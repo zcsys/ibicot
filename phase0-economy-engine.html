@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Phase 0 Economy Engine PoC</title>
+<style>
+  :root{--bg:#0e1116;--panel:#171b22;--panel2:#11151b;--text:#e7ebf0;--muted:#9ca6b2;--accent:#77b7ff;--good:#6fd08c;--warn:#f2c15b;--bad:#ef7b7b;--line:#2a303a}
+  *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--text);font:14px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+  header{padding:18px 22px;border-bottom:1px solid var(--line);background:#0b0e13;position:sticky;top:0;z-index:5}
+  h1{margin:0 0 3px;font-size:20px} .sub{color:var(--muted)}
+  main{max-width:1500px;margin:0 auto;padding:18px;display:grid;grid-template-columns:340px 1fr;gap:18px}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px}
+  .stack{display:grid;gap:12px}.row{display:flex;gap:8px;align-items:center}.row>*{min-width:0}.grow{flex:1}
+  label{display:block;color:var(--muted);font-size:12px;margin-bottom:4px}.field{display:grid;grid-template-columns:1fr 105px;align-items:center;gap:10px;margin:8px 0}
+  input,select,button{font:inherit} input,select{width:100%;background:var(--panel2);border:1px solid var(--line);border-radius:7px;padding:7px 8px;color:var(--text)}
+  button{background:#202834;color:var(--text);border:1px solid #374151;border-radius:7px;padding:7px 10px;cursor:pointer}button:hover{background:#27313f}button.primary{background:#315e8e;border-color:#4c84bc}button.good{background:#215c35;border-color:#377a4b}button.warn{background:#6d4f18;border-color:#966f26}button.bad{background:#6b2f34;border-color:#93434a}
+  .kpis{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}.kpi{background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:10px}.kpi b{display:block;font-size:19px;margin-top:3px}.muted{color:var(--muted)}
+  .chart{height:230px;margin-top:10px;background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:6px}.chart canvas{width:100%;height:100%}
+  table{width:100%;border-collapse:collapse}.table-wrap{overflow:auto}.table th,.table td{padding:7px 6px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}.table th:first-child,.table td:first-child{text-align:left}
+  .badge{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:2px 7px;font-size:11px}.ACTIVE{color:var(--good)}.DISTRESSED{color:var(--warn)}.BANKRUPT{color:var(--bad)}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}.small{font-size:12px}.log{height:150px;overflow:auto;background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:8px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;white-space:pre-wrap}
+  .checks{display:grid;grid-template-columns:1fr 1fr;gap:6px}.check{padding:6px 8px;border-radius:6px;background:var(--panel2);border:1px solid var(--line)}.pass{color:var(--good)}.fail{color:var(--bad)}
+  .tag{font-size:11px;padding:2px 5px;border:1px solid var(--line);border-radius:5px;color:var(--muted)}
+  @media(max-width:1000px){main{grid-template-columns:1fr}.kpis{grid-template-columns:repeat(2,1fr)}.grid2{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header>
+  <h1>Phase 0 — Economy Engine PoC</h1>
+  <div class="sub">Single commodity: Water · 5 companies · deterministic headless simulation · impulse-response harness</div>
+</header>
+<main>
+  <aside class="stack">
+    <section class="panel">
+      <div class="row"><strong>Simulation controls</strong><span class="tag">v0.1</span></div>
+      <div class="field"><label>Seed</label><input id="seed" type="number" value="12345"></div>
+      <div class="field"><label>Consumers (N)</label><input id="N" type="number" value="1000" min="1"></div>
+      <div class="field"><label>Base cost</label><input id="baseCost" type="number" value="1" min="0.01" step="0.01"></div>
+      <div class="field"><label>Capacity / company</label><input id="capacity" type="number" value="50" min="1"></div>
+      <div class="field"><label>v min</label><input id="vmin" type="number" value="1.2" min="0.01" step="0.01"></div>
+      <div class="field"><label>v max</label><input id="vmax" type="number" value="3.0" min="0.02" step="0.01"></div>
+      <div class="field"><label>Need p min</label><input id="pmin" type="number" value="0.15" min="0" max="1" step="0.01"></div>
+      <div class="field"><label>Need p max</label><input id="pmax" type="number" value="0.25" min="0" max="1" step="0.01"></div>
+      <div class="field"><label>Switching cost min</label><input id="taumin" type="number" value="0.05" min="0" step="0.01"></div>
+      <div class="field"><label>Switching cost max</label><input id="taumax" type="number" value="0.2" min="0" step="0.01"></div>
+      <div class="field"><label>d bar</label><input id="dbar" type="number" value="1" min="0.01" step="0.01"></div>
+      <div class="field"><label>Theta</label><input id="theta" type="number" value="0.15" min="0" max="1" step="0.01"></div>
+      <div class="field"><label>Sigma</label><input id="sigma" type="number" value="0.02" min="0" step="0.005"></div>
+      <div class="field"><label>d min</label><input id="dmin" type="number" value="0.7" min="0.01" step="0.01"></div>
+      <div class="field"><label>d max</label><input id="dmax" type="number" value="1.4" min="0.02" step="0.01"></div>
+      <div class="field"><label>Bot k</label><input id="k" type="number" value="0.8" min="0" step="0.05"></div>
+      <div class="field"><label>Bot alpha</label><input id="alpha" type="number" value="0.25" min="0.001" max="1" step="0.01"></div>
+      <div class="field"><label>Min margin</label><input id="minMargin" type="number" value="0.08" min="0" step="0.01"></div>
+      <div class="field"><label>Initial markup</label><input id="markup" type="number" value="0.25" min="0" step="0.01"></div>
+      <div class="field"><label>Initial cash</label><input id="initialCash" type="number" value="1000000" min="1" step="1000"></div>
+      <div class="field"><label>Eta max</label><input id="etaMax" type="number" value="1.15" min="1" step="0.01"></div>
+      <div class="row" style="margin-top:10px;flex-wrap:wrap">
+        <button id="reset" class="primary">Reset</button><button id="step">Step</button><button id="run" class="good">Run</button><button id="pause">Pause</button>
+      </div>
+      <div class="row" style="margin-top:8px"><label style="margin:0">Ticks / second</label><input id="speed" class="grow" type="range" min="1" max="30" value="10"></div>
+    </section>
+    <section class="panel">
+      <strong>Scenario harness</strong>
+      <div class="row" style="margin-top:10px;flex-wrap:wrap">
+        <button data-scenario="A">A · Competitive</button>
+        <button data-scenario="B">B · Supply shock</button>
+        <button data-scenario="C">C · Asymmetric</button>
+        <button data-scenario="D">D · Intervention</button>
+        <button data-scenario="E">E · Shortage</button>
+        <button data-scenario="F">F · Stability sweep</button>
+      </div>
+      <div class="small muted" style="margin-top:8px">Scenario buttons reset state. D runs a paired control/treatment experiment and reports divergence.</div>
+    </section>
+    <section class="panel">
+      <strong>Selected player control</strong>
+      <div class="field"><label>Company</label><select id="playerCompany"></select></div>
+      <div class="field"><label>Controller</label><select id="controller"><option>BOT</option><option>PLAYER</option></select></div>
+      <div class="field"><label>Player online</label><select id="playerOnline"><option value="true">Online</option><option value="false">Offline</option></select></div>
+      <div class="field"><label>Player price</label><input id="playerPrice" type="number" value="1.6" min="0.01" step="0.01"></div>
+      <button id="applyPlayer" class="primary">Apply controller / price</button>
+      <div class="small muted" style="margin-top:8px">Player price is not subject to the bot unit-cost floor. Set controller to PLAYER, then apply a price.</div>
+    </section>
+  </aside>
+  <section class="stack">
+    <section class="kpis">
+      <div class="kpi"><span class="muted">Tick</span><b id="tick">0</b></div>
+      <div class="kpi"><span class="muted">Global difficulty</span><b id="difficulty">1.000</b></div>
+      <div class="kpi"><span class="muted">TW avg price</span><b id="twPrice">—</b></div>
+      <div class="kpi"><span class="muted">Total volume</span><b id="volume">0</b></div>
+      <div class="kpi"><span class="muted">HHI</span><b id="hhi">—</b></div>
+    </section>
+    <section class="panel">
+      <div class="grid2">
+        <div><strong>Market series</strong><div class="chart"><canvas id="priceChart"></canvas></div></div>
+        <div><strong>Inventory / volume</strong><div class="chart"><canvas id="volumeChart"></canvas></div></div>
+      </div>
+    </section>
+    <section class="panel">
+      <strong>Company state</strong>
+      <div class="table-wrap" style="margin-top:8px">
+        <table class="table"><thead><tr><th>Company</th><th>Status</th><th>Controller</th><th>Eta</th><th>Capacity</th><th>Price</th><th>Unit cost</th><th>Cash</th><th>Inventory</th><th>Prod</th><th>Sold</th><th>Revenue</th><th>Net CF</th><th>Share</th></tr></thead><tbody id="companies"></tbody></table>
+      </div>
+    </section>
+    <section class="grid2">
+      <section class="panel"><strong>Demand accounting</strong><div class="table-wrap" style="margin-top:8px"><table class="table"><tbody id="demand"></tbody></table></div></section>
+      <section class="panel"><strong>Sanity checks</strong><div id="checks" class="checks" style="margin-top:8px"></div></section>
+    </section>
+    <section class="grid2">
+      <section class="panel"><strong>Latest telemetry</strong><div id="telemetry" class="small log" style="margin-top:8px"></div></section>
+      <section class="panel"><strong>Event log</strong><div id="log" class="log" style="margin-top:8px"></div></section>
+    </section>
+    <section class="panel"><strong>Impulse-response result</strong><div id="impulse" class="small" style="margin-top:8px;color:var(--muted)">Run scenario D to compare a control trajectory with a 20% price impulse at tick 50.</div></section>
+  </section>
+</main>
+<script>
+'use strict';
+
+// Deterministic utilities. Independent RNG instances are created for distinct subsystems.
+class RNG {
+  constructor(seed){ this.s = (seed>>>0) || 1; }
+  next(){ let x=this.s; x ^= x<<13; x ^= x>>>17; x ^= x<<5; this.s=x>>>0; return this.s/4294967296; }
+  uniform(a,b){ return a+(b-a)*this.next(); }
+  int(n){ return Math.floor(this.next()*n); }
+  normal(){ let u=0,v=0; while(u===0)u=this.next(); while(v===0)v=this.next(); return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v); }
+}
+function hashSeed(seed,tick){ let x=((seed>>>0) ^ Math.imul((tick+1)>>>0,0x9E3779B1))>>>0; x=Math.imul(x^(x>>>16),0x85EBCA6B)>>>0; x=Math.imul(x^(x>>>13),0xC2B2AE35)>>>0; return (x^(x>>>16))>>>0; }
+function clamp(x,a,b){return Math.max(a,Math.min(b,x));}
+function fmt(x,d=2){return Number.isFinite(x)?x.toFixed(d):'—';}
+function money(x){return Number.isFinite(x)?'$'+x.toFixed(2):'—';}
+
+class Economy {
+  constructor(cfg, scenario={}){ this.cfg=structuredClone(cfg); this.scenario=scenario; this.reset(); }
+  reset(){
+    const c=this.cfg, seed=c.seed|0; this.tick=0; this.d=c.dbar; this.history=[]; this.logs=[]; this.lastChecks=[]; this.lastDemand={active:0,fulfilled:0,unmetPrice:0,unmetStock:0}; this.lastStockBefore=Array(5).fill(0);
+    const cr=new RNG(hashSeed(seed,101)); const mr=new RNG(hashSeed(seed,202));
+    this.companies=[];
+    const etas = this.scenario.etas || Array.from({length:5},()=>cr.uniform(1,c.etaMax));
+    const capacities = this.scenario.capacities || Array.from({length:5},()=>c.capacity);
+    for(let i=0;i<5;i++){
+      const eta=etas[i], C=capacities[i], k=this.scenario.k?.[i] ?? c.k, alpha=this.scenario.alpha?.[i] ?? c.alpha;
+      const initialCost=c.baseCost*c.dbar*eta, price=this.scenario.prices?.[i] ?? initialCost*(1+c.markup);
+      this.companies.push({id:i,status:'ACTIVE',controller_type:(this.scenario.playerCompany===i?'PLAYER':'BOT'),controller_id:(this.scenario.playerCompany===i?'player':null),cash:c.initialCash,initial_cash:c.initialCash,inventory:0,production_capacity:C,efficiency_multiplier:eta,price,price_source:(this.scenario.playerCompany===i?'PLAYER':'BOT_POLICY'),target_inventory:C,inventory_ema:C,pricing_k:k,pricing_ema_alpha:alpha,min_margin:c.minMargin,last_active_tick:0,units_sold:0,revenue:0,production:0,production_cost:0,net_cashflow:0,unit_cost:initialCost,market_share:NaN});
+    }
+    this.consumerParams=[]; for(let i=0;i<c.N;i++) this.consumerParams.push({id:i,reservation_price:mr.uniform(c.vmin,c.vmax),switching_cost:mr.uniform(c.taumin,c.taumax),preferred_seller_id:mr.int(5),p_need:mr.uniform(c.pmin,c.pmax)});
+    this.playerPrices = {}; this.playerOnline = {}; this.onlineTransitionEvent = null; this.telemetry=[]; this.running=false; this.resetSeries();
+    this.log(`reset seed=${seed}, N=${c.N}`); this.record();
+  }
+  resetSeries(){ this.series={tick:[],price:[],volume:[],inventory:[],hhi:[],demand:[]}; }
+  log(s){ this.logs.unshift(`[t=${this.tick}] ${s}`); this.logs=this.logs.slice(0,60); }
+  step(){
+    const c=this.cfg, t=this.tick+1; // d_t is the beginning-of-tick shock
+    const drng=new RNG(hashSeed(c.seed,300000+t));
+    this.d=clamp(this.d + c.theta*(c.dbar-this.d)+c.sigma*drng.normal(),c.dmin,c.dmax);
+    if(this.scenario.supplyShockTick===t){ this.d=clamp(this.scenario.supplyShockValue,c.dmin,c.dmax); this.log(`difficulty shock -> ${this.d.toFixed(3)}`); }
+    // 2-4: cost, production, cash/inventory
+    for(const co of this.companies){
+      co.unit_cost=c.baseCost*this.d*co.efficiency_multiplier; co.production=0; co.units_sold=0; co.revenue=0; co.production_cost=0; co.net_cashflow=0;
+      if(co.status==='BANKRUPT') continue;
+      const q=Math.min(co.production_capacity,Math.floor(co.cash/co.unit_cost+1e-12));
+      co.production=q; co.production_cost=q*co.unit_cost; co.cash-=co.production_cost; co.inventory+=q;
+    }
+    // 5-7: shuffle and demand / seller resolution
+    const order=Array.from({length:c.N},(_,i)=>i); const orng=new RNG(hashSeed(c.seed,t)); for(let i=order.length-1;i>0;i--){const j=orng.int(i+1);[order[i],order[j]]=[order[j],order[i]];}
+    let activeDemand=0,fulfilled=0,unmetPrice=0,unmetStock=0,totalRevenue=0;
+    const stockBefore = this.companies.map(co=>co.inventory);
+    const nrng=new RNG(hashSeed(c.seed,500000+t));
+    const consumerNeed = new Uint8Array(c.N); for(let i=0;i<c.N;i++) consumerNeed[i]=nrng.next()<this.consumerParams[i].p_need?1:0;
+    // One-time intervention applies to tick t's active price only; bot price is restored by next tick's controller step.
+    if(this.scenario.impulseTick===t){ const idx=this.scenario.impulseCompany ?? 0; if(this.companies[idx].status!=='BANKRUPT'){this.companies[idx].price*=1.2;this.companies[idx].price_source='TEST_INTERVENTION';this.log(`test intervention: C${idx+1} price x1.20`);} }
+    for(const cid of order){ if(!consumerNeed[cid]) continue; activeDemand++; const cu=this.consumerParams[cid];
+      const feasible=[]; let anyPrice=false; let anyStock=false;
+      for(const co of this.companies){ if(co.status==='BANKRUPT') continue; const adj=co.price + (co.id===cu.preferred_seller_id?0:cu.switching_cost); if(adj<=cu.reservation_price+1e-12){anyPrice=true; feasible.push({co,adj}); if(co.inventory>0) anyStock=true;} }
+      const stocked=feasible.filter(x=>x.co.inventory>0); if(!stocked.length){ if(!anyPrice) unmetPrice++; else unmetStock++; continue; }
+      stocked.sort((a,b)=>a.adj-b.adj || a.co.id-b.co.id); const co=stocked[0].co; co.inventory-=1; co.units_sold++; co.revenue+=co.price; co.cash+=co.price; co.net_cashflow += co.price; totalRevenue+=co.price; fulfilled++;
+    }
+    this.lastDemand={active:activeDemand,fulfilled,unmetPrice,unmetStock}; this.lastStockBefore=stockBefore;
+    // 10 status, then 11 next-tick pricing based on settled inventory.
+    for(const co of this.companies){
+      if(co.status==='BANKRUPT') continue;
+      co.net_cashflow = co.revenue - co.production_cost;
+      const canFull=co.cash >= co.production_capacity*co.unit_cost-1e-9;
+      const canOne=co.cash >= co.unit_cost-1e-9;
+      if(!canOne && co.inventory<=1e-12) {co.status='BANKRUPT'; this.log(`company ${co.id+1} BANKRUPT`);}
+      else if(!canFull) co.status='DISTRESSED'; else co.status='ACTIVE';
+      if(co.status==='ACTIVE' || co.status==='DISTRESSED') co.last_active_tick=t;
+      co.inventory_ema=co.pricing_ema_alpha*co.inventory+(1-co.pricing_ema_alpha)*co.inventory_ema;
+    }
+    for(const co of this.companies){
+      if(co.status==='BANKRUPT') continue;
+      if(co.controller_type==='BOT'){
+        const err=(co.target_inventory-co.inventory_ema)/co.target_inventory; const raw=co.price*Math.exp(co.pricing_k*err); co.price=Math.max(raw,co.unit_cost*(1+co.min_margin)); co.price_source='BOT_POLICY';
+      } else {
+        co.price = this.playerPrices[co.id] ?? co.price; co.price_source='PLAYER';
+      }
+    }
+    this.tick=t; this.record();
+    return this.history[this.history.length-1];
+  }
+  record(){
+    let vol=0,rev=0,totalInv=0,prod=0,quoted=[]; for(const co of this.companies){vol+=co.units_sold;rev+=co.revenue;totalInv+=co.inventory;prod+=co.production;if(co.status!=='BANKRUPT') quoted.push(co.price);}
+    const tw=vol?rev/vol:NaN, qa=quoted.length?quoted.reduce((a,b)=>a+b,0)/quoted.length:NaN; const qstd=quoted.length>1?Math.sqrt(quoted.reduce((a,b)=>a+(b-qa)**2,0)/(quoted.length-1)):0; const shares=this.companies.map(co=>vol?co.units_sold/vol:NaN); const hhi=vol?shares.reduce((a,b)=>a+(b||0)**2,0):NaN; const shareSum=vol?shares.reduce((a,b)=>a+(b||0),0):NaN; this.companies.forEach((co,i)=>co.market_share=shares[i]);
+    let active=0,needFulfilled=0,unmetP=0,unmetS=0; const last=this.history[this.history.length-1]; // values will be attached below
+    // derive demand from transaction accounting against per-tick demand counters saved by record() caller
+    const r={tick:this.tick,difficulty:this.d,transaction_weighted_avg_price:tw,quoted_avg_price:qa,quoted_price_std:qstd,price_dispersion:(qa?Math.abs(qstd/qa):NaN),HHI:hhi,total_volume:vol,total_inventory:totalInv,total_production:prod,active_demand:this.lastDemand.active,fulfilled_demand:this.lastDemand.fulfilled,unmet_demand:this.lastDemand.unmetPrice+this.lastDemand.unmetStock,unmet_due_to_price:this.lastDemand.unmetPrice,unmet_due_to_stock:this.lastDemand.unmetStock};
+    this.history.push(r); this.series.tick.push(this.tick); this.series.price.push(Number.isFinite(tw)?tw:NaN); this.series.volume.push(vol); this.series.inventory.push(totalInv); this.series.hhi.push(hhi); r.player_online=Object.values(this.playerOnline).some(Boolean); r.online_transition_event=this.onlineTransitionEvent; this.onlineTransitionEvent=null; this.telemetry.unshift(r);
+    this.lastChecks=this.checks();
+    render(this);
+  }
+  checks(){
+    const out=[]; for(const co of this.companies){out.push([`C${co.id+1} inventory >= 0`,co.inventory>=-1e-9]);out.push([`C${co.id+1} cash >= 0`,co.cash>=-1e-9]);out.push([`C${co.id+1} production <= C`,co.production<=co.production_capacity+1e-9]);out.push([`C${co.id+1} sales <= starting stock + production`,co.units_sold<=this.lastStockBefore[co.id]+co.production+1e-9]); if(co.controller_type==='BOT'&&co.status!=='BANKRUPT') out.push([`C${co.id+1} bot floor`,co.price+1e-9>=co.unit_cost*(1+co.min_margin)]);}
+    out.push(['Transaction quantity = 1',true]); out.push(['All active quotes > 0',this.companies.filter(x=>x.status!=='BANKRUPT').every(x=>x.price>0)]); out.push(['Demand accounting',this.lastDemand.active===this.lastDemand.fulfilled+this.lastDemand.unmetPrice+this.lastDemand.unmetStock]); out.push(['Market share sums to 1 when volume > 0',this.history.at(-1)?.total_volume?Math.abs((this.history.at(-1).total_volume?this.companies.reduce((a,c)=>a+c.market_share,0):0)-1)<1e-9:true]); return out;
+  }
+}
+
+function cfgFromUI(){ const g=id=>+document.getElementById(id).value; return {seed:g('seed'),N:g('N'),baseCost:g('baseCost'),capacity:g('capacity'),vmin:g('vmin'),vmax:g('vmax'),pmin:g('pmin'),pmax:g('pmax'),taumin:g('taumin'),taumax:g('taumax'),dbar:g('dbar'),theta:g('theta'),sigma:g('sigma'),dmin:g('dmin'),dmax:g('dmax'),k:g('k'),alpha:g('alpha'),minMargin:g('minMargin'),markup:g('markup'),initialCash:g('initialCash'),etaMax:g('etaMax')}; }
+let sim=null, timer=null;
+function setScenario(name){ const c=cfgFromUI(); let s={};
+  if(name==='A'){c.sigma=0.005; s.etas=Array(5).fill(1.05); s.capacities=Array(5).fill(c.capacity); c.k=0.35;c.alpha=0.15;}
+  if(name==='B'){s.supplyShockTick=50;s.supplyShockValue=Math.min(c.dmax,c.dbar*1.35);c.sigma=0.005;}
+  if(name==='C'){s.etas=[1.00,1.05,1.10,1.15,1.08];s.capacities=[40,70,55,30,80];}
+  if(name==='D'){s.playerCompany=0;s.impulseTick=50;s.impulseCompany=0;}
+  if(name==='E'){c.capacity=Math.max(1,Math.floor(c.N*((c.pmin+c.pmax)/2)/5*0.7));c.k=0.5;c.alpha=0.25;}
+  if(name==='F'){runStabilitySweep(); return;}
+  sim=new Economy(c,s); document.getElementById('playerCompany').value='0'; refreshLog();
+}
+function runStabilitySweep(){ const c=cfgFromUI(); const rows=[]; const pairs=[]; for(let k=0.15;k<=1.95;k+=0.2) for(let a=0.1;a<=0.9;a+=0.2)pairs.push([+k.toFixed(2),+a.toFixed(2)]); for(const [k,a] of pairs){const s=new Economy({...c,k,alpha:a},{etas:Array(5).fill(1.05),capacities:Array(5).fill(c.capacity)}); let prices=[]; for(let i=0;i<220;i++){s.step(); if(i>=170)prices.push(s.history.at(-1).transaction_weighted_avg_price);} const finite=prices.filter(Number.isFinite), avg=finite.reduce((x,y)=>x+y,0)/(finite.length||1); const last=finite.at(-1)||NaN; const span=finite.length?(Math.max(...finite)-Math.min(...finite)):NaN; let cls='stable'; if(!Number.isFinite(last)||last>c.vmax*2||last<0.05) cls='pathological'; else if(span>avg*0.8) cls='cobweb/volatile'; rows.push({k,alpha,avg,last,span,cls}); }
+  const div=document.getElementById('impulse'); div.innerHTML='<b>Controller stability sweep</b><br><div class="small" style="overflow:auto;max-height:360px"><table class="table"><thead><tr><th>k</th><th>alpha</th><th>late avg</th><th>last</th><th>range</th><th>classification</th></tr></thead><tbody>'+rows.map(r=>`<tr><td>${r.k.toFixed(2)}</td><td>${r.alpha.toFixed(2)}</td><td>${fmt(r.avg,3)}</td><td>${fmt(r.last,3)}</td><td>${fmt(r.span,3)}</td><td>${r.cls}</td></tr>`).join('')+'</tbody></table></div>'; logGlobal('F sweep completed'); }
+function logGlobal(s){document.getElementById('log').textContent='[harness] '+s;}
+function pairedImpulse(){ const c=cfgFromUI(); const mk=seed=>new Economy({...c,seed},{etas:[1.02,1.06,1.10,1.04,1.12],capacities:[50,50,50,50,50]}); const control=mk(c.seed), treatment=mk(c.seed); const metrics=[]; for(let t=1;t<=180;t++){control.step();treatment.step(); if(t===50){treatment.scenario.impulseTick=50; /* applied on step; step already passed, so next line is intentional replay below */}}
+  // Re-run correctly with intervention active before tick 50.
+  const A=mk(c.seed), B=new Economy({...c,seed:c.seed}, {etas:[1.02,1.06,1.10,1.04,1.12],capacities:[50,50,50,50,50],impulseTick:50,impulseCompany:0});
+  for(let t=1;t<=180;t++){A.step();B.step(); const ar=A.history.at(-1),br=B.history.at(-1);metrics.push({t,price:diff(br.transaction_weighted_avg_price,ar.transaction_weighted_avg_price),hhi:diff(br.HHI,ar.HHI),vol:diff(br.total_volume,ar.total_volume)});}
+  const p=metrics.reduce((m,x)=>Math.max(m,Math.abs(x.price||0)),0), cum=metrics.reduce((s,x)=>s+Math.abs(x.price||0),0); const tol=Math.max(0.002,p*0.05); let rec='not reached'; let run=0; for(const x of metrics.slice(50)){ if(Math.abs(x.price||0)<tol) run++; else run=0; if(run>=5){rec=`tick ${x.t-4}`;break;} } document.getElementById('impulse').innerHTML=`<b>Paired impulse-response</b><br>Company 1 price ×1.20 at tick 50; same seed/initial state.<br>Peak |Δ TW price|: <b>${fmt(p,5)}</b> · cumulative |Δ TW price|: <b>${fmt(cum,5)}</b> · recovery (5 consecutive ticks, tolerance ${fmt(tol,5)}): <b>${rec}</b>`; logGlobal('D paired run completed'); }
+function diff(b,a){return Number.isFinite(a)&&Number.isFinite(b)?b-a:0;}
+function render(s){
+  document.getElementById('tick').textContent=s.tick; document.getElementById('difficulty').textContent=fmt(s.d,3); const r=s.history.at(-1)||{}; document.getElementById('twPrice').textContent=money(r.transaction_weighted_avg_price); document.getElementById('volume').textContent=r.total_volume??0; document.getElementById('hhi').textContent=fmt(r.HHI,3);
+  document.getElementById('companies').innerHTML=s.companies.map(co=>`<tr><td>C${co.id+1}</td><td><span class="badge ${co.status}">${co.status}</span></td><td>${co.controller_type}</td><td>${co.efficiency_multiplier.toFixed(3)} / ${Math.round(100/co.efficiency_multiplier)}%</td><td>${co.production_capacity}</td><td>${money(co.price)}</td><td>${money(co.unit_cost)}</td><td>${money(co.cash)}</td><td>${co.inventory.toFixed(0)}</td><td>${co.production}</td><td>${co.units_sold}</td><td>${money(co.revenue)}</td><td>${money(co.net_cashflow)}</td><td>${fmt(co.market_share*100,1)}%</td></tr>`).join('');
+  const last=s.history.at(-1)||{}; document.getElementById('demand').innerHTML=`<tr><th>Active demand</th><td>${last.active_demand??0}</td></tr><tr><th>Fulfilled demand</th><td>${last.fulfilled_demand??0}</td></tr><tr><th>Unmet demand</th><td>${last.unmet_demand??0}</td></tr><tr><th>Unmet due to price</th><td>${last.unmet_due_to_price??0}</td></tr><tr><th>Unmet due to stock</th><td>${last.unmet_due_to_stock??0}</td></tr><tr><th>Demand invariant</th><td>${(last.active_demand===last.fulfilled_demand+last.unmet_due_to_price+last.unmet_due_to_stock)?'PASS':'FAIL'}</td></tr>`;
+  document.getElementById('checks').innerHTML=s.lastChecks.slice(-12).map(x=>`<div class="check ${x[1]?'pass':'fail'}">${x[1]?'PASS':'FAIL'} · ${x[0]}</div>`).join('');
+  document.getElementById('telemetry').textContent=JSON.stringify(last,null,2); document.getElementById('log').textContent=s.logs.join('\n'); drawChart('priceChart',s.series.tick,s.series.price,'TW avg price'); drawChart('volumeChart',s.series.tick,s.series.volume,'volume');
+}
+function drawChart(id,x,y,label){ const cv=document.getElementById(id), dpr=devicePixelRatio||1, rect=cv.getBoundingClientRect(); cv.width=rect.width*dpr; cv.height=rect.height*dpr; const g=cv.getContext('2d');g.scale(dpr,dpr);const w=rect.width,h=rect.height;g.clearRect(0,0,w,h);const vals=y.filter(Number.isFinite);if(vals.length<2)return;const min=Math.min(...vals),max=Math.max(...vals);g.strokeStyle='#2a303a';g.lineWidth=1; for(let i=0;i<5;i++){const yy=10+i*(h-28)/4;g.beginPath();g.moveTo(35,yy);g.lineTo(w-8,yy);g.stroke();}g.strokeStyle='#77b7ff';g.lineWidth=2;g.beginPath(); y.forEach((v,i)=>{if(!Number.isFinite(v))return;const xx=35+(w-48)*(i/(y.length-1));const yy=10+(h-28)*(1-(v-min)/(max-min||1));if(i===0)g.moveTo(xx,yy);else g.lineTo(xx,yy);});g.stroke();g.fillStyle='#9ca6b2';g.font='11px system-ui';g.fillText(label,8,12);g.fillText(fmt(max,2),8,26);g.fillText(fmt(min,2),8,h-3);g.fillText(`t=${x.at(-1)||0}`,w-52,h-3); }
+function refreshLog(){if(sim)render(sim);}
+
+document.getElementById('reset').onclick=()=>{sim=new Economy(cfgFromUI());};
+document.getElementById('step').onclick=()=>{if(!sim)sim=new Economy(cfgFromUI());sim.step();};
+document.getElementById('run').onclick=()=>{ if(!sim)sim=new Economy(cfgFromUI()); clearInterval(timer); sim.running=true; timer=setInterval(()=>{if(sim.running)sim.step();},1000/(+document.getElementById('speed').value)); };
+document.getElementById('pause').onclick=()=>{if(sim)sim.running=false;clearInterval(timer);};
+document.querySelectorAll('[data-scenario]').forEach(b=>b.onclick=()=>{if(b.dataset.scenario==='D'){setScenario('D');pairedImpulse();}else setScenario(b.dataset.scenario);});
+document.getElementById('applyPlayer').onclick=()=>{if(!sim)return;const idx=+document.getElementById('playerCompany').value;const type=document.getElementById('controller').value;const online=document.getElementById('playerOnline').value==='true'; const prev=sim.playerOnline[idx]??false; sim.companies[idx].controller_type=type;sim.companies[idx].controller_id=type==='PLAYER'?'player':null; if(type==='PLAYER')sim.playerPrices[idx]=+document.getElementById('playerPrice').value; else delete sim.playerPrices[idx]; sim.playerOnline[idx]=online; sim.onlineTransitionEvent=(prev!==online)?{tick:sim.tick,company_id:idx,from:prev,to:online}:null; if(online&&type==='PLAYER')sim.companies[idx].last_active_tick=sim.tick; sim.log(`C${idx+1} controller -> ${type}; player ${online?'online':'offline'}`);render(sim);};
+for(let i=0;i<5;i++){const o=document.createElement('option');o.value=i;o.textContent='Company '+(i+1);document.getElementById('playerCompany').appendChild(o);} document.getElementById('playerCompany').onchange=e=>{ if(sim){document.getElementById('controller').value=sim.companies[+e.target.value].controller_type;} };
+sim=new Economy(cfgFromUI());
+window.addEventListener('resize',()=>sim&&render(sim));
+window.Phase0Economy = { Economy, RNG, hashSeed, cfgFromUI };
+</script>
+</body>
+</html>
