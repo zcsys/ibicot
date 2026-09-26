@@ -22,6 +22,10 @@
   .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}.small{font-size:12px}.log{height:150px;overflow:auto;background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:8px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;white-space:pre-wrap}
   .checks{display:grid;grid-template-columns:1fr 1fr;gap:6px}.check{padding:6px 8px;border-radius:6px;background:var(--panel2);border:1px solid var(--line)}.pass{color:var(--good)}.fail{color:var(--bad)}
   .tag{font-size:11px;padding:2px 5px;border:1px solid var(--line);border-radius:5px;color:var(--muted)}
+  .company-row{cursor:pointer}.company-row:hover{background:rgba(119,183,255,.05)}.company-row:focus{outline:2px solid var(--accent);outline-offset:-2px}.company-row.expanded{background:rgba(119,183,255,.04)}
+  .company-row td:first-child::before{content:'▸';display:inline-block;width:14px;color:var(--muted);transition:transform .12s ease}.company-row.expanded td:first-child::before{transform:rotate(90deg);color:var(--accent)}
+  .company-detail td{padding:0;border-bottom:1px solid var(--line)}.company-detail-inner{padding:12px 10px 14px;background:var(--panel2);border-top:1px solid var(--line)}
+  .equity-meta{display:flex;flex-wrap:wrap;gap:16px;margin-bottom:8px}.equity-meta span{color:var(--muted)}.equity-meta b{color:var(--text);margin-left:4px}.equity-chart{height:190px;background:#0d1117;border:1px solid var(--line);border-radius:7px;padding:6px}.equity-chart canvas{width:100%;height:100%}
   @media(max-width:1000px){main{grid-template-columns:1fr}.kpis{grid-template-columns:repeat(2,1fr)}.grid2{grid-template-columns:1fr}}
 </style>
 </head>
@@ -33,15 +37,17 @@
 <main>
   <aside class="stack">
     <section class="panel">
-      <div class="row"><strong>Simulation controls</strong><span class="tag">v0.1</span></div>
+      <div class="row"><strong>Simulation controls</strong><span class="tag">v0.1.1</span></div>
       <div class="field"><label>Seed</label><input id="seed" type="number" value="12345"></div>
       <div class="field"><label>Consumers (N)</label><input id="N" type="number" value="1000" min="1"></div>
       <div class="field"><label>Base cost</label><input id="baseCost" type="number" value="1" min="0.01" step="0.01"></div>
-      <div class="field"><label>Capacity / company</label><input id="capacity" type="number" value="50" min="1"></div>
+      <div class="field"><label>Capacity / company</label><input id="capacity" type="number" value="10000" min="1"></div>
+      <div class="field"><label>Target inventory / company</label><input id="targetInventory" type="number" value="50000" min="1"></div>
+      <div class="field"><label>Max inventory / company</label><input id="maxInventory" type="number" value="100000" min="1"></div>
       <div class="field"><label>v min</label><input id="vmin" type="number" value="1.2" min="0.01" step="0.01"></div>
       <div class="field"><label>v max</label><input id="vmax" type="number" value="3.0" min="0.02" step="0.01"></div>
-      <div class="field"><label>Need p min</label><input id="pmin" type="number" value="0.15" min="0" max="1" step="0.01"></div>
-      <div class="field"><label>Need p max</label><input id="pmax" type="number" value="0.25" min="0" max="1" step="0.01"></div>
+      <div class="field"><label>Need p min</label><input id="pmin" type="number" value="0.25" min="0" max="1" step="0.01"></div>
+      <div class="field"><label>Need p max</label><input id="pmax" type="number" value="0.40" min="0" max="1" step="0.01"></div>
       <div class="field"><label>Switching cost min</label><input id="taumin" type="number" value="0.05" min="0" step="0.01"></div>
       <div class="field"><label>Switching cost max</label><input id="taumax" type="number" value="0.2" min="0" step="0.01"></div>
       <div class="field"><label>d bar</label><input id="dbar" type="number" value="1" min="0.01" step="0.01"></div>
@@ -70,7 +76,7 @@
         <button data-scenario="E">E · Shortage</button>
         <button data-scenario="F">F · Stability sweep</button>
       </div>
-      <div class="small muted" style="margin-top:8px">Scenario buttons reset state. D runs a paired control/treatment experiment and reports divergence.</div>
+      <div class="small muted" style="margin-top:8px">Target inventory is the desired replenishment setpoint. Capacity is the per-tick production limit. Max inventory is a hard storage ceiling. Bot prices respond to short-run stock flow, not target size.</div>
     </section>
     <section class="panel">
       <strong>Selected player control</strong>
@@ -99,7 +105,7 @@
     <section class="panel">
       <strong>Company state</strong>
       <div class="table-wrap" style="margin-top:8px">
-        <table class="table"><thead><tr><th>Company</th><th>Status</th><th>Controller</th><th>Eta</th><th>Capacity</th><th>Price</th><th>Unit cost</th><th>Cash</th><th>Inventory</th><th>Prod</th><th>Sold</th><th>Revenue</th><th>Net CF</th><th>Share</th></tr></thead><tbody id="companies"></tbody></table>
+        <table class="table"><thead><tr><th>Company</th><th>Status</th><th>Controller</th><th>Eta</th><th>Capacity</th><th>Target Inv</th><th>Max Inv</th><th>Target/Cap</th><th>Price</th><th>Unit cost</th><th>Cash</th><th>Inventory</th><th>Equity</th><th>Prod</th><th>Sold</th><th>Revenue</th><th>Net CF</th><th>Share</th></tr></thead><tbody id="companies"></tbody></table>
       </div>
     </section>
     <section class="grid2">
@@ -116,7 +122,6 @@
 <script>
 'use strict';
 
-// Deterministic utilities. Independent RNG instances are created for distinct subsystems.
 class RNG {
   constructor(seed){ this.s = (seed>>>0) || 1; }
   next(){ let x=this.s; x ^= x<<13; x ^= x>>>17; x ^= x<<5; this.s=x>>>0; return this.s/4294967296; }
@@ -132,50 +137,59 @@ function money(x){return Number.isFinite(x)?'$'+x.toFixed(2):'—';}
 class Economy {
   constructor(cfg, scenario={}){ this.cfg=structuredClone(cfg); this.scenario=scenario; this.reset(); }
   reset(){
-    const c=this.cfg, seed=c.seed|0; this.tick=0; this.d=c.dbar; this.history=[]; this.logs=[]; this.lastChecks=[]; this.lastDemand={active:0,fulfilled:0,unmetPrice:0,unmetStock:0}; this.lastStockBefore=Array(5).fill(0);
+    const c=this.cfg, seed=c.seed|0; this.tick=0; this.d=c.dbar; this.history=[]; this.logs=[]; this.lastChecks=[]; this.lastDemand={active:0,fulfilled:0,unmetPrice:0,unmetStock:0}; this.lastStartingInventory=Array(5).fill(0); this.lastStockBefore=Array(5).fill(0); this.lastFiniteMarketAvgPrice=NaN; this.expandedCompanies=new Set();
     const cr=new RNG(hashSeed(seed,101)); const mr=new RNG(hashSeed(seed,202));
     this.companies=[];
     const etas = this.scenario.etas || Array.from({length:5},()=>cr.uniform(1,c.etaMax));
     const capacities = this.scenario.capacities || Array.from({length:5},()=>c.capacity);
     for(let i=0;i<5;i++){
       const eta=etas[i], C=capacities[i], k=this.scenario.k?.[i] ?? c.k, alpha=this.scenario.alpha?.[i] ?? c.alpha;
+      const maxInventory=Math.max(1,this.scenario.maxInventory?.[i] ?? c.maxInventory);
+      const targetInventory=Math.max(1,Math.min(maxInventory,this.scenario.targetInventory?.[i] ?? c.targetInventory));
       const initialCost=c.baseCost*c.dbar*eta, price=this.scenario.prices?.[i] ?? initialCost*(1+c.markup);
-      this.companies.push({id:i,status:'ACTIVE',controller_type:(this.scenario.playerCompany===i?'PLAYER':'BOT'),controller_id:(this.scenario.playerCompany===i?'player':null),cash:c.initialCash,initial_cash:c.initialCash,inventory:0,production_capacity:C,efficiency_multiplier:eta,price,price_source:(this.scenario.playerCompany===i?'PLAYER':'BOT_POLICY'),target_inventory:C,inventory_ema:C,pricing_k:k,pricing_ema_alpha:alpha,min_margin:c.minMargin,last_active_tick:0,units_sold:0,revenue:0,production:0,production_cost:0,net_cashflow:0,unit_cost:initialCost,market_share:NaN});
+      this.companies.push({id:i,status:'ACTIVE',controller_type:(this.scenario.playerCompany===i?'PLAYER':'BOT'),controller_id:(this.scenario.playerCompany===i?'player':null),cash:c.initialCash,initial_cash:c.initialCash,inventory:0,production_capacity:C,target_inventory:targetInventory,max_inventory:maxInventory,efficiency_multiplier:eta,price,price_source:(this.scenario.playerCompany===i?'PLAYER':'BOT_POLICY'),inventory_ema:0,pricing_k:k,pricing_ema_alpha:alpha,min_margin:c.minMargin,last_active_tick:0,units_sold:0,revenue:0,production:0,production_cost:0,net_cashflow:0,unit_cost:initialCost,market_share:NaN,inventory_value:0,equity:c.initialCash,equity_valuation_price:0,equity_history:[]});
     }
     this.consumerParams=[]; for(let i=0;i<c.N;i++) this.consumerParams.push({id:i,reservation_price:mr.uniform(c.vmin,c.vmax),switching_cost:mr.uniform(c.taumin,c.taumax),preferred_seller_id:mr.int(5),p_need:mr.uniform(c.pmin,c.pmax)});
     this.playerPrices = {}; this.playerOnline = {}; this.onlineTransitionEvent = null; this.telemetry=[]; this.running=false; this.resetSeries();
-    this.log(`reset seed=${seed}, N=${c.N}`); this.record();
+    this.log(`reset seed=${seed}, N=${c.N}, targetInventory=${c.targetInventory}, maxInventory=${c.maxInventory}`); this.record();
   }
   resetSeries(){ this.series={tick:[],price:[],volume:[],inventory:[],hhi:[],demand:[]}; }
   log(s){ this.logs.unshift(`[t=${this.tick}] ${s}`); this.logs=this.logs.slice(0,60); }
   step(){
-    const c=this.cfg, t=this.tick+1; // d_t is the beginning-of-tick shock
+    const c=this.cfg, t=this.tick+1;
     const drng=new RNG(hashSeed(c.seed,300000+t));
     this.d=clamp(this.d + c.theta*(c.dbar-this.d)+c.sigma*drng.normal(),c.dmin,c.dmax);
     if(this.scenario.supplyShockTick===t){ this.d=clamp(this.scenario.supplyShockValue,c.dmin,c.dmax); this.log(`difficulty shock -> ${this.d.toFixed(3)}`); }
-    // 2-4: cost, production, cash/inventory
+
+    // Production is directed toward the target inventory, while capacity remains the hard per-tick limit.
+    // Target inventory therefore controls the firm's intended stock buffer; max inventory remains a
+    // separate physical storage ceiling. This avoids using price as the only mechanism for filling stock.
+    const startingInventory=this.companies.map(co=>co.inventory);
     for(const co of this.companies){
       co.unit_cost=c.baseCost*this.d*co.efficiency_multiplier; co.production=0; co.units_sold=0; co.revenue=0; co.production_cost=0; co.net_cashflow=0;
       if(co.status==='BANKRUPT') continue;
-      const q=Math.min(co.production_capacity,Math.floor(co.cash/co.unit_cost+1e-12));
+      const inventoryHeadroom=Math.max(0,co.max_inventory-co.inventory);
+      const targetGap=Math.max(0,co.target_inventory-co.inventory);
+      const affordable=Math.floor(co.cash/co.unit_cost+1e-12);
+      const q=Math.min(co.production_capacity, inventoryHeadroom, targetGap, affordable);
       co.production=q; co.production_cost=q*co.unit_cost; co.cash-=co.production_cost; co.inventory+=q;
+      if(co.inventory>co.max_inventory) co.inventory=co.max_inventory; // defensive hard clamp
     }
-    // 5-7: shuffle and demand / seller resolution
+
     const order=Array.from({length:c.N},(_,i)=>i); const orng=new RNG(hashSeed(c.seed,t)); for(let i=order.length-1;i>0;i--){const j=orng.int(i+1);[order[i],order[j]]=[order[j],order[i]];}
-    let activeDemand=0,fulfilled=0,unmetPrice=0,unmetStock=0,totalRevenue=0;
+    let activeDemand=0,fulfilled=0,unmetPrice=0,unmetStock=0;
     const stockBefore = this.companies.map(co=>co.inventory);
     const nrng=new RNG(hashSeed(c.seed,500000+t));
-    const consumerNeed = new Uint8Array(c.N); for(let i=0;i<c.N;i++) consumerNeed[i]=nrng.next()<this.consumerParams[i].p_need?1:0;
-    // One-time intervention applies to tick t's active price only; bot price is restored by next tick's controller step.
+    const consumerNeed = new Uint8Array(c.N); for(let i=0;i<c.N;i++) consumerNeed[i]=nrng.next()<clamp(this.consumerParams[i].p_need,0,1)?1:0;
     if(this.scenario.impulseTick===t){ const idx=this.scenario.impulseCompany ?? 0; if(this.companies[idx].status!=='BANKRUPT'){this.companies[idx].price*=1.2;this.companies[idx].price_source='TEST_INTERVENTION';this.log(`test intervention: C${idx+1} price x1.20`);} }
     for(const cid of order){ if(!consumerNeed[cid]) continue; activeDemand++; const cu=this.consumerParams[cid];
-      const feasible=[]; let anyPrice=false; let anyStock=false;
-      for(const co of this.companies){ if(co.status==='BANKRUPT') continue; const adj=co.price + (co.id===cu.preferred_seller_id?0:cu.switching_cost); if(adj<=cu.reservation_price+1e-12){anyPrice=true; feasible.push({co,adj}); if(co.inventory>0) anyStock=true;} }
-      const stocked=feasible.filter(x=>x.co.inventory>0); if(!stocked.length){ if(!anyPrice) unmetPrice++; else unmetStock++; continue; }
-      stocked.sort((a,b)=>a.adj-b.adj || a.co.id-b.co.id); const co=stocked[0].co; co.inventory-=1; co.units_sold++; co.revenue+=co.price; co.cash+=co.price; co.net_cashflow += co.price; totalRevenue+=co.price; fulfilled++;
+      const feasible=[]; let anyPrice=false;
+      for(const co of this.companies){ if(co.status==='BANKRUPT') continue; const adj=co.price + (co.id===cu.preferred_seller_id?0:cu.switching_cost); if(adj<=cu.reservation_price+1e-12){anyPrice=true; if(co.inventory>0) feasible.push({co,adj});} }
+      if(!feasible.length){ if(!anyPrice) unmetPrice++; else unmetStock++; continue; }
+      feasible.sort((a,b)=>a.adj-b.adj || a.co.id-b.co.id); const co=feasible[0].co; co.inventory-=1; co.units_sold++; co.revenue+=co.price; co.cash+=co.price; co.net_cashflow += co.price; fulfilled++;
     }
-    this.lastDemand={active:activeDemand,fulfilled,unmetPrice,unmetStock}; this.lastStockBefore=stockBefore;
-    // 10 status, then 11 next-tick pricing based on settled inventory.
+    this.lastDemand={active:activeDemand,fulfilled,unmetPrice,unmetStock}; this.lastStartingInventory=startingInventory; this.lastStockBefore=stockBefore;
+
     for(const co of this.companies){
       if(co.status==='BANKRUPT') continue;
       co.net_cashflow = co.revenue - co.production_cost;
@@ -184,12 +198,28 @@ class Economy {
       if(!canOne && co.inventory<=1e-12) {co.status='BANKRUPT'; this.log(`company ${co.id+1} BANKRUPT`);}
       else if(!canFull) co.status='DISTRESSED'; else co.status='ACTIVE';
       if(co.status==='ACTIVE' || co.status==='DISTRESSED') co.last_active_tick=t;
+      // EMA smooths observed stock. It is state used by the price controller, not an implicit target.
       co.inventory_ema=co.pricing_ema_alpha*co.inventory+(1-co.pricing_ema_alpha)*co.inventory_ema;
+      co.inventory_ema=clamp(co.inventory_ema,0,co.max_inventory);
     }
     for(const co of this.companies){
       if(co.status==='BANKRUPT') continue;
       if(co.controller_type==='BOT'){
-        const err=(co.target_inventory-co.inventory_ema)/co.target_inventory; const raw=co.price*Math.exp(co.pricing_k*err); co.price=Math.max(raw,co.unit_cost*(1+co.min_margin)); co.price_source='BOT_POLICY';
+        // Deeper control separation: target inventory controls replenishment, not price.
+        // Price reacts to short-run inventory flow and operational stock scarcity instead.
+        // This makes the price controller insensitive to the absolute size of the target.
+        const cap=Math.max(1,co.production_capacity);
+        const flowSignal=clamp((co.units_sold-co.production)/cap,-1,1); // positive = stock is being depleted
+        const operationalBuffer=Math.max(1,cap);
+        const stockSignal=clamp((operationalBuffer-co.inventory_ema)/operationalBuffer,-1,1); // positive = low short-run stock
+        const controlSignal=clamp(0.75*flowSignal+0.25*stockSignal,-1,1);
+        const logStep=0.01*co.pricing_k*controlSignal; // max 1%/tick at k=1; no exponential runaway
+        const floor=co.unit_cost*(1+co.min_margin);
+        const demandCeiling=Math.max(0.01,c.vmax);
+        const ceiling=Math.max(floor,demandCeiling);
+        const raw=co.price*Math.exp(logStep);
+        co.price=clamp(raw,floor,ceiling);
+        co.price_source='BOT_POLICY';
       } else {
         co.price = this.playerPrices[co.id] ?? co.price; co.price_source='PLAYER';
       }
@@ -199,23 +229,37 @@ class Economy {
   }
   record(){
     let vol=0,rev=0,totalInv=0,prod=0,quoted=[]; for(const co of this.companies){vol+=co.units_sold;rev+=co.revenue;totalInv+=co.inventory;prod+=co.production;if(co.status!=='BANKRUPT') quoted.push(co.price);}
-    const tw=vol?rev/vol:NaN, qa=quoted.length?quoted.reduce((a,b)=>a+b,0)/quoted.length:NaN; const qstd=quoted.length>1?Math.sqrt(quoted.reduce((a,b)=>a+(b-qa)**2,0)/(quoted.length-1)):0; const shares=this.companies.map(co=>vol?co.units_sold/vol:NaN); const hhi=vol?shares.reduce((a,b)=>a+(b||0)**2,0):NaN; const shareSum=vol?shares.reduce((a,b)=>a+(b||0),0):NaN; this.companies.forEach((co,i)=>co.market_share=shares[i]);
-    let active=0,needFulfilled=0,unmetP=0,unmetS=0; const last=this.history[this.history.length-1]; // values will be attached below
-    // derive demand from transaction accounting against per-tick demand counters saved by record() caller
-    const r={tick:this.tick,difficulty:this.d,transaction_weighted_avg_price:tw,quoted_avg_price:qa,quoted_price_std:qstd,price_dispersion:(qa?Math.abs(qstd/qa):NaN),HHI:hhi,total_volume:vol,total_inventory:totalInv,total_production:prod,active_demand:this.lastDemand.active,fulfilled_demand:this.lastDemand.fulfilled,unmet_demand:this.lastDemand.unmetPrice+this.lastDemand.unmetStock,unmet_due_to_price:this.lastDemand.unmetPrice,unmet_due_to_stock:this.lastDemand.unmetStock};
+    const tw=vol?rev/vol:NaN, qa=quoted.length?quoted.reduce((a,b)=>a+b,0)/quoted.length:NaN; const qstd=quoted.length>1?Math.sqrt(quoted.reduce((a,b)=>a+(b-qa)**2,0)/(quoted.length-1)):0; const shares=this.companies.map(co=>vol?co.units_sold/vol:NaN); const hhi=vol?shares.reduce((a,b)=>a+(b||0)**2,0):NaN; this.companies.forEach((co,i)=>co.market_share=shares[i]);
+
+    // Equity is mark-to-market: cash plus inventory valued at the previous tick's
+    // transaction-weighted average market price. On the first priced tick, use that
+    // tick's average as a bootstrap valuation; if the previous tick had no trades,
+    // retain the last finite market average.
+    const inventoryValuationPrice=Number.isFinite(this.lastFiniteMarketAvgPrice)?this.lastFiniteMarketAvgPrice:(Number.isFinite(tw)?tw:(Number.isFinite(qa)?qa:0));
+    for(const co of this.companies){
+      co.equity_valuation_price=inventoryValuationPrice;
+      co.inventory_value=co.inventory*inventoryValuationPrice;
+      co.equity=co.cash+co.inventory_value;
+      co.equity_history.push({tick:this.tick,equity:co.equity,cash:co.cash,inventory:co.inventory,inventory_value:co.inventory_value,valuation_price:inventoryValuationPrice});
+    }
+
+    const companyEquity=this.companies.map(co=>co.equity);
+    const r={tick:this.tick,difficulty:this.d,transaction_weighted_avg_price:tw,quoted_avg_price:qa,quoted_price_std:qstd,price_dispersion:(qa?Math.abs(qstd/qa):NaN),HHI:hhi,total_volume:vol,total_inventory:totalInv,total_production:prod,target_inventory_per_company:this.cfg.targetInventory,max_inventory_per_company:this.cfg.maxInventory,max_total_inventory:this.cfg.maxInventory*5,inventory_utilization:(this.cfg.maxInventory*5?totalInv/(this.cfg.maxInventory*5):0),inventory_valuation_price:inventoryValuationPrice,company_equity:companyEquity,active_demand:this.lastDemand.active,fulfilled_demand:this.lastDemand.fulfilled,unmet_demand:this.lastDemand.unmetPrice+this.lastDemand.unmetStock,unmet_due_to_price:this.lastDemand.unmetPrice,unmet_due_to_stock:this.lastDemand.unmetStock};
     this.history.push(r); this.series.tick.push(this.tick); this.series.price.push(Number.isFinite(tw)?tw:NaN); this.series.volume.push(vol); this.series.inventory.push(totalInv); this.series.hhi.push(hhi); r.player_online=Object.values(this.playerOnline).some(Boolean); r.online_transition_event=this.onlineTransitionEvent; this.onlineTransitionEvent=null; this.telemetry.unshift(r);
+    if(Number.isFinite(tw)) this.lastFiniteMarketAvgPrice=tw;
     this.lastChecks=this.checks();
     render(this);
   }
   checks(){
-    const out=[]; for(const co of this.companies){out.push([`C${co.id+1} inventory >= 0`,co.inventory>=-1e-9]);out.push([`C${co.id+1} cash >= 0`,co.cash>=-1e-9]);out.push([`C${co.id+1} production <= C`,co.production<=co.production_capacity+1e-9]);out.push([`C${co.id+1} sales <= starting stock + production`,co.units_sold<=this.lastStockBefore[co.id]+co.production+1e-9]); if(co.controller_type==='BOT'&&co.status!=='BANKRUPT') out.push([`C${co.id+1} bot floor`,co.price+1e-9>=co.unit_cost*(1+co.min_margin)]);}
-    out.push(['Transaction quantity = 1',true]); out.push(['All active quotes > 0',this.companies.filter(x=>x.status!=='BANKRUPT').every(x=>x.price>0)]); out.push(['Demand accounting',this.lastDemand.active===this.lastDemand.fulfilled+this.lastDemand.unmetPrice+this.lastDemand.unmetStock]); out.push(['Market share sums to 1 when volume > 0',this.history.at(-1)?.total_volume?Math.abs((this.history.at(-1).total_volume?this.companies.reduce((a,c)=>a+c.market_share,0):0)-1)<1e-9:true]); return out;
+    const out=[]; for(const co of this.companies){out.push([`C${co.id+1} inventory >= 0`,co.inventory>=-1e-9]);out.push([`C${co.id+1} inventory <= max`,co.inventory<=co.max_inventory+1e-9]);out.push([`C${co.id+1} cash >= 0`,co.cash>=-1e-9]);out.push([`C${co.id+1} production <= C`,co.production<=co.production_capacity+1e-9]);out.push([`C${co.id+1} production respects inventory cap`,co.production<=Math.max(0,co.max_inventory-this.lastStartingInventory[co.id])+1e-9]);out.push([`C${co.id+1} production only fills target`,co.production<=Math.max(0,co.target_inventory-this.lastStartingInventory[co.id])+1e-9]);out.push([`C${co.id+1} sales <= starting stock + production`,co.units_sold<=this.lastStartingInventory[co.id]+co.production+1e-9]);out.push([`C${co.id+1} inventory flow reconciles`,Math.abs(co.inventory-(this.lastStartingInventory[co.id]+co.production-co.units_sold))<1e-9]); if(co.controller_type==='BOT'&&co.status!=='BANKRUPT') out.push([`C${co.id+1} bot floor`,co.price+1e-9>=co.unit_cost*(1+co.min_margin)]);}
+    out.push(['Transaction quantity = 1',true]); out.push(['All active quotes > 0',this.companies.filter(x=>x.status!=='BANKRUPT').every(x=>x.price>0)]); out.push(['Demand accounting',this.lastDemand.active===this.lastDemand.fulfilled+this.lastDemand.unmetPrice+this.lastDemand.unmetStock]); out.push(['Market share sums to 1 when volume > 0',this.history.at(-1)?.total_volume?Math.abs(this.companies.reduce((a,c)=>a+c.market_share,0)-1)<1e-9:true]); out.push(['Target inventory <= max inventory',this.companies.every(c=>c.target_inventory<=c.max_inventory+1e-9)]); out.push(['Configured target inventory <= max inventory',this.cfg.targetInventory<=this.cfg.maxInventory+1e-9]); out.push(['Total inventory <= system max',this.companies.reduce((a,c)=>a+c.inventory,0)<=this.cfg.maxInventory*5+1e-9]); out.push(['Bot prices bounded by demand ceiling unless cost floor forces higher',this.companies.filter(c=>c.controller_type==='BOT'&&c.status!=='BANKRUPT').every(c=>c.price<=Math.max(this.cfg.vmax,c.unit_cost*(1+this.cfg.minMargin))+1e-9)]); return out;
   }
 }
 
-function cfgFromUI(){ const g=id=>+document.getElementById(id).value; return {seed:g('seed'),N:g('N'),baseCost:g('baseCost'),capacity:g('capacity'),vmin:g('vmin'),vmax:g('vmax'),pmin:g('pmin'),pmax:g('pmax'),taumin:g('taumin'),taumax:g('taumax'),dbar:g('dbar'),theta:g('theta'),sigma:g('sigma'),dmin:g('dmin'),dmax:g('dmax'),k:g('k'),alpha:g('alpha'),minMargin:g('minMargin'),markup:g('markup'),initialCash:g('initialCash'),etaMax:g('etaMax')}; }
+function cfgFromUI(){ const g=id=>+document.getElementById(id).value; return {seed:g('seed'),N:g('N'),baseCost:g('baseCost'),capacity:g('capacity'),targetInventory:g('targetInventory'),maxInventory:g('maxInventory'),vmin:g('vmin'),vmax:g('vmax'),pmin:g('pmin'),pmax:g('pmax'),taumin:g('taumin'),taumax:g('taumax'),dbar:g('dbar'),theta:g('theta'),sigma:g('sigma'),dmin:g('dmin'),dmax:g('dmax'),k:g('k'),alpha:g('alpha'),minMargin:g('minMargin'),markup:g('markup'),initialCash:g('initialCash'),etaMax:g('etaMax')}; }
+function validatedCfgFromUI(){ const c=cfgFromUI(); c.targetInventory=Math.max(1,c.targetInventory); c.maxInventory=Math.max(c.targetInventory,c.maxInventory); const maxEl=document.getElementById('maxInventory'); if(+maxEl.value<c.targetInventory) maxEl.value=c.maxInventory; return c; }
 let sim=null, timer=null;
-function setScenario(name){ const c=cfgFromUI(); let s={};
+function setScenario(name){ const c=validatedCfgFromUI(); let s={};
   if(name==='A'){c.sigma=0.005; s.etas=Array(5).fill(1.05); s.capacities=Array(5).fill(c.capacity); c.k=0.35;c.alpha=0.15;}
   if(name==='B'){s.supplyShockTick=50;s.supplyShockValue=Math.min(c.dmax,c.dbar*1.35);c.sigma=0.005;}
   if(name==='C'){s.etas=[1.00,1.05,1.10,1.15,1.08];s.capacities=[40,70,55,30,80];}
@@ -224,33 +268,51 @@ function setScenario(name){ const c=cfgFromUI(); let s={};
   if(name==='F'){runStabilitySweep(); return;}
   sim=new Economy(c,s); document.getElementById('playerCompany').value='0'; refreshLog();
 }
-function runStabilitySweep(){ const c=cfgFromUI(); const rows=[]; const pairs=[]; for(let k=0.15;k<=1.95;k+=0.2) for(let a=0.1;a<=0.9;a+=0.2)pairs.push([+k.toFixed(2),+a.toFixed(2)]); for(const [k,a] of pairs){const s=new Economy({...c,k,alpha:a},{etas:Array(5).fill(1.05),capacities:Array(5).fill(c.capacity)}); let prices=[]; for(let i=0;i<220;i++){s.step(); if(i>=170)prices.push(s.history.at(-1).transaction_weighted_avg_price);} const finite=prices.filter(Number.isFinite), avg=finite.reduce((x,y)=>x+y,0)/(finite.length||1); const last=finite.at(-1)||NaN; const span=finite.length?(Math.max(...finite)-Math.min(...finite)):NaN; let cls='stable'; if(!Number.isFinite(last)||last>c.vmax*2||last<0.05) cls='pathological'; else if(span>avg*0.8) cls='cobweb/volatile'; rows.push({k,alpha,avg,last,span,cls}); }
+function runStabilitySweep(){ const c=validatedCfgFromUI(); const rows=[]; const pairs=[]; for(let k=0.15;k<=1.95;k+=0.2) for(let a=0.1;a<=0.9;a+=0.2)pairs.push([+k.toFixed(2),+a.toFixed(2)]); for(const [k,a] of pairs){const s=new Economy({...c,k,alpha:a},{etas:Array(5).fill(1.05),capacities:Array(5).fill(c.capacity)}); let prices=[]; for(let i=0;i<220;i++){s.step(); if(i>=170)prices.push(s.history.at(-1).transaction_weighted_avg_price);} const finite=prices.filter(Number.isFinite), avg=finite.reduce((x,y)=>x+y,0)/(finite.length||1); const last=finite.at(-1)||NaN; const span=finite.length?(Math.max(...finite)-Math.min(...finite)):NaN; let cls='stable'; if(!Number.isFinite(last)||last>c.vmax*2||last<0.05) cls='pathological'; else if(span>avg*0.8) cls='cobweb/volatile'; rows.push({k,alpha,avg,last,span,cls}); }
   const div=document.getElementById('impulse'); div.innerHTML='<b>Controller stability sweep</b><br><div class="small" style="overflow:auto;max-height:360px"><table class="table"><thead><tr><th>k</th><th>alpha</th><th>late avg</th><th>last</th><th>range</th><th>classification</th></tr></thead><tbody>'+rows.map(r=>`<tr><td>${r.k.toFixed(2)}</td><td>${r.alpha.toFixed(2)}</td><td>${fmt(r.avg,3)}</td><td>${fmt(r.last,3)}</td><td>${fmt(r.span,3)}</td><td>${r.cls}</td></tr>`).join('')+'</tbody></table></div>'; logGlobal('F sweep completed'); }
 function logGlobal(s){document.getElementById('log').textContent='[harness] '+s;}
-function pairedImpulse(){ const c=cfgFromUI(); const mk=seed=>new Economy({...c,seed},{etas:[1.02,1.06,1.10,1.04,1.12],capacities:[50,50,50,50,50]}); const control=mk(c.seed), treatment=mk(c.seed); const metrics=[]; for(let t=1;t<=180;t++){control.step();treatment.step(); if(t===50){treatment.scenario.impulseTick=50; /* applied on step; step already passed, so next line is intentional replay below */}}
-  // Re-run correctly with intervention active before tick 50.
+function pairedImpulse(){ const c=validatedCfgFromUI(); const mk=seed=>new Economy({...c,seed},{etas:[1.02,1.06,1.10,1.04,1.12],capacities:[50,50,50,50,50]});
   const A=mk(c.seed), B=new Economy({...c,seed:c.seed}, {etas:[1.02,1.06,1.10,1.04,1.12],capacities:[50,50,50,50,50],impulseTick:50,impulseCompany:0});
-  for(let t=1;t<=180;t++){A.step();B.step(); const ar=A.history.at(-1),br=B.history.at(-1);metrics.push({t,price:diff(br.transaction_weighted_avg_price,ar.transaction_weighted_avg_price),hhi:diff(br.HHI,ar.HHI),vol:diff(br.total_volume,ar.total_volume)});}
-  const p=metrics.reduce((m,x)=>Math.max(m,Math.abs(x.price||0)),0), cum=metrics.reduce((s,x)=>s+Math.abs(x.price||0),0); const tol=Math.max(0.002,p*0.05); let rec='not reached'; let run=0; for(const x of metrics.slice(50)){ if(Math.abs(x.price||0)<tol) run++; else run=0; if(run>=5){rec=`tick ${x.t-4}`;break;} } document.getElementById('impulse').innerHTML=`<b>Paired impulse-response</b><br>Company 1 price ×1.20 at tick 50; same seed/initial state.<br>Peak |Δ TW price|: <b>${fmt(p,5)}</b> · cumulative |Δ TW price|: <b>${fmt(cum,5)}</b> · recovery (5 consecutive ticks, tolerance ${fmt(tol,5)}): <b>${rec}</b>`; logGlobal('D paired run completed'); }
+  const metrics=[]; for(let t=1;t<=180;t++){A.step();B.step(); const ar=A.history.at(-1),br=B.history.at(-1);metrics.push({t,price:diff(br.transaction_weighted_avg_price,ar.transaction_weighted_avg_price),hhi:diff(br.HHI,ar.HHI),vol:diff(br.total_volume,ar.total_volume)});}
+  const p=metrics.reduce((m,x)=>Math.max(m,Math.abs(x.price||0)),0), cum=metrics.reduce((s,x)=>s+Math.abs(x.price||0),0); const tol=Math.max(0.002,p*0.05); let rec='not reached'; let run=0; for(const x of metrics.slice(50)){ if(Math.abs(x.price||0)<tol) run++; else run=0; if(run>=5){rec=`tick ${x.t-4}`;break;} } document.getElementById('impulse').innerHTML=`<b>Paired impulse-response</b><br>Company 1 price ×1.20 at tick 50; same seed/initial state; target inventory=${c.targetInventory} per company; inventory cap=${c.maxInventory} per company.<br>Peak |Δ TW price|: <b>${fmt(p,5)}</b> · cumulative |Δ TW price|: <b>${fmt(cum,5)}</b> · recovery (5 consecutive ticks, tolerance ${fmt(tol,5)}): <b>${rec}</b>`; logGlobal('D paired run completed'); }
 function diff(b,a){return Number.isFinite(a)&&Number.isFinite(b)?b-a:0;}
 function render(s){
   document.getElementById('tick').textContent=s.tick; document.getElementById('difficulty').textContent=fmt(s.d,3); const r=s.history.at(-1)||{}; document.getElementById('twPrice').textContent=money(r.transaction_weighted_avg_price); document.getElementById('volume').textContent=r.total_volume??0; document.getElementById('hhi').textContent=fmt(r.HHI,3);
-  document.getElementById('companies').innerHTML=s.companies.map(co=>`<tr><td>C${co.id+1}</td><td><span class="badge ${co.status}">${co.status}</span></td><td>${co.controller_type}</td><td>${co.efficiency_multiplier.toFixed(3)} / ${Math.round(100/co.efficiency_multiplier)}%</td><td>${co.production_capacity}</td><td>${money(co.price)}</td><td>${money(co.unit_cost)}</td><td>${money(co.cash)}</td><td>${co.inventory.toFixed(0)}</td><td>${co.production}</td><td>${co.units_sold}</td><td>${money(co.revenue)}</td><td>${money(co.net_cashflow)}</td><td>${fmt(co.market_share*100,1)}%</td></tr>`).join('');
-  const last=s.history.at(-1)||{}; document.getElementById('demand').innerHTML=`<tr><th>Active demand</th><td>${last.active_demand??0}</td></tr><tr><th>Fulfilled demand</th><td>${last.fulfilled_demand??0}</td></tr><tr><th>Unmet demand</th><td>${last.unmet_demand??0}</td></tr><tr><th>Unmet due to price</th><td>${last.unmet_due_to_price??0}</td></tr><tr><th>Unmet due to stock</th><td>${last.unmet_due_to_stock??0}</td></tr><tr><th>Demand invariant</th><td>${(last.active_demand===last.fulfilled_demand+last.unmet_due_to_price+last.unmet_due_to_stock)?'PASS':'FAIL'}</td></tr>`;
+  const companyRows=s.companies.map(co=>{ const expanded=s.expandedCompanies.has(co.id); const detailColspan=18; const hist=co.equity_history; const latest=hist.at(-1)||{}; return `<tr class="company-row${expanded?' expanded':''}" data-company-id="${co.id}" tabindex="0" role="button" aria-expanded="${expanded}"><td>C${co.id+1}</td><td><span class="badge ${co.status}">${co.status}</span></td><td>${co.controller_type}</td><td>${co.efficiency_multiplier.toFixed(3)} / ${Math.round(100/co.efficiency_multiplier)}%</td><td>${co.production_capacity}</td><td>${co.target_inventory}</td><td>${co.max_inventory}</td><td>${fmt(co.target_inventory/Math.max(1,co.production_capacity),1)} ticks</td><td>${money(co.price)}</td><td>${money(co.unit_cost)}</td><td>${money(co.cash)}</td><td>${co.inventory.toFixed(0)}</td><td>${money(co.equity)}</td><td>${co.production}</td><td>${co.units_sold}</td><td>${money(co.revenue)}</td><td>${money(co.net_cashflow)}</td><td>${fmt(co.market_share*100,1)}%</td></tr><tr class="company-detail" id="company-detail-${co.id}" style="display:${expanded?'table-row':'none'}"><td colspan="${detailColspan}"><div class="company-detail-inner"><div class="equity-meta"><span>Equity<b>${money(co.equity)}</b></span><span>Cash<b>${money(co.cash)}</b></span><span>Inventory value<b>${money(co.inventory_value)}</b></span><span>Inventory<b>${co.inventory.toFixed(0)}</b></span><span>Valuation price<b>${money(co.equity_valuation_price)}</b></span><span>History<b>${hist.length} ticks</b></span></div><div class="equity-chart"><canvas id="equityChart-${co.id}"></canvas></div></div></td></tr>`; }).join('');
+  document.getElementById('companies').innerHTML=companyRows;
+  document.querySelectorAll('.company-row').forEach(row=>{
+    const id=+row.dataset.companyId;
+    const toggle=()=>{ s.expandedCompanies.has(id)?s.expandedCompanies.delete(id):s.expandedCompanies.add(id); render(s); };
+    row.addEventListener('click',toggle);
+    row.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();toggle();}});
+  });
+  s.expandedCompanies.forEach(id=>{ const co=s.companies[id]; if(co) drawEquityChart(`equityChart-${id}`,co.equity_history); });
+  const last=s.history.at(-1)||{}; document.getElementById('demand').innerHTML=`<tr><th>Active demand</th><td>${last.active_demand??0}</td></tr><tr><th>Fulfilled demand</th><td>${last.fulfilled_demand??0}</td></tr><tr><th>Unmet demand</th><td>${last.unmet_demand??0}</td></tr><tr><th>Unmet due to price</th><td>${last.unmet_due_to_price??0}</td></tr><tr><th>Unmet due to stock</th><td>${last.unmet_due_to_stock??0}</td></tr><tr><th>Inventory utilization</th><td>${fmt((last.inventory_utilization||0)*100,1)}%</td></tr><tr><th>Inventory cap invariant</th><td>${s.companies.every(c=>c.inventory<=c.max_inventory+1e-9)?'PASS':'FAIL'}</td></tr><tr><th>Demand invariant</th><td>${(last.active_demand===last.fulfilled_demand+last.unmet_due_to_price+last.unmet_due_to_stock)?'PASS':'FAIL'}</td></tr>`;
   document.getElementById('checks').innerHTML=s.lastChecks.slice(-12).map(x=>`<div class="check ${x[1]?'pass':'fail'}">${x[1]?'PASS':'FAIL'} · ${x[0]}</div>`).join('');
-  document.getElementById('telemetry').textContent=JSON.stringify(last,null,2); document.getElementById('log').textContent=s.logs.join('\n'); drawChart('priceChart',s.series.tick,s.series.price,'TW avg price'); drawChart('volumeChart',s.series.tick,s.series.volume,'volume');
+  document.getElementById('telemetry').textContent=JSON.stringify(last,null,2); document.getElementById('log').textContent=s.logs.join('\n'); drawChart('priceChart',s.series.tick,s.series.price,'TW avg price'); drawChart('volumeChart',s.series.tick,s.series.inventory,'total inventory');
 }
-function drawChart(id,x,y,label){ const cv=document.getElementById(id), dpr=devicePixelRatio||1, rect=cv.getBoundingClientRect(); cv.width=rect.width*dpr; cv.height=rect.height*dpr; const g=cv.getContext('2d');g.scale(dpr,dpr);const w=rect.width,h=rect.height;g.clearRect(0,0,w,h);const vals=y.filter(Number.isFinite);if(vals.length<2)return;const min=Math.min(...vals),max=Math.max(...vals);g.strokeStyle='#2a303a';g.lineWidth=1; for(let i=0;i<5;i++){const yy=10+i*(h-28)/4;g.beginPath();g.moveTo(35,yy);g.lineTo(w-8,yy);g.stroke();}g.strokeStyle='#77b7ff';g.lineWidth=2;g.beginPath(); y.forEach((v,i)=>{if(!Number.isFinite(v))return;const xx=35+(w-48)*(i/(y.length-1));const yy=10+(h-28)*(1-(v-min)/(max-min||1));if(i===0)g.moveTo(xx,yy);else g.lineTo(xx,yy);});g.stroke();g.fillStyle='#9ca6b2';g.font='11px system-ui';g.fillText(label,8,12);g.fillText(fmt(max,2),8,26);g.fillText(fmt(min,2),8,h-3);g.fillText(`t=${x.at(-1)||0}`,w-52,h-3); }
+function drawChart(id,x,y,label){ const cv=document.getElementById(id), dpr=devicePixelRatio||1, rect=cv.getBoundingClientRect(); cv.width=rect.width*dpr; cv.height=rect.height*dpr; const g=cv.getContext('2d');g.setTransform(dpr,0,0,dpr,0,0);const w=rect.width,h=rect.height;g.clearRect(0,0,w,h);const vals=y.filter(Number.isFinite);if(vals.length<2)return;const min=Math.min(...vals),max=Math.max(...vals);g.strokeStyle='#2a303a';g.lineWidth=1; for(let i=0;i<5;i++){const yy=10+i*(h-28)/4;g.beginPath();g.moveTo(35,yy);g.lineTo(w-8,yy);g.stroke();}g.strokeStyle='#77b7ff';g.lineWidth=2;g.beginPath(); y.forEach((v,i)=>{if(!Number.isFinite(v))return;const xx=35+(w-48)*(i/(y.length-1));const yy=10+(h-28)*(1-(v-min)/(max-min||1));if(i===0)g.moveTo(xx,yy);else g.lineTo(xx,yy);});g.stroke();g.fillStyle='#9ca6b2';g.font='11px system-ui';g.fillText(label,8,12);g.fillText(fmt(max,2),8,26);g.fillText(fmt(min,2),8,h-3);g.fillText(`t=${x.at(-1)||0}`,w-52,h-3); }
+function drawEquityChart(id,history){
+  const cv=document.getElementById(id); if(!cv||history.length<2)return;
+  const dpr=devicePixelRatio||1, rect=cv.getBoundingClientRect(); cv.width=rect.width*dpr; cv.height=rect.height*dpr;
+  const g=cv.getContext('2d'); g.setTransform(dpr,0,0,dpr,0,0); const w=rect.width,h=rect.height; g.clearRect(0,0,w,h);
+  const vals=history.map(x=>x.equity).filter(Number.isFinite); if(vals.length<2)return; const min=Math.min(...vals),max=Math.max(...vals);
+  g.strokeStyle='#2a303a'; g.lineWidth=1; for(let i=0;i<5;i++){const yy=10+i*(h-28)/4;g.beginPath();g.moveTo(45,yy);g.lineTo(w-10,yy);g.stroke();}
+  g.strokeStyle='#6fd08c'; g.lineWidth=2; g.beginPath(); history.forEach((pt,i)=>{if(!Number.isFinite(pt.equity))return; const xx=45+(w-55)*(i/(history.length-1)); const yy=10+(h-28)*(1-(pt.equity-min)/(max-min||1)); if(i===0)g.moveTo(xx,yy);else g.lineTo(xx,yy);}); g.stroke();
+  g.fillStyle='#9ca6b2'; g.font='11px system-ui'; g.fillText('equity',8,12); g.fillText(money(max),8,26); g.fillText(money(min),8,h-3); g.fillText(`t=${history.at(-1)?.tick||0}`,w-52,h-3);
+}
 function refreshLog(){if(sim)render(sim);}
 
-document.getElementById('reset').onclick=()=>{sim=new Economy(cfgFromUI());};
-document.getElementById('step').onclick=()=>{if(!sim)sim=new Economy(cfgFromUI());sim.step();};
-document.getElementById('run').onclick=()=>{ if(!sim)sim=new Economy(cfgFromUI()); clearInterval(timer); sim.running=true; timer=setInterval(()=>{if(sim.running)sim.step();},1000/(+document.getElementById('speed').value)); };
+document.getElementById('reset').onclick=()=>{sim=new Economy(validatedCfgFromUI());};
+document.getElementById('step').onclick=()=>{if(!sim)sim=new Economy(validatedCfgFromUI());sim.step();};
+document.getElementById('run').onclick=()=>{ if(!sim)sim=new Economy(validatedCfgFromUI()); clearInterval(timer); sim.running=true; timer=setInterval(()=>{if(sim.running)sim.step();},1000/(+document.getElementById('speed').value)); };
 document.getElementById('pause').onclick=()=>{if(sim)sim.running=false;clearInterval(timer);};
 document.querySelectorAll('[data-scenario]').forEach(b=>b.onclick=()=>{if(b.dataset.scenario==='D'){setScenario('D');pairedImpulse();}else setScenario(b.dataset.scenario);});
 document.getElementById('applyPlayer').onclick=()=>{if(!sim)return;const idx=+document.getElementById('playerCompany').value;const type=document.getElementById('controller').value;const online=document.getElementById('playerOnline').value==='true'; const prev=sim.playerOnline[idx]??false; sim.companies[idx].controller_type=type;sim.companies[idx].controller_id=type==='PLAYER'?'player':null; if(type==='PLAYER')sim.playerPrices[idx]=+document.getElementById('playerPrice').value; else delete sim.playerPrices[idx]; sim.playerOnline[idx]=online; sim.onlineTransitionEvent=(prev!==online)?{tick:sim.tick,company_id:idx,from:prev,to:online}:null; if(online&&type==='PLAYER')sim.companies[idx].last_active_tick=sim.tick; sim.log(`C${idx+1} controller -> ${type}; player ${online?'online':'offline'}`);render(sim);};
 for(let i=0;i<5;i++){const o=document.createElement('option');o.value=i;o.textContent='Company '+(i+1);document.getElementById('playerCompany').appendChild(o);} document.getElementById('playerCompany').onchange=e=>{ if(sim){document.getElementById('controller').value=sim.companies[+e.target.value].controller_type;} };
-sim=new Economy(cfgFromUI());
+document.getElementById('targetInventory').addEventListener('change',()=>{ const target=Math.max(1,+document.getElementById('targetInventory').value); const max=Math.max(target,+document.getElementById('maxInventory').value); document.getElementById('targetInventory').value=target; document.getElementById('maxInventory').value=max; });
+document.getElementById('maxInventory').addEventListener('change',()=>{ const target=Math.max(1,+document.getElementById('targetInventory').value); const max=Math.max(target,+document.getElementById('maxInventory').value); document.getElementById('maxInventory').value=max; });
+sim=new Economy(validatedCfgFromUI());
 window.addEventListener('resize',()=>sim&&render(sim));
 window.Phase0Economy = { Economy, RNG, hashSeed, cfgFromUI };
 </script>
