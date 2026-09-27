@@ -1,0 +1,454 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Phase 0 Economy Engine PoC</title>
+<style>
+  :root{--bg:#0e1116;--panel:#171b22;--panel2:#11151b;--text:#e7ebf0;--muted:#9ca6b2;--accent:#77b7ff;--good:#6fd08c;--warn:#f2c15b;--bad:#ef7b7b;--line:#2a303a}
+  *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--text);font:14px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+  header{padding:18px 22px;border-bottom:1px solid var(--line);background:#0b0e13;position:sticky;top:0;z-index:5}
+  h1{margin:0 0 3px;font-size:20px}.sub{color:var(--muted)}
+  main{max-width:1650px;margin:0 auto;padding:18px;display:grid;grid-template-columns:360px 1fr;gap:18px}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px}.stack{display:grid;gap:12px}.row{display:flex;gap:8px;align-items:center}.row>*{min-width:0}.grow{flex:1}
+  label{display:block;color:var(--muted);font-size:12px;margin-bottom:4px}.field{display:grid;grid-template-columns:1fr 115px;align-items:center;gap:10px;margin:8px 0}
+  input,select,button{font:inherit} input,select{width:100%;background:var(--panel2);border:1px solid var(--line);border-radius:7px;padding:7px 8px;color:var(--text)}
+  button{background:#202834;color:var(--text);border:1px solid #374151;border-radius:7px;padding:7px 10px;cursor:pointer}button:hover{background:#27313f}button.primary{background:#315e8e;border-color:#4c84bc}button.good{background:#215c35;border-color:#377a4b}button.warn{background:#6d4f18;border-color:#966f26}button.bad{background:#6b2f34;border-color:#93434a}button:disabled{opacity:.5;cursor:not-allowed}
+  .kpis{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px}.kpi{background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:10px}.kpi b{display:block;font-size:18px;margin-top:3px}.muted{color:var(--muted)}
+  .chart{height:220px;margin-top:10px;background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:6px}.chart canvas{width:100%;height:100%}
+  table{width:100%;border-collapse:collapse}.table-wrap{overflow:auto}.table th,.table td{padding:7px 6px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}.table th:first-child,.table td:first-child{text-align:left}
+  .badge{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:2px 7px;font-size:11px}.ACTIVE{color:var(--good)}.DISTRESSED{color:var(--warn)}.BANKRUPT{color:var(--bad)}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}.small{font-size:12px}.log{height:155px;overflow:auto;background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:8px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;white-space:pre-wrap}
+  .checks{display:grid;grid-template-columns:1fr 1fr;gap:6px}.check{padding:6px 8px;border-radius:6px;background:var(--panel2);border:1px solid var(--line)}.pass{color:var(--good)}.fail{color:var(--bad)}
+  .tag{font-size:11px;padding:2px 5px;border:1px solid var(--line);border-radius:5px;color:var(--muted)}
+  .company-row{cursor:pointer}.company-row:hover{background:rgba(119,183,255,.05)}.company-row:focus{outline:2px solid var(--accent);outline-offset:-2px}.company-row.expanded{background:rgba(119,183,255,.04)}
+  .company-row td:first-child::before{content:'▸';display:inline-block;width:14px;color:var(--muted);transition:transform .12s ease}.company-row.expanded td:first-child::before{transform:rotate(90deg);color:var(--accent)}
+  .company-detail td{padding:0;border-bottom:1px solid var(--line)}.company-detail-inner{padding:12px 10px 14px;background:var(--panel2);border-top:1px solid var(--line)}
+  .equity-meta{display:flex;flex-wrap:wrap;gap:16px;margin-bottom:8px}.equity-meta span{color:var(--muted)}.equity-meta b{color:var(--text);margin-left:4px}.equity-chart{height:180px;background:#0d1117;border:1px solid var(--line);border-radius:7px;padding:6px}.equity-chart canvas{width:100%;height:100%}
+  .param-section{margin-top:12px;padding:10px 10px 2px;background:var(--panel2);border:1px solid var(--line);border-radius:8px}.param-heading{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:4px}.param-note{margin-bottom:6px}
+  .tier-note{margin-top:8px;padding:8px;border-radius:7px;background:var(--panel2);border:1px solid var(--line)}
+  .roster{max-height:320px;overflow:auto;display:grid;gap:5px}.roster-item{padding:6px 7px;border:1px solid var(--line);border-radius:6px;background:var(--panel2)}.roster-item b{display:block;font-size:12px}.roster-item span{color:var(--muted);font-size:11px}
+  .equipment-card{padding:8px;border:1px solid var(--line);border-radius:7px;background:var(--panel2);margin:6px 0}.equipment-card b{display:inline-block;margin-right:8px}.equipment-card span{color:var(--muted)}
+  @media(max-width:1150px){main{grid-template-columns:1fr}.kpis{grid-template-columns:repeat(3,1fr)}.grid2{grid-template-columns:1fr}}
+  @media(max-width:700px){.kpis{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<header>
+  <h1>Phase 0 — Economy Engine PoC</h1>
+  <div class="sub">Four-layer economy · Tier −1 Gaia · Tier 0 extractors · Tier 1 manufacturers/distributors · Tier 2 final customers · 4 raw elements · 10 manufactured products</div>
+</header>
+<main>
+  <aside class="stack">
+    <section class="panel">
+      <div class="row"><strong>Economy parameters</strong><span class="tag">v1.0</span></div>
+      <div class="small muted" style="margin-top:6px">Layered parameter map: Gaia environment → Tier 0 raw extraction → Tier 1 manufacturing/distribution → Tier 2 fixed product demand.</div>
+
+      <div class="param-section">
+        <div class="param-heading"><strong>Tier −1 · Gaia</strong><span class="tag">environment</span></div>
+        <div class="small muted param-note">Global environmental difficulty process.</div>
+        <div class="field"><label>d bar</label><input id="dbar" type="number" value="1" min="0.01" step="0.01"></div>
+        <div class="field"><label>Theta</label><input id="theta" type="number" value="0.15" min="0" max="1" step="0.01"></div>
+        <div class="field"><label>Sigma</label><input id="sigma" type="number" value="0.02" min="0" step="0.005"></div>
+        <div class="field"><label>d min</label><input id="dmin" type="number" value="0.7" min="0.01" step="0.01"></div>
+        <div class="field"><label>d max</label><input id="dmax" type="number" value="1.4" min="0.02" step="0.01"></div>
+      </div>
+
+      <div class="param-section">
+        <div class="param-heading"><strong>Tier 0 · Extraction companies</strong><span class="tag">20 BOT firms</span></div>
+        <div class="field"><label>Tier 0 companies</label><input type="number" value="20" readonly></div>
+        <div class="field"><label>Capacity / company / tick</label><input id="capacity" type="number" value="10000" min="1"></div>
+        <div class="field"><label>Target inventory / company</label><input id="targetInventory" type="number" value="50000" min="1"></div>
+        <div class="field"><label>Max inventory / company</label><input id="maxInventory" type="number" value="100000" min="1"></div>
+        <div class="field"><label>Extraction base cost</label><input id="baseCost" type="number" value="1" min="0.01" step="0.01"></div>
+        <div class="field"><label>Tier 0 starting capital</label><input id="initialCash" type="number" value="1000000" min="1" step="1000"></div>
+        <div class="field"><label>Eta max</label><input id="etaMax" type="number" value="1.15" min="1" step="0.01"></div>
+      </div>
+
+      <div class="param-section">
+        <div class="param-heading"><strong>Tier 1 · Manufacturing / distribution</strong><span class="tag">1,000 BOT firms</span></div>
+        <div class="small muted param-note">Each BOT has a fixed native product and fixed customer base. Native equipment is installed from the start; BOTs never trade equipment.</div>
+        <div class="field"><label>Tier 1 companies</label><input type="number" value="1000" readonly></div>
+        <div class="field"><label>Tier 2 customers / Tier 1 company</label><input id="buyersPerCompany" type="number" value="50" min="1"></div>
+        <div class="field"><label>Target inventory / company</label><input id="retailTargetInventory" type="number" value="50" min="1"></div>
+        <div class="field"><label>Max inventory / company</label><input id="retailMaxInventory" type="number" value="100" min="1"></div>
+        <div class="field"><label>Starting capital / company</label><input id="retailInitialCash" type="number" value="40000" min="1" step="1000"></div>
+        <div class="field"><label>Manufacturing cost / output unit</label><input id="manufacturingCostPerUnit" type="number" value="0.25" min="0" step="0.01"></div>
+        <div class="field"><label>Minimum wholesale lot</label><input id="minWholesaleLot" type="number" value="10" min="1" step="1"></div>
+        <div class="field"><label>BOT price response k</label><input id="k" type="number" value="0.8" min="0" step="0.05"></div>
+        <div class="field"><label>BOT EMA alpha</label><input id="alpha" type="number" value="0.25" min="0.001" max="1" step="0.01"></div>
+        <div class="field"><label>Min margin</label><input id="minMargin" type="number" value="0.08" min="0" step="0.01"></div>
+        <div class="field"><label>Initial markup</label><input id="markup" type="number" value="0.25" min="0" step="0.01"></div>
+        <div class="small muted">Target/max inventory are aggregate across raw inputs + finished products. Raw and finished stock remain element/product-specific beneath that single cap.</div>
+      </div>
+
+      <div class="param-section">
+        <div class="param-heading"><strong>Tier 2 · Final customers</strong><span class="tag">50,000 firms</span></div>
+        <div class="small muted param-note">Each customer has one fixed required product. This is perfect product-market fit: customers do not substitute between product categories, but they can switch among eligible Tier 1 suppliers of their required product.</div>
+        <div class="field"><label>Reservation price min</label><input id="vmin" type="number" value="1.2" min="0.01" step="0.01"></div>
+        <div class="field"><label>Reservation price max</label><input id="vmax" type="number" value="3.0" min="0.02" step="0.01"></div>
+        <div class="field"><label>Need probability min</label><input id="pmin" type="number" value="0.15" min="0" step="0.01"></div>
+        <div class="field"><label>Need probability max</label><input id="pmax" type="number" value="2.5" min="0" step="0.01"></div>
+        <div class="field"><label>Switching cost min</label><input id="taumin" type="number" value="0.05" min="0" step="0.01"></div>
+        <div class="field"><label>Switching cost max</label><input id="taumax" type="number" value="0.2" min="0" step="0.01"></div>
+      </div>
+
+      <div class="param-section">
+        <div class="param-heading"><strong>Equipment catalog</strong><span class="tag">player purchases only</span></div>
+        <div id="equipmentCatalog"></div>
+      </div>
+
+      <div class="param-section">
+        <div class="param-heading"><strong>Simulation</strong><span class="tag">execution</span></div>
+        <div class="field"><label>Seed</label><input id="seed" type="number" value="12345"></div>
+        <div class="row" style="margin-top:10px"><label style="margin:0">Ticks / second</label><input id="speed" class="grow" type="range" min="1" max="30" value="10"></div>
+      </div>
+
+      <div class="row" style="margin-top:10px;flex-wrap:wrap">
+        <button id="reset" class="primary">Reset</button><button id="step">Step</button><button id="run" class="good">Run</button><button id="pause">Pause</button>
+      </div>
+
+      <div class="tier-note small muted"><b>Equipment rule:</b> Native equipment is part of each Tier 1 BOT's initial operating setup. BOTs do not buy or sell machines. A PLAYER-controlled Tier 1 company can purchase an additional product's equipment; that immediately adds the product to its manufacturing portfolio, putting it into the same retail product market as the existing manufacturers.</div>
+
+      <div class="panel" style="padding:10px 12px"><strong>Tier 0 company roster</strong><div id="tier0Roster" class="roster" style="margin-top:8px"></div></div>
+      <div class="panel" style="padding:10px 12px"><strong>Tier 1 business roster</strong><div id="tier1Roster" class="roster" style="margin-top:8px"></div></div>
+      <div class="panel" style="padding:10px 12px"><strong>Tier 2 demand roster</strong><div id="tier2Roster" class="roster" style="margin-top:8px"></div></div>
+    </section>
+
+    <section class="panel">
+      <strong>Selected Tier 1 player control</strong>
+      <div class="field"><label>Company</label><select id="playerCompany"></select></div>
+      <div class="field"><label>Controller</label><select id="controller"><option>BOT</option><option>PLAYER</option></select></div>
+      <div class="field"><label>Player online</label><select id="playerOnline"><option value="true">Online</option><option value="false">Offline</option></select></div>
+      <div class="field"><label>Equipment product</label><select id="equipmentProduct"></select></div>
+      <div class="row" style="justify-content:space-between;margin:6px 0"><span class="small muted">Equipment status: <b id="equipmentStatus">—</b></span><span class="small muted">Price: <b id="equipmentPrice">—</b></span></div>
+      <button id="buyEquipment" class="warn">Buy equipment</button>
+      <div class="field" style="margin-top:10px"><label>Retail product</label><select id="playerProduct"></select></div>
+      <div class="field"><label>Player retail price</label><input id="playerPrice" type="number" value="1.6" min="0.01" step="0.01"></div>
+      <button id="applyPlayer" class="primary">Apply controller / price</button>
+      <div class="small muted" style="margin-top:8px">Only PLAYER-controlled Tier 1 firms can buy additional equipment. Existing BOT firms retain their fixed native customer base and native equipment; they do not dynamically enter or exit product markets.</div>
+    </section>
+
+    <section class="panel">
+      <strong>Scenario harness</strong>
+      <div class="row" style="margin-top:10px;flex-wrap:wrap">
+        <button data-scenario="A">A · Competitive</button><button data-scenario="B">B · Supply shock</button><button data-scenario="C">C · Asymmetric</button><button data-scenario="D">D · Intervention</button><button data-scenario="E">E · Shortage</button><button data-scenario="F">F · Stability sweep</button>
+      </div>
+      <div class="small muted" style="margin-top:8px">D applies a temporary Water wholesale-price impulse. F uses a reduced harness scale for speed.</div>
+    </section>
+  </aside>
+
+  <section class="stack">
+    <section class="kpis">
+      <div class="kpi"><span class="muted">Tick</span><b id="tick">0</b></div><div class="kpi"><span class="muted">Difficulty</span><b id="difficulty">1.000</b></div><div class="kpi"><span class="muted">Wholesale avg</span><b id="wholesalePrice">—</b></div><div class="kpi"><span class="muted">Retail avg</span><b id="retailPrice">—</b></div><div class="kpi"><span class="muted">Wholesale vol</span><b id="wholesaleVolume">0</b></div><div class="kpi"><span class="muted">Retail vol</span><b id="retailVolume">0</b></div>
+    </section>
+    <section class="panel"><div class="grid2"><div><strong>Wholesale price</strong><div class="chart"><canvas id="wholesalePriceChart"></canvas></div></div><div><strong>Retail price</strong><div class="chart"><canvas id="retailPriceChart"></canvas></div></div></div></section>
+    <section class="panel"><div class="grid2"><div><strong>Tier 0 inventory</strong><div class="chart"><canvas id="tier0InventoryChart"></canvas></div></div><div><strong>Tier 1 inventory</strong><div class="chart"><canvas id="tier1InventoryChart"></canvas></div></div></div></section>
+
+    <section class="panel">
+      <strong>Tier 0 — upstream extraction companies</strong>
+      <div class="table-wrap" style="margin-top:8px"><table class="table"><thead><tr><th>Company</th><th>Status</th><th>Elements</th><th>Capacity</th><th>Target Inv</th><th>Max Inv</th><th>Cash</th><th>Element Stock</th><th>Inventory</th><th>Equity</th><th>Prod</th><th>Wholesale sold</th></tr></thead><tbody id="tier0Companies"></tbody></table></div>
+    </section>
+
+    <section class="panel">
+      <strong>Tier 1 — manufacturers / distributors / player layer</strong>
+      <div class="table-wrap" style="margin-top:8px;max-height:680px"><table class="table"><thead><tr><th>Company</th><th>Status</th><th>Controller</th><th>Native</th><th>Equipment</th><th>Customers</th><th>Cash</th><th>Raw Stock</th><th>Finished Stock</th><th>Inventory</th><th>Equity</th><th>Bought</th><th>Made</th><th>Sold</th><th>Revenue</th></tr></thead><tbody id="tier1Companies"></tbody></table></div>
+    </section>
+
+    <section class="panel"><strong>Wholesale element markets</strong><div class="table-wrap" style="margin-top:8px"><table class="table"><thead><tr><th>Element</th><th>Wholesale avg</th><th>Volume</th><th>HHI</th></tr></thead><tbody id="elementMarkets"></tbody></table></div></section>
+    <section class="panel"><strong>Retail product markets</strong><div class="table-wrap" style="margin-top:8px"><table class="table"><thead><tr><th>Product</th><th>Inputs</th><th>Equipment price</th><th>Retail avg</th><th>Volume</th><th>HHI</th><th>Active demand</th><th>Fulfilled</th><th>Unmet</th></tr></thead><tbody id="productMarkets"></tbody></table></div></section>
+
+    <section class="grid2">
+      <section class="panel"><strong>Demand / fulfillment</strong><div class="table-wrap" style="margin-top:8px"><table class="table"><tbody id="demand"></tbody></table></div></section>
+      <section class="panel"><strong>Sanity checks</strong><div id="checks" class="checks" style="margin-top:8px"></div></section>
+    </section>
+    <section class="grid2"><section class="panel"><strong>Latest telemetry</strong><div id="telemetry" class="small log" style="margin-top:8px"></div></section><section class="panel"><strong>Event log</strong><div id="log" class="log" style="margin-top:8px"></div></section></section>
+    <section class="panel"><strong>Impulse-response / controller result</strong><div id="impulse" class="small" style="margin-top:8px;color:var(--muted)">Run scenario D to compare a multi-layer response.</div></section>
+  </section>
+</main>
+<script>
+'use strict';
+
+class RNG{constructor(seed){this.s=(seed>>>0)||1;}next(){let x=this.s;x^=x<<13;x^=x>>>17;x^=x<<5;this.s=x>>>0;return this.s/4294967296;}uniform(a,b){return a+(b-a)*this.next();}int(n){return Math.floor(this.next()*n);}normal(){let u=0,v=0;while(u===0)u=this.next();while(v===0)v=this.next();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v);}}
+function hashSeed(seed,tick){let x=((seed>>>0)^Math.imul((tick+1)>>>0,0x9E3779B1))>>>0;x=Math.imul(x^(x>>>16),0x85EBCA6B)>>>0;x=Math.imul(x^(x>>>13),0xC2B2AE35)>>>0;return(x^(x>>>16))>>>0;}
+function clamp(x,a,b){return Math.max(a,Math.min(b,x));} function fmt(x,d=2){return Number.isFinite(x)?x.toFixed(d):'—';} function money(x){return Number.isFinite(x)?'$'+x.toFixed(2):'—';}
+const ELEMENTS=['Water','Earth','Fire','Air'];
+const PRODUCTS=[
+  {code:'W',name:'Water',inputs:{Water:1},equipmentPrice:15000,equipmentCapacity:120},
+  {code:'E',name:'Earth',inputs:{Earth:1},equipmentPrice:15000,equipmentCapacity:120},
+  {code:'F',name:'Fire',inputs:{Fire:1},equipmentPrice:15000,equipmentCapacity:120},
+  {code:'A',name:'Air',inputs:{Air:1},equipmentPrice:15000,equipmentCapacity:120},
+  {code:'W+E',name:'AquaTerra',inputs:{Water:1,Earth:1},equipmentPrice:25000,equipmentCapacity:100},
+  {code:'W+F',name:'HydroFlame',inputs:{Water:1,Fire:1},equipmentPrice:25000,equipmentCapacity:100},
+  {code:'W+A',name:'AeroWater',inputs:{Water:1,Air:1},equipmentPrice:25000,equipmentCapacity:100},
+  {code:'E+F',name:'TerraFlame',inputs:{Earth:1,Fire:1},equipmentPrice:25000,equipmentCapacity:100},
+  {code:'E+A',name:'TerraAir',inputs:{Earth:1,Air:1},equipmentPrice:25000,equipmentCapacity:100},
+  {code:'F+A',name:'EmberWind',inputs:{Fire:1,Air:1},equipmentPrice:25000,equipmentCapacity:100}
+];
+const PRODUCT_BY_CODE=Object.fromEntries(PRODUCTS.map(p=>[p.code,p]));
+const TIER0_PROFILES=[
+  {name:'Raw Materials Corp.',elements:['Water','Earth','Fire','Air']},{name:'Elements Inc.',elements:['Water','Earth','Fire','Air']},{name:'TerraFlame Resources',elements:['Water','Earth','Fire']},{name:'Waterstone Industries',elements:['Water','Earth','Air']},{name:'AquaFlare Resources',elements:['Water','Fire','Air']},{name:'Elemental Foundry',elements:['Earth','Fire','Air']},{name:'TerraAqua Materials',elements:['Water','Earth']},{name:'AquaForge Resources',elements:['Water','Fire']},{name:'AeroAqua Utilities',elements:['Water','Air']},{name:'Ironfire Mining Co.',elements:['Earth','Fire']},{name:'TerraAir Resources',elements:['Earth','Air']},{name:'Emberwind Industries',elements:['Fire','Air']},{name:'Bluewater Corporation',elements:['Water']},{name:'Clearwater Resources',elements:['Water']},{name:'Earthworks Corporation',elements:['Earth']},{name:'TerraMine Industries',elements:['Earth']},{name:'Firestone Resources',elements:['Fire']},{name:'Emberworks Corporation',elements:['Fire']},{name:'Airborne Resources',elements:['Air']},{name:'Windward Materials',elements:['Air']}
+];
+const TIER1_PROFILE_SIZE=100;
+const TIER1_PROFILES=[
+  {name:'Aqua Distribution Co.',code:'W',product:'W'},{name:'Terra Distribution Co.',code:'E',product:'E'},{name:'Ember Distribution Co.',code:'F',product:'F'},{name:'Gale Distribution Co.',code:'A',product:'A'},{name:'AquaTerra Industries',code:'W+E',product:'W+E'},{name:'AquaFlame Industries',code:'W+F',product:'W+F'},{name:'AquaAir Industries',code:'W+A',product:'W+A'},{name:'TerraForge Industries',code:'E+F',product:'E+F'},{name:'TerraWind Industries',code:'E+A',product:'E+A'},{name:'EmberWind Industries',code:'F+A',product:'F+A'}
+];
+const TIER1_COUNT=TIER1_PROFILES.length*TIER1_PROFILE_SIZE;
+const TIER2_PROFILES=[
+  {code:'W',name:'Water Service Operators',customers:5000},{code:'E',name:'Earthworks Operators',customers:5000},{code:'F',name:'Fire Systems Operators',customers:5000},{code:'A',name:'Air Systems Operators',customers:5000},{code:'W+E',name:'AquaTerra End Users',customers:5000},{code:'W+F',name:'HydroFlame End Users',customers:5000},{code:'W+A',name:'AeroWater End Users',customers:5000},{code:'E+F',name:'TerraFlame End Users',customers:5000},{code:'E+A',name:'TerraAir End Users',customers:5000},{code:'F+A',name:'EmberWind End Users',customers:5000}
+];
+const TIER2_COUNT=50000;
+const tier1CompanyProfile=id=>TIER1_PROFILES[Math.floor(id/TIER1_PROFILE_SIZE)%TIER1_PROFILES.length];
+const tier1CompanyName=id=>{const p=tier1CompanyProfile(id);return `${p.name} ${String((id%TIER1_PROFILE_SIZE)+1).padStart(3,'0')}`;};
+const productByCode=code=>PRODUCT_BY_CODE[code];
+function elementObject(value=0){return Object.fromEntries(ELEMENTS.map(e=>[e,value]));}
+function productObject(value=0){return Object.fromEntries(PRODUCTS.map(p=>[p.code,value]));}
+function sumObject(obj){return Object.values(obj||{}).reduce((s,v)=>s+(Number(v)||0),0);}
+function sumRecipe(recipe){return Object.values(recipe||{}).reduce((s,v)=>s+(Number(v)||0),0);}
+function recipeMaxOutput(co,code){const recipe=co.recipes_by_product[code]||{};let q=Infinity;for(const [el,ratio0] of Object.entries(recipe)){const ratio=Math.max(0,Number(ratio0)||0);if(ratio>0)q=Math.min(q,Math.floor((co.raw_inventory_by_element[el]||0)/ratio));}return Number.isFinite(q)?q:0;}
+function productLabel(code){const p=productByCode(code);return `${code} · ${p?.name||code}`;}
+
+class Economy{
+  constructor(cfg,scenario={}){this.cfg=structuredClone(cfg);this.scenario=scenario;this.reset();}
+  reset(){
+    const c=this.cfg,seed=c.seed|0;this.tick=0;this.d=c.dbar;this.history=[];this.logs=[];this.telemetry=[];this.lastChecks=[];this.running=false;this.expandedTier0=new Set();this.expandedTier1=new Set();this.playerPrices={};this.playerOnline={};this.onlineTransitionEvent=null;
+    this.lastFiniteWholesaleAvgByElement=elementObject(NaN);this.lastFiniteRetailAvgByProduct=productObject(NaN);this.lastWholesale={requested:0,fulfilled:0,unmet:0,requestedByElement:elementObject(0),fulfilledByElement:elementObject(0),unmetByElement:elementObject(0),transactions:[]};
+    this.lastRetailDemand={active:0,fulfilled:0,unmetPrice:0,unmetStock:0,activeByProduct:productObject(0),fulfilledByProduct:productObject(0),unmetPriceByProduct:productObject(0),unmetStockByProduct:productObject(0)};
+    this.globalProductDemandEMA=productObject(0);
+    this.series={tick:[],wholesalePrice:[],retailPrice:[],tier0Inventory:[],tier1Inventory:[],wholesaleVolume:[],retailVolume:[]};
+    const cr=new RNG(hashSeed(seed,101));
+    this.tier0=[];
+    const etas=this.scenario.etas||Array.from({length:TIER0_PROFILES.length},()=>cr.uniform(1,c.etaMax));
+    const capacities=this.scenario.capacities||Array.from({length:TIER0_PROFILES.length},()=>c.capacity);
+    for(let i=0;i<TIER0_PROFILES.length;i++){
+      const profile=TIER0_PROFILES[i],eta=etas[i]??1.05,C=Math.max(1,capacities[i]??c.capacity),maxInventory=Math.max(1,this.scenario.maxInventory?.[i]??c.maxInventory),targetInventory=Math.max(1,Math.min(maxInventory,this.scenario.targetInventory?.[i]??c.targetInventory));
+      const unitCost=c.baseCost*c.dbar*eta,prices=elementObject(NaN),inventoryByElement=elementObject(0),productionByElement=elementObject(0),soldByElement=elementObject(0),revenueByElement=elementObject(0),emaByElement=elementObject(0),priceEmaByElement=elementObject(unitCost*(1+c.markup));
+      profile.elements.forEach(el=>prices[el]=unitCost*(1+c.markup));
+      this.tier0.push({id:i,name:profile.name,elements:profile.elements.slice(),status:'ACTIVE',controller_type:'BOT',cash:c.initialCash,initial_cash:c.initialCash,production_capacity:C,target_inventory:targetInventory,max_inventory:maxInventory,efficiency_multiplier:eta,unit_cost:unitCost,element_prices:prices,element_inventory:inventoryByElement,element_production:productionByElement,element_production_cost:elementObject(0),element_units_sold:soldByElement,element_revenue:revenueByElement,inventory_ema:emaByElement,price_ema:priceEmaByElement,pricing_k:c.k,pricing_ema_alpha:c.alpha,min_margin:c.minMargin,inventory:0,production:0,units_sold:0,revenue:0,production_cost:0,net_cashflow:0,cashflow:0,equity:c.initialCash,inventory_value:0,equity_history:[],market_share:NaN});
+    }
+
+    const buyersPerCompany=Math.max(1,Math.floor(c.buyersPerCompany));
+    this.tier1=[];
+    for(let id=0;id<c.retailCompanies;id++){
+      const profile=tier1CompanyProfile(id),native=profile.product,maxInventory=Math.max(1,c.retailMaxInventory),targetInventory=Math.max(1,Math.min(maxInventory,c.retailTargetInventory));
+      const equipmentOwned=[native],raw=elementObject(0),rawBasis=elementObject(0),finished=productObject(0),finishedBasis=productObject(0),prices=productObject(NaN),unitsPurchasedByElement=elementObject(0),spendByElement=elementObject(0),unitsMadeByProduct=productObject(0),madeSpendByProduct=productObject(0),unitsSoldByProduct=productObject(0),revenueByProduct=productObject(0),cogsByProduct=productObject(0),lastProcurement=elementObject(NaN),purchaseBacklog=elementObject(0),targetFinishedByProduct=productObject(0),salesEMAByProduct=productObject(0),equipmentBookValue=productByCode(native).equipmentPrice;
+      prices[native]=c.baseCost+c.manufacturingCostPerUnit; // initialized below from wholesale market estimate
+      this.tier1.push({id,name:tier1CompanyName(id),business_code:profile.code,native_product:native,status:'ACTIVE',controller_type:'BOT',cash:c.retailInitialCash,initial_cash:c.retailInitialCash,target_inventory:targetInventory,max_inventory:maxInventory,raw_inventory_by_element:raw,raw_cost_basis_by_element:rawBasis,finished_inventory_by_product:finished,finished_cost_basis_by_product:finishedBasis,equipment_owned:equipmentOwned,equipment_book_value:equipmentBookValue,purchase_requests:elementObject(0),recipes_by_product:{[native]:structuredClone(productByCode(native).inputs)},price_by_product:prices,unit_cost_by_product:productObject(NaN),units_purchased_by_element:unitsPurchasedByElement,procurement_spend_by_element:spendByElement,units_manufactured_by_product:unitsMadeByProduct,manufacturing_spend_by_product:madeSpendByProduct,units_sold_by_product:unitsSoldByProduct,revenue_by_product:revenueByProduct,cogs_by_product:cogsByProduct,last_procurement_cost_by_element:lastProcurement,purchase_backlog_by_element:purchaseBacklog,target_finished_by_product:targetFinishedByProduct,sales_ema_by_product:salesEMAByProduct,pricing_k:c.k,pricing_ema_alpha:c.alpha,min_margin:c.minMargin,manufacturing_cost_per_unit:c.manufacturingCostPerUnit,inventory:0,raw_inventory:0,finished_inventory:0,units_purchased:0,units_manufactured:0,units_sold:0,procurement_spend:0,manufacturing_spend:0,revenue:0,cogs:0,net_cashflow:0,equity:c.retailInitialCash,equity_history:[],inventory_value:0,buyer_ids:[],market_share:NaN,last_active_tick:0});
+    }
+    for(const co of this.tier1)co.buyer_ids=[];
+
+    // Fixed Tier 2 customer base: 50 customers per Tier 1 company, product perfectly matched to that company's native product.
+    const mr=new RNG(hashSeed(seed,202));this.buyers=new Array(c.retailCompanies*buyersPerCompany);
+    const productBaseCandidates=Object.fromEntries(PRODUCTS.map(p=>[p.code,[]]));
+    for(const co of this.tier1)productBaseCandidates[co.native_product].push(co.id);
+    for(let i=0;i<this.buyers.length;i++){
+      const home=Math.floor(i/buyersPerCompany),homeCo=this.tier1[home],needProduct=homeCo.native_product,reservation=mr.uniform(c.vmin,c.vmax),switching=mr.uniform(c.taumin,c.taumax),pNeed=clamp(mr.uniform(c.pmin,c.pmax),0,1),pool=productBaseCandidates[needProduct],arng=new RNG(hashSeed(seed,700000+i)),candidateIds=[home],candidateCount=Math.min(6,pool.length);
+      while(candidateIds.length<candidateCount){const alt=pool[arng.int(pool.length)];if(!candidateIds.includes(alt))candidateIds.push(alt);}
+      const b={id:i,home_company_id:home,need_product:needProduct,reservation_price:reservation,switching_cost:switching,p_need:pNeed,base_candidate_company_ids:candidateIds};this.buyers[i]=b;homeCo.buyer_ids.push(i);
+    }
+    const initialWholesale=elementObject(NaN);for(const el of ELEMENTS){const s=this.tier0.filter(co=>co.elements.includes(el));initialWholesale[el]=s.length?s.reduce((a,co)=>a+co.element_prices[el],0)/s.length:NaN;}
+    for(const co of this.tier1){for(const prodCode of co.equipment_owned){const prod=productByCode(prodCode);const wavg=Object.entries(prod.inputs).reduce((sum,[el,r])=>sum+(initialWholesale[el]||c.baseCost)*r,0);const unit=wavg+c.manufacturingCostPerUnit;co.unit_cost_by_product[prodCode]=unit;co.price_by_product[prodCode]=unit*(1+c.markup);}co.unit_cost_by_product[co.native_product]=co.unit_cost_by_product[co.native_product];}
+    this.log(`reset seed=${seed}, T0=${this.tier0.length}, T1=${this.tier1.length}, T2=${this.buyers.length}, T1 capital=${c.retailInitialCash}`);this.record(true);
+  }
+  log(s){this.logs.unshift(`[t=${this.tick}] ${s}`);this.logs=this.logs.slice(0,120);}
+
+  step(){
+    const c=this.cfg,t=this.tick+1;this.d=clamp(this.d+c.theta*(c.dbar-this.d)+c.sigma*new RNG(hashSeed(c.seed,300000+t)).normal(),c.dmin,c.dmax);
+    if(this.scenario.supplyShockTick===t){this.d=clamp(this.scenario.supplyShockValue,c.dmin,c.dmax);this.log(`difficulty shock -> ${this.d.toFixed(3)}`);}
+
+    // Reset per-tick flows.
+    for(const co of this.tier0){co.unit_cost=c.baseCost*this.d*co.efficiency_multiplier;co.production=0;co.units_sold=0;co.revenue=0;co.production_cost=0;co.net_cashflow=0;for(const el of co.elements){co.element_production[el]=0;co.element_units_sold[el]=0;co.element_revenue[el]=0;} }
+    for(const co of this.tier1){co.purchase_requests=elementObject(0);co.units_purchased=0;co.units_manufactured=0;co.units_sold=0;co.procurement_spend=0;co.manufacturing_spend=0;co.revenue=0;co.cogs=0;co.net_cashflow=0;for(const el of ELEMENTS){co.units_purchased_by_element[el]=0;co.procurement_spend_by_element[el]=0;}for(const p of PRODUCTS){co.units_manufactured_by_product[p.code]=0;co.manufacturing_spend_by_product[p.code]=0;co.units_sold_by_product[p.code]=0;co.revenue_by_product[p.code]=0;co.cogs_by_product[p.code]=0;}}
+
+    // Tier 0 extraction. One aggregate inventory cap; stock remains separated by element.
+    for(const co of this.tier0){
+      if(co.status==='BANKRUPT')continue;const current=sumObject(co.element_inventory),headroom=Math.max(0,co.max_inventory-current),targetGap=Math.max(0,co.target_inventory-current),affordable=Math.floor(co.cash/co.unit_cost+1e-12),qTotal=Math.min(co.production_capacity,headroom,targetGap,affordable);let allocated=0;
+      // Allocate across permitted elements with a deterministic rotating split.
+      const n=co.elements.length;for(let idx=0;idx<n;idx++){const el=co.elements[idx],q=idx===n-1?qTotal-allocated:Math.floor(qTotal/n);co.element_production[el]=q;co.element_production_cost[el]=q*co.unit_cost;co.element_inventory[el]+=q;allocated+=q;}
+      co.production=qTotal;co.production_cost=qTotal*co.unit_cost;co.cash-=co.production_cost;co.inventory=sumObject(co.element_inventory);
+    }
+
+    // Tier 0 price controller: bounded short-run stock/sales pressure; independent of target size.
+    for(const co of this.tier0){if(co.status==='BANKRUPT')continue;for(const el of co.elements){const expected=Math.max(1,co.element_production[el]+co.element_units_sold[el]+1),stockSignal=clamp(1-(co.element_inventory[el]/Math.max(1,co.production_capacity/Math.max(1,co.elements.length)))/3,-1,1),flowSignal=clamp((co.element_units_sold[el]-co.element_production[el])/expected,-1,1),signal=clamp(.7*flowSignal+.3*stockSignal,-1,1),floor=co.unit_cost*(1+co.min_margin),raw=Math.max(floor,co.element_prices[el]*Math.exp(.01*co.pricing_k*signal));co.element_prices[el]=clamp(raw,floor,Math.max(floor,c.vmax*2));}}
+    if(this.scenario.impulseTick===t){const co=this.tier0[this.scenario.impulseCompany??0];if(co&&co.elements.includes('Water')){co.element_prices.Water*=1.2;this.log(`${co.name} Water wholesale price x1.20 intervention`);}}
+
+    // Tier 1 purchasing plans. The target is a stock objective; equipment determines which products can be made.
+    for(const co of this.tier1){
+      if(co.status==='BANKRUPT')continue;const totalInv=sumObject(co.raw_inventory_by_element)+sumObject(co.finished_inventory_by_product),headroom=Math.max(0,co.max_inventory-totalInv);co.target_finished_by_product=productObject(0);const owned=co.equipment_owned.slice();
+      let totalDemand=0;for(const code of owned)totalDemand+=Math.max(.25,co.sales_ema_by_product[code]||this.globalProductDemandEMA[code]||.25);
+      for(const code of owned){const w=Math.max(.25,co.sales_ema_by_product[code]||this.globalProductDemandEMA[code]||.25),share=totalDemand>0?w/totalDemand:1/owned.length;co.target_finished_by_product[code]=co.target_inventory*share;}
+      const rawNeeds=elementObject(0);
+      for(const code of owned){const expectedSales=Math.max(.25,co.sales_ema_by_product[code]||this.globalProductDemandEMA[code]||.25),need=Math.max(0,co.target_finished_by_product[code]-co.finished_inventory_by_product[code])+expectedSales,recipe=co.recipes_by_product[code]||{};for(const [el,ratio0] of Object.entries(recipe)){const ratio=Math.max(0,Number(ratio0)||0);rawNeeds[el]+=Math.max(0,need*ratio-(co.raw_inventory_by_element[el]||0));}}
+      for(const el of ELEMENTS)if(rawNeeds[el]>0)co.purchase_backlog_by_element[el]+=rawNeeds[el];
+      let remaining=Math.floor(headroom),candidates=ELEMENTS.filter(el=>co.purchase_backlog_by_element[el]>=c.minWholesaleLot&&co.raw_inventory_by_element[el]<co.max_inventory);candidates.sort((a,b)=>(co.purchase_backlog_by_element[b]-co.purchase_backlog_by_element[a])||ELEMENTS.indexOf(a)-ELEMENTS.indexOf(b));
+      for(const el of candidates){const lots=Math.min(Math.floor(co.purchase_backlog_by_element[el]/c.minWholesaleLot),Math.floor(remaining/c.minWholesaleLot));if(lots<=0)continue;const q=lots*c.minWholesaleLot;co.purchase_requests??=elementObject(0);co.purchase_requests[el]=q;remaining-=q;}
+    }
+    for(const co of this.tier1)if(!co.purchase_requests)co.purchase_requests=elementObject(0);
+
+    // Element-specific wholesale markets: Tier 1 buyers purchase only raw inputs from Tier 0 suppliers.
+    const wrReq=elementObject(0),wrFul=elementObject(0),wrUnmet=elementObject(0),transactions=[];
+    for(const el of ELEMENTS){
+      const requests=this.tier1.filter(co=>co.status!=='BANKRUPT'&&co.purchase_requests[el]>0);requests.sort((a,b)=>b.purchase_requests[el]-a.purchase_requests[el]||a.id-b.id);
+      for(const buyer of requests){let best=null;for(const sup of this.tier0){if(sup.status==='BANKRUPT'||!sup.elements.includes(el)||sup.element_inventory[el]<c.minWholesaleLot)continue;const p=sup.element_prices[el],prodNeeds=buyer.equipment_owned.some(code=>Object.keys(PRODUCT_BY_CODE[code].inputs).includes(el));if(!prodNeeds)continue;if(!best||p<best.price-1e-12||(Math.abs(p-best.price)<=1e-12&&sup.id<best.sup.id))best={sup,price:p};}
+        if(!best)continue;const sup=best.sup,requestedLots=Math.floor(buyer.purchase_requests[el]/c.minWholesaleLot),availableLots=Math.floor(sup.element_inventory[el]/c.minWholesaleLot),affordableLots=Math.floor((buyer.cash+1e-9)/(sup.element_prices[el]*c.minWholesaleLot)),lots=Math.min(requestedLots,availableLots,affordableLots);if(lots<=0)continue;const q=lots*c.minWholesaleLot,spend=q*sup.element_prices[el];sup.element_inventory[el]-=q;sup.inventory=sumObject(sup.element_inventory);sup.element_units_sold[el]+=q;sup.units_sold+=q;sup.element_revenue[el]+=spend;sup.revenue+=spend;sup.cash+=spend;buyer.raw_inventory_by_element[el]+=q;buyer.raw_cost_basis_by_element[el]+=spend;buyer.last_procurement_cost_by_element[el]=sup.element_prices[el];buyer.inventory=sumObject(buyer.raw_inventory_by_element)+sumObject(buyer.finished_inventory_by_product);buyer.units_purchased+=q;buyer.units_purchased_by_element[el]+=q;buyer.procurement_spend+=spend;buyer.procurement_spend_by_element[el]+=spend;buyer.last_procurement_cost_by_element[el]=sup.element_prices[el];buyer.purchase_backlog_by_element[el]=Math.max(0,buyer.purchase_backlog_by_element[el]-q);wrFul[el]+=q;transactions.push({element:el,supplier_id:sup.id,buyer_id:buyer.id,quantity:q,price:sup.element_prices[el]});
+      }
+      wrReq[el]=this.tier1.reduce((s,co)=>s+co.purchase_requests[el],0);wrUnmet[el]=Math.max(0,wrReq[el]-wrFul[el]);
+    }
+    this.lastWholesale={requested:sumObject(wrReq),fulfilled:sumObject(wrFul),unmet:sumObject(wrUnmet),requestedByElement:wrReq,fulfilledByElement:wrFul,unmetByElement:wrUnmet,transactions};
+
+    // Tier 1 manufacturing. Each product uses its recipe inputs and universal manufacturing cost.
+    for(const co of this.tier1){
+      if(co.status==='BANKRUPT')continue;
+      for(const code of co.equipment_owned){
+        const prod=PRODUCT_BY_CODE[code];
+        const target=Math.max(0,co.target_finished_by_product[code]||0);
+        const makeable=recipeMaxOutput(co,code);
+        const equipmentCapacity=prod.equipmentCapacity;
+        const q0=Math.floor(Math.min(target,makeable,equipmentCapacity));
+        if(q0<=0)continue;
+
+        let inputUnitCost=0;
+        let feasible=true;
+        for(const [el,ratioRaw] of Object.entries(prod.inputs)){
+          const ratio=Math.max(0,Number(ratioRaw)||0);
+          if(ratio<=0)continue;
+          const stock=Number(co.raw_inventory_by_element[el]||0);
+          const basis=Number(co.raw_cost_basis_by_element[el]||0);
+          if(stock<=0 || !Number.isFinite(basis)){feasible=false;break;}
+          const avgCost=basis/stock;
+          if(!Number.isFinite(avgCost)){feasible=false;break;}
+          inputUnitCost+=ratio*avgCost;
+        }
+        if(!feasible)continue;
+
+        const mfgUnitCost=Math.max(0,co.manufacturing_cost_per_unit);
+        let q=q0;
+        if(mfgUnitCost>0)q=Math.min(q,Math.floor((co.cash+1e-9)/mfgUnitCost));
+        if(q<=0)continue;
+
+        let inputSpend=0;
+        for(const [el,ratioRaw] of Object.entries(prod.inputs)){
+          const ratio=Math.max(0,Number(ratioRaw)||0);
+          if(ratio<=0)continue;
+          const consume=q*ratio;
+          const stock=Number(co.raw_inventory_by_element[el]||0);
+          const basis=Number(co.raw_cost_basis_by_element[el]||0);
+          const avgCost=stock>0?basis/stock:0;
+          inputSpend+=consume*avgCost;
+          co.raw_inventory_by_element[el]=Math.max(0,stock-consume);
+          co.raw_cost_basis_by_element[el]=Math.max(0,basis-consume*avgCost);
+        }
+
+        const mfgSpend=q*mfgUnitCost;
+        co.cash-=mfgSpend;
+        co.finished_inventory_by_product[code]+=q;
+        co.finished_cost_basis_by_product[code]+=inputSpend+mfgSpend;
+        co.units_manufactured+=q;
+        co.units_manufactured_by_product[code]+=q;
+        co.manufacturing_spend+=mfgSpend;
+        co.manufacturing_spend_by_product[code]+=mfgSpend;
+        co.inventory=sumObject(co.raw_inventory_by_element)+sumObject(co.finished_inventory_by_product);
+        co.unit_cost_by_product[code]=inputUnitCost+mfgUnitCost;
+      }
+    }
+
+    // Retail pricing per manufactured product. Bots are stable operators of their existing customer base; no equipment trading.
+    for(const co of this.tier1){if(co.status==='BANKRUPT')continue;for(const code of co.equipment_owned){const finished=co.finished_inventory_by_product[code],basis=co.finished_cost_basis_by_product[code],avgCost=finished>0?basis/finished:(co.unit_cost_by_product[code]||c.baseCost+c.manufacturingCostPerUnit),floor=avgCost*(1+co.min_margin),old=Number.isFinite(co.price_by_product[code])?co.price_by_product[code]:floor;if(co.controller_type==='BOT'){const expected=Math.max(.25,co.sales_ema_by_product[code]||this.globalProductDemandEMA[code]||.25),coverage=finished/expected,stockSignal=clamp(1-coverage/3,-1,1),flowSignal=clamp((co.units_sold_by_product[code]-co.sales_ema_by_product[code])/Math.max(1,expected),-1,1),signal=clamp(.65*flowSignal+.35*stockSignal,-1,1);co.price_by_product[code]=clamp(old*Math.exp(.008*co.pricing_k*signal),floor,Math.max(floor,c.vmax*2));}else{const pp=this.playerPrices[co.id]?.[code];if(Number.isFinite(pp))co.price_by_product[code]=Math.max(pp,floor);else if(!Number.isFinite(co.price_by_product[code]))co.price_by_product[code]=floor;}}
+      co.inventory=sumObject(co.raw_inventory_by_element)+sumObject(co.finished_inventory_by_product);co.raw_inventory=sumObject(co.raw_inventory_by_element);co.finished_inventory=sumObject(co.finished_inventory_by_product);
+    }
+
+    // Tier 2 fixed product-demand market: no cross-product substitution. Candidate lists are stable, with only PLAYER entrants added dynamically.
+    const playerEntrantsByProduct=Object.fromEntries(PRODUCTS.map(p=>[p.code,[]]));
+    for(const co of this.tier1)if(co.controller_type==='PLAYER')for(const code of co.equipment_owned)playerEntrantsByProduct[code].push(co.id);
+    const buyerOrder=Array.from({length:this.buyers.length},(_,i)=>i),orng=new RNG(hashSeed(c.seed,t)),nrng=new RNG(hashSeed(c.seed,500000+t));for(let i=buyerOrder.length-1;i>0;i--){const j=orng.int(i+1);[buyerOrder[i],buyerOrder[j]]=[buyerOrder[j],buyerOrder[i]];}
+    let active=0,fulfilled=0,unmetPrice=0,unmetStock=0;const activeByProduct=productObject(0),fulfilledByProduct=productObject(0),unmetPriceByProduct=productObject(0),unmetStockByProduct=productObject(0);
+    for(const cid of buyerOrder){const b=this.buyers[cid];if(nrng.next()>=clamp(b.p_need,0,1))continue;active++;const code=b.need_product;activeByProduct[code]++;let best=null,anyPrice=false,anyStock=false;const candidates=[...new Set([...b.base_candidate_company_ids,...playerEntrantsByProduct[code]])];for(const sid of candidates){const co=this.tier1[sid];if(co.status==='BANKRUPT'||!co.equipment_owned.includes(code))continue;const quoted=co.price_by_product[code];if(!Number.isFinite(quoted))continue;const adj=quoted+(sid===b.home_company_id?0:b.switching_cost);if(adj<=b.reservation_price+1e-12){anyPrice=true;if(co.finished_inventory_by_product[code]>0){anyStock=true;if(!best||adj<best.adj-1e-12||(Math.abs(adj-best.adj)<=1e-12&&sid<best.co.id))best={co,adj};}}
+      }
+      if(!best){if(!anyPrice){unmetPrice++;unmetPriceByProduct[code]++;}else{unmetStock++;unmetStockByProduct[code]++;}continue;}
+      const co=best.co,salePrice=co.price_by_product[code],stock=co.finished_inventory_by_product[code],basis=co.finished_cost_basis_by_product[code],avgCost=stock>0?basis/stock:0;co.finished_inventory_by_product[code]=Math.max(0,stock-1);co.finished_cost_basis_by_product[code]=Math.max(0,basis-avgCost);co.units_sold++;co.units_sold_by_product[code]++;co.revenue+=salePrice;co.revenue_by_product[code]+=salePrice;co.cogs+=avgCost;co.cogs_by_product[code]+=avgCost;co.cash+=salePrice;co.inventory=sumObject(co.raw_inventory_by_element)+sumObject(co.finished_inventory_by_product);fulfilled++;fulfilledByProduct[code]++;
+    }
+    this.lastRetailDemand={active,fulfilled,unmetPrice,unmetStock,activeByProduct,fulfilledByProduct,unmetPriceByProduct,unmetStockByProduct};
+    for(const code of PRODUCTS.map(p=>p.code)){const observed=this.lastRetailDemand.fulfilledByProduct[code]||0;this.globalProductDemandEMA[code]=c.alpha*observed+(1-c.alpha)*(this.globalProductDemandEMA[code]||0);}
+
+    // Settle / signal updates.
+    for(const co of this.tier0){if(co.status==='BANKRUPT')continue;co.net_cashflow=co.revenue-co.production_cost;const canOne=co.cash>=co.unit_cost-1e-9;if(!canOne&&co.inventory<=1e-12){co.status='BANKRUPT';this.log(`Tier 0 ${co.name} BANKRUPT`);}else if(co.cash<co.production_capacity*co.unit_cost-1e-9)co.status='DISTRESSED';else co.status='ACTIVE';if(co.status!=='BANKRUPT')co.last_active_tick=t;for(const el of co.elements)co.inventory_ema[el]=co.pricing_ema_alpha*co.element_inventory[el]+(1-co.pricing_ema_alpha)*co.inventory_ema[el];}
+    for(const co of this.tier1){if(co.status==='BANKRUPT')continue;co.net_cashflow=co.revenue-co.procurement_spend-co.manufacturing_spend;const minUnitCost=Math.min(...co.equipment_owned.map(code=>co.unit_cost_by_product[code]).filter(Number.isFinite),Infinity),canOne=co.cash>=Math.max(.01,minUnitCost)-1e-9;if(!canOne&&co.inventory<=1e-12){co.status='BANKRUPT';this.log(`Tier 1 ${co.name} BANKRUPT`);}else if(!canOne)co.status='DISTRESSED';else co.status='ACTIVE';if(co.status!=='BANKRUPT')co.last_active_tick=t;for(const code of co.equipment_owned)co.sales_ema_by_product[code]=co.pricing_ema_alpha*co.units_sold_by_product[code]+(1-co.pricing_ema_alpha)*co.sales_ema_by_product[code];co.inventory=sumObject(co.raw_inventory_by_element)+sumObject(co.finished_inventory_by_product);}
+
+    this.tick=t;this.record(false);return this.history.at(-1);
+  }
+
+  record(initial=false){
+    let wVol=0,wRev=0,t0Inv=0,wQuotes=[];const wByEl=Object.fromEntries(ELEMENTS.map(el=>[el,{vol:0,rev:0,quotes:[]}]))
+    for(const co of this.tier0){wVol+=co.units_sold;wRev+=co.revenue;t0Inv+=co.inventory;if(co.status!=='BANKRUPT')for(const el of co.elements){wByEl[el].vol+=co.element_units_sold[el];wByEl[el].rev+=co.element_revenue[el];wByEl[el].quotes.push(co.element_prices[el]);}}
+    let rVol=0,rRev=0,t1Inv=0;const rByProd=Object.fromEntries(PRODUCTS.map(p=>[p.code,{vol:0,rev:0,quotes:[]}]))
+    for(const co of this.tier1){rVol+=co.units_sold;rRev+=co.revenue;t1Inv+=co.inventory;if(co.status!=='BANKRUPT')for(const code of co.equipment_owned){rByProd[code].vol+=co.units_sold_by_product[code];rByProd[code].rev+=co.revenue_by_product[code];if(Number.isFinite(co.price_by_product[code]))rByProd[code].quotes.push(co.price_by_product[code]);}}
+    const wAvg=wVol?wRev/wVol:(Object.values(wByEl).flatMap(x=>x.quotes).length?Object.values(wByEl).flatMap(x=>x.quotes).reduce((a,b)=>a+b,0)/Object.values(wByEl).flatMap(x=>x.quotes).length:NaN),rAvg=rVol?rRev/rVol:(Object.values(rByProd).flatMap(x=>x.quotes).length?Object.values(rByProd).flatMap(x=>x.quotes).reduce((a,b)=>a+b,0)/Object.values(rByProd).flatMap(x=>x.quotes).length:NaN);
+    const wElPrice=Object.fromEntries(ELEMENTS.map(el=>{const s=wByEl[el];return[el,s.vol?s.rev/s.vol:(s.quotes.length?s.quotes.reduce((a,b)=>a+b,0)/s.quotes.length:NaN)]})),rProdPrice=Object.fromEntries(PRODUCTS.map(p=>{const s=rByProd[p.code];return[p.code,s.vol?s.rev/s.vol:(s.quotes.length?s.quotes.reduce((a,b)=>a+b,0)/s.quotes.length:NaN)]}));
+    const wHHI=Object.fromEntries(ELEMENTS.map(el=>{const total=wByEl[el].vol;return[el,total?this.tier0.reduce((s,co)=>s+((co.element_units_sold[el]||0)/total)**2,0):NaN]})),rHHI=Object.fromEntries(PRODUCTS.map(p=>{const total=rByProd[p.code].vol;return[p.code,total?this.tier1.reduce((s,co)=>s+((co.units_sold_by_product[p.code]||0)/total)**2,0):NaN]}));
+    const wVolEl=Object.fromEntries(ELEMENTS.map(el=>[el,wByEl[el].vol])),rVolProd=Object.fromEntries(PRODUCTS.map(p=>[p.code,rByProd[p.code].vol]));
+    const wVal=Object.fromEntries(ELEMENTS.map(el=>[el,Number.isFinite(this.lastFiniteWholesaleAvgByElement[el])?this.lastFiniteWholesaleAvgByElement[el]:(Number.isFinite(wElPrice[el])?wElPrice[el]:0)])),rVal=Object.fromEntries(PRODUCTS.map(p=>[p.code,Number.isFinite(this.lastFiniteRetailAvgByProduct[p.code])?this.lastFiniteRetailAvgByProduct[p.code]:(Number.isFinite(rProdPrice[p.code])?rProdPrice[p.code]:0)]));
+    for(const co of this.tier0){co.inventory_value=co.elements.reduce((s,el)=>s+co.element_inventory[el]*wVal[el],0);co.equity=co.cash+co.inventory_value;co.equity_history.push({tick:this.tick,equity:co.equity,cash:co.cash,inventory:co.inventory,inventory_value:co.inventory_value,valuation_by_element:{...wVal}});}
+    for(const co of this.tier1){let invValue=0;const values={};for(const el of ELEMENTS){const rawPrice=wVal[el];values[el]=rawPrice;invValue+=(co.raw_inventory_by_element[el]||0)*rawPrice;}for(const code of co.equipment_owned){const pPrice=rVal[code];values[code]=pPrice;invValue+=(co.finished_inventory_by_product[code]||0)*pPrice;}co.inventory_value=invValue;co.equity=co.cash+co.inventory_value+co.equipment_book_value;co.equity_history.push({tick:this.tick,equity:co.equity,cash:co.cash,inventory:co.inventory,raw_inventory:sumObject(co.raw_inventory_by_element),finished_inventory:sumObject(co.finished_inventory_by_product),inventory_value:invValue,equipment_value:co.equipment_book_value,valuation:structuredClone(values)});}
+    ELEMENTS.forEach(el=>{if(Number.isFinite(wElPrice[el]))this.lastFiniteWholesaleAvgByElement[el]=wElPrice[el];});PRODUCTS.forEach(p=>{if(Number.isFinite(rProdPrice[p.code]))this.lastFiniteRetailAvgByProduct[p.code]=rProdPrice[p.code];});
+    this.tier0.forEach(co=>co.market_share=wVol?co.units_sold/wVol:NaN);this.tier1.forEach(co=>co.market_share=rVol?co.units_sold/rVol:NaN);
+    const r={tick:this.tick,difficulty:this.d,wholesale_transaction_weighted_avg_price:wAvg,retail_transaction_weighted_avg_price:rAvg,wholesale_price_by_element:wElPrice,retail_price_by_product:rProdPrice,wholesale_volume:wVol,retail_volume:rVol,wholesale_volume_by_element:wVolEl,retail_volume_by_product:rVolProd,wholesale_HHI_by_element:wHHI,retail_HHI_by_product:rHHI,active_retail_demand:this.lastRetailDemand.active,fulfilled_retail_demand:this.lastRetailDemand.fulfilled,unmet_retail_demand:this.lastRetailDemand.unmetPrice+this.lastRetailDemand.unmetStock,active_retail_demand_by_product:this.lastRetailDemand.activeByProduct,fulfilled_retail_demand_by_product:this.lastRetailDemand.fulfilledByProduct,unmet_price_by_product:this.lastRetailDemand.unmetPriceByProduct,unmet_stock_by_product:this.lastRetailDemand.unmetStockByProduct,wholesale_requested:this.lastWholesale.requested,wholesale_fulfilled:this.lastWholesale.fulfilled,wholesale_unmet:this.lastWholesale.unmet,wholesale_requested_by_element:this.lastWholesale.requestedByElement,wholesale_fulfilled_by_element:this.lastWholesale.fulfilledByElement,total_tier2_customers:this.buyers.length,tier0_inventory:t0Inv,tier1_inventory:t1Inv,equipment_pricing:Object.fromEntries(PRODUCTS.map(p=>[p.code,p.equipmentPrice]))};
+    r.player_online=Object.values(this.playerOnline).some(Boolean);r.online_transition_event=this.onlineTransitionEvent;this.onlineTransitionEvent=null;this.history.push(r);this.telemetry.unshift(r);this.series.tick.push(this.tick);this.series.wholesalePrice.push(wAvg);this.series.retailPrice.push(rAvg);this.series.wholesaleVolume.push(wVol);this.series.retailVolume.push(rVol);this.series.tier0Inventory.push(t0Inv);this.series.tier1Inventory.push(t1Inv);this.lastChecks=this.checks();render(this);
+  }
+
+  checks(){const out=[];for(const co of this.tier0){out.push([`T0 ${co.name} inventory >= 0`,co.inventory>=-1e-9]);out.push([`T0 ${co.name} inventory <= max`,co.inventory<=co.max_inventory+1e-9]);out.push([`T0 ${co.name} production <= capacity`,co.production<=co.production_capacity+1e-9]);out.push([`T0 ${co.name} element reconciliation`,Math.abs(co.inventory-sumObject(co.element_inventory))<1e-9]);}
+    for(const co of this.tier1){const total=sumObject(co.raw_inventory_by_element)+sumObject(co.finished_inventory_by_product);out.push([`T1 ${co.name} inventory >= 0`,co.inventory>=-1e-9]);out.push([`T1 ${co.name} inventory <= max`,co.inventory<=co.max_inventory+1e-9]);out.push([`T1 ${co.name} raw + finished reconcile`,Math.abs(co.inventory-total)<1e-9]);out.push([`T1 ${co.name} cash >= 0`,co.cash>=-1e-9]);out.push([`T1 ${co.name} equipment valid`,co.equipment_owned.length>=1&&co.equipment_owned.every(code=>!!PRODUCT_BY_CODE[code]&&co.recipes_by_product[code])]);}
+    out.push(['20 Tier 0 companies',this.tier0.length===20]);out.push(['1,000 Tier 1 companies',this.tier1.length===1000]);out.push(['50,000 Tier 2 customers',this.buyers.length===this.cfg.retailCompanies*this.cfg.buyersPerCompany]);out.push(['Tier 1 cohorts are exactly 100 each',TIER1_PROFILES.every(p=>this.tier1.filter(co=>co.native_product===p.product).length===TIER1_PROFILE_SIZE)]);out.push(['Tier 2 demand profiles are exactly 5,000 each',TIER2_PROFILES.every(p=>this.buyers.filter(b=>b.need_product===p.code).length===this.cfg.buyersPerCompany*TIER1_PROFILE_SIZE)]);out.push(['Retail demand accounting by product',PRODUCTS.every(p=>{const code=p.code;return this.lastRetailDemand.activeByProduct[code]===this.lastRetailDemand.fulfilledByProduct[code]+this.lastRetailDemand.unmetPriceByProduct[code]+this.lastRetailDemand.unmetStockByProduct[code];})]);out.push(['Wholesale lots respect minimum',this.lastWholesale.transactions.every(tx=>tx.quantity>=this.cfg.minWholesaleLot-1e-9&&Math.abs(tx.quantity/this.cfg.minWholesaleLot-Math.round(tx.quantity/this.cfg.minWholesaleLot))<1e-9)]);out.push(['Tier 1 native equipment matches native product',this.tier1.filter(co=>co.controller_type==='BOT').every(co=>co.equipment_owned.includes(co.native_product))]);out.push(['PLAYER equipment purchases expand product competition',this.tier1.filter(co=>co.controller_type==='PLAYER').every(co=>co.equipment_owned.every(code=>PRODUCT_BY_CODE[code]))]);return out;}
+
+  buyEquipment(companyId,productCode){const co=this.tier1[companyId],product=PRODUCT_BY_CODE[productCode];if(!co||!product)return{ok:false,message:'Invalid company or product.'};if(co.controller_type!=='PLAYER')return{ok:false,message:'Only PLAYER-controlled Tier 1 companies may purchase equipment.'};if(co.equipment_owned.includes(productCode))return{ok:false,message:`${productLabel(productCode)} equipment already owned.`};if(co.cash+1e-9<product.equipmentPrice)return{ok:false,message:`Insufficient cash. Equipment costs ${money(product.equipmentPrice)}.`};co.cash-=product.equipmentPrice;co.equipment_owned.push(productCode);co.recipes_by_product[productCode]=structuredClone(product.inputs);const rawCost=Object.entries(product.inputs).reduce((s,[el,ratio])=>s+(this.lastFiniteWholesaleAvgByElement[el]||this.cfg.baseCost)*ratio,0);co.unit_cost_by_product[productCode]=rawCost+co.manufacturing_cost_per_unit;co.price_by_product[productCode]=co.unit_cost_by_product[productCode]*(1+this.cfg.markup);co.equipment_book_value+=product.equipmentPrice;this.log(`${co.name} purchased ${productLabel(productCode)} equipment for ${money(product.equipmentPrice)}; now competes in ${productLabel(productCode)} retail market.`);return{ok:true};}
+}
+
+function cfgFromUI(){const g=id=>+document.getElementById(id).value;return{seed:g('seed'),dbar:g('dbar'),theta:g('theta'),sigma:g('sigma'),dmin:g('dmin'),dmax:g('dmax'),capacity:g('capacity'),targetInventory:g('targetInventory'),maxInventory:g('maxInventory'),baseCost:g('baseCost'),initialCash:g('initialCash'),etaMax:g('etaMax'),retailCompanies:1000,buyersPerCompany:Math.max(1,Math.floor(g('buyersPerCompany'))),retailTargetInventory:g('retailTargetInventory'),retailMaxInventory:g('retailMaxInventory'),retailInitialCash:g('retailInitialCash'),manufacturingCostPerUnit:Math.max(0,g('manufacturingCostPerUnit')),minWholesaleLot:Math.max(1,Math.floor(g('minWholesaleLot'))),k:g('k'),alpha:g('alpha'),minMargin:g('minMargin'),markup:g('markup'),vmin:g('vmin'),vmax:g('vmax'),pmin:g('pmin'),pmax:g('pmax'),taumin:g('taumin'),taumax:g('taumax')};}
+function validatedCfgFromUI(){const c=cfgFromUI();c.maxInventory=Math.max(c.targetInventory,c.maxInventory);c.retailMaxInventory=Math.max(c.retailTargetInventory,c.retailMaxInventory);c.minWholesaleLot=Math.max(1,Math.floor(c.minWholesaleLot));for(const id of ['maxInventory','retailMaxInventory','minWholesaleLot'])document.getElementById(id).value=id==='maxInventory'?c.maxInventory:id==='retailMaxInventory'?c.retailMaxInventory:c.minWholesaleLot;return c;}
+let sim=null,timer=null;
+function logGlobal(s){document.getElementById('log').textContent='[harness] '+s;}
+function setScenario(name){const c=validatedCfgFromUI(),s={};if(name==='A'){c.sigma=.005;c.k=.35;c.alpha=.15;s.etas=Array(20).fill(1.05);}if(name==='B'){s.supplyShockTick=50;s.supplyShockValue=Math.min(c.dmax,c.dbar*1.35);c.sigma=.005;}if(name==='C'){s.etas=[1,1.05,1.1,1.15,1.08,...Array(15).fill(1.07)];s.capacities=[4000,7000,5500,3000,8000,...Array(15).fill(c.capacity)];}if(name==='D'){s.impulseTick=50;s.impulseCompany=0;}if(name==='E'){c.capacity=Math.max(1,Math.floor(c.retailCompanies*c.buyersPerCompany*((c.pmin+c.pmax)/2)/20*.7));c.k=.5;c.alpha=.25;}if(name==='F'){runStabilitySweep();return;}sim=new Economy(c,s);refreshPlayerControls();}
+function runStabilitySweep(){const base=validatedCfgFromUI(),rows=[];for(let k=.15;k<=1.95;k+=.2){for(let a=.1;a<=.9;a+=.2){const c={...base,k:+k.toFixed(2),alpha:+a.toFixed(2),retailCompanies:100,buyersPerCompany:10},s=new Economy(c,{etas:Array(20).fill(1.05)}),prices=[];for(let i=0;i<160;i++){s.step();if(i>=120)prices.push(s.history.at(-1).retail_transaction_weighted_avg_price);}const f=prices.filter(Number.isFinite),avg=f.reduce((x,y)=>x+y,0)/(f.length||1),last=f.at(-1)||NaN,span=f.length?Math.max(...f)-Math.min(...f):NaN;let cls='stable';if(!Number.isFinite(last)||last>base.vmax*2||last<.05)cls='pathological';else if(span>avg*.8)cls='cobweb/volatile';rows.push({k:+k.toFixed(2),alpha:+a.toFixed(2),avg,last,span,cls});}}document.getElementById('impulse').innerHTML='<b>Controller stability sweep</b><br><div class="small" style="overflow:auto;max-height:360px"><table class="table"><thead><tr><th>k</th><th>alpha</th><th>late avg</th><th>last</th><th>range</th><th>classification</th></tr></thead><tbody>'+rows.map(r=>`<tr><td>${r.k.toFixed(2)}</td><td>${r.alpha.toFixed(2)}</td><td>${fmt(r.avg,3)}</td><td>${fmt(r.last,3)}</td><td>${fmt(r.span,3)}</td><td>${r.cls}</td></tr>`).join('')+'</tbody></table></div>';logGlobal('F sweep completed');}
+function pairedImpulse(){const base=validatedCfgFromUI(),mk=sc=>new Economy({...base,retailCompanies:100,buyersPerCompany:10},sc),A=mk({}),B=mk({impulseTick:50,impulseCompany:0}),metrics=[];for(let t=1;t<=140;t++){A.step();B.step();metrics.push({t,price:(B.history.at(-1).retail_transaction_weighted_avg_price||0)-(A.history.at(-1).retail_transaction_weighted_avg_price||0),wholesale:(B.history.at(-1).wholesale_transaction_weighted_avg_price||0)-(A.history.at(-1).wholesale_transaction_weighted_avg_price||0)});}const p=metrics.reduce((m,x)=>Math.max(m,Math.abs(x.price)),0),cum=metrics.reduce((s,x)=>s+Math.abs(x.price),0),tol=Math.max(.002,p*.05);let rec='not reached',run=0;for(const x of metrics.slice(50)){if(Math.abs(x.price)<tol)run++;else run=0;if(run>=5){rec=`tick ${x.t-4}`;break;}}document.getElementById('impulse').innerHTML=`<b>Paired multi-layer impulse-response</b><br>Tier 0 Company 1 Water wholesale price ×1.20 at tick 50.<br>Peak |Δ retail avg|: <b>${fmt(p,5)}</b> · cumulative |Δ retail avg|: <b>${fmt(cum,5)}</b> · recovery: <b>${rec}</b>`;logGlobal('D paired multi-layer run completed');}
+function productDisplay(code){const p=productByCode(code);return `${p.code} · ${p.name}`;}
+function render(s){
+  const r=s.history.at(-1)||{};document.getElementById('tick').textContent=s.tick;document.getElementById('difficulty').textContent=fmt(s.d,3);document.getElementById('wholesalePrice').textContent=money(r.wholesale_transaction_weighted_avg_price);document.getElementById('retailPrice').textContent=money(r.retail_transaction_weighted_avg_price);document.getElementById('wholesaleVolume').textContent=r.wholesale_volume??0;document.getElementById('retailVolume').textContent=r.retail_volume??0;
+  const t0Rows=s.tier0.map(co=>{const ex=s.expandedTier0.has(co.id);return `<tr class="company-row${ex?' expanded':''}" data-company-id="${co.id}" data-tier="0" tabindex="0" role="button" aria-expanded="${ex}"><td><b>${co.name}</b><br><span class="small muted">T0-${String(co.id+1).padStart(2,'0')}</span></td><td><span class="badge ${co.status}">${co.status}</span></td><td>${co.elements.join(', ')}</td><td>${co.production_capacity}</td><td>${co.target_inventory}</td><td>${co.max_inventory}</td><td>${money(co.cash)}</td><td>${co.elements.map(el=>`${el} ${co.element_inventory[el].toFixed(0)}`).join(' · ')}</td><td>${co.inventory.toFixed(0)}</td><td>${money(co.equity)}</td><td>${co.production}</td><td>${co.units_sold}</td></tr><tr class="company-detail" style="display:${ex?'table-row':'none'}"><td colspan="12"><div class="company-detail-inner"><div class="equity-meta"><span>Equity<b>${money(co.equity)}</b></span><span>Cash<b>${money(co.cash)}</b></span><span>Inventory value<b>${money(co.inventory_value)}</b></span><span>History<b>${co.equity_history.length} ticks</b></span></div><div class="small muted" style="margin-bottom:8px"><b>Element wholesale prices:</b> ${co.elements.map(el=>`${el}: ${money(co.element_prices[el])}`).join(' · ')}</div><div class="equity-chart"><canvas id="t0eq-${co.id}"></canvas></div></div></td></tr>`;}).join('');
+  document.getElementById('tier0Companies').innerHTML=t0Rows;document.querySelectorAll('#tier0Companies .company-row').forEach(row=>attachRowToggle(row,s,'tier0'));s.expandedTier0.forEach(id=>{const co=s.tier0[id];if(co)drawEquityChart(`t0eq-${id}`,co.equity_history);});
+  const t1Rows=s.tier1.map(co=>{const ex=s.expandedTier1.has(co.id),equip=co.equipment_owned.map(code=>code).join(' · '),raw=ELEMENTS.filter(el=>co.raw_inventory_by_element[el]>0).map(el=>`${el} ${co.raw_inventory_by_element[el].toFixed(0)}`).join(' · ')||'—',fin=co.equipment_owned.map(code=>`${code} ${co.finished_inventory_by_product[code].toFixed(0)}`).join(' · '),productPrices=co.equipment_owned.map(code=>`${code} ${money(co.price_by_product[code])}`).join(' · ');return `<tr class="company-row${ex?' expanded':''}" data-company-id="${co.id}" data-tier="1" tabindex="0" role="button" aria-expanded="${ex}"><td><b>${co.name}</b><br><span class="small muted">T1-${String(co.id+1).padStart(4,'0')}</span></td><td><span class="badge ${co.status}">${co.status}</span></td><td>${co.controller_type}</td><td>${productLabel(co.native_product)}</td><td>${equip}</td><td>${co.buyer_ids.length}</td><td>${money(co.cash)}</td><td>${raw}</td><td>${fin||'—'}</td><td>${co.inventory.toFixed(0)}</td><td>${money(co.equity)}</td><td>${co.units_purchased}</td><td>${co.units_manufactured}</td><td>${co.units_sold}</td><td>${money(co.revenue)}</td></tr><tr class="company-detail" style="display:${ex?'table-row':'none'}"><td colspan="15"><div class="company-detail-inner"><div class="equity-meta"><span>Equity<b>${money(co.equity)}</b></span><span>Cash<b>${money(co.cash)}</b></span><span>Inventory value<b>${money(co.inventory_value)}</b></span><span>Equipment value<b>${money(co.equipment_book_value)}</b></span><span>History<b>${co.equity_history.length} ticks</b></span></div><div class="small muted" style="margin-bottom:8px"><b>Equipment:</b> ${co.equipment_owned.map(code=>`${productLabel(code)} (${money(PRODUCT_BY_CODE[code].equipmentPrice)})`).join(' · ')}<br><b>Retail prices:</b> ${productPrices}<br><b>Target finished stock:</b> ${co.equipment_owned.map(code=>`${code} ${fmt(co.target_finished_by_product[code],1)}`).join(' · ')}<br><b>Procurement backlog:</b> ${co.equipment_owned.flatMap(code=>Object.keys(PRODUCT_BY_CODE[code].inputs)).filter((v,i,a)=>a.indexOf(v)===i).map(el=>`${el} ${fmt(co.purchase_backlog_by_element[el],0)}`).join(' · ')||'—'}</div><div class="equity-chart"><canvas id="t1eq-${co.id}"></canvas></div></div></td></tr>`;}).join('');
+  document.getElementById('tier1Companies').innerHTML=t1Rows;document.querySelectorAll('#tier1Companies .company-row').forEach(row=>attachRowToggle(row,s,'tier1'));s.expandedTier1.forEach(id=>{const co=s.tier1[id];if(co)drawEquityChart(`t1eq-${id}`,co.equity_history);});
+  document.getElementById('elementMarkets').innerHTML=ELEMENTS.map(el=>`<tr><th>${el}</th><td>${money(r.wholesale_price_by_element?.[el])}</td><td>${r.wholesale_volume_by_element?.[el]??0}</td><td>${fmt(r.wholesale_HHI_by_element?.[el],3)}</td></tr>`).join('');
+  document.getElementById('productMarkets').innerHTML=PRODUCTS.map(p=>{const code=p.code;const active=r.active_retail_demand_by_product?.[code]??0,ful=r.fulfilled_retail_demand_by_product?.[code]??0,unmet=active-ful;return `<tr><th>${productLabel(code)}</th><td>${Object.entries(p.inputs).map(([e,q])=>`${e}×${q}`).join(' + ')}</td><td>${money(p.equipmentPrice)}</td><td>${money(r.retail_price_by_product?.[code])}</td><td>${r.retail_volume_by_product?.[code]??0}</td><td>${fmt(r.retail_HHI_by_product?.[code],3)}</td><td>${active}</td><td>${ful}</td><td>${unmet}</td></tr>`;}).join('');
+  document.getElementById('demand').innerHTML=`<tr><th>Tier 2 customers</th><td>${s.buyers.length}</td></tr><tr><th>Active demand</th><td>${r.active_retail_demand??0}</td></tr><tr><th>Fulfilled demand</th><td>${r.fulfilled_retail_demand??0}</td></tr><tr><th>Unmet demand</th><td>${r.unmet_retail_demand??0}</td></tr><tr><th>Unmet due to price</th><td>${Object.values(r.unmet_price_by_product||{}).reduce((a,b)=>a+b,0)}</td></tr><tr><th>Unmet due to stock</th><td>${Object.values(r.unmet_stock_by_product||{}).reduce((a,b)=>a+b,0)}</td></tr><tr><th>Wholesale released</th><td>${r.wholesale_requested??0}</td></tr><tr><th>Wholesale fulfilled</th><td>${r.wholesale_fulfilled??0}</td></tr><tr><th>Wholesale unmet</th><td>${r.wholesale_unmet??0}</td></tr>`;
+  document.getElementById('checks').innerHTML=s.lastChecks.slice(-24).map(x=>`<div class="check ${x[1]?'pass':'fail'}">${x[1]?'PASS':'FAIL'} · ${x[0]}</div>`).join('');document.getElementById('telemetry').textContent=JSON.stringify(r,null,2);document.getElementById('log').textContent=s.logs.join('\n');
+  drawChart('wholesalePriceChart',s.series.tick,s.series.wholesalePrice,'wholesale price');drawChart('retailPriceChart',s.series.tick,s.series.retailPrice,'retail price');drawChart('tier0InventoryChart',s.series.tick,s.series.tier0Inventory,'Tier 0 inventory');drawChart('tier1InventoryChart',s.series.tick,s.series.tier1Inventory,'Tier 1 inventory');
+  refreshPlayerControls();
+}
+function attachRowToggle(row,s,tier){const id=+row.dataset.companyId;row.addEventListener('click',()=>{const set=tier==='tier0'?s.expandedTier0:s.expandedTier1;set.has(id)?set.delete(id):set.add(id);render(s);});row.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();row.click();}});}
+function drawChart(id,x,y,label){const cv=document.getElementById(id);if(!cv)return;const dpr=devicePixelRatio||1,rect=cv.getBoundingClientRect();cv.width=Math.max(1,rect.width*dpr);cv.height=Math.max(1,rect.height*dpr);const g=cv.getContext('2d');g.setTransform(dpr,0,0,dpr,0,0);const w=rect.width,h=rect.height;g.clearRect(0,0,w,h);const vals=y.filter(Number.isFinite);if(vals.length<2)return;const min=Math.min(...vals),max=Math.max(...vals);g.strokeStyle='#2a303a';g.lineWidth=1;for(let i=0;i<5;i++){const yy=10+i*(h-28)/4;g.beginPath();g.moveTo(45,yy);g.lineTo(w-8,yy);g.stroke();}g.strokeStyle='#77b7ff';g.lineWidth=2;g.beginPath();y.forEach((v,i)=>{if(!Number.isFinite(v))return;const xx=45+(w-53)*(i/(y.length-1)),yy=10+(h-28)*(1-(v-min)/(max-min||1));if(i===0)g.moveTo(xx,yy);else g.lineTo(xx,yy);});g.stroke();g.fillStyle='#9ca6b2';g.font='11px system-ui';g.fillText(label,8,12);g.fillText(fmt(max,2),8,26);g.fillText(fmt(min,2),8,h-3);g.fillText(`t=${x.at(-1)||0}`,w-52,h-3);}
+function drawEquityChart(id,history){const cv=document.getElementById(id);if(!cv||history.length<2)return;const dpr=devicePixelRatio||1,rect=cv.getBoundingClientRect();cv.width=Math.max(1,rect.width*dpr);cv.height=Math.max(1,rect.height*dpr);const g=cv.getContext('2d');g.setTransform(dpr,0,0,dpr,0,0);const w=rect.width,h=rect.height;g.clearRect(0,0,w,h);const vals=history.map(x=>x.equity).filter(Number.isFinite);if(vals.length<2)return;const min=Math.min(...vals),max=Math.max(...vals);g.strokeStyle='#2a303a';g.lineWidth=1;for(let i=0;i<5;i++){const yy=10+i*(h-28)/4;g.beginPath();g.moveTo(55,yy);g.lineTo(w-10,yy);g.stroke();}g.strokeStyle='#6fd08c';g.lineWidth=2;g.beginPath();history.forEach((pt,i)=>{if(!Number.isFinite(pt.equity))return;const xx=55+(w-65)*(i/(history.length-1)),yy=10+(h-28)*(1-(pt.equity-min)/(max-min||1));if(i===0)g.moveTo(xx,yy);else g.lineTo(xx,yy);});g.stroke();g.fillStyle='#9ca6b2';g.font='11px system-ui';g.fillText('equity',8,12);g.fillText(money(max),8,26);g.fillText(money(min),8,h-3);g.fillText(`t=${history.at(-1)?.tick||0}`,w-52,h-3);}
+function refreshPlayerControls(){if(!sim)return;const companySelect=document.getElementById('playerCompany');const idx=+companySelect.value||0;const co=sim.tier1[idx];if(!co)return;document.getElementById('controller').value=co.controller_type;const eqSel=document.getElementById('equipmentProduct'),currentEq=eqSel.value;eqSel.innerHTML=PRODUCTS.map(p=>`<option value="${p.code}">${productDisplay(p.code)}${co.equipment_owned.includes(p.code)?' · owned':''}</option>`).join('');eqSel.value=PRODUCTS.some(p=>p.code===currentEq)?currentEq:PRODUCTS[0].code;const eqCode=eqSel.value,owned=co.equipment_owned.includes(eqCode),eq=PRODUCT_BY_CODE[eqCode];document.getElementById('equipmentStatus').textContent=owned?'Owned':'Available to buy';document.getElementById('equipmentPrice').textContent=money(eq.equipmentPrice);document.getElementById('buyEquipment').disabled=owned||co.controller_type!=='PLAYER';document.getElementById('buyEquipment').textContent=owned?'Equipment owned':co.controller_type==='PLAYER'?'Buy equipment':'Select PLAYER to buy';
+  const prodSel=document.getElementById('playerProduct'),currentProd=prodSel.value,ownedProducts=co.equipment_owned.slice();prodSel.innerHTML=ownedProducts.map(code=>`<option value="${code}">${productDisplay(code)}</option>`).join('');prodSel.value=ownedProducts.includes(currentProd)?currentProd:ownedProducts[0];const prod=prodSel.value;const playerSet=sim.playerPrices[idx]?.[prod];document.getElementById('playerPrice').value=(Number.isFinite(playerSet)?playerSet:(co.price_by_product[prod]||1.6)).toFixed(2);}
+function renderTier0Roster(){document.getElementById('tier0Roster').innerHTML=TIER0_PROFILES.map((p,i)=>`<div class="roster-item"><b>T0-${String(i+1).padStart(2,'0')} · ${p.name}</b><span>${p.elements.join(' · ')} · $1,000,000 starting cash</span></div>`).join('');}
+function renderTier1Roster(){document.getElementById('tier1Roster').innerHTML=TIER1_PROFILES.map(p=>`<div class="roster-item"><b>${p.code} · ${p.name}</b><span>100 companies · native product ${productLabel(p.product)} · 50 fixed Tier 2 customers/company</span></div>`).join('');}
+function renderTier2Roster(){document.getElementById('tier2Roster').innerHTML=TIER2_PROFILES.map(p=>`<div class="roster-item"><b>${p.code} · ${p.name}</b><span>5,000 customers · fixed need ${productLabel(p.code)} · perfect product-market fit</span></div>`).join('');}
+function renderEquipmentCatalog(){document.getElementById('equipmentCatalog').innerHTML=PRODUCTS.map(p=>`<div class="equipment-card"><b>${productLabel(p.code)}</b><span>inputs: ${Object.entries(p.inputs).map(([e,q])=>`${e}×${q}`).join(' + ')} · price ${money(p.equipmentPrice)} · capacity ${p.equipmentCapacity}/tick</span></div>`).join('');}
+
+document.getElementById('reset').onclick=()=>{sim=new Economy(validatedCfgFromUI());};
+document.getElementById('step').onclick=()=>{if(!sim)sim=new Economy(validatedCfgFromUI());sim.step();};
+document.getElementById('run').onclick=()=>{if(!sim)sim=new Economy(validatedCfgFromUI());clearInterval(timer);sim.running=true;timer=setInterval(()=>{if(sim.running)sim.step();},1000/(+document.getElementById('speed').value));};
+document.getElementById('pause').onclick=()=>{if(sim)sim.running=false;clearInterval(timer);};
+document.querySelectorAll('[data-scenario]').forEach(b=>b.onclick=()=>{if(b.dataset.scenario==='D'){setScenario('D');pairedImpulse();}else setScenario(b.dataset.scenario);});
+document.getElementById('applyPlayer').onclick=()=>{if(!sim)return;const idx=+document.getElementById('playerCompany').value,type=document.getElementById('controller').value,online=document.getElementById('playerOnline').value==='true',code=document.getElementById('playerProduct').value,price=+document.getElementById('playerPrice').value,co=sim.tier1[idx],prev=sim.playerOnline[idx]??false;co.controller_type=type;if(type==='PLAYER'){sim.playerPrices[idx]??={};sim.playerPrices[idx][code]=price;}else delete sim.playerPrices[idx];sim.playerOnline[idx]=online;sim.onlineTransitionEvent=prev!==online?{tick:sim.tick,tier:1,company_id:idx,from:prev,to:online}:null;if(online&&type==='PLAYER')co.last_active_tick=sim.tick;sim.log(`${co.name} controller -> ${type}; ${productLabel(code)} retail price ${type==='PLAYER'?money(price):'BOT'}; player ${online?'online':'offline'}`);render(sim);};
+document.getElementById('buyEquipment').onclick=()=>{if(!sim)return;const idx=+document.getElementById('playerCompany').value,code=document.getElementById('equipmentProduct').value,res=sim.buyEquipment(idx,code);if(!res.ok)sim.log(res.message);render(sim);};
+document.getElementById('playerCompany').onchange=()=>refreshPlayerControls();
+document.getElementById('equipmentProduct').onchange=()=>refreshPlayerControls();
+document.getElementById('playerProduct').onchange=()=>{if(sim){const idx=+document.getElementById('playerCompany').value,co=sim.tier1[idx],code=document.getElementById('playerProduct').value;document.getElementById('playerPrice').value=(co.price_by_product[code]||1.6).toFixed(2);}};
+document.getElementById('targetInventory').addEventListener('change',()=>{const t=Math.max(1,+document.getElementById('targetInventory').value);const m=Math.max(t,+document.getElementById('maxInventory').value);document.getElementById('targetInventory').value=t;document.getElementById('maxInventory').value=m;});
+document.getElementById('maxInventory').addEventListener('change',()=>{const t=Math.max(1,+document.getElementById('targetInventory').value);const m=Math.max(t,+document.getElementById('maxInventory').value);document.getElementById('maxInventory').value=m;});
+document.getElementById('retailTargetInventory').addEventListener('change',()=>{const t=Math.max(1,+document.getElementById('retailTargetInventory').value);const m=Math.max(t,+document.getElementById('retailMaxInventory').value);document.getElementById('retailTargetInventory').value=t;document.getElementById('retailMaxInventory').value=m;});
+document.getElementById('retailMaxInventory').addEventListener('change',()=>{const t=Math.max(1,+document.getElementById('retailTargetInventory').value);const m=Math.max(t,+document.getElementById('retailMaxInventory').value);document.getElementById('retailMaxInventory').value=m;});
+for(let i=0;i<TIER1_COUNT;i++){const o=document.createElement('option');o.value=i;const p=tier1CompanyProfile(i);o.textContent=`${tier1CompanyName(i)} · ${p.code}`;document.getElementById('playerCompany').appendChild(o);}
+renderTier0Roster();renderTier1Roster();renderTier2Roster();renderEquipmentCatalog();sim=new Economy(validatedCfgFromUI());refreshPlayerControls();window.addEventListener('resize',()=>sim&&render(sim));window.Phase0Economy={Economy,RNG,hashSeed,PRODUCTS,TIER0_PROFILES,TIER1_PROFILES,TIER2_PROFILES,cfgFromUI};
+</script>
+</body>
+</html>
