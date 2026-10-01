@@ -4,9 +4,19 @@ This directory is the cleaned project layout for the Phase 0 simulator.
 
 **Run**
 
-On macOS, double-click **Start Phase 0.command**. It starts the local server
-and opens the simulator in your browser. Keep the Terminal window open;
+Double-click the launcher for your operating system. Each starts the local
+server and opens the simulator in your browser. Keep its terminal window open;
 press Ctrl+C there to stop it.
+
+| Operating system | Launcher |
+| --- | --- |
+| macOS | **Start Phase 0.command** |
+| Windows | **Start Phase 0.bat** |
+| Linux | **Start Phase 0.sh** |
+
+On Linux, make the launcher executable once if your file manager does not
+offer to run it: `chmod +x 'Start Phase 0.sh'`. Then double-click it and choose
+“Run” when prompted.
 
 From a terminal on any platform with Python 3:
 
