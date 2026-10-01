@@ -27,7 +27,26 @@ const T1P=[
  {name:'TerraWind Industries',product:'E+A'}, {name:'EmberWind Industries',product:'F+A'}
 ];
 const T0P=[
- ['Raw Materials Corp.',['Water','Earth','Fire','Air']],['Elements Inc.',['Water','Earth','Fire','Air']],['The People\'s Pottery, Inc.',['Water','Earth','Fire']],['The Crystal Company, Inc.',['Water','Earth','Air']],['Mechanics & Masonry, Inc.',['Water','Fire','Air']],['Standard Metal, Inc.',['Earth','Fire','Air']],['The Mineral Co.',['Water','Earth']],['General Machinery, Inc.',['Water','Fire']],['ShowZone Inc.',['Water','Air']],['Unidrug Corp., Inc.',['Earth','Fire']],['Sky Research, Inc.',['Earth','Air']],['The Oligarch',['Fire','Air']],['The Water Works, Inc.',['Water']],['Union Water Corp.',['Water']],['The Earthworks Company, Inc.',['Earth']],['Planetary Earth Corp.',['Earth']],['The Fire Company, Inc.',['Fire']],['General Flame, Inc.',['Fire']],['The Air Company, Inc.',['Air']],['Standard Wind, Inc.',['Air']]
+ ['Raw Materials Corp.', ['Water', 'Earth', 'Fire', 'Air']],
+ ['Elements Inc.', ['Water', 'Earth', 'Fire', 'Air']],
+ ['The People\'s Pottery, Inc.', ['Water', 'Earth', 'Fire']],
+ ['The Crystal Company, Inc.', ['Water', 'Earth', 'Air']],
+ ['Mechanics & Masonry, Inc.', ['Water', 'Fire', 'Air']],
+ ['Standard Metal, Inc.', ['Earth', 'Fire', 'Air']],
+ ['The Mineral Co.', ['Water', 'Earth']],
+ ['General Machinery, Inc.', ['Water', 'Fire']],
+ ['ShowZone Inc.', ['Water', 'Air']],
+ ['Unimind Corp., Inc.', ['Earth', 'Fire']],
+ ['Sky Research, Inc.', ['Earth', 'Air']],
+ ['The Oligarch', ['Fire', 'Air']],
+ ['MAMA Water Corp.', ['Water']],
+ ['Union Water Corp.', ['Water']],
+ ['MAMA Earth Corp.', ['Earth']],
+ ['Planetary Earth Corp.', ['Earth']],
+ ['MAMA Fire Corp.', ['Fire']],
+ ['Advanced Flame, Inc.', ['Fire']],
+ ['MAMA Air Corp.', ['Air']],
+ ['Standard Wind, Inc.', ['Air']]
 ].map((x,i)=>({id:i,name:x[0],elements:x[1]}));
 const N0=20,N1=1000,N2=50000,NP=10,NE=4,BPP=5000,MONTH=30;
 const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));

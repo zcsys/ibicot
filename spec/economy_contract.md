@@ -43,6 +43,12 @@ deterministic tests.
 
 ## Design decisions
 
-Wholesale pricing responds to unfulfilled purchase requests. Retail supplier
-selection uses the buyer relationship plus the best current alternative, and
-orders remain atomic. Changes to either behavior require a scenario test.
+Wholesale pricing responds to unfulfilled purchase requests. Tier 1 input
+buyers are interleaved by cohort each tick, and an empty supplier is excluded
+from input selection so another stocked supplier can serve the request.
+
+Retail supplier selection uses the buyer relationship plus the best current
+in-stock alternative; orders remain atomic. Changes to either behavior require
+a scenario test. The source-engine test includes a 360-tick sustained-market
+scenario: every product must retain effective-price demand and sales, and every
+compound market must continue to produce and earn revenue.

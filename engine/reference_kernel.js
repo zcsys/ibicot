@@ -40,9 +40,15 @@
     }
   }
 
-  function planAndBuyInputs(W, cfg, products, profiles) {
+  function planAndBuyInputs(W, cfg, products, profiles, tick) {
     W.t0Req.fill(0);
-    for (let company = 0; company < N1; company++) {
+    // Interleave cohorts instead of processing all firms in cohort order.
+    // This gives every product market a recurring chance to buy each input,
+    // rather than letting whichever cohort is first drain a shared element.
+    const firstCohort = tick % NP, firstFirm = (tick * 37) % 100;
+    for (let round = 0; round < 100; round++) for (let cohortOrder = 0; cohortOrder < NP; cohortOrder++) {
+      const cohort = (firstCohort + cohortOrder) % NP;
+      const company = cohort * 100 + (firstFirm + round) % 100;
       const rawBase = company * NE, productBase = company * NP;
       for (let p = 0; p < NP; p++) {
         if (!W.t1Operates[productBase + p]) continue;
@@ -62,8 +68,10 @@
         let chosen = -1, best = Infinity;
         for (let supplier = 0; supplier < N0; supplier++) {
           if (!profiles[supplier].elements.includes(M.ELEMENTS[e])) continue;
-          const index = supplier * NE + e, quote = W.t0Price[index];
-          if (!Number.isFinite(quote)) continue;
+          const index = supplier * NE + e, quote = W.t0Price[index], available = Math.floor(Math.max(0, W.t0Inv[index]));
+          // Do not let an empty low-price supplier block access to other
+          // stocked suppliers in the same element market.
+          if (!Number.isFinite(quote) || available < cfg.minWholesaleLot) continue;
           const friction = supplier === preferred ? 0 : M.switchingCost(preferred >= 0 ? W.t0Rel[preferred * NE + e] : .5, cfg.taumin, cfg.taumax);
           if (quote + friction < best) { best = quote + friction; chosen = supplier; }
         }
@@ -117,11 +125,14 @@
 
   function clearRetail(W, cfg, products, tick) {
     const cheapest = new Int32Array(NP); cheapest.fill(-1);
-    for (let p = 0; p < NP; p++) for (let company = 0; company < N1; company++) { const index = company * NP + p; if (W.t1Operates[index] && (cheapest[p] < 0 || W.t1Price[index] < W.t1Price[cheapest[p] * NP + p])) cheapest[p] = company; }
+    // Buyers can only fall back to a supplier that can actually fulfill an
+    // order.  Otherwise an empty low-price firm captures all demand while
+    // stocked producers, especially in compound markets, never make a sale.
+    for (let p = 0; p < NP; p++) for (let company = 0; company < N1; company++) { const index = company * NP + p; if (W.t1Operates[index] && W.t1Fin[index] > 0 && (cheapest[p] < 0 || W.t1Price[index] < W.t1Price[cheapest[p] * NP + p])) cheapest[p] = company; }
     let orders = 0, filledOrders = 0;
     for (let buyer = 0; buyer < N2; buyer++) {
       const preferred = W.buyerPreferred[buyer], p = Math.floor(preferred / 100), fallback = cheapest[p]; let seller = preferred;
-      if (seller < 0 || !W.t1Operates[seller * NP + p]) seller = fallback;
+      if (seller < 0 || !W.t1Operates[seller * NP + p] || W.t1Fin[seller * NP + p] <= 0) seller = fallback;
       if (seller < 0) continue;
       const preferredPrice = W.t1Price[seller * NP + p];
       if (fallback >= 0 && fallback !== seller) { const effectiveFallback = W.t1Price[fallback * NP + p] + M.switchingCost(W.t1Rel[seller * NP + p], cfg.taumin, cfg.taumax); if (effectiveFallback < preferredPrice) seller = fallback; }
@@ -142,6 +153,6 @@
     for (let i = 0; i < N1 * NP; i++) if (W.t1Operates[i]) { const attempts = W.t1RelAttempts[i], checks = W.t1RelAvailChecks[i], score = M.reliabilityScore(attempts ? W.t1RelFulfilled[i] / attempts : 1, W.t1RelPriceSamples[i] ? W.t1RelPriceSum[i] / W.t1RelPriceSamples[i] : 1, checks ? W.t1RelAvailable[i] / checks : 1); W.t1Rel[i] = M.nextReliability(W.t1Rel[i], score, cfg.reliabilityAlpha); W.t1RelAttempts[i] = W.t1RelFulfilled[i] = W.t1RelAvailChecks[i] = W.t1RelAvailable[i] = W.t1RelPriceSum[i] = W.t1RelPriceSamples[i] = 0; }
   }
 
-  function tick({ W, cfg, tick, products, profiles, state }) { resetTick(W); updateGaia(W, cfg, tick); produceTier0(W, cfg, profiles); planAndBuyInputs(W, cfg, products, profiles); manufacture(W, cfg, products); priceMarkets(W, cfg); const counts = clearRetail(W, cfg, products, tick); updateReliability(W, cfg, tick); state.activeOrders = counts.orders; state.fulfilledOrders = counts.filledOrders; }
+  function tick({ W, cfg, tick, products, profiles, state }) { resetTick(W); updateGaia(W, cfg, tick); produceTier0(W, cfg, profiles); planAndBuyInputs(W, cfg, products, profiles, tick); manufacture(W, cfg, products); priceMarkets(W, cfg); const counts = clearRetail(W, cfg, products, tick); updateReliability(W, cfg, tick); state.activeOrders = counts.orders; state.fulfilledOrders = counts.filledOrders; }
   root.Phase0ReferenceKernel = Object.freeze({ zero, tick });
 })(typeof self !== 'undefined' ? self : globalThis);
