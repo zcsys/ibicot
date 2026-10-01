@@ -31,9 +31,15 @@ deterministic tests.
 7. Update sales EMA. Every 30 ticks, update reliability from fulfillment,
    price stability, and availability.
 
+Run, Run Max, and Step all invoke this same tick sequence. Run Max only
+executes more ticks between UI updates; it does not use a fast or alternate
+economic model.
+
 ## Economic invariants
 
 - No inventory, cash, demand quantity, or reliability score may be negative.
+- `maxInventory` is a total Tier 0 supplier inventory cap across all elements
+  that supplier holds, not a per-element cap.
 - A transaction transfers equal and opposite cash and inventory value.
 - Fulfilled quantity never exceeds desired quantity.
 - A retail order is fulfilled completely or not at all.
@@ -43,7 +49,13 @@ deterministic tests.
 
 ## Design decisions
 
-Wholesale pricing responds to unfulfilled purchase requests. Tier 1 input
+Each Tier 0 supplier treats `targetInventory` as a total desired warehouse
+level, divided equally across its elements. It produces only element-level
+deficits from those equal targets. Wholesale pricing clears against funded
+purchase requests, fulfillment, and each supplier-element's distance from its
+target: shortages and below-target stock raise price, while above-target stock
+lowers it. Prices mean-revert toward unit cost plus the normal markup and have
+no fixed dollar ceiling. Tier 1 input
 buyers are interleaved by cohort each tick, and an empty supplier is excluded
 from input selection so another stocked supplier can serve the request.
 
