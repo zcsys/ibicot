@@ -1,0 +1,34 @@
+'use strict';
+const assert=require('node:assert/strict');
+const {createWorker}=require('./worker_harness');
+const {createPriceAudit,assertPriceHealth}=require('./price_audit_helpers');
+// Deterministic observations of both T0 transaction phases and both T1 channels.
+const w=createWorker({t2FirmCount:1000,endUserCount:20000});
+const {W,cfg}=w.inspect(), audit=createPriceAudit(w.model,cfg,{windowStart:1,windowTicks:1});
+W.t0Sold.fill(0);W.t0Revenue.fill(0);W.t1Sold.fill(0);W.t1Rev.fill(0);W.t2Sold.fill(0);W.t2Revenue.fill(0);
+const index=Array.from(W.t0Price).findIndex(Number.isFinite);
+W.t0Price[index]=2;W.t0Cost[index]=1;
+audit.begin(1,W);
+W.t0Sold[index]=10;W.t0Revenue[index]=20;
+audit.onBeforeTier0Reprice(W);
+W.t0Price[index]=3;W.t0Sold[index]+=20;W.t0Revenue[index]+=60;
+const t1=4004;W.t1Price[t1]=1;W.t1FinBasis[t1]=1;
+W.t1Sold[t1]=7;W.t1Rev[t1]=7*W.t1Price[t1];
+const line=0;W.t2Price[line]=12.5;W.t2FinBasis[line]=10;W.t2Sold[line]=2;W.t2Revenue[line]=25;
+audit.end(W);
+const report=audit.report();
+assert.equal(report.markets[index%4].units,30);
+assert.equal(report.markets[index%4].revenue,80);
+assert.equal(report.markets[8].floorUnits,7);
+assert.equal(report.markets[14+W.t2LineProduct[line]].units,2);
+assert.throws(()=>assertPriceHealth(report),/Every market must trade/);
+const healthy=structuredClone(report);
+healthy.inactiveMarkets=[];
+for(const m of healthy.markets)Object.assign(m,{units:10,floorUnits:0,floorShare:0,nearFloorShare:0,averageFloorDistance:0.2,averageTradedPrice:1.2});
+assert.doesNotThrow(()=>assertPriceHealth(healthy));
+// Break-even remains an admissible outcome; scarcity behavior is tested separately.
+Object.assign(healthy.markets[8],{floorUnits:10,floorShare:1,nearFloorShare:1,averageFloorDistance:0});
+assert.doesNotThrow(()=>assertPriceHealth(healthy));
+healthy.markets[8].averageFloorDistance=-0.5;
+assert.throws(()=>assertPriceHealth(healthy),/Below-cost/);
+console.log('price audit: transaction attribution, break-even diagnostics and failure detection: ok');
