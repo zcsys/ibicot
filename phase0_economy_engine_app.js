@@ -12,6 +12,7 @@
   const $ = (id) => document.getElementById(id);
   const M = window.Phase0Model;
   const displayProduct = (code) => M.PRODUCTS.find((p) => p.code === code)?.name || M.T2_PRODUCTS.find((p) => p.code === code)?.name || code;
+  const displayElement = code => M.ELEMENTS[['W','E','F','A'].indexOf(code)] || code;
   const controlId = () => $('playerTier').value === 'T2' ? Math.max(0, +$('t2PlayerCompany').value - 1) : +$('playerCompany').value;
   let t2Page = 0, t2Descending = false, controlDirty = false;
   const queryTier2 = () => worker.postMessage({ type: 'tier2Query', page: t2Page, search: $('t2Search').value,
@@ -96,10 +97,10 @@
     selectedCompanyId = 0;
   const expandedCompanies = { T0: new Set(), T1: new Set() };
   const tableSortColumns = {
-    wholesale: ['code', 'difficulty', 'price', 'volume', 'hhi', 'reliability'],
+    wholesale: ['name', 'difficulty', 'price', 'volume', 'hhi', 'reliability'],
     retail: [
-      'code',
-      'role',
+      'name',
+      'complexity',
       'retailPrice',
       'supplyCapacity',
       'readyStock',
@@ -113,12 +114,14 @@
       'fillRate',
       'stockUnmet',
     ],
-    tier2Products: ['name','sector','complexity','firms','machineryPrice','avgPrice','avgUnitCost','productionCapacity','utilization','readyStock','made','sold','revenue','grossProfit','margin','active','fillRate','stockUnmet','hhi','reliability'],
-    tier2Industries: ['name','products','lines','capacity','utilization','readyStock','made','sold','revenue','cogs','grossProfit','margin','active','fulfilled','fillRate','stockUnmet','volumeShare','reliability'],
+    tierComparison: ['name','complexity','firms','cash','cashPerFirm','equity','inventory','bought','made','sold','revenue','revenuePerFirm','cogs','grossProfit','margin','productionCost','operatingCashFlow','reliability'],
+    productCategories: ['name','tier','role','products','lines','machineryPrice','unitCapacity','avgPrice','avgUnitCost','capacity','utilization','readyStock','made','sold','soldPerLine','revenue','cogs','grossProfit','profitPerLine','margin','active','fillRate','stockUnmet'],
+    tier2Products: ['name','sector','primaryMaterial','complexity','recipe','firms','machineryPrice','avgPrice','avgUnitCost','productionCapacity','utilization','readyStock','made','sold','revenue','grossProfit','margin','active','fillRate','stockUnmet','hhi','reliability'],
+    tier2Industries: ['name','primaryMaterial','products','lines','capacity','utilization','readyStock','made','sold','revenue','cogs','grossProfit','margin','active','fulfilled','fillRate','stockUnmet','volumeShare','reliability'],
     tier2Cohorts: ['name','firms','online','players','lines','cash','equipmentBookValue','equity','raw','inventory','capacity','utilization','made','sold','revenue','grossProfit','margin'],
     tier2Complexity: ['complexity','products','lines','capacity','utilization','readyStock','made','sold','revenue','grossProfit','margin','active','fillRate','volumeShare'],
     cohorts: [
-      'code',
+      'name',
       'firms',
       'equipment',
       'avgPrice',
@@ -292,7 +295,7 @@
   }
   function companyChartMarkup(id, tier) {
     const prefix = tier + 'Company' + id;
-    const panels = [['Output', 'Production & sales · units / tick'],
+    const panels = [['Output', tier === 'T0' ? 'Bought from Gaia & sales · units / tick' : 'Production & sales · units / tick'],
       ['Finance', tier === 'T0' ? 'Revenue, extraction spending & operating cash flow · $ / tick' : 'Revenue, COGS & gross profit · $ / tick'],
       ['Cash', 'Cash · $'], ['Equity', 'Marked equity · $']];
     return '<p class="analytics-note">History starts when this company is expanded; up to 240 reported ticks.</p><div class="analytics-grid">' +
@@ -300,7 +303,7 @@
   }
   function drawCompanyHistory(detail) {
     const prefix = detail.tier + 'Company' + detail.id, history = detail.history || [];
-    drawLine(prefix + 'Output', history, ['made', 'sold'].map(key => history.map(point => point[key])), ['Production', 'Sales'], 0);
+    drawLine(prefix + 'Output', history, ['made', 'sold'].map(key => history.map(point => point[key])), [detail.tier === 'T0' ? 'Bought from Gaia' : 'Production', 'Sales'], 0);
     const keys = detail.tier === 'T0' ? ['revenue', 'productionCost', 'operatingCashFlow'] : ['revenue', 'cogs', 'grossProfit'];
     drawLine(prefix + 'Finance', history, keys.map(key => history.map(point => point[key])),
       detail.tier === 'T0' ? ['Revenue', 'Extraction spending', 'Operating cash flow'] : ['Revenue', 'COGS', 'Gross profit'], 0, true);
@@ -327,7 +330,7 @@
           : null);
       return `<tr class="company-detail-row"><td colspan="10"><div class="company-detail-inner">
       <div class="detail-section"><strong>${x.name} · current stocks & sell prices</strong></div>
-      <table class="detail-table"><thead><tr><th>Element</th><th>Current stock</th><th>Unit cost</th><th>Sell price</th><th>Produced / tick</th><th>Sold / tick</th><th>Revenue / tick</th><th>Reliability</th><th>Price stability</th></tr></thead>
+      <table class="detail-table"><thead><tr><th>Element</th><th>Current stock</th><th>Unit cost</th><th>Sell price</th><th>Bought from Gaia / tick</th><th>Sold / tick</th><th>Revenue / tick</th><th>Reliability</th><th>Price stability</th></tr></thead>
       <tbody>${(d?.elementData || []).map((v) => `<tr><th>${v.element}</th><td>${fmtInt(v.stock)}</td><td>${fmt5(v.cost)}</td><td>${fmt5(v.price)}</td><td>${fmtInt(v.production)}</td><td>${fmtInt(v.sold)}</td><td>${fmtMoney(v.revenue, 0)}</td><td>${fmtFixed(v.reliability, 3)}</td><td>${fmtFixed(v.stability, 3)}</td></tr>`).join('')}</tbody></table>
       ${companyChartMarkup(x.id, "T0")}
     </div></td></tr>`;
@@ -393,7 +396,7 @@
       $('companyTxnInspector').textContent = d.elementData
         .map(
           (x) =>
-            `${x.element}: stock ${Math.round(x.stock)}, cost ${fmtMoney(x.cost, 5)}, price ${fmtMoney(x.price, 5)}, prod ${Math.round(x.production)}, sold ${Math.round(x.sold)}, revenue ${fmtMoney(x.revenue, 0)}, rel ${x.reliability.toFixed(3)}, stability ${x.stability.toFixed(3)}, reliability attempts ${Math.round(x.reliabilityAttempts)}`,
+            `${x.element}: stock ${Math.round(x.stock)}, cost ${fmtMoney(x.cost, 5)}, price ${fmtMoney(x.price, 5)}, bought from Gaia ${Math.round(x.production)}, sold ${Math.round(x.sold)}, revenue ${fmtMoney(x.revenue, 0)}, rel ${x.reliability.toFixed(3)}, stability ${x.stability.toFixed(3)}, reliability attempts ${Math.round(x.reliabilityAttempts)}`,
         )
         .join('\n');
     } else {
@@ -545,7 +548,7 @@
     };
     cv.onmouseleave = () => { tooltip.hidden = true; };
   }
-  function drawComparison(id, items, key, money = false, ratio = false) {
+  function drawComparison(id, items, key, money = false, ratio = false, moneyDigits = 0) {
     const cv = $(id), r = cv.getBoundingClientRect(), dpr = devicePixelRatio || 1;
     if (r.width < 1 || r.height < 1) return;
     cv.width = Math.round(r.width * dpr); cv.height = Math.round(r.height * dpr);
@@ -562,14 +565,14 @@
       let name = item.name;
       while (g.measureText(name).width > left - 14 && name.length > 2) name = name.slice(0, -2) + '…';
       g.fillText(name, left - 8, y + row * .45); g.textAlign = 'left';
-      g.fillText(ratio ? pct(value) : compactAxis(value, money), right + 7, y + row * .45);
+      g.fillText(ratio ? pct(value) : money ? fmtMoney(value, moneyDigits) : compactAxis(value, false), right + 7, y + row * .45);
     });
     g.strokeStyle = '#768293'; g.beginPath(); g.moveTo(position(0), 10); g.lineTo(position(0), r.height - 30); g.stroke();
     g.fillStyle = '#9ca6b2'; g.fillText(compactAxis(lo, money), left, r.height - 8);
     g.textAlign = 'right'; g.fillText(ratio ? pct(hi, 0) : compactAxis(hi, money), right, r.height - 8); g.textAlign = 'left';
     cv.setAttribute('aria-label', cv.closest('.chart').previousElementSibling.textContent + ': ' + items.map(item => item.name + ' ' +
-      (ratio ? pct(item[key]) : money ? fmtMoney(item[key], 0) : fmtInt(item[key]))).join(', '));
-    cv.title = items.map(item => item.name + ': ' + (ratio ? pct(item[key]) : money ? fmtMoney(item[key], 0) : fmtInt(item[key]))).join('\n');
+      (ratio ? pct(item[key]) : money ? fmtMoney(item[key], moneyDigits) : fmtInt(item[key]))).join(', '));
+    cv.title = items.map(item => item.name + ': ' + (ratio ? pct(item[key]) : money ? fmtMoney(item[key], moneyDigits) : fmtInt(item[key]))).join('\n');
   }
   const meaningfulRatio = (numerator, denominator) => denominator > 0 ? numerator / denominator : NaN;
   function renderDashboard(s) {
@@ -581,9 +584,9 @@
       retailRevenue: consumers.revenue };
     for (const [id, value] of Object.entries(money)) $(id).textContent = fmtMoney(value, 0);
     const integers = { economyInventory: t0.inventory + t1.inventory + t2.inventory, economyPurchases: consumers.fulfilled,
-      t0Firms: t0.firms, t0Inventory: t0.inventory, t0Made: t0.made, t0Sold: t0.sold,
+      t0Firms: t0.firms, t0Inventory: t0.inventory, t0Made: t0.bought, t0Sold: t0.sold,
       t1Firms: t1.firms, t1Raw: t1.raw, t1Finished: t1.finished, t1Active: t1.activeFirms, t1Players: t1.players,
-      t1Made: t1.made, t1Sold: t1.sold, t1ConsumerSold: sum(s.products.map(p => p.consumerVolume)),
+      t1Bought: t1.bought, t1Made: t1.made, t1Sold: t1.sold, t1ConsumerSold: sum(s.products.map(p => p.consumerVolume)),
       t1BusinessSold: sum(s.products.map(p => p.intermediateVolume)), consumerPopulation: consumers.population,
       consumerActivated: s.performance.activatedConsumers, demandPotential: consumers.potential, demandActive: consumers.active,
       demandPriceLost: consumers.priceLost, demandStockUnmet: consumers.stockUnmet, demandFulfilled: consumers.fulfilled, orders: consumers.orders };
@@ -606,12 +609,12 @@
     const hist = s.analyticsHistory || [], scope = $('overviewTier').value;
     const tiers = scope ? [scope] : ['t0', 't1', 't2'];
     for (const [id, key, moneyAxis] of [['cashChart', 'cash', true], ['equityChart', 'equity', true], ['inventoryChart', 'inventory', false],
-      ['productionChart', 'made', false], ['salesChart', 'sold', false], ['producerRevenueChart', 'revenue', true]])
+      ['productionChart', 'bought', false], ['salesChart', 'sold', false], ['producerRevenueChart', 'revenue', true]])
       drawLine(id, hist, tiers.map(tier => hist.map(point => point.tiers[tier][key])), tiers.map(tier => 'Tier ' + tier.slice(1)), 0, moneyAxis);
-    drawLine('gaiaChart', hist, [0, 1, 2, 3].map(i => hist.map(point => point.difficulty[i])), ['Water', 'Earth', 'Fire', 'Air'], 3, false, false, false);
-    drawLine('wholesaleChart', hist, [0, 1, 2, 3].map(i => hist.map(point => point.elementPrices[i])), ['Water', 'Earth', 'Fire', 'Air'], 5, true, false, false);
+    drawLine('gaiaChart', hist, [0, 1, 2, 3].map(i => hist.map(point => point.difficulty[i])), M.ELEMENTS, 3, false, false, false);
+    drawLine('wholesaleChart', hist, [0, 1, 2, 3].map(i => hist.map(point => point.elementPrices[i])), M.ELEMENTS, 5, true, false, false);
     for (const tier of ['t0', 't1']) {
-      drawLine(tier + 'OutputChart', hist, ['made', 'sold'].map(key => hist.map(point => point.tiers[tier][key])), ['Production', 'Sales'], 0);
+      drawLine(tier + 'OutputChart', hist, ['made', 'sold'].map(key => hist.map(point => point.tiers[tier][key])), [tier === 't0' ? 'Bought from Gaia' : 'Production', 'Sales'], 0);
       const keys = tier === 't0' ? ['revenue', 'productionCost', 'operatingCashFlow'] : ['revenue', 'cogs', 'grossProfit'];
       drawLine(tier + 'FinanceChart', hist, keys.map(key => hist.map(point => point.tiers[tier][key])),
         tier === 't0' ? ['Revenue', 'Extraction spending', 'Operating cash flow'] : ['Revenue', 'COGS', 'Gross profit'], 0, true);
@@ -626,6 +629,38 @@
     drawLine('consumerFillChart', hist, ['active', 'orders'].map((key, i) => hist.map(point => meaningfulRatio(point.tiers.endUsers[i ? 'fulfilledOrders' : 'fulfilled'], point.tiers.endUsers[key]))), ['Unit fulfillment', 'Order fulfillment'], 1, false, true);
     drawLine('consumerSpendingChart', hist, [hist.map(point => point.tiers.endUsers.revenue)], ['Spending'], 0, true);
   }
+  function renderComparisons(s) {
+    const moneyKeys = new Set(['cash','cashPerFirm','equity','revenue','revenuePerFirm','cogs','grossProfit','productionCost','operatingCashFlow','machineryPrice','avgPrice','avgUnitCost','profitPerLine']);
+    const ratioKeys = new Set(['margin','utilization','fillRate','reliability']);
+    const cells = (row, keys) => keys.map(key => {
+      const value = row[key];
+      const text = value == null ? '—' : typeof value === 'string' ? value :
+        ratioKeys.has(key) ? pct(value) : moneyKeys.has(key) ? fmtMoney(value, ['avgPrice','avgUnitCost','profitPerLine'].includes(key) ? 2 : 0) :
+        key === 'soldPerLine' ? fmtFixed(value, 2) : fmtInt(value);
+      return '<td>' + text + '</td>';
+    }).join('');
+    const tiers = ['t0','t1','t2'].map((key, index) => {
+      const t = s.tiers[key];
+      return { ...t, name: ['Tier 0 · Extraction','Tier 1 · Materials','Tier 2 · Consumer goods'][index],
+        complexity: ['Raw elements','C-1–C-2','C-3–C-5'][index],
+        made: index === 0 ? null : t.made,
+        cashPerFirm: meaningfulRatio(t.cash, t.firms), revenuePerFirm: meaningfulRatio(t.revenue, t.firms),
+        margin: meaningfulRatio(t.grossProfit, t.revenue),
+        reliability: index === 2 ? meaningfulRatio(sum(s.tier2Products.map(p => p.reliability * p.firms)), sum(s.tier2Products.map(p => p.firms))) : t.reliability };
+    });
+    $('tierComparison').innerHTML = sortedTableRows('tierComparison', tiers).map(row => '<tr><th>' + row.name + '</th>' + cells(row, tableSortColumns.tierComparison.slice(1)) + '</tr>').join('');
+    const categories = s.productCategories.map(row => ({ ...row,
+      margin: meaningfulRatio(row.grossProfit, row.revenue), utilization: meaningfulRatio(row.made, row.capacity),
+      avgPrice: row.lines ? row.avgPrice : NaN, avgUnitCost: row.lines ? row.avgUnitCost : NaN,
+      active: row.active,
+      fillRate: meaningfulRatio(row.fulfilled, row.active),
+      stockUnmet: row.stockUnmet }));
+    $('productCategories').innerHTML = sortedTableRows('productCategories', categories).map(row => '<tr><th>' + row.name + '</th>' + cells(row, tableSortColumns.productCategories.slice(1)) + '</tr>').join('');
+    const metric = $('categoryMetric').value;
+    $('categoryComparisonCaption').textContent = $('categoryMetric').selectedOptions[0].textContent;
+    drawComparison('categoryComparisonChart', categories, metric,
+      ['revenue','grossProfit','profitPerLine','machineryPrice','avgPrice','avgUnitCost'].includes(metric), ['margin','utilization','fillRate'].includes(metric), ['profitPerLine','avgPrice','avgUnitCost'].includes(metric) ? 2 : 0);
+  }
   function render(s) {
     $('kernel').textContent = s.wasm
       ? 'Wasm active · legacy compatibility'
@@ -637,16 +672,17 @@
     $('month').textContent = s.month;
     $('tps').textContent = fmtFixed(s.tps, 1);
     renderDashboard(s);
+    renderComparisons(s);
     $('wholesale').innerHTML = sortedTableRows('wholesale', s.elements)
       .map(
         (x) =>
-          `<tr><th>${displayProduct(x.code)}</th><td>${x.difficulty.toFixed(3)}</td><td>${fmtMoney(x.price, 5)}</td><td>${fmtInt(x.volume)}</td><td>${x.volume > 0 ? x.hhi.toFixed(3) : "—"}</td><td>${x.reliability.toFixed(3)}</td></tr>`,
+          `<tr><th>${displayElement(x.code)}</th><td>${x.difficulty.toFixed(3)}</td><td>${fmtMoney(x.price, 5)}</td><td>${fmtInt(x.volume)}</td><td>${x.volume > 0 ? x.hhi.toFixed(3) : "—"}</td><td>${x.reliability.toFixed(3)}</td></tr>`,
       )
       .join('');
     $('retail').innerHTML = sortedTableRows('retail', s.products)
       .map(
         (x) =>
-          `<tr><th>${displayProduct(x.code)}</th><td>${x.role === 'retail' ? 'C-1 retail' : 'C-2 intermediate'}</td><td>${fmtMoney(x.retailPrice, 2)}</td><td>${fmtInt(x.supplyCapacity)}</td><td>${fmtInt(x.readyStock)}</td><td>${fmtInt(x.volume)}</td><td>${fmtInt(x.consumerVolume)}</td><td>${fmtInt(x.intermediateVolume)}</td><td>${x.volume > 0 ? x.hhi.toFixed(3) : "—"}</td><td>${x.role === "retail" ? fmtInt(x.potential) : "—"}</td><td>${x.role === "retail" ? fmtInt(x.active) : "—"}</td><td>${x.role === "retail" ? fmtInt(x.fulfilled) : "—"}</td><td>${pct(meaningfulRatio(x.fulfilled,x.active))}</td><td>${x.role === "retail" ? fmtInt(x.stockUnmet) : "—"}</td></tr>`,
+          `<tr><th>${displayProduct(x.code)}</th><td>${x.complexity === 1 ? 'C-1 business inputs' : 'C-2 business inputs'}</td><td>${fmtMoney(x.retailPrice, 2)}</td><td>${fmtInt(x.supplyCapacity)}</td><td>${fmtInt(x.readyStock)}</td><td>${fmtInt(x.volume)}</td><td>${fmtInt(x.consumerVolume)}</td><td>${fmtInt(x.intermediateVolume)}</td><td>${x.volume > 0 ? x.hhi.toFixed(3) : "—"}</td><td>${fmtInt(x.potential)}</td><td>${fmtInt(x.active)}</td><td>${fmtInt(x.fulfilled)}</td><td>${pct(meaningfulRatio(x.fulfilled,x.active))}</td><td>${fmtInt(x.stockUnmet)}</td></tr>`,
       )
       .join('');
     $('cohorts').innerHTML = sortedTableRows('cohorts', s.cohorts)
@@ -677,7 +713,7 @@
     const t2 = s.tiers.t2;
     $('t2Scale').textContent = `${fmtInt(t2.firms)} firms · ${fmtInt(t2.activeLines)} product lines`;
     for (const [id, value] of [['t2Cash',t2.cash],['t2Revenue',t2.revenue],['t2GP',t2.grossProfit],['t2COGS',t2.cogs],['t2Equity',t2.equity]]) $(id).textContent = fmtMoney(value,0);
-    for (const [id, value] of [['t2Raw',t2.inventory-t2.finished],['t2Finished',t2.finished],['t2Sold',t2.sold],['t2Made',t2.made],['t2Capacity',t2.capacity]]) $(id).textContent = fmtInt(value);
+    for (const [id, value] of [['t2Bought',t2.bought],['t2Raw',t2.inventory-t2.finished],['t2Finished',t2.finished],['t2Sold',t2.sold],['t2Made',t2.made],['t2Capacity',t2.capacity]]) $(id).textContent = fmtInt(value);
     $('t2Utilization').textContent = pct(t2.utilization); $('t2Margin').textContent = pct(meaningfulRatio(t2.grossProfit,t2.revenue)); $('t2Fill').textContent = pct(meaningfulRatio(t2.fulfilled,t2.desired));
     $('t2StockCoverage').textContent = t2.stockCoverage === null ? 'No sales yet' : `${t2.stockCoverage.toFixed(1)} ticks`;
     $('t2TradingFirms').textContent = `${fmtInt(t2.tradingFirms360)} / ${fmtInt(t2.firms)}`;
@@ -694,8 +730,8 @@
     }).join('');
     for (const [id, rows] of [['tier2Industries',s.tier2Industries],['tier2Cohorts',s.tier2Cohorts],['tier2Complexity',s.tier2Complexity]])
       $(id).innerHTML = sortedTableRows(id,rows).map((c)=>'<tr><th>'+c[tableSortColumns[id][0]]+'</th>'+cells(c,tableSortColumns[id].slice(1))+'</tr>').join('');
-    const search = $('t2ProductSearch').value.toLowerCase(), complexity = $('t2ComplexityFilter').value;
-    const products = s.tier2Products.filter((p)=>(!complexity || p.complexity === +complexity) && (p.name+' '+p.sector).toLowerCase().includes(search));
+    const search = $('t2ProductSearch').value.toLowerCase(), complexity = $('t2ComplexityFilter').value, sector = $('t2ProductSector').value;
+    const products = s.tier2Products.filter((p)=>(!complexity || p.complexity === +complexity) && (!sector || p.sector === sector) && (p.name+' '+p.sector+' '+p.recipe).toLowerCase().includes(search));
     $('t2ProductCount').textContent = products.length+' / '+s.tier2Products.length+' products';
     $('tier2Products').innerHTML = sortedTableRows('tier2Products',products).map((p)=>'<tr><th title="Recipe: '+p.recipe+'">'+p.name+'</th>'+cells(p,tableSortColumns.tier2Products.slice(1))+'</tr>').join('');
     const page = s.tier2Companies; t2Page = page.page;
@@ -740,6 +776,8 @@
   }
   $('t1PriceProduct').innerHTML += M.PRODUCTS.map((p,i)=>`<option value="${i}">${p.name}</option>`).join('');
   for (const id of ['overviewTier','t1PriceProduct']) $(id).addEventListener('change',()=>{if(latestSnapshot)renderDashboard(latestSnapshot);});
+  $('categoryMetric').addEventListener('change',()=>{if(latestSnapshot)renderComparisons(latestSnapshot);});
+  $('t2ProductSector').innerHTML += M.T2_SECTORS.map(s=>`<option>${s}</option>`).join('');
   $('t2SectorFilter').innerHTML += M.T2_SECTORS.map((s)=>`<option>${s}</option>`).join('');
   $('t2IndustrySector').innerHTML += M.T2_SECTORS.map((s)=>`<option>${s}</option>`).join('');
   for (const id of ['t2IndustrySector','t2SectorMetric']) $(id).addEventListener('change',()=>{if(latestSnapshot)renderTier2(latestSnapshot);});
@@ -758,7 +796,7 @@
   $('t2Prev').onclick=()=>{t2Page=Math.max(0,t2Page-1); queryTier2();};
   $('t2Next').onclick=()=>{t2Page++; queryTier2();};
   $('t2ResetFilter').onclick=()=>{for(const id of ['t2Search','t2SectorFilter','t2ControllerFilter'])$(id).value='';t2Page=0;queryTier2();};
-  for (const id of ['t2ProductSearch','t2ComplexityFilter']) $(id).addEventListener('input',()=>{if(latestSnapshot)renderTier2(latestSnapshot);});
+  for (const id of ['t2ProductSearch','t2ComplexityFilter','t2ProductSector']) $(id).addEventListener('input',()=>{if(latestSnapshot)renderTier2(latestSnapshot);});
   $('tier2Companies').addEventListener('click',(event)=>{
     const row=event.target.closest('[data-id]');if(!row)return;
     $('playerTier').value='T2';$('t2PlayerCompany').value=+row.dataset.id+1;

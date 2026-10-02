@@ -59,18 +59,18 @@ worker.send({ type: 'buyEquipment', tier: 'T2', id: 1, code: purchase.code });
 assert.equal(worker.self.lastMessage.ok, false, 'Bots cannot use player purchase command');
 
 // Material transactions preserve cash and transfer the exact inventory, basis,
-// supplier sales, and relationship for both upstream tiers.
-for (const [material, offer] of [[0, 4], [4, 4004]]) {
-  const basic = material < 4, stockArray = basic ? W.t0Inv : W.t1Fin;
-  const quoteArray = basic ? W.t0Price : W.t1Price, supplierCash = basic ? W.t0Cash : W.t1Cash;
-  const seller = Math.floor(offer / (basic ? 4 : 10));
+// supplier sales, and relationship for both Tier 1 material complexities.
+for (const [material, offer] of [[0, 10], [4, 4004]]) {
+  const basic = material < 4, stockArray = W.t1Fin;
+  const quoteArray = W.t1Price, supplierCash = W.t1Cash;
+  const seller = Math.floor(offer / 10);
   stockArray[offer] = 2000; quoteArray[offer] = 2; W.t2Cash[firm] = 10000;
   const index = firm * (basic ? 4 : 10) + material, rawArray = basic ? W.t2Raw : W.t2T1Raw;
   const oldRaw = rawArray[index], oldSupplierCash = supplierCash[seller];
-  const sales = basic ? W.t0Sold : W.t1Sold, revenues = basic ? W.t0Revenue : W.t1Rev;
+  const sales = W.t1Sold, revenues = W.t1Rev;
   const oldSales = sales[offer], oldRevenue = revenues[offer];
   const bought = worker.kernel.transferTier2Input(W, cfg, firm, material, offer, 12);
-  assert.equal(bought, basic ? Math.ceil(12 / cfg.minWholesaleLot) * cfg.minWholesaleLot : 12); assert.equal(rawArray[index] - oldRaw, bought);
+  assert.equal(bought, 12); assert.equal(rawArray[index] - oldRaw, bought);
   assert.equal(stockArray[offer], 2000 - bought);
   assert.equal(W.t2Cash[firm], 10000 - bought * 2);
   assert.equal(supplierCash[seller] - oldSupplierCash, bought * 2);

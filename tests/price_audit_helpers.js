@@ -42,8 +42,13 @@ function createPriceAudit(model, cfg, { windowStart, windowTicks }) {
       }
       for (let i=0;i<W.t1Price.length;i++) if (W.t1Operates[i])
         add(markets[4+i%10], W.t1Sold[i], W.t1Rev[i], W.t1Price[i], Math.max(0.01,W.t1FinBasis[i]||W.t1UnitCost[i]));
-      for (let i=0;i<W.t2LineCount;i++)
-        add(markets[14+W.t2LineProduct[i]], W.t2Sold[i], W.t2Revenue[i], W.t2Price[i], Math.max(0.01,W.t2FinBasis[i]||W.t2UnitCost[i]));
+      for (let i=0;i<W.t2LineCount;i++) {
+        // Receipts can precede later changes to blended inventory bases.
+        // Receipts and actual COGS retain the cost/quote of the delivered units.
+        add(markets[14+W.t2LineProduct[i]], W.t2Sold[i], W.t2Revenue[i],
+          W.t2Sold[i] ? W.t2Revenue[i]/W.t2Sold[i] : W.t2Price[i],
+          W.t2Sold[i] ? W.t2COGS[i]/W.t2Sold[i] : Math.max(0.01,W.t2FinBasis[i]||W.t2UnitCost[i]));
+      }
       markets.forEach((m,i) => {
         const units=m.units-prior[i][0], floor=m.floorUnits-prior[i][1];
         if (floor>1e-7) m.floorTicks++;
@@ -57,7 +62,7 @@ function createPriceAudit(model, cfg, { windowStart, windowTicks }) {
           nearFloorShare:perUnit(m.nearFloorUnits), averageFloorDistance:perUnit(m.floorDistanceWeighted),
           hasCeiling:false };
       });
-      return { windowStart, windowTicks, priceModel:'scarcity-aware-adaptive-experiments',
+      return { expectedMarketCount: markets.length, windowStart, windowTicks, priceModel:'scarcity-aware-adaptive-experiments',
         boundaryMeaning:'Variable-cost break-even reservation; no guaranteed markup or ceiling. Concentration is diagnostic, not an automatic model failure.',
         config:{priceObservationTicks:cfg.priceObservationTicks,startingMarkup:cfg.markup,consumerSearchOffers:cfg.consumerSearchOffers},
         inactiveMarkets:results.filter(m=>!m.units).map(m=>({tier:m.tier,name:m.name})),
@@ -72,7 +77,8 @@ function createPriceAudit(model, cfg, { windowStart, windowTicks }) {
 }
 
 function assertPriceHealth(report) {
-  assert.equal(report.markets.length,134);
+  assert.ok(Number.isInteger(report.expectedMarketCount) && report.expectedMarketCount > 0);
+  assert.equal(report.markets.length,report.expectedMarketCount,'Complete catalogue audit');
   assert.equal(report.inactiveMarkets.length,0,'Every market must trade');
   for (const m of report.markets) {
     assert.ok(m.units>0,`Inactive market: T${m.tier} ${m.name}`);

@@ -14,13 +14,18 @@ audit.onBeforeTier0Reprice(W);
 W.t0Price[index]=3;W.t0Sold[index]+=20;W.t0Revenue[index]+=60;
 const t1=4004;W.t1Price[t1]=1;W.t1FinBasis[t1]=1;
 W.t1Sold[t1]=7;W.t1Rev[t1]=7*W.t1Price[t1];
-const line=0;W.t2Price[line]=12.5;W.t2FinBasis[line]=10;W.t2Sold[line]=2;W.t2Revenue[line]=25;
+const line=0;W.t2Price[line]=12.5;W.t2FinBasis[line]=10;W.t2Sold[line]=2;W.t2Revenue[line]=25;W.t2COGS[line]=20;
+// Replenishment can change the posted quote and blended inventory basis after
+// an earlier consumer purchase. The audit must keep that sale's original economics.
+W.t2Price[line]=15;W.t2FinBasis[line]=11;
 audit.end(W);
 const report=audit.report();
 assert.equal(report.markets[index%4].units,30);
 assert.equal(report.markets[index%4].revenue,80);
 assert.equal(report.markets[8].floorUnits,7);
 assert.equal(report.markets[14+W.t2LineProduct[line]].units,2);
+assert.equal(report.markets[14+W.t2LineProduct[line]].averageTradedPrice,12.5);
+assert.equal(report.markets[14+W.t2LineProduct[line]].averageFloorDistance,0.25);
 assert.throws(()=>assertPriceHealth(report),/Every market must trade/);
 const healthy=structuredClone(report);
 healthy.inactiveMarkets=[];

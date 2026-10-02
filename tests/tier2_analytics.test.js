@@ -10,7 +10,7 @@ const sum = (rows, key) => rows.reduce((total, row) => total + row[key], 0);
 const near = (actual, expected) => assert.ok(Math.abs(actual - expected) < Math.max(1e-6, Math.abs(expected) * 1e-10), `${actual} != ${expected}`);
 assert.equal(snapshot.tier2Industries.length, 10);
 assert.equal(snapshot.tier2Complexity.length, 3);
-assert.equal(sum(snapshot.tier2Industries, 'products'), 120);
+assert.equal(sum(snapshot.tier2Industries, 'products'), worker.model.T2_PRODUCTS.length);
 assert.equal(sum(snapshot.tier2Cohorts, 'firms'), cfg.t2FirmCount);
 assert.equal(sum(snapshot.tier2Industries, 'lines'), W.t2LineCount);
 for (const key of ['capacity','made','sold','revenue','cogs','grossProfit']) {

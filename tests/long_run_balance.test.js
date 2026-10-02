@@ -48,8 +48,8 @@ for (let tick = 1; tick <= ticks; tick++) {
   window.fulfilled += sum(W.endFulfilled);
   for (let index = 0; index < W.t0Inv.length; index++)
     window.t0Production[index % 4] += W.t0Inv[index] - beforeT0[index];
-  // t0Ful also contains legacy previous-T2 diagnostic observations.
-  // Actual seller sales count transfers once; these diagnostics do not set prices.
+  // Resource sales count Tier 1 refinery transfers once. Tier 2 purchases
+  // processed materials from Tier 1 and never adds a second Tier 0 phase.
   for (let index = 0; index < W.t0Sold.length; index++) {
     window.t0Sales[index % 4] += W.t0Sold[index];
     window.t0Production[index % 4] += W.t0Sold[index];
@@ -139,7 +139,8 @@ const pricing = priceAudit.report();
 let priceFailure;
 try { assertPriceHealth(pricing); } catch (error) { priceFailure = error; }
 const finalReport = { result: priceFailure ? 'FAIL_PRICING' : 'PASS_ACCOUNTING_MARKET_BALANCE_AND_PRICING', seed, initialCash, ticks,
-  all120ProductsAnd10MaterialMarketsActive: true,
+  allProductAndMaterialMarketsActive: true,
+  productMarkets: model.T2_PRODUCTS.length, materialMarkets: model.PRODUCTS.length,
   maximumLedgerError, windows: reports, lastWindow: reports.at(-1), pricing };
 const output = path.resolve(process.env.BALANCE_OUTPUT || `reports/scarcity-aware-${seed}-${ticks}.json`);
 fs.mkdirSync(path.dirname(output), { recursive: true });

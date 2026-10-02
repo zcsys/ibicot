@@ -16,20 +16,22 @@ assert.equal(M.PRODUCTS.length, 10);
 assert.equal(M.T2_SECTORS.length, 10);
 for (const [sector, name] of M.T2_SECTORS.entries()) {
   const products = M.T2_PRODUCTS.filter((p) => p.sector === name);
-  assert.deepEqual([3,4,5].map((c) => products.filter((p) => p.complexity === c).length), [6,4,2]);
+  assert.deepEqual([3,4,5].map(c => products.filter(p => p.complexity === c).length),[2,2,2]);
   for (const neighbor of M.T2_ADJACENCY[sector]) assert.ok(M.T2_ADJACENCY[neighbor].includes(sector), 'Symmetric adjacency');
 }
 for (const p of M.PRODUCTS) {
   assert.ok([1,2].includes(p.complexity));
   assert.equal(p.equipmentPrice, M.machineryPrice(p.complexity));
-  assert.equal(p.role, p.complexity === 1 ? 'retail' : 'intermediate');
+  assert.equal(p.role, 'intermediate-only');
 }
 assert.deepEqual([1,2,3,4,5].map(M.machineryPrice), [15000,75000,375000,1875000,9375000]);
-assert.equal(M.T2_PRODUCTS.length, 120);
-assert.equal(new Set(M.T2_PRODUCTS.map((product) => product.name)).size, 120);
-assert.equal(new Set(M.T2_PRODUCTS.map((product) => product.code)).size, 120);
-assert.deepEqual(Array.from(M.T2_COMPLEXITY_COUNTS), [0, 0, 60, 40, 20]);
-assert.deepEqual([1, 2, 3, 4, 5].map((c) => M.T2_PRODUCTS.filter((p) => p.complexity === c).length), [0, 0, 60, 40, 20]);
+assert.equal(M.T2_PRODUCTS.length, 60);
+assert.equal(new Set(M.T2_PRODUCTS.map((product) => product.name)).size, 60);
+assert.equal(new Set(M.T2_PRODUCTS.map((product) => product.code)).size, 60);
+assert.deepEqual(Array.from(M.T2_COMPLEXITY_COUNTS), [0, 0, 20, 20, 20]);
+assert.deepEqual([1, 2, 3, 4, 5].map((c) => M.T2_PRODUCTS.filter((p) => p.complexity === c).length), [0, 0, 20, 20, 20]);
+assert.equal(new Set(M.T2_PRODUCTS.map(p => M.recipeKey(p.inputs))).size, 60);
+assert.equal(new Set(M.T2_PRODUCTS.map(p => M.recipeKey(p.composition))).size,60);
 for (const product of M.T2_PRODUCTS) {
   assert.equal(product.ingredients.reduce((sum, [material, quantity]) => sum + quantity * (material < 4 ? 1 : 2), 0), product.complexity);
   assert.ok(product.ingredients.every(([material, quantity]) => material >= 0 && material < 10 && Number.isInteger(quantity) && quantity > 0));
@@ -37,8 +39,8 @@ for (const product of M.T2_PRODUCTS) {
 }
 assert.ok(M.T2_PRODUCTS.every((product) => product.complexity >= 3 && product.complexity <= 5));
 assert.ok(M.T2_PRODUCTS.every((product) => product.equipmentPrice === 15000 * 5 ** (product.complexity - 1)));
-assert.equal(M.PRODUCTS.find((product) => product.code === 'W+E').name, 'Clay');
-assert.equal(M.PRODUCTS.find((product) => product.code === 'F+A').name, 'Smoke');
+assert.equal(M.PRODUCTS.find((product) => product.code === 'W+E').name, 'Ceramic Composite');
+assert.equal(M.PRODUCTS.find((product) => product.code === 'F+A').name, 'Active Compounds');
 assert.equal(M.demandAtPrice(10, 4, 4, 1), 5);
 assert.equal(M.switchingCost(0.5, 0.05, 0.2), 0.125);
 assert.equal(M.reliabilityScore(1, 1, 1), 1);

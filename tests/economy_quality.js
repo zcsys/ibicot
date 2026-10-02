@@ -9,7 +9,7 @@ const { createHash } = require('node:crypto');
 const root = path.resolve(__dirname, '..');
 const quick = process.argv.includes('--quick');
 const checks = [
-  'model_contract', 'pricing_model', 'price_audit', 'tier_boundaries', 'inventory_limits',
+  'model_contract', 'colony_catalogue', 'compound_consumers', 'comparisons', 'pricing_model', 'price_audit', 'tier_boundaries', 'inventory_limits',
   'calibration_contract', 'source_engine', 'tier2_contract', 'ui_actions',
   'scheduler', 'dashboard', 'tier2_analytics', 'market_shocks', 'market_competition', 'market_scarcity', 'player_strategy',
 ].map(name => ({ name, file: `tests/${name}.test.js` }));

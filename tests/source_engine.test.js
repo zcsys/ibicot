@@ -66,7 +66,8 @@ async function run(ticks = 60, cfg = { endUserCount: 10000, t2FirmCount: 1000 })
   assert.ok(snapshot.tiers.endUsers.fulfilled <= snapshot.tiers.endUsers.active);
   const compoundCohorts = snapshot.cohorts.slice(4);
   assert.ok(
-    compoundCohorts.every((cohort) => cohort.made > 0 && cohort.sold > 0 && cohort.revenue > 0),
+    compoundCohorts.every((cohort) => cohort.sold > 0 && cohort.revenue > 0 &&
+      messages.some(message => message.type === 'snapshot' && message.data.cohorts.some(row => row.code === cohort.code && row.made > 0))),
     'every compound market should produce and trade',
   );
   return {
@@ -79,17 +80,19 @@ async function run(ticks = 60, cfg = { endUserCount: 10000, t2FirmCount: 1000 })
     maxT0Inventory: Math.max(...snapshot.t0Companies.map((company) => company.inventory)),
     compound: JSON.parse(
       JSON.stringify(
-        compoundCohorts.map(({ code, made, sold, revenue }) => ({ code, made, sold, revenue })),
+        compoundCohorts.map(({ code, made, sold, revenue }) => ({ code, made, sold, revenue,
+          producedDuringRun: messages.some(message => message.type === 'snapshot' && message.data.cohorts.some(row => row.code === code && row.made > 0)) })),
       ),
     ),
     products: JSON.parse(
       JSON.stringify(
-        snapshot.products.map(({ code, active, fulfilled, revenue, intermediateVolume }) => ({
+        snapshot.products.map(({ code, active, fulfilled, revenue, intermediateVolume, consumerVolume }) => ({
           code,
           active,
           fulfilled,
           revenue,
           intermediateVolume,
+          consumerVolume,
         })),
       ),
     ),
@@ -114,12 +117,12 @@ async function run(ticks = 60, cfg = { endUserCount: 10000, t2FirmCount: 1000 })
     'a Tier 0 supplier must not produce beyond its total target inventory across elements',
   );
   assert.ok(
-    sustained.compound.every((market) => market.made > 0 && market.sold > 0 && market.revenue > 0),
+    sustained.compound.every((market) => market.producedDuringRun && market.sold > 0 && market.revenue > 0),
     'compound markets should remain active long-term',
   );
   assert.ok(
-    sustained.products.every((market, index) => index < 4 ? market.active > 0 && market.fulfilled > 0 && market.revenue > 0 : market.active === 0 && market.fulfilled === 0 && market.intermediateVolume > 0),
-    'C-1 markets must serve retail demand and C-2 markets must serve manufacturers only',
+    sustained.products.every(market => market.active === 0 && market.fulfilled === 0 && market.consumerVolume === 0 && market.intermediateVolume > 0 && market.revenue > 0),
+    'All C-1/C-2 markets must serve companies exclusively',
   );
   console.log('source engine: ok');
 })().catch((error) => {

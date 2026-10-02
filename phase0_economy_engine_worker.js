@@ -11,44 +11,33 @@ const PI = Object.fromEntries(P.map((p, i) => [p.code, i]));
 const EI = Object.fromEntries(E.map((e, i) => [e, i]));
 const T2P = self.Phase0Model.T2_PRODUCTS;
 const T2_SECTORS = self.Phase0Model.T2_SECTORS;
-const T1P = [
-  { name: 'Aqua Distribution Co.', product: 'W' },
-  { name: 'Terra Distribution Co.', product: 'E' },
-  { name: 'Ember Distribution Co.', product: 'F' },
-  { name: 'Gale Distribution Co.', product: 'A' },
-  { name: 'AquaTerra Industries', product: 'W+E' },
-  { name: 'AquaFlame Industries', product: 'W+F' },
-  { name: 'AquaAir Industries', product: 'W+A' },
-  { name: 'TerraForge Industries', product: 'E+F' },
-  { name: 'TerraWind Industries', product: 'E+A' },
-  { name: 'EmberWind Industries', product: 'F+A' },
-];
+const T1P = P.map(product => ({ name: product.companyName, product: product.code }));
 const T0P = [
-  ['Raw Materials Corp.', ['Water', 'Earth', 'Fire', 'Air']],
-  ['Elements Inc.', ['Water', 'Earth', 'Fire', 'Air']],
-  ["The People's Pottery, Inc.", ['Water', 'Earth', 'Fire']],
-  ['The Crystal Company, Inc.', ['Water', 'Earth', 'Air']],
-  ['Mechanics & Masonry, Inc.', ['Water', 'Fire', 'Air']],
-  ['Standard Metal, Inc.', ['Earth', 'Fire', 'Air']],
-  ['The Mineral Co.', ['Water', 'Earth']],
-  ['General Machinery, Inc.', ['Water', 'Fire']],
-  ['ShowZone Inc.', ['Water', 'Air']],
-  ['Unimind Corp., Inc.', ['Earth', 'Fire']],
-  ['Sky Research, Inc.', ['Earth', 'Air']],
-  ['The Oligarch', ['Fire', 'Air']],
-  ['MAMA Water Corp.', ['Water']],
-  ['Union Water Corp.', ['Water']],
-  ['MAMA Earth Corp.', ['Earth']],
-  ['Planetary Earth Corp.', ['Earth']],
-  ['MAMA Fire Corp.', ['Fire']],
-  ['Advanced Flame, Inc.', ['Fire']],
-  ['MAMA Air Corp.', ['Air']],
-  ['Standard Wind, Inc.', ['Air']],
+  ['Atlas Resource Robotics', [E[0],E[1],E[2],E[3]]],
+  ['Axiom Extraction Systems', [E[0],E[1],E[2],E[3]]],
+  ['Civic Materials Network', [E[0],E[1],E[2]]],
+  ['Colony Resource Authority', [E[0],E[1],E[3]]],
+  ['Gaia Extraction Works', [E[0],E[2],E[3]]],
+  ['Integrated Resource Robotics', [E[1],E[2],E[3]]],
+  ['Hydro Mineral Works', [E[0],E[1]]],
+  ['Solar Resource Works', [E[0],E[2]]],
+  ['Atmospheric Resource Works', [E[0],E[3]]],
+  ['Thermal Mineral Works', [E[1],E[2]]],
+  ['Mineral Air Works', [E[1],E[3]]],
+  ['Integrated Thermal Works', [E[2],E[3]]],
+  ['Aquifer Robotics', [E[0]]],
+  ['River Basin Robotics', [E[0]]],
+  ['Mineral Quarry Robotics', [E[1]]],
+  ['Subsurface Mining Robotics', [E[1]]],
+  ['Solar Heat Robotics', [E[2]]],
+  ['Geothermal Energy Robotics', [E[2]]],
+  ['Atmospheric Capture Robotics', [E[3]]],
+  ['Air Separation Robotics', [E[3]]],
 ].map((x, i) => ({ id: i, name: x[0], elements: x[1] }));
 const N0 = 20,
   N1 = 1000,
   N2_FIRMS = 50000,
-  N_END_USERS = 1000000,
+  N_END_USERS = M.COLONY_STORY.population,
   MAX_T2_LINES = 250000,
   NP = 10,
   NE = 4,
@@ -133,7 +122,7 @@ function tier2Company(id, detailed = true) {
   const required = new Map();
   for (let slot = 0; slot < W.t2FirmLineCount[id]; slot++) {
     const line = W.t2FirmLines[id * 5 + slot], product = T2P[W.t2LineProduct[line]];
-    products.push({ line, code: product.code, name: product.name, complexity: product.complexity,
+    products.push({ line, code: product.code, name: product.name, primaryMaterial: PB[product.primaryMaterial].name, complexity: product.complexity,
       recipe: product.ingredients.map(([p,q]) => `${q} ${P[p].name}`).join(' + '),
       price: W.t2Price[line], unitCost: W.t2FinBasis[line] || W.t2UnitCost[line], capacity: product.capacity,
       finished: W.t2Fin[line], made: W.t2Made[line], sold: W.t2Sold[line],
@@ -157,21 +146,21 @@ function tier2Company(id, detailed = true) {
     const quantity = (basic ? W.t2Raw : W.t2T1Raw)[index], basis = (basic ? W.t2RawBasis : W.t2T1Basis)[index];
     raw += quantity; value += quantity * basis;
     if (detailed && (quantity > 0 || required.has(material))) {
-      const supplier = W.t2Preferred[id * NP + material], seller = supplier < 0 ? -1 : Math.floor(supplier / (basic ? NE : NP));
+      const supplier = W.t2Preferred[id * NP + material], seller = supplier < 0 ? -1 : Math.floor(supplier / NP);
       const need = required.get(material) || { consumed: 0, capacityNeed: 0 };
-      inputs.push({ name: P[material].name, sourceTier: basic ? 'T0' : 'T1', stock: quantity, basis,
+      inputs.push({ name: P[material].name, sourceTier: 'T1', stock: quantity, basis,
         value: quantity * basis, consumed: need.consumed, capacityNeed: need.capacityNeed,
         capacityCoverage: need.capacityNeed ? quantity / need.capacityNeed : 0, supplier, supplierId: seller,
-        supplierName: seller < 0 ? null : basic ? T0P[seller].name :
+        supplierName: seller < 0 ? null :
           T1P[Math.floor(seller / 100)].name + ' ' + String(seller % 100 + 1).padStart(3, '0'),
-        supplierPrice: supplier < 0 ? null : (basic ? W.t0Price : W.t1Price)[supplier],
-        supplierReliability: supplier < 0 ? null : (basic ? W.t0Rel : W.t1Rel)[supplier] });
+        supplierPrice: supplier < 0 ? null : W.t1Price[supplier],
+        supplierReliability: supplier < 0 ? null : W.t1Rel[supplier] });
     }
   }
   const eligibleEquipment = detailed ? T2P.filter((p) => p.complexity <= W.t2Capability[id] &&
     M.relatedSector(W.t2Sector[id], p.sectorIndex) && !self.Phase0ReferenceKernel.hasTier2Product(W, id, p.id))
     .map((p) => ({ code: p.code, name: p.name, price: p.equipmentPrice, complexity: p.complexity })) : [];
-  return { tier: 'T2', id, name: T2_SECTORS[W.t2Sector[id]] + ' Works ' + String(id + 1).padStart(5, '0'),
+  return { tier: 'T2', id, name: T2_SECTORS[W.t2Sector[id]] + ' Robot Factory ' + String(id + 1).padStart(5, '0'),
     sector: T2_SECTORS[W.t2Sector[id]], capability: W.t2Capability[id],
     controller: W.t2Controller[id] ? 'PLAYER' : 'BOT', online: !!W.t2Online[id],
     cash: W.t2Cash[id], eqBook: W.t2EqBook[id], equipmentBookValue: W.t2EqBook[id],
@@ -187,7 +176,7 @@ function tier2Page() {
   for (let id = 0; id < cfg.t2FirmCount; id++) {
     const sector = T2_SECTORS[W.t2Sector[id]], control = W.t2Controller[id] ? 'PLAYER' : 'BOT';
     if (query.sector && query.sector !== sector || query.controller && query.controller !== control) continue;
-    let text = sector + ' Works ' + String(id + 1).padStart(5, '0') + ' ' + control;
+    let text = sector + ' Robot Factory ' + String(id + 1).padStart(5, '0') + ' ' + control;
     for (let slot = 0; slot < W.t2FirmLineCount[id]; slot++)
       text += ' ' + T2P[W.t2LineProduct[W.t2FirmLines[id * 5 + slot]]].name;
     if (search && !text.toLowerCase().includes(search)) continue;
@@ -350,6 +339,7 @@ function sourceViews() {
     t1InputNeed: new Float64Array(N1 * 4),
     t1PurchaseReq: new Float64Array(N1 * 4),
     t1LastBuy: new Float64Array(N1 * 4),
+    t1Bought: new Float64Array(N1),
     preferredWholesale: new Int32Array(N1 * 4),
     playerPrice: new Float64Array(N1 * 10),
     active: new Float64Array(NP),
@@ -372,6 +362,7 @@ function sourceViews() {
     // Sparse Tier 2 firm/product-line state.  Product lines are capped rather
     // than allocating one record for every firm/product combination.
     t2Cash: new Float64Array(N2_FIRMS),
+    t2Bought: new Float64Array(N2_FIRMS),
     t2EqBook: new Float64Array(N2_FIRMS),
     t2LastSaleTick: new Uint32Array(N2_FIRMS),
     t2Raw: new Float64Array(N2_FIRMS * NE),
@@ -402,8 +393,6 @@ function sourceViews() {
     t2FirmLines: new Int32Array(N2_FIRMS * 5),
     t2FirmLineCount: new Uint8Array(N2_FIRMS),
     t2Preferred: new Int32Array(N2_FIRMS * NP),
-    t2PreviousFunded: new Float64Array(NE),
-    t2PreviousFulfilled: new Float64Array(NE),
     t2Made: new Float64Array(MAX_T2_LINES),
     t2Rel: new Float64Array(MAX_T2_LINES),
     t2RelAttempts: new Uint32Array(MAX_T2_LINES),
@@ -1325,6 +1314,15 @@ function publish() {
       name: p.name,
       complexity: p.complexity,
       role: p.role,
+      firms: suppliers.length,
+      machineryPrice: p.equipmentPrice,
+      capacity: i < 4 ? cfg.basicEquipmentCapacity : cfg.compoundEquipmentCapacity,
+      productionCapacity: productSupplyCapacity(i),
+      made: suppliers.reduce((n, x) => n + (lastTickT1Made[x.id * NP + i] || 0), 0),
+      sold: m.rVol[i],
+      cogs: suppliers.reduce((n, x) => n + (W.t1COGS[x.id * NP + i] || 0), 0),
+      avgPrice: suppliers.reduce((n, x) => n + W.t1Price[x.id * NP + i], 0) / Math.max(1, suppliers.length),
+      avgUnitCost: suppliers.reduce((n, x) => n + W.t1UnitCost[x.id * NP + i], 0) / Math.max(1, suppliers.length),
       retailPrice: m.rP[i],
       volume: m.rVol[i],
       consumerVolume: W.endFulfilled[i],
@@ -1347,7 +1345,7 @@ function publish() {
     };
   });
   const t2ProductStats = T2P.map((p) => ({ code: p.code, name: p.name, sector: p.sector,
-    complexity: p.complexity, machineryPrice: p.equipmentPrice, capacity: p.capacity,
+    complexity: p.complexity, primaryMaterial: PB[p.primaryMaterial].name, machineryPrice: p.equipmentPrice, capacity: p.capacity,
     recipe: p.ingredients.map(([material, quantity]) => `${quantity} ${P[material].name}`).join(' + '),
     firms: 0, avgPrice: 0, avgUnitCost: 0, productionCapacity: 0, readyStock: 0, made: 0, sold: 0, revenue: 0, cogs: 0, reliability: 0, hhi: 0,
     potential: W.endPotential[NP + p.id], active: W.endActive[NP + p.id], fulfilled: W.endFulfilled[NP + p.id],
@@ -1405,9 +1403,21 @@ function publish() {
     summary.volumeShare = analytics.t2Sold ? summary.sold / analytics.t2Sold : 0;
     return summary;
   };
-  const t2Industries = T2_SECTORS.map((name) => summarizeMarkets(t2ProductStats.filter((p) => p.sector === name), name));
+  const t2Industries = T2_SECTORS.map((name, index) => ({ ...summarizeMarkets(t2ProductStats.filter((p) => p.sector === name), name), primaryMaterial: PB[M.T2_SECTOR_DEFINITIONS[index].primaryMaterial].name }));
   const t2Complexity = M.TIER_BOUNDARIES.T2.map((complexity) => ({ ...summarizeMarkets(t2ProductStats.filter((p) => p.complexity === complexity), 'Complexity ' + complexity), complexity }));
   const t2Totals = summarizeMarkets(t2ProductStats, 'All Tier 2 industries');
+  const productCategories = [1, 2, 3, 4, 5].map((complexity) => {
+    const products = (complexity < 3 ? productStats : t2ProductStats).filter(p => p.complexity === complexity);
+    const summary = summarizeMarkets(products, 'C-' + complexity);
+    return { ...summary, complexity, tier: complexity < 3 ? 'Tier 1' : 'Tier 2',
+      role: complexity < 3 ? 'Business inputs' : 'Human consumer goods',
+      machineryPrice: products[0].machineryPrice,
+      unitCapacity: products[0].capacity,
+      avgPrice: products.reduce((n, p) => n + p.avgPrice * p.firms, 0) / Math.max(1, summary.lines),
+      avgUnitCost: products.reduce((n, p) => n + p.avgUnitCost * p.firms, 0) / Math.max(1, summary.lines),
+      soldPerLine: summary.lines ? summary.sold / summary.lines : NaN,
+      profitPerLine: summary.lines ? summary.grossProfit / summary.lines : NaN };
+  });
   analytics.latest.t2Industries = t2Industries.map(({ name, made, sold, active, fulfilled, revenue, cogs, grossProfit, utilization, fillRate }) =>
     ({ name, made, sold, active, fulfilled, revenue, cogs, grossProfit, utilization, fillRate }));
   Object.assign(analytics.latest, { t2GrossProfit: t2Totals.grossProfit, t2Capacity: t2Totals.capacity,
@@ -1425,6 +1435,7 @@ function publish() {
     if (tier2CompanyHistory.length > 240) tier2CompanyHistory.shift();
   }
   const elementStats = E.map((e, i) => ({
+    name: e,
     code: ['W', 'E', 'F', 'A'][i],
     price: m.wP[i],
     volume: m.wVol[i],
@@ -1433,16 +1444,17 @@ function publish() {
     reliability: marketReliability(t0RelSafe(i), t0VolsFor(i)),
   }));
   lastSnapshot = {
+    colony: { ...M.COLONY_STORY, population: cfg.endUserCount },
     tick,
     month,
     tps,
     mode,
     targetTPS,
     difficulty: {
-      Water: W.difficulty[0],
-      Earth: W.difficulty[1],
-      Fire: W.difficulty[2],
-      Air: W.difficulty[3],
+      [E[0]]: W.difficulty[0],
+      [E[1]]: W.difficulty[1],
+      [E[2]]: W.difficulty[2],
+      [E[3]]: W.difficulty[3],
     },
     wholesaleAvg: m.wAvg,
     retailAvg: m.rAvg,
@@ -1453,6 +1465,7 @@ function publish() {
     elements: elementStats,
     products: productStats,
     tier2Products: t2ProductStats,
+    productCategories,
     tier2Cohorts: t2Cohorts,
     tier2Industries: t2Industries,
     tier2Complexity: t2Complexity,
@@ -1467,6 +1480,7 @@ function publish() {
     tiers: {
       t0: {
         firms: N0,
+        bought: sumArray(analytics.t0Produced),
         made: sumArray(analytics.t0Produced),
         productionCost: W.t0Cost.reduce((total, cost, index) => total + cost * lastTickT0Produced[index], 0),
         inventory: analytics.t0Inventory,
@@ -1485,6 +1499,7 @@ function publish() {
         finished: analytics.t1Finished,
         cash: analytics.t1Cash,
         equity: analytics.t1Equity,
+        bought: sumArray(W.t1Bought),
         made: analytics.t1Made,
         sold: analytics.t1Sold,
         revenue: analytics.t1Revenue,
@@ -1505,6 +1520,7 @@ function publish() {
           count + (last > 0 && tick - last < 360), 0),
         cash: analytics.t2Cash,
         equity: analytics.t2Equity,
+        bought: sumArray(W.t2Bought),
         made: analytics.t2Made,
         sold: analytics.t2Sold,
         revenue: analytics.t2Revenue,
@@ -1672,7 +1688,7 @@ self.onmessage = async (event) => {
       const id = message.id;
       if (message.tier === 'T2') {
         if (!Number.isInteger(id) || id < 0 || id >= cfg.t2FirmCount) throw new Error('Invalid Tier 2 company.');
-        const product = T2P.find((p) => p.code === message.code);
+        const product = M.T2_PRODUCT_BY_CODE[message.code];
         if (message.controller === 'PLAYER' && (!product || !self.Phase0ReferenceKernel.hasTier2Product(W, id, product.id) ||
             !Number.isFinite(message.price) || message.price < 0)) throw new Error('Select an installed product and a valid non-negative price.');
         W.t2Controller[id] = message.controller === 'PLAYER' ? 1 : 0; W.t2Online[id] = message.online ? 1 : 0;
@@ -1713,7 +1729,7 @@ self.onmessage = async (event) => {
       if (message.tier === 'T2') {
         try {
           if (!Number.isInteger(id) || id < 0 || id >= cfg.t2FirmCount || !W.t2Controller[id]) throw new Error('Only player-controlled Tier 2 companies can buy machinery.');
-          self.Phase0ReferenceKernel.addTier2Line(W, cfg, id, T2P.find((p) => p.code === code));
+          self.Phase0ReferenceKernel.addTier2Line(W, cfg, id, M.T2_PRODUCT_BY_CODE[code]);
           publish(); self.postMessage({ type: 'equipmentResult', ok: true });
         } catch (error) { self.postMessage({ type: 'equipmentResult', ok: false, msg: error.message }); }
         return;

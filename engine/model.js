@@ -13,36 +13,60 @@
   const machineryPrice = (complexity) => 15000 * 5 ** (complexity - 1);
   const TIER_BOUNDARIES = Object.freeze({ T1: Object.freeze([1, 2]), T2: Object.freeze([3, 4, 5]) });
   const PRODUCTS = Object.freeze([
-    { code: 'W', name: 'Water', inputs: { Water: 1 } },
-    { code: 'E', name: 'Earth', inputs: { Earth: 1 } },
-    { code: 'F', name: 'Fire', inputs: { Fire: 1 } },
-    { code: 'A', name: 'Air', inputs: { Air: 1 } },
-    { code: 'W+E', name: 'Clay', inputs: { Water: 1, Earth: 1 } },
-    { code: 'W+F', name: 'Steam', inputs: { Water: 1, Fire: 1 } },
-    { code: 'W+A', name: 'Mist', inputs: { Water: 1, Air: 1 } },
-    { code: 'E+F', name: 'Lava', inputs: { Earth: 1, Fire: 1 } },
-    { code: 'E+A', name: 'Dust', inputs: { Earth: 1, Air: 1 } },
-    { code: 'F+A', name: 'Smoke', inputs: { Fire: 1, Air: 1 } },
+    { code: 'W', name: 'Purified Water', inputs: { Water: 1 } },
+    { code: 'E', name: 'Refined Minerals', inputs: { Earth: 1 } },
+    { code: 'F', name: 'Energy Cells', inputs: { Fire: 1 } },
+    { code: 'A', name: 'Chemical Feedstock', inputs: { Air: 1 } },
+    { code: 'W+E', name: 'Ceramic Composite', inputs: { Water: 1, Earth: 1 } },
+    { code: 'W+F', name: 'Thermal Compounds', inputs: { Water: 1, Fire: 1 } },
+    { code: 'W+A', name: 'Synthetic Fibers', inputs: { Water: 1, Air: 1 } },
+    { code: 'E+F', name: 'Semiconductor Substrate', inputs: { Earth: 1, Fire: 1 } },
+    { code: 'E+A', name: 'Structural Polymers', inputs: { Earth: 1, Air: 1 } },
+    { code: 'F+A', name: 'Active Compounds', inputs: { Fire: 1, Air: 1 } },
   ].map((p) => {
     const complexity = Object.values(p.inputs).reduce((sum, quantity) => sum + quantity, 0);
-    return Object.freeze({ ...p, inputs: Object.freeze(p.inputs), complexity,
-      role: complexity === 1 ? 'retail' : 'intermediate', equipmentPrice: machineryPrice(complexity) });
+    return Object.freeze({ ...p, companyName: p.name + ' Refinery', inputs: Object.freeze(p.inputs), complexity,
+      role: 'intermediate-only',
+      consumerValue: complexity === 1 ? 1.875 : 3.75, equipmentPrice: machineryPrice(complexity) });
   }));
 
-  const T2_SECTORS = Object.freeze([
-    'Household', 'Construction', 'Ceramics & Glass', 'Textiles & Pigments',
-    'Alchemy', 'Tools & Mechanisms', 'Illumination & Instruments', 'Arcana & Luxury',
-    'Agriculture & Horticulture', 'Medicine & Wellness',
+  const COLONY_STORY = Object.freeze({ name: 'Midbridge', population: 1000000,
+    producers: 'Robots', consumers: 'Humans', immortal: true,
+    contract: 'Infinity contract', healthcareProductCode: 'T2-035',
+    purpose: 'Consumer behavior experiment',
+    participants: 'Selected humans who sought immortality and worked their way toward sealing the Infinity contract',
+    widerHumanCondition: 'Most humans elsewhere work in many roles for robots under poor conditions' });
+
+  // Each consumer sector requires its designated processed Tier 1 material.
+  const T2_SECTOR_DEFINITIONS = Object.freeze([
+    Object.freeze({ name: 'Food & Nutrition', primaryMaterial: 'W' }),
+    Object.freeze({ name: 'Housing & Furniture', primaryMaterial: 'E' }),
+    Object.freeze({ name: 'Household Energy', primaryMaterial: 'F' }),
+    Object.freeze({ name: 'Hygiene & Personal Care', primaryMaterial: 'A' }),
+    Object.freeze({ name: 'Home & Kitchen', primaryMaterial: 'W+E' }),
+    Object.freeze({ name: 'Healthcare & Wellness', primaryMaterial: 'W+F' }),
+    Object.freeze({ name: 'Clothing & Textiles', primaryMaterial: 'W+A' }),
+    Object.freeze({ name: 'Electronics & Communication', primaryMaterial: 'E+F' }),
+    Object.freeze({ name: 'Mobility & Transport', primaryMaterial: 'E+A' }),
+    Object.freeze({ name: 'Leisure & Fitness', primaryMaterial: 'F+A' }),
   ]);
-  // Explicit demand priors: everyday necessities outweigh discretionary luxury.
+  const T2_SECTORS = Object.freeze(T2_SECTOR_DEFINITIONS.map(sector => sector.name));
+  // Explicit demand priors: daily human needs outweigh specialized leisure purchases.
   // They are bootstrap design assumptions, not fitted market-size estimates.
-  const T2_SECTOR_WEIGHTS = Object.freeze([1.25, 1.15, 1.0, 1.05, 0.90, 1.0, 0.80, 0.50, 1.10, 1.25]);
+  const T2_SECTOR_WEIGHTS = Object.freeze([1.20, 1.15, 1.30, 1.00, 0.85, 1.05, 1.10, 1.25, 0.90, 0.75]);
+  // Related consumer sectors share manufacturing inputs and human needs.
   const T2_ADJACENCY = Object.freeze([
-    [1,2,3,4,8,9], [0,2,5,8], [0,1,6,7], [0,4,7,8,9],
-    [0,3,6,7,8,9], [1,6,7,8], [2,4,5,7], [2,3,4,5,6,9],
-    [0,1,3,4,5,9], [0,3,4,7,8],
+    [3, 4, 5],
+    [2, 3, 4, 7, 8],
+    [1, 4, 7, 8, 9],
+    [0, 1, 4, 5, 6],
+    [0, 1, 2, 3, 5, 7],
+    [0, 3, 4, 6, 8, 9],
+    [3, 5, 8, 9],
+    [1, 2, 4, 8, 9],
+    [1, 2, 5, 6, 7, 9],
+    [2, 5, 6, 7, 8],
   ].map(Object.freeze));
-  const T2_COMPLEXITY_COUNTS = Object.freeze([0, 0, 60, 40, 20]);
   const T2_CAPABILITY_BANDS = Object.freeze([
     Object.freeze({ complexity: 3, share: 0.60, startingLines: 2 }),
     Object.freeze({ complexity: 4, share: 0.30, startingLines: 3 }),
@@ -57,69 +81,76 @@
     compoundEquipmentCapacity: 240, minWholesaleLot: 10, inventoryCoverageTicks: 3,
     tier2WorkingCashTicks: 30, tier2MinimumCash: 500 });
   const t2Capacity = (c) => ({ 3: 3, 4: 2, 5: 1 })[c];
-  // Authored catalogue: six C-3, four C-4 and two C-5 products in each sector.
-  // Final field is a relative need-frequency prior, not a product-ID pattern.
+  // Every product has one code, one unordered input recipe and one distinct
+  // expanded four-element composition. Codes have no alternative spellings.
+  const recipeKey = inputs => Object.entries(inputs).sort(([a], [b]) => a.localeCompare(b))
+    .map(([code, quantity]) => code + ':' + quantity).join('|');
+  const elementalComposition = inputs => Object.freeze(Object.fromEntries(ELEMENTS.map(element =>
+    [element, Object.entries(inputs).reduce((total, [code, quantity]) =>
+      total + quantity * (PRODUCTS.find(p => p.code === code).inputs[element] || 0), 0)])));
   const recipes = [
-    [0,'Glazed Pot','W+E,F',1.3], [0,'Water Jug','W+E,W',1.25], [0,'Steam Cooker','W+F,E',1.2],
-    [0,'Smoke Hood','F+A,E',1.0], [0,'Ceramic Basin','W+E,A',1.1], [0,'Cooling Vessel','W+A,E',1.0],
-    [0,'Ceramic Stove','W+E,E+F',0.9], [0,'Condensing Cabinet','W+F,W+A',0.8],
-    [0,'Crystal Decanter','W+A,E+A',0.75], [0,'Purifying Filter','W+E,E+A',0.95],
-    [0,'Self-Warming Hearth','W+E,E+F,F',0.7], [0,'Living Glass Cabinet','W+A,E+F,E',0.6],
-
-    [1,'Fired Brick','W+E,F',1.4], [1,'Stone Cement','E+A,W',1.3], [1,'Insulated Tile','E+F,A',1.15],
-    [1,'Clay Pipe','W+E,A',1.2], [1,'Foundation Block','E+F,E',1.25], [1,'Weather Sealant','F+A,W',1.0],
-    [1,'Glazed Roof Tile','W+E,E+F',0.95], [1,'Cloud Insulation','W+A,E+A',0.85],
-    [1,'Smoke Vent','F+A,E+A',0.8], [1,'Reinforced Ceramic Panel','W+E,W+E',0.9],
-    [1,'Weatherproof Arch','W+E,E+A,F',0.7], [1,'Floating Keystone','E+A,W+A,E',0.6],
-
-    [2,'Glass Shard','E+F,A',1.25], [2,'Ceramic Vase','W+E,F',1.1], [2,'Porcelain Bead','W+E,E',1.0],
-    [2,'Crystal Seed','W+A,E',1.0], [2,'Glass Bottle','E+F,W',1.3], [2,'Glazed Dish','W+E,W',1.2],
-    [2,'Stained Glass','E+F,E+A',0.8], [2,'Porcelain Vessel','W+E,W+F',0.9],
-    [2,'Crystal Prism','W+A,E+F',0.75], [2,'Smoke Glass','E+F,F+A',0.8],
-    [2,'Rainbow Crystal','W+A,E+F,A',0.6], [2,'Phoenix Porcelain','W+E,F+A,F',0.65],
-
-    [3,'Red Pigment','E+F,W',1.2], [3,'Soot Dye','F+A,W',1.15], [3,'Mineral Thread','E+A,A',1.3],
-    [3,'Cloud Felt','W+A,A',1.2], [3,'Clay Mordant','W+E,W',1.1], [3,'Steam-Set Cloth','W+F,A',1.05],
-    [3,'Silken Cloud Cloth','W+A,W+A',0.85], [3,'Enamel Pigment','W+E,E+F',0.8],
-    [3,'Luminous Dye','F+A,W+F',0.75], [3,'Weatherproof Fabric','W+A,E+A',0.9],
-    [3,'Enchanted Tapestry','W+A,E+A,W',0.6], [3,'Aurora Silk','W+A,F+A,A',0.65],
-
-    [4,'Mineral Elixir','E+A,W',1.2], [4,'Calming Vapor','W+A,F',1.1], [4,'Distilled Essence','W+F,W',1.25],
-    [4,'Binding Resin','W+E,F',1.0], [4,'Smoke Catalyst','F+A,E',1.05], [4,'Crystal Reagent','W+A,E',1.1],
-    [4,'Restorative Potion','W+E,W+F',0.9], [4,'Clarity Draught','W+A,E+A',0.8],
-    [4,'Phoenix Balm','W+F,F+A',0.75], [4,'Transmutation Solvent','E+F,W+A',0.85],
-    [4,'Royal Elixir','W+F,W+E,A',0.65], [4,'Philosopher Tonic','W+F,E+A,E',0.6],
-
-    [5,'Chisel','E+F,E',1.2], [5,'Steam Valve','W+F,A',1.25], [5,'Potter Wheel','W+E,E',1.1],
-    [5,'Grinding Disc','E+A,E',1.15], [5,'Ceramic Bearing','W+E,F',1.2], [5,'Bellows Assembly','F+A,A',1.0],
-    [5,'Steam Turbine','W+F,E+F',0.85], [5,'Clockwork Gear','E+F,E+A',0.95],
-    [5,'Pressure Gauge','W+F,E+A',0.9], [5,'Hydraulic Press','W+F,W+E',0.8],
-    [5,'Aether Engine','W+F,E+F,A',0.7], [5,'Alchemist Automaton','E+F,E+A,W',0.6],
-
-    [6,'Oil Lamp','F+A,W',1.3], [6,'Wind Flute','E+A,A',1.1], [6,'Glass Lens','E+F,A',1.2],
-    [6,'Signal Lantern','F+A,F',1.15], [6,'Steam Whistle','W+F,A',1.05], [6,'Crystal Dial','W+A,E',1.0],
-    [6,'Crystal Lantern','W+A,E+F',0.9], [6,'Resonant Chime','E+A,F+A',0.75],
-    [6,'Optical Instrument','E+F,W+A',0.85], [6,'Surveying Compass','E+A,E+F',0.8],
-    [6,'Storm Organ','W+A,F+A,E',0.6], [6,'Phoenix Lantern','W+F,F+A,E',0.7],
-
-    [7,'Crystal Pendant','W+A,E',1.15], [7,'Ember Ring','E+F,F',1.1], [7,'Incense Censer','F+A,E',1.0],
-    [7,'Rune Tablet','W+E,F',1.2], [7,'Aether Token','E+A,A',1.0], [7,'Moon Glass','W+A,W',1.05],
-    [7,'Moonstone Ornament','W+E,W+A',0.85], [7,'Arcane Seal','E+F,F+A',0.8],
-    [7,'Spirit Mirror','W+A,F+A',0.75], [7,'Runic Reliquary','W+E,E+A',0.9],
-    [7,'Philosopher Vessel','W+E,E+F,A',0.65], [7,'Astral Crown','W+A,E+F,F',0.6],
-
-    [8,'Seedling Pot','W+E,W',1.3], [8,'Mineral Fertilizer','E+A,W',1.4], [8,'Irrigation Nozzle','W+F,E',1.25],
-    [8,'Clay Mulch','W+E,E',1.2], [8,'Mist Irrigator','W+A,E',1.3], [8,'Smoke Repellent','F+A,W',1.1],
-    [8,'Greenhouse Pane','E+F,W+A',0.95], [8,'Soil Conditioner','W+E,E+A',1.0],
-    [8,'Steam Cultivator','W+F,E+F',0.85], [8,'Reservoir Liner','W+E,W+A',0.9],
-    [8,'Evergreen Terrarium','W+E,W+A,E',0.7], [8,'Raincalling Sprinkler','W+F,W+A,A',0.65],
-
-    [9,'Healing Tonic','W+F,W',1.35], [9,'Purifying Salve','W+E,W',1.3], [9,'Sterile Dressing','W+F,A',1.25],
-    [9,'Mineral Compress','E+A,W',1.2], [9,'Cooling Poultice','W+A,E',1.2], [9,'Warming Liniment','E+F,W',1.1],
-    [9,'Healing Unguent','W+E,W+F',1.0], [9,'Breathing Inhaler','W+A,W+F',0.95],
-    [9,'Sterilizing Apparatus','W+F,E+F',0.85], [9,'Restorative Bath','W+A,W+E',0.9],
-    [9,'Regenerative Elixir','W+F,W+E,W',0.75], [9,'Vitality Infuser','W+A,E+F,W',0.7],
+    [0,"Drinking Water Pack","W,W,W",1.3],
+    [0,"Ready Meal","W,W+A",1.1],
+    [0,"Family Meal Pack","W,W,W+E",0.9],
+    [0,"Meal Preparation Kit","W,W,W+F",0.75],
+    [0,"Complete Nutrition Pack","W,W+A,W+E",0.7],
+    [0,"Automated Meal Station","W,W+F,E+F",0.6],
+    [1,"Storage Shelf","E,E,E",1.3],
+    [1,"Dining Chair","E,W+F",1.1],
+    [1,"Bed Frame","E,E,W+F",0.9],
+    [1,"Sofa","E,E,W+A",0.75],
+    [1,"Modular Apartment Kit","E,W+E,E+A",0.7],
+    [1,"Smart Home Climate System","E,W+A,W+E",0.6],
+    [2,"Rechargeable Battery","F,F,F",1.3],
+    [2,"LED Light Bulb","F,E+A",1.1],
+    [2,"Portable Power Station","F,F,W+A",0.9],
+    [2,"Home Battery","F,F,E+F",0.75],
+    [2,"Household Energy Hub","F,E+F,F+A",0.7],
+    [2,"Solar Home Power System","F,W+F,W+A",0.6],
+    [3,"Cleaning Concentrate","A,A,A",1.3],
+    [3,"Hand Soap","A,W+E",1.1],
+    [3,"Air Purifier","A,A,E+F",0.9],
+    [3,"Washing Machine","A,A,E+A",0.75],
+    [3,"Smart Laundry System","A,W+A,E+A",0.7],
+    [3,"Home Air & Water Care System","A,W+E,F+A",0.6],
+    [4,"Cookware Set","W+E,E",1.3],
+    [4,"Food Storage Set","W+E,W",1.1],
+    [4,"Dinnerware Set","W+E,W+E",0.9],
+    [4,"Induction Cooker","W+E,F+A",0.75],
+    [4,"Dishwasher","W+E,W+A,F",0.7],
+    [4,"Smart Kitchen Suite","W+E,E+F,E",0.6],
+    [5,"First Aid Kit","W+F,F",1.3],
+    [5,"Heat Therapy Pad","W+F,W",1.1],
+    [5,"Home Medical Kit","W+F,W+F",0.9],
+    [5,"Sleep Therapy Device","W+F,E+F",0.75],
+    [5,"Immortality Treatment","W+F,E+F,A",0.7],
+    [5,"Home Diagnostics Station","W+F,W+F,W",0.6],
+    [6,"Yoga Pants","W+A,F",1.3],
+    [6,"Everyday Shoes","W+A,A",1.1],
+    [6,"Athletic Clothing Set","W+A,W+A",0.9],
+    [6,"Weatherproof Jacket","W+A,W+E",0.75],
+    [6,"Custom Clothing Wardrobe","W+A,E+A,W",0.7],
+    [6,"Performance Sportswear Set","W+A,W+A,F",0.6],
+    [7,"Wireless Earbuds","E+F,E",1.3],
+    [7,"Portable Speaker","E+F,F",1.1],
+    [7,"Laptop","E+F,E+F",0.9],
+    [7,"Tablet","E+F,E,E",0.75],
+    [7,"Smartphone","E+F,F+A,E",0.7],
+    [7,"Home Entertainment System","E+F,W+E,F",0.6],
+    [8,"Bicycle Helmet","E+A,E",1.3],
+    [8,"Bicycle Light","E+A,A",1.1],
+    [8,"Bicycle","E+A,E+A",0.9],
+    [8,"Electric Scooter","E+A,F,F",0.75],
+    [8,"Electric Bicycle","E+A,W+E,F",0.7],
+    [8,"Personal Mobility Pod","E+A,E+A,F",0.6],
+    [9,"Fitness Mat","F+A,F",1.3],
+    [9,"Sports Bottle","F+A,A",1.1],
+    [9,"Home Exercise Kit","F+A,F+A",0.9],
+    [9,"Game Console","F+A,E,E",0.75],
+    [9,"Connected Fitness Station","F+A,W+F,A",0.7],
+    [9,"Immersive Gaming System","F+A,F+A,E",0.6],
   ];
+  const seenRecipes = new Set(), seenCompositions = new Set();
   const T2_PRODUCTS = Object.freeze(recipes.map(([sectorIndex, name, recipe, needWeight], id) => {
     const inputs = {};
     for (const code of recipe.split(',')) inputs[code] = (inputs[code] || 0) + 1;
@@ -127,11 +158,19 @@
       Object.freeze([PRODUCTS.findIndex((p) => p.code === code), quantity]));
     const complexity = ingredients.reduce((c, [material, quantity]) => c + quantity * (material < 4 ? 1 : 2), 0);
     if (!TIER_BOUNDARIES.T2.includes(complexity)) throw new Error('Tier 2 recipes must be C-3 through C-5.');
+    const key = recipeKey(inputs);
+    if (seenRecipes.has(key)) throw new Error('Duplicate Tier 2 recipe: ' + key);
+    seenRecipes.add(key);
+    const composition = elementalComposition(inputs), compositionKey = recipeKey(composition);
+    if (seenCompositions.has(compositionKey)) throw new Error('Duplicate elemental composition: ' + compositionKey);
+    seenCompositions.add(compositionKey);
+    const primaryMaterial = T2_SECTOR_DEFINITIONS[sectorIndex].primaryMaterial;
+    if (!inputs[primaryMaterial]) throw new Error('Every sector product must consume its primary Tier 1 material.');
     const conversionCost = 0.5 * complexity;
     return Object.freeze({
-      id, code: `T2-${String(id + 1).padStart(3, '0')}`, name, sectorIndex,
-      sector: T2_SECTORS[sectorIndex], complexity, inputs: Object.freeze(inputs),
-      ingredients: Object.freeze(ingredients), equipmentClass: `Craft ${complexity}`,
+      id, code: `T2-${String(id + 1).padStart(3, '0')}`, recipeKey: key, composition, name, sectorIndex,
+      sector: T2_SECTORS[sectorIndex], primaryMaterial, complexity, inputs: Object.freeze(inputs),
+      ingredients: Object.freeze(ingredients), equipmentClass: `Fabrication C-${complexity}`,
       equipmentPrice: t2EquipmentPrice(complexity), capacity: t2Capacity(complexity),
       conversionCost, needWeight, demandWeight: needWeight * T2_SECTOR_WEIGHTS[sectorIndex],
       demandFactor: 0.45 ** (complexity - 1), reservationPremium: 1 + 0.45 * (complexity - 1),
@@ -140,6 +179,9 @@
       consumerValue: ({ 3: 8, 4: 12, 5: 16 })[complexity],
     });
   }));
+  const T2_COMPLEXITY_COUNTS = Object.freeze([1, 2, 3, 4, 5].map(c =>
+    T2_PRODUCTS.filter(p => p.complexity === c).length));
+  const T2_PRODUCT_BY_CODE = Object.freeze(Object.fromEntries(T2_PRODUCTS.map(p => [p.code, p])));
   const relatedSector = (core, sector) => core === sector || T2_ADJACENCY[core].includes(sector);
 
   const clamp = (value, low, high) => Math.max(low, Math.min(high, value));
@@ -149,8 +191,9 @@
       Math.max(Math.min(capacity, bootstrapStock), Math.ceil(Math.max(0, salesEMA) * coverageTicks))));
   const tier2StartingCash = (products, cfg) => {
     const direct = new Set();
-    const basicQuote = cfg.baseCost * cfg.dbar * (1 + cfg.markup);
-    const compoundQuote = (2 * basicQuote + cfg.manufacturingCostPerUnit) *
+    const rawQuote = cfg.baseCost * cfg.dbar * (1 + cfg.markup);
+    const basicQuote = (rawQuote + cfg.manufacturingCostPerUnit) * (1 + cfg.markup);
+    const compoundQuote = (2 * rawQuote + cfg.manufacturingCostPerUnit) *
       (1 + cfg.markup + cfg.compoundMarkupPremium);
     const operatingCost = products.reduce((sum, product) => {
       for (const [material] of product.ingredients) if (material < 4) direct.add(material);
@@ -158,7 +201,7 @@
         cost + quantity * (material < 4 ? basicQuote : compoundQuote), 0);
       return sum + product.capacity * unitCost;
     }, 0);
-    const lotBuffer = direct.size * cfg.minWholesaleLot * basicQuote;
+    const lotBuffer = direct.size * basicQuote;
     return Math.ceil(Math.max(cfg.tier2MinimumCash,
       operatingCost * cfg.tier2WorkingCashTicks + lotBuffer) / 50) * 50;
   };
@@ -198,14 +241,19 @@
     return { price: next, direction: nextDirection, stepScale: scale };
   };
   const initialTier2Cost = (product, cfg) => {
-    const basic = cfg.baseCost * cfg.dbar * (1 + cfg.markup);
-    const compound = (2 * basic + cfg.manufacturingCostPerUnit) *
+    const raw = cfg.baseCost * cfg.dbar * (1 + cfg.markup);
+    const basic = (raw + cfg.manufacturingCostPerUnit) * (1 + cfg.markup);
+    const compound = (2 * raw + cfg.manufacturingCostPerUnit) *
       (1 + cfg.markup + cfg.compoundMarkupPremium);
     return product.conversionCost + product.ingredients.reduce((total, [material, quantity]) =>
       total + quantity * (material < 4 ? basic : compound), 0);
   };
 
   root.Phase0Model = Object.freeze({
+    COLONY_STORY,
+    recipeKey,
+    elementalComposition,
+    T2_PRODUCT_BY_CODE,
     machineryPrice,
     ECONOMY_DEFAULTS,
     finishedStockTarget,
@@ -217,6 +265,7 @@
     PRODUCTS,
     T2_PRODUCTS,
     T2_SECTORS,
+    T2_SECTOR_DEFINITIONS,
     T2_ADJACENCY,
     relatedSector,
     T2_COMPLEXITY_COUNTS,

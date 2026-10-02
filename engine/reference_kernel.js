@@ -38,6 +38,8 @@
 
   function resetTick(W) {
     for (const name of [
+      't1Bought',
+      't2Bought',
       't0Sold',
       't0Revenue',
       't0COGS',
@@ -68,7 +70,7 @@
     }
   }
 
-  function updateGaia(W, cfg, tick) {
+  function updateEnvironment(W, cfg, tick) {
     for (let e = 0; e < NE; e++)
       W.difficulty[e] = clamp(
         W.difficulty[e] +
@@ -216,6 +218,7 @@
             oldBasis = W.rawBasis[rawBase + e],
             payment = bought * quote;
           W.raw[rawBase + e] = oldRaw + bought;
+          W.t1Bought[company] += bought;
           W.rawBasis[rawBase + e] =
             oldRaw + bought > 0 ? (oldBasis * oldRaw + payment) / (oldRaw + bought) : 0;
           W.t1LastBuy[rawBase + e] = quote;
@@ -408,51 +411,38 @@
 
   function transferTier2Input(W, cfg, firm, material, supplier, request) {
     const isBasic = material < 4;
-    const stock = isBasic ? W.t0Inv : W.t1Fin, prices = isBasic ? W.t0Price : W.t1Price;
-    const cash = isBasic ? W.t0Cash : W.t1Cash;
-    const supplierFirm = Math.floor(supplier / (isBasic ? NE : NP));
-    const quote = prices[supplier], lot = isBasic ? cfg.minWholesaleLot : 1;
-    const requested = Math.ceil(request / lot) * lot;
-    const funded = Math.floor(Math.min(requested, W.t2Cash[firm] / quote) / lot) * lot;
-    const quantity = Math.floor(Math.min(funded, stock[supplier]) / lot) * lot;
-    if (isBasic) { W.t0FundedReq[material] += funded; W.t0Req[material] += requested; W.t0Demand[supplier] += funded; }
-    else W.t1Demand[supplier] += funded;
-    const attempts = isBasic ? W.t0RelAttempts : W.t1RelAttempts;
-    const fulfilled = isBasic ? W.t0RelFulfilled : W.t1RelFulfilled;
-    const checks = isBasic ? W.t0RelChecks : W.t1RelAvailChecks;
-    const available = isBasic ? W.t0RelAvailable : W.t1RelAvailable;
-    attempts[supplier]++; checks[supplier]++;
-    if (quantity >= requested) fulfilled[supplier]++;
-    if (stock[supplier] >= requested) available[supplier]++;
+    const stock = W.t1Fin, prices = W.t1Price, cash = W.t1Cash;
+    const supplierFirm = Math.floor(supplier / NP);
+    const quote = prices[supplier], requested = Math.ceil(request);
+    const funded = Math.floor(Math.min(requested, W.t2Cash[firm] / quote));
+    const quantity = Math.floor(Math.min(funded, stock[supplier]));
+    W.t1Demand[supplier] += funded;
+    W.t1RelAttempts[supplier]++; W.t1RelAvailChecks[supplier]++;
+    if (quantity >= requested) W.t1RelFulfilled[supplier]++;
+    if (stock[supplier] >= requested) W.t1RelAvailable[supplier]++;
     if (quantity <= 0) return 0;
     const raw = isBasic ? W.t2Raw : W.t2T1Raw, basis = isBasic ? W.t2RawBasis : W.t2T1Basis;
     const index = firm * (isBasic ? NE : NP) + material, old = raw[index], payment = quantity * quote;
     basis[index] = (basis[index] * old + payment) / (old + quantity); raw[index] += quantity;
+    W.t2Bought[firm] += quantity;
     W.t2Cash[firm] -= payment; cash[supplierFirm] += payment; stock[supplier] -= quantity;
-    if (isBasic) {
-      W.t0Sold[supplier] += quantity; W.t0Revenue[supplier] += payment; W.t0Ful[material] += quantity;
-      W.t0COGS[supplier] += quantity * W.t0InvBasis[supplier];
-    } else {
-      W.t1Sold[supplier] += quantity; W.t1Rev[supplier] += payment;
-      W.t1COGS[supplier] += quantity * W.t1FinBasis[supplier];
-      W.t1IntermediateSold[material] += quantity; W.t1IntermediateRevenue[material] += payment;
-    }
+    W.t1Sold[supplier] += quantity; W.t1Rev[supplier] += payment;
+    W.t1COGS[supplier] += quantity * W.t1FinBasis[supplier];
+    W.t1IntermediateSold[material] += quantity; W.t1IntermediateRevenue[material] += payment;
     W.t2Preferred[firm * NP + material] = supplier;
     return quantity;
   }
 
   function tier2BuyMakePrice(W, cfg, products, profiles, t2Products, tick) {
-    const t0Offers = marketOffers(W, 0, tick), t1Offers = marketOffers(W, 1, tick);
+    const t1Offers = marketOffers(W, 1, tick);
     const needs = new Float64Array(NP), plans = new Float64Array(5);
     const suppliers = new Int32Array(NP);
     for (let order = 0; order < cfg.t2FirmCount; order++) {
       const firm = (order + tick * 137) % cfg.t2FirmCount;
       needs.fill(0);
       for (let material = 0; material < NP; material++) {
-        const basic = material < 4;
-        suppliers[material] = chooseSupplier(basic ? t0Offers[material] : t1Offers[material],
-          basic ? W.t0Inv : W.t1Fin, basic ? W.t0Price : W.t1Price, W.t2Preferred[firm * NP + material],
-          basic ? W.t0Rel : W.t1Rel, cfg, basic ? cfg.minWholesaleLot : 1);
+        suppliers[material] = chooseSupplier(t1Offers[material], W.t1Fin, W.t1Price,
+          W.t2Preferred[firm * NP + material], W.t1Rel, cfg);
       }
       for (let slot = 0; slot < W.t2FirmLineCount[firm]; slot++) {
         const line = W.t2FirmLines[firm * 5 + slot], product = t2Products[W.t2LineProduct[line]];
@@ -464,7 +454,7 @@
         for (const [material, ratio] of product.ingredients) {
           const basic = material < 4, index = firm * (basic ? NE : NP) + material,
             raw = basic ? W.t2Raw : W.t2T1Raw, basis = basic ? W.t2RawBasis : W.t2T1Basis,
-            prices = basic ? W.t0Price : W.t1Price, offers = basic ? t0Offers[material] : t1Offers[material];
+            prices = W.t1Price, offers = t1Offers[material];
           const supplier = suppliers[material] >= 0 ? suppliers[material] : offers[0];
           const quote = supplier !== undefined ? prices[supplier] : basis[index];
           const stocked = Math.min(desired * ratio, raw[index]);
@@ -515,7 +505,7 @@
   }
 
   function clearEndUsers(W, cfg, products, t2Products, tick) {
-    const offers = [...marketOffers(W, 1, tick), ...marketOffers(W, 2, tick)];
+    const offers = marketOffers(W, 2, tick);
     W.endPotential.fill(0); W.endActive.fill(0); W.endFulfilled.fill(0);
     W.endPriceLost.fill(0); W.endStockUnmet.fill(0);
     W.endLastMarket.fill(-1); W.endLastSupplier.fill(-1); W.endLastQ.fill(0); W.endLastFulfilled.fill(0);
@@ -527,29 +517,25 @@
         1 + Math.floor(random(cfg.seed, tick, buyer + 3100000) * (W.endBasketCount[buyer] - 1));
       const relationship = buyer * 5 + slot, sector = W.endBasket[relationship];
       let market;
-      if (random(cfg.seed, tick, buyer + 4000000) < 0.12) {
-        market = Math.floor(random(cfg.seed, tick, buyer + 5000000) * NE);
-      } else {
-        const previous = W.endPreferredProduct[relationship];
-        if (previous >= NP && random(cfg.seed, tick, buyer + 5100000) < 0.65) market = previous;
-        else {
-          const base = sector * t2Products.length, count = W.t2SectorCount[sector];
-          const draw = random(cfg.seed, tick, buyer + 6000000) * W.t2SectorProductWeight[base + count - 1];
-          let offset = 0;
-          while (offset < count - 1 && draw >= W.t2SectorProductWeight[base + offset]) offset++;
-          market = NP + W.t2SectorProducts[sector * t2Products.length + offset];
-        }
+      // Public demand belongs exclusively to Tier 2 finished systems.
+      const previous = W.endPreferredProduct[relationship];
+      if (previous >= NP && random(cfg.seed, tick, buyer + 5100000) < 0.65) market = previous;
+      else {
+        const base = sector * t2Products.length, count = W.t2SectorCount[sector];
+        const draw = random(cfg.seed, tick, buyer + 6000000) * W.t2SectorProductWeight[base + count - 1];
+        let offset = 0;
+        while (offset < count - 1 && draw >= W.t2SectorProductWeight[base + offset]) offset++;
+        market = NP + W.t2SectorProducts[sector * t2Products.length + offset];
       }
-      const basicMarket = market < NP, product = basicMarket ? products[market] : t2Products[market - NP];
-      const complexity = basicMarket ? M.complexity(product) : product.complexity;
-      const multiplier = basicMarket ? 1 : Math.pow(cfg.tier2DemandFactor, complexity - 1);
+      const product = t2Products[market - NP], complexity = product.complexity;
+      const multiplier = Math.pow(cfg.tier2DemandFactor, complexity - 1);
       const latentQuantity = W.endQMax[buyer] * multiplier;
       const qmax = Math.ceil(latentQuantity);
-      const reference = basicMarket ? 1.875 : product.consumerValue;
-      const premium = basicMarket ? 1 : 1 + cfg.tier2ReservationPremium * (complexity - 1);
+      const reference = product.consumerValue;
+      const premium = 1 + cfg.tier2ReservationPremium * (complexity - 1);
       const choke = reference * W.endChoke[buyer] * premium;
-      const stock = basicMarket ? W.t1Fin : W.t2Fin, price = basicMarket ? W.t1Price : W.t2Price;
-      const reliability = basicMarket ? W.t1Rel : W.t2Rel, marketOffersList = offers[market];
+      const stock = W.t2Fin, price = W.t2Price;
+      const reliability = W.t2Rel, marketOffersList = offers[market - NP];
       const preferred = W.endPreferredProduct[relationship] === market ? W.endPreferredSupplier[relationship] : -1;
       // Comparison shopping with bounded information (Mark I / shopbots).
       // Empty posted offers remain discoverable: attempted orders reveal the
@@ -574,9 +560,8 @@
       for (const candidate of candidates) {
         const requested = demand(price[candidate]);
         if (requested <= 0) break;
-        (basicMarket ? W.t1Demand : W.t2Demand)[candidate] += requested;
-        if (basicMarket) { W.t1RelAttempts[candidate]++; W.t1RelAvailChecks[candidate]++; }
-        else W.t2RelAttempts[candidate]++;
+        W.t2Demand[candidate] += requested;
+        W.t2RelAttempts[candidate]++;
         if (stock[candidate] >= requested) { seller = candidate; desired = requested; break; }
       }
       W.endLastMarket[buyer] = market; W.endLastSupplier[buyer] = seller;
@@ -588,16 +573,10 @@
       const payment = desired * price[seller];
       consumerPayments += payment;
       stock[seller] -= desired;
-      if (basicMarket) {
-        W.t1Cash[Math.floor(seller / NP)] += payment;
-        W.t1Sold[seller] += desired; W.t1Rev[seller] += payment; W.t1COGS[seller] += desired * W.t1FinBasis[seller];
-        W.t1RelFulfilled[seller]++; W.t1RelAvailable[seller]++;
-      } else {
-        W.t2Cash[W.t2LineFirm[seller]] += payment;
-        W.t2LastSaleTick[W.t2LineFirm[seller]] = tick;
-        W.t2Sold[seller] += desired; W.t2Revenue[seller] += payment; W.t2COGS[seller] += desired * W.t2FinBasis[seller];
-        W.t2RelFulfilled[seller]++; W.t2RelAvailable[seller]++;
-      }
+      W.t2Cash[W.t2LineFirm[seller]] += payment;
+      W.t2LastSaleTick[W.t2LineFirm[seller]] = tick;
+      W.t2Sold[seller] += desired; W.t2Revenue[seller] += payment; W.t2COGS[seller] += desired * W.t2FinBasis[seller];
+      W.t2RelFulfilled[seller]++; W.t2RelAvailable[seller]++;
       W.endPreferredProduct[relationship] = market; W.endPreferredSupplier[relationship] = seller;
       W.endLastFulfilled[buyer] = desired; W.endFulfilled[market] += desired; filledOrders++;
     }
@@ -698,22 +677,12 @@
     resetTick(W);
     W.costSinks = 0;
     W.equipmentSinks = 0;
-    updateGaia(W, cfg, tick);
+    updateEnvironment(W, cfg, tick);
     produceTier0(W, cfg, profiles);
     planAndBuyInputs(W, cfg, products, profiles, tick);
     manufacture(W, cfg, products);
-    // Tier 2 orders use the posted wholesale quotes. Their funded scarcity
-    // observations feed the next quote update, alongside current Tier 1 orders.
-    for (let e = 0; e < NE; e++) {
-      W.t0FundedReq[e] += W.t2PreviousFunded[e]; W.t0Ful[e] += W.t2PreviousFulfilled[e];
-    }
     priceMarkets(W, cfg, profiles, products, tick);
-    const fundedBefore = W.t0FundedReq.slice(), fulfilledBefore = W.t0Ful.slice();
     tier2BuyMakePrice(W, cfg, products, profiles, t2Products, tick);
-    for (let e = 0; e < NE; e++) {
-      W.t2PreviousFunded[e] = W.t0FundedReq[e] - fundedBefore[e];
-      W.t2PreviousFulfilled[e] = W.t0Ful[e] - fulfilledBefore[e];
-    }
     const counts = clearRetail(W, cfg, products, tick, t2Products);
     observeMarkets(W, cfg);
     updateReliability(W, cfg, tick);

@@ -40,7 +40,8 @@ for (const seed of seeds) {
   assert.ok(firmsPerProduct.every((n) => n >= 100));
   assert.ok(W.endPreferredSupplier.every((n) => n === -1));
   invariant(W, cfg, model);
-  const traded = new Uint32Array(120), rolling = new Uint32Array(120);
+  const traded = new Uint32Array(model.T2_PRODUCTS.length), rolling = new Uint32Array(model.T2_PRODUCTS.length);
+  const recentRevenue = new Float64Array(model.T2_PRODUCTS.length);
   let minimumFill = 1, totalSales = 0, complexSales = 0, worstTickMs = 0;
   const start = performance.now();
   for (let t = 1; t <= ticks; t++) {
@@ -49,6 +50,7 @@ for (const seed of seeds) {
     for (let line = 0; line < W.t2LineCount; line++) {
       const id = W.t2LineProduct[line], sold = W.t2Sold[line];
       traded[id] += sold; rolling[id] += sold; totalSales += sold;
+      recentRevenue[id] += W.t2Revenue[line];
       if (model.T2_PRODUCTS[id].complexity === 5) complexSales += sold;
     }
     if (t % 30 === 0) {
@@ -63,6 +65,11 @@ for (const seed of seeds) {
       assert.ok(fulfilled <= desired);
     }
     if (t % 360 === 0) {
+      // Rare components can have intermittent sales while their supply chains
+      // bootstrap. Require receipts over the same window as catalogue activity.
+      for (const product of model.T2_PRODUCTS.filter(p => p.complexity === 5))
+        assert.ok(recentRevenue[product.id] > 0, `Inactive C-5 product over 360 ticks: ${product.name}`);
+      recentRevenue.fill(0);
       assert.ok(rolling.every((q) => q > 0), `Dead catalogue markets at tick ${t}`); rolling.fill(0);
       invariant(W, cfg, model);
       console.log(`seed ${seed}, tick ${t}, ${((performance.now()-start)/t).toFixed(1)} ms/tick`);
@@ -72,7 +79,9 @@ for (const seed of seeds) {
   assert.ok(traded.every((q) => q > 0));
   assert.ok(minimumFill > 0.5, `Persistent fill rate ${minimumFill}`);
   assert.ok(complexSales > 0 && complexSales / totalSales < 0.2);
-  assert.ok(snapshot.tier2Products.filter((p) => p.complexity === 5).every((p) => p.revenue > 0));
+  assert.equal(snapshot.tier2Products.filter(p=>p.complexity===5).length,20);
+  if (ticks % 360) for (const product of model.T2_PRODUCTS.filter(p => p.complexity === 5))
+    assert.ok(recentRevenue[product.id]>0, `Inactive C-5 product in final partial window: ${product.name}`);
   console.log(JSON.stringify({seed,ticks,lines:W.t2LineCount,minimumFill,complexShare:complexSales/totalSales,
     averageTickMs:(performance.now()-start)/ticks,worstTickMs,allProductsTraded:true}));
 }

@@ -10,19 +10,19 @@ deterministic tests.
 
 ## Fixed topology
 
-- Elements: Water, Earth, Fire, Air.
-- Tier 1 products: four C-1 retail elements and six C-2 intermediate substances
-  (Clay, Steam, Mist, Lava, Dust, and Smoke), defined in `engine/model.js`.
-- Tier 2 products: 120 fixed, named alchemy-style consumer goods across ten
+- Raw resources: Water, Earth, Fire, Air.
+- Tier 1 products: four C-1 refined materials and six C-2 intermediate substances
+  (Ceramic Composite, Thermal Compounds, Synthetic Fibers, Semiconductor Substrate, Structural Polymers, and Active Compounds), defined in `engine/model.js`.
+- Tier 2 products: 60 unique human consumer products across ten
   sectors. Their expanded elemental recipe complexity is three through five.
 - Firms: 20 Tier 0 suppliers and 1,000 Tier 1 firms (100 per product cohort).
 - Firms: 50,000 Tier 2 manufacturers with sparse, related product portfolios.
-- End users: 1,000,000 independent consumers with persistent sector baskets,
+- End users: 1,000,000 immortal human consumers with persistent sector baskets,
   unlimited cash, and no initial supplier attachment.
 
 ## Tick order
 
-1. Update each Gaia difficulty using a bounded mean-reverting deterministic
+1. Update each primary-resource extraction difficulty using a bounded mean-reverting deterministic
    process.
 2. Produce Tier 0 inventory and update unit extraction cost.
 3. Plan Tier 1 input purchases from observed orders, inventory and equipment
@@ -31,10 +31,11 @@ deterministic tests.
 4. Manufacture finished goods subject to raw inputs, equipment, target stock,
    and manufacturing cash.
 5. Price Tier 0 and Tier 1 offers using the functions in `engine/model.js`.
-6. Tier 2 firms purchase Tier 0 elements and Tier 1 substances, manufacture
-   consumer products, and price their sparse product lines.
+6. Tier 2 firms purchase all processed ingredients from Tier 1, manufacture
+   human consumer goods, and price their sparse product lines.
 7. Clear the end-user market with atomic orders; record demand, stock loss,
-   revenue, COGS, and supplier relationship observations.
+   revenue, COGS, and supplier relationship observations. Public orders target
+   Tier 2 only and always clear after manufacturing.
 8. Update distinct realized-sales and observed-order EMAs and accumulate
    local pricing observations. Every 30 ticks, update reliability from fulfillment,
    price stability, and availability.
@@ -182,7 +183,7 @@ switching friction, and buy only whole permitted lots within cash and stock.
 Frictions affect choice, not the seller's invoice. Tier 1 input procurement
 rotates cohort/firm priority; Tier 2 procurement rotates firm priority. Wholesale
 lot rounding can leave residual inputs. Insufficient cash or a missing ingredient
-can still constrain production. C-2 demand has no independent consumer curve.
+can still constrain production. C-1/C-2 demand consists exclusively of manufacturing input orders.
 
 If all posted suppliers lack a purchasable lot, a business buyer sends its
 affordable intended request to its best known empty offer. It receives no
@@ -191,13 +192,10 @@ This retains a local stockout signal instead of erasing input demand simply
 because every supplier is empty. Unaffordable requests do not enter this signal.
 Requests remain conditional inquiries, not cash reservations across all ingredients.
 
-T0 quotes change after current T1 procurement and before T2 procurement. T1
-quotes change after T1 manufacture and before T2 input buying/T3 clearing. T2
-quotes change after its input/production decision and before consumer clearing.
-All learners use completed prior observations. Consequently the audit attributes
-both T0 transaction phases to their actual posted quotes. Previous T2 funded
-request counters remain available in T0 diagnostics, but do not set a target
-price. Run, Run Max and Step execute identical economic decisions.
+T0 quotes change after current T1 resource procurement. T1 quotes change after
+refining and before Tier 2 purchases. Tier 2 quotes change after its input and
+production decision, before public shopping. Receipts and actual delivered COGS
+record the economics of each transaction.
 
 ### Demand curves and equilibrium estimates
 
@@ -218,13 +216,33 @@ it does not fit or impose a linear equilibrium solver.
 
 ## Tier 2 catalogue and portfolios
 
-The catalogue contains exactly 60/40/20 products of complexity 3/4/5.
-Each of ten sectors has six C-3, four C-4, and two C-5 products. C-1/C-2
+The catalogue contains exactly 20/20/20 products of complexity 3/4/5.
+Each of the ten sectors has two products in every Tier 2 complexity band. C-1/C-2
 products are forbidden in Tier 2, including equipment purchases.
 Complexity sums ingredient quantities times elemental ancestry: a basic
-element counts as one, a named Tier 1 compound as two. Recipes, names, stable
+C-1 processed material counts as one, a Tier 1 compound as two. Recipes, names, stable
 IDs, symmetric sector adjacency, demand weights, machinery, and independent consumer
-value scales are defined in the model. The 120 outputs have distinct authored names.
+value scales are defined in the model. The 60 outputs have distinct names, ingredient multisets and expanded elemental compositions.
+
+Exactly ten human consumer sectors map one-to-one onto the ten Tier 1 cohorts.
+`T2_SECTOR_DEFINITIONS` specifies each required material; every recipe must include
+it, enforced at model initialization. All Tier 2 purchases debit Tier 1 stock,
+credit Tier 1 cash and sales, and record Tier 1 supplier relationships, including
+C-1 materials. There is no direct Tier 0-to-Tier 2 trade.
+
+| Tier 2 sector | Required Tier 1 cohort | C-3 | C-4 | C-5 | Total |
+| --- | --- | --- | --- | --- | --- |
+| Food & Nutrition | Purified Water | 2 | 2 | 2 | 6 |
+| Housing & Furniture | Refined Minerals | 2 | 2 | 2 | 6 |
+| Household Energy | Energy Cells | 2 | 2 | 2 | 6 |
+| Hygiene & Personal Care | Chemical Feedstock | 2 | 2 | 2 | 6 |
+| Home & Kitchen | Ceramic Composite | 2 | 2 | 2 | 6 |
+| Healthcare & Wellness | Thermal Compounds | 2 | 2 | 2 | 6 |
+| Clothing & Textiles | Synthetic Fibers | 2 | 2 | 2 | 6 |
+| Electronics & Communication | Semiconductor Substrate | 2 | 2 | 2 | 6 |
+| Mobility & Transport | Structural Polymers | 2 | 2 | 2 | 6 |
+| Leisure & Fitness | Active Compounds | 2 | 2 | 2 | 6 |
+
 
 Capability bands 3/4/5 contain exactly 30,000/15,000/5,000 firms.
 Core-product quotas use sector/product need-frequency priors with seeded
@@ -235,7 +253,7 @@ normal distribution. Capability 3/4/5 starts with 2/3/4 lines, for exactly
 2:1 home-sector preference. Additional lines are distinct products within the core or an adjacent
 sector and never exceed the firm's capability. Initial equipment is granted;
 working cash covers 30 ticks of full-capacity estimated operating costs plus one
-wholesale lot per distinct direct element, rounded up to $50 with a $500 minimum.
+whole unit per distinct C-1 processed material, rounded up to $50 with a $500 minimum.
 Operating estimates use the reset configuration's extraction costs and Tier 1
 offers; capital equipment value does not determine the cash grant.
 
@@ -245,11 +263,12 @@ Tier 2 line capacities for C-3/C-4/C-5 are 3/2/1 units per tick.
 Conversion costs $0.50 × complexity per unit. Firm inventories share inputs
 among their sparse lines; at most 250,000 lines can exist and five can belong
 to one firm. Weighted-average input and finished-good bases determine COGS.
-Funded Tier 0 purchases use 10-unit lots by default; Tier 1 intermediate
-purchases use whole units and may partially fulfill. Procurement rotates firm
+Tier 1 refineries buy Tier 0 resources in 10-unit lots by default. Tier 2
+purchases from all ten Tier 1 cohorts use whole units and may partially fulfill. Procurement rotates firm
 priority each tick, excludes depleted offers, and compares preferred suppliers
 with the cheapest stocked alternative using reliability-based switching costs.
-Tier 2 funded wholesale observations affect the next Tier 0 quote update.
+Tier 2 funded orders update the supplying Tier 1 market; refinery input orders
+transmit demand upstream to Tier 0.
 
 At month close, a bot with at least 75% utilization over the observed month and
 1.6 times the next machinery cost in cash can add one distinct eligible line.
@@ -267,18 +286,19 @@ five unique sectors, quantities, reservation-price multipliers, elasticities,
 and one product/supplier relationship per basket slot. There is no initial
 seller attachment. Each consumer activates with probability 0.1 per tick,
 chooses the primary basket slot with probability 0.6 and otherwise a
-discretionary slot, and issues at most one order. Twelve percent of needs go
-to the four Tier 1 C-1 retail basics only. C-2 substances are intermediates,
-with demand derived exclusively from manufacturing recipes. Other needs select
-a basket-sector Tier 2 C-3/C-4/C-5 product by its authored need-frequency prior,
-with a 65% chance of retaining a previously purchased product.
+discretionary slot, and issues at most one order. All activated needs select
+basket-sector Tier 2 C-3/C-4/C-5 products by their authored need-frequency priors,
+with a 65% chance of retaining a previously purchased Tier 2 product. Public demand
+for all ten Tier 1 C-1/C-2 materials is exactly zero; only companies purchase them.
+Tier 2 procurement and production precede public shopping every tick.
 
 Expected quantity is scaled by 0.45^(complexity−1). Price-sensitive continuous
 demand is stochastically rounded to whole units, capped by the ceiling of the
 scaled quantity. This keeps rare complexity-5 purchases possible without
 creating fractional deliveries or rounding all of their demand to zero.
 Consumer value scales are authored independently of recipes, operating costs,
-starting markups and seller quotes: C-1 uses 1.875; T2 C-3/C-4/C-5 uses 8/12/16.
+starting markups and seller quotes: Tier 2 C-3/C-4/C-5 uses 8/12/16. Tier 1
+materials have no public consumer demand.
 The individual scale V multiplies this prior by the buyer's fixed private taste
 and, for T2, `1 + tier2ReservationPremium * (complexity - 1)` (default 0.45).
 Quantity at price P is `qMax / (1 + (P/V)^eta)`. V halves expected quantity;
@@ -324,7 +344,7 @@ sheets and equipment grants are reset-time endowments, not trades.
 The single worker owns economic state. `select`, `player`, and `buyEquipment`
 accept a Tier 1 or Tier 2 company identity. `tier2Query` requests a filtered,
 sorted 50-row company page. `companyDetail` supports all three firm tiers.
-Snapshots expose Tier 2 firms, sector cohorts, 120 product markets, selected
+Snapshots expose Tier 2 firms, sector cohorts, 60 product markets, selected
 portfolios, consumer aggregates (`endUsers` and `tiers.t3`), and performance
 statistics. Individual consumers are never sent to the main thread.
 
@@ -377,7 +397,7 @@ linear-demand profit optima; different initial quotes and demand/cost/capacity
 shifts; independent consumer values; censored orders; complete-recipe purchasing;
 supply outage/recovery; consumer price shocks; and market-responsive player
 pricing. Full-population 3,600-tick runs use seeds 12345 and 31415. Final
-360-tick audits record traded prices and break-even concentration in all 134
+360-tick audits record traded prices and break-even concentration in all 74
 markets, with activity, finite prices and cost coverage checks. No arbitrary
 positive margin is imposed just to make boundary diagnostics pass. Existing
 utilization, participation, inventory coverage and cash conservation gates
@@ -419,3 +439,47 @@ history stores only ten compact sector summaries; selected-company history
 starts at selection, resets when the company changes, and is cleared on reset.
 No per-consumer history or full 50,000-firm history is transmitted. Reporting has
 no authority to modify economic state or change the canonical tick sequence.
+
+## Bought quantities and tier boundaries
+
+Tier 0 buys from Gaia and sells to Tier 1 companies. Its extracted units count
+as bought units; extraction spending remains the same external cost sink.
+Tier 1 buys from Tier 0 and sells only to Tier 2 companies. Tier 2 buys from
+Tier 1 and sells only to human consumers. Bought counters reset each tick
+and record completed input transfers rather than requests or recipe consumption.
+Tier 0 bought quantity equals extracted quantity; Tier 1 bought equals Tier 0
+sold, and Tier 2 bought equals Tier 1 sold. Tier 0 output appears once as bought
+in the tier comparison, while internal production records remain available for
+inventory and cost accounting.
+
+## Midbridge and the Infinity contract
+
+Midbridge is an Earth colony running a consumer behavior experiment for exactly 1,000,000
+immortal humans. Residents are selected individuals who sought immortality and
+worked their way toward sealing the Infinity contract. Robots perform all
+production in the colony, provide for residents' needs and receive their
+consumerism. Most humans elsewhere work in many roles for robots under poor
+conditions.
+
+This premise is story metadata in `COLONY_STORY`. Selection, prior work,
+outside labor conditions and the contract introduce no additional simulation
+mechanics. Colony population is fixed through all ticks; there are no births,
+deaths, aging or health-state changes. Smaller configurable populations exist
+for test scenarios.
+
+Immortality Treatment is a C-5 Healthcare & Wellness product with the recipe
+WF + EF + A. It uses ordinary consumer purchases and stock/COGS accounting.
+A failed or unaffordable order cannot change immortality or population.
+
+## Distinct product identity
+
+The catalogue has 60 independently authored products: 20 C-3, 20 C-4 and
+20 C-5. Each has exactly one fresh code, T2-001 through T2-060, used by
+price controls, equipment, stocks, demand and reporting.
+`recipeKey` sorts Tier 1 ingredient codes and retains quantities. Ingredient
+order and sector labels cannot create another product for the same multiset.
+`elementalComposition` expands each recipe to Water, Earth, Fire and Air totals.
+The model rejects duplicate recipes and duplicate expanded compositions at
+initialization. Names and codes are also distinct; no alternate codes resolve
+to a product. Sector assignment and primary-material dependency are properties
+of that product. See [the complete catalogue](product_catalogue.md) for the map.

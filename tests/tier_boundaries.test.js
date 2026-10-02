@@ -17,22 +17,22 @@ const oldLines = W.t2LineCount, oldCash = W.t2Cash[0], oldEquipment = W.t2EqBook
 for (const material of model.PRODUCTS) assert.throws(() => worker.kernel.addTier2Line(W, cfg, 0, material), /C-3 through C-5/);
 assert.equal(W.t2LineCount, oldLines); assert.equal(W.t2Cash[0], oldCash); assert.equal(W.t2EqBook[0], oldEquipment);
 for (let tick = 0; tick < 60; tick++) worker.step();
-for (let market = 4; market < 10; market++) {
+for (let market = 0; market < 10; market++) {
   assert.equal(W.endPotential[market], 0);
   assert.equal(W.endActive[market], 0);
   assert.equal(W.endFulfilled[market], 0);
 }
-assert.ok(W.endPreferredProduct.every((p) => p < 4 || p >= 10), 'No consumer relationship with C-2 intermediates');
+assert.ok(W.endPreferredProduct.every(p => p === -1 || p >= 10));
 for (let user = 0; user < cfg.endUserCount; user++) {
   const market = W.endLastMarket[user];
-  assert.ok(market < 4 || market >= 10);
+  assert.ok(market >= -1 && market < model.PRODUCTS.length + model.T2_PRODUCTS.length);
   const basket = W.endBasket.slice(user * 5, user * 5 + W.endBasketCount[user]);
   assert.ok(basket.every((sector) => sector < 10));
 }
 const snapshot = worker.snapshot();
 for (const [index, product] of snapshot.products.entries()) {
   assert.equal(product.volume, product.consumerVolume + product.intermediateVolume);
-  if (index >= 4) assert.ok(product.intermediateVolume > 0);
+  assert.ok(product.intermediateVolume > 0); assert.equal(product.consumerVolume, 0);
 }
 assert.equal(snapshot.endUsers.revenue, worker.inspect().sourceState.consumerPayments, 'Retail revenue excludes intermediate transactions');
 assert.equal(snapshot.tier2Industries.length, 10);

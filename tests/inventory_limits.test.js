@@ -4,6 +4,8 @@ const { createWorker } = require('./worker_harness');
 const worker = createWorker({ t2FirmCount: 10, endUserCount: 10, consumerActivation: 0,
   retailTargetInventory: 100, retailMaxInventory: 120 });
 const { W, cfg } = worker.inspect();
+// Isolate the production guard from downstream material withdrawals.
+W.t2FirmLineCount.fill(0);
 W.raw[0] = 1000; W.rawBasis[0] = 1; W.t1Cash[0] = 10000;
 W.t1DemandEMA[0] = 100;
 worker.step();
