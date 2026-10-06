@@ -709,12 +709,15 @@
     $('foundHouse').disabled = !!o.house;
   }
   function render(s) {
-    $('kernel').textContent = s.wasm
-      ? 'Wasm active · legacy compatibility'
-      : s.engine === 'source'
-        ? 'Source engine active'
-        : 'Engine inactive';
-    $('kernel').className = 'pill ' + (s.wasm || s.engine === 'source' ? 'ok' : 'err');
+    const engineActive = s.engine === 'python' || s.engine === 'source' || !!s.wasm;
+    $('kernel').textContent = s.engine === 'python'
+      ? 'Python engine active · Numba'
+      : s.wasm
+        ? 'Wasm active · legacy compatibility'
+        : s.engine === 'source'
+          ? 'Source engine active'
+          : 'Engine inactive';
+    $('kernel').className = 'pill ' + (engineActive ? 'ok' : 'err');
     $('tick').textContent = fmtTick(s.tick);
     $('month').textContent = s.calendar.month;
     $('year').textContent = s.calendar.year;
