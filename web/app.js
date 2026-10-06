@@ -19,60 +19,25 @@
     sector: $('t2SectorFilter').value, controller: $('t2ControllerFilter').value, sort: $('t2Sort').value, descending: t2Descending });
   const PARAMS = [
     'seed',
-    'consumerActivation',
-    'tier2DemandFactor',
-    'tier2ReservationPremium',
-    'inventoryCoverageTicks',
-    'tier2WorkingCashTicks',
-    'tier2MinimumCash',
-    'tier2MarkupPremium',
-    'tier2BaseMarkup',
-    'procurementBaseMarkup',
-    'tier2ConversionCostScale',
-    'procurementConversionReferenceScale',
-    'procurementMarkupPremium',
-    'tier2CompanyCapacity',
-    'tier2InventoryCapacity',
-    'tier1InventoryCapacity',
-    'initialCash',
-    'retailInitialCash',
-    'dbar',
-    'theta',
-    'sigma',
-    'dmin',
-    'dmax',
-    'capacity',
-    'targetInventory',
-    'maxInventory',
-    'baseCost',
-    'retailTargetInventory',
-    'retailMaxInventory',
-    'basicEquipmentCapacity',
-    'compoundEquipmentCapacity',
-    'manufacturingCostPerUnit',
-    'minWholesaleLot',
-    'k',
-    'alpha',
-    'priceObservationTicks',
-    'consumerSearchOffers',
-    'markup',
-    'compoundMarkupPremium',
-    'demandQtyMin',
-    'demandQtyMax',
-    'vmin',
-    'vmax',
-    'elasticityMin',
-    'elasticityMax',
-    'taumin',
-    'taumax',
-    'reliabilityAlpha',
-    'switchingStableBand',
+    'dbar', 'theta', 'sigma', 'dmin', 'dmax',
+    't0Equity', 'capacity', 'targetInventory', 'maxInventory', 'baseCost', 'markup',
+    'minWholesaleLot', 'inventoryCoverageTicks',
+    't1Equity', 't1License', 't1Machinery', 't1Capacity', 't1MaterialCost', 't1Markup',
+    't2Equity', 't2License', 't2MaterialCost', 'conversionFactor',
+    't2MarkupBase', 't2MarkupExponent', 'storage',
+    'consumerActivation', 'consumerSearchOffers', 'demandQtyMin', 'demandQtyMax',
+    'vmin', 'vmax', 'elasticity', 'tier2DemandFactor', 'tier2ReservationPremium',
+    'k', 'alpha', 'wholesalePriceResponse', 'priceObservationTicks',
+    'taumin', 'taumax', 'reliabilityAlpha', 'switchingStableBand',
   ];
   for (const [id, value] of Object.entries(M.ECONOMY_DEFAULTS)) if ($(id)) $(id).value = value;
   const productCodes = ['W', 'E', 'F', 'A', 'W+E', 'W+F', 'W+A', 'E+F', 'E+A', 'F+A'];
   function readCfg() {
     const c = { ...M.ECONOMY_DEFAULTS };
     for (const id of PARAMS) c[id] = +$(id).value;
+    c.t2Machinery = { 3: +$('t2Machinery3').value, 4: +$('t2Machinery4').value, 5: +$('t2Machinery5').value };
+    c.t2Capacity = { 3: +$('t2Capacity3').value, 4: +$('t2Capacity4').value, 5: +$('t2Capacity5').value };
+    c.footprint = { ...M.ECONOMY_DEFAULTS.footprint };
     return c;
   }
   for (let i = 0; i < 1000; i++) {

@@ -93,17 +93,28 @@
   const T2_MAX_PRODUCTS_PER_FIRM = 4;
   // Bulk upstream firms and small downstream workshops serve the same population.
   // Stock coverage is measured against sales, not against idle nameplate capacity.
-  const ECONOMY_DEFAULTS = Object.freeze({ capacity: 10000, targetInventory: 500000,
-    maxInventory: 1000000, initialCash: 10000000, retailTargetInventory: 600,
-    retailMaxInventory: 1200, retailInitialCash: 485000, basicEquipmentCapacity: 500,
-    compoundEquipmentCapacity: 500, minWholesaleLot: 1000, inventoryCoverageTicks: 3,
-    tier2WorkingCashTicks: 30, tier2MinimumCash: 2500, tier2MarkupPremium: 0, tier2CompanyCapacity: 6, tier2InventoryCapacity: 20000, tier1InventoryCapacity: 20000,
-    tier2BaseMarkup: -1, procurementBaseMarkup: .25, procurementMarkupPremium: 0,
-    tier2CompoundStandardization: 0, tier2ComplexitySpecialization: 0,
-    procurementCompoundStandardization: 0, procurementComplexitySpecialization: 0,
-    procurementBasicReferenceCost: 1.875, procurementCompoundReferenceCost: 3.85,
-    tier2ConversionCostScale: 1, procurementConversionReferenceScale: 1 });
-  const t2Capacity = () => ECONOMY_DEFAULTS.tier2CompanyCapacity;
+  const ECONOMY_DEFAULTS = Object.freeze({
+    seed: 12345, dbar: 1, theta: .15, sigma: .005, dmin: .7, dmax: 1.4,
+    endUserCount: 1000000, t2FirmCount: 60000,
+    t0Equity: 10000000, capacity: 10000, targetInventory: 500000, maxInventory: 1000000,
+    baseCost: 1, markup: .25, minWholesaleLot: 1000, inventoryCoverageTicks: 3,
+    t1Equity: 1500000, t1License: 1000000, t1Machinery: 15000, t1Capacity: 500,
+    t1MaterialCost: 1, t1Markup: .25,
+    t2Equity: 1500000, t2License: 1000000,
+    t2Machinery: Object.freeze({ 3: 75000, 4: 375000, 5: 420000 }),
+    t2Capacity: Object.freeze({ 3: 300, 4: 200, 5: 100 }),
+    t2MaterialCost: 1.25, conversionFactor: .25, t2MarkupBase: .25, t2MarkupExponent: 5,
+    storage: 20000,
+    footprint: Object.freeze({ 1: 1000, 2: 1000, 3: 3000, 4: 4000, 5: 5000 }),
+    consumerActivation: .1, consumerSearchOffers: 5,
+    demandQtyMin: 1, demandQtyMax: 10, vmin: .9, vmax: 1.5, elasticity: 2,
+    tier2DemandFactor: 1, tier2ReservationPremium: 0,
+    k: .35, alpha: .15, reliabilityAlpha: .15, switchingStableBand: .025,
+    wholesalePriceResponse: .05, priceObservationTicks: 30, taumin: .05, taumax: .2,
+    researchPriceMinimumOpportunities: 0, researchPriceMinimumPotentialOrders: 0,
+    researchPriceMaxObservationTicks: 3600,
+  });
+  const t2Capacity = (complexity) => ECONOMY_DEFAULTS.t2Capacity[complexity];
   // Player-facing ownership and progression gates. These are entry/ownership
   // costs, orthogonal to the bot economy: paying a license or founding a house
   // does not move simulated economy cash. They are reference prices for the

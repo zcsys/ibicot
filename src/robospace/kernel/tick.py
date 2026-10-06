@@ -30,7 +30,7 @@ def _orv(a, b):
 
 def tier1_stock_target(W, cfg, product, index):
     # canon: desired inventory = fill G, split 1:1 → finished target = G/2
-    return M.inventory_target(M.complexity(product))
+    return M.inventory_target(M.complexity(product), cfg)
 
 
 # --------------------------------------------------------------------------
@@ -230,11 +230,11 @@ def plan_and_buy_inputs(W, cfg, products, profiles, tick):
                 if not W.t1Operates[product_base + p]:
                     continue
                 product = products[p]
-                cap = cfg['basicEquipmentCapacity'] if len(product['inputs']) == 1 else cfg['compoundEquipmentCapacity']
+                cap = cfg['t1Capacity']
                 output_qty = product['outputQty']                # count-preserving N→N
                 target = tier1_stock_target(W, cfg, product, product_base + p)
                 desired = max(0.0, min(cap, target - W.t1Fin[product_base + p]))
-                replacement = cfg['manufacturingCostPerUnit']
+                replacement = M.conversion_cost(M.complexity(product), cfg)
                 for element, ratio in product['inputs'].items():
                     e = M.ELEMENTS.index(element)
                     supplier = suppliers[e]
@@ -273,7 +273,7 @@ def plan_and_buy_inputs(W, cfg, products, profiles, tick):
                     held += W.raw[raw_base + material]
                 for output in range(NP):
                     held += W.t1Fin[product_base + output]
-                storage_room = math.floor(max(0.0, cfg['tier1InventoryCapacity'] - held)
+                storage_room = math.floor(max(0.0, cfg['storage'] - held)
                                           / cfg['minWholesaleLot']) * cfg['minWholesaleLot']
                 funded = math.floor(min(request, affordable, storage_room) / cfg['minWholesaleLot']) * cfg['minWholesaleLot']
                 W.t0FundedReq[e] += funded
@@ -316,7 +316,8 @@ def manufacture(W, cfg, products):
                 continue
             product = products[p]
             raw_base = company * NE
-            cap = cfg['basicEquipmentCapacity'] if len(product['inputs']) == 1 else cfg['compoundEquipmentCapacity']
+            cap = cfg['t1Capacity']
+            conv = M.conversion_cost(M.complexity(product), cfg)
             target = tier1_stock_target(W, cfg, product, index)
             output_qty = product['outputQty']                     # count-preserving N→N
             desired = min(cap, max(0.0, target - W.t1Fin[index]))
@@ -328,8 +329,8 @@ def manufacture(W, cfg, products):
                 input_cost_per_item += ratio * W.rawBasis[raw_base + e]
             input_cost_per_item /= output_qty
             made = min(made, math.floor(max(0.0, W.t1Cash[company])
-                                        / max(1e-9, cfg['manufacturingCostPerUnit'] * output_qty)))
-            if input_cost_per_item + cfg['manufacturingCostPerUnit'] > W.t1Price[index] + 1e-9:
+                                        / max(1e-9, conv * output_qty)))
+            if input_cost_per_item + conv > W.t1Price[index] + 1e-9:
                 made = 0
             if made <= 0:
                 continue
@@ -337,11 +338,11 @@ def manufacture(W, cfg, products):
             for element, ratio in product['inputs'].items():
                 e = M.ELEMENTS.index(element)
                 W.raw[raw_base + e] -= made * ratio
-            W.t1Cash[company] -= made_items * cfg['manufacturingCostPerUnit']
-            W.costSinks += made_items * cfg['manufacturingCostPerUnit']
+            W.t1Cash[company] -= made_items * conv
+            W.costSinks += made_items * conv
             old_fin = W.t1Fin[index]
             old_basis = W.t1FinBasis[index]
-            unit_cost = input_cost_per_item + cfg['manufacturingCostPerUnit']
+            unit_cost = input_cost_per_item + conv
             W.t1Fin[index] = old_fin + made_items
             W.t1FinBasis[index] = (old_basis * old_fin + unit_cost * made_items) / (old_fin + made_items) if old_fin + made_items > 0 else 0
             W.t1UnitCost[index] = unit_cost
@@ -526,7 +527,7 @@ def transfer_tier2_input(W, cfg, firm, material, supplier, request):
     supplier_firm = supplier // NP
     quote = prices[supplier]
     requested = max(0.0, min(math.ceil(request),
-                             math.floor(cfg['tier2InventoryCapacity'] - tier2_inventory_units(W, firm))))
+                             math.floor(cfg['storage'] - tier2_inventory_units(W, firm))))
     funded = math.floor(min(requested, W.t2Cash[firm] / quote))
     quantity = math.floor(min(funded, stock[supplier]))
     W.t1Demand[supplier] += funded
@@ -584,7 +585,7 @@ def tier2_buy_make_price(W, cfg, products, profiles, t2_products, tick):
         firm = (order + tick * 137) % cfg['t2FirmCount']
         needs = [0.0] * NP
         plans = [0.0] * M4
-        inventory_room = max(0.0, cfg['tier2InventoryCapacity'] - tier2_inventory_units(W, firm))
+        inventory_room = max(0.0, cfg['storage'] - tier2_inventory_units(W, firm))
 
         for material in range(NP):
             offers = t1_offers[material]
@@ -602,8 +603,8 @@ def tier2_buy_make_price(W, cfg, products, profiles, t2_products, tick):
             product = t2_products[int(W.t2LineProduct[line])]
             c = product['complexity']
             output_qty = product['outputQty']              # count-preserving N→N
-            capacity = product['capacity']                 # per machine per tick
-            target = M.inventory_target(c)                 # fill G, finished = G/2
+            capacity = cfg['t2Capacity'][c]                # per machine per tick
+            target = M.inventory_target(c, cfg)            # fill G, finished = G/2
             desired = math.floor(min(capacity, max(0.0, target - W.t2Fin[line])) / output_qty)
             while desired > 0:
                 missing = 0.0
@@ -617,7 +618,7 @@ def tier2_buy_make_price(W, cfg, products, profiles, t2_products, tick):
                 if missing <= inventory_room:
                     break
                 desired -= 1
-            replacement = product['conversionCost'] * cfg['tier2ConversionCostScale']
+            replacement = M.conversion_cost(c, cfg)
             for material, ratio in product['ingredients']:
                 basic = material < 4
                 index = firm * (NE if basic else NP) + material
@@ -660,10 +661,10 @@ def tier2_buy_make_price(W, cfg, products, profiles, t2_products, tick):
                 index = firm * (NE if basic else NP) + material
                 made = min(made, math.floor((W.t2Raw if basic else W.t2T1Raw)[index] / ratio))
                 input_cost += ratio * (W.t2RawBasis if basic else W.t2T1Basis)[index]
-            conversion_cost = product['conversionCost'] * output_qty * cfg['tier2ConversionCostScale']
+            conv_per_item = M.conversion_cost(c, cfg)
+            conversion_cost = conv_per_item * output_qty
             made = min(made, math.floor(W.t2Cash[firm] / conversion_cost))
             input_cost_per_item = input_cost / output_qty
-            conv_per_item = product['conversionCost'] * cfg['tier2ConversionCostScale']
             if input_cost_per_item + conv_per_item > W.t2Price[line] + 1e-9:
                 made = 0
             if made > 0:
@@ -691,7 +692,7 @@ def tier2_buy_make_price(W, cfg, products, profiles, t2_products, tick):
             W.t2RelPriceSum[line] += 1 - min(1.0, abs(W.t2Price[line] - previous)
                                              / max(1e-9, previous * cfg['switchingStableBand']))
             W.t2RelPriceSamples[line] += 1
-            W.t2MonthlyCapacity[line] += product['capacity']
+            W.t2MonthlyCapacity[line] += cfg['t2Capacity'][product['complexity']]
 
 
 # --------------------------------------------------------------------------

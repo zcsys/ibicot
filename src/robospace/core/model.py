@@ -59,67 +59,49 @@ N_END_USERS = WORLD_STORY['population']          # 1,000,000
 MAX_T2_LINES = N2_FIRMS     # one machine/line per firm at start
 MONTH = TIME['ticksPerMonth']                     # 30
 
-# Supply-side working values (canon §4 / §6).
-T1_MACHINERY = 15000.0            # T1 machinery flat $15k
-T1_CAPACITY = 500.0               # C-1/C-2 throughput per machine per tick
-T1_MATERIAL_COST = 1.0            # $1 per raw element (T0 -> T1)
-T2_MATERIAL_COST = 1.25           # $1.25 per T1 material item (T1 -> T2)
-LICENSE = 1000000.0               # $1m license equity asset (every T1/T2 firm)
-T0_INITIAL_CASH = 10000000.0      # $10m Tier 0
-T1_WORKING_CASH = 485000.0        # $485k (with $15k machinery -> $1.5m equity)
-T2_MACHINERY = {3: 75000.0, 4: 375000.0, 5: 420000.0}
-T2_CAPACITY = {3: 300.0, 4: 200.0, 5: 100.0}
-T2_WORKING_CASH = {3: 425000.0, 4: 125000.0, 5: 80000.0}
-STORAGE = 20000.0                 # firm-level storage pool (raw + finished + machinery)
-MACHINERY_FOOTPRINT = {1: 1000.0, 2: 1000.0, 3: 3000.0, 4: 4000.0, 5: 5000.0}
+# Supply-side scale values (equity, license, machinery, capacity, costs, storage)
+# live in ``core/config.py``.  The model exposes cfg-driven helpers so the kernel,
+# Numba fast path and snapshot layers all share one source of truth.
 
 
-def conversion_cost(complexity: int) -> float:
+def conversion_cost(complexity: int, cfg) -> float:
     # canon: $0.25 × max(1, complexity−1)  → 0.25/0.25/0.50/0.75/1.00
-    return 0.25 * max(1, complexity - 1)
+    return cfg['conversionFactor'] * max(1, complexity - 1)
 
 
-def unit_cost(complexity: int) -> float:
+def unit_cost(complexity: int, cfg) -> float:
     # canon cost ladder: $1.25 / $1.25 / $1.75 / $2.00 / $2.25 (per output item)
-    material = T1_MATERIAL_COST if complexity <= 2 else T2_MATERIAL_COST
-    return material + conversion_cost(complexity)
+    material = cfg['t1MaterialCost'] if complexity <= 2 else cfg['t2MaterialCost']
+    return material + conversion_cost(complexity, cfg)
 
 
-def t2_markup(complexity: int) -> float:
-    # canon first-guess markup: T2 0.25 × 5^(c−3); T1 flat 0.25
+def t2_markup(complexity: int, cfg) -> float:
+    # canon first-guess markup: T1 flat; T2 base × exponent^(c−3)
     if complexity <= 2:
-        return 0.25
-    return 0.25 * (5.0 ** (complexity - 3))
+        return cfg['t1Markup']
+    return cfg['t2MarkupBase'] * (cfg['t2MarkupExponent'] ** (complexity - 3))
 
 
-def goods_space(complexity: int) -> float:
-    # canon: G = 20,000 − machinery footprint (storage shared by raw+finished+machinery)
-    return STORAGE - MACHINERY_FOOTPRINT[complexity]
+def goods_space(complexity: int, cfg) -> float:
+    # canon: G = storage − machinery footprint (shared by raw+finished+machinery)
+    return cfg['storage'] - cfg['footprint'][complexity]
 
 
-def inventory_target(complexity: int) -> float:
+def inventory_target(complexity: int, cfg) -> float:
     # canon: desired inventory = fill G, split 1:1 → finished = raw = G/2
-    return goods_space(complexity) / 2.0
+    return goods_space(complexity, cfg) / 2.0
 
 
-# Apply the canon cost ladder + machinery + capacity to the catalogue in place.
+# Count-preserving output quantity (structural, from the recipe).
 for _p in T2_PRODUCTS:
-    _c = _p['complexity']
-    _p['conversionCost'] = conversion_cost(_c)      # per output item
-    _p['equipmentPrice'] = T2_MACHINERY[_c]
-    _p['capacity'] = T2_CAPACITY[_c]
     _p['outputQty'] = sum(int(q) for _m, q in _p['ingredients'])
 for _p in PRODUCTS:
-    _p['equipmentPrice'] = T1_MACHINERY            # T1 machinery flat $15k
-    _p['capacity'] = T1_CAPACITY
     _p['outputQty'] = sum(int(q) for q in _p['inputs'].values())
 
-# Per-product precomputed flat structure used by the hot kernel loops.
+# Per-product precomputed *structural* flat structure used by the hot loops.
+# (Scale values — conversion, machinery, capacity, target — are cfg-driven.)
 _T2_COMPLEXITY = [p['complexity'] for p in T2_PRODUCTS]
-_T2_CONVERSION = [p['conversionCost'] for p in T2_PRODUCTS]
 _T2_SECTOR = [p['sectorIndex'] for p in T2_PRODUCTS]
-_T2_EQUIP = [p['equipmentPrice'] for p in T2_PRODUCTS]
-_T2_CAPACITY = [p['capacity'] for p in T2_PRODUCTS]
 _T2_OUTPUT = [p['outputQty'] for p in T2_PRODUCTS]
 # ingredients: list per product of (material_index, quantity) tuples
 _T2_INGREDIENTS = [[(int(m), int(q)) for (m, q) in p['ingredients']] for p in T2_PRODUCTS]
@@ -216,46 +198,24 @@ def recipe_margin_factor(product, standardization=0.0, specialization=0.0, mater
 
 
 def tier2_starting_markup(product, cfg) -> float:
-    # canon first-guess markup: T1 0.25, T2 0.25 × 5^(c−3)
-    return t2_markup(product['complexity'])
+    return t2_markup(product['complexity'], cfg)
 
 
 def procurement_profile(product, cfg, reference_cost) -> dict:
     # canon demand side (§5): V = 2 × unit cost; η = 2;
     # quantityFactor ∝ 1 / (cost × benchmark markup), scaled by tier2DemandFactor.
-    markup = t2_markup(product['complexity'])
+    markup = t2_markup(product['complexity'], cfg)
     return {'markup': markup,
             'quantityFactor': cfg['tier2DemandFactor'] / (reference_cost * markup),
             'valuation': 2.0 * reference_cost}
 
 
 def initial_tier2_cost(product, cfg) -> float:
-    # canon: per-output-item unit cost = material ($1.25) + conversion
-    return unit_cost(product['complexity'])
+    return unit_cost(product['complexity'], cfg)
 
 
 def reference_tier2_cost(product, cfg=None) -> float:
-    # canon: frozen engineering reference cost = unit cost
-    return unit_cost(product['complexity'])
-
-
-def tier2_starting_cash(products, cfg) -> float:
-    direct = set()
-    raw_quote = cfg['baseCost'] * cfg['dbar'] * (1 + cfg['markup'])
-    basic_quote = (raw_quote + cfg['manufacturingCostPerUnit']) * (1 + cfg['markup'])
-    compound_quote = (2 * raw_quote + cfg['manufacturingCostPerUnit']) * (1 + cfg['markup'] + cfg['compoundMarkupPremium'])
-    operating_cost = 0.0
-    for product in products:
-        for material, _q in product['ingredients']:
-            if material < 4:
-                direct.add(material)
-        unit_cost = product['conversionCost'] * cfg.get('tier2ConversionCostScale', 1)
-        for material, quantity in product['ingredients']:
-            unit_cost += quantity * (basic_quote if material < 4 else compound_quote)
-        operating_cost += cfg['tier2CompanyCapacity'] / len(products) * unit_cost
-    lot_buffer = len(direct) * basic_quote
-    return math.ceil(max(cfg['tier2MinimumCash'],
-                         operating_cost * cfg['tier2WorkingCashTicks'] + lot_buffer) / 50) * 50
+    return unit_cost(product['complexity'], cfg or {})
 
 
 def portfolio_options(products, max_width=T2_MAX_PRODUCTS_PER_FIRM):

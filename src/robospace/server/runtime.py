@@ -39,7 +39,7 @@ T2_COMPANY_NAMES = [
 
 def _markup_code(code, cfg):
     comp = next(p['complexity'] for p in M.PRODUCTS if p['code'] == code)
-    return cfg['markup'] + cfg['compoundMarkupPremium'] * max(0, comp - 1)
+    return M.t2_markup(comp, cfg)
 
 
 def _sum(arr, n=None):
@@ -188,7 +188,7 @@ class KernelRuntime:
             b = hash_seed(self.cfg['seed'], 9000000 + cid)
             self.W.endQMax[cid] = self.cfg['demandQtyMin'] + a % (self.cfg['demandQtyMax'] - self.cfg['demandQtyMin'] + 1)
             self.W.endChoke[cid] = self.cfg['vmin'] + b / 4294967296 * (self.cfg['vmax'] - self.cfg['vmin'])
-            self.W.endEta[cid] = self.cfg['elasticityMin'] + ((a >> 8) % 1000) / 1000 * (self.cfg['elasticityMax'] - self.cfg['elasticityMin'])
+            self.W.endEta[cid] = self.cfg['elasticity']
         return self.publish()
 
     # ------------------------------------------------------------------
@@ -302,14 +302,14 @@ class KernelRuntime:
         product = M.PRODUCTS[_PI[code]] if code in _PI else None
         if self.controller[id_] != 1 or product is None or code in self.equipment[id_]:
             raise ValueError('Only PLAYER-controlled companies can buy new equipment.')
-        if self.W.t1Cash[id_] + 1e-9 < product['equipmentPrice']:
+        if self.W.t1Cash[id_] + 1e-9 < self.cfg['t1Machinery']:
             raise ValueError('Insufficient cash.')
-        self.W.t1Cash[id_] -= product['equipmentPrice']
-        self.W.t1EqBook[id_] += product['equipmentPrice']
+        self.W.t1Cash[id_] -= self.cfg['t1Machinery']
+        self.W.t1EqBook[id_] += self.cfg['t1Machinery']
         self.equipment[id_].append(code)
         index = id_ * NP + _PI[code]
         input_cost = sum(self._last_finite_wholesale(_EI[e]) * r for e, r in product['inputs'].items())
-        uc = input_cost + self.cfg['manufacturingCostPerUnit']
+        uc = input_cost + M.conversion_cost(product['complexity'], self.cfg)
         self.W.t1Operates[index] = 1
         self.W.t1UnitCost[index] = uc
         self.W.t1Rel[index] = 0.5
@@ -431,7 +431,7 @@ class KernelRuntime:
                 for p2 in range(NP):
                     if W.t1Operates[cid * NP + p2]:
                         inv_val += W.t1Fin[cid * NP + p2] * W.t1FinBasis[cid * NP + p2]
-                equity += W.t1Cash[cid] + W.t1EqBook[cid] + inv_val + M.LICENSE
+                equity += W.t1Cash[cid] + W.t1EqBook[cid] + inv_val + self.cfg['t1License']
                 for p in range(NP):
                     if not W.t1Operates[cid * NP + p]:
                         continue
@@ -519,11 +519,11 @@ class KernelRuntime:
             if any_:
                 activeFirms += 1
             t1Finished += finished
-            t1Equity += eqv + M.LICENSE
+            t1Equity += eqv + self.cfg['t1License']
         n2 = self.cfg['t2FirmCount']
         lc = int(W.t2LineCount)
         t2Cash = _sum(W.t2Cash, n2)
-        t2Equity = _sum(W.t2Cash, n2) + _sum(W.t2EqBook, n2) + n2 * M.LICENSE
+        t2Equity = _sum(W.t2Cash, n2) + _sum(W.t2EqBook, n2) + n2 * self.cfg['t2License']
         t2Inventory = _sum(W.t2Fin, lc)
         t2Made = _sum(W.t2Made, lc)
         t2Sold = _sum(W.t2Sold, lc)
@@ -599,18 +599,18 @@ class KernelRuntime:
                 'recipe': ' + '.join(f'{q} {M.PRODUCTS[m]["name"]}' for m, q in product['ingredients']),
                 'price': float(W.t2Price[line]),
                 'unitCost': float(W.t2FinBasis[line] or W.t2UnitCost[line]),
-                'capacity': product['capacity'],
+                'capacity': self.cfg['t2Capacity'][product['complexity']],
                 'finished': float(W.t2Fin[line]), 'made': float(W.t2Made[line]),
                 'sold': float(W.t2Sold[line]), 'revenue': float(W.t2Revenue[line]),
                 'cogs': float(W.t2COGS[line]),
                 'grossProfit': float(W.t2Revenue[line] - W.t2COGS[line]),
                 'margin': float((W.t2Revenue[line] - W.t2COGS[line]) / W.t2Revenue[line]) if W.t2Revenue[line] else 0.0,
-                'utilization': float(W.t2Made[line] / product['capacity']),
+                'utilization': float(W.t2Made[line] / self.cfg['t2Capacity'][product['complexity']]),
                 'demandEMA': float(W.t2DemandEMA[line]), 'salesEMA': float(W.t2SalesEMA[line]),
                 'stockCoverage': float(W.t2Fin[line] / W.t2SalesEMA[line]) if W.t2SalesEMA[line] > 0 else None,
                 'reliability': float(W.t2Rel[line]),
             })
-            capacity += product['capacity']
+            capacity += self.cfg['t2Capacity'][product['complexity']]
             finished += W.t2Fin[line]
             made += W.t2Made[line]
             sold += W.t2Sold[line]
@@ -638,7 +638,7 @@ class KernelRuntime:
                 })
         eligible = []
         if detailed:
-            eligible = [{'code': p['code'], 'name': p['name'], 'price': p['equipmentPrice'],
+            eligible = [{'code': p['code'], 'name': p['name'], 'price': self.cfg['t2Machinery'][p['complexity']],
                          'complexity': p['complexity']}
                         for p in M.T2_PRODUCTS
                         if p['complexity'] <= W.t2Capability[id_] and W.t2Sector[id_] == p['sectorIndex']
@@ -650,8 +650,8 @@ class KernelRuntime:
                 'online': bool(W.t2Online[id_]),
                 'cash': float(W.t2Cash[id_]), 'eqBook': float(W.t2EqBook[id_]),
                 'equipmentBookValue': float(W.t2EqBook[id_]),
-                'equity': float(W.t2Cash[id_] + W.t2EqBook[id_] + value + M.LICENSE),
-                'inventory': float(raw + finished), 'inventoryCapacity': self.cfg['tier2InventoryCapacity'],
+                'equity': float(W.t2Cash[id_] + W.t2EqBook[id_] + value + self.cfg['t2License']),
+                'inventory': float(raw + finished), 'inventoryCapacity': self.cfg['storage'],
                 'raw': float(raw), 'finished': float(finished), 'made': float(made), 'sold': float(sold),
                 'revenue': float(revenue), 'cogs': float(cogs),
                 'grossProfit': float(revenue - cogs), 'capacity': float(capacity),
@@ -754,7 +754,7 @@ class KernelRuntime:
                         'preferredSupplier': int(W.preferredWholesale[idx])})
         products = []
         inv = eqv = made = sold = revenue = cogs = 0.0
-        eqv = W.t1Cash[id_] + W.t1EqBook[id_] + M.LICENSE
+        eqv = W.t1Cash[id_] + W.t1EqBook[id_] + self.cfg['t1License']
         for p in range(NP):
             if W.t1Operates[id_ * NP + p]:
                 idx = id_ * NP + p
@@ -853,7 +853,7 @@ class KernelRuntime:
         return float(self.W.t1Fin[pi::NP].sum())
 
     def _product_supply_capacity(self, pi):
-        cap = self.cfg['basicEquipmentCapacity'] if pi < 4 else self.cfg['compoundEquipmentCapacity']
+        cap = self.cfg['t1Capacity']
         return float(np.count_nonzero(self.W.t1Operates[pi::NP])) * cap
 
     def publish(self):
@@ -902,7 +902,7 @@ class KernelRuntime:
                 'equipment': list(self.equipment[cid]), 'price': float(W.t1Price[b + pi]),
                 'raw': float(raw), 'finished': float(fin), 'inventory': float(raw + fin),
                 'cash': float(W.t1Cash[cid]),
-                'equity': float(W.t1Cash[cid] + W.t1EqBook[cid] + inv_val + M.LICENSE),
+                'equity': float(W.t1Cash[cid] + W.t1EqBook[cid] + inv_val + self.cfg['t1License']),
                 'made': float(totalMade), 'sold': float(totalSold), 'revenue': float(totalRevenue),
                 'grossProfit': float(totalRevenue - totalCOGS),
                 'reliability': float(rel / relN) if relN else 0.0})
@@ -920,8 +920,8 @@ class KernelRuntime:
             demand = sum(W.t1Demand[x['id'] * NP + p] for x in suppliers)
             productStats.append({
                 'code': prod['code'], 'name': prod['name'], 'complexity': prod['complexity'],
-                'role': prod['role'], 'firms': len(suppliers), 'machineryPrice': prod['equipmentPrice'],
-                'capacity': cfg['basicEquipmentCapacity'] if p < 4 else cfg['compoundEquipmentCapacity'],
+                'role': prod['role'], 'firms': len(suppliers), 'machineryPrice': self.cfg['t1Machinery'],
+                'capacity': cfg['t1Capacity'],
                 'productionCapacity': self._product_supply_capacity(p),
                 'made': float(made), 'sold': float(m['rVol'][p]), 'cogs': float(cogs),
                 'avgPrice': float(sum(W.t1Price[x['id'] * NP + p] for x in suppliers) / max(1, len(suppliers))),
@@ -944,7 +944,8 @@ class KernelRuntime:
                                    'needType': p['needType'], 'kind': p['kind'], 'sector': p['sector'],
                                    'complexity': p['complexity'],
                                    'primaryMaterial': next(x['name'] for x in M.PRODUCTS if x['code'] == p['primaryMaterial']),
-                                   'machineryPrice': p['equipmentPrice'], 'capacity': p['capacity'],
+                                   'machineryPrice': self.cfg['t2Machinery'][p['complexity']],
+                                   'capacity': self.cfg['t2Capacity'][p['complexity']],
                                    'recipe': ' + '.join(f'{q} {M.PRODUCTS[m]["name"]}' for m, q in p['ingredients']),
                                    'firms': 0, 'avgPrice': 0.0, 'avgUnitCost': 0.0, 'productionCapacity': 0.0,
                                    'readyStock': 0.0, 'made': 0.0, 'sold': 0.0, 'revenue': 0.0, 'cogs': 0.0,
@@ -1018,7 +1019,7 @@ class KernelRuntime:
         gross = rev - cogs
         capacity = np.bincount(line_sector, weights=t2_cap[W.t2LineProduct[:lc].astype(np.int64)], minlength=10)
         eq_fin = np.bincount(line_sector, weights=W.t2Fin[:lc] * W.t2FinBasis[:lc], minlength=10)
-        equity = cash + eqbook + eq_raw + eq_fin + firms * M.LICENSE
+        equity = cash + eqbook + eq_raw + eq_fin + firms * self.cfg['t2License']
 
         t2Cohorts = []
         for s in range(10):

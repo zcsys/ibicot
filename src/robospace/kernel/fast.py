@@ -34,31 +34,37 @@ N_T2 = len(M.T2_PRODUCTS)
 
 
 # --------------------------------------------------------------------------
-# Flat per-product data (built once at import).
+# Flat per-product *structural* data (built once at import).  Scale values
+# (conversion, machinery, capacity, target) are cfg-driven — see the
+# t2_scale_arrays / t1_scale_arrays helpers.
 # --------------------------------------------------------------------------
 def _build_flat():
-    comp, conv, sector, equip, cap, outq, ing_m, ing_q, off = [], [], [], [], [], [], [], [], [0]
+    comp, sector, outq, ing_m, ing_q, off = [], [], [], [], [], [0]
     for p in M.T2_PRODUCTS:
         comp.append(int(p['complexity']))
-        conv.append(float(p['conversionCost']))
         sector.append(int(p['sectorIndex']))
-        equip.append(float(p['equipmentPrice']))
-        cap.append(float(p['capacity']))
         outq.append(int(p['outputQty']))
         for m, q in p['ingredients']:
             ing_m.append(int(m))
             ing_q.append(int(q))
         off.append(len(ing_m))
-    return (np.array(comp, dtype=np.int64), np.array(conv, dtype=np.float64),
-            np.array(sector, dtype=np.int64), np.array(equip, dtype=np.float64),
-            np.array(cap, dtype=np.float64), np.array(outq, dtype=np.int64),
+    return (np.array(comp, dtype=np.int64), np.array(sector, dtype=np.int64),
+            np.array(outq, dtype=np.int64),
             np.array(ing_m, dtype=np.int64), np.array(ing_q, dtype=np.int64),
             np.array(off, dtype=np.int64))
 
 
-T2_COMPLEXITY, T2_CONVERSION, T2_SECTOR, T2_EQUIP, T2_CAPACITY, T2_OUTPUT, T2_ING_M, T2_ING_Q, T2_ING_OFF = _build_flat()
+T2_COMPLEXITY, T2_SECTOR, T2_OUTPUT, T2_ING_M, T2_ING_Q, T2_ING_OFF = _build_flat()
 RATIOS = np.array(M.catalogue_input_ratios, dtype=np.float64)
-T2_TARGET = np.array([M.inventory_target(int(p['complexity'])) for p in M.T2_PRODUCTS], dtype=np.float64)
+
+
+def t2_scale_arrays(cfg):
+    """cfg-driven conversion, machinery, capacity and fill target per T2 product."""
+    conv = np.array([M.conversion_cost(int(c), cfg) for c in T2_COMPLEXITY], dtype=np.float64)
+    equip = np.array([cfg['t2Machinery'][int(c)] for c in T2_COMPLEXITY], dtype=np.float64)
+    cap = np.array([cfg['t2Capacity'][int(c)] for c in T2_COMPLEXITY], dtype=np.float64)
+    target = np.array([M.inventory_target(int(c), cfg) for c in T2_COMPLEXITY], dtype=np.float64)
+    return conv, equip, cap, target
 
 
 def procurement_arrays(cfg):
@@ -81,15 +87,18 @@ for _s, _prof in enumerate(_T0P):
     for _e in _prof['element_indices']:
         PROF_HAS[_s, _e] = 1
 T1_INPUT_RATIO = np.zeros((NP, NE), dtype=np.float64)
-T1_OUTPUT = np.zeros(NP, dtype=np.int64)
-T1_TARGET = np.zeros(NP, dtype=np.float64)
 T1_IS_BASIC = np.zeros(NP, dtype=np.int8)
 for _pi, _p in enumerate(M.PRODUCTS):
     for _e, _r in _p['inputs'].items():
         T1_INPUT_RATIO[_pi, _EI[_e]] = float(_r)
-    T1_OUTPUT[_pi] = int(_p['outputQty'])
-    T1_TARGET[_pi] = M.inventory_target(_p['complexity'])
     T1_IS_BASIC[_pi] = 1 if len(_p['inputs']) == 1 else 0
+
+
+def t1_scale_arrays(cfg):
+    """cfg-driven conversion, machinery, capacity, target and output per T1 product."""
+    output = np.array([int(p['outputQty']) for p in M.PRODUCTS], dtype=np.int64)
+    target = np.array([M.inventory_target(p['complexity'], cfg) for p in M.PRODUCTS], dtype=np.float64)
+    return output, target
 
 
 def _flatten(offers):
@@ -228,8 +237,8 @@ if _HAVE_NUMBA:
 
     @_njit
     def _tier2_buy_make_price_nb(
-        seed, tick, t2_firm_count, tier2_inventory_capacity,
-        tier2_conversion_cost_scale, switching_stable_band, taumin, taumax, price_observation_ticks,
+        seed, tick, t2_firm_count, storage,
+        t2_conversion, switching_stable_band, taumin, taumax, price_observation_ticks,
         research_price_min_potential, research_price_max_obs, research_price_min_opp, k, response,
         t1_fin, t1_price, t1_rel, t1_cash, t1_sold, t1_rev, t1_cogs, t1_fin_basis,
         t1_intermediate_sold, t1_intermediate_revenue, t1_demand, t1_rel_attempts,
@@ -264,7 +273,7 @@ if _HAVE_NUMBA:
                     inv_units += t2_t1raw[firm * NP + m]
             for s in range(t2_firm_line_count[firm]):
                 inv_units += t2_fin[t2_firm_lines[firm * M4 + s]]
-            inventory_room = tier2_inventory_capacity - inv_units
+            inventory_room = storage - inv_units
             if inventory_room < 0.0:
                 inventory_room = 0.0
 
@@ -309,7 +318,7 @@ if _HAVE_NUMBA:
                     if missing <= inventory_room:
                         break
                     desired -= 1
-                replacement = T2_CONVERSION[pid] * tier2_conversion_cost_scale
+                replacement = t2_conversion[pid]
                 for gi in range(T2_ING_OFF[pid], T2_ING_OFF[pid + 1]):
                     material = T2_ING_M[gi]
                     ratio = T2_ING_Q[gi]
@@ -366,7 +375,7 @@ if _HAVE_NUMBA:
                             u += t2_t1raw[firm * NP + mm]
                     for ss in range(t2_firm_line_count[firm]):
                         u += t2_fin[t2_firm_lines[firm * M4 + ss]]
-                    room = tier2_inventory_capacity - u
+                    room = storage - u
                     if room < 0.0:
                         room = 0.0
                     requested = math.ceil(need)
@@ -421,12 +430,12 @@ if _HAVE_NUMBA:
                     if avail < made:
                         made = avail
                     input_cost += ratio * (t2_raw_basis if basic else t2_t1basis)[index]
-                conversion_cost = T2_CONVERSION[pid] * output_qty * tier2_conversion_cost_scale
+                conversion_cost = t2_conversion[pid] * output_qty
                 cash_avail = math.floor(t2_cash[firm] / conversion_cost)
                 if cash_avail < made:
                     made = cash_avail
                 input_cost_per_item = input_cost / output_qty
-                conv_per_item = T2_CONVERSION[pid] * tier2_conversion_cost_scale
+                conv_per_item = t2_conversion[pid]
                 if input_cost_per_item + conv_per_item > t2_price[line] + 1e-9:
                     made = 0.0
                 if made > 0:
@@ -718,8 +727,8 @@ if _HAVE_NUMBA:
 
     @_njit
     def _plan_and_buy_inputs_nb(
-        seed, tick, min_lot, manufacturing_cost, base_cost, basic_cap, compound_cap,
-        tier1_inventory_capacity, taumin, taumax,
+        seed, tick, min_lot, base_cost, t1_capacity, t1_conversion,
+        storage, taumin, taumax,
         t0_price, t0_inv, t0_inv_basis, t0_rel, t0_cash, t0_req, t0_funded_req,
         t0_opportunities, t0_demand, t0_rel_attempts, t0_rel_fulfilled, t0_rel_checks,
         t0_rel_available, t0_sold, t0_revenue, t0_cogs, t0_ful, difficulty,
@@ -744,7 +753,7 @@ if _HAVE_NUMBA:
                 for p in range(NP):
                     if t1_operates[product_base + p] == 0:
                         continue
-                    cap = basic_cap if t1_is_basic[p] == 1 else compound_cap
+                    cap = t1_capacity
                     output_qty = t1_output[p]
                     target = t1_target[p]
                     desired = cap
@@ -753,7 +762,7 @@ if _HAVE_NUMBA:
                         desired = d2
                     if desired < 0.0:
                         desired = 0.0
-                    replacement = manufacturing_cost
+                    replacement = t1_conversion[p]
                     for e in range(NE):
                         ratio = t1_input_ratio[p, e]
                         if ratio == 0.0:
@@ -802,7 +811,7 @@ if _HAVE_NUMBA:
                         held += raw[raw_base + material]
                     for output in range(NP):
                         held += t1_fin[product_base + output]
-                    storage_room = math.floor(max(0.0, tier1_inventory_capacity - held) / min_lot) * min_lot
+                    storage_room = math.floor(max(0.0, storage - held) / min_lot) * min_lot
                     funded = min(request, affordable, storage_room)
                     funded = math.floor(funded / min_lot) * min_lot
                     t0_funded_req[e] += funded
@@ -855,25 +864,28 @@ def observe_markets_fast(W, cfg, profiles):
 
 
 def plan_and_buy_inputs_fast(W, cfg, tick):
+    t1_output, t1_target = t1_scale_arrays(cfg)
+    t1_conv = np.array([M.conversion_cost(p['complexity'], cfg) for p in M.PRODUCTS], dtype=np.float64)
     _plan_and_buy_inputs_nb(
-        cfg['seed'], tick, cfg['minWholesaleLot'], cfg['manufacturingCostPerUnit'],
-        cfg['baseCost'], cfg['basicEquipmentCapacity'], cfg['compoundEquipmentCapacity'],
-        float(cfg['tier1InventoryCapacity']), float(cfg['taumin']), float(cfg['taumax']),
+        cfg['seed'], tick, cfg['minWholesaleLot'],
+        cfg['baseCost'], cfg['t1Capacity'], t1_conv,
+        float(cfg['storage']), float(cfg['taumin']), float(cfg['taumax']),
         W.t0Price, W.t0Inv, W.t0InvBasis, W.t0Rel, W.t0Cash, W.t0Req, W.t0FundedReq,
         W.t0Opportunities, W.t0Demand, W.t0RelAttempts, W.t0RelFulfilled, W.t0RelChecks,
         W.t0RelAvailable, W.t0Sold, W.t0Revenue, W.t0COGS, W.t0Ful, W.difficulty,
         W.t1Cash, W.t1Fin, W.t1FinBasis, W.t1Price, W.t1ReplacementCost, W.t1Operates,
         W.t1InputNeed, W.t1PurchaseReq, W.t1LastBuy, W.t1Bought, W.raw, W.rawBasis,
-        W.preferredWholesale, PROF_HAS, PROF_N, T1_INPUT_RATIO, T1_OUTPUT, T1_TARGET, T1_IS_BASIC)
+        W.preferredWholesale, PROF_HAS, PROF_N, T1_INPUT_RATIO, t1_output, t1_target, T1_IS_BASIC)
 
 
 def tier2_buy_make_price_fast(W, cfg, tick):
     t1_offers = _market_offers(W, 1, tick)
     flat, off = _flatten(t1_offers)
     qf, val = procurement_arrays(cfg)
+    t2_conv, _, t2_cap, t2_target = t2_scale_arrays(cfg)
     cs = _tier2_buy_make_price_nb(
-        cfg['seed'], tick, cfg['t2FirmCount'], float(cfg['tier2InventoryCapacity']),
-        float(cfg['tier2ConversionCostScale']), float(cfg['switchingStableBand']),
+        cfg['seed'], tick, cfg['t2FirmCount'], float(cfg['storage']),
+        t2_conv, float(cfg['switchingStableBand']),
         float(cfg['taumin']), float(cfg['taumax']), cfg['priceObservationTicks'],
         cfg['researchPriceMinimumPotentialOrders'], cfg['researchPriceMaxObservationTicks'],
         cfg['researchPriceMinimumOpportunities'], float(cfg['k']), float(cfg['wholesalePriceResponse']),
@@ -888,7 +900,7 @@ def tier2_buy_make_price_fast(W, cfg, tick):
         W.t2LearnTicks, W.t2LearnProfit, W.t2LearnSales, W.t2LearnPrevious,
         W.t2LearnDirection, W.t2LearnDemand, W.t2LearnStock, W.t2LearnStep,
         W.t2LearnOpportunity, W.t2LearnPotentialOpportunity,
-        flat, off, qf, val, T2_CAPACITY, T2_OUTPUT, T2_TARGET)
+        flat, off, qf, val, t2_cap, T2_OUTPUT, t2_target)
     W.costSinks += cs
     return cs
 

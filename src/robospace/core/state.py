@@ -63,11 +63,6 @@ def quant_r(x: float, floor: float = 0.0) -> float:
     return quant_w(x, floor)
 
 
-def _markup_code(code: str, cfg: dict) -> float:
-    comp = M.complexity(next(p for p in M.PRODUCTS if p['code'] == code))
-    return cfg['markup'] + cfg['compoundMarkupPremium'] * max(0, comp - 1)
-
-
 # --------------------------------------------------------------------------
 # Array schema (name -> (dtype, length)).  ML = min(MAX_T2_LINES, N2 * M4).
 # --------------------------------------------------------------------------
@@ -289,7 +284,7 @@ def add_tier2_line(W, cfg, firm, product, paid=True):
         raise ValueError('This product line is already installed.')
     if product['complexity'] > W.t2Capability[firm] or W.t2Sector[firm] != product['sectorIndex']:
         raise ValueError('Machinery requires an eligible sector and capability.')
-    if paid and W.t2Cash[firm] < product['equipmentPrice']:
+    if paid and W.t2Cash[firm] < cfg['t2Machinery'][product['complexity']]:
         raise ValueError('Insufficient cash.')
     line = W.t2LineCount
     W.t2LineCount += 1
@@ -305,11 +300,12 @@ def add_tier2_line(W, cfg, firm, product, paid=True):
     W.t2PlayerPrice[line] = float('nan')
     W.t2Rel[line] = 0.5
     W.t2SalesEMA[line] = 0
-    W.t2DemandEMA[line] = cfg['initialDemandForecastScale']
+    W.t2DemandEMA[line] = 0
     if paid:
-        W.t2Cash[firm] -= product['equipmentPrice']
-        W.equipmentSinks += product['equipmentPrice']
-        W.t2EqBook[firm] += product['equipmentPrice']
+        mach = cfg['t2Machinery'][product['complexity']]
+        W.t2Cash[firm] -= mach
+        W.equipmentSinks += mach
+        W.t2EqBook[firm] += mach
     return line
 
 
@@ -344,8 +340,9 @@ def initialize_tier2(W, cfg):
             W.t2Capability[firm] = 5
             W.t2Sector[firm] = product['sectorIndex']
             add_tier2_line(W, cfg, firm, product, False)
-            W.t2Cash[firm] = M.T2_WORKING_CASH[product['complexity']]
-            W.t2EqBook[firm] = product['equipmentPrice']
+            mach = cfg['t2Machinery'][product['complexity']]
+            W.t2Cash[firm] = cfg['t2Equity'] - cfg['t2License'] - mach
+            W.t2EqBook[firm] = mach
             firm += 1
         if firm >= target_firms:
             break
@@ -392,7 +389,7 @@ def initialize_consumers(W, cfg):
         W.endSecondarySector[cid] = W.endBasket[cid * 5 + 1]
         W.endQMax[cid] = cfg['demandQtyMin'] + a % (cfg['demandQtyMax'] - cfg['demandQtyMin'] + 1)
         W.endChoke[cid] = cfg['vmin'] + b / 4294967296 * (cfg['vmax'] - cfg['vmin'])
-        W.endEta[cid] = cfg['elasticityMin'] + ((a >> 8) % 1000) / 1000 * (cfg['elasticityMax'] - cfg['elasticityMin'])
+        W.endEta[cid] = cfg['elasticity']
 
 
 def reset_world(cfg):
@@ -417,7 +414,7 @@ def reset_world(cfg):
             learn_dir[i] = 1 if ((firm + seed) % 2) else -1
 
     W.difficulty.fill(cfg['dbar'])
-    W.t0Cash.fill(cfg['initialCash'])
+    W.t0Cash.fill(cfg['t0Equity'])
     W.t0Rel.fill(0.5)
     W.t0Stability.fill(1)
     W.t0Req.fill(0)
@@ -435,7 +432,7 @@ def reset_world(cfg):
                 W.t0Price[idx] = quant_w(cost * (1 + cfg['markup']))
                 W.t0PrevPrice[idx] = W.t0Price[idx]
 
-    W.t1Cash.fill(cfg['retailInitialCash'])
+    W.t1Cash.fill(cfg['t1Equity'] - cfg['t1License'] - cfg['t1Machinery'])
     W.t1EqBook.fill(0)
     W.t1Controller.fill(0)
     W.t1Operates.fill(0)
@@ -455,9 +452,9 @@ def reset_world(cfg):
         code = T1P[cid // 100]['product']
         pi = next(i for i, p in enumerate(M.PRODUCTS) if p['code'] == code)
         p = M.PRODUCTS[pi]
-        eq = p['equipmentPrice']                    # canon $15k flat
-        uc = M.unit_cost(p['complexity'])           # canon $1.25 reference unit cost
-        price = quant_r(uc * (1 + M.t2_markup(p['complexity'])), uc)  # first-guess markup 0.25
+        eq = cfg['t1Machinery']                        # canon $15k flat
+        uc = M.unit_cost(p['complexity'], cfg)         # canon $1.25 reference unit cost
+        price = quant_r(uc * (1 + M.t2_markup(p['complexity'], cfg)), uc)  # first-guess markup 0.25
         W.t1EqBook[cid] = eq
         W.t1Operates[cid * NP + pi] = 1
         W.t1Rel[cid * NP + pi] = 0.5
@@ -467,9 +464,5 @@ def reset_world(cfg):
 
     initialize_tier2(W, cfg)
     initialize_consumers(W, cfg)
-
-    for firm in range(N1):
-        p = firm // 100
-        W.t1DemandEMA[firm * NP + p] = (60 if p < 4 else 200) * cfg['initialDemandForecastScale']
 
     return cfg, W
