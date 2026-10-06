@@ -1,9 +1,10 @@
 .DS_Store
 
-# Obsolete calibration artifacts and transient live-simulation state; never
-# committed. A running Age job may transiently re-create checkpoints here.
-reports/
-work/
+# Transient live-simulation output and checkpoints (regenerated on every run)
+stats/
+*.checkpoint.bin
+*.progress.json
+*.npz
 
 # Python bytecode and test caches
 __pycache__/
