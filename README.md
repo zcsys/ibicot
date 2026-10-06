@@ -74,12 +74,12 @@ for the full rationale). The demand-side *scale* is calibration, not frozen.
 | **Unit cost** | $1.25 / $1.25 / $1.75 / $2.00 / $2.25 |
 | **Storage** | 20,000 firm-level pool; machinery footprint 1k/1k/3k/4k/5k; goods `G = 20,000 − machinery`; fill `G`; raw:finished = 1:1 |
 | **Demand valuation** | `V = 2 × unit cost`; elasticity `η = 2` |
-| **Latent demand** | `qmax = baseQty × quantityFactor`, `quantityFactor ∝ 1/(cost × markup)` |
-| **Markup** | T1 flat 0.25; T2 `0.25 × 5^(c−3)` = 0.25 / 1.25 / 6.25; `tier2DemandFactor = 1` |
+| **Latent demand** | `qmax = baseQty × quantityFactor`, `quantityFactor ∝ supply` (firms × capacity = 108:12:1) |
+| **Markup** | flat 0.25 first-guess everywhere; the equilibrium markup is discovered by the pricer; `tier2DemandFactor = 2.8` |
 
 **Deferred** (documented, not implemented): storage rent, machinery-as-good,
-financing, advertising. **Calibration** (not frozen): the demand scale, markup
-curve, and offer-sampling counts.
+financing, advertising. **Calibration** (not frozen): `tier2DemandFactor`, the
+`baseQty` range, and offer-sampling counts.
 
 ## How it runs
 

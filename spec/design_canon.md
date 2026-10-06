@@ -122,23 +122,27 @@ Every section below is a consequence of, or a requirement for, that sentence.
 
 ## 5. Product gradient (demand side)
 
-Higher complexity ⇒ **lower demand volume** and **higher unit markup**.
+Higher complexity ⇒ **lower demand volume**; the unit markup starts flat and is
+discovered by the derivative-following pricer.
 
 - **Valuation (choke price):** `V = 2 × unit cost` (cost from §4) — the price at which
   demand halves. No complexity gradient needed; the rising cost lifts `V` automatically.
 - **Latent quantity:** `qmax = baseQty × quantityFactor`, with
-  `quantityFactor ∝ 1 / (cost × benchmark markup)` — equal benchmark gross-profit
-  opportunity per purchase. One global `tier2DemandFactor` scales the overall level.
+  `quantityFactor ∝ supply` = firms × capacity (the **108 : 12 : 1** ratio across
+  C-3 / C-4 / C-5). At any common markup demand therefore scales with supply, so every
+  product clears at the same utilization.
 - **Demand curve:** `q(P) = qmax / (1 + (P/V)^η)`, elasticity `η = 2`.
+- **First-guess markup is flat** (`t1Markup = 0.25` for T0/T1/T2): the complexity
+  gradient lives entirely in the demand *volume*, not the seed price. The pricer then
+  raises prices while scarce until demand = supply, discovering the equilibrium markup.
+- **Equilibrium markup** is set by the global `tier2DemandFactor` (default 2.8) — a
+  larger factor is a tighter market ⇒ a higher discovered markup. `tier2DemandFactor`
+  is the demand-tightness lever.
 - **Utilization target:** ~50–70%; the demand scale is calibrated to hit it.
-- **First-guess markup curve:** Tier 1 flat 0.25; Tier 2 `0.25 × 5^(c−3)` (C-3 0.25,
-  C-4 1.25, C-5 6.25), `tier2DemandFactor = 1`. This makes `quantityFactor` fall ~32× from
-  C-3 to C-5; steepen the markup (or weight selection) to reach the ~108× supply match.
 
-The benchmark **markup gradient** is the key calibration lever: it must be steep enough
-that demand per product falls to match supply (firms × capacity = 108:12:1 across
-C-3/C-4/C-5). The formulas above are canon; the exact demand scale, markup curve, and
-elasticity are calibration.
+The `quantityFactor ∝ supply` shape and the flat first-guess markup are canon. The
+exact `tier2DemandFactor`, the `baseQty` range, and the offer-sampling counts are
+calibration (§12.5).
 
 ---
 
@@ -320,8 +324,8 @@ values**; the demand-side *scale* is **calibration** (not frozen).
 ### 12.5 Deferred / calibration
 
 - **Deferred (not implemented)**: storage rent, machinery-as-good, financing, advertising.
-- **Calibration (not frozen)**: the demand scale (`tier2DemandFactor` and the `∝`
-  constant), the markup curve, `baseQty` range, and offer-sampling counts.
+- **Calibration (not frozen)**: `tier2DemandFactor` (the demand tightness / equilibrium
+  markup), the `baseQty` range, and offer-sampling counts.
 
 ### 12.6 Pricing (per tick, derivative-following)
 
@@ -333,9 +337,8 @@ guardrails** only prevent degenerate values, and the simulation must never settl
 `MIN_UNIT_PRICE = 1e-5` (floor) and `MAX_UNIT_PRICE = 1e9` (ceiling). Every price is
 quoted in **whole cents** (rounded half away from zero via `round_to_cent`).
 
-**Initial price (tick 0)** — the first-guess markup from §5:
-`P₀ = unitCost × (1 + markup)`, with markup = `markup` (T0), `t1Markup` (T1),
-`t2MarkupBase × t2MarkupExponent^(c−3)` (T2).
+**Initial price (tick 0)** — the flat first-guess markup from §5:
+`P₀ = unitCost × (1 + t1Markup)`, with `t1Markup = 0.25` for every tier.
 
 **Observation cadence.** A price is re-evaluated only when
 `(tick + index) % priceObservationTicks == 0` and it has been observed at least once

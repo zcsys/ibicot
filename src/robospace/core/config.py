@@ -49,8 +49,6 @@ def default_cfg() -> dict:
         't2Capacity': {3: 300.0, 4: 200.0, 5: 100.0},
         't2MaterialCost': 1.25,         # $1.25 per T1 material item
         'conversionFactor': 0.25,       # conversion = 0.25 × max(1, c−1) for all tiers
-        't2MarkupBase': 0.25,           # markup = 0.25 × 5^(c−3)
-        't2MarkupExponent': 5.0,
 
         # Storage (firm-level pool, raw + finished + machinery)
         'storage': 20_000.0,
@@ -64,7 +62,7 @@ def default_cfg() -> dict:
         'vmin': 0.9,
         'vmax': 1.5,
         'elasticity': 2.0,              # eta = 2
-        'tier2DemandFactor': 1.0,
+        'tier2DemandFactor': 2.8,       # global demand tightness (sets equilibrium markup)
         'tier2ReservationPremium': 0.0,
 
         # Market / pricing / reliability
@@ -141,9 +139,8 @@ def normalize_config(c) -> dict:
     d['t1Markup'] = max(0, d['t1Markup'])
 
     # Tier 2
-    for key in ('t2Equity', 't2License', 't2MaterialCost', 'conversionFactor', 't2MarkupBase'):
+    for key in ('t2Equity', 't2License', 't2MaterialCost', 'conversionFactor'):
         d[key] = max(0.000001, d[key])
-    d['t2MarkupExponent'] = max(1, d['t2MarkupExponent'])
     _clamp_mapping(d, 't2Machinery', 1)
     _clamp_mapping(d, 't2Capacity', 1)
     _clamp_mapping(d, 'footprint', 0)

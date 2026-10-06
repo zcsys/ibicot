@@ -66,6 +66,8 @@ N2_FIRMS = 60000            # canon: 60,000 single-machine T2 firms (was 61,950)
 N_END_USERS = WORLD_STORY['population']          # 1,000,000
 MAX_T2_LINES = N2_FIRMS     # one machine/line per firm at start
 MONTH = TIME['ticksPerMonth']                     # 30
+# Firms per product by complexity (canon §3): C-3 1,800 · C-4 300 · C-5 50.
+T2_FIRMS_PER_PRODUCT = {3: 1800, 4: 300, 5: 50}
 
 # Supply-side scale values (equity, license, machinery, capacity, costs, storage)
 # live in ``core/config.py``.  The model exposes cfg-driven helpers so the kernel,
@@ -84,10 +86,11 @@ def unit_cost(complexity: int, cfg) -> float:
 
 
 def t2_markup(complexity: int, cfg) -> float:
-    # canon first-guess markup: T1 flat; T2 base × exponent^(c−3)
-    if complexity <= 2:
-        return cfg['t1Markup']
-    return cfg['t2MarkupBase'] * (cfg['t2MarkupExponent'] ** (complexity - 3))
+    # First-guess markup is uniform across tiers/complexities (flat 0.25): the
+    # complexity gradient lives in the demand *volume* (quantityFactor ∝ supply),
+    # not in the seed price.  Prices then rise to their own equilibrium via the
+    # derivative-following pricer.
+    return cfg['t1Markup']
 
 
 def goods_space(complexity: int, cfg) -> float:
@@ -233,11 +236,15 @@ def tier2_starting_markup(product, cfg) -> float:
 
 
 def procurement_profile(product, cfg, reference_cost) -> dict:
-    # canon demand side (§5): V = 2 × unit cost; η = 2;
-    # quantityFactor ∝ 1 / (cost × benchmark markup), scaled by tier2DemandFactor.
-    markup = t2_markup(product['complexity'], cfg)
-    return {'markup': markup,
-            'quantityFactor': cfg['tier2DemandFactor'] / (reference_cost * markup),
+    # canon demand side (§5): V = 2 × unit cost; η = 2.
+    # quantityFactor is proportional to *supply* (firms × capacity, the 108:12:1
+    # ratio), so at any common markup demand scales with supply and every product
+    # clears at the same utilization.  The global tier2DemandFactor sets the
+    # tightness, hence the equilibrium markup the pricer discovers.
+    c = product['complexity']
+    supply = T2_FIRMS_PER_PRODUCT[c] * cfg['t2Capacity'][c]
+    return {'markup': cfg['t1Markup'],
+            'quantityFactor': cfg['tier2DemandFactor'] * supply / 5000.0,
             'valuation': 2.0 * reference_cost}
 
 
