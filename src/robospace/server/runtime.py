@@ -677,11 +677,12 @@ class KernelRuntime:
                 continue
             if q['controller'] and q['controller'] != control:
                 continue
-            text = T2_COMPANY_NAMES[int(W.t2Sector[id_])] + ' ' + str(id_ + 1).zfill(5) + ' ' + sector + ' ' + control
-            for slot in range(int(W.t2FirmLineCount[id_])):
-                text += ' ' + M.T2_PRODUCTS[int(W.t2LineProduct[int(W.t2FirmLines[id_ * M4 + slot])])]['name']
-            if search and search not in text.lower():
-                continue
+            if search:
+                text = T2_COMPANY_NAMES[int(W.t2Sector[id_])] + ' ' + str(id_ + 1).zfill(5) + ' ' + sector + ' ' + control
+                for slot in range(int(W.t2FirmLineCount[id_])):
+                    text += ' ' + M.T2_PRODUCTS[int(W.t2LineProduct[int(W.t2FirmLines[id_ * M4 + slot])])]['name']
+                if search not in text.lower():
+                    continue
             matches.append(id_)
         if q['sort'] != 'id':
             vals = {x: self._tier2_company(x, False)[q['sort']] for x in matches}
@@ -954,62 +955,82 @@ class KernelRuntime:
                                    'stockUnmet': float(W.endStockUnmet[NP + p['id']]),
                                    'fillRate': float(W.endFulfilled[NP + p['id']] / W.endActive[NP + p['id']]) if W.endActive[NP + p['id']] else 0.0})
         lc = int(W.t2LineCount)
-        for line in range(lc):
-            st = t2ProductStats[int(W.t2LineProduct[line])]
-            st['firms'] += 1
-            st['avgPrice'] += W.t2Price[line]
-            st['readyStock'] += W.t2Fin[line]
-            st['made'] += W.t2Made[line]
-            st['avgUnitCost'] += (W.t2FinBasis[line] or W.t2UnitCost[line])
-            st['productionCapacity'] += M.T2_PRODUCTS[int(W.t2LineProduct[line])]['capacity']
-            st['sold'] += W.t2Sold[line]
-            st['revenue'] += W.t2Revenue[line]
-            st['cogs'] += W.t2COGS[line]
-            st['reliability'] += W.t2Rel[line]
-            st['hhi'] += W.t2Sold[line] ** 2
-        for st in t2ProductStats:
-            f = max(1, st['firms'])
-            st['avgPrice'] /= f
-            st['reliability'] /= f
-            st['avgUnitCost'] /= f
-            st['hhi'] = st['hhi'] / st['sold'] ** 2 if st['sold'] else 0.0
-            st['grossProfit'] = st['revenue'] - st['cogs']
-            st['margin'] = st['grossProfit'] / st['revenue'] if st['revenue'] else 0.0
-            st['utilization'] = st['made'] / st['productionCapacity'] if st['productionCapacity'] else 0.0
+        t2_cap = np.array([p['capacity'] for p in M.T2_PRODUCTS], dtype=np.float64)
+        if lc:
+            pid = W.t2LineProduct[:lc].astype(np.int64)
+            sold = W.t2Sold[:lc]
+            finb = W.t2FinBasis[:lc]
+            ucost = np.where(finb != 0.0, finb, W.t2UnitCost[:lc])
+            firms = np.bincount(pid, minlength=200).astype(np.float64)
+            avg_price = np.bincount(pid, weights=W.t2Price[:lc], minlength=200)
+            ready_stock = np.bincount(pid, weights=W.t2Fin[:lc], minlength=200)
+            made_s = np.bincount(pid, weights=W.t2Made[:lc], minlength=200)
+            avg_uc = np.bincount(pid, weights=ucost, minlength=200)
+            prod_cap = np.bincount(pid, weights=t2_cap[pid], minlength=200)
+            sold_s = np.bincount(pid, weights=sold, minlength=200)
+            rev_s = np.bincount(pid, weights=W.t2Revenue[:lc], minlength=200)
+            cogs_s = np.bincount(pid, weights=W.t2COGS[:lc], minlength=200)
+            rel_s = np.bincount(pid, weights=W.t2Rel[:lc], minlength=200)
+            hhi_s = np.bincount(pid, weights=sold * sold, minlength=200)
+            for i, st in enumerate(t2ProductStats):
+                f = firms[i]
+                st['firms'] = int(f)
+                st['avgPrice'] = float(avg_price[i] / f) if f else 0.0
+                st['readyStock'] = float(ready_stock[i])
+                st['made'] = float(made_s[i])
+                st['avgUnitCost'] = float(avg_uc[i] / f) if f else 0.0
+                st['productionCapacity'] = float(prod_cap[i])
+                st['sold'] = float(sold_s[i])
+                st['revenue'] = float(rev_s[i])
+                st['cogs'] = float(cogs_s[i])
+                st['reliability'] = float(rel_s[i] / f) if f else 0.0
+                st['hhi'] = float(hhi_s[i] / (sold_s[i] ** 2)) if sold_s[i] else 0.0
+                st['grossProfit'] = st['revenue'] - st['cogs']
+                st['margin'] = st['grossProfit'] / st['revenue'] if st['revenue'] else 0.0
+                st['utilization'] = st['made'] / st['productionCapacity'] if st['productionCapacity'] else 0.0
+
+        n2 = cfg['t2FirmCount']
+        sector = W.t2Sector[:n2].astype(np.int64)
+        firms = np.bincount(sector, minlength=10).astype(np.float64)
+        players = np.bincount(sector, weights=W.t2Controller[:n2].astype(np.float64), minlength=10)
+        online = np.bincount(sector, weights=(W.t2Controller[:n2] & W.t2Online[:n2]).astype(np.float64), minlength=10)
+        cash = np.bincount(sector, weights=W.t2Cash[:n2], minlength=10)
+        eqbook = np.bincount(sector, weights=W.t2EqBook[:n2], minlength=10)
+        raw = np.zeros(10)
+        eq_raw = np.zeros(10)
+        for mat in range(NP):
+            if mat < NE:
+                q = W.t2Raw[mat::NE][:n2]
+                b = W.t2RawBasis[mat::NE][:n2]
+            else:
+                q = W.t2T1Raw[mat::NP][:n2]
+                b = W.t2T1Basis[mat::NP][:n2]
+            raw += np.bincount(sector, weights=q, minlength=10)
+            eq_raw += np.bincount(sector, weights=q * b, minlength=10)
+        line_firm = W.t2LineFirm[:lc].astype(np.int64)
+        line_sector = sector[line_firm]
+        lines = np.bincount(line_sector, minlength=10).astype(np.float64)
+        inventory = np.bincount(line_sector, weights=W.t2Fin[:lc], minlength=10)
+        made = np.bincount(line_sector, weights=W.t2Made[:lc], minlength=10)
+        sold = np.bincount(line_sector, weights=W.t2Sold[:lc], minlength=10)
+        rev = np.bincount(line_sector, weights=W.t2Revenue[:lc], minlength=10)
+        cogs = np.bincount(line_sector, weights=W.t2COGS[:lc], minlength=10)
+        gross = rev - cogs
+        capacity = np.bincount(line_sector, weights=t2_cap[W.t2LineProduct[:lc].astype(np.int64)], minlength=10)
+        eq_fin = np.bincount(line_sector, weights=W.t2Fin[:lc] * W.t2FinBasis[:lc], minlength=10)
+        equity = cash + eqbook + eq_raw + eq_fin + firms * M.LICENSE
 
         t2Cohorts = []
-        for name in M.T2_SECTORS:
-            t2Cohorts.append({'name': name, 'firms': 0, 'lines': 0, 'players': 0, 'online': 0, 'cash': 0.0,
-                              'equity': 0.0, 'equipmentBookValue': 0.0, 'raw': 0.0, 'inventory': 0.0,
-                              'capacity': 0.0, 'made': 0.0, 'sold': 0.0, 'revenue': 0.0, 'cogs': 0.0, 'grossProfit': 0.0})
-        for firm in range(cfg['t2FirmCount']):
-            c = t2Cohorts[int(W.t2Sector[firm])]
-            c['firms'] += 1
-            c['cash'] += W.t2Cash[firm]
-            c['players'] += int(W.t2Controller[firm])
-            c['online'] += 1 if (W.t2Controller[firm] and W.t2Online[firm]) else 0
-            c['equipmentBookValue'] += W.t2EqBook[firm]
-            c['equity'] += W.t2Cash[firm] + W.t2EqBook[firm]
-            for material in range(NP):
-                basic = material < NE
-                idx = firm * (NE if basic else NP) + material
-                q = (W.t2Raw if basic else W.t2T1Raw)[idx]
-                c['raw'] += q
-                c['equity'] += q * (W.t2RawBasis if basic else W.t2T1Basis)[idx]
-            for slot in range(int(W.t2FirmLineCount[firm])):
-                line = int(W.t2FirmLines[firm * M4 + slot])
-                c['lines'] += 1
-                c['inventory'] += W.t2Fin[line]
-                c['made'] += W.t2Made[line]
-                c['sold'] += W.t2Sold[line]
-                c['capacity'] += M.T2_PRODUCTS[int(W.t2LineProduct[line])]['capacity']
-                c['equity'] += W.t2Fin[line] * W.t2FinBasis[line]
-                c['revenue'] += W.t2Revenue[line]
-                c['cogs'] += W.t2COGS[line]
-                c['grossProfit'] += W.t2Revenue[line] - W.t2COGS[line]
-        for c in t2Cohorts:
-            c['utilization'] = c['made'] / c['capacity'] if c['capacity'] else 0.0
-            c['margin'] = c['grossProfit'] / c['revenue'] if c['revenue'] else 0.0
+        for s in range(10):
+            t2Cohorts.append({
+                'name': M.T2_SECTORS[s], 'firms': int(firms[s]), 'lines': int(lines[s]),
+                'players': int(players[s]), 'online': int(online[s]), 'cash': float(cash[s]),
+                'equity': float(equity[s]), 'equipmentBookValue': float(eqbook[s]),
+                'raw': float(raw[s]), 'inventory': float(inventory[s]), 'capacity': float(capacity[s]),
+                'made': float(made[s]), 'sold': float(sold[s]), 'revenue': float(rev[s]),
+                'cogs': float(cogs[s]), 'grossProfit': float(gross[s]),
+                'utilization': float(made[s] / capacity[s]) if capacity[s] else 0.0,
+                'margin': float(gross[s] / rev[s]) if rev[s] else 0.0})
 
         def summarize_markets(products, name):
             s = {'name': name, 'products': len(products), 'lines': 0, 'capacity': 0.0, 'readyStock': 0.0,

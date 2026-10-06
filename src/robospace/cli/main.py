@@ -30,13 +30,17 @@ def run_headless(seed, ticks, cfg_overrides, out):
     cfg['seed'] = seed
     cfg, W = reset_world(cfg)
     state = {}
+    # Warm the Numba JIT with one throwaway tick before timing, so the reported
+    # rate is steady-state rather than dominated by first-tick compilation.
+    tick(W, cfg, 1, state=state)
     t0 = time.time()
-    for t in range(1, ticks + 1):
+    for t in range(2, ticks + 1):
         tick(W, cfg, t, state=state)
         if ticks <= 20 or t % 30 == 0 or t == ticks:
             _summary(W, cfg, t)
     elapsed = time.time() - t0
-    print(f'ran {ticks} ticks in {elapsed:.1f}s ({ticks / elapsed:.2f} ticks/s)')
+    timed = max(1, ticks - 1)
+    print(f'ran {ticks} ticks in {timed / elapsed:.2f} ticks/s (steady-state, JIT warmed)')
     if out:
         save_checkpoint(out, cfg, ticks, W, state)
         print(f'checkpoint written to {out}.npz / {out}.json')

@@ -190,10 +190,12 @@ async def _run_loop(ws: WebSocket, rt: KernelRuntime):
             await ws.send_json({'type': 'snapshot', 'data': rt.lastSnapshot})
             delay = 0.002
         else:
+            started = time.monotonic()
             rt.step()
             rt.publish()
             await ws.send_json({'type': 'snapshot', 'data': rt.lastSnapshot})
-            delay = 0.5
+            # Nominal 2 ticks/s: wait the remainder of a 500 ms period.
+            delay = max(0.02, 0.5 - (time.monotonic() - started))
         try:
             pending = await asyncio.wait_for(ws.receive_json(), timeout=delay)
             if pending.get('type') in ('pause', 'reset', 'init'):
