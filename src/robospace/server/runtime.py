@@ -8,8 +8,11 @@ they are fast and need not match the JS sequential-summation order bit-for-bit.
 """
 from __future__ import annotations
 
+import json
 import math
+import os
 import time
+from pathlib import Path
 
 import numpy as np
 
@@ -19,6 +22,9 @@ from ..core.rng import hash_seed
 from ..core.state import (T0P, T1P, WorldState, _has_tier2_product, add_tier2_line,
                           quant_r, quant_w, reset_world)
 from ..kernel.tick import tick as run_tick
+
+_STATS_DIR = Path(__file__).resolve().parents[3] / 'stats'
+_T2_COMP = np.array([p['complexity'] for p in M.T2_PRODUCTS], dtype=np.int64)
 
 NE, NP, N0, N1 = M.NE, M.NP, M.N0, M.N1
 M4 = M.T2_MAX_PRODUCTS_PER_FIRM
@@ -99,6 +105,11 @@ class KernelRuntime:
         self.ownershipEnforced = True
         self.tier2Query = {'page': 0, 'pageSize': 50, 'search': '', 'sector': '',
                            'controller': '', 'sort': 'id', 'descending': False}
+        self.statsLog = []
+        self.statsPath = _STATS_DIR / 'generation_run.jsonl'
+        # Auto-pause once this tick is reached (0 = run until paused).  1
+        # generation = 20 years = 240 months = 7,200 ticks.
+        self.targetTick = int(os.environ.get('ROBOSPACE_MAX_TICK', '0') or 0)
 
         self.cfg, self.W = reset_world(cfg)
         self._init_admin()
@@ -130,6 +141,12 @@ class KernelRuntime:
         self.tick = 0
         self.month = 0
         self.running = False
+        self.statsLog = []
+        try:
+            _STATS_DIR.mkdir(parents=True, exist_ok=True)
+            self.statsPath.write_text('')
+        except Exception:
+            pass
         self.playerLicenses = set(M.PROGRESSION_DEFAULTS['startingLicenses'])
         self.playerHouse = None
         self.ownershipAccounting = {'licensesSpent': 0, 'houseSpent': 0}
@@ -167,6 +184,12 @@ class KernelRuntime:
         self.workerStats['steps'] += 1
         self.workerStats['lastTickMs'] = (time.monotonic() - started) * 1000
         self.workerStats['totalTickMs'] += self.workerStats['lastTickMs']
+        self._record_stats()
+        if len(self.statsLog) >= 30:
+            self.flush_stats()
+        if self.targetTick and self.tick >= self.targetTick:
+            self.flush_stats()
+            self.running = False
 
     def run(self, mode='fixed'):
         self.mode = mode
@@ -174,6 +197,50 @@ class KernelRuntime:
 
     def pause(self):
         self.running = False
+        self.flush_stats()
+
+    def _record_stats(self):
+        W = self.W
+        lc = int(W.t2LineCount)
+        pid = W.t2LineProduct[:lc].astype(np.int64)
+        comp = _T2_COMP[pid]
+        t2_price = W.t2Price[:lc]
+        t2_sold = W.t2Sold[:lc]
+        t2_made = W.t2Made[:lc]
+        t0p = W.t0Price
+        t1p = W.t1Price
+        row = {'tick': self.tick, 'month': self.month, 'year': self.month // 12 + 1,
+               'gen': self.month // 240 + 1}
+        m = np.isfinite(t0p)
+        row['t0Price'] = round(float(t0p[m].mean()), 4) if m.any() else None
+        m = np.isfinite(t1p)
+        row['t1Price'] = round(float(t1p[m].mean()), 4) if m.any() else None
+        for c in (3, 4, 5):
+            sel = comp == c
+            cap = float(self.cfg['t2Capacity'][c])
+            if sel.any():
+                row[f'c{c}Price'] = round(float(t2_price[sel].mean()), 4)
+                row[f'c{c}Util'] = round(float(t2_sold[sel].sum() / (cap * sel.sum())), 4)
+                row[f'c{c}Made'] = float(t2_made[sel].sum())
+            else:
+                row[f'c{c}Price'] = row[f'c{c}Util'] = None
+                row[f'c{c}Made'] = 0.0
+        row['t2Cash'] = float(W.t2Cash[:self.cfg['t2FirmCount']].sum())
+        row['t2Equity'] = float(W.t2Cash[:self.cfg['t2FirmCount']].sum()
+                                + W.t2EqBook[:self.cfg['t2FirmCount']].sum()
+                                + self.cfg['t2FirmCount'] * self.cfg['t2License'])
+        row['consumersActive'] = float(W.endActive.sum())
+        row['consumersFulfilled'] = float(W.endFulfilled.sum())
+        self.statsLog.append(row)
+
+    def flush_stats(self):
+        if not self.statsLog:
+            return
+        _STATS_DIR.mkdir(parents=True, exist_ok=True)
+        with open(self.statsPath, 'a') as f:
+            for row in self.statsLog:
+                f.write(json.dumps(row) + '\n')
+        self.statsLog.clear()
 
     # ------------------------------------------------------------------
     # Live config
