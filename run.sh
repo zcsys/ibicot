@@ -63,7 +63,13 @@ case "${1:-}" in
     URL="http://${HOST}:${PORT}/index.html"
     echo "Backend + UI:  ${URL}"
     echo "WebSocket:     ws://${HOST}:${PORT}/ws   (keep this window open; Ctrl+C to stop)"
-    ( sleep 1.5
+    # Open the browser only once the backend is actually listening (the JIT
+    # warm-up delays uvicorn by ~10 s, so a fixed sleep opens too early).
+    (
+      for _ in $(seq 1 90); do
+        if curl -s -o /dev/null "http://${HOST}:${PORT}/health" 2>/dev/null; then break; fi
+        sleep 1
+      done
       if command -v open >/dev/null 2>&1; then open "$URL"
       elif command -v xdg-open >/dev/null 2>&1; then xdg-open "$URL"; fi
     ) &
