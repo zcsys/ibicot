@@ -89,9 +89,10 @@ curve, and offer-sampling counts.
   T1 input purchase → T1 manufacture → pricing → T2 buy/make/price → end-user
   clearing → observe/reliability. Monthly reliability and the calendar follow the
   canon's 30-tick month.
-- **Numba**: the three hot phases (T2 buy/make/price, end-user clearing,
-  observation) are `@njit` in `kernel/fast.py`; full-population steady state is
-  ~0.25 s/tick.
+- **Numba + vectorized RNG**: the hot phases (T1 purchase, T2 buy/make/price,
+  end-user clearing, observation) are `@njit` in `kernel/fast.py`, and the
+  SplitMix32 RNG has a bit-exact vectorized form (`rng.random_vec`); full-population
+  steady state is ~0.14 s/tick.
 - **Checkpoints**: `.npz` + JSON sidecar, byte-identical round-trip.
 
 ## Tests

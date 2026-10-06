@@ -71,6 +71,27 @@ def procurement_arrays(cfg):
     return qf, val
 
 
+# Flat Tier 0 profiles and Tier 1 product structure (for the Numba T1 kernel).
+from ..core.state import T0P as _T0P  # noqa: E402
+_EI = {e: i for i, e in enumerate(M.ELEMENTS)}
+PROF_HAS = np.zeros((N0, NE), dtype=np.int8)
+PROF_N = np.zeros(N0, dtype=np.int64)
+for _s, _prof in enumerate(_T0P):
+    PROF_N[_s] = len(_prof['elements'])
+    for _e in _prof['element_indices']:
+        PROF_HAS[_s, _e] = 1
+T1_INPUT_RATIO = np.zeros((NP, NE), dtype=np.float64)
+T1_OUTPUT = np.zeros(NP, dtype=np.int64)
+T1_TARGET = np.zeros(NP, dtype=np.float64)
+T1_IS_BASIC = np.zeros(NP, dtype=np.int8)
+for _pi, _p in enumerate(M.PRODUCTS):
+    for _e, _r in _p['inputs'].items():
+        T1_INPUT_RATIO[_pi, _EI[_e]] = float(_r)
+    T1_OUTPUT[_pi] = int(_p['outputQty'])
+    T1_TARGET[_pi] = M.inventory_target(_p['complexity'])
+    T1_IS_BASIC[_pi] = 1 if len(_p['inputs']) == 1 else 0
+
+
 def _flatten(offers):
     flat = []
     off = [0]
@@ -640,6 +661,178 @@ if _HAVE_NUMBA:
             t2_learn_stock[i] = t2_fin[i]
             t2_month_sold[i] += t2_sales[i]
 
+    @_njit
+    def _tier0_supplier_nb(seed, tick, buyer, e, preferred, prof_has, prof_n, t0_price, t0_rel,
+                           t0_inv, min_lot, taumin, taumax):
+        eff = np.empty(N0, dtype=np.float64)
+        empty_price = 1.7976931348623157e308
+        best = 1.7976931348623157e308
+        for s in range(N0):
+            if prof_has[s, e] == 0:
+                eff[s] = float('nan')
+                continue
+            q = t0_price[s * NE + e]
+            if not math.isfinite(q):
+                eff[s] = float('nan')
+                continue
+            fric = 0.0
+            if s != preferred:
+                r = t0_rel[preferred * NE + e] if preferred >= 0 else 0.5
+                if r < 0.0:
+                    r = 0.0
+                elif r > 1.0:
+                    r = 1.0
+                fric = taumin + (taumax - taumin) * r
+            eff[s] = q + fric
+            if eff[s] < empty_price - 1e-12:
+                empty_price = eff[s]
+            if t0_inv[s * NE + e] >= min_lot and eff[s] < best - 1e-12:
+                best = eff[s]
+        has_stocked = best < 1.7976931348623157e308
+        tied_eff = best if has_stocked else empty_price
+        if tied_eff == 1.7976931348623157e308:
+            return -1
+        total = 0.0
+        for s in range(N0):
+            if not math.isfinite(eff[s]) or abs(eff[s] - tied_eff) > 1e-12:
+                continue
+            if has_stocked:
+                if t0_inv[s * NE + e] >= min_lot:
+                    total += 1.0 / prof_n[s]
+            else:
+                total += 1.0 / prof_n[s]
+        if total == 0.0:
+            return -1
+        draw = _rand(seed, tick, buyer + 12000000 + e * 1300000) * total
+        last = -1
+        for s in range(N0):
+            if not math.isfinite(eff[s]) or abs(eff[s] - tied_eff) > 1e-12:
+                continue
+            is_stocked = t0_inv[s * NE + e] >= min_lot
+            if (has_stocked and is_stocked) or (not has_stocked):
+                last = s
+                draw -= 1.0 / prof_n[s]
+                if draw < 0.0:
+                    return s
+        return last
+
+    @_njit
+    def _plan_and_buy_inputs_nb(
+        seed, tick, min_lot, manufacturing_cost, base_cost, basic_cap, compound_cap,
+        tier1_inventory_capacity, taumin, taumax,
+        t0_price, t0_inv, t0_inv_basis, t0_rel, t0_cash, t0_req, t0_funded_req,
+        t0_opportunities, t0_demand, t0_rel_attempts, t0_rel_fulfilled, t0_rel_checks,
+        t0_rel_available, t0_sold, t0_revenue, t0_cogs, t0_ful, difficulty,
+        t1_cash, t1_fin, t1_fin_basis, t1_price, t1_replacement_cost, t1_operates,
+        t1_input_need, t1_purchase_req, t1_last_buy, t1_bought, raw, raw_basis,
+        preferred_wholesale, prof_has, prof_n, t1_input_ratio, t1_output, t1_target, t1_is_basic):
+        t0_req[:] = 0.0
+        t0_funded_req[:] = 0.0
+        first_cohort = tick % NP
+        first_firm = (tick * 37) % 100
+        for rnd in range(100):
+            for cohort_order in range(NP):
+                cohort = (first_cohort + cohort_order) % NP
+                company = cohort * 100 + ((first_firm + rnd) % 100)
+                raw_base = company * NE
+                product_base = company * NP
+                suppliers = np.empty(NE, dtype=np.int64)
+                for e in range(NE):
+                    suppliers[e] = _tier0_supplier_nb(
+                        seed, tick, company, e, preferred_wholesale[raw_base + e],
+                        prof_has, prof_n, t0_price, t0_rel, t0_inv, min_lot, taumin, taumax)
+                for p in range(NP):
+                    if t1_operates[product_base + p] == 0:
+                        continue
+                    cap = basic_cap if t1_is_basic[p] == 1 else compound_cap
+                    output_qty = t1_output[p]
+                    target = t1_target[p]
+                    desired = cap
+                    d2 = target - t1_fin[product_base + p]
+                    if d2 < desired:
+                        desired = d2
+                    if desired < 0.0:
+                        desired = 0.0
+                    replacement = manufacturing_cost
+                    for e in range(NE):
+                        ratio = t1_input_ratio[p, e]
+                        if ratio == 0.0:
+                            continue
+                        supplier = suppliers[e]
+                        q = t0_price[supplier * NE + e] if supplier >= 0 else t1_last_buy[raw_base + e]
+                        raw_need = desired * ratio / output_qty
+                        stocked = raw_need
+                        if raw[raw_base + e] < stocked:
+                            stocked = raw[raw_base + e]
+                        if desired > 0:
+                            qq = q if math.isfinite(q) else base_cost * difficulty[e]
+                            replacement += (stocked * raw_basis[raw_base + e] + (raw_need - stocked) * qq) / desired
+                        else:
+                            replacement += (ratio / output_qty) * (q if math.isfinite(q) else raw_basis[raw_base + e])
+                    t1_replacement_cost[product_base + p] = replacement
+                    if desired > 0 and replacement > t1_price[product_base + p] + 1e-9:
+                        continue
+                    for e in range(NE):
+                        ratio = t1_input_ratio[p, e]
+                        if ratio == 0.0:
+                            continue
+                        need = desired * ratio / output_qty - raw[raw_base + e]
+                        if need < 0.0:
+                            need = 0.0
+                        if need > 0.0:
+                            t1_input_need[raw_base + e] += need if need > min_lot else min_lot
+                for e in range(NE):
+                    need = t1_input_need[raw_base + e]
+                    if need <= 0.0:
+                        continue
+                    request = math.ceil(need / min_lot) * min_lot
+                    t1_purchase_req[raw_base + e] = request
+                    t0_req[e] += request
+                    chosen = suppliers[e]
+                    if chosen < 0:
+                        continue
+                    supplier_index = chosen * NE + e
+                    quote = t0_price[supplier_index]
+                    if quote < 0.0:
+                        quote = 0.0
+                    affordable = math.floor(max(0.0, t1_cash[company]) / max(1e-9, quote))
+                    available = math.floor(max(0.0, t0_inv[supplier_index]))
+                    held = 0.0
+                    for material in range(NE):
+                        held += raw[raw_base + material]
+                    for output in range(NP):
+                        held += t1_fin[product_base + output]
+                    storage_room = math.floor(max(0.0, tier1_inventory_capacity - held) / min_lot) * min_lot
+                    funded = min(request, affordable, storage_room)
+                    funded = math.floor(funded / min_lot) * min_lot
+                    t0_funded_req[e] += funded
+                    if funded > 0:
+                        t0_opportunities[e] += 1
+                    t0_demand[supplier_index] += funded
+                    bought = min(funded, available)
+                    bought = math.floor(bought / min_lot) * min_lot
+                    attempt = 1 if request > 0 else 0
+                    t0_rel_attempts[supplier_index] += attempt
+                    t0_rel_fulfilled[supplier_index] += attempt if bought >= request else 0
+                    t0_rel_checks[supplier_index] += attempt
+                    t0_rel_available[supplier_index] += attempt if available >= request else 0
+                    if bought <= 0:
+                        continue
+                    old_raw = raw[raw_base + e]
+                    old_basis = raw_basis[raw_base + e]
+                    payment = bought * quote
+                    raw[raw_base + e] = old_raw + bought
+                    t1_bought[company] += bought
+                    raw_basis[raw_base + e] = (old_basis * old_raw + payment) / (old_raw + bought) if old_raw + bought > 0 else 0.0
+                    t1_last_buy[raw_base + e] = quote
+                    t1_cash[company] -= payment
+                    t0_cash[chosen] += payment
+                    t0_inv[supplier_index] -= bought
+                    t0_sold[supplier_index] += bought
+                    t0_revenue[supplier_index] += payment
+                    t0_cogs[supplier_index] += bought * t0_inv_basis[supplier_index]
+                    t0_ful[e] += bought
+                    preferred_wholesale[raw_base + e] = chosen
 
 # --------------------------------------------------------------------------
 # Python wrappers (flatten + dispatch).
@@ -659,6 +852,19 @@ def observe_markets_fast(W, cfg, profiles):
         W.t2Demand, W.t2Sold, W.t2DemandEMA, W.t2SalesEMA, W.t2Revenue, W.t2COGS,
         W.t2LearnProfit, W.t2LearnSales, W.t2LearnTicks, W.t2LearnDemand, W.t2LearnStock, W.t2Fin,
         W.t2MonthSold)
+
+
+def plan_and_buy_inputs_fast(W, cfg, tick):
+    _plan_and_buy_inputs_nb(
+        cfg['seed'], tick, cfg['minWholesaleLot'], cfg['manufacturingCostPerUnit'],
+        cfg['baseCost'], cfg['basicEquipmentCapacity'], cfg['compoundEquipmentCapacity'],
+        float(cfg['tier1InventoryCapacity']), float(cfg['taumin']), float(cfg['taumax']),
+        W.t0Price, W.t0Inv, W.t0InvBasis, W.t0Rel, W.t0Cash, W.t0Req, W.t0FundedReq,
+        W.t0Opportunities, W.t0Demand, W.t0RelAttempts, W.t0RelFulfilled, W.t0RelChecks,
+        W.t0RelAvailable, W.t0Sold, W.t0Revenue, W.t0COGS, W.t0Ful, W.difficulty,
+        W.t1Cash, W.t1Fin, W.t1FinBasis, W.t1Price, W.t1ReplacementCost, W.t1Operates,
+        W.t1InputNeed, W.t1PurchaseReq, W.t1LastBuy, W.t1Bought, W.raw, W.rawBasis,
+        W.preferredWholesale, PROF_HAS, PROF_N, T1_INPUT_RATIO, T1_OUTPUT, T1_TARGET, T1_IS_BASIC)
 
 
 def tier2_buy_make_price_fast(W, cfg, tick):

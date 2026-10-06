@@ -13,6 +13,8 @@ from __future__ import annotations
 
 import math
 
+import numpy as _np
+
 MASK = 0xFFFFFFFF
 
 
@@ -45,6 +47,32 @@ mix = _mix_impl
 random_ = _random_impl
 normal_ = _normal_impl
 hash_seed = _hash_seed_impl
+
+
+# --------------------------------------------------------------------------
+# Vectorized SplitMix32 (bit-exact with the scalar forms, for matrix work).
+# --------------------------------------------------------------------------
+_U64 = _np.uint64
+_M64 = _U64(MASK)
+_K1 = _U64(0x85EBCA6B)
+_K2 = _U64(0xC2B2AE35)
+_K3 = _U64(0x9E3779B1)
+
+
+def mix_vec(x):
+    x = _np.asarray(x, dtype=_np.uint64)
+    with _np.errstate(over='ignore'):
+        x = ((x ^ (x >> _U64(16))) * _K1) & _M64
+        x = ((x ^ (x >> _U64(13))) * _K2) & _M64
+    return (x ^ (x >> _U64(16))) & _M64
+
+
+def random_vec(seed, tick, streams):
+    streams = _np.asarray(streams, dtype=_np.uint64)
+    x = (_U64(seed) & _M64) ^ (((_U64(tick) + _U64(1)) * _K3) & _M64) \
+        ^ (((streams + _U64(1)) * _K1) & _M64)
+    x &= _M64
+    return mix_vec(x).astype(_np.float64) / 4294967296.0
 
 
 try:  # optional acceleration

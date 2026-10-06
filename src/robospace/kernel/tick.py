@@ -980,11 +980,15 @@ def tick(W: WorldState, cfg, tick, products=None, profiles=None, t2_products=Non
     W.equipmentSinks = 0
     update_environment(W, cfg, tick)
     produce_tier0(W, cfg, profiles, tick)
-    plan_and_buy_inputs(W, cfg, products, profiles, tick)
+
+    from . import fast as _fast
+    if _fast._HAVE_NUMBA:
+        _fast.plan_and_buy_inputs_fast(W, cfg, tick)
+    else:
+        plan_and_buy_inputs(W, cfg, products, profiles, tick)
     manufacture(W, cfg, products)
     price_markets(W, cfg, profiles, products, tick)
 
-    from . import fast as _fast
     if _fast._HAVE_NUMBA:
         _fast.tier2_buy_make_price_fast(W, cfg, tick)
         o, f, a, cp = _fast.clear_end_users_fast(W, cfg, tick)
