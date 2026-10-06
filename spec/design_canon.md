@@ -1,14 +1,9 @@
 # Design canon — Robotic Space Generation kernel
 
-> **Status:** settled by review. This is the authoritative design rulebook: it states
-> *what must be true* of the economy kernel and the game's entry into it. It supersedes
-> the earlier "essential core" discussion and, where it conflicts with the current
-> implementation, the canon wins and the implementation is to be brought into line.
->
-> **Companion documents:**
-> - [`economy_contract.md`](economy_contract.md) — the economic *intent, rationale and acceptance criteria*.
-> - [`language_agnostic_contract.md`](language_agnostic_contract.md) — the *as-is* machine transcription of the current JavaScript kernel (state, config, RNG, tick order, commands). It stays valid until the kernel is re-implemented against this canon.
-> - [`technology_strategy.md`](technology_strategy.md) — stack and deployment; [`economy_calibration_status.md`](economy_calibration_status.md) — calibration progress (parameters are not yet frozen).
+> **Status:** settled by review. This is the **single source of truth**: it states
+> *what must be true* of the economy kernel and the game's entry into it, and now also
+> records the settled parameters and the machine contract (§12) so the whole economy is
+> specified in one document. Where it conflicts with any implementation, the canon wins.
 
 ---
 
@@ -59,14 +54,20 @@ Every section below is a consequence of, or a requirement for, that sentence.
   T3 external consumers. No tier bypass. C-1/C-2 belong exclusively to Tier 1;
   C-3/C-4/C-5 exclusively to Tier 2.
 - **Four raw elements:** Water, Earth, Fire, Air.
-- **Ten Tier 1 products:** four basic C-1 + six compound C-2, with their current identities.
+- **Ten Tier 1 products** (four basic C-1 + six compound C-2) made by **1,000 firms**
+  (100 per product cohort).
 - **Twenty Tier 0 firms**, including their **element-coverage spectrum** (2 all-element,
   4 three-element, 6 two-element, 8 single-element extractors).
+- **200 invented Tier 2 products** across ten sectors — 2 C-3 + 6 C-4 + 12 C-5 per sector
+  (the Hamilton apportionment of the 44/116/260 complete pool) — made by **60,000
+  single-machine firms** in the reverse 6:3:1 ratio: **C-3 = 36,000** (20 × 1,800),
+  **C-4 = 18,000** (60 × 300), **C-5 = 6,000** (120 × 50).
+- **1,000,000 Tier 3 consumers** (external procurement agents).
 - **The eight single-element extractors are also special-purpose**: the two Water
   extractors produce **machinery**; the two Earth extractors collect **storage-unit
   rent**; the two Fire extractors provide **financing**; the two Air extractors provide
-  **advertising**. These activate the storage, capital-goods, credit, and
-  visibility layers (mechanics TBD).
+  **advertising**. These four service layers (storage rent, machinery-as-good, credit,
+  and visibility) are **deferred for the PoC** — documented, not active (mechanics TBD).
 - Tier 0 companies are **significantly larger** than Tier 1 or Tier 2 companies.
 
 ---
@@ -77,13 +78,14 @@ Every section below is a consequence of, or a requirement for, that sentence.
   having no "product complexity."
 - **Tier 1 machinery is uniform:** every T1 product line's machinery is **$15K**
   (equity structure in §6). Within Tier 1, complexity differs only in *operations* —
-  throughput falls (C-1 320 vs C-2 240), markup rises (compound premium), demand falls —
-  never in capital.
-- **Tier 2 machinery grows exponentially with complexity** (C-3 < C-4 < C-5). The size
-  gradient lives here: higher complexity ⇒ much larger machinery capital and equity. The
-  exact exponential formula is calibration.
-- **Throughput falls with complexity** within a tier (C-1 > C-2; C-3 > C-4 > C-5).
-  There is no global C-1…C-5 capital ladder: T0 is largest, Tier 1 is flat, Tier 2 rises.
+  throughput is flat at 500, markup rises (compound premium), demand falls — never in
+  capital.
+- **Tier 2 machinery rises with complexity:** C-3 = **$75K**, C-4 = **$375K**, C-5 =
+  **$420K** (Tier 1 flat at $15K). The size gradient lives in Tier 2; higher complexity ⇒
+  larger machinery.
+- **Throughput (per machine, per tick):** Tier 1 is flat — C-1 = C-2 = **500**. Tier 2
+  falls with complexity — C-3 = **300**, C-4 = **200**, C-5 = **100**. One machine = one
+  product line = this capacity; there is no separate "line" concept.
 - **Per-line machinery:** each installed product line owns its own **machinery capital**
   and its own **throughput capacity**, both keyed to the product's complexity, and both
   **summed per company**. A firm's size is the sum of its lines. **At start every company
@@ -95,22 +97,39 @@ Every section below is a consequence of, or a requirement for, that sentence.
   and machinery. Machinery footprint is fixed — C-1/C-2 = 1,000, C-3 = 3,000,
   C-4 = 4,000, C-5 = 5,000 — leaving goods space `G = 20,000 − machinery` for raw and
   finished.
-- **Storage rent:** Tier 0 is fully subsidized (no storage or machinery costs). Tier 1
-  and Tier 2 pay a minuscule per-tick fee per storage space, collected by the two Earth
-  extractors.
+- **Storage rent (deferred for PoC):** Tier 0 is fully subsidized (no storage or
+  machinery costs). Tier 1 and Tier 2 would pay a minuscule per-tick fee per storage
+  space, collected by the two Earth extractors.
 - **Desired inventory = fill `G`:** the whole allocation is paid for, so empty space is
   pure waste. Companies fill the goods space to the brim (bounded by cash and capacity),
   rather than merely covering demand.
-- **Balanced pipeline:** within `G`, raw and finished are held in the recipe's own
-  `N : 1` ratio (each input unit = 1 space, each output unit = 1 space). For a recipe
-  with `N` input units: `finished = G/(N+1)`, `raw = G·N/(N+1)`.
+- **Balanced pipeline:** recipes preserve item count (N inputs → N outputs), so the raw
+  to finished split within `G` is always **1 : 1** — `finished = raw = G/2`.
+- **Cost ladder (count-preserving):** material cost is flat per unit — $1 (T1), $1.25
+  (T2). Conversion cost is `$0.25 × max(1, complexity−1)`: C-1/C-2 $0.25, C-3 $0.50,
+  C-4 $0.75, C-5 $1.00. Unit cost: $1.25 / $1.25 / $1.75 / $2.00 / $2.25.
 
 ---
 
-## 5. Product gradient
+## 5. Product gradient (demand side)
 
-Higher complexity ⇒ **lower demand volume** and **higher unit markup**. The direction is
-canon; the exact demand/markup curves are calibration.
+Higher complexity ⇒ **lower demand volume** and **higher unit markup**.
+
+- **Valuation (choke price):** `V = 2 × unit cost` (cost from §4) — the price at which
+  demand halves. No complexity gradient needed; the rising cost lifts `V` automatically.
+- **Latent quantity:** `qmax = baseQty × quantityFactor`, with
+  `quantityFactor ∝ 1 / (cost × benchmark markup)` — equal benchmark gross-profit
+  opportunity per purchase. One global `tier2DemandFactor` scales the overall level.
+- **Demand curve:** `q(P) = qmax / (1 + (P/V)^η)`, elasticity `η = 2`.
+- **Utilization target:** ~50–70%; the demand scale is calibrated to hit it.
+- **First-guess markup curve:** Tier 1 flat 0.25; Tier 2 `0.25 × 5^(c−3)` (C-3 0.25,
+  C-4 1.25, C-5 6.25), `tier2DemandFactor = 1`. This makes `quantityFactor` fall ~32× from
+  C-3 to C-5; steepen the markup (or weight selection) to reach the ~108× supply match.
+
+The benchmark **markup gradient** is the key calibration lever: it must be steep enough
+that demand per product falls to match supply (firms × capacity = 108:12:1 across
+C-3/C-4/C-5). The formulas above are canon; the exact demand scale, markup curve, and
+elasticity are calibration.
 
 ---
 
@@ -135,10 +154,10 @@ cash as the residual:
 | Tier 1 (all 10 types) | $1m | $15k | $485k | $1.5m |
 | Tier 2 — C-3 | $1m | $75k | $425k | $1.5m |
 | Tier 2 — C-4 | $1m | $375k | $125k | $1.5m |
-| Tier 2 — C-5 | $1m | $1.875m | $1.625m | $4.5m |
+| Tier 2 — C-5 | $1m | $420k | $80k | $1.5m |
 
-The machinery ladder is `$15k × 5^max(0, c−2)`. Tier 0 ($10m) remains the largest single
-company; C-5 ($4.5m) is the largest Tier 2 company.
+The machinery ladder is $15k (T1 flat) / $75k / $375k / $420k. Every Tier 1 and Tier 2
+company starts at $1.5m; only Tier 0 ($10m) is larger.
 
 **Fairness is carried by the rate, not the stake.** Equity (stake) and capital
 (machinery) are different things, and the tiers differ in *size* by design. What must be
@@ -189,13 +208,12 @@ not the absolute equity.
 Everything in §2–§8 is **canon** (design law). The following are **calibration**
 (numbers to be determined, not design):
 
-- the §6 starting-equity table is the current working proposal (license `$1m`,
-  machinery ladder `$15k × 5^max(0,c−2)`, residual cash, Tier 0 `$10m`) — final values
+- the supply side is pinned as working values — uniform $1.5m equity (license `$1m` +
+  machinery + residual cash), machinery $15k/$75k/$375k/$420k, capacity 500/500/300/200/100,
+  conversion `$0.25 × max(1,c−1)`, count-preserving recipes, storage 20,000 — final values
   from calibration;
-- per-line throughput capacity by complexity;
-- the demand-volume and markup curves by complexity;
-- the storage standard (20,000), machinery-space footprint, and per-space rent;
-- all prices, costs, activation rates, and offer-sampling counts.
+- the demand-volume and markup/valuation curves by complexity (the demand side);
+- all prices, activation rates, and offer-sampling counts.
 
 No parameter is frozen until calibration adopts it.
 
@@ -216,8 +234,82 @@ Tracked, explicitly **not** canon yet:
 
 ## 11. Acceptance for a reimplementation
 
-A new kernel satisfies this canon when it implements §2–§8, passes the invariants in
-[`economy_contract.md`](economy_contract.md), and reaches the fairness target in §8 under
-its own determinism — with the performance and replay gates of
-[`technology_strategy.md`](technology_strategy.md). The current JavaScript kernel remains
-the executable oracle until then.
+A new kernel satisfies this canon when it implements §2–§8, holds the invariants in §10
+(no negative inventory/cash/demand/reliability; conservation; atomic orders), and reaches
+the fairness target in §8 under its own determinism, at the performance and replay gates
+of §12.
+
+---
+
+## 12. Settled parameters & machine contract
+
+The machine-level specifics, consolidated here so the whole economy is specified in one
+place. Everything in §2–§8 is **canon**; the supply-side numbers below are pinned **working
+values**; the demand-side *scale* is **calibration** (not frozen).
+
+### 12.1 Topology (canon, fixed)
+
+| Quantity | Value |
+| --- | --- |
+| Tiers | 4 — T0 extraction → T1 refining → T2 manufacturing → T3 consumers (no bypass) |
+| Elements | 4 — Water, Earth, Fire, Air |
+| T0 firms | 20 — 2 all-element, 4 three-element, 6 two-element, 8 single-element |
+| T1 products | 10 — 4 basic C-1 + 6 compound C-2 |
+| T1 firms | 1,000 — 100 per product cohort |
+| T2 products | 200 invented — 2 C-3 + 6 C-4 + 12 C-5 per sector × 10 sectors |
+| T2 firms | **60,000 single-machine firms** (reverse 6:3:1 ratio) |
+| T2 firms per product | C-3 = **1,800**, C-4 = **300**, C-5 = **50** |
+| Consumers | 1,000,000 |
+
+### 12.2 Scale (working values)
+
+| Entity | License | Machinery | Working cash | Total equity |
+| --- | ---: | ---: | ---: | ---: |
+| Tier 0 (×20) | — | — (extraction) | $10m | $10m |
+| Tier 1 (all types) | $1m | $15k | $485k | $1.5m |
+| Tier 2 C-3 | $1m | $75k | $425k | $1.5m |
+| Tier 2 C-4 | $1m | $375k | $125k | $1.5m |
+| Tier 2 C-5 | $1m | $420k | $80k | $1.5m |
+
+- Machinery ladder: T1 flat **$15k**; T2 **$75k / $375k / $420k**.
+- Capacity (per machine, per tick): C-1/C-2 **500**, C-3 **300**, C-4 **200**, C-5 **100**.
+  One machine = one product line = this capacity.
+- Count-preserving recipes: **N inputs → N outputs**.
+- Cost ladder: material flat **$1 (T1) / $1.25 (T2)** per item; conversion
+  **$0.25 × max(1, complexity−1)** → C-1/C-2 $0.25, C-3 $0.50, C-4 $0.75, C-5 $1.00.
+  Unit cost: **$1.25 / $1.25 / $1.75 / $2.00 / $2.25**.
+- Storage: **20,000** firm-level pool (raw + finished + machinery). Machinery footprint
+  C-1/C-2 **1,000**, C-3 **3,000**, C-4 **4,000**, C-5 **5,000**; goods space
+  `G = 20,000 − machinery`. Desired inventory = **fill G**, split **1:1**
+  (`finished = raw = G/2`).
+
+### 12.3 Demand (structure canon, scale calibration)
+
+- Valuation: `V = 2 × unit cost` (cost from §12.2).
+- Latent quantity: `qmax = baseQty × quantityFactor`, `quantityFactor ∝ 1/(cost × markup)`.
+- Demand curve: `q(P) = qmax / (1 + (P/V)^η)`, `η = 2`.
+- First-guess markup: T1 flat **0.25**; T2 **`0.25 × 5^(c−3)`** = 0.25 / 1.25 / 6.25;
+  `tier2DemandFactor = 1`.
+- Utilization target ~50–70% (the demand scale is calibrated to hit it).
+
+### 12.4 Determinism, RNG, tick, runtime
+
+- **RNG**: 32-bit SplitMix32. `mix(u)`, `random(seed, tick, stream) = mix(seed ⊕ (tick+1)·0x9e3779b1 ⊕ (stream+1)·0x85ebca6b) / 2^32`,
+  `normal(·)` (Box-Muller), `hashSeed(seed, k) = mix(seed ⊕ (k+1)·0x9e3779b1)` (u32).
+- **Determinism**: same `(seed, config, command sequence)` ⇒ identical state. All iteration
+  rotations (`tick*37`, `tick*137`, `(tick+index)%N`, seed draws) are part of state.
+- **9-phase tick** (per tick): reset scratch → environment (difficulty mean-reversion) →
+  T0 extraction (order-up-to + proportional apportionment) → T1 input purchase
+  (whole-lot) → T1 manufacture → pricing (derivative-following) → T2 buy/make/price →
+  end-user clearing (atomic orders) → observe/reliability (monthly).
+- **Calendar**: 30 ticks/month, 12 months/year, 20 years/generation, 24 generations/age.
+- **Commands** (FastAPI/WebSocket): `init`, `reset`, `run`, `pause`, `step`,
+  `applyConfig`, `select`, `companyDetail`, `watchCompanies`, `player`,
+  `buyEquipment`, `tier2Query`, `buyLicense`, `foundHouse`. Reads are projections;
+  per-consumer state is never sent to clients.
+
+### 12.5 Deferred / calibration
+
+- **Deferred (not implemented)**: storage rent, machinery-as-good, financing, advertising.
+- **Calibration (not frozen)**: the demand scale (`tier2DemandFactor` and the `∝`
+  constant), the markup curve, `baseQty` range, and offer-sampling counts.
