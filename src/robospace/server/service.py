@@ -200,17 +200,21 @@ async def _run_loop(ws: WebSocket, rt: KernelRuntime):
             delay = max(0.02, 0.5 - (time.monotonic() - started))
         try:
             pending = await asyncio.wait_for(ws.receive_json(), timeout=delay)
-            if pending.get('type') in ('pause', 'reset', 'init'):
-                for resp in _dispatch(rt, pending):
-                    await ws.send_json(resp)
-                return
-            try:
-                for resp in _dispatch(rt, pending):
-                    await ws.send_json(resp)
-            except Exception as exc:  # noqa: BLE001
-                await ws.send_json({'type': 'error', 'message': str(exc)})
         except asyncio.TimeoutError:
-            pass
+            continue
+        if pending.get('type') == 'run':
+            # Switch mode on the fly (Run ⇄ Run Max) without leaving the loop.
+            rt.run(pending.get('mode') or 'fixed')
+            continue
+        if pending.get('type') in ('pause', 'reset', 'init'):
+            for resp in _dispatch(rt, pending):
+                await ws.send_json(resp)
+            return
+        try:
+            for resp in _dispatch(rt, pending):
+                await ws.send_json(resp)
+        except Exception as exc:  # noqa: BLE001
+            await ws.send_json({'type': 'error', 'message': str(exc)})
     await ws.send_json({'type': 'snapshot', 'data': rt.publish()})
 
 

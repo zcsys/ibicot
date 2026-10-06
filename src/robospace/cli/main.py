@@ -68,6 +68,13 @@ def main():
     # serve
     import uvicorn
     from ..server.service import app
+    # Warm the Numba JIT on a tiny bootstrap world (one-time ~10 s) so the first
+    # browser connect / reset / run doesn't stall on compilation.  Numba compiles
+    # on array dtype (not length), so this covers the full population too.
+    from ..server.runtime import KernelRuntime
+    print('Warming up the JIT (one-time)…', flush=True)
+    KernelRuntime({'endUserCount': 100, 't2FirmCount': 200}).step()
+    print('JIT ready.', flush=True)
     uvicorn.run(app, host=args.host, port=args.port)
 
 
