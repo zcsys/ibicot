@@ -50,7 +50,10 @@ Every section below is a consequence of, or a requirement for, that sentence.
    (adaptive pricing, bounded sampling, switching friction) must find an *interior*
    price equilibrium: prices must not top out at a ceiling or bottom out at a floor.
    A price pinned at a bound is a misspecification symptom — the cost curve, demand
-   curve, or markup is wrong — not a sound steady state.
+   curve, or markup is wrong — not a sound steady state. A floor and a ceiling may be
+   defined as **numerical guardrails** (`MIN_UNIT_PRICE`/`MAX_UNIT_PRICE`, see §12.6),
+   but they are degenerate-value protection only; a healthy simulation never settles
+   there.
 
 ---
 
@@ -323,9 +326,11 @@ values**; the demand-side *scale* is **calibration** (not frozen).
 ### 12.6 Pricing (per tick, derivative-following)
 
 All three producer tiers price their output each tick with one **derivative-following
-adaptive pricer**, plus a player/admin override. There is a hard **floor** (unit cost)
-and **no ceiling** — per axiom 6, a healthy price settles at an interior equilibrium,
-never pinned to a bound (`MIN_UNIT_PRICE = 1e-5` is only a numerical guardrail).
+adaptive pricer**, plus a player/admin override. Prices are **unbounded economically**:
+they may go below unit cost (sell at a loss) and there is no ceiling or unit-cost floor —
+per axiom 6, a healthy price settles at an interior equilibrium. Two **numerical
+guardrails** only prevent degenerate values, and the simulation must never settle at them:
+`MIN_UNIT_PRICE = 1e-5` (floor) and `MAX_UNIT_PRICE = 1e9` (ceiling).
 
 **Initial price (tick 0)** — the first-guess markup from §5:
 `P₀ = unitCost × (1 + markup)`, with markup = `markup` (T0), `t1Markup` (T1),
@@ -333,8 +338,8 @@ never pinned to a bound (`MIN_UNIT_PRICE = 1e-5` is only a numerical guardrail).
 
 **Observation cadence.** A price is re-evaluated only when
 `(tick + index) % priceObservationTicks == 0` and it has been observed at least once
-(`priceObservationTicks = 30`). On all other ticks the price is simply held at
-`max(floor, price)`.
+(`priceObservationTicks = 30`). On all other ticks the price is simply held, clamped to
+the guardrails.
 
 **Decision (at a cadence tick), from the average realized profit/tick accumulated since
 the last observation:**
@@ -344,18 +349,13 @@ the last observation:**
 4. Otherwise → continue the current direction.
 
 **Step size** adapts: ×1.2 on continuation, ×0.5 on reversal, clamped to `[0.01, 1]`.
-The price moves multiplicatively: `P ← max(floor, P × exp(± k × response × scale))`.
-After each observation the profit/sales/demand/opportunity accumulators and the age
-counter reset.
+The price moves multiplicatively: `P ← clamp(P × exp(± k × response × scale))`, where
+`clamp` is the guardrail interval `[MIN_UNIT_PRICE, MAX_UNIT_PRICE]`. After each
+observation the profit/sales/demand/opportunity accumulators and the age counter reset.
 
-**Per-tier floor (unit cost):**
-- T0 — `max(extraction cost = baseCost × difficulty, inventory basis)`.
-- T1 — `max(MIN_UNIT_PRICE, finished-goods basis | unit cost, replacement cost)`.
-- T2 — same as T1.
-
-**Player/admin override.** A player-controlled firm quotes `max(playerPrice, floor)` and
-its adaptive state is reset, so the set price takes effect on the next tick. This is
-uniform across T0, T1 and T2.
+**Player/admin override.** A player-controlled firm quotes the set price, clamped to the
+same guardrails, and its adaptive state is reset, so the price takes effect on the next
+tick. Uniform across T0, T1 and T2.
 
 **Parameters.** `k` (0.35, aggressiveness), `wholesalePriceResponse` (0.05, base step
 fraction), `priceObservationTicks` (30, cadence), `researchPriceMinimumOpportunities`

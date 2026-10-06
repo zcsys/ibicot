@@ -30,6 +30,7 @@ except Exception:  # pragma: no cover
 NE, NP, N0, N1 = M.NE, M.NP, M.N0, M.N1
 M4 = M.T2_MAX_PRODUCTS_PER_FIRM
 MIN_UNIT_PRICE = M.MIN_UNIT_PRICE
+MAX_UNIT_PRICE = M.MAX_UNIT_PRICE
 N_T2 = len(M.T2_PRODUCTS)
 
 
@@ -122,10 +123,12 @@ if _HAVE_NUMBA:
         return minimum + (maximum - minimum) * r
 
     @_njit
-    def _adaptive_price(old_price, unit_cost, profit, previous_profit, direction, sales,
+    def _adaptive_price(old_price, profit, previous_profit, direction, sales,
                         stock, demand, available, step_scale, k, response):
-        floor = MIN_UNIT_PRICE if MIN_UNIT_PRICE > unit_cost else unit_cost
-        price = floor if floor > old_price else old_price
+        floor = MIN_UNIT_PRICE
+        price = old_price if old_price > floor else floor
+        if price > MAX_UNIT_PRICE:
+            price = MAX_UNIT_PRICE
         next_direction = -1 if direction < 0 else 1
         if demand > available + 1e-9:
             next_direction = 1
@@ -146,18 +149,20 @@ if _HAVE_NUMBA:
         elif scale > 1.0:
             scale = 1.0
         e = price * math.exp(next_direction * kc * response * scale)
-        nxt = floor if floor > e else e
+        nxt = e if e > floor else floor
+        if nxt > MAX_UNIT_PRICE:
+            nxt = MAX_UNIT_PRICE
         if nxt == price and next_direction < 0:
             next_direction = 1
         return nxt, next_direction, scale
 
     @_njit
     def _learned_quote(view_tier, price, ages, profits, sales, previous, direction, demand,
-                       stocks, steps, opportunity, potential_opportunity, index, cost, stock,
+                       stocks, steps, opportunity, potential_opportunity, index, stock,
                        tick, price_observation_ticks, research_price_min_potential,
                        research_price_max_obs, research_price_min_opp, k, response):
         if ages[index] < price_observation_ticks or (tick + index) % price_observation_ticks != 0:
-            return max(MIN_UNIT_PRICE, cost, price[index])
+            return price[index] if price[index] > MIN_UNIT_PRICE else MIN_UNIT_PRICE
         if view_tier == 2 and research_price_min_potential > 0:
             stale = potential_opportunity[index] >= research_price_min_potential
         else:
@@ -165,7 +170,7 @@ if _HAVE_NUMBA:
         enough = research_price_min_opp == 0 or opportunity[index] >= research_price_min_opp or stale
         if enough:
             average = profits[index] / ages[index]
-            nxt, d, s = _adaptive_price(price[index], cost, average, previous[index],
+            nxt, d, s = _adaptive_price(price[index], average, previous[index],
                                         direction[index], sales[index], stock, demand[index],
                                         sales[index] + stocks[index], steps[index], k, response)
             price[index] = nxt
@@ -178,7 +183,8 @@ if _HAVE_NUMBA:
             ages[index] = 0
             opportunity[index] = 0.0
             potential_opportunity[index] = 0.0
-        return max(MIN_UNIT_PRICE, cost, price[index])
+        r = price[index] if price[index] > MIN_UNIT_PRICE else MIN_UNIT_PRICE
+        return MAX_UNIT_PRICE if r > MAX_UNIT_PRICE else r
 
     @_njit
     def _contains(arr, start, end, val):
@@ -455,24 +461,19 @@ if _HAVE_NUMBA:
                     t2_fin[line] += made_items
                     t2_unit_cost[line] = unit
                     t2_made[line] = made_items
-                fb = t2_fin_basis[line]
-                uc = t2_unit_cost[line]
-                unit = fb if (fb != 0.0 and fb == fb) else uc
-                if unit < MIN_UNIT_PRICE:
-                    unit = MIN_UNIT_PRICE
-                if t2_replacement_cost[line] > unit:
-                    unit = t2_replacement_cost[line]
                 previous = t2_price[line]
                 if t2_controller[firm] and math.isfinite(t2_player_price[line]):
                     nxt = t2_player_price[line]
-                    if unit > nxt:
-                        nxt = unit
+                    if nxt < MIN_UNIT_PRICE:
+                        nxt = MIN_UNIT_PRICE
+                    if nxt > MAX_UNIT_PRICE:
+                        nxt = MAX_UNIT_PRICE
                 else:
                     nxt = _learned_quote(2, t2_price, t2_learn_ticks, t2_learn_profit,
                                          t2_learn_sales, t2_learn_previous, t2_learn_direction,
                                          t2_learn_demand, t2_learn_stock, t2_learn_step,
                                          t2_learn_opportunity, t2_learn_potential_opportunity,
-                                         line, unit, t2_fin[line], tick, price_observation_ticks,
+                                         line, t2_fin[line], tick, price_observation_ticks,
                                          research_price_min_potential, research_price_max_obs,
                                          research_price_min_opp, k, response)
                 t2_price[line] = nxt

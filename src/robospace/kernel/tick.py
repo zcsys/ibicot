@@ -19,13 +19,8 @@ N0 = M.N0
 N1 = M.N1
 MONTH = M.MONTH
 MIN_UNIT_PRICE = M.MIN_UNIT_PRICE
+MAX_UNIT_PRICE = M.MAX_UNIT_PRICE
 M4 = M.T2_MAX_PRODUCTS_PER_FIRM
-
-
-def _orv(a, b):
-    # JS ``a || b`` on numeric values: 0, -0 and NaN are falsy.
-    f = float(a)
-    return a if (f != 0.0 and f == f) else b
 
 
 def tier1_stock_target(W, cfg, product, index):
@@ -368,11 +363,11 @@ def price_learning_view(W, tier):
     }
 
 
-def learned_quote(view, cfg, index, cost, stock, tick):
+def learned_quote(view, cfg, index, stock, tick):
     price = view['price']
     ages = view['ages']
     if ages[index] < cfg['priceObservationTicks'] or (tick + index) % cfg['priceObservationTicks'] != 0:
-        return max(MIN_UNIT_PRICE, cost, price[index])
+        return min(MAX_UNIT_PRICE, max(MIN_UNIT_PRICE, price[index]))
     profits = view['profits']
     sales = view['sales']
     previous = view['previous']
@@ -390,7 +385,7 @@ def learned_quote(view, cfg, index, cost, stock, tick):
     if enough_traffic:
         average = profits[index] / ages[index]
         result = M.adaptive_price(
-            old_price=price[index], unit_cost=cost, profit=average,
+            old_price=price[index], profit=average,
             previous_profit=previous[index], direction=direction[index],
             sales=sales[index], stock=stock, demand=demand[index],
             available=sales[index] + stocks[index], step_scale=steps[index],
@@ -405,7 +400,7 @@ def learned_quote(view, cfg, index, cost, stock, tick):
         ages[index] = 0
         view['opportunity'][index] = 0
         view['potentialOpportunity'][index] = 0
-    return max(MIN_UNIT_PRICE, cost, price[index])
+    return min(MAX_UNIT_PRICE, max(MIN_UNIT_PRICE, price[index]))
 
 
 def price_markets(W, cfg, profiles, products, tick):
@@ -417,11 +412,10 @@ def price_markets(W, cfg, profiles, products, tick):
             if not math.isfinite(W.t0Price[index]):
                 continue
             previous = W.t0Price[index]
-            unit = max(W.t0Cost[index], W.t0InvBasis[index])
             if W.t0Controller[supplier] and math.isfinite(W.t0PlayerPrice[index]):
-                nxt = max(W.t0PlayerPrice[index], unit)
+                nxt = min(MAX_UNIT_PRICE, max(MIN_UNIT_PRICE, W.t0PlayerPrice[index]))
             else:
-                nxt = learned_quote(t0_learning, cfg, index, unit, W.t0Inv[index], tick)
+                nxt = learned_quote(t0_learning, cfg, index, W.t0Inv[index], tick)
             W.t0PrevPrice[index] = previous
             W.t0Price[index] = nxt
             stable = 1 - min(1.0, abs(nxt - previous) / max(1e-9, previous)
@@ -435,12 +429,10 @@ def price_markets(W, cfg, profiles, products, tick):
             if not W.t1Operates[index]:
                 continue
             previous = W.t1Price[index]
-            unit = max(MIN_UNIT_PRICE, _orv(W.t1FinBasis[index], W.t1UnitCost[index]),
-                       W.t1ReplacementCost[index])
             if W.t1Controller[company] and math.isfinite(W.playerPrice[index]):
-                nxt = max(W.playerPrice[index], unit)
+                nxt = min(MAX_UNIT_PRICE, max(MIN_UNIT_PRICE, W.playerPrice[index]))
             else:
-                nxt = learned_quote(t1_learning, cfg, index, unit, W.t1Fin[index], tick)
+                nxt = learned_quote(t1_learning, cfg, index, W.t1Fin[index], tick)
             W.t1PrevPrice[index] = previous
             W.t1Price[index] = nxt
             stable = 1 - min(1.0, abs(nxt - previous) / max(1e-9, previous)
@@ -685,13 +677,11 @@ def tier2_buy_make_price(W, cfg, products, profiles, t2_products, tick):
                 W.t2Fin[line] += made_items
                 W.t2UnitCost[line] = unit
                 W.t2Made[line] = made_items
-            unit = max(MIN_UNIT_PRICE, _orv(W.t2FinBasis[line], W.t2UnitCost[line]),
-                       W.t2ReplacementCost[line])
             previous = W.t2Price[line]
             if W.t2Controller[firm] and math.isfinite(W.t2PlayerPrice[line]):
-                W.t2Price[line] = max(W.t2PlayerPrice[line], unit)
+                W.t2Price[line] = min(MAX_UNIT_PRICE, max(MIN_UNIT_PRICE, W.t2PlayerPrice[line]))
             else:
-                W.t2Price[line] = learned_quote(t2_learning, cfg, line, unit, W.t2Fin[line], tick)
+                W.t2Price[line] = learned_quote(t2_learning, cfg, line, W.t2Fin[line], tick)
             W.t2RelPriceSum[line] += 1 - min(1.0, abs(W.t2Price[line] - previous)
                                              / max(1e-9, previous * cfg['switchingStableBand']))
             W.t2RelPriceSamples[line] += 1

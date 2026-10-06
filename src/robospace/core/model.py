@@ -23,6 +23,9 @@ T1_BASIC_MACHINERY = _DATA['T1_BASIC_MACHINERY']
 T1_COMPOUND_MACHINERY = _DATA['T1_COMPOUND_MACHINERY']
 T2_ROUTE_SETUP = _DATA['T2_ROUTE_SETUP']
 MIN_UNIT_PRICE = _DATA['MIN_UNIT_PRICE']
+# Numerical guardrail ceiling for prices (never an economic bound — see canon
+# axiom 6: prices must settle at an interior equilibrium, not on a guardrail).
+MAX_UNIT_PRICE = 1e9
 TIER_BOUNDARIES = _DATA['TIER_BOUNDARIES']
 T1_COMPANY_NAMES = _DATA['T1_COMPANY_NAMES']
 PRODUCTS: list[dict] = _DATA['PRODUCTS']
@@ -184,11 +187,13 @@ def demand_at_price(q_max, choke_price, price, elasticity) -> float:
     return 0.0
 
 
-def adaptive_price(old_price, unit_cost, profit, previous_profit, direction=1,
+def adaptive_price(old_price, profit, previous_profit, direction=1,
                    sales=0.0, stock=0.0, demand=0.0, available=0.0, step_scale=1.0,
                    k=0.35, response=0.05) -> dict:
-    floor = max(MIN_UNIT_PRICE, unit_cost)
-    price = max(floor, old_price)
+    # Guardrails only: the price may go below unit cost (sell at a loss) and is
+    # never pinned to an economic floor/ceiling.
+    floor = MIN_UNIT_PRICE
+    price = min(MAX_UNIT_PRICE, max(floor, old_price))
     next_direction = -1 if direction < 0 else 1
     scarce = demand > available + 1e-9
     if scarce:
@@ -200,7 +205,7 @@ def adaptive_price(old_price, unit_cost, profit, previous_profit, direction=1,
     elif math.isfinite(previous_profit) and profit < previous_profit:
         next_direction *= -1
     scale = clamp(step_scale * (0.5 if next_direction != direction else 1.2), 0.01, 1.0)
-    nxt = max(floor, price * math.exp(next_direction * clamp(k, 0.0, 1.0) * response * scale))
+    nxt = min(MAX_UNIT_PRICE, max(floor, price * math.exp(next_direction * clamp(k, 0.0, 1.0) * response * scale)))
     if nxt == price and next_direction < 0:
         next_direction = 1
     return {'price': nxt, 'direction': next_direction, 'stepScale': scale}
