@@ -23,4 +23,21 @@ cfg.retailMaxInventory = 80;
 worker.step();
 assert.equal(W.t1Fin[0], 120, 'Lowering a limit stops production but never destroys owned stock');
 assert.equal(W.raw[0], raw);
+// Extraction shares one company capacity across materials. Equal deficits
+// must not favor the element listed last; uneven deficits retain their ratios.
+const extraction = createWorker({ t2FirmCount: 10, endUserCount: 10,
+  consumerActivation: 0, sigma: 0 });
+const { W: resources, cfg: resourceCfg } = extraction.inspect();
+resources.t1Operates.fill(0); resources.t2FirmLineCount.fill(0);
+function extractForDeficits(deficits) {
+  resources.t0Inv.fill(0); resources.t0DemandEMA.fill(0);
+  deficits.forEach((deficit, e) => { resources.t0DemandEMA[e] = deficit / resourceCfg.inventoryCoverageTicks; });
+  extraction.step();
+  return Array.from(resources.t0Inv.slice(0, 4));
+}
+assert.deepEqual(extractForDeficits([10000, 10000, 10000, 10000]), [2500, 2500, 2500, 2500]);
+assert.deepEqual(extractForDeficits([3000, 3000, 3000, 3000]), [2500, 2500, 2500, 2500],
+  'A final material stock target must not strand capacity needed by earlier materials');
+assert.deepEqual(extractForDeficits([4000, 8000, 12000, 16000]), [1000, 2000, 3000, 4000]);
+assert.deepEqual(extractForDeficits([16000, 12000, 8000, 4000]), [4000, 3000, 2000, 1000]);
 console.log('inventory target and independent maximum guard: ok');

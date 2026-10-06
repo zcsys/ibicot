@@ -8,12 +8,12 @@ const total = (rows, key) => rows.reduce((n, row) => n + row[key], 0);
 const near = (actual, expected) => assert.ok(Math.abs(actual - expected) < Math.max(1e-6, Math.abs(expected) * 1e-10), `${actual} != ${expected}`);
 const check = s => {
   assert.deepEqual(s.productCategories.map(row => row.complexity), [1, 2, 3, 4, 5]);
-  assert.deepEqual(s.productCategories.map(row => row.products), [4, 6, 20, 20, 20]);
+  assert.deepEqual(s.productCategories.map(row => row.products), [4, 6, 20, 60, 120]);
   for (const [tier, rows] of [['t1', s.productCategories.slice(0, 2)], ['t2', s.productCategories.slice(2)]]) {
     for (const key of ['made', 'sold', 'revenue', 'cogs', 'grossProfit']) near(total(rows, key), s.tiers[tier][key]);
     near(total(rows, 'readyStock'), s.tiers[tier].finished);
     for (const row of rows) {
-      near(row.machineryPrice, worker.model.machineryPrice(row.complexity));
+      near(row.machineryPrice, row.complexity === 1 ? worker.model.T1_BASIC_MACHINERY : row.complexity === 2 ? worker.model.T1_COMPOUND_MACHINERY : worker.model.T2_ROUTE_SETUP);
       near(row.capacity, row.lines * row.unitCapacity);
       near(row.margin, row.revenue ? row.grossProfit / row.revenue : 0);
       near(row.profitPerLine, row.grossProfit / row.lines);
@@ -54,14 +54,38 @@ for (const [id, expectedRows] of [['tierComparison', 3], ['productCategories', 5
   for (const row of rows) assert.equal((row[1].match(/<t[dh]>/g) || []).length, headCount);
   assert.ok(!/undefined|NaN/.test(nodes[id].innerHTML));
 }
-assert.equal(comparison.rows[1].active, 0, 'C-2 has no public demand');
-assert.ok(Number.isNaN(comparison.rows[1].fillRate), 'C-2 public fulfillment is unavailable');
+assert.ok(comparison.rows[1].active > 0, 'C-2 demand comes from company buyers');
+near(comparison.rows[1].fillRate, comparison.rows[1].fulfilled/comparison.rows[1].active);
+near(comparison.rows[0].active+comparison.rows[1].active,s.tiers.t1.desired);
+near(comparison.rows[0].fulfilled+comparison.rows[1].fulfilled,s.tiers.t1.fulfilled);
+const extractionRow=[...nodes.tierComparison.innerHTML.matchAll(/<tr>(.*?)<\/tr>/g)][0][1];
+const extractionCells=[...extractionRow.matchAll(/<t[dh]>(.*?)<\/t[dh]>/g)].map(m=>m[1]);
+assert.equal(extractionCells[7],'—', 'Extraction is not reported as bought');
+assert.notEqual(extractionCells[8],'—', 'Extraction appears as made');
 assert.equal(comparison.metric, 'profitPerLine');
 vm.runInContext("tableSort.productCategories = {key: 'machineryPrice', direction: -1}; renderComparisons(s)", context);
-assert.match(nodes.productCategories.innerHTML, /^<tr><th>C-5/);
+assert.match(nodes.productCategories.innerHTML, /^<tr><th>C-2/);
 worker.send({type: 'reset', cfg: {t2FirmCount: 1000, endUserCount: 20000}});
 context.s = worker.snapshot();
 vm.runInContext('renderComparisons(s)', context);
 assert.ok(!/undefined|NaN/.test(nodes.productCategories.innerHTML));
 assert.match(nodes.productCategories.innerHTML, /<td>—<\/td>/);
 console.log('category totals, portfolio attribution, comparison rendering and sorting: ok');
+
+for (const material of [0,4]) {
+  const live=worker.inspect().W, cfg=worker.inspect().cfg;
+  for (const key of ['t1Demand','t1Sold','t1Rev','t1COGS','t1IntermediateSold','t1IntermediateRevenue']) live[key].fill(0);
+  live.t1Fin.fill(0);
+  const supplier=material*100*10+material;
+  live.t1Price[supplier]=2; live.t1Fin[supplier]=3; live.t1FinBasis[supplier]=1;
+  live.t2Cash[0]=100;
+  assert.equal(worker.kernel.transferTier2Input(live,cfg,0,material,supplier,7),3);
+  const snapshot=worker.snapshot(), market=snapshot.products[material];
+  assert.equal(market.active,7); assert.equal(market.fulfilled,3);
+  assert.equal(market.stockUnmet,4); near(market.fillRate,3/7);
+  assert.equal(market.consumerVolume,0); assert.equal(market.potential,null);
+  const category=snapshot.productCategories[material<4?0:1];
+  assert.equal(category.active,7); assert.equal(category.fulfilled,3);
+  assert.equal(category.stockUnmet,4); near(category.fillRate,3/7);
+}
+console.log('C-1/C-2 funded business demand, delivery and stockout reporting: ok');

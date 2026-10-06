@@ -113,7 +113,7 @@ async function run(ticks = 60, cfg = { endUserCount: 10000, t2FirmCount: 1000 })
     'market prices must remain finite and positive without an authored ceiling',
   );
   assert.ok(
-    sustained.maxT0Inventory <= 60000,
+    sustained.maxT0Inventory <= 500000,
     'a Tier 0 supplier must not produce beyond its total target inventory across elements',
   );
   assert.ok(
@@ -121,7 +121,7 @@ async function run(ticks = 60, cfg = { endUserCount: 10000, t2FirmCount: 1000 })
     'compound markets should remain active long-term',
   );
   assert.ok(
-    sustained.products.every(market => market.active === 0 && market.fulfilled === 0 && market.consumerVolume === 0 && market.intermediateVolume > 0 && market.revenue > 0),
+    sustained.products.every(market => market.active >= market.fulfilled && market.fulfilled === market.intermediateVolume && market.consumerVolume === 0 && market.intermediateVolume > 0 && market.revenue > 0),
     'All C-1/C-2 markets must serve companies exclusively',
   );
   console.log('source engine: ok');

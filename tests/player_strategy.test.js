@@ -1,55 +1,41 @@
 'use strict';
 const assert = require('node:assert/strict');
 const { createWorker } = require('./worker_harness');
-const bot = createWorker(), player = createWorker();
+const config = { t2FirmCount: 1000, endUserCount: 20000 };
+const bot = createWorker(config), player = createWorker(config);
 const A = bot.inspect().W, B = player.inspect().W;
-// A player observes an established market and takes over an active workshop
-// with spare capacity. Selection uses visible recent sales, not a privileged
-// supplier, assigned customers, or a guaranteed winning company number.
+// The economy exists and trades before an investor chooses a company.
 for (let tick = 0; tick < 120; tick++) { bot.step(); player.step(); }
-let firm = -1;
-for (let id = 0; id < bot.inspect().cfg.t2FirmCount; id++) {
-  let sold = 0, capacity = 0;
-  for (let slot = 0; slot < A.t2FirmLineCount[id]; slot++) {
-    const line = A.t2FirmLines[id * 5 + slot];
-    sold += A.t2Sold[line]; capacity += bot.model.T2_PRODUCTS[A.t2LineProduct[line]].capacity;
-  }
-  if (sold > 0 && sold < capacity * 0.5) { firm = id; break; }
+let firm = -1, productIndex = -1;
+for (let id = 0; id < 1000 && firm < 0; id++) {
+  for (let p = 0; p < 10; p++) if (A.t1Sold[id * 10 + p] > 0) { firm = id; productIndex = p; break; }
 }
-assert.ok(firm >= 0, 'An observable active workshop with spare capacity');
-const cash = B.t2Cash[firm], equipment = B.t2EqBook[firm], lines = B.t2FirmLineCount[firm];
-// Refresh a quote from the product-market averages visible in the dashboard.
-// A fixed authored markup is not a guarantee of a competitive price.
-function quoteCompetition() {
-  const markets=player.snapshot().tier2Products;
-  for(let slot=0;slot<lines;slot++) {
-    const line=B.t2FirmLines[firm*5+slot],product=player.model.T2_PRODUCTS[B.t2LineProduct[line]];
-    const quote=markets.find(m=>m.code===product.code).avgPrice*.92;
-    player.send({type:'player',tier:'T2',id:firm,controller:'PLAYER',online:true,code:product.code,price:quote});
-  }
-}
-quoteCompetition();
-assert.equal(B.t2Cash[firm], cash); assert.equal(B.t2EqBook[firm], equipment);
-assert.equal(B.t2FirmLineCount[firm], lines);
-assert.equal(B.t2Controller.reduce((n, flag) => n + flag, 0), 1);
-console.log(`Comparing an 8% market-price undercut with identical established bot company ${firm + 1}`);
-const results = [{ revenue: 0, cogs: 0, sold: 0 }, { revenue: 0, cogs: 0, sold: 0 }];
+assert.ok(firm >= 0, 'An established trading company can be selected');
+const index = firm * 10 + productIndex, product = player.model.PRODUCTS[productIndex];
+const cash = B.t1Cash[firm], book = B.t1EqBook[firm];
+const stock = B.t1Fin.slice(firm * 10, firm * 10 + 10);
+const raw = B.raw.slice(firm * 4, firm * 4 + 4);
+const suppliers = B.preferredWholesale.slice(firm * 4, firm * 4 + 4);
+const quote = B.t1Price[index];
+player.send({ type: 'select', tier: 'T1', id: firm });
+assert.equal(B.t1Controller[firm], 0, 'Inspection does not take control');
+player.send({ type: 'player', tier: 'T1', id: firm, controller: 'PLAYER', online: true, code: product.code, price: quote });
+assert.equal(B.t1Cash[firm], cash); assert.equal(B.t1EqBook[firm], book);
+assert.deepEqual(B.t1Fin.slice(firm * 10, firm * 10 + 10), stock);
+assert.deepEqual(B.raw.slice(firm * 4, firm * 4 + 4), raw);
+assert.deepEqual(B.preferredWholesale.slice(firm * 4, firm * 4 + 4), suppliers);
+assert.equal(B.t1Controller.reduce((n, flag) => n + flag, 0), 1);
+let playerRevenue = 0, botRevenue = 0;
 for (let tick = 0; tick < 180; tick++) {
-  if(tick>0 && tick%30===0)quoteCompetition();
   bot.step(); player.step();
-  for (const [index, W] of [A, B].entries()) for (let slot = 0; slot < lines; slot++) {
-    const line = W.t2FirmLines[firm * 5 + slot];
-    results[index].revenue += W.t2Revenue[line]; results[index].cogs += W.t2COGS[line];
-    results[index].sold += W.t2Sold[line];
-    assert.ok(W.t2Price[line] + 1e-7 >= (W.t2FinBasis[line] || W.t2UnitCost[line]));
-  }
+  botRevenue += A.t1Rev[index]; playerRevenue += B.t1Rev[index];
+  const floor = Math.max(player.model.MIN_UNIT_PRICE, B.t1FinBasis[index] || B.t1UnitCost[index], B.t1ReplacementCost[index]);
+  assert.ok(Math.abs(B.t1Price[index] - Math.max(B.playerPrice[index], floor)) < 1e-7, 'Investor price persists subject to the normal cost floor');
 }
-const profits = results.map((r) => r.revenue - r.cogs);
-assert.ok(results.every((r) => r.sold > 0), JSON.stringify({ results, profits }));
-assert.ok(results[1].sold > results[0].sold,JSON.stringify({results,profits}));
-assert.ok(profits[1] > profits[0] * 1.05, JSON.stringify({ results, profits }));
-assert.equal(B.t2EqBook[firm], equipment); assert.equal(B.t2FirmLineCount[firm], lines);
-assert.equal(B.t2Controller.reduce((n, flag) => n + flag, 0), 1);
-console.log(JSON.stringify({ result: 'PASS', strategy: '8% below observed market-average offers, refreshed every 30 ticks', firm: firm + 1,
-  ticks: 180, bot: { ...results[0], profit: profits[0] }, player: { ...results[1], profit: profits[1] },
-  profitImprovement: profits[1] / profits[0] - 1 }));
+assert.ok(playerRevenue > 0 && botRevenue > 0, 'Both controllers participate in the same operating market');
+assert.equal(B.t1EqBook[firm], book, 'Takeover creates no equipment capital');
+assert.equal(B.t2Controller.reduce((n, flag) => n + flag, 0), 0);
+assert.ok(B.t2Revenue.some(value => value > 0), 'Tier 2 keeps operating under bots');
+player.send({ type: 'player', tier: 'T1', id: firm, controller: 'BOT', online: true, code: product.code, price: quote });
+assert.equal(B.t1Controller[firm], 0);
+console.log(JSON.stringify({ result: 'PASS', tier: 'T1', firm: firm + 1, ticks: 180, botRevenue, playerRevenue, takeover: 'Existing capital and relationships preserved; no guaranteed advantage' }));

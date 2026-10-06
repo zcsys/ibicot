@@ -10,8 +10,10 @@ for (const company of initial.companies) {
   assert.equal(company.cash, 5000);
   assert.equal(company.equity, product.complexity === 1 ? 20000 : 80000);
 }
-assert.equal(initial.tiers.t2.activeLines, 2500);
-assert.ok(W.t2Capability.slice(0, cfg.t2FirmCount).every((c) => c >= 3 && c <= 5));
+assert.equal(initial.tiers.t2.activeLines, W.t2LineCount);
+assert.equal(W.t2LineCount, W.t2FirmLineCount.slice(0, cfg.t2FirmCount).reduce((n, width) => n + width, 0));
+assert.ok(W.t2FirmLineCount.slice(0, cfg.t2FirmCount).every(width => width >= 1 && width <= 4));
+assert.ok(W.t2Capability.slice(0, cfg.t2FirmCount).every(c => c === 5));
 assert.equal(new Set(W.endPrimarySector.slice(0, cfg.endUserCount)).size, 10);
 const oldLines = W.t2LineCount, oldCash = W.t2Cash[0], oldEquipment = W.t2EqBook[0];
 for (const material of model.PRODUCTS) assert.throws(() => worker.kernel.addTier2Line(W, cfg, 0, material), /C-3 through C-5/);

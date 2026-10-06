@@ -22,18 +22,20 @@ assert.ok(sum(W.endFulfilled)>0);
 near(counts.consumerPayments,sum(W.t2Revenue));
 near(sum(W.endFulfilled),sum(W.t2Sold));
 near(sum(W.t2COGS),sum(W.t2Sold)*0.5);
-// Actual million-human colony: material sales are exclusively business
+// Actual million-agent robotic economy: material sales are exclusively business
 // purchases. Purchase counters count transfers, not orders or input use.
 const full=createWorker();
 for(let tick=0;tick<2;tick++) {
   full.step(); const s=full.snapshot(), state=full.inspect();
   assert.equal(s.tiers.endUsers.population,1000000);
-  assert.equal(s.colony.population,1000000);
-  assert.equal(s.colony.immortal,true);
-  assert.equal(s.colony.contract,'Infinity contract');
-  assert.ok(s.products.every(p=>p.consumerVolume===0 && p.active===0));
+  assert.equal(s.world.population,1000000);
+  assert.equal(s.world.name,'Robotic Space Generation');
+  assert.equal(s.world.consumers,'External galactic procurement agents');
+  assert.ok(s.products.every(p=>p.consumerVolume===0 && p.customerType==='Companies' && p.active>=p.fulfilled && p.fulfilled===p.intermediateVolume));
   assert.ok(state.W.endLastMarket.every(m=>m===-1 || m>=10));
-  near(s.tiers.t0.bought,s.tiers.t0.made);
+  assert.equal(s.tiers.t0.bought,0);
+  assert.ok(s.tiers.t0.made>0);
+  assert.ok(state.W.endActive.subarray(0,10).every(q=>q===0));
   near(s.tiers.t1.bought,s.tiers.t0.sold);
   near(s.tiers.t2.bought,s.tiers.t1.sold);
   near(s.tiers.endUsers.revenue,s.tiers.t2.revenue);

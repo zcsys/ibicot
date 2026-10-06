@@ -14,6 +14,7 @@ const controls = Object.fromEntries(Object.entries({
   controller: 'PLAYER', online: 'true', playerProduct: 'installed',
   playerPrice: '12.5', equipmentProduct: 'eligible',
   applyPlayer: '', buyEquipment: '',
+  buyT2License: '', foundHouse: '', houseName: 'House Atlas',
 }).map(([id, value]) => [id, { value }]));
 const messages = [];
 const context = {
@@ -26,10 +27,11 @@ for (const [tier, id] of [['T2', 49999], ['T1', 17]]) {
   controls.playerTier.value = tier;
   controls.applyPlayer.onclick();
   controls.buyEquipment.onclick();
+  assert.equal(messages.length, 2, 'Admin actions remain available for both tiers');
   for (const message of messages.splice(0)) {
     assert.equal(message.tier, tier);
     assert.equal(message.id, id);
     assert.ok(['player', 'buyEquipment'].includes(message.type));
   }
 }
-console.log('tier-aware UI actions: ok');
+console.log('Tier 1 and Tier 2 admin actions: ok');

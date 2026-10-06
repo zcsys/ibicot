@@ -2,6 +2,7 @@
 const assert = require('node:assert/strict');
 
 function createPriceAudit(model, cfg, { windowStart, windowTicks }) {
+  const minimumUnitPrice = model.MIN_UNIT_PRICE;
   const markets = [
     ...model.ELEMENTS.map((name, id) => ({ tier: 0, id, name })),
     ...model.PRODUCTS.map((p, id) => ({ tier: 1, id, name: p.name })),
@@ -26,7 +27,7 @@ function createPriceAudit(model, cfg, { windowStart, windowTicks }) {
     begin(tick, W) {
       currentTick = tick;
       if (tick < windowStart) return;
-      oldPrices = W.t0Price.slice(); oldCosts = W.t0Cost.map((cost,i)=>Math.max(0.01,cost,W.t0InvBasis[i]));
+      oldPrices = W.t0Price.slice(); oldCosts = W.t0Cost.map((cost,i)=>Math.max(minimumUnitPrice,cost,W.t0InvBasis[i]));
       prior = markets.map((m) => [m.units, m.floorUnits]);
     },
     onBeforeTier0Reprice(W) {
@@ -38,16 +39,16 @@ function createPriceAudit(model, cfg, { windowStart, windowTicks }) {
       for (let i=0;i<W.t0Price.length;i++) {
         if (!Number.isFinite(W.t0Price[i])) continue;
         add(markets[i%4], beforeRepricing.sold[i], beforeRepricing.revenue[i], oldPrices[i], oldCosts[i]);
-        add(markets[i%4], W.t0Sold[i]-beforeRepricing.sold[i], W.t0Revenue[i]-beforeRepricing.revenue[i], W.t0Price[i], Math.max(0.01,W.t0Cost[i],W.t0InvBasis[i]));
+        add(markets[i%4], W.t0Sold[i]-beforeRepricing.sold[i], W.t0Revenue[i]-beforeRepricing.revenue[i], W.t0Price[i], Math.max(minimumUnitPrice,W.t0Cost[i],W.t0InvBasis[i]));
       }
       for (let i=0;i<W.t1Price.length;i++) if (W.t1Operates[i])
-        add(markets[4+i%10], W.t1Sold[i], W.t1Rev[i], W.t1Price[i], Math.max(0.01,W.t1FinBasis[i]||W.t1UnitCost[i]));
+        add(markets[4+i%10], W.t1Sold[i], W.t1Rev[i], W.t1Price[i], Math.max(minimumUnitPrice,W.t1FinBasis[i]||W.t1UnitCost[i]));
       for (let i=0;i<W.t2LineCount;i++) {
         // Receipts can precede later changes to blended inventory bases.
         // Receipts and actual COGS retain the cost/quote of the delivered units.
         add(markets[14+W.t2LineProduct[i]], W.t2Sold[i], W.t2Revenue[i],
           W.t2Sold[i] ? W.t2Revenue[i]/W.t2Sold[i] : W.t2Price[i],
-          W.t2Sold[i] ? W.t2COGS[i]/W.t2Sold[i] : Math.max(0.01,W.t2FinBasis[i]||W.t2UnitCost[i]));
+          W.t2Sold[i] ? W.t2COGS[i]/W.t2Sold[i] : Math.max(minimumUnitPrice,W.t2FinBasis[i]||W.t2UnitCost[i]));
       }
       markets.forEach((m,i) => {
         const units=m.units-prior[i][0], floor=m.floorUnits-prior[i][1];

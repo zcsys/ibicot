@@ -36,4 +36,21 @@ Object.assign(healthy.markets[8],{floorUnits:10,floorShare:1,nearFloorShare:1,av
 assert.doesNotThrow(()=>assertPriceHealth(healthy));
 healthy.markets[8].averageFloorDistance=-0.5;
 assert.throws(()=>assertPriceHealth(healthy),/Below-cost/);
+// Wholesale prices below a cent are valid when they cover actual unit costs.
+// A verifier-only one-cent floor would misclassify calibrated input markets.
+W.t0Sold.fill(0);W.t0Revenue.fill(0);W.t1Sold.fill(0);W.t1Rev.fill(0);W.t2Sold.fill(0);W.t2Revenue.fill(0);
+W.t0Price[index]=.005;W.t0Cost[index]=.004;W.t0InvBasis[index]=.004;
+W.t1Price[t1]=.005;W.t1FinBasis[t1]=.004;
+const bulkAudit=createPriceAudit(w.model,cfg,{windowStart:1,windowTicks:1});
+bulkAudit.begin(1,W);
+W.t0Sold[index]=1000;W.t0Revenue[index]=5;
+bulkAudit.onBeforeTier0Reprice(W);
+W.t1Sold[t1]=1000;W.t1Rev[t1]=5;
+bulkAudit.end(W);
+const bulkReport=bulkAudit.report();
+for(const market of [bulkReport.markets[index%4],bulkReport.markets[8]]) {
+  assert.equal(market.averageTradedPrice,.005);
+  assert.ok(Math.abs(market.averageFloorDistance-.25)<1e-12);
+  assert.equal(market.floorShare,0);assert.equal(market.nearFloorShare,0);
+}
 console.log('price audit: transaction attribution, break-even diagnostics and failure detection: ok');

@@ -21,9 +21,9 @@ function invariant(W, cfg, model) {
   for (let firm = 0; firm < cfg.t2FirmCount; firm++) {
     const products = new Set();
     for (let slot = 0; slot < W.t2FirmLineCount[firm]; slot++) {
-      const line = W.t2FirmLines[firm * 5 + slot], product = model.T2_PRODUCTS[W.t2LineProduct[line]];
+      const line = W.t2FirmLines[firm * model.T2_MAX_PRODUCTS_PER_FIRM + slot], product = model.T2_PRODUCTS[W.t2LineProduct[line]];
       assert.equal(W.t2LineFirm[line], firm);
-      assert.ok(model.relatedSector(W.t2Sector[firm], product.sectorIndex));
+      assert.equal(W.t2Sector[firm], product.sectorIndex);
       assert.ok(product.complexity <= W.t2Capability[firm]);
       assert.ok(!products.has(product.id)); products.add(product.id);
     }
@@ -32,12 +32,13 @@ function invariant(W, cfg, model) {
 
 for (const seed of seeds) {
   const worker = createWorker({ seed }), { W, cfg } = worker.inspect(), model = worker.model;
-  assert.equal(cfg.endUserCount, 1000000); assert.equal(cfg.t2FirmCount, 50000);
+  assert.equal(cfg.endUserCount, 1000000); assert.equal(cfg.t2FirmCount, 61950);
   const capabilities = [0, 0, 0, 0, 0], firmsPerProduct = new Uint32Array(model.T2_PRODUCTS.length);
   for (let firm = 0; firm < cfg.t2FirmCount; firm++) capabilities[W.t2Capability[firm] - 1]++;
-  assert.deepEqual(capabilities, [0,0,30000,15000,5000]);
+  assert.deepEqual(capabilities, [0,0,0,0,61950]);
   for (let line = 0; line < W.t2LineCount; line++) firmsPerProduct[W.t2LineProduct[line]]++;
-  assert.ok(firmsPerProduct.every((n) => n >= 100));
+  assert.equal(W.t2LineCount, 232000);
+  assert.ok(firmsPerProduct.every(n => n === 1160));
   assert.ok(W.endPreferredSupplier.every((n) => n === -1));
   invariant(W, cfg, model);
   const traded = new Uint32Array(model.T2_PRODUCTS.length), rolling = new Uint32Array(model.T2_PRODUCTS.length);
@@ -78,10 +79,22 @@ for (const seed of seeds) {
   const snapshot = worker.snapshot();
   assert.ok(traded.every((q) => q > 0));
   assert.ok(minimumFill > 0.5, `Persistent fill rate ${minimumFill}`);
-  assert.ok(complexSales > 0 && complexSales / totalSales < 0.2);
-  assert.equal(snapshot.tier2Products.filter(p=>p.complexity===5).length,20);
+  // Complexity reduces unit orders per market. C-5 occupies 120 of 200
+  // markets, so its aggregate share cannot be compared with a fixed 20% cap.
+  const unitsByComplexity = [3,4,5].map(complexity => {
+    const markets = model.T2_PRODUCTS.filter(p => p.complexity === complexity);
+    const units = markets.reduce((n,p) => n + traded[p.id], 0);
+    return { complexity, markets: markets.length, units,
+      unitsPerMarketPerTick: units / markets.length / ticks };
+  });
+  assert.ok(unitsByComplexity.every(b => b.unitsPerMarketPerTick > 0));
+  assert.ok(unitsByComplexity[0].unitsPerMarketPerTick > unitsByComplexity[1].unitsPerMarketPerTick &&
+    unitsByComplexity[1].unitsPerMarketPerTick > unitsByComplexity[2].unitsPerMarketPerTick,
+    `Unit orders must decrease per market as complexity rises: ${JSON.stringify(unitsByComplexity)}`);
+  assert.equal(snapshot.tier2Products.filter(p=>p.complexity===5).length,model.T2_COMPLEXITY_COUNTS[4]);
   if (ticks % 360) for (const product of model.T2_PRODUCTS.filter(p => p.complexity === 5))
     assert.ok(recentRevenue[product.id]>0, `Inactive C-5 product in final partial window: ${product.name}`);
   console.log(JSON.stringify({seed,ticks,lines:W.t2LineCount,minimumFill,complexShare:complexSales/totalSales,
+    unitsByComplexity,
     averageTickMs:(performance.now()-start)/ticks,worstTickMs,allProductsTraded:true}));
 }

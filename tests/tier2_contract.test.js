@@ -11,7 +11,9 @@ function digest(W) {
   }
   return hash.digest('hex');
 }
-const worker = createWorker(config), { W, cfg } = worker.inspect(), model = worker.model;
+const worker = createWorker(config);
+worker.send({ type: 'setOwnershipEnforcement', enforced: false });
+const { W, cfg } = worker.inspect(), model = worker.model;
 for (let id = 0; id < cfg.endUserCount; id++) {
   const basket = W.endBasket.slice(id * 5, id * 5 + W.endBasketCount[id]);
   assert.ok(basket.length >= 2 && basket.length <= 5);
@@ -32,8 +34,9 @@ assert.ok(W.t2Rel.slice(0, W.t2LineCount).some((r) => r !== 0.5));
 const firstDigest = digest(W);
 worker.reset(config); for (let t = 0; t < 35; t++) worker.step();
 assert.equal(digest(W), firstDigest, 'Reset must reproduce all numerical state');
+worker.send({ type: 'setOwnershipEnforcement', enforced: false });
 
-// A takeover preserves the company balance sheet, portfolio and relationships.
+// Admin takeover preserves the company balance sheet, portfolio and relationships.
 const firm = 0, line = W.t2FirmLines[0], product = model.T2_PRODUCTS[W.t2LineProduct[line]];
 const cash = W.t2Cash[firm], stock = W.t2Fin[line], supplier = W.t2Preferred.slice(0, 10);
 worker.send({ type: 'select', tier: 'T2', id: firm });
@@ -44,8 +47,7 @@ assert.deepEqual(W.t2Preferred.slice(0, 10), supplier);
 assert.equal(W.t2Online[firm], 1); assert.equal(W.t2Controller[firm], 1);
 assert.ok(W.t2Price[line] >= (W.t2FinBasis[line] || W.t2UnitCost[line]));
 assert.equal(W.t2Controller[1], 0);
-const purchase = model.T2_PRODUCTS.find((p) => p.complexity <= W.t2Capability[firm] &&
-  model.relatedSector(W.t2Sector[firm], p.sectorIndex) && !worker.kernel.hasTier2Product(W, firm, p.id));
+const purchase = model.T2_PRODUCTS.find((p) => p.sectorIndex === W.t2Sector[firm] && !worker.kernel.hasTier2Product(W, firm, p.id));
 W.t2Cash[firm] = purchase.equipmentPrice * 2;
 const beforeLines = W.t2LineCount, beforeBook = W.t2EqBook[firm];
 worker.send({ type: 'buyEquipment', tier: 'T2', id: firm, code: purchase.code });
@@ -56,7 +58,7 @@ worker.send({ type: 'buyEquipment', tier: 'T2', id: firm, code: purchase.code })
 assert.equal(worker.self.lastMessage.ok, false, 'Reject duplicate machinery');
 assert.equal(W.t2LineCount, beforeLines + 1);
 worker.send({ type: 'buyEquipment', tier: 'T2', id: 1, code: purchase.code });
-assert.equal(worker.self.lastMessage.ok, false, 'Bots cannot use player purchase command');
+assert.equal(worker.self.lastMessage.ok, false, 'Select manual control before a manual machinery purchase');
 
 // Material transactions preserve cash and transfer the exact inventory, basis,
 // supplier sales, and relationship for both Tier 1 material complexities.

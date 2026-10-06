@@ -6,6 +6,10 @@ const { W, cfg } = worker.inspect();
 worker.send({ type: 'select', tier: 'T2', id: cfg.t2FirmCount - 1 });
 for (let t = 0; t < 35; t++) { worker.step(); worker.publish(); }
 const snapshot = worker.snapshot();
+worker.send({type:'tier2Query',search:snapshot.selected.name});
+assert.equal(worker.self.snapshot.tier2Companies.total,1,'Company search uses the displayed corporate name');
+assert.equal(worker.self.snapshot.tier2Companies.rows[0].id,snapshot.selected.id);
+worker.send({type:'tier2Query',search:''});
 const sum = (rows, key) => rows.reduce((total, row) => total + row[key], 0);
 const near = (actual, expected) => assert.ok(Math.abs(actual - expected) < Math.max(1e-6, Math.abs(expected) * 1e-10), `${actual} != ${expected}`);
 assert.equal(snapshot.tier2Industries.length, 10);

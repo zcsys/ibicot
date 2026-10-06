@@ -12,36 +12,42 @@ const EI = Object.fromEntries(E.map((e, i) => [e, i]));
 const T2P = self.Phase0Model.T2_PRODUCTS;
 const T2_SECTORS = self.Phase0Model.T2_SECTORS;
 const T1P = P.map(product => ({ name: product.companyName, product: product.code }));
+const T2_COMPANY_NAMES = Object.freeze([
+  'Helion Power Industries', 'Vector Drive Systems', 'Keel Spacecraft Works',
+  'Haven Habitat Systems', 'Forge Automation', 'Relay Computing and Communications',
+  'Prism Scientific Instruments', 'Stratum Industrial Machinery',
+  'Waypoint Supply Industries', 'Sentinel Defence and Rescue Systems',
+]);
 const T0P = [
-  ['Atlas Resource Robotics', [E[0],E[1],E[2],E[3]]],
+  ['Atlas Resources', [E[0],E[1],E[2],E[3]]],
   ['Axiom Extraction Systems', [E[0],E[1],E[2],E[3]]],
-  ['Civic Materials Network', [E[0],E[1],E[2]]],
-  ['Colony Resource Authority', [E[0],E[1],E[3]]],
+  ['Orbital Materials Network', [E[0],E[1],E[2]]],
+  ['Galactic Resource Consortium', [E[0],E[1],E[3]]],
   ['Gaia Extraction Works', [E[0],E[2],E[3]]],
-  ['Integrated Resource Robotics', [E[1],E[2],E[3]]],
+  ['Confluence Resources', [E[1],E[2],E[3]]],
   ['Hydro Mineral Works', [E[0],E[1]]],
   ['Solar Resource Works', [E[0],E[2]]],
   ['Atmospheric Resource Works', [E[0],E[3]]],
   ['Thermal Mineral Works', [E[1],E[2]]],
-  ['Mineral Air Works', [E[1],E[3]]],
-  ['Integrated Thermal Works', [E[2],E[3]]],
-  ['Aquifer Robotics', [E[0]]],
-  ['River Basin Robotics', [E[0]]],
-  ['Mineral Quarry Robotics', [E[1]]],
-  ['Subsurface Mining Robotics', [E[1]]],
-  ['Solar Heat Robotics', [E[2]]],
-  ['Geothermal Energy Robotics', [E[2]]],
-  ['Atmospheric Capture Robotics', [E[3]]],
-  ['Air Separation Robotics', [E[3]]],
+  ['Mineral and Gas Works', [E[1],E[3]]],
+  ['Thermal and Gas Works', [E[2],E[3]]],
+  ['Deepwell Ice Extraction', [E[0]]],
+  ['Comet Ice Harvesting', [E[0]]],
+  ['Bedrock Mineral Extraction', [E[1]]],
+  ['Stratum Mining', [E[1]]],
+  ['Helios Solar Collection', [E[2]]],
+  ['Mantle Geothermal Works', [E[2]]],
+  ['Cirrus Atmospheric Capture', [E[3]]],
+  ['Zephyr Gas Separation', [E[3]]],
 ].map((x, i) => ({ id: i, name: x[0], elements: x[1] }));
 const N0 = 20,
   N1 = 1000,
-  N2_FIRMS = 50000,
-  N_END_USERS = M.COLONY_STORY.population,
-  MAX_T2_LINES = 250000,
+  N2_FIRMS = 61950,
+  N_END_USERS = M.WORLD_STORY.population,
+  MAX_T2_LINES = N2_FIRMS * M.T2_MAX_PRODUCTS_PER_FIRM,
   NP = 10,
   NE = 4,
-  MONTH = 30;
+  MONTH = M.TIME.ticksPerMonth;
 const clamp = (x, a, b) => Math.max(a, Math.min(b, x));
 const complexity = (code) => M.complexity(PB[code]);
 const markup = (code, c) => c.markup + c.compoundMarkupPremium * Math.max(0, complexity(code) - 1);
@@ -51,12 +57,7 @@ const quantW = (x, floor = 0) => {
   const fq = Math.ceil((floor - 1e-12) * 1e5) / 1e5;
   return Math.max(r, fq);
 };
-const quantR = (x, floor = 0) => {
-  if (!Number.isFinite(x)) return x;
-  const r = Math.round(x * 100) / 100;
-  const fq = Math.ceil((floor - 1e-12) * 100) / 100;
-  return Math.max(r, fq);
-};
+const quantR = quantW;
 const hashSeed = (seed, tick) => {
   let x = ((seed >>> 0) ^ Math.imul((tick + 1) >>> 0, 0x9e3779b1)) >>> 0;
   x = Math.imul(x ^ (x >>> 16), 0x85ebca6b) >>> 0;
@@ -100,6 +101,10 @@ let equipment,
   selectedT2Id = 0,
   selectedId = 0,
   lastSnapshot = null;
+let playerLicenses = new Set(M.PROGRESSION_DEFAULTS.startingLicenses);
+let playerHouse = null; // { name } once founded
+let ownershipAccounting = { licensesSpent: 0, houseSpent: 0 };
+let ownershipEnforced = true;
 let lastReportAt = 0,
   lastReportTick = 0;
 let analyticsHistory = [];
@@ -114,31 +119,47 @@ let lastTickT0Produced = new Float64Array(N0 * 4),
 let watchedCompanies = { T0: new Set(), T1: new Set() };
 let watchedCompanyHistory = {};
 let workerStats = { steps: 0, lastTickMs: 0, totalTickMs: 0 };
+// Administrative purchases happen between actual ticks. Keep their cash
+// outflows separate from the kernel's per-tick equipment sink counters.
+let adminAccounting = { equipmentSinks: 0, sequence: 0, lastEquipmentReceipt: null };
 let tier2Query = { page: 0, pageSize: 50, search: '', sector: '', controller: '', sort: 'id', descending: false };
+function administrativeAccountingSnapshot() {
+  return { ...adminAccounting, lastEquipmentReceipt: adminAccounting.lastEquipmentReceipt ?
+    { ...adminAccounting.lastEquipmentReceipt } : null };
+}
+function equipmentActionReceipt(tier, id, code, ok, equipmentSink = 0, message = null) {
+  const receipt = { sequence: adminAccounting.sequence + 1, tick, tickHex: M.calendarAt(tick).tickHex,
+    tier, companyId: Number.isInteger(id) ? id : null, productCode: typeof code === 'string' ? code : null,
+    ok, equipmentSink: ok ? equipmentSink : 0,
+    cumulativeEquipmentSinks: adminAccounting.equipmentSinks + (ok ? equipmentSink : 0), message };
+  adminAccounting = { equipmentSinks: receipt.cumulativeEquipmentSinks,
+    sequence: receipt.sequence, lastEquipmentReceipt: receipt };
+  return receipt;
+}
 function tier2Company(id, detailed = true) {
   if (!Number.isInteger(id) || id < 0 || id >= cfg.t2FirmCount) return null;
   const products = [];
   let finished = 0, made = 0, sold = 0, revenue = 0, cogs = 0, raw = 0, value = 0, capacity = 0;
   const required = new Map();
   for (let slot = 0; slot < W.t2FirmLineCount[id]; slot++) {
-    const line = W.t2FirmLines[id * 5 + slot], product = T2P[W.t2LineProduct[line]];
+    const line = W.t2FirmLines[id * M.T2_MAX_PRODUCTS_PER_FIRM + slot], product = T2P[W.t2LineProduct[line]];
     products.push({ line, code: product.code, name: product.name, primaryMaterial: PB[product.primaryMaterial].name, complexity: product.complexity,
       recipe: product.ingredients.map(([p,q]) => `${q} ${P[p].name}`).join(' + '),
-      price: W.t2Price[line], unitCost: W.t2FinBasis[line] || W.t2UnitCost[line], capacity: product.capacity,
+      price: W.t2Price[line], unitCost: W.t2FinBasis[line] || W.t2UnitCost[line], capacity: cfg.tier2CompanyCapacity / W.t2FirmLineCount[id],
       finished: W.t2Fin[line], made: W.t2Made[line], sold: W.t2Sold[line],
       revenue: W.t2Revenue[line], cogs: W.t2COGS[line], grossProfit: W.t2Revenue[line] - W.t2COGS[line],
       margin: W.t2Revenue[line] ? (W.t2Revenue[line] - W.t2COGS[line]) / W.t2Revenue[line] : 0,
-      utilization: W.t2Made[line] / product.capacity,
+      utilization: W.t2Made[line] / (cfg.tier2CompanyCapacity / W.t2FirmLineCount[id]),
       demandEMA: W.t2DemandEMA[line], salesEMA: W.t2SalesEMA[line],
       stockCoverage: W.t2SalesEMA[line] > 0 ? W.t2Fin[line] / W.t2SalesEMA[line] : null, reliability: W.t2Rel[line] });
-    capacity += product.capacity;
+    capacity += cfg.tier2CompanyCapacity / W.t2FirmLineCount[id];
     if (detailed) for (const [material, quantity] of product.ingredients) {
       const need = required.get(material) || { consumed: 0, capacityNeed: 0 };
-      need.consumed += W.t2Made[line] * quantity; need.capacityNeed += product.capacity * quantity;
+      need.consumed += W.t2Made[line] * quantity; need.capacityNeed += cfg.tier2CompanyCapacity / W.t2FirmLineCount[id] * quantity;
       required.set(material, need);
     }
     finished += W.t2Fin[line]; made += W.t2Made[line]; sold += W.t2Sold[line];
-    revenue += W.t2Revenue[line]; cogs += W.t2COGS[line]; value += W.t2Fin[line] * W.t2Price[line];
+    revenue += W.t2Revenue[line]; cogs += W.t2COGS[line]; value += W.t2Fin[line] * W.t2FinBasis[line];
   }
   const inputs = [];
   for (let material = 0; material < NP; material++) {
@@ -158,13 +179,13 @@ function tier2Company(id, detailed = true) {
     }
   }
   const eligibleEquipment = detailed ? T2P.filter((p) => p.complexity <= W.t2Capability[id] &&
-    M.relatedSector(W.t2Sector[id], p.sectorIndex) && !self.Phase0ReferenceKernel.hasTier2Product(W, id, p.id))
+    W.t2Sector[id] === p.sectorIndex && !self.Phase0ReferenceKernel.hasTier2Product(W, id, p.id))
     .map((p) => ({ code: p.code, name: p.name, price: p.equipmentPrice, complexity: p.complexity })) : [];
-  return { tier: 'T2', id, name: T2_SECTORS[W.t2Sector[id]] + ' Robot Factory ' + String(id + 1).padStart(5, '0'),
+  return { tier: 'T2', id, name: T2_COMPANY_NAMES[W.t2Sector[id]] + ' ' + String(id + 1).padStart(5, '0'),
     sector: T2_SECTORS[W.t2Sector[id]], capability: W.t2Capability[id],
     controller: W.t2Controller[id] ? 'PLAYER' : 'BOT', online: !!W.t2Online[id],
     cash: W.t2Cash[id], eqBook: W.t2EqBook[id], equipmentBookValue: W.t2EqBook[id],
-    equity: W.t2Cash[id] + W.t2EqBook[id] + value, inventory: raw + finished, raw, finished,
+    equity: W.t2Cash[id] + W.t2EqBook[id] + value, inventory: raw + finished, inventoryCapacity: cfg.tier2InventoryCapacity, raw, finished,
     made, sold, revenue, cogs, grossProfit: revenue - cogs, capacity,
     utilization: capacity ? made / capacity : 0, margin: revenue ? (revenue - cogs) / revenue : 0,
     lineCount: products.length, sellThrough: finished + sold ? sold / (finished + sold) : 0,
@@ -176,9 +197,9 @@ function tier2Page() {
   for (let id = 0; id < cfg.t2FirmCount; id++) {
     const sector = T2_SECTORS[W.t2Sector[id]], control = W.t2Controller[id] ? 'PLAYER' : 'BOT';
     if (query.sector && query.sector !== sector || query.controller && query.controller !== control) continue;
-    let text = sector + ' Robot Factory ' + String(id + 1).padStart(5, '0') + ' ' + control;
+    let text = T2_COMPANY_NAMES[W.t2Sector[id]] + ' ' + String(id + 1).padStart(5, '0') + ' ' + sector + ' ' + control;
     for (let slot = 0; slot < W.t2FirmLineCount[id]; slot++)
-      text += ' ' + T2P[W.t2LineProduct[W.t2FirmLines[id * 5 + slot]]].name;
+      text += ' ' + T2P[W.t2LineProduct[W.t2FirmLines[id * M.T2_MAX_PRODUCTS_PER_FIRM + slot]]].name;
     if (search && !text.toLowerCase().includes(search)) continue;
     matches.push(id);
   }
@@ -221,6 +242,9 @@ function defaultCfg() {
     compoundMarkupPremium: 0.15,
     wholesalePriceResponse: 0.05,
     priceObservationTicks: 30,
+    researchPriceMinimumOpportunities: 0,
+    researchPriceMinimumPotentialOrders: 0,
+    researchPriceMaxObservationTicks: 3600,
     consumerSearchOffers: 5,
     vmin: 0.9,
     vmax: 1.5,
@@ -236,26 +260,64 @@ function defaultCfg() {
     t2FirmCount: N2_FIRMS,
     initialCash: M.ECONOMY_DEFAULTS.initialCash,
     inventoryCoverageTicks: M.ECONOMY_DEFAULTS.inventoryCoverageTicks,
+    initialDemandForecastScale: 0,
+    procurementMaterialBalance: Array(NP).fill(0),
+    tier2MaterialBalance: Array(NP).fill(0),
     tier2WorkingCashTicks: M.ECONOMY_DEFAULTS.tier2WorkingCashTicks,
     tier2MinimumCash: M.ECONOMY_DEFAULTS.tier2MinimumCash,
+    tier2MarkupPremium: M.ECONOMY_DEFAULTS.tier2MarkupPremium,
+    tier2BaseMarkup: M.ECONOMY_DEFAULTS.tier2BaseMarkup,
+    procurementBaseMarkup: M.ECONOMY_DEFAULTS.procurementBaseMarkup,
+    procurementMarkupPremium: M.ECONOMY_DEFAULTS.procurementMarkupPremium,
+    procurementBasicReferenceCost: M.ECONOMY_DEFAULTS.procurementBasicReferenceCost,
+    procurementCompoundReferenceCost: M.ECONOMY_DEFAULTS.procurementCompoundReferenceCost,
+    tier2ConversionCostScale: M.ECONOMY_DEFAULTS.tier2ConversionCostScale,
+    procurementConversionReferenceScale: M.ECONOMY_DEFAULTS.procurementConversionReferenceScale,
+    tier2CompoundStandardization: M.ECONOMY_DEFAULTS.tier2CompoundStandardization,
+    tier2ComplexitySpecialization: M.ECONOMY_DEFAULTS.tier2ComplexitySpecialization,
+    procurementCompoundStandardization: M.ECONOMY_DEFAULTS.procurementCompoundStandardization,
+    procurementComplexitySpecialization: M.ECONOMY_DEFAULTS.procurementComplexitySpecialization,
+    tier2CompanyCapacity: M.ECONOMY_DEFAULTS.tier2CompanyCapacity,
+    tier2InventoryCapacity: M.ECONOMY_DEFAULTS.tier2InventoryCapacity,
+    tier1InventoryCapacity: M.ECONOMY_DEFAULTS.tier1InventoryCapacity,
     consumerActivation: 0.1,
-    tier2DemandFactor: 0.45,
-    tier2ReservationPremium: 0.45,
+    tier2DemandFactor: 1,
+    tier2ReservationPremium: 0,
   };
 }
 function normalizeConfig(c) {
   const defaults = defaultCfg(), d = { ...defaults, ...c };
-  for (const key of Object.keys(defaults)) if (!Number.isFinite(d[key])) d[key] = defaults[key];
+  for (const key of Object.keys(defaults)) if (typeof defaults[key] === 'number' && !Number.isFinite(d[key])) d[key] = defaults[key];
+  for (const key of ['procurementMaterialBalance','tier2MaterialBalance']) {
+    const coefficients = Array.isArray(d[key]) ? d[key] : defaults[key];
+    d[key] = Array.from({length:NP}, (_, material) => Number.isFinite(coefficients[material]) ? clamp(coefficients[material], -5, 5) : 0);
+  }
   d.seed = Math.floor(d.seed) >>> 0;
+  d.researchPriceMaxObservationTicks = Math.max(1, Math.floor(d.researchPriceMaxObservationTicks));
+  d.initialDemandForecastScale = clamp(d.initialDemandForecastScale, 0, 100);
+  d.researchPriceMinimumPotentialOrders = clamp(d.researchPriceMinimumPotentialOrders, 0, 1000);
+  d.researchPriceMinimumOpportunities = Math.max(0, Math.min(1000, d.researchPriceMinimumOpportunities));
   for (const key of ['capacity','targetInventory','maxInventory','retailTargetInventory','retailMaxInventory','retailInitialCash','initialCash','baseCost','manufacturingCostPerUnit','tier2MinimumCash'])
     d[key] = Math.max(0, d[key]);
   for (const key of ['alpha','reliabilityAlpha','consumerActivation']) d[key] = clamp(d[key], 0, 1);
   d.dmin = Math.max(0.01, d.dmin); d.dmax = Math.max(d.dmin, d.dmax); d.dbar = clamp(d.dbar, d.dmin, d.dmax);
   d.theta = clamp(d.theta, 0, 1); d.sigma = Math.max(0, d.sigma);
+  d.tier2CompanyCapacity = Math.max(1, Math.floor(d.tier2CompanyCapacity));
+  d.tier2InventoryCapacity = Math.max(5, Math.floor(d.tier2InventoryCapacity));
   d.taumin = Math.max(0, d.taumin); d.taumax = Math.max(d.taumin, d.taumax);
+  d.tier2BaseMarkup = Math.max(-1, d.tier2BaseMarkup);
+  d.procurementBaseMarkup = Math.max(.000001, d.procurementBaseMarkup);
+  d.procurementMarkupPremium = Math.max(0, d.procurementMarkupPremium);
+  d.procurementBasicReferenceCost = Math.max(M.MIN_UNIT_PRICE, d.procurementBasicReferenceCost);
+  d.procurementCompoundReferenceCost = Math.max(M.MIN_UNIT_PRICE, d.procurementCompoundReferenceCost);
+  d.tier2ConversionCostScale = Math.max(1e-9, d.tier2ConversionCostScale);
+  d.procurementConversionReferenceScale = Math.max(1e-9, d.procurementConversionReferenceScale);
+  for (const key of ['tier2CompoundStandardization','tier2ComplexitySpecialization',
+    'procurementCompoundStandardization','procurementComplexitySpecialization']) d[key] = clamp(d[key], 0, 5);
   d.switchingStableBand = Math.max(1e-9, d.switchingStableBand);
-  d.tier2DemandFactor = clamp(d.tier2DemandFactor, 0.01, 1);
+  d.tier2DemandFactor = clamp(d.tier2DemandFactor, 0.01, 10);
   d.tier2ReservationPremium = Math.max(0, d.tier2ReservationPremium);
+  d.tier2MarkupPremium = Math.max(0,d.tier2MarkupPremium);
   d.markup = Math.max(0, d.markup); d.compoundMarkupPremium = Math.max(0, d.compoundMarkupPremium);
   d.k = clamp(d.k, 0, 1);
   d.priceObservationTicks = Math.max(1, Math.min(360, Math.floor(d.priceObservationTicks)));
@@ -270,6 +332,7 @@ function normalizeConfig(c) {
   d.elasticityMin = Math.max(0.05, Math.min(10, d.elasticityMin));
   d.elasticityMax = Math.max(d.elasticityMin, Math.min(10, d.elasticityMax));
   d.minWholesaleLot = Math.max(1, Math.floor(d.minWholesaleLot));
+  d.tier1InventoryCapacity = Math.max(2 * d.minWholesaleLot, Math.floor(d.tier1InventoryCapacity));
   d.inventoryCoverageTicks = Math.max(1, Math.min(30, d.inventoryCoverageTicks));
   d.tier2WorkingCashTicks = Math.max(1, Math.min(360, d.tier2WorkingCashTicks));
   d.endUserCount = Math.max(1, Math.min(N_END_USERS, Math.floor(d.endUserCount || N_END_USERS)));
@@ -284,9 +347,11 @@ function normalizeConfig(c) {
   return d;
 }
 function priceLearningViews(prefix, count) {
-  return { [`${prefix}LearnProfit`]: new Float64Array(count),
+  return { [`${prefix}LearnOpportunity`]: new Float64Array(count),
+    [`${prefix}LearnPotentialOpportunity`]: new Float64Array(count),
+    [`${prefix}LearnProfit`]: new Float64Array(count),
     [`${prefix}LearnSales`]: new Float64Array(count),
-    [`${prefix}LearnTicks`]: new Uint16Array(count),
+    [`${prefix}LearnTicks`]: new Uint32Array(count),
     [`${prefix}LearnPrevious`]: new Float64Array(count),
     [`${prefix}LearnDemand`]: new Float64Array(count),
     [`${prefix}LearnStock`]: new Float64Array(count),
@@ -297,6 +362,10 @@ function priceLearningViews(prefix, count) {
 }
 function sourceViews() {
   return {
+    t0Opportunities: new Uint32Array(NE),
+    t1Opportunities: new Uint32Array(NP),
+    t2Opportunities: new Uint32Array(M.T2_PRODUCTS.length),
+    t2PotentialOrders: new Uint32Array(M.T2_PRODUCTS.length),
     ...priceLearningViews('t0', N0 * NE),
     ...priceLearningViews('t1', N1 * NP),
     ...priceLearningViews('t2', MAX_T2_LINES),
@@ -372,38 +441,40 @@ function sourceViews() {
     t2Controller: new Uint8Array(N2_FIRMS),
     t2Capability: new Uint8Array(N2_FIRMS),
     t2Sector: new Uint8Array(N2_FIRMS),
-    t2LineFirm: new Uint16Array(MAX_T2_LINES),
-    t2LineProduct: new Uint8Array(MAX_T2_LINES),
-    t2Fin: new Float64Array(MAX_T2_LINES),
-    t2FinBasis: new Float64Array(MAX_T2_LINES),
-    t2UnitCost: new Float64Array(MAX_T2_LINES),
-    t2ReplacementCost: new Float64Array(MAX_T2_LINES),
-    t2Price: new Float64Array(MAX_T2_LINES),
-    t2PlayerPrice: new Float64Array(MAX_T2_LINES),
-    t2SalesEMA: new Float64Array(MAX_T2_LINES),
-    t2Sold: new Float64Array(MAX_T2_LINES),
-    t2Revenue: new Float64Array(MAX_T2_LINES),
-    t2COGS: new Float64Array(MAX_T2_LINES),
+    t2LineFirm: new Uint16Array(Math.min(MAX_T2_LINES, cfg.t2FirmCount * M.T2_MAX_PRODUCTS_PER_FIRM)),
+    t2LineProduct: new Uint16Array(Math.min(MAX_T2_LINES, cfg.t2FirmCount * M.T2_MAX_PRODUCTS_PER_FIRM)),
+    t2Fin: new Float64Array(Math.min(MAX_T2_LINES, cfg.t2FirmCount * M.T2_MAX_PRODUCTS_PER_FIRM)),
+    t2FinBasis: new Float64Array(Math.min(MAX_T2_LINES, cfg.t2FirmCount * M.T2_MAX_PRODUCTS_PER_FIRM)),
+    t2UnitCost: new Float64Array(Math.min(MAX_T2_LINES, cfg.t2FirmCount * M.T2_MAX_PRODUCTS_PER_FIRM)),
+    t2ReplacementCost: new Float64Array(Math.min(MAX_T2_LINES, cfg.t2FirmCount * M.T2_MAX_PRODUCTS_PER_FIRM)),
+    t2Price: new Float64Array(Math.min(MAX_T2_LINES, cfg.t2FirmCount * M.T2_MAX_PRODUCTS_PER_FIRM)),
+    t2PlayerPrice: new Float64Array(Math.min(MAX_T2_LINES, cfg.t2FirmCount * M.T2_MAX_PRODUCTS_PER_FIRM)),
+    t2SalesEMA: new Float64Array(Math.min(MAX_T2_LINES, cfg.t2FirmCount * M.T2_MAX_PRODUCTS_PER_FIRM)),
+    t2Sold: new Float64Array(Math.min(MAX_T2_LINES, cfg.t2FirmCount * M.T2_MAX_PRODUCTS_PER_FIRM)),
+    t2Revenue: new Float64Array(Math.min(MAX_T2_LINES, cfg.t2FirmCount * M.T2_MAX_PRODUCTS_PER_FIRM)),
+    t2COGS: new Float64Array(Math.min(MAX_T2_LINES, cfg.t2FirmCount * M.T2_MAX_PRODUCTS_PER_FIRM)),
     t2LineCount: 0,
-    t2SectorProducts: new Uint8Array(T2_SECTORS.length * T2P.length),
+    t2ReferenceCost: new Float64Array(M.T2_CATALOGUE.length),
+    t2SectorProducts: new Uint16Array(T2_SECTORS.length * T2P.length),
     t2SectorProductWeight: new Float64Array(T2_SECTORS.length * T2P.length),
     t2SectorCount: new Uint8Array(T2_SECTORS.length),
     // End users are intentionally compact and are never copied to snapshots.
     t2Online: new Uint8Array(N2_FIRMS),
-    t2FirmLines: new Int32Array(N2_FIRMS * 5),
+    t2FirmLines: new Int32Array(N2_FIRMS * M.T2_MAX_PRODUCTS_PER_FIRM),
     t2FirmLineCount: new Uint8Array(N2_FIRMS),
     t2Preferred: new Int32Array(N2_FIRMS * NP),
-    t2Made: new Float64Array(MAX_T2_LINES),
-    t2Rel: new Float64Array(MAX_T2_LINES),
-    t2RelAttempts: new Uint32Array(MAX_T2_LINES),
-    t2RelFulfilled: new Uint32Array(MAX_T2_LINES),
-    t2RelAvailable: new Uint32Array(MAX_T2_LINES),
-    t2RelPriceSum: new Float64Array(MAX_T2_LINES),
-    t2RelPriceSamples: new Uint32Array(MAX_T2_LINES),
-    t2MonthSold: new Float64Array(MAX_T2_LINES),
-    t2MonthlyCapacity: new Float64Array(MAX_T2_LINES),
+    t2Made: new Float64Array(Math.min(MAX_T2_LINES, cfg.t2FirmCount * M.T2_MAX_PRODUCTS_PER_FIRM)),
+    t2Rel: new Float64Array(Math.min(MAX_T2_LINES, cfg.t2FirmCount * M.T2_MAX_PRODUCTS_PER_FIRM)),
+    t2RelAttempts: new Uint32Array(Math.min(MAX_T2_LINES, cfg.t2FirmCount * M.T2_MAX_PRODUCTS_PER_FIRM)),
+    t2RelFulfilled: new Uint32Array(Math.min(MAX_T2_LINES, cfg.t2FirmCount * M.T2_MAX_PRODUCTS_PER_FIRM)),
+    t2RelAvailable: new Uint32Array(Math.min(MAX_T2_LINES, cfg.t2FirmCount * M.T2_MAX_PRODUCTS_PER_FIRM)),
+    t2RelPriceSum: new Float64Array(Math.min(MAX_T2_LINES, cfg.t2FirmCount * M.T2_MAX_PRODUCTS_PER_FIRM)),
+    t2RelPriceSamples: new Uint32Array(Math.min(MAX_T2_LINES, cfg.t2FirmCount * M.T2_MAX_PRODUCTS_PER_FIRM)),
+    t2MonthSold: new Float64Array(Math.min(MAX_T2_LINES, cfg.t2FirmCount * M.T2_MAX_PRODUCTS_PER_FIRM)),
+    t2MonthlyCapacity: new Float64Array(Math.min(MAX_T2_LINES, cfg.t2FirmCount * M.T2_MAX_PRODUCTS_PER_FIRM)),
     endBasketCount: new Uint8Array(N_END_USERS),
     endBasket: new Uint8Array(N_END_USERS * 5),
+    endNeedProduct: new Int16Array(N_END_USERS * 5),
     endPreferredProduct: new Int16Array(N_END_USERS * 5),
     endPreferredSupplier: new Int32Array(N_END_USERS * 5),
     endLastMarket: new Int16Array(N_END_USERS),
@@ -422,7 +493,8 @@ function sourceViews() {
     endStockUnmet: new Float64Array(NP + T2P.length),
   };
 }
-function initEngine() {
+function initEngine(c) {
+  cfg = normalizeConfig(c || defaultCfg());
   W = sourceViews();
   sourceState = { activeOrders: 0, fulfilledOrders: 0 };
 }
@@ -431,6 +503,10 @@ function reset(c) {
   tick = 0;
   month = 0;
   running = false;
+  playerLicenses = new Set(M.PROGRESSION_DEFAULTS.startingLicenses);
+  playerHouse = null;
+  ownershipAccounting = { licensesSpent: 0, houseSpent: 0 };
+  ownershipEnforced = true;
   analyticsHistory = [];
   watchedCompanyHistory = {};
   tier2CompanyHistory = []; tier2HistoryCompany = -1;
@@ -445,8 +521,10 @@ function reset(c) {
   for (const tier of ['t0', 't1', 't2']) {
     W[`${tier}LearnPrevious`].fill(NaN);
     W[`${tier}LearnStep`].fill(1);
-    for (let i = 0; i < W[`${tier}LearnDirection`].length; i++)
-      W[`${tier}LearnDirection`][i] = ((i + cfg.seed) % 2) ? 1 : -1;
+    for (let i = 0; i < W[`${tier}LearnDirection`].length; i++) {
+      const firm = tier === 't0' ? Math.floor(i / 4) : tier === 't1' ? Math.floor(i / 10) : i;
+      W[`${tier}LearnDirection`][i] = ((firm + cfg.seed) % 2) ? 1 : -1;
+    }
   }
   W.difficulty.fill(cfg.dbar);
   W.t0Cash.fill(cfg.initialCash);
@@ -515,35 +593,25 @@ function reset(c) {
     W.t1Price[id * 10 + pi] = price;
     W.t1PrevPrice[id * 10 + pi] = price;
   }
-  for (let id = 0; id < N1; id++) {
-    for (let e = 0; e < NE; e++) {
-      let best = -1,
-        bp = Infinity;
-      for (let s = 0; s < N0; s++)
-        if (T0P[s].elements.includes(E[e])) {
-          const p = W.t0Price[s * 4 + e];
-          if (p < bp - 1e-12 || (Math.abs(p - bp) <= 1e-12 && s < best)) {
-            best = s;
-            bp = p;
-          }
-        }
-      W.preferredWholesale[id * 4 + e] = best;
-    }
-  }
+  // Supplier relationships are earned on the first successful transaction.
+  // preferredWholesale was filled with -1 above; no company receives every
+  // buyer merely because it was listed first at a tied opening quote.
   initializeTier2();
   initializeConsumers();
   for (let firm = 0; firm < N1; firm++) {
     const p = Math.floor(firm / 100);
-    W.t1DemandEMA[firm * NP + p] = p < 4 ? 60 : 200;
+    W.t1DemandEMA[firm * NP + p] = (p < 4 ? 60 : 200) * cfg.initialDemandForecastScale;
   }
   lastReportAt = performance.now();
   lastReportTick = 0;
   workerStats = { steps: 0, lastTickMs: 0, totalTickMs: 0 };
+  adminAccounting = { equipmentSinks: 0, sequence: 0, lastEquipmentReceipt: null };
   sourceState = { activeOrders: 0, fulfilledOrders: 0, activatedConsumers: 0, consumerPayments: 0 };
   publish();
 }
 function initializeTier2() {
   W.t2LineCount = 0;
+  for (const p of T2P) W.t2ReferenceCost[p.id] = M.referenceTier2Cost(p, cfg);
   W.t2FirmLines.fill(-1); W.t2Preferred.fill(-1); W.t2PlayerPrice.fill(NaN); W.t2Rel.fill(0.5);
   W.t2SectorCount.fill(0);
   for (const product of T2P) {
@@ -552,38 +620,22 @@ function initializeTier2() {
     W.t2SectorProductWeight[index] = (count ? W.t2SectorProductWeight[index - 1] : 0) + product.demandWeight;
   }
   let firm = 0;
-  for (const band of M.T2_CAPABILITY_BANDS) {
-    const c = band.complexity;
-    const count = c === 5 ? cfg.t2FirmCount - firm : Math.floor(cfg.t2FirmCount * band.share);
-    const products = T2P.filter((p) => p.complexity === c);
-    const floor = Math.min(100, Math.floor(count / products.length));
-    const weights = products.map((p) => p.demandWeight * (0.8 + 0.4 * hashSeed(cfg.seed, 4000000 + p.id) / 4294967296));
-    const remainder = count - floor * products.length, weight = weights.reduce((sum, value) => sum + value, 0);
-    const quota = products.map((p, index) => floor + Math.floor(remainder * weights[index] / weight));
-    for (let left = count - quota.reduce((sum, n) => sum + n, 0), k = 0; left > 0; left--, k++) quota[k % quota.length]++;
-    products.forEach((core, p) => {
-      for (let n = 0; n < quota[p]; n++, firm++) {
-        W.t2Capability[firm] = c; W.t2Sector[firm] = core.sectorIndex;
-        self.Phase0ReferenceKernel.addTier2Line(W, cfg, firm, core, false);
-        const total = band.startingLines;
-        const candidates = T2P.filter((x) => x.id !== core.id && x.complexity <= c && M.relatedSector(core.sectorIndex, x.sectorIndex));
-        for (let extra = 1; extra < total; extra++) {
-          const eligible = candidates.filter((x) => !self.Phase0ReferenceKernel.hasTier2Product(W, firm, x.id));
-          const weights = eligible.map((x) => x.needWeight * (x.sectorIndex === core.sectorIndex ? 2 : 1));
-          let draw = hashSeed(cfg.seed, firm * 5 + extra) / 4294967296 * weights.reduce((sum, weight) => sum + weight, 0);
-          let product = eligible.at(-1);
-          for (let index = 0; index < eligible.length; index++) { draw -= weights[index]; if (draw < 0) { product = eligible[index]; break; } }
-          if (product) self.Phase0ReferenceKernel.addTier2Line(W, cfg, firm, product, false);
-        }
-        const portfolio = Array.from({ length: W.t2FirmLineCount[firm] }, (_, slot) =>
-          T2P[W.t2LineProduct[W.t2FirmLines[firm * 5 + slot]]]);
-        W.t2Cash[firm] = M.tier2StartingCash(portfolio, cfg);
-      }
-    });
+  for (let sector=0;sector<T2_SECTORS.length;sector++) {
+    const count = Math.floor(cfg.t2FirmCount/T2_SECTORS.length)+(sector<cfg.t2FirmCount%T2_SECTORS.length?1:0);
+    const products=T2P.filter(p=>p.sectorIndex===sector), options=M.portfolioOptions(products);
+    // At the normal 61,950 count, instantiate every option exactly once.
+    // Small regression fixtures use a deterministic stratified subset.
+    for(let n=0;n<count;n++,firm++) {
+      const index=count===options.length?n:Math.floor(n*options.length/count);
+      const portfolio=options[index]; W.t2Capability[firm]=5; W.t2Sector[firm]=sector;
+      for(const product of portfolio) self.Phase0ReferenceKernel.addTier2Line(W,cfg,firm,product,false);
+      W.t2Cash[firm]=M.tier2StartingCash(portfolio,cfg);
+      W.t2EqBook[firm]=portfolio.reduce((sum, product) => sum + product.equipmentPrice, 0);
+    }
   }
 }
 function initializeConsumers() {
-  W.endPreferredProduct.fill(-1); W.endPreferredSupplier.fill(-1);
+  W.endNeedProduct.fill(-1); W.endPreferredProduct.fill(-1); W.endPreferredSupplier.fill(-1);
   W.endLastMarket.fill(-1); W.endLastSupplier.fill(-1);
   for (let id = 0; id < cfg.endUserCount; id++) {
     const a = hashSeed(cfg.seed, 8000000 + id), b = hashSeed(cfg.seed, 9000000 + id);
@@ -761,12 +813,12 @@ function marketReliability(values, volumes) {
       : values.reduce((a, v) => a + (Number(v) || 0), 0) / active
     : 0;
 }
-function markedT0Equity(wP) {
+function bookT0Equity() {
   let total = 0;
   for (let i = 0; i < N0; i++) {
     const b = i * 4;
     let inv = 0;
-    for (let e = 0; e < 4; e++) inv += W.t0Inv[b + e] * (wP[e] || 0);
+    for (let e = 0; e < 4; e++) inv += W.t0Inv[b + e] * W.t0InvBasis[b + e];
     total += W.t0Cash[i] + inv;
   }
   return total;
@@ -808,9 +860,9 @@ function cohortAnalytics(m) {
       cash += W.t1Cash[id] || 0;
       const invVal = (() => {
         let v = 0;
-        for (let e = 0; e < 4; e++) v += (W.raw[rb + e] || 0) * (m.wP[e] || 0);
+        for (let e = 0; e < 4; e++) v += (W.raw[rb + e] || 0) * W.rawBasis[rb + e];
         for (let p2 = 0; p2 < NP; p2++)
-          if (W.t1Operates[id * NP + p2]) v += (W.t1Fin[id * NP + p2] || 0) * (m.rP[p2] || 0);
+          if (W.t1Operates[id * NP + p2]) v += (W.t1Fin[id * NP + p2] || 0) * W.t1FinBasis[id * NP + p2];
         return v;
       })();
       equity += W.t1Cash[id] + W.t1EqBook[id] + invVal;
@@ -904,7 +956,7 @@ function buildAnalytics(m) {
       eqv = W.t1Cash[id] + W.t1EqBook[id];
     for (let e = 0; e < 4; e++) {
       raw += W.raw[rb + e] || 0;
-      eqv += (W.raw[rb + e] || 0) * (m.wP[e] || 0);
+      eqv += (W.raw[rb + e] || 0) * W.rawBasis[rb + e];
     }
     t1Raw += raw;
     t1Finished += finished;
@@ -916,7 +968,7 @@ function buildAnalytics(m) {
         const idx = id * NP + p,
           fin = W.t1Fin[idx] || 0;
         finished += fin;
-        eqv += fin * (m.rP[p] || 0);
+        eqv += fin * W.t1FinBasis[idx];
         t1Sold += W.t1Sold[idx] || 0;
         t1Revenue += W.t1Rev[idx] || 0;
         t1COGS += W.t1COGS[idx] || 0;
@@ -933,7 +985,7 @@ function buildAnalytics(m) {
   let t2Cash = 0, t2Inventory = 0, t2Sold = 0, t2Revenue = 0, t2COGS = 0, t2Equity = 0, t2Made = 0;
   for (let line = 0; line < W.t2LineCount; line++) {
     t2Inventory += W.t2Fin[line] || 0; t2Sold += W.t2Sold[line] || 0;
-    t2Equity += W.t2Fin[line] * W.t2Price[line]; t2Made += W.t2Made[line];
+    t2Equity += W.t2Fin[line] * W.t2FinBasis[line]; t2Made += W.t2Made[line];
     t2Revenue += W.t2Revenue[line] || 0; t2COGS += W.t2COGS[line] || 0;
   }
   for (let firm = 0; firm < cfg.t2FirmCount; firm++) {
@@ -960,7 +1012,7 @@ function buildAnalytics(m) {
     rVolume: m.rVolume,
     t0Inventory,
     t1Inventory: t1Raw + t1Finished,
-    t0Equity: markedT0Equity(m.wP),
+    t0Equity: bookT0Equity(),
     t1Equity,
     t2Cash,
     t2Equity,
@@ -992,7 +1044,7 @@ function buildAnalytics(m) {
     t0Cash,
     t0Sold,
     t0Revenue,
-    t0Equity: markedT0Equity(m.wP),
+    t0Equity: bookT0Equity(),
     t0Produced,
     t0Vol,
     t0HHI,
@@ -1037,7 +1089,6 @@ function companyDetail(tier, id) {
   if (tier === 'T0') {
     const co = T0P[id];
     if (!co) return null;
-    const marketPrices = marketAverages().wP;
     const elements = [];
     let inventory = 0,
       prod = 0,
@@ -1049,7 +1100,7 @@ function companyDetail(tier, id) {
       const i = EI[e],
         idx = id * 4 + i,
         stock = W.t0Inv[idx] || 0,
-        invVal = stock * (marketPrices[i] || 0);
+        invVal = stock * W.t0InvBasis[idx];
       inventory += stock;
       prod += lastTickT0Produced[idx] || 0;
       sold += W.t0Sold[idx] || 0;
@@ -1063,6 +1114,10 @@ function companyDetail(tier, id) {
         production: lastTickT0Produced[idx] || 0,
         sold: W.t0Sold[idx] || 0,
         revenue: W.t0Revenue[idx] || 0,
+        cogs: W.t0COGS[idx] || 0,
+        grossProfit: (W.t0Revenue[idx] || 0) - (W.t0COGS[idx] || 0),
+        extractionSpending: (lastTickT0Produced[idx] || 0) * W.t0Cost[idx],
+        operatingCashFlow: (W.t0Revenue[idx] || 0) - (lastTickT0Produced[idx] || 0) * W.t0Cost[idx],
         reliability: W.t0Rel[idx] || 0,
         stability: W.t0Stability[idx] || 0,
         reliabilityAttempts: t0RelAttemptsCount(id, i),
@@ -1079,8 +1134,10 @@ function companyDetail(tier, id) {
       made: prod,
       sold,
       revenue,
-      productionCost: elements.reduce((total, element) => total + element.production * element.cost, 0),
-      operatingCashFlow: revenue - elements.reduce((total, element) => total + element.production * element.cost, 0),
+      cogs: elements.reduce((total, element) => total + element.cogs, 0),
+      grossProfit: revenue - elements.reduce((total, element) => total + element.cogs, 0),
+      extractionSpending: elements.reduce((total, element) => total + element.extractionSpending, 0),
+      operatingCashFlow: elements.reduce((total, element) => total + element.operatingCashFlow, 0),
       capacity: cfg.capacity,
       targetInventory: cfg.targetInventory,
       maxInventory: cfg.maxInventory,
@@ -1116,7 +1173,7 @@ function companyDetail(tier, id) {
       const idx = id * NP + p,
         fin = W.t1Fin[idx] || 0;
       inv += fin;
-      eqv += fin * (marketAverages().rP[p] || 0);
+      eqv += fin * W.t1FinBasis[idx];
       made += lastTickT1Made[idx] || 0;
       sold += W.t1Sold[idx] || 0;
       revenue += W.t1Rev[idx] || 0;
@@ -1129,6 +1186,8 @@ function companyDetail(tier, id) {
         finishedBasis: W.t1FinBasis[idx] || 0,
         salesEMA: W.t1SalesEMA[idx] || 0,
         demandEMA: W.t1DemandEMA[idx] || 0,
+        active: W.t1Demand[idx], fulfilled: W.t1Sold[idx],
+        stockUnmet: Math.max(0, W.t1Demand[idx] - W.t1Sold[idx]),
         made: lastTickT1Made[idx] || 0,
         sold: W.t1Sold[idx] || 0,
         revenue: W.t1Rev[idx] || 0,
@@ -1139,7 +1198,7 @@ function companyDetail(tier, id) {
       });
     }
   for (const x of raw) inv += x.stock;
-  for (const e of E) eqv += W.raw[id * 4 + EI[e]] * (marketAverages().wP[EI[e]] || 0);
+  for (const e of E) eqv += W.raw[id * 4 + EI[e]] * W.rawBasis[id * 4 + EI[e]];
   return {
     tier: 'T1',
     id,
@@ -1181,7 +1240,7 @@ function watchedDetails() {
   for (const [key, detail] of Object.entries(out)) {
     const history = watchedCompanyHistory[key] || (watchedCompanyHistory[key] = []);
     const point = { tick };
-    for (const field of ['cash', 'equity', 'made', 'sold', 'revenue', 'cogs', 'grossProfit', 'productionCost', 'operatingCashFlow'])
+    for (const field of ['cash', 'equity', 'made', 'sold', 'revenue', 'cogs', 'grossProfit', 'extractionSpending', 'operatingCashFlow'])
       if (Number.isFinite(detail[field])) point[field] = detail[field];
     if (history.at(-1)?.tick === tick) history[history.length - 1] = point;
     else history.push(point);
@@ -1196,6 +1255,8 @@ function companySummariesT0(m) {
     const prof = T0P[id];
     let inv = 0,
       prod = 0,
+      cogs = 0,
+      extractionSpending = 0,
       sold = 0,
       rev = 0,
       rel = 0,
@@ -1207,11 +1268,13 @@ function companySummariesT0(m) {
         const stock = W.t0Inv[idx] || 0;
         inv += stock;
         prod += lastTickT0Produced[idx] || 0;
+        cogs += W.t0COGS[idx] || 0;
+        extractionSpending += (lastTickT0Produced[idx] || 0) * W.t0Cost[idx];
         sold += W.t0Sold[idx] || 0;
         rev += W.t0Revenue[idx] || 0;
         rel += W.t0Rel[idx] || 0;
         n++;
-        eq += stock * (m.wP[e] || 0);
+        eq += stock * W.t0InvBasis[idx];
       }
     out.push({
       id,
@@ -1223,6 +1286,8 @@ function companySummariesT0(m) {
       production: prod,
       sold,
       revenue: rev,
+      cogs, grossProfit: rev - cogs,
+      extractionSpending, operatingCashFlow: rev - extractionSpending,
       avgPrice: n ? prof.elements.reduce((a, e) => a + W.t0Price[id * 4 + EI[e]], 0) / n : NaN,
       reliability: n ? rel / n : 0,
     });
@@ -1292,9 +1357,9 @@ function publish() {
         W.t1EqBook[id] +
         (() => {
           let v = 0;
-          for (let e = 0; e < 4; e++) v += (W.raw[id * 4 + e] || 0) * (m.wP[e] || 0);
+          for (let e = 0; e < 4; e++) v += (W.raw[id * 4 + e] || 0) * W.rawBasis[id * 4 + e];
           for (let p = 0; p < NP; p++)
-            if (W.t1Operates[id * NP + p]) v += (W.t1Fin[id * NP + p] || 0) * (m.rP[p] || 0);
+            if (W.t1Operates[id * NP + p]) v += (W.t1Fin[id * NP + p] || 0) * W.t1FinBasis[id * NP + p];
           return v;
         })(),
       made: totalMade,
@@ -1331,20 +1396,22 @@ function publish() {
       revenue: m.rRev[i],
       supplyCapacity: productSupplyCapacity(i),
       readyStock: productReadyStock(i),
-      potential: (W.endPotential || W.potential)[i],
-      active: (W.endActive || W.active)[i],
-      fulfilled: (W.endFulfilled || W.fulfilled)[i],
-      priceLost: (W.endPriceLost || W.priceLost)[i],
-      stockUnmet: (W.endStockUnmet || W.stockUnmet)[i],
+      customerType: 'Companies',
+      potential: null,
+      active: suppliers.reduce((n, x) => n + W.t1Demand[x.id * NP + i], 0),
+      fulfilled: W.t1IntermediateSold[i],
+      priceLost: null,
+      stockUnmet: Math.max(0, suppliers.reduce((n, x) => n + W.t1Demand[x.id * NP + i], 0) - W.t1IntermediateSold[i]),
       hhi: hhi(suppliers.map((x) => x.vol)),
       reliability: marketReliability(
         suppliers.map((x) => x.rel),
         suppliers.map((x) => x.vol),
       ),
-      fillRate: (W.endActive || W.active)[i] ? (W.endFulfilled || W.fulfilled)[i] / (W.endActive || W.active)[i] : 0,
+      fillRate: suppliers.reduce((n, x) => n + W.t1Demand[x.id * NP + i], 0) > 0 ?
+        W.t1IntermediateSold[i] / suppliers.reduce((n, x) => n + W.t1Demand[x.id * NP + i], 0) : null,
     };
   });
-  const t2ProductStats = T2P.map((p) => ({ code: p.code, name: p.name, sector: p.sector,
+  const t2ProductStats = T2P.map((p) => ({ customerType: 'External galactic buyers', code: p.code, name: p.name, needType: p.needType, kind: p.kind, sector: p.sector,
     complexity: p.complexity, primaryMaterial: PB[p.primaryMaterial].name, machineryPrice: p.equipmentPrice, capacity: p.capacity,
     recipe: p.ingredients.map(([material, quantity]) => `${quantity} ${P[material].name}`).join(' + '),
     firms: 0, avgPrice: 0, avgUnitCost: 0, productionCapacity: 0, readyStock: 0, made: 0, sold: 0, revenue: 0, cogs: 0, reliability: 0, hhi: 0,
@@ -1354,7 +1421,7 @@ function publish() {
   for (let line = 0; line < W.t2LineCount; line++) {
     const p = t2ProductStats[W.t2LineProduct[line]];
     p.firms++; p.avgPrice += W.t2Price[line]; p.readyStock += W.t2Fin[line]; p.made += W.t2Made[line];
-    p.avgUnitCost += W.t2FinBasis[line] || W.t2UnitCost[line]; p.productionCapacity += p.capacity;
+    p.avgUnitCost += W.t2FinBasis[line] || W.t2UnitCost[line]; p.productionCapacity += cfg.tier2CompanyCapacity / W.t2FirmLineCount[W.t2LineFirm[line]];
     p.sold += W.t2Sold[line]; p.revenue += W.t2Revenue[line]; p.cogs += W.t2COGS[line]; p.reliability += W.t2Rel[line];
     p.hhi += W.t2Sold[line] ** 2;
   }
@@ -1377,9 +1444,9 @@ function publish() {
       c.raw += stock; c.equity += stock * (basic ? W.t2RawBasis : W.t2T1Basis)[index];
     }
     for (let slot = 0; slot < W.t2FirmLineCount[firm]; slot++) {
-      const line = W.t2FirmLines[firm * 5 + slot];
+      const line = W.t2FirmLines[firm * M.T2_MAX_PRODUCTS_PER_FIRM + slot];
       c.lines++; c.inventory += W.t2Fin[line]; c.made += W.t2Made[line]; c.sold += W.t2Sold[line];
-      c.capacity += T2P[W.t2LineProduct[line]].capacity; c.equity += W.t2Fin[line] * W.t2Price[line];
+      c.capacity += cfg.tier2CompanyCapacity / W.t2FirmLineCount[firm]; c.equity += W.t2Fin[line] * W.t2FinBasis[line];
       c.revenue += W.t2Revenue[line]; c.cogs += W.t2COGS[line]; c.grossProfit += W.t2Revenue[line] - W.t2COGS[line];
     }
   }
@@ -1403,16 +1470,16 @@ function publish() {
     summary.volumeShare = analytics.t2Sold ? summary.sold / analytics.t2Sold : 0;
     return summary;
   };
-  const t2Industries = T2_SECTORS.map((name, index) => ({ ...summarizeMarkets(t2ProductStats.filter((p) => p.sector === name), name), primaryMaterial: PB[M.T2_SECTOR_DEFINITIONS[index].primaryMaterial].name }));
+  const t2Industries = T2_SECTORS.map((name, index) => ({ ...summarizeMarkets(t2ProductStats.filter((p) => p.sector === name), name), description: M.T2_SECTOR_DEFINITIONS[index].description }));
   const t2Complexity = M.TIER_BOUNDARIES.T2.map((complexity) => ({ ...summarizeMarkets(t2ProductStats.filter((p) => p.complexity === complexity), 'Complexity ' + complexity), complexity }));
   const t2Totals = summarizeMarkets(t2ProductStats, 'All Tier 2 industries');
   const productCategories = [1, 2, 3, 4, 5].map((complexity) => {
     const products = (complexity < 3 ? productStats : t2ProductStats).filter(p => p.complexity === complexity);
     const summary = summarizeMarkets(products, 'C-' + complexity);
     return { ...summary, complexity, tier: complexity < 3 ? 'Tier 1' : 'Tier 2',
-      role: complexity < 3 ? 'Business inputs' : 'Human consumer goods',
+      role: complexity < 3 ? 'Business inputs' : 'Galactic end-use goods',
       machineryPrice: products[0].machineryPrice,
-      unitCapacity: products[0].capacity,
+      unitCapacity: summary.lines ? summary.capacity / summary.lines : 0,
       avgPrice: products.reduce((n, p) => n + p.avgPrice * p.firms, 0) / Math.max(1, summary.lines),
       avgUnitCost: products.reduce((n, p) => n + p.avgUnitCost * p.firms, 0) / Math.max(1, summary.lines),
       soldPerLine: summary.lines ? summary.sold / summary.lines : NaN,
@@ -1439,17 +1506,32 @@ function publish() {
     code: ['W', 'E', 'F', 'A'][i],
     price: m.wP[i],
     volume: m.wVol[i],
+    revenue: W.t0Revenue.reduce((total, value, index) => total + (index % NE === i ? value : 0), 0),
+    cogs: W.t0COGS.reduce((total, value, index) => total + (index % NE === i ? value : 0), 0),
+    grossProfit: W.t0Revenue.reduce((total, value, index) => total + (index % NE === i ? value - W.t0COGS[index] : 0), 0),
+    extractionSpending: W.t0Cost.reduce((total, cost, index) => total + (index % NE === i ? cost * lastTickT0Produced[index] : 0), 0),
+    operatingCashFlow: W.t0Revenue.reduce((total, value, index) => total + (index % NE === i ? value - W.t0Cost[index] * lastTickT0Produced[index] : 0), 0),
     difficulty: W.difficulty[i],
     hhi: analytics.t0HHI[i],
     reliability: marketReliability(t0RelSafe(i), t0VolsFor(i)),
   }));
   lastSnapshot = {
-    colony: { ...M.COLONY_STORY, population: cfg.endUserCount },
+    world: { ...M.WORLD_STORY, population: cfg.endUserCount },
     tick,
     month,
+    calendar: M.calendarAt(tick),
+    invention: { possible: M.T2_CATALOGUE.length, invented: T2P.length, reserved: M.T2_UNINVENTED_PRODUCTS.length },
     tps,
     mode,
     targetTPS,
+    adminAccounting: administrativeAccountingSnapshot(),
+    ownership: {
+      licenses: [...playerLicenses],
+      licenseCosts: { ...M.PROGRESSION_DEFAULTS.licenseCosts },
+      house: playerHouse ? { ...playerHouse } : null,
+      houseFoundingCost: M.PROGRESSION_DEFAULTS.houseFoundingCost,
+      accounting: { ...ownershipAccounting },
+    },
     difficulty: {
       [E[0]]: W.difficulty[0],
       [E[1]]: W.difficulty[1],
@@ -1480,9 +1562,12 @@ function publish() {
     tiers: {
       t0: {
         firms: N0,
-        bought: sumArray(analytics.t0Produced),
+        bought: 0,
         made: sumArray(analytics.t0Produced),
-        productionCost: W.t0Cost.reduce((total, cost, index) => total + cost * lastTickT0Produced[index], 0),
+        cogs: sumArray(W.t0COGS),
+        grossProfit: analytics.t0Revenue - sumArray(W.t0COGS),
+        extractionSpending: W.t0Cost.reduce((total, cost, index) => total + cost * lastTickT0Produced[index], 0),
+        operatingCashFlow: analytics.t0Revenue - W.t0Cost.reduce((total, cost, index) => total + cost * lastTickT0Produced[index], 0),
         inventory: analytics.t0Inventory,
         cash: analytics.t0Cash,
         equity: analytics.t0Equity,
@@ -1505,6 +1590,9 @@ function publish() {
         revenue: analytics.t1Revenue,
         cogs: analytics.t1COGS,
         grossProfit: analytics.t1Revenue - analytics.t1COGS,
+        desired: productStats.reduce((n,p)=>n+p.active,0),
+        fulfilled: productStats.reduce((n,p)=>n+p.fulfilled,0),
+        stockUnmet: productStats.reduce((n,p)=>n+p.stockUnmet,0),
         activeFirms: analytics.activeFirms,
         players: analytics.players,
         reliability: analytics.latest.avgT1Reliability,
@@ -1567,7 +1655,6 @@ function publish() {
   };
   lastSnapshot.endUsers = lastSnapshot.tiers.endUsers;
   lastSnapshot.tiers.t3 = lastSnapshot.endUsers;
-  lastSnapshot.tiers.t0.operatingCashFlow = lastSnapshot.tiers.t0.revenue - lastSnapshot.tiers.t0.productionCost;
   // Charts and summary cards share the same aggregate values for each tick.
   analytics.latest.tiers = Object.fromEntries(Object.entries(lastSnapshot.tiers).map(([tier, stats]) =>
     [tier, Object.fromEntries(Object.entries(stats).map(([key, value]) => [key, Array.isArray(value) ? [...value] : value]))]));
@@ -1607,11 +1694,30 @@ function runLoop() {
   publish();
   timer = setTimeout(runLoop, 500);
 }
+function controlledScope() {
+  const tiers = new Set();
+  const t2Sectors = new Set();
+  for (let i = 0; i < N1; i++) if (controller[i]) tiers.add('T1');
+  for (let i = 0; i < cfg.t2FirmCount; i++) if (W.t2Controller[i]) { tiers.add('T2'); t2Sectors.add(W.t2Sector[i]); }
+  return { tiers, t2Sectors };
+}
+function ownershipGate(tier, t2Sector) {
+  if (!ownershipEnforced) return { ok: true };
+  if (!playerLicenses.has(tier)) return { ok: false, msg: `Requires a ${tier} license.` };
+  if (playerHouse) return { ok: true };
+  const scope = controlledScope();
+  const tiers = new Set(scope.tiers); tiers.add(tier);
+  const sectors = new Set(scope.t2Sectors); if (tier === 'T2') sectors.add(t2Sector);
+  if (tiers.size > 1) return { ok: false, msg: 'Spanning tiers requires a holding company (found a house).' };
+  if (sectors.size > 1) return { ok: false, msg: 'Spanning Tier 2 sectors requires a holding company (found a house).' };
+  return { ok: true };
+}
+
 self.onmessage = async (event) => {
   const message = event.data;
   try {
     if (message.type === 'init') {
-      initEngine();
+      initEngine(message.cfg);
       reset(message.cfg || defaultCfg());
       return;
     }
@@ -1691,13 +1797,18 @@ self.onmessage = async (event) => {
         const product = M.T2_PRODUCT_BY_CODE[message.code];
         if (message.controller === 'PLAYER' && (!product || !self.Phase0ReferenceKernel.hasTier2Product(W, id, product.id) ||
             !Number.isFinite(message.price) || message.price < 0)) throw new Error('Select an installed product and a valid non-negative price.');
+        if (message.controller === 'PLAYER') {
+          const gate = ownershipGate('T2', W.t2Sector[id]);
+          if (!gate.ok) { publish(); self.postMessage({ type: 'actionResult', ok: false, msg: gate.msg }); return; }
+        }
         W.t2Controller[id] = message.controller === 'PLAYER' ? 1 : 0; W.t2Online[id] = message.online ? 1 : 0;
         if (W.t2Controller[id])
           for (let slot = 0; slot < W.t2FirmLineCount[id]; slot++) {
-            const line = W.t2FirmLines[id * 5 + slot];
+            const line = W.t2FirmLines[id * M.T2_MAX_PRODUCTS_PER_FIRM + slot];
             if (W.t2LineProduct[line] === product.id) {
-              W.t2PlayerPrice[line] = Math.max(message.price, W.t2FinBasis[line] || W.t2UnitCost[line], 0.01);
+              W.t2PlayerPrice[line] = Math.max(message.price, W.t2FinBasis[line] || W.t2UnitCost[line], M.MIN_UNIT_PRICE);
               W.t2Price[line] = W.t2PlayerPrice[line];
+              W.t2LearnOpportunity[line] = W.t2LearnPotentialOpportunity[line] = 0;
               W.t2LearnProfit[line] = W.t2LearnSales[line] = W.t2LearnDemand[line] = W.t2LearnTicks[line] = 0;
               W.t2LearnStep[line] = 1;
               W.t2LearnPrevious[line] = NaN;
@@ -1708,6 +1819,10 @@ self.onmessage = async (event) => {
       if (!Number.isInteger(id) || id < 0 || id >= N1 || !PB[message.code] || !equipment[id].includes(message.code)) throw new Error('Invalid Tier 1 company or product.');
       selectedTierControl = 'T1';
       selectedId = id;
+      if (message.controller === 'PLAYER') {
+        const gate = ownershipGate('T1', -1);
+        if (!gate.ok) { publish(); self.postMessage({ type: 'actionResult', ok: false, msg: gate.msg }); return; }
+      }
       controller[id] = message.controller === 'PLAYER' ? 1 : 0;
       online[id] = message.online ? 1 : 0;
       W.t1Controller[id] = controller[id];
@@ -1715,6 +1830,7 @@ self.onmessage = async (event) => {
       if (controller[id] && Number.isFinite(message.price)) {
         playerPrices[id][message.code] = quantR(message.price);
         W.playerPrice[index] = playerPrices[id][message.code];
+        W.t1LearnOpportunity[index] = W.t1LearnPotentialOpportunity[index] = 0;
         W.t1LearnProfit[index] = W.t1LearnSales[index] = W.t1LearnDemand[index] = W.t1LearnTicks[index] = 0;
         W.t1LearnStep[index] = 1;
         W.t1LearnPrevious[index] = NaN;
@@ -1722,28 +1838,68 @@ self.onmessage = async (event) => {
       publish();
       return;
     }
+    if (message.type === 'setOwnershipEnforcement') {
+      ownershipEnforced = !!message.enforced;
+      publish();
+      return;
+    }
+    if (message.type === 'buyLicense') {
+      const tier = String(message.tier || '');
+      const cost = M.PROGRESSION_DEFAULTS.licenseCosts[tier];
+      let ok = false, msg = null;
+      if (!Object.prototype.hasOwnProperty.call(M.PROGRESSION_DEFAULTS.licenseCosts, tier)) msg = 'Unknown tier.';
+      else if (cost === null) msg = 'This license is not for sale.';
+      else if (playerLicenses.has(tier)) msg = 'License already held.';
+      else { playerLicenses.add(tier); ownershipAccounting.licensesSpent += cost; ok = true; }
+      publish();
+      self.postMessage({ type: 'licenseResult', ok, tier, cost: ok ? cost : null, msg, licenses: [...playerLicenses] });
+      return;
+    }
+    if (message.type === 'foundHouse') {
+      const name = String(message.name || '').trim().slice(0, 80);
+      let ok = false, msg = null;
+      if (playerHouse) msg = 'A house is already founded.';
+      else if (!name) msg = 'A house name is required.';
+      else { playerHouse = { name }; ownershipAccounting.houseSpent += M.PROGRESSION_DEFAULTS.houseFoundingCost; ok = true; }
+      publish();
+      self.postMessage({ type: 'houseResult', ok, name: ok ? name : null, msg, house: playerHouse ? { ...playerHouse } : null });
+      return;
+    }
     if (message.type === 'buyEquipment') {
       const id = message.id,
         code = message.code,
         product = PB[code];
       if (message.tier === 'T2') {
+        let receipt;
         try {
           if (!Number.isInteger(id) || id < 0 || id >= cfg.t2FirmCount || !W.t2Controller[id]) throw new Error('Only player-controlled Tier 2 companies can buy machinery.');
+          const hadTickEquipmentSinks = Object.hasOwn(W, 'equipmentSinks'), tickEquipmentSinks = W.equipmentSinks;
           self.Phase0ReferenceKernel.addTier2Line(W, cfg, id, M.T2_PRODUCT_BY_CODE[code]);
-          publish(); self.postMessage({ type: 'equipmentResult', ok: true });
-        } catch (error) { self.postMessage({ type: 'equipmentResult', ok: false, msg: error.message }); }
+          // The helper also serves monthly bot expansion. Its tick sink must
+          // retain only payments made during that actual kernel tick.
+          if (hadTickEquipmentSinks) W.equipmentSinks = tickEquipmentSinks; else delete W.equipmentSinks;
+          receipt = equipmentActionReceipt('T2', id, code, true, M.T2_PRODUCT_BY_CODE[code].equipmentPrice);
+        } catch (error) {
+          receipt = equipmentActionReceipt('T2', id, code, false, 0, error.message);
+        }
+        publish(); self.postMessage({ type: 'equipmentResult', ok: receipt.ok,
+          ...(receipt.ok ? {} : { msg: receipt.message }), receipt });
         return;
       }
       if (controller[id] !== 1 || !product || equipment[id].includes(code)) {
+        const msg = 'Only PLAYER-controlled companies can buy new equipment.';
+        const receipt = equipmentActionReceipt('T1', id, code, false, 0, msg);
+        publish();
         self.postMessage({
           type: 'equipmentResult',
           ok: false,
-          msg: 'Only PLAYER-controlled companies can buy new equipment.',
+          msg, receipt,
         });
         return;
       }
       if (W.t1Cash[id] + 1e-9 < product.equipmentPrice) {
-        self.postMessage({ type: 'equipmentResult', ok: false, msg: 'Insufficient cash.' });
+        const msg = 'Insufficient cash.', receipt = equipmentActionReceipt('T1', id, code, false, 0, msg);
+        publish(); self.postMessage({ type: 'equipmentResult', ok: false, msg, receipt });
         return;
       }
       W.t1Cash[id] -= product.equipmentPrice;
@@ -1763,8 +1919,9 @@ self.onmessage = async (event) => {
         W.t1UnitCost[index],
       );
       W.t1PrevPrice[index] = W.t1Price[index];
+      const receipt = equipmentActionReceipt('T1', id, code, true, product.equipmentPrice);
       publish();
-      self.postMessage({ type: 'equipmentResult', ok: true });
+      self.postMessage({ type: 'equipmentResult', ok: true, receipt });
     }
   } catch (error) {
     if (['player','applyConfig','select'].includes(message.type))
