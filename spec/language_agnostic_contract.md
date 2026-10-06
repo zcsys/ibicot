@@ -168,7 +168,7 @@ reproduce these objects **exactly** (counts, order, codes, recipes, selection).
 | Tier 2 firms `N2_FIRMS` | 61,950 |
 | Tier 2 max lines `MAX_T2_LINES` | 247,800 (`N2_FIRMS × 4`) |
 | End users `N_END_USERS` | 1,000,000 |
-| Time | 30 ticks/month, 12 months/year, 480 years/Age, 172,800 ticks/Age |
+| Time | 30 ticks/month, 12 months/year, 20 years/Generation, 24 Generations/Age, 172,800 ticks/Age |
 | Tier 2 catalogue | 420 recipes: 44 C-3, 116 C-4, 260 C-5 |
 | Invented markets | 200 (20/60/120), 220 reserved |
 
@@ -438,8 +438,10 @@ in scheduling/rendering. The concrete phase order in the kernel is:
    (`expandTier2Bots`), and set the tick-result fields (§8.8).
 
 `tick` (the world tick index) increments by one per phase sequence. The calendar is
-`age = floor(tick / 172800)`, `year = floor(tick / 360)`, `month = floor(tick / 30)`;
-tick counts are displayed in hexadecimal with a `0x` prefix.
+`month = floor(tick / 30) % 12 + 1`, `year = floor(tick / 360) % 20 + 1`,
+`generation = floor(tick / 7200)`, `age = floor(tick / 172800)`. Ticks, months and
+years display in decimal; the Generation displays in hexadecimal with a `0x` prefix;
+Age is not explicitly displayed but remains 24 Generations.
 
 ---
 

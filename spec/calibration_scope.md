@@ -9,7 +9,7 @@ experiment notes; those are history, not rules.
 Make the **bot-run economy** (no players, no ownership layer) reach a defensible
 outcome: standard bots in every tier earn **comparable percentage returns** and
 roughly **double their simulation-opening book equity over one Age**
-(480 years / 172,800 ticks / 0x2A300), while the individual-company hierarchy
+(one Age = 24 Generations / 480 years / 172,800 ticks), while the individual-company hierarchy
 and every accounting invariant hold.
 
 ## First principles (non-negotiable invariants)

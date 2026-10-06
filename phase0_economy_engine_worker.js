@@ -128,7 +128,7 @@ function administrativeAccountingSnapshot() {
     { ...adminAccounting.lastEquipmentReceipt } : null };
 }
 function equipmentActionReceipt(tier, id, code, ok, equipmentSink = 0, message = null) {
-  const receipt = { sequence: adminAccounting.sequence + 1, tick, tickHex: M.calendarAt(tick).tickHex,
+  const receipt = { sequence: adminAccounting.sequence + 1, tick, generationHex: M.calendarAt(tick).generationHex,
     tier, companyId: Number.isInteger(id) ? id : null, productCode: typeof code === 'string' ? code : null,
     ok, equipmentSink: ok ? equipmentSink : 0,
     cumulativeEquipmentSinks: adminAccounting.equipmentSinks + (ok ? equipmentSink : 0), message };

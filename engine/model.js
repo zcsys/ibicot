@@ -8,10 +8,22 @@
 (function (root) {
   'use strict';
 
-  const TIME = Object.freeze({ ticksPerMonth: 30, monthsPerYear: 12, yearsPerAge: 480, ticksPerYear: 360, ticksPerAge: 172800 });
+  const TIME = Object.freeze({
+    ticksPerMonth: 30, monthsPerYear: 12, ticksPerYear: 360,
+    yearsPerGeneration: 20, generationsPerAge: 24,
+    ticksPerGeneration: 7200, ticksPerAge: 172800,
+  });
   const calendarAt = tick => {
-    const age = Math.floor(tick / TIME.ticksPerAge);
-    return Object.freeze({ age, ageDecimal: String(age), tickHex: '0x' + Math.floor(tick).toString(16).toUpperCase(), year: Math.floor(tick / TIME.ticksPerYear), yearInAge: Math.floor(tick / TIME.ticksPerYear) % TIME.yearsPerAge, monthInYear: Math.floor(tick / TIME.ticksPerMonth) % 12 });
+    const t = Math.floor(tick);
+    const month = (Math.floor(t / TIME.ticksPerMonth) % TIME.monthsPerYear) + 1;
+    const year = (Math.floor(t / TIME.ticksPerYear) % TIME.yearsPerGeneration) + 1;
+    const generation = Math.floor(t / TIME.ticksPerGeneration);
+    const age = Math.floor(t / TIME.ticksPerAge);
+    return Object.freeze({
+      tick: t, month, year, generation,
+      generationHex: '0x' + generation.toString(16).toUpperCase(),
+      age,
+    });
   };
   const AGE_EQUITY_GROWTH = 2 ** (1 / TIME.ticksPerAge) - 1;
   const ELEMENTS = Object.freeze(['Water', 'Earth', 'Fire', 'Air']);

@@ -472,7 +472,7 @@
   function fmt2(x) {
     return Number.isFinite(x) ? '$' + x.toFixed(2) : '—';
   }
-  function fmtTick(value) { return '0x' + Math.floor(value).toString(16).toUpperCase(); }
+  function fmtTick(value) { return String(Math.floor(value)); }
   function fmtMoney(x, d = 2) {
     return Number.isFinite(x) ? '$' + x.toLocaleString(undefined, { minimumFractionDigits: d, maximumFractionDigits: d }) : '—';
   }
@@ -709,8 +709,9 @@
         : 'Engine inactive';
     $('kernel').className = 'pill ' + (s.wasm || s.engine === 'source' ? 'ok' : 'err');
     $('tick').textContent = fmtTick(s.tick);
-    $('month').textContent = s.month;
-    $('age').textContent = s.calendar.ageDecimal;
+    $('month').textContent = s.calendar.month;
+    $('year').textContent = s.calendar.year;
+    $('generation').textContent = s.calendar.generationHex;
     $('tps').textContent = fmtFixed(s.tps, 1);
     renderDashboard(s);
     renderComparisons(s);
@@ -795,7 +796,7 @@
         '<strong>Inputs & upstream supplier relationships</strong><div class="table-wrap industry-table"><table class="mini-table"><thead><tr><th>Material</th><th>Source</th><th>Stock</th><th>Inventory basis / unit</th><th>Book value</th><th>Consumed / tick</th><th>Full-capacity need / tick</th><th>Full-capacity coverage (ticks)</th><th>Last supplier</th><th>Current quote</th><th>Supplier reliability</th></tr></thead><tbody>'+
         c.inputs.map((x)=>'<tr><th>'+x.name+'</th><td>'+x.sourceTier+'</td><td>'+fmtInt(x.stock)+'</td><td>'+fmtUnitPrice(x.basis)+'</td><td>'+fmtMoney(x.value,0)+'</td><td>'+fmtInt(x.consumed)+'</td><td>'+fmtInt(x.capacityNeed)+'</td><td>'+x.capacityCoverage.toFixed(1)+'</td><td>'+(x.supplierName || 'No successful supplier yet')+'</td><td>'+(x.supplierPrice===null?'—':fmtUnitPrice(x.supplierPrice))+'</td><td>'+(x.supplierReliability===null?'—':pct(x.supplierReliability))+'</td></tr>').join('')+'</tbody></table></div>';
       const history = s.tier2CompanyHistory;
-      $('t2CompanyHistoryNote').textContent = c.name+' · history starts when selected; '+fmtTick(history.length)+' / 0xF0 reported ticks retained. Switching companies starts a fresh history.';
+      $('t2CompanyHistoryNote').textContent = c.name+' · history starts when selected; '+fmtTick(history.length)+' / 240 reported ticks retained. Switching companies starts a fresh history.';
       drawLine('tier2CompanyOutputChart',history,[history.map((x)=>x.made),history.map((x)=>x.sold)],['Made','Sold'],0);
       drawLine('tier2CompanyFinanceChart',history,[history.map((x)=>x.revenue),history.map((x)=>x.cogs),history.map((x)=>x.grossProfit)],['Revenue','COGS','Gross profit'],0,true);
       drawLine('tier2CompanyBalanceChart',history,[history.map((x)=>x.cash)],['Cash'],0,true);

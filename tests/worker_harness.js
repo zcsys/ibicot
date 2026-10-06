@@ -148,7 +148,7 @@ function createWorker(cfg = {}, runtime = {}) {
       assert.equal(receipt.sequence, ledger.sequence, 'Administrative receipt sequence differs');
       assert.equal(receipt.cumulativeEquipmentSinks, ledger.equipmentSinks, 'Administrative receipt total differs');
       assert.ok(Number.isSafeInteger(receipt.tick) && receipt.tick >= 0 && receipt.tick <= state.tick, 'Invalid administrative receipt tick');
-      assert.equal(receipt.tickHex, api.model.calendarAt(receipt.tick).tickHex, 'Administrative receipt calendar differs');
+      assert.equal(receipt.generationHex, api.model.calendarAt(receipt.tick).generationHex, 'Administrative receipt calendar differs');
       assert.ok(['T1', 'T2'].includes(receipt.tier) && typeof receipt.ok === 'boolean', 'Invalid administrative receipt status');
       assert.ok(Number.isFinite(receipt.equipmentSink) && receipt.equipmentSink >= 0 &&
         receipt.equipmentSink <= ledger.equipmentSinks, 'Invalid administrative receipt sink');

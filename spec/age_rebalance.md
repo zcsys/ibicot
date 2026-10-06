@@ -6,7 +6,7 @@ The outside economy procures physical goods from the simulated producers. Tier 3
 
 ## Time and target
 
-0x1E ticks/month × 12 months/year × 480 years/Age = **0x2A300 ticks/Age**. Completed Ages display in decimal: 0, 1, …, 15, 16. Tick counts display with a hexadecimal 0x prefix; one Age is 0x2A300 ticks. Years and months retain decimal notation. The compound growth target for doubling equity is `2^(1/172800)-1`, approximately 0.000004011276 per tick. This is a calibration target, not a guaranteed transfer or automatic equity multiplier.
+30 ticks/month × 12 months/year × 20 years/Generation × 24 Generations/Age = **172,800 ticks/Age**. Ticks, months and years display in decimal; the Generation displays in hexadecimal with a 0x prefix. Age is not explicitly displayed but remains defined as 24 Generations (0x18). The compound growth target for doubling equity is `2^(1/172800)-1`, approximately 0.000004011276 per tick. This is a calibration target, not a guaranteed transfer or automatic equity multiplier.
 
 Normal-condition evidence must distinguish startup inventory accumulation from settled earnings. Equity includes cash, equipment and inventory; cash growth alone does not prove the target. Short-window annualized earnings are preliminary estimates and do not prove a full Age of compounded behavior. Validation must include multi-seed, market-level returns, stock fulfillment, working cash sufficiency and ledger reconciliation.
 
@@ -20,7 +20,7 @@ Sector demand priors are now equal. Equal slot counts alone do not prove equal e
 
 The user confirmed return on equity and equity growth as the primary measures, and extended the one-Age doubling target to **Tier 0 as well as Tier 1 and Tier 2**. Larger absolute profits are consistent with the same percentage return on a larger equity base. Tier 0 retains its $1m starting cash per company.
 
-The target is approximately twice the starting book equity after 0x2A300 ticks under standard bots. `ln(2)/172800` is the continuously compounded equivalent, not a mandatory profit credited each tick. For an unchanged factory earning constant profits, doubling requires average earnings of `startingEquity/172800`, rather than `startingEquity*ln(2)/172800`. Report the actual trajectory and distinguish both assumptions. Inventory price appreciation cannot stand in for operating equity growth.
+The target is approximately twice the starting book equity after 172,800 ticks (one Age / 24 Generations) under standard bots. `ln(2)/172800` is the continuously compounded equivalent, not a mandatory profit credited each tick. For an unchanged factory earning constant profits, doubling requires average earnings of `startingEquity/172800`, rather than `startingEquity*ln(2)/172800`. Report the actual trajectory and distinguish both assumptions. Inventory price appreciation cannot stand in for operating equity growth.
 
 Work proceeds in two steps: first research and test market behavior; then hold those rules fixed while calibrating demand and supply. The working [annual-v1 protocol](../reports/calibration-protocol-annual-v1.json) is now frozen for that second step; standard application parameters have not yet been selected. The Age target must never enter supplier selection, buyer valuation, price learning, payments, or a company's profit calculation. Firm-level and cohort distributions matter: aggregate tier averages can hide winners and permanently unprofitable firms.
 
@@ -44,7 +44,7 @@ Tier 0 starts with **$1,000,000 cash per company**, unchanged. Calibration prese
 
 Per-company opening equity follows the tier hierarchy: **Tier 0 > Tier 1 > Tier 2**, with lower tiers far larger than higher tiers. In aggregate the ordering inverts because of company counts: **Tier 2 > Tier 1 > Tier 0**. Opening equity is fixed at $1,000,000 per Tier 0 firm, $20,000/$80,000 per basic/compound Tier 1 firm, and $1,000 per Tier 2 route plus $2,500 working cash ($3,500–$6,500 for one to four routes). Each Tier 2 firm owns its routes outright; there is no shared factory asset.
 
-Age now displays in decimal, while tick counts display in hexadecimal with the 0x prefix, including chart axes, tooltips, accessibility labels and retained history counts. The actual time arithmetic is unchanged.
+Ticks, months and years display in decimal; the Generation displays in hexadecimal with the 0x prefix, including chart axes, tooltips, accessibility labels and retained history counts. Age is not explicitly written but remains 24 Generations (0x18) = 172,800 ticks. The actual time arithmetic is unchanged.
 
 ## Current research evidence
 

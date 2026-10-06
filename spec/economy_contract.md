@@ -595,8 +595,10 @@ Product IDs use Uint16 storage to accommodate the full 420-recipe catalogue. The
 
 ## Age and profitability calibration
 
-One Age is 480 years × 12 months × 0x1E ticks = 0x2A300 ticks.
-Age displays in decimal; tick counts display in hexadecimal with a 0x prefix.
+One Age is 24 Generations × 20 years × 12 months × 30 ticks = 172,800 ticks.
+Ticks, months and years display in decimal; the Generation displays in
+hexadecimal with a 0x prefix; Age is not explicitly displayed but remains 24
+Generations (0x18).
 The accepted target is similar percentage equity growth for standard bots in
 Tier 0, Tier 1 and Tier 2, with roughly doubled opening book equity in one Age.
 This is a calibration objective, not an automatic return or payment rule.
