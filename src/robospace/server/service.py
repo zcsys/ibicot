@@ -183,8 +183,10 @@ async def _run_loop(ws: WebSocket, rt: KernelRuntime):
     """Tick + publish + push snapshots, polling for control messages."""
     while rt.running:
         if rt.mode == 'max':
+            # Run flat-out for ~1 s, then publish — ticks advance at full kernel
+            # rate while the UI refreshes about once per second.
             start = time.monotonic()
-            while rt.running and time.monotonic() - start < 0.045:
+            while rt.running and time.monotonic() - start < 1.0:
                 rt.step()
             rt.publish()
             await ws.send_json({'type': 'snapshot', 'data': rt.lastSnapshot})
