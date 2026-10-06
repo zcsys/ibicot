@@ -1,10 +1,9 @@
 /*
- * Worker bridge: makes phase0_economy_engine_app.js talk to the Python kernel
- * over WebSocket instead of a browser Web Worker.  It replaces the global
- * `Worker` constructor before app.js loads, keeping the app's postMessage /
- * onmessage protocol unchanged.
+ * Worker bridge: makes app.js talk to the Python kernel over WebSocket instead
+ * of a browser Web Worker.  It replaces the global `Worker` constructor before
+ * app.js loads, keeping the app's postMessage / onmessage protocol unchanged.
  *
- * Load this after engine/model.js and before phase0_economy_engine_app.js.
+ * Load this after catalogue.js and before app.js.
  */
 (function () {
   'use strict';

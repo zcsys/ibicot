@@ -2,13 +2,13 @@
   if (location.protocol === 'file:') {
     document.getElementById('kernel').textContent = 'Open with the launcher';
     document.getElementById('perf').textContent =
-      'Double-click Start Phase 0.command in this folder. Keep its Terminal window open while using the simulator.';
+      'Serve the app with ./run.sh serve and open it in your browser.';
     document
       .querySelectorAll('button,input,select')
       .forEach((control) => (control.disabled = true));
     return;
   }
-  const worker = new Worker('./phase0_economy_engine_worker.js');
+  const worker = new Worker('./worker.js');
   const $ = (id) => document.getElementById(id);
 
   // --- Intergalactic loading screen ---

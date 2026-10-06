@@ -2,8 +2,8 @@
 browser UI.
 
 Serves the static front-end (HTML + JS) and exposes the JS worker's exact
-message protocol over ``/ws``, so ``phase0_economy_engine_app.js`` runs
-unchanged via the ``worker_bridge.js`` shim.  The tick is CPU-bound and runs
+message protocol over ``/ws``, so ``web/app.js`` runs unchanged via the
+``web/bridge.js`` shim.  The tick is CPU-bound and runs
 inline in the WebSocket handler (single-user local PoC), mirroring the
 worker's single-threaded model.
 """
