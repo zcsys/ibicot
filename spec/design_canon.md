@@ -330,7 +330,8 @@ adaptive pricer**, plus a player/admin override. Prices are **unbounded economic
 they may go below unit cost (sell at a loss) and there is no ceiling or unit-cost floor —
 per axiom 6, a healthy price settles at an interior equilibrium. Two **numerical
 guardrails** only prevent degenerate values, and the simulation must never settle at them:
-`MIN_UNIT_PRICE = 1e-5` (floor) and `MAX_UNIT_PRICE = 1e9` (ceiling).
+`MIN_UNIT_PRICE = 1e-5` (floor) and `MAX_UNIT_PRICE = 1e9` (ceiling). Every price is
+quoted in **whole cents** (rounded half away from zero via `round_to_cent`).
 
 **Initial price (tick 0)** — the first-guess markup from §5:
 `P₀ = unitCost × (1 + markup)`, with markup = `markup` (T0), `t1Markup` (T1),

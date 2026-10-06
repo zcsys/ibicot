@@ -123,12 +123,20 @@ if _HAVE_NUMBA:
         return minimum + (maximum - minimum) * r
 
     @_njit
+    def _round_cent(x):
+        # Round half away from zero, to whole cents (matches model.round_to_cent).
+        if x >= 0.0:
+            return math.floor(x * 100.0 + 0.5) / 100.0
+        return math.ceil(x * 100.0 - 0.5) / 100.0
+
+    @_njit
     def _adaptive_price(old_price, profit, previous_profit, direction, sales,
                         stock, demand, available, step_scale, k, response):
         floor = MIN_UNIT_PRICE
         price = old_price if old_price > floor else floor
         if price > MAX_UNIT_PRICE:
             price = MAX_UNIT_PRICE
+        price = _round_cent(price)
         next_direction = -1 if direction < 0 else 1
         if demand > available + 1e-9:
             next_direction = 1
@@ -152,6 +160,7 @@ if _HAVE_NUMBA:
         nxt = e if e > floor else floor
         if nxt > MAX_UNIT_PRICE:
             nxt = MAX_UNIT_PRICE
+        nxt = _round_cent(nxt)
         if nxt == price and next_direction < 0:
             next_direction = 1
         return nxt, next_direction, scale
@@ -162,7 +171,7 @@ if _HAVE_NUMBA:
                        tick, price_observation_ticks, research_price_min_potential,
                        research_price_max_obs, research_price_min_opp, k, response):
         if ages[index] < price_observation_ticks or (tick + index) % price_observation_ticks != 0:
-            return price[index] if price[index] > MIN_UNIT_PRICE else MIN_UNIT_PRICE
+            return _round_cent(price[index] if price[index] > MIN_UNIT_PRICE else MIN_UNIT_PRICE)
         if view_tier == 2 and research_price_min_potential > 0:
             stale = potential_opportunity[index] >= research_price_min_potential
         else:
@@ -184,7 +193,9 @@ if _HAVE_NUMBA:
             opportunity[index] = 0.0
             potential_opportunity[index] = 0.0
         r = price[index] if price[index] > MIN_UNIT_PRICE else MIN_UNIT_PRICE
-        return MAX_UNIT_PRICE if r > MAX_UNIT_PRICE else r
+        if r > MAX_UNIT_PRICE:
+            r = MAX_UNIT_PRICE
+        return _round_cent(r)
 
     @_njit
     def _contains(arr, start, end, val):
@@ -468,6 +479,7 @@ if _HAVE_NUMBA:
                         nxt = MIN_UNIT_PRICE
                     if nxt > MAX_UNIT_PRICE:
                         nxt = MAX_UNIT_PRICE
+                    nxt = _round_cent(nxt)
                 else:
                     nxt = _learned_quote(2, t2_price, t2_learn_ticks, t2_learn_profit,
                                          t2_learn_sales, t2_learn_previous, t2_learn_direction,

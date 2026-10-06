@@ -26,6 +26,11 @@ MIN_UNIT_PRICE = _DATA['MIN_UNIT_PRICE']
 # Numerical guardrail ceiling for prices (never an economic bound — see canon
 # axiom 6: prices must settle at an interior equilibrium, not on a guardrail).
 MAX_UNIT_PRICE = 1e9
+
+
+def round_to_cent(x: float) -> float:
+    # Prices are quoted in whole cents, rounded half away from zero.
+    return (math.floor(x * 100 + 0.5) if x >= 0 else math.ceil(x * 100 - 0.5)) / 100
 TIER_BOUNDARIES = _DATA['TIER_BOUNDARIES']
 T1_COMPANY_NAMES = _DATA['T1_COMPANY_NAMES']
 PRODUCTS: list[dict] = _DATA['PRODUCTS']
@@ -193,7 +198,7 @@ def adaptive_price(old_price, profit, previous_profit, direction=1,
     # Guardrails only: the price may go below unit cost (sell at a loss) and is
     # never pinned to an economic floor/ceiling.
     floor = MIN_UNIT_PRICE
-    price = min(MAX_UNIT_PRICE, max(floor, old_price))
+    price = round_to_cent(min(MAX_UNIT_PRICE, max(floor, old_price)))
     next_direction = -1 if direction < 0 else 1
     scarce = demand > available + 1e-9
     if scarce:
@@ -205,7 +210,7 @@ def adaptive_price(old_price, profit, previous_profit, direction=1,
     elif math.isfinite(previous_profit) and profit < previous_profit:
         next_direction *= -1
     scale = clamp(step_scale * (0.5 if next_direction != direction else 1.2), 0.01, 1.0)
-    nxt = min(MAX_UNIT_PRICE, max(floor, price * math.exp(next_direction * clamp(k, 0.0, 1.0) * response * scale)))
+    nxt = round_to_cent(min(MAX_UNIT_PRICE, max(floor, price * math.exp(next_direction * clamp(k, 0.0, 1.0) * response * scale))))
     if nxt == price and next_direction < 0:
         next_direction = 1
     return {'price': nxt, 'direction': next_direction, 'stepScale': scale}

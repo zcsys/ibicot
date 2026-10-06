@@ -20,6 +20,7 @@ N1 = M.N1
 MONTH = M.MONTH
 MIN_UNIT_PRICE = M.MIN_UNIT_PRICE
 MAX_UNIT_PRICE = M.MAX_UNIT_PRICE
+round_to_cent = M.round_to_cent
 M4 = M.T2_MAX_PRODUCTS_PER_FIRM
 
 
@@ -367,7 +368,7 @@ def learned_quote(view, cfg, index, stock, tick):
     price = view['price']
     ages = view['ages']
     if ages[index] < cfg['priceObservationTicks'] or (tick + index) % cfg['priceObservationTicks'] != 0:
-        return min(MAX_UNIT_PRICE, max(MIN_UNIT_PRICE, price[index]))
+        return round_to_cent(min(MAX_UNIT_PRICE, max(MIN_UNIT_PRICE, price[index])))
     profits = view['profits']
     sales = view['sales']
     previous = view['previous']
@@ -400,7 +401,7 @@ def learned_quote(view, cfg, index, stock, tick):
         ages[index] = 0
         view['opportunity'][index] = 0
         view['potentialOpportunity'][index] = 0
-    return min(MAX_UNIT_PRICE, max(MIN_UNIT_PRICE, price[index]))
+    return round_to_cent(min(MAX_UNIT_PRICE, max(MIN_UNIT_PRICE, price[index])))
 
 
 def price_markets(W, cfg, profiles, products, tick):
@@ -413,7 +414,7 @@ def price_markets(W, cfg, profiles, products, tick):
                 continue
             previous = W.t0Price[index]
             if W.t0Controller[supplier] and math.isfinite(W.t0PlayerPrice[index]):
-                nxt = min(MAX_UNIT_PRICE, max(MIN_UNIT_PRICE, W.t0PlayerPrice[index]))
+                nxt = round_to_cent(min(MAX_UNIT_PRICE, max(MIN_UNIT_PRICE, W.t0PlayerPrice[index])))
             else:
                 nxt = learned_quote(t0_learning, cfg, index, W.t0Inv[index], tick)
             W.t0PrevPrice[index] = previous
@@ -430,7 +431,7 @@ def price_markets(W, cfg, profiles, products, tick):
                 continue
             previous = W.t1Price[index]
             if W.t1Controller[company] and math.isfinite(W.playerPrice[index]):
-                nxt = min(MAX_UNIT_PRICE, max(MIN_UNIT_PRICE, W.playerPrice[index]))
+                nxt = round_to_cent(min(MAX_UNIT_PRICE, max(MIN_UNIT_PRICE, W.playerPrice[index])))
             else:
                 nxt = learned_quote(t1_learning, cfg, index, W.t1Fin[index], tick)
             W.t1PrevPrice[index] = previous
@@ -679,7 +680,7 @@ def tier2_buy_make_price(W, cfg, products, profiles, t2_products, tick):
                 W.t2Made[line] = made_items
             previous = W.t2Price[line]
             if W.t2Controller[firm] and math.isfinite(W.t2PlayerPrice[line]):
-                W.t2Price[line] = min(MAX_UNIT_PRICE, max(MIN_UNIT_PRICE, W.t2PlayerPrice[line]))
+                W.t2Price[line] = round_to_cent(min(MAX_UNIT_PRICE, max(MIN_UNIT_PRICE, W.t2PlayerPrice[line])))
             else:
                 W.t2Price[line] = learned_quote(t2_learning, cfg, line, W.t2Fin[line], tick)
             W.t2RelPriceSum[line] += 1 - min(1.0, abs(W.t2Price[line] - previous)

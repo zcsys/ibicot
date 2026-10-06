@@ -6,8 +6,6 @@ transcription.  See ``spec/design_canon.md`` §6.
 """
 from __future__ import annotations
 
-import math
-
 import numpy as np
 
 from . import model as M
@@ -48,19 +46,12 @@ T0P = [{'id': i, 'name': name, 'elements': elements,
 T1P = [{'name': p['companyName'], 'product': p['code']} for p in M.PRODUCTS]
 
 
-def _js_round(x: float) -> float:
-    # Math.round semantics: round half away from zero.
-    return math.floor(x + 0.5) if x >= 0 else math.ceil(x - 0.5)
-
-
 def quant_w(x: float, floor: float = 0.0) -> float:
-    r = _js_round(x * 1e5) / 1e5
-    fq = math.ceil((floor - 1e-12) * 1e5) / 1e5
-    return max(r, fq)
+    return M.round_to_cent(x)
 
 
 def quant_r(x: float, floor: float = 0.0) -> float:
-    return quant_w(x, floor)
+    return M.round_to_cent(x)
 
 
 # --------------------------------------------------------------------------
@@ -296,7 +287,7 @@ def add_tier2_line(W, cfg, firm, product, paid=True):
     W.t2LineProduct[line] = product['id']
     W.t2UnitCost[line] = M.initial_tier2_cost(product, cfg)
     W.t2LearnStep[line] = 1
-    W.t2Price[line] = max(M.MIN_UNIT_PRICE, W.t2UnitCost[line] * (1 + M.tier2_starting_markup(product, cfg)))
+    W.t2Price[line] = M.round_to_cent(max(M.MIN_UNIT_PRICE, W.t2UnitCost[line] * (1 + M.tier2_starting_markup(product, cfg))))
     W.t2LearnPrevious[line] = float('nan')
     W.t2LearnDirection[line] = 1 if ((firm + cfg['seed']) % 2) else -1
     W.t2PlayerPrice[line] = float('nan')
