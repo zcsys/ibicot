@@ -10,6 +10,47 @@
   }
   const worker = new Worker('./phase0_economy_engine_worker.js');
   const $ = (id) => document.getElementById(id);
+
+  // --- Intergalactic loading screen ---
+  const LOADING_MESSAGES = [
+    'Establishing uplink…',
+    'Calibrating galactic markets…',
+    'Waking 1,000,000 procurement agents…',
+    'Spinning up 60,000 robotic firms…',
+    'Aligning supply chains…',
+    'Synchronizing sector indexes…',
+  ];
+  let loadingMsgIndex = 0;
+  let loadingTimer = null;
+  function loadingCycle() {
+    if (loadingTimer) clearInterval(loadingTimer);
+    loadingTimer = setInterval(() => {
+      const el = $('loading');
+      if (el && el.style.display !== 'none') {
+        loadingMsgIndex = (loadingMsgIndex + 1) % LOADING_MESSAGES.length;
+        $('loadingStatus').textContent = LOADING_MESSAGES[loadingMsgIndex];
+      }
+    }, 1500);
+  }
+  function showLoading(msg) {
+    const el = $('loading');
+    if (!el) return;
+    if (msg) {
+      $('loadingStatus').textContent = msg;
+      loadingMsgIndex = -1;
+    }
+    el.classList.remove('fading');
+    el.style.display = 'flex';
+    loadingCycle();
+  }
+  function hideLoading() {
+    const el = $('loading');
+    if (!el) return;
+    if (loadingTimer) { clearInterval(loadingTimer); loadingTimer = null; }
+    el.classList.add('fading');
+    setTimeout(() => { el.style.display = 'none'; }, 460);
+  }
+
   const M = window.Phase0Model;
   const displayProduct = (code) => M.PRODUCTS.find((p) => p.code === code)?.name || M.T2_PRODUCTS.find((p) => p.code === code)?.name || code;
   const displayElement = code => M.ELEMENTS[['W','E','F','A'].indexOf(code)] || code;
@@ -222,6 +263,7 @@
       const key = selectedTier + ':' + selectedCompanyId;
       companyDetailData = m.data.expandedDetails?.[key] || companyDetailData;
       render(m.data);
+      hideLoading();
     }
     if (m.type === 'companyDetail') {
       companyDetailData = m.data;
@@ -885,8 +927,14 @@
     $('perf').textContent = 'Paused';
   };
   $('step').onclick = () => worker.postMessage({ type: 'step' });
-  $('reset').onclick = () => worker.postMessage({ type: 'reset', cfg: readCfg() });
-  $('applyParams').onclick = () => worker.postMessage({ type: 'applyConfig', cfg: readCfg() });
+  $('reset').onclick = () => {
+    showLoading('Re-initializing the galactic economy…');
+    worker.postMessage({ type: 'reset', cfg: readCfg() });
+  };
+  $('applyParams').onclick = () => {
+    showLoading('Recalibrating parameters…');
+    worker.postMessage({ type: 'applyConfig', cfg: readCfg() });
+  };
   $('applyPlayer').onclick = () => {
     controlDirty = false;
     worker.postMessage({
@@ -912,5 +960,6 @@
   initializeTableSorting();
   if (location.protocol === 'file:')
     $('perf').textContent = 'Use a local web server for the multi-file worker build.';
+  loadingCycle();
   worker.postMessage({ type: 'init', cfg: readCfg() });
 })();

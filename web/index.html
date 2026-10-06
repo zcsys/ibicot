@@ -448,9 +448,59 @@
       .stat-grid.industry-kpis { margin-top:10px; }
       .chart { position:relative; }
       .chart-tooltip { position:absolute; left:8px; right:8px; bottom:28px; background:var(--panel); border:1px solid var(--line); border-radius:5px; padding:7px; font-size:11px; pointer-events:none; white-space:pre-line; z-index:5; }
+
+      /* --- Intergalactic loading screen --- */
+      .loading-screen {
+        position: fixed; inset: 0; z-index: 1000;
+        display: flex; align-items: center; justify-content: center;
+        background: radial-gradient(1200px 800px at 50% 38%, #17223c 0%, #0b0e16 55%, #05070b 100%);
+        overflow: hidden;
+      }
+      .loading-starfield {
+        position: absolute; inset: 0;
+        background-image:
+          radial-gradient(1px 1px at 12% 22%, #ffffff, transparent 42%),
+          radial-gradient(1px 1px at 33% 72%, #cdd7ff, transparent 42%),
+          radial-gradient(1.5px 1.5px at 52% 12%, #ffffff, transparent 46%),
+          radial-gradient(1px 1px at 68% 46%, #9f7bff, transparent 42%),
+          radial-gradient(1.5px 1.5px at 84% 82%, #ffffff, transparent 46%),
+          radial-gradient(1px 1px at 24% 88%, #77b7ff, transparent 42%),
+          radial-gradient(1px 1px at 90% 8%, #ffffff, transparent 42%),
+          radial-gradient(1.5px 1.5px at 44% 52%, #cdd7ff, transparent 46%);
+        background-size: 260px 260px;
+        opacity: .55;
+        animation: loading-twinkle 3.2s ease-in-out infinite;
+      }
+      .loading-core { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; gap: 22px; padding: 24px; }
+      .loading-galaxy { position: relative; width: 112px; height: 112px; }
+      .loading-ring { position: absolute; inset: 0; border-radius: 50%; border: 1px solid rgba(119,183,255,.18); }
+      .loading-ring::before { content: ''; position: absolute; inset: -1px; border-radius: 50%; border: 2px solid transparent; border-top-color: var(--accent); animation: loading-spin 1.4s linear infinite; }
+      .loading-ring2 { position: absolute; inset: 16px; border-radius: 50%; border: 1px solid rgba(159,123,255,.16); }
+      .loading-ring2::before { content: ''; position: absolute; inset: -1px; border-radius: 50%; border: 2px solid transparent; border-right-color: #9f7bff; animation: loading-spin 2.2s linear infinite reverse; }
+      .loading-core-dot { position: absolute; inset: 42px; border-radius: 50%; background: radial-gradient(circle at 50% 42%, #ffffff 0%, var(--accent) 55%, #2c5a9e 100%); box-shadow: 0 0 24px 7px rgba(119,183,255,.45); animation: loading-pulse 1.8s ease-in-out infinite; }
+      .loading-title { font-size: 21px; letter-spacing: .34em; font-weight: 700; color: var(--text); text-shadow: 0 0 16px rgba(119,183,255,.55); animation: loading-pulse 2.4s ease-in-out infinite; }
+      .loading-sub { color: var(--muted); font-size: 13px; letter-spacing: .08em; }
+      .loading-status { color: var(--accent); font-size: 12px; letter-spacing: .05em; min-height: 16px; }
+      @keyframes loading-spin { to { transform: rotate(360deg); } }
+      @keyframes loading-pulse { 0%, 100% { opacity: 1; } 50% { opacity: .55; } }
+      @keyframes loading-twinkle { 0%, 100% { opacity: .55; } 50% { opacity: .26; } }
+      .loading-screen.fading { opacity: 0; transition: opacity .45s ease; pointer-events: none; }
     </style>
   </head>
   <body>
+    <div id="loading" class="loading-screen" role="status" aria-live="polite">
+      <div class="loading-starfield"></div>
+      <div class="loading-core">
+        <div class="loading-galaxy">
+          <div class="loading-ring"></div>
+          <div class="loading-ring2"></div>
+          <div class="loading-core-dot"></div>
+        </div>
+        <div class="loading-title">ROBOTIC SPACE GENERATION</div>
+        <div class="loading-sub">Humanity's robotic industry · Galactic war preparation</div>
+        <div id="loadingStatus" class="loading-status">Establishing uplink…</div>
+      </div>
+    </div>
     <header>
       <div class="row">
         <div class="grow">
