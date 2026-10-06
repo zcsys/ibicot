@@ -62,7 +62,7 @@ def default_cfg() -> dict:
         'vmin': 0.9,
         'vmax': 1.5,
         'elasticity': 2.0,              # eta = 2
-        'tier2DemandFactor': 2.8,       # global demand tightness (sets equilibrium markup)
+        'tier2DemandFactor': 23.0,     # global demand level (uniform per-consumer scale)
         'tier2ReservationPremium': 0.0,
 
         # Market / pricing / reliability
@@ -156,7 +156,7 @@ def normalize_config(c) -> dict:
     d['vmin'] = max(0.01, d['vmin'])
     d['vmax'] = max(d['vmin'], d['vmax'])
     d['elasticity'] = max(0.05, min(10, d['elasticity']))
-    d['tier2DemandFactor'] = M.clamp(d['tier2DemandFactor'], 0.01, 10)
+    d['tier2DemandFactor'] = M.clamp(d['tier2DemandFactor'], 0.01, 200)
     d['tier2ReservationPremium'] = max(0, d['tier2ReservationPremium'])
 
     # Market

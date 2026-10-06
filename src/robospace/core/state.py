@@ -317,7 +317,11 @@ def initialize_tier2(W, cfg):
         W.t2SectorCount[product['sectorIndex']] = count + 1
         index = product['sectorIndex'] * n_t2 + count
         W.t2SectorProducts[index] = product['id']
-        W.t2SectorProductWeight[index] = (W.t2SectorProductWeight[index - 1] if count else 0) + product['demandWeight']
+        # Demand routing weight ∝ supply (firms × capacity, the 108:12:1 ratio):
+        # more consumers are routed to higher-supply products, so total demand
+        # scales with supply while the per-consumer quantity stays small.
+        supply = M.T2_FIRMS_PER_PRODUCT[product['complexity']] * cfg['t2Capacity'][product['complexity']]
+        W.t2SectorProductWeight[index] = (W.t2SectorProductWeight[index - 1] if count else 0) + supply
 
     # Canon topology (§3): 60,000 single-machine firms — 1,800 C-3 / 300 C-4 /
     # 50 C-5 per product (reverse 6:3:1 ratio).  Each firm owns exactly one line.
@@ -325,7 +329,7 @@ def initialize_tier2(W, cfg):
     # C-4, then C-5) so small regression fixtures stay representative.
     firm = 0
     target_firms = cfg['t2FirmCount']
-    per_product = {3: 1800, 4: 300, 5: 50}
+    per_product = M.T2_FIRMS_PER_PRODUCT
     for product in M.T2_PRODUCTS:
         for _ in range(per_product[product['complexity']]):
             if firm >= target_firms:

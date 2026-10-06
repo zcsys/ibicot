@@ -127,22 +127,25 @@ discovered by the derivative-following pricer.
 
 - **Valuation (choke price):** `V = 2 × unit cost` (cost from §4) — the price at which
   demand halves. No complexity gradient needed; the rising cost lifts `V` automatically.
-- **Latent quantity:** `qmax = baseQty × quantityFactor`, with
-  `quantityFactor ∝ supply` = firms × capacity (the **108 : 12 : 1** ratio across
-  C-3 / C-4 / C-5). At any common markup demand therefore scales with supply, so every
-  product clears at the same utilization.
+- **Latent quantity:** `qmax = baseQty × quantityFactor`, where `quantityFactor` is a
+  **small uniform** per-consumer multiplier (`tier2DemandFactor`). The per-consumer
+  request therefore stays small (whole units), never exceeding a firm's fill-G stock.
+- **Consumer routing ∝ supply:** each product's selection weight in `t2SectorProductWeight`
+  is `firms × capacity` (the **108 : 12 : 1** ratio across C-3 / C-4 / C-5), so *more
+  consumers* are routed to higher-supply products. At any common markup total demand
+  therefore scales with supply and every product clears at the same utilization — while
+  the per-consumer quantity stays small. The complexity gradient lives in *routing*, not
+  in `qmax`.
 - **Demand curve:** `q(P) = qmax / (1 + (P/V)^η)`, elasticity `η = 2`.
 - **First-guess markup is flat** (`t1Markup = 0.25` for T0/T1/T2): the complexity
-  gradient lives entirely in the demand *volume*, not the seed price. The pricer then
-  raises prices while scarce until demand = supply, discovering the equilibrium markup.
-- **Equilibrium markup** is set by the global `tier2DemandFactor` (default 2.8) — a
-  larger factor is a tighter market ⇒ a higher discovered markup. `tier2DemandFactor`
-  is the demand-tightness lever.
+  gradient is entirely in demand volume/routing, not the seed price.
+- **Equilibrium markup** is set by the global `tier2DemandFactor` (default 23) — a larger
+  factor is a tighter market ⇒ a higher discovered markup.
 - **Utilization target:** ~50–70%; the demand scale is calibrated to hit it.
 
-The `quantityFactor ∝ supply` shape and the flat first-guess markup are canon. The
-exact `tier2DemandFactor`, the `baseQty` range, and the offer-sampling counts are
-calibration (§12.5).
+The `quantityFactor`-uniform + `routing ∝ supply` shape and the flat first-guess markup
+are canon. The exact `tier2DemandFactor`, the `baseQty` range, and the offer-sampling
+counts are calibration (§12.5).
 
 ---
 
@@ -346,16 +349,24 @@ quoted in **whole cents** (rounded half away from zero via `round_to_cent`).
 the guardrails.
 
 **Decision (at a cadence tick), from the average realized profit/tick accumulated since
-the last observation:**
-1. **Scarce** — demand exceeded sales + stock → raise price.
-2. **No sales, stock remains** → lower price.
-3. **Profit fell** vs the previous observation → reverse direction.
+the last observation.** A firm that is *not selling* is never "scarce" — scarcity is
+only meaningful once the firm is actually transacting:
+1. **No sales** → if stock remains, lower; if no stock, hold. (This prevents phantom
+   scarcity — e.g. an input-starved firm — from ratcheting the price up.)
+2. **Scarce** (demand exceeded sales + stock, *and* sales > 0) → raise price.
+3. **Profit fell** vs the previous observation → reverse direction (the demand side
+   pulling the price down to the profit-maximising level).
 4. Otherwise → continue the current direction.
 
 **Step size** adapts: ×1.2 on continuation, ×0.5 on reversal, clamped to `[0.01, 1]`.
 The price moves multiplicatively: `P ← clamp(P × exp(± k × response × scale))`, where
 `clamp` is the guardrail interval `[MIN_UNIT_PRICE, MAX_UNIT_PRICE]`. After each
 observation the profit/sales/demand/opportunity accumulators and the age counter reset.
+
+**End-user purchase is split across suppliers in whole units** (no fractional fill, no
+all-or-nothing from one seller): a consumer fills `q(P)` by taking `⌊stock⌋` whole units
+from each sampled seller in price order until satisfied or offers are exhausted. The
+unsatisfied remainder is recorded as `endStockUnmet`.
 
 **Player/admin override.** A player-controlled firm quotes the set price, clamped to the
 same guardrails, and its adaptive state is reset, so the price takes effect on the next

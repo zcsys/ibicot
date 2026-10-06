@@ -203,13 +203,17 @@ def adaptive_price(old_price, profit, previous_profit, direction=1,
     floor = MIN_UNIT_PRICE
     price = round_to_cent(min(MAX_UNIT_PRICE, max(floor, old_price)))
     next_direction = -1 if direction < 0 else 1
-    scarce = demand > available + 1e-9
-    if scarce:
-        next_direction = 1
-    elif sales <= 0:
+    # A firm that is not selling must not raise on "scarcity": with no stock it
+    # holds, with stock it lowers.  Only a firm that IS selling may raise on
+    # excess demand, and only a firm with a realized profit signal reverses on a
+    # profit decline — so the demand side (elasticity) pulls prices down to the
+    # profit-maximising level instead of ratcheting them up on phantom demand.
+    if sales <= 0:
         if stock <= 0:
             return {'price': price, 'direction': next_direction, 'stepScale': step_scale}
         next_direction = -1
+    elif demand > available + 1e-9:
+        next_direction = 1
     elif math.isfinite(previous_profit) and profit < previous_profit:
         next_direction *= -1
     scale = clamp(step_scale * (0.5 if next_direction != direction else 1.2), 0.01, 1.0)
@@ -237,14 +241,12 @@ def tier2_starting_markup(product, cfg) -> float:
 
 def procurement_profile(product, cfg, reference_cost) -> dict:
     # canon demand side (§5): V = 2 × unit cost; η = 2.
-    # quantityFactor is proportional to *supply* (firms × capacity, the 108:12:1
-    # ratio), so at any common markup demand scales with supply and every product
-    # clears at the same utilization.  The global tier2DemandFactor sets the
-    # tightness, hence the equilibrium markup the pricer discovers.
-    c = product['complexity']
-    supply = T2_FIRMS_PER_PRODUCT[c] * cfg['t2Capacity'][c]
+    # quantityFactor is a small, uniform per-consumer multiplier; the complexity
+    # gradient (demand ∝ supply = firms × capacity, 108:12:1) lives in *consumer
+    # routing* (t2SectorProductWeight in initialize_tier2), not in qmax.  The
+    # global tier2DemandFactor sets the overall demand level / equilibrium markup.
     return {'markup': cfg['t1Markup'],
-            'quantityFactor': cfg['tier2DemandFactor'] * supply / 5000.0,
+            'quantityFactor': cfg['tier2DemandFactor'],
             'valuation': 2.0 * reference_cost}
 
 

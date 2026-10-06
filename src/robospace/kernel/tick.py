@@ -791,49 +791,61 @@ def clear_end_users(W, cfg, products, t2_products, tick):
                 candidates.append(candidate)
         friction = M.switching_cost(reliability[preferred], cfg['taumin'], cfg['taumax']) if preferred >= 0 else 0.0
         candidates.sort(key=lambda a: price[a] + (0 if a == preferred else friction))
-        seller = candidates[0] if candidates else -1
 
         def demand(quote):
             continuous = M.demand_at_price(latent_quantity, choke, quote, W.endEta[buyer])
             return min(qmax, math.floor(continuous) + (1 if rounding < continuous % 1 else 0))
 
-        desired = demand(reference if seller < 0 else price[seller])
+        # Buyer's total desired at the best available price (whole units).
+        total_desired = demand(price[candidates[0]]) if candidates else demand(reference)
+        remaining = total_desired
+        fulfilled = 0
+        primary = -1
         for candidate in candidates:
+            if remaining <= 0:
+                break
             requested = demand(price[candidate])
             if requested <= 0:
                 break
-            W.t2Demand[candidate] += requested
+            wanted = min(remaining, requested)
+            W.t2Demand[candidate] += wanted
             W.t2RelAttempts[candidate] += 1
-            if stock[candidate] >= requested:
-                seller = candidate
-                desired = requested
-                break
+            # Whole-number sale only; the buyer splits its demand across suppliers,
+            # taking floor(stock) whole units from each until satisfied.
+            take = min(wanted, int(stock[candidate]))
+            if take <= 0:
+                continue
+            if primary < 0:
+                primary = candidate
+            stock[candidate] -= take
+            payment = take * price[candidate]
+            consumer_payments += payment
+            W.t2Cash[W.t2LineFirm[candidate]] += payment
+            W.t2LastSaleTick[W.t2LineFirm[candidate]] = tick
+            W.t2Sold[candidate] += take
+            W.t2Revenue[candidate] += payment
+            W.t2COGS[candidate] += take * W.t2FinBasis[candidate]
+            W.t2RelFulfilled[candidate] += 1
+            W.t2RelAvailable[candidate] += 1
+            fulfilled += take
+            remaining -= take
         W.endLastMarket[buyer] = market
-        W.endLastSupplier[buyer] = seller
-        W.endLastQ[buyer] = desired
-        W.endActive[market] += desired
-        W.endPriceLost[market] += potential_quantity - desired
-        if desired <= 0:
+        W.endLastSupplier[buyer] = primary
+        W.endLastQ[buyer] = total_desired
+        W.endActive[market] += total_desired
+        W.endPriceLost[market] += potential_quantity - total_desired
+        if total_desired <= 0:
             continue
         orders += 1
         W.t2Opportunities[market - NP] += 1
-        if seller < 0 or stock[seller] < desired:
-            W.endStockUnmet[market] += desired
+        if remaining > 0:
+            W.endStockUnmet[market] += remaining
+        if fulfilled <= 0:
             continue
-        payment = desired * price[seller]
-        consumer_payments += payment
-        stock[seller] -= desired
-        W.t2Cash[W.t2LineFirm[seller]] += payment
-        W.t2LastSaleTick[W.t2LineFirm[seller]] = tick
-        W.t2Sold[seller] += desired
-        W.t2Revenue[seller] += payment
-        W.t2COGS[seller] += desired * W.t2FinBasis[seller]
-        W.t2RelFulfilled[seller] += 1
-        W.t2RelAvailable[seller] += 1
         W.endPreferredProduct[relationship] = market
-        W.endPreferredSupplier[relationship] = seller
-        W.endLastFulfilled[buyer] = desired
-        W.endFulfilled[market] += desired
+        W.endPreferredSupplier[relationship] = primary
+        W.endLastFulfilled[buyer] = fulfilled
+        W.endFulfilled[market] += fulfilled
         filled_orders += 1
 
     return {'orders': orders, 'filledOrders': filled_orders, 'activated': activated,

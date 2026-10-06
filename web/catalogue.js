@@ -121,7 +121,7 @@
     footprint: Object.freeze({ 1: 1000, 2: 1000, 3: 3000, 4: 4000, 5: 5000 }),
     consumerActivation: .1, consumerSearchOffers: 5,
     demandQtyMin: 1, demandQtyMax: 10, vmin: .9, vmax: 1.5, elasticity: 2,
-    tier2DemandFactor: 2.8, tier2ReservationPremium: 0,
+    tier2DemandFactor: 23, tier2ReservationPremium: 0,
     k: .35, alpha: .15, reliabilityAlpha: .15, switchingStableBand: .025,
     wholesalePriceResponse: .05, priceObservationTicks: 30, taumin: .05, taumax: .2,
     researchPriceMinimumOpportunities: 0, researchPriceMinimumPotentialOrders: 0,

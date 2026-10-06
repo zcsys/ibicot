@@ -138,12 +138,13 @@ if _HAVE_NUMBA:
             price = MAX_UNIT_PRICE
         price = _round_cent(price)
         next_direction = -1 if direction < 0 else 1
-        if demand > available + 1e-9:
-            next_direction = 1
-        elif sales <= 0:
+        # No-sales firms must not raise on phantom scarcity (see model.adaptive_price).
+        if sales <= 0:
             if stock <= 0:
                 return price, next_direction, step_scale
             next_direction = -1
+        elif demand > available + 1e-9:
+            next_direction = 1
         elif math.isfinite(previous_profit) and profit < previous_profit:
             next_direction = -next_direction
         kc = k
@@ -595,48 +596,58 @@ if _HAVE_NUMBA:
             else:
                 friction = 0.0
             _sort_candidates(cand, n_cand, t2_price, preferred, friction)
-            seller = cand[0] if n_cand > 0 else -1
-            if seller < 0:
-                desired = _demand_units(latent, choke, reference, end_eta[buyer], qmax, rounding)
+            if n_cand > 0:
+                total_desired = _demand_units(latent, choke, t2_price[cand[0]], end_eta[buyer], qmax, rounding)
             else:
-                desired = _demand_units(latent, choke, t2_price[seller], end_eta[buyer], qmax, rounding)
+                total_desired = _demand_units(latent, choke, reference, end_eta[buyer], qmax, rounding)
+            remaining = total_desired
+            fulfilled_qty = 0
+            primary = -1
             for ci in range(n_cand):
                 candidate = cand[ci]
+                if remaining <= 0:
+                    break
                 requested = _demand_units(latent, choke, t2_price[candidate], end_eta[buyer], qmax, rounding)
                 if requested <= 0:
                     break
-                t2_demand[candidate] += requested
+                wanted = remaining if remaining < requested else requested
+                t2_demand[candidate] += wanted
                 t2_rel_attempts[candidate] += 1
-                if t2_fin[candidate] >= requested:
-                    seller = candidate
-                    desired = requested
-                    break
+                available = int(math.floor(t2_fin[candidate]))
+                take = wanted if wanted < available else available
+                if take <= 0:
+                    continue
+                if primary < 0:
+                    primary = candidate
+                t2_fin[candidate] -= take
+                payment = take * t2_price[candidate]
+                payments += payment
+                t2_cash[t2_line_firm[candidate]] += payment
+                t2_last_sale_tick[t2_line_firm[candidate]] = tick
+                t2_sold[candidate] += take
+                t2_revenue[candidate] += payment
+                t2_cogs[candidate] += take * t2_fin_basis[candidate]
+                t2_rel_fulfilled[candidate] += 1
+                t2_rel_available[candidate] += 1
+                fulfilled_qty += take
+                remaining -= take
             end_last_market[buyer] = market
-            end_last_supplier[buyer] = seller
-            end_last_q[buyer] = desired
-            end_active[market] += desired
-            end_price_lost[market] += potential - desired
-            if desired <= 0:
+            end_last_supplier[buyer] = primary
+            end_last_q[buyer] = total_desired
+            end_active[market] += total_desired
+            end_price_lost[market] += potential - total_desired
+            if total_desired <= 0:
                 continue
             orders += 1
             t2_opportunities[pid] += 1
-            if seller < 0 or t2_fin[seller] < desired:
-                end_stock_unmet[market] += desired
+            if remaining > 0:
+                end_stock_unmet[market] += remaining
+            if fulfilled_qty <= 0:
                 continue
-            payment = desired * t2_price[seller]
-            payments += payment
-            t2_fin[seller] -= desired
-            t2_cash[t2_line_firm[seller]] += payment
-            t2_last_sale_tick[t2_line_firm[seller]] = tick
-            t2_sold[seller] += desired
-            t2_revenue[seller] += payment
-            t2_cogs[seller] += desired * t2_fin_basis[seller]
-            t2_rel_fulfilled[seller] += 1
-            t2_rel_available[seller] += 1
             end_preferred_product[relationship] = market
-            end_preferred_supplier[relationship] = seller
-            end_last_fulfilled[buyer] = desired
-            end_fulfilled[market] += desired
+            end_preferred_supplier[relationship] = primary
+            end_last_fulfilled[buyer] = fulfilled_qty
+            end_fulfilled[market] += fulfilled_qty
             filled += 1
 
         return orders, filled, activated, payments
