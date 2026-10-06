@@ -26,6 +26,42 @@ from ..kernel.tick import tick as run_tick
 _STATS_DIR = Path(__file__).resolve().parents[3] / 'stats'
 _T2_COMP = np.array([p['complexity'] for p in M.T2_PRODUCTS], dtype=np.int64)
 
+
+def stats_row(W, cfg, tick, month):
+    """One compact per-tick economy snapshot (shared by the server recorder and
+    the headless CLI runner)."""
+    lc = int(W.t2LineCount)
+    pid = W.t2LineProduct[:lc].astype(np.int64)
+    comp = _T2_COMP[pid]
+    t2_price = W.t2Price[:lc]
+    t2_sold = W.t2Sold[:lc]
+    t2_made = W.t2Made[:lc]
+    t0p = W.t0Price
+    t1p = W.t1Price
+    row = {'tick': tick, 'month': month, 'year': month // 12 + 1,
+           'gen': month // 240 + 1}
+    m = np.isfinite(t0p)
+    row['t0Price'] = round(float(t0p[m].mean()), 4) if m.any() else None
+    m = np.isfinite(t1p)
+    row['t1Price'] = round(float(t1p[m].mean()), 4) if m.any() else None
+    for c in (3, 4, 5):
+        sel = comp == c
+        cap = float(cfg['t2Capacity'][c])
+        if sel.any():
+            row[f'c{c}Price'] = round(float(t2_price[sel].mean()), 4)
+            row[f'c{c}Util'] = round(float(t2_sold[sel].sum() / (cap * sel.sum())), 4)
+            row[f'c{c}Made'] = float(t2_made[sel].sum())
+        else:
+            row[f'c{c}Price'] = row[f'c{c}Util'] = None
+            row[f'c{c}Made'] = 0.0
+    row['t2Cash'] = float(W.t2Cash[:cfg['t2FirmCount']].sum())
+    row['t2Equity'] = float(W.t2Cash[:cfg['t2FirmCount']].sum()
+                            + W.t2EqBook[:cfg['t2FirmCount']].sum()
+                            + cfg['t2FirmCount'] * cfg['t2License'])
+    row['consumersActive'] = float(W.endActive.sum())
+    row['consumersFulfilled'] = float(W.endFulfilled.sum())
+    return row
+
 NE, NP, N0, N1 = M.NE, M.NP, M.N0, M.N1
 M4 = M.T2_MAX_PRODUCTS_PER_FIRM
 MONTH = M.MONTH
@@ -200,38 +236,7 @@ class KernelRuntime:
         self.flush_stats()
 
     def _record_stats(self):
-        W = self.W
-        lc = int(W.t2LineCount)
-        pid = W.t2LineProduct[:lc].astype(np.int64)
-        comp = _T2_COMP[pid]
-        t2_price = W.t2Price[:lc]
-        t2_sold = W.t2Sold[:lc]
-        t2_made = W.t2Made[:lc]
-        t0p = W.t0Price
-        t1p = W.t1Price
-        row = {'tick': self.tick, 'month': self.month, 'year': self.month // 12 + 1,
-               'gen': self.month // 240 + 1}
-        m = np.isfinite(t0p)
-        row['t0Price'] = round(float(t0p[m].mean()), 4) if m.any() else None
-        m = np.isfinite(t1p)
-        row['t1Price'] = round(float(t1p[m].mean()), 4) if m.any() else None
-        for c in (3, 4, 5):
-            sel = comp == c
-            cap = float(self.cfg['t2Capacity'][c])
-            if sel.any():
-                row[f'c{c}Price'] = round(float(t2_price[sel].mean()), 4)
-                row[f'c{c}Util'] = round(float(t2_sold[sel].sum() / (cap * sel.sum())), 4)
-                row[f'c{c}Made'] = float(t2_made[sel].sum())
-            else:
-                row[f'c{c}Price'] = row[f'c{c}Util'] = None
-                row[f'c{c}Made'] = 0.0
-        row['t2Cash'] = float(W.t2Cash[:self.cfg['t2FirmCount']].sum())
-        row['t2Equity'] = float(W.t2Cash[:self.cfg['t2FirmCount']].sum()
-                                + W.t2EqBook[:self.cfg['t2FirmCount']].sum()
-                                + self.cfg['t2FirmCount'] * self.cfg['t2License'])
-        row['consumersActive'] = float(W.endActive.sum())
-        row['consumersFulfilled'] = float(W.endFulfilled.sum())
-        self.statsLog.append(row)
+        self.statsLog.append(stats_row(self.W, self.cfg, self.tick, self.month))
 
     def flush_stats(self):
         if not self.statsLog:

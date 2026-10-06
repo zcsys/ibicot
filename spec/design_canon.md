@@ -368,6 +368,21 @@ all-or-nothing from one seller): a consumer fills `q(P)` by taking `⌊stock⌋`
 from each sampled seller in price order until satisfied or offers are exhausted. The
 unsatisfied remainder is recorded as `endStockUnmet`.
 
+**Switching cost and the split.** A consumer's sampled offers are ranked by effective
+price `price + friction`, where `friction = switchingCost(reliability) = taumin +
+(taumax − taumin) × reliability` (5¢–20¢) applies to every seller **except** the
+incumbent (`preferred`, last tick's first-fill supplier). The friction is a ranking bias
+only — it is never subtracted from the payment and never enters `q(P)`:
+
+- the incumbent is drained first (up to its whole-unit stock), so a buyer does not
+  switch for a price difference smaller than `friction`;
+- the residual spills to the next-effective-cheapest seller, and so on;
+- the buyer pays each seller its raw price (a blended rate when the fill spans sellers);
+- `total_desired` is computed at the top-ranked seller's raw price, so stickiness slightly
+  understates demand by anchoring it to the (possibly higher) incumbent price;
+- `endPreferredSupplier` for the next tick is the first seller that actually sold ≥ 1
+  whole unit, so the relationship follows whoever served the buyer first in the split.
+
 **Player/admin override.** A player-controlled firm quotes the set price, clamped to the
 same guardrails, and its adaptive state is reset, so the price takes effect on the next
 tick. Uniform across T0, T1 and T2.
