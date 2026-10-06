@@ -1200,19 +1200,19 @@
           <section class="panel">
             <div class="title-row">
               <strong>
-                Tier 1 cohorts
+                Tier 1 sectors
               </strong >
-              <span class="muted tiny">Grouped by native product; holdings and activity include every installed line</span>
+              <span class="muted tiny">Grouped by galactic sector; holdings and activity include every installed line</span>
             </div>
             <div class="table-wrap" style="margin-top: 7px">
               <table class="mini-table">
                 <thead>
                   <tr>
-                    <th>Cohort</th>
+                    <th>Sector</th>
                     <th>Firms</th>
-                    <th>Native equipment</th>
-                    <th>Native avg price</th>
-                    <th>Native unit cost</th>
+                    <th>Equipment</th>
+                    <th>Avg price</th>
+                    <th>Unit cost</th>
                     <th>Finished</th>
                     <th>Total inv</th>
                     <th>Cash</th>
@@ -1221,8 +1221,8 @@
                     <th>Sold / tick</th>
                     <th>Revenue / tick</th>
                     <th>Gross profit / tick</th>
-                    <th>Native reliability</th>
-                    <th>Native market share</th>
+                    <th>Reliability</th>
+                    <th>Market share</th>
                   </tr>
                 </thead>
                 <tbody id="cohorts">
@@ -1231,16 +1231,16 @@
             </div>
             <div class="grid2" style="margin-top: 10px">
               <div>
-                <span class="chart-caption">Company cohort gross profit · $ / tick</span>
+                <span class="chart-caption">Company sector gross profit · $ / tick</span>
                 <div class="chart tall">
-                  <canvas id="cohortChart" role="img" aria-label="Company cohort gross profit · $ / tick">
+                  <canvas id="cohortChart" role="img" aria-label="Company sector gross profit · $ / tick">
                   </canvas>
                 </div>
               </div>
               <div>
-                <span class="chart-caption">Company cohort revenue · $ / tick</span>
+                <span class="chart-caption">Company sector revenue · $ / tick</span>
                 <div class="chart tall">
-                  <canvas id="revenueChart" role="img" aria-label="Company cohort revenue · $ / tick">
+                  <canvas id="revenueChart" role="img" aria-label="Company sector revenue · $ / tick">
                   </canvas>
                 </div>
               </div>
@@ -1256,9 +1256,9 @@
               </span >
             </div>
             <div class="table-toolbar">
-              <input id="t1Search" placeholder="Search company, native product, controller or equipment" />
+              <input id="t1Search" placeholder="Search company, sector, controller or equipment" />
               <select id="t1CohortFilter">
-                <option value="">All cohorts</option>
+                <option value="">All sectors</option>
               </select >
               <select id="t1ControllerFilter">
                 <option value="">All controllers</option>
@@ -1275,14 +1275,14 @@
                   <tr>
                     <th>Company</th>
                     <th>Controller</th>
-                    <th>Native</th>
+                    <th>Sector</th>
                     <th>Equipment</th>
                     <th>Cash</th>
                     <th>Raw</th>
                     <th>Finished</th>
                     <th>Inventory</th>
                     <th>Equity</th>
-                    <th>Native posted price</th>
+                    <th>Posted price</th>
                     <th>Made / tick</th>
                     <th>Sold / tick</th>
                     <th>Revenue / tick</th>

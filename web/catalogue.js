@@ -84,6 +84,19 @@
     Object.freeze({"name":"Defence & Rescue","description":"Fleet defence, civilian protection, emergency response, rescue and evacuation equipment"}),
   ]);
   const T2_SECTORS = Object.freeze(T2_SECTOR_DEFINITIONS.map(sector => sector.name));
+  // Tier 1 material -> galactic sector (canon 1:1 mapping; mirrors core/model.py).
+  const T1_SECTOR_BY_CODE = Object.freeze({
+    'W': 'Habitats & Life Support',
+    'E': 'Mining & Industry',
+    'F': 'Power & Energy',
+    'A': 'Science & Diagnostics',
+    'W+E': 'Spacecraft & Hulls',
+    'W+F': 'Propulsion & Navigation',
+    'W+A': 'Logistics & Provisioning',
+    'E+F': 'Computing & Communications',
+    'E+A': 'Robotics & Automation',
+    'F+A': 'Defence & Rescue',
+  });
   // Design priors for galactic demand, independent of the number of markets.
   const T2_SECTOR_WEIGHTS = Object.freeze(Array(10).fill(1));
   // Procurement baskets have equal access to every other sector; no hub
@@ -777,6 +790,7 @@
     T2_RECIPE_BY_KEY,
     T2_MATERIAL_COVERAGE,
     T2_SECTORS,
+    T1_SECTOR_BY_CODE,
     T2_NEED_TYPES,
     T2_SECTOR_DEFINITIONS,
     T2_ADJACENCY,

@@ -450,6 +450,7 @@ class KernelRuntime:
             marketVol = m['rVol'][pIdx]
             cohorts.append({
                 'code': product, 'displayName': M.PRODUCTS[pIdx]['name'], 'name': T1P[cidx]['name'],
+                'sector': M.t1_sector(product),
                 'firms': end - start,
                 'equipment': 'Basic' if M.PRODUCTS[pIdx]['complexity'] == 1 else 'Compound',
                 'avgPrice': price / eqCount if eqCount else float('nan'),
@@ -782,7 +783,7 @@ class KernelRuntime:
         for e in M.ELEMENTS:
             eqv += W.raw[id_ * NE + _EI[e]] * W.rawBasis[id_ * NE + _EI[e]]
         return {'tier': 'T1', 'id': id_, 'name': piBase['name'] + ' ' + str((id_ % 100) + 1).zfill(3),
-                'native': piBase['product'],
+                'sector': M.t1_sector(piBase['product']),
                 'controller': 'PLAYER' if self.controller[id_] else 'BOT',
                 'online': bool(self.online[id_]), 'cash': float(W.t1Cash[id_]),
                 'equipment': list(self.equipment[id_]), 'equipmentBookValue': float(W.t1EqBook[id_]),
@@ -897,7 +898,7 @@ class KernelRuntime:
                     inv_val += W.t1Fin[cid * NP + p] * W.t1FinBasis[cid * NP + p]
             companies.append({
                 'id': cid, 'name': T1P[cid // 100]['name'] + ' ' + str((cid % 100) + 1).zfill(3),
-                'native': T1P[cid // 100]['product'],
+                'sector': M.t1_sector(T1P[cid // 100]['product']),
                 'controller': 'PLAYER' if self.controller[cid] else 'BOT',
                 'equipment': list(self.equipment[cid]), 'price': float(W.t1Price[b + pi]),
                 'raw': float(raw), 'finished': float(fin), 'inventory': float(raw + fin),
@@ -1188,7 +1189,7 @@ class KernelRuntime:
             'selected': selectedT2 or {
                 'tier': 'T1', 'products': self._company_detail('T1', sid)['products'], 'id': sid,
                 'name': T1P[sid // 100]['name'] + ' ' + str((sid % 100) + 1).zfill(3),
-                'native': scode, 'controller': 'PLAYER' if self.controller[sid] else 'BOT',
+                'sector': M.t1_sector(scode), 'controller': 'PLAYER' if self.controller[sid] else 'BOT',
                 'online': bool(self.online[sid]), 'price': float(W.t1Price[sid * NP + spi]),
                 'cash': float(W.t1Cash[sid]), 'finished': float(W.t1Fin[sid * NP + spi]),
                 'inventory': float(W.raw[sid * NE:(sid + 1) * NE].sum() + W.t1Fin[sid * NP + spi]),

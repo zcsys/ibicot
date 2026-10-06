@@ -92,6 +92,27 @@ def inventory_target(complexity: int, cfg) -> float:
     return goods_space(complexity, cfg) / 2.0
 
 
+# Tier 1 material -> galactic sector (canon 1:1 mapping).  Each of the ten
+# processed materials feeds one distinct Tier 2 application sector; this is the
+# sector a Tier 1 firm is grouped under in the dashboard.
+T1_SECTOR_BY_CODE: dict = {
+    'W': 3,    # Purified Water      -> Habitats & Life Support
+    'E': 7,    # Refined Minerals    -> Mining & Industry
+    'F': 0,    # Energy Cells        -> Power & Energy
+    'A': 6,    # Chemical Feedstock  -> Science & Diagnostics
+    'W+E': 2,  # Ceramic Composite   -> Spacecraft & Hulls
+    'W+F': 1,  # Thermal Compounds   -> Propulsion & Navigation
+    'W+A': 8,  # Synthetic Fibers    -> Logistics & Provisioning
+    'E+F': 5,  # Semiconductor Substrate -> Computing & Communications
+    'E+A': 4,  # Structural Polymers -> Robotics & Automation
+    'F+A': 9,  # Active Compounds    -> Defence & Rescue
+}
+
+
+def t1_sector(code: str) -> str:
+    return T2_SECTORS[T1_SECTOR_BY_CODE[code]]
+
+
 # Count-preserving output quantity (structural, from the recipe).
 for _p in T2_PRODUCTS:
     _p['outputQty'] = sum(int(q) for _m, q in _p['ingredients'])

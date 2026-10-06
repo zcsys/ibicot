@@ -171,7 +171,7 @@
     tier1Companies: [
       'name',
       'controller',
-      'native',
+      'sector',
       'equipment',
       'cash',
       'raw',
@@ -310,10 +310,10 @@
       (x) =>
         (!q ||
           x.name.toLowerCase().includes(q) ||
-          x.native.toLowerCase().includes(q) ||
+          x.sector.toLowerCase().includes(q) ||
           x.controller.toLowerCase().includes(q) ||
           x.equipment.map(displayProduct).join(' ').toLowerCase().includes(q)) &&
-        (!cf || x.native === cf) &&
+        (!cf || x.sector === cf) &&
         (!ctrl || x.controller === ctrl),
     );
   }
@@ -388,7 +388,7 @@
     $('tier1Companies').innerHTML = t1slice
       .map((x) => {
         const row = `<tr class="clickable-row${selectedTier === 'T1' && selectedCompanyId === x.id ? ' selected' : ''}" data-tier="T1" data-id="${x.id}">
-      <th>▸ ${x.name}</th><td>${x.controller}</td><td>${displayProduct(x.native)}</td><td>${x.equipment.map(displayProduct).join(' · ')}</td><td>${fmtMoney(x.cash, 0)}</td><td>${fmtInt(x.raw)}</td><td>${fmtInt(x.finished)}</td><td>${fmtInt(x.inventory)}</td><td>${fmtMoney(x.equity, 0)}</td><td>${fmtUnitPrice(x.price)}</td><td>${fmtInt(x.made)}</td><td>${fmtInt(x.sold)}</td><td>${fmtMoney(x.revenue, 0)}</td><td>${fmtMoney(x.grossProfit, 0)}</td><td>${fmtFixed(x.reliability, 3)}</td></tr>`;
+      <th>▸ ${x.name}</th><td>${x.controller}</td><td>${x.sector}</td><td>${x.equipment.map(displayProduct).join(' · ')}</td><td>${fmtMoney(x.cash, 0)}</td><td>${fmtInt(x.raw)}</td><td>${fmtInt(x.finished)}</td><td>${fmtInt(x.inventory)}</td><td>${fmtMoney(x.equity, 0)}</td><td>${fmtUnitPrice(x.price)}</td><td>${fmtInt(x.made)}</td><td>${fmtInt(x.sold)}</td><td>${fmtMoney(x.revenue, 0)}</td><td>${fmtMoney(x.grossProfit, 0)}</td><td>${fmtFixed(x.reliability, 3)}</td></tr>`;
         return row + (exp1.has(x.id) ? detailT1(x) : '');
       })
       .join('');
@@ -435,7 +435,7 @@
         `${d.name} · Tier 1`,
         `controller: ${d.controller}`,
         `online: ${d.online ? 'yes' : 'no'}`,
-        `native: ${displayProduct(d.native)}`,
+        `sector: ${d.sector}`,
         `cash: ${fmtMoney(d.cash, 2)}`,
         `equipment book: ${fmtMoney(d.equipmentBookValue, 2)}`,
         `equipment: ${d.equipment.map(displayProduct).join(', ')}`,
@@ -659,8 +659,8 @@
     drawLine('retailChart', hist, product !== '' ? [hist.map(point => point.materialPrices[+product])] :
       [hist.map(point => sum(point.materialPrices.slice(0, 4)) / 4), hist.map(point => sum(point.materialPrices.slice(4)) / 6)],
       product !== '' ? [M.PRODUCTS[+product].name] : ['C-1 mean market price', 'C-2 mean market price'], 5, true, false, false);
-    drawComparison('cohortChart', s.cohorts.map(c => ({...c, name: displayProduct(c.code)})), 'grossProfit', true);
-    drawComparison('revenueChart', s.cohorts.map(c => ({...c, name: displayProduct(c.code)})), 'revenue', true);
+    drawComparison('cohortChart', s.cohorts.map(c => ({...c, name: c.sector})), 'grossProfit', true);
+    drawComparison('revenueChart', s.cohorts.map(c => ({...c, name: c.sector})), 'revenue', true);
     drawLine('demandChart', hist, ['potential', 'active', 'fulfilled'].map(key => hist.map(point => point.tiers.endUsers[key])), ['Latent', 'Desired', 'Fulfilled'], 0);
     drawLine('consumerFillChart', hist, ['active', 'orders'].map((key, i) => hist.map(point => meaningfulRatio(point.tiers.endUsers[i ? 'fulfilledOrders' : 'fulfilled'], point.tiers.endUsers[key]))), ['Unit fulfillment', 'Order fulfillment'], 1, false, true);
     drawLine('consumerSpendingChart', hist, [hist.map(point => point.tiers.endUsers.revenue)], ['Spending'], 0, true);
@@ -740,7 +740,7 @@
     $('cohorts').innerHTML = sortedTableRows('cohorts', s.cohorts)
       .map(
         (x) =>
-          `<tr><th>${displayProduct(x.code)} · ${x.name}</th><td>${x.firms}</td><td>${x.equipment}</td><td>${fmtUnitPrice(x.avgPrice)}</td><td>${fmtUnitPrice(x.avgUnitCost)}</td><td>${fmtInt(x.finished)}</td><td>${fmtInt(x.inventory)}</td><td>${fmtMoney(x.cash, 0)}</td><td>${fmtMoney(x.equity, 0)}</td><td>${fmtInt(x.made)}</td><td>${fmtInt(x.sold)}</td><td>${fmtMoney(x.revenue, 0)}</td><td>${fmtMoney(x.grossProfit, 0)}</td><td>${x.reliability.toFixed(3)}</td><td>${s.products.find(p => p.code === x.code)?.volume > 0 ? pct(x.marketShare, 1) : "—"}</td></tr>`,
+          `<tr><th>${x.sector}</th><td>${x.firms}</td><td>${x.equipment}</td><td>${fmtUnitPrice(x.avgPrice)}</td><td>${fmtUnitPrice(x.avgUnitCost)}</td><td>${fmtInt(x.finished)}</td><td>${fmtInt(x.inventory)}</td><td>${fmtMoney(x.cash, 0)}</td><td>${fmtMoney(x.equity, 0)}</td><td>${fmtInt(x.made)}</td><td>${fmtInt(x.sold)}</td><td>${fmtMoney(x.revenue, 0)}</td><td>${fmtMoney(x.grossProfit, 0)}</td><td>${x.reliability.toFixed(3)}</td><td>${s.products.find(p => p.code === x.code)?.volume > 0 ? pct(x.marketShare, 1) : "—"}</td></tr>`,
       )
       .join('');
     renderCompanyTables();
@@ -892,8 +892,8 @@
     renderCompanyTables();
   });
   $('t1CohortFilter').innerHTML =
-    '<option value="">All cohorts</option>' +
-    productCodes.map((x) => `<option value="${x}">${displayProduct(x)}</option>`).join('');
+    '<option value="">All sectors</option>' +
+    M.T2_SECTORS.map((sector) => `<option value="${sector}">${sector}</option>`).join('');
   $('t1CohortFilter').addEventListener('change', () => {
     t1Page = 0;
     renderCompanyTables();
