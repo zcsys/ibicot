@@ -735,8 +735,6 @@
                     <th>Revenue / firm / tick</th>
                     <th>COGS / tick</th>
                     <th>Gross profit / tick</th>
-                    <th>Extraction spending / tick</th>
-                    <th>Operating cash flow / tick</th>
                     <th>Gross margin</th>
                     <th>Reliability</th>
                   </tr>
@@ -744,7 +742,7 @@
                 <tbody id="tierComparison"></tbody>
               </table>
             </div>
-            <p class="analytics-note">Current tick · per-firm figures divide by all firms in the tier. COGS is the cost basis of units sold, and gross profit is revenue minus COGS in every tier. Tier 0 also shows extraction spending and operating cash flow: revenue minus extraction spending. Unsold extraction adds inventory rather than reducing gross profit. — means unavailable or no activity for a ratio.</p>
+            <p class="analytics-note">Current tick · per-firm figures divide by all firms in the tier. COGS is the cost basis of units sold — for Tier 0 that is the cost of buying raw elements from Gaia — and gross profit is revenue minus COGS in every tier. Unsold extraction adds inventory rather than reducing gross profit. — means unavailable or no activity for a ratio.</p>
             <div class="table-toolbar">
               <label for="overviewTier">Chart scope</label>
               <select id="overviewTier">
@@ -924,17 +922,9 @@
                 <span>Gross profit · $ / tick</span>
                 <b id="t0GrossProfit">—</b>
               </div>
-              <div class="stat">
-                <span>Extraction spending · $ / tick</span>
-                <b id="t0ExtractionSpending">—</b>
-              </div>
-              <div class="stat">
-                <span>Operating cash flow · $ / tick</span>
-                <b id="t0OperatingCashFlow">—</b>
-              </div>
             </div>
             <p class="analytics-note">
-              Gross profit subtracts the cost of elements sold. Extraction spending pays for all units made this tick; operating cash flow is revenue minus that spending. The difference reflects inventory built or sold from earlier stock.
+              Tier 0 buys raw elements from Gaia, so its COGS is the extraction cost of the units sold. Gross profit is revenue minus COGS, exactly as in every other tier.
             </p>
             <div class="analytics-grid">
               <div>
@@ -945,9 +935,9 @@
                 </div>
               </div>
               <div>
-                <span class="chart-caption">Revenue, COGS, gross profit, extraction spending & operating cash flow · $ / tick</span>
+                <span class="chart-caption">Revenue, COGS & gross profit · $ / tick</span>
                 <div class="chart">
-                  <canvas id="t0FinanceChart" role="img" aria-label="Revenue, COGS, gross profit, extraction spending & operating cash flow · $ / tick">
+                  <canvas id="t0FinanceChart" role="img" aria-label="Revenue, COGS & gross profit · $ / tick">
                   </canvas>
                 </div>
               </div>
@@ -971,8 +961,6 @@
                     <th>Revenue / tick</th>
                     <th>COGS / tick</th>
                     <th>Gross profit / tick</th>
-                    <th>Extraction spending / tick</th>
-                    <th>Operating cash flow / tick</th>
                     <th>HHI</th>
                     <th>Reliability</th>
                   </tr>
@@ -1036,8 +1024,6 @@
                     <th>Revenue / tick</th>
                     <th>COGS / tick</th>
                     <th>Gross profit / tick</th>
-                    <th>Extraction spending / tick</th>
-                    <th>Operating cash flow / tick</th>
                     <th>Mean posted price</th>
                     <th>Reliability</th>
                   </tr>

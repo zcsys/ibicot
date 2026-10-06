@@ -736,8 +736,6 @@ class KernelRuntime:
                     'sold': float(W.t0Sold[idx]), 'revenue': float(W.t0Revenue[idx]),
                     'cogs': float(W.t0COGS[idx]),
                     'grossProfit': float(W.t0Revenue[idx] - W.t0COGS[idx]),
-                    'extractionSpending': float(self.lastTickT0Produced[idx] * W.t0Cost[idx]),
-                    'operatingCashFlow': float(W.t0Revenue[idx] - self.lastTickT0Produced[idx] * W.t0Cost[idx]),
                     'reliability': float(W.t0Rel[idx]), 'stability': float(W.t0Stability[idx]),
                     'reliabilityAttempts': int(W.t0RelAttempts[idx]),
                 })
@@ -746,8 +744,6 @@ class KernelRuntime:
                     'made': float(prod), 'sold': float(sold), 'revenue': float(revenue),
                     'cogs': float(sum(x['cogs'] for x in elements)),
                     'grossProfit': float(revenue - sum(x['cogs'] for x in elements)),
-                    'extractionSpending': float(sum(x['extractionSpending'] for x in elements)),
-                    'operatingCashFlow': float(sum(x['operatingCashFlow'] for x in elements)),
                     'capacity': self.cfg['capacity'], 'targetInventory': self.cfg['targetInventory'],
                     'maxInventory': self.cfg['maxInventory'], 'status': 'ACTIVE', 'elementData': elements}
         if id_ >= N1:
@@ -814,8 +810,7 @@ class KernelRuntime:
         for key, detail in out.items():
             history = self.watchedCompanyHistory.get(key) or []
             point = {'tick': self.tick}
-            for field in ('cash', 'equity', 'made', 'sold', 'revenue', 'cogs', 'grossProfit',
-                          'extractionSpending', 'operatingCashFlow'):
+            for field in ('cash', 'equity', 'made', 'sold', 'revenue', 'cogs', 'grossProfit'):
                 if field in detail and math.isfinite(detail[field]):
                     point[field] = detail[field]
             if history and history[-1].get('tick') == self.tick:
@@ -833,7 +828,7 @@ class KernelRuntime:
         out = []
         for id_ in range(N0):
             prof = T0P[id_]
-            inv = prod = cogs = extractionSpending = sold = rev = rel = 0.0
+            inv = prod = cogs = sold = rev = rel = 0.0
             n = 0
             eq = W.t0Cash[id_]
             for e in range(NE):
@@ -842,7 +837,6 @@ class KernelRuntime:
                     inv += W.t0Inv[idx]
                     prod += self.lastTickT0Produced[idx]
                     cogs += W.t0COGS[idx]
-                    extractionSpending += self.lastTickT0Produced[idx] * W.t0Cost[idx]
                     sold += W.t0Sold[idx]
                     rev += W.t0Revenue[idx]
                     rel += W.t0Rel[idx]
@@ -852,8 +846,6 @@ class KernelRuntime:
                         'cash': float(W.t0Cash[id_]), 'inventory': float(inv), 'equity': float(eq),
                         'production': float(prod), 'sold': float(sold), 'revenue': float(rev),
                         'cogs': float(cogs), 'grossProfit': float(rev - cogs),
-                        'extractionSpending': float(extractionSpending),
-                        'operatingCashFlow': float(rev - extractionSpending),
                         'avgPrice': float(np.mean([W.t0Price[id_ * NE + _EI[e]] for e in prof['elements']])) if n else float('nan'),
                         'reliability': float(rel / n) if n else 0.0})
         return out
@@ -1130,8 +1122,6 @@ class KernelRuntime:
                 'revenue': float(W.t0Revenue[i::NE].sum()),
                 'cogs': float(W.t0COGS[i::NE].sum()),
                 'grossProfit': float((W.t0Revenue[i::NE] - W.t0COGS[i::NE]).sum()),
-                'extractionSpending': float((W.t0Cost[i::NE] * self.lastTickT0Produced[i::NE]).sum()),
-                'operatingCashFlow': float((W.t0Revenue[i::NE] - W.t0Cost[i::NE] * self.lastTickT0Produced[i::NE]).sum()),
                 'difficulty': float(W.difficulty[i]), 'hhi': analytics['t0HHI'][i],
                 'reliability': _market_reliability([W.t0Rel[j * NE + i] for j in range(N0) if M.ELEMENTS[i] in T0P[j]['elements']],
                                                    [W.t0Sold[j * NE + i] for j in range(N0) if M.ELEMENTS[i] in T0P[j]['elements']])})
@@ -1168,8 +1158,6 @@ class KernelRuntime:
             'tiers': {
                 't0': {'firms': N0, 'bought': 0, 'made': float(analytics['t0Produced'].sum()),
                        'cogs': _sum(W.t0COGS), 'grossProfit': analytics['t0Revenue'] - _sum(W.t0COGS),
-                       'extractionSpending': float((W.t0Cost * self.lastTickT0Produced).sum()),
-                       'operatingCashFlow': float((W.t0Revenue - W.t0Cost * self.lastTickT0Produced).sum()),
                        'inventory': analytics['t0Inventory'], 'cash': analytics['t0Cash'],
                        'equity': analytics['t0Equity'], 'sold': analytics['t0Sold'],
                        'revenue': analytics['t0Revenue'], 'productionByElement': list(analytics['t0Produced']),

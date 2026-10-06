@@ -112,7 +112,7 @@
     selectedCompanyId = 0;
   const expandedCompanies = { T0: new Set(), T1: new Set() };
   const tableSortColumns = {
-    wholesale: ['name', 'difficulty', 'price', 'volume', 'revenue', 'cogs', 'grossProfit', 'extractionSpending', 'operatingCashFlow', 'hhi', 'reliability'],
+    wholesale: ['name', 'difficulty', 'price', 'volume', 'revenue', 'cogs', 'grossProfit', 'hhi', 'reliability'],
     retail: [
       'name',
       'complexity',
@@ -129,7 +129,7 @@
       'fillRate',
       'stockUnmet',
     ],
-    tierComparison: ['name','complexity','firms','cash','cashPerFirm','equity','inventory','bought','made','sold','revenue','revenuePerFirm','cogs','grossProfit','extractionSpending','operatingCashFlow','margin','reliability'],
+    tierComparison: ['name','complexity','firms','cash','cashPerFirm','equity','inventory','bought','made','sold','revenue','revenuePerFirm','cogs','grossProfit','margin','reliability'],
     productCategories: ['name','tier','role','products','lines','machineryPrice','unitCapacity','avgPrice','avgUnitCost','capacity','utilization','readyStock','made','sold','soldPerLine','revenue','cogs','grossProfit','profitPerLine','margin','active','fillRate','stockUnmet'],
     tier2Products: ['name','code','complexity','needType','sector','primaryMaterial','recipe','firms','machineryPrice','avgPrice','avgUnitCost','productionCapacity','utilization','readyStock','made','sold','revenue','grossProfit','margin','active','fillRate','stockUnmet','hhi','reliability'],
     tier2Industries: ['name','description','products','lines','capacity','utilization','readyStock','made','sold','revenue','cogs','grossProfit','margin','active','fulfilled','fillRate','stockUnmet','volumeShare','reliability'],
@@ -163,8 +163,6 @@
       'revenue',
       'cogs',
       'grossProfit',
-      'extractionSpending',
-      'operatingCashFlow',
       'avgPrice',
       'reliability',
     ],
@@ -320,7 +318,7 @@
   function companyChartMarkup(id, tier) {
     const prefix = tier + 'Company' + id;
     const panels = [['Output', 'Production & sales · units / tick'],
-      ['Finance', tier === 'T0' ? 'Revenue, COGS, gross profit, extraction spending & operating cash flow · $ / tick' : 'Revenue, COGS & gross profit · $ / tick'],
+      ['Finance', 'Revenue, COGS & gross profit · $ / tick'],
       ['Cash', 'Cash · $'], ['Equity', 'Book equity · $']];
     return '<p class="analytics-note">History starts when this company is expanded; up to 0xF0 reported ticks.</p><div class="analytics-grid">' +
       panels.map(([suffix, label]) => '<div><span class="chart-caption">' + label + '</span><div class="chart"><canvas id="' + prefix + suffix + '" role="img" aria-label="' + tier + ' company ' + label + '"></canvas></div></div>').join('') + '</div>';
@@ -328,8 +326,8 @@
   function drawCompanyHistory(detail) {
     const prefix = detail.tier + 'Company' + detail.id, history = detail.history || [];
     drawLine(prefix + 'Output', history, ['made', 'sold'].map(key => history.map(point => point[key])), ['Production', 'Sales'], 0);
-    const keys = detail.tier === 'T0' ? ['revenue', 'cogs', 'grossProfit', 'extractionSpending', 'operatingCashFlow'] : ['revenue', 'cogs', 'grossProfit'];
-    const labels = detail.tier === 'T0' ? ['Revenue', 'COGS', 'Gross profit', 'Extraction spending', 'Operating cash flow'] : ['Revenue', 'COGS', 'Gross profit'];
+    const keys = ['revenue', 'cogs', 'grossProfit'];
+    const labels = ['Revenue', 'COGS', 'Gross profit'];
     drawLine(prefix + 'Finance', history, keys.map(key => history.map(point => point[key])), labels, 0, true);
     drawLine(prefix + 'Cash', history, [history.map(point => point.cash)], ['Cash'], 0, true);
     drawLine(prefix + 'Equity', history, [history.map(point => point.equity)], ['Book equity'], 0, true);
@@ -354,8 +352,8 @@
           : null);
       return `<tr class="company-detail-row"><td colspan="14"><div class="company-detail-inner">
       <div class="detail-section"><strong>${x.name} · current stocks & sell prices</strong></div>
-      <table class="detail-table"><thead><tr><th>Element</th><th>Current stock</th><th>Unit cost</th><th>Sell price</th><th>Made / tick</th><th>Sold / tick</th><th>Revenue / tick</th><th>COGS / tick</th><th>Gross profit / tick</th><th>Extraction spending / tick</th><th>Operating cash flow / tick</th><th>Reliability</th><th>Price stability</th></tr></thead>
-      <tbody>${(d?.elementData || []).map((v) => `<tr><th>${v.element}</th><td>${fmtInt(v.stock)}</td><td>${fmt5(v.cost)}</td><td>${fmt5(v.price)}</td><td>${fmtInt(v.production)}</td><td>${fmtInt(v.sold)}</td><td>${fmtMoney(v.revenue, 0)}</td><td>${fmtMoney(v.cogs, 0)}</td><td>${fmtMoney(v.grossProfit, 0)}</td><td>${fmtMoney(v.extractionSpending, 0)}</td><td>${fmtMoney(v.operatingCashFlow, 0)}</td><td>${fmtFixed(v.reliability, 3)}</td><td>${fmtFixed(v.stability, 3)}</td></tr>`).join('')}</tbody></table>
+      <table class="detail-table"><thead><tr><th>Element</th><th>Current stock</th><th>Unit cost</th><th>Sell price</th><th>Made / tick</th><th>Sold / tick</th><th>Revenue / tick</th><th>COGS / tick</th><th>Gross profit / tick</th><th>Reliability</th><th>Price stability</th></tr></thead>
+      <tbody>${(d?.elementData || []).map((v) => `<tr><th>${v.element}</th><td>${fmtInt(v.stock)}</td><td>${fmt5(v.cost)}</td><td>${fmt5(v.price)}</td><td>${fmtInt(v.production)}</td><td>${fmtInt(v.sold)}</td><td>${fmtMoney(v.revenue, 0)}</td><td>${fmtMoney(v.cogs, 0)}</td><td>${fmtMoney(v.grossProfit, 0)}</td><td>${fmtFixed(v.reliability, 3)}</td><td>${fmtFixed(v.stability, 3)}</td></tr>`).join('')}</tbody></table>
       ${companyChartMarkup(x.id, "T0")}
     </div></td></tr>`;
     };
@@ -380,7 +378,7 @@
     $('tier0Companies').innerHTML = t0
       .map((x) => {
         const row = `<tr class="clickable-row${selectedTier === 'T0' && selectedCompanyId === x.id ? ' selected' : ''}" data-tier="T0" data-id="${x.id}">
-      <th>▸ ${x.name}</th><td>${x.elements.join(' · ')}</td><td>${fmtMoney(x.cash, 0)}</td><td>${fmtInt(x.inventory)}</td><td>${fmtMoney(x.equity, 0)}</td><td>${fmtInt(x.production)}</td><td>${fmtInt(x.sold)}</td><td>${fmtMoney(x.revenue, 0)}</td><td>${fmtMoney(x.cogs, 0)}</td><td>${fmtMoney(x.grossProfit, 0)}</td><td>${fmtMoney(x.extractionSpending, 0)}</td><td>${fmtMoney(x.operatingCashFlow, 0)}</td><td>${fmt5(x.avgPrice)}</td><td>${fmtFixed(x.reliability, 3)}</td></tr>`;
+      <th>▸ ${x.name}</th><td>${x.elements.join(' · ')}</td><td>${fmtMoney(x.cash, 0)}</td><td>${fmtInt(x.inventory)}</td><td>${fmtMoney(x.equity, 0)}</td><td>${fmtInt(x.production)}</td><td>${fmtInt(x.sold)}</td><td>${fmtMoney(x.revenue, 0)}</td><td>${fmtMoney(x.cogs, 0)}</td><td>${fmtMoney(x.grossProfit, 0)}</td><td>${fmt5(x.avgPrice)}</td><td>${fmtFixed(x.reliability, 3)}</td></tr>`;
         return row + (exp0.has(x.id) ? detailT0(x) : '');
       })
       .join('');
@@ -416,8 +414,6 @@
         `revenue: ${fmtMoney(d.revenue, 2)}`,
         `COGS: ${fmtMoney(d.cogs, 2)}`,
         `gross profit: ${fmtMoney(d.grossProfit, 2)}`,
-        `extraction spending: ${fmtMoney(d.extractionSpending, 2)}`,
-        `operating cash flow: ${fmtMoney(d.operatingCashFlow, 2)}`,
         `capacity/tick: ${fmtInt(d.capacity)}`,
         `target inventory: ${fmtInt(d.targetInventory)}`,
         `max inventory: ${fmtInt(d.maxInventory)}`,
@@ -427,7 +423,7 @@
       $('companyTxnInspector').textContent = d.elementData
         .map(
           (x) =>
-            `${x.element}: stock ${Math.round(x.stock)}, cost ${fmtMoney(x.cost, 5)}, price ${fmtMoney(x.price, 5)}, made ${Math.round(x.production)}, sold ${Math.round(x.sold)}, revenue ${fmtMoney(x.revenue, 0)}, COGS ${fmtMoney(x.cogs, 0)}, gross profit ${fmtMoney(x.grossProfit, 0)}, extraction spending ${fmtMoney(x.extractionSpending, 0)}, operating cash flow ${fmtMoney(x.operatingCashFlow, 0)}, rel ${x.reliability.toFixed(3)}, stability ${x.stability.toFixed(3)}, reliability attempts ${Math.round(x.reliabilityAttempts)}`,
+            `${x.element}: stock ${Math.round(x.stock)}, cost ${fmtMoney(x.cost, 5)}, price ${fmtMoney(x.price, 5)}, made ${Math.round(x.production)}, sold ${Math.round(x.sold)}, revenue ${fmtMoney(x.revenue, 0)}, COGS ${fmtMoney(x.cogs, 0)}, gross profit ${fmtMoney(x.grossProfit, 0)}, rel ${x.reliability.toFixed(3)}, stability ${x.stability.toFixed(3)}, reliability attempts ${Math.round(x.reliabilityAttempts)}`,
         )
         .join('\n');
     } else {
@@ -614,7 +610,7 @@
     const t0 = s.tiers.t0, t1 = s.tiers.t1, t2 = s.tiers.t2, consumers = s.tiers.endUsers;
     const money = { economyCash: t0.cash + t1.cash + t2.cash, economyEquity: t0.equity + t1.equity + t2.equity,
       economySpending: consumers.revenue, t0Cash: t0.cash, t0Equity: t0.equity, t0Revenue: t0.revenue,
-      t0COGS: t0.cogs, t0GrossProfit: t0.grossProfit, t0ExtractionSpending: t0.extractionSpending, t0OperatingCashFlow: t0.operatingCashFlow,
+      t0COGS: t0.cogs, t0GrossProfit: t0.grossProfit,
       t1Cash: t1.cash, t1Equity: t1.equity, t1Revenue: t1.revenue, t1COGS: t1.cogs, t1GP: t1.grossProfit,
       retailRevenue: consumers.revenue };
     for (const [id, value] of Object.entries(money)) $(id).textContent = fmtMoney(value, 0);
@@ -651,9 +647,7 @@
     drawLine('wholesaleChart', hist, [0, 1, 2, 3].map(i => hist.map(point => point.elementPrices[i])), M.ELEMENTS, 5, true, false, false);
     for (const tier of ['t0', 't1']) {
       drawLine(tier + 'OutputChart', hist, ['made', 'sold'].map(key => hist.map(point => point.tiers[tier][key])), ['Production', 'Sales'], 0);
-      const keys = tier === 't0' ? ['revenue', 'cogs', 'grossProfit', 'extractionSpending', 'operatingCashFlow'] : ['revenue', 'cogs', 'grossProfit'];
-      const labels = tier === 't0' ? ['Revenue', 'COGS', 'Gross profit', 'Extraction spending', 'Operating cash flow'] : ['Revenue', 'COGS', 'Gross profit'];
-      drawLine(tier + 'FinanceChart', hist, keys.map(key => hist.map(point => point.tiers[tier][key])), labels, 0, true);
+      drawLine(tier + 'FinanceChart', hist, ['revenue', 'cogs', 'grossProfit'].map(key => hist.map(point => point.tiers[tier][key])), ['Revenue', 'COGS', 'Gross profit'], 0, true);
     }
     const product = $('t1PriceProduct').value;
     drawLine('retailChart', hist, product !== '' ? [hist.map(point => point.materialPrices[+product])] :
@@ -666,7 +660,7 @@
     drawLine('consumerSpendingChart', hist, [hist.map(point => point.tiers.endUsers.revenue)], ['Spending'], 0, true);
   }
   function renderComparisons(s) {
-    const moneyKeys = new Set(['cash','cashPerFirm','equity','revenue','revenuePerFirm','cogs','grossProfit','extractionSpending','operatingCashFlow','machineryPrice','avgPrice','avgUnitCost','profitPerLine']);
+    const moneyKeys = new Set(['cash','cashPerFirm','equity','revenue','revenuePerFirm','cogs','grossProfit','machineryPrice','avgPrice','avgUnitCost','profitPerLine']);
     const ratioKeys = new Set(['margin','utilization','fillRate','reliability']);
     const cells = (row, keys) => keys.map(key => {
       const value = row[key];
@@ -680,8 +674,6 @@
       return { ...t, name: ['Tier 0 · Extraction','Tier 1 · Materials','Tier 2 · Galactic goods'][index],
         complexity: ['Raw elements','C-1–C-2','C-3–C-5'][index],
         bought: index === 0 ? null : t.bought,
-        extractionSpending: index === 0 ? t.extractionSpending : null,
-        operatingCashFlow: index === 0 ? t.operatingCashFlow : null,
         cashPerFirm: meaningfulRatio(t.cash, t.firms), revenuePerFirm: meaningfulRatio(t.revenue, t.firms),
         margin: meaningfulRatio(t.grossProfit, t.revenue),
         reliability: index === 2 ? meaningfulRatio(sum(s.tier2Products.map(p => p.reliability * p.firms)), sum(s.tier2Products.map(p => p.firms))) : t.reliability };
@@ -728,7 +720,7 @@
     $('wholesale').innerHTML = sortedTableRows('wholesale', s.elements)
       .map(
         (x) =>
-          `<tr><th>${displayElement(x.code)}</th><td>${x.difficulty.toFixed(3)}</td><td>${fmtMoney(x.price, 5)}</td><td>${fmtInt(x.volume)}</td><td>${fmtMoney(x.revenue, 0)}</td><td>${fmtMoney(x.cogs, 0)}</td><td>${fmtMoney(x.grossProfit, 0)}</td><td>${fmtMoney(x.extractionSpending, 0)}</td><td>${fmtMoney(x.operatingCashFlow, 0)}</td><td>${x.volume > 0 ? x.hhi.toFixed(3) : "—"}</td><td>${x.reliability.toFixed(3)}</td></tr>`,
+          `<tr><th>${displayElement(x.code)}</th><td>${x.difficulty.toFixed(3)}</td><td>${fmtMoney(x.price, 5)}</td><td>${fmtInt(x.volume)}</td><td>${fmtMoney(x.revenue, 0)}</td><td>${fmtMoney(x.cogs, 0)}</td><td>${fmtMoney(x.grossProfit, 0)}</td><td>${x.volume > 0 ? x.hhi.toFixed(3) : "—"}</td><td>${x.reliability.toFixed(3)}</td></tr>`,
       )
       .join('');
     $('retail').innerHTML = sortedTableRows('retail', s.products)
