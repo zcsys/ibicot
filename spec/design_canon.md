@@ -46,6 +46,12 @@ Every section below is a consequence of, or a requirement for, that sentence.
 5. **Fairness.** See §8. The binding form: **equal opportunity for players who join at
    any time.**
 
+6. **Prices settle on their own equilibrium — never on a bound.** The market dynamics
+   (adaptive pricing, bounded sampling, switching friction) must find an *interior*
+   price equilibrium: prices must not top out at a ceiling or bottom out at a floor.
+   A price pinned at a bound is a misspecification symptom — the cost curve, demand
+   curve, or markup is wrong — not a sound steady state.
+
 ---
 
 ## 3. Fixed topology & identity
