@@ -81,6 +81,7 @@ class KernelRuntime:
         self.state = {'activeOrders': 0, 'fulfilledOrders': 0}
         self.selectedTierControl = 'T1'
         self.selectedT2Id = 0
+        self.selectedT0Id = 0
         self.selectedId = 0
         self.lastSnapshot = None
         self.lastReportAt = time.monotonic()
@@ -109,6 +110,9 @@ class KernelRuntime:
         self.controller = np.zeros(N1, dtype=np.uint8)
         self.online = np.zeros(N1, dtype=np.uint8)
         self.playerPrices = [{} for _ in range(N1)]
+        self.controllerT0 = np.zeros(N0, dtype=np.uint8)
+        self.onlineT0 = np.zeros(N0, dtype=np.uint8)
+        self.playerPricesT0 = [{} for _ in range(N0)]
 
     def _init_analytics_scratch(self):
         self.prevT0Inventory = np.zeros(N0 * NE, dtype=np.float64)
@@ -198,6 +202,9 @@ class KernelRuntime:
         if tier == 'T2':
             self.selectedTierControl = 'T2'
             self.selectedT2Id = max(0, min(self.cfg['t2FirmCount'] - 1, int(id_)))
+        elif tier == 'T0':
+            self.selectedTierControl = 'T0'
+            self.selectedT0Id = max(0, min(N0 - 1, int(id_)))
         else:
             self.selectedTierControl = 'T1'
             self.selectedId = max(0, min(N1 - 1, int(id_)))
@@ -245,6 +252,28 @@ class KernelRuntime:
                 'house': dict(self.playerHouse)}
 
     def player(self, tier, id_, code, price, online, controller):
+        if tier == 'T0':
+            id_ = int(id_)
+            if not (0 <= id_ < N0):
+                raise ValueError('Invalid Tier 0 company.')
+            ei = _EI.get(code)
+            if controller == 'PLAYER' and (ei is None or ei not in T0P[id_]['element_indices']
+                                           or not math.isfinite(price) or price < 0):
+                raise ValueError('Select an element this extractor produces and a valid non-negative price.')
+            self.selectedTierControl = 'T0'
+            self.selectedT0Id = id_
+            self.controllerT0[id_] = 1 if controller == 'PLAYER' else 0
+            self.onlineT0[id_] = 1 if online else 0
+            self.W.t0Controller[id_] = self.controllerT0[id_]
+            if self.controllerT0[id_] and ei is not None:
+                index = id_ * NE + ei
+                self.playerPricesT0[id_][code] = quant_r(price)
+                self.W.t0PlayerPrice[index] = self.playerPricesT0[id_][code]
+                self.W.t0LearnOpportunity[index] = self.W.t0LearnPotentialOpportunity[index] = 0
+                self.W.t0LearnProfit[index] = self.W.t0LearnSales[index] = self.W.t0LearnDemand[index] = self.W.t0LearnTicks[index] = 0
+                self.W.t0LearnStep[index] = 1
+                self.W.t0LearnPrevious[index] = float('nan')
+            return self.publish()
         if tier == 'T2':
             id_ = int(id_)
             if not (0 <= id_ < self.cfg['t2FirmCount']):
@@ -740,6 +769,8 @@ class KernelRuntime:
                     'reliabilityAttempts': int(W.t0RelAttempts[idx]),
                 })
             return {'tier': 'T0', 'id': id_, 'name': co['name'], 'elements': list(co['elements']),
+                    'controller': 'PLAYER' if self.controllerT0[id_] else 'BOT',
+                    'online': bool(self.onlineT0[id_]),
                     'cash': float(W.t0Cash[id_]), 'inventory': float(inventory), 'equity': float(equity),
                     'made': float(prod), 'sold': float(sold), 'revenue': float(revenue),
                     'cogs': float(sum(x['cogs'] for x in elements)),
@@ -843,6 +874,8 @@ class KernelRuntime:
                     n += 1
                     eq += W.t0Inv[idx] * W.t0InvBasis[idx]
             out.append({'id': id_, 'name': prof['name'], 'elements': list(prof['elements']),
+                        'controller': 'PLAYER' if self.controllerT0[id_] else 'BOT',
+                        'online': bool(self.onlineT0[id_]),
                         'cash': float(W.t0Cash[id_]), 'inventory': float(inv), 'equity': float(eq),
                         'production': float(prod), 'sold': float(sold), 'revenue': float(rev),
                         'cogs': float(cogs), 'grossProfit': float(rev - cogs),
@@ -1126,6 +1159,35 @@ class KernelRuntime:
                 'reliability': _market_reliability([W.t0Rel[j * NE + i] for j in range(N0) if M.ELEMENTS[i] in T0P[j]['elements']],
                                                    [W.t0Sold[j * NE + i] for j in range(N0) if M.ELEMENTS[i] in T0P[j]['elements']])})
 
+        if self.selectedTierControl == 'T2':
+            selected = selectedT2 or self._tier2_company(self.selectedT2Id)
+        elif self.selectedTierControl == 'T0':
+            tid = max(0, min(N0 - 1, self.selectedT0Id))
+            prof = T0P[tid]
+            t0_products = []
+            for e in prof['elements']:
+                ei = _EI[e]
+                t0_products.append({'code': e, 'price': float(W.t0Price[tid * NE + ei])})
+            first = prof['elements'][0] if prof['elements'] else None
+            selected = {
+                'tier': 'T0', 'id': tid, 'name': prof['name'],
+                'controller': 'PLAYER' if self.controllerT0[tid] else 'BOT',
+                'online': bool(self.onlineT0[tid]),
+                'price': float(W.t0Price[tid * NE + _EI[first]]) if first else float('nan'),
+                'cash': float(W.t0Cash[tid]), 'eqBook': 0.0,
+                'equipment': list(prof['elements']), 'products': t0_products,
+            }
+        else:
+            selected = {
+                'tier': 'T1', 'products': self._company_detail('T1', sid)['products'], 'id': sid,
+                'name': T1P[sid // 100]['name'] + ' ' + str((sid % 100) + 1).zfill(3),
+                'sector': M.t1_sector(scode), 'controller': 'PLAYER' if self.controller[sid] else 'BOT',
+                'online': bool(self.online[sid]), 'price': float(W.t1Price[sid * NP + spi]),
+                'cash': float(W.t1Cash[sid]), 'finished': float(W.t1Fin[sid * NP + spi]),
+                'inventory': float(W.raw[sid * NE:(sid + 1) * NE].sum() + W.t1Fin[sid * NP + spi]),
+                'eqBook': float(W.t1EqBook[sid]), 'equipment': list(self.equipment[sid]),
+                'reliability': float(W.t1Rel[sid * NP + spi])}
+
         lastSnapshot = {
             'world': dict(M.WORLD_STORY, population=cfg['endUserCount']),
             'tick': self.tick, 'month': self.month, 'calendar': M.calendar_at(self.tick),
@@ -1194,15 +1256,7 @@ class KernelRuntime:
                              'revenue': analytics['retailRevenue']},
             },
             'companies': companies,
-            'selected': selectedT2 or {
-                'tier': 'T1', 'products': self._company_detail('T1', sid)['products'], 'id': sid,
-                'name': T1P[sid // 100]['name'] + ' ' + str((sid % 100) + 1).zfill(3),
-                'sector': M.t1_sector(scode), 'controller': 'PLAYER' if self.controller[sid] else 'BOT',
-                'online': bool(self.online[sid]), 'price': float(W.t1Price[sid * NP + spi]),
-                'cash': float(W.t1Cash[sid]), 'finished': float(W.t1Fin[sid * NP + spi]),
-                'inventory': float(W.raw[sid * NE:(sid + 1) * NE].sum() + W.t1Fin[sid * NP + spi]),
-                'eqBook': float(W.t1EqBook[sid]), 'equipment': list(self.equipment[sid]),
-                'reliability': float(W.t1Rel[sid * NP + spi])},
+            'selected': selected,
             'engine': 'python', 'expandedDetails': self._watched_details(),
         }
         lastSnapshot['endUsers'] = lastSnapshot['tiers']['endUsers']

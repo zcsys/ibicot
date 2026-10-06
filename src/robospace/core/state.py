@@ -116,7 +116,9 @@ def _array_spec(cfg):
         ('difficulty', 'f64', NE),
         ('t0Inv', 'f64', N0 * NE),
         ('t0Cash', 'f64', N0),
+        ('t0Controller', 'u8', N0),
         ('t0Price', 'f64', N0 * NE),
+        ('t0PlayerPrice', 'f64', N0 * NE),
         ('t0Cost', 'f64', N0 * NE),
         ('t0InvBasis', 'f64', N0 * NE),
         ('t0COGS', 'f64', N0 * NE),
@@ -415,6 +417,8 @@ def reset_world(cfg):
 
     W.difficulty.fill(cfg['dbar'])
     W.t0Cash.fill(cfg['t0Equity'])
+    W.t0Controller.fill(0)
+    W.t0PlayerPrice.fill(float('nan'))
     W.t0Rel.fill(0.5)
     W.t0Stability.fill(1)
     W.t0Req.fill(0)

@@ -417,8 +417,11 @@ def price_markets(W, cfg, profiles, products, tick):
             if not math.isfinite(W.t0Price[index]):
                 continue
             previous = W.t0Price[index]
-            nxt = learned_quote(t0_learning, cfg, index,
-                                max(W.t0Cost[index], W.t0InvBasis[index]), W.t0Inv[index], tick)
+            unit = max(W.t0Cost[index], W.t0InvBasis[index])
+            if W.t0Controller[supplier] and math.isfinite(W.t0PlayerPrice[index]):
+                nxt = max(W.t0PlayerPrice[index], unit)
+            else:
+                nxt = learned_quote(t0_learning, cfg, index, unit, W.t0Inv[index], tick)
             W.t0PrevPrice[index] = previous
             W.t0Price[index] = nxt
             stable = 1 - min(1.0, abs(nxt - previous) / max(1e-9, previous)

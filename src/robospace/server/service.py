@@ -78,6 +78,7 @@ def checkpoint_load(req: CheckpointRequest):
     rt.selectedTierControl = 'T1'
     rt.selectedId = 0
     rt.selectedT2Id = 0
+    rt.selectedT0Id = 0
     rt.lastSnapshot = None
     rt.lastReportAt = time.monotonic()
     rt.lastReportTick = 0

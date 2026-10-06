@@ -608,9 +608,9 @@
         </section>
         <section class="panel">
           <strong>Selected company control · Admin</strong>
-          <p class="group-note">Admin tools control Tier 1 and Tier 2 companies for economy testing. The far-future setting follows a human investor competing with opportunist investors and robotic executives as industry prepares for a major galactic war and sustains civilian life. Future alpha player scope is Tier 1; admin access covers both tiers.</p>
-          <div class="field"><label>Tier</label><select id="playerTier"><option value="T1">Tier 1 materials</option><option value="T2">Tier 2 galactic goods</option></select></div>
-          <div class="field" id="t2ControlId" hidden><label>Tier 2 company #</label><input id="t2PlayerCompany" type="number" min="1" max="61950" value="1" /></div>
+          <p class="group-note">Admin tools control Tier 0, Tier 1 and Tier 2 companies for economy testing. The far-future setting follows a human investor competing with opportunist investors and robotic executives as industry prepares for a major galactic war and sustains civilian life.</p>
+          <div class="field"><label>Tier</label><select id="playerTier"><option value="T0">Tier 0 extraction</option><option value="T1">Tier 1 materials</option><option value="T2">Tier 2 galactic goods</option></select></div>
+          <div class="field" id="t2ControlId" hidden><label>Tier 2 company #</label><input id="t2PlayerCompany" type="number" min="1" max="60000" value="1" /></div>
           <div class="field">
             <label id="playerCompanyLabel">Tier 1 company</label
             ><select id="playerCompany"></select>
@@ -1015,6 +1015,7 @@
                 <thead>
                   <tr>
                     <th>Company</th>
+                    <th>Controller</th>
                     <th>Elements</th>
                     <th>Cash</th>
                     <th>Inventory</th>

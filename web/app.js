@@ -99,8 +99,10 @@
   $('t2PlayerCompany').addEventListener('change', sendSelect);
   $('t2PlayerCompany').addEventListener('input', () => { if ($('t2PlayerCompany').value) sendSelect(); });
   $('playerTier').addEventListener('change', () => {
-    const tier2 = $('playerTier').value === 'T2';
+    const tier = $('playerTier').value;
+    const tier2 = tier === 'T2';
     $('playerCompany').hidden = tier2; $('playerCompanyLabel').hidden = tier2; $('t2ControlId').hidden = !tier2;
+    populatePlayerCompany();
     sendSelect();
   });
   let latestSnapshot = null,
@@ -110,6 +112,28 @@
     companyPageSize = 50,
     selectedTier = 'T1',
     selectedCompanyId = 0;
+  function populatePlayerCompany() {
+    const tier = $('playerTier').value;
+    const sel = $('playerCompany');
+    const current = sel.value;
+    sel.innerHTML = '';
+    if (tier === 'T0') {
+      (latestSnapshot?.t0Companies || []).forEach((c) => {
+        const o = document.createElement('option');
+        o.value = c.id;
+        o.textContent = `T0-${String(c.id + 1).padStart(2, '0')} · ${c.name}`;
+        sel.appendChild(o);
+      });
+    } else {
+      for (let i = 0; i < 1000; i++) {
+        const o = document.createElement('option');
+        o.value = i;
+        o.textContent = `T1-${String(i + 1).padStart(4, '0')} · ${displayProduct(productCodes[Math.floor(i / 100)])}`;
+        sel.appendChild(o);
+      }
+    }
+    if (current) sel.value = current;
+  }
   const expandedCompanies = { T0: new Set(), T1: new Set() };
   const tableSortColumns = {
     wholesale: ['name', 'difficulty', 'price', 'volume', 'revenue', 'cogs', 'grossProfit', 'hhi', 'reliability'],
@@ -154,6 +178,7 @@
     ],
     tier0Companies: [
       'name',
+      'controller',
       'elements',
       'cash',
       'inventory',
@@ -378,7 +403,7 @@
     $('tier0Companies').innerHTML = t0
       .map((x) => {
         const row = `<tr class="clickable-row${selectedTier === 'T0' && selectedCompanyId === x.id ? ' selected' : ''}" data-tier="T0" data-id="${x.id}">
-      <th>▸ ${x.name}</th><td>${x.elements.join(' · ')}</td><td>${fmtMoney(x.cash, 0)}</td><td>${fmtInt(x.inventory)}</td><td>${fmtMoney(x.equity, 0)}</td><td>${fmtInt(x.production)}</td><td>${fmtInt(x.sold)}</td><td>${fmtMoney(x.revenue, 0)}</td><td>${fmtMoney(x.cogs, 0)}</td><td>${fmtMoney(x.grossProfit, 0)}</td><td>${fmt5(x.avgPrice)}</td><td>${fmtFixed(x.reliability, 3)}</td></tr>`;
+      <th>▸ ${x.name}</th><td>${x.controller}</td><td>${x.elements.join(' · ')}</td><td>${fmtMoney(x.cash, 0)}</td><td>${fmtInt(x.inventory)}</td><td>${fmtMoney(x.equity, 0)}</td><td>${fmtInt(x.production)}</td><td>${fmtInt(x.sold)}</td><td>${fmtMoney(x.revenue, 0)}</td><td>${fmtMoney(x.cogs, 0)}</td><td>${fmtMoney(x.grossProfit, 0)}</td><td>${fmt5(x.avgPrice)}</td><td>${fmtFixed(x.reliability, 3)}</td></tr>`;
         return row + (exp0.has(x.id) ? detailT0(x) : '');
       })
       .join('');
@@ -739,12 +764,16 @@
     renderTier2(s);
     renderOwnership(s);
     if (!controlDirty) { $('controller').value = s.selected.controller; $('online').value = String(s.selected.online); }
+    const isT0 = s.selected.tier === 'T0';
+    const displayCode = (x) => (isT0 ? displayElement(x) : displayProduct(x));
     const selectedProduct = $('playerProduct').value;
-    const productOptions = s.selected.equipment.map((x) => `<option value="${x}">${displayProduct(x)}</option>`).join('');
+    const productOptions = s.selected.equipment.map((x) => `<option value="${x}">${displayCode(x)}</option>`).join('');
     if ($('playerProduct').innerHTML !== productOptions) $('playerProduct').innerHTML = productOptions;
     if (s.selected.equipment.includes(selectedProduct)) $('playerProduct').value = selectedProduct;
     const currentProduct = s.selected.products?.find((p) => (p.code || p.product) === $('playerProduct').value);
     if (!controlDirty && document.activeElement !== $('playerPrice')) $('playerPrice').value = (currentProduct?.price ?? s.selected.price ?? 1).toFixed(5);
+    $('buyEquipment').hidden = isT0;
+    $('equipmentProduct').hidden = isT0;
     const eligible = s.selected.tier === 'T2' ? s.selected.eligibleEquipment :
       M.PRODUCTS.filter((p) => !s.selected.equipment.includes(p.code)).map((p) => ({ ...p, price: p.equipmentPrice }));
     const machineryOptions = eligible.map((p) => `<option value="${p.code}">${p.name} · ${fmtMoney(p.price, 0)}</option>`).join('');
