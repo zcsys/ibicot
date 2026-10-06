@@ -670,8 +670,16 @@ class KernelRuntime:
         W = self.W
         q = self.tier2Query
         search = q['search'].lower()
+        n = self.cfg['t2FirmCount']
+        # Fast path: no filters, default id order — the match set is the whole
+        # population, so skip the per-firm scan entirely.
+        if not search and not q['sector'] and not q['controller'] and q['sort'] == 'id' and not q['descending']:
+            page = min(max(0, q['page']), max(0, math.ceil(n / q['pageSize']) - 1))
+            start = page * q['pageSize']
+            rows = [self._tier2_company(i, False) for i in range(start, min(n, start + q['pageSize']))]
+            return {'page': page, 'pageSize': q['pageSize'], 'total': n, 'rows': rows}
         matches = []
-        for id_ in range(self.cfg['t2FirmCount']):
+        for id_ in range(n):
             sector = M.T2_SECTORS[int(W.t2Sector[id_])]
             control = 'PLAYER' if W.t2Controller[id_] else 'BOT'
             if q['sector'] and q['sector'] != sector:
@@ -909,34 +917,46 @@ class KernelRuntime:
                 'reliability': float(rel / relN) if relN else 0.0})
 
         productStats = []
+        _op = W.t1Operates.reshape(N1, NP)
+        _sold = W.t1Sold.reshape(N1, NP)
+        _rel = W.t1Rel.reshape(N1, NP)
+        _price = W.t1Price.reshape(N1, NP)
+        _uc = W.t1UnitCost.reshape(N1, NP)
+        _made = self.lastTickT1Made.reshape(N1, NP)
+        _cogs = W.t1COGS.reshape(N1, NP)
+        _demand = W.t1Demand.reshape(N1, NP)
         for p in range(NP):
             prod = M.PRODUCTS[p]
-            suppliers = []
-            for cid in range(N1):
-                if W.t1Operates[cid * NP + p]:
-                    suppliers.append({'id': cid, 'vol': float(W.t1Sold[cid * NP + p]),
-                                      'rel': float(W.t1Rel[cid * NP + p])})
-            made = sum(self.lastTickT1Made[x['id'] * NP + p] for x in suppliers)
-            cogs = sum(W.t1COGS[x['id'] * NP + p] for x in suppliers)
-            demand = sum(W.t1Demand[x['id'] * NP + p] for x in suppliers)
+            mask = _op[:, p] != 0
+            firms = int(mask.sum())
+            if firms:
+                vol = _sold[:, p][mask]
+                rel = _rel[:, p][mask]
+                made = float(_made[:, p][mask].sum())
+                cogs = float(_cogs[:, p][mask].sum())
+                demand = float(_demand[:, p][mask].sum())
+                avg_price = float(_price[:, p][mask].mean())
+                avg_uc = float(_uc[:, p][mask].mean())
+                hhi = _hhi(vol)
+                reliability = _market_reliability(rel, vol)
+            else:
+                made = cogs = demand = avg_price = avg_uc = hhi = reliability = 0.0
             productStats.append({
                 'code': prod['code'], 'name': prod['name'], 'complexity': prod['complexity'],
-                'role': prod['role'], 'firms': len(suppliers), 'machineryPrice': self.cfg['t1Machinery'],
+                'role': prod['role'], 'firms': firms, 'machineryPrice': self.cfg['t1Machinery'],
                 'capacity': cfg['t1Capacity'],
                 'productionCapacity': self._product_supply_capacity(p),
-                'made': float(made), 'sold': float(m['rVol'][p]), 'cogs': float(cogs),
-                'avgPrice': float(sum(W.t1Price[x['id'] * NP + p] for x in suppliers) / max(1, len(suppliers))),
-                'avgUnitCost': float(sum(W.t1UnitCost[x['id'] * NP + p] for x in suppliers) / max(1, len(suppliers))),
+                'made': made, 'sold': float(m['rVol'][p]), 'cogs': cogs,
+                'avgPrice': avg_price, 'avgUnitCost': avg_uc,
                 'retailPrice': float(m['rP'][p]), 'volume': float(m['rVol'][p]),
                 'consumerVolume': float(W.endFulfilled[p]),
                 'intermediateVolume': float(W.t1IntermediateSold[p]),
                 'intermediateRevenue': float(W.t1IntermediateRevenue[p]),
                 'revenue': float(m['rRev'][p]), 'supplyCapacity': self._product_supply_capacity(p),
                 'readyStock': self._product_ready_stock(p), 'customerType': 'Companies',
-                'potential': None, 'active': float(demand), 'fulfilled': float(W.t1IntermediateSold[p]),
+                'potential': None, 'active': demand, 'fulfilled': float(W.t1IntermediateSold[p]),
                 'priceLost': None, 'stockUnmet': float(max(0.0, demand - W.t1IntermediateSold[p])),
-                'hhi': _hhi([x['vol'] for x in suppliers]),
-                'reliability': _market_reliability([x['rel'] for x in suppliers], [x['vol'] for x in suppliers]),
+                'hhi': hhi, 'reliability': reliability,
                 'fillRate': float(W.t1IntermediateSold[p] / demand) if demand > 0 else None})
 
         t2ProductStats = []
