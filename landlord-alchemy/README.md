@@ -3,12 +3,9 @@
 An idle/clicker game concept that mixes **land**, **alchemy**, and a **free
 market**, pitched as a 16-slide deck (V0).
 
-> **Deck:** [`LandLordAlchemyV0.pdf`](LandLordAlchemyV0.pdf) · by **Dr Muhte**,
-> under the **Ibicot** banner · landing page <https://www.landlordalchemy.play>
-
 ## Status
 
-**Concept only (V0).** Nothing is implemented. The formulas below are first-pass
+**Concept only (V0).** The formulas below are first-pass
 design; several constants are explicitly left to be tuned by simulation.
 
 ## The core loop
