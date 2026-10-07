@@ -1,4 +1,4 @@
-# ibicot
+# Ibicot
 
 A shared, collaborative brainstorming space to
 design games that might be built without a pro dev team.
