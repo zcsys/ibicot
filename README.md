@@ -1,8 +1,8 @@
 # ibicot
 
-A shared, collaborative brainstorming space where a group of friends gathers to
-design the games and simulations we might build. Every idea gets its own folder
-here, so the platform can keep collecting new projects side by side.
+A shared, collaborative brainstorming space to
+design games that might be built without a pro dev team.
+Every idea gets its own folder at root.
 
 ## Projects & ideas
 
