@@ -67,7 +67,7 @@ for the full rationale). The demand-side *scale* is calibration, not frozen.
 | ↳ T1 | license $1m + machinery $15k + cash $485k |
 | ↳ T2 C-3 / C-4 / C-5 | $1m + $75k/$375k/$420k + $425k/$125k/$80k |
 | **Machinery** | T1 flat $15k; T2 $75k / $375k / $420k |
-| **Capacity** (per machine/tick) | C-1/C-2 = 500; C-3 = 300; C-4 = 200; C-5 = 100 |
+| **Capacity** (per tick) | T0 extraction 500,000/firm; T1 C-1/C-2 = 10,000; T2 C-3 = 300, C-4 = 200, C-5 = 100 |
 | **Recipes** | count-preserving (N inputs → N outputs) |
 | **Material cost** | $1 (T1) / $1.25 (T2), flat per item |
 | **Conversion** | $0.25 × max(1, complexity−1) → 0.25 / 0.25 / 0.50 / 0.75 / 1.00 |

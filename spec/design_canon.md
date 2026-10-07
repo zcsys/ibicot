@@ -87,12 +87,12 @@ Every section below is a consequence of, or a requirement for, that sentence.
   having no "product complexity."
 - **Tier 1 machinery is uniform:** every T1 product line's machinery is **$15K**
   (equity structure in §6). Within Tier 1, complexity differs only in *operations* —
-  throughput is flat at 500, markup rises (compound premium), demand falls — never in
+  throughput is flat at 10,000, markup rises (compound premium), demand falls — never in
   capital.
 - **Tier 2 machinery rises with complexity:** C-3 = **$75K**, C-4 = **$375K**, C-5 =
   **$420K** (Tier 1 flat at $15K). The size gradient lives in Tier 2; higher complexity ⇒
   larger machinery.
-- **Throughput (per machine, per tick):** Tier 1 is flat — C-1 = C-2 = **500**. Tier 2
+- **Throughput (per machine, per tick):** Tier 1 is flat — C-1 = C-2 = **10,000**. Tier 2
   falls with complexity — C-3 = **300**, C-4 = **200**, C-5 = **100**. One machine = one
   product line = this capacity; there is no separate "line" concept.
 - **Per-line machinery:** each installed product line owns its own **machinery capital**
@@ -225,7 +225,7 @@ Everything in §2–§8 is **canon** (design law). The following are **calibrati
 (numbers to be determined, not design):
 
 - the supply side is pinned as working values — uniform $1.5m equity (license `$1m` +
-  machinery + residual cash), machinery $15k/$75k/$375k/$420k, capacity 500/500/300/200/100,
+  machinery + residual cash), machinery $15k/$75k/$375k/$420k, capacity 10000/10000/300/200/100,
   conversion `$0.25 × max(1,c−1)`, count-preserving recipes, storage 20,000 — final values
   from calibration;
 - the demand-volume and markup/valuation curves by complexity (the demand side);
@@ -288,8 +288,10 @@ values**; the demand-side *scale* is **calibration** (not frozen).
 | Tier 2 C-5 | $1m | $420k | $80k | $1.5m |
 
 - Machinery ladder: T1 flat **$15k**; T2 **$75k / $375k / $420k**.
-- Capacity (per machine, per tick): C-1/C-2 **500**, C-3 **300**, C-4 **200**, C-5 **100**.
-  One machine = one product line = this capacity.
+- Capacity (per tick): T0 extraction **500,000** per firm (×20 = 10 M raw); T1 C-1/C-2
+  **10,000** per machine (×1,000 = 10 M processed); T2 C-3 **300**, C-4 **200**, C-5 **100**
+  per machine (×60,000 = 15 M). One machine = one product line = this capacity. The T0/T1
+  values are sized so the upstream ladder can feed T2 at the 50–70 % utilization target.
 - Count-preserving recipes: **N inputs → N outputs**.
 - Cost ladder: material flat **$1 (T1) / $1.25 (T2)** per item; conversion
   **$0.25 × max(1, complexity−1)** → C-1/C-2 $0.25, C-3 $0.50, C-4 $0.75, C-5 $1.00.

@@ -28,6 +28,7 @@ Robotic Space Generation — economy kernel launcher
 Usage:
   ./run.sh run   [--seed N] [--ticks N] [--cfg JSON] [--out PATH]   headless run
   ./run.sh serve [--host H] [--port P]                              start backend + open browser UI
+  ./run.sh probe [--factors 23,40,70,120,200] [--ticks 720]         calibrate demand scale (sweep tier2DemandFactor)
   ./run.sh test                                                      Python unit tests
 
 Examples:
@@ -74,6 +75,10 @@ case "${1:-}" in
       elif command -v xdg-open >/dev/null 2>&1; then xdg-open "$URL"; fi
     ) &
     exec "$PY" -W ignore -m robospace.cli.main serve --host "$HOST" --port "$PORT"
+    ;;
+  probe)
+    shift
+    exec "$PY" -W ignore tools/probe_demand.py "$@"
     ;;
   test)
     "$PY" -W ignore tests/py/test_rng.py

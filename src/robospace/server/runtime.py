@@ -143,9 +143,9 @@ class KernelRuntime:
                            'controller': '', 'sort': 'id', 'descending': False}
         self.statsLog = []
         self.statsPath = _STATS_DIR / 'generation_run.jsonl'
-        # Auto-pause once this tick is reached (0 = run until paused).  1
-        # generation = 20 years = 240 months = 7,200 ticks.
-        self.targetTick = int(os.environ.get('ROBOSPACE_MAX_TICK', '0') or 0)
+        # Auto-pause once this tick is reached.  1 generation = 20 years =
+        # 240 months = 7,200 ticks; set ROBOSPACE_MAX_TICK=0 to run until paused.
+        self.targetTick = int(os.environ.get('ROBOSPACE_MAX_TICK', str(M.TIME['ticksPerGeneration'])) or 0)
 
         self.cfg, self.W = reset_world(cfg)
         self._init_admin()

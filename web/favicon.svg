@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="36%" r="78%">
+      <stop offset="0%" stop-color="#1b2537"/>
+      <stop offset="52%" stop-color="#0c1017"/>
+      <stop offset="100%" stop-color="#05070c"/>
+    </radialGradient>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#77b7ff" stop-opacity="0.55"/>
+      <stop offset="48%" stop-color="#77b7ff" stop-opacity="0.16"/>
+      <stop offset="100%" stop-color="#77b7ff" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="core" cx="50%" cy="42%" r="52%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="45%" stop-color="#77b7ff"/>
+      <stop offset="100%" stop-color="#2c5a9e"/>
+    </radialGradient>
+  </defs>
+
+  <!-- rounded-square dark backdrop echoing the loading screen gradient -->
+  <rect x="1" y="1" width="62" height="62" rx="14" fill="url(#bg)"
+        stroke="#ffffff" stroke-opacity="0.06" stroke-width="1"/>
+
+  <!-- starfield speckles -->
+  <g fill="#ffffff">
+    <circle cx="12" cy="15" r="0.8" opacity="0.85"/>
+    <circle cx="49" cy="10" r="0.7" fill="#cdd7ff" opacity="0.8"/>
+    <circle cx="55" cy="34" r="0.7" fill="#9f7bff" opacity="0.75"/>
+    <circle cx="9" cy="45" r="0.8" fill="#77b7ff" opacity="0.8"/>
+    <circle cx="47" cy="56" r="0.6" opacity="0.7"/>
+    <circle cx="19" cy="55" r="0.5" opacity="0.6"/>
+  </g>
+
+  <!-- glowing core dot -->
+  <circle cx="32" cy="32" r="17" fill="url(#glow)"/>
+  <circle cx="32" cy="32" r="6" fill="url(#core)"/>
+
+  <!-- outer orbital ring (blue) with a bright arc -->
+  <circle cx="32" cy="32" r="20.5" fill="none" stroke="#77b7ff" stroke-opacity="0.20" stroke-width="1.5"/>
+  <circle cx="32" cy="32" r="20.5" fill="none" stroke="#77b7ff" stroke-width="1.5" stroke-linecap="round"
+          stroke-dasharray="48 81" transform="rotate(-35 32 32)"/>
+
+  <!-- inner orbital ring (purple) with a bright arc -->
+  <circle cx="32" cy="32" r="14" fill="none" stroke="#9f7bff" stroke-opacity="0.24" stroke-width="1.5"/>
+  <circle cx="32" cy="32" r="14" fill="none" stroke="#9f7bff" stroke-width="1.5" stroke-linecap="round"
+          stroke-dasharray="32 56" transform="rotate(155 32 32)"/>
+</svg>

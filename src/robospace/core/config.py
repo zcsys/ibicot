@@ -26,9 +26,9 @@ def default_cfg() -> dict:
 
         # Tier 0 (extraction)
         't0Equity': 10_000_000.0,       # $10m per extractor (all cash)
-        'capacity': 10000,              # extraction throughput per tick
-        'targetInventory': 500_000,
-        'maxInventory': 1_000_000,
+        'capacity': 500_000,            # extraction throughput per tick (rescaled to feed T1→T2)
+        'targetInventory': 5_000_000,
+        'maxInventory': 10_000_000,
         'baseCost': 1.0,                # $1 per raw element
         'markup': 0.25,                 # T0 first-guess markup
         'minWholesaleLot': 1000,
@@ -38,7 +38,7 @@ def default_cfg() -> dict:
         't1Equity': 1_500_000.0,
         't1License': 1_000_000.0,
         't1Machinery': 15_000.0,
-        't1Capacity': 500.0,            # C-1/C-2 throughput per machine/tick
+        't1Capacity': 10_000.0,         # C-1/C-2 throughput per machine/tick (rescaled to feed T2)
         't1MaterialCost': 1.0,          # $1 per raw element
         't1Markup': 0.25,               # T1 first-guess markup (flat)
 

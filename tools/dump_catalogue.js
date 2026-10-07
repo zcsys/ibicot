@@ -48,9 +48,7 @@ const data = {
   T2_ROUTE_SETUP: M.T2_ROUTE_SETUP,
   MIN_UNIT_PRICE: M.MIN_UNIT_PRICE,
   TIER_BOUNDARIES: M.TIER_BOUNDARIES,
-  T1_COMPANY_NAMES: ['Aster Water Systems', 'Meridian Mineral Refining', 'Helion Energy Cells', 'Cirrus Chemical Works',
-    'Vanguard Ceramic Materials', 'Caldera Thermal Materials', 'Spindle Fiber Industries',
-    'Lattice Semiconductor Materials', 'Truss Polymer Works', 'Catalyst Active Materials'],
+  T1_COMPANY_NAMES: M.T1_COMPANY_NAMES,
   PRODUCTS: M.PRODUCTS.map((p) => ({
     code: p.code, name: p.name, inputs: p.inputs, complexity: p.complexity,
     companyName: p.companyName, role: p.role, consumerValue: p.consumerValue, equipmentPrice: p.equipmentPrice,
