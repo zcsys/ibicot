@@ -1,5 +1,11 @@
 .DS_Store
 
+# Transient live-simulation output and checkpoints (regenerated on every run)
+stats/
+*.checkpoint.bin
+*.progress.json
+*.npz
+
 # Python bytecode and test caches
 __pycache__/
 *.py[cod]
@@ -7,6 +13,9 @@ __pycache__/
 .pytest_cache/
 .coverage
 coverage.xml
+
+# Local pip --target install of numba/fastapi/uvicorn (Python 3.12 arm64)
+.pydeps/
 
 # JavaScript dependencies and test coverage
 node_modules/
