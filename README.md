@@ -1,108 +1,113 @@
-# Robotic Space Generation — economy kernel
+# Robotic Space Generation — Economy Kernel
 
-An **emergent, fair-market simulation of a physical-goods supply chain**, run by
-autonomous agents and entered by players on equal footing. This repository is
-the authoritative server-side **economy kernel** in **Python (NumPy + Numba)**
-with a browser dashboard.
+A deterministic, fair-market simulation of a physical-goods supply chain, driven
+by autonomous firms and entered by players on equal footing. This repository is
+the authoritative server-side **economy kernel** in **Python (NumPy + Numba)**,
+with a live browser dashboard.
 
-The design rulebook is [`docs/design_canon.md`](docs/design_canon.md) — it is the
-single source of truth for *what* the economy is. Everything else here implements
-it.
+The rulebook is [`docs/design_canon.md`](docs/design_canon.md) — it is the single
+source of truth for *what* the economy is. Everything here implements it.
 
 ## Quickstart
 
 ```sh
-./run.sh serve            # start the Python backend AND open the browser dashboard
-./run.sh run --ticks 360  # headless run (write a checkpoint with --out /tmp/ckpt)
-./run.sh test             # run the Python test suite
+./run.sh serve             # start the Python backend AND open the browser dashboard
+./run.sh run --ticks 360   # headless run (append --stats path to write a JSONL log)
+./run.sh test              # run the Python test suite
 ```
 
-`serve` starts FastAPI + WebSocket on `http://127.0.0.1:8000`, serves the
-dashboard at `/index.html`, and opens it in the browser. Edit parameters and use
-**Run / Run Max / Pause / Step / Reset / Apply Params** — the Python kernel is the
-world. The first load resets to full population (~6 s).
+`serve` starts a FastAPI + WebSocket service on `http://127.0.0.1:8000`, serves the
+dashboard at `/index.html`, and opens it in a browser. Use **Run / Run Max / Pause /
+Step / Reset / Apply Params** — the Python kernel is the world, and the first load
+resets to full population (~6 s).
 
-The launcher requires Python 3.12 with NumPy (Numba and FastAPI are installed to
-`.pydeps/`, which is git-ignored). See the install hint the launcher prints if
-`.pydeps/` is missing.
+The launcher needs Python 3.12 with NumPy; Numba and FastAPI are vendored into
+`.pydeps/` (git-ignored). If `.pydeps/` is missing, run the `pip install` line the
+launcher prints.
 
-## Layout
+## The economy
+
+A four-tier physical supply chain, calibrated to be *supply-consistent* (every tier
+can actually feed the next):
+
+| Tier | Who | Count |
+| --- | --- | --- |
+| **T0 — extraction** | mines the four raw elements (Water, Earth, Fire, Air) | 20 firms |
+| **T1 — refining** | 10 products (4 C-1 basic + 6 C-2 compound) | 1,000 firms |
+| **T2 — manufacturing** | 200 invented goods, complexity C-3 / C-4 / C-5 | 60,000 firms |
+| **T3 — consumers** | external procurement agents | 1,000,000 |
+
+Time is a **30-tick month**, a **360-tick year**, and a **7,200-tick generation**
+(20 years). The T2 firm count follows a reverse 6:3:1 ratio — 36,000 C-3, 18,000 C-4,
+6,000 C-5 — so more complex goods have fewer, higher-capacity producers.
+
+## Key mechanisms
+
+- **Deterministic** — SplitMix32 RNG; identical `(seed, config)` ⇒ byte-identical state.
+- **9-phase tick** — reset → environment (difficulty) → T0 extraction → T1 purchase →
+  T1 manufacture → pricing → T2 buy/make/price → consumer clearing → observe/reliability.
+- **Derivative-following pricing** — firms walk their price against realised profit and
+  hold at the flat optimum; a 2 % dead band prevents overshoot.
+- **Margin-ramp input demand** — a producer throttles purchases by gross margin
+  (`productionMarginBand = 0.05`): full output at ≥ 5 % margin, tapering to 0 at
+  break-even, never producing at a loss.
+- **Adaptive loyalty charge** — switching suppliers costs
+  `M × unit_cost × (1 + reliability)`; `M` is re-derived every tick from an EMA of the
+  observed average order value (`loyaltyEmaAlpha = 0.01`) so the charge tracks ~10 % of
+  a typical order as prices drift.
+- **Reliability** — `0.5 × price-stability + 0.5 × availability`, EMA-smoothed monthly.
+
+## Repository layout
 
 ```
 economy/                  # the Python kernel
   core/                   #   catalogue + canon parameters, config, RNG, WorldState
-  kernel/                 #   the 9-phase tick (tick.py) + Numba fast path (fast.py)
-  server/                 #   runtime, FastAPI/WebSocket service, persistence
-  cli/                    #   headless `run` / `serve` entry point
+    config.py             #   every tunable parameter (single place to change them)
+    model.py              #   catalogue, cost ladder, pricing/loyalty primitives
+    state.py              #   WorldState (NumPy arrays) + world construction
+    rng.py                #   SplitMix32 (scalar + vectorised, bit-exact)
+  kernel/
+    tick.py               #   the 9-phase tick (pure-Python reference)
+    numba.py              #   @njit fast path, byte-identical to tick.py
+  server/
+    runtime.py            #   KernelRuntime (step/pause/publish, stats)
+    service.py            #   FastAPI + WebSocket service
+    scheduler.py          #   tick scheduling for the dashboard
+    persistence.py        #   checkpoint save/load (byte-identical round-trip)
+  cli/main.py             #   headless `run` / `serve` entry point
 web/                      # the browser dashboard (served by the backend)
-  index.html  app.js  catalogue.js  bridge.js
-docs/design_canon.md      # the design rulebook (single source of truth)
-tests/                    # Python tests (RNG, determinism, invariants)
-tools/dump_catalogue.js   # one-time catalogue extractor (web/catalogue.js -> JSON)
+  index.html  app.js  bridge.js  catalogue.js
+docs/design_canon.md      # the design rulebook (source of truth)
+docs/landlord-alchemy/    # sibling "Landlord Alchemy" design artefact
+tools/dump_catalogue.js   # one-time catalogue extractor (web/catalogue.js → JSON)
+tests/                    # Python tests (RNG + determinism + invariants)
 run.sh                    # launcher
 ```
 
-The dashboard (`web/app.js`) talks to the backend over WebSocket through
-`web/bridge.js`, which re-implements the browser `Worker` interface so the UI
-code is unchanged.
+The dashboard (`web/app.js`) speaks WebSocket to the backend through `web/bridge.js`,
+which re-implements the browser `Worker` interface so the UI code runs unchanged
+against the Python kernel.
 
-## Settled parameters
+## Configuration
 
-These are the target parameters (see [`docs/design_canon.md`](docs/design_canon.md)
-for the full rationale). The demand-side *scale* is calibration, not frozen.
+All parameters live in `economy/core/config.py` (see `default_cfg()`), organised by
+tier, demand, and market behaviour. Override them per-run:
 
-| Area | Value |
-| --- | --- |
-| **Tiers** | T0 extraction → T1 refining → T2 manufacturing → T3 consumers |
-| **Elements** | Water, Earth, Fire, Air |
-| **T0 firms** | 20 (element-coverage spectrum: 2 all / 4 three / 6 two / 8 single) |
-| **T1 products / firms** | 10 (4 C-1 basic + 6 C-2 compound) × 100 = 1,000 firms |
-| **T2 products** | 200 invented: 2 C-3 + 6 C-4 + 12 C-5 per sector × 10 sectors |
-| **T2 firms** | **60,000 single-machine firms** (reverse 6:3:1 ratio) |
-| ↳ C-3 | 36,000 = 20 products × **1,800 firms/product** |
-| ↳ C-4 | 18,000 = 60 products × **300 firms/product** |
-| ↳ C-5 | 6,000 = 120 products × **50 firms/product** |
-| **Consumers** | 1,000,000 |
-| **Equity** | T0 = $75m ($22m license + $49m machinery + $1m reserve + $3m cash); every T1/T2 firm = $1.5m = $1m license + machinery + cash |
-| ↳ T1 | license $1m + machinery $15k + cash $485k |
-| ↳ T2 C-3 / C-4 / C-5 | $1m + $75k/$375k/$420k + $425k/$125k/$80k |
-| **Machinery** | T1 flat $15k; T2 $75k / $375k / $420k |
-| **Capacity** (per machine/tick) | T0 = 1,000,000; C-1/C-2 = 2,000; C-3 = 30; C-4 = 20; C-5 = 10 |
-| **Recipes** | count-preserving (N inputs → N outputs) |
-| **Material cost** | $1.25 (T1) / $1.875 (T2), flat per item (each already includes the upstream 0.25 markup) |
-| **Conversion** | $0.25 × max(1, complexity−1) → 0.25 / 0.25 / 0.50 / 0.75 / 1.00 |
-| **Unit cost** | $1.50 / $1.50 / $2.375 / $2.625 / $2.875 |
-| **Storage** | T0 50,000,000 (fill to brim); T1/T2 20,000 firm-level pool; machinery footprint 1k/1k/3k/4k/5k; goods `G = 20,000 − machinery`; fill `G`; raw:finished = 1:1 |
-| **Demand valuation** | `V = unit cost`; choke = `V × [1.8, 3.0]`; elasticity `η = 2` |
-| **Latent demand** | `qmax = 15` fixed per consumer |
-| **Markup** | flat 0.25 first-guess everywhere; the equilibrium markup is discovered by the pricer |
-| **Input demand** | margin ramp: `q = need × clamp((1 − cost/price) / 0.05, 0, 1)`; full ≥ 5 % margin, 0 at/above break-even |
-| **Loyalty / M** | switching charge `M × unit_cost × (1 + reliability)` ≈ 10 % of a typical order; `M` is adaptive — an EMA of the observed average order value (`loyaltyEmaAlpha = 0.01`) re-derives it each tick; seeds: C-1/C-2 83.33, C-3 1.21, C-4 0.65, C-5 0.26, T3 0.97 |
-| **Reliability** | `0.5 × price-stability + 0.5 × availability`, EMA `α = 0.15`, monthly |
+```sh
+./run.sh run --cfg '{"consumerCount": 500, "t2FirmCount": 1000, "seed": 137}'
+ECONOMY_CFG='{"consumerCount": 500, "t2FirmCount": 1000}' ./run.sh serve
+```
 
-**Deferred** (documented, not implemented): storage rent, machinery-as-good,
-financing, advertising. **Calibration** (not frozen): the demand scale and
-offer-sampling counts.
-
-## How it runs
-
-- **Deterministic**: SplitMix32 32-bit RNG; same `(seed, config, commands)` ⇒
-  identical state every run.
-- **9-phase tick** per tick: reset → environment (difficulty) → T0 extraction →
-  T1 input purchase → T1 manufacture → pricing → T2 buy/make/price → end-user
-  clearing → observe/reliability. Monthly reliability and the calendar follow the
-  canon's 30-tick month.
-- **Numba + vectorized RNG**: the hot phases (T1 purchase, T2 buy/make/price,
-  end-user clearing, observation) are `@njit` in `kernel/fast.py`, and the
-  SplitMix32 RNG has a bit-exact vectorized form (`rng.random_vec`); full-population
-  steady state is ~0.14 s/tick.
-- **Checkpoints**: `.npz` + JSON sidecar, byte-identical round-trip.
+Notable knobs: `productionMarginBand`, `loyaltyMultiple` (bootstrap) +
+`loyaltyEmaAlpha`, `elasticity`, `pricingAggressiveness`, `switchingStableBand`,
+`priceObservationTicks`. The exact settled values and their rationale live in
+`docs/design_canon.md`.
 
 ## Tests
 
 ```sh
 ./run.sh test
-# tests/py/test_rng.py      SplitMix32 vs known outputs
-# tests/py/test_kernel.py   determinism (byte-identical) + invariants (no
-#                           negatives, conservation, atomic orders)
+# tests/py/test_rng.py      SplitMix32 against known reference outputs
+# tests/py/test_kernel.py   determinism (byte-identical re-runs) + invariants
+#                           (no negatives, conservation holds, atomic orders)
 ```
