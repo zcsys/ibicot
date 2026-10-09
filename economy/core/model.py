@@ -1,7 +1,7 @@
-"""Static catalogue and economic primitives.
+"""Static catalog and economic primitives.
 
-The catalogue data is extracted one-for-one from ``web/catalogue.js`` into
-``_catalogue.json`` (see ``tools/dump_catalogue.js``), so the counts, order,
+The catalog data is extracted one-for-one from ``web/catalog.js`` into
+``catalog.json`` (see ``tools/dump_catalog.js``), so the counts, order,
 codes, recipes and invented-market selection are bit-identical to the JS
 oracle without hand transcription.  This module adds the small pure-math
 primitives (``adaptivePrice``, ``finishedStockTarget``, ``procurementProfile``,
@@ -14,7 +14,7 @@ import math
 import os
 
 _HERE = os.path.dirname(os.path.abspath(__file__))
-with open(os.path.join(_HERE, '_catalogue.json'), 'r', encoding='utf-8') as _f:
+with open(os.path.join(_HERE, 'catalog.json'), 'r', encoding='utf-8') as _f:
     _DATA = json.load(_f)
 
 TIME = _DATA['TIME']
@@ -44,10 +44,13 @@ ECONOMY_DEFAULTS = _DATA['ECONOMY_DEFAULTS']
 PROGRESSION_DEFAULTS = _DATA['PROGRESSION_DEFAULTS']
 INVENTED_PER_COMPLEXITY = {int(k): v for k, v in _DATA['INVENTED_PER_COMPLEXITY'].items()}
 T2_PRODUCTS: list[dict] = _DATA['T2_PRODUCTS']
-T2_CATALOGUE: list[dict] = _DATA['T2_CATALOGUE']
+T2_Catalog: list[dict] = _DATA['T2_Catalog']
 T2_UNINVENTED_PRODUCTS: list[dict] = _DATA['T2_UNINVENTED_PRODUCTS']
 T2_COMPLEXITY_COUNTS: list = _DATA['T2_COMPLEXITY_COUNTS']
-T2_CATALOGUE_COUNT = _DATA['T2_CATALOGUE_COUNT']
+T2_Catalog_COUNT = _DATA['T2_Catalog_COUNT']
+T2_SECTOR_MANUFACTURERS: list[dict] = _DATA['T2_SECTOR_MANUFACTURERS']
+T2_MANUFACTURER_BY_SECTOR: dict = _DATA['T2_MANUFACTURER_BY_SECTOR']
+EQUIPMENT_MAKERS: list[str] = _DATA['EQUIPMENT_MAKERS']
 WORLD_STORY = _DATA['WORLD_STORY']
 
 # ===========================================================================
@@ -63,11 +66,12 @@ NP = len(PRODUCTS)          # 10
 N0 = 20
 N1 = 1000
 N2_FIRMS = 60000            # canon: 60,000 single-machine T2 firms (was 61,950)
-N_END_USERS = WORLD_STORY['population']          # 1,000,000
+N_CONSUMERS = WORLD_STORY['population']          # 1,000,000
 MAX_T2_LINES = N2_FIRMS     # one machine/line per firm at start
 MONTH = TIME['ticksPerMonth']                     # 30
 # Firms per product by complexity (canon §3): C-3 1,800 · C-4 300 · C-5 50.
 T2_FIRMS_PER_PRODUCT = {3: 1800, 4: 300, 5: 50}
+CONSUMER_QMAX = 20                           # canon §5: fixed per-consumer quantity
 
 # Supply-side scale values (equity, license, machinery, capacity, costs, storage)
 # live in ``core/config.py``.  The model exposes cfg-driven helpers so the kernel,
@@ -87,8 +91,8 @@ def unit_cost(complexity: int, cfg) -> float:
 
 def t2_markup(complexity: int, cfg) -> float:
     # First-guess markup is uniform across tiers/complexities (flat 0.25): the
-    # complexity gradient lives in the demand *volume* (quantityFactor ∝ supply),
-    # not in the seed price.  Prices then rise to their own equilibrium via the
+    # complexity gradient lives in demand *volume* (supply-scaled consumer routing,
+    # 108:12:1), not in the seed price.  Prices then rise to their own equilibrium via the
     # derivative-following pricer.
     return cfg['t1Markup']
 
@@ -103,21 +107,82 @@ def inventory_target(complexity: int, cfg) -> float:
     return goods_space(complexity, cfg) / 2.0
 
 
-# Tier 1 material -> galactic sector (canon 1:1 mapping).  Each of the ten
-# processed materials feeds one distinct Tier 2 application sector; this is the
-# sector a Tier 1 firm is grouped under in the dashboard.
+# Tier 1 material -> manufacturing sector (Star Business 1:1 mapping).  Each of
+# the ten refined materials feeds one distinct Tier 2 application sector; this is
+# the sector a Tier 1 firm is grouped under in the dashboard.
 T1_SECTOR_BY_CODE: dict = {
-    'W': 3,    # Purified Water      -> Habitats & Life Support
-    'E': 7,    # Refined Minerals    -> Mining & Industry
-    'F': 0,    # Energy Cells        -> Power & Energy
-    'A': 6,    # Chemical Feedstock  -> Science & Diagnostics
-    'W+E': 2,  # Ceramic Composite   -> Spacecraft & Hulls
-    'W+F': 1,  # Thermal Compounds   -> Propulsion & Navigation
-    'W+A': 8,  # Synthetic Fibers    -> Logistics & Provisioning
-    'E+F': 5,  # Semiconductor Substrate -> Computing & Communications
-    'E+A': 4,  # Structural Polymers -> Robotics & Automation
-    'F+A': 9,  # Active Compounds    -> Defence & Rescue
+    'W': 3,    # Industrial Fluid      -> Housing & Life Support
+    'E': 7,    # Bulk Alloy            -> Industrial Tooling & Mining Supplies
+    'F': 0,    # Energy Carrier        -> Power & Utilities
+    'A': 6,    # Process Gas           -> Sensors & Medical Equipment
+    'W+E': 2,  # Ceramic Stock         -> Shipbuilding & Orbital Structures
+    'W+F': 1,  # Thermal Compound      -> Propulsion & Flight Systems
+    'W+A': 8,  # Technical Fiber       -> Freight & Warehouse Equipment
+    'E+F': 5,  # Semiconductor Crystal -> Computing & Communications
+    'E+A': 4,  # Polymer Composite     -> Robotics & Field Services
+    'F+A': 9,  # Active Reagent        -> Defense & Emergency Systems
 }
+
+# Market symbols (Star Business naming catalog §3), keyed by the legacy recipe code.
+MATERIAL_SYMBOLS: dict = {p['code']: p['symbol'] for p in PRODUCTS}
+
+# ---------------------------------------------------------------------------
+# Tier 1 refining installations (Star Business naming catalog §7).  "Refining"
+# identifies the operation; "bench" and "cell" express increasing installation
+# scale.  These are equipment classes within the Machinery Market, not separate
+# markets.  The maker is kept separate: Bluegate Water & Machine Co. or
+# Coldwell Ice & Machine Inc.
+# ---------------------------------------------------------------------------
+T1_EQUIPMENT_CLASS: dict = {1: 'Refining Bench', 2: 'Refining Cell'}
+T1_EQUIPMENT_CONFIG: dict = {1: 'Single-Element Refining', 2: 'Paired-Element Refining'}
+T1_EQUIPMENT_INSTALLATION: dict = {
+    p['code']: f"{p['name']} {T1_EQUIPMENT_CLASS[p['complexity']]}"
+    for p in PRODUCTS
+}
+T2_EQUIPMENT_CONFIG: dict = {int(k): v for k, v in _DATA['EQUIPMENT_CONFIG'].items()}
+
+# ---------------------------------------------------------------------------
+# Numbered companies (Star Business naming catalog §9).  Each sector has one
+# recognizable generic business name; a decimal sector serial identifies the
+# individual firm.  No house-name pool, location suffix, district, or berth is
+# added.  The twenty authored identities stay separate and are never prepended.
+# ---------------------------------------------------------------------------
+T1_GENERIC_BASES: dict = {
+    'W': 'Industrial Fluids', 'E': 'Alloy Refining', 'F': 'Energy Materials',
+    'A': 'Process Gases', 'W+E': 'Ceramic Materials', 'W+F': 'Thermal Materials',
+    'W+A': 'Technical Fibers', 'E+F': 'Semiconductor Materials', 'E+A': 'Composite Materials',
+    'F+A': 'Active Chemicals',
+}
+T2_GENERIC_BASES: list[str] = [
+    'Power Equipment', 'Propulsion Systems', 'Shipbuilding Works', 'Habitat Systems',
+    'Service Robotics', 'Computing Systems', 'Scientific Instruments', 'Industrial Tooling',
+    'Freight Equipment', 'Defense Systems',
+]
+
+# Cohort sizes used to derive a firm's 1-based sector serial for the display name.
+T1_FIRMS_PER_MATERIAL: int = N1 // len(PRODUCTS)          # 100
+T2_FIRMS_PER_SECTOR: int = N2_FIRMS // len(T2_SECTORS)    # 6000
+
+
+def company_display_name(tier: int, generic_base: str, sector_serial: int) -> str:
+    if tier not in (1, 2) or sector_serial < 1:
+        raise ValueError("Invalid tier or sector serial")
+    width = 3 if tier == 1 else 5
+    return f"{generic_base} {sector_serial:0{width}d}"
+
+
+def t1_firm_name(cid: int) -> str:
+    """Display name for a Tier 1 refinery: generic base + decimal sector serial."""
+    code = PRODUCTS[int(cid) // 100]['code']
+    serial = int(cid) % T1_FIRMS_PER_MATERIAL + 1
+    return company_display_name(1, T1_GENERIC_BASES[code], serial)
+
+
+def t2_firm_name(sector: int, firm_id: int) -> str:
+    """Display name for a Tier 2 manufacturer: generic base + decimal sector serial."""
+    sector = int(sector)
+    serial = int(firm_id) - sector * T2_FIRMS_PER_SECTOR + 1
+    return company_display_name(2, T2_GENERIC_BASES[sector], serial)
 
 
 def t1_sector(code: str) -> str:
@@ -137,7 +202,7 @@ _T2_SECTOR = [p['sectorIndex'] for p in T2_PRODUCTS]
 _T2_OUTPUT = [p['outputQty'] for p in T2_PRODUCTS]
 # ingredients: list per product of (material_index, quantity) tuples
 _T2_INGREDIENTS = [[(int(m), int(q)) for (m, q) in p['ingredients']] for p in T2_PRODUCTS]
-# catalogueInputRatios: T2_PRODUCTS x PRODUCTS ratio matrix
+# catalogInputRatios: T2_PRODUCTS x PRODUCTS ratio matrix
 _T2_RATIOS = [[0.0] * NP for _ in range(len(T2_PRODUCTS))]
 for _pid, _ing in enumerate(_T2_INGREDIENTS):
     for _m, _q in _ing:
@@ -146,8 +211,8 @@ for _pid, _ing in enumerate(_T2_INGREDIENTS):
 # T2_PRODUCT_BY_CODE
 T2_PRODUCT_BY_CODE = {p['code']: p for p in T2_PRODUCTS}
 
-# catalogueInputRatios (T2_PRODUCTS x PRODUCTS) used by the Tier 2 buy phase.
-catalogue_input_ratios = _T2_RATIOS
+# catalogInputRatios (T2_PRODUCTS x PRODUCTS) used by the Tier 2 buy phase.
+catalog_input_ratios = _T2_RATIOS
 
 
 def calendar_at(tick: int) -> dict:
@@ -175,14 +240,21 @@ def finished_stock_target(sales_ema, coverage_ticks, bootstrap_stock, capacity,
                             math.ceil(max(0.0, sales_ema) * coverage_ticks))))
 
 
-def switching_cost(reliability, minimum, maximum) -> float:
-    return minimum + (maximum - minimum) * clamp(reliability, 0.0, 1.0)
+def loyalty_surcharge(price, reliability) -> float:
+    # Per-unit surcharge used in supplier ranking: the fixed switching charge spread
+    # over one typical order ≈ 10 % of price at reliability 0.5 (the charge ≈ 10 % of
+    # a typical order's value, so a challenger must undercut by ~10 % to win).
+    return 0.10 * price * (1.0 + clamp(reliability, 0.0, 1.0)) / 1.5
 
 
-def reliability_score(fulfillment, price_stability, availability) -> float:
-    return (0.5 * clamp(fulfillment, 0.0, 1.0)
-            + 0.3 * clamp(price_stability, 0.0, 1.0)
-            + 0.2 * clamp(availability, 0.0, 1.0))
+def loyalty_charge(unit_cost, reliability, multiple) -> float:
+    # Fixed charge paid once per disloyal purchase, to the incumbent (see canon §12.6).
+    return multiple * unit_cost * (1.0 + clamp(reliability, 0.0, 1.0))
+
+
+def reliability_score(price_stability, availability) -> float:
+    return (0.5 * clamp(price_stability, 0.0, 1.0)
+            + 0.5 * clamp(availability, 0.0, 1.0))
 
 
 def next_reliability(current, score, alpha) -> float:
@@ -197,22 +269,25 @@ def demand_at_price(q_max, choke_price, price, elasticity) -> float:
 
 def adaptive_price(old_price, profit, previous_profit, direction=1,
                    sales=0.0, stock=0.0, demand=0.0, available=0.0, step_scale=1.0,
-                   k=0.35, response=0.05) -> dict:
+                   pricing_aggressiveness=0.35, response=0.05) -> dict:
     # Guardrails only: the price may go below unit cost (sell at a loss) and is
     # never pinned to an economic floor/ceiling.
     floor = MIN_UNIT_PRICE
     price = round_to_cent(min(MAX_UNIT_PRICE, max(floor, old_price)))
     next_direction = -1 if direction < 0 else 1
     # Derivative-following pricing (canon §12.6): a firm that is not selling
-    # lowers (if it has stock); otherwise it follows the sign of the realised
-    # profit change and *holds* once profit flattens at the optimum. The dead
-    # band stops the fixed-step walk from overshooting the flat profit peak and
-    # drifting away from it. Scarcity is used only as a probe before any profit
-    # baseline exists.
+    # lowers (if it has stock); unmet demand (demand > supplied) raises; otherwise
+    # it follows the sign of the realised profit change and *holds* once profit
+    # flattens at the optimum. The dead band stops the fixed-step walk from
+    # overshooting the flat profit peak and drifting away from it.
     if sales <= 0:
         if stock <= 0:
             return {'price': price, 'direction': next_direction, 'stepScale': step_scale}
         next_direction = -1
+    elif demand > available + 1e-9:
+        # Scarce: unmet demand (demand exceeds what we supplied) → raise, even once
+        # a profit baseline exists, so upstream tiers capture a lively market.
+        next_direction = 1
     elif math.isfinite(previous_profit) and previous_profit > 0:
         change = (profit - previous_profit) / previous_profit
         if change < -0.02:
@@ -221,10 +296,8 @@ def adaptive_price(old_price, profit, previous_profit, direction=1,
             pass
         else:
             return {'price': price, 'direction': next_direction, 'stepScale': step_scale}
-    elif demand > available + 1e-9:
-        next_direction = 1
-    scale = clamp(step_scale * (0.5 if next_direction != direction else 1.2), 0.01, 1.0)
-    nxt = round_to_cent(min(MAX_UNIT_PRICE, max(floor, price * math.exp(next_direction * clamp(k, 0.0, 1.0) * response * scale))))
+    scale = clamp(step_scale * (1.0 if next_direction != direction else 1.2), 0.01, 1.0)
+    nxt = round_to_cent(min(MAX_UNIT_PRICE, max(floor, price * math.exp(next_direction * clamp(pricing_aggressiveness, 0.0, 1.0) * response * scale))))
     if nxt == price and next_direction < 0:
         next_direction = 1
     return {'price': nxt, 'direction': next_direction, 'stepScale': scale}
@@ -247,14 +320,11 @@ def tier2_starting_markup(product, cfg) -> float:
 
 
 def procurement_profile(product, cfg, reference_cost) -> dict:
-    # canon demand side (§5): V = 2 × unit cost; η = 2.
-    # quantityFactor is a small, uniform per-consumer multiplier; the complexity
-    # gradient (demand ∝ supply = firms × capacity, 108:12:1) lives in *consumer
-    # routing* (t2SectorProductWeight in initialize_tier2), not in qmax.  The
-    # global tier2DemandFactor sets the overall demand level / equilibrium markup.
+    # canon demand side (§5): V = unit cost; η = 2. Per-consumer quantity is
+    # fixed at CONSUMER_QMAX; the complexity gradient (demand ∝ supply = firms ×
+    # capacity, 108:12:1) lives in *consumer routing* (initialize_consumers).
     return {'markup': cfg['t1Markup'],
-            'quantityFactor': cfg['tier2DemandFactor'],
-            'valuation': 2.0 * reference_cost}
+            'valuation': reference_cost}
 
 
 def initial_tier2_cost(product, cfg) -> float:

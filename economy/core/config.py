@@ -15,39 +15,40 @@ from . import model as M
 def default_cfg() -> dict:
     return {
         # Global / environment
-        'seed': 12345,
-        'dbar': 1.0,
+        'seed': 137,
+        'difficultyTarget': 1.0,
         'theta': 0.15,
         'sigma': 0.005,
-        'dmin': 0.7,
-        'dmax': 1.4,
-        'endUserCount': M.N_END_USERS,
+        'difficultyMin': 0.7,
+        'difficultyMax': 1.4,
+        'consumerCount': M.N_CONSUMERS,
         't2FirmCount': M.N2_FIRMS,
 
         # Tier 0 (extraction)
-        't0Equity': 10_000_000.0,       # $10m per extractor (all cash)
-        'capacity': 10000,              # extraction throughput per tick
-        'targetInventory': 500_000,
-        'maxInventory': 1_000_000,
+        't0Equity': 75_000_000.0,       # $75m per extractor = license + machinery + reserve + cash
+        't0License': 22_000_000.0,      # $22m Tier 0 license (equity asset)
+        't0Machinery': 49_000_000.0,    # $49m extraction machinery (equity asset)
+        't0Reserve': 1_000_000.0,       # $1m reserved for other business operations
+        't0Capacity': 200_000,          # extraction throughput per tick
+        't0Storage': 500_000,           # storage capacity (fill to the brim, like T1/T2)
         'baseCost': 1.0,                # $1 per raw element
-        'markup': 0.25,                 # T0 first-guess markup
+        't0Markup': 0.25,                 # T0 first-guess markup
         'minWholesaleLot': 1000,
-        'inventoryCoverageTicks': 3,
 
         # Tier 1 (refining) — uniform scale
         't1Equity': 1_500_000.0,
         't1License': 1_000_000.0,
         't1Machinery': 15_000.0,
-        't1Capacity': 500.0,            # C-1/C-2 throughput per machine/tick
-        't1MaterialCost': 1.0,          # $1 per raw element
+        't1Capacity': 2_000.0,          # C-1/C-2 throughput per machine/tick
+        't1MaterialCost': 1.25,         # $1.25 per raw element (baseCost × (1 + t0Markup): T1 pays T0's marked-up price)
         't1Markup': 0.25,               # T1 first-guess markup (flat)
 
         # Tier 2 (manufacturing) — per-complexity machinery/capacity
         't2Equity': 1_500_000.0,
         't2License': 1_000_000.0,
         't2Machinery': {3: 75_000.0, 4: 375_000.0, 5: 420_000.0},
-        't2Capacity': {3: 300.0, 4: 200.0, 5: 100.0},
-        't2MaterialCost': 1.25,         # $1.25 per T1 material item
+        't2Capacity': {3: 30.0, 4: 20.0, 5: 10.0},
+        't2MaterialCost': 1.875,        # $1.875 per T1 material item ((t1MaterialCost + conversion) × (1 + t1Markup))
         'conversionFactor': 0.25,       # conversion = 0.25 × max(1, c−1) for all tiers
 
         # Storage (firm-level pool, raw + finished + machinery)
@@ -55,25 +56,23 @@ def default_cfg() -> dict:
         'footprint': {1: 1_000.0, 2: 1_000.0, 3: 3_000.0, 4: 4_000.0, 5: 5_000.0},
 
         # Demand / consumers
-        'consumerActivation': 0.1,
         'consumerSearchOffers': 5,
-        'demandQtyMin': 1,
-        'demandQtyMax': 10,
-        'vmin': 0.9,
-        'vmax': 1.5,
-        'elasticity': 2.0,              # eta = 2
-        'tier2DemandFactor': 1.5,      # global demand level (uniform per-consumer scale)
-        'tier2ReservationPremium': 0.0,
+        'consumerActivation': 0.2,       # fraction of buyers that activate each tick
+        'chokeMin': 1.8,
+        'chokeMax': 3.0,
+        'elasticity': 2.0,              # eta = 2 (T3 consumer demand)
+        'productionMarginBand': 0.05,   # gross-margin fraction below which producer output tapers to 0 at break-even
+        't2ReservationPremium': 0.25,
 
         # Market / pricing / reliability
-        'k': 0.35,
+        'pricingAggressiveness': 0.35,
         'alpha': 0.15,
         'reliabilityAlpha': 0.15,
         'switchingStableBand': 0.025,
         'wholesalePriceResponse': 0.05,
         'priceObservationTicks': 30,
-        'taumin': 0.05,
-        'taumax': 0.2,
+        'loyaltyMultiple': {1: 83.33, 2: {3: 1.21, 4: 0.65, 5: 0.26}, 3: 0.97},
+        'loyaltyEmaAlpha': 0.01,         # EMA smoothing for the adaptive loyalty-multiple regime
 
         # Research pricing (off by default)
         'researchPriceMinimumOpportunities': 0,
@@ -116,22 +115,20 @@ def normalize_config(c) -> dict:
     d['researchPriceMinimumOpportunities'] = max(0, min(1000, d['researchPriceMinimumOpportunities']))
 
     # Environment
-    d['dmin'] = max(0.01, d['dmin'])
-    d['dmax'] = max(d['dmin'], d['dmax'])
-    d['dbar'] = M.clamp(d['dbar'], d['dmin'], d['dmax'])
+    d['difficultyMin'] = max(0.01, d['difficultyMin'])
+    d['difficultyMax'] = max(d['difficultyMin'], d['difficultyMax'])
+    d['difficultyTarget'] = M.clamp(d['difficultyTarget'], d['difficultyMin'], d['difficultyMax'])
     d['theta'] = M.clamp(d['theta'], 0, 1)
     d['sigma'] = max(0, d['sigma'])
 
     # Topology
-    d['endUserCount'] = max(1, min(M.N_END_USERS, math.floor(d['endUserCount'] or M.N_END_USERS)))
+    d['consumerCount'] = max(1, min(M.N_CONSUMERS, math.floor(d['consumerCount'] or M.N_CONSUMERS)))
     d['t2FirmCount'] = max(1, min(M.N2_FIRMS, math.floor(d['t2FirmCount'] or M.N2_FIRMS)))
 
     # Tier 0
-    for key in ('t0Equity', 'capacity', 'targetInventory', 'maxInventory', 'baseCost', 'minWholesaleLot'):
+    for key in ('t0Equity', 't0License', 't0Machinery', 't0Reserve', 't0Capacity', 't0Storage', 'baseCost', 'minWholesaleLot'):
         d[key] = max(1, d[key])
-    d['maxInventory'] = max(d['targetInventory'], d['maxInventory'])
-    d['markup'] = max(0, d['markup'])
-    d['inventoryCoverageTicks'] = max(1, min(30, d['inventoryCoverageTicks']))
+    d['t0Markup'] = max(0, d['t0Markup'])
 
     # Tier 1
     for key in ('t1Equity', 't1License', 't1Machinery', 't1Capacity', 't1MaterialCost'):
@@ -149,23 +146,36 @@ def normalize_config(c) -> dict:
     d['storage'] = max(1, d['storage'])
 
     # Demand
-    d['consumerActivation'] = M.clamp(d['consumerActivation'], 0, 1)
     d['consumerSearchOffers'] = max(1, min(20, math.floor(d['consumerSearchOffers'])))
-    d['demandQtyMin'] = max(1, min(100, math.floor(d['demandQtyMin'])))
-    d['demandQtyMax'] = max(d['demandQtyMin'], min(100, math.floor(d['demandQtyMax'])))
-    d['vmin'] = max(0.01, d['vmin'])
-    d['vmax'] = max(d['vmin'], d['vmax'])
+    d['consumerActivation'] = M.clamp(d['consumerActivation'], 0, 1)
+    d['chokeMin'] = max(0.01, d['chokeMin'])
+    d['chokeMax'] = max(d['chokeMin'], d['chokeMax'])
     d['elasticity'] = max(0.05, min(10, d['elasticity']))
-    d['tier2DemandFactor'] = M.clamp(d['tier2DemandFactor'], 0.01, 200)
-    d['tier2ReservationPremium'] = max(0, d['tier2ReservationPremium'])
+    d['productionMarginBand'] = M.clamp(d['productionMarginBand'], 0.001, 1.0)
+    d['t2ReservationPremium'] = max(0, d['t2ReservationPremium'])
 
     # Market
-    d['k'] = M.clamp(d['k'], 0, 1)
+    d['pricingAggressiveness'] = M.clamp(d['pricingAggressiveness'], 0, 1)
     d['alpha'] = M.clamp(d['alpha'], 0, 1)
     d['reliabilityAlpha'] = M.clamp(d['reliabilityAlpha'], 0, 1)
     d['switchingStableBand'] = max(1e-9, d['switchingStableBand'])
-    d['taumin'] = max(0, d['taumin'])
-    d['taumax'] = max(d['taumin'], d['taumax'])
+    # loyaltyMultiple: {1: scalar (C-1/C-2 raw buyer), 2: {3,4,5: scalar}, 3: scalar}
+    _lm = d['loyaltyMultiple']
+    if not isinstance(_lm, dict):
+        _lm = dict(default_cfg()['loyaltyMultiple'])
+    for _k in (1, 3):
+        _v = float(_lm.get(_k, default_cfg()['loyaltyMultiple'][_k]))
+        _lm[_k] = max(0.0, _v) if math.isfinite(_v) else float(default_cfg()['loyaltyMultiple'][_k])
+    _sub = _lm.get(2)
+    if not isinstance(_sub, dict):
+        _sub = dict(default_cfg()['loyaltyMultiple'][2])
+    _out2 = {}
+    for _c in (3, 4, 5):
+        _v = float(_sub.get(_c, default_cfg()['loyaltyMultiple'][2][_c]))
+        _out2[int(_c)] = max(0.0, _v) if math.isfinite(_v) else float(default_cfg()['loyaltyMultiple'][2][_c])
+    _lm[2] = _out2
+    d['loyaltyMultiple'] = _lm
+    d['loyaltyEmaAlpha'] = M.clamp(d['loyaltyEmaAlpha'], 0.0001, 1.0)
     d['priceObservationTicks'] = max(1, min(360, math.floor(d['priceObservationTicks'])))
     wpr = d['wholesalePriceResponse']
     wpr = float(wpr) if math.isfinite(wpr) else 0.05

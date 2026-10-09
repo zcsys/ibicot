@@ -7,7 +7,7 @@ All arithmetic is 32-bit unsigned.  ``MASK = 0xFFFFFFFF`` replaces
 The pure-Python path is exact (arbitrary-precision integers).  The optional
 Numba path uses explicit ``uint64`` for the multiply steps so it also wraps
 mod 2^64 (and therefore yields the correct low 32 bits) with no reliance on
-signed-overflow behaviour.
+signed-overflow behavior.
 """
 from __future__ import annotations
 
@@ -73,6 +73,15 @@ def random_vec(seed, tick, streams):
         ^ (((streams + _U64(1)) * _K1) & _M64)
     x &= _M64
     return mix_vec(x).astype(_np.float64) / 4294967296.0
+
+
+def hash_seed_vec(seed, ks):
+    """Vectorized ``hash_seed`` — returns the raw u32 (not divided by 2**32),
+    bit-exact with ``_hash_seed_impl`` for every element of ``ks``."""
+    ks = _np.asarray(ks, dtype=_np.uint64)
+    x = (_U64(seed) & _M64) ^ (((ks + _U64(1)) * _K3) & _M64)
+    x &= _M64
+    return mix_vec(x)
 
 
 try:  # optional acceleration

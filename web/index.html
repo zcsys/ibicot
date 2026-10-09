@@ -6,7 +6,7 @@
     <link rel="icon" href="/favicon.ico" sizes="32x32" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-    <title>Robotic Space Generation — Economy · Phase 1</title>
+    <title>Star Business — Economy · Phase 1</title>
     <style>
       :root {
         --bg: #0e1116;
@@ -280,7 +280,7 @@
       .stat-grid.industry-kpis { grid-template-columns: repeat(auto-fit, minmax(145px, 1fr)); }
       .industry-table th:first-child, .industry-table td:first-child { position: sticky; left: 0; background: var(--panel); z-index: 1; }
       .industry-table thead th:first-child { z-index: 4; }
-      .catalogue-filter { display: inline-flex; align-items: center; gap: 6px; }
+      .catalog-filter { display: inline-flex; align-items: center; gap: 6px; }
       .recipe-cell { white-space: normal; min-width: 160px; max-width: 240px; text-align: left; }
       .analytics-note { color: var(--muted); font-size: 12px; margin: 8px 0; }
       details.industry-details { margin-top: 12px; }
@@ -452,7 +452,7 @@
       .chart { position:relative; }
       .chart-tooltip { position:absolute; left:8px; right:8px; bottom:28px; background:var(--panel); border:1px solid var(--line); border-radius:5px; padding:7px; font-size:11px; pointer-events:none; white-space:pre-line; z-index:5; }
 
-      /* --- Intergalactic loading screen --- */
+      /* --- Loading screen --- */
       .loading-screen {
         position: fixed; inset: 0; z-index: 1000;
         display: flex; align-items: center; justify-content: center;
@@ -499,17 +499,17 @@
           <div class="loading-ring2"></div>
           <div class="loading-core-dot"></div>
         </div>
-        <div class="loading-title">ROBOTIC SPACE GENERATION</div>
-        <div class="loading-sub">Humanity's robotic industry · Galactic war preparation</div>
+        <div class="loading-title">STAR BUSINESS</div>
+        <div class="loading-sub">Build the Colony. Supply the Fleet.</div>
         <div id="loadingStatus" class="loading-status">Establishing uplink…</div>
       </div>
     </div>
     <header>
       <div class="row">
         <div class="grow">
-          <h1>Robotic Space Generation — Economy · Phase 1</h1>
+          <h1>Star Business — Economy · Phase 1</h1>
           <div class="sub">
-            Humanity's robotic industry · Galactic war preparation &amp; civilian continuity · 1,000,000 procurement agents
+            Build the Colony. Supply the Fleet. · 1,000,000 consumers
           </div>
         </div>
         <span id="kernel" class="pill">Engine: loading</span>
@@ -522,7 +522,7 @@
             <strong>Execution</strong><a class="tiny" href="README.md" target="_blank">README</a>
           </div>
           <div class="field">
-            <label>Seed</label><input id="seed" type="number" value="12345" />
+            <label>Seed</label><input id="seed" type="number" value="137" />
           </div>
           <div class="toolbar">
             <button id="run" class="good">Run · 2 ticks/s</button
@@ -536,84 +536,82 @@
             <strong>Parameters</strong><button id="applyParams" class="primary">Apply live</button>
           </div>
           <div class="param-group">
-            <h3>Environment · Gaia</h3>
-            <div class="group-note">Mean-reverting extraction difficulty that scales Tier 0 unit costs.</div>
-            <div class="field"><label>Difficulty mean d̄</label><input id="dbar" type="number" step=".01" value="1" /></div>
+            <h3>Environment</h3>
+            <div class="group-note">Mean-reverting extraction difficulty that scales extraction unit costs.</div>
+            <div class="field"><label>Difficulty mean d̄</label><input id="difficultyTarget" type="number" step=".01" value="1" /></div>
             <div class="field"><label>Mean-reversion θ</label><input id="theta" type="number" step=".01" value=".15" /></div>
             <div class="field"><label>Shock σ</label><input id="sigma" type="number" step=".005" value=".005" /></div>
-            <div class="field"><label>Difficulty minimum</label><input id="dmin" type="number" step=".01" value=".7" /></div>
-            <div class="field"><label>Difficulty maximum</label><input id="dmax" type="number" step=".01" value="1.4" /></div>
+            <div class="field"><label>Difficulty minimum</label><input id="difficultyMin" type="number" step=".01" value=".7" /></div>
+            <div class="field"><label>Difficulty maximum</label><input id="difficultyMax" type="number" step=".01" value="1.4" /></div>
           </div>
           <div class="param-group">
-            <h3>Tier 0 · Extraction</h3>
-            <div class="group-note">Equity is the firm's starting capital; extraction capacity, cost base and inventory buffering.</div>
-            <div class="field"><label>Equity / firm</label><input id="t0Equity" type="number" min="0" step="any" value="10000000" /></div>
-            <div class="field"><label>Capacity / tick</label><input id="capacity" type="number" value="10000" /></div>
-            <div class="field"><label>Target inventory</label><input id="targetInventory" type="number" value="500000" /></div>
-            <div class="field"><label>Maximum inventory</label><input id="maxInventory" type="number" value="1000000" /></div>
+            <h3>Resource Companies</h3>
+            <div class="group-note">Equity is the house's starting capital; extraction capacity, cost base and inventory buffering.</div>
+            <div class="field"><label>Equity / firm</label><input id="t0Equity" type="number" min="0" step="any" value="75000000" /></div>
+            <div class="field"><label>License (equity asset)</label><input id="t0License" type="number" min="0" step="any" value="22000000" /></div>
+            <div class="field"><label>Machinery (equity asset)</label><input id="t0Machinery" type="number" min="0" step="any" value="49000000" /></div>
+            <div class="field"><label>Reserve</label><input id="t0Reserve" type="number" min="0" step="any" value="1000000" /></div>
+            <div class="field"><label>Capacity / tick</label><input id="t0Capacity" type="number" value="200000" /></div>
+            <div class="field"><label>Storage</label><input id="t0Storage" type="number" value="500000" /></div>
             <div class="field"><label>Extraction base cost</label><input id="baseCost" type="number" min="0" step="any" value="1" /></div>
-            <div class="field"><label>First-guess markup</label><input id="markup" type="number" step=".01" value=".25" /></div>
+            <div class="field"><label>First-guess t0Markup</label><input id="t0Markup" type="number" step=".01" value=".25" /></div>
             <div class="field"><label>Minimum wholesale lot</label><input id="minWholesaleLot" type="number" value="1000" /></div>
-            <div class="field"><label>Stock coverage (ticks)</label><input id="inventoryCoverageTicks" type="number" min="1" max="30" value="3" /></div>
           </div>
           <div class="param-group">
-            <h3>Tier 1 · Refining (C-1 / C-2)</h3>
+            <h3>Refineries (C-1 / C-2)</h3>
             <div class="group-note">Starting cash = equity − license − machinery (derived, not set directly).</div>
             <div class="field"><label>Equity / firm</label><input id="t1Equity" type="number" min="0" step="any" value="1500000" /></div>
             <div class="field"><label>License (equity asset)</label><input id="t1License" type="number" min="0" step="any" value="1000000" /></div>
             <div class="field"><label>Machinery</label><input id="t1Machinery" type="number" min="0" step="any" value="15000" /></div>
-            <div class="field"><label>Capacity / machine / tick</label><input id="t1Capacity" type="number" min="0" step="any" value="500" /></div>
-            <div class="field"><label>Material cost / unit</label><input id="t1MaterialCost" type="number" min="0" step="any" value="1" /></div>
-            <div class="field"><label>First-guess markup</label><input id="t1Markup" type="number" step=".01" value=".25" /></div>
+            <div class="field"><label>Capacity / machine / tick</label><input id="t1Capacity" type="number" min="0" step="any" value="2000" /></div>
+            <div class="field"><label>Material cost / unit</label><input id="t1MaterialCost" type="number" min="0" step="any" value="1.25" /></div>
+            <div class="field"><label>First-guess t0Markup</label><input id="t1Markup" type="number" step=".01" value=".25" /></div>
           </div>
           <div class="param-group">
-            <h3>Tier 2 · Manufacturing (C-3 … C-5)</h3>
+            <h3>Manufacturers (C-3 … C-5)</h3>
             <div class="group-note">Starting cash = equity − license − machinery, per complexity. Conversion = factor × max(1, c−1).</div>
             <div class="field"><label>Equity / firm</label><input id="t2Equity" type="number" min="0" step="any" value="1500000" /></div>
             <div class="field"><label>License (equity asset)</label><input id="t2License" type="number" min="0" step="any" value="1000000" /></div>
             <div class="field"><label>Machinery · C-3</label><input id="t2Machinery3" type="number" min="0" step="any" value="75000" /></div>
             <div class="field"><label>Machinery · C-4</label><input id="t2Machinery4" type="number" min="0" step="any" value="375000" /></div>
             <div class="field"><label>Machinery · C-5</label><input id="t2Machinery5" type="number" min="0" step="any" value="420000" /></div>
-            <div class="field"><label>Capacity · C-3</label><input id="t2Capacity3" type="number" min="0" step="any" value="300" /></div>
-            <div class="field"><label>Capacity · C-4</label><input id="t2Capacity4" type="number" min="0" step="any" value="200" /></div>
-            <div class="field"><label>Capacity · C-5</label><input id="t2Capacity5" type="number" min="0" step="any" value="100" /></div>
-            <div class="field"><label>Material cost / unit</label><input id="t2MaterialCost" type="number" min="0" step="any" value="1.25" /></div>
+            <div class="field"><label>Capacity · C-3</label><input id="t2Capacity3" type="number" min="0" step="any" value="30" /></div>
+            <div class="field"><label>Capacity · C-4</label><input id="t2Capacity4" type="number" min="0" step="any" value="20" /></div>
+            <div class="field"><label>Capacity · C-5</label><input id="t2Capacity5" type="number" min="0" step="any" value="10" /></div>
+            <div class="field"><label>Material cost / unit</label><input id="t2MaterialCost" type="number" min="0" step="any" value="1.875" /></div>
             <div class="field"><label>Conversion factor</label><input id="conversionFactor" type="number" min="0" step="any" value=".25" /></div>
             <div class="field"><label>Firm storage pool</label><input id="storage" type="number" min="1" step="any" value="20000" /></div>
           </div>
           <div class="param-group">
             <h3>Consumers · Demand</h3>
-            <div class="group-note">1,000,000 external procurement agents; V = 2 × unit cost, η = elasticity.</div>
-            <div class="field"><label>Activation / tick</label><input id="consumerActivation" type="number" min="0" max="1" step=".01" value=".1" /></div>
+            <div class="group-note">1,000,000 consumers; V = unit cost, η = elasticity.</div>
+            <div class="field"><label>Activation / tick</label><input id="consumerActivation" type="number" min="0" max="1" step=".01" value=".2" /></div>
             <div class="field"><label>Comparison offers</label><input id="consumerSearchOffers" type="number" min="1" max="20" value="5" /></div>
-            <div class="field"><label>Demand quantity min</label><input id="demandQtyMin" type="number" value="1" /></div>
-            <div class="field"><label>Demand quantity max</label><input id="demandQtyMax" type="number" value="10" /></div>
-            <div class="field"><label>Value multiplier min</label><input id="vmin" type="number" step=".01" value=".9" /></div>
-            <div class="field"><label>Value multiplier max</label><input id="vmax" type="number" step=".01" value="1.5" /></div>
+            <div class="field"><label>Value multiplier min</label><input id="chokeMin" type="number" step=".01" value="1.8" /></div>
+            <div class="field"><label>Value multiplier max</label><input id="chokeMax" type="number" step=".01" value="3" /></div>
             <div class="field"><label>Elasticity η</label><input id="elasticity" type="number" step=".05" value="2" /></div>
-            <div class="field"><label>T2 demand multiplier</label><input id="tier2DemandFactor" type="number" min=".01" max="200" step=".1" value="1.5" /></div>
-            <div class="field"><label>T2 reservation premium</label><input id="tier2ReservationPremium" type="number" min="0" step=".05" value="0" /></div>
+            <div class="field"><label>Production margin band</label><input id="productionMarginBand" type="number" min=".001" max="1" step=".005" value=".05" /></div>
+            <div class="field"><label>T2 reservation premium</label><input id="t2ReservationPremium" type="number" min="0" step=".05" value=".25" /></div>
           </div>
           <div class="param-group">
             <h3>Market · Pricing &amp; reliability</h3>
-            <div class="group-note">Adaptive pricing, EMA smoothing and supplier switching friction.</div>
-            <div class="field"><label>BOT price response k</label><input id="k" type="number" step=".05" value=".35" /></div>
+            <div class="group-note">Adaptive pricing, EMA smoothing and supplier loyalty friction.</div>
+            <div class="field"><label>BOT pricing aggressiveness</label><input id="pricingAggressiveness" type="number" step=".05" value=".35" /></div>
             <div class="field"><label>Demand EMA α</label><input id="alpha" type="number" step=".01" value=".15" /></div>
             <div class="field"><label>Price response</label><input id="wholesalePriceResponse" type="number" step=".01" value=".05" /></div>
             <div class="field"><label>Price observation (ticks)</label><input id="priceObservationTicks" type="number" min="1" max="360" value="30" /></div>
-            <div class="field"><label>Switching cost min</label><input id="taumin" type="number" step=".01" value=".05" /></div>
-            <div class="field"><label>Switching cost max</label><input id="taumax" type="number" step=".01" value=".2" /></div>
             <div class="field"><label>Reliability EMA α</label><input id="reliabilityAlpha" type="number" step=".01" value=".15" /></div>
             <div class="field"><label>Stable price band</label><input id="switchingStableBand" type="number" step=".005" value=".025" /></div>
+            <div class="field"><label>Loyalty EMA α</label><input id="loyaltyEmaAlpha" type="number" min=".0001" max="1" step=".001" value=".01" /></div>
           </div>
         </section>
         <section class="panel">
           <strong>Selected company control · Admin</strong>
-          <p class="group-note">Admin tools control Tier 0, Tier 1 and Tier 2 companies for economy testing. The far-future setting follows a human investor competing with opportunist investors and robotic executives as industry prepares for a major galactic war and sustains civilian life.</p>
-          <div class="field"><label>Tier</label><select id="playerTier"><option value="T0">Tier 0 extraction</option><option value="T1">Tier 1 materials</option><option value="T2">Tier 2 galactic goods</option></select></div>
-          <div class="field" id="t2ControlId" hidden><label>Tier 2 company #</label><input id="t2PlayerCompany" type="number" min="1" max="60000" value="1" /></div>
+          <p class="group-note">Admin tools control resource companies, refineries and manufacturers for economy testing. The setting follows a human investor competing with opportunist investors and robotic executives as a human–robot manufacturing colony prepares for an approaching war and sustains civilian life.</p>
+          <div class="field"><label>Producer</label><select id="playerTier"><option value="T0">Resource company</option><option value="T1">Refinery</option><option value="T2">Manufacturer</option></select></div>
+          <div class="field" id="t2ControlId" hidden><label>Manufacturer #</label><input id="t2PlayerCompany" type="number" min="1" max="60000" value="1" /></div>
           <div class="field">
-            <label id="playerCompanyLabel">Tier 1 company</label
+            <label id="playerCompanyLabel">Refinery</label
             ><select id="playerCompany"></select>
           </div>
           <div class="field">
@@ -649,7 +647,7 @@
           <strong>Ownership · Licenses &amp; House</strong>
           <p class="group-note">Licenses gate tier entry; a House gates cross-sector and cross-tier ownership. Ownership costs are layer references and do not move simulated economy cash.</p>
           <div class="field"><label>Licenses held</label><span id="ownershipLicenses">T1</span></div>
-          <div class="field"><label>Tier 2 license</label><span id="t2LicenseCost">—</span><button id="buyT2License" class="primary">Buy Tier 2 license</button></div>
+          <div class="field"><label>Manufacturer license</label><span id="t2LicenseCost">—</span><button id="buyT2License" class="primary">Buy manufacturer license</button></div>
           <div class="field"><label>House</label><span id="ownershipHouse">None</span></div>
           <div class="field"><label>House name</label><input id="houseName" type="text" maxlength="80" value="House Atlas" /><button id="foundHouse" class="primary">Found house</button></div>
           <div id="ownershipStatus" class="status" style="margin-top: 7px">—</div>
@@ -658,11 +656,11 @@
       <section class="stack">
 <nav class="dashboard-nav" aria-label="Dashboard sections">
           <a href="#overview">Overview</a>
-          <a href="#gaia">Environment</a>
-          <a href="#tier0">Tier 0</a>
-          <a href="#tier1">Tier 1</a>
-          <a href="#tier2">Tier 2</a>
-          <a href="#consumers">Galactic procurement</a>
+          <a href="#environment">Environment</a>
+          <a href="#tier0">Resource Companies</a>
+          <a href="#tier1">Refineries</a>
+          <a href="#tier2">Manufacturers</a>
+          <a href="#consumers">Consumers</a>
         </nav>
         <section id="overview" class="dashboard-tier stack" aria-labelledby="overviewHeading">
           <h2 id="overviewHeading">Economy overview</h2>
@@ -694,15 +692,15 @@
               <b id="economyInventory">—</b>
             </div>
             <div class="kpi">
-              <span class="muted">Procurement purchases · units / tick</span>
+              <span class="muted">Consumer purchases · units / tick</span>
               <b id="economyPurchases">—</b>
             </div>
             <div class="kpi">
-              <span class="muted">Procurement spending · $ / tick</span>
+              <span class="muted">Consumer spending · $ / tick</span>
               <b id="economySpending">—</b>
             </div>
             <div class="kpi">
-              <span class="muted">Procurement unit fulfillment</span>
+              <span class="muted">Consumer unit fulfillment</span>
               <b id="fillRate">—</b>
             </div>
           </section>
@@ -712,13 +710,13 @@
               —
             </p>
             <p class="analytics-note">
-              Cash, equity and inventory include all T0, T1 and T2 firms. Procurement spending counts final purchases once. Tier 0 buys resources from Gaia and sells to companies; Tier 1 buys and sells to companies; Tier 2 buys from companies and sells to external galactic buyers. Bought counts actual units received; Tier 0 extraction appears under Made; its Bought column is not applicable.
+              Cash, equity and inventory include all resource companies, refineries and manufacturers. Consumer spending counts final purchases once. Resource companies extract raw elements from the environment and sell to companies; refineries buy and sell to companies; manufacturers buy from companies and sell to consumers. Bought counts actual units received; extraction appears under Made; its Bought column is not applicable.
             </p>
-            <div class="table-wrap industry-table" tabindex="0" aria-label="Tier comparison table, scroll for more metrics">
+            <div class="table-wrap industry-table" tabindex="0" aria-label="Producer comparison table, scroll for more metrics">
               <table class="mini-table">
                 <thead>
                   <tr>
-                    <th>Tier</th>
+                    <th>Producer</th>
                     <th>Products</th>
                     <th>Firms</th>
                     <th>Cash</th>
@@ -739,14 +737,14 @@
                 <tbody id="tierComparison"></tbody>
               </table>
             </div>
-            <p class="analytics-note">Current tick · per-firm figures divide by all firms in the tier. COGS is the cost basis of units sold — for Tier 0 that is the cost of buying raw elements from Gaia — and gross profit is revenue minus COGS in every tier. Unsold extraction adds inventory rather than reducing gross profit. — means unavailable or no activity for a ratio.</p>
+            <p class="analytics-note">Current tick · per-firm figures divide by all firms in the tier. COGS is the cost basis of units sold — for resource companies that is the cost of extracting raw elements from the environment — and gross profit is revenue minus COGS in every tier. Unsold extraction adds inventory rather than reducing gross profit. — means unavailable or no activity for a ratio.</p>
             <div class="table-toolbar">
               <label for="overviewTier">Chart scope</label>
               <select id="overviewTier">
                 <option value="">All producing tiers</option>
-                <option value="t0">Tier 0</option>
-                <option value="t1">Tier 1</option>
-                <option value="t2">Tier 2</option>
+                <option value="t0">Resource companies</option>
+                <option value="t1">Refineries</option>
+                <option value="t2">Manufacturers</option>
               </select>
               <span class="muted tiny">Select a tier to see its own scale.</span>
             </div>
@@ -800,7 +798,7 @@
           </section>
           <section class="panel">
             <h3>Product category comparison · C-1 through C-5</h3>
-            <p class="analytics-note">Complexity counts raw-element ancestry: C-1 uses one element, C-2 combines two, and C-3–C-5 combine materials with three to five ancestral elements. More complex final goods receive fewer unit orders and higher starting markups. Tier 2 factories share capacity across their products. Actual recipes appear in the Tier 2 product table.</p>
+            <p class="analytics-note">Complexity counts raw-element ancestry: C-1 uses one element, C-2 combines two, and C-3–C-5 combine materials with three to five ancestral elements. More complex final goods receive fewer unit orders and higher starting markups. Manufacturers share capacity across their products. Actual recipes appear in the goods table.</p>
             <div class="table-toolbar">
               <label for="categoryMetric">Compare categories by</label>
               <select id="categoryMetric">
@@ -815,15 +813,25 @@
                 <option value="avgUnitCost">Average unit cost · $ / unit</option>
                 <option value="fillRate">Customer fulfillment</option>
               </select>
+              <button id="categorySplitMerge" type="button" title="Toggle split/merged category view">Merge</button>
             </div>
             <span class="chart-caption" id="categoryComparisonCaption">Gross profit / line · $ / tick</span>
-            <div class="chart"><canvas id="categoryComparisonChart" role="img" aria-label="Product category comparison"></canvas></div>
+            <div id="categoryChartsSplit">
+              <span class="chart-caption">Refineries · C-1 and C-2</span>
+              <div class="chart"><canvas id="categoryComparisonChartT1" role="img" aria-label="Refinery category comparison"></canvas></div>
+              <span class="chart-caption">Manufacturers · C-3, C-4 and C-5</span>
+              <div class="chart"><canvas id="categoryComparisonChartT2" role="img" aria-label="Manufacturer category comparison"></canvas></div>
+            </div>
+            <div id="categoryChartsMerged" hidden>
+              <span class="chart-caption">Refineries and Manufacturers · C-1 through C-5</span>
+              <div class="chart"><canvas id="categoryComparisonChartAll" role="img" aria-label="Combined category comparison"></canvas></div>
+            </div>
             <div class="table-wrap industry-table" tabindex="0" aria-label="Product category comparison table, scroll for more metrics">
               <table class="mini-table">
                 <thead>
                   <tr>
                     <th>Category</th>
-                    <th>Tier</th>
+                    <th>Producer</th>
                     <th>Market role</th>
                     <th>Products</th>
                     <th>Installed lines</th>
@@ -850,11 +858,11 @@
                 <tbody id="productCategories"></tbody>
               </table>
             </div>
-            <p class="analytics-note">Current tick · prices and unit costs are weighted by installed lines; margin = total gross profit / total revenue. Per-line figures account for different category sizes. Customer demand, fulfillment and unmet units describe company buyers for C-1/C-2 and external galactic buyers for C-3–C-5. Sales include intermediate transactions; category revenues must not be added as final procurement spending. Click column headers to sort.</p>
+            <p class="analytics-note">Current tick · prices and unit costs are weighted by installed lines; margin = total gross profit / total revenue. Per-line figures account for different category sizes. Customer demand, fulfillment and unmet units describe company buyers for C-1/C-2 and consumers for C-3–C-5. Sales include intermediate transactions; category revenues must not be added as final consumer spending. Click column headers to sort.</p>
           </section>
         </section>
-        <section id="gaia" class="dashboard-tier stack" aria-labelledby="gaiaHeading">
-          <h2 id="gaiaHeading">Tier −1 · Gaia · Resource environment</h2>
+        <section id="environment" class="dashboard-tier stack" aria-labelledby="environmentHeading">
+          <h2 id="environmentHeading">Environment · Resource conditions</h2>
           <section class="panel">
             <h3>Resource extraction difficulty</h3>
             <div class="stat-grid industry-kpis">
@@ -864,14 +872,14 @@
               </div>
               <div class="stat">
                 <span>Element difficulty range</span>
-                <b id="gaiaRange">—</b>
+                <b id="envRange">—</b>
               </div>
             </div>
             <div class="analytics-grid">
               <div>
                 <span class="chart-caption">Difficulty by element · dimensionless</span>
                 <div class="chart">
-                  <canvas id="gaiaChart" role="img" aria-label="Difficulty by element · dimensionless">
+                  <canvas id="envChart" role="img" aria-label="Difficulty by element · dimensionless">
                   </canvas>
                 </div>
               </div>
@@ -879,7 +887,7 @@
           </section>
         </section>
         <section id="tier0" class="dashboard-tier stack" aria-labelledby="tier0Heading">
-          <h2 id="tier0Heading">Tier 0 · Extraction</h2>
+          <h2 id="tier0Heading">Resource Companies</h2>
           <section class="panel">
             <h3>Extraction summary</h3>
             <div class="stat-grid industry-kpis">
@@ -921,7 +929,7 @@
               </div>
             </div>
             <p class="analytics-note">
-              Tier 0 buys raw elements from Gaia, so its COGS is the extraction cost of the units sold. Gross profit is revenue minus COGS, exactly as in every other tier.
+              Resource companies extract raw elements from the environment, so COGS is the extraction cost of the units sold. Gross profit is revenue minus COGS, exactly as in every other tier.
             </p>
             <div class="analytics-grid">
               <div>
@@ -994,7 +1002,7 @@
           <section class="panel">
             <div class="title-row">
               <strong>
-                Tier 0 companies
+                Resource companies
               </strong >
               <span class="muted tiny" >
                 All 20 firms · search/filter and select any row for full company data
@@ -1033,9 +1041,9 @@
           </section>
         </section>
         <section id="tier1" class="dashboard-tier stack" aria-labelledby="tier1Heading">
-          <h2 id="tier1Heading">Tier 1 · Materials</h2>
+          <h2 id="tier1Heading">Refineries</h2>
           <section class="panel">
-            <h3>Material manufacturing summary</h3>
+            <h3>Refining summary</h3>
             <div class="stat-grid industry-kpis">
               <div class="stat">
                 <span>Firms</span>
@@ -1121,7 +1129,7 @@
               <strong>
                 Material markets
               </strong >
-              <span class="muted tiny">All 10 processed materials supply Tier 2 fabricators · customer demand is funded company orders; latent zero-price demand is not measured</span>
+              <span class="muted tiny">All 10 refined materials supply manufacturers · customer demand is funded company orders; latent zero-price demand is not measured</span>
             </div>
             <div class="table-wrap" style="margin-top: 7px">
               <table class="mini-table">
@@ -1184,9 +1192,9 @@
           <section class="panel">
             <div class="title-row">
               <strong>
-                Tier 1 sectors
+                Refining sectors
               </strong >
-              <span class="muted tiny">Grouped by galactic sector; holdings and activity include every installed line</span>
+              <span class="muted tiny">Grouped by manufacturing sector; holdings and activity include every installed line</span>
             </div>
             <div class="table-wrap" style="margin-top: 7px">
               <table class="mini-table">
@@ -1233,7 +1241,7 @@
           <section class="panel">
             <div class="title-row">
               <strong>
-                Tier 1 companies
+                Refineries
               </strong >
               <span class="muted tiny" >
                 All 1,000 firms · searchable/filterable · select any row for full company data
@@ -1292,7 +1300,7 @@
           </section>
         </section>
         <section id="tier2" class="dashboard-tier stack" aria-labelledby="tier2Heading">
-          <h2 id="tier2Heading">Tier 2 · Galactic goods</h2>
+          <h2 id="tier2Heading">Manufacturers</h2>
           <section class="panel">
             <div class="title-row">
               <strong>Manufacturing summary</strong>
@@ -1357,14 +1365,14 @@
                 <b id="t2Margin">—</b>
               </div>
               <div class="stat">
-                <span>C-3–C-5 procurement unit fulfillment</span>
+                <span>C-3–C-5 consumer unit fulfillment</span>
                 <b id="t2Fill">—</b>
               </div>
             </div>
             <div class="table-toolbar">
               <label for="t2IndustrySector">Industry charts</label>
               <select id="t2IndustrySector">
-                <option value="">All Tier 2 industries</option>
+                <option value="">All manufacturing sectors</option>
               </select>
               <label for="t2SectorMetric">Sector comparison</label>
               <select id="t2SectorMetric">
@@ -1376,34 +1384,34 @@
               </select>
             </div>
             <p class="analytics-note">
-              Galactic sectors organize the uses of physical goods independently of manufacturing materials. The complete pool has 420 distinct unordered Tier 1 recipes. Each sector starts with 20 invented markets: 2 C-3, 6 C-4 and 12 C-5. The remaining 220 recipes await invention. Each good has one unique name, market code and processed-input recipe. Different intermediates can share elemental ancestry. Industries group products by their sector. Charts retain the latest 0xF0 reported ticks; utilization is production divided by installed capacity. Sector selection applies to the three industry trend charts; the summary and comparison cover all Tier 2 firms.
+              Manufacturing sectors organize the uses of physical goods independently of refining materials. The complete pool has 420 distinct unordered refined-material recipes. Each sector starts with 20 active markets: 2 C-3, 6 C-4 and 12 C-5. The remaining 220 recipes await invention. Each good has one unique name, market code and refined-input recipe. Different materials can share elemental ancestry. Sectors group products by their market. Charts retain the latest 0xF0 reported ticks; utilization is production divided by installed capacity. Sector selection applies to the three industry trend charts; the summary and comparison cover all manufacturers.
             </p>
             <div class="analytics-grid">
               <div>
-                <span class="chart-caption">Production, sales & desired procurement demand · units / tick</span>
+                <span class="chart-caption">Production, sales & desired demand · units / tick</span>
                 <div class="chart">
-                  <canvas id="tier2SalesChart" role="img" aria-label="Tier 2 production, sales and desired procurement demand trend">
+                  <canvas id="tier2SalesChart" role="img" aria-label="Manufacturing production, sales and desired demand trend">
                   </canvas>
                 </div>
               </div>
               <div>
                 <span class="chart-caption">Revenue, cost of goods sold & gross profit · $ / tick</span>
                 <div class="chart">
-                  <canvas id="tier2FinanceChart" role="img" aria-label="Tier 2 revenue, cost and gross profit trend">
+                  <canvas id="tier2FinanceChart" role="img" aria-label="Manufacturing revenue, cost and gross profit trend">
                   </canvas>
                 </div>
               </div>
               <div>
-                <span class="chart-caption">Capacity utilization & procurement fulfillment · %</span>
+                <span class="chart-caption">Capacity utilization & consumer fulfillment · %</span>
                 <div class="chart">
-                  <canvas id="tier2OperationsChart" role="img" aria-label="Tier 2 utilization and fulfillment trend">
+                  <canvas id="tier2OperationsChart" role="img" aria-label="Manufacturing utilization and fulfillment trend">
                   </canvas>
                 </div>
               </div>
               <div>
                 <span class="chart-caption" id="t2ComparisonCaption">Sector revenue · $ / tick</span>
                 <div class="chart tall">
-                  <canvas id="tier2SectorChart" role="img" aria-label="Ten Tier 2 sectors performance comparison">
+                  <canvas id="tier2SectorChart" role="img" aria-label="Ten manufacturing sectors performance comparison">
                   </canvas>
                 </div>
               </div>
@@ -1470,10 +1478,61 @@
                 </table>
               </div>
             </details>
-            <details class="industry-details">
+            <details class="industry-details" id="t2ComplexityDetails">
               <summary>
                 Complexity bands · market activity and demand
               </summary>
+              <div class="table-toolbar">
+                <label for="t2ComplexityBand">Complexity charts</label>
+                <select id="t2ComplexityBand">
+                  <option value="">All manufacturing complexity bands</option>
+                  <option value="3">Complexity 3 · C-3</option>
+                  <option value="4">Complexity 4 · C-4</option>
+                  <option value="5">Complexity 5 · C-5</option>
+                </select>
+                <label for="t2ComplexityMetric">Band comparison</label>
+                <select id="t2ComplexityMetric">
+                  <option value="revenue">Revenue · $ / tick</option>
+                  <option value="grossProfit">Gross profit · $ / tick</option>
+                  <option value="sold">Sales · units / tick</option>
+                  <option value="active">Desired demand · units / tick</option>
+                  <option value="utilization">Production utilization</option>
+                  <option value="fillRate">Customer fulfillment</option>
+                </select>
+              </div>
+              <p class="analytics-note">
+                Complexity counts raw-element ancestry: C-3 combines three ancestral elements, C-4 combines four and C-5 combines five. Each step up is served by fewer, larger firms, so market activity and demand are read per band rather than per product. Charts retain the latest 0xF0 reported ticks; utilization is production divided by installed capacity and fulfillment is fulfilled demand divided by desired demand. Band selection applies to the three trend charts; the comparison covers all three bands.
+              </p>
+              <div class="analytics-grid">
+                <div>
+                  <span class="chart-caption">Production, sales & desired demand · units / tick</span>
+                  <div class="chart">
+                    <canvas id="tier2ComplexityActivityChart" role="img" aria-label="Complexity band production, sales and desired demand trend">
+                    </canvas>
+                  </div>
+                </div>
+                <div>
+                  <span class="chart-caption">Revenue, cost of goods sold & gross profit · $ / tick</span>
+                  <div class="chart">
+                    <canvas id="tier2ComplexityFinanceChart" role="img" aria-label="Complexity band revenue, cost of goods sold and gross profit trend">
+                    </canvas>
+                  </div>
+                </div>
+                <div>
+                  <span class="chart-caption">Capacity utilization & consumer fulfillment · %</span>
+                  <div class="chart">
+                    <canvas id="tier2ComplexityOperationsChart" role="img" aria-label="Complexity band utilization and consumer fulfillment trend">
+                    </canvas>
+                  </div>
+                </div>
+                <div>
+                  <span class="chart-caption" id="t2ComplexityComparisonCaption">Band revenue · $ / tick</span>
+                  <div class="chart tall">
+                    <canvas id="tier2ComplexityComparisonChart" role="img" aria-label="Manufacturing complexity band market activity and demand comparison">
+                    </canvas>
+                  </div>
+                </div>
+              </div>
               <div class="table-wrap industry-table">
                 <table class="mini-table">
                   <thead>
@@ -1501,27 +1560,27 @@
             </details>
           </section>
           <section class="panel">
-            <strong>Tier 2 catalogue · galactic goods</strong>
-            <p id="recipePoolSummary" class="analytics-note">200 invented goods · 220 reserved recipes · 20 C-3 · 60 C-4 · 120 C-5</p>
-            <p class="analytics-note">Each invented recipe has exactly one active good; reserved recipes await invention. Ingredient order does not create another market; separate basic inputs differ from an already processed compound input.</p>
-            <div id="t2NeedOverview" class="table-toolbar" aria-label="Galactic sectors"></div>
+            <strong>Goods catalog · manufactured goods</strong>
+            <p id="recipePoolSummary" class="analytics-note">200 goods · 220 reserved recipes · 20 C-3 · 60 C-4 · 120 C-5</p>
+            <p class="analytics-note">Each recipe has exactly one active good; reserved recipes await invention. Ingredient order does not create another market; separate basic inputs differ from an already processed compound input.</p>
+            <div id="t2NeedOverview" class="table-toolbar" aria-label="Manufacturing sectors"></div>
             <div class="table-toolbar">
               <input id="t2ProductSearch" aria-label="Search products, sectors or recipes" placeholder="Search products, sectors or recipes" />
-              <span class="catalogue-filter"><label for="t2ProductSector">Sector</label>
+              <span class="catalog-filter"><label for="t2ProductSector">Sector</label>
               <select id="t2ProductSector"><option value="">All sectors</option></select></span>
-              <span class="catalogue-filter"><label for="t2ProductNeed">Form</label>
+              <span class="catalog-filter"><label for="t2ProductNeed">Form</label>
               <select id="t2ProductNeed"><option value="">All forms</option></select></span>
-              <span class="catalogue-filter"><label for="t2ComplexityFilter">Complexity</label>
+              <span class="catalog-filter"><label for="t2ComplexityFilter">Complexity</label>
               <select id="t2ComplexityFilter">
                 <option value="">All complexities</option>
                 <option>3</option>
                 <option>4</option>
                 <option>5</option>
               </select></span>
-              <span id="t2ProductCount" class="muted">200 invented galactic goods</span>
+              <span id="t2ProductCount" class="muted">200 manufactured goods</span>
             </div>
             <p class="analytics-note">
-              Browse galactic goods by sector, physical form and complexity. Recipes show quantities of direct material inputs per unit; complexity counts their raw-element ancestry. Horizontal scrolling exposes costs, margins, capacity and unmet demand.
+              Browse manufactured goods by sector, physical form and complexity. Recipes show quantities of direct material inputs per unit; complexity counts their raw-element ancestry. Horizontal scrolling exposes costs, margins, capacity and unmet demand.
             </p>
             <div class="table-wrap company-table industry-table">
               <table class="mini-table">
@@ -1560,7 +1619,7 @@
           </section>
           <section class="panel">
             <div class="title-row">
-              <strong>Tier 2 companies</strong>
+              <strong>Manufacturers</strong>
               <span class="muted tiny">Search all firms; select one to inspect or take control</span>
             </div>
             <div class="table-toolbar">
@@ -1635,7 +1694,7 @@
               </button>
             </div>
             <div id="t2CompanyDetail" class="status" style="margin-top:10px">
-              Select a Tier 2 firm to inspect its product lines and inputs.
+              Select a manufacturer to inspect its product lines and inputs.
             </div>
             <div id="t2CompanyCharts" hidden>
               <p class="analytics-note" id="t2CompanyHistoryNote">
@@ -1645,21 +1704,21 @@
                 <div>
                   <span class="chart-caption">Selected company · production & sales · units / tick</span>
                   <div class="chart">
-                    <canvas id="tier2CompanyOutputChart" role="img" aria-label="Selected Tier 2 company production and sales">
+                    <canvas id="tier2CompanyOutputChart" role="img" aria-label="Selected manufacturer production and sales">
                     </canvas>
                   </div>
                 </div>
                 <div>
                   <span class="chart-caption">Selected company · revenue, COGS & gross profit · $ / tick</span>
                   <div class="chart">
-                    <canvas id="tier2CompanyFinanceChart" role="img" aria-label="Selected Tier 2 company financial performance">
+                    <canvas id="tier2CompanyFinanceChart" role="img" aria-label="Selected manufacturer financial performance">
                     </canvas>
                   </div>
                 </div>
                 <div>
                   <span class="chart-caption">Selected company · cash · $</span>
                   <div class="chart">
-                    <canvas id="tier2CompanyBalanceChart" role="img" aria-label="Selected Tier 2 company cash">
+                    <canvas id="tier2CompanyBalanceChart" role="img" aria-label="Selected manufacturer cash">
                     </canvas>
                   </div>
                 </div>
@@ -1675,18 +1734,18 @@
           </section>
         </section>
         <section id="consumers" class="dashboard-tier stack" aria-labelledby="consumersHeading">
-          <h2 id="consumersHeading">Tier 3 · Galactic procurement</h2>
+          <h2 id="consumersHeading">Consumers</h2>
           <section class="panel">
             <h3>Demand & fulfillment</h3>
             <p class="analytics-note" id="demandCaption">
               —
             </p>
             <p class="analytics-note">
-              The Robotic Space Generation is humanity's industrial vessel in a far-future society preparing for a major galactic war. Its output supports fleet readiness and civilian life: shelter, nutrition, healthcare equipment, learning hardware, communications, transport and industry. One million external procurement agents represent purchasing needs across that society, rather than a demographic population. They purchase only Tier 2 C-3–C-5 outputs; Tier 1 materials supply manufacturers exclusively. Every market delivers a physical good. Demand-agent count stays fixed, and final purchasing budgets are unlimited in this model.
+              Star Business is a human–robot manufacturing colony building itself into the supply base for a coming galactic war. Its output covers housing, medical equipment, gardens, archives, rescue vehicles, and everyday trade. One million consumers buy, switch suppliers, and keep the colony running; prices, reliability, loyalty, supply, and demand emerge from their decisions. They purchase only C-3–C-5 manufactured goods; refined materials supply manufacturers exclusively. Every market delivers a physical good. The consumer count stays fixed, and final purchasing budgets are unlimited in this model.
             </p>
             <div class="stat-grid industry-kpis">
               <div class="stat">
-                <span>External procurement agents</span>
+                <span>Consumers</span>
                 <b id="consumerPopulation">—</b>
               </div>
               <div class="stat">
@@ -1758,9 +1817,9 @@
                 </div>
               </div>
               <div>
-                <span class="chart-caption">Procurement spending · $ / tick</span>
+                <span class="chart-caption">Consumer spending · $ / tick</span>
                 <div class="chart">
-                  <canvas id="consumerSpendingChart" role="img" aria-label="Procurement spending · $ / tick">
+                  <canvas id="consumerSpendingChart" role="img" aria-label="Consumer spending · $ / tick">
                   </canvas>
                 </div>
               </div>
@@ -1770,7 +1829,7 @@
       </section>
     </main>
 
-    <script src="./catalogue.js"></script>
+    <script src="./catalog.js"></script>
     <script src="./bridge.js"></script>
     <script src="./app.js"></script>
   </body>

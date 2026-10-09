@@ -22,12 +22,12 @@ from pydantic import BaseModel
 
 from ..core import model as M
 from .persistence import load_checkpoint, save_checkpoint
-from .runtime import KernelRuntime
+from .runtime import KernelRuntime, _STATS_DIR
 
-ROOT = Path(__file__).resolve().parents[3]  # repository root
+ROOT = Path(__file__).resolve().parents[2]  # repository root
 WEB_DIR = ROOT / 'web'                       # front-end static files
 
-app = FastAPI(title='Robotic Space Generation — economy kernel', version='0.1.6')
+app = FastAPI(title='Star Business — economy kernel', version='0.1.6')
 
 _runtime: KernelRuntime | None = None
 
@@ -37,7 +37,7 @@ def runtime() -> KernelRuntime:
     if _runtime is None:
         # Bootstrap with a tiny population so first connect is instant; the UI's
         # `init` message then resets to whatever population its config selects.
-        cfg = json.loads(os.environ.get('ECONOMY_CFG', '{"endUserCount":100,"t2FirmCount":200}'))
+        cfg = json.loads(os.environ.get('ECONOMY_CFG', '{"consumerCount":100,"t2FirmCount":200}'))
         _runtime = KernelRuntime(cfg)
     return _runtime
 
@@ -60,17 +60,17 @@ class CheckpointRequest(BaseModel):
 @app.post('/checkpoint/save')
 def checkpoint_save(req: CheckpointRequest):
     rt = runtime()
-    save_checkpoint(req.path, rt.cfg, rt.tick, rt.W, rt.state)
+    save_checkpoint(req.path, rt.cfg, rt.tick, rt.world, rt.state)
     return {'ok': True, 'path': req.path, 'tick': rt.tick}
 
 
 @app.post('/checkpoint/load')
 def checkpoint_load(req: CheckpointRequest):
     global _runtime
-    cfg, tick, W, scalars = load_checkpoint(req.path)
+    cfg, tick, world, scalars = load_checkpoint(req.path)
     rt = KernelRuntime.__new__(KernelRuntime)
-    rt.cfg, rt.W, rt.tick = cfg, W, tick
-    rt.month = tick // 30
+    rt.cfg, rt.world, rt.tick = cfg, world, tick
+    rt.month = tick // M.MONTH
     rt.running = False
     rt.mode = 'fixed'
     rt.targetTPS = 30
@@ -94,8 +94,12 @@ def checkpoint_load(req: CheckpointRequest):
     rt.ownershipAccounting = {'licensesSpent': 0, 'houseSpent': 0}
     rt.ownershipEnforced = True
     rt.tier2Query = {'page': 0, 'pageSize': 50, 'search': '', 'sector': '', 'controller': '', 'sort': 'id', 'descending': False}
+    rt.statsLog = []
+    rt.statsPath = _STATS_DIR / 'generation_run.jsonl'
+    rt.targetTick = int(os.environ.get('ECONOMY_MAX_TICK', str(M.TIME['ticksPerGeneration'])) or 0)
     rt._init_admin()
     rt._init_analytics_scratch()
+    rt.publish()
     _runtime = rt
     return {'ok': True, 'path': req.path, 'tick': tick}
 

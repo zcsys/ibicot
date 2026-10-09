@@ -1,9 +1,22 @@
-# Design canon — Robotic Space Generation kernel
+# Design canon — Star Business kernel
 
 > **Status:** settled by review. This is the **single source of truth**: it states
-> *what must be true* of the economy kernel and the game's entry into it, and now also
-> records the settled parameters and the machine contract (§12) so the whole economy is
-> specified in one document. Where it conflicts with any implementation, the canon wins.
+> *what must be true* of the economy kernel and the game's entry into it, and records
+> the machine contract (§12) so the whole economy is specified in one document.
+> Where it conflicts with any implementation, the canon wins.
+>
+> **Naming policy.** The game is **Star Business**; all catalog display names
+> (materials, companies, sectors, goods and equipment) follow the **Star Business**
+> naming catalog, which supersedes all earlier naming directions. House style is
+> **American English**: aluminum, fiber, mold, center, defense, maneuver,
+> pressurized, standardized. Use title case for catalog labels and lower case for
+> generic material, equipment, and product descriptions in sentences. The
+> agent-category display labels are **Resource Companies** (T0), **Refineries**
+> (T1), **Manufacturers** (T2) and **Consumers** (T3). Generated firms use a
+> sector-specific generic name plus a decimal serial number (e.g.
+> **Power Equipment 00042**); no house-name pool, location suffix, district, or
+> berth is appended. `T0`–`T3` remain the internal tier keys throughout this
+> document and the machine contract.
 
 ---
 
@@ -47,11 +60,11 @@ Every section below is a consequence of, or a requirement for, that sentence.
    any time.**
 
 6. **Prices settle on their own equilibrium — never on a bound.** The market dynamics
-   (adaptive pricing, bounded sampling, switching friction) must find an *interior*
+   (adaptive pricing, bounded sampling, loyalty charge) must find an *interior*
    price equilibrium: prices must not top out at a ceiling or bottom out at a floor.
    A price pinned at a bound is a misspecification symptom — the cost curve, demand
    curve, or markup is wrong — not a sound steady state. A floor and a ceiling may be
-   defined as **numerical guardrails** (`MIN_UNIT_PRICE`/`MAX_UNIT_PRICE`, see §12.6),
+   defined as **numerical guardrails** (`MIN_UNIT_PRICE`/`MAX_UNIT_PRICE`, see §12.2),
    but they are degenerate-value protection only; a healthy simulation never settles
    there.
 
@@ -71,12 +84,13 @@ Every section below is a consequence of, or a requirement for, that sentence.
   (the Hamilton apportionment of the 44/116/260 complete pool) — made by **60,000
   single-machine firms** in the reverse 6:3:1 ratio: **C-3 = 36,000** (20 × 1,800),
   **C-4 = 18,000** (60 × 300), **C-5 = 6,000** (120 × 50).
-- **1,000,000 Tier 3 consumers** (external procurement agents).
+- **1,000,000 Tier 3 consumers** (resident consumers).
 - **The eight single-element extractors are also special-purpose**: the two Water
-  extractors produce **machinery**; the two Earth extractors collect **storage-unit
-  rent**; the two Fire extractors provide **financing**; the two Air extractors provide
-  **advertising**. These four service layers (storage rent, machinery-as-good, credit,
-  and visibility) are **deferred for the PoC** — documented, not active (mechanics TBD).
+  extractors produce **machinery**; the two Earth extractors collect the **Storage
+  Concession Fee**; the two Fire extractors provide **Banking**; the two Air extractors
+  provide **Advertising**. These four service layers (the storage concession, machinery,
+  banking and advertising) are **deferred for the PoC** — documented, not active
+  (mechanics TBD).
 - Tier 0 companies are **significantly larger** than Tier 1 or Tier 2 companies.
 
 ---
@@ -86,15 +100,18 @@ Every section below is a consequence of, or a requirement for, that sentence.
 - **Tier 0 has the most capital of all tiers.** It is the largest by design, despite
   having no "product complexity."
 - **Tier 1 machinery is uniform:** every T1 product line's machinery is **$15K**
-  (equity structure in §6). Within Tier 1, complexity differs only in *operations* —
-  throughput is flat at 500, markup rises (compound premium), demand falls — never in
-  capital.
+  (equity structure in §6). Within Tier 1, complexity differs only in the *recipe* —
+  throughput is flat at **2,000** and markup is flat (**0.25**) — never in capital,
+  throughput, or markup.
 - **Tier 2 machinery rises with complexity:** C-3 = **$75K**, C-4 = **$375K**, C-5 =
   **$420K** (Tier 1 flat at $15K). The size gradient lives in Tier 2; higher complexity ⇒
   larger machinery.
-- **Throughput (per machine, per tick):** Tier 1 is flat — C-1 = C-2 = **500**. Tier 2
-  falls with complexity — C-3 = **300**, C-4 = **200**, C-5 = **100**. One machine = one
-  product line = this capacity; there is no separate "line" concept.
+- **Throughput (per machine, per tick):** Tier 0 extraction is **200,000** per firm per tick
+  (extraction, not a machine line). Tier 1 is flat — C-1 = C-2 = **2,000**. Tier 2 falls with
+  complexity — C-3 = **30**, C-4 = **20**, C-5 = **10**. One machine = one product line =
+  this capacity; there is no separate "line" concept.
+- **Tier 0 extraction cost & lot:** raw costs **`$1 × difficulty`** (`baseCost`; difficulty
+  mean-reverts to `difficultyTarget = 1`), sold in whole lots of **1,000** minimum.
 - **Per-line machinery:** each installed product line owns its own **machinery capital**
   and its own **throughput capacity**, both keyed to the product's complexity, and both
   **summed per company**. A firm's size is the sum of its lines. **At start every company
@@ -105,18 +122,21 @@ Every section below is a consequence of, or a requirement for, that sentence.
 - **Storage (working standard 20,000):** one firm-level pool shared by raw, finished,
   and machinery. Machinery footprint is fixed — C-1/C-2 = 1,000, C-3 = 3,000,
   C-4 = 4,000, C-5 = 5,000 — leaving goods space `G = 20,000 − machinery` for raw and
-  finished.
-- **Storage rent (deferred for PoC):** Tier 0 is fully subsidized (no storage or
+  finished. **Tier 0 storage is a separate, fully-subsidized raw pool of 500,000 per firm**
+  (no machinery footprint; extraction equipment is an equity asset, not a storage cost).
+- **Storage Royalty (deferred for PoC):** Tier 0 is fully subsidized (no storage or
   machinery costs). Tier 1 and Tier 2 would pay a minuscule per-tick fee per storage
-  space, collected by the two Earth extractors.
+  space, collected by the two Earth houses.
 - **Desired inventory = fill `G`:** the whole allocation is paid for, so empty space is
   pure waste. Companies fill the goods space to the brim (bounded by cash and capacity),
   rather than merely covering demand.
 - **Balanced pipeline:** recipes preserve item count (N inputs → N outputs), so the raw
   to finished split within `G` is always **1 : 1** — `finished = raw = G/2`.
-- **Cost ladder (count-preserving):** material cost is flat per unit — $1 (T1), $1.25
-  (T2). Conversion cost is `$0.25 × max(1, complexity−1)`: C-1/C-2 $0.25, C-3 $0.50,
-  C-4 $0.75, C-5 $1.00. Unit cost: $1.25 / $1.25 / $1.75 / $2.00 / $2.25.
+- **Cost ladder (count-preserving):** material cost is flat per unit — $1.25 (T1), $1.875
+  (T2). Each tier's material cost already includes the upstream tier's 0.25 markup, so the
+  realized markup is a true 25 % at every tier. Conversion cost is
+  `$0.25 × max(1, complexity−1)`: C-1/C-2 $0.25, C-3 $0.50, C-4 $0.75, C-5 $1.00.
+  Unit cost: $1.50 / $1.50 / $2.375 / $2.625 / $2.875.
 
 ---
 
@@ -125,30 +145,31 @@ Every section below is a consequence of, or a requirement for, that sentence.
 Higher complexity ⇒ **lower demand volume**; the unit markup starts flat and is
 discovered by the derivative-following pricer.
 
-- **Valuation (choke price):** `V = 2 × unit cost` (cost from §4) — the price at which
-  demand halves. Each consumer's choke is `V × [0.9, 1.5]` (a per-consumer draw), so the
-  choke is a band, not a point. No complexity gradient needed; the rising cost lifts `V`
-  automatically.
-- **Latent quantity:** `qmax = baseQty × quantityFactor`, where `baseQty` is the
-  per-consumer draw (1–10) and `quantityFactor` is the **global** `tier2DemandFactor`
-  (1.5). The per-consumer request therefore stays small (whole units), never exceeding
-  a firm's fill-G stock.
-- **Consumer routing ∝ supply:** each product's selection weight in `t2SectorProductWeight`
-  is `firms × capacity` (the **108 : 12 : 1** ratio across C-3 / C-4 / C-5), so *more
-  consumers* are routed to higher-supply products. At any common markup total demand
-  therefore scales with supply and every product clears at the same utilization — while
-  the per-consumer quantity stays small. The complexity gradient lives in *routing*, not
-  in `qmax`.
+- **Valuation (choke price):** `V = unit cost × (1 + t2ReservationPremium × (complexity − 1))`
+  (cost from §4) — the price at which demand halves. Each consumer's choke is
+  `V × [1.8, 3]` (a per-consumer draw), so the choke is a band, not a point.
+  `t2ReservationPremium = 0.25` gives more complex goods a higher reservation value
+  (C-3 ×1.5, C-4 ×1.75, C-5 ×2.0), so they clear at higher prices.
+- **Latent quantity:** `qmax = 20` (fixed per consumer, `CONSUMER_QMAX`). The
+  per-consumer request therefore stays small (whole units), never exceeding a firm's
+  fill-G stock.
+- **One product per consumer, supply-scaled:** each consumer is assigned exactly one
+  product (`consumerProduct`) for its lifetime, drawn weighted by supply — `firms ×
+  capacity` (the **108 : 12 : 1** ratio across C-3 / C-4 / C-5), so higher-supply
+  products attract more consumers (~**36,000 / 4,000 / 333** per product). No renewals,
+  no sector routing. The per-consumer quantity stays small.
+- **Activation:** each tick only a fraction `consumerActivation = 0.2` of the 1,000,000
+  consumers activate (a fresh random draw per buyer per tick), so ~200,000 buy per tick —
+  matching the supply scale and keeping service fair (no buyer is permanently starved).
 - **Demand curve:** `q(P) = qmax / (1 + (P/V)^η)`, elasticity `η = 2`.
 - **First-guess markup is flat** (`t1Markup = 0.25` for T0/T1/T2): the complexity
-  gradient is entirely in demand volume/routing, not the seed price.
-- **Equilibrium markup** is set by the global `tier2DemandFactor` (default 1.5) — a larger
-  factor is a tighter market ⇒ a higher discovered markup.
-- **Utilization target:** ~50–70%; the demand scale is calibrated to hit it.
+  gradient lives in demand volume/routing *and* the reservation valuation
+  (`t2ReservationPremium`), not the seed price.
+- **Equilibrium markup** is set by the fixed demand level (`qmax = 20`) — a larger
+  quantity is a tighter market ⇒ a higher discovered markup.
 
-The `quantityFactor`-uniform + `routing ∝ supply` shape and the flat first-guess markup
-are canon. The exact `tier2DemandFactor`, the `baseQty` range, and the offer-sampling
-counts are calibration (§12.5).
+The flat first-guess markup is canon. Each consumer samples offers — currently **5**
+(`consumerSearchOffers`); the sampling count is calibration, not frozen.
 
 ---
 
@@ -169,14 +190,14 @@ cash as the residual:
 
 | Entity | License | Machinery | Working cash | Total equity |
 | --- | ---: | ---: | ---: | ---: |
-| Tier 0 (×20) | — | — (extraction) | $10m | $10m |
+| Tier 0 (×20) | $22m | $49m | $3m (+$1m reserve) | $75m |
 | Tier 1 (all 10 types) | $1m | $15k | $485k | $1.5m |
 | Tier 2 — C-3 | $1m | $75k | $425k | $1.5m |
 | Tier 2 — C-4 | $1m | $375k | $125k | $1.5m |
 | Tier 2 — C-5 | $1m | $420k | $80k | $1.5m |
 
 The machinery ladder is $15k (T1 flat) / $75k / $375k / $420k. Every Tier 1 and Tier 2
-company starts at $1.5m; only Tier 0 ($10m) is larger.
+company starts at $1.5m; only Tier 0 ($75m) is larger.
 
 **Fairness is carried by the rate, not the stake.** Equity (stake) and capital
 (machinery) are different things, and the tiers differ in *size* by design. What must be
@@ -224,18 +245,10 @@ not the absolute equity.
 
 ## 9. Canon vs. calibration
 
-Everything in §2–§8 is **canon** (design law). The following are **calibration**
-(numbers to be determined, not design):
-
-- the supply side is pinned as working values — uniform $1.5m equity (license `$1m` +
-  machinery + residual cash), machinery $15k/$75k/$375k/$420k, capacity T0 10,000 /
-  C-1,C-2 500 / C-3 300 / C-4 200 / C-5 100, conversion `$0.25 × max(1,c−1)`,
-  count-preserving recipes, storage 20,000 — final values
-  from calibration;
-- the demand-volume and markup/valuation curves by complexity (the demand side);
-- all prices, activation rates, and offer-sampling counts.
-
-No parameter is frozen until calibration adopts it.
+Everything in §2–§8 is **canon** (design law). The **supply-side numbers** in §4 and §6
+(equity, machinery, capacity, storage, conversion) are pinned **working values**; the
+**demand-side scale** (offer-sampling counts, valuation curves) and **all prices** are
+**calibration** (not frozen) until calibration adopts them.
 
 ---
 
@@ -249,6 +262,10 @@ Tracked, explicitly **not** canon yet:
   presentation/UX layer, decoupled from the economic model.
 - **T1 vs. T2 steady-state size divergence** — game-start sizes are fixed (§6); their
   later divergence is emergent, not prescribed.
+- **New product invention** — the dynamic introduction of new T2 products over time
+  (innovation). The PoC uses a fixed 200-product catalog; how new products enter the
+  market — and what happens to the supply-scaled consumer assignment, firm lines, and
+  supply when one appears — is deferred, mechanics TBD.
 
 ---
 
@@ -256,75 +273,18 @@ Tracked, explicitly **not** canon yet:
 
 A new kernel satisfies this canon when it implements §2–§8, holds the machine invariants
 (no negative inventory/cash/demand/reliability; conservation per §2; atomic orders per
-§12.4), and reaches the fairness target in §8 under its own determinism, at the
+§12.1), and reaches the fairness target in §8 under its own determinism, at the
 performance and replay gates of §12.
 
 ---
 
-## 12. Settled parameters & machine contract
+## 12. Machine contract
 
-The machine-level specifics, consolidated here so the whole economy is specified in one
-place. Everything in §2–§8 is **canon**; the supply-side numbers below are pinned **working
-values**; the demand-side *scale* is **calibration** (not frozen).
+The machine-level specifics — determinism/RNG/tick/runtime and the derivative-following
+pricing algorithm. Topology, scale, demand and the deferred/calibration lists are canon
+in §3–§10 above and are not repeated here.
 
-### 12.1 Topology (canon, fixed)
-
-| Quantity | Value |
-| --- | --- |
-| Tiers | 4 — T0 extraction → T1 refining → T2 manufacturing → T3 consumers (no bypass) |
-| Elements | 4 — Water, Earth, Fire, Air |
-| T0 firms | 20 — 2 all-element, 4 three-element, 6 two-element, 8 single-element |
-| T1 products | 10 — 4 basic C-1 + 6 compound C-2 |
-| T1 firms | 1,000 — 100 per product cohort |
-| T2 products | 200 invented — 2 C-3 + 6 C-4 + 12 C-5 per sector × 10 sectors |
-| T2 firms | **60,000 single-machine firms** (reverse 6:3:1 ratio) |
-| T2 firms per product | C-3 = **1,800**, C-4 = **300**, C-5 = **50** |
-| Consumers | 1,000,000 |
-
-### 12.2 Scale (working values)
-
-| Entity | License | Machinery | Working cash | Total equity |
-| --- | ---: | ---: | ---: | ---: |
-| Tier 0 (×20) | — | — (extraction) | $10m | $10m |
-| Tier 1 (all types) | $1m | $15k | $485k | $1.5m |
-| Tier 2 C-3 | $1m | $75k | $425k | $1.5m |
-| Tier 2 C-4 | $1m | $375k | $125k | $1.5m |
-| Tier 2 C-5 | $1m | $420k | $80k | $1.5m |
-
-- Machinery ladder: T1 flat **$15k**; T2 **$75k / $375k / $420k**.
-- Capacity (per machine, per tick): C-1/C-2 **500**, C-3 **300**, C-4 **200**, C-5 **100**.
-  One machine = one product line = this capacity.
-- Tier 0 extraction (per firm, per tick): **10,000** capacity; order-up-to inventory
-  (target **500,000**, max **1,000,000**, coverage **3** ticks); cost **$1 × difficulty**
-  (`baseCost`, difficulty mean-reverts to `dbar = 1`); whole-lot minimum **1,000**.
-- Count-preserving recipes: **N inputs → N outputs**.
-- Cost ladder: material flat **$1 (T1) / $1.25 (T2)** per item; conversion
-  **$0.25 × max(1, complexity−1)** → C-1/C-2 $0.25, C-3 $0.50, C-4 $0.75, C-5 $1.00.
-  Unit cost: **$1.25 / $1.25 / $1.75 / $2.00 / $2.25**.
-- Storage: **20,000** firm-level pool (raw + finished + machinery). Machinery footprint
-  C-1/C-2 **1,000**, C-3 **3,000**, C-4 **4,000**, C-5 **5,000**; goods space
-  `G = 20,000 − machinery`. Desired inventory = **fill G**, split **1:1**
-  (`finished = raw = G/2`).
-
-### 12.3 Demand (structure canon, scale calibration)
-
-- Valuation: `V = 2 × unit cost` (cost from §12.2); each consumer's choke is
-  `V × [0.9, 1.5]` (`vmin`/`vmax`) — a per-consumer band, not a point.
-- Latent quantity: `qmax = baseQty × quantityFactor`, where `baseQty` is the
-  per-consumer draw (1–10, `demandQtyMin`/`demandQtyMax`) and `quantityFactor` is the
-  **global** `tier2DemandFactor` (1.5). The complexity gradient lives in *consumer
-  routing*, not in `qmax`: each product's selection weight is `firms × capacity` (the
-  **108 : 12 : 1** ratio across C-3 / C-4 / C-5).
-- Demand curve: `q(P) = qmax / (1 + (P/V)^η)`, `η = 2`, rounded to whole units and
-  capped at `ceil(qmax)`.
-- Activation & search: **10 %** of consumers activate per tick (`consumerActivation`),
-  each sampling **5** offers (`consumerSearchOffers`).
-- First-guess markup: **flat `t1Markup = 0.25` for T0/T1/T2**; the equilibrium
-  markup is discovered by the pricer and set by the global `tier2DemandFactor`
-  (**default 1.5**).
-- Utilization target ~50–70% (the demand scale is calibrated to hit it).
-
-### 12.4 Determinism, RNG, tick, runtime
+### 12.1 Determinism, RNG, tick, runtime
 
 - **RNG**: 32-bit SplitMix32. `mix(u)`, `random(seed, tick, stream) = mix(seed ⊕ (tick+1)·0x9e3779b1 ⊕ (stream+1)·0x85ebca6b) / 2^32`,
   `normal(·)` (Box-Muller), `hashSeed(seed, k) = mix(seed ⊕ (k+1)·0x9e3779b1)` (u32).
@@ -333,23 +293,20 @@ values**; the demand-side *scale* is **calibration** (not frozen).
 - **9-phase tick** (per tick): reset scratch → environment (difficulty mean-reversion) →
   T0 extraction (order-up-to + proportional apportionment) → T1 input purchase
   (whole-lot) → T1 manufacture → pricing (derivative-following) → T2 buy/make/price →
-  end-user clearing (atomic orders) → observe/reliability (monthly).
+  consumer clearing (atomic orders) → observe/reliability (monthly).
 - **Calendar**: 30 ticks/month, 12 months/year, 20 years/generation, 24 generations/age.
-- **Environment**: extraction difficulty mean-reverts to `dbar = 1` (`theta = 0.15`,
-  `sigma = 0.005`, bounded `[0.7, 1.4]`). Demand/sales EMA `alpha = 0.15`; reliability
-  `reliabilityAlpha = 0.15`.
+- **Environment**: extraction difficulty mean-reverts to `difficultyTarget = 1` (`theta = 0.15`,
+  `sigma = 0.005`, bounded `[0.7, 1.4]`). Demand/sales EMA `alpha = 0.15`.
+- **Reliability** (EMA, `reliabilityAlpha = 0.15`): score =
+  `0.5·price-stability + 0.5·availability`. The price-stability component is
+  **asymmetric — only upward price moves penalize it**; a price drop never reduces
+  reliability.
 - **Commands** (FastAPI/WebSocket): `init`, `reset`, `run`, `pause`, `step`,
   `applyConfig`, `select`, `companyDetail`, `watchCompanies`, `player`,
   `buyEquipment`, `tier2Query`, `buyLicense`, `foundHouse`. Reads are projections;
   per-consumer state is never sent to clients.
 
-### 12.5 Deferred / calibration
-
-- **Deferred (not implemented)**: storage rent, machinery-as-good, financing, advertising.
-- **Calibration (not frozen)**: `tier2DemandFactor` (the demand tightness / equilibrium
-  markup), the `baseQty` range, and offer-sampling counts.
-
-### 12.6 Pricing (per tick, derivative-following)
+### 12.2 Pricing (per tick, derivative-following)
 
 All three producer tiers price their output each tick with one **derivative-following
 adaptive pricer**, plus a player/admin override. Prices are **unbounded economically**:
@@ -372,51 +329,99 @@ the last observation.** A firm that is *not selling* is never "scarce" — scarc
 only meaningful once the firm is actually transacting:
 1. **No sales** → if stock remains, lower; if no stock, hold. (This prevents phantom
    scarcity — e.g. an input-starved firm — from ratcheting the price up.)
-2. **Profit baseline available** (a prior observation's realized profit exists) → pure
+2. **Scarce** (unmet demand: `demand > sales`) → raise, *regardless of the profit baseline*,
+   so a lively downstream market is transmitted upstream (the incumbent supplier's 4M
+   inventory buffer no longer hides demand pressure).
+3. **Profit baseline available** (a prior observation's realized profit exists) → pure
    derivative-following with a **2 % dead band**: reverse when profit fell ≥ 2 %, continue
    when it rose ≥ 2 %, and **hold inside the band** — flat profit is the profit-maximum,
    so the walk stops there instead of overshooting the flat peak and drifting past it.
-3. **No profit baseline yet** → probe: raise if scarce (demand > sales + stock), else hold.
 
 **Production & purchase gates (the quantity side of discovery).** A producer manufactures
 only while it can cover the *realized* cost of its current stock —
 `if input_cost_per_item + conversion > price`, output is 0 ("don't produce below cost").
-A T1/T2 buyer stops buying an input when its *marginal* current-price cost exceeds its
-posted price — `if current_cost > price`, buy 0, where
-`current_cost = conversion + Σ (recipe ratio ÷ output) × current supplier price`. The
-purchase gate transmits the downstream breakeven upstream: an overpricing supplier loses
-orders and is pulled back to a profitable level.
 
-**Step size** adapts: ×1.2 on continuation, ×0.5 on reversal, clamped to `[0.01, 1]`.
-The price moves multiplicatively: `P ← clamp(P × exp(± k × response × scale))`, where
-`clamp` is the guardrail interval `[MIN_UNIT_PRICE, MAX_UNIT_PRICE]`. After each
+A T1/T2 buyer throttles its input purchase with a **margin-ramp demand curve** instead of
+a hard buy/no-buy gate. The purchase quantity is scaled by
+
+`factor = clamp( (1 − current_cost / price) / productionMarginBand , 0, 1 )`,
+
+where `current_cost = conversion + Σ (recipe ratio ÷ output) × current supplier price`,
+`1 − current_cost/price` is the realized gross margin, and `productionMarginBand = 0.05`.
+So production stays **full while margin ≥ 5 %**, tapers linearly to **0 at break-even**
+(cost = price), and is 0 for any loss — a late cutoff, not an early throttle. The ceiling
+still transmits the downstream breakeven upstream: an overpricing supplier loses orders and
+is pulled back to a profitable level.
+
+**Step size** adapts: ×1.2 on continuation, no halving on reversal (×1.0), clamped to `[0.01, 1]`.
+The price moves multiplicatively: `P ← clamp(P × exp(± pricingAggressiveness × response × scale))`, where
+`clamp` is the guardrail interval `[MIN_UNIT_PRICE, MAX_UNIT_PRICE]`, then rounded to
+whole cents (`round_to_cent`). If the rounded quote is unchanged and the direction is
+*down*, the direction flips *up* (`if nxt == price and next_direction < 0: next_direction = 1`),
+so a walk cannot wedge frozen at a cent boundary. After each
 observation the profit/sales/demand/opportunity accumulators and the age counter reset.
 
-**End-user purchase is split across suppliers in whole units** (no fractional fill, no
-all-or-nothing from one seller): a consumer fills `q(P)` by taking `⌊stock⌋` whole units
-from each sampled seller in price order until satisfied or offers are exhausted. The
-unsatisfied remainder is recorded as `endStockUnmet`.
+**Consumer purchase is split across suppliers in whole units** (no fractional fill, no
+all-or-nothing from one seller). Demand is **marginal-value**: the consumer walks its
+sampled sellers in total-cost order (incumbent first; the loyalty charge below applies),
+and at each seller computes `q_at = demand(price)` then buys `want = max(0, q_at − bought)`
+whole units (capped by that seller's `⌊stock⌋`), stopping once `bought ≥ q_at`. The total
+quantity is therefore pinned to the *marginal* seller's price — a rogue cheap seller
+cannot inflate demand. The unsatisfied remainder is recorded as `endStockUnmet`.
 
-**Switching cost and the split.** A consumer's sampled offers are ranked by effective
-price `price + friction`, where `friction = switchingCost(reliability) = taumin +
-(taumax − taumin) × reliability` (5¢–20¢) applies to every seller **except** the
-incumbent (`preferred`, last tick's first-fill supplier). The friction is a ranking bias
-only — it is never subtracted from the payment and never enters `q(P)`:
+**Loyalty charge (real, paid to the incumbent).** A buyer's sampled offers are ranked by the total
+cost of filling its order `q` from each seller alone. Staying with the incumbent
+(`preferred`) costs `P_inc × q`; sourcing from a
+challenger costs `P_chal × q + loyaltyCharge`, where
 
-- the incumbent is drained first (up to its whole-unit stock), so a buyer does not
-  switch for a price difference smaller than `friction`;
-- the residual spills to the next-effective-cheapest seller, and so on;
-- the buyer pays each seller its raw price (a blended rate when the fill spans sellers);
-- `total_desired` is computed at the top-ranked seller's raw price, so stickiness slightly
-  understates demand by anchoring it to the (possibly higher) incumbent price;
-- `endPreferredSupplier` for the next tick is the first seller that actually sold ≥ 1
-  whole unit, so the relationship follows whoever served the buyer first in the split.
+`loyaltyCharge = M × unit_cost × (1 + reliability_inc)`.
+
+`unit_cost` is the product's canonical cost-ladder unit cost (§4) — a *fixed*
+reference, independent of the current market price, so a price drop does not shrink the
+barrier — and `reliability_inc` is the incumbent's reliability (0–1), so the
+`(1 + reliability)` factor makes sourcing away from a reliable supplier cost up to 2× more. `M` is a **per-complexity** multiple, sized so the charge equals ~10 % of a typical
+order: **83.33** for the T1 raw buyer (C-1/C-2, equal), **{3: 1.21, 4: 0.65, 5: 0.26}**
+for T2 intermediate buyers by the buying firm's complexity, and **0.97** for T3 consumers.
+The charge is **fixed per disloyal purchase** (independent of order size, so
+a 1-unit order cannot dodge it) and is **paid to the incumbent**: deducted from the buyer's cash and credited to the incumbent — a
+transfer, not a sink.
+
+**Adaptive regime.** The per-complexity values above are *bootstrap seeds*, not constants.
+Each tick, after the tiers operate, the kernel folds the observed **average order value**
+(AOV) per buyer class — T1 raw (`raw revenue ÷ purchase events`), T2 material by buying
+complexity (`material spend ÷ purchases`), T3 consumer (`consumer payments ÷ fulfilled
+orders`) — into an EMA (`α = loyaltyEmaAlpha`, default 0.01). Once per **year**
+(every `ticksPerYear` ticks) it re-derives
+
+`M = 0.10 × AOV / (unit_cost × 1.5)`,
+
+so the charge keeps tracking ~10 % of a typical order as prices and margins drift, with no
+per-generation bookkeeping. `unit_cost` here is the same canonical reference ($1 raw,
+$1.50 material, mean T2 unit cost).
+
+The buyer sources from a challenger only when `P_chal × q + loyaltyCharge < P_inc × q`, i.e. a challenger
+must undercut the incumbent by more than `loyaltyCharge / q` per unit. The winner fills the
+whole order in whole units; a split across suppliers is a fallback only when the winner
+cannot fill `q` (and the charge is then incurred once, on the first non-incumbent unit).
+**Stock-out exception:** the charge applies only to a *discretionary* purchase — if the
+incumbent cannot fulfill the order (stock below `q`), the buyer sources from a challenger for free, no
+charge.
+
+**The relationship is sticky.** `endPreferredSupplier` (next tick's incumbent) changes **only
+when a single seller filled the entire `q`**. If the demand was split across sellers, the
+relationship stays with the old incumbent — even if a challenger sold the first unit and the
+loyalty charge was paid. To take the customer, a challenger must therefore be a full
+substitute: cheap enough to win the ranking *and* stocked enough to fill 100%.
 
 **Player/admin override.** A player-controlled firm quotes the set price, clamped to the
 same guardrails, and its adaptive state is reset, so the price takes effect on the next
 tick. Uniform across T0, T1 and T2.
 
-**Parameters.** `k` (0.35, aggressiveness), `wholesalePriceResponse` (0.05, base step
+**Parameters.** `pricingAggressiveness` (0.35), `wholesalePriceResponse` (0.05, base step
 fraction), `priceObservationTicks` (30, cadence), `researchPriceMinimumOpportunities`
-(0, minimum traffic before repricing; 0 = repriced at cadence). `switchingStableBand`
-(0.025) drives the price-stability *metric*, not the price itself.
+(0, minimum traffic before repricing; 0 = repriced at cadence). `loyaltyMultiple`
+(per-complexity *bootstrap*: C-1/C-2 **83.33**, C-3 **1.21**, C-4 **0.65**, C-5 **0.26**,
+T3 **0.97**, × `unit_cost` × `(1 + reliability)` — the loyalty charge) and
+`loyaltyEmaAlpha` (**0.01**, the AOV-EMA smoothing driving the adaptive regime above).
+`switchingStableBand` (0.025) drives the
+price-stability *metric*, not the price itself.

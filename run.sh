@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Robotic Space Generation — Python economy kernel launcher.
+# Star Business — Python economy kernel launcher.
 #
 # Wraps the environment setup (interpreter + PYTHONPATH) so you can run the
 # kernel, the service, or the tests with one command.
@@ -23,16 +23,15 @@ cd "$ROOT"
 
 usage() {
   cat <<'EOF'
-Robotic Space Generation — economy kernel launcher
+Star Business — economy kernel launcher
 
 Usage:
   ./run.sh run   [--seed N] [--ticks N] [--cfg JSON] [--out PATH]   headless run
   ./run.sh serve [--host H] [--port P]                              start backend + open browser UI
-  ./run.sh probe [--factors 23,40,70,120,200] [--ticks 720]         calibrate demand scale (sweep tier2DemandFactor)
   ./run.sh test                                                      Python unit tests
 
 Examples:
-  ./run.sh run --seed 12345 --ticks 30 --cfg '{"endUserCount":500,"t2FirmCount":1000}'
+  ./run.sh run --seed 137 --ticks 30 --cfg '{"consumerCount":500,"t2FirmCount":1000}'
   ./run.sh serve                       # full population (lazy reset ~6s)
   ECONOMY_CFG='{"endUserCount":500,"t2FirmCount":1000}' ./run.sh serve
   ./run.sh test
@@ -75,10 +74,6 @@ case "${1:-}" in
       elif command -v xdg-open >/dev/null 2>&1; then xdg-open "$URL"; fi
     ) &
     exec "$PY" -W ignore -m economy.cli.main serve --host "$HOST" --port "$PORT"
-    ;;
-  probe)
-    shift
-    exec "$PY" -W ignore tools/probe_demand.py "$@"
     ;;
   test)
     "$PY" -W ignore tests/py/test_rng.py

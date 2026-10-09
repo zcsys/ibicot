@@ -1,6 +1,6 @@
 """Full kernel runtime: owns the WorldState, applies the JS worker's command
 surface, and publishes the exact ``lastSnapshot`` projection the browser UI
-expects.  This is the Python analogue of ``the canon machine contract (docs/design_canon.md §12)``
+expects.  This is the Python analog of ``the canon machine contract (docs/design_canon.md §12)``
 closure + ``publish()``/``companyDetail()``/``tier2Page()``/``buildAnalytics()``.
 
 The snapshot is a read projection (display-only); aggregate sums use NumPy so
@@ -18,32 +18,32 @@ import numpy as np
 
 from ..core import model as M
 from ..core.config import normalize_config
-from ..core.rng import hash_seed
+from ..core.rng import hash_seed_vec
 from ..core.state import (T0P, T1P, WorldState, _has_tier2_product, add_tier2_line,
-                          quant_r, quant_w, reset_world)
+                          quantize_round, quantize_whole, reset_world)
 from ..kernel.tick import tick as run_tick
 
-_STATS_DIR = Path(__file__).resolve().parents[3] / 'stats'
+_STATS_DIR = Path(__file__).resolve().parents[2] / 'stats'
 _T2_COMP = np.array([p['complexity'] for p in M.T2_PRODUCTS], dtype=np.int64)
 
 
-def stats_row(W, cfg, tick, month):
+def stats_row(world, cfg, tick, month):
     """One compact per-tick economy snapshot (shared by the server recorder and
     the headless CLI runner)."""
-    lc = int(W.t2LineCount)
-    pid = W.t2LineProduct[:lc].astype(np.int64)
+    lc = int(world.t2LineCount)
+    pid = world.t2LineProduct[:lc].astype(np.int64)
     comp = _T2_COMP[pid]
-    t2_price = W.t2Price[:lc]
-    t2_sold = W.t2Sold[:lc]
-    t2_made = W.t2Made[:lc]
-    t0p = W.t0Price
-    t1p = W.t1Price
+    t2_price = world.t2Price[:lc]
+    t2_sold = world.t2Sold[:lc]
+    t2_made = world.t2Made[:lc]
+    t0p = world.t0Price
+    t1p = world.t1Price
     row = {'tick': tick, 'month': month, 'year': month // 12 + 1,
            'gen': month // 240 + 1}
-    m = np.isfinite(t0p)
-    row['t0Price'] = round(float(t0p[m].mean()), 4) if m.any() else None
-    m = np.isfinite(t1p)
-    row['t1Price'] = round(float(t1p[m].mean()), 4) if m.any() else None
+    mask = np.isfinite(t0p)
+    row['t0Price'] = round(float(t0p[mask].mean()), 4) if mask.any() else None
+    mask = np.isfinite(t1p)
+    row['t1Price'] = round(float(t1p[mask].mean()), 4) if mask.any() else None
     for c in (3, 4, 5):
         sel = comp == c
         cap = float(cfg['t2Capacity'][c])
@@ -54,29 +54,43 @@ def stats_row(W, cfg, tick, month):
         else:
             row[f'c{c}Price'] = row[f'c{c}Util'] = None
             row[f'c{c}Made'] = 0.0
-    row['t2Cash'] = float(W.t2Cash[:cfg['t2FirmCount']].sum())
-    row['t2Equity'] = float(W.t2Cash[:cfg['t2FirmCount']].sum()
-                            + W.t2EqBook[:cfg['t2FirmCount']].sum()
+    row['t2Cash'] = float(world.t2Cash[:cfg['t2FirmCount']].sum())
+    row['t2Equity'] = float(world.t2Cash[:cfg['t2FirmCount']].sum()
+                            + world.t2EqBook[:cfg['t2FirmCount']].sum()
                             + cfg['t2FirmCount'] * cfg['t2License'])
-    row['consumersActive'] = float(W.endActive.sum())
-    row['consumersFulfilled'] = float(W.endFulfilled.sum())
+    row['consumersActive'] = float(world.marketActive.sum())
+    row['consumersFulfilled'] = float(world.marketFulfilled.sum())
+    row['stockUnmet'] = float(world.marketStockUnmet.sum())
+    row['t0Demand'] = float(world.t0Demand.sum())
+    row['t0Sold'] = float(world.t0Sold.sum())
+    row['t0Unmet'] = float(np.maximum(0.0, world.t0Demand - world.t0Sold).sum())
+    row['t1Demand'] = float(world.t1Demand.sum())
+    row['t1Sold'] = float(world.t1Sold.sum())
+    row['t1Unmet'] = float(np.maximum(0.0, world.t1Demand - world.t1Sold).sum())
+    row['t2Demand'] = float(world.t2Demand[:lc].sum())
+    row['t2Sold'] = float(world.t2Sold[:lc].sum())
+    row['t2Unmet'] = float(np.maximum(0.0, world.t2Demand[:lc] - world.t2Sold[:lc]).sum())
+    row['loyaltySwitches'] = int(world.loyaltySwitches.sum())
+    row['loyaltyPenalties'] = float(world.loyaltyPenalties.sum())
+    row['loyaltySwitchesT1'] = int(world.loyaltySwitches[0])
+    row['loyaltySwitchesT2'] = int(world.loyaltySwitches[1])
+    row['loyaltySwitchesT3'] = int(world.loyaltySwitches[2])
+    row['loyaltyPenaltiesT1'] = float(world.loyaltyPenalties[0])
+    row['loyaltyPenaltiesT2'] = float(world.loyaltyPenalties[1])
+    row['loyaltyPenaltiesT3'] = float(world.loyaltyPenalties[2])
     return row
 
 NE, NP, N0, N1 = M.NE, M.NP, M.N0, M.N1
 M4 = M.T2_MAX_PRODUCTS_PER_FIRM
 MONTH = M.MONTH
 N2_FIRMS = M.N2_FIRMS
-N_END_USERS = M.N_END_USERS
+N_CONSUMERS = M.N_CONSUMERS
 
-_EI = {e: i for i, e in enumerate(M.ELEMENTS)}
+_EI = {element: i for i, element in enumerate(M.ELEMENTS)}
 _PI = {p['code']: i for i, p in enumerate(M.PRODUCTS)}
 
-T2_COMPANY_NAMES = [
-    'Helion Power Industries', 'Vector Drive Systems', 'Keel Spacecraft Works',
-    'Haven Habitat Systems', 'Forge Automation', 'Relay Computing and Communications',
-    'Prism Scientific Instruments', 'Stratum Industrial Machinery',
-    'Waypoint Supply Industries', 'Sentinel Defence and Rescue Systems',
-]
+# Generic firm names come from ``core.model`` (Star Business naming catalog §9):
+# a sector-specific generic base plus a decimal serial number.
 
 
 def _markup_code(code, cfg):
@@ -84,7 +98,7 @@ def _markup_code(code, cfg):
     return M.t2_markup(comp, cfg)
 
 
-def _sum(arr, n=None):
+def _array_sum(arr, n=None):
     a = arr if n is None else arr[:n]
     return float(np.sum(a))
 
@@ -147,7 +161,7 @@ class KernelRuntime:
         # 240 months = 7,200 ticks; set ECONOMY_MAX_TICK=0 to run until paused.
         self.targetTick = int(os.environ.get('ECONOMY_MAX_TICK', str(M.TIME['ticksPerGeneration'])) or 0)
 
-        self.cfg, self.W = reset_world(cfg)
+        self.cfg, self.world = reset_world(cfg)
         self._init_admin()
         self._init_analytics_scratch()
         self.publish()
@@ -192,7 +206,7 @@ class KernelRuntime:
         self.tier2CompanyHistory = []
         self.tier2HistoryCompany = -1
         self._init_analytics_scratch()
-        self.cfg, self.W = reset_world(cfg if cfg is not None else self.cfg)
+        self.cfg, self.world = reset_world(cfg if cfg is not None else self.cfg)
         self._init_admin()
         self.workerStats = {'steps': 0, 'lastTickMs': 0.0, 'totalTickMs': 0.0}
         self.adminAccounting = {'equipmentSinks': 0, 'sequence': 0, 'lastEquipmentReceipt': None}
@@ -204,17 +218,17 @@ class KernelRuntime:
     def step(self):
         started = time.monotonic()
         t = self.tick + 1
-        np.copyto(self.tickStartT0Inventory, self.W.t0Inv)
-        np.copyto(self.tickStartT1Finished, self.W.t1Fin)
-        run_tick(self.W, self.cfg, t, state=self.state)
+        np.copyto(self.tickStartT0Inventory, self.world.t0Inv)
+        np.copyto(self.tickStartT1Finished, self.world.t1Fin)
+        run_tick(self.world, self.cfg, t, state=self.state)
         for i in range(N0):
-            for e in range(NE):
-                idx = i * NE + e
-                self.lastTickT0Produced[idx] = max(0.0, self.W.t0Inv[idx] - self.tickStartT0Inventory[idx] + self.W.t0Sold[idx])
+            for element in range(NE):
+                idx = i * NE + element
+                self.lastTickT0Produced[idx] = max(0.0, self.world.t0Inv[idx] - self.tickStartT0Inventory[idx] + self.world.t0Sold[idx])
         for cid in range(N1):
             for p in range(NP):
                 idx = cid * NP + p
-                self.lastTickT1Made[idx] = max(0.0, self.W.t1Fin[idx] - self.tickStartT1Finished[idx] + self.W.t1Sold[idx])
+                self.lastTickT1Made[idx] = max(0.0, self.world.t1Fin[idx] - self.tickStartT1Finished[idx] + self.world.t1Sold[idx])
         self.tick = t
         self.month = t // MONTH
         self.workerStats['steps'] += 1
@@ -236,7 +250,7 @@ class KernelRuntime:
         self.flush_stats()
 
     def _record_stats(self):
-        self.statsLog.append(stats_row(self.W, self.cfg, self.tick, self.month))
+        self.statsLog.append(stats_row(self.world, self.cfg, self.tick, self.month))
 
     def flush_stats(self):
         if not self.statsLog:
@@ -253,18 +267,22 @@ class KernelRuntime:
     def apply_config(self, patch):
         if patch is None:
             return self.publish()
-        for key in ('endUserCount', 't2FirmCount'):
+        for key in ('consumerCount', 't2FirmCount'):
             if key in patch and patch[key] != self.cfg[key]:
                 raise ValueError('Population changes require Reset.')
         merged = dict(self.cfg)
         merged.update(patch)
         self.cfg = normalize_config(merged)
-        for cid in range(self.cfg['endUserCount']):
-            a = hash_seed(self.cfg['seed'], 8000000 + cid)
-            b = hash_seed(self.cfg['seed'], 9000000 + cid)
-            self.W.endQMax[cid] = self.cfg['demandQtyMin'] + a % (self.cfg['demandQtyMax'] - self.cfg['demandQtyMin'] + 1)
-            self.W.endChoke[cid] = self.cfg['vmin'] + b / 4294967296 * (self.cfg['vmax'] - self.cfg['vmin'])
-            self.W.endEta[cid] = self.cfg['elasticity']
+        # Recomputed wholesale (vectorized): choke/eta are the only per-consumer
+        # fields that respond to a live config change (routing is supply-driven
+        # and gated on Reset by the population guard above).
+        n = self.cfg['consumerCount']
+        cids = np.arange(n)
+        b = hash_seed_vec(self.cfg['seed'], 9000000 + cids)
+        self.world.consumerChoke[:n] = (self.cfg['chokeMin']
+                                        + b.astype(np.float64) / 4294967296.0
+                                        * (self.cfg['chokeMax'] - self.cfg['chokeMin'])).astype(np.float32)
+        self.world.consumerEta[:n] = self.cfg['elasticity']
         return self.publish()
 
     # ------------------------------------------------------------------
@@ -336,15 +354,15 @@ class KernelRuntime:
             self.selectedT0Id = id_
             self.controllerT0[id_] = 1 if controller == 'PLAYER' else 0
             self.onlineT0[id_] = 1 if online else 0
-            self.W.t0Controller[id_] = self.controllerT0[id_]
+            self.world.t0Controller[id_] = self.controllerT0[id_]
             if self.controllerT0[id_] and ei is not None:
                 index = id_ * NE + ei
-                self.playerPricesT0[id_][code] = quant_r(price)
-                self.W.t0PlayerPrice[index] = self.playerPricesT0[id_][code]
-                self.W.t0LearnOpportunity[index] = self.W.t0LearnPotentialOpportunity[index] = 0
-                self.W.t0LearnProfit[index] = self.W.t0LearnSales[index] = self.W.t0LearnDemand[index] = self.W.t0LearnTicks[index] = 0
-                self.W.t0LearnStep[index] = 1
-                self.W.t0LearnPrevious[index] = float('nan')
+                self.playerPricesT0[id_][code] = quantize_round(price)
+                self.world.t0PlayerPrice[index] = self.playerPricesT0[id_][code]
+                self.world.t0LearnOpportunity[index] = self.world.t0LearnPotentialOpportunity[index] = 0
+                self.world.t0LearnProfit[index] = self.world.t0LearnSales[index] = self.world.t0LearnDemand[index] = self.world.t0LearnTicks[index] = 0
+                self.world.t0LearnStep[index] = 1
+                self.world.t0LearnPrevious[index] = float('nan')
             return self.publish()
         if tier == 'T2':
             id_ = int(id_)
@@ -352,21 +370,21 @@ class KernelRuntime:
                 raise ValueError('Invalid Tier 2 company.')
             product = M.T2_PRODUCT_BY_CODE.get(code)
             if controller == 'PLAYER' and (product is None
-                                           or not _has_tier2_product(self.W, id_, product['id'])
+                                           or not _has_tier2_product(self.world, id_, product['id'])
                                            or not math.isfinite(price) or price < 0):
                 raise ValueError('Select an installed product and a valid non-negative price.')
-            self.W.t2Controller[id_] = 1 if controller == 'PLAYER' else 0
-            self.W.t2Online[id_] = 1 if online else 0
-            if self.W.t2Controller[id_]:
-                for slot in range(int(self.W.t2FirmLineCount[id_])):
-                    line = int(self.W.t2FirmLines[id_ * M4 + slot])
-                    if self.W.t2LineProduct[line] == product['id']:
-                        self.W.t2PlayerPrice[line] = max(price, self.W.t2FinBasis[line] or self.W.t2UnitCost[line], M.MIN_UNIT_PRICE)
-                        self.W.t2Price[line] = self.W.t2PlayerPrice[line]
-                        self.W.t2LearnOpportunity[line] = self.W.t2LearnPotentialOpportunity[line] = 0
-                        self.W.t2LearnProfit[line] = self.W.t2LearnSales[line] = self.W.t2LearnDemand[line] = self.W.t2LearnTicks[line] = 0
-                        self.W.t2LearnStep[line] = 1
-                        self.W.t2LearnPrevious[line] = float('nan')
+            self.world.t2Controller[id_] = 1 if controller == 'PLAYER' else 0
+            self.world.t2Online[id_] = 1 if online else 0
+            if self.world.t2Controller[id_]:
+                for slot in range(int(self.world.t2FirmLineCount[id_])):
+                    line = int(self.world.t2FirmLines[id_ * M4 + slot])
+                    if self.world.t2LineProduct[line] == product['id']:
+                        self.world.t2PlayerPrice[line] = max(price, self.world.t2FinBasis[line] or self.world.t2UnitCost[line], M.MIN_UNIT_PRICE)
+                        self.world.t2Price[line] = self.world.t2PlayerPrice[line]
+                        self.world.t2LearnOpportunity[line] = self.world.t2LearnPotentialOpportunity[line] = 0
+                        self.world.t2LearnProfit[line] = self.world.t2LearnSales[line] = self.world.t2LearnDemand[line] = self.world.t2LearnTicks[line] = 0
+                        self.world.t2LearnStep[line] = 1
+                        self.world.t2LearnPrevious[line] = float('nan')
             self.selectedTierControl = 'T2'
             self.selectedT2Id = id_
             return self.publish()
@@ -378,51 +396,51 @@ class KernelRuntime:
         self.selectedId = id_
         self.controller[id_] = 1 if controller == 'PLAYER' else 0
         self.online[id_] = 1 if online else 0
-        self.W.t1Controller[id_] = self.controller[id_]
+        self.world.t1Controller[id_] = self.controller[id_]
         index = id_ * NP + pi
         if self.controller[id_] and math.isfinite(price):
-            self.playerPrices[id_][code] = quant_r(price)
-            self.W.playerPrice[index] = self.playerPrices[id_][code]
-            self.W.t1LearnOpportunity[index] = self.W.t1LearnPotentialOpportunity[index] = 0
-            self.W.t1LearnProfit[index] = self.W.t1LearnSales[index] = self.W.t1LearnDemand[index] = self.W.t1LearnTicks[index] = 0
-            self.W.t1LearnStep[index] = 1
-            self.W.t1LearnPrevious[index] = float('nan')
+            self.playerPrices[id_][code] = quantize_round(price)
+            self.world.playerPrice[index] = self.playerPrices[id_][code]
+            self.world.t1LearnOpportunity[index] = self.world.t1LearnPotentialOpportunity[index] = 0
+            self.world.t1LearnProfit[index] = self.world.t1LearnSales[index] = self.world.t1LearnDemand[index] = self.world.t1LearnTicks[index] = 0
+            self.world.t1LearnStep[index] = 1
+            self.world.t1LearnPrevious[index] = float('nan')
         return self.publish()
 
     def buy_equipment(self, tier, id_, code):
         if tier == 'T2':
             id_ = int(id_)
-            if not (0 <= id_ < self.cfg['t2FirmCount']) or not self.W.t2Controller[id_]:
+            if not (0 <= id_ < self.cfg['t2FirmCount']) or not self.world.t2Controller[id_]:
                 raise ValueError('Only player-controlled Tier 2 companies can buy machinery.')
             product = M.T2_PRODUCT_BY_CODE.get(code)
             if product is None:
                 raise ValueError('Unknown product.')
-            add_tier2_line(self.W, self.cfg, id_, product)
+            add_tier2_line(self.world, self.cfg, id_, product)
             return self.publish()
         id_ = int(id_)
         product = M.PRODUCTS[_PI[code]] if code in _PI else None
         if self.controller[id_] != 1 or product is None or code in self.equipment[id_]:
             raise ValueError('Only PLAYER-controlled companies can buy new equipment.')
-        if self.W.t1Cash[id_] + 1e-9 < self.cfg['t1Machinery']:
+        if self.world.t1Cash[id_] + 1e-9 < self.cfg['t1Machinery']:
             raise ValueError('Insufficient cash.')
-        self.W.t1Cash[id_] -= self.cfg['t1Machinery']
-        self.W.t1EqBook[id_] += self.cfg['t1Machinery']
+        self.world.t1Cash[id_] -= self.cfg['t1Machinery']
+        self.world.t1EqBook[id_] += self.cfg['t1Machinery']
         self.equipment[id_].append(code)
         index = id_ * NP + _PI[code]
-        input_cost = sum(self._last_finite_wholesale(_EI[e]) * r for e, r in product['inputs'].items())
+        input_cost = sum(self._last_finite_wholesale(_EI[element]) * r for element, r in product['inputs'].items())
         uc = input_cost + M.conversion_cost(product['complexity'], self.cfg)
-        self.W.t1Operates[index] = 1
-        self.W.t1UnitCost[index] = uc
-        self.W.t1Rel[index] = 0.5
-        self.W.t1Price[index] = quant_r(uc * (1 + _markup_code(code, self.cfg)), uc)
-        self.W.t1PrevPrice[index] = self.W.t1Price[index]
+        self.world.t1Operates[index] = 1
+        self.world.t1UnitCost[index] = uc
+        self.world.t1Rel[index] = 0.5
+        self.world.t1Price[index] = quantize_round(uc * (1 + _markup_code(code, self.cfg)), uc)
+        self.world.t1PrevPrice[index] = self.world.t1Price[index]
         return self.publish()
 
-    def _last_finite_wholesale(self, e):
+    def _last_finite_wholesale(self, element):
         best = float('inf')
         for i in range(N0):
-            if M.ELEMENTS[e] in T0P[i]['elements']:
-                best = min(best, float(self.W.t0Price[i * NE + e]))
+            if M.ELEMENTS[element] in T0P[i]['elements']:
+                best = min(best, float(self.world.t0Price[i * NE + element]))
         return best if math.isfinite(best) else self.cfg['baseCost']
 
     def company_detail(self, tier, id_):
@@ -432,44 +450,44 @@ class KernelRuntime:
     # Projections (ports of worker publish() + helpers)
     # ------------------------------------------------------------------
     def _book_t0_equity(self):
-        v = float(self.W.t0Cash.sum())
+        v = float(self.world.t0Cash.sum()) + N0 * (self.cfg['t0License'] + self.cfg['t0Machinery'] + self.cfg['t0Reserve'])
         for i in range(N0):
             b = i * NE
-            for e in range(NE):
-                v += float(self.W.t0Inv[b + e] * self.W.t0InvBasis[b + e])
+            for element in range(NE):
+                v += float(self.world.t0Inv[b + element] * self.world.t0InvBasis[b + element])
         return v
 
     def _market_averages(self):
-        W = self.W
+        world = self.world
         wVol = np.zeros(NE)
         wRev = np.zeros(NE)
         rVol = np.zeros(NP)
         rRev = np.zeros(NP)
         rCounts = np.zeros(NP, dtype=np.int64)
         for i in range(N0):
-            for e in range(NE):
-                if M.ELEMENTS[e] in T0P[i]['elements']:
-                    idx = i * NE + e
-                    wVol[e] += W.t0Sold[idx]
-                    wRev[e] += W.t0Revenue[idx]
+            for element in range(NE):
+                if M.ELEMENTS[element] in T0P[i]['elements']:
+                    idx = i * NE + element
+                    wVol[element] += world.t0Sold[idx]
+                    wRev[element] += world.t0Revenue[idx]
         for cid in range(N1):
             for p in range(NP):
-                if W.t1Operates[cid * NP + p]:
-                    rVol[p] += W.t1Sold[cid * NP + p]
-                    rRev[p] += W.t1Rev[cid * NP + p]
+                if world.t1Operates[cid * NP + p]:
+                    rVol[p] += world.t1Sold[cid * NP + p]
+                    rRev[p] += world.t1Revenue[cid * NP + p]
                     rCounts[p] += 1
         wP = np.zeros(NE)
-        for e in range(NE):
-            if wVol[e]:
-                wP[e] = wRev[e] / wVol[e]
+        for element in range(NE):
+            if wVol[element]:
+                wP[element] = wRev[element] / wVol[element]
             else:
                 s = 0.0
                 n = 0
                 for i in range(N0):
-                    if M.ELEMENTS[e] in T0P[i]['elements']:
-                        s += W.t0Price[i * NE + e]
+                    if M.ELEMENTS[element] in T0P[i]['elements']:
+                        s += world.t0Price[i * NE + element]
                         n += 1
-                wP[e] = s / n if n else float('nan')
+                wP[element] = s / n if n else float('nan')
         rP = np.zeros(NP)
         for p in range(NP):
             if rVol[p]:
@@ -478,8 +496,8 @@ class KernelRuntime:
                 s = 0.0
                 n = 0
                 for cid in range(N1):
-                    if W.t1Operates[cid * NP + p] and math.isfinite(W.t1Price[cid * NP + p]):
-                        s += W.t1Price[cid * NP + p]
+                    if world.t1Operates[cid * NP + p] and math.isfinite(world.t1Price[cid * NP + p]):
+                        s += world.t1Price[cid * NP + p]
                         n += 1
                 rP[p] = s / n if n else float('nan')
         wv = float(wVol.sum())
@@ -491,8 +509,8 @@ class KernelRuntime:
                 'rAvg': rr / rv if rv else float(np.nansum(rP) / NP),
                 'wVolume': wv, 'rVolume': rv}
 
-    def _cohort_analytics(self, m):
-        W = self.W
+    def _cohort_analytics(self, analytics):
+        world = self.world
         cohorts = []
         for cidx in range(NP):
             start = cidx * 100
@@ -516,45 +534,45 @@ class KernelRuntime:
             for cid in range(start, end):
                 b = cid * NP + pIdx
                 rb = cid * NE
-                stock = W.t1Fin[b]
-                p = W.t1Price[b]
+                stock = world.t1Fin[b]
+                p = world.t1Price[b]
                 if math.isfinite(p):
                     price += p
                     eqCount += 1
-                uc += W.t1UnitCost[b]
+                uc += world.t1UnitCost[b]
                 finished += stock
-                for e in range(NE):
-                    raw += W.raw[rb + e]
-                cash += W.t1Cash[cid]
+                for element in range(NE):
+                    raw += world.raw[rb + element]
+                cash += world.t1Cash[cid]
                 inv_val = 0.0
-                for e in range(NE):
-                    inv_val += W.raw[rb + e] * W.rawBasis[rb + e]
+                for element in range(NE):
+                    inv_val += world.raw[rb + element] * world.rawBasis[rb + element]
                 for p2 in range(NP):
-                    if W.t1Operates[cid * NP + p2]:
-                        inv_val += W.t1Fin[cid * NP + p2] * W.t1FinBasis[cid * NP + p2]
-                equity += W.t1Cash[cid] + W.t1EqBook[cid] + inv_val + self.cfg['t1License']
+                    if world.t1Operates[cid * NP + p2]:
+                        inv_val += world.t1Fin[cid * NP + p2] * world.t1FinBasis[cid * NP + p2]
+                equity += world.t1Cash[cid] + world.t1EqBook[cid] + inv_val + self.cfg['t1License']
                 for p in range(NP):
-                    if not W.t1Operates[cid * NP + p]:
+                    if not world.t1Operates[cid * NP + p]:
                         continue
                     index = cid * NP + p
                     made += self.lastTickT1Made[index]
-                    sold += W.t1Sold[index]
-                    revenue += W.t1Rev[index]
-                    cogs += W.t1COGS[index]
+                    sold += world.t1Sold[index]
+                    revenue += world.t1Revenue[index]
+                    cogs += world.t1COGS[index]
                     if p != pIdx:
-                        finished += W.t1Fin[index]
-                rel += W.t1Rel[b]
-                stability += W.t1PriceStability[b]
+                        finished += world.t1Fin[index]
+                rel += world.t1Rel[b]
+                stability += world.t1PriceStability[b]
                 if self.controller[cid]:
                     players += 1
-                self.prevT1FinishedCohort[b] = W.t1Fin[b]
-            marketVol = m['rVol'][pIdx]
+                self.prevT1FinishedCohort[b] = world.t1Fin[b]
+            marketVol = analytics['rVol'][pIdx]
             cohorts.append({
                 'code': product, 'displayName': M.PRODUCTS[pIdx]['name'], 'name': T1P[cidx]['name'],
                 'sector': M.t1_sector(product),
                 'firms': end - start,
-                'equipment': 'Basic' if M.PRODUCTS[pIdx]['complexity'] == 1 else 'Compound',
-                'avgPrice': price / eqCount if eqCount else float('nan'),
+                'equipment': M.T1_EQUIPMENT_CLASS[M.PRODUCTS[pIdx]['complexity']],
+                'avgPrice': price / eqCount if eqCount else None,
                 'avgUnitCost': uc / (end - start),
                 'finished': float(finished), 'raw': float(raw), 'inventory': float(finished + raw),
                 'cash': float(cash), 'equity': float(equity), 'made': float(made),
@@ -563,59 +581,59 @@ class KernelRuntime:
                 'margin': float((revenue - cogs) / revenue) if revenue else 0.0,
                 'reliability': float(rel / (end - start)),
                 'priceStability': float(stability / (end - start)),
-                'marketShare': (float(W.t1Sold[start * NP + pIdx:end * NP + pIdx][::NP].sum()) / marketVol) if marketVol else 0.0,
+                'marketShare': (float(world.t1Sold[start * NP + pIdx:end * NP + pIdx][::NP].sum()) / marketVol) if marketVol else 0.0,
                 'players': players,
             })
         return cohorts
 
-    def _build_analytics(self, m):
-        W = self.W
-        t0Inventory = _sum(W.t0Inv)
-        t0Cash = _sum(W.t0Cash)
-        t0Sold = _sum(W.t0Sold)
-        t0Revenue = _sum(W.t0Revenue)
+    def _build_analytics(self, analytics):
+        world = self.world
+        t0Inventory = _array_sum(world.t0Inv)
+        t0Cash = _array_sum(world.t0Cash)
+        t0Sold = _array_sum(world.t0Sold)
+        t0Revenue = _array_sum(world.t0Revenue)
         t0Produced = np.zeros(NE)
         t0Vol = np.zeros(NE)
         t0HHI = [0.0] * NE
         t0Rel = [[] for _ in range(NE)]
         for i in range(N0):
-            for e in range(NE):
-                if M.ELEMENTS[e] in T0P[i]['elements']:
-                    idx = i * NE + e
-                    t0Produced[e] += self.lastTickT0Produced[idx]
-                    t0Vol[e] += W.t0Sold[idx]
-                    t0Rel[e].append(W.t0Rel[idx])
-                    self.prevT0Inventory[idx] = W.t0Inv[idx]
-        for e in range(NE):
-            vols = [W.t0Sold[i * NE + e] for i in range(N0) if M.ELEMENTS[e] in T0P[i]['elements']]
-            t0HHI[e] = _hhi(vols)
+            for element in range(NE):
+                if M.ELEMENTS[element] in T0P[i]['elements']:
+                    idx = i * NE + element
+                    t0Produced[element] += self.lastTickT0Produced[idx]
+                    t0Vol[element] += world.t0Sold[idx]
+                    t0Rel[element].append(world.t0Rel[idx])
+                    self.prevT0Inventory[idx] = world.t0Inv[idx]
+        for element in range(NE):
+            vols = [world.t0Sold[i * NE + element] for i in range(N0) if M.ELEMENTS[element] in T0P[i]['elements']]
+            t0HHI[element] = _hhi(vols)
         t1Raw = t1Finished = t1Cash = t1Sold = t1Revenue = t1COGS = t1Made = t1Equity = 0.0
         activeFirms = players = relWeighted = relN = 0
         for cid in range(N1):
             rb = cid * NE
             raw = 0.0
             finished = 0.0
-            eqv = W.t1Cash[cid] + W.t1EqBook[cid]
-            for e in range(NE):
-                raw += W.raw[rb + e]
-                eqv += W.raw[rb + e] * W.rawBasis[rb + e]
+            eqv = world.t1Cash[cid] + world.t1EqBook[cid]
+            for element in range(NE):
+                raw += world.raw[rb + element]
+                eqv += world.raw[rb + element] * world.rawBasis[rb + element]
             t1Raw += raw
-            t1Cash += W.t1Cash[cid]
+            t1Cash += world.t1Cash[cid]
             if self.controller[cid]:
                 players += 1
             any_ = False
             for p in range(NP):
-                if W.t1Operates[cid * NP + p]:
+                if world.t1Operates[cid * NP + p]:
                     idx = cid * NP + p
-                    fin = W.t1Fin[idx]
+                    fin = world.t1Fin[idx]
                     finished += fin
-                    eqv += fin * W.t1FinBasis[idx]
-                    t1Sold += W.t1Sold[idx]
-                    t1Revenue += W.t1Rev[idx]
-                    t1COGS += W.t1COGS[idx]
+                    eqv += fin * world.t1FinBasis[idx]
+                    t1Sold += world.t1Sold[idx]
+                    t1Revenue += world.t1Revenue[idx]
+                    t1COGS += world.t1COGS[idx]
                     t1Made += self.lastTickT1Made[idx]
                     self.prevT1Finished[idx] = fin
-                    relWeighted += W.t1Rel[idx]
+                    relWeighted += world.t1Rel[idx]
                     relN += 1
                     any_ = True
             if any_:
@@ -623,29 +641,29 @@ class KernelRuntime:
             t1Finished += finished
             t1Equity += eqv + self.cfg['t1License']
         n2 = self.cfg['t2FirmCount']
-        lc = int(W.t2LineCount)
-        t2Cash = _sum(W.t2Cash, n2)
-        t2Equity = _sum(W.t2Cash, n2) + _sum(W.t2EqBook, n2) + n2 * self.cfg['t2License']
-        t2Inventory = _sum(W.t2Fin, lc)
-        t2Made = _sum(W.t2Made, lc)
-        t2Sold = _sum(W.t2Sold, lc)
-        t2Revenue = _sum(W.t2Revenue, lc)
-        t2COGS = _sum(W.t2COGS, lc)
-        t2Equity += float((W.t2Fin[:lc] * W.t2FinBasis[:lc]).sum())
-        t2Inventory += _sum(W.t2Raw, n2 * NE) + _sum(W.t2T1Raw, n2 * NP)
-        t2Equity += float((W.t2Raw[:n2 * NE] * W.t2RawBasis[:n2 * NE]).sum())
-        t2Equity += float((W.t2T1Raw[:n2 * NP] * W.t2T1Basis[:n2 * NP]).sum())
-        potential = _sum(W.endPotential)
-        active = _sum(W.endActive)
-        fulfilled = _sum(W.endFulfilled)
-        priceLost = _sum(W.endPriceLost)
-        stockUnmet = _sum(W.endStockUnmet)
+        lc = int(world.t2LineCount)
+        t2Cash = _array_sum(world.t2Cash, n2)
+        t2Equity = _array_sum(world.t2Cash, n2) + _array_sum(world.t2EqBook, n2) + n2 * self.cfg['t2License']
+        t2Inventory = _array_sum(world.t2Fin, lc)
+        t2Made = _array_sum(world.t2Made, lc)
+        t2Sold = _array_sum(world.t2Sold, lc)
+        t2Revenue = _array_sum(world.t2Revenue, lc)
+        t2COGS = _array_sum(world.t2COGS, lc)
+        t2Equity += float((world.t2Fin[:lc] * world.t2FinBasis[:lc]).sum())
+        t2Inventory += _array_sum(world.t2Raw, n2 * NE) + _array_sum(world.t2T1Raw, n2 * NP)
+        t2Equity += float((world.t2Raw[:n2 * NE] * world.t2RawBasis[:n2 * NE]).sum())
+        t2Equity += float((world.t2T1Raw[:n2 * NP] * world.t2T1Basis[:n2 * NP]).sum())
+        potential = _array_sum(world.marketPotential)
+        active = _array_sum(world.marketActive)
+        fulfilled = _array_sum(world.marketFulfilled)
+        priceLost = _array_sum(world.marketPriceLost)
+        stockUnmet = _array_sum(world.marketStockUnmet)
         orderTotal = self.state.get('activeOrders', 0)
         fulfilledOrders = self.state.get('fulfilledOrders', 0)
-        cohort = self._cohort_analytics(m)
+        cohort = self._cohort_analytics(analytics)
         latest = {
-            'tick': self.tick, 'wholesaleAvg': m['wAvg'], 'retailAvg': m['rAvg'],
-            'wVolume': m['wVolume'], 'rVolume': m['rVolume'],
+            'tick': self.tick, 'wholesaleAvg': analytics['wAvg'], 'retailAvg': analytics['rAvg'],
+            'wVolume': analytics['wVolume'], 'rVolume': analytics['rVolume'],
             't0Inventory': t0Inventory, 't1Inventory': t1Raw + t1Finished,
             't0Equity': self._book_t0_equity(), 't1Equity': t1Equity,
             't2Cash': t2Cash, 't2Equity': t2Equity, 't2Made': t2Made,
@@ -663,8 +681,8 @@ class KernelRuntime:
             self.analyticsHistory.append(latest)
         if len(self.analyticsHistory) > 240:
             self.analyticsHistory.pop(0)
-        return {
-            'cohort': cohort, 'latest': latest, 't0Inventory': t0Inventory, 't0Cash': t0Cash,
+        return {**analytics,
+                'cohort': cohort, 'latest': latest, 't0Inventory': t0Inventory, 't0Cash': t0Cash,
             't0Sold': t0Sold, 't0Revenue': t0Revenue, 't0Equity': self._book_t0_equity(),
             't0Produced': t0Produced, 't0Vol': t0Vol, 't0HHI': t0HHI,
             't1Raw': t1Raw, 't1Finished': t1Finished, 't1Cash': t1Cash,
@@ -680,79 +698,79 @@ class KernelRuntime:
             'priceLossShare': priceLost / potential if potential else 0.0,
             'stockUnmetShare': stockUnmet / active if active else 0.0,
             'retailRevenue': self.state.get('consumerPayments', 0),
-            'difficultyMean': float(W.difficulty.mean()),
-            'difficultyMin': float(W.difficulty.min()),
-            'difficultyMax': float(W.difficulty.max()),
+            'difficultyMean': float(world.difficulty.mean()),
+            'difficultyMin': float(world.difficulty.min()),
+            'difficultyMax': float(world.difficulty.max()),
         }
 
     def _tier2_company(self, id_, detailed=True):
-        W = self.W
+        world = self.world
         if not (0 <= id_ < self.cfg['t2FirmCount']):
             return None
         products = []
         finished = made = sold = revenue = cogs = raw = value = capacity = 0.0
-        for slot in range(int(W.t2FirmLineCount[id_])):
-            line = int(W.t2FirmLines[id_ * M4 + slot])
-            product = M.T2_PRODUCTS[int(W.t2LineProduct[line])]
+        for slot in range(int(world.t2FirmLineCount[id_])):
+            line = int(world.t2FirmLines[id_ * M4 + slot])
+            product = M.T2_PRODUCTS[int(world.t2LineProduct[line])]
             products.append({
                 'line': line, 'code': product['code'], 'name': product['name'],
                 'primaryMaterial': next(p['name'] for p in M.PRODUCTS if p['code'] == product['primaryMaterial']),
                 'complexity': product['complexity'],
-                'recipe': ' + '.join(f'{q} {M.PRODUCTS[m]["name"]}' for m, q in product['ingredients']),
-                'price': float(W.t2Price[line]),
-                'unitCost': float(W.t2FinBasis[line] or W.t2UnitCost[line]),
+                'recipe': ' + '.join(f'{q} {M.PRODUCTS[material_idx]["name"]}' for material_idx, q in product['ingredients']),
+                'price': float(world.t2Price[line]),
+                'unitCost': float(world.t2FinBasis[line] or world.t2UnitCost[line]),
                 'capacity': self.cfg['t2Capacity'][product['complexity']],
-                'finished': float(W.t2Fin[line]), 'made': float(W.t2Made[line]),
-                'sold': float(W.t2Sold[line]), 'revenue': float(W.t2Revenue[line]),
-                'cogs': float(W.t2COGS[line]),
-                'grossProfit': float(W.t2Revenue[line] - W.t2COGS[line]),
-                'margin': float((W.t2Revenue[line] - W.t2COGS[line]) / W.t2Revenue[line]) if W.t2Revenue[line] else 0.0,
-                'utilization': float(W.t2Made[line] / self.cfg['t2Capacity'][product['complexity']]),
-                'demandEMA': float(W.t2DemandEMA[line]), 'salesEMA': float(W.t2SalesEMA[line]),
-                'stockCoverage': float(W.t2Fin[line] / W.t2SalesEMA[line]) if W.t2SalesEMA[line] > 0 else None,
-                'reliability': float(W.t2Rel[line]),
+                'finished': float(world.t2Fin[line]), 'made': float(world.t2Made[line]),
+                'sold': float(world.t2Sold[line]), 'revenue': float(world.t2Revenue[line]),
+                'cogs': float(world.t2COGS[line]),
+                'grossProfit': float(world.t2Revenue[line] - world.t2COGS[line]),
+                'margin': float((world.t2Revenue[line] - world.t2COGS[line]) / world.t2Revenue[line]) if world.t2Revenue[line] else 0.0,
+                'utilization': float(world.t2Made[line] / self.cfg['t2Capacity'][product['complexity']]),
+                'demandEMA': float(world.t2DemandEMA[line]), 'salesEMA': float(world.t2SalesEMA[line]),
+                'stockCoverage': float(world.t2Fin[line] / world.t2SalesEMA[line]) if world.t2SalesEMA[line] > 0 else None,
+                'reliability': float(world.t2Rel[line]),
             })
             capacity += self.cfg['t2Capacity'][product['complexity']]
-            finished += W.t2Fin[line]
-            made += W.t2Made[line]
-            sold += W.t2Sold[line]
-            revenue += W.t2Revenue[line]
-            cogs += W.t2COGS[line]
-            value += W.t2Fin[line] * W.t2FinBasis[line]
+            finished += world.t2Fin[line]
+            made += world.t2Made[line]
+            sold += world.t2Sold[line]
+            revenue += world.t2Revenue[line]
+            cogs += world.t2COGS[line]
+            value += world.t2Fin[line] * world.t2FinBasis[line]
         inputs = []
         for material in range(NP):
             basic = material < NE
             index = id_ * (NE if basic else NP) + material
-            q = (W.t2Raw if basic else W.t2T1Raw)[index]
-            b = (W.t2RawBasis if basic else W.t2T1Basis)[index]
+            q = (world.t2Raw if basic else world.t2T1Raw)[index]
+            b = (world.t2RawBasis if basic else world.t2T1Basis)[index]
             raw += q
             value += q * b
             if detailed:
-                supplier = int(W.t2Preferred[id_ * NP + material])
+                supplier = int(world.t2Preferred[id_ * NP + material])
                 seller = supplier // NP if supplier >= 0 else -1
                 inputs.append({
                     'name': M.PRODUCTS[material]['name'], 'sourceTier': 'T1',
                     'stock': float(q), 'basis': float(b), 'value': float(q * b),
                     'supplier': supplier, 'supplierId': seller,
-                    'supplierName': (T1P[seller // 100]['name'] + ' ' + str(seller % 100 + 1).zfill(3)) if seller >= 0 else None,
-                    'supplierPrice': float(W.t1Price[supplier]) if supplier >= 0 else None,
-                    'supplierReliability': float(W.t1Rel[supplier]) if supplier >= 0 else None,
+                    'supplierName': M.t1_firm_name(seller) if seller >= 0 else None,
+                    'supplierPrice': float(world.t1Price[supplier]) if supplier >= 0 else None,
+                    'supplierReliability': float(world.t1Rel[supplier]) if supplier >= 0 else None,
                 })
         eligible = []
         if detailed:
             eligible = [{'code': p['code'], 'name': p['name'], 'price': self.cfg['t2Machinery'][p['complexity']],
                          'complexity': p['complexity']}
                         for p in M.T2_PRODUCTS
-                        if p['complexity'] <= W.t2Capability[id_] and W.t2Sector[id_] == p['sectorIndex']
-                        and not _has_tier2_product(W, id_, p['id'])]
+                        if p['complexity'] <= world.t2Capability[id_] and world.t2Sector[id_] == p['sectorIndex']
+                        and not _has_tier2_product(world, id_, p['id'])]
         return {'tier': 'T2', 'id': id_,
-                'name': T2_COMPANY_NAMES[int(W.t2Sector[id_])] + ' ' + str(id_ + 1).zfill(5),
-                'sector': M.T2_SECTORS[int(W.t2Sector[id_])], 'capability': int(W.t2Capability[id_]),
-                'controller': 'PLAYER' if W.t2Controller[id_] else 'BOT',
-                'online': bool(W.t2Online[id_]),
-                'cash': float(W.t2Cash[id_]), 'eqBook': float(W.t2EqBook[id_]),
-                'equipmentBookValue': float(W.t2EqBook[id_]),
-                'equity': float(W.t2Cash[id_] + W.t2EqBook[id_] + value + self.cfg['t2License']),
+                'name': M.t2_firm_name(int(world.t2Sector[id_]), id_),
+                'sector': M.T2_SECTORS[int(world.t2Sector[id_])], 'capability': int(world.t2Capability[id_]),
+                'controller': 'PLAYER' if world.t2Controller[id_] else 'BOT',
+                'online': bool(world.t2Online[id_]),
+                'cash': float(world.t2Cash[id_]), 'eqBook': float(world.t2EqBook[id_]),
+                'equipmentBookValue': float(world.t2EqBook[id_]),
+                'equity': float(world.t2Cash[id_] + world.t2EqBook[id_] + value + self.cfg['t2License']),
                 'inventory': float(raw + finished), 'inventoryCapacity': self.cfg['storage'],
                 'raw': float(raw), 'finished': float(finished), 'made': float(made), 'sold': float(sold),
                 'revenue': float(revenue), 'cogs': float(cogs),
@@ -768,7 +786,7 @@ class KernelRuntime:
                 'products': products, 'inputs': inputs, 'eligibleEquipment': eligible}
 
     def _tier2_page(self):
-        W = self.W
+        world = self.world
         q = self.tier2Query
         search = q['search'].lower()
         n = self.cfg['t2FirmCount']
@@ -781,16 +799,16 @@ class KernelRuntime:
             return {'page': page, 'pageSize': q['pageSize'], 'total': n, 'rows': rows}
         matches = []
         for id_ in range(n):
-            sector = M.T2_SECTORS[int(W.t2Sector[id_])]
-            control = 'PLAYER' if W.t2Controller[id_] else 'BOT'
+            sector = M.T2_SECTORS[int(world.t2Sector[id_])]
+            control = 'PLAYER' if world.t2Controller[id_] else 'BOT'
             if q['sector'] and q['sector'] != sector:
                 continue
             if q['controller'] and q['controller'] != control:
                 continue
             if search:
-                text = T2_COMPANY_NAMES[int(W.t2Sector[id_])] + ' ' + str(id_ + 1).zfill(5) + ' ' + sector + ' ' + control
-                for slot in range(int(W.t2FirmLineCount[id_])):
-                    text += ' ' + M.T2_PRODUCTS[int(W.t2LineProduct[int(W.t2FirmLines[id_ * M4 + slot])])]['name']
+                text = M.t2_firm_name(int(world.t2Sector[id_]), id_) + ' ' + sector + ' ' + control
+                for slot in range(int(world.t2FirmLineCount[id_])):
+                    text += ' ' + M.T2_PRODUCTS[int(world.t2LineProduct[int(world.t2FirmLines[id_ * M4 + slot])])]['name']
                 if search not in text.lower():
                     continue
             matches.append(id_)
@@ -808,7 +826,7 @@ class KernelRuntime:
         return {'page': page, 'pageSize': q['pageSize'], 'total': len(matches), 'rows': rows}
 
     def _company_detail(self, tier, id_):
-        W = self.W
+        world = self.world
         if tier == 'T2':
             return self._tier2_company(id_)
         id_ = max(0, id_)
@@ -818,82 +836,82 @@ class KernelRuntime:
                 return None
             elements = []
             inventory = prod = sold = revenue = equity = 0.0
-            equity = W.t0Cash[id_]
-            for e in M.ELEMENTS:
-                if e not in co['elements']:
+            equity = world.t0Cash[id_] + self.cfg['t0License'] + self.cfg['t0Machinery'] + self.cfg['t0Reserve']
+            for element in M.ELEMENTS:
+                if element not in co['elements']:
                     continue
-                i = _EI[e]
+                i = _EI[element]
                 idx = id_ * NE + i
-                stock = W.t0Inv[idx]
-                invVal = stock * W.t0InvBasis[idx]
+                stock = world.t0Inv[idx]
+                invVal = stock * world.t0InvBasis[idx]
                 inventory += stock
                 prod += self.lastTickT0Produced[idx]
-                sold += W.t0Sold[idx]
-                revenue += W.t0Revenue[idx]
+                sold += world.t0Sold[idx]
+                revenue += world.t0Revenue[idx]
                 equity += invVal
                 elements.append({
-                    'element': e, 'stock': float(stock), 'cost': float(W.t0Cost[idx]),
-                    'price': float(W.t0Price[idx]), 'production': float(self.lastTickT0Produced[idx]),
-                    'sold': float(W.t0Sold[idx]), 'revenue': float(W.t0Revenue[idx]),
-                    'cogs': float(W.t0COGS[idx]),
-                    'grossProfit': float(W.t0Revenue[idx] - W.t0COGS[idx]),
-                    'reliability': float(W.t0Rel[idx]), 'stability': float(W.t0Stability[idx]),
-                    'reliabilityAttempts': int(W.t0RelAttempts[idx]),
+                    'element': element, 'stock': float(stock), 'cost': float(world.t0Cost[idx]),
+                    'price': float(world.t0Price[idx]), 'production': float(self.lastTickT0Produced[idx]),
+                    'sold': float(world.t0Sold[idx]), 'revenue': float(world.t0Revenue[idx]),
+                    'cogs': float(world.t0COGS[idx]),
+                    'grossProfit': float(world.t0Revenue[idx] - world.t0COGS[idx]),
+                    'reliability': float(world.t0Rel[idx]), 'stability': float(world.t0Stability[idx]),
+                    'reliabilityAttempts': int(world.t0RelAttempts[idx]),
                 })
             return {'tier': 'T0', 'id': id_, 'name': co['name'], 'elements': list(co['elements']),
                     'controller': 'PLAYER' if self.controllerT0[id_] else 'BOT',
                     'online': bool(self.onlineT0[id_]),
-                    'cash': float(W.t0Cash[id_]), 'inventory': float(inventory), 'equity': float(equity),
+                    'cash': float(world.t0Cash[id_]), 'inventory': float(inventory), 'equity': float(equity),
                     'made': float(prod), 'sold': float(sold), 'revenue': float(revenue),
                     'cogs': float(sum(x['cogs'] for x in elements)),
                     'grossProfit': float(revenue - sum(x['cogs'] for x in elements)),
-                    'capacity': self.cfg['capacity'], 'targetInventory': self.cfg['targetInventory'],
-                    'maxInventory': self.cfg['maxInventory'], 'status': 'ACTIVE', 'elementData': elements}
+                    'capacity': self.cfg['t0Capacity'], 'targetInventory': self.cfg['t0Storage'],
+                    'maxInventory': self.cfg['t0Storage'], 'status': 'ACTIVE', 'elementData': elements}
         if id_ >= N1:
             return None
         piBase = T1P[id_ // 100]
         raw = []
-        for e in M.ELEMENTS:
-            i = _EI[e]
+        for element in M.ELEMENTS:
+            i = _EI[element]
             idx = id_ * NE + i
-            raw.append({'element': e, 'stock': float(W.raw[idx]), 'basis': float(W.rawBasis[idx]),
-                        'lastBuy': float(W.t1LastBuy[idx]) if math.isfinite(W.t1LastBuy[idx]) else None,
-                        'inputNeed': float(W.t1InputNeed[idx]), 'purchaseRequest': float(W.t1PurchaseReq[idx]),
-                        'preferredSupplier': int(W.preferredWholesale[idx])})
+            raw.append({'element': element, 'stock': float(world.raw[idx]), 'basis': float(world.rawBasis[idx]),
+                        'lastBuy': float(world.t1LastBuy[idx]) if math.isfinite(world.t1LastBuy[idx]) else None,
+                        'inputNeed': float(world.t1InputNeed[idx]), 'purchaseRequest': float(world.t1PurchaseReq[idx]),
+                        'preferredSupplier': int(world.preferredWholesale[idx])})
         products = []
         inv = eqv = made = sold = revenue = cogs = 0.0
-        eqv = W.t1Cash[id_] + W.t1EqBook[id_] + self.cfg['t1License']
+        eqv = world.t1Cash[id_] + world.t1EqBook[id_] + self.cfg['t1License']
         for p in range(NP):
-            if W.t1Operates[id_ * NP + p]:
+            if world.t1Operates[id_ * NP + p]:
                 idx = id_ * NP + p
-                fin = W.t1Fin[idx]
+                fin = world.t1Fin[idx]
                 inv += fin
-                eqv += fin * W.t1FinBasis[idx]
+                eqv += fin * world.t1FinBasis[idx]
                 made += self.lastTickT1Made[idx]
-                sold += W.t1Sold[idx]
-                revenue += W.t1Rev[idx]
-                cogs += W.t1COGS[idx]
+                sold += world.t1Sold[idx]
+                revenue += world.t1Revenue[idx]
+                cogs += world.t1COGS[idx]
                 products.append({
-                    'product': M.PRODUCTS[p]['code'], 'price': float(W.t1Price[idx]),
-                    'unitCost': float(W.t1UnitCost[idx]), 'finished': float(fin),
-                    'finishedBasis': float(W.t1FinBasis[idx]),
-                    'salesEMA': float(W.t1SalesEMA[idx]), 'demandEMA': float(W.t1DemandEMA[idx]),
-                    'active': float(W.t1Demand[idx]), 'fulfilled': float(W.t1Sold[idx]),
-                    'stockUnmet': float(max(0.0, W.t1Demand[idx] - W.t1Sold[idx])),
-                    'made': float(self.lastTickT1Made[idx]), 'sold': float(W.t1Sold[idx]),
-                    'revenue': float(W.t1Rev[idx]), 'cogs': float(W.t1COGS[idx]),
-                    'reliability': float(W.t1Rel[idx]), 'priceStability': float(W.t1PriceStability[idx]),
-                    'reliabilityAttempts': int(W.t1RelAttempts[idx]),
+                    'product': M.PRODUCTS[p]['code'], 'price': float(world.t1Price[idx]),
+                    'unitCost': float(world.t1UnitCost[idx]), 'finished': float(fin),
+                    'finishedBasis': float(world.t1FinBasis[idx]),
+                    'salesEMA': float(world.t1SalesEMA[idx]), 'demandEMA': float(world.t1DemandEMA[idx]),
+                    'active': float(world.t1Demand[idx]), 'fulfilled': float(world.t1Sold[idx]),
+                    'stockUnmet': float(max(0.0, world.t1Demand[idx] - world.t1Sold[idx])),
+                    'made': float(self.lastTickT1Made[idx]), 'sold': float(world.t1Sold[idx]),
+                    'revenue': float(world.t1Revenue[idx]), 'cogs': float(world.t1COGS[idx]),
+                    'reliability': float(world.t1Rel[idx]), 'priceStability': float(world.t1PriceStability[idx]),
+                    'reliabilityAttempts': int(world.t1RelAttempts[idx]),
                 })
         for x in raw:
             inv += x['stock']
-        for e in M.ELEMENTS:
-            eqv += W.raw[id_ * NE + _EI[e]] * W.rawBasis[id_ * NE + _EI[e]]
-        return {'tier': 'T1', 'id': id_, 'name': piBase['name'] + ' ' + str((id_ % 100) + 1).zfill(3),
+        for element in M.ELEMENTS:
+            eqv += world.raw[id_ * NE + _EI[element]] * world.rawBasis[id_ * NE + _EI[element]]
+        return {'tier': 'T1', 'id': id_, 'name': M.t1_firm_name(id_),
                 'sector': M.t1_sector(piBase['product']),
                 'controller': 'PLAYER' if self.controller[id_] else 'BOT',
-                'online': bool(self.online[id_]), 'cash': float(W.t1Cash[id_]),
-                'equipment': list(self.equipment[id_]), 'equipmentBookValue': float(W.t1EqBook[id_]),
+                'online': bool(self.online[id_]), 'cash': float(world.t1Cash[id_]),
+                'equipment': list(self.equipment[id_]), 'equipmentBookValue': float(world.t1EqBook[id_]),
                 'inventory': float(inv), 'equity': float(eqv), 'raw': raw, 'products': products,
                 'made': float(made), 'sold': float(sold), 'revenue': float(revenue), 'cogs': float(cogs),
                 'grossProfit': float(revenue - cogs),
@@ -927,52 +945,52 @@ class KernelRuntime:
         return out
 
     def _company_summaries_t0(self):
-        W = self.W
+        world = self.world
         out = []
         for id_ in range(N0):
             prof = T0P[id_]
             inv = prod = cogs = sold = rev = rel = 0.0
             n = 0
-            eq = W.t0Cash[id_]
-            for e in range(NE):
-                if M.ELEMENTS[e] in prof['elements']:
-                    idx = id_ * NE + e
-                    inv += W.t0Inv[idx]
+            eq = world.t0Cash[id_] + self.cfg['t0License'] + self.cfg['t0Machinery'] + self.cfg['t0Reserve']
+            for element in range(NE):
+                if M.ELEMENTS[element] in prof['elements']:
+                    idx = id_ * NE + element
+                    inv += world.t0Inv[idx]
                     prod += self.lastTickT0Produced[idx]
-                    cogs += W.t0COGS[idx]
-                    sold += W.t0Sold[idx]
-                    rev += W.t0Revenue[idx]
-                    rel += W.t0Rel[idx]
+                    cogs += world.t0COGS[idx]
+                    sold += world.t0Sold[idx]
+                    rev += world.t0Revenue[idx]
+                    rel += world.t0Rel[idx]
                     n += 1
-                    eq += W.t0Inv[idx] * W.t0InvBasis[idx]
+                    eq += world.t0Inv[idx] * world.t0InvBasis[idx]
             out.append({'id': id_, 'name': prof['name'], 'elements': list(prof['elements']),
                         'controller': 'PLAYER' if self.controllerT0[id_] else 'BOT',
                         'online': bool(self.onlineT0[id_]),
-                        'cash': float(W.t0Cash[id_]), 'inventory': float(inv), 'equity': float(eq),
+                        'cash': float(world.t0Cash[id_]), 'inventory': float(inv), 'equity': float(eq),
                         'production': float(prod), 'sold': float(sold), 'revenue': float(rev),
                         'cogs': float(cogs), 'grossProfit': float(rev - cogs),
-                        'avgPrice': float(np.mean([W.t0Price[id_ * NE + _EI[e]] for e in prof['elements']])) if n else float('nan'),
+                        'avgPrice': float(np.mean([world.t0Price[id_ * NE + _EI[element]] for element in prof['elements']])) if n else None,
                         'reliability': float(rel / n) if n else 0.0})
         return out
 
     def _product_ready_stock(self, pi):
-        return float(self.W.t1Fin[pi::NP].sum())
+        return float(self.world.t1Fin[pi::NP].sum())
 
     def _product_supply_capacity(self, pi):
         cap = self.cfg['t1Capacity']
-        return float(np.count_nonzero(self.W.t1Operates[pi::NP])) * cap
+        return float(np.count_nonzero(self.world.t1Operates[pi::NP])) * cap
 
     def publish(self):
-        W = self.W
+        world = self.world
         cfg = self.cfg
-        m = self._market_averages()
+        analytics = self._market_averages()
         now = time.monotonic()
         elapsed = max(0.001, now - self.lastReportAt)
         intervalTicks = self.tick - self.lastReportTick
         tps = intervalTicks / elapsed
         self.lastReportAt = now
         self.lastReportTick = self.tick
-        analytics = self._build_analytics(m)
+        analytics = self._build_analytics(analytics)
 
         sid = max(0, min(N1 - 1, self.selectedId))
         scode = T1P[sid // 100]['product']
@@ -984,44 +1002,44 @@ class KernelRuntime:
             b = cid * NP
             raw = fin = totalSold = totalRevenue = totalCOGS = totalMade = rel = 0.0
             relN = 0
-            for e in range(NE):
-                raw += W.raw[cid * NE + e]
+            for element in range(NE):
+                raw += world.raw[cid * NE + element]
             for p in range(NP):
-                if W.t1Operates[cid * NP + p]:
-                    fin += W.t1Fin[cid * NP + p]
-                    totalSold += W.t1Sold[cid * NP + p]
-                    totalRevenue += W.t1Rev[cid * NP + p]
-                    totalCOGS += W.t1COGS[cid * NP + p]
+                if world.t1Operates[cid * NP + p]:
+                    fin += world.t1Fin[cid * NP + p]
+                    totalSold += world.t1Sold[cid * NP + p]
+                    totalRevenue += world.t1Revenue[cid * NP + p]
+                    totalCOGS += world.t1COGS[cid * NP + p]
                     totalMade += self.lastTickT1Made[cid * NP + p]
-                    rel += W.t1Rel[cid * NP + p]
+                    rel += world.t1Rel[cid * NP + p]
                     relN += 1
             inv_val = 0.0
-            for e in range(NE):
-                inv_val += W.raw[cid * NE + e] * W.rawBasis[cid * NE + e]
+            for element in range(NE):
+                inv_val += world.raw[cid * NE + element] * world.rawBasis[cid * NE + element]
             for p in range(NP):
-                if W.t1Operates[cid * NP + p]:
-                    inv_val += W.t1Fin[cid * NP + p] * W.t1FinBasis[cid * NP + p]
+                if world.t1Operates[cid * NP + p]:
+                    inv_val += world.t1Fin[cid * NP + p] * world.t1FinBasis[cid * NP + p]
             companies.append({
-                'id': cid, 'name': T1P[cid // 100]['name'] + ' ' + str((cid % 100) + 1).zfill(3),
+                'id': cid, 'name': M.t1_firm_name(cid),
                 'sector': M.t1_sector(T1P[cid // 100]['product']),
                 'controller': 'PLAYER' if self.controller[cid] else 'BOT',
-                'equipment': list(self.equipment[cid]), 'price': float(W.t1Price[b + pi]),
+                'equipment': list(self.equipment[cid]), 'price': float(world.t1Price[b + pi]),
                 'raw': float(raw), 'finished': float(fin), 'inventory': float(raw + fin),
-                'cash': float(W.t1Cash[cid]),
-                'equity': float(W.t1Cash[cid] + W.t1EqBook[cid] + inv_val + self.cfg['t1License']),
+                'cash': float(world.t1Cash[cid]),
+                'equity': float(world.t1Cash[cid] + world.t1EqBook[cid] + inv_val + self.cfg['t1License']),
                 'made': float(totalMade), 'sold': float(totalSold), 'revenue': float(totalRevenue),
                 'grossProfit': float(totalRevenue - totalCOGS),
                 'reliability': float(rel / relN) if relN else 0.0})
 
         productStats = []
-        _op = W.t1Operates.reshape(N1, NP)
-        _sold = W.t1Sold.reshape(N1, NP)
-        _rel = W.t1Rel.reshape(N1, NP)
-        _price = W.t1Price.reshape(N1, NP)
-        _uc = W.t1UnitCost.reshape(N1, NP)
+        _op = world.t1Operates.reshape(N1, NP)
+        _sold = world.t1Sold.reshape(N1, NP)
+        _rel = world.t1Rel.reshape(N1, NP)
+        _price = world.t1Price.reshape(N1, NP)
+        _uc = world.t1UnitCost.reshape(N1, NP)
         _made = self.lastTickT1Made.reshape(N1, NP)
-        _cogs = W.t1COGS.reshape(N1, NP)
-        _demand = W.t1Demand.reshape(N1, NP)
+        _cogs = world.t1COGS.reshape(N1, NP)
+        _demand = world.t1Demand.reshape(N1, NP)
         for p in range(NP):
             prod = M.PRODUCTS[p]
             mask = _op[:, p] != 0
@@ -1043,53 +1061,53 @@ class KernelRuntime:
                 'role': prod['role'], 'firms': firms, 'machineryPrice': self.cfg['t1Machinery'],
                 'capacity': cfg['t1Capacity'],
                 'productionCapacity': self._product_supply_capacity(p),
-                'made': made, 'sold': float(m['rVol'][p]), 'cogs': cogs,
+                'made': made, 'sold': float(analytics['rVol'][p]), 'cogs': cogs,
                 'avgPrice': avg_price, 'avgUnitCost': avg_uc,
-                'retailPrice': float(m['rP'][p]), 'volume': float(m['rVol'][p]),
-                'consumerVolume': float(W.endFulfilled[p]),
-                'intermediateVolume': float(W.t1IntermediateSold[p]),
-                'intermediateRevenue': float(W.t1IntermediateRevenue[p]),
-                'revenue': float(m['rRev'][p]), 'supplyCapacity': self._product_supply_capacity(p),
+                'retailPrice': float(analytics['rP'][p]), 'volume': float(analytics['rVol'][p]),
+                'consumerVolume': float(world.marketFulfilled[p]),
+                'intermediateVolume': float(world.t1IntermediateSold[p]),
+                'intermediateRevenue': float(world.t1IntermediateRevenue[p]),
+                'revenue': float(analytics['rRev'][p]), 'supplyCapacity': self._product_supply_capacity(p),
                 'readyStock': self._product_ready_stock(p), 'customerType': 'Companies',
-                'potential': None, 'active': demand, 'fulfilled': float(W.t1IntermediateSold[p]),
-                'priceLost': None, 'stockUnmet': float(max(0.0, demand - W.t1IntermediateSold[p])),
+                'potential': None, 'active': demand, 'fulfilled': float(world.t1IntermediateSold[p]),
+                'priceLost': None, 'stockUnmet': float(max(0.0, demand - world.t1IntermediateSold[p])),
                 'hhi': hhi, 'reliability': reliability,
-                'fillRate': float(W.t1IntermediateSold[p] / demand) if demand > 0 else None})
+                'fillRate': float(world.t1IntermediateSold[p] / demand) if demand > 0 else None})
 
         t2ProductStats = []
         for p in M.T2_PRODUCTS:
-            t2ProductStats.append({'customerType': 'External galactic buyers', 'code': p['code'], 'name': p['name'],
+            t2ProductStats.append({'customerType': 'Consumers', 'code': p['code'], 'name': p['name'],
                                    'needType': p['needType'], 'kind': p['kind'], 'sector': p['sector'],
                                    'complexity': p['complexity'],
                                    'primaryMaterial': next(x['name'] for x in M.PRODUCTS if x['code'] == p['primaryMaterial']),
                                    'machineryPrice': self.cfg['t2Machinery'][p['complexity']],
                                    'capacity': self.cfg['t2Capacity'][p['complexity']],
-                                   'recipe': ' + '.join(f'{q} {M.PRODUCTS[m]["name"]}' for m, q in p['ingredients']),
+                                   'recipe': ' + '.join(f'{q} {M.PRODUCTS[material_idx]["name"]}' for material_idx, q in p['ingredients']),
                                    'firms': 0, 'avgPrice': 0.0, 'avgUnitCost': 0.0, 'productionCapacity': 0.0,
                                    'readyStock': 0.0, 'made': 0.0, 'sold': 0.0, 'revenue': 0.0, 'cogs': 0.0,
                                    'reliability': 0.0, 'hhi': 0.0,
-                                   'potential': float(W.endPotential[NP + p['id']]),
-                                   'active': float(W.endActive[NP + p['id']]),
-                                   'fulfilled': float(W.endFulfilled[NP + p['id']]),
-                                   'stockUnmet': float(W.endStockUnmet[NP + p['id']]),
-                                   'fillRate': float(W.endFulfilled[NP + p['id']] / W.endActive[NP + p['id']]) if W.endActive[NP + p['id']] else 0.0})
-        lc = int(W.t2LineCount)
-        t2_cap = np.array([p['capacity'] for p in M.T2_PRODUCTS], dtype=np.float64)
+                                   'potential': float(world.marketPotential[NP + p['id']]),
+                                   'active': float(world.marketActive[NP + p['id']]),
+                                   'fulfilled': float(world.marketFulfilled[NP + p['id']]),
+                                   'stockUnmet': float(world.marketStockUnmet[NP + p['id']]),
+                                   'fillRate': float(world.marketFulfilled[NP + p['id']] / world.marketActive[NP + p['id']]) if world.marketActive[NP + p['id']] else 0.0})
+        lc = int(world.t2LineCount)
+        t2_cap = np.array([cfg['t2Capacity'][p['complexity']] for p in M.T2_PRODUCTS], dtype=np.float64)
         if lc:
-            pid = W.t2LineProduct[:lc].astype(np.int64)
-            sold = W.t2Sold[:lc]
-            finb = W.t2FinBasis[:lc]
-            ucost = np.where(finb != 0.0, finb, W.t2UnitCost[:lc])
+            pid = world.t2LineProduct[:lc].astype(np.int64)
+            sold = world.t2Sold[:lc]
+            finb = world.t2FinBasis[:lc]
+            ucost = np.where(finb != 0.0, finb, world.t2UnitCost[:lc])
             firms = np.bincount(pid, minlength=200).astype(np.float64)
-            avg_price = np.bincount(pid, weights=W.t2Price[:lc], minlength=200)
-            ready_stock = np.bincount(pid, weights=W.t2Fin[:lc], minlength=200)
-            made_s = np.bincount(pid, weights=W.t2Made[:lc], minlength=200)
+            avg_price = np.bincount(pid, weights=world.t2Price[:lc], minlength=200)
+            ready_stock = np.bincount(pid, weights=world.t2Fin[:lc], minlength=200)
+            made_s = np.bincount(pid, weights=world.t2Made[:lc], minlength=200)
             avg_uc = np.bincount(pid, weights=ucost, minlength=200)
             prod_cap = np.bincount(pid, weights=t2_cap[pid], minlength=200)
             sold_s = np.bincount(pid, weights=sold, minlength=200)
-            rev_s = np.bincount(pid, weights=W.t2Revenue[:lc], minlength=200)
-            cogs_s = np.bincount(pid, weights=W.t2COGS[:lc], minlength=200)
-            rel_s = np.bincount(pid, weights=W.t2Rel[:lc], minlength=200)
+            rev_s = np.bincount(pid, weights=world.t2Revenue[:lc], minlength=200)
+            cogs_s = np.bincount(pid, weights=world.t2COGS[:lc], minlength=200)
+            rel_s = np.bincount(pid, weights=world.t2Rel[:lc], minlength=200)
             hhi_s = np.bincount(pid, weights=sold * sold, minlength=200)
             for i, st in enumerate(t2ProductStats):
                 f = firms[i]
@@ -1109,34 +1127,34 @@ class KernelRuntime:
                 st['utilization'] = st['made'] / st['productionCapacity'] if st['productionCapacity'] else 0.0
 
         n2 = cfg['t2FirmCount']
-        sector = W.t2Sector[:n2].astype(np.int64)
+        sector = world.t2Sector[:n2].astype(np.int64)
         firms = np.bincount(sector, minlength=10).astype(np.float64)
-        players = np.bincount(sector, weights=W.t2Controller[:n2].astype(np.float64), minlength=10)
-        online = np.bincount(sector, weights=(W.t2Controller[:n2] & W.t2Online[:n2]).astype(np.float64), minlength=10)
-        cash = np.bincount(sector, weights=W.t2Cash[:n2], minlength=10)
-        eqbook = np.bincount(sector, weights=W.t2EqBook[:n2], minlength=10)
+        players = np.bincount(sector, weights=world.t2Controller[:n2].astype(np.float64), minlength=10)
+        online = np.bincount(sector, weights=(world.t2Controller[:n2] & world.t2Online[:n2]).astype(np.float64), minlength=10)
+        cash = np.bincount(sector, weights=world.t2Cash[:n2], minlength=10)
+        eqbook = np.bincount(sector, weights=world.t2EqBook[:n2], minlength=10)
         raw = np.zeros(10)
         eq_raw = np.zeros(10)
         for mat in range(NP):
             if mat < NE:
-                q = W.t2Raw[mat::NE][:n2]
-                b = W.t2RawBasis[mat::NE][:n2]
+                q = world.t2Raw[mat::NE][:n2]
+                b = world.t2RawBasis[mat::NE][:n2]
             else:
-                q = W.t2T1Raw[mat::NP][:n2]
-                b = W.t2T1Basis[mat::NP][:n2]
+                q = world.t2T1Raw[mat::NP][:n2]
+                b = world.t2T1Basis[mat::NP][:n2]
             raw += np.bincount(sector, weights=q, minlength=10)
             eq_raw += np.bincount(sector, weights=q * b, minlength=10)
-        line_firm = W.t2LineFirm[:lc].astype(np.int64)
+        line_firm = world.t2LineFirm[:lc].astype(np.int64)
         line_sector = sector[line_firm]
         lines = np.bincount(line_sector, minlength=10).astype(np.float64)
-        inventory = np.bincount(line_sector, weights=W.t2Fin[:lc], minlength=10)
-        made = np.bincount(line_sector, weights=W.t2Made[:lc], minlength=10)
-        sold = np.bincount(line_sector, weights=W.t2Sold[:lc], minlength=10)
-        rev = np.bincount(line_sector, weights=W.t2Revenue[:lc], minlength=10)
-        cogs = np.bincount(line_sector, weights=W.t2COGS[:lc], minlength=10)
+        inventory = np.bincount(line_sector, weights=world.t2Fin[:lc], minlength=10)
+        made = np.bincount(line_sector, weights=world.t2Made[:lc], minlength=10)
+        sold = np.bincount(line_sector, weights=world.t2Sold[:lc], minlength=10)
+        rev = np.bincount(line_sector, weights=world.t2Revenue[:lc], minlength=10)
+        cogs = np.bincount(line_sector, weights=world.t2COGS[:lc], minlength=10)
         gross = rev - cogs
-        capacity = np.bincount(line_sector, weights=t2_cap[W.t2LineProduct[:lc].astype(np.int64)], minlength=10)
-        eq_fin = np.bincount(line_sector, weights=W.t2Fin[:lc] * W.t2FinBasis[:lc], minlength=10)
+        capacity = np.bincount(line_sector, weights=t2_cap[world.t2LineProduct[:lc].astype(np.int64)], minlength=10)
+        eq_fin = np.bincount(line_sector, weights=world.t2Fin[:lc] * world.t2FinBasis[:lc], minlength=10)
         equity = cash + eqbook + eq_raw + eq_fin + firms * self.cfg['t2License']
 
         t2Cohorts = []
@@ -1179,26 +1197,32 @@ class KernelRuntime:
             d = summarize_markets([p for p in t2ProductStats if p['complexity'] == c], 'Complexity ' + str(c))
             d['complexity'] = c
             t2Complexity.append(d)
-        t2Totals = summarize_markets(t2ProductStats, 'All Tier 2 industries')
+        t2Totals = summarize_markets(t2ProductStats, 'All manufacturing sectors')
         productCategories = []
         for c in [1, 2, 3, 4, 5]:
             products = [p for p in (productStats if c < 3 else t2ProductStats) if p['complexity'] == c]
             s = summarize_markets(products, 'C-' + str(c))
             s['complexity'] = c
-            s['tier'] = 'Tier 1' if c < 3 else 'Tier 2'
-            s['role'] = 'Business inputs' if c < 3 else 'Galactic end-use goods'
+            s['tier'] = 'Refinery' if c < 3 else 'Manufacturer'
+            s['role'] = 'Refining stock' if c < 3 else 'Manufactured goods'
             s['machineryPrice'] = products[0]['machineryPrice'] if products else 0
             s['unitCapacity'] = s['capacity'] / s['lines'] if s['lines'] else 0.0
             s['avgPrice'] = float(sum(p['avgPrice'] * p['firms'] for p in products) / max(1, s['lines']))
             s['avgUnitCost'] = float(sum(p['avgUnitCost'] * p['firms'] for p in products) / max(1, s['lines']))
-            s['soldPerLine'] = s['sold'] / s['lines'] if s['lines'] else float('nan')
-            s['profitPerLine'] = s['grossProfit'] / s['lines'] if s['lines'] else float('nan')
+            s['soldPerLine'] = s['sold'] / s['lines'] if s['lines'] else None
+            s['profitPerLine'] = s['grossProfit'] / s['lines'] if s['lines'] else None
             productCategories.append(s)
         analytics['latest']['t2Industries'] = [{'name': x['name'], 'made': x['made'], 'sold': x['sold'],
                                                 'active': x['active'], 'fulfilled': x['fulfilled'],
                                                 'revenue': x['revenue'], 'cogs': x['cogs'],
                                                 'grossProfit': x['grossProfit'], 'utilization': x['utilization'],
                                                 'fillRate': x['fillRate']} for x in t2Industries]
+        analytics['latest']['t2Complexity'] = [{'name': x['name'], 'complexity': x['complexity'],
+                                                'made': x['made'], 'sold': x['sold'],
+                                                'active': x['active'], 'fulfilled': x['fulfilled'],
+                                                'revenue': x['revenue'], 'cogs': x['cogs'],
+                                                'grossProfit': x['grossProfit'], 'utilization': x['utilization'],
+                                                'fillRate': x['fillRate']} for x in t2Complexity]
         analytics['latest'].update({'t2GrossProfit': t2Totals['grossProfit'], 't2Capacity': t2Totals['capacity'],
                                     't2Utilization': t2Totals['utilization'], 't2Desired': t2Totals['active'],
                                     't2Fulfilled': t2Totals['fulfilled'], 't2FillRate': t2Totals['fillRate']})
@@ -1220,16 +1244,16 @@ class KernelRuntime:
                 self.tier2CompanyHistory.pop(0)
 
         elementStats = []
-        for i, e in enumerate(M.ELEMENTS):
+        for i, element in enumerate(M.ELEMENTS):
             elementStats.append({
-                'name': e, 'code': ['W', 'E', 'F', 'A'][i], 'price': float(m['wP'][i]),
-                'volume': float(m['wVol'][i]),
-                'revenue': float(W.t0Revenue[i::NE].sum()),
-                'cogs': float(W.t0COGS[i::NE].sum()),
-                'grossProfit': float((W.t0Revenue[i::NE] - W.t0COGS[i::NE]).sum()),
-                'difficulty': float(W.difficulty[i]), 'hhi': analytics['t0HHI'][i],
-                'reliability': _market_reliability([W.t0Rel[j * NE + i] for j in range(N0) if M.ELEMENTS[i] in T0P[j]['elements']],
-                                                   [W.t0Sold[j * NE + i] for j in range(N0) if M.ELEMENTS[i] in T0P[j]['elements']])})
+                'name': element, 'code': ['W', 'E', 'F', 'A'][i], 'price': float(analytics['wP'][i]),
+                'volume': float(analytics['wVol'][i]),
+                'revenue': float(world.t0Revenue[i::NE].sum()),
+                'cogs': float(world.t0COGS[i::NE].sum()),
+                'grossProfit': float((world.t0Revenue[i::NE] - world.t0COGS[i::NE]).sum()),
+                'difficulty': float(world.difficulty[i]), 'hhi': analytics['t0HHI'][i],
+                'reliability': _market_reliability([world.t0Rel[j * NE + i] for j in range(N0) if M.ELEMENTS[i] in T0P[j]['elements']],
+                                                   [world.t0Sold[j * NE + i] for j in range(N0) if M.ELEMENTS[i] in T0P[j]['elements']])})
 
         if self.selectedTierControl == 'T2':
             selected = selectedT2 or self._tier2_company(self.selectedT2Id)
@@ -1237,33 +1261,33 @@ class KernelRuntime:
             tid = max(0, min(N0 - 1, self.selectedT0Id))
             prof = T0P[tid]
             t0_products = []
-            for e in prof['elements']:
-                ei = _EI[e]
-                t0_products.append({'code': e, 'price': float(W.t0Price[tid * NE + ei])})
+            for element in prof['elements']:
+                ei = _EI[element]
+                t0_products.append({'code': element, 'price': float(world.t0Price[tid * NE + ei])})
             first = prof['elements'][0] if prof['elements'] else None
             selected = {
                 'tier': 'T0', 'id': tid, 'name': prof['name'],
                 'controller': 'PLAYER' if self.controllerT0[tid] else 'BOT',
                 'online': bool(self.onlineT0[tid]),
-                'price': float(W.t0Price[tid * NE + _EI[first]]) if first else float('nan'),
-                'cash': float(W.t0Cash[tid]), 'eqBook': 0.0,
+                'price': float(world.t0Price[tid * NE + _EI[first]]) if first else None,
+                'cash': float(world.t0Cash[tid]), 'eqBook': float(self.cfg['t0Machinery']),
                 'equipment': list(prof['elements']), 'products': t0_products,
             }
         else:
             selected = {
                 'tier': 'T1', 'products': self._company_detail('T1', sid)['products'], 'id': sid,
-                'name': T1P[sid // 100]['name'] + ' ' + str((sid % 100) + 1).zfill(3),
+                'name': M.t1_firm_name(sid),
                 'sector': M.t1_sector(scode), 'controller': 'PLAYER' if self.controller[sid] else 'BOT',
-                'online': bool(self.online[sid]), 'price': float(W.t1Price[sid * NP + spi]),
-                'cash': float(W.t1Cash[sid]), 'finished': float(W.t1Fin[sid * NP + spi]),
-                'inventory': float(W.raw[sid * NE:(sid + 1) * NE].sum() + W.t1Fin[sid * NP + spi]),
-                'eqBook': float(W.t1EqBook[sid]), 'equipment': list(self.equipment[sid]),
-                'reliability': float(W.t1Rel[sid * NP + spi])}
+                'online': bool(self.online[sid]), 'price': float(world.t1Price[sid * NP + spi]),
+                'cash': float(world.t1Cash[sid]), 'finished': float(world.t1Fin[sid * NP + spi]),
+                'inventory': float(world.raw[sid * NE:(sid + 1) * NE].sum() + world.t1Fin[sid * NP + spi]),
+                'eqBook': float(world.t1EqBook[sid]), 'equipment': list(self.equipment[sid]),
+                'reliability': float(world.t1Rel[sid * NP + spi])}
 
         lastSnapshot = {
-            'world': dict(M.WORLD_STORY, population=cfg['endUserCount']),
+            'world': dict(M.WORLD_STORY, population=cfg['consumerCount']),
             'tick': self.tick, 'month': self.month, 'calendar': M.calendar_at(self.tick),
-            'invention': {'possible': M.T2_CATALOGUE_COUNT, 'invented': len(M.T2_PRODUCTS),
+            'invention': {'possible': M.T2_Catalog_COUNT, 'invented': len(M.T2_PRODUCTS),
                           'reserved': len(M.T2_UNINVENTED_PRODUCTS)},
             'tps': tps, 'mode': self.mode, 'targetTPS': self.targetTPS,
             'adminAccounting': dict(self.adminAccounting, lastEquipmentReceipt=(
@@ -1273,9 +1297,9 @@ class KernelRuntime:
                           'house': dict(self.playerHouse) if self.playerHouse else None,
                           'houseFoundingCost': M.PROGRESSION_DEFAULTS['houseFoundingCost'],
                           'accounting': dict(self.ownershipAccounting)},
-            'difficulty': {M.ELEMENTS[e]: float(W.difficulty[e]) for e in range(NE)},
-            'wholesaleAvg': m['wAvg'], 'retailAvg': m['rAvg'],
-            'wholesaleVolume': m['wVolume'], 'retailVolume': m['rVolume'],
+            'difficulty': {M.ELEMENTS[element]: float(world.difficulty[element]) for element in range(NE)},
+            'wholesaleAvg': analytics['wAvg'], 'retailAvg': analytics['rAvg'],
+            'wholesaleVolume': analytics['wVolume'], 'retailVolume': analytics['rVolume'],
             'retailOrders': analytics['orderTotal'], 'fulfilledOrders': analytics['fulfilledOrders'],
             'elements': elementStats, 'products': productStats, 'tier2Products': t2ProductStats,
             'productCategories': productCategories, 'tier2Cohorts': t2Cohorts,
@@ -1283,15 +1307,15 @@ class KernelRuntime:
             'tier2CompanyHistory': self.tier2CompanyHistory, 'tier2Companies': self._tier2_page(),
             'performance': {'lastTickMs': self.workerStats['lastTickMs'],
                             'averageTickMs': self.workerStats['totalTickMs'] / max(1, self.workerStats['steps']),
-                            'stateBytes': int(sum(a.nbytes for a in (getattr(W, n) for n in W.array_names))),
-                            'activeLines': int(W.t2LineCount),
+                            'stateBytes': int(sum(a.nbytes for a in (getattr(world, n) for n in world.array_names))),
+                            'activeLines': int(world.t2LineCount),
                             'activatedConsumers': self.state.get('activatedConsumers', 0),
                             'orders': self.state.get('activeOrders', 0)},
             'cohorts': analytics['cohort'], 't0Companies': self._company_summaries_t0(),
             'analyticsHistory': self.analyticsHistory,
             'tiers': {
                 't0': {'firms': N0, 'bought': 0, 'made': float(analytics['t0Produced'].sum()),
-                       'cogs': _sum(W.t0COGS), 'grossProfit': analytics['t0Revenue'] - _sum(W.t0COGS),
+                       'cogs': _array_sum(world.t0COGS), 'grossProfit': analytics['t0Revenue'] - _array_sum(world.t0COGS),
                        'inventory': analytics['t0Inventory'], 'cash': analytics['t0Cash'],
                        'equity': analytics['t0Equity'], 'sold': analytics['t0Sold'],
                        'revenue': analytics['t0Revenue'], 'productionByElement': list(analytics['t0Produced']),
@@ -1299,7 +1323,7 @@ class KernelRuntime:
                 't1': {'firms': N1, 'inventory': analytics['latest']['t1Inventory'],
                        'raw': analytics['t1Raw'], 'finished': analytics['t1Finished'],
                        'cash': analytics['t1Cash'], 'equity': analytics['t1Equity'],
-                       'bought': _sum(W.t1Bought), 'made': analytics['t1Made'],
+                       'bought': _array_sum(world.t1Bought), 'made': analytics['t1Made'],
                        'sold': analytics['t1Sold'], 'revenue': analytics['t1Revenue'],
                        'cogs': analytics['t1COGS'], 'grossProfit': analytics['t1Revenue'] - analytics['t1COGS'],
                        'desired': float(sum(p['active'] for p in productStats)),
@@ -1308,17 +1332,17 @@ class KernelRuntime:
                        'activeFirms': analytics['activeFirms'], 'players': analytics['players'],
                        'reliability': analytics['latest']['avgT1Reliability']},
                 't2': {'firms': cfg['t2FirmCount'], 'activeLines': analytics['t2Lines'],
-                       'inventory': analytics['t2Inventory'], 'finished': _sum(W.t2Fin, lc),
-                       'stockCoverage': (float(W.t2Fin[:lc].sum() / W.t2SalesEMA[:lc].sum()) if W.t2SalesEMA[:lc].sum() > 0 else None),
-                       'tradingFirms360': int((W.t2LastSaleTick[:cfg['t2FirmCount']] > 0).sum()) if self.tick > 0 else 0,
+                       'inventory': analytics['t2Inventory'], 'finished': _array_sum(world.t2Fin, lc),
+                       'stockCoverage': (float(world.t2Fin[:lc].sum() / world.t2SalesEMA[:lc].sum()) if world.t2SalesEMA[:lc].sum() > 0 else None),
+                       'tradingFirms360': int((world.t2LastSaleTick[:cfg['t2FirmCount']] > 0).sum()) if self.tick > 0 else 0,
                        'cash': analytics['t2Cash'], 'equity': analytics['t2Equity'],
-                       'bought': _sum(W.t2Bought, cfg['t2FirmCount']), 'made': analytics['t2Made'],
+                       'bought': _array_sum(world.t2Bought, cfg['t2FirmCount']), 'made': analytics['t2Made'],
                        'sold': analytics['t2Sold'], 'revenue': analytics['t2Revenue'],
                        'cogs': analytics['t2COGS'], 'grossProfit': analytics['t2Revenue'] - analytics['t2COGS'],
                        'capacity': t2Totals['capacity'], 'utilization': t2Totals['utilization'],
                        'margin': t2Totals['margin'], 'desired': t2Totals['active'],
                        'fulfilled': t2Totals['fulfilled'], 'fillRate': t2Totals['fillRate']},
-                'endUsers': {'population': cfg['endUserCount'], 'potential': analytics['potential'],
+                'endUsers': {'population': cfg['consumerCount'], 'potential': analytics['potential'],
                              'active': analytics['active'], 'fulfilled': analytics['fulfilled'],
                              'priceLost': analytics['priceLost'], 'stockUnmet': analytics['stockUnmet'],
                              'orders': analytics['orderTotal'], 'fulfilledOrders': analytics['fulfilledOrders'],
@@ -1336,8 +1360,8 @@ class KernelRuntime:
         analytics['latest']['tiers'] = {t: {k: (list(v) if isinstance(v, (list, np.ndarray)) else v)
                                              for k, v in s.items()}
                                         for t, s in lastSnapshot['tiers'].items()}
-        analytics['latest']['difficulty'] = list(W.difficulty)
-        analytics['latest']['elementPrices'] = list(m['wP'])
-        analytics['latest']['materialPrices'] = list(m['rP'])
+        analytics['latest']['difficulty'] = list(world.difficulty)
+        analytics['latest']['elementPrices'] = list(analytics['wP'])
+        analytics['latest']['materialPrices'] = list(analytics['rP'])
         self.lastSnapshot = lastSnapshot
         return lastSnapshot
