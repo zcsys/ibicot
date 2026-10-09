@@ -61,14 +61,14 @@
   const PARAMS = [
     'seed',
     'difficultyTarget', 'theta', 'sigma', 'difficultyMin', 'difficultyMax',
-    't0Equity', 't0Capacity', 't0TargetInventory', 't0MaxInventory', 'baseCost', 't0Markup',
-    'minWholesaleLot', 'inventoryCoverageTicks',
+    't0Equity', 't0License', 't0Machinery', 't0Reserve', 't0Capacity', 't0Storage',
+    'baseCost', 't0Markup', 'minWholesaleLot',
     't1Equity', 't1License', 't1Machinery', 't1Capacity', 't1MaterialCost', 't1Markup',
     't2Equity', 't2License', 't2MaterialCost', 'conversionFactor', 'storage',
     'consumerActivation', 'consumerSearchOffers',
-    'chokeMin', 'chokeMax', 'elasticity', 't2ReservationPremium',
+    'chokeMin', 'chokeMax', 'elasticity', 'productionMarginBand', 't2ReservationPremium',
     'pricingAggressiveness', 'alpha', 'wholesalePriceResponse', 'priceObservationTicks',
-    'taumin', 'taumax', 'reliabilityAlpha', 'switchingStableBand',
+    'reliabilityAlpha', 'switchingStableBand',
   ];
   for (const [id, value] of Object.entries(M.ECONOMY_DEFAULTS)) if ($(id)) $(id).value = value;
   const productCodes = ['W', 'E', 'F', 'A', 'W+E', 'W+F', 'W+A', 'E+F', 'E+A', 'F+A'];

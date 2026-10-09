@@ -547,14 +547,15 @@
           <div class="param-group">
             <h3>Tier 0 · Extraction</h3>
             <div class="group-note">Equity is the firm's starting capital; extraction capacity, cost base and inventory buffering.</div>
-            <div class="field"><label>Equity / firm</label><input id="t0Equity" type="number" min="0" step="any" value="10000000" /></div>
-            <div class="field"><label>Capacity / tick</label><input id="t0Capacity" type="number" value="10000" /></div>
-            <div class="field"><label>Target inventory</label><input id="t0TargetInventory" type="number" value="500000" /></div>
-            <div class="field"><label>Maximum inventory</label><input id="t0MaxInventory" type="number" value="1000000" /></div>
+            <div class="field"><label>Equity / firm</label><input id="t0Equity" type="number" min="0" step="any" value="75000000" /></div>
+            <div class="field"><label>License (equity asset)</label><input id="t0License" type="number" min="0" step="any" value="22000000" /></div>
+            <div class="field"><label>Machinery (equity asset)</label><input id="t0Machinery" type="number" min="0" step="any" value="49000000" /></div>
+            <div class="field"><label>Reserve</label><input id="t0Reserve" type="number" min="0" step="any" value="1000000" /></div>
+            <div class="field"><label>Capacity / tick</label><input id="t0Capacity" type="number" value="1000000" /></div>
+            <div class="field"><label>Storage</label><input id="t0Storage" type="number" value="50000000" /></div>
             <div class="field"><label>Extraction base cost</label><input id="baseCost" type="number" min="0" step="any" value="1" /></div>
             <div class="field"><label>First-guess t0Markup</label><input id="t0Markup" type="number" step=".01" value=".25" /></div>
             <div class="field"><label>Minimum wholesale lot</label><input id="minWholesaleLot" type="number" value="1000" /></div>
-            <div class="field"><label>Stock coverage (ticks)</label><input id="inventoryCoverageTicks" type="number" min="1" max="30" value="3" /></div>
           </div>
           <div class="param-group">
             <h3>Tier 1 · Refining (C-1 / C-2)</h3>
@@ -562,8 +563,8 @@
             <div class="field"><label>Equity / firm</label><input id="t1Equity" type="number" min="0" step="any" value="1500000" /></div>
             <div class="field"><label>License (equity asset)</label><input id="t1License" type="number" min="0" step="any" value="1000000" /></div>
             <div class="field"><label>Machinery</label><input id="t1Machinery" type="number" min="0" step="any" value="15000" /></div>
-            <div class="field"><label>Capacity / machine / tick</label><input id="t1Capacity" type="number" min="0" step="any" value="500" /></div>
-            <div class="field"><label>Material cost / unit</label><input id="t1MaterialCost" type="number" min="0" step="any" value="1" /></div>
+            <div class="field"><label>Capacity / machine / tick</label><input id="t1Capacity" type="number" min="0" step="any" value="2000" /></div>
+            <div class="field"><label>Material cost / unit</label><input id="t1MaterialCost" type="number" min="0" step="any" value="1.25" /></div>
             <div class="field"><label>First-guess t0Markup</label><input id="t1Markup" type="number" step=".01" value=".25" /></div>
           </div>
           <div class="param-group">
@@ -574,10 +575,10 @@
             <div class="field"><label>Machinery · C-3</label><input id="t2Machinery3" type="number" min="0" step="any" value="75000" /></div>
             <div class="field"><label>Machinery · C-4</label><input id="t2Machinery4" type="number" min="0" step="any" value="375000" /></div>
             <div class="field"><label>Machinery · C-5</label><input id="t2Machinery5" type="number" min="0" step="any" value="420000" /></div>
-            <div class="field"><label>Capacity · C-3</label><input id="t2Capacity3" type="number" min="0" step="any" value="300" /></div>
-            <div class="field"><label>Capacity · C-4</label><input id="t2Capacity4" type="number" min="0" step="any" value="200" /></div>
-            <div class="field"><label>Capacity · C-5</label><input id="t2Capacity5" type="number" min="0" step="any" value="100" /></div>
-            <div class="field"><label>Material cost / unit</label><input id="t2MaterialCost" type="number" min="0" step="any" value="1.25" /></div>
+            <div class="field"><label>Capacity · C-3</label><input id="t2Capacity3" type="number" min="0" step="any" value="30" /></div>
+            <div class="field"><label>Capacity · C-4</label><input id="t2Capacity4" type="number" min="0" step="any" value="20" /></div>
+            <div class="field"><label>Capacity · C-5</label><input id="t2Capacity5" type="number" min="0" step="any" value="10" /></div>
+            <div class="field"><label>Material cost / unit</label><input id="t2MaterialCost" type="number" min="0" step="any" value="1.875" /></div>
             <div class="field"><label>Conversion factor</label><input id="conversionFactor" type="number" min="0" step="any" value=".25" /></div>
             <div class="field"><label>Firm storage pool</label><input id="storage" type="number" min="1" step="any" value="20000" /></div>
           </div>
@@ -589,6 +590,7 @@
             <div class="field"><label>Value multiplier min</label><input id="chokeMin" type="number" step=".01" value="1.8" /></div>
             <div class="field"><label>Value multiplier max</label><input id="chokeMax" type="number" step=".01" value="3" /></div>
             <div class="field"><label>Elasticity η</label><input id="elasticity" type="number" step=".05" value="2" /></div>
+            <div class="field"><label>Production margin band</label><input id="productionMarginBand" type="number" min=".001" max="1" step=".005" value=".05" /></div>
             <div class="field"><label>T2 reservation premium</label><input id="t2ReservationPremium" type="number" min="0" step=".05" value="0" /></div>
           </div>
           <div class="param-group">
@@ -598,8 +600,6 @@
             <div class="field"><label>Demand EMA α</label><input id="alpha" type="number" step=".01" value=".15" /></div>
             <div class="field"><label>Price response</label><input id="wholesalePriceResponse" type="number" step=".01" value=".05" /></div>
             <div class="field"><label>Price observation (ticks)</label><input id="priceObservationTicks" type="number" min="1" max="360" value="30" /></div>
-            <div class="field"><label>Switching cost min</label><input id="taumin" type="number" step=".01" value=".05" /></div>
-            <div class="field"><label>Switching cost max</label><input id="taumax" type="number" step=".01" value=".2" /></div>
             <div class="field"><label>Reliability EMA α</label><input id="reliabilityAlpha" type="number" step=".01" value=".15" /></div>
             <div class="field"><label>Stable price band</label><input id="switchingStableBand" type="number" step=".005" value=".025" /></div>
           </div>
