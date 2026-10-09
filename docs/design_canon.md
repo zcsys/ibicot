@@ -93,9 +93,9 @@ Every section below is a consequence of, or a requirement for, that sentence.
 - **Tier 0 has the most capital of all tiers.** It is the largest by design, despite
   having no "product complexity."
 - **Tier 1 machinery is uniform:** every T1 product line's machinery is **$15K**
-  (equity structure in §6). Within Tier 1, complexity differs only in *operations* —
-  throughput is flat at 500, markup rises (compound premium), demand falls — never in
-  capital.
+  (equity structure in §6). Within Tier 1, complexity differs only in the *recipe* —
+  throughput is flat at **2,000** and markup is flat (**0.25**) — never in capital,
+  throughput, or markup.
 - **Tier 2 machinery rises with complexity:** C-3 = **$75K**, C-4 = **$375K**, C-5 =
   **$420K** (Tier 1 flat at $15K). The size gradient lives in Tier 2; higher complexity ⇒
   larger machinery.
@@ -153,7 +153,8 @@ discovered by the derivative-following pricer.
   matching the supply scale and keeping service fair (no buyer is permanently starved).
 - **Demand curve:** `q(P) = qmax / (1 + (P/V)^η)`, elasticity `η = 2`.
 - **First-guess markup is flat** (`t1Markup = 0.25` for T0/T1/T2): the complexity
-  gradient is entirely in demand volume/routing, not the seed price.
+  gradient lives in demand volume/routing *and* the reservation valuation
+  (`t2ReservationPremium`), not the seed price.
 - **Equilibrium markup** is set by the fixed demand level (`qmax = 20`) — a larger
   quantity is a tighter market ⇒ a higher discovered markup.
 
@@ -411,7 +412,7 @@ So production stays **full while margin ≥ 5 %**, tapers linearly to **0 at bre
 still transmits the downstream breakeven upstream: an overpricing supplier loses orders and
 is pulled back to a profitable level.
 
-**Step size** adapts: ×1.2 on continuation, ×0.5 on reversal, clamped to `[0.01, 1]`.
+**Step size** adapts: ×1.2 on continuation, no halving on reversal (×1.0), clamped to `[0.01, 1]`.
 The price moves multiplicatively: `P ← clamp(P × exp(± pricingAggressiveness × response × scale))`, where
 `clamp` is the guardrail interval `[MIN_UNIT_PRICE, MAX_UNIT_PRICE]`. After each
 observation the profit/sales/demand/opportunity accumulators and the age counter reset.
@@ -427,7 +428,7 @@ cost of filling its order `q` from each seller alone. Staying with the incumbent
 (`preferred`) costs `P_inc × q`; sourcing from a
 challenger costs `P_chal × q + loyaltyCharge`, where
 
-`loyaltyCharge = M_tier × unit_cost × (1 + reliability_inc)`.
+`loyaltyCharge = M × unit_cost × (1 + reliability_inc)`.
 
 `unit_cost` is the product's canonical cost-ladder unit cost (§4/§12.2) — a *fixed*
 reference, independent of the current market price, so a price drop does not shrink the
