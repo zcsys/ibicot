@@ -18,12 +18,12 @@ import numpy as np
 
 from ..core import model as M
 from ..core.config import normalize_config
-from ..core.rng import hash_seed
+from ..core.rng import hash_seed_vec
 from ..core.state import (T0P, T1P, WorldState, _has_tier2_product, add_tier2_line,
                           quantize_round, quantize_whole, reset_world)
 from ..kernel.tick import tick as run_tick
 
-_STATS_DIR = Path(__file__).resolve().parents[3] / 'stats'
+_STATS_DIR = Path(__file__).resolve().parents[2] / 'stats'
 _T2_COMP = np.array([p['complexity'] for p in M.T2_PRODUCTS], dtype=np.int64)
 
 
@@ -259,10 +259,16 @@ class KernelRuntime:
         merged = dict(self.cfg)
         merged.update(patch)
         self.cfg = normalize_config(merged)
-        for cid in range(self.cfg['consumerCount']):
-            b = hash_seed(self.cfg['seed'], 9000000 + cid)
-            self.world.consumerChoke[cid] = self.cfg['chokeMin'] + b / 4294967296 * (self.cfg['chokeMax'] - self.cfg['chokeMin'])
-            self.world.consumerEta[cid] = self.cfg['elasticity']
+        # Recomputed wholesale (vectorized): choke/eta are the only per-consumer
+        # fields that respond to a live config change (routing is supply-driven
+        # and gated on Reset by the population guard above).
+        n = self.cfg['consumerCount']
+        cids = np.arange(n)
+        b = hash_seed_vec(self.cfg['seed'], 9000000 + cids)
+        self.world.consumerChoke[:n] = (self.cfg['chokeMin']
+                                        + b.astype(np.float64) / 4294967296.0
+                                        * (self.cfg['chokeMax'] - self.cfg['chokeMin'])).astype(np.float32)
+        self.world.consumerEta[:n] = self.cfg['elasticity']
         return self.publish()
 
     # ------------------------------------------------------------------
@@ -552,7 +558,7 @@ class KernelRuntime:
                 'sector': M.t1_sector(product),
                 'firms': end - start,
                 'equipment': 'Basic' if M.PRODUCTS[pIdx]['complexity'] == 1 else 'Compound',
-                'avgPrice': price / eqCount if eqCount else float('nan'),
+                'avgPrice': price / eqCount if eqCount else None,
                 'avgUnitCost': uc / (end - start),
                 'finished': float(finished), 'raw': float(raw), 'inventory': float(finished + raw),
                 'cash': float(cash), 'equity': float(equity), 'made': float(made),
@@ -661,8 +667,8 @@ class KernelRuntime:
             self.analyticsHistory.append(latest)
         if len(self.analyticsHistory) > 240:
             self.analyticsHistory.pop(0)
-        return {
-            'cohort': cohort, 'latest': latest, 't0Inventory': t0Inventory, 't0Cash': t0Cash,
+        return {**analytics,
+                'cohort': cohort, 'latest': latest, 't0Inventory': t0Inventory, 't0Cash': t0Cash,
             't0Sold': t0Sold, 't0Revenue': t0Revenue, 't0Equity': self._book_t0_equity(),
             't0Produced': t0Produced, 't0Vol': t0Vol, 't0HHI': t0HHI,
             't1Raw': t1Raw, 't1Finished': t1Finished, 't1Cash': t1Cash,
@@ -949,7 +955,7 @@ class KernelRuntime:
                         'cash': float(world.t0Cash[id_]), 'inventory': float(inv), 'equity': float(eq),
                         'production': float(prod), 'sold': float(sold), 'revenue': float(rev),
                         'cogs': float(cogs), 'grossProfit': float(rev - cogs),
-                        'avgPrice': float(np.mean([world.t0Price[id_ * NE + _EI[element]] for element in prof['elements']])) if n else float('nan'),
+                        'avgPrice': float(np.mean([world.t0Price[id_ * NE + _EI[element]] for element in prof['elements']])) if n else None,
                         'reliability': float(rel / n) if n else 0.0})
         return out
 
@@ -1189,8 +1195,8 @@ class KernelRuntime:
             s['unitCapacity'] = s['capacity'] / s['lines'] if s['lines'] else 0.0
             s['avgPrice'] = float(sum(p['avgPrice'] * p['firms'] for p in products) / max(1, s['lines']))
             s['avgUnitCost'] = float(sum(p['avgUnitCost'] * p['firms'] for p in products) / max(1, s['lines']))
-            s['soldPerLine'] = s['sold'] / s['lines'] if s['lines'] else float('nan')
-            s['profitPerLine'] = s['grossProfit'] / s['lines'] if s['lines'] else float('nan')
+            s['soldPerLine'] = s['sold'] / s['lines'] if s['lines'] else None
+            s['profitPerLine'] = s['grossProfit'] / s['lines'] if s['lines'] else None
             productCategories.append(s)
         analytics['latest']['t2Industries'] = [{'name': x['name'], 'made': x['made'], 'sold': x['sold'],
                                                 'active': x['active'], 'fulfilled': x['fulfilled'],
@@ -1243,7 +1249,7 @@ class KernelRuntime:
                 'tier': 'T0', 'id': tid, 'name': prof['name'],
                 'controller': 'PLAYER' if self.controllerT0[tid] else 'BOT',
                 'online': bool(self.onlineT0[tid]),
-                'price': float(world.t0Price[tid * NE + _EI[first]]) if first else float('nan'),
+                'price': float(world.t0Price[tid * NE + _EI[first]]) if first else None,
                 'cash': float(world.t0Cash[tid]), 'eqBook': 0.0,
                 'equipment': list(prof['elements']), 'products': t0_products,
             }

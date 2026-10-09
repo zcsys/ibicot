@@ -12,6 +12,7 @@ import os
 
 import numpy as np
 
+from ..core.config import normalize_config
 from ..core.state import WorldState
 
 
@@ -40,7 +41,9 @@ def load_checkpoint(path):
     with open(path + '.json') as f:
         meta = json.load(f)
     assert meta['format'] == 'economy-checkpoint', 'unsupported checkpoint format'
-    cfg = meta['cfg']
+    # JSON turns the int keys of nested config mappings (t2Machinery, t2Capacity,
+    # footprint, loyaltyMultiple) into strings — re-normalize to restore them.
+    cfg = normalize_config(meta['cfg'])
     tick = meta['tick']
     scalars = meta['scalars']
     world = WorldState(cfg)

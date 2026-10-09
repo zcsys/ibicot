@@ -13,4 +13,4 @@ def batch_run(runtime, ticks):
     """Advance ``ticks`` ticks synchronously (used by the headless CLI)."""
     for _ in range(ticks):
         runtime.step()
-    return runtime.snapshot()
+    return runtime.publish()
