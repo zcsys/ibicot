@@ -111,7 +111,8 @@
     companyPageSize = 50,
     selectedTier = 'T1',
     selectedCompanyId = 0,
-    complexityHistory = [];
+    complexityHistory = [],
+    categorySplit = true;
   function populatePlayerCompany() {
     const tier = $('playerTier').value;
     const sel = $('playerCompany');
@@ -748,8 +749,16 @@
     const moneyMetric = ['revenue','grossProfit','profitPerLine','machineryPrice','avgPrice','avgUnitCost'].includes(metric);
     const ratioMetric = ['margin','utilization','fillRate'].includes(metric);
     const digits = ['avgPrice','avgUnitCost'].includes(metric) ? 5 : metric === 'profitPerLine' ? 2 : 0;
-    drawComparison('categoryComparisonChartT1', categories.filter(row => row.tier === 'Refinery'), metric, moneyMetric, ratioMetric, digits);
-    drawComparison('categoryComparisonChartT2', categories.filter(row => row.tier === 'Manufacturer'), metric, moneyMetric, ratioMetric, digits);
+    if (categorySplit) {
+      $('categoryChartsSplit').hidden = false;
+      $('categoryChartsMerged').hidden = true;
+      drawComparison('categoryComparisonChartT1', categories.filter(row => row.tier === 'Refinery'), metric, moneyMetric, ratioMetric, digits);
+      drawComparison('categoryComparisonChartT2', categories.filter(row => row.tier === 'Manufacturer'), metric, moneyMetric, ratioMetric, digits);
+    } else {
+      $('categoryChartsSplit').hidden = true;
+      $('categoryChartsMerged').hidden = false;
+      drawComparison('categoryComparisonChartAll', categories, metric, moneyMetric, ratioMetric, digits);
+    }
   }
   function renderOwnership(s) {
     const o = s.ownership;
@@ -902,6 +911,11 @@
   $('t1PriceProduct').innerHTML += M.PRODUCTS.map((p,i)=>`<option value="${i}">${p.name}</option>`).join('');
   for (const id of ['overviewTier','t1PriceProduct']) $(id).addEventListener('change',()=>{if(latestSnapshot)renderDashboard(latestSnapshot);});
   $('categoryMetric').addEventListener('change',()=>{if(latestSnapshot)renderComparisons(latestSnapshot);});
+  $('categorySplitMerge').addEventListener('click',()=>{
+    categorySplit = !categorySplit;
+    $('categorySplitMerge').textContent = categorySplit ? 'Merge' : 'Split';
+    if (latestSnapshot) renderComparisons(latestSnapshot);
+  });
   $('t2ProductNeed').innerHTML += M.T2_NEED_TYPES.map(form=>`<option>${form}</option>`).join('');
   $('t2ProductSector').innerHTML += M.T2_SECTORS.map(s=>`<option>${s}</option>`).join('');
   $('t2NeedOverview').innerHTML = M.T2_SECTORS.map(sector =>

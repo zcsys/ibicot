@@ -106,7 +106,7 @@ Every section below is a consequence of, or a requirement for, that sentence.
 - **Tier 2 machinery rises with complexity:** C-3 = **$75K**, C-4 = **$375K**, C-5 =
   **$420K** (Tier 1 flat at $15K). The size gradient lives in Tier 2; higher complexity ⇒
   larger machinery.
-- **Throughput (per machine, per tick):** Tier 0 extraction is **100,000** per firm per tick
+- **Throughput (per machine, per tick):** Tier 0 extraction is **200,000** per firm per tick
   (extraction, not a machine line). Tier 1 is flat — C-1 = C-2 = **2,000**. Tier 2 falls with
   complexity — C-3 = **30**, C-4 = **20**, C-5 = **10**. One machine = one product line =
   this capacity; there is no separate "line" concept.
@@ -246,9 +246,9 @@ Everything in §2–§8 is **canon** (design law). The following are **calibrati
 
 - the supply side is pinned as working values — T0 equity $75m (license $22m +
   machinery $49m + reserve $1m + cash $3m), T1/T2 uniform $1.5m equity (license `$1m` +
-  machinery + residual cash), machinery $15k/$75k/$375k/$420k, capacity T0 100,000 /
+  machinery + residual cash), machinery $15k/$75k/$375k/$420k, capacity T0 200,000 /
   C-1,C-2 2,000 / C-3 30 / C-4 20 / C-5 10, conversion `$0.25 × max(1,c−1)`,
-  count-preserving recipes, storage 20,000 (T1/T2) / 5,000,000 (T0) — final values
+  count-preserving recipes, storage 20,000 (T1/T2) / 4,000,000 (T0) — final values
   from calibration;
 - the demand-volume and markup/valuation curves by complexity (the demand side);
 - all prices and offer-sampling counts.
@@ -314,9 +314,9 @@ values**; the demand-side *scale* is **calibration** (not frozen).
 | Tier 2 C-5 | $1m | $420k | $80k | $1.5m |
 
 - Machinery ladder: T1 flat **$15k**; T2 **$75k / $375k / $420k**.
-- Capacity (per machine, per tick): T0 **100,000**; C-1/C-2 **2,000**, C-3 **30**,
+- Capacity (per machine, per tick): T0 **200,000**; C-1/C-2 **2,000**, C-3 **30**,
   C-4 **20**, C-5 **10**. One machine = one product line = this capacity.
-- Tier 0 extraction (per firm, per tick): **100,000** capacity; storage **5,000,000**
+- Tier 0 extraction (per firm, per tick): **200,000** capacity; storage **4,000,000**
   (fill to the brim — the same "fill G" behavior as T1/T2, no separate order-up-to target);
   cost **$1 × difficulty** (`baseCost`, difficulty mean-reverts to `difficultyTarget = 1`);
   whole-lot minimum **1,000**.
@@ -328,7 +328,7 @@ values**; the demand-side *scale* is **calibration** (not frozen).
 - Storage: **20,000** firm-level pool for T1/T2 (raw + finished + machinery). Machinery
   footprint C-1/C-2 **1,000**, C-3 **3,000**, C-4 **4,000**, C-5 **5,000**; goods space
   `G = 20,000 − machinery`. Desired inventory = **fill G**, split **1:1**
-  (`finished = raw = G/2`). Tier 0 storage is **5,000,000** (fully subsidized, no footprint).
+  (`finished = raw = G/2`). Tier 0 storage is **4,000,000** (fully subsidized, no footprint).
 
 ### 12.3 Demand (structure canon, scale calibration)
 
