@@ -112,7 +112,7 @@
     seed: 137, difficultyTarget: 1, theta: .15, sigma: .005, difficultyMin: .7, difficultyMax: 1.4,
     consumerCount: 1000000, t2FirmCount: 60000,
     t0Equity: 75000000, t0License: 22000000, t0Machinery: 49000000, t0Reserve: 1000000,
-    t0Capacity: 1000000, t0Storage: 50000000,
+    t0Capacity: 100000, t0Storage: 5000000,
     baseCost: 1, t0Markup: .25, minWholesaleLot: 1000,
     t1Equity: 1500000, t1License: 1000000, t1Machinery: 15000, t1Capacity: 2000,
     t1MaterialCost: 1.25, t1Markup: .25,

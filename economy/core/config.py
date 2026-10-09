@@ -29,8 +29,8 @@ def default_cfg() -> dict:
         't0License': 22_000_000.0,      # $22m Tier 0 license (equity asset)
         't0Machinery': 49_000_000.0,    # $49m extraction machinery (equity asset)
         't0Reserve': 1_000_000.0,       # $1m reserved for other business operations
-        't0Capacity': 1_000_000,        # extraction throughput per tick
-        't0Storage': 50_000_000,        # storage capacity (fill to the brim, like T1/T2)
+        't0Capacity': 100_000,          # extraction throughput per tick
+        't0Storage': 5_000_000,         # storage capacity (fill to the brim, like T1/T2)
         'baseCost': 1.0,                # $1 per raw element
         't0Markup': 0.25,                 # T0 first-guess markup
         'minWholesaleLot': 1000,
