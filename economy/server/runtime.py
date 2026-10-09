@@ -90,7 +90,7 @@ _EI = {element: i for i, element in enumerate(M.ELEMENTS)}
 _PI = {p['code']: i for i, p in enumerate(M.PRODUCTS)}
 
 # Generic firm names come from ``core.model`` (Star Business naming catalog §9):
-# a sector-specific generic base plus a decimal serial number.
+# a sector-specific generic base plus a hex serial number.
 
 
 def _markup_code(code, cfg):

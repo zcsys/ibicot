@@ -85,14 +85,14 @@ def test_generated_names():
         'Freight Equipment', 'Defense Systems',
     ]
 
-    # Tier 1 examples: first firm of each material cohort is 001.
+    # Tier 1 examples: first firm of each material cohort is 001 (hex).
     assert M.t1_firm_name(0) == 'Industrial Fluids 001'
     assert M.t1_firm_name(800) == 'Composite Materials 001'
-    assert M.t1_firm_name(99) == 'Industrial Fluids 100'
+    assert M.t1_firm_name(99) == 'Industrial Fluids 064'
 
-    # Tier 2 examples: decimal serial within each 6,000-firm sector.
+    # Tier 2 examples: hex serial within each 6,000-firm sector.
     assert M.t2_firm_name(0, 0) == 'Power Equipment 00001'
-    assert M.t2_firm_name(0, 5999) == 'Power Equipment 06000'
+    assert M.t2_firm_name(0, 5999) == 'Power Equipment 01770'
     assert M.t2_firm_name(1, 6000) == 'Propulsion Systems 00001'
 
     # Equipment classes and configurations.
@@ -105,7 +105,7 @@ def test_generated_names():
     # Cohort sizes are consistent with the tier populations.
     assert M.T1_FIRMS_PER_MATERIAL == 100
     assert M.T2_FIRMS_PER_SECTOR == 6000
-    print('generated names: ok (generic bases + decimal serials hold)')
+    print('generated names: ok (generic bases + hex serials hold)')
 
 
 if __name__ == '__main__':

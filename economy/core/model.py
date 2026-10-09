@@ -142,7 +142,7 @@ T2_EQUIPMENT_CONFIG: dict = {int(k): v for k, v in _DATA['EQUIPMENT_CONFIG'].ite
 
 # ---------------------------------------------------------------------------
 # Numbered companies (Star Business naming catalog §9).  Each sector has one
-# recognizable generic business name; a decimal sector serial identifies the
+# recognizable generic business name; a hex sector serial identifies the
 # individual firm.  No house-name pool, location suffix, district, or berth is
 # added.  The twenty authored identities stay separate and are never prepended.
 # ---------------------------------------------------------------------------
@@ -167,18 +167,18 @@ def company_display_name(tier: int, generic_base: str, sector_serial: int) -> st
     if tier not in (1, 2) or sector_serial < 1:
         raise ValueError("Invalid tier or sector serial")
     width = 3 if tier == 1 else 5
-    return f"{generic_base} {sector_serial:0{width}d}"
+    return f"{generic_base} {sector_serial:0{width}X}"
 
 
 def t1_firm_name(cid: int) -> str:
-    """Display name for a Tier 1 refinery: generic base + decimal sector serial."""
+    """Display name for a Tier 1 refinery: generic base + hex sector serial."""
     code = PRODUCTS[int(cid) // 100]['code']
     serial = int(cid) % T1_FIRMS_PER_MATERIAL + 1
     return company_display_name(1, T1_GENERIC_BASES[code], serial)
 
 
 def t2_firm_name(sector: int, firm_id: int) -> str:
-    """Display name for a Tier 2 manufacturer: generic base + decimal sector serial."""
+    """Display name for a Tier 2 manufacturer: generic base + hex sector serial."""
     sector = int(sector)
     serial = int(firm_id) - sector * T2_FIRMS_PER_SECTOR + 1
     return company_display_name(2, T2_GENERIC_BASES[sector], serial)

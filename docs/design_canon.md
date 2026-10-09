@@ -13,8 +13,8 @@
 > generic material, equipment, and product descriptions in sentences. The
 > agent-category display labels are **Resource Companies** (T0), **Refineries**
 > (T1), **Manufacturers** (T2) and **Consumers** (T3). Generated firms use a
-> sector-specific generic name plus a decimal serial number (e.g.
-> **Power Equipment 00042**); no house-name pool, location suffix, district, or
+> sector-specific generic name plus a hex serial number (e.g.
+> **Power Equipment 0002A**); no house-name pool, location suffix, district, or
 > berth is appended. `T0`–`T3` remain the internal tier keys throughout this
 > document and the machine contract.
 

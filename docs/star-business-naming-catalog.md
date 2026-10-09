@@ -24,7 +24,7 @@ Naming logic: use direct American business and engineering language with a visib
 - Materials identify trade stock. Companies identify businesses. Sectors identify purchasing domains. Goods identify physical purchases.
 - Keep names short enough for a market row. Use longer names only when the distinction matters, such as Medical Cold-Chain Container versus Orbital Shipping Container.
 - Keep the maker in its own field. “Mudrock” is never part of a generic equipment class or product name.
-- Generated firms use a sector-specific generic name plus a serial number. No house-name pool, location suffix, district, or berth is added to a company name.
+- Generated firms use a sector-specific generic name plus a hex serial number. No house-name pool, location suffix, district, or berth is added to a company name.
 - Avoid invented mineral suffixes, model years, military ranks, and prestige adjectives as substitutes for function.
 
 ## 2. Raw Elements — T0 Output
@@ -508,14 +508,14 @@ Naming logic: Defense-contractor language gives the mission and hardware type, w
 
 ## 9. Numbered Companies — Simple, Stable Names
 
-Naming logic: each sector has one recognizable generic business name. A serial number identifies the individual company. The simplicity is intentional.
+Naming logic: each sector has one recognizable generic business name. A hex serial number identifies the individual company. The simplicity is intentional.
 
 Use the **Generic Company Base** from sections 5 and 6, followed by a space and the firm’s sector serial:
 
-- Tier 1: `{Generic Company Base} {Serial:03d}` — for example, **Industrial Fluids 001**.
-- Tier 2: `{Generic Company Base} {Serial:05d}` — for example, **Power Equipment 00001**.
+- Tier 1: `{Generic Company Base} {Serial:03X}` — for example, **Industrial Fluids 001**.
+- Tier 2: `{Generic Company Base} {Serial:05X}` — for example, **Power Equipment 00001**.
 
-These are minimum widths, not limits. Numbers expand naturally when necessary. The ten Tier 1 bases and ten Tier 2 bases are all distinct, so numbering may restart at 1 independently in each sector without causing duplicate names.
+These are minimum widths, not limits. Serials expand naturally when necessary. The ten Tier 1 bases and ten Tier 2 bases are all distinct, so numbering may restart at 1 independently in each sector without causing duplicate names.
 
 ### Complete Generic-Name Mapping
 
@@ -555,12 +555,12 @@ def company_display_name(tier, generic_base, sector_serial):
     if tier not in (1, 2) or sector_serial < 1:
         raise ValueError("Invalid tier or sector serial")
     width = 3 if tier == 1 else 5
-    return f"{generic_base} {sector_serial:0{width}d}"
+    return f"{generic_base} {sector_serial:0{width}X}"
 ```
 
-If allocation is even, 100 refineries in each material sector yield serials 001–100. Six thousand manufacturers in each manufacturing sector yield serials 00001–06000. The same rule works with an uneven distribution: it requires no fixed population per sector.
+If allocation is even, 100 refineries in each material sector yield hex serials 001–064. Six thousand manufacturers in each manufacturing sector yield hex serials 00001–01770. The same rule works with an uneven distribution: it requires no fixed population per sector.
 
-Store the authored identity or cohort label in a separate field. Do not prepend Clearwater, Switchyard, or another authored company name to every agent in its cohort. For example, **Power Equipment 00042** is an independent firm name, not “Switchyard Power Systems 00042.”
+Store the authored identity or cohort label in a separate field. Do not prepend Clearwater, Switchyard, or another authored company name to every agent in its cohort. For example, **Power Equipment 0002A** is an independent firm name, not “Switchyard Power Systems 0002A.”
 
 ## 10. Interface and Service Labels
 
@@ -601,7 +601,7 @@ Naming logic: use familiar American business software labels, with plain simulat
 | Buyer relationship metric | Supplier Loyalty | Keep it distinct from seller reliability. |
 | Trade history | Transactions | Buyer, seller, product, quantity, price, and time. |
 
-An example notification reads: “Backup battery racks are in short supply. Power Equipment 00042 raised its price.” Another reads: “Mudrock Machinery Co. delivered a refining cell.” These use lowercase product and equipment names in prose while preserving registered company names.
+An example notification reads: “Backup battery racks are in short supply. Power Equipment 0002A raised its price.” Another reads: “Mudrock Machinery Co. delivered a refining cell.” These use lowercase product and equipment names in prose while preserving registered company names.
 
 ## 11. Migration and Consistency
 
