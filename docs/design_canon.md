@@ -85,12 +85,14 @@ Every section below is a consequence of, or a requirement for, that sentence.
   single-machine firms** in the reverse 6:3:1 ratio: **C-3 = 36,000** (20 × 1,800),
   **C-4 = 18,000** (60 × 300), **C-5 = 6,000** (120 × 50).
 - **1,000,000 Tier 3 consumers** (resident consumers).
-- **The eight single-element extractors are also special-purpose**: the two Water
-  extractors produce **machinery**; the two Earth extractors collect the **Storage
-  Concession Fee**; the two Fire extractors provide **Banking**; the two Air extractors
-  provide **Advertising**. These four service layers (the storage concession, machinery,
-  banking and advertising) are **deferred for the PoC** — documented, not active
-  (mechanics TBD).
+- **The six two-element extractors are special-purpose**: Mudrock Machinery Co.
+  (machinery), Steam Ridge Financial Inc. (financial services), Dustline Spatial Solutions
+  Corp. (warehouses, land, and industrial space — the Storage Concession Fee), Flare
+  Basin Advertising Incorporated (advertising), Cloudline Games & Entertainment
+  Corporation (games and entertainment), and Hotrock Utility Company (utilities). The
+  single-element extractors are pure extractors. These service layers are **deferred for
+  the PoC** — documented, not active (mechanics TBD), except the machinery maker, which
+  is active in the Machinery Market.
 - Tier 0 companies are **significantly larger** than Tier 1 or Tier 2 companies.
 
 ---

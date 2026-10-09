@@ -61,9 +61,9 @@ The legacy codes are compatibility keys. **W+E is one T1 material**, not two T1 
 
 ## 4. Extraction Companies — All 20
 
-Naming logic: diversified corporations get broad business names; specialized operators get resource names; the monopoly pairs put their additional business directly in the company name.
+Naming logic: diversified corporations get broad business names; specialized operators get resource names; the two-market operators put their special duty directly in the company name.
 
-The distribution is **2 four-market + 4 three-market + 6 two-market + 8 single-market companies**. The six unspecified slots are assigned to the six distinct element pairs. This gives each element ten extractors without granting every extractor the corresponding monopoly service.
+The distribution is **2 four-market + 4 three-market + 6 two-market + 8 single-market companies**. The six two-market slots are assigned to the six distinct element pairs, each with a special duty. The eight single-market companies are pure extractors.
 
 ### Four-Market Corporations
 
@@ -330,7 +330,7 @@ Grow Room Enclosure and Garden Dome Shell are structures, not installed food-pro
 
 **Authored company:** Workhorse Service Robotics. **Scope:** Service robots, repair platforms, and replaceable robotic components.
 
-Naming logic: Parts-counter names for components and straightforward job names for robots; production robots remain Water-company machinery.
+Naming logic: Parts-counter names for components and straightforward job names for robots; production robots remain Mudrock machinery.
 
 | Product ID | Good | T1 Recipe | Complexity |
 |---|---|---|---|
@@ -355,7 +355,7 @@ Naming logic: Parts-counter names for components and straightforward job names f
 | T2-099 | Building Maintenance Robot | 1 IF + 1 CS + 1 PC | C-5 |
 | T2-100 | Salvage Handling Robot | 1 BA + 1 TC + 1 PC | C-5 |
 
-These robots perform inspection, handling, cleaning, rescue support, or repair. None is a production-line robot. A complete manufacturing robot must be purchased from one of the two Water companies. Service products do not imply that autonomous robot residents are property.
+These robots perform inspection, handling, cleaning, rescue support, or repair. None is a production-line robot. A complete manufacturing robot must be purchased from Mudrock Machinery Co. Service products do not imply that autonomous robot residents are property.
 
 ### 8.6. Computing & Communications
 
@@ -475,7 +475,7 @@ Naming logic: Warehouse and trucking terminology makes every item recognizable o
 | T2-179 | Propellant Transfer Station | 1 IF + 1 TC + 1 TF | C-5 |
 | T2-180 | Medical Gas Storage Tank | 1 BA + 1 TF + 1 SC | C-5 |
 
-Freight-handling machinery moves or stores goods; it does not refine stock or manufacture saleable output. Warehouse hardware sales do not transfer the Earth companies’ storage royalty rights.
+Freight-handling machinery moves or stores goods; it does not refine stock or manufacture saleable output. Warehouse hardware sales do not transfer Dustline Spatial Solutions Corp.’s storage royalty rights.
 
 ### 8.10. Defense & Emergency Systems
 
@@ -583,7 +583,7 @@ Naming logic: use familiar American business software labels, with plain simulat
 | Factory view | Production | Installed equipment, processes, and output. |
 | Stock view | Inventory | Materials and finished goods on hand. |
 | Facility capacity view | Storage | Capacity, utilization, and royalty charges. |
-| Earth-company charge | Storage Royalty | Show the actual recipient or recipients. |
+| Storage charge | Storage Royalty | Show Dustline Spatial Solutions Corp. as the recipient. |
 | Financial services | Banking | Steam Ridge Financial Inc. is the sole provider. |
 | Paid promotion | Advertising | Flare Basin Advertising Incorporated is the sole provider. |
 | Policy service | Colony Policy | Provided by Baseline Resource Corporation. |
@@ -609,7 +609,7 @@ Naming logic: stable IDs carry identity; display names communicate the new setti
 
 - Keep W, E, F, A and their compound codes as internal material keys. Section 3 is their new display-name and symbol map.
 - Keep T2-001 through T2-200 as product keys. Section 8 gives the complete replacement list and preserves every recipe and complexity.
-- Keep the ten sector slots in their original order. Their display names change to section 6. The tooling sector’s narrower scope is deliberate because only the Water pair may produce complete manufacturing equipment.
+- Keep the ten sector slots in their original order. Their display names change to section 6. The tooling sector’s narrower scope is deliberate because only Mudrock Machinery Co. may produce complete manufacturing equipment.
 - For code already migrated against the earlier catalog, T0-01 through T0-20 preserve the same coverage and responsibility slots. Replace the names using section 4. T1-01 through T1-10 remain in material order; T2-C01 through T2-C10 remain in sector order.
 - Equipment class IDs in this document are catalog keys. Map them to existing code IDs rather than changing stored IDs unnecessarily.
 - The previous prohibitions on numeric display-name suffixes and the previous house/district/berth generation scheme are superseded. Use section 9 exclusively for generated company names.
@@ -632,7 +632,7 @@ Naming logic: stable IDs carry identity; display names communicate the new setti
 | Single-market companies | 8; two per element |
 | Extractors per element | 10 |
 | Civic roles | 4, one per three-market company |
-| Monopoly pairs | 4: machinery, storage royalties, banking, advertising |
+| Special duties | 6, one per two-market company: machinery, finance, warehousing/land, advertising, games, utilities |
 | Authored refinery identities | 10 |
 | Manufacturing sectors | 10 |
 | Authored manufacturing identities | 10 |
