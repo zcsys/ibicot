@@ -1316,6 +1316,8 @@ class KernelRuntime:
             'analyticsHistory': self.analyticsHistory,
             'tiers': {
                 't0': {'firms': N0, 'bought': 0, 'made': float(analytics['t0Produced'].sum()),
+                       'capacity': float(cfg['t0Capacity'] * N0),
+                       'utilization': float(analytics['t0Produced'].sum() / (cfg['t0Capacity'] * N0)) if cfg['t0Capacity'] > 0 else 0.0,
                        'cogs': _array_sum(world.t0COGS), 'grossProfit': analytics['t0Revenue'] - _array_sum(world.t0COGS),
                        'inventory': analytics['t0Inventory'], 'cash': analytics['t0Cash'],
                        'equity': analytics['t0Equity'], 'sold': analytics['t0Sold'],
@@ -1325,6 +1327,8 @@ class KernelRuntime:
                        'raw': analytics['t1Raw'], 'finished': analytics['t1Finished'],
                        'cash': analytics['t1Cash'], 'equity': analytics['t1Equity'],
                        'bought': _array_sum(world.t1Bought), 'made': analytics['t1Made'],
+                       'capacity': float(cfg['t1Capacity'] * int(world.t1Operates.sum())),
+                       'utilization': float(analytics['t1Made'] / (cfg['t1Capacity'] * int(world.t1Operates.sum()))) if (cfg['t1Capacity'] > 0 and world.t1Operates.sum() > 0) else 0.0,
                        'sold': analytics['t1Sold'], 'revenue': analytics['t1Revenue'],
                        'cogs': analytics['t1COGS'], 'grossProfit': analytics['t1Revenue'] - analytics['t1COGS'],
                        'desired': float(sum(p['active'] for p in productStats)),
