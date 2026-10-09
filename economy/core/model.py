@@ -63,7 +63,7 @@ NP = len(PRODUCTS)          # 10
 N0 = 20
 N1 = 1000
 N2_FIRMS = 60000            # canon: 60,000 single-machine T2 firms (was 61,950)
-N_CONSUMERS = WORLD_STORY['population']          # 100,000
+N_CONSUMERS = WORLD_STORY['population']          # 1,000,000
 MAX_T2_LINES = N2_FIRMS     # one machine/line per firm at start
 MONTH = TIME['ticksPerMonth']                     # 30
 # Firms per product by complexity (canon §3): C-3 1,800 · C-4 300 · C-5 50.

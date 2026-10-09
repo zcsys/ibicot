@@ -528,7 +528,7 @@ if _HAVE_NUMBA:
 
     @_njit
     def _clear_consumers_nb(
-        seed, tick, consumer_count, consumer_search_offers,
+        seed, tick, consumer_count, consumer_activation, consumer_search_offers,
         loyalty_multiple_t3, tier2_reservation_premium, n_t2,
         consumer_product, consumer_preferred_supplier,
         consumer_last_market, consumer_last_supplier, consumer_last_q, consumer_last_fulfilled,
@@ -556,6 +556,8 @@ if _HAVE_NUMBA:
         payments = 0.0
 
         for buyer in range(consumer_count):
+            if _rand(seed, tick, buyer + 2000000) >= consumer_activation:
+                continue
             activated += 1
             market = consumer_product[buyer]
             pid = market - NP
@@ -978,7 +980,7 @@ def clear_consumers(world, cfg, tick):
     world.consumerLastFulfilled.fill(0)
     return _clear_consumers_nb(
         cfg['seed'], tick, cfg['consumerCount'],
-        cfg['consumerSearchOffers'], float(cfg['loyaltyMultiple'][3]),
+        float(cfg['consumerActivation']), cfg['consumerSearchOffers'], float(cfg['loyaltyMultiple'][3]),
         float(cfg['t2ReservationPremium']), N_T2,
         world.consumerProduct, world.consumerPreferredSupplier,
         world.consumerLastMarket, world.consumerLastSupplier, world.consumerLastQ, world.consumerLastFulfilled,

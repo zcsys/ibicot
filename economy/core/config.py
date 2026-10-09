@@ -56,6 +56,7 @@ def default_cfg() -> dict:
 
         # Demand / consumers
         'consumerSearchOffers': 5,
+        'consumerActivation': 0.1,       # fraction of buyers that activate each tick
         'chokeMin': 1.8,
         'chokeMax': 3.0,
         'elasticity': 2.0,              # eta = 2
@@ -145,6 +146,7 @@ def normalize_config(c) -> dict:
 
     # Demand
     d['consumerSearchOffers'] = max(1, min(20, math.floor(d['consumerSearchOffers'])))
+    d['consumerActivation'] = M.clamp(d['consumerActivation'], 0, 1)
     d['chokeMin'] = max(0.01, d['chokeMin'])
     d['chokeMax'] = max(d['chokeMin'], d['chokeMax'])
     d['elasticity'] = max(0.05, min(10, d['elasticity']))

@@ -15,7 +15,7 @@
   const LOADING_MESSAGES = [
     'Establishing uplink…',
     'Calibrating galactic markets…',
-    'Waking 100,000 procurement agents…',
+    'Waking 1,000,000 procurement agents…',
     'Spinning up 60,000 robotic firms…',
     'Aligning supply chains…',
     'Synchronizing sector indexes…',
@@ -65,7 +65,7 @@
     'minWholesaleLot', 'inventoryCoverageTicks',
     't1Equity', 't1License', 't1Machinery', 't1Capacity', 't1MaterialCost', 't1Markup',
     't2Equity', 't2License', 't2MaterialCost', 'conversionFactor', 'storage',
-    'consumerSearchOffers',
+    'consumerActivation', 'consumerSearchOffers',
     'chokeMin', 'chokeMax', 'elasticity', 't2ReservationPremium',
     'pricingAggressiveness', 'alpha', 'wholesalePriceResponse', 'priceObservationTicks',
     'taumin', 'taumax', 'reliabilityAlpha', 'switchingStableBand',

@@ -753,6 +753,8 @@ def clear_consumers(world, cfg, products, t2_products, tick):
     n_t2 = len(t2_products)
 
     for buyer in range(cfg['consumerCount']):
+        if random_(seed, tick, buyer + 2000000) >= cfg['consumerActivation']:
+            continue
         activated += 1
         market = int(world.consumerProduct[buyer])
         product = t2_products[market - NP]
