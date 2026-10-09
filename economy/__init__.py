@@ -1,4 +1,4 @@
-"""Robotic Space Generation — Python economy kernel (Phase 1 PoC).
+"""Long Muster — Python economy kernel (Phase 1 PoC).
 
 A faithful, deterministic port of the JavaScript economy kernel
 (web/catalogue.js + the canon (docs/design_canon.md) + the canon machine contract (docs/design_canon.md §12))

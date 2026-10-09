@@ -1,4 +1,4 @@
-# Robotic Space Generation — Economy Kernel
+# Long Muster — Economy Kernel
 
 A deterministic, fair-market simulation of a physical-goods supply chain, driven
 by autonomous firms and entered by players on equal footing. This repository is
@@ -32,10 +32,10 @@ can actually feed the next):
 
 | Tier | Who | Count |
 | --- | --- | --- |
-| **T0 — extraction** | mines the four raw elements (Water, Earth, Fire, Air) | 20 firms |
-| **T1 — refining** | 10 products (4 C-1 basic + 6 C-2 compound) | 1,000 firms |
-| **T2 — manufacturing** | 200 invented goods, complexity C-3 / C-4 / C-5 | 60,000 firms |
-| **T3 — consumers** | external procurement agents | 1,000,000 |
+| **T0 — Extraction Houses** | extract the four raw elements (Water, Earth, Fire, Air) | 20 houses |
+| **T1 — Refineries** | 10 refined materials (4 C-1 basic + 6 C-2 compound) | 1,000 firms |
+| **T2 — Manufacturers** | 200 manufactured goods, complexity C-3 / C-4 / C-5 | 60,000 firms |
+| **T3 — Consumers** | resident consumers | 1,000,000 |
 
 Time is a **30-tick month**, a **360-tick year**, and a **7,200-tick generation**
 (20 years). The T2 firm count follows a reverse 6:3:1 ratio — 36,000 C-3, 18,000 C-4,

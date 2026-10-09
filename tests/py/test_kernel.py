@@ -70,6 +70,34 @@ def test_invariants_conservation():
     print('invariants: ok (30 ticks — no negatives, conservation holds, atomic orders)')
 
 
+def test_generated_names():
+    # Freeze the naming catalogue's ordered implementation data (§10) and the
+    # deterministic mixed-radix generator, plus the Tier 1 equipment classes (§7).
+    assert len(M.HOUSE_NAMES) == 32
+    assert len(M.DISTRICT_NAMES) == 32
+    assert len(M.BERTH_FIRST) == 8 and len(M.BERTH_SECOND) == 8
+
+    assert M.generated_company_name(0, 'Metals') == \
+        'Fenwick Metals — Ashbank District, Amber Anchor Berth'
+    assert M.generated_company_name(52529, 'Membranes') == \
+        'Shared Hearth Membranes — Juniper District, Quiet Landing Berth'
+    assert M.generated_company_name(64504, 'Service Robotics') == \
+        'Old Lathe Service Robotics — Southmere District, Silver Slip Berth'
+    assert M.generated_company_name(20651, 'Tool Supply') == \
+        'Reedwater Tool Supply — Flintbank District, Chalk Quay Berth'
+
+    # Tier 1 equipment classes.
+    assert M.T1_EQUIPMENT_CLASS == {1: 'Refining Bench', 2: 'Refining Cell'}
+    assert M.T1_EQUIPMENT_INSTALLATION['W+E'] == 'Mineral Ceramic Refining Cell'
+    assert M.T1_EQUIPMENT_INSTALLATION['F'] == 'Charge Medium Refining Bench'
+
+    # Every slot in the 65,536-slot namespace yields a unique name.
+    names = {M.generated_company_name(s, 'Metals') for s in range(65_536)}
+    assert len(names) == 65_536
+    print('generated names: ok (frozen pools, examples and uniqueness hold)')
+
+
 if __name__ == '__main__':
     test_determinism()
     test_invariants_conservation()
+    test_generated_names()

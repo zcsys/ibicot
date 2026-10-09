@@ -11,12 +11,12 @@
   const worker = new Worker('./worker.js');
   const $ = (id) => document.getElementById(id);
 
-  // --- Intergalactic loading screen ---
+  // --- Loading screen ---
   const LOADING_MESSAGES = [
     'Establishing uplink…',
-    'Calibrating galactic markets…',
-    'Waking 1,000,000 procurement agents…',
-    'Spinning up 60,000 robotic firms…',
+    'Calibrating colony markets…',
+    'Waking 1,000,000 consumers…',
+    'Spinning up 60,000 manufacturers…',
     'Aligning supply chains…',
     'Synchronizing sector indexes…',
   ];
@@ -429,7 +429,7 @@
     }
     if (d.tier === 'T0') {
       const txt = [
-        `${d.name} · Tier 0`,
+        `${d.name} · Extraction house`,
         `status: ${d.status}`,
         `cash: ${fmtMoney(d.cash, 2)}`,
         `inventory: ${fmtInt(d.inventory)}`,
@@ -453,7 +453,7 @@
         .join('\n');
     } else {
       const txt = [
-        `${d.name} · Tier 1`,
+        `${d.name} · Refinery`,
         `controller: ${d.controller}`,
         `online: ${d.online ? 'yes' : 'no'}`,
         `sector: ${d.sector}`,
@@ -688,17 +688,17 @@
     $('ravg').textContent = s.retailVolume > 0 ? fmtUnitPrice(s.retailAvg) : '—';
     $('ordersFulfilled').textContent = fmtInt(consumers.fulfilledOrders) + ' / ' + fmtInt(consumers.orders);
     const difficulty = Object.values(s.difficulty);
-    $('gaiaRange').textContent = fmtFixed(Math.min(...difficulty), 3) + '–' + fmtFixed(Math.max(...difficulty), 3);
+    $('envRange').textContent = fmtFixed(Math.min(...difficulty), 3) + '–' + fmtFixed(Math.max(...difficulty), 3);
     $('t0DiffMean').textContent = fmtFixed(sum(difficulty) / difficulty.length, 3);
-    $('scaleCaption').textContent = fmtInt(t0.firms) + ' extraction firms · ' + fmtInt(t1.firms) + ' material firms · ' +
-      fmtInt(t2.firms) + ' finished-goods firms · ' + fmtInt(consumers.population) + ' external procurement agents';
+    $('scaleCaption').textContent = fmtInt(t0.firms) + ' extraction houses · ' + fmtInt(t1.firms) + ' refineries · ' +
+      fmtInt(t2.firms) + ' manufacturers · ' + fmtInt(consumers.population) + ' consumers';
     $('demandCaption').textContent = fmtInt(consumers.fulfilled) + ' / ' + fmtInt(consumers.active) + ' desired units fulfilled this tick';
     const hist = s.analyticsHistory || [], scope = $('overviewTier').value;
     const tiers = scope ? [scope] : ['t0', 't1', 't2'];
     for (const [id, key, moneyAxis] of [['cashChart', 'cash', true], ['equityChart', 'equity', true], ['inventoryChart', 'inventory', false],
       ['productionChart', 'made', false], ['salesChart', 'sold', false], ['producerRevenueChart', 'revenue', true]])
       drawLine(id, hist, tiers.map(tier => hist.map(point => point.tiers[tier][key])), tiers.map(tier => 'Tier ' + tier.slice(1)), 0, moneyAxis);
-    drawLine('gaiaChart', hist, [0, 1, 2, 3].map(i => hist.map(point => point.difficulty[i])), M.ELEMENTS, 3, false, false, false);
+    drawLine('envChart', hist, [0, 1, 2, 3].map(i => hist.map(point => point.difficulty[i])), M.ELEMENTS, 3, false, false, false);
     drawLine('wholesaleChart', hist, [0, 1, 2, 3].map(i => hist.map(point => point.elementPrices[i])), M.ELEMENTS, 5, true, false, false);
     for (const tier of ['t0', 't1']) {
       drawLine(tier + 'OutputChart', hist, ['made', 'sold'].map(key => hist.map(point => point.tiers[tier][key])), ['Production', 'Sales'], 0);
@@ -726,7 +726,7 @@
     }).join('');
     const tiers = ['t0','t1','t2'].map((key, index) => {
       const t = s.tiers[key];
-      return { ...t, name: ['Tier 0 · Extraction','Tier 1 · Materials','Tier 2 · Galactic goods'][index],
+      return { ...t, name: ['Extraction Houses','Refineries','Manufacturers'][index],
         complexity: ['Raw elements','C-1–C-2','C-3–C-5'][index],
         bought: index === 0 ? null : t.bought,
         cashPerFirm: meaningfulRatio(t.cash, t.firms), revenuePerFirm: meaningfulRatio(t.revenue, t.firms),
@@ -746,13 +746,14 @@
     const moneyMetric = ['revenue','grossProfit','profitPerLine','machineryPrice','avgPrice','avgUnitCost'].includes(metric);
     const ratioMetric = ['margin','utilization','fillRate'].includes(metric);
     const digits = ['avgPrice','avgUnitCost'].includes(metric) ? 5 : metric === 'profitPerLine' ? 2 : 0;
-    drawComparison('categoryComparisonChartT1', categories.filter(row => row.tier === 'Tier 1'), metric, moneyMetric, ratioMetric, digits);
-    drawComparison('categoryComparisonChartT2', categories.filter(row => row.tier === 'Tier 2'), metric, moneyMetric, ratioMetric, digits);
+    drawComparison('categoryComparisonChartT1', categories.filter(row => row.tier === 'Refinery'), metric, moneyMetric, ratioMetric, digits);
+    drawComparison('categoryComparisonChartT2', categories.filter(row => row.tier === 'Manufacturer'), metric, moneyMetric, ratioMetric, digits);
   }
   function renderOwnership(s) {
     const o = s.ownership;
     if (!o) return;
-    $('ownershipLicenses').textContent = o.licenses.join(', ') || '—';
+    const LICENSE_NAMES = { T0: 'Extraction house', T1: 'Refinery', T2: 'Manufacturer' };
+    $('ownershipLicenses').textContent = o.licenses.map((l) => LICENSE_NAMES[l] || l).join(', ') || '—';
     $('t2LicenseCost').textContent = o.licenseCosts.T2 == null ? 'not for sale' : fmtMoney(o.licenseCosts.T2, 0);
     $('buyT2License').disabled = o.licenses.includes('T2');
     $('ownershipHouse').textContent = o.house ? o.house.name : 'None';
@@ -838,7 +839,7 @@
       $(id).innerHTML = sortedTableRows(id,rows).map((c)=>'<tr><th>'+c[tableSortColumns[id][0]]+'</th>'+cells(c,tableSortColumns[id].slice(1))+'</tr>').join('');
     const search = $('t2ProductSearch').value.toLowerCase(), complexity = $('t2ComplexityFilter').value, sector = $('t2ProductSector').value, need = $('t2ProductNeed').value;
     const products = s.tier2Products.filter((p)=>(!complexity || p.complexity === +complexity) && (!sector || p.sector === sector) && (!need || p.needType === need) && (p.code+' '+p.name+' '+p.needType+' '+p.kind+' '+p.sector+' '+p.recipe).toLowerCase().includes(search));
-    $('t2ProductCount').textContent = products.length+' / '+s.tier2Products.length+' galactic goods';
+    $('t2ProductCount').textContent = products.length+' / '+s.tier2Products.length+' manufactured goods';
     $('tier2Products').innerHTML = sortedTableRows('tier2Products',products).map((p)=>'<tr><th title="Recipe: '+p.recipe+'">'+p.name+'</th>'+cells(p,tableSortColumns.tier2Products.slice(1))+'</tr>').join('');
     const page = s.tier2Companies; t2Page = page.page;
     $('tier2Companies').innerHTML = page.rows.map((c)=>'<tr class="clickable-row" data-id="'+c.id+'"><th>'+c.name+'</th><td>'+c.sector+'</td><td>'+c.capability+'</td><td>'+c.controller+'</td><td>'+(c.controller==='BOT'?'Automated':c.online?'Online':'Offline')+'</td><td class="recipe-cell">'+c.products.map((p)=>p.name).join(', ')+'</td>'+
@@ -865,7 +866,7 @@
       drawLine('tier2CompanyBalanceChart',history,[history.map((x)=>x.cash)],['Cash'],0,true);
       drawLine('tier2CompanyEquityChart',history,[history.map((x)=>x.equity)],['Book equity'],0,true);
     } else {
-      $('t2CompanyDetail').textContent = 'Select a Tier 2 company row or use Selected company control to inspect its portfolio, inputs and performance.';
+      $('t2CompanyDetail').textContent = 'Select a manufacturer row or use Selected company control to inspect its portfolio, inputs and performance.';
     }
     const selectedSector = $('t2IndustrySector').value;
     const history = s.analyticsHistory.map((x)=>selectedSector ? {tick:x.tick,...x.t2Industries.find((sector)=>sector.name===selectedSector)} :
@@ -907,7 +908,7 @@
     const sector=event.target.closest('[data-catalogue-sector]')?.dataset.catalogueSector;
     if(sector){$('t2ProductSector').value=sector;if(latestSnapshot)renderTier2(latestSnapshot);}
   });
-  $('recipePoolSummary').textContent = M.T2_PRODUCTS.length+' invented goods · '+M.T2_UNINVENTED_PRODUCTS.length+' reserved recipes · '+[3,4,5].map(c=>M.T2_COMPLEXITY_COUNTS[c-1]+' C-'+c).join(' · ');
+  $('recipePoolSummary').textContent = M.T2_PRODUCTS.length+' goods · '+M.T2_UNINVENTED_PRODUCTS.length+' reserved recipes · '+[3,4,5].map(c=>M.T2_COMPLEXITY_COUNTS[c-1]+' C-'+c).join(' · ');
   $('t2SectorFilter').innerHTML += M.T2_SECTORS.map((s)=>`<option>${s}</option>`).join('');
   $('t2IndustrySector').innerHTML += M.T2_SECTORS.map((s)=>`<option>${s}</option>`).join('');
   for (const id of ['t2IndustrySector','t2SectorMetric']) $(id).addEventListener('change',()=>{if(latestSnapshot)renderTier2(latestSnapshot);});
@@ -1003,7 +1004,7 @@
   };
   $('step').onclick = () => worker.postMessage({ type: 'step' });
   $('reset').onclick = () => {
-    showLoading('Re-initializing the galactic economy…');
+    showLoading('Re-initializing the colony economy…');
     worker.postMessage({ type: 'reset', cfg: readCfg() });
   };
   $('applyParams').onclick = () => {

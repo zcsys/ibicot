@@ -13,29 +13,43 @@ from .config import normalize_config
 from .rng import hash_seed_vec
 
 # --------------------------------------------------------------------------
-# Tier 0 profiles (worker `T0P`): name + element names, in fixed order.
+# Tier 0 profiles (worker `T0P`): the 20 extraction houses, in fixed order.
+# Names follow the Long Muster naming catalogue §4.  Coverage is 2 four-market,
+# 4 three-market, 6 two-market and 8 single-market houses.
+#
+# Civic duties (three-market charter houses):
+#   Common Measure Resources  -> Colony Standards (policy)
+#   Charterline Resources     -> Company Register (administration)
+#   Open Ledger Resources     -> Sector Observatory (intelligence)
+#   Assembly Square Resources -> Colony Forum (community)
+#
+# Monopoly service pairs (single-market houses):
+#   Water: Meltwell Ice & Machine / Brinewright Water & Machine -> machinery
+#   Earth: Stonehold Mining & Storage / Underfloor Minerals & Storage -> storage fee
+#   Fire:  Emberwell Energy Bank / Coreheat Energy Bank -> banking
+#   Air:   Skybill Gas & Advertising / Highsign Atmospherics & Advertising -> advertising
 # --------------------------------------------------------------------------
 _T0P_RAW = [
-    ['Atlas Resources', ['Water', 'Earth', 'Fire', 'Air']],
-    ['Axiom Extraction Systems', ['Water', 'Earth', 'Fire', 'Air']],
-    ['Orbital Materials Network', ['Water', 'Earth', 'Fire']],
-    ['Galactic Resource Consortium', ['Water', 'Earth', 'Air']],
-    ['Gaia Extraction Works', ['Water', 'Fire', 'Air']],
-    ['Confluence Resources', ['Earth', 'Fire', 'Air']],
-    ['Hydro Mineral Works', ['Water', 'Earth']],
-    ['Solar Resource Works', ['Water', 'Fire']],
-    ['Atmospheric Resource Works', ['Water', 'Air']],
-    ['Thermal Mineral Works', ['Earth', 'Fire']],
-    ['Mineral and Gas Works', ['Earth', 'Air']],
-    ['Thermal and Gas Works', ['Fire', 'Air']],
-    ['Deepwell Ice Extraction', ['Water']],
-    ['Comet Ice Harvesting', ['Water']],
-    ['Bedrock Mineral Extraction', ['Earth']],
-    ['Stratum Mining', ['Earth']],
-    ['Helios Solar Collection', ['Fire']],
-    ['Mantle Geothermal Works', ['Fire']],
-    ['Cirrus Atmospheric Capture', ['Air']],
-    ['Zephyr Gas Separation', ['Air']],
+    ['First Landing Consolidated', ['Water', 'Earth', 'Fire', 'Air']],
+    ['Far Acre Holdings', ['Water', 'Earth', 'Fire', 'Air']],
+    ['Common Measure Resources', ['Water', 'Earth', 'Fire']],
+    ['Charterline Resources', ['Water', 'Earth', 'Air']],
+    ['Open Ledger Resources', ['Water', 'Fire', 'Air']],
+    ['Assembly Square Resources', ['Earth', 'Fire', 'Air']],
+    ['Siltline Recovery', ['Water', 'Earth']],
+    ['Hotwell Extraction', ['Water', 'Fire']],
+    ['Cloudbank Harvesting', ['Water', 'Air']],
+    ['Red Seam Extraction', ['Earth', 'Fire']],
+    ['Dustwake Recovery', ['Earth', 'Air']],
+    ['Flarewell Harvesting', ['Fire', 'Air']],
+    ['Meltwell Ice & Machine', ['Water']],
+    ['Brinewright Water & Machine', ['Water']],
+    ['Stonehold Mining & Storage', ['Earth']],
+    ['Underfloor Minerals & Storage', ['Earth']],
+    ['Emberwell Energy Bank', ['Fire']],
+    ['Coreheat Energy Bank', ['Fire']],
+    ['Skybill Gas & Advertising', ['Air']],
+    ['Highsign Atmospherics & Advertising', ['Air']],
 ]
 _EI = {element: i for i, element in enumerate(M.ELEMENTS)}
 T0P = [{'id': i, 'name': name, 'elements': elements,

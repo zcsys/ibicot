@@ -48,6 +48,9 @@ T2_CATALOGUE: list[dict] = _DATA['T2_CATALOGUE']
 T2_UNINVENTED_PRODUCTS: list[dict] = _DATA['T2_UNINVENTED_PRODUCTS']
 T2_COMPLEXITY_COUNTS: list = _DATA['T2_COMPLEXITY_COUNTS']
 T2_CATALOGUE_COUNT = _DATA['T2_CATALOGUE_COUNT']
+T2_SECTOR_MANUFACTURERS: list[dict] = _DATA['T2_SECTOR_MANUFACTURERS']
+T2_MANUFACTURER_BY_SECTOR: dict = _DATA['T2_MANUFACTURER_BY_SECTOR']
+EQUIPMENT_MAKERS: list[str] = _DATA['EQUIPMENT_MAKERS']
 WORLD_STORY = _DATA['WORLD_STORY']
 
 # ===========================================================================
@@ -104,21 +107,118 @@ def inventory_target(complexity: int, cfg) -> float:
     return goods_space(complexity, cfg) / 2.0
 
 
-# Tier 1 material -> galactic sector (canon 1:1 mapping).  Each of the ten
-# processed materials feeds one distinct Tier 2 application sector; this is the
+# Tier 1 material -> manufacturing sector (naming catalogue 1:1 mapping).  Each of
+# the ten refined materials feeds one distinct Tier 2 application sector; this is the
 # sector a Tier 1 firm is grouped under in the dashboard.
 T1_SECTOR_BY_CODE: dict = {
-    'W': 3,    # Purified Water      -> Habitats & Life Support
-    'E': 7,    # Refined Minerals    -> Mining & Industry
-    'F': 0,    # Energy Cells        -> Power & Energy
-    'A': 6,    # Chemical Feedstock  -> Science & Diagnostics
-    'W+E': 2,  # Ceramic Composite   -> Spacecraft & Hulls
-    'W+F': 1,  # Thermal Compounds   -> Propulsion & Navigation
-    'W+A': 8,  # Synthetic Fibers    -> Logistics & Provisioning
-    'E+F': 5,  # Semiconductor Substrate -> Computing & Communications
-    'E+A': 4,  # Structural Polymers -> Robotics & Automation
-    'F+A': 9,  # Active Compounds    -> Defence & Rescue
+    'W': 3,    # Process Fluid    -> Settlement & Life Support
+    'E': 7,    # Structural Alloy -> Tooling & Extraction Hardware
+    'F': 0,    # Charge Medium    -> Grid & Thermal
+    'A': 6,    # Working Gas      -> Survey & Diagnostics
+    'W+E': 2,  # Mineral Ceramic  -> Hull & Dock Construction
+    'W+F': 1,  # Thermal Gel      -> Drives & Guidance
+    'W+A': 8,  # Membrane Stock   -> Freight & Stores
+    'E+F': 5,  # Circuit Crystal  -> Computation & Signals
+    'E+A': 4,  # Resin Composite  -> Robotics & Field Service
+    'F+A': 9,  # Reactive Salt    -> Defence & Recovery
 }
+
+# Two-letter market symbols (naming catalogue §3), keyed by the legacy recipe code.
+MATERIAL_SYMBOLS: dict = {p['code']: p['symbol'] for p in PRODUCTS}
+
+# ---------------------------------------------------------------------------
+# Tier 1 refining installations (extension of naming catalogue §7).
+# "Refining" identifies the operation; "bench" and "cell" express increasing
+# installation scale, matching Production Bench / Cell / Hall.  These are
+# equipment classes within the Machinery Market, not separate markets.  The
+# maker is kept separate: Meltwell Ice & Machine or Brinewright Water & Machine.
+# ---------------------------------------------------------------------------
+T1_EQUIPMENT_CLASS: dict = {1: 'Refining Bench', 2: 'Refining Cell'}
+T1_EQUIPMENT_CONFIG: dict = {1: 'Single-Element Refining', 2: 'Paired-Element Refining'}
+T1_EQUIPMENT_INSTALLATION: dict = {
+    p['code']: f"{p['name']} {T1_EQUIPMENT_CLASS[p['complexity']]}"
+    for p in PRODUCTS
+}
+
+# ---------------------------------------------------------------------------
+# Generic firm naming (naming catalogue §10).  A generated firm's display name
+# is "{House} {Trade Descriptor} — {District} District, {Berth} Berth".  The
+# house name is an independent identity (surname, remembered place, cooperative
+# or workshop history); the trade descriptor names the firm's actual trade; the
+# district and berth are stable location qualifiers, not subsidiaries.  Both
+# tiers map to ten sectors, so the descriptor is derived from that sector.
+# ---------------------------------------------------------------------------
+T1_MATERIAL_DESCRIPTORS: dict = {
+    'W': 'Process Liquids', 'E': 'Metals', 'F': 'Charge Refining', 'A': 'Gasworks',
+    'W+E': 'Ceramics', 'W+F': 'Thermal Fluids', 'W+A': 'Membranes', 'E+F': 'Crystalworks',
+    'E+A': 'Composites', 'F+A': 'Process Chemicals',
+}
+T2_SECTOR_DESCRIPTORS: list[str] = [
+    'Power Equipment', 'Drive Systems', 'Shipbuilding', 'Habitation', 'Service Robotics',
+    'Electronics', 'Instruments', 'Tool Supply', 'Cargo Equipment', 'Protective Systems',
+]
+
+# Ordered implementation data — freeze order once names have been assigned.
+# 32 house names: 8 surnames, 8 places, 8 cooperative origins, 8 workshop histories.
+HOUSE_NAMES: tuple[str, ...] = (
+    "Fenwick", "Sato", "Demir", "Okafor",
+    "Varela", "Nordin", "Ivers", "Navarro",
+
+    "Alder Reach", "Lowbank", "Westhaven", "Reedwater",
+    "Grey Orchard", "Far Hollow", "North Crossing", "Saltmeadow",
+
+    "Common Hand", "Shared Hearth", "Many Hands", "Open Table",
+    "Equal Share", "Neighbour House", "Joined Effort", "Common Ground",
+
+    "Old Lathe", "First Shift", "Backroom", "Spare Part",
+    "Long Table", "Patchwork", "Yard Bell", "Second Measure",
+)
+
+# 32 district names.
+DISTRICT_NAMES: tuple[str, ...] = (
+    "Ashbank", "Bracken", "Cinderbank", "Dovewell",
+    "Elmstead", "Flintbank", "Gorsefield", "Holloway",
+    "Ironfield", "Juniper", "Kestrel", "Larch",
+    "Morrow", "Nettle", "Ochre", "Plover",
+    "Quarryside", "Rushfield", "Sedge", "Thornbank",
+    "Umber", "Vetch", "Willow", "Yarrow",
+    "Copperfield", "Drywell", "Eastfold", "Fallow",
+    "Gravelend", "Highwater", "Lowlight", "Southmere",
+)
+
+# 8 × 8 = 64 named berths in each district.
+BERTH_FIRST: tuple[str, ...] = ("Amber", "Blue", "Chalk", "Dawn", "Evening", "Glass", "Quiet", "Silver")
+BERTH_SECOND: tuple[str, ...] = ("Anchor", "Basin", "Crossing", "Landing", "Quay", "Reach", "Slip", "Turn")
+
+
+def generated_company_name(name_slot: int, trade_descriptor: str) -> str:
+    if not 0 <= name_slot < 65_536:
+        raise ValueError("Naming namespace exhausted; extend it explicitly.")
+
+    # Mixed-radix decomposition: 32 houses × 32 districts × 64 berths.
+    house_index = name_slot % 32
+    district_index = (name_slot // 32) % 32
+    berth_index = name_slot // 1024
+
+    berth_first_index = berth_index // 8
+    berth_second_index = berth_index % 8
+
+    house = HOUSE_NAMES[house_index]
+    district = DISTRICT_NAMES[district_index]
+    berth = f"{BERTH_FIRST[berth_first_index]} {BERTH_SECOND[berth_second_index]}"
+
+    return f"{house} {trade_descriptor} — {district} District, {berth} Berth"
+
+
+def t1_firm_name(cid: int) -> str:
+    """Display name for a Tier 1 refinery by its immutable agent id (name slot)."""
+    code = PRODUCTS[int(cid) // 100]['code']
+    return generated_company_name(int(cid), T1_MATERIAL_DESCRIPTORS[code])
+
+
+def t2_firm_name(sector: int, firm_id: int) -> str:
+    """Display name for a Tier 2 manufacturer by its immutable agent id (name slot)."""
+    return generated_company_name(int(firm_id), T2_SECTOR_DESCRIPTORS[int(sector)])
 
 
 def t1_sector(code: str) -> str:

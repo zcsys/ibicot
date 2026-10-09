@@ -79,12 +79,8 @@ N_CONSUMERS = M.N_CONSUMERS
 _EI = {element: i for i, element in enumerate(M.ELEMENTS)}
 _PI = {p['code']: i for i, p in enumerate(M.PRODUCTS)}
 
-T2_COMPANY_NAMES = [
-    'Helion Power Industries', 'Vector Drive Systems', 'Keel Spacecraft Works',
-    'Haven Habitat Systems', 'Forge Automation', 'Relay Computing and Communications',
-    'Prism Scientific Instruments', 'Stratum Industrial Machinery',
-    'Waypoint Supply Industries', 'Sentinel Defence and Rescue Systems',
-]
+# Generic firm names come from ``core.model`` (naming catalogue §10): a
+# deterministic house name + trade descriptor + district/berth qualifier.
 
 
 def _markup_code(code, cfg):
@@ -565,7 +561,7 @@ class KernelRuntime:
                 'code': product, 'displayName': M.PRODUCTS[pIdx]['name'], 'name': T1P[cidx]['name'],
                 'sector': M.t1_sector(product),
                 'firms': end - start,
-                'equipment': 'Basic' if M.PRODUCTS[pIdx]['complexity'] == 1 else 'Compound',
+                'equipment': M.T1_EQUIPMENT_CLASS[M.PRODUCTS[pIdx]['complexity']],
                 'avgPrice': price / eqCount if eqCount else None,
                 'avgUnitCost': uc / (end - start),
                 'finished': float(finished), 'raw': float(raw), 'inventory': float(finished + raw),
@@ -746,7 +742,7 @@ class KernelRuntime:
                     'name': M.PRODUCTS[material]['name'], 'sourceTier': 'T1',
                     'stock': float(q), 'basis': float(b), 'value': float(q * b),
                     'supplier': supplier, 'supplierId': seller,
-                    'supplierName': (T1P[seller // 100]['name'] + ' ' + str(seller % 100 + 1).zfill(3)) if seller >= 0 else None,
+                    'supplierName': M.t1_firm_name(seller) if seller >= 0 else None,
                     'supplierPrice': float(world.t1Price[supplier]) if supplier >= 0 else None,
                     'supplierReliability': float(world.t1Rel[supplier]) if supplier >= 0 else None,
                 })
@@ -758,7 +754,7 @@ class KernelRuntime:
                         if p['complexity'] <= world.t2Capability[id_] and world.t2Sector[id_] == p['sectorIndex']
                         and not _has_tier2_product(world, id_, p['id'])]
         return {'tier': 'T2', 'id': id_,
-                'name': T2_COMPANY_NAMES[int(world.t2Sector[id_])] + ' ' + str(id_ + 1).zfill(5),
+                'name': M.t2_firm_name(int(world.t2Sector[id_]), id_),
                 'sector': M.T2_SECTORS[int(world.t2Sector[id_])], 'capability': int(world.t2Capability[id_]),
                 'controller': 'PLAYER' if world.t2Controller[id_] else 'BOT',
                 'online': bool(world.t2Online[id_]),
@@ -800,7 +796,7 @@ class KernelRuntime:
             if q['controller'] and q['controller'] != control:
                 continue
             if search:
-                text = T2_COMPANY_NAMES[int(world.t2Sector[id_])] + ' ' + str(id_ + 1).zfill(5) + ' ' + sector + ' ' + control
+                text = M.t2_firm_name(int(world.t2Sector[id_]), id_) + ' ' + sector + ' ' + control
                 for slot in range(int(world.t2FirmLineCount[id_])):
                     text += ' ' + M.T2_PRODUCTS[int(world.t2LineProduct[int(world.t2FirmLines[id_ * M4 + slot])])]['name']
                 if search not in text.lower():
@@ -901,7 +897,7 @@ class KernelRuntime:
             inv += x['stock']
         for element in M.ELEMENTS:
             eqv += world.raw[id_ * NE + _EI[element]] * world.rawBasis[id_ * NE + _EI[element]]
-        return {'tier': 'T1', 'id': id_, 'name': piBase['name'] + ' ' + str((id_ % 100) + 1).zfill(3),
+        return {'tier': 'T1', 'id': id_, 'name': M.t1_firm_name(id_),
                 'sector': M.t1_sector(piBase['product']),
                 'controller': 'PLAYER' if self.controller[id_] else 'BOT',
                 'online': bool(self.online[id_]), 'cash': float(world.t1Cash[id_]),
@@ -1014,7 +1010,7 @@ class KernelRuntime:
                 if world.t1Operates[cid * NP + p]:
                     inv_val += world.t1Fin[cid * NP + p] * world.t1FinBasis[cid * NP + p]
             companies.append({
-                'id': cid, 'name': T1P[cid // 100]['name'] + ' ' + str((cid % 100) + 1).zfill(3),
+                'id': cid, 'name': M.t1_firm_name(cid),
                 'sector': M.t1_sector(T1P[cid // 100]['product']),
                 'controller': 'PLAYER' if self.controller[cid] else 'BOT',
                 'equipment': list(self.equipment[cid]), 'price': float(world.t1Price[b + pi]),
@@ -1070,7 +1066,7 @@ class KernelRuntime:
 
         t2ProductStats = []
         for p in M.T2_PRODUCTS:
-            t2ProductStats.append({'customerType': 'External galactic buyers', 'code': p['code'], 'name': p['name'],
+            t2ProductStats.append({'customerType': 'Consumers', 'code': p['code'], 'name': p['name'],
                                    'needType': p['needType'], 'kind': p['kind'], 'sector': p['sector'],
                                    'complexity': p['complexity'],
                                    'primaryMaterial': next(x['name'] for x in M.PRODUCTS if x['code'] == p['primaryMaterial']),
@@ -1191,14 +1187,14 @@ class KernelRuntime:
             d = summarize_markets([p for p in t2ProductStats if p['complexity'] == c], 'Complexity ' + str(c))
             d['complexity'] = c
             t2Complexity.append(d)
-        t2Totals = summarize_markets(t2ProductStats, 'All Tier 2 industries')
+        t2Totals = summarize_markets(t2ProductStats, 'All manufacturing sectors')
         productCategories = []
         for c in [1, 2, 3, 4, 5]:
             products = [p for p in (productStats if c < 3 else t2ProductStats) if p['complexity'] == c]
             s = summarize_markets(products, 'C-' + str(c))
             s['complexity'] = c
-            s['tier'] = 'Tier 1' if c < 3 else 'Tier 2'
-            s['role'] = 'Business inputs' if c < 3 else 'Galactic end-use goods'
+            s['tier'] = 'Refinery' if c < 3 else 'Manufacturer'
+            s['role'] = 'Refining stock' if c < 3 else 'Manufactured goods'
             s['machineryPrice'] = products[0]['machineryPrice'] if products else 0
             s['unitCapacity'] = s['capacity'] / s['lines'] if s['lines'] else 0.0
             s['avgPrice'] = float(sum(p['avgPrice'] * p['firms'] for p in products) / max(1, s['lines']))
@@ -1270,7 +1266,7 @@ class KernelRuntime:
         else:
             selected = {
                 'tier': 'T1', 'products': self._company_detail('T1', sid)['products'], 'id': sid,
-                'name': T1P[sid // 100]['name'] + ' ' + str((sid % 100) + 1).zfill(3),
+                'name': M.t1_firm_name(sid),
                 'sector': M.t1_sector(scode), 'controller': 'PLAYER' if self.controller[sid] else 'BOT',
                 'online': bool(self.online[sid]), 'price': float(world.t1Price[sid * NP + spi]),
                 'cash': float(world.t1Cash[sid]), 'finished': float(world.t1Fin[sid * NP + spi]),

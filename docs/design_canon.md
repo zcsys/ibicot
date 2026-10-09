@@ -1,9 +1,15 @@
-# Design canon — Robotic Space Generation kernel
+# Design canon — Long Muster kernel
 
 > **Status:** settled by review. This is the **single source of truth**: it states
 > *what must be true* of the economy kernel and the game's entry into it, and now also
 > records the settled parameters and the machine contract (§12) so the whole economy is
 > specified in one document. Where it conflicts with any implementation, the canon wins.
+>
+> **Naming.** The game is **Long Muster**; all catalogue display names (materials,
+> companies, sectors, goods and equipment) follow the Long Muster naming catalogue.
+> The agent-category display labels are **Extraction Houses** (T0), **Refineries**
+> (T1), **Manufacturers** (T2) and **Consumers** (T3). `T0`–`T3` remain the internal
+> tier keys throughout this document and the machine contract.
 
 ---
 
@@ -71,12 +77,13 @@ Every section below is a consequence of, or a requirement for, that sentence.
   (the Hamilton apportionment of the 44/116/260 complete pool) — made by **60,000
   single-machine firms** in the reverse 6:3:1 ratio: **C-3 = 36,000** (20 × 1,800),
   **C-4 = 18,000** (60 × 300), **C-5 = 6,000** (120 × 50).
-- **1,000,000 Tier 3 consumers** (external procurement agents).
+- **1,000,000 Tier 3 consumers** (resident consumers).
 - **The eight single-element extractors are also special-purpose**: the two Water
-  extractors produce **machinery**; the two Earth extractors collect **storage-unit
-  rent**; the two Fire extractors provide **financing**; the two Air extractors provide
-  **advertising**. These four service layers (storage rent, machinery-as-good, credit,
-  and visibility) are **deferred for the PoC** — documented, not active (mechanics TBD).
+  extractors produce **machinery**; the two Earth extractors collect the **Storage
+  Concession Fee**; the two Fire extractors provide **Banking**; the two Air extractors
+  provide **Advertising**. These four service layers (the storage concession, machinery,
+  banking and advertising) are **deferred for the PoC** — documented, not active
+  (mechanics TBD).
 - Tier 0 companies are **significantly larger** than Tier 1 or Tier 2 companies.
 
 ---
@@ -107,9 +114,9 @@ Every section below is a consequence of, or a requirement for, that sentence.
   and machinery. Machinery footprint is fixed — C-1/C-2 = 1,000, C-3 = 3,000,
   C-4 = 4,000, C-5 = 5,000 — leaving goods space `G = 20,000 − machinery` for raw and
   finished.
-- **Storage rent (deferred for PoC):** Tier 0 is fully subsidized (no storage or
+- **Storage Concession Fee (deferred for PoC):** Tier 0 is fully subsidized (no storage or
   machinery costs). Tier 1 and Tier 2 would pay a minuscule per-tick fee per storage
-  space, collected by the two Earth extractors.
+  space, collected by the two Earth houses.
 - **Desired inventory = fill `G`:** the whole allocation is paid for, so empty space is
   pure waste. Companies fill the goods space to the brim (bounded by cash and capacity),
   rather than merely covering demand.
@@ -356,7 +363,7 @@ values**; the demand-side *scale* is **calibration** (not frozen).
 
 ### 12.5 Deferred / calibration
 
-- **Deferred (not implemented)**: storage rent, machinery-as-good, financing, advertising.
+- **Deferred (not implemented)**: Storage Concession Fee, machinery, Banking, Advertising.
 - **Calibration (not frozen)**: offer-sampling counts.
 
 ### 12.6 Pricing (per tick, derivative-following)

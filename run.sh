@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Robotic Space Generation — Python economy kernel launcher.
+# Long Muster — Python economy kernel launcher.
 #
 # Wraps the environment setup (interpreter + PYTHONPATH) so you can run the
 # kernel, the service, or the tests with one command.
@@ -23,7 +23,7 @@ cd "$ROOT"
 
 usage() {
   cat <<'EOF'
-Robotic Space Generation — economy kernel launcher
+Long Muster — economy kernel launcher
 
 Usage:
   ./run.sh run   [--seed N] [--ticks N] [--cfg JSON] [--out PATH]   headless run
