@@ -607,9 +607,9 @@ const recipes = [
   // "Production" distinguishes the purchase.
   const EQUIPMENT_CLASS = Object.freeze({ 3: 'Production Bench', 4: 'Production Cell', 5: 'Production Hall' });
   const EQUIPMENT_CONFIG = Object.freeze({ 3: 'Component Production', 4: 'Assembly Production', 5: 'Systems Production' });
-  // The two Water companies are the only producers of complete production and
+  // Mudrock Machinery Co. is the sole producer of complete production and
   // refining machinery (Star Business naming catalog §4).
-  const EQUIPMENT_MAKERS = Object.freeze(['Bluegate Water & Machine Co.', 'Coldwell Ice & Machine Inc.']);
+  const EQUIPMENT_MAKERS = Object.freeze(['Mudrock Machinery Co.']);
   const EQUIPMENT_PRICE = Object.freeze({ 3: 75000, 4: 375000, 5: 420000 });
   const T2_CAPACITY = Object.freeze({ 3: 30, 4: 20, 5: 10 });
   const T2_CONVERSION_COST = Object.freeze({ 3: 0.5, 4: 0.75, 5: 1.0 });

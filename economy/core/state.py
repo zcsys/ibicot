@@ -17,17 +17,25 @@ from .rng import hash_seed_vec
 # Names follow the Star Business naming catalog §4.  Coverage is 2 four-market,
 # 4 three-market, 6 two-market and 8 single-market companies.
 #
+# Special duties (two-market companies):
+#   Mudrock Machinery Co.                     -> machinery manufacturing
+#   Steam Ridge Financial Inc.                -> financial services
+#   Dustline Spatial Solutions Corp.          -> warehouses, land, industrial space
+#   Flare Basin Advertising Incorporated      -> advertising
+#   Cloudline Games & Entertainment Corp.     -> games & entertainment
+#   Hotrock Utility Company                   -> utilities
+#
 # Civic duties (three-market corporations):
 #   Baseline Resource Corporation  -> Colony Policy
 #   Union Charter Resources Inc.   -> Business Registry
 #   Signal Point Resources Corp.   -> Market Intelligence
 #   Commonline Resources Company   -> Community Hub
 #
-# Monopoly service pairs (single-market companies):
-#   Water: Bluegate Water & Machine Co. / Coldwell Ice & Machine Inc. -> machinery
-#   Earth: Bedrock Mining & Storage Corp. / Iron County Minerals & Storage Co. -> storage royalty
-#   Fire:  Furnace Creek Energy Bank, Inc. / Sunbelt Energy Bank Corporation -> banking
-#   Air:   Skyline Gas & Advertising Co. / Highband Atmospherics & Advertising Inc. -> advertising
+# Single-market companies (pure extractors, two per element):
+#   Water: Bluegate Water Co. / Coldwell Ice Resources Inc.
+#   Earth: Bedrock Mining Corp. / Iron County Minerals Company
+#   Fire:  Furnace Creek Energy Inc. / Sunbelt Energy Corporation
+#   Air:   Skyline Gas Co. / Highband Atmospherics Inc.
 # --------------------------------------------------------------------------
 _T0P_RAW = [
     ['Raw Materials Corp.', ['Water', 'Earth', 'Fire', 'Air']],
@@ -36,20 +44,20 @@ _T0P_RAW = [
     ['Union Charter Resources Inc.', ['Water', 'Earth', 'Air']],
     ['Signal Point Resources Corp.', ['Water', 'Fire', 'Air']],
     ['Commonline Resources Company', ['Earth', 'Fire', 'Air']],
-    ['Mudrock Extraction Co.', ['Water', 'Earth']],
-    ['Steam Ridge Resources Inc.', ['Water', 'Fire']],
-    ['Cloudline Harvesting Corporation', ['Water', 'Air']],
-    ['Hotrock Extraction Company', ['Earth', 'Fire']],
-    ['Dustline Recovery Corp.', ['Earth', 'Air']],
-    ['Flare Basin Resources Incorporated', ['Fire', 'Air']],
-    ['Bluegate Water & Machine Co.', ['Water']],
-    ['Coldwell Ice & Machine Inc.', ['Water']],
-    ['Bedrock Mining & Storage Corp.', ['Earth']],
-    ['Iron County Minerals & Storage Company', ['Earth']],
-    ['Furnace Creek Energy Bank, Inc.', ['Fire']],
-    ['Sunbelt Energy Bank Corporation', ['Fire']],
-    ['Skyline Gas & Advertising Co.', ['Air']],
-    ['Highband Atmospherics & Advertising Inc.', ['Air']],
+    ['Mudrock Machinery Co.', ['Water', 'Earth']],
+    ['Steam Ridge Financial Inc.', ['Water', 'Fire']],
+    ['Cloudline Games & Entertainment Corporation', ['Water', 'Air']],
+    ['Hotrock Utility Company', ['Earth', 'Fire']],
+    ['Dustline Spatial Solutions Corp.', ['Earth', 'Air']],
+    ['Flare Basin Advertising Incorporated', ['Fire', 'Air']],
+    ['Bluegate Water Co.', ['Water']],
+    ['Coldwell Ice Resources Inc.', ['Water']],
+    ['Bedrock Mining Corp.', ['Earth']],
+    ['Iron County Minerals Company', ['Earth']],
+    ['Furnace Creek Energy Inc.', ['Fire']],
+    ['Sunbelt Energy Corporation', ['Fire']],
+    ['Skyline Gas Co.', ['Air']],
+    ['Highband Atmospherics Inc.', ['Air']],
 ]
 _EI = {element: i for i, element in enumerate(M.ELEMENTS)}
 T0P = [{'id': i, 'name': name, 'elements': elements,

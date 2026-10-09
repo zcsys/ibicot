@@ -23,7 +23,7 @@ Naming logic: use direct American business and engineering language with a visib
 - Use title case for catalog labels. Use lowercase for generic material, equipment, and product descriptions in sentences. Proper company names keep their capitalization.
 - Materials identify trade stock. Companies identify businesses. Sectors identify purchasing domains. Goods identify physical purchases.
 - Keep names short enough for a market row. Use longer names only when the distinction matters, such as Medical Cold-Chain Container versus Orbital Shipping Container.
-- Keep the maker in its own field. “Bluegate” is never part of a generic equipment class or product name.
+- Keep the maker in its own field. “Mudrock” is never part of a generic equipment class or product name.
 - Generated firms use a sector-specific generic name plus a serial number. No house-name pool, location suffix, district, or berth is added to a company name.
 - Avoid invented mineral suffixes, model years, military ranks, and prestige adjectives as substitutes for function.
 
@@ -87,39 +87,43 @@ Baseline does not directly replace emergent prices with a fixed price list. Mark
 
 ### Two-Market Operators
 
-| ID | Company | Extraction Markets | Specialization |
+| ID | Company | Extraction Markets | Special Duty |
 |---|---|---|---|
-| T0-07 | Mudrock Extraction Co. | Water, Earth | Works ice-bearing rock and wet mineral deposits. |
-| T0-08 | Steam Ridge Resources Inc. | Water, Fire | Recovers water and thermal resources from heated formations. |
-| T0-09 | Cloudline Harvesting Corporation | Water, Air | Captures atmospheric moisture and gaseous resources. |
-| T0-10 | Hotrock Extraction Company | Earth, Fire | Works mineral formations with accessible energetic resources. |
-| T0-11 | Dustline Recovery Corp. | Earth, Air | Collects dispersed solids and gaseous resources. |
-| T0-12 | Flare Basin Resources Incorporated | Fire, Air | Harvests energetic gas environments. |
+| T0-07 | Mudrock Machinery Co. | Water, Earth | Machinery manufacturing. |
+| T0-08 | Steam Ridge Financial Inc. | Water, Fire | Financial services. |
+| T0-09 | Cloudline Games & Entertainment Corporation | Water, Air | Games and entertainment. |
+| T0-10 | Hotrock Utility Company | Earth, Fire | Utilities. |
+| T0-11 | Dustline Spatial Solutions Corp. | Earth, Air | Warehouses, land, and industrial space. |
+| T0-12 | Flare Basin Advertising Incorporated | Fire, Air | Advertising. |
 
-### Single-Market Monopoly Pairs
+### Single-Market Extractors
 
-| ID | Company | Sole Extraction Market | Additional Exclusive Business |
-|---|---|---|---|
-| T0-13 | Bluegate Water & Machine Co. | Water | Water extraction plus exclusive production-machinery manufacturing, shared only with Coldwell. |
-| T0-14 | Coldwell Ice & Machine Inc. | Water | Water extraction plus exclusive production-machinery manufacturing, shared only with Bluegate. |
-| T0-15 | Bedrock Mining & Storage Corp. | Earth | Earth extraction plus a cut from every other company’s storage facilities. |
-| T0-16 | Iron County Minerals & Storage Company | Earth | Earth extraction plus a cut from every other company’s storage facilities. |
-| T0-17 | Furnace Creek Energy Bank, Inc. | Fire | Fire extraction plus financial services, shared only with Sunbelt. |
-| T0-18 | Sunbelt Energy Bank Corporation | Fire | Fire extraction plus financial services, shared only with Furnace Creek. |
-| T0-19 | Skyline Gas & Advertising Co. | Air | Air extraction plus paid advertising, shared only with Highband. |
-| T0-20 | Highband Atmospherics & Advertising Inc. | Air | Air extraction plus paid advertising, shared only with Skyline. |
+| ID | Company | Sole Extraction Market |
+|---|---|---|
+| T0-13 | Bluegate Water Co. | Water |
+| T0-14 | Coldwell Ice Resources Inc. | Water |
+| T0-15 | Bedrock Mining Corp. | Earth |
+| T0-16 | Iron County Minerals Company | Earth |
+| T0-17 | Furnace Creek Energy Inc. | Fire |
+| T0-18 | Sunbelt Energy Corporation | Fire |
+| T0-19 | Skyline Gas Co. | Air |
+| T0-20 | Highband Atmospherics Inc. | Air |
 
-### Rights That Follow the Company, Not the Element
+### Special Duties That Follow the Two-Market Companies
 
-**Water:** Bluegate and Coldwell are the only producers of complete refining and manufacturing machinery. This includes production robots and production installations. Other firms can supply parts, tooling, consumables, and service robots; they cannot independently sell complete output-producing machinery. Owning Water extraction rights alone does not grant this business.
+**Machinery manufacturing — Mudrock Machinery Co.** Mudrock is the sole producer of complete refining and manufacturing machinery. This includes production robots and production installations. Other firms can supply parts, tooling, consumables, and service robots; they cannot independently sell complete output-producing machinery.
 
-**Earth:** Bedrock and Iron County each take the stipulated cut from every other company’s storage facilities, including those of other extraction companies. Display the charge as **Storage Royalty** with its actual recipient or recipients. Rates, allocation, and the accounting base remain simulation parameters. Selling racks or containers does not confer this royalty.
+**Financial services — Steam Ridge Financial Inc.** Steam Ridge is the game’s financial institution, providing banking, lending, deposits, and financial settlement services. Ordinary firms can price goods, invoice customers, and receive payment without becoming financial institutions.
 
-**Fire:** Furnace Creek and Sunbelt are the only financial institutions. They provide the game’s banking, lending, deposits, and financial settlement services. Ordinary firms can price goods, invoice customers, and receive payment without becoming financial institutions.
+**Warehouses, land, and industrial space — Dustline Spatial Solutions Corp.** Dustline provides the colony’s warehousing, land, and industrial space. Display the charge for its facilities as **Storage Royalty** with Dustline as the recipient. Rates, allocation, and the accounting base remain simulation parameters.
 
-**Air:** Skyline and Highband are the only advertising entities. They sell paid promotion and advertising distribution. A standard product listing, technical specification, civic notice, or ordinary forum post does not become an advertising business by existing.
+**Advertising — Flare Basin Advertising Incorporated.** Flare Basin sells paid promotion and advertising distribution. A standard product listing, technical specification, civic notice, or ordinary forum post does not become an advertising business by existing.
 
-The all-market companies and civic-duty companies do not inherit any of these exclusive rights.
+**Games and entertainment — Cloudline Games & Entertainment Corporation.** Cloudline publishes games and entertainment.
+
+**Utilities — Hotrock Utility Company.** Hotrock operates the colony’s utility services.
+
+The all-market companies, civic-duty companies, and single-market extractors do not inherit any of these special duties.
 
 ## 5. Authored Refinery Companies — All 10
 
@@ -157,13 +161,13 @@ Naming logic: industry names identify the market; authored companies have the pl
 | S09 | Freight & Warehouse Equipment | T2-C09 | Crossdock Cargo Systems | Freight Equipment |
 | S10 | Defense & Emergency Systems | T2-C10 | Hardstop Defense Systems | Defense Systems |
 
-These are authored identities or cohort labels, not parent corporations for every numbered manufacturer. In particular, Industrial Tooling & Mining Supplies supplies tools and passive fixtures, while Robotics & Field Services supplies service robots. Complete factory machinery remains the Water pair’s business.
+These are authored identities or cohort labels, not parent corporations for every numbered manufacturer. In particular, Industrial Tooling & Mining Supplies supplies tools and passive fixtures, while Robotics & Field Services supplies service robots. Complete factory machinery remains Mudrock Machinery Co.’s business.
 
 ## 7. Equipment Classes and Refining Configurations
 
 Naming logic: the operation comes first, followed by a familiar installation scale: bench, cell, or hall. The existing production-class names remain useful in American manufacturing language and are retained.
 
-**Market:** Machinery Market. **Sections:** Refining Equipment and Production Equipment. Both sections have the same two eligible makers: **Bluegate Water & Machine Co.** and **Coldwell Ice & Machine Inc.**. These sections do not create separate machinery markets.
+**Market:** Machinery Market. **Sections:** Refining Equipment and Production Equipment. Both sections have the same sole eligible maker: **Mudrock Machinery Co.**. These sections do not create separate machinery markets.
 
 | Class ID | Complexity | Equipment Class | Configuration Label |
 |---|---|---|---|
@@ -190,9 +194,9 @@ Use these exact names instead of the unnamed refining installations and “Basic
 | Polymer Composite | Polymer Composite Refining Cell | C-2 |
 | Active Reagent | Active Reagent Refining Cell | C-2 |
 
-A purchase card reads **Thermal Compound Refining Cell**, with **Maker: Coldwell Ice & Machine Inc.** and **Complexity: C-2** in separate fields. A production card reads **Production Hall**, with **Maker: Bluegate Water & Machine Co.** and **Supported Sector: Shipbuilding & Orbital Structures** in separate fields.
+A purchase card reads **Thermal Compound Refining Cell**, with **Maker: Mudrock Machinery Co.** and **Complexity: C-2** in separate fields. A production card reads **Production Hall**, with **Maker: Mudrock Machinery Co.** and **Supported Sector: Shipbuilding & Orbital Structures** in separate fields.
 
-Bench, cell, and hall describe equipment packages and installation scale, not the literal size of every object they can build. These five classes sit outside the 200 finished goods. No new machinery recipes are invented by this catalog. Specialized factory robots and refining equipment are configurations of Water-company machinery, not independent manufacturing markets.
+Bench, cell, and hall describe equipment packages and installation scale, not the literal size of every object they can build. These five classes sit outside the 200 finished goods. No new machinery recipes are invented by this catalog. Specialized factory robots and refining equipment are configurations of Mudrock machinery, not independent manufacturing markets.
 
 ## 8. Manufactured Goods — All 200
 
@@ -320,7 +324,7 @@ Naming logic: Construction and building-supply language keeps everyday life visi
 | T2-079 | Underground Habitat Liner | 1 IF + 1 TF + 1 SC | C-5 |
 | T2-080 | Orbital Tether Foundation | 1 IF + 1 PC + 1 AR | C-5 |
 
-Grow Room Enclosure and Garden Dome Shell are structures, not installed food-production machinery. Any complete production machinery fitted inside them comes from Bluegate or Coldwell. Mixed-Crew Housing Unit includes human living space and robot service accommodations.
+Grow Room Enclosure and Garden Dome Shell are structures, not installed food-production machinery. Any complete production machinery fitted inside them comes from Mudrock Machinery Co. Mixed-Crew Housing Unit includes human living space and robot service accommodations.
 
 ### 8.5. Robotics & Field Services
 
@@ -573,15 +577,15 @@ Naming logic: use familiar American business software labels, with plain simulat
 | Raw trading | Element Markets | Water, Earth, Fire, and Air. |
 | Refined-stock trading | Material Markets | The ten refined stocks. |
 | Finished-goods trading | Product Markets | The 200 manufactured goods. |
-| Equipment trading | Machinery Market | The single market supplied by Bluegate and Coldwell. |
+| Equipment trading | Machinery Market | The single market supplied by Mudrock Machinery Co. |
 | T1 machinery section | Refining Equipment | Refining Bench and Refining Cell configurations. |
 | T2 machinery section | Production Equipment | Production Bench, Production Cell, and Production Hall. |
 | Factory view | Production | Installed equipment, processes, and output. |
 | Stock view | Inventory | Materials and finished goods on hand. |
 | Facility capacity view | Storage | Capacity, utilization, and royalty charges. |
 | Earth-company charge | Storage Royalty | Show the actual recipient or recipients. |
-| Financial services | Banking | Furnace Creek and Sunbelt are the only providers. |
-| Paid promotion | Advertising | Skyline and Highband are the only providers. |
+| Financial services | Banking | Steam Ridge Financial Inc. is the sole provider. |
+| Paid promotion | Advertising | Flare Basin Advertising Incorporated is the sole provider. |
 | Policy service | Colony Policy | Provided by Baseline Resource Corporation. |
 | Policy announcement | Policy Update | Show changed parameters and effective time. |
 | Administrative service | Business Registry | Provided by Union Charter Resources Inc.. |
@@ -597,7 +601,7 @@ Naming logic: use familiar American business software labels, with plain simulat
 | Buyer relationship metric | Supplier Loyalty | Keep it distinct from seller reliability. |
 | Trade history | Transactions | Buyer, seller, product, quantity, price, and time. |
 
-An example notification reads: “Backup battery racks are in short supply. Power Equipment 00042 raised its price.” Another reads: “Bluegate Water & Machine Co. delivered a refining cell.” These use lowercase product and equipment names in prose while preserving registered company names.
+An example notification reads: “Backup battery racks are in short supply. Power Equipment 00042 raised its price.” Another reads: “Mudrock Machinery Co. delivered a refining cell.” These use lowercase product and equipment names in prose while preserving registered company names.
 
 ## 11. Migration and Consistency
 

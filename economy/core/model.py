@@ -130,8 +130,7 @@ MATERIAL_SYMBOLS: dict = {p['code']: p['symbol'] for p in PRODUCTS}
 # Tier 1 refining installations (Star Business naming catalog §7).  "Refining"
 # identifies the operation; "bench" and "cell" express increasing installation
 # scale.  These are equipment classes within the Machinery Market, not separate
-# markets.  The maker is kept separate: Bluegate Water & Machine Co. or
-# Coldwell Ice & Machine Inc.
+# markets.  The maker is kept separate: Mudrock Machinery Co.
 # ---------------------------------------------------------------------------
 T1_EQUIPMENT_CLASS: dict = {1: 'Refining Bench', 2: 'Refining Cell'}
 T1_EQUIPMENT_CONFIG: dict = {1: 'Single-Element Refining', 2: 'Paired-Element Refining'}
