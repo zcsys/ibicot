@@ -15,22 +15,22 @@ from . import model as M
 def default_cfg() -> dict:
     return {
         # Global / environment
-        'seed': 12345,
-        'dbar': 1.0,
+        'seed': 137,
+        'difficultyTarget': 1.0,
         'theta': 0.15,
         'sigma': 0.005,
-        'dmin': 0.7,
-        'dmax': 1.4,
-        'endUserCount': M.N_END_USERS,
+        'difficultyMin': 0.7,
+        'difficultyMax': 1.4,
+        'consumerCount': M.N_CONSUMERS,
         't2FirmCount': M.N2_FIRMS,
 
         # Tier 0 (extraction)
         't0Equity': 10_000_000.0,       # $10m per extractor (all cash)
-        'capacity': 10000,              # extraction throughput per tick
-        'targetInventory': 500_000,
-        'maxInventory': 1_000_000,
+        't0Capacity': 10000,              # extraction throughput per tick
+        't0TargetInventory': 500_000,
+        't0MaxInventory': 1_000_000,
         'baseCost': 1.0,                # $1 per raw element
-        'markup': 0.25,                 # T0 first-guess markup
+        't0Markup': 0.25,                 # T0 first-guess markup
         'minWholesaleLot': 1000,
         'inventoryCoverageTicks': 3,
 
@@ -55,25 +55,20 @@ def default_cfg() -> dict:
         'footprint': {1: 1_000.0, 2: 1_000.0, 3: 3_000.0, 4: 4_000.0, 5: 5_000.0},
 
         # Demand / consumers
-        'consumerActivation': 0.1,
         'consumerSearchOffers': 5,
-        'demandQtyMin': 1,
-        'demandQtyMax': 10,
-        'vmin': 0.9,
-        'vmax': 1.5,
+        'chokeMin': 1.8,
+        'chokeMax': 3.0,
         'elasticity': 2.0,              # eta = 2
-        'tier2DemandFactor': 1.5,      # global demand level (uniform per-consumer scale)
-        'tier2ReservationPremium': 0.0,
+        't2ReservationPremium': 0.0,
 
         # Market / pricing / reliability
-        'k': 0.35,
+        'pricingAggressiveness': 0.35,
         'alpha': 0.15,
         'reliabilityAlpha': 0.15,
         'switchingStableBand': 0.025,
         'wholesalePriceResponse': 0.05,
         'priceObservationTicks': 30,
-        'taumin': 0.05,
-        'taumax': 0.2,
+        'loyaltyMultiple': {1: 500.0, 2: 125.0, 3: 0.5},
 
         # Research pricing (off by default)
         'researchPriceMinimumOpportunities': 0,
@@ -116,21 +111,21 @@ def normalize_config(c) -> dict:
     d['researchPriceMinimumOpportunities'] = max(0, min(1000, d['researchPriceMinimumOpportunities']))
 
     # Environment
-    d['dmin'] = max(0.01, d['dmin'])
-    d['dmax'] = max(d['dmin'], d['dmax'])
-    d['dbar'] = M.clamp(d['dbar'], d['dmin'], d['dmax'])
+    d['difficultyMin'] = max(0.01, d['difficultyMin'])
+    d['difficultyMax'] = max(d['difficultyMin'], d['difficultyMax'])
+    d['difficultyTarget'] = M.clamp(d['difficultyTarget'], d['difficultyMin'], d['difficultyMax'])
     d['theta'] = M.clamp(d['theta'], 0, 1)
     d['sigma'] = max(0, d['sigma'])
 
     # Topology
-    d['endUserCount'] = max(1, min(M.N_END_USERS, math.floor(d['endUserCount'] or M.N_END_USERS)))
+    d['consumerCount'] = max(1, min(M.N_CONSUMERS, math.floor(d['consumerCount'] or M.N_CONSUMERS)))
     d['t2FirmCount'] = max(1, min(M.N2_FIRMS, math.floor(d['t2FirmCount'] or M.N2_FIRMS)))
 
     # Tier 0
-    for key in ('t0Equity', 'capacity', 'targetInventory', 'maxInventory', 'baseCost', 'minWholesaleLot'):
+    for key in ('t0Equity', 't0Capacity', 't0TargetInventory', 't0MaxInventory', 'baseCost', 'minWholesaleLot'):
         d[key] = max(1, d[key])
-    d['maxInventory'] = max(d['targetInventory'], d['maxInventory'])
-    d['markup'] = max(0, d['markup'])
+    d['t0MaxInventory'] = max(d['t0TargetInventory'], d['t0MaxInventory'])
+    d['t0Markup'] = max(0, d['t0Markup'])
     d['inventoryCoverageTicks'] = max(1, min(30, d['inventoryCoverageTicks']))
 
     # Tier 1
@@ -149,23 +144,18 @@ def normalize_config(c) -> dict:
     d['storage'] = max(1, d['storage'])
 
     # Demand
-    d['consumerActivation'] = M.clamp(d['consumerActivation'], 0, 1)
     d['consumerSearchOffers'] = max(1, min(20, math.floor(d['consumerSearchOffers'])))
-    d['demandQtyMin'] = max(1, min(100, math.floor(d['demandQtyMin'])))
-    d['demandQtyMax'] = max(d['demandQtyMin'], min(100, math.floor(d['demandQtyMax'])))
-    d['vmin'] = max(0.01, d['vmin'])
-    d['vmax'] = max(d['vmin'], d['vmax'])
+    d['chokeMin'] = max(0.01, d['chokeMin'])
+    d['chokeMax'] = max(d['chokeMin'], d['chokeMax'])
     d['elasticity'] = max(0.05, min(10, d['elasticity']))
-    d['tier2DemandFactor'] = M.clamp(d['tier2DemandFactor'], 0.01, 200)
-    d['tier2ReservationPremium'] = max(0, d['tier2ReservationPremium'])
+    d['t2ReservationPremium'] = max(0, d['t2ReservationPremium'])
 
     # Market
-    d['k'] = M.clamp(d['k'], 0, 1)
+    d['pricingAggressiveness'] = M.clamp(d['pricingAggressiveness'], 0, 1)
     d['alpha'] = M.clamp(d['alpha'], 0, 1)
     d['reliabilityAlpha'] = M.clamp(d['reliabilityAlpha'], 0, 1)
     d['switchingStableBand'] = max(1e-9, d['switchingStableBand'])
-    d['taumin'] = max(0, d['taumin'])
-    d['taumax'] = max(d['taumin'], d['taumax'])
+    _clamp_mapping(d, 'loyaltyMultiple', 0)
     d['priceObservationTicks'] = max(1, min(360, math.floor(d['priceObservationTicks'])))
     wpr = d['wholesalePriceResponse']
     wpr = float(wpr) if math.isfinite(wpr) else 0.05

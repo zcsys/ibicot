@@ -9,7 +9,7 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const root = path.resolve(__dirname, '..');
-const out = process.argv[2] || path.join(root, 'economy', 'core', '_catalogue.json');
+const out = process.argv[2] || path.join(root, 'economy', 'core', 'catalogue.json');
 
 global.self = globalThis;
 require(path.join(root, 'web', 'catalogue.js'));

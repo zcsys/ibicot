@@ -6,6 +6,8 @@ transcription.  See ``docs/design_canon.md`` §6.
 """
 from __future__ import annotations
 
+import bisect
+
 import numpy as np
 
 from . import model as M
@@ -37,20 +39,20 @@ _T0P_RAW = [
     ['Cirrus Atmospheric Capture', ['Air']],
     ['Zephyr Gas Separation', ['Air']],
 ]
-_EI = {e: i for i, e in enumerate(M.ELEMENTS)}
+_EI = {element: i for i, element in enumerate(M.ELEMENTS)}
 T0P = [{'id': i, 'name': name, 'elements': elements,
-        'element_indices': sorted(_EI[e] for e in elements)}
+        'element_indices': sorted(_EI[element] for element in elements)}
        for i, (name, elements) in enumerate(_T0P_RAW)]
 
 # Tier 1 cohort -> native product code (worker `T1P`).
 T1P = [{'name': p['companyName'], 'product': p['code']} for p in M.PRODUCTS]
 
 
-def quant_w(x: float, floor: float = 0.0) -> float:
+def quantize_whole(x: float, floor: float = 0.0) -> float:
     return M.round_to_cent(x)
 
 
-def quant_r(x: float, floor: float = 0.0) -> float:
+def quantize_round(x: float, floor: float = 0.0) -> float:
     return M.round_to_cent(x)
 
 
@@ -85,10 +87,10 @@ def _array_spec(cfg):
     NE, NP, N0, N1 = M.NE, M.NP, M.N0, M.N1
     # Firm-level and end-user arrays are ALWAYS allocated at full population
     # (mirrors sourceViews()); only the sparse line arrays scale with
-    # cfg.t2FirmCount.  cfg.endUserCount / cfg.t2FirmCount merely limit how
+    # cfg.t2FirmCount.  cfg.consumerCount / cfg.t2FirmCount merely limit how
     # many entries are initialized and processed.
     N2F = M.N2_FIRMS
-    NUF = M.N_END_USERS
+    NUF = M.N_CONSUMERS
     ML = min(M.MAX_T2_LINES, cfg['t2FirmCount'])  # single-machine: one line per firm
     n_t2 = len(M.T2_PRODUCTS)  # 200
 
@@ -119,7 +121,7 @@ def _array_spec(cfg):
         ('t0Stability', 'f64', N0 * NE),
         ('t0Req', 'f64', NE),
         ('t0FundedReq', 'f64', NE),
-        ('t0Ful', 'f64', NE),
+        ('t0Fulfilled', 'f64', NE),
         ('t0Sold', 'f64', N0 * NE),
         ('t0Revenue', 'f64', N0 * NE),
         ('raw', 'f64', N1 * NE),
@@ -138,7 +140,7 @@ def _array_spec(cfg):
         ('t1FinBasis', 'f64', N1 * NP),
         ('t1SalesEMA', 'f64', N1 * NP),
         ('t1Sold', 'f64', N1 * NP),
-        ('t1Rev', 'f64', N1 * NP),
+        ('t1Revenue', 'f64', N1 * NP),
         ('t1COGS', 'f64', N1 * NP),
         ('t1IntermediateSold', 'f64', NP),
         ('t1IntermediateRevenue', 'f64', NP),
@@ -154,13 +156,11 @@ def _array_spec(cfg):
         ('priceLost', 'f64', NP),
         ('stockUnmet', 'f64', NP),
         ('t0RelAttempts', 'f64', N0 * NE),
-        ('t0RelFulfilled', 'f64', N0 * NE),
         ('t0RelChecks', 'f64', N0 * NE),
         ('t0RelAvailable', 'f64', N0 * NE),
         ('t0RelPriceSum', 'f64', N0 * NE),
         ('t0RelPriceSamples', 'u32', N0 * NE),
         ('t1RelAttempts', 'f64', N1 * NP),
-        ('t1RelFulfilled', 'f64', N1 * NP),
         ('t1RelAvailChecks', 'f64', N1 * NP),
         ('t1RelAvailable', 'f64', N1 * NP),
         ('t1RelPriceSum', 'f64', N1 * NP),
@@ -199,37 +199,31 @@ def _array_spec(cfg):
         ('t2Made', 'f64', ML),
         ('t2Rel', 'f64', ML),
         ('t2RelAttempts', 'u32', ML),
-        ('t2RelFulfilled', 'u32', ML),
         ('t2RelAvailable', 'u32', ML),
         ('t2RelPriceSum', 'f64', ML),
         ('t2RelPriceSamples', 'u32', ML),
         ('t2MonthSold', 'f64', ML),
         ('t2MonthlyCapacity', 'f64', ML),
-        ('endBasketCount', 'u8', NUF),
-        ('endBasket', 'u8', NUF * 5),
-        ('endNeedProduct', 'i16', NUF * 5),
-        ('endPreferredProduct', 'i16', NUF * 5),
-        ('endPreferredSupplier', 'i32', NUF * 5),
-        ('endLastMarket', 'i16', NUF),
-        ('endLastSupplier', 'i32', NUF),
-        ('endLastQ', 'u16', NUF),
-        ('endLastFulfilled', 'u16', NUF),
-        ('endPrimarySector', 'u8', NUF),
-        ('endSecondarySector', 'u8', NUF),
-        ('endQMax', 'f32', NUF),
-        ('endChoke', 'f32', NUF),
-        ('endEta', 'f32', NUF),
-        ('endPotential', 'f64', NP + n_t2),
-        ('endActive', 'f64', NP + n_t2),
-        ('endFulfilled', 'f64', NP + n_t2),
-        ('endPriceLost', 'f64', NP + n_t2),
-        ('endStockUnmet', 'f64', NP + n_t2),
+        ('consumerProduct', 'i16', NUF),
+        ('consumerPreferredSupplier', 'i32', NUF),
+        ('consumerLastMarket', 'i16', NUF),
+        ('consumerLastSupplier', 'i32', NUF),
+        ('consumerLastQ', 'u16', NUF),
+        ('consumerLastFulfilled', 'u16', NUF),
+        ('consumerQMax', 'f32', NUF),
+        ('consumerChoke', 'f32', NUF),
+        ('consumerEta', 'f32', NUF),
+        ('marketPotential', 'f64', NP + n_t2),
+        ('marketActive', 'f64', NP + n_t2),
+        ('marketFulfilled', 'f64', NP + n_t2),
+        ('marketPriceLost', 'f64', NP + n_t2),
+        ('marketStockUnmet', 'f64', NP + n_t2),
     ]
     return spec
 
 
 class WorldState:
-    """Flat record of NumPy typed arrays + scalars, mirroring the JS ``W``."""
+    """Flat record of NumPy typed arrays + scalars, mirroring the JS ``world``."""
 
     def __init__(self, cfg):
         self.cfg = cfg
@@ -250,78 +244,78 @@ class WorldState:
             yield name, getattr(self, name)
 
 
-def zero(W: WorldState) -> None:
-    for name in W.array_names:
-        getattr(W, name).fill(0)
+def zero(world: WorldState) -> None:
+    for name in world.array_names:
+        getattr(world, name).fill(0)
 
 
 # --------------------------------------------------------------------------
 # Tier 2 line installation (worker `addTier2Line`).
 # --------------------------------------------------------------------------
-def _has_tier2_product(W, firm, product_id):
-    for slot in range(int(W.t2FirmLineCount[firm])):
-        if W.t2LineProduct[W.t2FirmLines[firm * M.T2_MAX_PRODUCTS_PER_FIRM + slot]] == product_id:
+def _has_tier2_product(world, firm, product_id):
+    for slot in range(int(world.t2FirmLineCount[firm])):
+        if world.t2LineProduct[world.t2FirmLines[firm * M.T2_MAX_PRODUCTS_PER_FIRM + slot]] == product_id:
             return True
     return False
 
 
-def add_tier2_line(W, cfg, firm, product, paid=True):
+def add_tier2_line(world, cfg, firm, product, paid=True):
     firm = int(firm)
     if not (0 <= firm < cfg['t2FirmCount']) or product is None:
         raise ValueError('Invalid Tier 2 company or product.')
     if product['complexity'] not in M.TIER_BOUNDARIES['T2']:
         raise ValueError('Tier 2 firms can only manufacture C-3 through C-5 products.')
-    if W.t2FirmLineCount[firm] >= M.T2_MAX_PRODUCTS_PER_FIRM or W.t2LineCount >= len(W.t2Fin):
+    if world.t2FirmLineCount[firm] >= M.T2_MAX_PRODUCTS_PER_FIRM or world.t2LineCount >= len(world.t2Fin):
         raise ValueError('Company or economy product-line limit reached.')
-    if _has_tier2_product(W, firm, product['id']):
+    if _has_tier2_product(world, firm, product['id']):
         raise ValueError('This product line is already installed.')
-    if product['complexity'] > W.t2Capability[firm] or W.t2Sector[firm] != product['sectorIndex']:
+    if product['complexity'] > world.t2Capability[firm] or world.t2Sector[firm] != product['sectorIndex']:
         raise ValueError('Machinery requires an eligible sector and capability.')
-    if paid and W.t2Cash[firm] < cfg['t2Machinery'][product['complexity']]:
+    if paid and world.t2Cash[firm] < cfg['t2Machinery'][product['complexity']]:
         raise ValueError('Insufficient cash.')
-    line = W.t2LineCount
-    W.t2LineCount += 1
-    W.t2FirmLines[firm * M.T2_MAX_PRODUCTS_PER_FIRM + int(W.t2FirmLineCount[firm])] = line
-    W.t2FirmLineCount[firm] = int(W.t2FirmLineCount[firm]) + 1
-    W.t2LineFirm[line] = firm
-    W.t2LineProduct[line] = product['id']
-    W.t2UnitCost[line] = M.initial_tier2_cost(product, cfg)
-    W.t2LearnStep[line] = 1
-    W.t2Price[line] = M.round_to_cent(max(M.MIN_UNIT_PRICE, W.t2UnitCost[line] * (1 + M.tier2_starting_markup(product, cfg))))
-    W.t2LearnPrevious[line] = float('nan')
-    W.t2LearnDirection[line] = 1 if ((firm + cfg['seed']) % 2) else -1
-    W.t2PlayerPrice[line] = float('nan')
-    W.t2Rel[line] = 0.5
-    W.t2SalesEMA[line] = 0
-    W.t2DemandEMA[line] = 0
+    line = world.t2LineCount
+    world.t2LineCount += 1
+    world.t2FirmLines[firm * M.T2_MAX_PRODUCTS_PER_FIRM + int(world.t2FirmLineCount[firm])] = line
+    world.t2FirmLineCount[firm] = int(world.t2FirmLineCount[firm]) + 1
+    world.t2LineFirm[line] = firm
+    world.t2LineProduct[line] = product['id']
+    world.t2UnitCost[line] = M.initial_tier2_cost(product, cfg)
+    world.t2LearnStep[line] = 1
+    world.t2Price[line] = M.round_to_cent(max(M.MIN_UNIT_PRICE, world.t2UnitCost[line] * (1 + M.tier2_starting_markup(product, cfg))))
+    world.t2LearnPrevious[line] = float('nan')
+    world.t2LearnDirection[line] = 1 if ((firm + cfg['seed']) % 2) else -1
+    world.t2PlayerPrice[line] = float('nan')
+    world.t2Rel[line] = 0.5
+    world.t2SalesEMA[line] = 0
+    world.t2DemandEMA[line] = 0
     if paid:
         mach = cfg['t2Machinery'][product['complexity']]
-        W.t2Cash[firm] -= mach
-        W.equipmentSinks += mach
-        W.t2EqBook[firm] += mach
+        world.t2Cash[firm] -= mach
+        world.equipmentSinks += mach
+        world.t2EqBook[firm] += mach
     return line
 
 
-def initialize_tier2(W, cfg):
-    W.t2LineCount = 0
+def initialize_tier2(world, cfg):
+    world.t2LineCount = 0
     for p in M.T2_PRODUCTS:
-        W.t2ReferenceCost[p['id']] = M.reference_tier2_cost(p, cfg)
-    W.t2FirmLines.fill(-1)
-    W.t2Preferred.fill(-1)
-    W.t2PlayerPrice.fill(float('nan'))
-    W.t2Rel.fill(0.5)
-    W.t2SectorCount.fill(0)
+        world.t2ReferenceCost[p['id']] = M.reference_tier2_cost(p, cfg)
+    world.t2FirmLines.fill(-1)
+    world.t2Preferred.fill(-1)
+    world.t2PlayerPrice.fill(float('nan'))
+    world.t2Rel.fill(0.5)
+    world.t2SectorCount.fill(0)
     n_t2 = len(M.T2_PRODUCTS)
     for product in M.T2_PRODUCTS:
-        count = int(W.t2SectorCount[product['sectorIndex']])
-        W.t2SectorCount[product['sectorIndex']] = count + 1
+        count = int(world.t2SectorCount[product['sectorIndex']])
+        world.t2SectorCount[product['sectorIndex']] = count + 1
         index = product['sectorIndex'] * n_t2 + count
-        W.t2SectorProducts[index] = product['id']
+        world.t2SectorProducts[index] = product['id']
         # Demand routing weight ∝ supply (firms × capacity, the 108:12:1 ratio):
         # more consumers are routed to higher-supply products, so total demand
         # scales with supply while the per-consumer quantity stays small.
         supply = M.T2_FIRMS_PER_PRODUCT[product['complexity']] * cfg['t2Capacity'][product['complexity']]
-        W.t2SectorProductWeight[index] = (W.t2SectorProductWeight[index - 1] if count else 0) + supply
+        world.t2SectorProductWeight[index] = (world.t2SectorProductWeight[index - 1] if count else 0) + supply
 
     # Canon topology (§3): 60,000 single-machine firms — 1,800 C-3 / 300 C-4 /
     # 50 C-5 per product (reverse 6:3:1 ratio).  Each firm owns exactly one line.
@@ -334,73 +328,56 @@ def initialize_tier2(W, cfg):
         for _ in range(per_product[product['complexity']]):
             if firm >= target_firms:
                 break
-            W.t2Capability[firm] = 5
-            W.t2Sector[firm] = product['sectorIndex']
-            add_tier2_line(W, cfg, firm, product, False)
+            world.t2Capability[firm] = 5
+            world.t2Sector[firm] = product['sectorIndex']
+            add_tier2_line(world, cfg, firm, product, False)
             mach = cfg['t2Machinery'][product['complexity']]
-            W.t2Cash[firm] = cfg['t2Equity'] - cfg['t2License'] - mach
-            W.t2EqBook[firm] = mach
+            world.t2Cash[firm] = cfg['t2Equity'] - cfg['t2License'] - mach
+            world.t2EqBook[firm] = mach
             firm += 1
         if firm >= target_firms:
             break
 
 
-def initialize_consumers(W, cfg):
-    W.endNeedProduct.fill(-1)
-    W.endPreferredProduct.fill(-1)
-    W.endPreferredSupplier.fill(-1)
-    W.endLastMarket.fill(-1)
-    W.endLastSupplier.fill(-1)
+def initialize_consumers(world, cfg):
+    world.consumerPreferredSupplier.fill(-1)
+    world.consumerLastMarket.fill(-1)
+    world.consumerLastSupplier.fill(-1)
     seed = cfg['seed']
-    total_weight = sum(M.T2_SECTOR_WEIGHTS)
-    nsector = len(M.T2_SECTORS)
-    for cid in range(cfg['endUserCount']):
-        a = hash_seed(seed, 8000000 + cid)
+    n_t2 = len(M.T2_PRODUCTS)
+    # Per-product supply weight = firms × capacity (canon §5: the 108:12:1 ratio across
+    # C-3 / C-4 / C-5), so the number of consumers interested in a product scales with
+    # its supply rather than being spread evenly.
+    cum = []
+    acc = 0.0
+    for p in M.T2_PRODUCTS:
+        acc += M.T2_FIRMS_PER_PRODUCT[p['complexity']] * cfg['t2Capacity'][p['complexity']]
+        cum.append(acc)
+    total = cum[-1]
+    world.consumerQMax.fill(M.CONSUMER_QMAX)
+    for cid in range(cfg['consumerCount']):
         b = hash_seed(seed, 9000000 + cid)
-        count = 2 + a % 4
-        draw = hash_seed(seed, 10000000 + cid) / 4294967296 * total_weight
-        primary = nsector - 1
-        for sector in range(nsector):
-            draw -= M.T2_SECTOR_WEIGHTS[sector]
-            if draw < 0:
-                primary = sector
-                break
-        W.endBasketCount[cid] = count
-        W.endPrimarySector[cid] = primary
-        W.endBasket[cid * 5] = primary
-        sectors = M.T2_ADJACENCY[primary]
-        for slot in range(1, count):
-            if slot == 1:
-                sector = sectors[b % len(sectors)]
-            else:
-                sector = (primary + 1 + ((b >> (slot * 3)) % (nsector - 1))) % nsector
-            duplicate = True
-            while duplicate:
-                duplicate = False
-                for previous in range(slot):
-                    if W.endBasket[cid * 5 + previous] == sector:
-                        duplicate = True
-                if duplicate:
-                    sector = (sector + 1) % nsector
-            W.endBasket[cid * 5 + slot] = sector
-        W.endSecondarySector[cid] = W.endBasket[cid * 5 + 1]
-        W.endQMax[cid] = cfg['demandQtyMin'] + a % (cfg['demandQtyMax'] - cfg['demandQtyMin'] + 1)
-        W.endChoke[cid] = cfg['vmin'] + b / 4294967296 * (cfg['vmax'] - cfg['vmin'])
-        W.endEta[cid] = cfg['elasticity']
+        draw = hash_seed(seed, 7000000 + cid) / 4294967296 * total
+        offset = bisect.bisect_left(cum, draw)
+        if offset >= n_t2:
+            offset = n_t2 - 1
+        world.consumerProduct[cid] = M.NP + offset
+        world.consumerChoke[cid] = cfg['chokeMin'] + b / 4294967296 * (cfg['chokeMax'] - cfg['chokeMin'])
+        world.consumerEta[cid] = cfg['elasticity']
 
 
 def reset_world(cfg):
     """Normalize config, allocate and initialize the world (JS worker ``reset``)."""
     cfg = normalize_config(cfg)
-    W = WorldState(cfg)
+    world = WorldState(cfg)
     seed = cfg['seed']
     NE, NP, N0, N1 = M.NE, M.NP, M.N0, M.N1
 
-    zero(W)
+    zero(world)
     for tier, width in (('t0', NE), ('t1', NP), ('t2', None)):
-        learn_dir = getattr(W, f'{tier}LearnDirection')
-        getattr(W, f'{tier}LearnPrevious').fill(float('nan'))
-        getattr(W, f'{tier}LearnStep').fill(1)
+        learn_dir = getattr(world, f'{tier}LearnDirection')
+        getattr(world, f'{tier}LearnPrevious').fill(float('nan'))
+        getattr(world, f'{tier}LearnStep').fill(1)
         for i in range(len(learn_dir)):
             if tier == 't0':
                 firm = i // NE
@@ -410,42 +387,42 @@ def reset_world(cfg):
                 firm = i
             learn_dir[i] = 1 if ((firm + seed) % 2) else -1
 
-    W.difficulty.fill(cfg['dbar'])
-    W.t0Cash.fill(cfg['t0Equity'])
-    W.t0Controller.fill(0)
-    W.t0PlayerPrice.fill(float('nan'))
-    W.t0Rel.fill(0.5)
-    W.t0Stability.fill(1)
-    W.t0Req.fill(0)
-    W.t0Ful.fill(0)
-    W.t0PrevPrice.fill(float('nan'))
-    W.t0Price.fill(float('nan'))
-    W.t0Cost.fill(0)
+    world.difficulty.fill(cfg['difficultyTarget'])
+    world.t0Cash.fill(cfg['t0Equity'])
+    world.t0Controller.fill(0)
+    world.t0PlayerPrice.fill(float('nan'))
+    world.t0Rel.fill(0.5)
+    world.t0Stability.fill(1)
+    world.t0Req.fill(0)
+    world.t0Fulfilled.fill(0)
+    world.t0PrevPrice.fill(float('nan'))
+    world.t0Price.fill(float('nan'))
+    world.t0Cost.fill(0)
     for i in range(N0):
-        for e in range(NE):
-            if M.ELEMENTS[e] in T0P[i]['elements']:
-                idx = i * NE + e
-                cost = cfg['baseCost'] * cfg['dbar']
-                W.t0Cost[idx] = cost
-                W.t0DemandEMA[idx] = cfg['targetInventory'] / len(T0P[i]['elements']) / cfg['inventoryCoverageTicks']
-                W.t0Price[idx] = quant_w(cost * (1 + cfg['markup']))
-                W.t0PrevPrice[idx] = W.t0Price[idx]
+        for element in range(NE):
+            if M.ELEMENTS[element] in T0P[i]['elements']:
+                idx = i * NE + element
+                cost = cfg['baseCost'] * cfg['difficultyTarget']
+                world.t0Cost[idx] = cost
+                world.t0DemandEMA[idx] = cfg['t0TargetInventory'] / len(T0P[i]['elements']) / cfg['inventoryCoverageTicks']
+                world.t0Price[idx] = quantize_whole(cost * (1 + cfg['t0Markup']))
+                world.t0PrevPrice[idx] = world.t0Price[idx]
 
-    W.t1Cash.fill(cfg['t1Equity'] - cfg['t1License'] - cfg['t1Machinery'])
-    W.t1EqBook.fill(0)
-    W.t1Controller.fill(0)
-    W.t1Operates.fill(0)
-    W.t1Price.fill(float('nan'))
-    W.t1PrevPrice.fill(float('nan'))
-    W.t1PriceStability.fill(1)
-    W.t1Rel.fill(0)
-    W.t1UnitCost.fill(0)
-    W.t1Fin.fill(0)
-    W.t1FinBasis.fill(0)
-    W.t1SalesEMA.fill(0)
-    W.t1LastBuy.fill(float('nan'))
-    W.preferredWholesale.fill(-1)
-    W.playerPrice.fill(float('nan'))
+    world.t1Cash.fill(cfg['t1Equity'] - cfg['t1License'] - cfg['t1Machinery'])
+    world.t1EqBook.fill(0)
+    world.t1Controller.fill(0)
+    world.t1Operates.fill(0)
+    world.t1Price.fill(float('nan'))
+    world.t1PrevPrice.fill(float('nan'))
+    world.t1PriceStability.fill(1)
+    world.t1Rel.fill(0)
+    world.t1UnitCost.fill(0)
+    world.t1Fin.fill(0)
+    world.t1FinBasis.fill(0)
+    world.t1SalesEMA.fill(0)
+    world.t1LastBuy.fill(float('nan'))
+    world.preferredWholesale.fill(-1)
+    world.playerPrice.fill(float('nan'))
 
     for cid in range(N1):
         code = T1P[cid // 100]['product']
@@ -453,15 +430,15 @@ def reset_world(cfg):
         p = M.PRODUCTS[pi]
         eq = cfg['t1Machinery']                        # canon $15k flat
         uc = M.unit_cost(p['complexity'], cfg)         # canon $1.25 reference unit cost
-        price = quant_r(uc * (1 + M.t2_markup(p['complexity'], cfg)), uc)  # first-guess markup 0.25
-        W.t1EqBook[cid] = eq
-        W.t1Operates[cid * NP + pi] = 1
-        W.t1Rel[cid * NP + pi] = 0.5
-        W.t1UnitCost[cid * NP + pi] = uc
-        W.t1Price[cid * NP + pi] = price
-        W.t1PrevPrice[cid * NP + pi] = price
+        price = quantize_round(uc * (1 + M.t2_markup(p['complexity'], cfg)), uc)  # first-guess markup 0.25
+        world.t1EqBook[cid] = eq
+        world.t1Operates[cid * NP + pi] = 1
+        world.t1Rel[cid * NP + pi] = 0.5
+        world.t1UnitCost[cid * NP + pi] = uc
+        world.t1Price[cid * NP + pi] = price
+        world.t1PrevPrice[cid * NP + pi] = price
 
-    initialize_tier2(W, cfg)
-    initialize_consumers(W, cfg)
+    initialize_tier2(world, cfg)
+    initialize_consumers(world, cfg)
 
-    return cfg, W
+    return cfg, world

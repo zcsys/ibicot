@@ -1,7 +1,7 @@
 """Static catalogue and economic primitives.
 
 The catalogue data is extracted one-for-one from ``web/catalogue.js`` into
-``_catalogue.json`` (see ``tools/dump_catalogue.js``), so the counts, order,
+``catalogue.json`` (see ``tools/dump_catalogue.js``), so the counts, order,
 codes, recipes and invented-market selection are bit-identical to the JS
 oracle without hand transcription.  This module adds the small pure-math
 primitives (``adaptivePrice``, ``finishedStockTarget``, ``procurementProfile``,
@@ -14,7 +14,7 @@ import math
 import os
 
 _HERE = os.path.dirname(os.path.abspath(__file__))
-with open(os.path.join(_HERE, '_catalogue.json'), 'r', encoding='utf-8') as _f:
+with open(os.path.join(_HERE, 'catalogue.json'), 'r', encoding='utf-8') as _f:
     _DATA = json.load(_f)
 
 TIME = _DATA['TIME']
@@ -63,11 +63,12 @@ NP = len(PRODUCTS)          # 10
 N0 = 20
 N1 = 1000
 N2_FIRMS = 60000            # canon: 60,000 single-machine T2 firms (was 61,950)
-N_END_USERS = WORLD_STORY['population']          # 1,000,000
+N_CONSUMERS = WORLD_STORY['population']          # 1,000,000
 MAX_T2_LINES = N2_FIRMS     # one machine/line per firm at start
 MONTH = TIME['ticksPerMonth']                     # 30
 # Firms per product by complexity (canon §3): C-3 1,800 · C-4 300 · C-5 50.
 T2_FIRMS_PER_PRODUCT = {3: 1800, 4: 300, 5: 50}
+CONSUMER_QMAX = 15                           # canon §5: fixed per-consumer quantity
 
 # Supply-side scale values (equity, license, machinery, capacity, costs, storage)
 # live in ``core/config.py``.  The model exposes cfg-driven helpers so the kernel,
@@ -87,8 +88,8 @@ def unit_cost(complexity: int, cfg) -> float:
 
 def t2_markup(complexity: int, cfg) -> float:
     # First-guess markup is uniform across tiers/complexities (flat 0.25): the
-    # complexity gradient lives in the demand *volume* (quantityFactor ∝ supply),
-    # not in the seed price.  Prices then rise to their own equilibrium via the
+    # complexity gradient lives in demand *volume* (supply-scaled consumer routing,
+    # 108:12:1), not in the seed price.  Prices then rise to their own equilibrium via the
     # derivative-following pricer.
     return cfg['t1Markup']
 
@@ -175,14 +176,21 @@ def finished_stock_target(sales_ema, coverage_ticks, bootstrap_stock, capacity,
                             math.ceil(max(0.0, sales_ema) * coverage_ticks))))
 
 
-def switching_cost(reliability, minimum, maximum) -> float:
-    return minimum + (maximum - minimum) * clamp(reliability, 0.0, 1.0)
+def loyalty_surcharge(unit_cost, reliability) -> float:
+    # Per-unit surcharge used in supplier ranking — the fixed charge spread over one
+    # characteristic order (M = order_size/2 after the halving), i.e. half a unit's
+    # cost × (1 + reliability).  Halved to stay consistent with the halved loyaltyMultiple.
+    return 0.5 * unit_cost * (1.0 + clamp(reliability, 0.0, 1.0))
 
 
-def reliability_score(fulfillment, price_stability, availability) -> float:
-    return (0.5 * clamp(fulfillment, 0.0, 1.0)
-            + 0.3 * clamp(price_stability, 0.0, 1.0)
-            + 0.2 * clamp(availability, 0.0, 1.0))
+def loyalty_charge(unit_cost, reliability, multiple) -> float:
+    # Fixed charge paid once per disloyal purchase, to the incumbent (see canon §12.6).
+    return multiple * unit_cost * (1.0 + clamp(reliability, 0.0, 1.0))
+
+
+def reliability_score(price_stability, availability) -> float:
+    return (0.5 * clamp(price_stability, 0.0, 1.0)
+            + 0.5 * clamp(availability, 0.0, 1.0))
 
 
 def next_reliability(current, score, alpha) -> float:
@@ -197,7 +205,7 @@ def demand_at_price(q_max, choke_price, price, elasticity) -> float:
 
 def adaptive_price(old_price, profit, previous_profit, direction=1,
                    sales=0.0, stock=0.0, demand=0.0, available=0.0, step_scale=1.0,
-                   k=0.35, response=0.05) -> dict:
+                   pricing_aggressiveness=0.35, response=0.05) -> dict:
     # Guardrails only: the price may go below unit cost (sell at a loss) and is
     # never pinned to an economic floor/ceiling.
     floor = MIN_UNIT_PRICE
@@ -224,7 +232,7 @@ def adaptive_price(old_price, profit, previous_profit, direction=1,
     elif demand > available + 1e-9:
         next_direction = 1
     scale = clamp(step_scale * (0.5 if next_direction != direction else 1.2), 0.01, 1.0)
-    nxt = round_to_cent(min(MAX_UNIT_PRICE, max(floor, price * math.exp(next_direction * clamp(k, 0.0, 1.0) * response * scale))))
+    nxt = round_to_cent(min(MAX_UNIT_PRICE, max(floor, price * math.exp(next_direction * clamp(pricing_aggressiveness, 0.0, 1.0) * response * scale))))
     if nxt == price and next_direction < 0:
         next_direction = 1
     return {'price': nxt, 'direction': next_direction, 'stepScale': scale}
@@ -247,14 +255,11 @@ def tier2_starting_markup(product, cfg) -> float:
 
 
 def procurement_profile(product, cfg, reference_cost) -> dict:
-    # canon demand side (§5): V = 2 × unit cost; η = 2.
-    # quantityFactor is a small, uniform per-consumer multiplier; the complexity
-    # gradient (demand ∝ supply = firms × capacity, 108:12:1) lives in *consumer
-    # routing* (t2SectorProductWeight in initialize_tier2), not in qmax.  The
-    # global tier2DemandFactor sets the overall demand level / equilibrium markup.
+    # canon demand side (§5): V = unit cost; η = 2. Per-consumer quantity is
+    # fixed at CONSUMER_QMAX; the complexity gradient (demand ∝ supply = firms ×
+    # capacity, 108:12:1) lives in *consumer routing* (initialize_consumers).
     return {'markup': cfg['t1Markup'],
-            'quantityFactor': cfg['tier2DemandFactor'],
-            'valuation': 2.0 * reference_cost}
+            'valuation': reference_cost}
 
 
 def initial_tier2_cost(product, cfg) -> float:

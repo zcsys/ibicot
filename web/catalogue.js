@@ -109,10 +109,10 @@
   // Bulk upstream firms and small downstream workshops serve the same population.
   // Stock coverage is measured against sales, not against idle nameplate capacity.
   const ECONOMY_DEFAULTS = Object.freeze({
-    seed: 12345, dbar: 1, theta: .15, sigma: .005, dmin: .7, dmax: 1.4,
-    endUserCount: 1000000, t2FirmCount: 60000,
-    t0Equity: 10000000, capacity: 10000, targetInventory: 500000, maxInventory: 1000000,
-    baseCost: 1, markup: .25, minWholesaleLot: 1000, inventoryCoverageTicks: 3,
+    seed: 137, difficultyTarget: 1, theta: .15, sigma: .005, difficultyMin: .7, difficultyMax: 1.4,
+    consumerCount: 1000000, t2FirmCount: 60000,
+    t0Equity: 10000000, t0Capacity: 10000, t0TargetInventory: 500000, t0MaxInventory: 1000000,
+    baseCost: 1, t0Markup: .25, minWholesaleLot: 1000, inventoryCoverageTicks: 3,
     t1Equity: 1500000, t1License: 1000000, t1Machinery: 15000, t1Capacity: 500,
     t1MaterialCost: 1, t1Markup: .25,
     t2Equity: 1500000, t2License: 1000000,
@@ -121,10 +121,10 @@
     t2MaterialCost: 1.25, conversionFactor: .25,
     storage: 20000,
     footprint: Object.freeze({ 1: 1000, 2: 1000, 3: 3000, 4: 4000, 5: 5000 }),
-    consumerActivation: .1, consumerSearchOffers: 5,
-    demandQtyMin: 1, demandQtyMax: 10, vmin: .9, vmax: 1.5, elasticity: 2,
-    tier2DemandFactor: 1.5, tier2ReservationPremium: 0,
-    k: .35, alpha: .15, reliabilityAlpha: .15, switchingStableBand: .025,
+    consumerSearchOffers: 5,
+    chokeMin: 1.8, chokeMax: 3, elasticity: 2,
+    t2ReservationPremium: 0,
+    pricingAggressiveness: .35, alpha: .15, reliabilityAlpha: .15, switchingStableBand: .025,
     wholesalePriceResponse: .05, priceObservationTicks: 30, taumin: .05, taumax: .2,
     researchPriceMinimumOpportunities: 0, researchPriceMinimumPotentialOrders: 0,
     researchPriceMaxObservationTicks: 3600,
@@ -632,10 +632,10 @@ const recipes = [
       Math.max(Math.min(capacity, bootstrapStock), Math.ceil(Math.max(0, salesEMA) * coverageTicks))));
   const tier2StartingCash = (products, cfg) => {
     const direct = new Set();
-    const rawQuote = cfg.baseCost * cfg.dbar * (1 + cfg.markup);
-    const basicQuote = (rawQuote + cfg.manufacturingCostPerUnit) * (1 + cfg.markup);
+    const rawQuote = cfg.baseCost * cfg.difficultyTarget * (1 + cfg.t0Markup);
+    const basicQuote = (rawQuote + cfg.manufacturingCostPerUnit) * (1 + cfg.t0Markup);
     const compoundQuote = (2 * rawQuote + cfg.manufacturingCostPerUnit) *
-      (1 + cfg.markup + cfg.compoundMarkupPremium);
+      (1 + cfg.t0Markup + cfg.compoundMarkupPremium);
     const operatingCost = products.reduce((sum, product) => {
       for (const [material] of product.ingredients) if (material < 4) direct.add(material);
       const unitCost = product.conversionCost * (cfg.tier2ConversionCostScale ?? 1) + product.ingredients.reduce((cost, [material, quantity]) =>
@@ -650,7 +650,7 @@ const recipes = [
     qMax > 0 && chokePrice > 0 && price >= 0 && elasticity > 0
       ? qMax / (1 + Math.pow(price / chokePrice, elasticity))
       : 0;
-  const switchingCost = (reliability, minimum, maximum) =>
+  const loyaltyCost = (reliability, minimum, maximum) =>
     minimum + (maximum - minimum) * clamp(reliability, 0, 1);
   const reliabilityScore = (fulfillment, priceStability, availability) =>
     0.5 * clamp(fulfillment, 0, 1) +
@@ -660,10 +660,10 @@ const recipes = [
     clamp(current + clamp(alpha, 0, 1) * (score - current), 0, 1);
   // Derivative-following pricebot: Kephart, Hanson & Greenwald (2000), §3.2.
   // Total observed gross profit per tick is the objective, not margin per unit.
-  // No consumer value, normal markup or market-wide ideal enters this rule.
+  // No consumer value, normal t0Markup or market-wide ideal enters this rule.
   const adaptivePrice = ({ oldPrice, unitCost, profit, previousProfit, direction = 1,
     sales, stock, demand = sales, available = sales + stock, stepScale = 1,
-    k = 0.35, response = 0.05 }) => {
+    pricingAggressiveness = 0.35, response = 0.05 }) => {
     const floor = Math.max(MIN_UNIT_PRICE, unitCost), price = Math.max(floor, oldPrice);
     let nextDirection = direction < 0 ? -1 : 1;
     // A received order which could not be served is evidence of scarcity,
@@ -677,7 +677,7 @@ const recipes = [
     // Adaptive derivative-following: shrink experiments after reversals and
     // recover resolution on a consistent signal. This may still quote at cost.
     const scale = clamp(stepScale * (nextDirection !== direction ? 0.5 : 1.2), 0.01, 1);
-    const next = Math.max(floor, price * Math.exp(nextDirection * clamp(k, 0, 1) * response * scale));
+    const next = Math.max(floor, price * Math.exp(nextDirection * clamp(pricingAggressiveness, 0, 1) * response * scale));
     if (next === price && nextDirection < 0) nextDirection = 1;
     return { price: next, direction: nextDirection, stepScale: scale };
   };
@@ -690,20 +690,20 @@ const recipes = [
     return Math.exp(specialization * (product.complexity - 3) - standardization * compounds - materialTilt);
   };
   const tier2StartingMarkup = (product,cfg) =>
-    ((cfg.tier2BaseMarkup >= 0 ? cfg.tier2BaseMarkup : cfg.markup) + cfg.tier2MarkupPremium * (product.complexity-3)) *
+    ((cfg.tier2BaseMarkup >= 0 ? cfg.tier2BaseMarkup : cfg.t0Markup) + cfg.tier2MarkupPremium * (product.complexity-3)) *
     recipeMarginFactor(product, cfg.tier2CompoundStandardization, cfg.tier2ComplexitySpecialization, cfg.tier2MaterialBalance);
   const procurementProfile = (product,cfg,referenceCost) => {
-    const markup = ((cfg.procurementBaseMarkup ?? .25) + (cfg.procurementMarkupPremium ?? .05) * (product.complexity-3)) *
+    const t0Markup = ((cfg.procurementBaseMarkup ?? .25) + (cfg.procurementMarkupPremium ?? .05) * (product.complexity-3)) *
       recipeMarginFactor(product, cfg.procurementCompoundStandardization, cfg.procurementComplexitySpecialization, cfg.procurementMaterialBalance);
     const baseline = .25;
-    return Object.freeze({ markup, quantityFactor: cfg.tier2DemandFactor * baseline / (referenceCost * markup),
-      valuation: 2 * referenceCost * (1+markup) / (1+baseline) });
+    return Object.freeze({ t0Markup,
+      valuation: referenceCost * (1+t0Markup) / (1+baseline) });
   };
   const initialTier2Cost = (product, cfg) => {
-    const raw = cfg.baseCost * cfg.dbar * (1 + cfg.markup);
-    const basic = (raw + cfg.manufacturingCostPerUnit) * (1 + cfg.markup);
+    const raw = cfg.baseCost * cfg.difficultyTarget * (1 + cfg.t0Markup);
+    const basic = (raw + cfg.manufacturingCostPerUnit) * (1 + cfg.t0Markup);
     const compound = (2 * raw + cfg.manufacturingCostPerUnit) *
-      (1 + cfg.markup + cfg.compoundMarkupPremium);
+      (1 + cfg.t0Markup + cfg.compoundMarkupPremium);
     return product.conversionCost * (cfg.tier2ConversionCostScale ?? 1) + product.ingredients.reduce((total, [material, quantity]) =>
       total + quantity * (material < 4 ? basic : compound), 0);
   };
@@ -740,7 +740,7 @@ const recipes = [
     clamp,
     complexity,
     demandAtPrice,
-    switchingCost,
+    loyaltyCost,
     reliabilityScore,
     nextReliability,
     adaptivePrice,

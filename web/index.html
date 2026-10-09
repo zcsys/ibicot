@@ -522,7 +522,7 @@
             <strong>Execution</strong><a class="tiny" href="README.md" target="_blank">README</a>
           </div>
           <div class="field">
-            <label>Seed</label><input id="seed" type="number" value="12345" />
+            <label>Seed</label><input id="seed" type="number" value="137" />
           </div>
           <div class="toolbar">
             <button id="run" class="good">Run · 2 ticks/s</button
@@ -538,21 +538,21 @@
           <div class="param-group">
             <h3>Environment · Gaia</h3>
             <div class="group-note">Mean-reverting extraction difficulty that scales Tier 0 unit costs.</div>
-            <div class="field"><label>Difficulty mean d̄</label><input id="dbar" type="number" step=".01" value="1" /></div>
+            <div class="field"><label>Difficulty mean d̄</label><input id="difficultyTarget" type="number" step=".01" value="1" /></div>
             <div class="field"><label>Mean-reversion θ</label><input id="theta" type="number" step=".01" value=".15" /></div>
             <div class="field"><label>Shock σ</label><input id="sigma" type="number" step=".005" value=".005" /></div>
-            <div class="field"><label>Difficulty minimum</label><input id="dmin" type="number" step=".01" value=".7" /></div>
-            <div class="field"><label>Difficulty maximum</label><input id="dmax" type="number" step=".01" value="1.4" /></div>
+            <div class="field"><label>Difficulty minimum</label><input id="difficultyMin" type="number" step=".01" value=".7" /></div>
+            <div class="field"><label>Difficulty maximum</label><input id="difficultyMax" type="number" step=".01" value="1.4" /></div>
           </div>
           <div class="param-group">
             <h3>Tier 0 · Extraction</h3>
             <div class="group-note">Equity is the firm's starting capital; extraction capacity, cost base and inventory buffering.</div>
             <div class="field"><label>Equity / firm</label><input id="t0Equity" type="number" min="0" step="any" value="10000000" /></div>
-            <div class="field"><label>Capacity / tick</label><input id="capacity" type="number" value="10000" /></div>
-            <div class="field"><label>Target inventory</label><input id="targetInventory" type="number" value="500000" /></div>
-            <div class="field"><label>Maximum inventory</label><input id="maxInventory" type="number" value="1000000" /></div>
+            <div class="field"><label>Capacity / tick</label><input id="t0Capacity" type="number" value="10000" /></div>
+            <div class="field"><label>Target inventory</label><input id="t0TargetInventory" type="number" value="500000" /></div>
+            <div class="field"><label>Maximum inventory</label><input id="t0MaxInventory" type="number" value="1000000" /></div>
             <div class="field"><label>Extraction base cost</label><input id="baseCost" type="number" min="0" step="any" value="1" /></div>
-            <div class="field"><label>First-guess markup</label><input id="markup" type="number" step=".01" value=".25" /></div>
+            <div class="field"><label>First-guess t0Markup</label><input id="t0Markup" type="number" step=".01" value=".25" /></div>
             <div class="field"><label>Minimum wholesale lot</label><input id="minWholesaleLot" type="number" value="1000" /></div>
             <div class="field"><label>Stock coverage (ticks)</label><input id="inventoryCoverageTicks" type="number" min="1" max="30" value="3" /></div>
           </div>
@@ -564,7 +564,7 @@
             <div class="field"><label>Machinery</label><input id="t1Machinery" type="number" min="0" step="any" value="15000" /></div>
             <div class="field"><label>Capacity / machine / tick</label><input id="t1Capacity" type="number" min="0" step="any" value="500" /></div>
             <div class="field"><label>Material cost / unit</label><input id="t1MaterialCost" type="number" min="0" step="any" value="1" /></div>
-            <div class="field"><label>First-guess markup</label><input id="t1Markup" type="number" step=".01" value=".25" /></div>
+            <div class="field"><label>First-guess t0Markup</label><input id="t1Markup" type="number" step=".01" value=".25" /></div>
           </div>
           <div class="param-group">
             <h3>Tier 2 · Manufacturing (C-3 … C-5)</h3>
@@ -583,21 +583,17 @@
           </div>
           <div class="param-group">
             <h3>Consumers · Demand</h3>
-            <div class="group-note">1,000,000 external procurement agents; V = 2 × unit cost, η = elasticity.</div>
-            <div class="field"><label>Activation / tick</label><input id="consumerActivation" type="number" min="0" max="1" step=".01" value=".1" /></div>
+            <div class="group-note">1,000,000 external procurement agents; V = unit cost, η = elasticity.</div>
             <div class="field"><label>Comparison offers</label><input id="consumerSearchOffers" type="number" min="1" max="20" value="5" /></div>
-            <div class="field"><label>Demand quantity min</label><input id="demandQtyMin" type="number" value="1" /></div>
-            <div class="field"><label>Demand quantity max</label><input id="demandQtyMax" type="number" value="10" /></div>
-            <div class="field"><label>Value multiplier min</label><input id="vmin" type="number" step=".01" value=".9" /></div>
-            <div class="field"><label>Value multiplier max</label><input id="vmax" type="number" step=".01" value="1.5" /></div>
+            <div class="field"><label>Value multiplier min</label><input id="chokeMin" type="number" step=".01" value="1.8" /></div>
+            <div class="field"><label>Value multiplier max</label><input id="chokeMax" type="number" step=".01" value="3" /></div>
             <div class="field"><label>Elasticity η</label><input id="elasticity" type="number" step=".05" value="2" /></div>
-            <div class="field"><label>T2 demand multiplier</label><input id="tier2DemandFactor" type="number" min=".01" max="200" step=".1" value="1.5" /></div>
-            <div class="field"><label>T2 reservation premium</label><input id="tier2ReservationPremium" type="number" min="0" step=".05" value="0" /></div>
+            <div class="field"><label>T2 reservation premium</label><input id="t2ReservationPremium" type="number" min="0" step=".05" value="0" /></div>
           </div>
           <div class="param-group">
             <h3>Market · Pricing &amp; reliability</h3>
-            <div class="group-note">Adaptive pricing, EMA smoothing and supplier switching friction.</div>
-            <div class="field"><label>BOT price response k</label><input id="k" type="number" step=".05" value=".35" /></div>
+            <div class="group-note">Adaptive pricing, EMA smoothing and supplier loyalty friction.</div>
+            <div class="field"><label>BOT pricing aggressiveness</label><input id="pricingAggressiveness" type="number" step=".05" value=".35" /></div>
             <div class="field"><label>Demand EMA α</label><input id="alpha" type="number" step=".01" value=".15" /></div>
             <div class="field"><label>Price response</label><input id="wholesalePriceResponse" type="number" step=".01" value=".05" /></div>
             <div class="field"><label>Price observation (ticks)</label><input id="priceObservationTicks" type="number" min="1" max="360" value="30" /></div>

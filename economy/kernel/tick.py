@@ -24,7 +24,7 @@ round_to_cent = M.round_to_cent
 M4 = M.T2_MAX_PRODUCTS_PER_FIRM
 
 
-def tier1_stock_target(W, cfg, product, index):
+def tier1_stock_target(world, cfg, product, index):
     # canon: desired inventory = fill G, split 1:1 → finished target = G/2
     return M.inventory_target(M.complexity(product), cfg)
 
@@ -35,59 +35,59 @@ def tier1_stock_target(W, cfg, product, index):
 _RESET_NAMES = [
     't0Opportunities', 't1Opportunities', 't2Opportunities', 't2PotentialOrders',
     't1Bought', 't2Bought', 't0Sold', 't0Revenue', 't0COGS', 't0Demand',
-    't1Demand', 't2Demand', 't1Sold', 't1Rev', 't1COGS', 't1IntermediateSold',
+    't1Demand', 't2Demand', 't1Sold', 't1Revenue', 't1COGS', 't1IntermediateSold',
     't1IntermediateRevenue', 'active', 'potential', 'fulfilled', 'priceLost',
-    'stockUnmet', 't0Ful', 't0FundedReq', 't1InputNeed', 't1PurchaseReq',
+    'stockUnmet', 't0Fulfilled', 't0FundedReq', 't1InputNeed', 't1PurchaseReq',
 ]
 
 
-def reset_tick(W: WorldState) -> None:
+def reset_tick(world: WorldState) -> None:
     for name in _RESET_NAMES:
-        getattr(W, name).fill(0)
-    W.t2Sold.fill(0)
-    W.t2Revenue.fill(0)
-    W.t2COGS.fill(0)
-    W.t2Made.fill(0)
+        getattr(world, name).fill(0)
+    world.t2Sold.fill(0)
+    world.t2Revenue.fill(0)
+    world.t2COGS.fill(0)
+    world.t2Made.fill(0)
 
 
 # --------------------------------------------------------------------------
 # 2. Environment (difficulty)
 # --------------------------------------------------------------------------
-def update_environment(W, cfg, tick):
-    for e in range(NE):
-        W.difficulty[e] = M.clamp(
-            W.difficulty[e] + cfg['theta'] * (cfg['dbar'] - W.difficulty[e])
-            + cfg['sigma'] * normal_(cfg['seed'], tick, e * 4),
-            cfg['dmin'], cfg['dmax'])
+def update_environment(world, cfg, tick):
+    for element in range(NE):
+        world.difficulty[element] = M.clamp(
+            world.difficulty[element] + cfg['theta'] * (cfg['difficultyTarget'] - world.difficulty[element])
+            + cfg['sigma'] * normal_(cfg['seed'], tick, element * 4),
+            cfg['difficultyMin'], cfg['difficultyMax'])
 
 
 # --------------------------------------------------------------------------
 # 3. Tier 0 extraction
 # --------------------------------------------------------------------------
-def produce_tier0(W, cfg, profiles, tick):
+def operate_tier0(world, cfg, profiles, tick):
     seed = cfg['seed']
     for supplier in range(N0):
         elements = profiles[supplier]['element_indices']  # sorted ascending
         n_el = len(elements)
-        target_per_element = cfg['targetInventory'] / n_el
-        bootstrap = max(cfg['minWholesaleLot'], math.ceil(cfg['capacity'] * 0.1 / n_el))
+        target_per_element = cfg['t0TargetInventory'] / n_el
+        bootstrap = max(cfg['minWholesaleLot'], math.ceil(cfg['t0Capacity'] * 0.1 / n_el))
         targets = [
-            M.finished_stock_target(W.t0DemandEMA[supplier * NE + e],
+            M.finished_stock_target(world.t0DemandEMA[supplier * NE + element],
                                     cfg['inventoryCoverageTicks'], bootstrap,
-                                    cfg['capacity'], target_per_element,
-                                    cfg['maxInventory'] / n_el)
-            for e in elements
+                                    cfg['t0Capacity'], target_per_element,
+                                    cfg['t0MaxInventory'] / n_el)
+            for element in elements
         ]
-        deficits = [max(0.0, targets[n] - W.t0Inv[supplier * NE + elements[n]]) for n in range(n_el)]
-        capacity = max(0.0, cfg['capacity'])
-        total_inventory = sum(max(0.0, W.t0Inv[supplier * NE + e]) for e in elements)
+        deficits = [max(0.0, targets[n] - world.t0Inv[supplier * NE + elements[n]]) for n in range(n_el)]
+        capacity = max(0.0, cfg['t0Capacity'])
+        total_inventory = sum(max(0.0, world.t0Inv[supplier * NE + element]) for element in elements)
         costs = []
-        for e in elements:
-            index = supplier * NE + e
-            cost = max(1e-9, cfg['baseCost'] * W.difficulty[e])
-            W.t0Cost[index] = cost
-            if not math.isfinite(W.t0Price[index]) or W.t0Price[index] <= 0:
-                W.t0Price[index] = cost * (1 + cfg['markup'])
+        for element in elements:
+            index = supplier * NE + element
+            cost = max(1e-9, cfg['baseCost'] * world.difficulty[element])
+            world.t0Cost[index] = cost
+            if not math.isfinite(world.t0Price[index]) or world.t0Price[index] <= 0:
+                world.t0Price[index] = cost * (1 + cfg['t0Markup'])
             costs.append(cost)
         positive = [n for n in range(n_el) if deficits[n] > 0]
         if not positive:
@@ -100,23 +100,23 @@ def produce_tier0(W, cfg, profiles, tick):
             nonlocal capacity, total_inventory
             index = supplier * NE + elements[n]
             cost = costs[n]
-            headroom = max(0.0, cfg['maxInventory'] - total_inventory)
-            affordable = math.floor(max(0.0, W.t0Cash[supplier]) / cost)
+            headroom = max(0.0, cfg['t0MaxInventory'] - total_inventory)
+            affordable = math.floor(max(0.0, world.t0Cash[supplier]) / cost)
             made = max(0.0, min(planned, deficits[n], capacity, headroom, affordable))
-            old = W.t0Inv[index]
+            old = world.t0Inv[index]
             if made > 0:
-                W.t0InvBasis[index] = (old * W.t0InvBasis[index] + made * cost) / (old + made)
-            W.t0Inv[index] += made
-            W.t0Cash[supplier] -= made * cost
-            W.costSinks += made * cost
+                world.t0InvBasis[index] = (old * world.t0InvBasis[index] + made * cost) / (old + made)
+            world.t0Inv[index] += made
+            world.t0Cash[supplier] -= made * cost
+            world.costSinks += made * cost
             capacity -= made
             total_inventory += made
             deficits[n] -= made
             return made
 
         total_deficit = sum(deficits)
-        initial_budget = max(0.0, min(capacity, cfg['maxInventory'] - total_inventory, total_deficit))
-        cash_can_bind = initial_budget * max(costs[n] for n in positive) > W.t0Cash[supplier]
+        initial_budget = max(0.0, min(capacity, cfg['t0MaxInventory'] - total_inventory, total_deficit))
+        cash_can_bind = initial_budget * max(costs[n] for n in positive) > world.t0Cash[supplier]
         if initial_budget < len(positive) or cash_can_bind:
             for n in priority:
                 make(n, min(1, deficits[n]))
@@ -124,7 +124,7 @@ def produce_tier0(W, cfg, profiles, tick):
             reserved = set()
             for _pass in range(NE):
                 total = sum(deficits)
-                budget = max(0.0, min(capacity, cfg['maxInventory'] - total_inventory, total))
+                budget = max(0.0, min(capacity, cfg['t0MaxInventory'] - total_inventory, total))
                 small = [n for n in priority
                          if n not in reserved and deficits[n] > 0 and budget * deficits[n] / total < 1]
                 if not small:
@@ -136,10 +136,10 @@ def produce_tier0(W, cfg, profiles, tick):
         for _pass in range(NE + 2):
             if capacity <= 1e-9:
                 break
-            feasible = [min(deficits[n], math.floor(max(0.0, W.t0Cash[supplier]) / costs[n]))
+            feasible = [min(deficits[n], math.floor(max(0.0, world.t0Cash[supplier]) / costs[n]))
                         for n in range(n_el)]
             total = sum(feasible)
-            budget = max(0.0, min(capacity, cfg['maxInventory'] - total_inventory, total))
+            budget = max(0.0, min(capacity, cfg['t0MaxInventory'] - total_inventory, total))
             if budget <= 1e-9:
                 break
             if budget >= total:
@@ -166,31 +166,31 @@ def produce_tier0(W, cfg, profiles, tick):
 # --------------------------------------------------------------------------
 # 4. Tier 1 input purchase
 # --------------------------------------------------------------------------
-def tier0_supplier(W, cfg, profiles, e, preferred, buyer, tick):
+def tier0_supplier(world, cfg, profiles, element, preferred, buyer, tick):
     preferred = int(preferred)
     best = float('inf')
     empty_price = float('inf')
     stocked = []
     empty = []
     for supplier in range(N0):
-        if M.ELEMENTS[e] not in profiles[supplier]['elements']:
+        if M.ELEMENTS[element] not in profiles[supplier]['elements']:
             continue
-        index = supplier * NE + e
-        quote = W.t0Price[index]
+        index = supplier * NE + element
+        quote = world.t0Price[index]
         if not math.isfinite(quote):
             continue
         if supplier == preferred:
             friction = 0.0
         else:
-            rel = W.t0Rel[preferred * NE + e] if preferred >= 0 else 0.5
-            friction = M.switching_cost(rel, cfg['taumin'], cfg['taumax'])
+            rel = world.t0Rel[preferred * NE + element] if preferred >= 0 else 0.5
+            friction = M.loyalty_surcharge(cfg['baseCost'], rel)
         effective = quote + friction
         if effective < empty_price - 1e-12:
             empty_price = effective
             empty = []
         if abs(effective - empty_price) <= 1e-12:
             empty.append(supplier)
-        if W.t0Inv[index] >= cfg['minWholesaleLot']:
+        if world.t0Inv[index] >= cfg['minWholesaleLot']:
             if effective < best - 1e-12:
                 best = effective
                 stocked = []
@@ -200,7 +200,7 @@ def tier0_supplier(W, cfg, profiles, e, preferred, buyer, tick):
     if not tied:
         return -1
     total = sum(1 / len(profiles[s]['elements']) for s in tied)
-    draw = random_(cfg['seed'], tick, buyer + 12000000 + e * 1300000) * total
+    draw = random_(cfg['seed'], tick, buyer + 12000000 + element * 1300000) * total
     for supplier in tied:
         draw -= 1 / len(profiles[supplier]['elements'])
         if draw < 0:
@@ -208,9 +208,9 @@ def tier0_supplier(W, cfg, profiles, e, preferred, buyer, tick):
     return tied[-1]
 
 
-def plan_and_buy_inputs(W, cfg, products, profiles, tick):
-    W.t0Req.fill(0)
-    W.t0FundedReq.fill(0)
+def plan_and_buy_inputs(world, cfg, products, profiles, tick):
+    world.t0Req.fill(0)
+    world.t0FundedReq.fill(0)
     first_cohort = tick % NP
     first_firm = (tick * 37) % 100
     for rnd in range(100):
@@ -219,151 +219,161 @@ def plan_and_buy_inputs(W, cfg, products, profiles, tick):
             company = cohort * 100 + ((first_firm + rnd) % 100)
             raw_base = company * NE
             product_base = company * NP
-            suppliers = [tier0_supplier(W, cfg, profiles, e,
-                                        W.preferredWholesale[raw_base + e], company, tick)
-                         for e in range(NE)]
+            suppliers = [tier0_supplier(world, cfg, profiles, element,
+                                        world.preferredWholesale[raw_base + element], company, tick)
+                         for element in range(NE)]
             for p in range(NP):
-                if not W.t1Operates[product_base + p]:
+                if not world.t1Operates[product_base + p]:
                     continue
                 product = products[p]
                 cap = cfg['t1Capacity']
                 output_qty = product['outputQty']                # count-preserving N→N
-                target = tier1_stock_target(W, cfg, product, product_base + p)
-                desired = max(0.0, min(cap, target - W.t1Fin[product_base + p]))
+                target = tier1_stock_target(world, cfg, product, product_base + p)
+                desired = max(0.0, min(cap, target - world.t1Fin[product_base + p]))
                 replacement = M.conversion_cost(M.complexity(product), cfg)
                 current_cost = M.conversion_cost(M.complexity(product), cfg)
-                for element, ratio in product['inputs'].items():
-                    e = M.ELEMENTS.index(element)
-                    supplier = suppliers[e]
-                    quote = W.t0Price[supplier * NE + e] if supplier >= 0 else W.t1LastBuy[raw_base + e]
-                    current_cost += (ratio / output_qty) * (quote if math.isfinite(quote) else cfg['baseCost'] * W.difficulty[e])
+                for element_name, ratio in product['inputs'].items():
+                    element = M.ELEMENTS.index(element_name)
+                    supplier = suppliers[element]
+                    quote = world.t0Price[supplier * NE + element] if supplier >= 0 else world.t1LastBuy[raw_base + element]
+                    current_cost += (ratio / output_qty) * (quote if math.isfinite(quote) else cfg['baseCost'] * world.difficulty[element])
                     raw_need = desired * ratio / output_qty
-                    stocked = min(raw_need, W.raw[raw_base + e])
+                    stocked = min(raw_need, world.raw[raw_base + element])
                     if desired > 0:
-                        q = quote if math.isfinite(quote) else cfg['baseCost'] * W.difficulty[e]
-                        replacement += (stocked * W.rawBasis[raw_base + e] + (raw_need - stocked) * q) / desired
+                        q = quote if math.isfinite(quote) else cfg['baseCost'] * world.difficulty[element]
+                        replacement += (stocked * world.rawBasis[raw_base + element] + (raw_need - stocked) * q) / desired
                     else:
-                        replacement += (ratio / output_qty) * (quote if math.isfinite(quote) else W.rawBasis[raw_base + e])
-                W.t1ReplacementCost[product_base + p] = replacement
-                # Fix B: gate the *purchase* on marginal (current-price) cost; see fast.py.
-                if desired > 0 and current_cost > W.t1Price[product_base + p] + 1e-9:
+                        replacement += (ratio / output_qty) * (quote if math.isfinite(quote) else world.rawBasis[raw_base + element])
+                world.t1ReplacementCost[product_base + p] = replacement
+                # Fix B: gate the *purchase* on marginal (current-price) cost; see numba.py.
+                if desired > 0 and current_cost > world.t1Price[product_base + p] + 1e-9:
                     continue
-                for element, ratio in product['inputs'].items():
-                    e = M.ELEMENTS.index(element)
-                    need = max(0.0, desired * ratio / output_qty - W.raw[raw_base + e])
+                for element_name, ratio in product['inputs'].items():
+                    element = M.ELEMENTS.index(element_name)
+                    need = max(0.0, desired * ratio / output_qty - world.raw[raw_base + element])
                     if need > 0:
-                        W.t1InputNeed[raw_base + e] += max(need, cfg['minWholesaleLot'])
-            for e in range(NE):
-                need = W.t1InputNeed[raw_base + e]
+                        world.t1InputNeed[raw_base + element] += max(need, cfg['minWholesaleLot'])
+            for element in range(NE):
+                need = world.t1InputNeed[raw_base + element]
                 if need <= 0:
                     continue
                 request = math.ceil(need / cfg['minWholesaleLot']) * cfg['minWholesaleLot']
-                W.t1PurchaseReq[raw_base + e] = request
-                W.t0Req[e] += request
-                chosen = suppliers[e]
+                world.t1PurchaseReq[raw_base + element] = request
+                world.t0Req[element] += request
+                chosen = suppliers[element]
                 if chosen < 0:
                     continue
-                supplier_index = chosen * NE + e
-                quote = max(0.0, W.t0Price[supplier_index])
-                affordable = math.floor(max(0.0, W.t1Cash[company]) / max(1e-9, quote))
-                available = math.floor(max(0.0, W.t0Inv[supplier_index]))
+                preferred = int(world.preferredWholesale[raw_base + element])
+                loyalty_charge = 0.0
+                if chosen != preferred and preferred >= 0 and world.t0Inv[preferred * NE + element] >= request:
+                    loyalty_charge = M.loyalty_charge(cfg['baseCost'], world.t0Rel[preferred * NE + element],
+                                                    cfg['loyaltyMultiple'][1])
+                    if loyalty_charge > world.t1Cash[company]:
+                        chosen = preferred
+                        loyalty_charge = 0.0
+                supplier_index = chosen * NE + element
+                quote = max(0.0, world.t0Price[supplier_index])
+                affordable = math.floor(max(0.0, world.t1Cash[company] - loyalty_charge) / max(1e-9, quote))
+                available = math.floor(max(0.0, world.t0Inv[supplier_index]))
                 held = 0.0
                 for material in range(NE):
-                    held += W.raw[raw_base + material]
+                    held += world.raw[raw_base + material]
                 for output in range(NP):
-                    held += W.t1Fin[product_base + output]
+                    held += world.t1Fin[product_base + output]
                 storage_room = math.floor(max(0.0, cfg['storage'] - held)
                                           / cfg['minWholesaleLot']) * cfg['minWholesaleLot']
                 funded = math.floor(min(request, affordable, storage_room) / cfg['minWholesaleLot']) * cfg['minWholesaleLot']
-                W.t0FundedReq[e] += funded
+                world.t0FundedReq[element] += funded
                 if funded > 0:
-                    W.t0Opportunities[e] += 1
-                W.t0Demand[supplier_index] += funded
+                    world.t0Opportunities[element] += 1
+                world.t0Demand[supplier_index] += funded
                 bought = math.floor(min(funded, available) / cfg['minWholesaleLot']) * cfg['minWholesaleLot']
                 attempt = 1 if request > 0 else 0
-                W.t0RelAttempts[supplier_index] += attempt
-                W.t0RelFulfilled[supplier_index] += attempt if bought >= request else 0
-                W.t0RelChecks[supplier_index] += attempt
-                W.t0RelAvailable[supplier_index] += attempt if available >= request else 0
+                world.t0RelAttempts[supplier_index] += attempt
+                world.t0RelChecks[supplier_index] += attempt
+                world.t0RelAvailable[supplier_index] += attempt if available >= request else 0
                 if bought <= 0:
                     continue
-                old_raw = W.raw[raw_base + e]
-                old_basis = W.rawBasis[raw_base + e]
+                old_raw = world.raw[raw_base + element]
+                old_basis = world.rawBasis[raw_base + element]
                 payment = bought * quote
-                W.raw[raw_base + e] = old_raw + bought
-                W.t1Bought[company] += bought
-                W.rawBasis[raw_base + e] = (old_basis * old_raw + payment) / (old_raw + bought) if old_raw + bought > 0 else 0
-                W.t1LastBuy[raw_base + e] = quote
-                W.t1Cash[company] -= payment
-                W.t0Cash[chosen] += payment
-                W.t0Inv[supplier_index] -= bought
-                W.t0Sold[supplier_index] += bought
-                W.t0Revenue[supplier_index] += payment
-                W.t0COGS[supplier_index] += bought * W.t0InvBasis[supplier_index]
-                W.t0Ful[e] += bought
-                W.preferredWholesale[raw_base + e] = chosen
+                world.raw[raw_base + element] = old_raw + bought
+                world.t1Bought[company] += bought
+                world.rawBasis[raw_base + element] = (old_basis * old_raw + payment) / (old_raw + bought) if old_raw + bought > 0 else 0
+                world.t1LastBuy[raw_base + element] = quote
+                world.t1Cash[company] -= payment
+                world.t0Cash[chosen] += payment
+                world.t0Inv[supplier_index] -= bought
+                world.t0Sold[supplier_index] += bought
+                world.t0Revenue[supplier_index] += payment
+                world.t0COGS[supplier_index] += bought * world.t0InvBasis[supplier_index]
+                world.t0Fulfilled[element] += bought
+                if loyalty_charge > 0.0:
+                    world.t1Cash[company] -= loyalty_charge
+                    world.t0Cash[preferred] += loyalty_charge
+                world.preferredWholesale[raw_base + element] = chosen
 
 
 # --------------------------------------------------------------------------
-# 5. Tier 1 manufacture
+# 5. Tier 1 production
 # --------------------------------------------------------------------------
-def manufacture(W, cfg, products):
+def operate_tier1(world, cfg, products):
     for company in range(N1):
         for p in range(NP):
             index = company * NP + p
-            if not W.t1Operates[index]:
+            if not world.t1Operates[index]:
                 continue
             product = products[p]
             raw_base = company * NE
             cap = cfg['t1Capacity']
             conv = M.conversion_cost(M.complexity(product), cfg)
-            target = tier1_stock_target(W, cfg, product, index)
+            target = tier1_stock_target(world, cfg, product, index)
             output_qty = product['outputQty']                     # count-preserving N→N
-            desired = min(cap, max(0.0, target - W.t1Fin[index]))
+            desired = min(cap, max(0.0, target - world.t1Fin[index]))
             made = math.floor(desired / output_qty)               # whole batches
             input_cost_per_item = 0.0
-            for element, ratio in product['inputs'].items():
-                e = M.ELEMENTS.index(element)
-                made = min(made, math.floor(W.raw[raw_base + e] / ratio))
-                input_cost_per_item += ratio * W.rawBasis[raw_base + e]
+            for element_name, ratio in product['inputs'].items():
+                element = M.ELEMENTS.index(element_name)
+                made = min(made, math.floor(world.raw[raw_base + element] / ratio))
+                input_cost_per_item += ratio * world.rawBasis[raw_base + element]
             input_cost_per_item /= output_qty
-            made = min(made, math.floor(max(0.0, W.t1Cash[company])
+            made = min(made, math.floor(max(0.0, world.t1Cash[company])
                                         / max(1e-9, conv * output_qty)))
-            if input_cost_per_item + conv > W.t1Price[index] + 1e-9:
+            if input_cost_per_item + conv > world.t1Price[index] + 1e-9:
                 made = 0
             if made <= 0:
                 continue
             made_items = made * output_qty
-            for element, ratio in product['inputs'].items():
-                e = M.ELEMENTS.index(element)
-                W.raw[raw_base + e] -= made * ratio
-            W.t1Cash[company] -= made_items * conv
-            W.costSinks += made_items * conv
-            old_fin = W.t1Fin[index]
-            old_basis = W.t1FinBasis[index]
+            for element_name, ratio in product['inputs'].items():
+                element = M.ELEMENTS.index(element_name)
+                world.raw[raw_base + element] -= made * ratio
+            world.t1Cash[company] -= made_items * conv
+            world.costSinks += made_items * conv
+            old_fin = world.t1Fin[index]
+            old_basis = world.t1FinBasis[index]
             unit_cost = input_cost_per_item + conv
-            W.t1Fin[index] = old_fin + made_items
-            W.t1FinBasis[index] = (old_basis * old_fin + unit_cost * made_items) / (old_fin + made_items) if old_fin + made_items > 0 else 0
-            W.t1UnitCost[index] = unit_cost
+            world.t1Fin[index] = old_fin + made_items
+            world.t1FinBasis[index] = (old_basis * old_fin + unit_cost * made_items) / (old_fin + made_items) if old_fin + made_items > 0 else 0
+            world.t1UnitCost[index] = unit_cost
 
 
 # --------------------------------------------------------------------------
 # 6. Pricing (T0 + T1)
 # --------------------------------------------------------------------------
-def price_learning_view(W, tier):
+def price_learning_view(world, tier):
     return {
         'tier': tier,
-        'price': getattr(W, f'{tier}Price'),
-        'ages': getattr(W, f'{tier}LearnTicks'),
-        'profits': getattr(W, f'{tier}LearnProfit'),
-        'sales': getattr(W, f'{tier}LearnSales'),
-        'previous': getattr(W, f'{tier}LearnPrevious'),
-        'direction': getattr(W, f'{tier}LearnDirection'),
-        'demand': getattr(W, f'{tier}LearnDemand'),
-        'stocks': getattr(W, f'{tier}LearnStock'),
-        'steps': getattr(W, f'{tier}LearnStep'),
-        'opportunity': getattr(W, f'{tier}LearnOpportunity'),
-        'potentialOpportunity': getattr(W, f'{tier}LearnPotentialOpportunity'),
+        'price': getattr(world, f'{tier}Price'),
+        'ages': getattr(world, f'{tier}LearnTicks'),
+        'profits': getattr(world, f'{tier}LearnProfit'),
+        'sales': getattr(world, f'{tier}LearnSales'),
+        'previous': getattr(world, f'{tier}LearnPrevious'),
+        'direction': getattr(world, f'{tier}LearnDirection'),
+        'demand': getattr(world, f'{tier}LearnDemand'),
+        'stocks': getattr(world, f'{tier}LearnStock'),
+        'steps': getattr(world, f'{tier}LearnStep'),
+        'opportunity': getattr(world, f'{tier}LearnOpportunity'),
+        'potentialOpportunity': getattr(world, f'{tier}LearnPotentialOpportunity'),
     }
 
 
@@ -393,7 +403,7 @@ def learned_quote(view, cfg, index, stock, tick):
             previous_profit=previous[index], direction=direction[index],
             sales=sales[index], stock=stock, demand=demand[index],
             available=sales[index] + stocks[index], step_scale=steps[index],
-            k=cfg['k'], response=cfg['wholesalePriceResponse'])
+            pricing_aggressiveness=cfg['pricingAggressiveness'], response=cfg['wholesalePriceResponse'])
         price[index] = result['price']
         direction[index] = result['direction']
         previous[index] = average
@@ -407,67 +417,67 @@ def learned_quote(view, cfg, index, stock, tick):
     return round_to_cent(min(MAX_UNIT_PRICE, max(MIN_UNIT_PRICE, price[index])))
 
 
-def price_markets(W, cfg, profiles, products, tick):
-    t0_learning = price_learning_view(W, 't0')
-    t1_learning = price_learning_view(W, 't1')
+def price_markets(world, cfg, profiles, products, tick):
+    t0_learning = price_learning_view(world, 't0')
+    t1_learning = price_learning_view(world, 't1')
     for supplier in range(N0):
-        for e in range(NE):
-            index = supplier * NE + e
-            if not math.isfinite(W.t0Price[index]):
+        for element in range(NE):
+            index = supplier * NE + element
+            if not math.isfinite(world.t0Price[index]):
                 continue
-            previous = W.t0Price[index]
-            if W.t0Controller[supplier] and math.isfinite(W.t0PlayerPrice[index]):
-                nxt = round_to_cent(min(MAX_UNIT_PRICE, max(MIN_UNIT_PRICE, W.t0PlayerPrice[index])))
+            previous = world.t0Price[index]
+            if world.t0Controller[supplier] and math.isfinite(world.t0PlayerPrice[index]):
+                nxt = round_to_cent(min(MAX_UNIT_PRICE, max(MIN_UNIT_PRICE, world.t0PlayerPrice[index])))
             else:
-                nxt = learned_quote(t0_learning, cfg, index, W.t0Inv[index], tick)
-            W.t0PrevPrice[index] = previous
-            W.t0Price[index] = nxt
-            stable = 1 - min(1.0, abs(nxt - previous) / max(1e-9, previous)
+                nxt = learned_quote(t0_learning, cfg, index, world.t0Inv[index], tick)
+            world.t0PrevPrice[index] = previous
+            world.t0Price[index] = nxt
+            stable = 1 - min(1.0, max(0.0, nxt - previous) / max(1e-9, previous)
                              / max(1e-9, cfg['switchingStableBand']))
-            W.t0Stability[index] = stable
-            W.t0RelPriceSum[index] += stable
-            W.t0RelPriceSamples[index] += 1
+            world.t0Stability[index] = stable
+            world.t0RelPriceSum[index] += stable
+            world.t0RelPriceSamples[index] += 1
     for company in range(N1):
         for p in range(NP):
             index = company * NP + p
-            if not W.t1Operates[index]:
+            if not world.t1Operates[index]:
                 continue
-            previous = W.t1Price[index]
-            if W.t1Controller[company] and math.isfinite(W.playerPrice[index]):
-                nxt = round_to_cent(min(MAX_UNIT_PRICE, max(MIN_UNIT_PRICE, W.playerPrice[index])))
+            previous = world.t1Price[index]
+            if world.t1Controller[company] and math.isfinite(world.playerPrice[index]):
+                nxt = round_to_cent(min(MAX_UNIT_PRICE, max(MIN_UNIT_PRICE, world.playerPrice[index])))
             else:
-                nxt = learned_quote(t1_learning, cfg, index, W.t1Fin[index], tick)
-            W.t1PrevPrice[index] = previous
-            W.t1Price[index] = nxt
-            stable = 1 - min(1.0, abs(nxt - previous) / max(1e-9, previous)
+                nxt = learned_quote(t1_learning, cfg, index, world.t1Fin[index], tick)
+            world.t1PrevPrice[index] = previous
+            world.t1Price[index] = nxt
+            stable = 1 - min(1.0, max(0.0, nxt - previous) / max(1e-9, previous)
                              / max(1e-9, cfg['switchingStableBand']))
-            W.t1PriceStability[index] = stable
-            W.t1RelPriceSum[index] += stable
-            W.t1RelPriceSamples[index] += 1
+            world.t1PriceStability[index] = stable
+            world.t1RelPriceSum[index] += stable
+            world.t1RelPriceSamples[index] += 1
 
 
 # --------------------------------------------------------------------------
 # Tier 2 helpers
 # --------------------------------------------------------------------------
-def market_offers(W, tier, tick):
+def market_offers(world, tier, tick):
     if tier == 0:
         count = NE
-        price = W.t0Price
+        price = world.t0Price
         total = N0 * NE
     elif tier == 1:
         count = NP
-        price = W.t1Price
+        price = world.t1Price
         total = N1 * NP
     else:
         count = len(M.T2_PRODUCTS)
-        price = W.t2Price
-        total = int(W.t2LineCount)
+        price = world.t2Price
+        total = int(world.t2LineCount)
 
     offers = [[] for _ in range(count)]
     for i in range(total):
-        if not math.isfinite(price[i]) or (tier == 1 and not W.t1Operates[i]):
+        if not math.isfinite(price[i]) or (tier == 1 and not world.t1Operates[i]):
             continue
-        market = int(W.t2LineProduct[i]) if tier == 2 else i % count
+        market = int(world.t2LineProduct[i]) if tier == 2 else i % count
         offers[market].append(i)
 
     for market in offers:
@@ -484,6 +494,7 @@ def market_offers(W, tier, tick):
 
 def choose_supplier(offers, stock, price, preferred, reliability, cfg, minimum=1, known_best=None):
     preferred = int(preferred)
+    unit_cost = cfg['t1MaterialCost'] + cfg['conversionFactor']
     best = -1 if known_best is None else int(known_best)
     if known_best is None:
         for supplier in offers:
@@ -492,7 +503,7 @@ def choose_supplier(offers, stock, price, preferred, reliability, cfg, minimum=1
                 break
     if (preferred >= 0 and stock[preferred] >= minimum and math.isfinite(price[preferred])
             and (best < 0 or price[preferred] <= price[best]
-                 + M.switching_cost(reliability[preferred], cfg['taumin'], cfg['taumax']))):
+                 + M.loyalty_surcharge(unit_cost, reliability[preferred]))):
         return preferred
     if best >= 0:
         return best
@@ -501,77 +512,86 @@ def choose_supplier(offers, stock, price, preferred, reliability, cfg, minimum=1
     empty = offers[0]
     if (preferred >= 0 and preferred in offers
             and price[preferred] <= price[empty]
-            + M.switching_cost(reliability[preferred], cfg['taumin'], cfg['taumax'])):
+            + M.loyalty_surcharge(unit_cost, reliability[preferred])):
         return preferred
     return empty
 
 
-def tier2_inventory_units(W, firm):
+def tier2_inventory_units(world, firm):
     total = 0.0
     for material in range(NP):
         if material < NE:
-            total += W.t2Raw[firm * NE + material]
+            total += world.t2Raw[firm * NE + material]
         else:
-            total += W.t2T1Raw[firm * NP + material]
-    for slot in range(int(W.t2FirmLineCount[firm])):
-        total += W.t2Fin[W.t2FirmLines[firm * M4 + slot]]
+            total += world.t2T1Raw[firm * NP + material]
+    for slot in range(int(world.t2FirmLineCount[firm])):
+        total += world.t2Fin[world.t2FirmLines[firm * M4 + slot]]
     return total
 
 
-def transfer_tier2_input(W, cfg, firm, material, supplier, request):
+def transfer_tier2_input(world, cfg, firm, material, supplier, request):
     is_basic = material < 4
-    stock = W.t1Fin
-    prices = W.t1Price
-    cash = W.t1Cash
+    stock = world.t1Fin
+    prices = world.t1Price
+    cash = world.t1Cash
+    requested = max(0.0, min(math.ceil(request),
+                             math.floor(cfg['storage'] - tier2_inventory_units(world, firm))))
+    preferred = int(world.t2Preferred[firm * NP + material])
+    loyalty_charge = 0.0
+    if supplier != preferred and preferred >= 0 and stock[preferred] >= requested:
+        loyalty_charge = M.loyalty_charge(cfg['t1MaterialCost'] + cfg['conversionFactor'],
+                                        world.t1Rel[preferred], cfg['loyaltyMultiple'][2])
+        if loyalty_charge > world.t2Cash[firm]:
+            supplier = preferred
+            loyalty_charge = 0.0
     supplier_firm = supplier // NP
     quote = prices[supplier]
-    requested = max(0.0, min(math.ceil(request),
-                             math.floor(cfg['storage'] - tier2_inventory_units(W, firm))))
-    funded = math.floor(min(requested, W.t2Cash[firm] / quote))
+    funded = math.floor(min(requested, max(0.0, world.t2Cash[firm] - loyalty_charge) / quote))
     quantity = math.floor(min(funded, stock[supplier]))
-    W.t1Demand[supplier] += funded
+    world.t1Demand[supplier] += funded
     if funded > 0:
-        W.t1Opportunities[material] += 1
-    W.t1RelAttempts[supplier] += 1
-    W.t1RelAvailChecks[supplier] += 1
-    if quantity >= requested:
-        W.t1RelFulfilled[supplier] += 1
+        world.t1Opportunities[material] += 1
+    world.t1RelAttempts[supplier] += 1
+    world.t1RelAvailChecks[supplier] += 1
     if stock[supplier] >= requested:
-        W.t1RelAvailable[supplier] += 1
+        world.t1RelAvailable[supplier] += 1
     if quantity <= 0:
         return 0
     if is_basic:
-        raw = W.t2Raw
-        basis = W.t2RawBasis
+        raw = world.t2Raw
+        basis = world.t2RawBasis
     else:
-        raw = W.t2T1Raw
-        basis = W.t2T1Basis
+        raw = world.t2T1Raw
+        basis = world.t2T1Basis
     index = firm * (NE if is_basic else NP) + material
     old = raw[index]
     payment = quantity * quote
     basis[index] = (basis[index] * old + payment) / (old + quantity)
     raw[index] += quantity
-    W.t2Bought[firm] += quantity
-    W.t2Cash[firm] -= payment
+    world.t2Bought[firm] += quantity
+    world.t2Cash[firm] -= payment
     cash[supplier_firm] += payment
     stock[supplier] -= quantity
-    W.t1Sold[supplier] += quantity
-    W.t1Rev[supplier] += payment
-    W.t1COGS[supplier] += quantity * W.t1FinBasis[supplier]
-    W.t1IntermediateSold[material] += quantity
-    W.t1IntermediateRevenue[material] += payment
-    W.t2Preferred[firm * NP + material] = supplier
+    world.t1Sold[supplier] += quantity
+    world.t1Revenue[supplier] += payment
+    world.t1COGS[supplier] += quantity * world.t1FinBasis[supplier]
+    world.t1IntermediateSold[material] += quantity
+    world.t1IntermediateRevenue[material] += payment
+    if loyalty_charge > 0.0:
+        world.t2Cash[firm] -= loyalty_charge
+        world.t1Cash[preferred // NP] += loyalty_charge
+    world.t2Preferred[firm * NP + material] = supplier
     return quantity
 
 
 # --------------------------------------------------------------------------
 # 7. Tier 2 buy / make / price
 # --------------------------------------------------------------------------
-def tier2_buy_make_price(W, cfg, products, profiles, t2_products, tick):
-    t2_learning = price_learning_view(W, 't2')
-    t1_offers = market_offers(W, 1, tick)
+def operate_tier2(world, cfg, products, profiles, t2_products, tick):
+    t2_learning = price_learning_view(world, 't2')
+    t1_offers = market_offers(world, 1, tick)
     procurement_profiles = [
-        M.procurement_profile(p, cfg, W.t2ReferenceCost[p['id']] or M.reference_tier2_cost(p))
+        M.procurement_profile(p, cfg, world.t2ReferenceCost[p['id']] or M.reference_tier2_cost(p))
         for p in t2_products
     ]
     input_ratios = M.catalogue_input_ratios
@@ -584,35 +604,35 @@ def tier2_buy_make_price(W, cfg, products, profiles, t2_products, tick):
         firm = (order + tick * 137) % cfg['t2FirmCount']
         needs = [0.0] * NP
         plans = [0.0] * M4
-        inventory_room = max(0.0, cfg['storage'] - tier2_inventory_units(W, firm))
+        inventory_room = max(0.0, cfg['storage'] - tier2_inventory_units(world, firm))
 
         for material in range(NP):
             offers = t1_offers[material]
-            while offer_heads[material] < len(offers) and W.t1Fin[offers[offer_heads[material]]] < 1:
+            while offer_heads[material] < len(offers) and world.t1Fin[offers[offer_heads[material]]] < 1:
                 offer_heads[material] += 1
             best = offers[offer_heads[material]] if offer_heads[material] < len(offers) else -1
-            suppliers[material] = choose_supplier(offers, W.t1Fin, W.t1Price,
-                                                  W.t2Preferred[firm * NP + material],
-                                                  W.t1Rel, cfg, 1, best)
+            suppliers[material] = choose_supplier(offers, world.t1Fin, world.t1Price,
+                                                  world.t2Preferred[firm * NP + material],
+                                                  world.t1Rel, cfg, 1, best)
 
-        line_count = int(W.t2FirmLineCount[firm])
+        line_count = int(world.t2FirmLineCount[firm])
         for order2 in range(line_count):
             slot = (order2 + tick) % line_count
-            line = int(W.t2FirmLines[firm * M4 + slot])
-            product = t2_products[int(W.t2LineProduct[line])]
+            line = int(world.t2FirmLines[firm * M4 + slot])
+            product = t2_products[int(world.t2LineProduct[line])]
             c = product['complexity']
             output_qty = product['outputQty']              # count-preserving N→N
             capacity = cfg['t2Capacity'][c]                # per machine per tick
             target = M.inventory_target(c, cfg)            # fill G, finished = G/2
-            desired = math.floor(min(capacity, max(0.0, target - W.t2Fin[line])) / output_qty)
+            desired = math.floor(min(capacity, max(0.0, target - world.t2Fin[line])) / output_qty)
             while desired > 0:
                 missing = 0.0
                 for material in range(NP):
                     ratio = input_ratios[product['id']][material]
                     if material < NE:
-                        held = W.t2Raw[firm * NE + material]
+                        held = world.t2Raw[firm * NE + material]
                     else:
-                        held = W.t2T1Raw[firm * NP + material]
+                        held = world.t2T1Raw[firm * NP + material]
                     missing += max(0.0, needs[material] + desired * ratio - held)
                 if missing <= inventory_room:
                     break
@@ -622,23 +642,23 @@ def tier2_buy_make_price(W, cfg, products, profiles, t2_products, tick):
             for material, ratio in product['ingredients']:
                 basic = material < 4
                 index = firm * (NE if basic else NP) + material
-                raw = W.t2Raw if basic else W.t2T1Raw
-                basis = W.t2RawBasis if basic else W.t2T1Basis
+                raw = world.t2Raw if basic else world.t2T1Raw
+                basis = world.t2RawBasis if basic else world.t2T1Basis
                 offers = t1_offers[material]
                 supplier = suppliers[material] if suppliers[material] >= 0 else (offers[0] if offers else None)
-                quote = W.t1Price[supplier] if supplier is not None else basis[index]
+                quote = world.t1Price[supplier] if supplier is not None else basis[index]
                 current_cost += (ratio / output_qty) * quote
                 stocked = min(desired * ratio, raw[index])
                 if desired > 0:
                     replacement += (stocked * basis[index] + (desired * ratio - stocked) * quote) / (desired * output_qty)
                 else:
                     replacement += (ratio / output_qty) * quote
-            W.t2ReplacementCost[line] = replacement
-            if replacement > W.t2Price[line] + 1e-9:
+            world.t2ReplacementCost[line] = replacement
+            if replacement > world.t2Price[line] + 1e-9:
                 desired = 0
             plans[slot] = desired
-            # Fix B: gate the *purchase* on marginal (current-price) cost; see fast.py.
-            if current_cost > W.t2Price[line] + 1e-9:
+            # Fix B: gate the *purchase* on marginal (current-price) cost; see numba.py.
+            if current_cost > world.t2Price[line] + 1e-9:
                 continue
             for material, ratio in product['ingredients']:
                 needs[material] += desired * ratio
@@ -646,64 +666,64 @@ def tier2_buy_make_price(W, cfg, products, profiles, t2_products, tick):
         for material in range(NP):
             basic = material < 4
             index = firm * (NE if basic else NP) + material
-            raw = W.t2Raw if basic else W.t2T1Raw
+            raw = world.t2Raw if basic else world.t2T1Raw
             need = max(0.0, needs[material] - raw[index])
             if not need:
                 continue
             supplier = suppliers[material]
             if supplier >= 0:
-                transfer_tier2_input(W, cfg, firm, material, supplier, need)
+                transfer_tier2_input(world, cfg, firm, material, supplier, need)
 
         for slot in range(line_count):
-            line = int(W.t2FirmLines[firm * M4 + slot])
-            product = t2_products[int(W.t2LineProduct[line])]
+            line = int(world.t2FirmLines[firm * M4 + slot])
+            product = t2_products[int(world.t2LineProduct[line])]
             output_qty = product['outputQty']
             made = plans[slot]                              # batches
             input_cost = 0.0                                # per batch
             for material, ratio in product['ingredients']:
                 basic = material < 4
                 index = firm * (NE if basic else NP) + material
-                made = min(made, math.floor((W.t2Raw if basic else W.t2T1Raw)[index] / ratio))
-                input_cost += ratio * (W.t2RawBasis if basic else W.t2T1Basis)[index]
+                made = min(made, math.floor((world.t2Raw if basic else world.t2T1Raw)[index] / ratio))
+                input_cost += ratio * (world.t2RawBasis if basic else world.t2T1Basis)[index]
             conv_per_item = M.conversion_cost(c, cfg)
             conversion_cost = conv_per_item * output_qty
-            made = min(made, math.floor(W.t2Cash[firm] / conversion_cost))
+            made = min(made, math.floor(world.t2Cash[firm] / conversion_cost))
             input_cost_per_item = input_cost / output_qty
-            if input_cost_per_item + conv_per_item > W.t2Price[line] + 1e-9:
+            if input_cost_per_item + conv_per_item > world.t2Price[line] + 1e-9:
                 made = 0
             if made > 0:
                 for material, ratio in product['ingredients']:
                     if material < 4:
-                        W.t2Raw[firm * NE + material] -= made * ratio
+                        world.t2Raw[firm * NE + material] -= made * ratio
                     else:
-                        W.t2T1Raw[firm * NP + material] -= made * ratio
+                        world.t2T1Raw[firm * NP + material] -= made * ratio
                 made_items = made * output_qty
-                W.t2Cash[firm] -= made_items * conv_per_item
-                W.costSinks += made_items * conv_per_item
-                old = W.t2Fin[line]
+                world.t2Cash[firm] -= made_items * conv_per_item
+                world.costSinks += made_items * conv_per_item
+                old = world.t2Fin[line]
                 unit = input_cost_per_item + conv_per_item
-                W.t2FinBasis[line] = (old * W.t2FinBasis[line] + unit * made_items) / (old + made_items)
-                W.t2Fin[line] += made_items
-                W.t2UnitCost[line] = unit
-                W.t2Made[line] = made_items
-            previous = W.t2Price[line]
-            if W.t2Controller[firm] and math.isfinite(W.t2PlayerPrice[line]):
-                W.t2Price[line] = round_to_cent(min(MAX_UNIT_PRICE, max(MIN_UNIT_PRICE, W.t2PlayerPrice[line])))
+                world.t2FinBasis[line] = (old * world.t2FinBasis[line] + unit * made_items) / (old + made_items)
+                world.t2Fin[line] += made_items
+                world.t2UnitCost[line] = unit
+                world.t2Made[line] = made_items
+            previous = world.t2Price[line]
+            if world.t2Controller[firm] and math.isfinite(world.t2PlayerPrice[line]):
+                world.t2Price[line] = round_to_cent(min(MAX_UNIT_PRICE, max(MIN_UNIT_PRICE, world.t2PlayerPrice[line])))
             else:
-                W.t2Price[line] = learned_quote(t2_learning, cfg, line, W.t2Fin[line], tick)
-            W.t2RelPriceSum[line] += 1 - min(1.0, abs(W.t2Price[line] - previous)
+                world.t2Price[line] = learned_quote(t2_learning, cfg, line, world.t2Fin[line], tick)
+            world.t2RelPriceSum[line] += 1 - min(1.0, max(0.0, world.t2Price[line] - previous)
                                              / max(1e-9, previous * cfg['switchingStableBand']))
-            W.t2RelPriceSamples[line] += 1
-            W.t2MonthlyCapacity[line] += cfg['t2Capacity'][product['complexity']]
+            world.t2RelPriceSamples[line] += 1
+            world.t2MonthlyCapacity[line] += cfg['t2Capacity'][product['complexity']]
 
 
 # --------------------------------------------------------------------------
 # 8. End-user clearing (atomic retail)
 # --------------------------------------------------------------------------
-def clear_end_users(W, cfg, products, t2_products, tick):
-    offers = market_offers(W, 2, tick)
+def clear_consumers(world, cfg, products, t2_products, tick):
+    offers = market_offers(world, 2, tick)
     procurement_profiles = [
-        M.procurement_profile(p, cfg, W.t2ReferenceCost[p['id']] or M.reference_tier2_cost(p))
+        M.procurement_profile(p, cfg, world.t2ReferenceCost[p['id']] or M.reference_tier2_cost(p))
         for p in t2_products
     ]
     cumulative_offers = []
@@ -711,19 +731,19 @@ def clear_end_users(W, cfg, products, t2_products, tick):
         weights = [0.0] * len(market)
         total = 0.0
         for i, line in enumerate(market):
-            total += 1 / W.t2FirmLineCount[W.t2LineFirm[line]]
+            total += 1 / world.t2FirmLineCount[world.t2LineFirm[line]]
             weights[i] = total
         cumulative_offers.append(weights)
 
-    W.endPotential.fill(0)
-    W.endActive.fill(0)
-    W.endFulfilled.fill(0)
-    W.endPriceLost.fill(0)
-    W.endStockUnmet.fill(0)
-    W.endLastMarket.fill(-1)
-    W.endLastSupplier.fill(-1)
-    W.endLastQ.fill(0)
-    W.endLastFulfilled.fill(0)
+    world.marketPotential.fill(0)
+    world.marketActive.fill(0)
+    world.marketFulfilled.fill(0)
+    world.marketPriceLost.fill(0)
+    world.marketStockUnmet.fill(0)
+    world.consumerLastMarket.fill(-1)
+    world.consumerLastSupplier.fill(-1)
+    world.consumerLastQ.fill(0)
+    world.consumerLastFulfilled.fill(0)
 
     orders = 0
     filled_orders = 0
@@ -732,52 +752,29 @@ def clear_end_users(W, cfg, products, t2_products, tick):
     seed = cfg['seed']
     n_t2 = len(t2_products)
 
-    for buyer in range(cfg['endUserCount']):
-        if random_(seed, tick, buyer + 2000000) >= cfg['consumerActivation']:
-            continue
+    for buyer in range(cfg['consumerCount']):
         activated += 1
-        if random_(seed, tick, buyer + 3000000) < 0.60:
-            slot = 0
-        else:
-            slot = 1 + math.floor(random_(seed, tick, buyer + 3100000) * (W.endBasketCount[buyer] - 1))
-        relationship = buyer * 5 + slot
-        sector = int(W.endBasket[relationship])
-        previous = W.endNeedProduct[relationship]
-        if previous >= NP and random_(seed, tick, buyer + 5100000) < 0.65:
-            market = int(previous)
-        else:
-            base = sector * n_t2
-            count = int(W.t2SectorCount[sector])
-            draw = random_(seed, tick, buyer + 6000000) * W.t2SectorProductWeight[base + count - 1]
-            offset = 0
-            while offset < count - 1 and draw >= W.t2SectorProductWeight[base + offset]:
-                offset += 1
-            market = NP + int(W.t2SectorProducts[sector * n_t2 + offset])
-        W.endNeedProduct[relationship] = market
+        market = int(world.consumerProduct[buyer])
         product = t2_products[market - NP]
         complexity = product['complexity']
         profile = procurement_profiles[product['id']]
-        multiplier = profile['quantityFactor']
-        latent_quantity = W.endQMax[buyer] * multiplier
+        latent_quantity = world.consumerQMax[buyer]
         qmax = math.ceil(latent_quantity)
         rounding = random_(seed, tick, buyer + 7000000)
         potential_quantity = math.floor(latent_quantity) + (1 if rounding < latent_quantity % 1 else 0)
-        W.endLastMarket[buyer] = market
+        world.consumerLastMarket[buyer] = market
         if potential_quantity <= 0:
             continue
-        W.t2PotentialOrders[market - NP] += 1
-        W.endPotential[market] += potential_quantity
+        world.t2PotentialOrders[market - NP] += 1
+        world.marketPotential[market] += potential_quantity
         reference = profile['valuation']
-        premium = 1 + cfg['tier2ReservationPremium'] * (complexity - 1)
-        choke = reference * W.endChoke[buyer] * premium
-        stock = W.t2Fin
-        price = W.t2Price
-        reliability = W.t2Rel
+        premium = 1 + cfg['t2ReservationPremium'] * (complexity - 1)
+        choke = reference * world.consumerChoke[buyer] * premium
+        stock = world.t2Fin
+        price = world.t2Price
+        reliability = world.t2Rel
         market_offers_list = offers[market - NP]
-        if W.endPreferredProduct[relationship] == market:
-            preferred = int(W.endPreferredSupplier[relationship])
-        else:
-            preferred = -1
+        preferred = int(world.consumerPreferredSupplier[buyer])
         candidates = []
         if preferred >= 0 and math.isfinite(price[preferred]):
             candidates.append(preferred)
@@ -797,15 +794,19 @@ def clear_end_users(W, cfg, products, t2_products, tick):
             candidate = market_offers_list[low]
             if candidate not in candidates:
                 candidates.append(candidate)
-        friction = M.switching_cost(reliability[preferred], cfg['taumin'], cfg['taumax']) if preferred >= 0 else 0.0
+        friction = M.loyalty_surcharge(reference, reliability[preferred]) if preferred >= 0 else 0.0
         candidates.sort(key=lambda a: price[a] + (0 if a == preferred else friction))
 
         def demand(quote):
-            continuous = M.demand_at_price(latent_quantity, choke, quote, W.endEta[buyer])
+            continuous = M.demand_at_price(latent_quantity, choke, quote, world.consumerEta[buyer])
             return min(qmax, math.floor(continuous) + (1 if rounding < continuous % 1 else 0))
 
         # Buyer's total desired at the best available price (whole units).
         total_desired = demand(price[candidates[0]]) if candidates else demand(reference)
+        preferred_can_fulfill = preferred >= 0 and stock[preferred] >= total_desired
+        # The relationship only moves when a single seller fills the entire order
+        # (evaluated pre-drain, since the drain depletes stock). A split keeps the incumbent.
+        full_filler = candidates[0] if candidates and stock[candidates[0]] >= total_desired else -1
         remaining = total_desired
         fulfilled = 0
         primary = -1
@@ -816,8 +817,8 @@ def clear_end_users(W, cfg, products, t2_products, tick):
             if requested <= 0:
                 break
             wanted = min(remaining, requested)
-            W.t2Demand[candidate] += wanted
-            W.t2RelAttempts[candidate] += 1
+            world.t2Demand[candidate] += wanted
+            world.t2RelAttempts[candidate] += 1
             # Whole-number sale only; the buyer splits its demand across suppliers,
             # taking floor(stock) whole units from each until satisfied.
             take = min(wanted, int(stock[candidate]))
@@ -828,32 +829,41 @@ def clear_end_users(W, cfg, products, t2_products, tick):
             stock[candidate] -= take
             payment = take * price[candidate]
             consumer_payments += payment
-            W.t2Cash[W.t2LineFirm[candidate]] += payment
-            W.t2LastSaleTick[W.t2LineFirm[candidate]] = tick
-            W.t2Sold[candidate] += take
-            W.t2Revenue[candidate] += payment
-            W.t2COGS[candidate] += take * W.t2FinBasis[candidate]
-            W.t2RelFulfilled[candidate] += 1
-            W.t2RelAvailable[candidate] += 1
+            world.t2Cash[world.t2LineFirm[candidate]] += payment
+            world.t2LastSaleTick[world.t2LineFirm[candidate]] = tick
+            world.t2Sold[candidate] += take
+            world.t2Revenue[candidate] += payment
+            world.t2COGS[candidate] += take * world.t2FinBasis[candidate]
+            world.t2RelAvailable[candidate] += 1
             fulfilled += take
             remaining -= take
-        W.endLastMarket[buyer] = market
-        W.endLastSupplier[buyer] = primary
-        W.endLastQ[buyer] = total_desired
-        W.endActive[market] += total_desired
-        W.endPriceLost[market] += potential_quantity - total_desired
+        world.consumerLastMarket[buyer] = market
+        world.consumerLastSupplier[buyer] = primary
+        world.consumerLastQ[buyer] = total_desired
+        world.marketActive[market] += total_desired
+        world.marketPriceLost[market] += potential_quantity - total_desired
         if total_desired <= 0:
             continue
         orders += 1
-        W.t2Opportunities[market - NP] += 1
+        world.t2Opportunities[market - NP] += 1
         if remaining > 0:
-            W.endStockUnmet[market] += remaining
+            world.marketStockUnmet[market] += remaining
         if fulfilled <= 0:
             continue
-        W.endPreferredProduct[relationship] = market
-        W.endPreferredSupplier[relationship] = primary
-        W.endLastFulfilled[buyer] = fulfilled
-        W.endFulfilled[market] += fulfilled
+        if full_filler >= 0:
+            new_incumbent = full_filler
+        elif preferred >= 0:
+            new_incumbent = preferred
+        else:
+            new_incumbent = primary
+        world.consumerPreferredSupplier[buyer] = new_incumbent
+        world.consumerLastFulfilled[buyer] = fulfilled
+        if primary != preferred and preferred_can_fulfill:
+            charge = M.loyalty_charge(reference, reliability[preferred],
+                                     cfg['loyaltyMultiple'][3])
+            world.t2Cash[world.t2LineFirm[preferred]] += charge
+            consumer_payments += charge
+        world.marketFulfilled[market] += fulfilled
         filled_orders += 1
 
     return {'orders': orders, 'filledOrders': filled_orders, 'activated': activated,
@@ -863,42 +873,38 @@ def clear_end_users(W, cfg, products, t2_products, tick):
 # --------------------------------------------------------------------------
 # 9. Observation, reliability, expansion
 # --------------------------------------------------------------------------
-def update_reliability(W, cfg, tick):
+def update_reliability(world, cfg, tick):
     if tick % MONTH != 0:
         return
     for i in range(N0 * NE):
-        if math.isfinite(W.t0Price[i]):
-            attempts = W.t0RelAttempts[i]
-            checks = W.t0RelChecks[i]
+        if math.isfinite(world.t0Price[i]):
+            attempts = world.t0RelAttempts[i]
+            checks = world.t0RelChecks[i]
             score = M.reliability_score(
-                W.t0RelFulfilled[i] / attempts if attempts else 1,
-                W.t0RelPriceSum[i] / W.t0RelPriceSamples[i] if W.t0RelPriceSamples[i] else 1,
-                W.t0RelAvailable[i] / checks if checks else 1)
-            W.t0Rel[i] = M.next_reliability(W.t0Rel[i], score, cfg['reliabilityAlpha'])
-            W.t0RelAttempts[i] = 0
-            W.t0RelFulfilled[i] = 0
-            W.t0RelChecks[i] = 0
-            W.t0RelAvailable[i] = 0
-            W.t0RelPriceSum[i] = 0
-            W.t0RelPriceSamples[i] = 0
+                world.t0RelPriceSum[i] / world.t0RelPriceSamples[i] if world.t0RelPriceSamples[i] else 1,
+                world.t0RelAvailable[i] / checks if checks else 1)
+            world.t0Rel[i] = M.next_reliability(world.t0Rel[i], score, cfg['reliabilityAlpha'])
+            world.t0RelAttempts[i] = 0
+            world.t0RelChecks[i] = 0
+            world.t0RelAvailable[i] = 0
+            world.t0RelPriceSum[i] = 0
+            world.t0RelPriceSamples[i] = 0
     for i in range(N1 * NP):
-        if W.t1Operates[i]:
-            attempts = W.t1RelAttempts[i]
-            checks = W.t1RelAvailChecks[i]
+        if world.t1Operates[i]:
+            attempts = world.t1RelAttempts[i]
+            checks = world.t1RelAvailChecks[i]
             score = M.reliability_score(
-                W.t1RelFulfilled[i] / attempts if attempts else 1,
-                W.t1RelPriceSum[i] / W.t1RelPriceSamples[i] if W.t1RelPriceSamples[i] else 1,
-                W.t1RelAvailable[i] / checks if checks else 1)
-            W.t1Rel[i] = M.next_reliability(W.t1Rel[i], score, cfg['reliabilityAlpha'])
-            W.t1RelAttempts[i] = 0
-            W.t1RelFulfilled[i] = 0
-            W.t1RelAvailChecks[i] = 0
-            W.t1RelAvailable[i] = 0
-            W.t1RelPriceSum[i] = 0
-            W.t1RelPriceSamples[i] = 0
+                world.t1RelPriceSum[i] / world.t1RelPriceSamples[i] if world.t1RelPriceSamples[i] else 1,
+                world.t1RelAvailable[i] / checks if checks else 1)
+            world.t1Rel[i] = M.next_reliability(world.t1Rel[i], score, cfg['reliabilityAlpha'])
+            world.t1RelAttempts[i] = 0
+            world.t1RelAvailChecks[i] = 0
+            world.t1RelAvailable[i] = 0
+            world.t1RelPriceSum[i] = 0
+            world.t1RelPriceSamples[i] = 0
 
 
-def observe_markets(W, cfg, profiles):
+def observe_markets(world, cfg, profiles):
     if cfg['researchPriceMinimumOpportunities'] > 0:
         opp_weights = {
             't0': [0.0] * NE,
@@ -909,28 +915,28 @@ def observe_markets(W, cfg, profiles):
             for element in profile['elements']:
                 opp_weights['t0'][M.ELEMENTS.index(element)] += 1 / len(profile['elements'])
         for i in range(N1 * NP):
-            if W.t1Operates[i]:
+            if world.t1Operates[i]:
                 opp_weights['t1'][i % NP] += 1
-        for i in range(int(W.t2LineCount)):
-            opp_weights['t2'][int(W.t2LineProduct[i])] += 1 / W.t2FirmLineCount[W.t2LineFirm[i]]
+        for i in range(int(world.t2LineCount)):
+            opp_weights['t2'][int(world.t2LineProduct[i])] += 1 / world.t2FirmLineCount[world.t2LineFirm[i]]
     else:
         opp_weights = None
 
-    for tier, count in (('t0', N0 * NE), ('t1', N1 * NP), ('t2', int(W.t2LineCount))):
-        sales = getattr(W, f'{tier}Sold')
-        demand = getattr(W, f'{tier}Demand')
-        forecast = getattr(W, f'{tier}DemandEMA')
-        actual_sales = getattr(W, f'{tier}SalesEMA')
-        revenue = W.t1Rev if tier == 't1' else getattr(W, f'{tier}Revenue')
-        cogs = getattr(W, f'{tier}COGS')
-        profits = getattr(W, f'{tier}LearnProfit')
-        quantities = getattr(W, f'{tier}LearnSales')
-        ages = getattr(W, f'{tier}LearnTicks')
-        requests = getattr(W, f'{tier}LearnDemand')
-        stocks = getattr(W, f'{tier}LearnStock')
-        held = W.t0Inv if tier == 't0' else (W.t1Fin if tier == 't1' else W.t2Fin)
+    for tier, count in (('t0', N0 * NE), ('t1', N1 * NP), ('t2', int(world.t2LineCount))):
+        sales = getattr(world, f'{tier}Sold')
+        demand = getattr(world, f'{tier}Demand')
+        forecast = getattr(world, f'{tier}DemandEMA')
+        actual_sales = getattr(world, f'{tier}SalesEMA')
+        revenue = world.t1Revenue if tier == 't1' else getattr(world, f'{tier}Revenue')
+        cogs = getattr(world, f'{tier}COGS')
+        profits = getattr(world, f'{tier}LearnProfit')
+        quantities = getattr(world, f'{tier}LearnSales')
+        ages = getattr(world, f'{tier}LearnTicks')
+        requests = getattr(world, f'{tier}LearnDemand')
+        stocks = getattr(world, f'{tier}LearnStock')
+        held = world.t0Inv if tier == 't0' else (world.t1Fin if tier == 't1' else world.t2Fin)
         for i in range(count):
-            if (tier == 't0' and not math.isfinite(W.t0Price[i])) or (tier == 't1' and not W.t1Operates[i]):
+            if (tier == 't0' and not math.isfinite(world.t0Price[i])) or (tier == 't1' and not world.t1Operates[i]):
                 continue
             forecast[i] += cfg['alpha'] * (max(demand[i], sales[i]) - forecast[i])
             actual_sales[i] += cfg['alpha'] * (sales[i] - actual_sales[i])
@@ -943,86 +949,84 @@ def observe_markets(W, cfg, profiles):
                 elif tier == 't1':
                     market = i % NP
                 else:
-                    market = int(W.t2LineProduct[i])
+                    market = int(world.t2LineProduct[i])
                 if tier == 't0':
                     weight = 1 / len(profiles[i // NE]['elements'])
                 elif tier == 't1':
                     weight = 1
                 else:
-                    weight = 1 / W.t2FirmLineCount[W.t2LineFirm[i]]
-                getattr(W, f'{tier}LearnOpportunity')[i] += \
-                    getattr(W, f'{tier}Opportunities')[market] * weight / opp_weights[tier][market]
+                    weight = 1 / world.t2FirmLineCount[world.t2LineFirm[i]]
+                getattr(world, f'{tier}LearnOpportunity')[i] += \
+                    getattr(world, f'{tier}Opportunities')[market] * weight / opp_weights[tier][market]
                 if tier == 't2':
-                    W.t2LearnPotentialOpportunity[i] += W.t2PotentialOrders[market] * weight / opp_weights['t2'][market]
+                    world.t2LearnPotentialOpportunity[i] += world.t2PotentialOrders[market] * weight / opp_weights['t2'][market]
             requests[i] += max(demand[i], sales[i])
             stocks[i] = held[i]
             if tier == 't2':
-                W.t2MonthSold[i] += sales[i]
+                world.t2MonthSold[i] += sales[i]
 
 
-def expand_tier2_bots(W, cfg, t2_products, tick):
+def expand_tier2_bots(world, cfg, t2_products, tick):
     if tick % MONTH != 0:
         return
-    for line in range(int(W.t2LineCount)):
-        attempts = W.t2RelAttempts[line]
+    for line in range(int(world.t2LineCount)):
+        attempts = world.t2RelAttempts[line]
         score = M.reliability_score(
-            W.t2RelFulfilled[line] / attempts if attempts else 1,
-            W.t2RelPriceSum[line] / W.t2RelPriceSamples[line] if W.t2RelPriceSamples[line] else 1,
-            W.t2RelAvailable[line] / attempts if attempts else 1)
-        W.t2Rel[line] = M.next_reliability(W.t2Rel[line], score, cfg['reliabilityAlpha'])
-        W.t2RelAttempts[line] = 0
-        W.t2RelFulfilled[line] = 0
-        W.t2RelAvailable[line] = 0
-        W.t2RelPriceSum[line] = 0
-        W.t2RelPriceSamples[line] = 0
+            world.t2RelPriceSum[line] / world.t2RelPriceSamples[line] if world.t2RelPriceSamples[line] else 1,
+            world.t2RelAvailable[line] / attempts if attempts else 1)
+        world.t2Rel[line] = M.next_reliability(world.t2Rel[line], score, cfg['reliabilityAlpha'])
+        world.t2RelAttempts[line] = 0
+        world.t2RelAvailable[line] = 0
+        world.t2RelPriceSum[line] = 0
+        world.t2RelPriceSamples[line] = 0
     # Canon §7: bots do not expand to multi-machine firms (holding-company
     # acquisition is deferred); firms stay single-machine and grow equity only.
-    W.t2MonthSold.fill(0)
-    W.t2MonthlyCapacity.fill(0)
+    world.t2MonthSold.fill(0)
+    world.t2MonthlyCapacity.fill(0)
 
 
 # --------------------------------------------------------------------------
 # Tick orchestrator
 # --------------------------------------------------------------------------
-def tick(W: WorldState, cfg, tick, products=None, profiles=None, t2_products=None, state=None):
+def tick(world: WorldState, cfg, tick, products=None, profiles=None, t2_products=None, state=None):
     products = products if products is not None else M.PRODUCTS
     profiles = profiles if profiles is not None else T0P
     t2_products = t2_products if t2_products is not None else M.T2_PRODUCTS
     state = state if state is not None else {}
 
-    reset_tick(W)
-    W.costSinks = 0
-    W.equipmentSinks = 0
-    update_environment(W, cfg, tick)
-    produce_tier0(W, cfg, profiles, tick)
+    reset_tick(world)
+    world.costSinks = 0
+    world.equipmentSinks = 0
+    update_environment(world, cfg, tick)
+    operate_tier0(world, cfg, profiles, tick)
 
-    from . import fast as _fast
-    if _fast._HAVE_NUMBA:
-        _fast.plan_and_buy_inputs_fast(W, cfg, tick)
+    from . import numba as _numba
+    if _numba._HAVE_NUMBA:
+        _numba.plan_and_buy_inputs(world, cfg, tick)
     else:
-        plan_and_buy_inputs(W, cfg, products, profiles, tick)
-    manufacture(W, cfg, products)
-    price_markets(W, cfg, profiles, products, tick)
+        plan_and_buy_inputs(world, cfg, products, profiles, tick)
+    operate_tier1(world, cfg, products)
+    price_markets(world, cfg, profiles, products, tick)
 
-    if _fast._HAVE_NUMBA:
-        _fast.tier2_buy_make_price_fast(W, cfg, tick)
-        o, f, a, cp = _fast.clear_end_users_fast(W, cfg, tick)
+    if _numba._HAVE_NUMBA:
+        _numba.operate_tier2(world, cfg, tick)
+        o, f, a, cp = _numba.clear_consumers(world, cfg, tick)
         counts = {'orders': o, 'filledOrders': f, 'activated': a, 'consumerPayments': cp}
     else:
-        tier2_buy_make_price(W, cfg, products, profiles, t2_products, tick)
-        counts = clear_end_users(W, cfg, products, t2_products, tick)
+        operate_tier2(world, cfg, products, profiles, t2_products, tick)
+        counts = clear_consumers(world, cfg, products, t2_products, tick)
 
-    if _fast._HAVE_NUMBA:
-        _fast.observe_markets_fast(W, cfg, profiles)
+    if _numba._HAVE_NUMBA:
+        _numba.observe_markets(world, cfg, profiles)
     else:
-        observe_markets(W, cfg, profiles)
-    update_reliability(W, cfg, tick)
-    expand_tier2_bots(W, cfg, t2_products, tick)
+        observe_markets(world, cfg, profiles)
+    update_reliability(world, cfg, tick)
+    expand_tier2_bots(world, cfg, t2_products, tick)
 
     state['activatedConsumers'] = counts['activated']
     state['consumerPayments'] = counts['consumerPayments']
-    state['costSinks'] = W.costSinks
-    state['equipmentSinks'] = W.equipmentSinks
+    state['costSinks'] = world.costSinks
+    state['equipmentSinks'] = world.equipmentSinks
     state['activeOrders'] = counts['orders']
     state['fulfilledOrders'] = counts['filledOrders']
     return state

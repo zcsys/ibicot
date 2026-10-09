@@ -37,7 +37,7 @@ def runtime() -> KernelRuntime:
     if _runtime is None:
         # Bootstrap with a tiny population so first connect is instant; the UI's
         # `init` message then resets to whatever population its config selects.
-        cfg = json.loads(os.environ.get('ECONOMY_CFG', '{"endUserCount":100,"t2FirmCount":200}'))
+        cfg = json.loads(os.environ.get('ECONOMY_CFG', '{"consumerCount":100,"t2FirmCount":200}'))
         _runtime = KernelRuntime(cfg)
     return _runtime
 
@@ -60,16 +60,16 @@ class CheckpointRequest(BaseModel):
 @app.post('/checkpoint/save')
 def checkpoint_save(req: CheckpointRequest):
     rt = runtime()
-    save_checkpoint(req.path, rt.cfg, rt.tick, rt.W, rt.state)
+    save_checkpoint(req.path, rt.cfg, rt.tick, rt.world, rt.state)
     return {'ok': True, 'path': req.path, 'tick': rt.tick}
 
 
 @app.post('/checkpoint/load')
 def checkpoint_load(req: CheckpointRequest):
     global _runtime
-    cfg, tick, W, scalars = load_checkpoint(req.path)
+    cfg, tick, world, scalars = load_checkpoint(req.path)
     rt = KernelRuntime.__new__(KernelRuntime)
-    rt.cfg, rt.W, rt.tick = cfg, W, tick
+    rt.cfg, rt.world, rt.tick = cfg, world, tick
     rt.month = tick // 30
     rt.running = False
     rt.mode = 'fixed'

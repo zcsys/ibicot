@@ -60,14 +60,14 @@
     sector: $('t2SectorFilter').value, controller: $('t2ControllerFilter').value, sort: $('t2Sort').value, descending: t2Descending });
   const PARAMS = [
     'seed',
-    'dbar', 'theta', 'sigma', 'dmin', 'dmax',
-    't0Equity', 'capacity', 'targetInventory', 'maxInventory', 'baseCost', 'markup',
+    'difficultyTarget', 'theta', 'sigma', 'difficultyMin', 'difficultyMax',
+    't0Equity', 't0Capacity', 't0TargetInventory', 't0MaxInventory', 'baseCost', 't0Markup',
     'minWholesaleLot', 'inventoryCoverageTicks',
     't1Equity', 't1License', 't1Machinery', 't1Capacity', 't1MaterialCost', 't1Markup',
     't2Equity', 't2License', 't2MaterialCost', 'conversionFactor', 'storage',
-    'consumerActivation', 'consumerSearchOffers', 'demandQtyMin', 'demandQtyMax',
-    'vmin', 'vmax', 'elasticity', 'tier2DemandFactor', 'tier2ReservationPremium',
-    'k', 'alpha', 'wholesalePriceResponse', 'priceObservationTicks',
+    'consumerSearchOffers',
+    'chokeMin', 'chokeMax', 'elasticity', 't2ReservationPremium',
+    'pricingAggressiveness', 'alpha', 'wholesalePriceResponse', 'priceObservationTicks',
     'taumin', 'taumax', 'reliabilityAlpha', 'switchingStableBand',
   ];
   for (const [id, value] of Object.entries(M.ECONOMY_DEFAULTS)) if ($(id)) $(id).value = value;

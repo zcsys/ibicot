@@ -47,7 +47,7 @@ Every section below is a consequence of, or a requirement for, that sentence.
    any time.**
 
 6. **Prices settle on their own equilibrium — never on a bound.** The market dynamics
-   (adaptive pricing, bounded sampling, switching friction) must find an *interior*
+   (adaptive pricing, bounded sampling, loyalty charge) must find an *interior*
    price equilibrium: prices must not top out at a ceiling or bottom out at a floor.
    A price pinned at a bound is a misspecification symptom — the cost curve, demand
    curve, or markup is wrong — not a sound steady state. A floor and a ceiling may be
@@ -92,9 +92,10 @@ Every section below is a consequence of, or a requirement for, that sentence.
 - **Tier 2 machinery rises with complexity:** C-3 = **$75K**, C-4 = **$375K**, C-5 =
   **$420K** (Tier 1 flat at $15K). The size gradient lives in Tier 2; higher complexity ⇒
   larger machinery.
-- **Throughput (per machine, per tick):** Tier 1 is flat — C-1 = C-2 = **500**. Tier 2
-  falls with complexity — C-3 = **300**, C-4 = **200**, C-5 = **100**. One machine = one
-  product line = this capacity; there is no separate "line" concept.
+- **Throughput (per machine, per tick):** Tier 0 extraction is **10,000** per firm per tick
+  (extraction, not a machine line). Tier 1 is flat — C-1 = C-2 = **500**. Tier 2 falls with
+  complexity — C-3 = **300**, C-4 = **200**, C-5 = **100**. One machine = one product line =
+  this capacity; there is no separate "line" concept.
 - **Per-line machinery:** each installed product line owns its own **machinery capital**
   and its own **throughput capacity**, both keyed to the product's complexity, and both
   **summed per company**. A firm's size is the sum of its lines. **At start every company
@@ -125,30 +126,26 @@ Every section below is a consequence of, or a requirement for, that sentence.
 Higher complexity ⇒ **lower demand volume**; the unit markup starts flat and is
 discovered by the derivative-following pricer.
 
-- **Valuation (choke price):** `V = 2 × unit cost` (cost from §4) — the price at which
-  demand halves. Each consumer's choke is `V × [0.9, 1.5]` (a per-consumer draw), so the
+- **Valuation (choke price):** `V = unit cost` (cost from §4) — the price at which
+  demand halves. Each consumer's choke is `V × [1.8, 3]` (a per-consumer draw), so the
   choke is a band, not a point. No complexity gradient needed; the rising cost lifts `V`
   automatically.
-- **Latent quantity:** `qmax = baseQty × quantityFactor`, where `baseQty` is the
-  per-consumer draw (1–10) and `quantityFactor` is the **global** `tier2DemandFactor`
-  (1.5). The per-consumer request therefore stays small (whole units), never exceeding
-  a firm's fill-G stock.
-- **Consumer routing ∝ supply:** each product's selection weight in `t2SectorProductWeight`
-  is `firms × capacity` (the **108 : 12 : 1** ratio across C-3 / C-4 / C-5), so *more
-  consumers* are routed to higher-supply products. At any common markup total demand
-  therefore scales with supply and every product clears at the same utilization — while
-  the per-consumer quantity stays small. The complexity gradient lives in *routing*, not
-  in `qmax`.
+- **Latent quantity:** `qmax = 15` (fixed per consumer, `CONSUMER_QMAX`). The
+  per-consumer request therefore stays small (whole units), never exceeding a firm's
+  fill-G stock.
+- **One product per consumer, supply-scaled:** each consumer is assigned exactly one
+  product (`consumerProduct`) for its lifetime, drawn weighted by supply — `firms ×
+  capacity` (the **108 : 12 : 1** ratio across C-3 / C-4 / C-5), so higher-supply
+  products attract more consumers (~**36,000 / 4,000 / 333** per product). No renewals,
+  no sector routing. The per-consumer quantity stays small.
 - **Demand curve:** `q(P) = qmax / (1 + (P/V)^η)`, elasticity `η = 2`.
 - **First-guess markup is flat** (`t1Markup = 0.25` for T0/T1/T2): the complexity
   gradient is entirely in demand volume/routing, not the seed price.
-- **Equilibrium markup** is set by the global `tier2DemandFactor` (default 1.5) — a larger
-  factor is a tighter market ⇒ a higher discovered markup.
+- **Equilibrium markup** is set by the fixed demand level (`qmax = 15`) — a larger
+  quantity is a tighter market ⇒ a higher discovered markup.
 - **Utilization target:** ~50–70%; the demand scale is calibrated to hit it.
 
-The `quantityFactor`-uniform + `routing ∝ supply` shape and the flat first-guess markup
-are canon. The exact `tier2DemandFactor`, the `baseQty` range, and the offer-sampling
-counts are calibration (§12.5).
+The flat first-guess markup is canon. The offer-sampling counts are calibration (§12.5).
 
 ---
 
@@ -233,7 +230,7 @@ Everything in §2–§8 is **canon** (design law). The following are **calibrati
   count-preserving recipes, storage 20,000 — final values
   from calibration;
 - the demand-volume and markup/valuation curves by complexity (the demand side);
-- all prices, activation rates, and offer-sampling counts.
+- all prices and offer-sampling counts.
 
 No parameter is frozen until calibration adopts it.
 
@@ -249,6 +246,10 @@ Tracked, explicitly **not** canon yet:
   presentation/UX layer, decoupled from the economic model.
 - **T1 vs. T2 steady-state size divergence** — game-start sizes are fixed (§6); their
   later divergence is emergent, not prescribed.
+- **New product invention** — the dynamic introduction of new T2 products over time
+  (innovation). The PoC uses a fixed 200-product catalogue; how new products enter the
+  market — and what happens to the supply-scaled consumer assignment, firm lines, and
+  supply when one appears — is deferred, mechanics TBD.
 
 ---
 
@@ -296,7 +297,7 @@ values**; the demand-side *scale* is **calibration** (not frozen).
   One machine = one product line = this capacity.
 - Tier 0 extraction (per firm, per tick): **10,000** capacity; order-up-to inventory
   (target **500,000**, max **1,000,000**, coverage **3** ticks); cost **$1 × difficulty**
-  (`baseCost`, difficulty mean-reverts to `dbar = 1`); whole-lot minimum **1,000**.
+  (`baseCost`, difficulty mean-reverts to `difficultyTarget = 1`); whole-lot minimum **1,000**.
 - Count-preserving recipes: **N inputs → N outputs**.
 - Cost ladder: material flat **$1 (T1) / $1.25 (T2)** per item; conversion
   **$0.25 × max(1, complexity−1)** → C-1/C-2 $0.25, C-3 $0.50, C-4 $0.75, C-5 $1.00.
@@ -308,20 +309,16 @@ values**; the demand-side *scale* is **calibration** (not frozen).
 
 ### 12.3 Demand (structure canon, scale calibration)
 
-- Valuation: `V = 2 × unit cost` (cost from §12.2); each consumer's choke is
-  `V × [0.9, 1.5]` (`vmin`/`vmax`) — a per-consumer band, not a point.
-- Latent quantity: `qmax = baseQty × quantityFactor`, where `baseQty` is the
-  per-consumer draw (1–10, `demandQtyMin`/`demandQtyMax`) and `quantityFactor` is the
-  **global** `tier2DemandFactor` (1.5). The complexity gradient lives in *consumer
-  routing*, not in `qmax`: each product's selection weight is `firms × capacity` (the
-  **108 : 12 : 1** ratio across C-3 / C-4 / C-5).
+- Valuation: `V = unit cost` (cost from §12.2); each consumer's choke is
+  `V × [1.8, 3]` (`chokeMin`/`chokeMax`) — a per-consumer band, not a point.
+- Latent quantity: `qmax = 15` (fixed, `CONSUMER_QMAX`). Each consumer is assigned
+  exactly one product (`consumerProduct`), drawn weighted by supply — `firms ×
+  capacity`, the **108 : 12 : 1** ratio across C-3 / C-4 / C-5.
 - Demand curve: `q(P) = qmax / (1 + (P/V)^η)`, `η = 2`, rounded to whole units and
   capped at `ceil(qmax)`.
-- Activation & search: **10 %** of consumers activate per tick (`consumerActivation`),
-  each sampling **5** offers (`consumerSearchOffers`).
+- Search: each consumer samples **5** offers (`consumerSearchOffers`).
 - First-guess markup: **flat `t1Markup = 0.25` for T0/T1/T2**; the equilibrium
-  markup is discovered by the pricer and set by the global `tier2DemandFactor`
-  (**default 1.5**).
+  markup is discovered by the pricer and set by the fixed demand level (`qmax = 15`).
 - Utilization target ~50–70% (the demand scale is calibrated to hit it).
 
 ### 12.4 Determinism, RNG, tick, runtime
@@ -333,11 +330,14 @@ values**; the demand-side *scale* is **calibration** (not frozen).
 - **9-phase tick** (per tick): reset scratch → environment (difficulty mean-reversion) →
   T0 extraction (order-up-to + proportional apportionment) → T1 input purchase
   (whole-lot) → T1 manufacture → pricing (derivative-following) → T2 buy/make/price →
-  end-user clearing (atomic orders) → observe/reliability (monthly).
+  consumer clearing (atomic orders) → observe/reliability (monthly).
 - **Calendar**: 30 ticks/month, 12 months/year, 20 years/generation, 24 generations/age.
-- **Environment**: extraction difficulty mean-reverts to `dbar = 1` (`theta = 0.15`,
-  `sigma = 0.005`, bounded `[0.7, 1.4]`). Demand/sales EMA `alpha = 0.15`; reliability
-  `reliabilityAlpha = 0.15`.
+- **Environment**: extraction difficulty mean-reverts to `difficultyTarget = 1` (`theta = 0.15`,
+  `sigma = 0.005`, bounded `[0.7, 1.4]`). Demand/sales EMA `alpha = 0.15`.
+- **Reliability** (EMA, `reliabilityAlpha = 0.15`): score =
+  `0.5·price-stability + 0.5·availability`. The price-stability component is
+  **asymmetric — only upward price moves penalize it**; a price drop never reduces
+  reliability.
 - **Commands** (FastAPI/WebSocket): `init`, `reset`, `run`, `pause`, `step`,
   `applyConfig`, `select`, `companyDetail`, `watchCompanies`, `player`,
   `buyEquipment`, `tier2Query`, `buyLicense`, `foundHouse`. Reads are projections;
@@ -346,8 +346,7 @@ values**; the demand-side *scale* is **calibration** (not frozen).
 ### 12.5 Deferred / calibration
 
 - **Deferred (not implemented)**: storage rent, machinery-as-good, financing, advertising.
-- **Calibration (not frozen)**: `tier2DemandFactor` (the demand tightness / equilibrium
-  markup), the `baseQty` range, and offer-sampling counts.
+- **Calibration (not frozen)**: offer-sampling counts.
 
 ### 12.6 Pricing (per tick, derivative-following)
 
@@ -388,35 +387,52 @@ purchase gate transmits the downstream breakeven upstream: an overpricing suppli
 orders and is pulled back to a profitable level.
 
 **Step size** adapts: ×1.2 on continuation, ×0.5 on reversal, clamped to `[0.01, 1]`.
-The price moves multiplicatively: `P ← clamp(P × exp(± k × response × scale))`, where
+The price moves multiplicatively: `P ← clamp(P × exp(± pricingAggressiveness × response × scale))`, where
 `clamp` is the guardrail interval `[MIN_UNIT_PRICE, MAX_UNIT_PRICE]`. After each
 observation the profit/sales/demand/opportunity accumulators and the age counter reset.
 
-**End-user purchase is split across suppliers in whole units** (no fractional fill, no
+**Consumer purchase is split across suppliers in whole units** (no fractional fill, no
 all-or-nothing from one seller): a consumer fills `q(P)` by taking `⌊stock⌋` whole units
-from each sampled seller in price order until satisfied or offers are exhausted. The
-unsatisfied remainder is recorded as `endStockUnmet`.
+from each sampled seller in total-cost order (incumbent first; the loyalty charge below
+applies) until satisfied or offers are exhausted. The unsatisfied remainder is recorded as
+`endStockUnmet`.
 
-**Switching cost and the split.** A consumer's sampled offers are ranked by effective
-price `price + friction`, where `friction = switchingCost(reliability) = taumin +
-(taumax − taumin) × reliability` (5¢–20¢) applies to every seller **except** the
-incumbent (`preferred`, last tick's first-fill supplier). The friction is a ranking bias
-only — it is never subtracted from the payment and never enters `q(P)`:
+**Loyalty charge (real, paid to the incumbent).** A buyer's sampled offers are ranked by the total
+cost of filling its order `q` from each seller alone. Staying with the incumbent
+(`preferred`) costs `P_inc × q`; sourcing from a
+challenger costs `P_chal × q + loyaltyCharge`, where
 
-- the incumbent is drained first (up to its whole-unit stock), so a buyer does not
-  switch for a price difference smaller than `friction`;
-- the residual spills to the next-effective-cheapest seller, and so on;
-- the buyer pays each seller its raw price (a blended rate when the fill spans sellers);
-- `total_desired` is computed at the top-ranked seller's raw price, so stickiness slightly
-  understates demand by anchoring it to the (possibly higher) incumbent price;
-- `endPreferredSupplier` for the next tick is the first seller that actually sold ≥ 1
-  whole unit, so the relationship follows whoever served the buyer first in the split.
+`loyaltyCharge = M_tier × unit_cost × (1 + reliability_inc)`.
+
+`unit_cost` is the product's canonical cost-ladder unit cost (§4/§12.2) — a *fixed*
+reference, independent of the current market price, so a price drop does not shrink the
+barrier — and `reliability_inc` is the incumbent's reliability (0–1), so the
+`(1 + reliability)` factor makes sourcing away from a reliable supplier cost up to 2× more. `M_tier` is a tier-specific multiple — **500** for the T1 wholesale
+raw buyer, **125** for T2 intermediate buyers, and **0.5** for T3 consumers. The charge is **fixed per disloyal purchase** (independent of order size, so
+a 1-unit order cannot dodge it) and is **paid to the incumbent**: deducted from the buyer's cash and credited to the incumbent — a
+transfer, not a sink.
+
+The buyer sources from a challenger only when `P_chal × q + loyaltyCharge < P_inc × q`, i.e. a challenger
+must undercut the incumbent by more than `loyaltyCharge / q` per unit. The winner fills the
+whole order in whole units; a split across suppliers is a fallback only when the winner
+cannot fill `q` (and the charge is then incurred once, on the first non-incumbent unit).
+**Stock-out exception:** the charge applies only to a *discretionary* purchase — if the
+incumbent cannot fulfill the order (stock below `q`), the buyer sources from a challenger for free, no
+charge.
+
+**The relationship is sticky.** `endPreferredSupplier` (next tick's incumbent) changes **only
+when a single seller filled the entire `q`**. If the demand was split across sellers, the
+relationship stays with the old incumbent — even if a challenger sold the first unit and the
+loyalty charge was paid. To take the customer, a challenger must therefore be a full
+substitute: cheap enough to win the ranking *and* stocked enough to fill 100%.
 
 **Player/admin override.** A player-controlled firm quotes the set price, clamped to the
 same guardrails, and its adaptive state is reset, so the price takes effect on the next
 tick. Uniform across T0, T1 and T2.
 
-**Parameters.** `k` (0.35, aggressiveness), `wholesalePriceResponse` (0.05, base step
+**Parameters.** `pricingAggressiveness` (0.35), `wholesalePriceResponse` (0.05, base step
 fraction), `priceObservationTicks` (30, cadence), `researchPriceMinimumOpportunities`
-(0, minimum traffic before repricing; 0 = repriced at cadence). `switchingStableBand`
-(0.025) drives the price-stability *metric*, not the price itself.
+(0, minimum traffic before repricing; 0 = repriced at cadence). `loyaltyMultiple`
+(tier-specific: T1 **500**, T2 **125**, T3 **0.5**, × `unit_cost` × `(1 + reliability)` —
+the loyalty charge). `switchingStableBand` (0.025) drives the
+price-stability *metric*, not the price itself.
