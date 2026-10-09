@@ -176,6 +176,8 @@ if _HAVE_NUMBA:
             if stock <= 0:
                 return price, next_direction, step_scale
             next_direction = -1
+        elif demand > available + 1e-9:
+            next_direction = 1
         elif math.isfinite(previous_profit) and previous_profit > 0:
             change = (profit - previous_profit) / previous_profit
             if change < -0.02:
@@ -184,8 +186,6 @@ if _HAVE_NUMBA:
                 pass
             else:
                 return price, next_direction, step_scale
-        elif demand > available + 1e-9:
-            next_direction = 1
         kc = pricing_aggressiveness
         if kc > 1.0:
             kc = 1.0
@@ -207,7 +207,7 @@ if _HAVE_NUMBA:
 
     @_njit
     def _learned_quote(view_tier, price, ages, profits, sales, previous, direction, demand,
-                       stocks, steps, opportunity, potential_opportunity, index, stock,
+                       steps, opportunity, potential_opportunity, index, stock,
                        tick, price_observation_ticks, research_price_min_potential,
                        research_price_max_obs, research_price_min_opp, pricing_aggressiveness, response):
         if ages[index] < price_observation_ticks or (tick + index) % price_observation_ticks != 0:
@@ -221,7 +221,7 @@ if _HAVE_NUMBA:
             average = profits[index] / ages[index]
             nxt, d, s = _adaptive_price(price[index], average, previous[index],
                                         direction[index], sales[index], stock, demand[index],
-                                        sales[index] + stocks[index], steps[index], pricing_aggressiveness, response)
+                                        sales[index], steps[index], pricing_aggressiveness, response)
             price[index] = nxt
             direction[index] = d
             previous[index] = average
@@ -306,7 +306,7 @@ if _HAVE_NUMBA:
         t2_made, t2_demand_ema, t2_sold, t2_revenue, t2_cogs, t2_bought,
         t2_rel_price_sum, t2_rel_price_samples, t2_monthly_capacity,
         t2_learn_ticks, t2_learn_profit, t2_learn_sales, t2_learn_previous,
-        t2_learn_direction, t2_learn_demand, t2_learn_stock, t2_learn_step,
+        t2_learn_direction, t2_learn_demand, t2_learn_step,
         t2_learn_opportunity, t2_learn_potential_opportunity,
         t1_offers_flat, t1_offers_off, valuation, t2_capacity, t2_output, t2_target,
         t2_mat_spend, t2_mat_orders, loyalty_switches, loyalty_penalties):
@@ -544,7 +544,7 @@ if _HAVE_NUMBA:
                 else:
                     nxt = _learned_quote(2, t2_price, t2_learn_ticks, t2_learn_profit,
                                          t2_learn_sales, t2_learn_previous, t2_learn_direction,
-                                         t2_learn_demand, t2_learn_stock, t2_learn_step,
+                                         t2_learn_demand, t2_learn_step,
                                          t2_learn_opportunity, t2_learn_potential_opportunity,
                                          line, t2_fin[line], tick, price_observation_ticks,
                                          research_price_min_potential, research_price_max_obs,
@@ -716,11 +716,11 @@ if _HAVE_NUMBA:
     @_njit
     def _observe_markets_nb(alpha, t2_line_count,
                             t0_price, t0_demand, t0_sales, t0_demand_ema, t0_sales_ema, t0_revenue, t0_cogs,
-                            t0_learn_profit, t0_learn_sales, t0_learn_ticks, t0_learn_demand, t0_learn_stock, t0_inv,
+                            t0_learn_profit, t0_learn_sales, t0_learn_ticks, t0_learn_demand,
                             t1_operates, t1_demand, t1_sales, t1_demand_ema, t1_sales_ema, t1_rev, t1_cogs,
-                            t1_learn_profit, t1_learn_sales, t1_learn_ticks, t1_learn_demand, t1_learn_stock, t1_fin,
+                            t1_learn_profit, t1_learn_sales, t1_learn_ticks, t1_learn_demand,
                             t2_demand, t2_sales, t2_demand_ema, t2_sales_ema, t2_revenue, t2_cogs,
-                            t2_learn_profit, t2_learn_sales, t2_learn_ticks, t2_learn_demand, t2_learn_stock, t2_fin,
+                            t2_learn_profit, t2_learn_sales, t2_learn_ticks, t2_learn_demand,
                             t2_month_sold):
         for i in range(80):
             if not math.isfinite(t0_price[i]):
@@ -732,7 +732,6 @@ if _HAVE_NUMBA:
             t0_learn_sales[i] += t0_sales[i]
             t0_learn_ticks[i] += 1
             t0_learn_demand[i] += mx
-            t0_learn_stock[i] = t0_inv[i]
         for i in range(10000):
             if not t1_operates[i]:
                 continue
@@ -743,7 +742,6 @@ if _HAVE_NUMBA:
             t1_learn_sales[i] += t1_sales[i]
             t1_learn_ticks[i] += 1
             t1_learn_demand[i] += mx
-            t1_learn_stock[i] = t1_fin[i]
         for i in range(t2_line_count):
             mx = t2_demand[i] if t2_demand[i] > t2_sales[i] else t2_sales[i]
             t2_demand_ema[i] += alpha * (mx - t2_demand_ema[i])
@@ -752,7 +750,6 @@ if _HAVE_NUMBA:
             t2_learn_sales[i] += t2_sales[i]
             t2_learn_ticks[i] += 1
             t2_learn_demand[i] += mx
-            t2_learn_stock[i] = t2_fin[i]
             t2_month_sold[i] += t2_sales[i]
 
     @_njit
@@ -956,11 +953,11 @@ def observe_markets(world, cfg, profiles):
     _observe_markets_nb(
         float(cfg['alpha']), int(world.t2LineCount),
         world.t0Price, world.t0Demand, world.t0Sold, world.t0DemandEMA, world.t0SalesEMA, world.t0Revenue, world.t0COGS,
-        world.t0LearnProfit, world.t0LearnSales, world.t0LearnTicks, world.t0LearnDemand, world.t0LearnStock, world.t0Inv,
+        world.t0LearnProfit, world.t0LearnSales, world.t0LearnTicks, world.t0LearnDemand,
         world.t1Operates, world.t1Demand, world.t1Sold, world.t1DemandEMA, world.t1SalesEMA, world.t1Revenue, world.t1COGS,
-        world.t1LearnProfit, world.t1LearnSales, world.t1LearnTicks, world.t1LearnDemand, world.t1LearnStock, world.t1Fin,
+        world.t1LearnProfit, world.t1LearnSales, world.t1LearnTicks, world.t1LearnDemand,
         world.t2Demand, world.t2Sold, world.t2DemandEMA, world.t2SalesEMA, world.t2Revenue, world.t2COGS,
-        world.t2LearnProfit, world.t2LearnSales, world.t2LearnTicks, world.t2LearnDemand, world.t2LearnStock, world.t2Fin,
+        world.t2LearnProfit, world.t2LearnSales, world.t2LearnTicks, world.t2LearnDemand,
         world.t2MonthSold)
 
 
@@ -1001,7 +998,7 @@ def operate_tier2(world, cfg, tick):
         world.t2Made, world.t2DemandEMA, world.t2Sold, world.t2Revenue, world.t2COGS, world.t2Bought,
         world.t2RelPriceSum, world.t2RelPriceSamples, world.t2MonthlyCapacity,
         world.t2LearnTicks, world.t2LearnProfit, world.t2LearnSales, world.t2LearnPrevious,
-        world.t2LearnDirection, world.t2LearnDemand, world.t2LearnStock, world.t2LearnStep,
+        world.t2LearnDirection, world.t2LearnDemand, world.t2LearnStep,
         world.t2LearnOpportunity, world.t2LearnPotentialOpportunity,
         flat, off, val, t2_cap, T2_OUTPUT, t2_target,
         world.t2MatSpend, world.t2MatOrders, world.loyaltySwitches, world.loyaltyPenalties)

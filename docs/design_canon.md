@@ -390,11 +390,13 @@ the last observation.** A firm that is *not selling* is never "scarce" — scarc
 only meaningful once the firm is actually transacting:
 1. **No sales** → if stock remains, lower; if no stock, hold. (This prevents phantom
    scarcity — e.g. an input-starved firm — from ratcheting the price up.)
-2. **Profit baseline available** (a prior observation's realized profit exists) → pure
+2. **Scarce** (unmet demand: `demand > sales`) → raise, *regardless of the profit baseline*,
+   so a lively downstream market is transmitted upstream (the incumbent supplier's 5M
+   inventory buffer no longer hides demand pressure).
+3. **Profit baseline available** (a prior observation's realized profit exists) → pure
    derivative-following with a **2 % dead band**: reverse when profit fell ≥ 2 %, continue
    when it rose ≥ 2 %, and **hold inside the band** — flat profit is the profit-maximum,
    so the walk stops there instead of overshooting the flat peak and drifting past it.
-3. **No profit baseline yet** → probe: raise if scarce (demand > sales + stock), else hold.
 
 **Production & purchase gates (the quantity side of discovery).** A producer manufactures
 only while it can cover the *realized* cost of its current stock —

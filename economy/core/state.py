@@ -87,7 +87,6 @@ def _learn(prefix, n):
         (f'{prefix}LearnTicks', 'u32', n),
         (f'{prefix}LearnPrevious', 'f64', n),
         (f'{prefix}LearnDemand', 'f64', n),
-        (f'{prefix}LearnStock', 'f64', n),
         (f'{prefix}LearnStep', 'f64', n),
         (f'{prefix}LearnDirection', 'i8', n),
         (f'{prefix}Demand', 'f64', n),

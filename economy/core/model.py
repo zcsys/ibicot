@@ -312,15 +312,18 @@ def adaptive_price(old_price, profit, previous_profit, direction=1,
     price = round_to_cent(min(MAX_UNIT_PRICE, max(floor, old_price)))
     next_direction = -1 if direction < 0 else 1
     # Derivative-following pricing (canon §12.6): a firm that is not selling
-    # lowers (if it has stock); otherwise it follows the sign of the realised
-    # profit change and *holds* once profit flattens at the optimum. The dead
-    # band stops the fixed-step walk from overshooting the flat profit peak and
-    # drifting away from it. Scarcity is used only as a probe before any profit
-    # baseline exists.
+    # lowers (if it has stock); unmet demand (demand > supplied) raises; otherwise
+    # it follows the sign of the realised profit change and *holds* once profit
+    # flattens at the optimum. The dead band stops the fixed-step walk from
+    # overshooting the flat profit peak and drifting away from it.
     if sales <= 0:
         if stock <= 0:
             return {'price': price, 'direction': next_direction, 'stepScale': step_scale}
         next_direction = -1
+    elif demand > available + 1e-9:
+        # Scarce: unmet demand (demand exceeds what we supplied) → raise, even once
+        # a profit baseline exists, so upstream tiers capture a lively market.
+        next_direction = 1
     elif math.isfinite(previous_profit) and previous_profit > 0:
         change = (profit - previous_profit) / previous_profit
         if change < -0.02:
@@ -329,8 +332,6 @@ def adaptive_price(old_price, profit, previous_profit, direction=1,
             pass
         else:
             return {'price': price, 'direction': next_direction, 'stepScale': step_scale}
-    elif demand > available + 1e-9:
-        next_direction = 1
     scale = clamp(step_scale * (1.0 if next_direction != direction else 1.2), 0.01, 1.0)
     nxt = round_to_cent(min(MAX_UNIT_PRICE, max(floor, price * math.exp(next_direction * clamp(pricing_aggressiveness, 0.0, 1.0) * response * scale))))
     if nxt == price and next_direction < 0:

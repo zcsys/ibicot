@@ -377,7 +377,6 @@ def price_learning_view(world, tier):
         'previous': getattr(world, f'{tier}LearnPrevious'),
         'direction': getattr(world, f'{tier}LearnDirection'),
         'demand': getattr(world, f'{tier}LearnDemand'),
-        'stocks': getattr(world, f'{tier}LearnStock'),
         'steps': getattr(world, f'{tier}LearnStep'),
         'opportunity': getattr(world, f'{tier}LearnOpportunity'),
         'potentialOpportunity': getattr(world, f'{tier}LearnPotentialOpportunity'),
@@ -394,7 +393,6 @@ def learned_quote(view, cfg, index, stock, tick):
     previous = view['previous']
     direction = view['direction']
     demand = view['demand']
-    stocks = view['stocks']
     steps = view['steps']
     if view['tier'] == 't2' and cfg['researchPriceMinimumPotentialOrders'] > 0:
         stale_evidence = view['potentialOpportunity'][index] >= cfg['researchPriceMinimumPotentialOrders']
@@ -409,7 +407,7 @@ def learned_quote(view, cfg, index, stock, tick):
             old_price=price[index], profit=average,
             previous_profit=previous[index], direction=direction[index],
             sales=sales[index], stock=stock, demand=demand[index],
-            available=sales[index] + stocks[index], step_scale=steps[index],
+            available=sales[index], step_scale=steps[index],
             pricing_aggressiveness=cfg['pricingAggressiveness'], response=cfg['wholesalePriceResponse'])
         price[index] = result['price']
         direction[index] = result['direction']
@@ -1028,8 +1026,6 @@ def observe_markets(world, cfg, profiles):
         quantities = getattr(world, f'{tier}LearnSales')
         ages = getattr(world, f'{tier}LearnTicks')
         requests = getattr(world, f'{tier}LearnDemand')
-        stocks = getattr(world, f'{tier}LearnStock')
-        held = world.t0Inv if tier == 't0' else (world.t1Fin if tier == 't1' else world.t2Fin)
         for i in range(count):
             if (tier == 't0' and not math.isfinite(world.t0Price[i])) or (tier == 't1' and not world.t1Operates[i]):
                 continue
@@ -1056,7 +1052,6 @@ def observe_markets(world, cfg, profiles):
                 if tier == 't2':
                     world.t2LearnPotentialOpportunity[i] += world.t2PotentialOrders[market] * weight / opp_weights['t2'][market]
             requests[i] += max(demand[i], sales[i])
-            stocks[i] = held[i]
             if tier == 't2':
                 world.t2MonthSold[i] += sales[i]
 
