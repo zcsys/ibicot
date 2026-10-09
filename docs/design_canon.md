@@ -128,10 +128,11 @@ Every section below is a consequence of, or a requirement for, that sentence.
 Higher complexity ⇒ **lower demand volume**; the unit markup starts flat and is
 discovered by the derivative-following pricer.
 
-- **Valuation (choke price):** `V = unit cost` (cost from §4) — the price at which
-  demand halves. Each consumer's choke is `V × [1.8, 3]` (a per-consumer draw), so the
-  choke is a band, not a point. No complexity gradient needed; the rising cost lifts `V`
-  automatically.
+- **Valuation (choke price):** `V = unit cost × (1 + t2ReservationPremium × (complexity − 1))`
+  (cost from §4) — the price at which demand halves. Each consumer's choke is
+  `V × [1.8, 3]` (a per-consumer draw), so the choke is a band, not a point.
+  `t2ReservationPremium = 0.25` gives more complex goods a higher reservation value
+  (C-3 ×1.5, C-4 ×1.75, C-5 ×2.0), so they clear at higher prices.
 - **Latent quantity:** `qmax = 20` (fixed per consumer, `CONSUMER_QMAX`). The
   per-consumer request therefore stays small (whole units), never exceeding a firm's
   fill-G stock.
@@ -316,8 +317,10 @@ values**; the demand-side *scale* is **calibration** (not frozen).
 
 ### 12.3 Demand (structure canon, scale calibration)
 
-- Valuation: `V = unit cost` (cost from §12.2); each consumer's choke is
-  `V × [1.8, 3]` (`chokeMin`/`chokeMax`) — a per-consumer band, not a point.
+- Valuation: `V = unit cost × (1 + t2ReservationPremium × (complexity − 1))`
+  (cost from §12.2); each consumer's choke is `V × [1.8, 3]`
+  (`chokeMin`/`chokeMax`) — a per-consumer band, not a point. `t2ReservationPremium = 0.25`
+  adds the complexity gradient (C-3 ×1.5, C-4 ×1.75, C-5 ×2.0).
 - Latent quantity: `qmax = 20` (fixed, `CONSUMER_QMAX`). Each consumer is assigned
   exactly one product (`consumerProduct`), drawn weighted by supply — `firms ×
   capacity`, the **108 : 12 : 1** ratio across C-3 / C-4 / C-5.
