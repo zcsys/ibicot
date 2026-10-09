@@ -321,6 +321,8 @@ if _HAVE_NUMBA:
                 needs[m] = 0.0
             for s in range(M4):
                 plans[s] = 0.0
+            firm_pid = int(t2_line_product[t2_firm_lines[firm * M4]])
+            firm_cx = int(T2_COMPLEXITY[firm_pid]) - 3
 
             inv_units = 0.0
             for m in range(NP):
@@ -448,7 +450,7 @@ if _HAVE_NUMBA:
                     pref = int(t2_preferred[firm * NP + material])
                     loyalty_charge = 0.0
                     if supplier != pref and pref >= 0 and t1_fin[pref] >= requested:
-                        loyalty_charge = _loyalty_charge(t1_unit_cost, t1_rel[pref], loyalty_multiple_t2)
+                        loyalty_charge = _loyalty_charge(t1_unit_cost, t1_rel[pref], loyalty_multiple_t2[firm_cx])
                         if loyalty_charge > t2_cash[firm]:
                             supplier = pref
                             loyalty_charge = 0.0
@@ -974,7 +976,7 @@ def operate_tier2(world, cfg, tick):
     cs = _operate_tier2_nb(
         cfg['seed'], tick, cfg['t2FirmCount'], float(cfg['storage']),
         t2_conv, float(cfg['switchingStableBand']),
-        t1_unit_cost, float(cfg['loyaltyMultiple'][2]), cfg['priceObservationTicks'],
+        t1_unit_cost, np.array([cfg['loyaltyMultiple'][2][3], cfg['loyaltyMultiple'][2][4], cfg['loyaltyMultiple'][2][5]], dtype=np.float64), cfg['priceObservationTicks'],
         cfg['researchPriceMinimumPotentialOrders'], cfg['researchPriceMaxObservationTicks'],
         cfg['researchPriceMinimumOpportunities'], float(cfg['pricingAggressiveness']), float(cfg['wholesalePriceResponse']),
         float(cfg['productionMarginBand']),

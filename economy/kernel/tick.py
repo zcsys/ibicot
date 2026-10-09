@@ -615,8 +615,10 @@ def transfer_tier2_input(world, cfg, firm, material, supplier, request):
     preferred = int(world.t2Preferred[firm * NP + material])
     loyalty_charge = 0.0
     if supplier != preferred and preferred >= 0 and stock[preferred] >= requested:
+        firm_pid = int(world.t2LineProduct[int(world.t2FirmLines[firm * M4])])
+        firm_cx = M.T2_PRODUCTS[firm_pid]['complexity']
         loyalty_charge = M.loyalty_charge(cfg['t1MaterialCost'] + cfg['conversionFactor'],
-                                        world.t1Rel[preferred], cfg['loyaltyMultiple'][2])
+                                        world.t1Rel[preferred], cfg['loyaltyMultiple'][2][firm_cx])
         if loyalty_charge > world.t2Cash[firm]:
             supplier = preferred
             loyalty_charge = 0.0

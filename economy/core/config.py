@@ -71,7 +71,7 @@ def default_cfg() -> dict:
         'switchingStableBand': 0.025,
         'wholesalePriceResponse': 0.05,
         'priceObservationTicks': 30,
-        'loyaltyMultiple': {1: 500.0, 2: 125.0, 3: 0.5},
+        'loyaltyMultiple': {1: 83.33, 2: {3: 1.21, 4: 0.65, 5: 0.26}, 3: 0.97},
 
         # Research pricing (off by default)
         'researchPriceMinimumOpportunities': 0,
@@ -158,7 +158,22 @@ def normalize_config(c) -> dict:
     d['alpha'] = M.clamp(d['alpha'], 0, 1)
     d['reliabilityAlpha'] = M.clamp(d['reliabilityAlpha'], 0, 1)
     d['switchingStableBand'] = max(1e-9, d['switchingStableBand'])
-    _clamp_mapping(d, 'loyaltyMultiple', 0)
+    # loyaltyMultiple: {1: scalar (C-1/C-2 raw buyer), 2: {3,4,5: scalar}, 3: scalar}
+    _lm = d['loyaltyMultiple']
+    if not isinstance(_lm, dict):
+        _lm = dict(default_cfg()['loyaltyMultiple'])
+    for _k in (1, 3):
+        _v = float(_lm.get(_k, default_cfg()['loyaltyMultiple'][_k]))
+        _lm[_k] = max(0.0, _v) if math.isfinite(_v) else float(default_cfg()['loyaltyMultiple'][_k])
+    _sub = _lm.get(2)
+    if not isinstance(_sub, dict):
+        _sub = dict(default_cfg()['loyaltyMultiple'][2])
+    _out2 = {}
+    for _c in (3, 4, 5):
+        _v = float(_sub.get(_c, default_cfg()['loyaltyMultiple'][2][_c]))
+        _out2[int(_c)] = max(0.0, _v) if math.isfinite(_v) else float(default_cfg()['loyaltyMultiple'][2][_c])
+    _lm[2] = _out2
+    d['loyaltyMultiple'] = _lm
     d['priceObservationTicks'] = max(1, min(360, math.floor(d['priceObservationTicks'])))
     wpr = d['wholesalePriceResponse']
     wpr = float(wpr) if math.isfinite(wpr) else 0.05

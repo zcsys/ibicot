@@ -422,8 +422,10 @@ challenger costs `P_chal × q + loyaltyCharge`, where
 `unit_cost` is the product's canonical cost-ladder unit cost (§4/§12.2) — a *fixed*
 reference, independent of the current market price, so a price drop does not shrink the
 barrier — and `reliability_inc` is the incumbent's reliability (0–1), so the
-`(1 + reliability)` factor makes sourcing away from a reliable supplier cost up to 2× more. `M_tier` is a tier-specific multiple — **500** for the T1 wholesale
-raw buyer, **125** for T2 intermediate buyers, and **0.5** for T3 consumers. The charge is **fixed per disloyal purchase** (independent of order size, so
+`(1 + reliability)` factor makes sourcing away from a reliable supplier cost up to 2× more. `M` is a **per-complexity** multiple, sized so the charge equals ~10 % of a typical
+order: **83.33** for the T1 raw buyer (C-1/C-2, equal), **{3: 1.21, 4: 0.65, 5: 0.26}**
+for T2 intermediate buyers by the buying firm's complexity, and **0.97** for T3 consumers.
+The charge is **fixed per disloyal purchase** (independent of order size, so
 a 1-unit order cannot dodge it) and is **paid to the incumbent**: deducted from the buyer's cash and credited to the incumbent — a
 transfer, not a sink.
 
@@ -448,6 +450,6 @@ tick. Uniform across T0, T1 and T2.
 **Parameters.** `pricingAggressiveness` (0.35), `wholesalePriceResponse` (0.05, base step
 fraction), `priceObservationTicks` (30, cadence), `researchPriceMinimumOpportunities`
 (0, minimum traffic before repricing; 0 = repriced at cadence). `loyaltyMultiple`
-(tier-specific: T1 **500**, T2 **125**, T3 **0.5**, × `unit_cost` × `(1 + reliability)` —
-the loyalty charge). `switchingStableBand` (0.025) drives the
+(per-complexity: C-1/C-2 **83.33**, C-3 **1.21**, C-4 **0.65**, C-5 **0.26**, T3 **0.97**,
+× `unit_cost` × `(1 + reliability)` — the loyalty charge). `switchingStableBand` (0.025) drives the
 price-stability *metric*, not the price itself.
