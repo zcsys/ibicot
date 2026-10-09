@@ -296,7 +296,7 @@ if _HAVE_NUMBA:
     def _operate_tier2_nb(
         seed, tick, t2_firm_count, storage,
         t2_conversion, switching_stable_band, t1_unit_cost, loyalty_multiple_t2, price_observation_ticks,
-        research_price_min_potential, research_price_max_obs, research_price_min_opp, pricing_aggressiveness, response, elasticity,
+        research_price_min_potential, research_price_max_obs, research_price_min_opp, pricing_aggressiveness, response, margin_band,
         t1_fin, t1_price, t1_rel, t1_cash, t1_sold, t1_rev, t1_cogs, t1_fin_basis,
         t1_intermediate_sold, t1_intermediate_revenue, t1_demand, t1_rel_attempts,
         t1_rel_avail_checks, t1_rel_available, t1_opportunities,
@@ -406,7 +406,7 @@ if _HAVE_NUMBA:
                 # Elastic input demand (no hard freeze): throttle by the
                 # marginal-cost/price ratio — reversed T3 curve: 0 at/above break-even, full at zero cost.
                 r = current_cost / max(t2_price[line], 1e-9)
-                desired = desired * max(0.0, 1.0 - r ** elasticity)
+                desired = math.floor(desired * min(1.0, max(0.0, (1.0 - r) / margin_band)) + 0.5)
                 plans[slot] = desired
                 for gi in range(T2_ING_OFF[pid], T2_ING_OFF[pid + 1]):
                     material = T2_ING_M[gi]
@@ -803,7 +803,7 @@ if _HAVE_NUMBA:
     @_njit
     def _plan_and_buy_inputs_nb(
         seed, tick, min_lot, base_cost, t1_capacity, t1_conversion,
-        storage, loyalty_multiple_t1, elasticity,
+        storage, loyalty_multiple_t1, margin_band,
         t0_price, t0_inv, t0_inv_basis, t0_rel, t0_cash, t0_req, t0_funded_req,
         t0_opportunities, t0_demand, t0_rel_attempts, t0_rel_checks,
         t0_rel_available, t0_sold, t0_revenue, t0_cogs, t0_ful, difficulty,
@@ -859,7 +859,7 @@ if _HAVE_NUMBA:
                     # Elastic input demand (no hard freeze): throttle by the
                     # marginal-cost/price ratio — reversed T3 curve: 0 at/above break-even, full at zero cost.
                     r = current_cost / max(t1_price[product_base + p], 1e-9)
-                    desired = desired * max(0.0, 1.0 - r ** elasticity)
+                    desired = math.floor(desired * min(1.0, max(0.0, (1.0 - r) / margin_band)) + 0.5)
                     for element in range(NE):
                         ratio = t1_input_ratio[p, element]
                         if ratio == 0.0:
@@ -957,7 +957,7 @@ def plan_and_buy_inputs(world, cfg, tick):
     _plan_and_buy_inputs_nb(
         cfg['seed'], tick, cfg['minWholesaleLot'],
         cfg['baseCost'], cfg['t1Capacity'], t1_conv,
-        float(cfg['storage']), float(cfg['loyaltyMultiple'][1]), float(cfg['elasticity']),
+        float(cfg['storage']), float(cfg['loyaltyMultiple'][1]), float(cfg['productionMarginBand']),
         world.t0Price, world.t0Inv, world.t0InvBasis, world.t0Rel, world.t0Cash, world.t0Req, world.t0FundedReq,
         world.t0Opportunities, world.t0Demand, world.t0RelAttempts, world.t0RelChecks,
         world.t0RelAvailable, world.t0Sold, world.t0Revenue, world.t0COGS, world.t0Fulfilled, world.difficulty,
@@ -977,7 +977,7 @@ def operate_tier2(world, cfg, tick):
         t1_unit_cost, float(cfg['loyaltyMultiple'][2]), cfg['priceObservationTicks'],
         cfg['researchPriceMinimumPotentialOrders'], cfg['researchPriceMaxObservationTicks'],
         cfg['researchPriceMinimumOpportunities'], float(cfg['pricingAggressiveness']), float(cfg['wholesalePriceResponse']),
-        float(cfg['elasticity']),
+        float(cfg['productionMarginBand']),
         world.t1Fin, world.t1Price, world.t1Rel, world.t1Cash, world.t1Sold, world.t1Revenue, world.t1COGS, world.t1FinBasis,
         world.t1IntermediateSold, world.t1IntermediateRevenue, world.t1Demand, world.t1RelAttempts,
         world.t1RelAvailChecks, world.t1RelAvailable, world.t1Opportunities,

@@ -242,7 +242,7 @@ def plan_and_buy_inputs(world, cfg, products, profiles, tick):
                 # Elastic input demand (no hard freeze): throttle the buy/produce
                 # quantity by the marginal-cost/price ratio — reversed T3 curve: 0 at/above break-even, full at zero cost.
                 r = current_cost / max(world.t1Price[product_base + p], 1e-9)
-                desired = desired * max(0.0, 1.0 - r ** cfg['elasticity'])
+                desired = math.floor(desired * min(1.0, max(0.0, (1.0 - r) / cfg['productionMarginBand'])) + 0.5)
                 for element_name, ratio in product['inputs'].items():
                     element = M.ELEMENTS.index(element_name)
                     need = max(0.0, desired * ratio / output_qty - world.raw[raw_base + element])
@@ -735,7 +735,7 @@ def operate_tier2(world, cfg, products, profiles, t2_products, tick):
             # Elastic input demand (no hard freeze): throttle the buy/produce
             # quantity by the marginal-cost/price ratio — reversed T3 curve: 0 at/above break-even, full at zero cost.
             r = current_cost / max(world.t2Price[line], 1e-9)
-            desired = desired * max(0.0, 1.0 - r ** cfg['elasticity'])
+            desired = math.floor(desired * min(1.0, max(0.0, (1.0 - r) / cfg['productionMarginBand'])) + 0.5)
             plans[slot] = desired
             for material, ratio in product['ingredients']:
                 needs[material] += desired * ratio

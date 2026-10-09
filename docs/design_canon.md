@@ -389,17 +389,17 @@ only meaningful once the firm is actually transacting:
 only while it can cover the *realized* cost of its current stock —
 `if input_cost_per_item + conversion > price`, output is 0 ("don't produce below cost").
 
-A T1/T2 buyer throttles its input purchase with an **elastic input-demand curve** — the
-reversed analogue of the T3 consumer curve — instead of a hard buy/no-buy gate. The
-purchase quantity is scaled by
+A T1/T2 buyer throttles its input purchase with a **margin-ramp demand curve** instead of
+a hard buy/no-buy gate. The purchase quantity is scaled by
 
-`factor = max(0, 1 − (current_cost / price)^η)`,
+`factor = clamp( (1 − current_cost / price) / productionMarginBand , 0, 1 )`,
 
-where `current_cost = conversion + Σ (recipe ratio ÷ output) × current supplier price` and
-`η` is the shared elasticity (`elasticity = 2`). So **cost ≥ price → 0** (no production at or
-above break-even), and as cost falls below price the quantity rises smoothly toward full —
-there is no binary freeze. The demand ceiling still transmits the downstream breakeven
-upstream: an overpricing supplier loses orders and is pulled back to a profitable level.
+where `current_cost = conversion + Σ (recipe ratio ÷ output) × current supplier price`,
+`1 − current_cost/price` is the realized gross margin, and `productionMarginBand = 0.05`.
+So production stays **full while margin ≥ 5 %**, tapers linearly to **0 at break-even**
+(cost = price), and is 0 for any loss — a late cutoff, not an early throttle. The ceiling
+still transmits the downstream breakeven upstream: an overpricing supplier loses orders and
+is pulled back to a profitable level.
 
 **Step size** adapts: ×1.2 on continuation, ×0.5 on reversal, clamped to `[0.01, 1]`.
 The price moves multiplicatively: `P ← clamp(P × exp(± pricingAggressiveness × response × scale))`, where

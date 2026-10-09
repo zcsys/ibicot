@@ -60,7 +60,8 @@ def default_cfg() -> dict:
         'consumerActivation': 0.1,       # fraction of buyers that activate each tick
         'chokeMin': 1.8,
         'chokeMax': 3.0,
-        'elasticity': 2.0,              # eta = 2
+        'elasticity': 2.0,              # eta = 2 (T3 consumer demand)
+        'productionMarginBand': 0.05,   # gross-margin fraction below which producer output tapers to 0 at break-even
         't2ReservationPremium': 0.0,
 
         # Market / pricing / reliability
@@ -149,6 +150,7 @@ def normalize_config(c) -> dict:
     d['chokeMin'] = max(0.01, d['chokeMin'])
     d['chokeMax'] = max(d['chokeMin'], d['chokeMax'])
     d['elasticity'] = max(0.05, min(10, d['elasticity']))
+    d['productionMarginBand'] = M.clamp(d['productionMarginBand'], 0.001, 1.0)
     d['t2ReservationPremium'] = max(0, d['t2ReservationPremium'])
 
     # Market

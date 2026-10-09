@@ -76,7 +76,7 @@ for the full rationale). The demand-side *scale* is calibration, not frozen.
 | **Demand valuation** | `V = unit cost`; choke = `V × [1.8, 3.0]`; elasticity `η = 2` |
 | **Latent demand** | `qmax = 15` fixed per consumer |
 | **Markup** | flat 0.25 first-guess everywhere; the equilibrium markup is discovered by the pricer |
-| **Input demand** | elastic (reversed T3 curve): `q = need × max(0, 1 − (cost/price)^η)`; 0 at/above break-even |
+| **Input demand** | margin ramp: `q = need × clamp((1 − cost/price) / 0.05, 0, 1)`; full ≥ 5 % margin, 0 at/above break-even |
 | **Loyalty / M** | switching charge `M × unit_cost × (1 + reliability)`: T1 = 500, T2 = 125, T3 = 0.5 |
 | **Reliability** | `0.5 × price-stability + 0.5 × availability`, EMA `α = 0.15`, monthly |
 
