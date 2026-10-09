@@ -191,7 +191,7 @@ if _HAVE_NUMBA:
             kc = 1.0
         if kc < 0.0:
             kc = 0.0
-        scale = step_scale * (0.5 if next_direction != direction else 1.2)
+        scale = step_scale * (1.0 if next_direction != direction else 1.2)
         if scale < 0.01:
             scale = 0.01
         elif scale > 1.0:

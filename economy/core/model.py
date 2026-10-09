@@ -231,7 +231,7 @@ def adaptive_price(old_price, profit, previous_profit, direction=1,
             return {'price': price, 'direction': next_direction, 'stepScale': step_scale}
     elif demand > available + 1e-9:
         next_direction = 1
-    scale = clamp(step_scale * (0.5 if next_direction != direction else 1.2), 0.01, 1.0)
+    scale = clamp(step_scale * (1.0 if next_direction != direction else 1.2), 0.01, 1.0)
     nxt = round_to_cent(min(MAX_UNIT_PRICE, max(floor, price * math.exp(next_direction * clamp(pricing_aggressiveness, 0.0, 1.0) * response * scale))))
     if nxt == price and next_direction < 0:
         next_direction = 1
