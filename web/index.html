@@ -1471,10 +1471,61 @@
                 </table>
               </div>
             </details>
-            <details class="industry-details">
+            <details class="industry-details" id="t2ComplexityDetails">
               <summary>
                 Complexity bands · market activity and demand
               </summary>
+              <div class="table-toolbar">
+                <label for="t2ComplexityBand">Complexity charts</label>
+                <select id="t2ComplexityBand">
+                  <option value="">All Tier 2 complexity bands</option>
+                  <option value="3">Complexity 3 · C-3</option>
+                  <option value="4">Complexity 4 · C-4</option>
+                  <option value="5">Complexity 5 · C-5</option>
+                </select>
+                <label for="t2ComplexityMetric">Band comparison</label>
+                <select id="t2ComplexityMetric">
+                  <option value="revenue">Revenue · $ / tick</option>
+                  <option value="grossProfit">Gross profit · $ / tick</option>
+                  <option value="sold">Sales · units / tick</option>
+                  <option value="active">Desired procurement demand · units / tick</option>
+                  <option value="utilization">Production utilization</option>
+                  <option value="fillRate">Customer fulfillment</option>
+                </select>
+              </div>
+              <p class="analytics-note">
+                Complexity counts raw-element ancestry: C-3 combines three ancestral elements, C-4 combines four and C-5 combines five. Each step up is served by fewer, larger firms, so market activity and demand are read per band rather than per product. Charts retain the latest 0xF0 reported ticks; utilization is production divided by installed capacity and fulfillment is fulfilled procurement demand divided by desired procurement demand. Band selection applies to the three trend charts; the comparison covers all three bands.
+              </p>
+              <div class="analytics-grid">
+                <div>
+                  <span class="chart-caption">Production, sales & desired procurement demand · units / tick</span>
+                  <div class="chart">
+                    <canvas id="tier2ComplexityActivityChart" role="img" aria-label="Complexity band production, sales and desired procurement demand trend">
+                    </canvas>
+                  </div>
+                </div>
+                <div>
+                  <span class="chart-caption">Revenue, cost of goods sold & gross profit · $ / tick</span>
+                  <div class="chart">
+                    <canvas id="tier2ComplexityFinanceChart" role="img" aria-label="Complexity band revenue, cost of goods sold and gross profit trend">
+                    </canvas>
+                  </div>
+                </div>
+                <div>
+                  <span class="chart-caption">Capacity utilization & procurement fulfillment · %</span>
+                  <div class="chart">
+                    <canvas id="tier2ComplexityOperationsChart" role="img" aria-label="Complexity band utilization and procurement fulfillment trend">
+                    </canvas>
+                  </div>
+                </div>
+                <div>
+                  <span class="chart-caption" id="t2ComplexityComparisonCaption">Band revenue · $ / tick</span>
+                  <div class="chart tall">
+                    <canvas id="tier2ComplexityComparisonChart" role="img" aria-label="Tier 2 complexity band market activity and demand comparison">
+                    </canvas>
+                  </div>
+                </div>
+              </div>
               <div class="table-wrap industry-table">
                 <table class="mini-table">
                   <thead>

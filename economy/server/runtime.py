@@ -1211,6 +1211,12 @@ class KernelRuntime:
                                                 'revenue': x['revenue'], 'cogs': x['cogs'],
                                                 'grossProfit': x['grossProfit'], 'utilization': x['utilization'],
                                                 'fillRate': x['fillRate']} for x in t2Industries]
+        analytics['latest']['t2Complexity'] = [{'name': x['name'], 'complexity': x['complexity'],
+                                                'made': x['made'], 'sold': x['sold'],
+                                                'active': x['active'], 'fulfilled': x['fulfilled'],
+                                                'revenue': x['revenue'], 'cogs': x['cogs'],
+                                                'grossProfit': x['grossProfit'], 'utilization': x['utilization'],
+                                                'fillRate': x['fillRate']} for x in t2Complexity]
         analytics['latest'].update({'t2GrossProfit': t2Totals['grossProfit'], 't2Capacity': t2Totals['capacity'],
                                     't2Utilization': t2Totals['utilization'], 't2Desired': t2Totals['active'],
                                     't2Fulfilled': t2Totals['fulfilled'], 't2FillRate': t2Totals['fillRate']})

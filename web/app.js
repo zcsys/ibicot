@@ -110,7 +110,8 @@
     t1Page = 0,
     companyPageSize = 50,
     selectedTier = 'T1',
-    selectedCompanyId = 0;
+    selectedCompanyId = 0,
+    complexityHistory = [];
   function populatePlayerCompany() {
     const tier = $('playerTier').value;
     const sel = $('playerCompany');
@@ -630,6 +631,36 @@
     cv.title = items.map(item => item.name + ': ' + (ratio ? pct(item[key]) : money ? fmtMoney(item[key], moneyDigits) : fmtInt(item[key]))).join('\n');
   }
   const meaningfulRatio = (numerator, denominator) => denominator > 0 ? numerator / denominator : NaN;
+  // Complexity bands share the Tier 2 history record when the running kernel
+  // reports it; otherwise the dashboard accumulates its own band history from
+  // the snapshots it receives (history then starts when the page is opened).
+  function updateComplexityHistory(s) {
+    const reported = (s.analyticsHistory || []).filter(
+      (point) => Array.isArray(point.t2Complexity) && point.t2Complexity.length,
+    );
+    if (reported.length) {
+      complexityHistory = reported.map((point) => ({
+        tick: point.tick,
+        bands: point.t2Complexity,
+        totals: { made: point.t2Made, sold: point.t2Sold, active: point.t2Desired,
+          fulfilled: point.t2Fulfilled, revenue: point.t2Revenue, cogs: point.t2COGS,
+          grossProfit: point.t2GrossProfit, utilization: point.t2Utilization,
+          fillRate: point.t2FillRate },
+      }));
+      return;
+    }
+    const bands = s.tier2Complexity;
+    if (!bands || !bands.length) return;
+    const t2 = s.tiers.t2;
+    const point = { tick: s.tick, bands,
+      totals: { made: t2.made, sold: t2.sold, active: t2.desired, fulfilled: t2.fulfilled,
+        revenue: t2.revenue, cogs: t2.cogs, grossProfit: t2.grossProfit,
+        utilization: t2.utilization, fillRate: t2.fillRate } };
+    if (complexityHistory.length && complexityHistory[complexityHistory.length - 1].tick === s.tick)
+      complexityHistory[complexityHistory.length - 1] = point;
+    else complexityHistory.push(point);
+    if (complexityHistory.length > 240) complexityHistory.shift();
+  }
   function renderDashboard(s) {
     const t0 = s.tiers.t0, t1 = s.tiers.t1, t2 = s.tiers.t2, consumers = s.tiers.endUsers;
     const money = { economyCash: t0.cash + t1.cash + t2.cash, economyEquity: t0.equity + t1.equity + t2.equity,
@@ -846,6 +877,22 @@
     $('t2ComparisonCaption').textContent = 'Sector ' + $('t2SectorMetric').selectedOptions[0].textContent.toLowerCase();
     drawComparison('tier2SectorChart',s.tier2Industries.map(row => ({ ...row, fillRate: meaningfulRatio(row.fulfilled,row.active) })),comparison,
       ['revenue','grossProfit'].includes(comparison),['utilization','fillRate'].includes(comparison));
+    updateComplexityHistory(s);
+    const complexityValue = $('t2ComplexityBand').value, complexityBand = complexityValue === '' ? null : +complexityValue;
+    const complexitySeries = complexityHistory.map((point) => {
+      const source = complexityBand === null ? point.totals :
+        point.bands.find((band) => band.complexity === complexityBand) || {};
+      return { tick: point.tick, made: source.made, sold: source.sold, active: source.active,
+        fulfilled: source.fulfilled, revenue: source.revenue, cogs: source.cogs,
+        grossProfit: source.grossProfit, utilization: source.utilization, fillRate: source.fillRate };
+    });
+    drawLine('tier2ComplexityActivityChart',complexitySeries,['made','sold','active'].map(key=>complexitySeries.map(x=>x[key])),['Made','Sold','Desired'],0);
+    drawLine('tier2ComplexityFinanceChart',complexitySeries,['revenue','cogs','grossProfit'].map(key=>complexitySeries.map(x=>x[key])),['Revenue','COGS','Gross profit'],0,true);
+    drawLine('tier2ComplexityOperationsChart',complexitySeries,[complexitySeries.map(x=>x.utilization),complexitySeries.map(x=>meaningfulRatio(x.fulfilled,x.active))],['Utilization','Fulfillment'],0,false,true);
+    const complexityMetric = $('t2ComplexityMetric').value;
+    $('t2ComplexityComparisonCaption').textContent = 'Band ' + $('t2ComplexityMetric').selectedOptions[0].textContent.toLowerCase();
+    drawComparison('tier2ComplexityComparisonChart',(s.tier2Complexity || []).map(row => ({ ...row, fillRate: meaningfulRatio(row.fulfilled,row.active) })),complexityMetric,
+      ['revenue','grossProfit'].includes(complexityMetric),['utilization','fillRate'].includes(complexityMetric));
     const p = s.performance;
     $('perf').textContent = p.lastTickMs.toFixed(1)+' ms / tick · '+(p.stateBytes/1048576).toFixed(1)+' MB state · '+fmtInt(p.activatedConsumers)+' active external buyers';
   }
@@ -864,6 +911,9 @@
   $('t2SectorFilter').innerHTML += M.T2_SECTORS.map((s)=>`<option>${s}</option>`).join('');
   $('t2IndustrySector').innerHTML += M.T2_SECTORS.map((s)=>`<option>${s}</option>`).join('');
   for (const id of ['t2IndustrySector','t2SectorMetric']) $(id).addEventListener('change',()=>{if(latestSnapshot)renderTier2(latestSnapshot);});
+  for (const id of ['t2ComplexityBand','t2ComplexityMetric']) $(id).addEventListener('change',()=>{if(latestSnapshot)renderTier2(latestSnapshot);});
+  // A closed <details> gives its canvases zero size, so redraw when it opens.
+  $('t2ComplexityDetails').addEventListener('toggle',()=>{if(latestSnapshot)renderTier2(latestSnapshot);});
   let analyticsResizeFrame;
   const dashboardHeader = document.querySelector('header'), dashboardNav = document.querySelector('.dashboard-nav');
   const navigationResize = new ResizeObserver(() => {
