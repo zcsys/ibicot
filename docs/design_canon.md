@@ -117,6 +117,12 @@ Every section below is a consequence of, or a requirement for, that sentence.
   Extraction is **profit-gated like T1/T2 manufacture**: no extraction while
   `cost > price` (hard gate), tapering to zero as the extraction margin
   `(price − cost)/price` falls below 5 % (`productionMarginBand`).
+- **Tier 0 extraction quantity:** per element, `made = min(deficit, capacity, headroom,
+  ⌊cash ÷ cost⌋)`, where `deficit = target − inventory` (the element's even share of the
+  fill-to-brim 500,000 pool) and `headroom = storage − total inventory` (free space). When
+  the firm's capacity or cash cannot cover every element's deficit, the budget is
+  **apportioned across elements proportionally to their deficits**, so no single element
+  starves the others.
 - **Per-line machinery:** each installed product line owns its own **machinery capital**
   and its own **throughput capacity**, both keyed to the product's complexity, and both
   **summed per company**. A firm's size is the sum of its lines. **At start every company
@@ -135,6 +141,11 @@ Every section below is a consequence of, or a requirement for, that sentence.
 - **Desired inventory = fill `G`:** the whole allocation is paid for, so empty space is
   pure waste. Companies fill the goods space to the brim (bounded by cash and capacity),
   rather than merely covering demand.
+- **Manufacture quantity (T1/T2):** `desired = min(capacity, G − finished)`, rounded down to
+  whole batches (`⌊desired ÷ output_qty⌋`), then capped by (a) the raw/materials on hand
+  (`⌊stock ÷ recipe ratio⌋` per input) and (b) cash for conversion
+  (`⌊cash ÷ (conversion × output_qty)⌋`). The economic gates (margin ramp, break-even) are
+  in §12.2.
 - **Balanced pipeline:** recipes preserve item count (N inputs → N outputs), so the raw
   to finished split within `G` is always **1 : 1** — `finished = raw = G/2`.
 - **Cost ladder (count-preserving):** material cost is flat per unit — $1.25 (T1), $1.875
@@ -174,7 +185,10 @@ discovered by the derivative-following pricer.
   quantity is a tighter market ⇒ a higher discovered markup.
 
 The flat first-guess markup is canon. Each consumer samples offers — currently **5**
-(`consumerSearchOffers`); the sampling count is calibration, not frozen.
+(`consumerSearchOffers`); the sampling count is calibration, not frozen. Purchase is
+**marginal-value** (§12.2): the consumer walks its sampled sellers in total-cost order and
+buys `want = q_at − bought` whole units at each, so the quantity is pinned to the marginal
+seller's price.
 
 ---
 
@@ -305,7 +319,9 @@ in §3–§10 above and are not repeated here.
 - **Reliability** (EMA, `reliabilityAlpha = 0.15`): score =
   `0.5·price-stability + 0.5·availability`. The price-stability component is
   **asymmetric — only upward price moves penalize it**; a price drop never reduces
-  reliability.
+  reliability. The availability component is `RelAvailable ÷ RelChecks` and **defaults to
+  1.0** when there are no checks (`RelChecks == 0`), so a firm never asked for stock looks
+  perfectly available.
 - **Commands** (FastAPI/WebSocket): `init`, `reset`, `run`, `pause`, `step`,
   `applyConfig`, `select`, `companyDetail`, `watchCompanies`, `player`,
   `buyEquipment`, `tier2Query`, `buyLicense`, `foundHouse`. Reads are projections;
@@ -340,7 +356,10 @@ to offer). Otherwise, in order:
    sales-weighted average price. Above `going_rate × (1 + marketAnchorBand)` → lower
    (expensive → contest); below `going_rate × (1 − marketAnchorBand)` → raise (cheap →
    capture value). `marketAnchorBand = 0.02`. This lets a small, expensive seller drift
-   down to the going rate without a symmetric race to the bottom.
+   down to the going rate without a symmetric race to the bottom. The going rate is
+   `Σ(sales_i × price_i) / Σ(sales_i)` over the sellers of that good (element / material /
+   product), falling back to the simple average of their finite prices when a market has
+   no sales in the window.
 4. **Profit baseline available** (a prior observation's realized profit exists) → pure
    derivative-following with a **2 % dead band**: reverse when profit fell ≥ 2 %, continue
    when it rose ≥ 2 %, and **hold inside the band** — flat profit is the profit-maximum,
