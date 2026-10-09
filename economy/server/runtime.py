@@ -1078,7 +1078,7 @@ class KernelRuntime:
                                    'stockUnmet': float(world.marketStockUnmet[NP + p['id']]),
                                    'fillRate': float(world.marketFulfilled[NP + p['id']] / world.marketActive[NP + p['id']]) if world.marketActive[NP + p['id']] else 0.0})
         lc = int(world.t2LineCount)
-        t2_cap = np.array([p['capacity'] for p in M.T2_PRODUCTS], dtype=np.float64)
+        t2_cap = np.array([cfg['t2Capacity'][p['complexity']] for p in M.T2_PRODUCTS], dtype=np.float64)
         if lc:
             pid = world.t2LineProduct[:lc].astype(np.int64)
             sold = world.t2Sold[:lc]

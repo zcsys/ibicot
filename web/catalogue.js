@@ -581,7 +581,7 @@ const recipes = [
   // ---- build the catalogue from the recipe list ----
   const EQUIPMENT_CLASS = Object.freeze({ 3: 'Component Fabricator', 4: 'Assembly Fabricator', 5: 'Systems Fabricator' });
   const EQUIPMENT_PRICE = Object.freeze({ 3: 75000, 4: 375000, 5: 420000 });
-  const T2_CAPACITY = Object.freeze({ 3: 300, 4: 200, 5: 100 });
+  const T2_CAPACITY = Object.freeze({ 3: 30, 4: 20, 5: 10 });
   const T2_CONVERSION_COST = Object.freeze({ 3: 0.5, 4: 0.75, 5: 1.0 });
   const T2_CONSUMER_VALUE = Object.freeze({ 3: 3.5, 4: 4.0, 5: 4.5 });
   const INVENTED_PER_COMPLEXITY = Object.freeze({ 3: 2, 4: 6, 5: 12 });
