@@ -140,8 +140,8 @@ discovered by the derivative-following pricer.
   capacity` (the **108 : 12 : 1** ratio across C-3 / C-4 / C-5), so higher-supply
   products attract more consumers (~**36,000 / 4,000 / 333** per product). No renewals,
   no sector routing. The per-consumer quantity stays small.
-- **Activation:** each tick only a fraction `consumerActivation = 0.1` of the 1,000,000
-  consumers activate (a fresh random draw per buyer per tick), so ~100,000 buy per tick —
+- **Activation:** each tick only a fraction `consumerActivation = 0.2` of the 1,000,000
+  consumers activate (a fresh random draw per buyer per tick), so ~200,000 buy per tick —
   matching the supply scale and keeping service fair (no buyer is permanently starved).
 - **Demand curve:** `q(P) = qmax / (1 + (P/V)^η)`, elasticity `η = 2`.
 - **First-guess markup is flat** (`t1Markup = 0.25` for T0/T1/T2): the complexity
@@ -321,8 +321,8 @@ values**; the demand-side *scale* is **calibration** (not frozen).
 - Latent quantity: `qmax = 20` (fixed, `CONSUMER_QMAX`). Each consumer is assigned
   exactly one product (`consumerProduct`), drawn weighted by supply — `firms ×
   capacity`, the **108 : 12 : 1** ratio across C-3 / C-4 / C-5.
-- Activation: each tick a consumer activates with probability `consumerActivation = 0.1`
-  (a fresh random draw per buyer per tick), so ~100,000 of the 1,000,000 buy per tick.
+- Activation: each tick a consumer activates with probability `consumerActivation = 0.2`
+  (a fresh random draw per buyer per tick), so ~200,000 of the 1,000,000 buy per tick.
 - Demand curve: `q(P) = qmax / (1 + (P/V)^η)`, `η = 2`, rounded to whole units and
   capped at `ceil(qmax)`.
 - Search: each consumer samples **5** offers (`consumerSearchOffers`).

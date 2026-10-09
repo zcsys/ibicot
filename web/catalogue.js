@@ -123,7 +123,7 @@
     storage: 20000,
     footprint: Object.freeze({ 1: 1000, 2: 1000, 3: 3000, 4: 4000, 5: 5000 }),
     consumerSearchOffers: 5,
-    consumerActivation: .1,
+    consumerActivation: .2,
     chokeMin: 1.8, chokeMax: 3, elasticity: 2,
     productionMarginBand: .05,
     t2ReservationPremium: 0,

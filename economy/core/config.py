@@ -57,7 +57,7 @@ def default_cfg() -> dict:
 
         # Demand / consumers
         'consumerSearchOffers': 5,
-        'consumerActivation': 0.1,       # fraction of buyers that activate each tick
+        'consumerActivation': 0.2,       # fraction of buyers that activate each tick
         'chokeMin': 1.8,
         'chokeMax': 3.0,
         'elasticity': 2.0,              # eta = 2 (T3 consumer demand)
