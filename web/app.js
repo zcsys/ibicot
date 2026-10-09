@@ -15,7 +15,7 @@
   const LOADING_MESSAGES = [
     'Establishing uplink…',
     'Calibrating colony markets…',
-    'Waking 1,000,000 consumers…',
+    'Waking 1,000,000 distributors…',
     'Spinning up 60,000 manufacturers…',
     'Aligning supply chains…',
     'Synchronizing sector indexes…',
@@ -665,38 +665,38 @@
     if (complexityHistory.length > 240) complexityHistory.shift();
   }
   function renderDashboard(s) {
-    const t0 = s.tiers.t0, t1 = s.tiers.t1, t2 = s.tiers.t2, consumers = s.tiers.endUsers;
+    const t0 = s.tiers.t0, t1 = s.tiers.t1, t2 = s.tiers.t2, distributors = s.tiers.endUsers;
     const money = { economyCash: t0.cash + t1.cash + t2.cash, economyEquity: t0.equity + t1.equity + t2.equity,
-      economySpending: consumers.revenue, t0Cash: t0.cash, t0Equity: t0.equity, t0Revenue: t0.revenue,
+      economySpending: distributors.revenue, t0Cash: t0.cash, t0Equity: t0.equity, t0Revenue: t0.revenue,
       t0COGS: t0.cogs, t0GrossProfit: t0.grossProfit,
       t1Cash: t1.cash, t1Equity: t1.equity, t1Revenue: t1.revenue, t1COGS: t1.cogs, t1GP: t1.grossProfit,
-      retailRevenue: consumers.revenue };
+      retailRevenue: distributors.revenue };
     for (const [id, value] of Object.entries(money)) $(id).textContent = fmtMoney(value, 0);
-    const integers = { economyInventory: t0.inventory + t1.inventory + t2.inventory, economyPurchases: consumers.fulfilled,
+    const integers = { economyInventory: t0.inventory + t1.inventory + t2.inventory, economyPurchases: distributors.fulfilled,
       t0Firms: t0.firms, t0Inventory: t0.inventory, t0Made: t0.made, t0Sold: t0.sold,
       t1Firms: t1.firms, t1Raw: t1.raw, t1Finished: t1.finished, t1Active: t1.activeFirms, t1Players: t1.players,
       t1Bought: t1.bought, t1Made: t1.made, t1Sold: t1.sold, t1ConsumerSold: sum(s.products.map(p => p.consumerVolume)),
       t1BusinessSold: sum(s.products.map(p => p.intermediateVolume)),
-      t1CustomerDesired: t1.desired, t1CustomerFulfilled: t1.fulfilled, t1StockUnmet: t1.stockUnmet, consumerPopulation: consumers.population,
-      consumerActivated: s.performance.activatedConsumers, demandPotential: consumers.potential, demandActive: consumers.active,
-      demandPriceLost: consumers.priceLost, demandStockUnmet: consumers.stockUnmet, demandFulfilled: consumers.fulfilled, orders: consumers.orders };
+      t1CustomerDesired: t1.desired, t1CustomerFulfilled: t1.fulfilled, t1StockUnmet: t1.stockUnmet, consumerPopulation: distributors.population,
+      consumerActivated: s.performance.activatedConsumers, demandPotential: distributors.potential, demandActive: distributors.active,
+      demandPriceLost: distributors.priceLost, demandStockUnmet: distributors.stockUnmet, demandFulfilled: distributors.fulfilled, orders: distributors.orders };
     for (const [id, value] of Object.entries(integers)) $(id).textContent = fmtInt(value);
-    const ratios = { fillRate: meaningfulRatio(consumers.fulfilled, consumers.active),
-      unitFillRate: meaningfulRatio(consumers.fulfilled, consumers.active), orderFillRate: meaningfulRatio(consumers.fulfilledOrders, consumers.orders),
-      priceLossShare: meaningfulRatio(consumers.priceLost, consumers.potential), stockUnmetShare: meaningfulRatio(consumers.stockUnmet, consumers.active),
+    const ratios = { fillRate: meaningfulRatio(distributors.fulfilled, distributors.active),
+      unitFillRate: meaningfulRatio(distributors.fulfilled, distributors.active), orderFillRate: meaningfulRatio(distributors.fulfilledOrders, distributors.orders),
+      priceLossShare: meaningfulRatio(distributors.priceLost, distributors.potential), stockUnmetShare: meaningfulRatio(distributors.stockUnmet, distributors.active),
       t0HHI: meaningfulRatio(sum(s.elements.filter(e => e.volume > 0).map(e => e.hhi)),s.elements.filter(e => e.volume > 0).length), t0Reliability: t0.reliability, t1Reliability: t1.reliability,
       t0Utilization: t0.utilization, t1Utilization: t1.utilization,
       t1CustomerFill: meaningfulRatio(t1.fulfilled,t1.desired), t1Margin: meaningfulRatio(t1.grossProfit, t1.revenue) };
     for (const [id, value] of Object.entries(ratios)) $(id).textContent = id === 't0HHI' ? fmtFixed(value, 3) : pct(value);
     $('wavg').textContent = s.wholesaleVolume > 0 ? fmtMoney(s.wholesaleAvg, 5) : '—';
     $('ravg').textContent = s.retailVolume > 0 ? fmtUnitPrice(s.retailAvg) : '—';
-    $('ordersFulfilled').textContent = fmtInt(consumers.fulfilledOrders) + ' / ' + fmtInt(consumers.orders);
+    $('ordersFulfilled').textContent = fmtInt(distributors.fulfilledOrders) + ' / ' + fmtInt(distributors.orders);
     const difficulty = Object.values(s.difficulty);
     $('envRange').textContent = fmtFixed(Math.min(...difficulty), 3) + '–' + fmtFixed(Math.max(...difficulty), 3);
     $('t0DiffMean').textContent = fmtFixed(sum(difficulty) / difficulty.length, 3);
     $('scaleCaption').textContent = fmtInt(t0.firms) + ' resource companies · ' + fmtInt(t1.firms) + ' refineries · ' +
-      fmtInt(t2.firms) + ' manufacturers · ' + fmtInt(consumers.population) + ' consumers';
-    $('demandCaption').textContent = fmtInt(consumers.fulfilled) + ' / ' + fmtInt(consumers.active) + ' desired units fulfilled this tick';
+      fmtInt(t2.firms) + ' manufacturers · ' + fmtInt(distributors.population) + ' distributors';
+    $('demandCaption').textContent = fmtInt(distributors.fulfilled) + ' / ' + fmtInt(distributors.active) + ' desired units fulfilled this tick';
     const hist = s.analyticsHistory || [], scope = $('overviewTier').value;
     const tiers = scope ? [scope] : ['t0', 't1', 't2'];
     for (const [id, key, moneyAxis] of [['cashChart', 'cash', true], ['equityChart', 'equity', true], ['inventoryChart', 'inventory', false],

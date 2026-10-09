@@ -12,7 +12,7 @@
 > pressurized, standardized. Use title case for catalog labels and lower case for
 > generic material, equipment, and product descriptions in sentences. The
 > agent-category display labels are **Resource Companies** (T0), **Refineries**
-> (T1), **Manufacturers** (T2) and **Consumers** (T3). Generated firms use a
+> (T1), **Manufacturers** (T2) and **Distributors** (T3). Generated firms use a
 > sector-specific generic name plus a hex serial number (e.g.
 > **Power Equipment 0002A**); no house-name pool, location suffix, district, or
 > berth is appended. `T0`–`T3` remain the internal tier keys throughout this
@@ -34,7 +34,7 @@ Every section below is a consequence of, or a requirement for, that sentence.
 ## 2. Core axioms (non-negotiable)
 
 1. **Conservation & accounting.** Money and goods are conserved; only *defined* external
-   flows change the system total (consumer spend in; extraction, conversion, capital, and
+   flows change the system total (distributor spend in; extraction, conversion, capital, and
    dividend-destruction out). Every firm is a double-entry entity: cash + license +
    inventory-at-acquisition-basis + machinery = equity. **Cash and equity are the only
    first-class financial quantities; net profit is derived** (revenue − COGS) and is
@@ -73,7 +73,7 @@ Every section below is a consequence of, or a requirement for, that sentence.
 ## 3. Fixed topology & identity
 
 - **Four tiers, fixed demarcation:** T0 extraction → T1 refining → T2 manufacturing →
-  T3 external consumers. No tier bypass. C-1/C-2 belong exclusively to Tier 1;
+  T3 external distributors. No tier bypass. C-1/C-2 belong exclusively to Tier 1;
   C-3/C-4/C-5 exclusively to Tier 2.
 - **Four raw elements:** Water, Earth, Fire, Air.
 - **Ten Tier 1 products** (four basic C-1 + six compound C-2) made by **1,000 firms**
@@ -84,7 +84,7 @@ Every section below is a consequence of, or a requirement for, that sentence.
   (the Hamilton apportionment of the 44/116/260 complete pool) — made by **60,000
   single-machine firms** in the reverse 6:3:1 ratio: **C-3 = 36,000** (20 × 1,800),
   **C-4 = 18,000** (60 × 300), **C-5 = 6,000** (120 × 50).
-- **1,000,000 Tier 3 consumers** (resident consumers).
+- **1,000,000 Tier 3 distributors** (resident distributors).
 - **The six two-element extractors are special-purpose**: Mudrock Machinery Co.
   (machinery), Steam Ridge Financial Inc. (financial services), Dustline Spatial Solutions
   Corp. (warehouses, land, and industrial space — the Storage Concession Fee), Flare
@@ -162,20 +162,20 @@ Higher complexity ⇒ **lower demand volume**; the unit markup starts flat and i
 discovered by the derivative-following pricer.
 
 - **Valuation (choke price):** `V = unit cost × (1 + t2ReservationPremium × (complexity − 1))`
-  (cost from §4) — the price at which demand halves. Each consumer's choke is
-  `V × [1.8, 3]` (a per-consumer draw), so the choke is a band, not a point.
+  (cost from §4) — the price at which demand halves. Each distributor's choke is
+  `V × [1.8, 3]` (a per-distributor draw), so the choke is a band, not a point.
   `t2ReservationPremium = 0.25` gives more complex goods a higher reservation value
   (C-3 ×1.5, C-4 ×1.75, C-5 ×2.0), so they clear at higher prices.
-- **Latent quantity:** `qmax = 20` (fixed per consumer, `CONSUMER_QMAX`). The
-  per-consumer request therefore stays small (whole units), never exceeding a firm's
+- **Latent quantity:** `qmax = 20` (fixed per distributor, `CONSUMER_QMAX`). The
+  per-distributor request therefore stays small (whole units), never exceeding a firm's
   fill-G stock.
-- **One product per consumer, supply-scaled:** each consumer is assigned exactly one
+- **One product per distributor, supply-scaled:** each distributor is assigned exactly one
   product (`consumerProduct`) for its lifetime, drawn weighted by supply — `firms ×
   capacity` (the **108 : 12 : 1** ratio across C-3 / C-4 / C-5), so higher-supply
-  products attract more consumers (~**36,000 / 4,000 / 333** per product). No renewals,
-  no sector routing. The per-consumer quantity stays small.
+  products attract more distributors (~**36,000 / 4,000 / 333** per product). No renewals,
+  no sector routing. The per-distributor quantity stays small.
 - **Activation:** each tick only a fraction `consumerActivation = 0.2` of the 1,000,000
-  consumers activate (a fresh random draw per buyer per tick), so ~200,000 buy per tick —
+  distributors activate (a fresh random draw per buyer per tick), so ~200,000 buy per tick —
   matching the supply scale and keeping service fair (no buyer is permanently starved).
 - **Demand curve:** `q(P) = qmax / (1 + (P/V)^η)`, elasticity `η = 2`.
 - **First-guess markup is flat** (`t1Markup = 0.25` for T0/T1/T2): the complexity
@@ -184,9 +184,9 @@ discovered by the derivative-following pricer.
 - **Equilibrium markup** is set by the fixed demand level (`qmax = 20`) — a larger
   quantity is a tighter market ⇒ a higher discovered markup.
 
-The flat first-guess markup is canon. Each consumer samples offers — currently **5**
+The flat first-guess markup is canon. Each distributor samples offers — currently **5**
 (`consumerSearchOffers`); the sampling count is calibration, not frozen. Purchase is
-**marginal-value** (§12.2): the consumer walks its sampled sellers in total-cost order and
+**marginal-value** (§12.2): the distributor walks its sampled sellers in total-cost order and
 buys `want = q_at − bought` whole units at each, so the quantity is pinned to the marginal
 seller's price.
 
@@ -283,7 +283,7 @@ Tracked, explicitly **not** canon yet:
   later divergence is emergent, not prescribed.
 - **New product invention** — the dynamic introduction of new T2 products over time
   (innovation). The PoC uses a fixed 200-product catalog; how new products enter the
-  market — and what happens to the supply-scaled consumer assignment, firm lines, and
+  market — and what happens to the supply-scaled distributor assignment, firm lines, and
   supply when one appears — is deferred, mechanics TBD.
 
 ---
@@ -312,7 +312,7 @@ in §3–§10 above and are not repeated here.
 - **9-phase tick** (per tick): reset scratch → environment (difficulty mean-reversion) →
   T0 extraction (order-up-to + proportional apportionment) → T1 input purchase
   (whole-lot) → T1 manufacture → pricing (derivative-following) → T2 buy/make/price →
-  consumer clearing (atomic orders) → observe/reliability (monthly).
+  distributor clearing (atomic orders) → observe/reliability (monthly).
 - **Calendar**: 30 ticks/month, 12 months/year, 20 years/generation, 24 generations/age.
 - **Environment**: extraction difficulty mean-reverts to `difficultyTarget = 1` (`theta = 0.15`,
   `sigma = 0.005`, bounded `[0.7, 1.4]`). Demand/sales EMA `alpha = 0.15`.
@@ -325,7 +325,7 @@ in §3–§10 above and are not repeated here.
 - **Commands** (FastAPI/WebSocket): `init`, `reset`, `run`, `pause`, `step`,
   `applyConfig`, `select`, `companyDetail`, `watchCompanies`, `player`,
   `buyEquipment`, `tier2Query`, `buyLicense`, `foundHouse`. Reads are projections;
-  per-consumer state is never sent to clients.
+  per-distributor state is never sent to clients.
 
 ### 12.2 Pricing (per tick, derivative-following)
 
@@ -392,8 +392,8 @@ whole cents (`round_to_cent`). If the rounded quote is unchanged and the directi
 so a walk cannot wedge frozen at a cent boundary. After each
 observation the profit/sales/demand/opportunity accumulators and the age counter reset.
 
-**Consumer purchase is split across suppliers in whole units** (no fractional fill, no
-all-or-nothing from one seller). Demand is **marginal-value**: the consumer walks its
+**Distributor purchase is split across suppliers in whole units** (no fractional fill, no
+all-or-nothing from one seller). Demand is **marginal-value**: the distributor walks its
 sampled sellers in total-cost order (incumbent first; the loyalty charge below applies),
 and at each seller computes `q_at = demand(price)` then buys `want = max(0, q_at − bought)`
 whole units (capped by that seller's `⌊stock⌋`), stopping once `bought ≥ q_at`. The total
@@ -412,7 +412,7 @@ reference, independent of the current market price, so a price drop does not shr
 barrier — and `reliability_inc` is the incumbent's reliability (0–1), so the
 `(1 + reliability)` factor makes sourcing away from a reliable supplier cost up to 2× more. `M` is a **per-complexity** multiple, sized so the charge equals ~5 % of a typical
 order: **41.665** for the T1 raw buyer (C-1/C-2, equal), **{3: 0.605, 4: 0.325, 5: 0.13}**
-for T2 intermediate buyers by the buying firm's complexity, and **0.485** for T3 consumers.
+for T2 intermediate buyers by the buying firm's complexity, and **0.485** for T3 distributors.
 The charge is **fixed per disloyal purchase** (independent of order size, so
 a 1-unit order cannot dodge it) and is **paid to the incumbent**: deducted from the buyer's cash and credited to the incumbent — a
 transfer, not a sink.
@@ -420,7 +420,7 @@ transfer, not a sink.
 **Adaptive regime.** The per-complexity values above are *bootstrap seeds*, not constants.
 Each tick, after the tiers operate, the kernel folds the observed **average order value**
 (AOV) per buyer class — T1 raw (`raw revenue ÷ purchase events`), T2 material by buying
-complexity (`material spend ÷ purchases`), T3 consumer (`consumer payments ÷ fulfilled
+complexity (`material spend ÷ purchases`), T3 distributor (`distributor payments ÷ fulfilled
 orders`) — into an EMA (`α = loyaltyEmaAlpha`, default 0.01). Once per **year**
 (every `ticksPerYear` ticks) it re-derives
 

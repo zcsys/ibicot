@@ -509,7 +509,7 @@
         <div class="grow">
           <h1>Star Business — Economy · v0.1</h1>
           <div class="sub">
-            Build the Colony. Supply the Fleet. · 1,000,000 consumers
+            Build the Colony. Supply the Fleet. · 1,000,000 distributors
           </div>
         </div>
         <span id="kernel" class="pill">Engine: loading</span>
@@ -583,8 +583,8 @@
             <div class="field"><label>Firm storage pool</label><input id="storage" type="number" min="1" step="any" value="20000" /></div>
           </div>
           <div class="param-group">
-            <h3>Consumers · Demand</h3>
-            <div class="group-note">1,000,000 consumers; V = unit cost, η = elasticity.</div>
+            <h3>Distributors · Demand</h3>
+            <div class="group-note">1,000,000 distributors; V = unit cost, η = elasticity.</div>
             <div class="field"><label>Activation / tick</label><input id="consumerActivation" type="number" min="0" max="1" step=".01" value=".2" /></div>
             <div class="field"><label>Comparison offers</label><input id="consumerSearchOffers" type="number" min="1" max="20" value="5" /></div>
             <div class="field"><label>Value multiplier min</label><input id="chokeMin" type="number" step=".01" value="1.8" /></div>
@@ -661,7 +661,7 @@
           <a href="#tier0">Resource Companies</a>
           <a href="#tier1">Refineries</a>
           <a href="#tier2">Manufacturers</a>
-          <a href="#consumers">Consumers</a>
+          <a href="#distributors">Distributors</a>
         </nav>
         <section id="overview" class="dashboard-tier stack" aria-labelledby="overviewHeading">
           <h2 id="overviewHeading">Economy overview</h2>
@@ -693,15 +693,15 @@
               <b id="economyInventory">—</b>
             </div>
             <div class="kpi">
-              <span class="muted">Consumer purchases · units / tick</span>
+              <span class="muted">Distributor purchases · units / tick</span>
               <b id="economyPurchases">—</b>
             </div>
             <div class="kpi">
-              <span class="muted">Consumer spending · $ / tick</span>
+              <span class="muted">Distributor spending · $ / tick</span>
               <b id="economySpending">—</b>
             </div>
             <div class="kpi">
-              <span class="muted">Consumer unit fulfillment</span>
+              <span class="muted">Distributor unit fulfillment</span>
               <b id="fillRate">—</b>
             </div>
           </section>
@@ -711,7 +711,7 @@
               —
             </p>
             <p class="analytics-note">
-              Cash, equity and inventory include all resource companies, refineries and manufacturers. Consumer spending counts final purchases once. Resource companies extract raw elements from the environment and sell to companies; refineries buy and sell to companies; manufacturers buy from companies and sell to consumers. Bought counts actual units received; extraction appears under Made; its Bought column is not applicable.
+              Cash, equity and inventory include all resource companies, refineries and manufacturers. Distributor spending counts final purchases once. Resource companies extract raw elements from the environment and sell to companies; refineries buy and sell to companies; manufacturers buy from companies and sell to distributors. Bought counts actual units received; extraction appears under Made; its Bought column is not applicable.
             </p>
             <div class="table-wrap industry-table" tabindex="0" aria-label="Producer comparison table, scroll for more metrics">
               <table class="mini-table">
@@ -861,7 +861,7 @@
                 <tbody id="productCategories"></tbody>
               </table>
             </div>
-            <p class="analytics-note">Current tick · prices and unit costs are weighted by installed lines; margin = total gross profit / total revenue. Per-line figures account for different category sizes. Customer demand, fulfillment and unmet units describe company buyers for C-1/C-2 and consumers for C-3–C-5. Sales include intermediate transactions; category revenues must not be added as final consumer spending. Click column headers to sort.</p>
+            <p class="analytics-note">Current tick · prices and unit costs are weighted by installed lines; margin = total gross profit / total revenue. Per-line figures account for different category sizes. Customer demand, fulfillment and unmet units describe company buyers for C-1/C-2 and distributors for C-3–C-5. Sales include intermediate transactions; category revenues must not be added as final distributor spending. Click column headers to sort.</p>
           </section>
         </section>
         <section id="environment" class="dashboard-tier stack" aria-labelledby="environmentHeading">
@@ -1376,7 +1376,7 @@
                 <b id="t2Margin">—</b>
               </div>
               <div class="stat">
-                <span>C-3–C-5 consumer unit fulfillment</span>
+                <span>C-3–C-5 distributor unit fulfillment</span>
                 <b id="t2Fill">—</b>
               </div>
             </div>
@@ -1413,7 +1413,7 @@
                 </div>
               </div>
               <div>
-                <span class="chart-caption">Capacity utilization & consumer fulfillment · %</span>
+                <span class="chart-caption">Capacity utilization & distributor fulfillment · %</span>
                 <div class="chart">
                   <canvas id="tier2OperationsChart" role="img" aria-label="Manufacturing utilization and fulfillment trend">
                   </canvas>
@@ -1530,9 +1530,9 @@
                   </div>
                 </div>
                 <div>
-                  <span class="chart-caption">Capacity utilization & consumer fulfillment · %</span>
+                  <span class="chart-caption">Capacity utilization & distributor fulfillment · %</span>
                   <div class="chart">
-                    <canvas id="tier2ComplexityOperationsChart" role="img" aria-label="Complexity band utilization and consumer fulfillment trend">
+                    <canvas id="tier2ComplexityOperationsChart" role="img" aria-label="Complexity band utilization and distributor fulfillment trend">
                     </canvas>
                   </div>
                 </div>
@@ -1744,19 +1744,19 @@
             </div>
           </section>
         </section>
-        <section id="consumers" class="dashboard-tier stack" aria-labelledby="consumersHeading">
-          <h2 id="consumersHeading">Consumers</h2>
+        <section id="distributors" class="dashboard-tier stack" aria-labelledby="consumersHeading">
+          <h2 id="consumersHeading">Distributors</h2>
           <section class="panel">
             <h3>Demand & fulfillment</h3>
             <p class="analytics-note" id="demandCaption">
               —
             </p>
             <p class="analytics-note">
-              Star Business is a human–robot manufacturing colony building itself into the supply base for a coming galactic war. Its output covers housing, medical equipment, gardens, archives, rescue vehicles, and everyday trade. One million consumers buy, switch suppliers, and keep the colony running; prices, reliability, loyalty, supply, and demand emerge from their decisions. They purchase only C-3–C-5 manufactured goods; refined materials supply manufacturers exclusively. Every market delivers a physical good. The consumer count stays fixed, and final purchasing budgets are unlimited in this model.
+              Star Business is a human–robot manufacturing colony building itself into the supply base for a coming galactic war. Its output covers housing, medical equipment, gardens, archives, rescue vehicles, and everyday trade. One million distributors buy, switch suppliers, and keep the colony running; prices, reliability, loyalty, supply, and demand emerge from their decisions. They purchase only C-3–C-5 manufactured goods; refined materials supply manufacturers exclusively. Every market delivers a physical good. The distributor count stays fixed, and final purchasing budgets are unlimited in this model.
             </p>
             <div class="stat-grid industry-kpis">
               <div class="stat">
-                <span>Consumers</span>
+                <span>Distributors</span>
                 <b id="consumerPopulation">—</b>
               </div>
               <div class="stat">
@@ -1828,9 +1828,9 @@
                 </div>
               </div>
               <div>
-                <span class="chart-caption">Consumer spending · $ / tick</span>
+                <span class="chart-caption">Distributor spending · $ / tick</span>
                 <div class="chart">
-                  <canvas id="consumerSpendingChart" role="img" aria-label="Consumer spending · $ / tick">
+                  <canvas id="consumerSpendingChart" role="img" aria-label="Distributor spending · $ / tick">
                   </canvas>
                 </div>
               </div>

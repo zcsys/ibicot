@@ -7,7 +7,7 @@
 
 Naming logic: “Star” establishes the galactic setting; “Business” puts trade, competing companies, and the economy at the center of the game.
 
-In 4259, humans and robots are building a manufacturing colony into the supply base for a coming galactic war. Twenty extraction giants supply 1,000 refineries. Those refineries feed 60,000 autonomous manufacturers. A million consumers buy, switch suppliers, and keep the colony running. Prices, reliability, loyalty, supply, and demand emerge from those decisions.
+In 4259, humans and robots are building a manufacturing colony into the supply base for a coming galactic war. Twenty extraction giants supply 1,000 refineries. Those refineries feed 60,000 autonomous manufacturers. A million distributors buy, switch suppliers, and keep the colony running. Prices, reliability, loyalty, supply, and demand emerge from those decisions.
 
 The American character comes from electric utilities, aerospace contractors, machine shops, railroad suppliers, company towns, truck stops, and warehouse catalogs. Large corporations sound broad and established. Specialized suppliers sound like businesses whose names belong on a loading dock. Products sound like things a purchasing manager can order and a maintenance crew can identify.
 
@@ -573,7 +573,7 @@ Naming logic: use familiar American business software labels, with plain simulat
 | T0 category | Resource Companies | The 20 extraction corporations. |
 | T1 category | Refineries | The 1,000 refining agents. |
 | T2 category | Manufacturers | The 60,000 manufacturing firms. |
-| Buyer category | Consumers | The 1,000,000 consumers. |
+| Buyer category | Distributors | The 1,000,000 distributors. |
 | Raw trading | Element Markets | Water, Earth, Fire, and Air. |
 | Refined-stock trading | Material Markets | The ten refined stocks. |
 | Finished-goods trading | Product Markets | The 200 manufactured goods. |

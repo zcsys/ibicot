@@ -55,12 +55,12 @@ def default_cfg() -> dict:
         'storage': 20_000.0,
         'footprint': {1: 1_000.0, 2: 1_000.0, 3: 3_000.0, 4: 4_000.0, 5: 5_000.0},
 
-        # Demand / consumers
+        # Demand / distributors (T3)
         'consumerSearchOffers': 5,
-        'consumerActivation': 0.2,       # fraction of buyers that activate each tick
+        'consumerActivation': 0.2,       # fraction of distributors that activate each tick
         'chokeMin': 1.8,
         'chokeMax': 3.0,
-        'elasticity': 2.0,              # eta = 2 (T3 consumer demand)
+        'elasticity': 2.0,              # eta = 2 (T3 distributor demand)
         'productionMarginBand': 0.05,   # gross-margin fraction below which producer output tapers to 0 at break-even
         't2ReservationPremium': 0.25,
 

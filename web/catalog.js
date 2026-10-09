@@ -68,7 +68,7 @@
   const WORLD_STORY = Object.freeze({ name: 'Star Business',
     tagline: 'Build the Colony. Supply the Fleet.', population: 1000000,
     producers: 'Autonomous refineries and manufacturers building a colony into a supply base',
-    consumers: 'One million consumers buying, switching suppliers, and keeping the colony running',
+    consumers: 'One million distributors buying, switching suppliers, and keeping the colony running',
     player: 'Human investor', entry: 'An initial investment in a refinery or manufacturing business',
     competitors: Object.freeze(['Opportunist human investors', 'Robotic executive agents']),
     alphaPlayableTiers: Object.freeze(['T1']),
