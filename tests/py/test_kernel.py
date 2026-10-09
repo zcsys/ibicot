@@ -85,15 +85,15 @@ def test_generated_names():
         'Freight Equipment', 'Defense Systems',
     ]
 
-    # Tier 1 examples: first firm of each material cohort is 001 (hex).
-    assert M.t1_firm_name(0) == 'Industrial Fluids 001'
-    assert M.t1_firm_name(800) == 'Composite Materials 001'
-    assert M.t1_firm_name(99) == 'Industrial Fluids 064'
+    # Tier 1 examples: first firm of each material cohort is 0x1.
+    assert M.t1_firm_name(0) == 'Industrial Fluids 0x1'
+    assert M.t1_firm_name(800) == 'Composite Materials 0x1'
+    assert M.t1_firm_name(99) == 'Industrial Fluids 0x64'
 
-    # Tier 2 examples: hex serial within each 6,000-firm sector.
-    assert M.t2_firm_name(0, 0) == 'Power Equipment 00001'
-    assert M.t2_firm_name(0, 5999) == 'Power Equipment 01770'
-    assert M.t2_firm_name(1, 6000) == 'Propulsion Systems 00001'
+    # Tier 2 examples: 0x-prefixed hex serial within each 6,000-firm sector.
+    assert M.t2_firm_name(0, 0) == 'Power Equipment 0x1'
+    assert M.t2_firm_name(0, 5999) == 'Power Equipment 0x1770'
+    assert M.t2_firm_name(1, 6000) == 'Propulsion Systems 0x1'
 
     # Equipment classes and configurations.
     assert M.T1_EQUIPMENT_CLASS == {1: 'Refining Bench', 2: 'Refining Cell'}

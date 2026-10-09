@@ -24,7 +24,7 @@ Naming logic: use direct American business and engineering language with a visib
 - Materials identify trade stock. Companies identify businesses. Sectors identify purchasing domains. Goods identify physical purchases.
 - Keep names short enough for a market row. Use longer names only when the distinction matters, such as Medical Cold-Chain Container versus Orbital Shipping Container.
 - Keep the maker in its own field. “Mudrock” is never part of a generic equipment class or product name.
-- Generated firms use a sector-specific generic name plus a hex serial number. No house-name pool, location suffix, district, or berth is added to a company name.
+- Generated firms use a sector-specific generic name plus a `0x`-prefixed hex serial number. No house-name pool, location suffix, district, or berth is added to a company name.
 - Avoid invented mineral suffixes, model years, military ranks, and prestige adjectives as substitutes for function.
 
 ## 2. Raw Elements — T0 Output
@@ -508,39 +508,39 @@ Naming logic: Defense-contractor language gives the mission and hardware type, w
 
 ## 9. Numbered Companies — Simple, Stable Names
 
-Naming logic: each sector has one recognizable generic business name. A hex serial number identifies the individual company. The simplicity is intentional.
+Naming logic: each sector has one recognizable generic business name. A `0x`-prefixed hex serial number identifies the individual company. The simplicity is intentional.
 
-Use the **Generic Company Base** from sections 5 and 6, followed by a space and the firm’s sector serial:
+Use the **Generic Company Base** from sections 5 and 6, followed by a space and the firm’s `0x`-prefixed sector serial:
 
-- Tier 1: `{Generic Company Base} {Serial:03X}` — for example, **Industrial Fluids 001**.
-- Tier 2: `{Generic Company Base} {Serial:05X}` — for example, **Power Equipment 00001**.
+- Tier 1: `{Generic Company Base} 0x{Serial:x}` — for example, **Industrial Fluids 0x1**.
+- Tier 2: `{Generic Company Base} 0x{Serial:x}` — for example, **Power Equipment 0x1**.
 
-These are minimum widths, not limits. Serials expand naturally when necessary. The ten Tier 1 bases and ten Tier 2 bases are all distinct, so numbering may restart at 1 independently in each sector without causing duplicate names.
+No zero-padding; the serial is written as a plain lowercase hex value after `0x`. Serials expand naturally when necessary. The ten Tier 1 bases and ten Tier 2 bases are all distinct, so numbering may restart at 1 independently in each sector without causing duplicate names.
 
 ### Complete Generic-Name Mapping
 
 | Tier | Stable Sector Key | Generic Base | First Display Name |
 |---|---|---|---|
-| T1 | W | Industrial Fluids | Industrial Fluids 001 |
-| T1 | E | Alloy Refining | Alloy Refining 001 |
-| T1 | F | Energy Materials | Energy Materials 001 |
-| T1 | A | Process Gases | Process Gases 001 |
-| T1 | W+E | Ceramic Materials | Ceramic Materials 001 |
-| T1 | W+F | Thermal Materials | Thermal Materials 001 |
-| T1 | W+A | Technical Fibers | Technical Fibers 001 |
-| T1 | E+F | Semiconductor Materials | Semiconductor Materials 001 |
-| T1 | E+A | Composite Materials | Composite Materials 001 |
-| T1 | F+A | Active Chemicals | Active Chemicals 001 |
-| T2 | S01 | Power Equipment | Power Equipment 00001 |
-| T2 | S02 | Propulsion Systems | Propulsion Systems 00001 |
-| T2 | S03 | Shipbuilding Works | Shipbuilding Works 00001 |
-| T2 | S04 | Habitat Systems | Habitat Systems 00001 |
-| T2 | S05 | Service Robotics | Service Robotics 00001 |
-| T2 | S06 | Computing Systems | Computing Systems 00001 |
-| T2 | S07 | Scientific Instruments | Scientific Instruments 00001 |
-| T2 | S08 | Industrial Tooling | Industrial Tooling 00001 |
-| T2 | S09 | Freight Equipment | Freight Equipment 00001 |
-| T2 | S10 | Defense Systems | Defense Systems 00001 |
+| T1 | W | Industrial Fluids | Industrial Fluids 0x1 |
+| T1 | E | Alloy Refining | Alloy Refining 0x1 |
+| T1 | F | Energy Materials | Energy Materials 0x1 |
+| T1 | A | Process Gases | Process Gases 0x1 |
+| T1 | W+E | Ceramic Materials | Ceramic Materials 0x1 |
+| T1 | W+F | Thermal Materials | Thermal Materials 0x1 |
+| T1 | W+A | Technical Fibers | Technical Fibers 0x1 |
+| T1 | E+F | Semiconductor Materials | Semiconductor Materials 0x1 |
+| T1 | E+A | Composite Materials | Composite Materials 0x1 |
+| T1 | F+A | Active Chemicals | Active Chemicals 0x1 |
+| T2 | S01 | Power Equipment | Power Equipment 0x1 |
+| T2 | S02 | Propulsion Systems | Propulsion Systems 0x1 |
+| T2 | S03 | Shipbuilding Works | Shipbuilding Works 0x1 |
+| T2 | S04 | Habitat Systems | Habitat Systems 0x1 |
+| T2 | S05 | Service Robotics | Service Robotics 0x1 |
+| T2 | S06 | Computing Systems | Computing Systems 0x1 |
+| T2 | S07 | Scientific Instruments | Scientific Instruments 0x1 |
+| T2 | S08 | Industrial Tooling | Industrial Tooling 0x1 |
+| T2 | S09 | Freight Equipment | Freight Equipment 0x1 |
+| T2 | S10 | Defense Systems | Defense Systems 0x1 |
 
 ### Deterministic Allocation
 
@@ -554,13 +554,12 @@ These are minimum widths, not limits. Serials expand naturally when necessary. T
 def company_display_name(tier, generic_base, sector_serial):
     if tier not in (1, 2) or sector_serial < 1:
         raise ValueError("Invalid tier or sector serial")
-    width = 3 if tier == 1 else 5
-    return f"{generic_base} {sector_serial:0{width}X}"
+    return f"{generic_base} 0x{sector_serial:x}"
 ```
 
-If allocation is even, 100 refineries in each material sector yield hex serials 001–064. Six thousand manufacturers in each manufacturing sector yield hex serials 00001–01770. The same rule works with an uneven distribution: it requires no fixed population per sector.
+If allocation is even, 100 refineries in each material sector yield hex serials 0x1–0x64. Six thousand manufacturers in each manufacturing sector yield hex serials 0x1–0x1770. The same rule works with an uneven distribution: it requires no fixed population per sector.
 
-Store the authored identity or cohort label in a separate field. Do not prepend Clearwater, Switchyard, or another authored company name to every agent in its cohort. For example, **Power Equipment 0002A** is an independent firm name, not “Switchyard Power Systems 0002A.”
+Store the authored identity or cohort label in a separate field. Do not prepend Clearwater, Switchyard, or another authored company name to every agent in its cohort. For example, **Power Equipment 0x2a** is an independent firm name, not “Switchyard Power Systems 0x2a.”
 
 ## 10. Interface and Service Labels
 
@@ -601,7 +600,7 @@ Naming logic: use familiar American business software labels, with plain simulat
 | Buyer relationship metric | Supplier Loyalty | Keep it distinct from seller reliability. |
 | Trade history | Transactions | Buyer, seller, product, quantity, price, and time. |
 
-An example notification reads: “Backup battery racks are in short supply. Power Equipment 0002A raised its price.” Another reads: “Mudrock Machinery Co. delivered a refining cell.” These use lowercase product and equipment names in prose while preserving registered company names.
+An example notification reads: “Backup battery racks are in short supply. Power Equipment 0x2a raised its price.” Another reads: “Mudrock Machinery Co. delivered a refining cell.” These use lowercase product and equipment names in prose while preserving registered company names.
 
 ## 11. Migration and Consistency
 
