@@ -215,6 +215,8 @@
       { key: columns[0], direction: 1 },
     ]),
   );
+  // Producer comparison defaults to Firms ascending (smallest tier first).
+  tableSort.tierComparison = { key: 'firms', direction: 1 };
 
   function compareTableValues(left, right) {
     const leftNumber = Number(left);
