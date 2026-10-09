@@ -22,7 +22,7 @@ def _arrays_equal(a, b):
 
 
 def test_determinism():
-    cfg = {'consumerCount': 300, 't2FirmCount': 500}
+    cfg = {'distributorCount': 300, 't2FirmCount': 500}
     _, W1 = _run(12345, 35, cfg)
     _, W2 = _run(12345, 35, cfg)
     for name in W1.array_names:
@@ -50,7 +50,7 @@ def _check_invariants(cfg, world):
 
 
 def test_invariants_conservation():
-    cfg_overrides = {'consumerCount': 300, 't2FirmCount': 500}
+    cfg_overrides = {'distributorCount': 300, 't2FirmCount': 500}
     cfg, world = reset_world(dict(cfg_overrides, seed=12345))
 
     def total_cash():
@@ -61,7 +61,7 @@ def test_invariants_conservation():
         before = total_cash()
         state = tick(world, cfg, t, state={})
         after = total_cash()
-        expected = state['consumerPayments'] - state['costSinks'] - state['equipmentSinks']
+        expected = state['distributorPayments'] - state['costSinks'] - state['equipmentSinks']
         diff = (after - before) - expected
         if abs(diff) > 1e-6 * max(1.0, abs(expected)):
             raise AssertionError(f'conservation violation at tick {t}: Δcash={after-before} '

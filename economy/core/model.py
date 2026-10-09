@@ -66,12 +66,12 @@ NP = len(PRODUCTS)          # 10
 N0 = 20
 N1 = 1000
 N2_FIRMS = 60000            # canon: 60,000 single-machine T2 firms (was 61,950)
-N_CONSUMERS = WORLD_STORY['population']          # 1,000,000
+N_DISTRIBUTORS = WORLD_STORY['population']          # 1,000,000
 MAX_T2_LINES = N2_FIRMS     # one machine/line per firm at start
 MONTH = TIME['ticksPerMonth']                     # 30
 # Firms per product by complexity (canon §3): C-3 1,800 · C-4 300 · C-5 50.
 T2_FIRMS_PER_PRODUCT = {3: 1800, 4: 300, 5: 50}
-CONSUMER_QMAX = 20                           # canon §5: fixed per-consumer quantity
+DISTRIBUTOR_QMAX = 20                           # canon §5: fixed per-distributor quantity
 
 # Supply-side scale values (equity, license, machinery, capacity, costs, storage)
 # live in ``core/config.py``.  The model exposes cfg-driven helpers so the kernel,
@@ -91,7 +91,7 @@ def unit_cost(complexity: int, cfg) -> float:
 
 def t2_markup(complexity: int, cfg) -> float:
     # First-guess markup is uniform across tiers/complexities (flat 0.25): the
-    # complexity gradient lives in demand *volume* (supply-scaled consumer routing,
+    # complexity gradient lives in demand *volume* (supply-scaled distributor routing,
     # 108:12:1), not in the seed price.  Prices then rise to their own equilibrium via the
     # derivative-following pricer.
     return cfg['t1Markup']
@@ -329,9 +329,9 @@ def tier2_starting_markup(product, cfg) -> float:
 
 
 def procurement_profile(product, cfg, reference_cost) -> dict:
-    # canon demand side (§5): V = unit cost; η = 2. Per-consumer quantity is
-    # fixed at CONSUMER_QMAX; the complexity gradient (demand ∝ supply = firms ×
-    # capacity, 108:12:1) lives in *consumer routing* (initialize_consumers).
+    # canon demand side (§5): V = unit cost; η = 2. Per-distributor quantity is
+    # fixed at DISTRIBUTOR_QMAX; the complexity gradient (demand ∝ supply = firms ×
+    # capacity, 108:12:1) lives in *distributor routing* (initialize_distributors).
     return {'markup': cfg['t1Markup'],
             'valuation': reference_cost}
 

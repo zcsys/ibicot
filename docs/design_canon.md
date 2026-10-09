@@ -166,15 +166,15 @@ discovered by the derivative-following pricer.
   `V × [1.8, 3]` (a per-distributor draw), so the choke is a band, not a point.
   `t2ReservationPremium = 0.25` gives more complex goods a higher reservation value
   (C-3 ×1.5, C-4 ×1.75, C-5 ×2.0), so they clear at higher prices.
-- **Latent quantity:** `qmax = 20` (fixed per distributor, `CONSUMER_QMAX`). The
+- **Latent quantity:** `qmax = 20` (fixed per distributor, `DISTRIBUTOR_QMAX`). The
   per-distributor request therefore stays small (whole units), never exceeding a firm's
   fill-G stock.
 - **One product per distributor, supply-scaled:** each distributor is assigned exactly one
-  product (`consumerProduct`) for its lifetime, drawn weighted by supply — `firms ×
+  product (`distributorProduct`) for its lifetime, drawn weighted by supply — `firms ×
   capacity` (the **108 : 12 : 1** ratio across C-3 / C-4 / C-5), so higher-supply
   products attract more distributors (~**36,000 / 4,000 / 333** per product). No renewals,
   no sector routing. The per-distributor quantity stays small.
-- **Activation:** each tick only a fraction `consumerActivation = 0.2` of the 1,000,000
+- **Activation:** each tick only a fraction `distributorActivation = 0.2` of the 1,000,000
   distributors activate (a fresh random draw per buyer per tick), so ~200,000 buy per tick —
   matching the supply scale and keeping service fair (no buyer is permanently starved).
 - **Demand curve:** `q(P) = qmax / (1 + (P/V)^η)`, elasticity `η = 2`.
@@ -185,7 +185,7 @@ discovered by the derivative-following pricer.
   quantity is a tighter market ⇒ a higher discovered markup.
 
 The flat first-guess markup is canon. Each distributor samples offers — currently **5**
-(`consumerSearchOffers`); the sampling count is calibration, not frozen. Purchase is
+(`distributorSearchOffers`); the sampling count is calibration, not frozen. Purchase is
 **marginal-value** (§12.2): the distributor walks its sampled sellers in total-cost order and
 buys `want = q_at − bought` whole units at each, so the quantity is pinned to the marginal
 seller's price.

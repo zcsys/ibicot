@@ -37,7 +37,7 @@ def runtime() -> KernelRuntime:
     if _runtime is None:
         # Bootstrap with a tiny population so first connect is instant; the UI's
         # `init` message then resets to whatever population its config selects.
-        cfg = json.loads(os.environ.get('ECONOMY_CFG', '{"consumerCount":100,"t2FirmCount":200}'))
+        cfg = json.loads(os.environ.get('ECONOMY_CFG', '{"distributorCount":100,"t2FirmCount":200}'))
         _runtime = KernelRuntime(cfg)
     return _runtime
 

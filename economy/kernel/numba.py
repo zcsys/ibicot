@@ -572,12 +572,12 @@ if _HAVE_NUMBA:
         return cost_sinks
 
     @_njit
-    def _clear_consumers_nb(
-        seed, tick, consumer_count, consumer_activation, consumer_search_offers,
+    def _clear_distributors_nb(
+        seed, tick, distributor_count, distributor_activation, distributor_search_offers,
         loyalty_multiple_t3, tier2_reservation_premium, n_t2,
-        consumer_product, consumer_preferred_supplier,
-        consumer_last_market, consumer_last_supplier, consumer_last_q, consumer_last_fulfilled,
-        consumer_qmax, consumer_choke, consumer_eta,
+        distributor_product, distributor_preferred_supplier,
+        distributor_last_market, distributor_last_supplier, distributor_last_q, distributor_last_fulfilled,
+        distributor_qmax, distributor_choke, distributor_eta,
         market_potential, market_active, market_fulfilled, market_price_lost, market_stock_unmet,
         offers_flat, offers_off, t2_firm_line_count, t2_line_firm,
         t2_fin, t2_price, t2_rel, t2_demand, t2_rel_attempts, t2_rel_available,
@@ -595,41 +595,41 @@ if _HAVE_NUMBA:
                 acc += 1.0
                 cum[i] = acc
 
-        cand = np.empty(1 + consumer_search_offers, dtype=np.int64)
+        cand = np.empty(1 + distributor_search_offers, dtype=np.int64)
         orders = 0
         filled = 0
         activated = 0
         payments = 0.0
 
-        for buyer in range(consumer_count):
-            if _rand(seed, tick, buyer + 2000000) >= consumer_activation:
+        for buyer in range(distributor_count):
+            if _rand(seed, tick, buyer + 2000000) >= distributor_activation:
                 continue
             activated += 1
-            market = consumer_product[buyer]
+            market = distributor_product[buyer]
             pid = market - NP
             cx = complexity[pid]
-            latent = consumer_qmax[buyer]
+            latent = distributor_qmax[buyer]
             qmax = math.ceil(latent)
             rounding = _rand(seed, tick, buyer + 7000000)
             potential = math.floor(latent)
             if rounding < latent % 1:
                 potential += 1
-            consumer_last_market[buyer] = market
+            distributor_last_market[buyer] = market
             if potential <= 0:
                 continue
             t2_potential_orders[pid] += 1
             market_potential[market] += potential
             reference = valuation[pid]
             premium = 1 + tier2_reservation_premium * (cx - 1)
-            choke = reference * consumer_choke[buyer] * premium
-            preferred = consumer_preferred_supplier[buyer]
+            choke = reference * distributor_choke[buyer] * premium
+            preferred = distributor_preferred_supplier[buyer]
             start = offers_off[pid]
             end = offers_off[pid + 1]
             n_cand = 0
             if preferred >= 0 and math.isfinite(t2_price[preferred]):
                 cand[0] = preferred
                 n_cand = 1
-            for sample in range(consumer_search_offers):
+            for sample in range(distributor_search_offers):
                 if start >= end:
                     break
                 draw = _rand(seed, tick, buyer + 8000000 + sample * 1100000) * cum[end - 1]
@@ -655,11 +655,11 @@ if _HAVE_NUMBA:
             else:
                 cheapest = -1
             if preferred >= 0 and math.isfinite(t2_price[preferred]) \
-                    and t2_fin[preferred] >= _demand_units(latent, choke, t2_price[preferred], consumer_eta[buyer], qmax, rounding):
+                    and t2_fin[preferred] >= _demand_units(latent, choke, t2_price[preferred], distributor_eta[buyer], qmax, rounding):
                 preferred_can_fulfill = True
             else:
                 preferred_can_fulfill = False
-            if cheapest >= 0 and t2_fin[cheapest] >= _demand_units(latent, choke, t2_price[cheapest], consumer_eta[buyer], qmax, rounding):
+            if cheapest >= 0 and t2_fin[cheapest] >= _demand_units(latent, choke, t2_price[cheapest], distributor_eta[buyer], qmax, rounding):
                 full_filler = cheapest
             else:
                 full_filler = -1
@@ -668,7 +668,7 @@ if _HAVE_NUMBA:
             primary = -1
             for ci in range(n_cand):
                 candidate = cand[ci]
-                q_at = _demand_units(latent, choke, t2_price[candidate], consumer_eta[buyer], qmax, rounding)
+                q_at = _demand_units(latent, choke, t2_price[candidate], distributor_eta[buyer], qmax, rounding)
                 want = q_at - bought
                 if want < 0:
                     want = 0
@@ -695,9 +695,9 @@ if _HAVE_NUMBA:
                 bought += take
                 if bought >= q_at:
                     break
-            consumer_last_market[buyer] = market
-            consumer_last_supplier[buyer] = primary
-            consumer_last_q[buyer] = total_desired
+            distributor_last_market[buyer] = market
+            distributor_last_supplier[buyer] = primary
+            distributor_last_q[buyer] = total_desired
             market_active[market] += total_desired
             market_price_lost[market] += potential - total_desired
             if total_desired <= 0:
@@ -714,8 +714,8 @@ if _HAVE_NUMBA:
                 new_incumbent = preferred
             else:
                 new_incumbent = primary
-            consumer_preferred_supplier[buyer] = new_incumbent
-            consumer_last_fulfilled[buyer] = bought
+            distributor_preferred_supplier[buyer] = new_incumbent
+            distributor_last_fulfilled[buyer] = bought
             if primary != preferred and preferred_can_fulfill:
                 charge = _loyalty_charge(reference, t2_rel[preferred], loyalty_multiple_t3)
                 t2_cash[t2_line_firm[preferred]] += charge
@@ -1023,7 +1023,7 @@ def operate_tier2(world, cfg, tick):
     return cs
 
 
-def clear_consumers(world, cfg, tick):
+def clear_distributors(world, cfg, tick):
     flat, off = market_offers_table(world, 2, tick)
     val = procurement_arrays(cfg)
     # Per-tick demand-ledger reset (mirrors the top of clearEndUsers in JS).
@@ -1032,17 +1032,17 @@ def clear_consumers(world, cfg, tick):
     world.marketFulfilled.fill(0)
     world.marketPriceLost.fill(0)
     world.marketStockUnmet.fill(0)
-    world.consumerLastMarket.fill(-1)
-    world.consumerLastSupplier.fill(-1)
-    world.consumerLastQ.fill(0)
-    world.consumerLastFulfilled.fill(0)
-    return _clear_consumers_nb(
-        cfg['seed'], tick, cfg['consumerCount'],
-        float(cfg['consumerActivation']), cfg['consumerSearchOffers'], float(world.lm3),
+    world.distributorLastMarket.fill(-1)
+    world.distributorLastSupplier.fill(-1)
+    world.distributorLastQ.fill(0)
+    world.distributorLastFulfilled.fill(0)
+    return _clear_distributors_nb(
+        cfg['seed'], tick, cfg['distributorCount'],
+        float(cfg['distributorActivation']), cfg['distributorSearchOffers'], float(world.lm3),
         float(cfg['t2ReservationPremium']), N_T2,
-        world.consumerProduct, world.consumerPreferredSupplier,
-        world.consumerLastMarket, world.consumerLastSupplier, world.consumerLastQ, world.consumerLastFulfilled,
-        world.consumerQMax, world.consumerChoke, world.consumerEta,
+        world.distributorProduct, world.distributorPreferredSupplier,
+        world.distributorLastMarket, world.distributorLastSupplier, world.distributorLastQ, world.distributorLastFulfilled,
+        world.distributorQMax, world.distributorChoke, world.distributorEta,
         world.marketPotential, world.marketActive, world.marketFulfilled, world.marketPriceLost, world.marketStockUnmet,
         flat, off, world.t2FirmLineCount, world.t2LineFirm,
         world.t2Fin, world.t2Price, world.t2Rel, world.t2Demand, world.t2RelAttempts, world.t2RelAvailable,

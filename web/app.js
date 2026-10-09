@@ -65,7 +65,7 @@
     'baseCost', 't0Markup', 'minWholesaleLot',
     't1Equity', 't1License', 't1Machinery', 't1Capacity', 't1MaterialCost', 't1Markup',
     't2Equity', 't2License', 't2MaterialCost', 'conversionFactor', 'storage',
-    'consumerActivation', 'consumerSearchOffers',
+    'distributorActivation', 'distributorSearchOffers',
     'chokeMin', 'chokeMax', 'elasticity', 'productionMarginBand', 't2ReservationPremium',
     'pricingAggressiveness', 'alpha', 'wholesalePriceResponse', 'priceObservationTicks',
     'reliabilityAlpha', 'switchingStableBand', 'loyaltyEmaAlpha',
@@ -145,7 +145,7 @@
       'supplyCapacity',
       'readyStock',
       'volume',
-      'consumerVolume',
+      'distributorVolume',
       'intermediateVolume',
       'hhi',
       'potential',
@@ -665,7 +665,7 @@
     if (complexityHistory.length > 240) complexityHistory.shift();
   }
   function renderDashboard(s) {
-    const t0 = s.tiers.t0, t1 = s.tiers.t1, t2 = s.tiers.t2, distributors = s.tiers.endUsers;
+    const t0 = s.tiers.t0, t1 = s.tiers.t1, t2 = s.tiers.t2, distributors = s.tiers.distributors;
     const money = { economyCash: t0.cash + t1.cash + t2.cash, economyEquity: t0.equity + t1.equity + t2.equity,
       economySpending: distributors.revenue, t0Cash: t0.cash, t0Equity: t0.equity, t0Revenue: t0.revenue,
       t0COGS: t0.cogs, t0GrossProfit: t0.grossProfit,
@@ -675,10 +675,10 @@
     const integers = { economyInventory: t0.inventory + t1.inventory + t2.inventory, economyPurchases: distributors.fulfilled,
       t0Firms: t0.firms, t0Inventory: t0.inventory, t0Made: t0.made, t0Sold: t0.sold,
       t1Firms: t1.firms, t1Raw: t1.raw, t1Finished: t1.finished, t1Active: t1.activeFirms, t1Players: t1.players,
-      t1Bought: t1.bought, t1Made: t1.made, t1Sold: t1.sold, t1ConsumerSold: sum(s.products.map(p => p.consumerVolume)),
+      t1Bought: t1.bought, t1Made: t1.made, t1Sold: t1.sold, t1DistributorSold: sum(s.products.map(p => p.distributorVolume)),
       t1BusinessSold: sum(s.products.map(p => p.intermediateVolume)),
-      t1CustomerDesired: t1.desired, t1CustomerFulfilled: t1.fulfilled, t1StockUnmet: t1.stockUnmet, consumerPopulation: distributors.population,
-      consumerActivated: s.performance.activatedConsumers, demandPotential: distributors.potential, demandActive: distributors.active,
+      t1CustomerDesired: t1.desired, t1CustomerFulfilled: t1.fulfilled, t1StockUnmet: t1.stockUnmet, distributorPopulation: distributors.population,
+      distributorActivated: s.performance.activatedDistributors, demandPotential: distributors.potential, demandActive: distributors.active,
       demandPriceLost: distributors.priceLost, demandStockUnmet: distributors.stockUnmet, demandFulfilled: distributors.fulfilled, orders: distributors.orders };
     for (const [id, value] of Object.entries(integers)) $(id).textContent = fmtInt(value);
     const ratios = { fillRate: meaningfulRatio(distributors.fulfilled, distributors.active),
@@ -714,9 +714,9 @@
       product !== '' ? [M.PRODUCTS[+product].name] : ['C-1 mean market price', 'C-2 mean market price'], 5, true, false, false);
     drawComparison('cohortChart', s.cohorts.map(c => ({...c, name: c.sector})), 'grossProfit', true);
     drawComparison('revenueChart', s.cohorts.map(c => ({...c, name: c.sector})), 'revenue', true);
-    drawLine('demandChart', hist, ['potential', 'active', 'fulfilled'].map(key => hist.map(point => point.tiers.endUsers[key])), ['Latent', 'Desired', 'Fulfilled'], 0);
-    drawLine('consumerFillChart', hist, ['active', 'orders'].map((key, i) => hist.map(point => meaningfulRatio(point.tiers.endUsers[i ? 'fulfilledOrders' : 'fulfilled'], point.tiers.endUsers[key]))), ['Unit fulfillment', 'Order fulfillment'], 1, false, true);
-    drawLine('consumerSpendingChart', hist, [hist.map(point => point.tiers.endUsers.revenue)], ['Spending'], 0, true);
+    drawLine('demandChart', hist, ['potential', 'active', 'fulfilled'].map(key => hist.map(point => point.tiers.distributors[key])), ['Latent', 'Desired', 'Fulfilled'], 0);
+    drawLine('distributorFillChart', hist, ['active', 'orders'].map((key, i) => hist.map(point => meaningfulRatio(point.tiers.distributors[i ? 'fulfilledOrders' : 'fulfilled'], point.tiers.distributors[key]))), ['Unit fulfillment', 'Order fulfillment'], 1, false, true);
+    drawLine('distributorSpendingChart', hist, [hist.map(point => point.tiers.distributors.revenue)], ['Spending'], 0, true);
   }
   function renderComparisons(s) {
     const moneyKeys = new Set(['cash','cashPerFirm','equity','revenue','revenuePerFirm','cogs','grossProfit','machineryPrice','avgPrice','avgUnitCost','profitPerLine']);
@@ -797,7 +797,7 @@
     $('retail').innerHTML = sortedTableRows('retail', s.products)
       .map(
         (x) =>
-          `<tr><th>${displayProduct(x.code)}</th><td>${x.complexity === 1 ? 'C-1 business inputs' : 'C-2 business inputs'}</td><td>${fmtUnitPrice(x.retailPrice)}</td><td>${fmtInt(x.supplyCapacity)}</td><td>${fmtInt(x.readyStock)}</td><td>${fmtInt(x.volume)}</td><td>${fmtInt(x.consumerVolume)}</td><td>${fmtInt(x.intermediateVolume)}</td><td>${x.volume > 0 ? x.hhi.toFixed(3) : "—"}</td><td>${x.potential == null ? "—" : fmtInt(x.potential)}</td><td>${fmtInt(x.active)}</td><td>${fmtInt(x.fulfilled)}</td><td>${pct(meaningfulRatio(x.fulfilled,x.active))}</td><td>${fmtInt(x.stockUnmet)}</td></tr>`,
+          `<tr><th>${displayProduct(x.code)}</th><td>${x.complexity === 1 ? 'C-1 business inputs' : 'C-2 business inputs'}</td><td>${fmtUnitPrice(x.retailPrice)}</td><td>${fmtInt(x.supplyCapacity)}</td><td>${fmtInt(x.readyStock)}</td><td>${fmtInt(x.volume)}</td><td>${fmtInt(x.distributorVolume)}</td><td>${fmtInt(x.intermediateVolume)}</td><td>${x.volume > 0 ? x.hhi.toFixed(3) : "—"}</td><td>${x.potential == null ? "—" : fmtInt(x.potential)}</td><td>${fmtInt(x.active)}</td><td>${fmtInt(x.fulfilled)}</td><td>${pct(meaningfulRatio(x.fulfilled,x.active))}</td><td>${fmtInt(x.stockUnmet)}</td></tr>`,
       )
       .join('');
     $('cohorts').innerHTML = sortedTableRows('cohorts', s.cohorts)
@@ -908,7 +908,7 @@
     drawComparison('tier2ComplexityComparisonChart',(s.tier2Complexity || []).map(row => ({ ...row, fillRate: meaningfulRatio(row.fulfilled,row.active) })),complexityMetric,
       ['revenue','grossProfit'].includes(complexityMetric),['utilization','fillRate'].includes(complexityMetric));
     const p = s.performance;
-    $('perf').textContent = p.lastTickMs.toFixed(1)+' ms / tick · '+(p.stateBytes/1048576).toFixed(1)+' MB state · '+fmtInt(p.activatedConsumers)+' active external buyers';
+    $('perf').textContent = p.lastTickMs.toFixed(1)+' ms / tick · '+(p.stateBytes/1048576).toFixed(1)+' MB state · '+fmtInt(p.activatedDistributors)+' active external buyers';
   }
   $('t1PriceProduct').innerHTML += M.PRODUCTS.map((p,i)=>`<option value="${i}">${p.name}</option>`).join('');
   for (const id of ['overviewTier','t1PriceProduct']) $(id).addEventListener('change',()=>{if(latestSnapshot)renderDashboard(latestSnapshot);});

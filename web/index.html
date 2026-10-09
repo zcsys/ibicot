@@ -585,8 +585,8 @@
           <div class="param-group">
             <h3>Distributors · Demand</h3>
             <div class="group-note">1,000,000 distributors; V = unit cost, η = elasticity.</div>
-            <div class="field"><label>Activation / tick</label><input id="consumerActivation" type="number" min="0" max="1" step=".01" value=".2" /></div>
-            <div class="field"><label>Comparison offers</label><input id="consumerSearchOffers" type="number" min="1" max="20" value="5" /></div>
+            <div class="field"><label>Activation / tick</label><input id="distributorActivation" type="number" min="0" max="1" step=".01" value=".2" /></div>
+            <div class="field"><label>Comparison offers</label><input id="distributorSearchOffers" type="number" min="1" max="20" value="5" /></div>
             <div class="field"><label>Value multiplier min</label><input id="chokeMin" type="number" step=".01" value="1.8" /></div>
             <div class="field"><label>Value multiplier max</label><input id="chokeMax" type="number" step=".01" value="3" /></div>
             <div class="field"><label>Elasticity η</label><input id="elasticity" type="number" step=".05" value="2" /></div>
@@ -1176,7 +1176,7 @@
               </div>
               <div class="stat">
                 <span>Sales to external buyers · units / tick</span>
-                <b id="t1ConsumerSold">—</b>
+                <b id="t1DistributorSold">—</b>
               </div>
               <div class="stat">
                 <span>Sales to firms · units / tick</span>
@@ -1744,8 +1744,8 @@
             </div>
           </section>
         </section>
-        <section id="distributors" class="dashboard-tier stack" aria-labelledby="consumersHeading">
-          <h2 id="consumersHeading">Distributors</h2>
+        <section id="distributors" class="dashboard-tier stack" aria-labelledby="distributorsHeading">
+          <h2 id="distributorsHeading">Distributors</h2>
           <section class="panel">
             <h3>Demand & fulfillment</h3>
             <p class="analytics-note" id="demandCaption">
@@ -1757,11 +1757,11 @@
             <div class="stat-grid industry-kpis">
               <div class="stat">
                 <span>Distributors</span>
-                <b id="consumerPopulation">—</b>
+                <b id="distributorPopulation">—</b>
               </div>
               <div class="stat">
                 <span>Activated buyers / tick</span>
-                <b id="consumerActivated">—</b>
+                <b id="distributorActivated">—</b>
               </div>
               <div class="stat">
                 <span>Latent demand · units / tick</span>
@@ -1823,14 +1823,14 @@
               <div>
                 <span class="chart-caption">Unit & order fulfillment · %</span>
                 <div class="chart">
-                  <canvas id="consumerFillChart" role="img" aria-label="Unit & order fulfillment · %">
+                  <canvas id="distributorFillChart" role="img" aria-label="Unit & order fulfillment · %">
                   </canvas>
                 </div>
               </div>
               <div>
                 <span class="chart-caption">Distributor spending · $ / tick</span>
                 <div class="chart">
-                  <canvas id="consumerSpendingChart" role="img" aria-label="Distributor spending · $ / tick">
+                  <canvas id="distributorSpendingChart" role="img" aria-label="Distributor spending · $ / tick">
                   </canvas>
                 </div>
               </div>

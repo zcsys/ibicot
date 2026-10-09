@@ -58,8 +58,8 @@ def stats_row(world, cfg, tick, month):
     row['t2Equity'] = float(world.t2Cash[:cfg['t2FirmCount']].sum()
                             + world.t2EqBook[:cfg['t2FirmCount']].sum()
                             + cfg['t2FirmCount'] * cfg['t2License'])
-    row['consumersActive'] = float(world.marketActive.sum())
-    row['consumersFulfilled'] = float(world.marketFulfilled.sum())
+    row['distributorsActive'] = float(world.marketActive.sum())
+    row['distributorsFulfilled'] = float(world.marketFulfilled.sum())
     row['stockUnmet'] = float(world.marketStockUnmet.sum())
     row['t0Demand'] = float(world.t0Demand.sum())
     row['t0Sold'] = float(world.t0Sold.sum())
@@ -84,7 +84,7 @@ NE, NP, N0, N1 = M.NE, M.NP, M.N0, M.N1
 M4 = M.T2_MAX_PRODUCTS_PER_FIRM
 MONTH = M.MONTH
 N2_FIRMS = M.N2_FIRMS
-N_CONSUMERS = M.N_CONSUMERS
+N_DISTRIBUTORS = M.N_DISTRIBUTORS
 
 _EI = {element: i for i, element in enumerate(M.ELEMENTS)}
 _PI = {p['code']: i for i, p in enumerate(M.PRODUCTS)}
@@ -210,7 +210,7 @@ class KernelRuntime:
         self._init_admin()
         self.workerStats = {'steps': 0, 'lastTickMs': 0.0, 'totalTickMs': 0.0}
         self.adminAccounting = {'equipmentSinks': 0, 'sequence': 0, 'lastEquipmentReceipt': None}
-        self.state = {'activeOrders': 0, 'fulfilledOrders': 0, 'activatedConsumers': 0, 'consumerPayments': 0}
+        self.state = {'activeOrders': 0, 'fulfilledOrders': 0, 'activatedDistributors': 0, 'distributorPayments': 0}
         self.lastReportAt = time.monotonic()
         self.lastReportTick = 0
         return self.publish()
@@ -267,22 +267,22 @@ class KernelRuntime:
     def apply_config(self, patch):
         if patch is None:
             return self.publish()
-        for key in ('consumerCount', 't2FirmCount'):
+        for key in ('distributorCount', 't2FirmCount'):
             if key in patch and patch[key] != self.cfg[key]:
                 raise ValueError('Population changes require Reset.')
         merged = dict(self.cfg)
         merged.update(patch)
         self.cfg = normalize_config(merged)
-        # Recomputed wholesale (vectorized): choke/eta are the only per-consumer
+        # Recomputed wholesale (vectorized): choke/eta are the only per-distributor
         # fields that respond to a live config change (routing is supply-driven
         # and gated on Reset by the population guard above).
-        n = self.cfg['consumerCount']
+        n = self.cfg['distributorCount']
         cids = np.arange(n)
         b = hash_seed_vec(self.cfg['seed'], 9000000 + cids)
-        self.world.consumerChoke[:n] = (self.cfg['chokeMin']
+        self.world.distributorChoke[:n] = (self.cfg['chokeMin']
                                         + b.astype(np.float64) / 4294967296.0
                                         * (self.cfg['chokeMax'] - self.cfg['chokeMin'])).astype(np.float32)
-        self.world.consumerEta[:n] = self.cfg['elasticity']
+        self.world.distributorEta[:n] = self.cfg['elasticity']
         return self.publish()
 
     # ------------------------------------------------------------------
@@ -698,7 +698,7 @@ class KernelRuntime:
             'orderFillRate': fulfilledOrders / orderTotal if orderTotal else 0.0,
             'priceLossShare': priceLost / potential if potential else 0.0,
             'stockUnmetShare': stockUnmet / active if active else 0.0,
-            'retailRevenue': self.state.get('consumerPayments', 0),
+            'retailRevenue': self.state.get('distributorPayments', 0),
             'difficultyMean': float(world.difficulty.mean()),
             'difficultyMin': float(world.difficulty.min()),
             'difficultyMax': float(world.difficulty.max()),
@@ -1065,7 +1065,7 @@ class KernelRuntime:
                 'made': made, 'sold': float(analytics['rVol'][p]), 'cogs': cogs,
                 'avgPrice': avg_price, 'avgUnitCost': avg_uc,
                 'retailPrice': float(analytics['rP'][p]), 'volume': float(analytics['rVol'][p]),
-                'consumerVolume': float(world.marketFulfilled[p]),
+                'distributorVolume': float(world.marketFulfilled[p]),
                 'intermediateVolume': float(world.t1IntermediateSold[p]),
                 'intermediateRevenue': float(world.t1IntermediateRevenue[p]),
                 'revenue': float(analytics['rRev'][p]), 'supplyCapacity': self._product_supply_capacity(p),
@@ -1077,7 +1077,7 @@ class KernelRuntime:
 
         t2ProductStats = []
         for p in M.T2_PRODUCTS:
-            t2ProductStats.append({'customerType': 'Consumers', 'code': p['code'], 'name': p['name'],
+            t2ProductStats.append({'customerType': 'Distributors', 'code': p['code'], 'name': p['name'],
                                    'needType': p['needType'], 'kind': p['kind'], 'sector': p['sector'],
                                    'complexity': p['complexity'],
                                    'primaryMaterial': next(x['name'] for x in M.PRODUCTS if x['code'] == p['primaryMaterial']),
@@ -1313,7 +1313,7 @@ class KernelRuntime:
                 'reliability': float(world.t1Rel[sid * NP + spi])}
 
         lastSnapshot = {
-            'world': dict(M.WORLD_STORY, population=cfg['consumerCount']),
+            'world': dict(M.WORLD_STORY, population=cfg['distributorCount']),
             'tick': self.tick, 'month': self.month, 'calendar': M.calendar_at(self.tick),
             'invention': {'possible': M.T2_Catalog_COUNT, 'invented': len(M.T2_PRODUCTS),
                           'reserved': len(M.T2_UNINVENTED_PRODUCTS)},
@@ -1337,7 +1337,7 @@ class KernelRuntime:
                             'averageTickMs': self.workerStats['totalTickMs'] / max(1, self.workerStats['steps']),
                             'stateBytes': int(sum(a.nbytes for a in (getattr(world, n) for n in world.array_names))),
                             'activeLines': int(world.t2LineCount),
-                            'activatedConsumers': self.state.get('activatedConsumers', 0),
+                            'activatedDistributors': self.state.get('activatedDistributors', 0),
                             'orders': self.state.get('activeOrders', 0)},
             'cohorts': analytics['cohort'], 't0Companies': self._company_summaries_t0(),
             'analyticsHistory': self.analyticsHistory,
@@ -1374,7 +1374,7 @@ class KernelRuntime:
                        'capacity': t2Totals['capacity'], 'utilization': t2Totals['utilization'],
                        'margin': t2Totals['margin'], 'desired': t2Totals['active'],
                        'fulfilled': t2Totals['fulfilled'], 'fillRate': t2Totals['fillRate']},
-                'endUsers': {'population': cfg['consumerCount'], 'potential': analytics['potential'],
+                'distributors': {'population': cfg['distributorCount'], 'potential': analytics['potential'],
                              'active': analytics['active'], 'fulfilled': analytics['fulfilled'],
                              'priceLost': analytics['priceLost'], 'stockUnmet': analytics['stockUnmet'],
                              'orders': analytics['orderTotal'], 'fulfilledOrders': analytics['fulfilledOrders'],
@@ -1387,8 +1387,8 @@ class KernelRuntime:
             'selected': selected,
             'engine': 'python', 'expandedDetails': self._watched_details(),
         }
-        lastSnapshot['endUsers'] = lastSnapshot['tiers']['endUsers']
-        lastSnapshot['tiers']['t3'] = lastSnapshot['endUsers']
+        lastSnapshot['distributors'] = lastSnapshot['tiers']['distributors']
+        lastSnapshot['tiers']['t3'] = lastSnapshot['distributors']
         analytics['latest']['tiers'] = {t: {k: (list(v) if isinstance(v, (list, np.ndarray)) else v)
                                              for k, v in s.items()}
                                         for t, s in lastSnapshot['tiers'].items()}

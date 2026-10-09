@@ -21,7 +21,7 @@ def default_cfg() -> dict:
         'sigma': 0.005,
         'difficultyMin': 0.7,
         'difficultyMax': 1.4,
-        'consumerCount': M.N_CONSUMERS,
+        'distributorCount': M.N_DISTRIBUTORS,
         't2FirmCount': M.N2_FIRMS,
 
         # Tier 0 (extraction)
@@ -56,8 +56,8 @@ def default_cfg() -> dict:
         'footprint': {1: 1_000.0, 2: 1_000.0, 3: 3_000.0, 4: 4_000.0, 5: 5_000.0},
 
         # Demand / distributors (T3)
-        'consumerSearchOffers': 5,
-        'consumerActivation': 0.2,       # fraction of distributors that activate each tick
+        'distributorSearchOffers': 5,
+        'distributorActivation': 0.2,       # fraction of distributors that activate each tick
         'chokeMin': 1.8,
         'chokeMax': 3.0,
         'elasticity': 2.0,              # eta = 2 (T3 distributor demand)
@@ -123,7 +123,7 @@ def normalize_config(c) -> dict:
     d['sigma'] = max(0, d['sigma'])
 
     # Topology
-    d['consumerCount'] = max(1, min(M.N_CONSUMERS, math.floor(d['consumerCount'] or M.N_CONSUMERS)))
+    d['distributorCount'] = max(1, min(M.N_DISTRIBUTORS, math.floor(d['distributorCount'] or M.N_DISTRIBUTORS)))
     d['t2FirmCount'] = max(1, min(M.N2_FIRMS, math.floor(d['t2FirmCount'] or M.N2_FIRMS)))
 
     # Tier 0
@@ -147,8 +147,8 @@ def normalize_config(c) -> dict:
     d['storage'] = max(1, d['storage'])
 
     # Demand
-    d['consumerSearchOffers'] = max(1, min(20, math.floor(d['consumerSearchOffers'])))
-    d['consumerActivation'] = M.clamp(d['consumerActivation'], 0, 1)
+    d['distributorSearchOffers'] = max(1, min(20, math.floor(d['distributorSearchOffers'])))
+    d['distributorActivation'] = M.clamp(d['distributorActivation'], 0, 1)
     d['chokeMin'] = max(0.01, d['chokeMin'])
     d['chokeMax'] = max(d['chokeMin'], d['chokeMax'])
     d['elasticity'] = max(0.05, min(10, d['elasticity']))

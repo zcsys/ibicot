@@ -62,13 +62,13 @@
     const complexity = Object.values(p.inputs).reduce((sum, quantity) => sum + quantity, 0);
     return Object.freeze({ ...p, companyName: T1_COMPANY_NAMES[index], inputs: Object.freeze(p.inputs), complexity,
       role: 'intermediate-only',
-      consumerValue: complexity === 1 ? 1.875 : 3.75, equipmentPrice: T1_BASIC_MACHINERY });
+      distributorValue: complexity === 1 ? 1.875 : 3.75, equipmentPrice: T1_BASIC_MACHINERY });
   }));
 
   const WORLD_STORY = Object.freeze({ name: 'Star Business',
     tagline: 'Build the Colony. Supply the Fleet.', population: 1000000,
     producers: 'Autonomous refineries and manufacturers building a colony into a supply base',
-    consumers: 'One million distributors buying, switching suppliers, and keeping the colony running',
+    distributors: 'One million distributors buying, switching suppliers, and keeping the colony running',
     player: 'Human investor', entry: 'An initial investment in a refinery or manufacturing business',
     competitors: Object.freeze(['Opportunist human investors', 'Robotic executive agents']),
     alphaPlayableTiers: Object.freeze(['T1']),
@@ -122,7 +122,7 @@
     'E+A': 'Robotics & Field Services',
     'F+A': 'Defense & Emergency Systems',
   });
-  // Design priors for consumer demand, independent of the number of markets.
+  // Design priors for distributor demand, independent of the number of markets.
   const T2_SECTOR_WEIGHTS = Object.freeze(Array(10).fill(1));
   // Demand baskets have equal access to every other sector; no hub
   // sector receives extra demand merely from having more neighbors.
@@ -133,7 +133,7 @@
   // Stock coverage is measured against sales, not against idle nameplate capacity.
   const ECONOMY_DEFAULTS = Object.freeze({
     seed: 137, difficultyTarget: 1, theta: .15, sigma: .005, difficultyMin: .7, difficultyMax: 1.4,
-    consumerCount: 1000000, t2FirmCount: 60000,
+    distributorCount: 1000000, t2FirmCount: 60000,
     t0Equity: 75000000, t0License: 22000000, t0Machinery: 12250000, t0Reserve: 1000000,
     t0Capacity: 200000, t0Storage: 500000,
     baseCost: 1, t0Markup: .25, minWholesaleLot: 1000,
@@ -145,8 +145,8 @@
     t2MaterialCost: 1.875, conversionFactor: .25,
     storage: 20000,
     footprint: Object.freeze({ 1: 1000, 2: 1000, 3: 3000, 4: 4000, 5: 5000 }),
-    consumerSearchOffers: 5,
-    consumerActivation: .2,
+    distributorSearchOffers: 5,
+    distributorActivation: .2,
     chokeMin: 1.8, chokeMax: 3, elasticity: 2,
     productionMarginBand: .05,
     t2ReservationPremium: .25,
@@ -613,7 +613,7 @@ const recipes = [
   const EQUIPMENT_PRICE = Object.freeze({ 3: 75000, 4: 375000, 5: 420000 });
   const T2_CAPACITY = Object.freeze({ 3: 30, 4: 20, 5: 10 });
   const T2_CONVERSION_COST = Object.freeze({ 3: 0.5, 4: 0.75, 5: 1.0 });
-  const T2_CONSUMER_VALUE = Object.freeze({ 3: 3.5, 4: 4.0, 5: 4.5 });
+  const T2_DISTRIBUTOR_VALUE = Object.freeze({ 3: 3.5, 4: 4.0, 5: 4.5 });
   const INVENTED_PER_COMPLEXITY = Object.freeze({ 3: 2, 4: 6, 5: 12 });
 
   const sectorSignature = (sectorIndex) => Object.keys(T1_SECTOR_BY_CODE)
@@ -638,7 +638,7 @@ const recipes = [
       capacity: T2_CAPACITY[complexity], conversionCost: T2_CONVERSION_COST[complexity],
       needWeight: 1 / INVENTED_PER_COMPLEXITY[complexity], demandWeight: 1 / 20,
       demandFactor: 0.45 ** (complexity - 1), reservationPremium: 1 + 0.45 * (complexity - 1),
-      consumerValue: T2_CONSUMER_VALUE[complexity], invented,
+      distributorValue: T2_DISTRIBUTOR_VALUE[complexity], invented,
     });
   };
 
@@ -696,7 +696,7 @@ const recipes = [
     clamp(current + clamp(alpha, 0, 1) * (score - current), 0, 1);
   // Derivative-following pricebot: Kephart, Hanson & Greenwald (2000), §3.2.
   // Total observed gross profit per tick is the objective, not margin per unit.
-  // No consumer value, normal t0Markup or market-wide ideal enters this rule.
+  // No distributor value, normal t0Markup or market-wide ideal enters this rule.
   const adaptivePrice = ({ oldPrice, unitCost, profit, previousProfit, direction = 1,
     sales, stock, demand = sales, available = sales, stepScale = 1,
     pricingAggressiveness = 0.35, response = 0.05 }) => {
