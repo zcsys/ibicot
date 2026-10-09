@@ -152,7 +152,7 @@
     t2ReservationPremium: .25,
     pricingAggressiveness: .35, alpha: .15, reliabilityAlpha: .15, switchingStableBand: .025,
     wholesalePriceResponse: .05, priceObservationTicks: 30,
-    loyaltyMultiple: Object.freeze({ 1: 83.33, 2: Object.freeze({ 3: 1.21, 4: 0.65, 5: 0.26 }), 3: 0.97 }),
+    loyaltyMultiple: Object.freeze({ 1: 41.665, 2: Object.freeze({ 3: 0.605, 4: 0.325, 5: 0.13 }), 3: 0.485 }),
     loyaltyEmaAlpha: .01,
     researchPriceMinimumOpportunities: 0, researchPriceMinimumPotentialOrders: 0,
     researchPriceMaxObservationTicks: 3600,

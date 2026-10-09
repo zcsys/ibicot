@@ -398,7 +398,7 @@ only meaningful once the firm is actually transacting:
 1. **No sales** → if stock remains, lower; if no stock, hold. (This prevents phantom
    scarcity — e.g. an input-starved firm — from ratcheting the price up.)
 2. **Scarce** (unmet demand: `demand > sales`) → raise, *regardless of the profit baseline*,
-   so a lively downstream market is transmitted upstream (the incumbent supplier's 5M
+   so a lively downstream market is transmitted upstream (the incumbent supplier's 4M
    inventory buffer no longer hides demand pressure).
 3. **Profit baseline available** (a prior observation's realized profit exists) → pure
    derivative-following with a **2 % dead band**: reverse when profit fell ≥ 2 %, continue
@@ -423,14 +423,19 @@ is pulled back to a profitable level.
 
 **Step size** adapts: ×1.2 on continuation, no halving on reversal (×1.0), clamped to `[0.01, 1]`.
 The price moves multiplicatively: `P ← clamp(P × exp(± pricingAggressiveness × response × scale))`, where
-`clamp` is the guardrail interval `[MIN_UNIT_PRICE, MAX_UNIT_PRICE]`. After each
+`clamp` is the guardrail interval `[MIN_UNIT_PRICE, MAX_UNIT_PRICE]`, then rounded to
+whole cents (`round_to_cent`). If the rounded quote is unchanged and the direction is
+*down*, the direction flips *up* (`if nxt == price and next_direction < 0: next_direction = 1`),
+so a walk cannot wedge frozen at a cent boundary. After each
 observation the profit/sales/demand/opportunity accumulators and the age counter reset.
 
 **Consumer purchase is split across suppliers in whole units** (no fractional fill, no
-all-or-nothing from one seller): a consumer fills `q(P)` by taking `⌊stock⌋` whole units
-from each sampled seller in total-cost order (incumbent first; the loyalty charge below
-applies) until satisfied or offers are exhausted. The unsatisfied remainder is recorded as
-`endStockUnmet`.
+all-or-nothing from one seller). Demand is **marginal-value**: the consumer walks its
+sampled sellers in total-cost order (incumbent first; the loyalty charge below applies),
+and at each seller computes `q_at = demand(price)` then buys `want = max(0, q_at − bought)`
+whole units (capped by that seller's `⌊stock⌋`), stopping once `bought ≥ q_at`. The total
+quantity is therefore pinned to the *marginal* seller's price — a rogue cheap seller
+cannot inflate demand. The unsatisfied remainder is recorded as `endStockUnmet`.
 
 **Loyalty charge (real, paid to the incumbent).** A buyer's sampled offers are ranked by the total
 cost of filling its order `q` from each seller alone. Staying with the incumbent
@@ -442,9 +447,9 @@ challenger costs `P_chal × q + loyaltyCharge`, where
 `unit_cost` is the product's canonical cost-ladder unit cost (§4/§12.2) — a *fixed*
 reference, independent of the current market price, so a price drop does not shrink the
 barrier — and `reliability_inc` is the incumbent's reliability (0–1), so the
-`(1 + reliability)` factor makes sourcing away from a reliable supplier cost up to 2× more. `M` is a **per-complexity** multiple, sized so the charge equals ~10 % of a typical
-order: **83.33** for the T1 raw buyer (C-1/C-2, equal), **{3: 1.21, 4: 0.65, 5: 0.26}**
-for T2 intermediate buyers by the buying firm's complexity, and **0.97** for T3 consumers.
+`(1 + reliability)` factor makes sourcing away from a reliable supplier cost up to 2× more. `M` is a **per-complexity** multiple, sized so the charge equals ~5 % of a typical
+order: **41.665** for the T1 raw buyer (C-1/C-2, equal), **{3: 0.605, 4: 0.325, 5: 0.13}**
+for T2 intermediate buyers by the buying firm's complexity, and **0.485** for T3 consumers.
 The charge is **fixed per disloyal purchase** (independent of order size, so
 a 1-unit order cannot dodge it) and is **paid to the incumbent**: deducted from the buyer's cash and credited to the incumbent — a
 transfer, not a sink.
@@ -456,9 +461,9 @@ complexity (`material spend ÷ purchases`), T3 consumer (`consumer payments ÷ f
 orders`) — into an EMA (`α = loyaltyEmaAlpha`, default 0.01). Once per **year**
 (every `ticksPerYear` ticks) it re-derives
 
-`M = 0.10 × AOV / (unit_cost × 1.5)`,
+`M = 0.05 × AOV / (unit_cost × 1.5)`,
 
-so the charge keeps tracking ~10 % of a typical order as prices and margins drift, with no
+so the charge keeps tracking ~5 % of a typical order as prices and margins drift, with no
 per-generation bookkeeping. `unit_cost` here is the same canonical reference ($1 raw,
 $1.50 material, mean T2 unit cost).
 
@@ -483,8 +488,8 @@ tick. Uniform across T0, T1 and T2.
 **Parameters.** `pricingAggressiveness` (0.35), `wholesalePriceResponse` (0.05, base step
 fraction), `priceObservationTicks` (30, cadence), `researchPriceMinimumOpportunities`
 (0, minimum traffic before repricing; 0 = repriced at cadence). `loyaltyMultiple`
-(per-complexity *bootstrap*: C-1/C-2 **83.33**, C-3 **1.21**, C-4 **0.65**, C-5 **0.26**,
-T3 **0.97**, × `unit_cost` × `(1 + reliability)` — the loyalty charge) and
+(per-complexity *bootstrap*: C-1/C-2 **41.665**, C-3 **0.605**, C-4 **0.325**, C-5 **0.13**,
+T3 **0.485**, × `unit_cost` × `(1 + reliability)` — the loyalty charge) and
 `loyaltyEmaAlpha` (**0.01**, the AOV-EMA smoothing driving the adaptive regime above).
 `switchingStableBand` (0.025) drives the
 price-stability *metric*, not the price itself.

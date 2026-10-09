@@ -1086,7 +1086,7 @@ def expand_tier2_bots(world, cfg, t2_products, tick):
 def update_loyalty_regime(world, cfg, counts, tick):
     """End-of-tick: fold this tick's observed average order value into the
     per-class EMA every tick; re-derive the loyalty multiples
-    ``M = 0.10 × AOV / (unit_cost × 1.5)`` once per year (the charge ≈ 10 % of
+    ``M = 0.05 × AOV / (unit_cost × 1.5)`` once per year (the charge ≈ 5 % of
     a typical order at reliability 0.5).  Pure scalar math, identical for the
     NumPy and pure-Python paths."""
     alpha = float(cfg['loyaltyEmaAlpha'])
@@ -1110,9 +1110,9 @@ def update_loyalty_regime(world, cfg, counts, tick):
 
     # Re-derive M from the smoothed AOV once per year (piecewise-constant).
     if tick % M.TIME['ticksPerYear'] == 0:
-        world.lm1 = 0.10 * world.aov1 / (world.lmUnitCost1 * 1.5)
-        world.lm2 = 0.10 * world.aov2 / (world.lmUnitCost2 * 1.5)
-        world.lm3 = 0.10 * world.aov3 / (world.lmUnitCost3 * 1.5)
+        world.lm1 = 0.05 * world.aov1 / (world.lmUnitCost1 * 1.5)
+        world.lm2 = 0.05 * world.aov2 / (world.lmUnitCost2 * 1.5)
+        world.lm3 = 0.05 * world.aov3 / (world.lmUnitCost3 * 1.5)
 
 
 def tick(world: WorldState, cfg, tick, products=None, profiles=None, t2_products=None, state=None):

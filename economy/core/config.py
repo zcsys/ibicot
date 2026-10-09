@@ -71,7 +71,7 @@ def default_cfg() -> dict:
         'switchingStableBand': 0.025,
         'wholesalePriceResponse': 0.05,
         'priceObservationTicks': 30,
-        'loyaltyMultiple': {1: 83.33, 2: {3: 1.21, 4: 0.65, 5: 0.26}, 3: 0.97},
+        'loyaltyMultiple': {1: 41.665, 2: {3: 0.605, 4: 0.325, 5: 0.13}, 3: 0.485},
         'loyaltyEmaAlpha': 0.01,         # EMA smoothing for the adaptive loyalty-multiple regime
 
         # Research pricing (off by default)
