@@ -433,7 +433,8 @@ transfer, not a sink.
 Each tick, after the tiers operate, the kernel folds the observed **average order value**
 (AOV) per buyer class — T1 raw (`raw revenue ÷ purchase events`), T2 material by buying
 complexity (`material spend ÷ purchases`), T3 consumer (`consumer payments ÷ fulfilled
-orders`) — into an EMA (`α = loyaltyEmaAlpha`, default 0.01), then re-derives
+orders`) — into an EMA (`α = loyaltyEmaAlpha`, default 0.01). Once per **year**
+(every `ticksPerYear` ticks) it re-derives
 
 `M = 0.10 × AOV / (unit_cost × 1.5)`,
 

@@ -1083,12 +1083,12 @@ def expand_tier2_bots(world, cfg, t2_products, tick):
 # --------------------------------------------------------------------------
 # Tick orchestrator
 # --------------------------------------------------------------------------
-def update_loyalty_regime(world, cfg, counts):
+def update_loyalty_regime(world, cfg, counts, tick):
     """End-of-tick: fold this tick's observed average order value into the
-    per-class EMA, then re-derive the loyalty multiples
-    ``M = 0.10 × AOV / (unit_cost × 1.5)`` (the charge ≈ 10 % of a typical
-    order at reliability 0.5).  Pure scalar math, identical for the NumPy and
-    pure-Python paths."""
+    per-class EMA every tick; re-derive the loyalty multiples
+    ``M = 0.10 × AOV / (unit_cost × 1.5)`` once per year (the charge ≈ 10 % of
+    a typical order at reliability 0.5).  Pure scalar math, identical for the
+    NumPy and pure-Python paths."""
     alpha = float(cfg['loyaltyEmaAlpha'])
     one_minus = 1.0 - alpha
 
@@ -1097,19 +1097,22 @@ def update_loyalty_regime(world, cfg, counts):
     orders = float(np.sum(world.t0Opportunities))
     if orders > 0.0:
         world.aov1 = alpha * (spend / orders) + one_minus * world.aov1
-    world.lm1 = 0.10 * world.aov1 / (world.lmUnitCost1 * 1.5)
 
     # T2 material buyer, per complexity.
     for c in range(3):
         if world.t2MatOrders[c] > 0.0:
             world.aov2[c] = alpha * (world.t2MatSpend[c] / world.t2MatOrders[c]) + one_minus * world.aov2[c]
-    world.lm2 = 0.10 * world.aov2 / (world.lmUnitCost2 * 1.5)
 
     # T3 consumer: spend = consumer payments, orders = fulfilled orders.
     orders = float(counts.get('filledOrders', 0) or 0)
     if orders > 0.0:
         world.aov3 = alpha * (float(counts.get('consumerPayments', 0) or 0) / orders) + one_minus * world.aov3
-    world.lm3 = 0.10 * world.aov3 / (world.lmUnitCost3 * 1.5)
+
+    # Re-derive M from the smoothed AOV once per year (piecewise-constant).
+    if tick % M.TIME['ticksPerYear'] == 0:
+        world.lm1 = 0.10 * world.aov1 / (world.lmUnitCost1 * 1.5)
+        world.lm2 = 0.10 * world.aov2 / (world.lmUnitCost2 * 1.5)
+        world.lm3 = 0.10 * world.aov3 / (world.lmUnitCost3 * 1.5)
 
 
 def tick(world: WorldState, cfg, tick, products=None, profiles=None, t2_products=None, state=None):
@@ -1146,7 +1149,7 @@ def tick(world: WorldState, cfg, tick, products=None, profiles=None, t2_products
         observe_markets(world, cfg, profiles)
     update_reliability(world, cfg, tick)
     expand_tier2_bots(world, cfg, t2_products, tick)
-    update_loyalty_regime(world, cfg, counts)
+    update_loyalty_regime(world, cfg, counts, tick)
 
     state['activatedConsumers'] = counts['activated']
     state['consumerPayments'] = counts['consumerPayments']

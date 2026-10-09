@@ -52,7 +52,7 @@ Time is a **30-tick month**, a **360-tick year**, and a **7,200-tick generation*
   (`productionMarginBand = 0.05`): full output at ≥ 5 % margin, tapering to 0 at
   break-even, never producing at a loss.
 - **Adaptive loyalty charge** — switching suppliers costs
-  `M × unit_cost × (1 + reliability)`; `M` is re-derived every tick from an EMA of the
+  `M × unit_cost × (1 + reliability)`; `M` is re-derived once per year from an EMA of the
   observed average order value (`loyaltyEmaAlpha = 0.01`) so the charge tracks ~10 % of
   a typical order as prices drift.
 - **Reliability** — `0.5 × price-stability + 0.5 × availability`, EMA-smoothed monthly.
