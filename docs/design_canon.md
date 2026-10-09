@@ -112,6 +112,9 @@ Every section below is a consequence of, or a requirement for, that sentence.
   this capacity; there is no separate "line" concept.
 - **Tier 0 extraction cost & lot:** raw costs **`$1 × difficulty`** (`baseCost`; difficulty
   mean-reverts to `difficultyTarget = 1`), sold in whole lots of **1,000** minimum.
+  Extraction is **profit-gated like T1/T2 manufacture**: no extraction while
+  `cost > price` (hard gate), tapering to zero as the extraction margin
+  `(price − cost)/price` falls below 5 % (`productionMarginBand`).
 - **Per-line machinery:** each installed product line owns its own **machinery capital**
   and its own **throughput capacity**, both keyed to the product's complexity, and both
   **summed per company**. A firm's size is the sum of its lines. **At start every company
@@ -124,6 +127,8 @@ Every section below is a consequence of, or a requirement for, that sentence.
   C-4 = 4,000, C-5 = 5,000 — leaving goods space `G = 20,000 − machinery` for raw and
   finished. **Tier 0 storage is a separate, fully-subsidized raw pool of 500,000 per firm**
   (no machinery footprint; extraction equipment is an equity asset, not a storage cost).
+  Tier 0 **targets half its pool** (order-up-to 50 % of storage, not fill-to-brim), leaving
+  headroom.
 - **Storage Royalty (deferred for PoC):** Tier 0 is fully subsidized (no storage or
   machinery costs). Tier 1 and Tier 2 would pay a minuscule per-tick fee per storage
   space, collected by the two Earth houses.
@@ -330,7 +335,7 @@ only meaningful once the firm is actually transacting:
 1. **No sales** → if stock remains, lower; if no stock, hold. (This prevents phantom
    scarcity — e.g. an input-starved firm — from ratcheting the price up.)
 2. **Scarce** (unmet demand: `demand > sales`) → raise, *regardless of the profit baseline*,
-   so a lively downstream market is transmitted upstream (the incumbent supplier's 4M
+   so a lively downstream market is transmitted upstream (the incumbent supplier's 500k
    inventory buffer no longer hides demand pressure).
 3. **Profit baseline available** (a prior observation's realized profit exists) → pure
    derivative-following with a **2 % dead band**: reverse when profit fell ≥ 2 %, continue
@@ -340,18 +345,21 @@ only meaningful once the firm is actually transacting:
 **Production & purchase gates (the quantity side of discovery).** A producer manufactures
 only while it can cover the *realized* cost of its current stock —
 `if input_cost_per_item + conversion > price`, output is 0 ("don't produce below cost").
+Tier 0 extraction obeys the same hard gate against its *extraction* cost —
+`if baseCost × difficulty > raw price`, extraction is 0.
 
-A T1/T2 buyer throttles its input purchase with a **margin-ramp demand curve** instead of
-a hard buy/no-buy gate. The purchase quantity is scaled by
+A buyer (T1 raw, T2 material) throttles its input purchase, and Tier 0 throttles its
+extraction, with one shared **margin-ramp** instead of a hard buy/no-buy gate. The quantity
+is scaled by
 
-`factor = clamp( (1 − current_cost / price) / productionMarginBand , 0, 1 )`,
+`factor = clamp( margin / productionMarginBand , 0, 1 )`,
 
-where `current_cost = conversion + Σ (recipe ratio ÷ output) × current supplier price`,
-`1 − current_cost/price` is the realized gross margin, and `productionMarginBand = 0.05`.
-So production stays **full while margin ≥ 5 %**, tapers linearly to **0 at break-even**
-(cost = price), and is 0 for any loss — a late cutoff, not an early throttle. The ceiling
-still transmits the downstream breakeven upstream: an overpricing supplier loses orders and
-is pulled back to a profitable level.
+where `margin = (price − cost)/price`. For T1/T2, `cost = conversion + Σ (recipe ratio ÷
+output) × current supplier price`; for T0, `cost = baseCost × difficulty`.
+`productionMarginBand = 0.05`. So production/extraction stays **full while margin ≥ 5 %**,
+tapers linearly to **0 at break-even** (cost = price), and is 0 for any loss — a late
+cutoff, not an early throttle. The ceiling still transmits the downstream breakeven
+upstream: an overpricing supplier loses orders and is pulled back to a profitable level.
 
 **Step size** adapts: ×1.2 on continuation, no halving on reversal (×1.0), clamped to `[0.01, 1]`.
 The price moves multiplicatively: `P ← clamp(P × exp(± pricingAggressiveness × response × scale))`, where

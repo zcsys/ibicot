@@ -70,9 +70,9 @@ def operate_tier0(world, cfg, profiles, tick):
     for supplier in range(N0):
         elements = profiles[supplier]['element_indices']  # sorted ascending
         n_el = len(elements)
-        # Like T1/T2 ("fill G"), T0 fills its storage to the brim — no separate
-        # order-up-to target. Each element gets an even share of the storage pool.
-        targets = [cfg['t0Storage'] / n_el for element in elements]
+        # T0 targets half its storage (order-up-to 50 % of the pool), leaving
+        # headroom rather than filling to the brim. Each element gets an even share.
+        targets = [cfg['t0Storage'] / 2 / n_el for element in elements]
         deficits = [max(0.0, targets[n] - world.t0Inv[supplier * NE + elements[n]]) for n in range(n_el)]
         capacity = max(0.0, cfg['t0Capacity'])
         total_inventory = sum(max(0.0, world.t0Inv[supplier * NE + element]) for element in elements)
@@ -84,6 +84,18 @@ def operate_tier0(world, cfg, profiles, tick):
             if not math.isfinite(world.t0Price[index]) or world.t0Price[index] <= 0:
                 world.t0Price[index] = cost * (1 + cfg['t0Markup'])
             costs.append(cost)
+        # Profit-gate extraction like T1/T2 manufacture: pull raw out of Gaia only
+        # while the posted raw price covers the extraction cost, tapering as the
+        # extraction margin thins (productionMarginBand).
+        for n in range(n_el):
+            index = supplier * NE + elements[n]
+            price = world.t0Price[index]
+            cost = costs[n]
+            if cost > price + 1e-9:
+                deficits[n] = 0.0
+            else:
+                margin = (price - cost) / max(price, 1e-9)
+                deficits[n] *= min(1.0, max(0.0, margin / cfg['productionMarginBand']))
         positive = [n for n in range(n_el) if deficits[n] > 0]
         if not positive:
             continue
