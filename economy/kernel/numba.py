@@ -138,13 +138,13 @@ def t1_scale_arrays(cfg):
 if _HAVE_NUMBA:
 
     @_njit
-    def _loyalty_surcharge(unit_cost, reliability):
+    def _loyalty_surcharge(price, reliability):
         r = reliability
         if r < 0.0:
             r = 0.0
         elif r > 1.0:
             r = 1.0
-        return 0.5 * unit_cost * (1.0 + r)
+        return 0.10 * price * (1.0 + r) / 1.5
 
     @_njit
     def _loyalty_charge(unit_cost, reliability, multiple):
@@ -246,9 +246,9 @@ if _HAVE_NUMBA:
 
     @_njit
     def _choose_supplier_nb(offers_flat, start, end, stock, price, preferred, reliability,
-                            t1_unit_cost, best):
+                            best):
         if (preferred >= 0 and stock[preferred] >= 1 and math.isfinite(price[preferred])
-                and (best < 0 or price[preferred] <= price[best] + _loyalty_surcharge(t1_unit_cost, reliability[preferred]))):
+                and (best < 0 or price[preferred] <= price[best] + _loyalty_surcharge(price[best], reliability[preferred]))):
             return preferred
         if best >= 0:
             return best
@@ -256,7 +256,7 @@ if _HAVE_NUMBA:
             return -1
         empty = offers_flat[start]
         if (preferred >= 0 and _contains(offers_flat, start, end, preferred)
-                and price[preferred] <= price[empty] + _loyalty_surcharge(t1_unit_cost, reliability[preferred])):
+                and price[preferred] <= price[empty] + _loyalty_surcharge(price[empty], reliability[preferred])):
             return preferred
         return empty
 
@@ -349,7 +349,7 @@ if _HAVE_NUMBA:
                 preferred = t2_preferred[firm * NP + material]
                 suppliers[material] = _choose_supplier_nb(
                     t1_offers_flat, start, end, t1_fin, t1_price, preferred, t1_rel,
-                    t1_unit_cost, best)
+                    best)
 
             line_count = t2_firm_line_count[firm]
             for order2 in range(line_count):
@@ -632,7 +632,7 @@ if _HAVE_NUMBA:
                     cand[n_cand] = candidate
                     n_cand += 1
             if preferred >= 0:
-                friction = _loyalty_surcharge(reference, t2_rel[preferred])
+                friction = _loyalty_surcharge(t2_price[preferred], t2_rel[preferred])
             else:
                 friction = 0.0
             _sort_candidates(cand, n_cand, t2_price, preferred, friction)
@@ -757,7 +757,7 @@ if _HAVE_NUMBA:
 
     @_njit
     def _tier0_supplier_nb(seed, tick, buyer, element, preferred, profile_has, profile_count, t0_price, t0_rel,
-                           t0_inv, min_lot, base_cost):
+                           t0_inv, min_lot):
         eff = np.empty(N0, dtype=np.float64)
         empty_price = 1.7976931348623157e308
         best = 1.7976931348623157e308
@@ -776,7 +776,7 @@ if _HAVE_NUMBA:
                     r = 0.0
                 elif r > 1.0:
                     r = 1.0
-                fric = 0.5 * base_cost * (1.0 + r)
+                fric = 0.10 * q * (1.0 + r) / 1.5
             eff[s] = q + fric
             if eff[s] < empty_price - 1e-12:
                 empty_price = eff[s]
@@ -835,7 +835,7 @@ if _HAVE_NUMBA:
                 for element in range(NE):
                     suppliers[element] = _tier0_supplier_nb(
                         seed, tick, company, element, preferred_wholesale[raw_base + element],
-                        profile_has, profile_count, t0_price, t0_rel, t0_inv, min_lot, base_cost)
+                        profile_has, profile_count, t0_price, t0_rel, t0_inv, min_lot)
                 for p in range(NP):
                     if t1_operates[product_base + p] == 0:
                         continue

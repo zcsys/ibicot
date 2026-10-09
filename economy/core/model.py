@@ -176,11 +176,11 @@ def finished_stock_target(sales_ema, coverage_ticks, bootstrap_stock, capacity,
                             math.ceil(max(0.0, sales_ema) * coverage_ticks))))
 
 
-def loyalty_surcharge(unit_cost, reliability) -> float:
-    # Per-unit surcharge used in supplier ranking — the fixed charge spread over one
-    # characteristic order (M = order_size/2 after the halving), i.e. half a unit's
-    # cost × (1 + reliability).  Halved to stay consistent with the halved loyaltyMultiple.
-    return 0.5 * unit_cost * (1.0 + clamp(reliability, 0.0, 1.0))
+def loyalty_surcharge(price, reliability) -> float:
+    # Per-unit surcharge used in supplier ranking: the fixed switching charge spread
+    # over one typical order ≈ 10 % of price at reliability 0.5 (the charge ≈ 10 % of
+    # a typical order's value, so a challenger must undercut by ~10 % to win).
+    return 0.10 * price * (1.0 + clamp(reliability, 0.0, 1.0)) / 1.5
 
 
 def loyalty_charge(unit_cost, reliability, multiple) -> float:

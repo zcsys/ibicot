@@ -178,7 +178,7 @@ def tier0_supplier(world, cfg, profiles, element, preferred, buyer, tick):
             friction = 0.0
         else:
             rel = world.t0Rel[preferred * NE + element] if preferred >= 0 else 0.5
-            friction = M.loyalty_surcharge(cfg['baseCost'], rel)
+            friction = M.loyalty_surcharge(quote, rel)
         effective = quote + friction
         if effective < empty_price - 1e-12:
             empty_price = effective
@@ -573,7 +573,6 @@ def market_offers_table(world, tier, tick):
 
 def choose_supplier(offers, stock, price, preferred, reliability, cfg, minimum=1, known_best=None):
     preferred = int(preferred)
-    unit_cost = cfg['t1MaterialCost'] + cfg['conversionFactor']
     best = -1 if known_best is None else int(known_best)
     if known_best is None:
         for supplier in offers:
@@ -582,7 +581,7 @@ def choose_supplier(offers, stock, price, preferred, reliability, cfg, minimum=1
                 break
     if (preferred >= 0 and stock[preferred] >= minimum and math.isfinite(price[preferred])
             and (best < 0 or price[preferred] <= price[best]
-                 + M.loyalty_surcharge(unit_cost, reliability[preferred]))):
+                 + M.loyalty_surcharge(price[best], reliability[preferred]))):
         return preferred
     if best >= 0:
         return best
@@ -591,7 +590,7 @@ def choose_supplier(offers, stock, price, preferred, reliability, cfg, minimum=1
     empty = offers[0]
     if (preferred >= 0 and preferred in offers
             and price[preferred] <= price[empty]
-            + M.loyalty_surcharge(unit_cost, reliability[preferred])):
+            + M.loyalty_surcharge(price[empty], reliability[preferred])):
         return preferred
     return empty
 
@@ -882,7 +881,7 @@ def clear_consumers(world, cfg, products, t2_products, tick):
             candidate = market_offers_list[low]
             if candidate not in candidates:
                 candidates.append(candidate)
-        friction = M.loyalty_surcharge(reference, reliability[preferred]) if preferred >= 0 else 0.0
+        friction = M.loyalty_surcharge(price[preferred], reliability[preferred]) if preferred >= 0 else 0.0
         candidates.sort(key=lambda a: price[a] + (0 if a == preferred else friction))
 
         def demand(quote):
