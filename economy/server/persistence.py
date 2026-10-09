@@ -29,6 +29,12 @@ def save_checkpoint(path, cfg, tick, world, scalars=None):
         'scalars': {'t2LineCount': int(world.t2LineCount),
                     'costSinks': float(world.costSinks),
                     'equipmentSinks': float(world.equipmentSinks),
+                    'lm1': float(world.lm1),
+                    'lm2': [float(x) for x in world.lm2],
+                    'lm3': float(world.lm3),
+                    'aov1': float(world.aov1),
+                    'aov2': [float(x) for x in world.aov2],
+                    'aov3': float(world.aov3),
                     **{k: v for k, v in scalars.items()}},
     }
     with open(path + '.json', 'w') as f:
@@ -53,6 +59,13 @@ def load_checkpoint(path):
     world.t2LineCount = int(scalars['t2LineCount'])
     world.costSinks = float(scalars['costSinks'])
     world.equipmentSinks = float(scalars['equipmentSinks'])
+    # adaptive loyalty regime (backward-compatible with pre-EMA checkpoints)
+    world.lm1 = float(scalars.get('lm1', world.lm1))
+    world.lm2[:] = [float(x) for x in scalars.get('lm2', world.lm2)]
+    world.lm3 = float(scalars.get('lm3', world.lm3))
+    world.aov1 = float(scalars.get('aov1', world.aov1))
+    world.aov2[:] = [float(x) for x in scalars.get('aov2', world.aov2)]
+    world.aov3 = float(scalars.get('aov3', world.aov3))
     return cfg, tick, world, scalars
 
 

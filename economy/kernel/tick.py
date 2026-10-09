@@ -38,6 +38,7 @@ _RESET_NAMES = [
     't1Demand', 't2Demand', 't1Sold', 't1Revenue', 't1COGS', 't1IntermediateSold',
     't1IntermediateRevenue', 'active', 'potential', 'fulfilled', 'priceLost',
     'stockUnmet', 't0Fulfilled', 't0FundedReq', 't1InputNeed', 't1PurchaseReq',
+    't2MatSpend', 't2MatOrders',
 ]
 
 
@@ -262,7 +263,7 @@ def plan_and_buy_inputs(world, cfg, products, profiles, tick):
                 loyalty_charge = 0.0
                 if chosen != preferred and preferred >= 0 and world.t0Inv[preferred * NE + element] >= request:
                     loyalty_charge = M.loyalty_charge(cfg['baseCost'], world.t0Rel[preferred * NE + element],
-                                                    cfg['loyaltyMultiple'][1])
+                                                    world.lm1)
                     if loyalty_charge > world.t1Cash[company]:
                         chosen = preferred
                         loyalty_charge = 0.0
@@ -613,12 +614,12 @@ def transfer_tier2_input(world, cfg, firm, material, supplier, request):
     requested = max(0.0, min(math.ceil(request),
                              math.floor(cfg['storage'] - tier2_inventory_units(world, firm))))
     preferred = int(world.t2Preferred[firm * NP + material])
+    firm_pid = int(world.t2LineProduct[int(world.t2FirmLines[firm * M4])])
+    firm_cx = M.T2_PRODUCTS[firm_pid]['complexity']
     loyalty_charge = 0.0
     if supplier != preferred and preferred >= 0 and stock[preferred] >= requested:
-        firm_pid = int(world.t2LineProduct[int(world.t2FirmLines[firm * M4])])
-        firm_cx = M.T2_PRODUCTS[firm_pid]['complexity']
         loyalty_charge = M.loyalty_charge(cfg['t1MaterialCost'] + cfg['conversionFactor'],
-                                        world.t1Rel[preferred], cfg['loyaltyMultiple'][2][firm_cx])
+                                        world.t1Rel[preferred], world.lm2[firm_cx - 3])
         if loyalty_charge > world.t2Cash[firm]:
             supplier = preferred
             loyalty_charge = 0.0
@@ -644,6 +645,8 @@ def transfer_tier2_input(world, cfg, firm, material, supplier, request):
     index = firm * (NE if is_basic else NP) + material
     old = raw[index]
     payment = quantity * quote
+    world.t2MatSpend[firm_cx - 3] += payment
+    world.t2MatOrders[firm_cx - 3] += 1.0
     basis[index] = (basis[index] * old + payment) / (old + quantity)
     raw[index] += quantity
     world.t2Bought[firm] += quantity
@@ -945,7 +948,7 @@ def clear_consumers(world, cfg, products, t2_products, tick):
         world.consumerLastFulfilled[buyer] = bought
         if primary != preferred and preferred_can_fulfill:
             charge = M.loyalty_charge(reference, reliability[preferred],
-                                     cfg['loyaltyMultiple'][3])
+                                     world.lm3)
             world.t2Cash[world.t2LineFirm[preferred]] += charge
             consumer_payments += charge
         world.marketFulfilled[market] += bought
@@ -1080,6 +1083,35 @@ def expand_tier2_bots(world, cfg, t2_products, tick):
 # --------------------------------------------------------------------------
 # Tick orchestrator
 # --------------------------------------------------------------------------
+def update_loyalty_regime(world, cfg, counts):
+    """End-of-tick: fold this tick's observed average order value into the
+    per-class EMA, then re-derive the loyalty multiples
+    ``M = 0.10 × AOV / (unit_cost × 1.5)`` (the charge ≈ 10 % of a typical
+    order at reliability 0.5).  Pure scalar math, identical for the NumPy and
+    pure-Python paths."""
+    alpha = float(cfg['loyaltyEmaAlpha'])
+    one_minus = 1.0 - alpha
+
+    # T1 raw buyer: spend = raw revenue, orders = raw purchase events.
+    spend = float(np.sum(world.t0Revenue))
+    orders = float(np.sum(world.t0Opportunities))
+    if orders > 0.0:
+        world.aov1 = alpha * (spend / orders) + one_minus * world.aov1
+    world.lm1 = 0.10 * world.aov1 / (world.lmUnitCost1 * 1.5)
+
+    # T2 material buyer, per complexity.
+    for c in range(3):
+        if world.t2MatOrders[c] > 0.0:
+            world.aov2[c] = alpha * (world.t2MatSpend[c] / world.t2MatOrders[c]) + one_minus * world.aov2[c]
+    world.lm2 = 0.10 * world.aov2 / (world.lmUnitCost2 * 1.5)
+
+    # T3 consumer: spend = consumer payments, orders = fulfilled orders.
+    orders = float(counts.get('filledOrders', 0) or 0)
+    if orders > 0.0:
+        world.aov3 = alpha * (float(counts.get('consumerPayments', 0) or 0) / orders) + one_minus * world.aov3
+    world.lm3 = 0.10 * world.aov3 / (world.lmUnitCost3 * 1.5)
+
+
 def tick(world: WorldState, cfg, tick, products=None, profiles=None, t2_products=None, state=None):
     products = products if products is not None else M.PRODUCTS
     profiles = profiles if profiles is not None else T0P
@@ -1114,6 +1146,7 @@ def tick(world: WorldState, cfg, tick, products=None, profiles=None, t2_products
         observe_markets(world, cfg, profiles)
     update_reliability(world, cfg, tick)
     expand_tier2_bots(world, cfg, t2_products, tick)
+    update_loyalty_regime(world, cfg, counts)
 
     state['activatedConsumers'] = counts['activated']
     state['consumerPayments'] = counts['consumerPayments']

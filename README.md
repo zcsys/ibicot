@@ -77,7 +77,7 @@ for the full rationale). The demand-side *scale* is calibration, not frozen.
 | **Latent demand** | `qmax = 15` fixed per consumer |
 | **Markup** | flat 0.25 first-guess everywhere; the equilibrium markup is discovered by the pricer |
 | **Input demand** | margin ramp: `q = need × clamp((1 − cost/price) / 0.05, 0, 1)`; full ≥ 5 % margin, 0 at/above break-even |
-| **Loyalty / M** | switching charge `M × unit_cost × (1 + reliability)` ≈ 10 % of a typical order: C-1/C-2 = 83.33, C-3 = 1.21, C-4 = 0.65, C-5 = 0.26, T3 = 0.97 |
+| **Loyalty / M** | switching charge `M × unit_cost × (1 + reliability)` ≈ 10 % of a typical order; `M` is adaptive — an EMA of the observed average order value (`loyaltyEmaAlpha = 0.01`) re-derives it each tick; seeds: C-1/C-2 83.33, C-3 1.21, C-4 0.65, C-5 0.26, T3 0.97 |
 | **Reliability** | `0.5 × price-stability + 0.5 × availability`, EMA `α = 0.15`, monthly |
 
 **Deferred** (documented, not implemented): storage rent, machinery-as-good,

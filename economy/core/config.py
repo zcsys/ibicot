@@ -72,6 +72,7 @@ def default_cfg() -> dict:
         'wholesalePriceResponse': 0.05,
         'priceObservationTicks': 30,
         'loyaltyMultiple': {1: 83.33, 2: {3: 1.21, 4: 0.65, 5: 0.26}, 3: 0.97},
+        'loyaltyEmaAlpha': 0.01,         # EMA smoothing for the adaptive loyalty-multiple regime
 
         # Research pricing (off by default)
         'researchPriceMinimumOpportunities': 0,
@@ -174,6 +175,7 @@ def normalize_config(c) -> dict:
         _out2[int(_c)] = max(0.0, _v) if math.isfinite(_v) else float(default_cfg()['loyaltyMultiple'][2][_c])
     _lm[2] = _out2
     d['loyaltyMultiple'] = _lm
+    d['loyaltyEmaAlpha'] = M.clamp(d['loyaltyEmaAlpha'], 0.0001, 1.0)
     d['priceObservationTicks'] = max(1, min(360, math.floor(d['priceObservationTicks'])))
     wpr = d['wholesalePriceResponse']
     wpr = float(wpr) if math.isfinite(wpr) else 0.05

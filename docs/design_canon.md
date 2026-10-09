@@ -429,6 +429,18 @@ The charge is **fixed per disloyal purchase** (independent of order size, so
 a 1-unit order cannot dodge it) and is **paid to the incumbent**: deducted from the buyer's cash and credited to the incumbent — a
 transfer, not a sink.
 
+**Adaptive regime.** The per-complexity values above are *bootstrap seeds*, not constants.
+Each tick, after the tiers operate, the kernel folds the observed **average order value**
+(AOV) per buyer class — T1 raw (`raw revenue ÷ purchase events`), T2 material by buying
+complexity (`material spend ÷ purchases`), T3 consumer (`consumer payments ÷ fulfilled
+orders`) — into an EMA (`α = loyaltyEmaAlpha`, default 0.01), then re-derives
+
+`M = 0.10 × AOV / (unit_cost × 1.5)`,
+
+so the charge keeps tracking ~10 % of a typical order as prices and margins drift, with no
+per-generation bookkeeping. `unit_cost` here is the same canonical reference ($1 raw,
+$1.50 material, mean T2 unit cost).
+
 The buyer sources from a challenger only when `P_chal × q + loyaltyCharge < P_inc × q`, i.e. a challenger
 must undercut the incumbent by more than `loyaltyCharge / q` per unit. The winner fills the
 whole order in whole units; a split across suppliers is a fallback only when the winner
@@ -450,6 +462,8 @@ tick. Uniform across T0, T1 and T2.
 **Parameters.** `pricingAggressiveness` (0.35), `wholesalePriceResponse` (0.05, base step
 fraction), `priceObservationTicks` (30, cadence), `researchPriceMinimumOpportunities`
 (0, minimum traffic before repricing; 0 = repriced at cadence). `loyaltyMultiple`
-(per-complexity: C-1/C-2 **83.33**, C-3 **1.21**, C-4 **0.65**, C-5 **0.26**, T3 **0.97**,
-× `unit_cost` × `(1 + reliability)` — the loyalty charge). `switchingStableBand` (0.025) drives the
+(per-complexity *bootstrap*: C-1/C-2 **83.33**, C-3 **1.21**, C-4 **0.65**, C-5 **0.26**,
+T3 **0.97**, × `unit_cost` × `(1 + reliability)` — the loyalty charge) and
+`loyaltyEmaAlpha` (**0.01**, the AOV-EMA smoothing driving the adaptive regime above).
+`switchingStableBand` (0.025) drives the
 price-stability *metric*, not the price itself.

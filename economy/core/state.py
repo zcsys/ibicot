@@ -232,6 +232,29 @@ class WorldState:
         self.t2LineCount = 0
         self.costSinks = 0.0
         self.equipmentSinks = 0.0
+        self._init_loyalty_regime(cfg)
+
+    def _init_loyalty_regime(self, cfg):
+        # Adaptive loyalty-multiple regime (§12.6): an EMA of the average order
+        # value per buyer class drives the switching-charge multiple M, so the
+        # charge tracks ~10% of a typical order as prices/margins drift.
+        self.lmUnitCost1 = float(cfg['baseCost'])                                 # raw
+        self.lmUnitCost2 = float(cfg['t1MaterialCost'] + cfg['conversionFactor'])  # material
+        self.lmUnitCost3 = self._mean_t2_unit_cost(cfg)                            # good (mean)
+        self.lm1 = float(cfg['loyaltyMultiple'][1])
+        self.lm2 = np.array([cfg['loyaltyMultiple'][2][c] for c in (3, 4, 5)], dtype=np.float64)
+        self.lm3 = float(cfg['loyaltyMultiple'][3])
+        self.aov1 = self.lm1 * self.lmUnitCost1 * 1.5 / 0.10
+        self.aov2 = self.lm2 * self.lmUnitCost2 * 1.5 / 0.10
+        self.aov3 = self.lm3 * self.lmUnitCost3 * 1.5 / 0.10
+        # per-tick accumulators for the T2 material AOV (split by complexity)
+        self.t2MatSpend = np.zeros(3, dtype=np.float64)
+        self.t2MatOrders = np.zeros(3, dtype=np.float64)
+
+    @staticmethod
+    def _mean_t2_unit_cost(cfg):
+        return sum(cfg['t2MaterialCost'] + cfg['conversionFactor'] * max(1, p['complexity'] - 1)
+                   for p in M.T2_PRODUCTS) / len(M.T2_PRODUCTS)
 
     @property
     def array_names(self):

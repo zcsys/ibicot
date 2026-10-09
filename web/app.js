@@ -68,7 +68,7 @@
     'consumerActivation', 'consumerSearchOffers',
     'chokeMin', 'chokeMax', 'elasticity', 'productionMarginBand', 't2ReservationPremium',
     'pricingAggressiveness', 'alpha', 'wholesalePriceResponse', 'priceObservationTicks',
-    'reliabilityAlpha', 'switchingStableBand',
+    'reliabilityAlpha', 'switchingStableBand', 'loyaltyEmaAlpha',
   ];
   for (const [id, value] of Object.entries(M.ECONOMY_DEFAULTS)) if ($(id)) $(id).value = value;
   const productCodes = ['W', 'E', 'F', 'A', 'W+E', 'W+F', 'W+A', 'E+F', 'E+A', 'F+A'];

@@ -308,7 +308,8 @@ if _HAVE_NUMBA:
         t2_learn_ticks, t2_learn_profit, t2_learn_sales, t2_learn_previous,
         t2_learn_direction, t2_learn_demand, t2_learn_stock, t2_learn_step,
         t2_learn_opportunity, t2_learn_potential_opportunity,
-        t1_offers_flat, t1_offers_off, valuation, t2_capacity, t2_output, t2_target):
+        t1_offers_flat, t1_offers_off, valuation, t2_capacity, t2_output, t2_target,
+        t2_mat_spend, t2_mat_orders):
         needs = np.zeros(NP, dtype=np.float64)
         plans = np.zeros(M4, dtype=np.float64)
         suppliers = np.zeros(NP, dtype=np.int64)
@@ -471,6 +472,8 @@ if _HAVE_NUMBA:
                         continue
                     old = raw_x[idx]
                     payment = quantity * quote
+                    t2_mat_spend[firm_cx] += payment
+                    t2_mat_orders[firm_cx] += 1.0
                     basis_x[idx] = (basis_x[idx] * old + payment) / (old + quantity)
                     raw_x[idx] += quantity
                     t2_bought[firm] += quantity
@@ -959,7 +962,7 @@ def plan_and_buy_inputs(world, cfg, tick):
     _plan_and_buy_inputs_nb(
         cfg['seed'], tick, cfg['minWholesaleLot'],
         cfg['baseCost'], cfg['t1Capacity'], t1_conv,
-        float(cfg['storage']), float(cfg['loyaltyMultiple'][1]), float(cfg['productionMarginBand']),
+        float(cfg['storage']), float(world.lm1), float(cfg['productionMarginBand']),
         world.t0Price, world.t0Inv, world.t0InvBasis, world.t0Rel, world.t0Cash, world.t0Req, world.t0FundedReq,
         world.t0Opportunities, world.t0Demand, world.t0RelAttempts, world.t0RelChecks,
         world.t0RelAvailable, world.t0Sold, world.t0Revenue, world.t0COGS, world.t0Fulfilled, world.difficulty,
@@ -976,7 +979,7 @@ def operate_tier2(world, cfg, tick):
     cs = _operate_tier2_nb(
         cfg['seed'], tick, cfg['t2FirmCount'], float(cfg['storage']),
         t2_conv, float(cfg['switchingStableBand']),
-        t1_unit_cost, np.array([cfg['loyaltyMultiple'][2][3], cfg['loyaltyMultiple'][2][4], cfg['loyaltyMultiple'][2][5]], dtype=np.float64), cfg['priceObservationTicks'],
+        t1_unit_cost, world.lm2, cfg['priceObservationTicks'],
         cfg['researchPriceMinimumPotentialOrders'], cfg['researchPriceMaxObservationTicks'],
         cfg['researchPriceMinimumOpportunities'], float(cfg['pricingAggressiveness']), float(cfg['wholesalePriceResponse']),
         float(cfg['productionMarginBand']),
@@ -991,7 +994,8 @@ def operate_tier2(world, cfg, tick):
         world.t2LearnTicks, world.t2LearnProfit, world.t2LearnSales, world.t2LearnPrevious,
         world.t2LearnDirection, world.t2LearnDemand, world.t2LearnStock, world.t2LearnStep,
         world.t2LearnOpportunity, world.t2LearnPotentialOpportunity,
-        flat, off, val, t2_cap, T2_OUTPUT, t2_target)
+        flat, off, val, t2_cap, T2_OUTPUT, t2_target,
+        world.t2MatSpend, world.t2MatOrders)
     world.costSinks += cs
     return cs
 
@@ -1011,7 +1015,7 @@ def clear_consumers(world, cfg, tick):
     world.consumerLastFulfilled.fill(0)
     return _clear_consumers_nb(
         cfg['seed'], tick, cfg['consumerCount'],
-        float(cfg['consumerActivation']), cfg['consumerSearchOffers'], float(cfg['loyaltyMultiple'][3]),
+        float(cfg['consumerActivation']), cfg['consumerSearchOffers'], float(world.lm3),
         float(cfg['t2ReservationPremium']), N_T2,
         world.consumerProduct, world.consumerPreferredSupplier,
         world.consumerLastMarket, world.consumerLastSupplier, world.consumerLastQ, world.consumerLastFulfilled,
