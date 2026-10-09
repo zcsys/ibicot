@@ -134,7 +134,7 @@
   const ECONOMY_DEFAULTS = Object.freeze({
     seed: 137, difficultyTarget: 1, theta: .15, sigma: .005, difficultyMin: .7, difficultyMax: 1.4,
     consumerCount: 1000000, t2FirmCount: 60000,
-    t0Equity: 75000000, t0License: 22000000, t0Machinery: 49000000, t0Reserve: 1000000,
+    t0Equity: 75000000, t0License: 22000000, t0Machinery: 12250000, t0Reserve: 1000000,
     t0Capacity: 200000, t0Storage: 500000,
     baseCost: 1, t0Markup: .25, minWholesaleLot: 1000,
     t1Equity: 1500000, t1License: 1000000, t1Machinery: 15000, t1Capacity: 2000,
@@ -151,7 +151,7 @@
     productionMarginBand: .05,
     t2ReservationPremium: .25,
     pricingAggressiveness: .35, alpha: .15, reliabilityAlpha: .15, switchingStableBand: .025,
-    wholesalePriceResponse: .05, priceObservationTicks: 30,
+    wholesalePriceResponse: .05, marketAnchorBand: .02, priceObservationTicks: 30,
     loyaltyMultiple: Object.freeze({ 1: 83.33, 2: Object.freeze({ 3: 1.21, 4: 0.65, 5: 0.26 }), 3: 0.97 }),
     loyaltyEmaAlpha: .01,
     researchPriceMinimumOpportunities: 0, researchPriceMinimumPotentialOrders: 0,

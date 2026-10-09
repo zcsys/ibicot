@@ -127,8 +127,6 @@ Every section below is a consequence of, or a requirement for, that sentence.
   C-4 = 4,000, C-5 = 5,000 — leaving goods space `G = 20,000 − machinery` for raw and
   finished. **Tier 0 storage is a separate, fully-subsidized raw pool of 500,000 per firm**
   (no machinery footprint; extraction equipment is an equity asset, not a storage cost).
-  Tier 0 **targets half its pool** (order-up-to 50 % of storage, not fill-to-brim), leaving
-  headroom.
 - **Storage Royalty (deferred for PoC):** Tier 0 is fully subsidized (no storage or
   machinery costs). Tier 1 and Tier 2 would pay a minuscule per-tick fee per storage
   space, collected by the two Earth houses.
@@ -195,7 +193,7 @@ cash as the residual:
 
 | Entity | License | Machinery | Working cash | Total equity |
 | --- | ---: | ---: | ---: | ---: |
-| Tier 0 (×20) | $22m | $49m | $3m (+$1m reserve) | $75m |
+| Tier 0 (×20) | $22m | $12.25m × systems (≤4) | $3m–$39.75m (+$1m reserve) | $75m |
 | Tier 1 (all 10 types) | $1m | $15k | $485k | $1.5m |
 | Tier 2 — C-3 | $1m | $75k | $425k | $1.5m |
 | Tier 2 — C-4 | $1m | $375k | $125k | $1.5m |
@@ -330,14 +328,18 @@ quoted in **whole cents** (rounded half away from zero via `round_to_cent`).
 the guardrails.
 
 **Decision (at a cadence tick), from the average realized profit/tick accumulated since
-the last observation.** A firm that is *not selling* is never "scarce" — scarcity is
-only meaningful once the firm is actually transacting:
-1. **No sales** → if stock remains, lower; if no stock, hold. (This prevents phantom
-   scarcity — e.g. an input-starved firm — from ratcheting the price up.)
+the last observation.** A firm with no sales *and* no stock holds (degenerate — nothing
+to offer). Otherwise, in order:
+1. **No sales** → if stock remains, lower (attract demand); if no stock, hold.
 2. **Scarce** (unmet demand: `demand > sales`) → raise, *regardless of the profit baseline*,
    so a lively downstream market is transmitted upstream (the incumbent supplier's 500k
    inventory buffer no longer hides demand pressure).
-3. **Profit baseline available** (a prior observation's realized profit exists) → pure
+3. **Market anchor** (leaked going rate): the firm compares its price to its market's
+   sales-weighted average price. Above `going_rate × (1 + marketAnchorBand)` → lower
+   (expensive → contest); below `going_rate × (1 − marketAnchorBand)` → raise (cheap →
+   capture value). `marketAnchorBand = 0.02`. This lets a small, expensive seller drift
+   down to the going rate without a symmetric race to the bottom.
+4. **Profit baseline available** (a prior observation's realized profit exists) → pure
    derivative-following with a **2 % dead band**: reverse when profit fell ≥ 2 %, continue
    when it rose ≥ 2 %, and **hold inside the band** — flat profit is the profit-maximum,
    so the walk stops there instead of overshooting the flat peak and drifting past it.

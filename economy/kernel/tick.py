@@ -70,9 +70,9 @@ def operate_tier0(world, cfg, profiles, tick):
     for supplier in range(N0):
         elements = profiles[supplier]['element_indices']  # sorted ascending
         n_el = len(elements)
-        # T0 targets half its storage (order-up-to 50 % of the pool), leaving
-        # headroom rather than filling to the brim. Each element gets an even share.
-        targets = [cfg['t0Storage'] / 2 / n_el for element in elements]
+        # Like T1/T2 ("fill G"), T0 fills its storage to the brim — no separate
+        # order-up-to target. Each element gets an even share of the storage pool.
+        targets = [cfg['t0Storage'] / n_el for element in elements]
         deficits = [max(0.0, targets[n] - world.t0Inv[supplier * NE + elements[n]]) for n in range(n_el)]
         capacity = max(0.0, cfg['t0Capacity'])
         total_inventory = sum(max(0.0, world.t0Inv[supplier * NE + element]) for element in elements)
@@ -395,7 +395,7 @@ def price_learning_view(world, tier):
     }
 
 
-def learned_quote(view, cfg, index, stock, tick):
+def learned_quote(view, cfg, index, stock, tick, market_price=None):
     price = view['price']
     ages = view['ages']
     if ages[index] < cfg['priceObservationTicks'] or (tick + index) % cfg['priceObservationTicks'] != 0:
@@ -420,6 +420,7 @@ def learned_quote(view, cfg, index, stock, tick):
             previous_profit=previous[index], direction=direction[index],
             sales=sales[index], stock=stock, demand=demand[index],
             available=sales[index], step_scale=steps[index],
+            market_price=market_price, band=cfg['marketAnchorBand'],
             pricing_aggressiveness=cfg['pricingAggressiveness'], response=cfg['wholesalePriceResponse'])
         price[index] = result['price']
         direction[index] = result['direction']
@@ -440,6 +441,29 @@ def _clamp_round_cent(price):
     return np.floor(p * 100.0 + 0.5) / 100.0
 
 
+def _market_going_rate(prices, sales, market_of, count):
+    """Sales-weighted average price per market (the "going rate").
+
+    Falls back to the simple average of finite prices when a market has no sales;
+    a market with no finite price at all gets 0.0 (the anchor is then skipped).
+    """
+    rates = np.zeros(count)
+    for m in range(count):
+        sel = market_of == m
+        p = prices[sel]
+        w = sales[sel]
+        finite = np.isfinite(p)
+        if not finite.any():
+            continue
+        p = p[finite]
+        w = w[finite]
+        if w.sum() > 0:
+            rates[m] = float((p * w).sum() / w.sum())
+        else:
+            rates[m] = float(p.mean())
+    return rates
+
+
 def price_markets(world, cfg, profiles, products, tick):
     obs = cfg['priceObservationTicks']
     band = cfg['switchingStableBand']
@@ -455,9 +479,10 @@ def price_markets(world, cfg, profiles, products, tick):
         nxt0 = np.where(player0, _clamp_round_cent(world.t0PlayerPrice[valid0]), nxt0)
     t0_learning = price_learning_view(world, 't0')
     due0 = (~player0) & (t0_learning['ages'][valid0] >= obs) & ((tick + valid0) % obs == 0)
+    rates0 = _market_going_rate(world.t0Price, world.t0LearnSales, np.arange(N0 * NE) % NE, NE)
     for j in np.flatnonzero(due0):
         i = int(valid0[j])
-        nxt0[j] = learned_quote(t0_learning, cfg, i, world.t0Inv[i], tick)
+        nxt0[j] = learned_quote(t0_learning, cfg, i, world.t0Inv[i], tick, rates0[i % NE])
     world.t0PrevPrice[valid0] = prev0
     world.t0Price[valid0] = nxt0
     stable0 = 1.0 - np.minimum(1.0, np.maximum(0.0, nxt0 - prev0)
@@ -476,9 +501,10 @@ def price_markets(world, cfg, profiles, products, tick):
         nxt1 = np.where(player1, _clamp_round_cent(world.playerPrice[idx1]), nxt1)
     t1_learning = price_learning_view(world, 't1')
     due1 = (~player1) & (t1_learning['ages'][idx1] >= obs) & ((tick + idx1) % obs == 0)
+    rates1 = _market_going_rate(world.t1Price, world.t1LearnSales, np.arange(N1 * NP) % NP, NP)
     for j in np.flatnonzero(due1):
         i = int(idx1[j])
-        nxt1[j] = learned_quote(t1_learning, cfg, i, world.t1Fin[i], tick)
+        nxt1[j] = learned_quote(t1_learning, cfg, i, world.t1Fin[i], tick, rates1[i % NP])
     world.t1PrevPrice[idx1] = prev1
     world.t1Price[idx1] = nxt1
     stable1 = 1.0 - np.minimum(1.0, np.maximum(0.0, nxt1 - prev1)
@@ -683,6 +709,9 @@ def transfer_tier2_input(world, cfg, firm, material, supplier, request):
 # --------------------------------------------------------------------------
 def operate_tier2(world, cfg, products, profiles, t2_products, tick):
     t2_learning = price_learning_view(world, 't2')
+    n_lines = int(world.t2LineCount)
+    t2_going = _market_going_rate(world.t2Price[:n_lines], world.t2LearnSales[:n_lines],
+                                  world.t2LineProduct[:n_lines].astype(np.int64), len(M.T2_PRODUCTS))
     t1_offers = market_offers(world, 1, tick)
     procurement_profiles = [
         M.procurement_profile(p, cfg, world.t2ReferenceCost[p['id']] or M.reference_tier2_cost(p))
@@ -805,7 +834,7 @@ def operate_tier2(world, cfg, products, profiles, t2_products, tick):
             if world.t2Controller[firm] and math.isfinite(world.t2PlayerPrice[line]):
                 world.t2Price[line] = round_to_cent(min(MAX_UNIT_PRICE, max(MIN_UNIT_PRICE, world.t2PlayerPrice[line])))
             else:
-                world.t2Price[line] = learned_quote(t2_learning, cfg, line, world.t2Fin[line], tick)
+                world.t2Price[line] = learned_quote(t2_learning, cfg, line, world.t2Fin[line], tick, t2_going[int(world.t2LineProduct[line])])
             world.t2RelPriceSum[line] += 1 - min(1.0, max(0.0, world.t2Price[line] - previous)
                                              / max(1e-9, previous * cfg['switchingStableBand']))
             world.t2RelPriceSamples[line] += 1

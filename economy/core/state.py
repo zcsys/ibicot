@@ -446,7 +446,9 @@ def reset_world(cfg):
         learn_dir[:] = np.where(((firms + seed) % 2) == 1, np.int8(1), np.int8(-1))
 
     world.difficulty.fill(cfg['difficultyTarget'])
-    world.t0Cash.fill(cfg['t0Equity'] - cfg['t0License'] - cfg['t0Machinery'] - cfg['t0Reserve'])
+    for i in range(N0):
+        n_el = len(T0P[i]['element_indices'])
+        world.t0Cash[i] = cfg['t0Equity'] - cfg['t0License'] - n_el * cfg['t0Machinery'] - cfg['t0Reserve']
     world.t0Controller.fill(0)
     world.t0PlayerPrice.fill(float('nan'))
     world.t0Rel.fill(0.5)

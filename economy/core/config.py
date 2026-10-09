@@ -27,7 +27,7 @@ def default_cfg() -> dict:
         # Tier 0 (extraction)
         't0Equity': 75_000_000.0,       # $75m per extractor = license + machinery + reserve + cash
         't0License': 22_000_000.0,      # $22m Tier 0 license (equity asset)
-        't0Machinery': 49_000_000.0,    # $49m extraction machinery (equity asset)
+        't0Machinery': 12_250_000.0,    # $12.25m per extraction system (equity asset; ×4 = $49m full rig)
         't0Reserve': 1_000_000.0,       # $1m reserved for other business operations
         't0Capacity': 200_000,          # extraction throughput per tick
         't0Storage': 500_000,           # storage capacity (fill to the brim, like T1/T2)
@@ -70,6 +70,7 @@ def default_cfg() -> dict:
         'reliabilityAlpha': 0.15,
         'switchingStableBand': 0.025,
         'wholesalePriceResponse': 0.05,
+        'marketAnchorBand': 0.02,        # ± fraction around the market going rate where a firm holds instead of re-pricing
         'priceObservationTicks': 30,
         'loyaltyMultiple': {1: 83.33, 2: {3: 1.21, 4: 0.65, 5: 0.26}, 3: 0.97},
         'loyaltyEmaAlpha': 0.01,         # EMA smoothing for the adaptive loyalty-multiple regime
@@ -180,5 +181,8 @@ def normalize_config(c) -> dict:
     wpr = d['wholesalePriceResponse']
     wpr = float(wpr) if math.isfinite(wpr) else 0.05
     d['wholesalePriceResponse'] = M.clamp(wpr, 0.001, 1)
+    mab = d['marketAnchorBand']
+    mab = float(mab) if math.isfinite(mab) else 0.02
+    d['marketAnchorBand'] = M.clamp(mab, 0.001, 1.0)
 
     return d

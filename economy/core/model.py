@@ -269,26 +269,37 @@ def demand_at_price(q_max, choke_price, price, elasticity) -> float:
 
 def adaptive_price(old_price, profit, previous_profit, direction=1,
                    sales=0.0, stock=0.0, demand=0.0, available=0.0, step_scale=1.0,
+                   market_price=None, band=0.02,
                    pricing_aggressiveness=0.35, response=0.05) -> dict:
     # Guardrails only: the price may go below unit cost (sell at a loss) and is
     # never pinned to an economic floor/ceiling.
     floor = MIN_UNIT_PRICE
     price = round_to_cent(min(MAX_UNIT_PRICE, max(floor, old_price)))
     next_direction = -1 if direction < 0 else 1
-    # Derivative-following pricing (canon §12.6): a firm that is not selling
-    # lowers (if it has stock); unmet demand (demand > supplied) raises; otherwise
-    # it follows the sign of the realised profit change and *holds* once profit
-    # flattens at the optimum. The dead band stops the fixed-step walk from
-    # overshooting the flat profit peak and drifting away from it.
+    moved = False
+    # Derivative-following pricing (canon §12.6): a firm that is not selling lowers
+    # (if it has stock); unmet demand (demand > supplied) raises; a firm priced
+    # above its market's going rate lowers (expensive → contest) and one priced
+    # below raises (cheap → capture value); otherwise it follows the sign of the
+    # realised profit change with a 2 % dead band, holding once profit flattens.
     if sales <= 0:
         if stock <= 0:
             return {'price': price, 'direction': next_direction, 'stepScale': step_scale}
         next_direction = -1
+        moved = True
     elif demand > available + 1e-9:
         # Scarce: unmet demand (demand exceeds what we supplied) → raise, even once
         # a profit baseline exists, so upstream tiers capture a lively market.
         next_direction = 1
-    elif math.isfinite(previous_profit) and previous_profit > 0:
+        moved = True
+    elif market_price is not None and market_price > 0:
+        if price > market_price * (1 + band):
+            next_direction = -1   # expensive → contest
+            moved = True
+        elif price < market_price * (1 - band):
+            next_direction = 1    # cheap → capture value
+            moved = True
+    if not moved and math.isfinite(previous_profit) and previous_profit > 0:
         change = (profit - previous_profit) / previous_profit
         if change < -0.02:
             next_direction = -next_direction

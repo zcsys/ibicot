@@ -19,7 +19,7 @@ import numpy as np
 
 from ..core import model as M
 from ..core.rng import random_ as _rand
-from ..kernel.tick import market_offers_table
+from ..kernel.tick import market_offers_table, _market_going_rate
 
 try:
     from numba import njit as _njit
@@ -164,21 +164,32 @@ if _HAVE_NUMBA:
 
     @_njit
     def _adaptive_price(old_price, profit, previous_profit, direction, sales,
-                        stock, demand, available, step_scale, pricing_aggressiveness, response):
+                        stock, demand, available, step_scale, market_price, band,
+                        pricing_aggressiveness, response):
         floor = MIN_UNIT_PRICE
         price = old_price if old_price > floor else floor
         if price > MAX_UNIT_PRICE:
             price = MAX_UNIT_PRICE
         price = _round_cent(price)
         next_direction = -1 if direction < 0 else 1
+        moved = False
         # Derivative-following with a dead band (see model.adaptive_price).
         if sales <= 0:
             if stock <= 0:
                 return price, next_direction, step_scale
             next_direction = -1
+            moved = True
         elif demand > available + 1e-9:
             next_direction = 1
-        elif math.isfinite(previous_profit) and previous_profit > 0:
+            moved = True
+        elif market_price > 0:
+            if price > market_price * (1 + band):
+                next_direction = -1
+                moved = True
+            elif price < market_price * (1 - band):
+                next_direction = 1
+                moved = True
+        if not moved and math.isfinite(previous_profit) and previous_profit > 0:
             change = (profit - previous_profit) / previous_profit
             if change < -0.02:
                 next_direction = -next_direction
@@ -209,7 +220,8 @@ if _HAVE_NUMBA:
     def _learned_quote(view_tier, price, ages, profits, sales, previous, direction, demand,
                        steps, opportunity, potential_opportunity, index, stock,
                        tick, price_observation_ticks, research_price_min_potential,
-                       research_price_max_obs, research_price_min_opp, pricing_aggressiveness, response):
+                       research_price_max_obs, research_price_min_opp, market_price, band,
+                       pricing_aggressiveness, response):
         if ages[index] < price_observation_ticks or (tick + index) % price_observation_ticks != 0:
             return _round_cent(price[index] if price[index] > MIN_UNIT_PRICE else MIN_UNIT_PRICE)
         if view_tier == 2 and research_price_min_potential > 0:
@@ -221,7 +233,8 @@ if _HAVE_NUMBA:
             average = profits[index] / ages[index]
             nxt, d, s = _adaptive_price(price[index], average, previous[index],
                                         direction[index], sales[index], stock, demand[index],
-                                        sales[index], steps[index], pricing_aggressiveness, response)
+                                        sales[index], steps[index], market_price, band,
+                                        pricing_aggressiveness, response)
             price[index] = nxt
             direction[index] = d
             previous[index] = average
@@ -296,7 +309,7 @@ if _HAVE_NUMBA:
     def _operate_tier2_nb(
         seed, tick, t2_firm_count, storage,
         t2_conversion, switching_stable_band, t1_unit_cost, loyalty_multiple_t2, price_observation_ticks,
-        research_price_min_potential, research_price_max_obs, research_price_min_opp, pricing_aggressiveness, response, margin_band,
+        research_price_min_potential, research_price_max_obs, research_price_min_opp, pricing_aggressiveness, response, market_price, band, margin_band,
         t1_fin, t1_price, t1_rel, t1_cash, t1_sold, t1_rev, t1_cogs, t1_fin_basis,
         t1_intermediate_sold, t1_intermediate_revenue, t1_demand, t1_rel_attempts,
         t1_rel_avail_checks, t1_rel_available, t1_opportunities,
@@ -548,7 +561,8 @@ if _HAVE_NUMBA:
                                          t2_learn_opportunity, t2_learn_potential_opportunity,
                                          line, t2_fin[line], tick, price_observation_ticks,
                                          research_price_min_potential, research_price_max_obs,
-                                         research_price_min_opp, pricing_aggressiveness, response)
+                                         research_price_min_opp, market_price[pid], band,
+                                         pricing_aggressiveness, response)
                 t2_price[line] = nxt
                 t2_rel_price_sum[line] += 1 - min(1.0, max(0.0, nxt - previous)
                                                   / max(1e-9, previous * switching_stable_band))
@@ -982,13 +996,16 @@ def operate_tier2(world, cfg, tick):
     val = procurement_arrays(cfg)
     t2_conv, _, t2_cap, t2_target = t2_scale_arrays(cfg)
     t1_unit_cost = cfg['t1MaterialCost'] + cfg['conversionFactor']
+    n_lines = int(world.t2LineCount)
+    t2_going = _market_going_rate(world.t2Price[:n_lines], world.t2LearnSales[:n_lines],
+                                  world.t2LineProduct[:n_lines].astype(np.int64), len(M.T2_PRODUCTS))
     cs = _operate_tier2_nb(
         cfg['seed'], tick, cfg['t2FirmCount'], float(cfg['storage']),
         t2_conv, float(cfg['switchingStableBand']),
         t1_unit_cost, world.lm2, cfg['priceObservationTicks'],
         cfg['researchPriceMinimumPotentialOrders'], cfg['researchPriceMaxObservationTicks'],
         cfg['researchPriceMinimumOpportunities'], float(cfg['pricingAggressiveness']), float(cfg['wholesalePriceResponse']),
-        float(cfg['productionMarginBand']),
+        t2_going, float(cfg['marketAnchorBand']), float(cfg['productionMarginBand']),
         world.t1Fin, world.t1Price, world.t1Rel, world.t1Cash, world.t1Sold, world.t1Revenue, world.t1COGS, world.t1FinBasis,
         world.t1IntermediateSold, world.t1IntermediateRevenue, world.t1Demand, world.t1RelAttempts,
         world.t1RelAvailChecks, world.t1RelAvailable, world.t1Opportunities,

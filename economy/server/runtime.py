@@ -450,7 +450,8 @@ class KernelRuntime:
     # Projections (ports of worker publish() + helpers)
     # ------------------------------------------------------------------
     def _book_t0_equity(self):
-        v = float(self.world.t0Cash.sum()) + N0 * (self.cfg['t0License'] + self.cfg['t0Machinery'] + self.cfg['t0Reserve'])
+        machinery = sum(len(T0P[i]['element_indices']) * self.cfg['t0Machinery'] for i in range(N0))
+        v = float(self.world.t0Cash.sum()) + N0 * (self.cfg['t0License'] + self.cfg['t0Reserve']) + machinery
         for i in range(N0):
             b = i * NE
             for element in range(NE):
@@ -836,7 +837,7 @@ class KernelRuntime:
                 return None
             elements = []
             inventory = prod = sold = revenue = equity = 0.0
-            equity = world.t0Cash[id_] + self.cfg['t0License'] + self.cfg['t0Machinery'] + self.cfg['t0Reserve']
+            equity = world.t0Cash[id_] + self.cfg['t0License'] + len(T0P[id_]['element_indices']) * self.cfg['t0Machinery'] + self.cfg['t0Reserve']
             for element in M.ELEMENTS:
                 if element not in co['elements']:
                     continue
@@ -951,7 +952,7 @@ class KernelRuntime:
             prof = T0P[id_]
             inv = prod = cogs = sold = rev = rel = 0.0
             n = 0
-            eq = world.t0Cash[id_] + self.cfg['t0License'] + self.cfg['t0Machinery'] + self.cfg['t0Reserve']
+            eq = world.t0Cash[id_] + self.cfg['t0License'] + len(prof['element_indices']) * self.cfg['t0Machinery'] + self.cfg['t0Reserve']
             for element in range(NE):
                 if M.ELEMENTS[element] in prof['elements']:
                     idx = id_ * NE + element
@@ -1270,7 +1271,7 @@ class KernelRuntime:
                 'controller': 'PLAYER' if self.controllerT0[tid] else 'BOT',
                 'online': bool(self.onlineT0[tid]),
                 'price': float(world.t0Price[tid * NE + _EI[first]]) if first else None,
-                'cash': float(world.t0Cash[tid]), 'eqBook': float(self.cfg['t0Machinery']),
+                'cash': float(world.t0Cash[tid]), 'eqBook': float(len(prof['element_indices']) * self.cfg['t0Machinery']),
                 'equipment': list(prof['elements']), 'products': t0_products,
             }
         else:
