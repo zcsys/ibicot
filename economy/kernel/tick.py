@@ -676,7 +676,7 @@ def operate_tier2(world, cfg, products, profiles, t2_products, tick):
         M.procurement_profile(p, cfg, world.t2ReferenceCost[p['id']] or M.reference_tier2_cost(p))
         for p in t2_products
     ]
-    input_ratios = M.catalogue_input_ratios
+    input_ratios = M.catalog_input_ratios
     needs = [0.0] * NP
     plans = [0.0] * M4
     suppliers = [0] * NP

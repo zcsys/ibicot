@@ -7,7 +7,7 @@ All arithmetic is 32-bit unsigned.  ``MASK = 0xFFFFFFFF`` replaces
 The pure-Python path is exact (arbitrary-precision integers).  The optional
 Numba path uses explicit ``uint64`` for the multiply steps so it also wraps
 mod 2^64 (and therefore yields the correct low 32 bits) with no reliance on
-signed-overflow behaviour.
+signed-overflow behavior.
 """
 from __future__ import annotations
 

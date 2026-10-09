@@ -1,18 +1,18 @@
 'use strict';
 /*
- * One-time extractor: serialize the static catalogue from web/catalogue.js
+ * One-time extractor: serialize the static catalog from web/catalog.js
  * into a JSON file that the Python kernel loads verbatim. This avoids hand
- * transcription of the 420-recipe catalogue and the invented-market selection.
+ * transcription of the 420-recipe catalog and the invented-market selection.
  *
- * Usage: node tools/dump_catalogue.js [out.json]
+ * Usage: node tools/dump_catalog.js [out.json]
  */
 const fs = require('node:fs');
 const path = require('node:path');
 const root = path.resolve(__dirname, '..');
-const out = process.argv[2] || path.join(root, 'economy', 'core', 'catalogue.json');
+const out = process.argv[2] || path.join(root, 'economy', 'core', 'catalog.json');
 
 global.self = globalThis;
-require(path.join(root, 'web', 'catalogue.js'));
+require(path.join(root, 'web', 'catalog.js'));
 const M = globalThis.Phase0Model;
 
 const serializeT2 = (p) => ({
@@ -56,9 +56,10 @@ const data = {
   })),
   T2_SECTORS: M.T2_SECTORS,
   T2_SECTOR_DEFINITIONS: M.T2_SECTOR_DEFINITIONS.map((s) => ({ name: s.name, description: s.description })),
-  T2_SECTOR_MANUFACTURERS: M.T2_SECTOR_MANUFACTURERS.map((s) => ({ sector: s.sector, company: s.company, mark: s.mark })),
+  T2_SECTOR_MANUFACTURERS: M.T2_SECTOR_MANUFACTURERS.map((s) => ({ sector: s.sector, company: s.company })),
   T2_MANUFACTURER_BY_SECTOR: M.T2_MANUFACTURER_BY_SECTOR,
   EQUIPMENT_MAKERS: M.EQUIPMENT_MAKERS,
+  EQUIPMENT_CONFIG: M.EQUIPMENT_CONFIG,
   T2_SECTOR_WEIGHTS: M.T2_SECTOR_WEIGHTS,
   T2_ADJACENCY: M.T2_ADJACENCY,
   T2_NEED_TYPES: M.T2_NEED_TYPES,
@@ -67,10 +68,10 @@ const data = {
   PROGRESSION_DEFAULTS: M.PROGRESSION_DEFAULTS,
   INVENTED_PER_COMPLEXITY: M.INVENTED_PER_COMPLEXITY,
   T2_PRODUCTS: M.T2_PRODUCTS.map(serializeT2),
-  T2_CATALOGUE: M.T2_CATALOGUE.map(serializeT2),
+  T2_Catalog: M.T2_Catalog.map(serializeT2),
   T2_UNINVENTED_PRODUCTS: M.T2_UNINVENTED_PRODUCTS.map(serializeT2),
   T2_COMPLEXITY_COUNTS: M.T2_COMPLEXITY_COUNTS,
-  T2_CATALOGUE_COUNT: M.T2_CATALOGUE.length,
+  T2_Catalog_COUNT: M.T2_Catalog.length,
   WORLD_STORY: M.WORLD_STORY,
 };
 
@@ -78,4 +79,4 @@ fs.mkdirSync(path.dirname(out), { recursive: true });
 fs.writeFileSync(out, JSON.stringify(data, null, 1));
 console.log('wrote', out);
 console.log('PRODUCTS', data.PRODUCTS.length, 'T2_PRODUCTS', data.T2_PRODUCTS.length,
-  'T2_CATALOGUE', data.T2_CATALOGUE.length, 'uninvented', data.T2_UNINVENTED_PRODUCTS.length);
+  'T2_Catalog', data.T2_Catalog.length, 'uninvented', data.T2_UNINVENTED_PRODUCTS.length);

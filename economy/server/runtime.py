@@ -1,6 +1,6 @@
 """Full kernel runtime: owns the WorldState, applies the JS worker's command
 surface, and publishes the exact ``lastSnapshot`` projection the browser UI
-expects.  This is the Python analogue of ``the canon machine contract (docs/design_canon.md §12)``
+expects.  This is the Python analog of ``the canon machine contract (docs/design_canon.md §12)``
 closure + ``publish()``/``companyDetail()``/``tier2Page()``/``buildAnalytics()``.
 
 The snapshot is a read projection (display-only); aggregate sums use NumPy so
@@ -79,8 +79,8 @@ N_CONSUMERS = M.N_CONSUMERS
 _EI = {element: i for i, element in enumerate(M.ELEMENTS)}
 _PI = {p['code']: i for i, p in enumerate(M.PRODUCTS)}
 
-# Generic firm names come from ``core.model`` (naming catalogue §10): a
-# deterministic house name + trade descriptor + district/berth qualifier.
+# Generic firm names come from ``core.model`` (Star Business naming catalog §9):
+# a sector-specific generic base plus a decimal serial number.
 
 
 def _markup_code(code, cfg):
@@ -1277,7 +1277,7 @@ class KernelRuntime:
         lastSnapshot = {
             'world': dict(M.WORLD_STORY, population=cfg['consumerCount']),
             'tick': self.tick, 'month': self.month, 'calendar': M.calendar_at(self.tick),
-            'invention': {'possible': M.T2_CATALOGUE_COUNT, 'invented': len(M.T2_PRODUCTS),
+            'invention': {'possible': M.T2_Catalog_COUNT, 'invented': len(M.T2_PRODUCTS),
                           'reserved': len(M.T2_UNINVENTED_PRODUCTS)},
             'tps': tps, 'mode': self.mode, 'targetTPS': self.targetTPS,
             'adminAccounting': dict(self.adminAccounting, lastEquipmentReceipt=(

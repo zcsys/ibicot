@@ -27,7 +27,7 @@ from .runtime import KernelRuntime, _STATS_DIR
 ROOT = Path(__file__).resolve().parents[2]  # repository root
 WEB_DIR = ROOT / 'web'                       # front-end static files
 
-app = FastAPI(title='Long Muster — economy kernel', version='0.1.6')
+app = FastAPI(title='Star Business — economy kernel', version='0.1.6')
 
 _runtime: KernelRuntime | None = None
 

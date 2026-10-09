@@ -3,7 +3,7 @@
  * of a browser Web Worker.  It replaces the global `Worker` constructor before
  * app.js loads, keeping the app's postMessage / onmessage protocol unchanged.
  *
- * Load this after catalogue.js and before app.js.
+ * Load this after catalog.js and before app.js.
  */
 (function () {
   'use strict';

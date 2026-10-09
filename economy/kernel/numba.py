@@ -57,7 +57,7 @@ def _build_flat():
 
 
 T2_COMPLEXITY, T2_SECTOR, T2_OUTPUT, T2_ING_M, T2_ING_Q, T2_ING_OFF = _build_flat()
-RATIOS = np.array(M.catalogue_input_ratios, dtype=np.float64)
+RATIOS = np.array(M.catalog_input_ratios, dtype=np.float64)
 
 
 def _scale_key(cfg):

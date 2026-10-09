@@ -13,43 +13,43 @@ from .config import normalize_config
 from .rng import hash_seed_vec
 
 # --------------------------------------------------------------------------
-# Tier 0 profiles (worker `T0P`): the 20 extraction houses, in fixed order.
-# Names follow the Long Muster naming catalogue §4.  Coverage is 2 four-market,
-# 4 three-market, 6 two-market and 8 single-market houses.
+# Tier 0 profiles (worker `T0P`): the 20 extraction companies, in fixed order.
+# Names follow the Star Business naming catalog §4.  Coverage is 2 four-market,
+# 4 three-market, 6 two-market and 8 single-market companies.
 #
-# Civic duties (three-market charter houses):
-#   Common Measure Resources  -> Colony Standards (policy)
-#   Charterline Resources     -> Company Register (administration)
-#   Open Ledger Resources     -> Sector Observatory (intelligence)
-#   Assembly Square Resources -> Colony Forum (community)
+# Civic duties (three-market corporations):
+#   Baseline Resource Corporation  -> Colony Policy
+#   Union Charter Resources Inc.   -> Business Registry
+#   Signal Point Resources Corp.   -> Market Intelligence
+#   Commonline Resources Company   -> Community Hub
 #
-# Monopoly service pairs (single-market houses):
-#   Water: Meltwell Ice & Machine / Brinewright Water & Machine -> machinery
-#   Earth: Stonehold Mining & Storage / Underfloor Minerals & Storage -> storage fee
-#   Fire:  Emberwell Energy Bank / Coreheat Energy Bank -> banking
-#   Air:   Skybill Gas & Advertising / Highsign Atmospherics & Advertising -> advertising
+# Monopoly service pairs (single-market companies):
+#   Water: Bluegate Water & Machine Co. / Coldwell Ice & Machine Inc. -> machinery
+#   Earth: Bedrock Mining & Storage Corp. / Iron County Minerals & Storage Co. -> storage royalty
+#   Fire:  Furnace Creek Energy Bank, Inc. / Sunbelt Energy Bank Corporation -> banking
+#   Air:   Skyline Gas & Advertising Co. / Highband Atmospherics & Advertising Inc. -> advertising
 # --------------------------------------------------------------------------
 _T0P_RAW = [
-    ['First Landing Consolidated', ['Water', 'Earth', 'Fire', 'Air']],
-    ['Far Acre Holdings', ['Water', 'Earth', 'Fire', 'Air']],
-    ['Common Measure Resources', ['Water', 'Earth', 'Fire']],
-    ['Charterline Resources', ['Water', 'Earth', 'Air']],
-    ['Open Ledger Resources', ['Water', 'Fire', 'Air']],
-    ['Assembly Square Resources', ['Earth', 'Fire', 'Air']],
-    ['Siltline Recovery', ['Water', 'Earth']],
-    ['Hotwell Extraction', ['Water', 'Fire']],
-    ['Cloudbank Harvesting', ['Water', 'Air']],
-    ['Red Seam Extraction', ['Earth', 'Fire']],
-    ['Dustwake Recovery', ['Earth', 'Air']],
-    ['Flarewell Harvesting', ['Fire', 'Air']],
-    ['Meltwell Ice & Machine', ['Water']],
-    ['Brinewright Water & Machine', ['Water']],
-    ['Stonehold Mining & Storage', ['Earth']],
-    ['Underfloor Minerals & Storage', ['Earth']],
-    ['Emberwell Energy Bank', ['Fire']],
-    ['Coreheat Energy Bank', ['Fire']],
-    ['Skybill Gas & Advertising', ['Air']],
-    ['Highsign Atmospherics & Advertising', ['Air']],
+    ['Raw Materials Corp.', ['Water', 'Earth', 'Fire', 'Air']],
+    ['Elements Inc.', ['Water', 'Earth', 'Fire', 'Air']],
+    ['Baseline Resource Corporation', ['Water', 'Earth', 'Fire']],
+    ['Union Charter Resources Inc.', ['Water', 'Earth', 'Air']],
+    ['Signal Point Resources Corp.', ['Water', 'Fire', 'Air']],
+    ['Commonline Resources Company', ['Earth', 'Fire', 'Air']],
+    ['Mudrock Extraction Co.', ['Water', 'Earth']],
+    ['Steam Ridge Resources Inc.', ['Water', 'Fire']],
+    ['Cloudline Harvesting Corporation', ['Water', 'Air']],
+    ['Hotrock Extraction Company', ['Earth', 'Fire']],
+    ['Dustline Recovery Corp.', ['Earth', 'Air']],
+    ['Flare Basin Resources Incorporated', ['Fire', 'Air']],
+    ['Bluegate Water & Machine Co.', ['Water']],
+    ['Coldwell Ice & Machine Inc.', ['Water']],
+    ['Bedrock Mining & Storage Corp.', ['Earth']],
+    ['Iron County Minerals & Storage Company', ['Earth']],
+    ['Furnace Creek Energy Bank, Inc.', ['Fire']],
+    ['Sunbelt Energy Bank Corporation', ['Fire']],
+    ['Skyline Gas & Advertising Co.', ['Air']],
+    ['Highband Atmospherics & Advertising Inc.', ['Air']],
 ]
 _EI = {element: i for i, element in enumerate(M.ELEMENTS)}
 T0P = [{'id': i, 'name': name, 'elements': elements,
@@ -199,7 +199,7 @@ def _array_spec(cfg):
         ('t2Sold', 'f64', ML),
         ('t2Revenue', 'f64', ML),
         ('t2COGS', 'f64', ML),
-        ('t2ReferenceCost', 'f64', M.T2_CATALOGUE_COUNT),
+        ('t2ReferenceCost', 'f64', M.T2_Catalog_COUNT),
         ('t2SectorProducts', 'u16', len(M.T2_SECTORS) * n_t2),
         ('t2SectorProductWeight', 'f64', len(M.T2_SECTORS) * n_t2),
         ('t2SectorCount', 'u8', len(M.T2_SECTORS)),

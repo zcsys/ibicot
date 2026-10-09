@@ -1,15 +1,22 @@
-# Design canon — Long Muster kernel
+# Design canon — Star Business kernel
 
 > **Status:** settled by review. This is the **single source of truth**: it states
 > *what must be true* of the economy kernel and the game's entry into it, and now also
 > records the settled parameters and the machine contract (§12) so the whole economy is
 > specified in one document. Where it conflicts with any implementation, the canon wins.
 >
-> **Naming.** The game is **Long Muster**; all catalogue display names (materials,
-> companies, sectors, goods and equipment) follow the Long Muster naming catalogue.
-> The agent-category display labels are **Extraction Houses** (T0), **Refineries**
-> (T1), **Manufacturers** (T2) and **Consumers** (T3). `T0`–`T3` remain the internal
-> tier keys throughout this document and the machine contract.
+> **Naming policy.** The game is **Star Business**; all catalog display names
+> (materials, companies, sectors, goods and equipment) follow the **Star Business**
+> naming catalog, which supersedes all earlier naming directions. House style is
+> **American English**: aluminum, fiber, mold, center, defense, maneuver,
+> pressurized, standardized. Use title case for catalog labels and lower case for
+> generic material, equipment, and product descriptions in sentences. The
+> agent-category display labels are **Resource Companies** (T0), **Refineries**
+> (T1), **Manufacturers** (T2) and **Consumers** (T3). Generated firms use a
+> sector-specific generic name plus a decimal serial number (e.g.
+> **Power Equipment 00042**); no house-name pool, location suffix, district, or
+> berth is appended. `T0`–`T3` remain the internal tier keys throughout this
+> document and the machine contract.
 
 ---
 
@@ -114,7 +121,7 @@ Every section below is a consequence of, or a requirement for, that sentence.
   and machinery. Machinery footprint is fixed — C-1/C-2 = 1,000, C-3 = 3,000,
   C-4 = 4,000, C-5 = 5,000 — leaving goods space `G = 20,000 − machinery` for raw and
   finished.
-- **Storage Concession Fee (deferred for PoC):** Tier 0 is fully subsidized (no storage or
+- **Storage Royalty (deferred for PoC):** Tier 0 is fully subsidized (no storage or
   machinery costs). Tier 1 and Tier 2 would pay a minuscule per-tick fee per storage
   space, collected by the two Earth houses.
 - **Desired inventory = fill `G`:** the whole allocation is paid for, so empty space is
@@ -261,7 +268,7 @@ Tracked, explicitly **not** canon yet:
 - **T1 vs. T2 steady-state size divergence** — game-start sizes are fixed (§6); their
   later divergence is emergent, not prescribed.
 - **New product invention** — the dynamic introduction of new T2 products over time
-  (innovation). The PoC uses a fixed 200-product catalogue; how new products enter the
+  (innovation). The PoC uses a fixed 200-product catalog; how new products enter the
   market — and what happens to the supply-scaled consumer assignment, firm lines, and
   supply when one appears — is deferred, mechanics TBD.
 
@@ -364,7 +371,7 @@ values**; the demand-side *scale* is **calibration** (not frozen).
 
 ### 12.5 Deferred / calibration
 
-- **Deferred (not implemented)**: Storage Concession Fee, machinery, Banking, Advertising.
+- **Deferred (not implemented)**: Storage Royalty, machinery, Banking, Advertising.
 - **Calibration (not frozen)**: offer-sampling counts.
 
 ### 12.6 Pricing (per tick, derivative-following)

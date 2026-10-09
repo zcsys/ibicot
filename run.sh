@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Long Muster — Python economy kernel launcher.
+# Star Business — Python economy kernel launcher.
 #
 # Wraps the environment setup (interpreter + PYTHONPATH) so you can run the
 # kernel, the service, or the tests with one command.
@@ -23,7 +23,7 @@ cd "$ROOT"
 
 usage() {
   cat <<'EOF'
-Long Muster — economy kernel launcher
+Star Business — economy kernel launcher
 
 Usage:
   ./run.sh run   [--seed N] [--ticks N] [--cfg JSON] [--out PATH]   headless run

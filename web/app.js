@@ -431,7 +431,7 @@
     }
     if (d.tier === 'T0') {
       const txt = [
-        `${d.name} · Extraction house`,
+        `${d.name} · Resource company`,
         `status: ${d.status}`,
         `cash: ${fmtMoney(d.cash, 2)}`,
         `inventory: ${fmtInt(d.inventory)}`,
@@ -692,7 +692,7 @@
     const difficulty = Object.values(s.difficulty);
     $('envRange').textContent = fmtFixed(Math.min(...difficulty), 3) + '–' + fmtFixed(Math.max(...difficulty), 3);
     $('t0DiffMean').textContent = fmtFixed(sum(difficulty) / difficulty.length, 3);
-    $('scaleCaption').textContent = fmtInt(t0.firms) + ' extraction houses · ' + fmtInt(t1.firms) + ' refineries · ' +
+    $('scaleCaption').textContent = fmtInt(t0.firms) + ' resource companies · ' + fmtInt(t1.firms) + ' refineries · ' +
       fmtInt(t2.firms) + ' manufacturers · ' + fmtInt(consumers.population) + ' consumers';
     $('demandCaption').textContent = fmtInt(consumers.fulfilled) + ' / ' + fmtInt(consumers.active) + ' desired units fulfilled this tick';
     const hist = s.analyticsHistory || [], scope = $('overviewTier').value;
@@ -728,7 +728,7 @@
     }).join('');
     const tiers = ['t0','t1','t2'].map((key, index) => {
       const t = s.tiers[key];
-      return { ...t, name: ['Extraction Houses','Refineries','Manufacturers'][index],
+      return { ...t, name: ['Resource Companies','Refineries','Manufacturers'][index],
         complexity: ['Raw elements','C-1–C-2','C-3–C-5'][index],
         bought: index === 0 ? null : t.bought,
         cashPerFirm: meaningfulRatio(t.cash, t.firms), revenuePerFirm: meaningfulRatio(t.revenue, t.firms),
@@ -754,7 +754,7 @@
   function renderOwnership(s) {
     const o = s.ownership;
     if (!o) return;
-    const LICENSE_NAMES = { T0: 'Extraction house', T1: 'Refinery', T2: 'Manufacturer' };
+    const LICENSE_NAMES = { T0: 'Resource company', T1: 'Refinery', T2: 'Manufacturer' };
     $('ownershipLicenses').textContent = o.licenses.map((l) => LICENSE_NAMES[l] || l).join(', ') || '—';
     $('t2LicenseCost').textContent = o.licenseCosts.T2 == null ? 'not for sale' : fmtMoney(o.licenseCosts.T2, 0);
     $('buyT2License').disabled = o.licenses.includes('T2');
@@ -905,9 +905,9 @@
   $('t2ProductNeed').innerHTML += M.T2_NEED_TYPES.map(form=>`<option>${form}</option>`).join('');
   $('t2ProductSector').innerHTML += M.T2_SECTORS.map(s=>`<option>${s}</option>`).join('');
   $('t2NeedOverview').innerHTML = M.T2_SECTORS.map(sector =>
-    '<button type="button" data-catalogue-sector="'+sector+'">'+sector+' · '+M.T2_PRODUCTS.filter(p=>p.sector===sector).length+'</button>').join('');
+    '<button type="button" data-catalog-sector="'+sector+'">'+sector+' · '+M.T2_PRODUCTS.filter(p=>p.sector===sector).length+'</button>').join('');
   $('t2NeedOverview').addEventListener('click',event=>{
-    const sector=event.target.closest('[data-catalogue-sector]')?.dataset.catalogueSector;
+    const sector=event.target.closest('[data-catalog-sector]')?.dataset.catalogSector;
     if(sector){$('t2ProductSector').value=sector;if(latestSnapshot)renderTier2(latestSnapshot);}
   });
   $('recipePoolSummary').textContent = M.T2_PRODUCTS.length+' goods · '+M.T2_UNINVENTED_PRODUCTS.length+' reserved recipes · '+[3,4,5].map(c=>M.T2_COMPLEXITY_COUNTS[c-1]+' C-'+c).join(' · ');

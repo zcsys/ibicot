@@ -1,4 +1,4 @@
-# Long Muster — Economy Kernel
+# Star Business — Economy Kernel
 
 A deterministic, fair-market simulation of a physical-goods supply chain, driven
 by autonomous firms and entered by players on equal footing. This repository is
@@ -7,6 +7,10 @@ with a live browser dashboard.
 
 The rulebook is [`docs/design_canon.md`](docs/design_canon.md) — it is the single
 source of truth for *what* the economy is. Everything here implements it.
+
+**Naming.** All display names (materials, companies, sectors, equipment, and
+goods) follow the **Star Business** naming catalog, and house style is
+**American English**. See the *House Style* section of `docs/design_canon.md`.
 
 ## Quickstart
 
@@ -32,7 +36,7 @@ can actually feed the next):
 
 | Tier | Who | Count |
 | --- | --- | --- |
-| **T0 — Extraction Houses** | extract the four raw elements (Water, Earth, Fire, Air) | 20 houses |
+| **T0 — Resource Companies** | extract the four raw elements (Water, Earth, Fire, Air) | 20 companies |
 | **T1 — Refineries** | 10 refined materials (4 C-1 basic + 6 C-2 compound) | 1,000 firms |
 | **T2 — Manufacturers** | 200 manufactured goods, complexity C-3 / C-4 / C-5 | 60,000 firms |
 | **T3 — Consumers** | resident consumers | 1,000,000 |
@@ -61,9 +65,9 @@ Time is a **30-tick month**, a **360-tick year**, and a **7,200-tick generation*
 
 ```
 economy/                  # the Python kernel
-  core/                   #   catalogue + canon parameters, config, RNG, WorldState
+  core/                   #   catalog + canon parameters, config, RNG, WorldState
     config.py             #   every tunable parameter (single place to change them)
-    model.py              #   catalogue, cost ladder, pricing/loyalty primitives
+    model.py              #   catalog, cost ladder, pricing/loyalty primitives
     state.py              #   WorldState (NumPy arrays) + world construction
     rng.py                #   SplitMix32 (scalar + vectorised, bit-exact)
   kernel/
@@ -76,10 +80,10 @@ economy/                  # the Python kernel
     persistence.py        #   checkpoint save/load (byte-identical round-trip)
   cli/main.py             #   headless `run` / `serve` entry point
 web/                      # the browser dashboard (served by the backend)
-  index.html  app.js  bridge.js  catalogue.js
+  index.html  app.js  bridge.js  catalog.js
 docs/design_canon.md      # the design rulebook (source of truth)
 docs/landlord-alchemy/    # sibling "Landlord Alchemy" design artefact
-tools/dump_catalogue.js   # one-time catalogue extractor (web/catalogue.js → JSON)
+tools/dump_catalog.js   # one-time catalog extractor (web/catalog.js → JSON)
 tests/                    # Python tests (RNG + determinism + invariants)
 run.sh                    # launcher
 ```
@@ -90,8 +94,8 @@ against the Python kernel.
 
 ## Configuration
 
-All parameters live in `economy/core/config.py` (see `default_cfg()`), organised by
-tier, demand, and market behaviour. Override them per-run:
+All parameters live in `economy/core/config.py` (see `default_cfg()`), organized by
+tier, demand, and market behavior. Override them per-run:
 
 ```sh
 ./run.sh run --cfg '{"consumerCount": 500, "t2FirmCount": 1000, "seed": 137}'

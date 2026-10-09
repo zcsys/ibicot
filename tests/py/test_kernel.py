@@ -71,30 +71,41 @@ def test_invariants_conservation():
 
 
 def test_generated_names():
-    # Freeze the naming catalogue's ordered implementation data (§10) and the
-    # deterministic mixed-radix generator, plus the Tier 1 equipment classes (§7).
-    assert len(M.HOUSE_NAMES) == 32
-    assert len(M.DISTRICT_NAMES) == 32
-    assert len(M.BERTH_FIRST) == 8 and len(M.BERTH_SECOND) == 8
+    # Freeze the generic company bases (Star Business naming catalog §9) and the
+    # decimal sector-serial numbering scheme, plus the equipment classes (§7).
+    assert M.T1_GENERIC_BASES == {
+        'W': 'Industrial Fluids', 'E': 'Alloy Refining', 'F': 'Energy Materials',
+        'A': 'Process Gases', 'W+E': 'Ceramic Materials', 'W+F': 'Thermal Materials',
+        'W+A': 'Technical Fibers', 'E+F': 'Semiconductor Materials', 'E+A': 'Composite Materials',
+        'F+A': 'Active Chemicals',
+    }
+    assert M.T2_GENERIC_BASES == [
+        'Power Equipment', 'Propulsion Systems', 'Shipbuilding Works', 'Habitat Systems',
+        'Service Robotics', 'Computing Systems', 'Scientific Instruments', 'Industrial Tooling',
+        'Freight Equipment', 'Defense Systems',
+    ]
 
-    assert M.generated_company_name(0, 'Metals') == \
-        'Fenwick Metals — Ashbank District, Amber Anchor Berth'
-    assert M.generated_company_name(52529, 'Membranes') == \
-        'Shared Hearth Membranes — Juniper District, Quiet Landing Berth'
-    assert M.generated_company_name(64504, 'Service Robotics') == \
-        'Old Lathe Service Robotics — Southmere District, Silver Slip Berth'
-    assert M.generated_company_name(20651, 'Tool Supply') == \
-        'Reedwater Tool Supply — Flintbank District, Chalk Quay Berth'
+    # Tier 1 examples: first firm of each material cohort is 001.
+    assert M.t1_firm_name(0) == 'Industrial Fluids 001'
+    assert M.t1_firm_name(800) == 'Composite Materials 001'
+    assert M.t1_firm_name(99) == 'Industrial Fluids 100'
 
-    # Tier 1 equipment classes.
+    # Tier 2 examples: decimal serial within each 6,000-firm sector.
+    assert M.t2_firm_name(0, 0) == 'Power Equipment 00001'
+    assert M.t2_firm_name(0, 5999) == 'Power Equipment 06000'
+    assert M.t2_firm_name(1, 6000) == 'Propulsion Systems 00001'
+
+    # Equipment classes and configurations.
     assert M.T1_EQUIPMENT_CLASS == {1: 'Refining Bench', 2: 'Refining Cell'}
-    assert M.T1_EQUIPMENT_INSTALLATION['W+E'] == 'Mineral Ceramic Refining Cell'
-    assert M.T1_EQUIPMENT_INSTALLATION['F'] == 'Charge Medium Refining Bench'
+    assert M.T1_EQUIPMENT_CONFIG == {1: 'Single-Element Refining', 2: 'Paired-Element Refining'}
+    assert M.T1_EQUIPMENT_INSTALLATION['W+E'] == 'Ceramic Stock Refining Cell'
+    assert M.T1_EQUIPMENT_INSTALLATION['F'] == 'Energy Carrier Refining Bench'
+    assert M.T2_EQUIPMENT_CONFIG == {3: 'Component Production', 4: 'Assembly Production', 5: 'Systems Production'}
 
-    # Every slot in the 65,536-slot namespace yields a unique name.
-    names = {M.generated_company_name(s, 'Metals') for s in range(65_536)}
-    assert len(names) == 65_536
-    print('generated names: ok (frozen pools, examples and uniqueness hold)')
+    # Cohort sizes are consistent with the tier populations.
+    assert M.T1_FIRMS_PER_MATERIAL == 100
+    assert M.T2_FIRMS_PER_SECTOR == 6000
+    print('generated names: ok (generic bases + decimal serials hold)')
 
 
 if __name__ == '__main__':
