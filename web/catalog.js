@@ -1,5 +1,5 @@
 /*
- * Canonical, editable Phase 1 model primitives.
+ * Canonical, editable v0.1 model primitives.
  *
  * This file deliberately contains no browser-runtime boundary code. The
  * source kernel imports these definitions; keeping them here makes

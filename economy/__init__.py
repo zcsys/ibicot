@@ -1,4 +1,4 @@
-"""Star Business — Python economy kernel (Phase 1 PoC).
+"""Star Business — Python economy kernel (v0.1 PoC).
 
 A faithful, deterministic port of the JavaScript economy kernel
 (web/catalog.js + the canon (docs/design_canon.md) + the canon machine contract (docs/design_canon.md §12))
