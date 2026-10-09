@@ -62,7 +62,7 @@ def default_cfg() -> dict:
         'chokeMax': 3.0,
         'elasticity': 2.0,              # eta = 2 (T3 consumer demand)
         'productionMarginBand': 0.05,   # gross-margin fraction below which producer output tapers to 0 at break-even
-        't2ReservationPremium': 0.0,
+        't2ReservationPremium': 0.25,
 
         # Market / pricing / reliability
         'pricingAggressiveness': 0.35,
