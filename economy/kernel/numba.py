@@ -309,7 +309,7 @@ if _HAVE_NUMBA:
         t2_learn_direction, t2_learn_demand, t2_learn_stock, t2_learn_step,
         t2_learn_opportunity, t2_learn_potential_opportunity,
         t1_offers_flat, t1_offers_off, valuation, t2_capacity, t2_output, t2_target,
-        t2_mat_spend, t2_mat_orders):
+        t2_mat_spend, t2_mat_orders, loyalty_switches, loyalty_penalties):
         needs = np.zeros(NP, dtype=np.float64)
         plans = np.zeros(M4, dtype=np.float64)
         suppliers = np.zeros(NP, dtype=np.int64)
@@ -488,6 +488,8 @@ if _HAVE_NUMBA:
                     if loyalty_charge > 0.0:
                         t2_cash[firm] -= loyalty_charge
                         t1_cash[pref // NP] += loyalty_charge
+                        loyalty_switches[1] += 1.0
+                        loyalty_penalties[1] += loyalty_charge
                     t2_preferred[firm * NP + material] = supplier
 
             for slot in range(line_count):
@@ -566,7 +568,8 @@ if _HAVE_NUMBA:
         offers_flat, offers_off, t2_firm_line_count, t2_line_firm,
         t2_fin, t2_price, t2_rel, t2_demand, t2_rel_attempts, t2_rel_available,
         t2_cash, t2_last_sale_tick, t2_sold, t2_revenue, t2_cogs, t2_fin_basis,
-        t2_opportunities, t2_potential_orders, complexity, valuation):
+        t2_opportunities, t2_potential_orders, complexity, valuation,
+        loyalty_switches, loyalty_penalties):
         total_lines = offers_off[n_t2]
         cum = np.empty(total_lines, dtype=np.float64)
         for m in range(n_t2):
@@ -703,6 +706,8 @@ if _HAVE_NUMBA:
                 charge = _loyalty_charge(reference, t2_rel[preferred], loyalty_multiple_t3)
                 t2_cash[t2_line_firm[preferred]] += charge
                 payments += charge
+                loyalty_switches[2] += 1.0
+                loyalty_penalties[2] += charge
             market_fulfilled[market] += bought
             filled += 1
 
@@ -814,7 +819,8 @@ if _HAVE_NUMBA:
         t0_rel_available, t0_sold, t0_revenue, t0_cogs, t0_ful, difficulty,
         t1_cash, t1_fin, t1_fin_basis, t1_price, t1_replacement_cost, t1_operates,
         t1_input_need, t1_purchase_req, t1_last_buy, t1_bought, raw, raw_basis,
-        preferred_wholesale, profile_has, profile_count, t1_input_ratio, t1_output, t1_target, t1_is_basic):
+        preferred_wholesale, profile_has, profile_count, t1_input_ratio, t1_output, t1_target, t1_is_basic,
+        loyalty_switches, loyalty_penalties):
         t0_req[:] = 0.0
         t0_funded_req[:] = 0.0
         first_cohort = tick % NP
@@ -934,6 +940,8 @@ if _HAVE_NUMBA:
                     if loyalty_charge > 0.0:
                         t1_cash[company] -= loyalty_charge
                         t0_cash[pref] += loyalty_charge
+                        loyalty_switches[0] += 1.0
+                        loyalty_penalties[0] += loyalty_charge
                     preferred_wholesale[raw_base + element] = chosen
 
 # --------------------------------------------------------------------------
@@ -968,7 +976,8 @@ def plan_and_buy_inputs(world, cfg, tick):
         world.t0RelAvailable, world.t0Sold, world.t0Revenue, world.t0COGS, world.t0Fulfilled, world.difficulty,
         world.t1Cash, world.t1Fin, world.t1FinBasis, world.t1Price, world.t1ReplacementCost, world.t1Operates,
         world.t1InputNeed, world.t1PurchaseReq, world.t1LastBuy, world.t1Bought, world.raw, world.rawBasis,
-        world.preferredWholesale, PROF_HAS, PROF_N, T1_INPUT_RATIO, t1_output, t1_target, T1_IS_BASIC)
+        world.preferredWholesale, PROF_HAS, PROF_N, T1_INPUT_RATIO, t1_output, t1_target, T1_IS_BASIC,
+        world.loyaltySwitches, world.loyaltyPenalties)
 
 
 def operate_tier2(world, cfg, tick):
@@ -995,7 +1004,7 @@ def operate_tier2(world, cfg, tick):
         world.t2LearnDirection, world.t2LearnDemand, world.t2LearnStock, world.t2LearnStep,
         world.t2LearnOpportunity, world.t2LearnPotentialOpportunity,
         flat, off, val, t2_cap, T2_OUTPUT, t2_target,
-        world.t2MatSpend, world.t2MatOrders)
+        world.t2MatSpend, world.t2MatOrders, world.loyaltySwitches, world.loyaltyPenalties)
     world.costSinks += cs
     return cs
 
@@ -1024,4 +1033,5 @@ def clear_consumers(world, cfg, tick):
         flat, off, world.t2FirmLineCount, world.t2LineFirm,
         world.t2Fin, world.t2Price, world.t2Rel, world.t2Demand, world.t2RelAttempts, world.t2RelAvailable,
         world.t2Cash, world.t2LastSaleTick, world.t2Sold, world.t2Revenue, world.t2COGS, world.t2FinBasis,
-        world.t2Opportunities, world.t2PotentialOrders, T2_COMPLEXITY, val)
+        world.t2Opportunities, world.t2PotentialOrders, T2_COMPLEXITY, val,
+        world.loyaltySwitches, world.loyaltyPenalties)

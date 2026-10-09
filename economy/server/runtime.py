@@ -60,6 +60,14 @@ def stats_row(world, cfg, tick, month):
                             + cfg['t2FirmCount'] * cfg['t2License'])
     row['consumersActive'] = float(world.marketActive.sum())
     row['consumersFulfilled'] = float(world.marketFulfilled.sum())
+    row['loyaltySwitches'] = int(world.loyaltySwitches.sum())
+    row['loyaltyPenalties'] = float(world.loyaltyPenalties.sum())
+    row['loyaltySwitchesT1'] = int(world.loyaltySwitches[0])
+    row['loyaltySwitchesT2'] = int(world.loyaltySwitches[1])
+    row['loyaltySwitchesT3'] = int(world.loyaltySwitches[2])
+    row['loyaltyPenaltiesT1'] = float(world.loyaltyPenalties[0])
+    row['loyaltyPenaltiesT2'] = float(world.loyaltyPenalties[1])
+    row['loyaltyPenaltiesT3'] = float(world.loyaltyPenalties[2])
     return row
 
 NE, NP, N0, N1 = M.NE, M.NP, M.N0, M.N1

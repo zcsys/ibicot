@@ -38,7 +38,7 @@ _RESET_NAMES = [
     't1Demand', 't2Demand', 't1Sold', 't1Revenue', 't1COGS', 't1IntermediateSold',
     't1IntermediateRevenue', 'active', 'potential', 'fulfilled', 'priceLost',
     'stockUnmet', 't0Fulfilled', 't0FundedReq', 't1InputNeed', 't1PurchaseReq',
-    't2MatSpend', 't2MatOrders',
+    't2MatSpend', 't2MatOrders', 'loyaltySwitches', 'loyaltyPenalties',
 ]
 
 
@@ -307,6 +307,8 @@ def plan_and_buy_inputs(world, cfg, products, profiles, tick):
                 if loyalty_charge > 0.0:
                     world.t1Cash[company] -= loyalty_charge
                     world.t0Cash[preferred] += loyalty_charge
+                    world.loyaltySwitches[0] += 1.0
+                    world.loyaltyPenalties[0] += loyalty_charge
                 world.preferredWholesale[raw_base + element] = chosen
 
 
@@ -661,6 +663,8 @@ def transfer_tier2_input(world, cfg, firm, material, supplier, request):
     if loyalty_charge > 0.0:
         world.t2Cash[firm] -= loyalty_charge
         world.t1Cash[preferred // NP] += loyalty_charge
+        world.loyaltySwitches[1] += 1.0
+        world.loyaltyPenalties[1] += loyalty_charge
     world.t2Preferred[firm * NP + material] = supplier
     return quantity
 
@@ -951,6 +955,8 @@ def clear_consumers(world, cfg, products, t2_products, tick):
                                      world.lm3)
             world.t2Cash[world.t2LineFirm[preferred]] += charge
             consumer_payments += charge
+            world.loyaltySwitches[2] += 1.0
+            world.loyaltyPenalties[2] += charge
         world.marketFulfilled[market] += bought
         filled_orders += 1
 

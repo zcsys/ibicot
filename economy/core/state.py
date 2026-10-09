@@ -250,6 +250,10 @@ class WorldState:
         # per-tick accumulators for the T2 material AOV (split by complexity)
         self.t2MatSpend = np.zeros(3, dtype=np.float64)
         self.t2MatOrders = np.zeros(3, dtype=np.float64)
+        # per-tick loyalty accounting: disloyal supplier switches and charge paid,
+        # indexed by buyer tier [T1, T2, T3]
+        self.loyaltySwitches = np.zeros(3, dtype=np.float64)
+        self.loyaltyPenalties = np.zeros(3, dtype=np.float64)
 
     @staticmethod
     def _mean_t2_unit_cost(cfg):
