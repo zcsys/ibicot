@@ -410,9 +410,9 @@ challenger costs `P_chal × q + loyaltyCharge`, where
 `unit_cost` is the product's canonical cost-ladder unit cost (§4) — a *fixed*
 reference, independent of the current market price, so a price drop does not shrink the
 barrier — and `reliability_inc` is the incumbent's reliability (0–1), so the
-`(1 + reliability)` factor makes sourcing away from a reliable supplier cost up to 2× more. `M` is a **per-complexity** multiple, sized so the charge equals ~10 % of a typical
-order: **83.33** for the T1 raw buyer (C-1/C-2, equal), **{3: 1.21, 4: 0.65, 5: 0.26}**
-for T2 intermediate buyers by the buying firm's complexity, and **0.97** for T3 consumers.
+`(1 + reliability)` factor makes sourcing away from a reliable supplier cost up to 2× more. `M` is a **per-complexity** multiple, sized so the charge equals ~5 % of a typical
+order: **41.665** for the T1 raw buyer (C-1/C-2, equal), **{3: 0.605, 4: 0.325, 5: 0.13}**
+for T2 intermediate buyers by the buying firm's complexity, and **0.485** for T3 consumers.
 The charge is **fixed per disloyal purchase** (independent of order size, so
 a 1-unit order cannot dodge it) and is **paid to the incumbent**: deducted from the buyer's cash and credited to the incumbent — a
 transfer, not a sink.
@@ -424,9 +424,9 @@ complexity (`material spend ÷ purchases`), T3 consumer (`consumer payments ÷ f
 orders`) — into an EMA (`α = loyaltyEmaAlpha`, default 0.01). Once per **year**
 (every `ticksPerYear` ticks) it re-derives
 
-`M = 0.10 × AOV / (unit_cost × 1.5)`,
+`M = 0.05 × AOV / (unit_cost × 1.5)`,
 
-so the charge keeps tracking ~10 % of a typical order as prices and margins drift, with no
+so the charge keeps tracking ~5 % of a typical order as prices and margins drift, with no
 per-generation bookkeeping. `unit_cost` here is the same canonical reference ($1 raw,
 $1.50 material, mean T2 unit cost).
 
@@ -451,8 +451,8 @@ tick. Uniform across T0, T1 and T2.
 **Parameters.** `pricingAggressiveness` (0.35), `wholesalePriceResponse` (0.05, base step
 fraction), `priceObservationTicks` (30, cadence), `researchPriceMinimumOpportunities`
 (0, minimum traffic before repricing; 0 = repriced at cadence). `loyaltyMultiple`
-(per-complexity *bootstrap*: C-1/C-2 **83.33**, C-3 **1.21**, C-4 **0.65**, C-5 **0.26**,
-T3 **0.97**, × `unit_cost` × `(1 + reliability)` — the loyalty charge) and
+(per-complexity *bootstrap*: C-1/C-2 **41.665**, C-3 **0.605**, C-4 **0.325**, C-5 **0.13**,
+T3 **0.485**, × `unit_cost` × `(1 + reliability)` — the loyalty charge) and
 `loyaltyEmaAlpha` (**0.01**, the AOV-EMA smoothing driving the adaptive regime above).
 `switchingStableBand` (0.025) drives the
 price-stability *metric*, not the price itself.
