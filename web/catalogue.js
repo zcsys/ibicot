@@ -110,7 +110,7 @@
   // Stock coverage is measured against sales, not against idle nameplate capacity.
   const ECONOMY_DEFAULTS = Object.freeze({
     seed: 137, difficultyTarget: 1, theta: .15, sigma: .005, difficultyMin: .7, difficultyMax: 1.4,
-    consumerCount: 1000000, t2FirmCount: 60000,
+    consumerCount: 100000, t2FirmCount: 60000,
     t0Equity: 10000000, t0Capacity: 10000, t0TargetInventory: 500000, t0MaxInventory: 1000000,
     baseCost: 1, t0Markup: .25, minWholesaleLot: 1000, inventoryCoverageTicks: 3,
     t1Equity: 1500000, t1License: 1000000, t1Machinery: 15000, t1Capacity: 500,

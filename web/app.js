@@ -15,7 +15,7 @@
   const LOADING_MESSAGES = [
     'Establishing uplink…',
     'Calibrating galactic markets…',
-    'Waking 1,000,000 procurement agents…',
+    'Waking 100,000 procurement agents…',
     'Spinning up 60,000 robotic firms…',
     'Aligning supply chains…',
     'Synchronizing sector indexes…',

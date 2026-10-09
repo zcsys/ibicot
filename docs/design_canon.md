@@ -71,7 +71,7 @@ Every section below is a consequence of, or a requirement for, that sentence.
   (the Hamilton apportionment of the 44/116/260 complete pool) — made by **60,000
   single-machine firms** in the reverse 6:3:1 ratio: **C-3 = 36,000** (20 × 1,800),
   **C-4 = 18,000** (60 × 300), **C-5 = 6,000** (120 × 50).
-- **1,000,000 Tier 3 consumers** (external procurement agents).
+- **100,000 Tier 3 consumers** (external procurement agents).
 - **The eight single-element extractors are also special-purpose**: the two Water
   extractors produce **machinery**; the two Earth extractors collect **storage-unit
   rent**; the two Fire extractors provide **financing**; the two Air extractors provide
@@ -136,7 +136,7 @@ discovered by the derivative-following pricer.
 - **One product per consumer, supply-scaled:** each consumer is assigned exactly one
   product (`consumerProduct`) for its lifetime, drawn weighted by supply — `firms ×
   capacity` (the **108 : 12 : 1** ratio across C-3 / C-4 / C-5), so higher-supply
-  products attract more consumers (~**36,000 / 4,000 / 333** per product). No renewals,
+  products attract more consumers (~**3,600 / 400 / 33** per product). No renewals,
   no sector routing. The per-consumer quantity stays small.
 - **Demand curve:** `q(P) = qmax / (1 + (P/V)^η)`, elasticity `η = 2`.
 - **First-guess markup is flat** (`t1Markup = 0.25` for T0/T1/T2): the complexity
@@ -280,7 +280,7 @@ values**; the demand-side *scale* is **calibration** (not frozen).
 | T2 products | 200 invented — 2 C-3 + 6 C-4 + 12 C-5 per sector × 10 sectors |
 | T2 firms | **60,000 single-machine firms** (reverse 6:3:1 ratio) |
 | T2 firms per product | C-3 = **1,800**, C-4 = **300**, C-5 = **50** |
-| Consumers | 1,000,000 |
+| Consumers | 100,000 |
 
 ### 12.2 Scale (working values)
 
