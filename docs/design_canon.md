@@ -92,9 +92,9 @@ Every section below is a consequence of, or a requirement for, that sentence.
 - **Tier 2 machinery rises with complexity:** C-3 = **$75K**, C-4 = **$375K**, C-5 =
   **$420K** (Tier 1 flat at $15K). The size gradient lives in Tier 2; higher complexity ⇒
   larger machinery.
-- **Throughput (per machine, per tick):** Tier 0 extraction is **10,000** per firm per tick
-  (extraction, not a machine line). Tier 1 is flat — C-1 = C-2 = **500**. Tier 2 falls with
-  complexity — C-3 = **300**, C-4 = **200**, C-5 = **100**. One machine = one product line =
+- **Throughput (per machine, per tick):** Tier 0 extraction is **1,000,000** per firm per tick
+  (extraction, not a machine line). Tier 1 is flat — C-1 = C-2 = **2,000**. Tier 2 falls with
+  complexity — C-3 = **30**, C-4 = **20**, C-5 = **10**. One machine = one product line =
   this capacity; there is no separate "line" concept.
 - **Per-line machinery:** each installed product line owns its own **machinery capital**
   and its own **throughput capacity**, both keyed to the product's complexity, and both
@@ -115,9 +115,11 @@ Every section below is a consequence of, or a requirement for, that sentence.
   rather than merely covering demand.
 - **Balanced pipeline:** recipes preserve item count (N inputs → N outputs), so the raw
   to finished split within `G` is always **1 : 1** — `finished = raw = G/2`.
-- **Cost ladder (count-preserving):** material cost is flat per unit — $1 (T1), $1.25
-  (T2). Conversion cost is `$0.25 × max(1, complexity−1)`: C-1/C-2 $0.25, C-3 $0.50,
-  C-4 $0.75, C-5 $1.00. Unit cost: $1.25 / $1.25 / $1.75 / $2.00 / $2.25.
+- **Cost ladder (count-preserving):** material cost is flat per unit — $1.25 (T1), $1.875
+  (T2). Each tier's material cost already includes the upstream tier's 0.25 markup, so the
+  realized markup is a true 25 % at every tier. Conversion cost is
+  `$0.25 × max(1, complexity−1)`: C-1/C-2 $0.25, C-3 $0.50, C-4 $0.75, C-5 $1.00.
+  Unit cost: $1.50 / $1.50 / $2.375 / $2.625 / $2.875.
 
 ---
 
@@ -146,7 +148,6 @@ discovered by the derivative-following pricer.
   gradient is entirely in demand volume/routing, not the seed price.
 - **Equilibrium markup** is set by the fixed demand level (`qmax = 15`) — a larger
   quantity is a tighter market ⇒ a higher discovered markup.
-- **Utilization target:** ~50–70%; the demand scale is calibrated to hit it.
 
 The flat first-guess markup is canon. The offer-sampling counts are calibration (§12.5).
 
@@ -169,14 +170,14 @@ cash as the residual:
 
 | Entity | License | Machinery | Working cash | Total equity |
 | --- | ---: | ---: | ---: | ---: |
-| Tier 0 (×20) | — | — (extraction) | $10m | $10m |
+| Tier 0 (×20) | $22m | $49m | $3m (+$1m reserve) | $75m |
 | Tier 1 (all 10 types) | $1m | $15k | $485k | $1.5m |
 | Tier 2 — C-3 | $1m | $75k | $425k | $1.5m |
 | Tier 2 — C-4 | $1m | $375k | $125k | $1.5m |
 | Tier 2 — C-5 | $1m | $420k | $80k | $1.5m |
 
 The machinery ladder is $15k (T1 flat) / $75k / $375k / $420k. Every Tier 1 and Tier 2
-company starts at $1.5m; only Tier 0 ($10m) is larger.
+company starts at $1.5m; only Tier 0 ($75m) is larger.
 
 **Fairness is carried by the rate, not the stake.** Equity (stake) and capital
 (machinery) are different things, and the tiers differ in *size* by design. What must be
@@ -227,10 +228,11 @@ not the absolute equity.
 Everything in §2–§8 is **canon** (design law). The following are **calibration**
 (numbers to be determined, not design):
 
-- the supply side is pinned as working values — uniform $1.5m equity (license `$1m` +
-  machinery + residual cash), machinery $15k/$75k/$375k/$420k, capacity T0 10,000 /
-  C-1,C-2 500 / C-3 300 / C-4 200 / C-5 100, conversion `$0.25 × max(1,c−1)`,
-  count-preserving recipes, storage 20,000 — final values
+- the supply side is pinned as working values — T0 equity $75m (license $22m +
+  machinery $49m + reserve $1m + cash $3m), T1/T2 uniform $1.5m equity (license `$1m` +
+  machinery + residual cash), machinery $15k/$75k/$375k/$420k, capacity T0 1,000,000 /
+  C-1,C-2 2,000 / C-3 30 / C-4 20 / C-5 10, conversion `$0.25 × max(1,c−1)`,
+  count-preserving recipes, storage 20,000 (T1/T2) / 50,000,000 (T0) — final values
   from calibration;
 - the demand-volume and markup/valuation curves by complexity (the demand side);
 - all prices and offer-sampling counts.
@@ -289,26 +291,28 @@ values**; the demand-side *scale* is **calibration** (not frozen).
 
 | Entity | License | Machinery | Working cash | Total equity |
 | --- | ---: | ---: | ---: | ---: |
-| Tier 0 (×20) | — | — (extraction) | $10m | $10m |
+| Tier 0 (×20) | $22m | $49m | $3m (+$1m reserve) | $75m |
 | Tier 1 (all types) | $1m | $15k | $485k | $1.5m |
 | Tier 2 C-3 | $1m | $75k | $425k | $1.5m |
 | Tier 2 C-4 | $1m | $375k | $125k | $1.5m |
 | Tier 2 C-5 | $1m | $420k | $80k | $1.5m |
 
 - Machinery ladder: T1 flat **$15k**; T2 **$75k / $375k / $420k**.
-- Capacity (per machine, per tick): C-1/C-2 **500**, C-3 **300**, C-4 **200**, C-5 **100**.
-  One machine = one product line = this capacity.
-- Tier 0 extraction (per firm, per tick): **10,000** capacity; order-up-to inventory
-  (target **500,000**, max **1,000,000**, coverage **3** ticks); cost **$1 × difficulty**
-  (`baseCost`, difficulty mean-reverts to `difficultyTarget = 1`); whole-lot minimum **1,000**.
+- Capacity (per machine, per tick): T0 **1,000,000**; C-1/C-2 **2,000**, C-3 **30**,
+  C-4 **20**, C-5 **10**. One machine = one product line = this capacity.
+- Tier 0 extraction (per firm, per tick): **1,000,000** capacity; storage **50,000,000**
+  (fill to the brim — the same "fill G" behavior as T1/T2, no separate order-up-to target);
+  cost **$1 × difficulty** (`baseCost`, difficulty mean-reverts to `difficultyTarget = 1`);
+  whole-lot minimum **1,000**.
 - Count-preserving recipes: **N inputs → N outputs**.
-- Cost ladder: material flat **$1 (T1) / $1.25 (T2)** per item; conversion
-  **$0.25 × max(1, complexity−1)** → C-1/C-2 $0.25, C-3 $0.50, C-4 $0.75, C-5 $1.00.
-  Unit cost: **$1.25 / $1.25 / $1.75 / $2.00 / $2.25**.
-- Storage: **20,000** firm-level pool (raw + finished + machinery). Machinery footprint
-  C-1/C-2 **1,000**, C-3 **3,000**, C-4 **4,000**, C-5 **5,000**; goods space
+- Cost ladder: material **$1.25 (T1) / $1.875 (T2)** per item — each tier's material cost
+  already includes the upstream tier's 0.25 markup, so the realized markup is a true 25 % at
+  every tier; conversion **$0.25 × max(1, complexity−1)** → C-1/C-2 $0.25, C-3 $0.50,
+  C-4 $0.75, C-5 $1.00. Unit cost: **$1.50 / $1.50 / $2.375 / $2.625 / $2.875**.
+- Storage: **20,000** firm-level pool for T1/T2 (raw + finished + machinery). Machinery
+  footprint C-1/C-2 **1,000**, C-3 **3,000**, C-4 **4,000**, C-5 **5,000**; goods space
   `G = 20,000 − machinery`. Desired inventory = **fill G**, split **1:1**
-  (`finished = raw = G/2`).
+  (`finished = raw = G/2`). Tier 0 storage is **50,000,000** (fully subsidized, no footprint).
 
 ### 12.3 Demand (structure canon, scale calibration)
 
@@ -324,7 +328,6 @@ values**; the demand-side *scale* is **calibration** (not frozen).
 - Search: each consumer samples **5** offers (`consumerSearchOffers`).
 - First-guess markup: **flat `t1Markup = 0.25` for T0/T1/T2**; the equilibrium
   markup is discovered by the pricer and set by the fixed demand level (`qmax = 15`).
-- Utilization target ~50–70% (the demand scale is calibrated to hit it).
 
 ### 12.4 Determinism, RNG, tick, runtime
 
@@ -385,11 +388,18 @@ only meaningful once the firm is actually transacting:
 **Production & purchase gates (the quantity side of discovery).** A producer manufactures
 only while it can cover the *realized* cost of its current stock —
 `if input_cost_per_item + conversion > price`, output is 0 ("don't produce below cost").
-A T1/T2 buyer stops buying an input when its *marginal* current-price cost exceeds its
-posted price — `if current_cost > price`, buy 0, where
-`current_cost = conversion + Σ (recipe ratio ÷ output) × current supplier price`. The
-purchase gate transmits the downstream breakeven upstream: an overpricing supplier loses
-orders and is pulled back to a profitable level.
+
+A T1/T2 buyer throttles its input purchase with an **elastic input-demand curve** — the
+reversed analogue of the T3 consumer curve — instead of a hard buy/no-buy gate. The
+purchase quantity is scaled by
+
+`factor = max(0, 1 − (current_cost / price)^η)`,
+
+where `current_cost = conversion + Σ (recipe ratio ÷ output) × current supplier price` and
+`η` is the shared elasticity (`elasticity = 2`). So **cost ≥ price → 0** (no production at or
+above break-even), and as cost falls below price the quantity rises smoothly toward full —
+there is no binary freeze. The demand ceiling still transmits the downstream breakeven
+upstream: an overpricing supplier loses orders and is pulled back to a profitable level.
 
 **Step size** adapts: ×1.2 on continuation, ×0.5 on reversal, clamped to `[0.01, 1]`.
 The price moves multiplicatively: `P ← clamp(P × exp(± pricingAggressiveness × response × scale))`, where

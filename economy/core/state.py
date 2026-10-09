@@ -406,7 +406,7 @@ def reset_world(cfg):
         learn_dir[:] = np.where(((firms + seed) % 2) == 1, np.int8(1), np.int8(-1))
 
     world.difficulty.fill(cfg['difficultyTarget'])
-    world.t0Cash.fill(cfg['t0Equity'])
+    world.t0Cash.fill(cfg['t0Equity'] - cfg['t0License'] - cfg['t0Machinery'] - cfg['t0Reserve'])
     world.t0Controller.fill(0)
     world.t0PlayerPrice.fill(float('nan'))
     world.t0Rel.fill(0.5)
@@ -422,7 +422,6 @@ def reset_world(cfg):
                 idx = i * NE + element
                 cost = cfg['baseCost'] * cfg['difficultyTarget']
                 world.t0Cost[idx] = cost
-                world.t0DemandEMA[idx] = cfg['t0TargetInventory'] / len(T0P[i]['elements']) / cfg['inventoryCoverageTicks']
                 world.t0Price[idx] = quantize_whole(cost * (1 + cfg['t0Markup']))
                 world.t0PrevPrice[idx] = world.t0Price[idx]
 

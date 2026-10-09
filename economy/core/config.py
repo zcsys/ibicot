@@ -25,29 +25,30 @@ def default_cfg() -> dict:
         't2FirmCount': M.N2_FIRMS,
 
         # Tier 0 (extraction)
-        't0Equity': 10_000_000.0,       # $10m per extractor (all cash)
-        't0Capacity': 10000,              # extraction throughput per tick
-        't0TargetInventory': 500_000,
-        't0MaxInventory': 1_000_000,
+        't0Equity': 75_000_000.0,       # $75m per extractor = license + machinery + reserve + cash
+        't0License': 22_000_000.0,      # $22m Tier 0 license (equity asset)
+        't0Machinery': 49_000_000.0,    # $49m extraction machinery (equity asset)
+        't0Reserve': 1_000_000.0,       # $1m reserved for other business operations
+        't0Capacity': 1_000_000,        # extraction throughput per tick
+        't0Storage': 50_000_000,        # storage capacity (fill to the brim, like T1/T2)
         'baseCost': 1.0,                # $1 per raw element
         't0Markup': 0.25,                 # T0 first-guess markup
         'minWholesaleLot': 1000,
-        'inventoryCoverageTicks': 3,
 
         # Tier 1 (refining) — uniform scale
         't1Equity': 1_500_000.0,
         't1License': 1_000_000.0,
         't1Machinery': 15_000.0,
-        't1Capacity': 500.0,            # C-1/C-2 throughput per machine/tick
-        't1MaterialCost': 1.0,          # $1 per raw element
+        't1Capacity': 2_000.0,          # C-1/C-2 throughput per machine/tick
+        't1MaterialCost': 1.25,         # $1.25 per raw element (baseCost × (1 + t0Markup): T1 pays T0's marked-up price)
         't1Markup': 0.25,               # T1 first-guess markup (flat)
 
         # Tier 2 (manufacturing) — per-complexity machinery/capacity
         't2Equity': 1_500_000.0,
         't2License': 1_000_000.0,
         't2Machinery': {3: 75_000.0, 4: 375_000.0, 5: 420_000.0},
-        't2Capacity': {3: 300.0, 4: 200.0, 5: 100.0},
-        't2MaterialCost': 1.25,         # $1.25 per T1 material item
+        't2Capacity': {3: 30.0, 4: 20.0, 5: 10.0},
+        't2MaterialCost': 1.875,        # $1.875 per T1 material item ((t1MaterialCost + conversion) × (1 + t1Markup))
         'conversionFactor': 0.25,       # conversion = 0.25 × max(1, c−1) for all tiers
 
         # Storage (firm-level pool, raw + finished + machinery)
@@ -123,11 +124,9 @@ def normalize_config(c) -> dict:
     d['t2FirmCount'] = max(1, min(M.N2_FIRMS, math.floor(d['t2FirmCount'] or M.N2_FIRMS)))
 
     # Tier 0
-    for key in ('t0Equity', 't0Capacity', 't0TargetInventory', 't0MaxInventory', 'baseCost', 'minWholesaleLot'):
+    for key in ('t0Equity', 't0License', 't0Machinery', 't0Reserve', 't0Capacity', 't0Storage', 'baseCost', 'minWholesaleLot'):
         d[key] = max(1, d[key])
-    d['t0MaxInventory'] = max(d['t0TargetInventory'], d['t0MaxInventory'])
     d['t0Markup'] = max(0, d['t0Markup'])
-    d['inventoryCoverageTicks'] = max(1, min(30, d['inventoryCoverageTicks']))
 
     # Tier 1
     for key in ('t1Equity', 't1License', 't1Machinery', 't1Capacity', 't1MaterialCost'):

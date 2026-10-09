@@ -436,7 +436,7 @@ class KernelRuntime:
     # Projections (ports of worker publish() + helpers)
     # ------------------------------------------------------------------
     def _book_t0_equity(self):
-        v = float(self.world.t0Cash.sum())
+        v = float(self.world.t0Cash.sum()) + N0 * (self.cfg['t0License'] + self.cfg['t0Machinery'] + self.cfg['t0Reserve'])
         for i in range(N0):
             b = i * NE
             for element in range(NE):
@@ -822,7 +822,7 @@ class KernelRuntime:
                 return None
             elements = []
             inventory = prod = sold = revenue = equity = 0.0
-            equity = world.t0Cash[id_]
+            equity = world.t0Cash[id_] + self.cfg['t0License'] + self.cfg['t0Machinery'] + self.cfg['t0Reserve']
             for element in M.ELEMENTS:
                 if element not in co['elements']:
                     continue
@@ -851,8 +851,8 @@ class KernelRuntime:
                     'made': float(prod), 'sold': float(sold), 'revenue': float(revenue),
                     'cogs': float(sum(x['cogs'] for x in elements)),
                     'grossProfit': float(revenue - sum(x['cogs'] for x in elements)),
-                    'capacity': self.cfg['t0Capacity'], 'targetInventory': self.cfg['t0TargetInventory'],
-                    'maxInventory': self.cfg['t0MaxInventory'], 'status': 'ACTIVE', 'elementData': elements}
+                    'capacity': self.cfg['t0Capacity'], 'targetInventory': self.cfg['t0Storage'],
+                    'maxInventory': self.cfg['t0Storage'], 'status': 'ACTIVE', 'elementData': elements}
         if id_ >= N1:
             return None
         piBase = T1P[id_ // 100]
@@ -937,7 +937,7 @@ class KernelRuntime:
             prof = T0P[id_]
             inv = prod = cogs = sold = rev = rel = 0.0
             n = 0
-            eq = world.t0Cash[id_]
+            eq = world.t0Cash[id_] + self.cfg['t0License'] + self.cfg['t0Machinery'] + self.cfg['t0Reserve']
             for element in range(NE):
                 if M.ELEMENTS[element] in prof['elements']:
                     idx = id_ * NE + element
@@ -1250,7 +1250,7 @@ class KernelRuntime:
                 'controller': 'PLAYER' if self.controllerT0[tid] else 'BOT',
                 'online': bool(self.onlineT0[tid]),
                 'price': float(world.t0Price[tid * NE + _EI[first]]) if first else None,
-                'cash': float(world.t0Cash[tid]), 'eqBook': 0.0,
+                'cash': float(world.t0Cash[tid]), 'eqBook': float(self.cfg['t0Machinery']),
                 'equipment': list(prof['elements']), 'products': t0_products,
             }
         else:

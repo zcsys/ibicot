@@ -63,23 +63,26 @@ for the full rationale). The demand-side *scale* is calibration, not frozen.
 | ↳ C-4 | 18,000 = 60 products × **300 firms/product** |
 | ↳ C-5 | 6,000 = 120 products × **50 firms/product** |
 | **Consumers** | 1,000,000 |
-| **Equity (uniform)** | T0 = $10m; every T1/T2 firm = $1.5m = $1m license + machinery + cash |
+| **Equity** | T0 = $75m ($22m license + $49m machinery + $1m reserve + $3m cash); every T1/T2 firm = $1.5m = $1m license + machinery + cash |
 | ↳ T1 | license $1m + machinery $15k + cash $485k |
 | ↳ T2 C-3 / C-4 / C-5 | $1m + $75k/$375k/$420k + $425k/$125k/$80k |
 | **Machinery** | T1 flat $15k; T2 $75k / $375k / $420k |
-| **Capacity** (per machine/tick) | C-1/C-2 = 500; C-3 = 300; C-4 = 200; C-5 = 100 |
+| **Capacity** (per machine/tick) | T0 = 1,000,000; C-1/C-2 = 2,000; C-3 = 30; C-4 = 20; C-5 = 10 |
 | **Recipes** | count-preserving (N inputs → N outputs) |
-| **Material cost** | $1 (T1) / $1.25 (T2), flat per item |
+| **Material cost** | $1.25 (T1) / $1.875 (T2), flat per item (each already includes the upstream 0.25 markup) |
 | **Conversion** | $0.25 × max(1, complexity−1) → 0.25 / 0.25 / 0.50 / 0.75 / 1.00 |
-| **Unit cost** | $1.25 / $1.25 / $1.75 / $2.00 / $2.25 |
-| **Storage** | 20,000 firm-level pool; machinery footprint 1k/1k/3k/4k/5k; goods `G = 20,000 − machinery`; fill `G`; raw:finished = 1:1 |
-| **Demand valuation** | `V = 2 × unit cost`; elasticity `η = 2` |
-| **Latent demand** | `qmax = baseQty × quantityFactor`, `quantityFactor ∝ supply` (firms × capacity = 108:12:1) |
-| **Markup** | flat 0.25 first-guess everywhere; the equilibrium markup is discovered by the pricer; `tier2DemandFactor = 1.5` |
+| **Unit cost** | $1.50 / $1.50 / $2.375 / $2.625 / $2.875 |
+| **Storage** | T0 50,000,000 (fill to brim); T1/T2 20,000 firm-level pool; machinery footprint 1k/1k/3k/4k/5k; goods `G = 20,000 − machinery`; fill `G`; raw:finished = 1:1 |
+| **Demand valuation** | `V = unit cost`; choke = `V × [1.8, 3.0]`; elasticity `η = 2` |
+| **Latent demand** | `qmax = 15` fixed per consumer |
+| **Markup** | flat 0.25 first-guess everywhere; the equilibrium markup is discovered by the pricer |
+| **Input demand** | elastic (reversed T3 curve): `q = need × max(0, 1 − (cost/price)^η)`; 0 at/above break-even |
+| **Loyalty / M** | switching charge `M × unit_cost × (1 + reliability)`: T1 = 500, T2 = 125, T3 = 0.5 |
+| **Reliability** | `0.5 × price-stability + 0.5 × availability`, EMA `α = 0.15`, monthly |
 
 **Deferred** (documented, not implemented): storage rent, machinery-as-good,
-financing, advertising. **Calibration** (not frozen): `tier2DemandFactor`, the
-`baseQty` range, and offer-sampling counts.
+financing, advertising. **Calibration** (not frozen): the demand scale and
+offer-sampling counts.
 
 ## How it runs
 

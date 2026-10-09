@@ -69,15 +69,9 @@ def operate_tier0(world, cfg, profiles, tick):
     for supplier in range(N0):
         elements = profiles[supplier]['element_indices']  # sorted ascending
         n_el = len(elements)
-        target_per_element = cfg['t0TargetInventory'] / n_el
-        bootstrap = max(cfg['minWholesaleLot'], math.ceil(cfg['t0Capacity'] * 0.1 / n_el))
-        targets = [
-            M.finished_stock_target(world.t0DemandEMA[supplier * NE + element],
-                                    cfg['inventoryCoverageTicks'], bootstrap,
-                                    cfg['t0Capacity'], target_per_element,
-                                    cfg['t0MaxInventory'] / n_el)
-            for element in elements
-        ]
+        # Like T1/T2 ("fill G"), T0 fills its storage to the brim — no separate
+        # order-up-to target. Each element gets an even share of the storage pool.
+        targets = [cfg['t0Storage'] / n_el for element in elements]
         deficits = [max(0.0, targets[n] - world.t0Inv[supplier * NE + elements[n]]) for n in range(n_el)]
         capacity = max(0.0, cfg['t0Capacity'])
         total_inventory = sum(max(0.0, world.t0Inv[supplier * NE + element]) for element in elements)
@@ -100,7 +94,7 @@ def operate_tier0(world, cfg, profiles, tick):
             nonlocal capacity, total_inventory
             index = supplier * NE + elements[n]
             cost = costs[n]
-            headroom = max(0.0, cfg['t0MaxInventory'] - total_inventory)
+            headroom = max(0.0, cfg['t0Storage'] - total_inventory)
             affordable = math.floor(max(0.0, world.t0Cash[supplier]) / cost)
             made = max(0.0, min(planned, deficits[n], capacity, headroom, affordable))
             old = world.t0Inv[index]
@@ -115,7 +109,7 @@ def operate_tier0(world, cfg, profiles, tick):
             return made
 
         total_deficit = sum(deficits)
-        initial_budget = max(0.0, min(capacity, cfg['t0MaxInventory'] - total_inventory, total_deficit))
+        initial_budget = max(0.0, min(capacity, cfg['t0Storage'] - total_inventory, total_deficit))
         cash_can_bind = initial_budget * max(costs[n] for n in positive) > world.t0Cash[supplier]
         if initial_budget < len(positive) or cash_can_bind:
             for n in priority:
@@ -124,7 +118,7 @@ def operate_tier0(world, cfg, profiles, tick):
             reserved = set()
             for _pass in range(NE):
                 total = sum(deficits)
-                budget = max(0.0, min(capacity, cfg['t0MaxInventory'] - total_inventory, total))
+                budget = max(0.0, min(capacity, cfg['t0Storage'] - total_inventory, total))
                 small = [n for n in priority
                          if n not in reserved and deficits[n] > 0 and budget * deficits[n] / total < 1]
                 if not small:
@@ -139,7 +133,7 @@ def operate_tier0(world, cfg, profiles, tick):
             feasible = [min(deficits[n], math.floor(max(0.0, world.t0Cash[supplier]) / costs[n]))
                         for n in range(n_el)]
             total = sum(feasible)
-            budget = max(0.0, min(capacity, cfg['t0MaxInventory'] - total_inventory, total))
+            budget = max(0.0, min(capacity, cfg['t0Storage'] - total_inventory, total))
             if budget <= 1e-9:
                 break
             if budget >= total:
@@ -245,9 +239,10 @@ def plan_and_buy_inputs(world, cfg, products, profiles, tick):
                     else:
                         replacement += (ratio / output_qty) * (quote if math.isfinite(quote) else world.rawBasis[raw_base + element])
                 world.t1ReplacementCost[product_base + p] = replacement
-                # Fix B: gate the *purchase* on marginal (current-price) cost; see numba.py.
-                if desired > 0 and current_cost > world.t1Price[product_base + p] + 1e-9:
-                    continue
+                # Elastic input demand (no hard freeze): throttle the buy/produce
+                # quantity by the marginal-cost/price ratio — reversed T3 curve: 0 at/above break-even, full at zero cost.
+                r = current_cost / max(world.t1Price[product_base + p], 1e-9)
+                desired = desired * max(0.0, 1.0 - r ** cfg['elasticity'])
                 for element_name, ratio in product['inputs'].items():
                     element = M.ELEMENTS.index(element_name)
                     need = max(0.0, desired * ratio / output_qty - world.raw[raw_base + element])
@@ -737,10 +732,11 @@ def operate_tier2(world, cfg, products, profiles, t2_products, tick):
             world.t2ReplacementCost[line] = replacement
             if replacement > world.t2Price[line] + 1e-9:
                 desired = 0
+            # Elastic input demand (no hard freeze): throttle the buy/produce
+            # quantity by the marginal-cost/price ratio — reversed T3 curve: 0 at/above break-even, full at zero cost.
+            r = current_cost / max(world.t2Price[line], 1e-9)
+            desired = desired * max(0.0, 1.0 - r ** cfg['elasticity'])
             plans[slot] = desired
-            # Fix B: gate the *purchase* on marginal (current-price) cost; see numba.py.
-            if current_cost > world.t2Price[line] + 1e-9:
-                continue
             for material, ratio in product['ingredients']:
                 needs[material] += desired * ratio
 
