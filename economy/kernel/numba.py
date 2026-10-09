@@ -144,7 +144,7 @@ if _HAVE_NUMBA:
             r = 0.0
         elif r > 1.0:
             r = 1.0
-        return 0.05 * price * (1.0 + r) / 1.5
+        return 0.10 * price * (1.0 + r) / 1.5
 
     @_njit
     def _loyalty_charge(unit_cost, reliability, multiple):
@@ -773,7 +773,7 @@ if _HAVE_NUMBA:
                     r = 0.0
                 elif r > 1.0:
                     r = 1.0
-                fric = 0.05 * q * (1.0 + r) / 1.5
+                fric = 0.10 * q * (1.0 + r) / 1.5
             eff[s] = q + fric
             if eff[s] < empty_price - 1e-12:
                 empty_price = eff[s]

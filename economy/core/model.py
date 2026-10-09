@@ -242,9 +242,9 @@ def finished_stock_target(sales_ema, coverage_ticks, bootstrap_stock, capacity,
 
 def loyalty_surcharge(price, reliability) -> float:
     # Per-unit surcharge used in supplier ranking: the fixed switching charge spread
-    # over one typical order ≈ 5 % of price at reliability 0.5 (the charge ≈ 5 % of
-    # a typical order's value, so a challenger must undercut by ~5 % to win).
-    return 0.05 * price * (1.0 + clamp(reliability, 0.0, 1.0)) / 1.5
+    # over one typical order ≈ 10 % of price at reliability 0.5 (the charge ≈ 10 % of
+    # a typical order's value, so a challenger must undercut by ~10 % to win).
+    return 0.10 * price * (1.0 + clamp(reliability, 0.0, 1.0)) / 1.5
 
 
 def loyalty_charge(unit_cost, reliability, multiple) -> float:

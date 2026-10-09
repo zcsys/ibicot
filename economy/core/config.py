@@ -30,7 +30,7 @@ def default_cfg() -> dict:
         't0Machinery': 49_000_000.0,    # $49m extraction machinery (equity asset)
         't0Reserve': 1_000_000.0,       # $1m reserved for other business operations
         't0Capacity': 200_000,          # extraction throughput per tick
-        't0Storage': 4_000_000,         # storage capacity (fill to the brim, like T1/T2)
+        't0Storage': 500_000,           # storage capacity (fill to the brim, like T1/T2)
         'baseCost': 1.0,                # $1 per raw element
         't0Markup': 0.25,                 # T0 first-guess markup
         'minWholesaleLot': 1000,
@@ -71,7 +71,7 @@ def default_cfg() -> dict:
         'switchingStableBand': 0.025,
         'wholesalePriceResponse': 0.05,
         'priceObservationTicks': 30,
-        'loyaltyMultiple': {1: 41.665, 2: {3: 0.605, 4: 0.325, 5: 0.13}, 3: 0.485},
+        'loyaltyMultiple': {1: 83.33, 2: {3: 1.21, 4: 0.65, 5: 0.26}, 3: 0.97},
         'loyaltyEmaAlpha': 0.01,         # EMA smoothing for the adaptive loyalty-multiple regime
 
         # Research pricing (off by default)
