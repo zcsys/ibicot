@@ -13,12 +13,13 @@ and Float64 aggregates stay within the declared 1e-9 tolerance.
 from __future__ import annotations
 
 import math
+from functools import lru_cache
 
 import numpy as np
 
 from ..core import model as M
 from ..core.rng import random_ as _rand
-from ..kernel.tick import market_offers as _market_offers
+from ..kernel.tick import market_offers_table
 
 try:
     from numba import njit as _njit
@@ -59,21 +60,57 @@ T2_COMPLEXITY, T2_SECTOR, T2_OUTPUT, T2_ING_M, T2_ING_Q, T2_ING_OFF = _build_fla
 RATIOS = np.array(M.catalogue_input_ratios, dtype=np.float64)
 
 
-def t2_scale_arrays(cfg):
-    """cfg-driven conversion, machinery, capacity and fill target per T2 product."""
-    conv = np.array([M.conversion_cost(int(c), cfg) for c in T2_COMPLEXITY], dtype=np.float64)
-    equip = np.array([cfg['t2Machinery'][int(c)] for c in T2_COMPLEXITY], dtype=np.float64)
-    cap = np.array([cfg['t2Capacity'][int(c)] for c in T2_COMPLEXITY], dtype=np.float64)
-    target = np.array([M.inventory_target(int(c), cfg) for c in T2_COMPLEXITY], dtype=np.float64)
+def _scale_key(cfg):
+    """Hashable signature of the cfg values the per-tick scale arrays depend on."""
+    return (
+        float(cfg['conversionFactor']),
+        float(cfg['t1MaterialCost']),
+        float(cfg['t2MaterialCost']),
+        float(cfg['storage']),
+        tuple(sorted((int(k), float(v)) for k, v in cfg['t2Machinery'].items())),
+        tuple(sorted((int(k), float(v)) for k, v in cfg['t2Capacity'].items())),
+        tuple(sorted((int(k), float(v)) for k, v in cfg['footprint'].items())),
+    )
+
+
+@lru_cache(maxsize=64)
+def _t2_scale_arrays_cached(key):
+    conversion_factor, _t1_material, t2_material, storage, t2_machinery, t2_capacity, footprint = key
+    t2_machinery = dict(t2_machinery)
+    t2_capacity = dict(t2_capacity)
+    footprint = dict(footprint)
+    conv = np.array([conversion_factor * max(1, int(c) - 1) for c in T2_COMPLEXITY], dtype=np.float64)
+    equip = np.array([t2_machinery[int(c)] for c in T2_COMPLEXITY], dtype=np.float64)
+    cap = np.array([t2_capacity[int(c)] for c in T2_COMPLEXITY], dtype=np.float64)
+    target = np.array([(storage - footprint[int(c)]) / 2.0 for c in T2_COMPLEXITY], dtype=np.float64)
     return conv, equip, cap, target
 
 
-def procurement_arrays(cfg):
+@lru_cache(maxsize=64)
+def _procurement_arrays_cached(key):
+    conversion_factor, _t1_material, t2_material, _storage, _t2_machinery, _t2_capacity, _footprint = key
     val = np.empty(N_T2, dtype=np.float64)
-    for i, p in enumerate(M.T2_PRODUCTS):
-        prof = M.procurement_profile(p, cfg, M.reference_tier2_cost(p, cfg))
-        val[i] = prof['valuation']
+    for i, c in enumerate(T2_COMPLEXITY):
+        val[i] = t2_material + conversion_factor * max(1, int(c) - 1)
     return val
+
+
+@lru_cache(maxsize=64)
+def _t1_scale_arrays_cached(key):
+    _conversion_factor, _t1_material, _t2_material, storage, _t2_machinery, _t2_capacity, footprint = key
+    footprint = dict(footprint)
+    output = np.array([int(p['outputQty']) for p in M.PRODUCTS], dtype=np.int64)
+    target = np.array([(storage - footprint[int(p['complexity'])]) / 2.0 for p in M.PRODUCTS], dtype=np.float64)
+    return output, target
+
+
+def t2_scale_arrays(cfg):
+    """cfg-driven conversion, machinery, capacity and fill target per T2 product."""
+    return _t2_scale_arrays_cached(_scale_key(cfg))
+
+
+def procurement_arrays(cfg):
+    return _procurement_arrays_cached(_scale_key(cfg))
 
 
 # Flat Tier 0 profiles and Tier 1 product structure (for the Numba T1 kernel).
@@ -95,18 +132,7 @@ for _pi, _p in enumerate(M.PRODUCTS):
 
 def t1_scale_arrays(cfg):
     """cfg-driven conversion, machinery, capacity, target and output per T1 product."""
-    output = np.array([int(p['outputQty']) for p in M.PRODUCTS], dtype=np.int64)
-    target = np.array([M.inventory_target(p['complexity'], cfg) for p in M.PRODUCTS], dtype=np.float64)
-    return output, target
-
-
-def _flatten(offers):
-    flat = []
-    off = [0]
-    for market in offers:
-        flat.extend(market)
-        off.append(len(flat))
-    return np.array(flat, dtype=np.int64), np.array(off, dtype=np.int64)
+    return _t1_scale_arrays_cached(_scale_key(cfg))
 
 
 if _HAVE_NUMBA:
@@ -546,7 +572,7 @@ if _HAVE_NUMBA:
             acc = 0.0
             for i in range(start, end):
                 line = offers_flat[i]
-                acc += 1.0 / t2_firm_line_count[t2_line_firm[line]]
+                acc += 1.0
                 cum[i] = acc
 
         cand = np.empty(1 + consumer_search_offers, dtype=np.int64)
@@ -605,29 +631,34 @@ if _HAVE_NUMBA:
                 friction = 0.0
             _sort_candidates(cand, n_cand, t2_price, preferred, friction)
             if n_cand > 0:
-                total_desired = _demand_units(latent, choke, t2_price[cand[0]], consumer_eta[buyer], qmax, rounding)
+                cheapest = cand[0]
             else:
-                total_desired = _demand_units(latent, choke, reference, consumer_eta[buyer], qmax, rounding)
-            preferred_can_fulfill = preferred >= 0 and t2_fin[preferred] >= total_desired
-            if n_cand > 0 and t2_fin[cand[0]] >= total_desired:
-                full_filler = cand[0]
+                cheapest = -1
+            if preferred >= 0 and math.isfinite(t2_price[preferred]) \
+                    and t2_fin[preferred] >= _demand_units(latent, choke, t2_price[preferred], consumer_eta[buyer], qmax, rounding):
+                preferred_can_fulfill = True
+            else:
+                preferred_can_fulfill = False
+            if cheapest >= 0 and t2_fin[cheapest] >= _demand_units(latent, choke, t2_price[cheapest], consumer_eta[buyer], qmax, rounding):
+                full_filler = cheapest
             else:
                 full_filler = -1
-            remaining = total_desired
-            fulfilled_qty = 0
+            bought = 0
+            total_desired = 0
             primary = -1
             for ci in range(n_cand):
                 candidate = cand[ci]
-                if remaining <= 0:
+                q_at = _demand_units(latent, choke, t2_price[candidate], consumer_eta[buyer], qmax, rounding)
+                want = q_at - bought
+                if want < 0:
+                    want = 0
+                if want <= 0:
                     break
-                requested = _demand_units(latent, choke, t2_price[candidate], consumer_eta[buyer], qmax, rounding)
-                if requested <= 0:
-                    break
-                wanted = remaining if remaining < requested else requested
-                t2_demand[candidate] += wanted
+                total_desired = q_at
+                t2_demand[candidate] += want
                 t2_rel_attempts[candidate] += 1
                 available = int(math.floor(t2_fin[candidate]))
-                take = wanted if wanted < available else available
+                take = want if want < available else available
                 if take <= 0:
                     continue
                 if primary < 0:
@@ -641,8 +672,9 @@ if _HAVE_NUMBA:
                 t2_revenue[candidate] += payment
                 t2_cogs[candidate] += take * t2_fin_basis[candidate]
                 t2_rel_available[candidate] += 1
-                fulfilled_qty += take
-                remaining -= take
+                bought += take
+                if bought >= q_at:
+                    break
             consumer_last_market[buyer] = market
             consumer_last_supplier[buyer] = primary
             consumer_last_q[buyer] = total_desired
@@ -652,9 +684,9 @@ if _HAVE_NUMBA:
                 continue
             orders += 1
             t2_opportunities[pid] += 1
-            if remaining > 0:
-                market_stock_unmet[market] += remaining
-            if fulfilled_qty <= 0:
+            if bought < total_desired:
+                market_stock_unmet[market] += total_desired - bought
+            if bought <= 0:
                 continue
             if full_filler >= 0:
                 new_incumbent = full_filler
@@ -663,12 +695,12 @@ if _HAVE_NUMBA:
             else:
                 new_incumbent = primary
             consumer_preferred_supplier[buyer] = new_incumbent
-            consumer_last_fulfilled[buyer] = fulfilled_qty
+            consumer_last_fulfilled[buyer] = bought
             if primary != preferred and preferred_can_fulfill:
                 charge = _loyalty_charge(reference, t2_rel[preferred], loyalty_multiple_t3)
                 t2_cash[t2_line_firm[preferred]] += charge
                 payments += charge
-            market_fulfilled[market] += fulfilled_qty
+            market_fulfilled[market] += bought
             filled += 1
 
         return orders, filled, activated, payments
@@ -937,8 +969,7 @@ def plan_and_buy_inputs(world, cfg, tick):
 
 
 def operate_tier2(world, cfg, tick):
-    t1_offers = _market_offers(world, 1, tick)
-    flat, off = _flatten(t1_offers)
+    flat, off = market_offers_table(world, 1, tick)
     val = procurement_arrays(cfg)
     t2_conv, _, t2_cap, t2_target = t2_scale_arrays(cfg)
     t1_unit_cost = cfg['t1MaterialCost'] + cfg['conversionFactor']
@@ -965,8 +996,7 @@ def operate_tier2(world, cfg, tick):
 
 
 def clear_consumers(world, cfg, tick):
-    offers = _market_offers(world, 2, tick)
-    flat, off = _flatten(offers)
+    flat, off = market_offers_table(world, 2, tick)
     val = procurement_arrays(cfg)
     # Per-tick demand-ledger reset (mirrors the top of clearEndUsers in JS).
     world.marketPotential.fill(0)

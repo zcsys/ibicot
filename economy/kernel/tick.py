@@ -318,43 +318,52 @@ def plan_and_buy_inputs(world, cfg, products, profiles, tick):
 # 5. Tier 1 production
 # --------------------------------------------------------------------------
 def operate_tier1(world, cfg, products):
-    for company in range(N1):
-        for p in range(NP):
-            index = company * NP + p
-            if not world.t1Operates[index]:
-                continue
-            product = products[p]
-            raw_base = company * NE
-            cap = cfg['t1Capacity']
-            conv = M.conversion_cost(M.complexity(product), cfg)
-            target = tier1_stock_target(world, cfg, product, index)
-            output_qty = product['outputQty']                     # count-preserving N→N
-            desired = min(cap, max(0.0, target - world.t1Fin[index]))
-            made = math.floor(desired / output_qty)               # whole batches
-            input_cost_per_item = 0.0
-            for element_name, ratio in product['inputs'].items():
-                element = M.ELEMENTS.index(element_name)
-                made = min(made, math.floor(world.raw[raw_base + element] / ratio))
-                input_cost_per_item += ratio * world.rawBasis[raw_base + element]
-            input_cost_per_item /= output_qty
-            made = min(made, math.floor(max(0.0, world.t1Cash[company])
-                                        / max(1e-9, conv * output_qty)))
-            if input_cost_per_item + conv > world.t1Price[index] + 1e-9:
-                made = 0
-            if made <= 0:
-                continue
-            made_items = made * output_qty
-            for element_name, ratio in product['inputs'].items():
-                element = M.ELEMENTS.index(element_name)
-                world.raw[raw_base + element] -= made * ratio
-            world.t1Cash[company] -= made_items * conv
-            world.costSinks += made_items * conv
-            old_fin = world.t1Fin[index]
-            old_basis = world.t1FinBasis[index]
-            unit_cost = input_cost_per_item + conv
-            world.t1Fin[index] = old_fin + made_items
-            world.t1FinBasis[index] = (old_basis * old_fin + unit_cost * made_items) / (old_fin + made_items) if old_fin + made_items > 0 else 0
-            world.t1UnitCost[index] = unit_cost
+    # Per-product constants (cfg-driven scale + structural recipe), computed once
+    # per tick so the firm loop avoids dict/index lookups.  ``products`` has only
+    # ``NP`` entries; the firm loop is the hot part.
+    convs = [M.conversion_cost(M.complexity(p), cfg) for p in products]
+    targets = [M.inventory_target(M.complexity(p), cfg) for p in products]
+    outputs = [int(p['outputQty']) for p in products]
+    elem_lists = [[M.ELEMENTS.index(e) for e in p['inputs']] for p in products]
+    ratio_lists = [[float(r) for r in p['inputs'].values()] for p in products]
+
+    cap = cfg['t1Capacity']
+    # Iterate only the operating firm-product slots (ascending index == the old
+    # company-major, product-minor order, so shared raw/cash drain semantics are
+    # unchanged while the ~9/10 no-op slots are skipped).
+    for index in np.flatnonzero(world.t1Operates):
+        company = index // NP
+        p = index % NP
+        raw_base = company * NE
+        conv = convs[p]
+        target = targets[p]
+        output_qty = outputs[p]                                 # count-preserving N→N
+        elems = elem_lists[p]
+        ratios = ratio_lists[p]
+        desired = min(cap, max(0.0, target - world.t1Fin[index]))
+        made = math.floor(desired / output_qty)               # whole batches
+        input_cost_per_item = 0.0
+        for element, ratio in zip(elems, ratios):
+            made = min(made, math.floor(world.raw[raw_base + element] / ratio))
+            input_cost_per_item += ratio * world.rawBasis[raw_base + element]
+        input_cost_per_item /= output_qty
+        made = min(made, math.floor(max(0.0, world.t1Cash[company])
+                                    / max(1e-9, conv * output_qty)))
+        if input_cost_per_item + conv > world.t1Price[index] + 1e-9:
+            made = 0
+        if made <= 0:
+            continue
+        made_items = made * output_qty
+        for element, ratio in zip(elems, ratios):
+            world.raw[raw_base + element] -= made * ratio
+        world.t1Cash[company] -= made_items * conv
+        world.costSinks += made_items * conv
+        old_fin = world.t1Fin[index]
+        old_basis = world.t1FinBasis[index]
+        unit_cost = input_cost_per_item + conv
+        world.t1Fin[index] = old_fin + made_items
+        world.t1FinBasis[index] = (old_basis * old_fin + unit_cost * made_items) / (old_fin + made_items) if old_fin + made_items > 0 else 0
+        world.t1UnitCost[index] = unit_cost
 
 
 # --------------------------------------------------------------------------
@@ -417,43 +426,58 @@ def learned_quote(view, cfg, index, stock, tick):
     return round_to_cent(min(MAX_UNIT_PRICE, max(MIN_UNIT_PRICE, price[index])))
 
 
+def _clamp_round_cent(price):
+    """Vectorized ``round_to_cent(min(MAX, max(MIN, price)))`` for non-negative prices."""
+    p = np.minimum(MAX_UNIT_PRICE, np.maximum(MIN_UNIT_PRICE, price))
+    return np.floor(p * 100.0 + 0.5) / 100.0
+
+
 def price_markets(world, cfg, profiles, products, tick):
+    obs = cfg['priceObservationTicks']
+    band = cfg['switchingStableBand']
+
+    # ---- Tier 0 (wholesale) ----
+    t0 = world.t0Price
+    idx0 = np.arange(N0 * NE)
+    valid0 = idx0[np.isfinite(t0)]
+    prev0 = t0[valid0].copy()
+    nxt0 = _clamp_round_cent(prev0)
+    player0 = (world.t0Controller[valid0 // NE] != 0) & np.isfinite(world.t0PlayerPrice[valid0])
+    if player0.any():
+        nxt0 = np.where(player0, _clamp_round_cent(world.t0PlayerPrice[valid0]), nxt0)
     t0_learning = price_learning_view(world, 't0')
+    due0 = (~player0) & (t0_learning['ages'][valid0] >= obs) & ((tick + valid0) % obs == 0)
+    for j in np.flatnonzero(due0):
+        i = int(valid0[j])
+        nxt0[j] = learned_quote(t0_learning, cfg, i, world.t0Inv[i], tick)
+    world.t0PrevPrice[valid0] = prev0
+    world.t0Price[valid0] = nxt0
+    stable0 = 1.0 - np.minimum(1.0, np.maximum(0.0, nxt0 - prev0)
+                               / np.maximum(1e-9, prev0) / np.maximum(1e-9, band))
+    world.t0Stability[valid0] = stable0
+    world.t0RelPriceSum[valid0] += stable0
+    world.t0RelPriceSamples[valid0] += 1
+
+    # ---- Tier 1 (refined) ----
+    t1 = world.t1Price
+    idx1 = np.flatnonzero(world.t1Operates)
+    prev1 = t1[idx1].copy()
+    nxt1 = _clamp_round_cent(prev1)
+    player1 = (world.t1Controller[idx1 // NP] != 0) & np.isfinite(world.playerPrice[idx1])
+    if player1.any():
+        nxt1 = np.where(player1, _clamp_round_cent(world.playerPrice[idx1]), nxt1)
     t1_learning = price_learning_view(world, 't1')
-    for supplier in range(N0):
-        for element in range(NE):
-            index = supplier * NE + element
-            if not math.isfinite(world.t0Price[index]):
-                continue
-            previous = world.t0Price[index]
-            if world.t0Controller[supplier] and math.isfinite(world.t0PlayerPrice[index]):
-                nxt = round_to_cent(min(MAX_UNIT_PRICE, max(MIN_UNIT_PRICE, world.t0PlayerPrice[index])))
-            else:
-                nxt = learned_quote(t0_learning, cfg, index, world.t0Inv[index], tick)
-            world.t0PrevPrice[index] = previous
-            world.t0Price[index] = nxt
-            stable = 1 - min(1.0, max(0.0, nxt - previous) / max(1e-9, previous)
-                             / max(1e-9, cfg['switchingStableBand']))
-            world.t0Stability[index] = stable
-            world.t0RelPriceSum[index] += stable
-            world.t0RelPriceSamples[index] += 1
-    for company in range(N1):
-        for p in range(NP):
-            index = company * NP + p
-            if not world.t1Operates[index]:
-                continue
-            previous = world.t1Price[index]
-            if world.t1Controller[company] and math.isfinite(world.playerPrice[index]):
-                nxt = round_to_cent(min(MAX_UNIT_PRICE, max(MIN_UNIT_PRICE, world.playerPrice[index])))
-            else:
-                nxt = learned_quote(t1_learning, cfg, index, world.t1Fin[index], tick)
-            world.t1PrevPrice[index] = previous
-            world.t1Price[index] = nxt
-            stable = 1 - min(1.0, max(0.0, nxt - previous) / max(1e-9, previous)
-                             / max(1e-9, cfg['switchingStableBand']))
-            world.t1PriceStability[index] = stable
-            world.t1RelPriceSum[index] += stable
-            world.t1RelPriceSamples[index] += 1
+    due1 = (~player1) & (t1_learning['ages'][idx1] >= obs) & ((tick + idx1) % obs == 0)
+    for j in np.flatnonzero(due1):
+        i = int(idx1[j])
+        nxt1[j] = learned_quote(t1_learning, cfg, i, world.t1Fin[i], tick)
+    world.t1PrevPrice[idx1] = prev1
+    world.t1Price[idx1] = nxt1
+    stable1 = 1.0 - np.minimum(1.0, np.maximum(0.0, nxt1 - prev1)
+                               / np.maximum(1e-9, prev1) / np.maximum(1e-9, band))
+    world.t1PriceStability[idx1] = stable1
+    world.t1RelPriceSum[idx1] += stable1
+    world.t1RelPriceSamples[idx1] += 1
 
 
 # --------------------------------------------------------------------------
@@ -490,6 +514,63 @@ def market_offers(world, tier, tick):
         else:
             market.sort(key=lambda a: (price[a], (a + tick * 37) % total))
     return offers
+
+
+def market_offers_table(world, tier, tick):
+    """Vectorized ``market_offers`` — returns ``(flat, off)`` NumPy arrays.
+
+    ``flat`` is the concatenation of the per-market sorted offer lists (the same
+    sequence ``market_offers`` yields, market 0 first then 1, …), and ``off`` is
+    its length-``count+1`` offset table (``flat[off[m]:off[m+1]]`` = market ``m``).
+    Identical ordering to ``market_offers``: each market is sorted by
+    ``(price, tiebreak)``, where the tiebreak is a rotating index used to
+    de-bias the cheapest-first walk.
+    """
+    count = NE if tier == 0 else (NP if tier == 1 else len(M.T2_PRODUCTS))
+    if tier == 0:
+        total = N0 * NE
+        price = world.t0Price
+        idx = np.arange(total)
+        market = idx % count
+        valid = np.isfinite(price)
+    elif tier == 1:
+        total = N1 * NP
+        price = world.t1Price
+        idx = np.arange(total)
+        market = idx % count
+        valid = np.isfinite(price) & (world.t1Operates != 0)
+    else:
+        total = int(world.t2LineCount)
+        price = world.t2Price[:total]
+        idx = np.arange(total)
+        market = world.t2LineProduct[:total].astype(np.int64)
+        valid = np.isfinite(price)
+
+    idx = idx[valid]
+    market = market[valid]
+    p = price[valid]
+
+    if tier == 1:
+        # Original ranks each market list by ascending index before the sort, so
+        # the within-market rank is the position in ascending-index order (among
+        # valid entries — computed generally so gaps stay correct).
+        order_m = np.argsort(market, kind='stable')
+        grouped = market[order_m]
+        uniq, first = np.unique(grouped, return_index=True)
+        start = np.zeros(count, dtype=np.int64)
+        start[uniq] = first
+        rank = np.empty(market.size, dtype=np.int64)
+        rank[order_m] = np.arange(market.size, dtype=np.int64) - start[grouped]
+        sizes = np.bincount(market, minlength=count)
+        tiebreak = (rank + tick) % sizes[market]
+    else:
+        tiebreak = (idx + tick * 37) % total
+
+    order = np.lexsort((tiebreak, p, market))
+    flat = idx[order]
+    off = np.zeros(count + 1, dtype=np.int64)
+    off[1:] = np.cumsum(np.bincount(market, minlength=count))
+    return flat, off
 
 
 def choose_supplier(offers, stock, price, preferred, reliability, cfg, minimum=1, known_best=None):
@@ -731,7 +812,7 @@ def clear_consumers(world, cfg, products, t2_products, tick):
         weights = [0.0] * len(market)
         total = 0.0
         for i, line in enumerate(market):
-            total += 1 / world.t2FirmLineCount[world.t2LineFirm[line]]
+            total += 1.0
             weights[i] = total
         cumulative_offers.append(weights)
 
@@ -803,27 +884,30 @@ def clear_consumers(world, cfg, products, t2_products, tick):
             continuous = M.demand_at_price(latent_quantity, choke, quote, world.consumerEta[buyer])
             return min(qmax, math.floor(continuous) + (1 if rounding < continuous % 1 else 0))
 
-        # Buyer's total desired at the best available price (whole units).
-        total_desired = demand(price[candidates[0]]) if candidates else demand(reference)
-        preferred_can_fulfill = preferred >= 0 and stock[preferred] >= total_desired
+        # Pre-drain checks, each against the seller's own-price demand.
+        cheapest = candidates[0] if candidates else -1
+        preferred_can_fulfill = (preferred >= 0 and math.isfinite(price[preferred])
+                                 and stock[preferred] >= demand(price[preferred]))
         # The relationship only moves when a single seller fills the entire order
         # (evaluated pre-drain, since the drain depletes stock). A split keeps the incumbent.
-        full_filler = candidates[0] if candidates and stock[candidates[0]] >= total_desired else -1
-        remaining = total_desired
-        fulfilled = 0
+        full_filler = cheapest if cheapest >= 0 and stock[cheapest] >= demand(price[cheapest]) else -1
+
+        # Marginal-value demand: buy whole units in price order, stopping when the next
+        # unit's marginal value falls below the seller's price. A rogue cheap seller
+        # cannot inflate demand — the quantity is pinned to the marginal price.
+        bought = 0
+        total_desired = 0
         primary = -1
         for candidate in candidates:
-            if remaining <= 0:
+            q_at = demand(price[candidate])
+            want = max(0, q_at - bought)
+            if want <= 0:
                 break
-            requested = demand(price[candidate])
-            if requested <= 0:
-                break
-            wanted = min(remaining, requested)
-            world.t2Demand[candidate] += wanted
+            total_desired = q_at
+            world.t2Demand[candidate] += want
             world.t2RelAttempts[candidate] += 1
-            # Whole-number sale only; the buyer splits its demand across suppliers,
-            # taking floor(stock) whole units from each until satisfied.
-            take = min(wanted, int(stock[candidate]))
+            # Whole-number sale only.
+            take = min(want, int(stock[candidate]))
             if take <= 0:
                 continue
             if primary < 0:
@@ -837,8 +921,9 @@ def clear_consumers(world, cfg, products, t2_products, tick):
             world.t2Revenue[candidate] += payment
             world.t2COGS[candidate] += take * world.t2FinBasis[candidate]
             world.t2RelAvailable[candidate] += 1
-            fulfilled += take
-            remaining -= take
+            bought += take
+            if bought >= q_at:
+                break
         world.consumerLastMarket[buyer] = market
         world.consumerLastSupplier[buyer] = primary
         world.consumerLastQ[buyer] = total_desired
@@ -848,9 +933,9 @@ def clear_consumers(world, cfg, products, t2_products, tick):
             continue
         orders += 1
         world.t2Opportunities[market - NP] += 1
-        if remaining > 0:
-            world.marketStockUnmet[market] += remaining
-        if fulfilled <= 0:
+        if bought < total_desired:
+            world.marketStockUnmet[market] += total_desired - bought
+        if bought <= 0:
             continue
         if full_filler >= 0:
             new_incumbent = full_filler
@@ -859,13 +944,13 @@ def clear_consumers(world, cfg, products, t2_products, tick):
         else:
             new_incumbent = primary
         world.consumerPreferredSupplier[buyer] = new_incumbent
-        world.consumerLastFulfilled[buyer] = fulfilled
+        world.consumerLastFulfilled[buyer] = bought
         if primary != preferred and preferred_can_fulfill:
             charge = M.loyalty_charge(reference, reliability[preferred],
                                      cfg['loyaltyMultiple'][3])
             world.t2Cash[world.t2LineFirm[preferred]] += charge
             consumer_payments += charge
-        world.marketFulfilled[market] += fulfilled
+        world.marketFulfilled[market] += bought
         filled_orders += 1
 
     return {'orders': orders, 'filledOrders': filled_orders, 'activated': activated,
@@ -878,32 +963,34 @@ def clear_consumers(world, cfg, products, t2_products, tick):
 def update_reliability(world, cfg, tick):
     if tick % MONTH != 0:
         return
-    for i in range(N0 * NE):
-        if math.isfinite(world.t0Price[i]):
-            attempts = world.t0RelAttempts[i]
-            checks = world.t0RelChecks[i]
-            score = M.reliability_score(
-                world.t0RelPriceSum[i] / world.t0RelPriceSamples[i] if world.t0RelPriceSamples[i] else 1,
-                world.t0RelAvailable[i] / checks if checks else 1)
-            world.t0Rel[i] = M.next_reliability(world.t0Rel[i], score, cfg['reliabilityAlpha'])
-            world.t0RelAttempts[i] = 0
-            world.t0RelChecks[i] = 0
-            world.t0RelAvailable[i] = 0
-            world.t0RelPriceSum[i] = 0
-            world.t0RelPriceSamples[i] = 0
-    for i in range(N1 * NP):
-        if world.t1Operates[i]:
-            attempts = world.t1RelAttempts[i]
-            checks = world.t1RelAvailChecks[i]
-            score = M.reliability_score(
-                world.t1RelPriceSum[i] / world.t1RelPriceSamples[i] if world.t1RelPriceSamples[i] else 1,
-                world.t1RelAvailable[i] / checks if checks else 1)
-            world.t1Rel[i] = M.next_reliability(world.t1Rel[i], score, cfg['reliabilityAlpha'])
-            world.t1RelAttempts[i] = 0
-            world.t1RelAvailChecks[i] = 0
-            world.t1RelAvailable[i] = 0
-            world.t1RelPriceSum[i] = 0
-            world.t1RelPriceSamples[i] = 0
+    alpha = float(cfg['reliabilityAlpha'])
+
+    def _step(rel, price_sum, price_samples, available, checks, valid):
+        samples = price_samples[valid]
+        ps = np.where(samples != 0, price_sum[valid] / np.maximum(samples, 1), 1.0)
+        chk = checks[valid]
+        av = np.where(chk != 0, available[valid] / np.maximum(chk, 1), 1.0)
+        score = 0.5 * np.clip(ps, 0.0, 1.0) + 0.5 * np.clip(av, 0.0, 1.0)
+        cur = rel[valid]
+        rel[valid] = np.clip(cur + alpha * (score - cur), 0.0, 1.0)
+
+    v0 = np.isfinite(world.t0Price)
+    _step(world.t0Rel, world.t0RelPriceSum, world.t0RelPriceSamples,
+          world.t0RelAvailable, world.t0RelChecks, v0)
+    world.t0RelAttempts[v0] = 0
+    world.t0RelChecks[v0] = 0
+    world.t0RelAvailable[v0] = 0
+    world.t0RelPriceSum[v0] = 0
+    world.t0RelPriceSamples[v0] = 0
+
+    v1 = world.t1Operates != 0
+    _step(world.t1Rel, world.t1RelPriceSum, world.t1RelPriceSamples,
+          world.t1RelAvailable, world.t1RelAvailChecks, v1)
+    world.t1RelAttempts[v1] = 0
+    world.t1RelAvailChecks[v1] = 0
+    world.t1RelAvailable[v1] = 0
+    world.t1RelPriceSum[v1] = 0
+    world.t1RelPriceSamples[v1] = 0
 
 
 def observe_markets(world, cfg, profiles):
@@ -971,16 +1058,21 @@ def observe_markets(world, cfg, profiles):
 def expand_tier2_bots(world, cfg, t2_products, tick):
     if tick % MONTH != 0:
         return
-    for line in range(int(world.t2LineCount)):
-        attempts = world.t2RelAttempts[line]
-        score = M.reliability_score(
-            world.t2RelPriceSum[line] / world.t2RelPriceSamples[line] if world.t2RelPriceSamples[line] else 1,
-            world.t2RelAvailable[line] / attempts if attempts else 1)
-        world.t2Rel[line] = M.next_reliability(world.t2Rel[line], score, cfg['reliabilityAlpha'])
-        world.t2RelAttempts[line] = 0
-        world.t2RelAvailable[line] = 0
-        world.t2RelPriceSum[line] = 0
-        world.t2RelPriceSamples[line] = 0
+    n = int(world.t2LineCount)
+    if n <= 0:
+        return
+    alpha = float(cfg['reliabilityAlpha'])
+    samples = world.t2RelPriceSamples[:n]
+    ps = np.where(samples != 0, world.t2RelPriceSum[:n] / np.maximum(samples, 1), 1.0)
+    attempts = world.t2RelAttempts[:n]
+    av = np.where(attempts != 0, world.t2RelAvailable[:n] / np.maximum(attempts, 1), 1.0)
+    score = 0.5 * np.clip(ps, 0.0, 1.0) + 0.5 * np.clip(av, 0.0, 1.0)
+    cur = world.t2Rel[:n]
+    world.t2Rel[:n] = np.clip(cur + alpha * (score - cur), 0.0, 1.0)
+    world.t2RelAttempts[:n] = 0
+    world.t2RelAvailable[:n] = 0
+    world.t2RelPriceSum[:n] = 0
+    world.t2RelPriceSamples[:n] = 0
     # Canon §7: bots do not expand to multi-machine firms (holding-company
     # acquisition is deferred); firms stay single-machine and grow equity only.
     world.t2MonthSold.fill(0)

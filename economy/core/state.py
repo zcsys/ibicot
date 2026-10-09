@@ -6,13 +6,11 @@ transcription.  See ``docs/design_canon.md`` §6.
 """
 from __future__ import annotations
 
-import bisect
-
 import numpy as np
 
 from . import model as M
 from .config import normalize_config
-from .rng import hash_seed
+from .rng import hash_seed_vec
 
 # --------------------------------------------------------------------------
 # Tier 0 profiles (worker `T0P`): name + element names, in fixed order.
@@ -298,8 +296,10 @@ def add_tier2_line(world, cfg, firm, product, paid=True):
 
 def initialize_tier2(world, cfg):
     world.t2LineCount = 0
-    for p in M.T2_PRODUCTS:
-        world.t2ReferenceCost[p['id']] = M.reference_tier2_cost(p, cfg)
+    prod_id = np.array([p['id'] for p in M.T2_PRODUCTS], dtype=np.int64)
+    prod_comp = np.array([p['complexity'] for p in M.T2_PRODUCTS], dtype=np.int64)
+    prod_sector = np.array([p['sectorIndex'] for p in M.T2_PRODUCTS], dtype=np.int64)
+    world.t2ReferenceCost[prod_id] = cfg['t2MaterialCost'] + cfg['conversionFactor'] * np.maximum(1, prod_comp - 1)
     world.t2FirmLines.fill(-1)
     world.t2Preferred.fill(-1)
     world.t2PlayerPrice.fill(float('nan'))
@@ -321,22 +321,41 @@ def initialize_tier2(world, cfg):
     # 50 C-5 per product (reverse 6:3:1 ratio).  Each firm owns exactly one line.
     # A reduced cfg['t2FirmCount'] takes a stratified prefix (C-3 first, then
     # C-4, then C-5) so small regression fixtures stay representative.
-    firm = 0
     target_firms = cfg['t2FirmCount']
     per_product = M.T2_FIRMS_PER_PRODUCT
+    assigned = []
     for product in M.T2_PRODUCTS:
-        for _ in range(per_product[product['complexity']]):
-            if firm >= target_firms:
-                break
-            world.t2Capability[firm] = 5
-            world.t2Sector[firm] = product['sectorIndex']
-            add_tier2_line(world, cfg, firm, product, False)
-            mach = cfg['t2Machinery'][product['complexity']]
-            world.t2Cash[firm] = cfg['t2Equity'] - cfg['t2License'] - mach
-            world.t2EqBook[firm] = mach
-            firm += 1
-        if firm >= target_firms:
+        cnt = min(per_product[product['complexity']], target_firms - len(assigned))
+        if cnt <= 0:
             break
+        assigned.extend([product['id']] * cnt)
+    pid = np.array(assigned, dtype=np.int64)
+    n = pid.size
+    firms = np.arange(n)
+    comp = prod_comp[pid]
+    sector = prod_sector[pid]
+    mach = np.array([cfg['t2Machinery'][int(c)] for c in comp], dtype=np.float64)
+    unit_cost = cfg['t2MaterialCost'] + cfg['conversionFactor'] * np.maximum(1, comp - 1)
+    price = np.floor(np.maximum(M.MIN_UNIT_PRICE, unit_cost * (1.0 + cfg['t1Markup'])) * 100.0 + 0.5) / 100.0
+
+    world.t2Capability[:n] = 5
+    world.t2Sector[:n] = sector
+    world.t2FirmLines[firms * M.T2_MAX_PRODUCTS_PER_FIRM] = firms
+    world.t2FirmLineCount[:n] = 1
+    world.t2LineFirm[:n] = firms
+    world.t2LineProduct[:n] = pid
+    world.t2UnitCost[:n] = unit_cost
+    world.t2LearnStep[:n] = 1
+    world.t2Price[:n] = price
+    world.t2LearnPrevious[:n] = float('nan')
+    world.t2LearnDirection[:n] = np.where(((firms + cfg['seed']) % 2) == 1, np.int8(1), np.int8(-1))
+    world.t2PlayerPrice[:n] = float('nan')
+    world.t2Rel[:n] = 0.5
+    world.t2SalesEMA[:n] = 0
+    world.t2DemandEMA[:n] = 0
+    world.t2Cash[:n] = cfg['t2Equity'] - cfg['t2License'] - mach
+    world.t2EqBook[:n] = mach
+    world.t2LineCount = n
 
 
 def initialize_consumers(world, cfg):
@@ -348,22 +367,21 @@ def initialize_consumers(world, cfg):
     # Per-product supply weight = firms × capacity (canon §5: the 108:12:1 ratio across
     # C-3 / C-4 / C-5), so the number of consumers interested in a product scales with
     # its supply rather than being spread evenly.
-    cum = []
-    acc = 0.0
-    for p in M.T2_PRODUCTS:
-        acc += M.T2_FIRMS_PER_PRODUCT[p['complexity']] * cfg['t2Capacity'][p['complexity']]
-        cum.append(acc)
+    supply = np.array([M.T2_FIRMS_PER_PRODUCT[p['complexity']] * cfg['t2Capacity'][p['complexity']]
+                       for p in M.T2_PRODUCTS], dtype=np.float64)
+    cum = np.cumsum(supply)
     total = cum[-1]
     world.consumerQMax.fill(M.CONSUMER_QMAX)
-    for cid in range(cfg['consumerCount']):
-        b = hash_seed(seed, 9000000 + cid)
-        draw = hash_seed(seed, 7000000 + cid) / 4294967296 * total
-        offset = bisect.bisect_left(cum, draw)
-        if offset >= n_t2:
-            offset = n_t2 - 1
-        world.consumerProduct[cid] = M.NP + offset
-        world.consumerChoke[cid] = cfg['chokeMin'] + b / 4294967296 * (cfg['chokeMax'] - cfg['chokeMin'])
-        world.consumerEta[cid] = cfg['elasticity']
+    n = cfg['consumerCount']
+    cids = np.arange(n)
+    b = hash_seed_vec(seed, 9000000 + cids)
+    draw = hash_seed_vec(seed, 7000000 + cids).astype(np.float64) / 4294967296.0 * total
+    offset = np.searchsorted(cum, draw, side='left')
+    np.minimum(offset, n_t2 - 1, out=offset)
+    world.consumerProduct[:n] = (M.NP + offset).astype(np.int16)
+    world.consumerChoke[:n] = (cfg['chokeMin'] + b.astype(np.float64) / 4294967296.0
+                               * (cfg['chokeMax'] - cfg['chokeMin'])).astype(np.float32)
+    world.consumerEta[:n] = cfg['elasticity']
 
 
 def reset_world(cfg):
@@ -378,14 +396,14 @@ def reset_world(cfg):
         learn_dir = getattr(world, f'{tier}LearnDirection')
         getattr(world, f'{tier}LearnPrevious').fill(float('nan'))
         getattr(world, f'{tier}LearnStep').fill(1)
-        for i in range(len(learn_dir)):
-            if tier == 't0':
-                firm = i // NE
-            elif tier == 't1':
-                firm = i // NP
-            else:
-                firm = i
-            learn_dir[i] = 1 if ((firm + seed) % 2) else -1
+        n = len(learn_dir)
+        if tier == 't0':
+            firms = np.arange(n) // NE
+        elif tier == 't1':
+            firms = np.arange(n) // NP
+        else:
+            firms = np.arange(n)
+        learn_dir[:] = np.where(((firms + seed) % 2) == 1, np.int8(1), np.int8(-1))
 
     world.difficulty.fill(cfg['difficultyTarget'])
     world.t0Cash.fill(cfg['t0Equity'])

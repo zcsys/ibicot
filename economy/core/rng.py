@@ -75,6 +75,15 @@ def random_vec(seed, tick, streams):
     return mix_vec(x).astype(_np.float64) / 4294967296.0
 
 
+def hash_seed_vec(seed, ks):
+    """Vectorized ``hash_seed`` — returns the raw u32 (not divided by 2**32),
+    bit-exact with ``_hash_seed_impl`` for every element of ``ks``."""
+    ks = _np.asarray(ks, dtype=_np.uint64)
+    x = (_U64(seed) & _M64) ^ (((ks + _U64(1)) * _K3) & _M64)
+    x &= _M64
+    return mix_vec(x)
+
+
 try:  # optional acceleration
     import numpy as _np
     from numba import njit as _njit
