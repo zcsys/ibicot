@@ -712,8 +712,11 @@
     $('productCategories').innerHTML = sortedTableRows('productCategories', categories).map(row => '<tr><th>' + row.name + '</th>' + cells(row, tableSortColumns.productCategories.slice(1)) + '</tr>').join('');
     const metric = $('categoryMetric').value;
     $('categoryComparisonCaption').textContent = $('categoryMetric').selectedOptions[0].textContent;
-    drawComparison('categoryComparisonChart', categories, metric,
-      ['revenue','grossProfit','profitPerLine','machineryPrice','avgPrice','avgUnitCost'].includes(metric), ['margin','utilization','fillRate'].includes(metric), ['avgPrice','avgUnitCost'].includes(metric) ? 5 : metric==='profitPerLine' ? 2 : 0);
+    const moneyMetric = ['revenue','grossProfit','profitPerLine','machineryPrice','avgPrice','avgUnitCost'].includes(metric);
+    const ratioMetric = ['margin','utilization','fillRate'].includes(metric);
+    const digits = ['avgPrice','avgUnitCost'].includes(metric) ? 5 : metric === 'profitPerLine' ? 2 : 0;
+    drawComparison('categoryComparisonChartT1', categories.filter(row => row.tier === 'Tier 1'), metric, moneyMetric, ratioMetric, digits);
+    drawComparison('categoryComparisonChartT2', categories.filter(row => row.tier === 'Tier 2'), metric, moneyMetric, ratioMetric, digits);
   }
   function renderOwnership(s) {
     const o = s.ownership;
