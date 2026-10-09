@@ -132,7 +132,7 @@ discovered by the derivative-following pricer.
   demand halves. Each consumer's choke is `V × [1.8, 3]` (a per-consumer draw), so the
   choke is a band, not a point. No complexity gradient needed; the rising cost lifts `V`
   automatically.
-- **Latent quantity:** `qmax = 15` (fixed per consumer, `CONSUMER_QMAX`). The
+- **Latent quantity:** `qmax = 20` (fixed per consumer, `CONSUMER_QMAX`). The
   per-consumer request therefore stays small (whole units), never exceeding a firm's
   fill-G stock.
 - **One product per consumer, supply-scaled:** each consumer is assigned exactly one
@@ -146,7 +146,7 @@ discovered by the derivative-following pricer.
 - **Demand curve:** `q(P) = qmax / (1 + (P/V)^η)`, elasticity `η = 2`.
 - **First-guess markup is flat** (`t1Markup = 0.25` for T0/T1/T2): the complexity
   gradient is entirely in demand volume/routing, not the seed price.
-- **Equilibrium markup** is set by the fixed demand level (`qmax = 15`) — a larger
+- **Equilibrium markup** is set by the fixed demand level (`qmax = 20`) — a larger
   quantity is a tighter market ⇒ a higher discovered markup.
 
 The flat first-guess markup is canon. The offer-sampling counts are calibration (§12.5).
@@ -318,7 +318,7 @@ values**; the demand-side *scale* is **calibration** (not frozen).
 
 - Valuation: `V = unit cost` (cost from §12.2); each consumer's choke is
   `V × [1.8, 3]` (`chokeMin`/`chokeMax`) — a per-consumer band, not a point.
-- Latent quantity: `qmax = 15` (fixed, `CONSUMER_QMAX`). Each consumer is assigned
+- Latent quantity: `qmax = 20` (fixed, `CONSUMER_QMAX`). Each consumer is assigned
   exactly one product (`consumerProduct`), drawn weighted by supply — `firms ×
   capacity`, the **108 : 12 : 1** ratio across C-3 / C-4 / C-5.
 - Activation: each tick a consumer activates with probability `consumerActivation = 0.1`
@@ -327,7 +327,7 @@ values**; the demand-side *scale* is **calibration** (not frozen).
   capped at `ceil(qmax)`.
 - Search: each consumer samples **5** offers (`consumerSearchOffers`).
 - First-guess markup: **flat `t1Markup = 0.25` for T0/T1/T2**; the equilibrium
-  markup is discovered by the pricer and set by the fixed demand level (`qmax = 15`).
+  markup is discovered by the pricer and set by the fixed demand level (`qmax = 20`).
 
 ### 12.4 Determinism, RNG, tick, runtime
 

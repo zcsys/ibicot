@@ -68,7 +68,7 @@ MAX_T2_LINES = N2_FIRMS     # one machine/line per firm at start
 MONTH = TIME['ticksPerMonth']                     # 30
 # Firms per product by complexity (canon §3): C-3 1,800 · C-4 300 · C-5 50.
 T2_FIRMS_PER_PRODUCT = {3: 1800, 4: 300, 5: 50}
-CONSUMER_QMAX = 15                           # canon §5: fixed per-consumer quantity
+CONSUMER_QMAX = 20                           # canon §5: fixed per-consumer quantity
 
 # Supply-side scale values (equity, license, machinery, capacity, costs, storage)
 # live in ``core/config.py``.  The model exposes cfg-driven helpers so the kernel,
