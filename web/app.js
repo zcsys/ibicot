@@ -753,6 +753,7 @@
     if (categorySplit) {
       $('categoryChartsSplit').hidden = false;
       $('categoryChartsMerged').hidden = true;
+      drawComparison('categoryComparisonChartT0', categories.filter(row => row.tier === 'Extractor'), metric, moneyMetric, ratioMetric, digits);
       drawComparison('categoryComparisonChartT1', categories.filter(row => row.tier === 'Refinery'), metric, moneyMetric, ratioMetric, digits);
       drawComparison('categoryComparisonChartT2', categories.filter(row => row.tier === 'Manufacturer'), metric, moneyMetric, ratioMetric, digits);
     } else {

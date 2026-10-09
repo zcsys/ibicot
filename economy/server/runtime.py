@@ -1200,6 +1200,33 @@ class KernelRuntime:
             t2Complexity.append(d)
         t2Totals = summarize_markets(t2ProductStats, 'All manufacturing sectors')
         productCategories = []
+        # C-0 (simple elements): aggregate the four raw elements into one category.
+        t0_made = float(analytics['t0Produced'].sum())
+        t0_sold = analytics['t0Sold']
+        t0_revenue = analytics['t0Revenue']
+        t0_cogs = _array_sum(world.t0COGS)
+        t0_capacity = float(cfg['t0Capacity'] * N0)
+        c0 = {'name': 'C-0', 'products': NE, 'lines': N0, 'capacity': t0_capacity,
+              'readyStock': analytics['t0Inventory'], 'made': t0_made, 'sold': t0_sold,
+              'revenue': t0_revenue, 'cogs': t0_cogs,
+              'active': float(world.t0Demand.sum()), 'fulfilled': t0_sold,
+              'stockUnmet': float(np.maximum(0.0, world.t0Demand - world.t0Sold).sum()),
+              'reliability': analytics['latest']['avgT0Reliability'],
+              'grossProfit': t0_revenue - t0_cogs}
+        c0['margin'] = c0['grossProfit'] / t0_revenue if t0_revenue else 0.0
+        c0['utilization'] = t0_made / t0_capacity if t0_capacity else 0.0
+        c0['fillRate'] = c0['fulfilled'] / c0['active'] if c0['active'] else 0.0
+        c0['volumeShare'] = t0_sold / analytics['t2Sold'] if analytics['t2Sold'] else 0.0
+        c0['complexity'] = 0
+        c0['tier'] = 'Extractor'
+        c0['role'] = 'Raw elements'
+        c0['machineryPrice'] = float(cfg['t0Machinery'])
+        c0['unitCapacity'] = float(cfg['t0Capacity'])
+        c0['avgPrice'] = t0_revenue / t0_sold if t0_sold else 0.0
+        c0['avgUnitCost'] = t0_cogs / t0_sold if t0_sold else 0.0
+        c0['soldPerLine'] = t0_sold / N0 if N0 else None
+        c0['profitPerLine'] = (t0_revenue - t0_cogs) / N0 if N0 else None
+        productCategories.append(c0)
         for c in [1, 2, 3, 4, 5]:
             products = [p for p in (productStats if c < 3 else t2ProductStats) if p['complexity'] == c]
             s = summarize_markets(products, 'C-' + str(c))

@@ -798,8 +798,8 @@
             </p>
           </section>
           <section class="panel">
-            <h3>Product category comparison · C-1 through C-5</h3>
-            <p class="analytics-note">Complexity counts raw-element ancestry: C-1 uses one element, C-2 combines two, and C-3–C-5 combine materials with three to five ancestral elements. More complex final goods receive fewer unit orders and higher starting markups. Manufacturers share capacity across their products. Actual recipes appear in the goods table.</p>
+            <h3>Product category comparison · C-0 through C-5</h3>
+            <p class="analytics-note">Complexity counts raw-element ancestry: C-0 is the four simple elements, C-1 uses one element, C-2 combines two, and C-3–C-5 combine materials with three to five ancestral elements. More complex final goods receive fewer unit orders and higher starting markups. Manufacturers share capacity across their products. Actual recipes appear in the goods table.</p>
             <div class="table-toolbar">
               <label for="categoryMetric">Compare categories by</label>
               <select id="categoryMetric">
@@ -818,13 +818,15 @@
             </div>
             <span class="chart-caption" id="categoryComparisonCaption">Gross profit / line · $ / tick</span>
             <div id="categoryChartsSplit">
+              <span class="chart-caption">Extractors · C-0</span>
+              <div class="chart"><canvas id="categoryComparisonChartT0" role="img" aria-label="Extractor category comparison"></canvas></div>
               <span class="chart-caption">Refineries · C-1 and C-2</span>
               <div class="chart"><canvas id="categoryComparisonChartT1" role="img" aria-label="Refinery category comparison"></canvas></div>
               <span class="chart-caption">Manufacturers · C-3, C-4 and C-5</span>
               <div class="chart"><canvas id="categoryComparisonChartT2" role="img" aria-label="Manufacturer category comparison"></canvas></div>
             </div>
             <div id="categoryChartsMerged" hidden>
-              <span class="chart-caption">Refineries and Manufacturers · C-1 through C-5</span>
+              <span class="chart-caption">Extractors, Refineries and Manufacturers · C-0 through C-5</span>
               <div class="chart"><canvas id="categoryComparisonChartAll" role="img" aria-label="Combined category comparison"></canvas></div>
             </div>
             <div class="table-wrap industry-table" tabindex="0" aria-label="Product category comparison table, scroll for more metrics">
