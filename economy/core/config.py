@@ -21,13 +21,13 @@ def default_cfg() -> dict:
         'sigma': 0.005,
         'difficultyMin': 0.7,
         'difficultyMax': 1.4,
-        'consumerCount': M.N_CONSUMERS,
+        'distributorCount': M.N_DISTRIBUTORS,
         't2FirmCount': M.N2_FIRMS,
 
         # Tier 0 (extraction)
         't0Equity': 75_000_000.0,       # $75m per extractor = license + machinery + reserve + cash
         't0License': 22_000_000.0,      # $22m Tier 0 license (equity asset)
-        't0Machinery': 49_000_000.0,    # $49m extraction machinery (equity asset)
+        't0Machinery': 12_250_000.0,    # $12.25m per extraction system (equity asset; ×4 = $49m full rig)
         't0Reserve': 1_000_000.0,       # $1m reserved for other business operations
         't0Capacity': 200_000,          # extraction throughput per tick
         't0Storage': 500_000,           # storage capacity (fill to the brim, like T1/T2)
@@ -55,12 +55,12 @@ def default_cfg() -> dict:
         'storage': 20_000.0,
         'footprint': {1: 1_000.0, 2: 1_000.0, 3: 3_000.0, 4: 4_000.0, 5: 5_000.0},
 
-        # Demand / consumers
-        'consumerSearchOffers': 5,
-        'consumerActivation': 0.2,       # fraction of buyers that activate each tick
+        # Demand / distributors (T3)
+        'distributorSearchOffers': 5,
+        'distributorActivation': 0.2,       # fraction of distributors that activate each tick
         'chokeMin': 1.8,
         'chokeMax': 3.0,
-        'elasticity': 2.0,              # eta = 2 (T3 consumer demand)
+        'elasticity': 2.0,              # eta = 2 (T3 distributor demand)
         'productionMarginBand': 0.05,   # gross-margin fraction below which producer output tapers to 0 at break-even
         't2ReservationPremium': 0.25,
 
@@ -70,8 +70,9 @@ def default_cfg() -> dict:
         'reliabilityAlpha': 0.15,
         'switchingStableBand': 0.025,
         'wholesalePriceResponse': 0.05,
+        'marketAnchorBand': 0.02,        # ± fraction around the market going rate where a firm holds instead of re-pricing
         'priceObservationTicks': 30,
-        'loyaltyMultiple': {1: 83.33, 2: {3: 1.21, 4: 0.65, 5: 0.26}, 3: 0.97},
+        'loyaltyMultiple': {1: 41.665, 2: {3: 0.605, 4: 0.325, 5: 0.13}, 3: 0.485},
         'loyaltyEmaAlpha': 0.01,         # EMA smoothing for the adaptive loyalty-multiple regime
 
         # Research pricing (off by default)
@@ -122,7 +123,7 @@ def normalize_config(c) -> dict:
     d['sigma'] = max(0, d['sigma'])
 
     # Topology
-    d['consumerCount'] = max(1, min(M.N_CONSUMERS, math.floor(d['consumerCount'] or M.N_CONSUMERS)))
+    d['distributorCount'] = max(1, min(M.N_DISTRIBUTORS, math.floor(d['distributorCount'] or M.N_DISTRIBUTORS)))
     d['t2FirmCount'] = max(1, min(M.N2_FIRMS, math.floor(d['t2FirmCount'] or M.N2_FIRMS)))
 
     # Tier 0
@@ -146,8 +147,8 @@ def normalize_config(c) -> dict:
     d['storage'] = max(1, d['storage'])
 
     # Demand
-    d['consumerSearchOffers'] = max(1, min(20, math.floor(d['consumerSearchOffers'])))
-    d['consumerActivation'] = M.clamp(d['consumerActivation'], 0, 1)
+    d['distributorSearchOffers'] = max(1, min(20, math.floor(d['distributorSearchOffers'])))
+    d['distributorActivation'] = M.clamp(d['distributorActivation'], 0, 1)
     d['chokeMin'] = max(0.01, d['chokeMin'])
     d['chokeMax'] = max(d['chokeMin'], d['chokeMax'])
     d['elasticity'] = max(0.05, min(10, d['elasticity']))
@@ -180,5 +181,8 @@ def normalize_config(c) -> dict:
     wpr = d['wholesalePriceResponse']
     wpr = float(wpr) if math.isfinite(wpr) else 0.05
     d['wholesalePriceResponse'] = M.clamp(wpr, 0.001, 1)
+    mab = d['marketAnchorBand']
+    mab = float(mab) if math.isfinite(mab) else 0.02
+    d['marketAnchorBand'] = M.clamp(mab, 0.001, 1.0)
 
     return d

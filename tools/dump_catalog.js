@@ -37,7 +37,7 @@ const serializeT2 = (p) => ({
   demandWeight: p.demandWeight,
   demandFactor: p.demandFactor,
   reservationPremium: p.reservationPremium,
-  consumerValue: p.consumerValue,
+  distributorValue: p.distributorValue,
   invented: !!p.invented,
 });
 
@@ -52,7 +52,7 @@ const data = {
   T1_COMPANY_NAMES: M.T1_COMPANY_NAMES,
   PRODUCTS: M.PRODUCTS.map((p) => ({
     code: p.code, symbol: p.symbol, name: p.name, inputs: p.inputs, complexity: p.complexity,
-    companyName: p.companyName, role: p.role, consumerValue: p.consumerValue, equipmentPrice: p.equipmentPrice,
+    companyName: p.companyName, role: p.role, distributorValue: p.distributorValue, equipmentPrice: p.equipmentPrice,
   })),
   T2_SECTORS: M.T2_SECTORS,
   T2_SECTOR_DEFINITIONS: M.T2_SECTOR_DEFINITIONS.map((s) => ({ name: s.name, description: s.description })),

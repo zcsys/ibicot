@@ -84,6 +84,18 @@ def operate_tier0(world, cfg, profiles, tick):
             if not math.isfinite(world.t0Price[index]) or world.t0Price[index] <= 0:
                 world.t0Price[index] = cost * (1 + cfg['t0Markup'])
             costs.append(cost)
+        # Profit-gate extraction like T1/T2 manufacture: pull raw out of Gaia only
+        # while the posted raw price covers the extraction cost, tapering as the
+        # extraction margin thins (productionMarginBand).
+        for n in range(n_el):
+            index = supplier * NE + elements[n]
+            price = world.t0Price[index]
+            cost = costs[n]
+            if cost > price + 1e-9:
+                deficits[n] = 0.0
+            else:
+                margin = (price - cost) / max(price, 1e-9)
+                deficits[n] *= min(1.0, max(0.0, margin / cfg['productionMarginBand']))
         positive = [n for n in range(n_el) if deficits[n] > 0]
         if not positive:
             continue
@@ -383,7 +395,7 @@ def price_learning_view(world, tier):
     }
 
 
-def learned_quote(view, cfg, index, stock, tick):
+def learned_quote(view, cfg, index, stock, tick, market_price=None):
     price = view['price']
     ages = view['ages']
     if ages[index] < cfg['priceObservationTicks'] or (tick + index) % cfg['priceObservationTicks'] != 0:
@@ -408,6 +420,7 @@ def learned_quote(view, cfg, index, stock, tick):
             previous_profit=previous[index], direction=direction[index],
             sales=sales[index], stock=stock, demand=demand[index],
             available=sales[index], step_scale=steps[index],
+            market_price=market_price, band=cfg['marketAnchorBand'],
             pricing_aggressiveness=cfg['pricingAggressiveness'], response=cfg['wholesalePriceResponse'])
         price[index] = result['price']
         direction[index] = result['direction']
@@ -428,6 +441,29 @@ def _clamp_round_cent(price):
     return np.floor(p * 100.0 + 0.5) / 100.0
 
 
+def _market_going_rate(prices, sales, market_of, count):
+    """Sales-weighted average price per market (the "going rate").
+
+    Falls back to the simple average of finite prices when a market has no sales;
+    a market with no finite price at all gets 0.0 (the anchor is then skipped).
+    """
+    rates = np.zeros(count)
+    for m in range(count):
+        sel = market_of == m
+        p = prices[sel]
+        w = sales[sel]
+        finite = np.isfinite(p)
+        if not finite.any():
+            continue
+        p = p[finite]
+        w = w[finite]
+        if w.sum() > 0:
+            rates[m] = float((p * w).sum() / w.sum())
+        else:
+            rates[m] = float(p.mean())
+    return rates
+
+
 def price_markets(world, cfg, profiles, products, tick):
     obs = cfg['priceObservationTicks']
     band = cfg['switchingStableBand']
@@ -443,9 +479,10 @@ def price_markets(world, cfg, profiles, products, tick):
         nxt0 = np.where(player0, _clamp_round_cent(world.t0PlayerPrice[valid0]), nxt0)
     t0_learning = price_learning_view(world, 't0')
     due0 = (~player0) & (t0_learning['ages'][valid0] >= obs) & ((tick + valid0) % obs == 0)
+    rates0 = _market_going_rate(world.t0Price, world.t0LearnSales, np.arange(N0 * NE) % NE, NE)
     for j in np.flatnonzero(due0):
         i = int(valid0[j])
-        nxt0[j] = learned_quote(t0_learning, cfg, i, world.t0Inv[i], tick)
+        nxt0[j] = learned_quote(t0_learning, cfg, i, world.t0Inv[i], tick, rates0[i % NE])
     world.t0PrevPrice[valid0] = prev0
     world.t0Price[valid0] = nxt0
     stable0 = 1.0 - np.minimum(1.0, np.maximum(0.0, nxt0 - prev0)
@@ -464,9 +501,10 @@ def price_markets(world, cfg, profiles, products, tick):
         nxt1 = np.where(player1, _clamp_round_cent(world.playerPrice[idx1]), nxt1)
     t1_learning = price_learning_view(world, 't1')
     due1 = (~player1) & (t1_learning['ages'][idx1] >= obs) & ((tick + idx1) % obs == 0)
+    rates1 = _market_going_rate(world.t1Price, world.t1LearnSales, np.arange(N1 * NP) % NP, NP)
     for j in np.flatnonzero(due1):
         i = int(idx1[j])
-        nxt1[j] = learned_quote(t1_learning, cfg, i, world.t1Fin[i], tick)
+        nxt1[j] = learned_quote(t1_learning, cfg, i, world.t1Fin[i], tick, rates1[i % NP])
     world.t1PrevPrice[idx1] = prev1
     world.t1Price[idx1] = nxt1
     stable1 = 1.0 - np.minimum(1.0, np.maximum(0.0, nxt1 - prev1)
@@ -671,6 +709,9 @@ def transfer_tier2_input(world, cfg, firm, material, supplier, request):
 # --------------------------------------------------------------------------
 def operate_tier2(world, cfg, products, profiles, t2_products, tick):
     t2_learning = price_learning_view(world, 't2')
+    n_lines = int(world.t2LineCount)
+    t2_going = _market_going_rate(world.t2Price[:n_lines], world.t2LearnSales[:n_lines],
+                                  world.t2LineProduct[:n_lines].astype(np.int64), len(M.T2_PRODUCTS))
     t1_offers = market_offers(world, 1, tick)
     procurement_profiles = [
         M.procurement_profile(p, cfg, world.t2ReferenceCost[p['id']] or M.reference_tier2_cost(p))
@@ -793,7 +834,7 @@ def operate_tier2(world, cfg, products, profiles, t2_products, tick):
             if world.t2Controller[firm] and math.isfinite(world.t2PlayerPrice[line]):
                 world.t2Price[line] = round_to_cent(min(MAX_UNIT_PRICE, max(MIN_UNIT_PRICE, world.t2PlayerPrice[line])))
             else:
-                world.t2Price[line] = learned_quote(t2_learning, cfg, line, world.t2Fin[line], tick)
+                world.t2Price[line] = learned_quote(t2_learning, cfg, line, world.t2Fin[line], tick, t2_going[int(world.t2LineProduct[line])])
             world.t2RelPriceSum[line] += 1 - min(1.0, max(0.0, world.t2Price[line] - previous)
                                              / max(1e-9, previous * cfg['switchingStableBand']))
             world.t2RelPriceSamples[line] += 1
@@ -803,7 +844,7 @@ def operate_tier2(world, cfg, products, profiles, t2_products, tick):
 # --------------------------------------------------------------------------
 # 8. End-user clearing (atomic retail)
 # --------------------------------------------------------------------------
-def clear_consumers(world, cfg, products, t2_products, tick):
+def clear_distributors(world, cfg, products, t2_products, tick):
     offers = market_offers(world, 2, tick)
     procurement_profiles = [
         M.procurement_profile(p, cfg, world.t2ReferenceCost[p['id']] or M.reference_tier2_cost(p))
@@ -823,47 +864,47 @@ def clear_consumers(world, cfg, products, t2_products, tick):
     world.marketFulfilled.fill(0)
     world.marketPriceLost.fill(0)
     world.marketStockUnmet.fill(0)
-    world.consumerLastMarket.fill(-1)
-    world.consumerLastSupplier.fill(-1)
-    world.consumerLastQ.fill(0)
-    world.consumerLastFulfilled.fill(0)
+    world.distributorLastMarket.fill(-1)
+    world.distributorLastSupplier.fill(-1)
+    world.distributorLastQ.fill(0)
+    world.distributorLastFulfilled.fill(0)
 
     orders = 0
     filled_orders = 0
     activated = 0
-    consumer_payments = 0.0
+    distributor_payments = 0.0
     seed = cfg['seed']
     n_t2 = len(t2_products)
 
-    for buyer in range(cfg['consumerCount']):
-        if random_(seed, tick, buyer + 2000000) >= cfg['consumerActivation']:
+    for buyer in range(cfg['distributorCount']):
+        if random_(seed, tick, buyer + 2000000) >= cfg['distributorActivation']:
             continue
         activated += 1
-        market = int(world.consumerProduct[buyer])
+        market = int(world.distributorProduct[buyer])
         product = t2_products[market - NP]
         complexity = product['complexity']
         profile = procurement_profiles[product['id']]
-        latent_quantity = world.consumerQMax[buyer]
+        latent_quantity = world.distributorQMax[buyer]
         qmax = math.ceil(latent_quantity)
         rounding = random_(seed, tick, buyer + 7000000)
         potential_quantity = math.floor(latent_quantity) + (1 if rounding < latent_quantity % 1 else 0)
-        world.consumerLastMarket[buyer] = market
+        world.distributorLastMarket[buyer] = market
         if potential_quantity <= 0:
             continue
         world.t2PotentialOrders[market - NP] += 1
         world.marketPotential[market] += potential_quantity
         reference = profile['valuation']
         premium = 1 + cfg['t2ReservationPremium'] * (complexity - 1)
-        choke = reference * world.consumerChoke[buyer] * premium
+        choke = reference * world.distributorChoke[buyer] * premium
         stock = world.t2Fin
         price = world.t2Price
         reliability = world.t2Rel
         market_offers_list = offers[market - NP]
-        preferred = int(world.consumerPreferredSupplier[buyer])
+        preferred = int(world.distributorPreferredSupplier[buyer])
         candidates = []
         if preferred >= 0 and math.isfinite(price[preferred]):
             candidates.append(preferred)
-        for sample in range(cfg['consumerSearchOffers']):
+        for sample in range(cfg['distributorSearchOffers']):
             if not market_offers_list:
                 break
             weights = cumulative_offers[market - NP]
@@ -883,7 +924,7 @@ def clear_consumers(world, cfg, products, t2_products, tick):
         candidates.sort(key=lambda a: price[a] + (0 if a == preferred else friction))
 
         def demand(quote):
-            continuous = M.demand_at_price(latent_quantity, choke, quote, world.consumerEta[buyer])
+            continuous = M.demand_at_price(latent_quantity, choke, quote, world.distributorEta[buyer])
             return min(qmax, math.floor(continuous) + (1 if rounding < continuous % 1 else 0))
 
         # Pre-drain checks, each against the seller's own-price demand.
@@ -916,7 +957,7 @@ def clear_consumers(world, cfg, products, t2_products, tick):
                 primary = candidate
             stock[candidate] -= take
             payment = take * price[candidate]
-            consumer_payments += payment
+            distributor_payments += payment
             world.t2Cash[world.t2LineFirm[candidate]] += payment
             world.t2LastSaleTick[world.t2LineFirm[candidate]] = tick
             world.t2Sold[candidate] += take
@@ -926,9 +967,9 @@ def clear_consumers(world, cfg, products, t2_products, tick):
             bought += take
             if bought >= q_at:
                 break
-        world.consumerLastMarket[buyer] = market
-        world.consumerLastSupplier[buyer] = primary
-        world.consumerLastQ[buyer] = total_desired
+        world.distributorLastMarket[buyer] = market
+        world.distributorLastSupplier[buyer] = primary
+        world.distributorLastQ[buyer] = total_desired
         world.marketActive[market] += total_desired
         world.marketPriceLost[market] += potential_quantity - total_desired
         if total_desired <= 0:
@@ -945,20 +986,20 @@ def clear_consumers(world, cfg, products, t2_products, tick):
             new_incumbent = preferred
         else:
             new_incumbent = primary
-        world.consumerPreferredSupplier[buyer] = new_incumbent
-        world.consumerLastFulfilled[buyer] = bought
+        world.distributorPreferredSupplier[buyer] = new_incumbent
+        world.distributorLastFulfilled[buyer] = bought
         if primary != preferred and preferred_can_fulfill:
             charge = M.loyalty_charge(reference, reliability[preferred],
                                      world.lm3)
             world.t2Cash[world.t2LineFirm[preferred]] += charge
-            consumer_payments += charge
+            distributor_payments += charge
             world.loyaltySwitches[2] += 1.0
             world.loyaltyPenalties[2] += charge
         world.marketFulfilled[market] += bought
         filled_orders += 1
 
     return {'orders': orders, 'filledOrders': filled_orders, 'activated': activated,
-            'consumerPayments': consumer_payments}
+            'distributorPayments': distributor_payments}
 
 
 # --------------------------------------------------------------------------
@@ -1086,7 +1127,7 @@ def expand_tier2_bots(world, cfg, t2_products, tick):
 def update_loyalty_regime(world, cfg, counts, tick):
     """End-of-tick: fold this tick's observed average order value into the
     per-class EMA every tick; re-derive the loyalty multiples
-    ``M = 0.10 × AOV / (unit_cost × 1.5)`` once per year (the charge ≈ 10 % of
+    ``M = 0.05 × AOV / (unit_cost × 1.5)`` once per year (the charge ≈ 5 % of
     a typical order at reliability 0.5).  Pure scalar math, identical for the
     NumPy and pure-Python paths."""
     alpha = float(cfg['loyaltyEmaAlpha'])
@@ -1103,16 +1144,16 @@ def update_loyalty_regime(world, cfg, counts, tick):
         if world.t2MatOrders[c] > 0.0:
             world.aov2[c] = alpha * (world.t2MatSpend[c] / world.t2MatOrders[c]) + one_minus * world.aov2[c]
 
-    # T3 consumer: spend = consumer payments, orders = fulfilled orders.
+    # T3 distributor: spend = distributor payments, orders = fulfilled orders.
     orders = float(counts.get('filledOrders', 0) or 0)
     if orders > 0.0:
-        world.aov3 = alpha * (float(counts.get('consumerPayments', 0) or 0) / orders) + one_minus * world.aov3
+        world.aov3 = alpha * (float(counts.get('distributorPayments', 0) or 0) / orders) + one_minus * world.aov3
 
     # Re-derive M from the smoothed AOV once per year (piecewise-constant).
     if tick % M.TIME['ticksPerYear'] == 0:
-        world.lm1 = 0.10 * world.aov1 / (world.lmUnitCost1 * 1.5)
-        world.lm2 = 0.10 * world.aov2 / (world.lmUnitCost2 * 1.5)
-        world.lm3 = 0.10 * world.aov3 / (world.lmUnitCost3 * 1.5)
+        world.lm1 = 0.05 * world.aov1 / (world.lmUnitCost1 * 1.5)
+        world.lm2 = 0.05 * world.aov2 / (world.lmUnitCost2 * 1.5)
+        world.lm3 = 0.05 * world.aov3 / (world.lmUnitCost3 * 1.5)
 
 
 def tick(world: WorldState, cfg, tick, products=None, profiles=None, t2_products=None, state=None):
@@ -1137,11 +1178,11 @@ def tick(world: WorldState, cfg, tick, products=None, profiles=None, t2_products
 
     if _numba._HAVE_NUMBA:
         _numba.operate_tier2(world, cfg, tick)
-        o, f, a, cp = _numba.clear_consumers(world, cfg, tick)
-        counts = {'orders': o, 'filledOrders': f, 'activated': a, 'consumerPayments': cp}
+        o, f, a, cp = _numba.clear_distributors(world, cfg, tick)
+        counts = {'orders': o, 'filledOrders': f, 'activated': a, 'distributorPayments': cp}
     else:
         operate_tier2(world, cfg, products, profiles, t2_products, tick)
-        counts = clear_consumers(world, cfg, products, t2_products, tick)
+        counts = clear_distributors(world, cfg, products, t2_products, tick)
 
     if _numba._HAVE_NUMBA:
         _numba.observe_markets(world, cfg, profiles)
@@ -1151,8 +1192,8 @@ def tick(world: WorldState, cfg, tick, products=None, profiles=None, t2_products
     expand_tier2_bots(world, cfg, t2_products, tick)
     update_loyalty_regime(world, cfg, counts, tick)
 
-    state['activatedConsumers'] = counts['activated']
-    state['consumerPayments'] = counts['consumerPayments']
+    state['activatedDistributors'] = counts['activated']
+    state['distributorPayments'] = counts['distributorPayments']
     state['costSinks'] = world.costSinks
     state['equipmentSinks'] = world.equipmentSinks
     state['activeOrders'] = counts['orders']

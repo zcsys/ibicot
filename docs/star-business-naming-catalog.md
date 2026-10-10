@@ -7,7 +7,7 @@
 
 Naming logic: “Star” establishes the galactic setting; “Business” puts trade, competing companies, and the economy at the center of the game.
 
-In 4259, humans and robots are building a manufacturing colony into the supply base for a coming galactic war. Twenty extraction giants supply 1,000 refineries. Those refineries feed 60,000 autonomous manufacturers. A million consumers buy, switch suppliers, and keep the colony running. Prices, reliability, loyalty, supply, and demand emerge from those decisions.
+In 4259, humans and robots are building a manufacturing colony into the supply base for a coming galactic war. Twenty extraction giants supply 1,000 refineries. Those refineries feed 60,000 autonomous manufacturers. A million distributors buy, switch suppliers, and keep the colony running. Prices, reliability, loyalty, supply, and demand emerge from those decisions.
 
 The American character comes from electric utilities, aerospace contractors, machine shops, railroad suppliers, company towns, truck stops, and warehouse catalogs. Large corporations sound broad and established. Specialized suppliers sound like businesses whose names belong on a loading dock. Products sound like things a purchasing manager can order and a maintenance crew can identify.
 
@@ -23,8 +23,8 @@ Naming logic: use direct American business and engineering language with a visib
 - Use title case for catalog labels. Use lowercase for generic material, equipment, and product descriptions in sentences. Proper company names keep their capitalization.
 - Materials identify trade stock. Companies identify businesses. Sectors identify purchasing domains. Goods identify physical purchases.
 - Keep names short enough for a market row. Use longer names only when the distinction matters, such as Medical Cold-Chain Container versus Orbital Shipping Container.
-- Keep the maker in its own field. “Bluegate” is never part of a generic equipment class or product name.
-- Generated firms use a sector-specific generic name plus a serial number. No house-name pool, location suffix, district, or berth is added to a company name.
+- Keep the maker in its own field. “Mudrock” is never part of a generic equipment class or product name.
+- Generated firms use a sector-specific generic name plus a `0x`-prefixed hex serial number. No house-name pool, location suffix, district, or berth is added to a company name.
 - Avoid invented mineral suffixes, model years, military ranks, and prestige adjectives as substitutes for function.
 
 ## 2. Raw Elements — T0 Output
@@ -61,9 +61,9 @@ The legacy codes are compatibility keys. **W+E is one T1 material**, not two T1 
 
 ## 4. Extraction Companies — All 20
 
-Naming logic: diversified corporations get broad business names; specialized operators get resource names; the monopoly pairs put their additional business directly in the company name.
+Naming logic: diversified corporations get broad business names; specialized operators get resource names; the two-market operators put their special duty directly in the company name.
 
-The distribution is **2 four-market + 4 three-market + 6 two-market + 8 single-market companies**. The six unspecified slots are assigned to the six distinct element pairs. This gives each element ten extractors without granting every extractor the corresponding monopoly service.
+The distribution is **2 four-market + 4 three-market + 6 two-market + 8 single-market companies**. The six two-market slots are assigned to the six distinct element pairs, each with a special duty. The eight single-market companies are pure extractors.
 
 ### Four-Market Corporations
 
@@ -87,39 +87,43 @@ Baseline does not directly replace emergent prices with a fixed price list. Mark
 
 ### Two-Market Operators
 
-| ID | Company | Extraction Markets | Specialization |
+| ID | Company | Extraction Markets | Special Duty |
 |---|---|---|---|
-| T0-07 | Mudrock Extraction Co. | Water, Earth | Works ice-bearing rock and wet mineral deposits. |
-| T0-08 | Steam Ridge Resources Inc. | Water, Fire | Recovers water and thermal resources from heated formations. |
-| T0-09 | Cloudline Harvesting Corporation | Water, Air | Captures atmospheric moisture and gaseous resources. |
-| T0-10 | Hotrock Extraction Company | Earth, Fire | Works mineral formations with accessible energetic resources. |
-| T0-11 | Dustline Recovery Corp. | Earth, Air | Collects dispersed solids and gaseous resources. |
-| T0-12 | Flare Basin Resources Incorporated | Fire, Air | Harvests energetic gas environments. |
+| T0-07 | Mudrock Machinery Co. | Water, Earth | Machinery manufacturing. |
+| T0-08 | Steam Ridge Financial Inc. | Water, Fire | Financial services. |
+| T0-09 | Cloudline Games & Entertainment Corporation | Water, Air | Games and entertainment. |
+| T0-10 | Hotrock Utility Company | Earth, Fire | Utilities. |
+| T0-11 | Dustline Spatial Solutions Corp. | Earth, Air | Warehouses, land, and industrial space. |
+| T0-12 | Flare Basin Advertising Incorporated | Fire, Air | Advertising. |
 
-### Single-Market Monopoly Pairs
+### Single-Market Extractors
 
-| ID | Company | Sole Extraction Market | Additional Exclusive Business |
-|---|---|---|---|
-| T0-13 | Bluegate Water & Machine Co. | Water | Water extraction plus exclusive production-machinery manufacturing, shared only with Coldwell. |
-| T0-14 | Coldwell Ice & Machine Inc. | Water | Water extraction plus exclusive production-machinery manufacturing, shared only with Bluegate. |
-| T0-15 | Bedrock Mining & Storage Corp. | Earth | Earth extraction plus a cut from every other company’s storage facilities. |
-| T0-16 | Iron County Minerals & Storage Company | Earth | Earth extraction plus a cut from every other company’s storage facilities. |
-| T0-17 | Furnace Creek Energy Bank, Inc. | Fire | Fire extraction plus financial services, shared only with Sunbelt. |
-| T0-18 | Sunbelt Energy Bank Corporation | Fire | Fire extraction plus financial services, shared only with Furnace Creek. |
-| T0-19 | Skyline Gas & Advertising Co. | Air | Air extraction plus paid advertising, shared only with Highband. |
-| T0-20 | Highband Atmospherics & Advertising Inc. | Air | Air extraction plus paid advertising, shared only with Skyline. |
+| ID | Company | Sole Extraction Market |
+|---|---|---|
+| T0-13 | Bluegate Water Co. | Water |
+| T0-14 | Coldwell Ice Resources Inc. | Water |
+| T0-15 | Bedrock Mining Corp. | Earth |
+| T0-16 | Iron County Minerals Company | Earth |
+| T0-17 | Furnace Creek Energy Inc. | Fire |
+| T0-18 | Sunbelt Energy Corporation | Fire |
+| T0-19 | Skyline Gas Co. | Air |
+| T0-20 | Highband Atmospherics Inc. | Air |
 
-### Rights That Follow the Company, Not the Element
+### Special Duties That Follow the Two-Market Companies
 
-**Water:** Bluegate and Coldwell are the only producers of complete refining and manufacturing machinery. This includes production robots and production installations. Other firms can supply parts, tooling, consumables, and service robots; they cannot independently sell complete output-producing machinery. Owning Water extraction rights alone does not grant this business.
+**Machinery manufacturing — Mudrock Machinery Co.** Mudrock is the sole producer of complete refining and manufacturing machinery. This includes production robots and production installations. Other firms can supply parts, tooling, consumables, and service robots; they cannot independently sell complete output-producing machinery.
 
-**Earth:** Bedrock and Iron County each take the stipulated cut from every other company’s storage facilities, including those of other extraction companies. Display the charge as **Storage Royalty** with its actual recipient or recipients. Rates, allocation, and the accounting base remain simulation parameters. Selling racks or containers does not confer this royalty.
+**Financial services — Steam Ridge Financial Inc.** Steam Ridge is the game’s financial institution, providing banking, lending, deposits, and financial settlement services. Ordinary firms can price goods, invoice customers, and receive payment without becoming financial institutions.
 
-**Fire:** Furnace Creek and Sunbelt are the only financial institutions. They provide the game’s banking, lending, deposits, and financial settlement services. Ordinary firms can price goods, invoice customers, and receive payment without becoming financial institutions.
+**Warehouses, land, and industrial space — Dustline Spatial Solutions Corp.** Dustline provides the colony’s warehousing, land, and industrial space. Display the charge for its facilities as **Storage Royalty** with Dustline as the recipient. Rates, allocation, and the accounting base remain simulation parameters.
 
-**Air:** Skyline and Highband are the only advertising entities. They sell paid promotion and advertising distribution. A standard product listing, technical specification, civic notice, or ordinary forum post does not become an advertising business by existing.
+**Advertising — Flare Basin Advertising Incorporated.** Flare Basin sells paid promotion and advertising distribution. A standard product listing, technical specification, civic notice, or ordinary forum post does not become an advertising business by existing.
 
-The all-market companies and civic-duty companies do not inherit any of these exclusive rights.
+**Games and entertainment — Cloudline Games & Entertainment Corporation.** Cloudline publishes games and entertainment.
+
+**Utilities — Hotrock Utility Company.** Hotrock operates the colony’s utility services.
+
+The all-market companies, civic-duty companies, and single-market extractors do not inherit any of these special duties.
 
 ## 5. Authored Refinery Companies — All 10
 
@@ -157,13 +161,13 @@ Naming logic: industry names identify the market; authored companies have the pl
 | S09 | Freight & Warehouse Equipment | T2-C09 | Crossdock Cargo Systems | Freight Equipment |
 | S10 | Defense & Emergency Systems | T2-C10 | Hardstop Defense Systems | Defense Systems |
 
-These are authored identities or cohort labels, not parent corporations for every numbered manufacturer. In particular, Industrial Tooling & Mining Supplies supplies tools and passive fixtures, while Robotics & Field Services supplies service robots. Complete factory machinery remains the Water pair’s business.
+These are authored identities or cohort labels, not parent corporations for every numbered manufacturer. In particular, Industrial Tooling & Mining Supplies supplies tools and passive fixtures, while Robotics & Field Services supplies service robots. Complete factory machinery remains Mudrock Machinery Co.’s business.
 
 ## 7. Equipment Classes and Refining Configurations
 
 Naming logic: the operation comes first, followed by a familiar installation scale: bench, cell, or hall. The existing production-class names remain useful in American manufacturing language and are retained.
 
-**Market:** Machinery Market. **Sections:** Refining Equipment and Production Equipment. Both sections have the same two eligible makers: **Bluegate Water & Machine Co.** and **Coldwell Ice & Machine Inc.**. These sections do not create separate machinery markets.
+**Market:** Machinery Market. **Sections:** Refining Equipment and Production Equipment. Both sections have the same sole eligible maker: **Mudrock Machinery Co.**. These sections do not create separate machinery markets.
 
 | Class ID | Complexity | Equipment Class | Configuration Label |
 |---|---|---|---|
@@ -190,9 +194,9 @@ Use these exact names instead of the unnamed refining installations and “Basic
 | Polymer Composite | Polymer Composite Refining Cell | C-2 |
 | Active Reagent | Active Reagent Refining Cell | C-2 |
 
-A purchase card reads **Thermal Compound Refining Cell**, with **Maker: Coldwell Ice & Machine Inc.** and **Complexity: C-2** in separate fields. A production card reads **Production Hall**, with **Maker: Bluegate Water & Machine Co.** and **Supported Sector: Shipbuilding & Orbital Structures** in separate fields.
+A purchase card reads **Thermal Compound Refining Cell**, with **Maker: Mudrock Machinery Co.** and **Complexity: C-2** in separate fields. A production card reads **Production Hall**, with **Maker: Mudrock Machinery Co.** and **Supported Sector: Shipbuilding & Orbital Structures** in separate fields.
 
-Bench, cell, and hall describe equipment packages and installation scale, not the literal size of every object they can build. These five classes sit outside the 200 finished goods. No new machinery recipes are invented by this catalog. Specialized factory robots and refining equipment are configurations of Water-company machinery, not independent manufacturing markets.
+Bench, cell, and hall describe equipment packages and installation scale, not the literal size of every object they can build. These five classes sit outside the 200 finished goods. No new machinery recipes are invented by this catalog. Specialized factory robots and refining equipment are configurations of Mudrock machinery, not independent manufacturing markets.
 
 ## 8. Manufactured Goods — All 200
 
@@ -320,13 +324,13 @@ Naming logic: Construction and building-supply language keeps everyday life visi
 | T2-079 | Underground Habitat Liner | 1 IF + 1 TF + 1 SC | C-5 |
 | T2-080 | Orbital Tether Foundation | 1 IF + 1 PC + 1 AR | C-5 |
 
-Grow Room Enclosure and Garden Dome Shell are structures, not installed food-production machinery. Any complete production machinery fitted inside them comes from Bluegate or Coldwell. Mixed-Crew Housing Unit includes human living space and robot service accommodations.
+Grow Room Enclosure and Garden Dome Shell are structures, not installed food-production machinery. Any complete production machinery fitted inside them comes from Mudrock Machinery Co. Mixed-Crew Housing Unit includes human living space and robot service accommodations.
 
 ### 8.5. Robotics & Field Services
 
 **Authored company:** Workhorse Service Robotics. **Scope:** Service robots, repair platforms, and replaceable robotic components.
 
-Naming logic: Parts-counter names for components and straightforward job names for robots; production robots remain Water-company machinery.
+Naming logic: Parts-counter names for components and straightforward job names for robots; production robots remain Mudrock machinery.
 
 | Product ID | Good | T1 Recipe | Complexity |
 |---|---|---|---|
@@ -351,7 +355,7 @@ Naming logic: Parts-counter names for components and straightforward job names f
 | T2-099 | Building Maintenance Robot | 1 IF + 1 CS + 1 PC | C-5 |
 | T2-100 | Salvage Handling Robot | 1 BA + 1 TC + 1 PC | C-5 |
 
-These robots perform inspection, handling, cleaning, rescue support, or repair. None is a production-line robot. A complete manufacturing robot must be purchased from one of the two Water companies. Service products do not imply that autonomous robot residents are property.
+These robots perform inspection, handling, cleaning, rescue support, or repair. None is a production-line robot. A complete manufacturing robot must be purchased from Mudrock Machinery Co. Service products do not imply that autonomous robot residents are property.
 
 ### 8.6. Computing & Communications
 
@@ -471,7 +475,7 @@ Naming logic: Warehouse and trucking terminology makes every item recognizable o
 | T2-179 | Propellant Transfer Station | 1 IF + 1 TC + 1 TF | C-5 |
 | T2-180 | Medical Gas Storage Tank | 1 BA + 1 TF + 1 SC | C-5 |
 
-Freight-handling machinery moves or stores goods; it does not refine stock or manufacture saleable output. Warehouse hardware sales do not transfer the Earth companies’ storage royalty rights.
+Freight-handling machinery moves or stores goods; it does not refine stock or manufacture saleable output. Warehouse hardware sales do not transfer Dustline Spatial Solutions Corp.’s storage royalty rights.
 
 ### 8.10. Defense & Emergency Systems
 
@@ -504,39 +508,39 @@ Naming logic: Defense-contractor language gives the mission and hardware type, w
 
 ## 9. Numbered Companies — Simple, Stable Names
 
-Naming logic: each sector has one recognizable generic business name. A serial number identifies the individual company. The simplicity is intentional.
+Naming logic: each sector has one recognizable generic business name. A `0x`-prefixed hex serial number identifies the individual company. The simplicity is intentional.
 
-Use the **Generic Company Base** from sections 5 and 6, followed by a space and the firm’s sector serial:
+Use the **Generic Company Base** from sections 5 and 6, followed by a space and the firm’s `0x`-prefixed sector serial:
 
-- Tier 1: `{Generic Company Base} {Serial:03d}` — for example, **Industrial Fluids 001**.
-- Tier 2: `{Generic Company Base} {Serial:05d}` — for example, **Power Equipment 00001**.
+- Tier 1: `{Generic Company Base} 0x{Serial:x}` — for example, **Industrial Fluids 0x1**.
+- Tier 2: `{Generic Company Base} 0x{Serial:x}` — for example, **Power Equipment 0x1**.
 
-These are minimum widths, not limits. Numbers expand naturally when necessary. The ten Tier 1 bases and ten Tier 2 bases are all distinct, so numbering may restart at 1 independently in each sector without causing duplicate names.
+No zero-padding; the serial is written as a plain lowercase hex value after `0x`. Serials expand naturally when necessary. The ten Tier 1 bases and ten Tier 2 bases are all distinct, so numbering may restart at 1 independently in each sector without causing duplicate names.
 
 ### Complete Generic-Name Mapping
 
 | Tier | Stable Sector Key | Generic Base | First Display Name |
 |---|---|---|---|
-| T1 | W | Industrial Fluids | Industrial Fluids 001 |
-| T1 | E | Alloy Refining | Alloy Refining 001 |
-| T1 | F | Energy Materials | Energy Materials 001 |
-| T1 | A | Process Gases | Process Gases 001 |
-| T1 | W+E | Ceramic Materials | Ceramic Materials 001 |
-| T1 | W+F | Thermal Materials | Thermal Materials 001 |
-| T1 | W+A | Technical Fibers | Technical Fibers 001 |
-| T1 | E+F | Semiconductor Materials | Semiconductor Materials 001 |
-| T1 | E+A | Composite Materials | Composite Materials 001 |
-| T1 | F+A | Active Chemicals | Active Chemicals 001 |
-| T2 | S01 | Power Equipment | Power Equipment 00001 |
-| T2 | S02 | Propulsion Systems | Propulsion Systems 00001 |
-| T2 | S03 | Shipbuilding Works | Shipbuilding Works 00001 |
-| T2 | S04 | Habitat Systems | Habitat Systems 00001 |
-| T2 | S05 | Service Robotics | Service Robotics 00001 |
-| T2 | S06 | Computing Systems | Computing Systems 00001 |
-| T2 | S07 | Scientific Instruments | Scientific Instruments 00001 |
-| T2 | S08 | Industrial Tooling | Industrial Tooling 00001 |
-| T2 | S09 | Freight Equipment | Freight Equipment 00001 |
-| T2 | S10 | Defense Systems | Defense Systems 00001 |
+| T1 | W | Industrial Fluids | Industrial Fluids 0x1 |
+| T1 | E | Alloy Refining | Alloy Refining 0x1 |
+| T1 | F | Energy Materials | Energy Materials 0x1 |
+| T1 | A | Process Gases | Process Gases 0x1 |
+| T1 | W+E | Ceramic Materials | Ceramic Materials 0x1 |
+| T1 | W+F | Thermal Materials | Thermal Materials 0x1 |
+| T1 | W+A | Technical Fibers | Technical Fibers 0x1 |
+| T1 | E+F | Semiconductor Materials | Semiconductor Materials 0x1 |
+| T1 | E+A | Composite Materials | Composite Materials 0x1 |
+| T1 | F+A | Active Chemicals | Active Chemicals 0x1 |
+| T2 | S01 | Power Equipment | Power Equipment 0x1 |
+| T2 | S02 | Propulsion Systems | Propulsion Systems 0x1 |
+| T2 | S03 | Shipbuilding Works | Shipbuilding Works 0x1 |
+| T2 | S04 | Habitat Systems | Habitat Systems 0x1 |
+| T2 | S05 | Service Robotics | Service Robotics 0x1 |
+| T2 | S06 | Computing Systems | Computing Systems 0x1 |
+| T2 | S07 | Scientific Instruments | Scientific Instruments 0x1 |
+| T2 | S08 | Industrial Tooling | Industrial Tooling 0x1 |
+| T2 | S09 | Freight Equipment | Freight Equipment 0x1 |
+| T2 | S10 | Defense Systems | Defense Systems 0x1 |
 
 ### Deterministic Allocation
 
@@ -550,13 +554,12 @@ These are minimum widths, not limits. Numbers expand naturally when necessary. T
 def company_display_name(tier, generic_base, sector_serial):
     if tier not in (1, 2) or sector_serial < 1:
         raise ValueError("Invalid tier or sector serial")
-    width = 3 if tier == 1 else 5
-    return f"{generic_base} {sector_serial:0{width}d}"
+    return f"{generic_base} 0x{sector_serial:x}"
 ```
 
-If allocation is even, 100 refineries in each material sector yield serials 001–100. Six thousand manufacturers in each manufacturing sector yield serials 00001–06000. The same rule works with an uneven distribution: it requires no fixed population per sector.
+If allocation is even, 100 refineries in each material sector yield hex serials 0x1–0x64. Six thousand manufacturers in each manufacturing sector yield hex serials 0x1–0x1770. The same rule works with an uneven distribution: it requires no fixed population per sector.
 
-Store the authored identity or cohort label in a separate field. Do not prepend Clearwater, Switchyard, or another authored company name to every agent in its cohort. For example, **Power Equipment 00042** is an independent firm name, not “Switchyard Power Systems 00042.”
+Store the authored identity or cohort label in a separate field. Do not prepend Clearwater, Switchyard, or another authored company name to every agent in its cohort. For example, **Power Equipment 0x2a** is an independent firm name, not “Switchyard Power Systems 0x2a.”
 
 ## 10. Interface and Service Labels
 
@@ -569,19 +572,19 @@ Naming logic: use familiar American business software labels, with plain simulat
 | T0 category | Resource Companies | The 20 extraction corporations. |
 | T1 category | Refineries | The 1,000 refining agents. |
 | T2 category | Manufacturers | The 60,000 manufacturing firms. |
-| Buyer category | Consumers | The 1,000,000 consumers. |
+| Buyer category | Distributors | The 1,000,000 distributors. |
 | Raw trading | Element Markets | Water, Earth, Fire, and Air. |
 | Refined-stock trading | Material Markets | The ten refined stocks. |
 | Finished-goods trading | Product Markets | The 200 manufactured goods. |
-| Equipment trading | Machinery Market | The single market supplied by Bluegate and Coldwell. |
+| Equipment trading | Machinery Market | The single market supplied by Mudrock Machinery Co. |
 | T1 machinery section | Refining Equipment | Refining Bench and Refining Cell configurations. |
 | T2 machinery section | Production Equipment | Production Bench, Production Cell, and Production Hall. |
 | Factory view | Production | Installed equipment, processes, and output. |
 | Stock view | Inventory | Materials and finished goods on hand. |
 | Facility capacity view | Storage | Capacity, utilization, and royalty charges. |
-| Earth-company charge | Storage Royalty | Show the actual recipient or recipients. |
-| Financial services | Banking | Furnace Creek and Sunbelt are the only providers. |
-| Paid promotion | Advertising | Skyline and Highband are the only providers. |
+| Storage charge | Storage Royalty | Show Dustline Spatial Solutions Corp. as the recipient. |
+| Financial services | Banking | Steam Ridge Financial Inc. is the sole provider. |
+| Paid promotion | Advertising | Flare Basin Advertising Incorporated is the sole provider. |
 | Policy service | Colony Policy | Provided by Baseline Resource Corporation. |
 | Policy announcement | Policy Update | Show changed parameters and effective time. |
 | Administrative service | Business Registry | Provided by Union Charter Resources Inc.. |
@@ -597,7 +600,7 @@ Naming logic: use familiar American business software labels, with plain simulat
 | Buyer relationship metric | Supplier Loyalty | Keep it distinct from seller reliability. |
 | Trade history | Transactions | Buyer, seller, product, quantity, price, and time. |
 
-An example notification reads: “Backup battery racks are in short supply. Power Equipment 00042 raised its price.” Another reads: “Bluegate Water & Machine Co. delivered a refining cell.” These use lowercase product and equipment names in prose while preserving registered company names.
+An example notification reads: “Backup battery racks are in short supply. Power Equipment 0x2a raised its price.” Another reads: “Mudrock Machinery Co. delivered a refining cell.” These use lowercase product and equipment names in prose while preserving registered company names.
 
 ## 11. Migration and Consistency
 
@@ -605,7 +608,7 @@ Naming logic: stable IDs carry identity; display names communicate the new setti
 
 - Keep W, E, F, A and their compound codes as internal material keys. Section 3 is their new display-name and symbol map.
 - Keep T2-001 through T2-200 as product keys. Section 8 gives the complete replacement list and preserves every recipe and complexity.
-- Keep the ten sector slots in their original order. Their display names change to section 6. The tooling sector’s narrower scope is deliberate because only the Water pair may produce complete manufacturing equipment.
+- Keep the ten sector slots in their original order. Their display names change to section 6. The tooling sector’s narrower scope is deliberate because only Mudrock Machinery Co. may produce complete manufacturing equipment.
 - For code already migrated against the earlier catalog, T0-01 through T0-20 preserve the same coverage and responsibility slots. Replace the names using section 4. T1-01 through T1-10 remain in material order; T2-C01 through T2-C10 remain in sector order.
 - Equipment class IDs in this document are catalog keys. Map them to existing code IDs rather than changing stored IDs unnecessarily.
 - The previous prohibitions on numeric display-name suffixes and the previous house/district/berth generation scheme are superseded. Use section 9 exclusively for generated company names.
@@ -628,7 +631,7 @@ Naming logic: stable IDs carry identity; display names communicate the new setti
 | Single-market companies | 8; two per element |
 | Extractors per element | 10 |
 | Civic roles | 4, one per three-market company |
-| Monopoly pairs | 4: machinery, storage royalties, banking, advertising |
+| Special duties | 6, one per two-market company: machinery, finance, warehousing/land, advertising, games, utilities |
 | Authored refinery identities | 10 |
 | Manufacturing sectors | 10 |
 | Authored manufacturing identities | 10 |

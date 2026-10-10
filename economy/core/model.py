@@ -66,12 +66,12 @@ NP = len(PRODUCTS)          # 10
 N0 = 20
 N1 = 1000
 N2_FIRMS = 60000            # canon: 60,000 single-machine T2 firms (was 61,950)
-N_CONSUMERS = WORLD_STORY['population']          # 1,000,000
+N_DISTRIBUTORS = WORLD_STORY['population']          # 1,000,000
 MAX_T2_LINES = N2_FIRMS     # one machine/line per firm at start
 MONTH = TIME['ticksPerMonth']                     # 30
 # Firms per product by complexity (canon §3): C-3 1,800 · C-4 300 · C-5 50.
 T2_FIRMS_PER_PRODUCT = {3: 1800, 4: 300, 5: 50}
-CONSUMER_QMAX = 20                           # canon §5: fixed per-consumer quantity
+DISTRIBUTOR_QMAX = 20                           # canon §5: fixed per-distributor quantity
 
 # Supply-side scale values (equity, license, machinery, capacity, costs, storage)
 # live in ``core/config.py``.  The model exposes cfg-driven helpers so the kernel,
@@ -91,7 +91,7 @@ def unit_cost(complexity: int, cfg) -> float:
 
 def t2_markup(complexity: int, cfg) -> float:
     # First-guess markup is uniform across tiers/complexities (flat 0.25): the
-    # complexity gradient lives in demand *volume* (supply-scaled consumer routing,
+    # complexity gradient lives in demand *volume* (supply-scaled distributor routing,
     # 108:12:1), not in the seed price.  Prices then rise to their own equilibrium via the
     # derivative-following pricer.
     return cfg['t1Markup']
@@ -130,8 +130,7 @@ MATERIAL_SYMBOLS: dict = {p['code']: p['symbol'] for p in PRODUCTS}
 # Tier 1 refining installations (Star Business naming catalog §7).  "Refining"
 # identifies the operation; "bench" and "cell" express increasing installation
 # scale.  These are equipment classes within the Machinery Market, not separate
-# markets.  The maker is kept separate: Bluegate Water & Machine Co. or
-# Coldwell Ice & Machine Inc.
+# markets.  The maker is kept separate: Mudrock Machinery Co.
 # ---------------------------------------------------------------------------
 T1_EQUIPMENT_CLASS: dict = {1: 'Refining Bench', 2: 'Refining Cell'}
 T1_EQUIPMENT_CONFIG: dict = {1: 'Single-Element Refining', 2: 'Paired-Element Refining'}
@@ -143,8 +142,8 @@ T2_EQUIPMENT_CONFIG: dict = {int(k): v for k, v in _DATA['EQUIPMENT_CONFIG'].ite
 
 # ---------------------------------------------------------------------------
 # Numbered companies (Star Business naming catalog §9).  Each sector has one
-# recognizable generic business name; a decimal sector serial identifies the
-# individual firm.  No house-name pool, location suffix, district, or berth is
+# recognizable generic business name; a `0x`-prefixed hex sector serial identifies
+# the individual firm.  No house-name pool, location suffix, district, or berth is
 # added.  The twenty authored identities stay separate and are never prepended.
 # ---------------------------------------------------------------------------
 T1_GENERIC_BASES: dict = {
@@ -167,19 +166,18 @@ T2_FIRMS_PER_SECTOR: int = N2_FIRMS // len(T2_SECTORS)    # 6000
 def company_display_name(tier: int, generic_base: str, sector_serial: int) -> str:
     if tier not in (1, 2) or sector_serial < 1:
         raise ValueError("Invalid tier or sector serial")
-    width = 3 if tier == 1 else 5
-    return f"{generic_base} {sector_serial:0{width}d}"
+    return f"{generic_base} 0x{sector_serial:x}"
 
 
 def t1_firm_name(cid: int) -> str:
-    """Display name for a Tier 1 refinery: generic base + decimal sector serial."""
+    """Display name for a Tier 1 refinery: generic base + hex sector serial."""
     code = PRODUCTS[int(cid) // 100]['code']
     serial = int(cid) % T1_FIRMS_PER_MATERIAL + 1
     return company_display_name(1, T1_GENERIC_BASES[code], serial)
 
 
 def t2_firm_name(sector: int, firm_id: int) -> str:
-    """Display name for a Tier 2 manufacturer: generic base + decimal sector serial."""
+    """Display name for a Tier 2 manufacturer: generic base + hex sector serial."""
     sector = int(sector)
     serial = int(firm_id) - sector * T2_FIRMS_PER_SECTOR + 1
     return company_display_name(2, T2_GENERIC_BASES[sector], serial)
@@ -242,9 +240,9 @@ def finished_stock_target(sales_ema, coverage_ticks, bootstrap_stock, capacity,
 
 def loyalty_surcharge(price, reliability) -> float:
     # Per-unit surcharge used in supplier ranking: the fixed switching charge spread
-    # over one typical order ≈ 10 % of price at reliability 0.5 (the charge ≈ 10 % of
-    # a typical order's value, so a challenger must undercut by ~10 % to win).
-    return 0.10 * price * (1.0 + clamp(reliability, 0.0, 1.0)) / 1.5
+    # over one typical order ≈ 5 % of price at reliability 0.5 (the charge ≈ 5 % of
+    # a typical order's value, so a challenger must undercut by ~5 % to win).
+    return 0.05 * price * (1.0 + clamp(reliability, 0.0, 1.0)) / 1.5
 
 
 def loyalty_charge(unit_cost, reliability, multiple) -> float:
@@ -269,26 +267,37 @@ def demand_at_price(q_max, choke_price, price, elasticity) -> float:
 
 def adaptive_price(old_price, profit, previous_profit, direction=1,
                    sales=0.0, stock=0.0, demand=0.0, available=0.0, step_scale=1.0,
+                   market_price=None, band=0.02,
                    pricing_aggressiveness=0.35, response=0.05) -> dict:
     # Guardrails only: the price may go below unit cost (sell at a loss) and is
     # never pinned to an economic floor/ceiling.
     floor = MIN_UNIT_PRICE
     price = round_to_cent(min(MAX_UNIT_PRICE, max(floor, old_price)))
     next_direction = -1 if direction < 0 else 1
-    # Derivative-following pricing (canon §12.6): a firm that is not selling
-    # lowers (if it has stock); unmet demand (demand > supplied) raises; otherwise
-    # it follows the sign of the realised profit change and *holds* once profit
-    # flattens at the optimum. The dead band stops the fixed-step walk from
-    # overshooting the flat profit peak and drifting away from it.
+    moved = False
+    # Derivative-following pricing (canon §12.6): a firm that is not selling lowers
+    # (if it has stock); unmet demand (demand > supplied) raises; a firm priced
+    # above its market's going rate lowers (expensive → contest) and one priced
+    # below raises (cheap → capture value); otherwise it follows the sign of the
+    # realised profit change with a 2 % dead band, holding once profit flattens.
     if sales <= 0:
         if stock <= 0:
             return {'price': price, 'direction': next_direction, 'stepScale': step_scale}
         next_direction = -1
+        moved = True
     elif demand > available + 1e-9:
         # Scarce: unmet demand (demand exceeds what we supplied) → raise, even once
         # a profit baseline exists, so upstream tiers capture a lively market.
         next_direction = 1
-    elif math.isfinite(previous_profit) and previous_profit > 0:
+        moved = True
+    elif market_price is not None and market_price > 0:
+        if price > market_price * (1 + band):
+            next_direction = -1   # expensive → contest
+            moved = True
+        elif price < market_price * (1 - band):
+            next_direction = 1    # cheap → capture value
+            moved = True
+    if not moved and math.isfinite(previous_profit) and previous_profit > 0:
         change = (profit - previous_profit) / previous_profit
         if change < -0.02:
             next_direction = -next_direction
@@ -320,9 +329,9 @@ def tier2_starting_markup(product, cfg) -> float:
 
 
 def procurement_profile(product, cfg, reference_cost) -> dict:
-    # canon demand side (§5): V = unit cost; η = 2. Per-consumer quantity is
-    # fixed at CONSUMER_QMAX; the complexity gradient (demand ∝ supply = firms ×
-    # capacity, 108:12:1) lives in *consumer routing* (initialize_consumers).
+    # canon demand side (§5): V = unit cost; η = 2. Per-distributor quantity is
+    # fixed at DISTRIBUTOR_QMAX; the complexity gradient (demand ∝ supply = firms ×
+    # capacity, 108:12:1) lives in *distributor routing* (initialize_distributors).
     return {'markup': cfg['t1Markup'],
             'valuation': reference_cost}
 

@@ -2,7 +2,7 @@
 
 Usage:
   python -m economy.cli.main run --seed 137 --ticks 360 \
-      --cfg '{"consumerCount":500,"t2FirmCount":1000}' --out /tmp/ckpt
+      --cfg '{"distributorCount":500,"t2FirmCount":1000}' --out /tmp/ckpt
   python -m economy.cli.main serve --host 127.0.0.1 --port 8000
 """
 from __future__ import annotations
@@ -89,7 +89,7 @@ def main():
     # on array dtype (not length), so this covers the full population too.
     from ..server.runtime import KernelRuntime
     print('Warming up the JIT (one-time)…', flush=True)
-    KernelRuntime({'consumerCount': 100, 't2FirmCount': 200}).step()
+    KernelRuntime({'distributorCount': 100, 't2FirmCount': 200}).step()
     print('JIT ready.', flush=True)
     uvicorn.run(app, host=args.host, port=args.port)
 

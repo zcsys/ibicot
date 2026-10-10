@@ -22,7 +22,7 @@ def _arrays_equal(a, b):
 
 
 def test_determinism():
-    cfg = {'consumerCount': 300, 't2FirmCount': 500}
+    cfg = {'distributorCount': 300, 't2FirmCount': 500}
     _, W1 = _run(12345, 35, cfg)
     _, W2 = _run(12345, 35, cfg)
     for name in W1.array_names:
@@ -50,7 +50,7 @@ def _check_invariants(cfg, world):
 
 
 def test_invariants_conservation():
-    cfg_overrides = {'consumerCount': 300, 't2FirmCount': 500}
+    cfg_overrides = {'distributorCount': 300, 't2FirmCount': 500}
     cfg, world = reset_world(dict(cfg_overrides, seed=12345))
 
     def total_cash():
@@ -61,7 +61,7 @@ def test_invariants_conservation():
         before = total_cash()
         state = tick(world, cfg, t, state={})
         after = total_cash()
-        expected = state['consumerPayments'] - state['costSinks'] - state['equipmentSinks']
+        expected = state['distributorPayments'] - state['costSinks'] - state['equipmentSinks']
         diff = (after - before) - expected
         if abs(diff) > 1e-6 * max(1.0, abs(expected)):
             raise AssertionError(f'conservation violation at tick {t}: Δcash={after-before} '
@@ -85,15 +85,15 @@ def test_generated_names():
         'Freight Equipment', 'Defense Systems',
     ]
 
-    # Tier 1 examples: first firm of each material cohort is 001.
-    assert M.t1_firm_name(0) == 'Industrial Fluids 001'
-    assert M.t1_firm_name(800) == 'Composite Materials 001'
-    assert M.t1_firm_name(99) == 'Industrial Fluids 100'
+    # Tier 1 examples: first firm of each material cohort is 0x1.
+    assert M.t1_firm_name(0) == 'Industrial Fluids 0x1'
+    assert M.t1_firm_name(800) == 'Composite Materials 0x1'
+    assert M.t1_firm_name(99) == 'Industrial Fluids 0x64'
 
-    # Tier 2 examples: decimal serial within each 6,000-firm sector.
-    assert M.t2_firm_name(0, 0) == 'Power Equipment 00001'
-    assert M.t2_firm_name(0, 5999) == 'Power Equipment 06000'
-    assert M.t2_firm_name(1, 6000) == 'Propulsion Systems 00001'
+    # Tier 2 examples: 0x-prefixed hex serial within each 6,000-firm sector.
+    assert M.t2_firm_name(0, 0) == 'Power Equipment 0x1'
+    assert M.t2_firm_name(0, 5999) == 'Power Equipment 0x1770'
+    assert M.t2_firm_name(1, 6000) == 'Propulsion Systems 0x1'
 
     # Equipment classes and configurations.
     assert M.T1_EQUIPMENT_CLASS == {1: 'Refining Bench', 2: 'Refining Cell'}
@@ -105,7 +105,7 @@ def test_generated_names():
     # Cohort sizes are consistent with the tier populations.
     assert M.T1_FIRMS_PER_MATERIAL == 100
     assert M.T2_FIRMS_PER_SECTOR == 6000
-    print('generated names: ok (generic bases + decimal serials hold)')
+    print('generated names: ok (generic bases + hex serials hold)')
 
 
 if __name__ == '__main__':

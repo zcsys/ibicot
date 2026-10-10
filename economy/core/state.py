@@ -17,17 +17,25 @@ from .rng import hash_seed_vec
 # Names follow the Star Business naming catalog §4.  Coverage is 2 four-market,
 # 4 three-market, 6 two-market and 8 single-market companies.
 #
+# Special duties (two-market companies):
+#   Mudrock Machinery Co.                     -> machinery manufacturing
+#   Steam Ridge Financial Inc.                -> financial services
+#   Dustline Spatial Solutions Corp.          -> warehouses, land, industrial space
+#   Flare Basin Advertising Incorporated      -> advertising
+#   Cloudline Games & Entertainment Corp.     -> games & entertainment
+#   Hotrock Utility Company                   -> utilities
+#
 # Civic duties (three-market corporations):
 #   Baseline Resource Corporation  -> Colony Policy
 #   Union Charter Resources Inc.   -> Business Registry
 #   Signal Point Resources Corp.   -> Market Intelligence
 #   Commonline Resources Company   -> Community Hub
 #
-# Monopoly service pairs (single-market companies):
-#   Water: Bluegate Water & Machine Co. / Coldwell Ice & Machine Inc. -> machinery
-#   Earth: Bedrock Mining & Storage Corp. / Iron County Minerals & Storage Co. -> storage royalty
-#   Fire:  Furnace Creek Energy Bank, Inc. / Sunbelt Energy Bank Corporation -> banking
-#   Air:   Skyline Gas & Advertising Co. / Highband Atmospherics & Advertising Inc. -> advertising
+# Single-market companies (pure extractors, two per element):
+#   Water: Bluegate Water Co. / Coldwell Ice Resources Inc.
+#   Earth: Bedrock Mining Corp. / Iron County Minerals Company
+#   Fire:  Furnace Creek Energy Inc. / Sunbelt Energy Corporation
+#   Air:   Skyline Gas Co. / Highband Atmospherics Inc.
 # --------------------------------------------------------------------------
 _T0P_RAW = [
     ['Raw Materials Corp.', ['Water', 'Earth', 'Fire', 'Air']],
@@ -36,20 +44,20 @@ _T0P_RAW = [
     ['Union Charter Resources Inc.', ['Water', 'Earth', 'Air']],
     ['Signal Point Resources Corp.', ['Water', 'Fire', 'Air']],
     ['Commonline Resources Company', ['Earth', 'Fire', 'Air']],
-    ['Mudrock Extraction Co.', ['Water', 'Earth']],
-    ['Steam Ridge Resources Inc.', ['Water', 'Fire']],
-    ['Cloudline Harvesting Corporation', ['Water', 'Air']],
-    ['Hotrock Extraction Company', ['Earth', 'Fire']],
-    ['Dustline Recovery Corp.', ['Earth', 'Air']],
-    ['Flare Basin Resources Incorporated', ['Fire', 'Air']],
-    ['Bluegate Water & Machine Co.', ['Water']],
-    ['Coldwell Ice & Machine Inc.', ['Water']],
-    ['Bedrock Mining & Storage Corp.', ['Earth']],
-    ['Iron County Minerals & Storage Company', ['Earth']],
-    ['Furnace Creek Energy Bank, Inc.', ['Fire']],
-    ['Sunbelt Energy Bank Corporation', ['Fire']],
-    ['Skyline Gas & Advertising Co.', ['Air']],
-    ['Highband Atmospherics & Advertising Inc.', ['Air']],
+    ['Mudrock Machinery Co.', ['Water', 'Earth']],
+    ['Steam Ridge Financial Inc.', ['Water', 'Fire']],
+    ['Cloudline Games & Entertainment Corporation', ['Water', 'Air']],
+    ['Hotrock Utility Company', ['Earth', 'Fire']],
+    ['Dustline Spatial Solutions Corp.', ['Earth', 'Air']],
+    ['Flare Basin Advertising Incorporated', ['Fire', 'Air']],
+    ['Bluegate Water Co.', ['Water']],
+    ['Coldwell Ice Resources Inc.', ['Water']],
+    ['Bedrock Mining Corp.', ['Earth']],
+    ['Iron County Minerals Company', ['Earth']],
+    ['Furnace Creek Energy Inc.', ['Fire']],
+    ['Sunbelt Energy Corporation', ['Fire']],
+    ['Skyline Gas Co.', ['Air']],
+    ['Highband Atmospherics Inc.', ['Air']],
 ]
 _EI = {element: i for i, element in enumerate(M.ELEMENTS)}
 T0P = [{'id': i, 'name': name, 'elements': elements,
@@ -98,10 +106,10 @@ def _array_spec(cfg):
     NE, NP, N0, N1 = M.NE, M.NP, M.N0, M.N1
     # Firm-level and end-user arrays are ALWAYS allocated at full population
     # (mirrors sourceViews()); only the sparse line arrays scale with
-    # cfg.t2FirmCount.  cfg.consumerCount / cfg.t2FirmCount merely limit how
+    # cfg.t2FirmCount.  cfg.distributorCount / cfg.t2FirmCount merely limit how
     # many entries are initialized and processed.
     N2F = M.N2_FIRMS
-    NUF = M.N_CONSUMERS
+    NUF = M.N_DISTRIBUTORS
     ML = min(M.MAX_T2_LINES, cfg['t2FirmCount'])  # single-machine: one line per firm
     n_t2 = len(M.T2_PRODUCTS)  # 200
 
@@ -215,15 +223,15 @@ def _array_spec(cfg):
         ('t2RelPriceSamples', 'u32', ML),
         ('t2MonthSold', 'f64', ML),
         ('t2MonthlyCapacity', 'f64', ML),
-        ('consumerProduct', 'i16', NUF),
-        ('consumerPreferredSupplier', 'i32', NUF),
-        ('consumerLastMarket', 'i16', NUF),
-        ('consumerLastSupplier', 'i32', NUF),
-        ('consumerLastQ', 'u16', NUF),
-        ('consumerLastFulfilled', 'u16', NUF),
-        ('consumerQMax', 'f32', NUF),
-        ('consumerChoke', 'f32', NUF),
-        ('consumerEta', 'f32', NUF),
+        ('distributorProduct', 'i16', NUF),
+        ('distributorPreferredSupplier', 'i32', NUF),
+        ('distributorLastMarket', 'i16', NUF),
+        ('distributorLastSupplier', 'i32', NUF),
+        ('distributorLastQ', 'u16', NUF),
+        ('distributorLastFulfilled', 'u16', NUF),
+        ('distributorQMax', 'f32', NUF),
+        ('distributorChoke', 'f32', NUF),
+        ('distributorEta', 'f32', NUF),
         ('marketPotential', 'f64', NP + n_t2),
         ('marketActive', 'f64', NP + n_t2),
         ('marketFulfilled', 'f64', NP + n_t2),
@@ -352,8 +360,8 @@ def initialize_tier2(world, cfg):
         index = product['sectorIndex'] * n_t2 + count
         world.t2SectorProducts[index] = product['id']
         # Demand routing weight ∝ supply (firms × capacity, the 108:12:1 ratio):
-        # more consumers are routed to higher-supply products, so total demand
-        # scales with supply while the per-consumer quantity stays small.
+        # more distributors are routed to higher-supply products, so total demand
+        # scales with supply while the per-distributor quantity stays small.
         supply = M.T2_FIRMS_PER_PRODUCT[product['complexity']] * cfg['t2Capacity'][product['complexity']]
         world.t2SectorProductWeight[index] = (world.t2SectorProductWeight[index - 1] if count else 0) + supply
 
@@ -398,30 +406,30 @@ def initialize_tier2(world, cfg):
     world.t2LineCount = n
 
 
-def initialize_consumers(world, cfg):
-    world.consumerPreferredSupplier.fill(-1)
-    world.consumerLastMarket.fill(-1)
-    world.consumerLastSupplier.fill(-1)
+def initialize_distributors(world, cfg):
+    world.distributorPreferredSupplier.fill(-1)
+    world.distributorLastMarket.fill(-1)
+    world.distributorLastSupplier.fill(-1)
     seed = cfg['seed']
     n_t2 = len(M.T2_PRODUCTS)
     # Per-product supply weight = firms × capacity (canon §5: the 108:12:1 ratio across
-    # C-3 / C-4 / C-5), so the number of consumers interested in a product scales with
+    # C-3 / C-4 / C-5), so the number of distributors interested in a product scales with
     # its supply rather than being spread evenly.
     supply = np.array([M.T2_FIRMS_PER_PRODUCT[p['complexity']] * cfg['t2Capacity'][p['complexity']]
                        for p in M.T2_PRODUCTS], dtype=np.float64)
     cum = np.cumsum(supply)
     total = cum[-1]
-    world.consumerQMax.fill(M.CONSUMER_QMAX)
-    n = cfg['consumerCount']
+    world.distributorQMax.fill(M.DISTRIBUTOR_QMAX)
+    n = cfg['distributorCount']
     cids = np.arange(n)
     b = hash_seed_vec(seed, 9000000 + cids)
     draw = hash_seed_vec(seed, 7000000 + cids).astype(np.float64) / 4294967296.0 * total
     offset = np.searchsorted(cum, draw, side='left')
     np.minimum(offset, n_t2 - 1, out=offset)
-    world.consumerProduct[:n] = (M.NP + offset).astype(np.int16)
-    world.consumerChoke[:n] = (cfg['chokeMin'] + b.astype(np.float64) / 4294967296.0
+    world.distributorProduct[:n] = (M.NP + offset).astype(np.int16)
+    world.distributorChoke[:n] = (cfg['chokeMin'] + b.astype(np.float64) / 4294967296.0
                                * (cfg['chokeMax'] - cfg['chokeMin'])).astype(np.float32)
-    world.consumerEta[:n] = cfg['elasticity']
+    world.distributorEta[:n] = cfg['elasticity']
 
 
 def reset_world(cfg):
@@ -446,7 +454,9 @@ def reset_world(cfg):
         learn_dir[:] = np.where(((firms + seed) % 2) == 1, np.int8(1), np.int8(-1))
 
     world.difficulty.fill(cfg['difficultyTarget'])
-    world.t0Cash.fill(cfg['t0Equity'] - cfg['t0License'] - cfg['t0Machinery'] - cfg['t0Reserve'])
+    for i in range(N0):
+        n_el = len(T0P[i]['element_indices'])
+        world.t0Cash[i] = cfg['t0Equity'] - cfg['t0License'] - n_el * cfg['t0Machinery'] - cfg['t0Reserve']
     world.t0Controller.fill(0)
     world.t0PlayerPrice.fill(float('nan'))
     world.t0Rel.fill(0.5)
@@ -496,6 +506,6 @@ def reset_world(cfg):
         world.t1PrevPrice[cid * NP + pi] = price
 
     initialize_tier2(world, cfg)
-    initialize_consumers(world, cfg)
+    initialize_distributors(world, cfg)
 
     return cfg, world
