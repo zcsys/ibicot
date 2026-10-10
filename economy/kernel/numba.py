@@ -78,15 +78,15 @@ def _scale_key(cfg):
 
 @lru_cache(maxsize=64)
 def _t2_scale_arrays_cached(key):
-    conversion_factor, _t1_material, t2_material, storage, t2_machinery, t2_capacity, footprint = key
+    conversion_factor, _t1_material, t2_material, _storage, t2_machinery, t2_capacity, footprint = key
     t2_machinery = dict(t2_machinery)
     t2_capacity = dict(t2_capacity)
     footprint = dict(footprint)
     conv = np.array([conversion_factor * max(1, int(c) - 1) for c in T2_COMPLEXITY], dtype=np.float64)
     equip = np.array([t2_machinery[int(c)] for c in T2_COMPLEXITY], dtype=np.float64)
     cap = np.array([t2_capacity[int(c)] for c in T2_COMPLEXITY], dtype=np.float64)
-    target = np.array([(storage - footprint[int(c)]) / 2.0 for c in T2_COMPLEXITY], dtype=np.float64)
-    return conv, equip, cap, target
+    footprint_arr = np.array([footprint[int(c)] for c in T2_COMPLEXITY], dtype=np.float64)
+    return conv, equip, cap, footprint_arr
 
 
 @lru_cache(maxsize=64)
@@ -100,15 +100,15 @@ def _procurement_arrays_cached(key):
 
 @lru_cache(maxsize=64)
 def _t1_scale_arrays_cached(key):
-    _conversion_factor, _t1_material, _t2_material, storage, _t2_machinery, _t2_capacity, footprint = key
+    _conversion_factor, _t1_material, _t2_material, _storage, _t2_machinery, _t2_capacity, footprint = key
     footprint = dict(footprint)
     output = np.array([int(p['outputQty']) for p in M.PRODUCTS], dtype=np.int64)
-    target = np.array([(storage - footprint[int(p['complexity'])]) / 2.0 for p in M.PRODUCTS], dtype=np.float64)
-    return output, target
+    footprint_arr = np.array([footprint[int(p['complexity'])] for p in M.PRODUCTS], dtype=np.float64)
+    return output, footprint_arr
 
 
 def t2_scale_arrays(cfg):
-    """cfg-driven conversion, machinery, capacity and fill target per T2 product."""
+    """cfg-driven conversion, machinery, capacity and footprint per T2 product."""
     return _t2_scale_arrays_cached(_scale_key(cfg))
 
 
@@ -137,7 +137,7 @@ T1_ING_Q = np.array([q for p in M.PRODUCTS for q in p['inputs'].values()], dtype
 
 
 def t1_scale_arrays(cfg):
-    """cfg-driven conversion, machinery, capacity, target and output per T1 product."""
+    """cfg-driven output quantity and machinery footprint per T1 product."""
     return _t1_scale_arrays_cached(_scale_key(cfg))
 
 
@@ -412,7 +412,7 @@ if _HAVE_NUMBA:
         t2_learn_ticks, t2_learn_profit, t2_learn_sales, t2_learn_previous,
         t2_learn_direction, t2_learn_demand, t2_learn_step,
         t2_learn_opportunity, t2_learn_potential_opportunity,
-        t1_offers_flat, t1_offers_off, valuation, t2_capacity, t2_output, t2_target,
+        t1_offers_flat, t1_offers_off, valuation, t2_capacity, t2_output, t2_footprint,
         t2_mat_spend, t2_mat_orders, loyalty_switches, loyalty_penalties):
         needs = np.zeros(NP, dtype=np.float64)
         plans = np.zeros(M4, dtype=np.float64)
@@ -442,7 +442,7 @@ if _HAVE_NUMBA:
             material_mask = 0
             for s in range(t2_firm_line_count[firm]):
                 pid = t2_line_product[t2_firm_lines[firm * M4 + s]]
-                goods_space -= storage - 2 * t2_target[pid]
+                goods_space -= t2_footprint[pid]
                 material_mask |= T2_MATERIAL_MASK[pid]
             inventory_room = goods_space - inv_units
             if inventory_room < 0.0:
@@ -957,7 +957,7 @@ if _HAVE_NUMBA:
         t0_rel_available, t0_sold, t0_revenue, t0_cogs, t0_ful, difficulty,
         t1_cash, t1_fin, t1_fin_basis, t1_price, t1_replacement_cost, t1_operates,
         t1_input_need, t1_purchase_req, t1_last_buy, t1_bought, raw, raw_basis,
-        preferred_wholesale, profile_has, profile_count, t1_input_ratio, t1_output, t1_target, t1_is_basic,
+        preferred_wholesale, profile_has, profile_count, t1_input_ratio, t1_output, t1_footprint, t1_is_basic,
         loyalty_switches, loyalty_penalties):
         t0_req[:] = 0.0
         t0_funded_req[:] = 0.0
@@ -973,7 +973,7 @@ if _HAVE_NUMBA:
                 line_count = 0
                 for p in range(NP):
                     if t1_operates[product_base + p]:
-                        goods_space -= storage - 2 * t1_target[p]
+                        goods_space -= t1_footprint[p]
                         line_count += 1
                 suppliers = np.empty(NE, dtype=np.int64)
                 for element in range(NE):
@@ -1085,9 +1085,8 @@ if _HAVE_NUMBA:
 # Python wrappers (flatten + dispatch).
 # --------------------------------------------------------------------------
 def operate_tier1(world, cfg):
-    output, _ = t1_scale_arrays(cfg)
+    output, footprint = t1_scale_arrays(cfg)
     conversion = np.array([M.conversion_cost(p['complexity'], cfg) for p in M.PRODUCTS])
-    footprint = np.array([cfg['footprint'][p['complexity']] for p in M.PRODUCTS], dtype=np.float64)
     world.costSinks = _operate_tier1_nb(
         cfg['t1Capacity'], float(cfg['storage']), footprint, conversion, output, world.costSinks,
         world.t1Operates, world.t1Cash, world.raw, world.rawBasis,
@@ -1118,7 +1117,7 @@ def observe_markets(world, cfg, profiles):
 
 
 def plan_and_buy_inputs(world, cfg, tick):
-    t1_output, t1_target = t1_scale_arrays(cfg)
+    t1_output, t1_footprint = t1_scale_arrays(cfg)
     t1_conv = np.array([M.conversion_cost(p['complexity'], cfg) for p in M.PRODUCTS], dtype=np.float64)
     _plan_and_buy_inputs_nb(
         cfg['seed'], tick, cfg['minWholesaleLot'],
@@ -1129,14 +1128,14 @@ def plan_and_buy_inputs(world, cfg, tick):
         world.t0RelAvailable, world.t0Sold, world.t0Revenue, world.t0COGS, world.t0Fulfilled, world.difficulty,
         world.t1Cash, world.t1Fin, world.t1FinBasis, world.t1Price, world.t1ReplacementCost, world.t1Operates,
         world.t1InputNeed, world.t1PurchaseReq, world.t1LastBuy, world.t1Bought, world.raw, world.rawBasis,
-        world.preferredWholesale, PROF_HAS, PROF_N, T1_INPUT_RATIO, t1_output, t1_target, T1_IS_BASIC,
+        world.preferredWholesale, PROF_HAS, PROF_N, T1_INPUT_RATIO, t1_output, t1_footprint, T1_IS_BASIC,
         world.loyaltySwitches, world.loyaltyPenalties)
 
 
 def operate_tier2(world, cfg, tick):
     flat, off = market_offers_table(world, 1, tick)
     val = procurement_arrays(cfg)
-    t2_conv, _, t2_cap, t2_target = t2_scale_arrays(cfg)
+    t2_conv, _, t2_cap, t2_footprint = t2_scale_arrays(cfg)
     t1_unit_cost = cfg['t1MaterialCost'] + cfg['conversionFactor']
     n_lines = int(world.t2LineCount)
     t2_going = _market_going_rate(world.t2Price[:n_lines], world.t2LearnSales[:n_lines],
@@ -1159,7 +1158,7 @@ def operate_tier2(world, cfg, tick):
         world.t2LearnTicks, world.t2LearnProfit, world.t2LearnSales, world.t2LearnPrevious,
         world.t2LearnDirection, world.t2LearnDemand, world.t2LearnStep,
         world.t2LearnOpportunity, world.t2LearnPotentialOpportunity,
-        flat, off, val, t2_cap, T2_OUTPUT, t2_target,
+        flat, off, val, t2_cap, T2_OUTPUT, t2_footprint,
         world.t2MatSpend, world.t2MatOrders, world.loyaltySwitches, world.loyaltyPenalties)
     world.costSinks += cs
     return cs
