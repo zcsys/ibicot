@@ -3,9 +3,9 @@ browser UI.
 
 Serves the static front-end (HTML + JS) and exposes the JS worker's exact
 message protocol over ``/ws``, so ``web/app.js`` runs unchanged via the
-``web/bridge.js`` shim.  The tick is CPU-bound and runs
-inline in the WebSocket handler (single-user local PoC), mirroring the
-worker's single-threaded model.
+``web/bridge.js`` shim.  The tick is CPU-bound and runs in a single
+server-owned scheduler task on the event loop (one world, one tick cadence),
+mirroring the worker's single-threaded model.
 """
 from __future__ import annotations
 
@@ -169,18 +169,67 @@ def _dispatch(rt: KernelRuntime, msg: dict) -> list[dict]:
     return [{'type': 'error', 'message': f'Unknown message type: {mtype}'}]
 
 
+class _ConnectionManager:
+    """All attached dashboard sockets; the scheduler broadcasts to all of them."""
+
+    def __init__(self):
+        self._ws: set[WebSocket] = set()
+
+    async def connect(self, ws: WebSocket):
+        self._ws.add(ws)
+
+    def disconnect(self, ws: WebSocket):
+        self._ws.discard(ws)
+
+    async def broadcast(self, message: dict):
+        for ws in list(self._ws):
+            try:
+                await ws.send_json(message)
+            except Exception:  # noqa: BLE001 — drop sockets that died mid-send
+                self._ws.discard(ws)
+
+
+_manager = _ConnectionManager()
+_scheduler_task: asyncio.Task | None = None
+
+
+async def _scheduler():
+    """The single server-owned run loop: one world, one tick cadence.
+
+    ``rt.step()`` stays on the event loop so a checkpoint swap (which replaces
+    the runtime's ``__dict__`` in place) can never interleave with a tick.
+    """
+    while True:
+        rt = runtime()
+        if not rt.running:
+            await asyncio.sleep(0.05)
+            continue
+        started = time.monotonic()
+        rt.step()
+        rt.publish()
+        await _manager.broadcast({'type': 'snapshot', 'data': rt.lastSnapshot})
+        delay = 0.01 if rt.mode == 'max' else max(0.02, 0.5 - (time.monotonic() - started))
+        await asyncio.sleep(delay)
+
+
+def _ensure_scheduler():
+    global _scheduler_task
+    if _scheduler_task is None or _scheduler_task.done():
+        _scheduler_task = asyncio.create_task(_scheduler())
+
+
 @app.websocket('/ws')
 async def ws_endpoint(ws: WebSocket):
     await ws.accept()
     rt = runtime()
+    await _manager.connect(ws)
     try:
         while True:
             msg = await ws.receive_json()
-            mtype = msg.get('type')
-            if mtype == 'run':
+            if msg.get('type') == 'run':
                 rt.run(msg.get('mode') or 'fixed')
+                _ensure_scheduler()
                 await ws.send_json({'type': 'snapshot', 'data': rt.publish()})
-                await _run_loop(ws, rt)
                 continue
             try:
                 for resp in _dispatch(rt, msg):
@@ -189,43 +238,8 @@ async def ws_endpoint(ws: WebSocket):
                 await ws.send_json({'type': 'error', 'message': str(exc)})
     except WebSocketDisconnect:
         pass
-
-
-async def _run_loop(ws: WebSocket, rt: KernelRuntime):
-    """Tick + publish + push snapshots, polling for control messages."""
-    while rt.running:
-        if rt.mode == 'max':
-            # Run flat-out: one tick + one snapshot per iteration, so the UI data
-            # updates at the tick rate rather than a throttled batch cadence.
-            rt.step()
-            rt.publish()
-            await ws.send_json({'type': 'snapshot', 'data': rt.lastSnapshot})
-            delay = 0.01
-        else:
-            started = time.monotonic()
-            rt.step()
-            rt.publish()
-            await ws.send_json({'type': 'snapshot', 'data': rt.lastSnapshot})
-            # Nominal 2 ticks/s: wait the remainder of a 500 ms period.
-            delay = max(0.02, 0.5 - (time.monotonic() - started))
-        try:
-            pending = await asyncio.wait_for(ws.receive_json(), timeout=delay)
-        except asyncio.TimeoutError:
-            continue
-        if pending.get('type') == 'run':
-            # Switch mode on the fly (Run ⇄ Run Max) without leaving the loop.
-            rt.run(pending.get('mode') or 'fixed')
-            continue
-        if pending.get('type') in ('pause', 'reset'):
-            for resp in _dispatch(rt, pending):
-                await ws.send_json(resp)
-            return
-        try:
-            for resp in _dispatch(rt, pending):
-                await ws.send_json(resp)
-        except Exception as exc:  # noqa: BLE001
-            await ws.send_json({'type': 'error', 'message': str(exc)})
-    await ws.send_json({'type': 'snapshot', 'data': rt.publish()})
+    finally:
+        _manager.disconnect(ws)
 
 
 # Static front-end (mounted last so API/WS routes win).

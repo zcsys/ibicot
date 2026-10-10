@@ -57,13 +57,22 @@ The machine-readable result is saved in [economy review validation](economy-revi
 
 ## Further findings for discussion
 
-These are outside the 14 requested repairs and have not been silently changed:
+These are outside the 14 requested repairs. Items 1–4 were fixed in a follow-up commit (see [Follow-up fixes](#follow-up-fixes)); item 5 is deferred to the operator:
 
 1. **P2 Shared run scheduling is still tied to each WebSocket.** Each connection's Run command enters its own `_run_loop`, and each loop calls `rt.step()`. Two running clients can therefore advance one shared world through two schedulers. A disconnected running client can also leave `running` true with no loop advancing it. The attachment and checkpoint repairs do not establish a single server-owned scheduler. See `economy/server/service.py`, `ws_endpoint` and `_run_loop`.
 2. **P2 Partial nested configuration patches can leave invalid state.** Reproduced with `apply_config({'t2Capacity': {'3': 30}})`: it raises `KeyError: 4` after assigning `{3: 30.0}` into the runtime config. The dashboard sends all three capacity values, but API callers can trigger this. General mapping normalization and transactional configuration application need a separate repair; the loyalty mapping and storage paths covered above are fixed.
 3. **The design still conflicts over market-average pricing.** Canon axiom 2 prohibits a market-average target; section 12 specifies the going-rate anchor used by the implementation. Choosing which rule governs requires a design decision. The anchor slider now works; the pricing model has not been replaced.
 4. **Loyalty documentation and bootstrap AOV disagree about 5% versus 10%.** The annual update uses `0.05`; the starting AOV inference divides by `0.10`, and README text still describes 10%. This deserves an explicit decision before changing bootstrap behavior.
 5. **One year does not establish sustained equal equity ROI.** The measured group returns above differ materially. Longer runs and multiple seeds are needed after these behavioral corrections; the previous calibration traces are not interchangeable with the corrected kernel.
+
+## Follow-up fixes
+
+The four actionable follow-ups (items 1–4 above) were repaired in a second pass:
+
+1. **Single server-owned scheduler.** `service.py` now owns one `_scheduler` task that ticks the world and broadcasts to all attached sockets through a `_ConnectionManager`; `ws_endpoint` no longer enters a per-connection run loop, and `_run_loop` is removed. Two clients can no longer advance one world through two schedulers, and a disconnecting client cannot strand `running` with no loop.
+2. **Total, atomic configuration.** `_clamp_mapping` now fills missing mapping keys from defaults (matching the loyalty-mapping normalization), so a partial patch such as `{'t2Capacity': {'3': 30}}` produces a complete mapping. `apply_config` precomputes all derived values against the candidate before committing, so a failure cannot leave the runtime half-configured.
+3. **Market-average pricing clarified.** Axiom 2 now forbids buyers and sellers *coordinating* on a common target price, while explicitly permitting a single firm to observe its market's realized going rate and position itself against it (§12.2). No behavioral change.
+4. **Loyalty charge 5 % everywhere.** The bootstrap AOV inference now divides by `0.05` (was `0.10`), matching the annual `M = 0.05 × AOV / (unit_cost × 1.5)` re-derivation; the README and the `_init_loyalty_regime` comment now say 5 %.
 
 Version 1 checkpoints cannot recover ownership metadata that was never saved. Loading preserves recoverable world state and reconstructs controls/equipment; missing administrative fields receive defaults. Version 2 checkpoints preserve those fields going forward. Existing checkpoints already above the newly enforced storage limit are not silently liquidated; procurement admits no additional goods while full, and existing goods can drain through sales.
 

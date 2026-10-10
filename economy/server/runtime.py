@@ -307,23 +307,30 @@ class KernelRuntime:
         candidate = normalize_config(merged)
         if candidate['storage'] != self.cfg['storage'] or candidate['footprint'] != self.cfg['footprint']:
             validate_storage(self.world, candidate)
+        # Precompute every derived value against ``candidate`` before mutating the
+        # runtime, so a failure cannot leave the world half-configured.
+        ref_costs = {p['id']: M.unit_cost(p['complexity'], candidate) for p in M.T2_PRODUCTS}
+        lm_unit2 = candidate['t1MaterialCost'] + candidate['conversionFactor']
+        lm_unit3 = self.world._mean_t2_unit_cost(candidate)
+        n = candidate['distributorCount']
+        cids = np.arange(n)
+        b = hash_seed_vec(candidate['seed'], 9000000 + cids)
+        choke = (candidate['chokeMin']
+                 + b.astype(np.float64) / 4294967296.0
+                 * (candidate['chokeMax'] - candidate['chokeMin'])).astype(np.float32)
+        # Commit.
         self.cfg = candidate
-        self.world.cfg = self.cfg
+        self.world.cfg = candidate
         for p in M.T2_PRODUCTS:
-            self.world.t2ReferenceCost[p['id']] = M.unit_cost(p['complexity'], self.cfg)
-        self.world.lmUnitCost1 = self.cfg['baseCost']
-        self.world.lmUnitCost2 = self.cfg['t1MaterialCost'] + self.cfg['conversionFactor']
-        self.world.lmUnitCost3 = self.world._mean_t2_unit_cost(self.cfg)
+            self.world.t2ReferenceCost[p['id']] = ref_costs[p['id']]
+        self.world.lmUnitCost1 = candidate['baseCost']
+        self.world.lmUnitCost2 = lm_unit2
+        self.world.lmUnitCost3 = lm_unit3
         # Recomputed wholesale (vectorized): choke/eta are the only per-distributor
         # fields that respond to a live config change (routing is supply-driven
         # and gated on Reset by the population guard above).
-        n = self.cfg['distributorCount']
-        cids = np.arange(n)
-        b = hash_seed_vec(self.cfg['seed'], 9000000 + cids)
-        self.world.distributorChoke[:n] = (self.cfg['chokeMin']
-                                        + b.astype(np.float64) / 4294967296.0
-                                        * (self.cfg['chokeMax'] - self.cfg['chokeMin'])).astype(np.float32)
-        self.world.distributorEta[:n] = self.cfg['elasticity']
+        self.world.distributorChoke[:n] = choke
+        self.world.distributorEta[:n] = candidate['elasticity']
         return self.publish()
 
     # ------------------------------------------------------------------

@@ -10,6 +10,7 @@ from unittest.mock import patch
 import numpy as np
 
 from economy.core import model as M
+from economy.core.config import normalize_config
 from economy.core.state import reset_world, T0P, add_tier2_line, tier1_goods_space, tier2_occupied_space
 from economy.core.trading import select_offer, affordable_order
 from economy.kernel import tick as reference
@@ -19,6 +20,14 @@ from economy.server.persistence import save_checkpoint, load_checkpoint
 from economy.server.runtime import KernelRuntime, stats_row
 
 SMALL = {'t2FirmCount': 12, 'distributorCount': 30}
+
+
+class _FakeWS:
+    def __init__(self):
+        self.sent = []
+
+    async def send_json(self, message):
+        self.sent.append(message)
 
 
 class ReviewFixes(unittest.TestCase):
@@ -374,6 +383,59 @@ if (ctx.result.marketAnchorBand !== .123) throw Error('anchor omitted');
             for name in a.world.array_names:
                 np.testing.assert_array_equal(getattr(a.world, name), getattr(b.world, name), err_msg=f'{t}: {name}')
             self.assertAlmostEqual(a.world.costSinks, b.world.costSinks, delta=1e-6)
+
+    def test_partial_nested_config_is_total_and_atomic(self):
+        cfg = normalize_config({'t2Capacity': {'3': 30}})
+        self.assertEqual(sorted(cfg['t2Capacity']), [3, 4, 5])
+        self.assertEqual(cfg['t2Capacity'][4], 20)
+        rt = self.runtime()
+        rt.apply_config({'t2Capacity': {'3': 30}})
+        self.assertEqual(sorted(rt.cfg['t2Capacity']), [3, 4, 5])
+        self.assertEqual(rt.cfg['t2Capacity'][3], 30)
+        self.assertEqual(rt.cfg['t2Capacity'][4], 20)
+
+    def test_loyalty_aov_bootstrap_is_five_percent(self):
+        cfg, w = reset_world(SMALL)
+        self.assertAlmostEqual(w.aov1, w.lm1 * w.lmUnitCost1 * 1.5 / 0.05)
+        self.assertAlmostEqual(w.aov3, w.lm3 * w.lmUnitCost3 * 1.5 / 0.05)
+        # Bootstrap and annual re-derivation agree: 5 % everywhere.
+        self.assertAlmostEqual(0.05 * w.aov1 / (w.lmUnitCost1 * 1.5), w.lm1)
+        self.assertAlmostEqual(0.05 * w.aov3 / (w.lmUnitCost3 * 1.5), w.lm3)
+
+    def test_server_scheduler_is_singleton(self):
+        service._runtime = self.runtime()
+        service._scheduler_task = None
+
+        async def exercise():
+            service._ensure_scheduler()
+            first = service._scheduler_task
+            service._ensure_scheduler()
+            self.assertIs(service._scheduler_task, first)
+            first.cancel()
+            try:
+                await first
+            except asyncio.CancelledError:
+                pass
+            service._scheduler_task = None
+
+        asyncio.run(exercise())
+        self.assertIsNone(service._scheduler_task)
+
+    def test_connection_manager_broadcast(self):
+        mgr = service._ConnectionManager()
+        a, b = _FakeWS(), _FakeWS()
+
+        async def exercise():
+            await mgr.connect(a)
+            await mgr.connect(b)
+            await mgr.broadcast({'type': 'x'})
+            mgr.disconnect(a)
+            await mgr.broadcast({'type': 'y'})
+            return a, b
+
+        a, b = asyncio.run(exercise())
+        self.assertEqual([m['type'] for m in a.sent], ['x'])
+        self.assertEqual([m['type'] for m in b.sent], ['x', 'y'])
 
 
 if __name__ == '__main__':

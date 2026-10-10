@@ -42,10 +42,14 @@ Every section below is a consequence of, or a requirement for, that sentence.
 
 2. **Decentralized emergence.** Prices, supplier choices, market shares, and firm
    survival emerge from many self-interested local agents with private information and
-   bounded sampling. **In no market do buyers and sellers converge on a shared ideal
-   price.** No central price solver, no market-average target, no demand oracle, no
-   "assign demand to fit capacity." Unmet demand and stranded firms are legitimate
-   outcomes.
+   bounded sampling. **In no market do buyers and sellers coordinate on — or jointly
+   steer toward — a common target price.** Equilibrium is not an input: no central price
+   solver, no shared ideal price the parties converge on by design, no demand oracle, no
+   "assign demand to fit capacity." A single firm may observe the *realized* going rate of
+   its own market (a sales-weighted average of competitors' actual prices, §12.2) and
+   position *itself* relative to it — individual competitive behavior on local information,
+   not a shared target; the equilibrium still emerges from independent choices, never from
+   a goal held in common. Unmet demand and stranded firms are legitimate outcomes.
 
 3. **Agency.** Two actor kinds: **autonomous bots** deciding independently from local
    information only (own orders, stock, cost, profit — no shared optimum), and the
@@ -359,7 +363,9 @@ to offer). Otherwise, in order:
    down to the going rate without a symmetric race to the bottom. The going rate is
    `Σ(sales_i × price_i) / Σ(sales_i)` over the sellers of that good (element / material /
    product), falling back to the simple average of their finite prices when a market has
-   no sales in the window.
+   no sales in the window. This is the firm's own positioning against observed competitor
+   prices, not a shared target: no seller aims at the average as a goal, and no buyer is
+   steered by it (axiom 2).
 4. **Profit baseline available** (a prior observation's realized profit exists) → pure
    derivative-following with a **2 % dead band**: reverse when profit fell ≥ 2 %, continue
    when it rose ≥ 2 %, and **hold inside the band** — flat profit is the profit-maximum,

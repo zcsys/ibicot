@@ -87,13 +87,17 @@ def _is_number(v):
 
 
 def _clamp_mapping(d, key, low, high=None):
-    if not isinstance(d[key], dict):
-        d[key] = dict(default_cfg()[key])
+    base = default_cfg()[key]
+    source = d[key] if isinstance(d[key], dict) else {}
     out = {}
-    for k in list(d[key]):
-        v = float(d[key][k])
+    for k in base:
+        v = source.get(k, source.get(str(k), base[k]))
+        try:
+            v = float(v)
+        except (TypeError, ValueError):
+            v = base[k]
         if not math.isfinite(v):
-            v = float(default_cfg()[key][int(k)])
+            v = base[k]
         v = max(low, v)
         if high is not None:
             v = min(high, v)
