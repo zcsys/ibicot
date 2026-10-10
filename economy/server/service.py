@@ -182,9 +182,14 @@ class _ConnectionManager:
         self._ws.discard(ws)
 
     async def broadcast(self, message: dict):
+        payload = None
         for ws in list(self._ws):
             try:
-                await ws.send_json(message)
+                if payload is None:
+                    # Match Starlette's send_json wire representation, once
+                    # for the entire broadcast rather than once per dashboard.
+                    payload = json.dumps(message, separators=(',', ':'), ensure_ascii=False)
+                await ws.send_text(payload)
             except Exception:  # noqa: BLE001 — drop sockets that died mid-send
                 self._ws.discard(ws)
 

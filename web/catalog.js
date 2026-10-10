@@ -706,10 +706,7 @@ const recipes = [
     // including windows with no deliveries. No target margin is inferred.
     const scarce = demand > available + 1e-9;
     if (scarce) nextDirection = 1;
-    else if (sales <= 0) {
-      if (stock <= 0) return { price, direction: nextDirection, stepScale };
-      nextDirection = -1;
-    } else if (Number.isFinite(previousProfit) && profit < previousProfit) nextDirection *= -1;
+    else if (Number.isFinite(previousProfit) && profit < previousProfit) nextDirection *= -1;
     // Adaptive derivative-following: grow on continuation, keep the step on
     // reversal (no halving). This may still quote at cost.
     const scale = clamp(stepScale * (nextDirection !== direction ? 1.0 : 1.2), 0.01, 1);

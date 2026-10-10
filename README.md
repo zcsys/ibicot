@@ -115,4 +115,53 @@ Notable knobs: `productionMarginBand`, `loyaltyMultiple` (bootstrap) +
 # tests/py/test_rng.py      SplitMix32 against known reference outputs
 # tests/py/test_kernel.py   determinism (byte-identical re-runs) + invariants
 #                           (no negatives, conservation holds, atomic orders)
+# tests/py/test_performance.py  exact ranking, storage planning, reductions,
+#                               sort order, and WebSocket serialization
+# tests/js/test_formatting.js   unchanged locale formatting
 ```
+
+## Performance validation
+
+```sh
+./run.sh bench --ticks 361 --fingerprint-every 1 --output /tmp/before.json
+# Make changes, then run the same seed/config and compare:
+./run.sh bench --ticks 361 --fingerprint-every 1 --output /tmp/after.json --verify /tmp/before.json
+```
+
+The benchmark uses the full 60,000 manufacturers and 1,000,000 distributors by
+default. It measures steps, snapshot construction, JSON encoding, and company
+queries separately. Compilation and state fingerprinting are excluded from the
+steady-state timings. Comparison checks every world array, scalar ledger,
+per-tick stats, snapshot, and sampled query result exactly; only elapsed-time
+telemetry is excluded. Use `--cfg` for another population or parameter set.
+
+The optimized kernel preserves sequential trade order, seeded draws, supplier
+tie-breaks, and floating-point reduction order. It uses indexed stock searches,
+direct uniform offer sampling, bounded storage planning, compiled refinery and
+research loops, and shared snapshot projections. Manufacturer pages project only
+the requested sort column. Broadcasts encode each message once, and the browser
+reuses locale number formatters.
+
+Compiled functions are cached under `economy/__pycache__/numba/` (or the configured
+`NUMBA_CACHE_DIR`). The cache is keyed by all economy Python source and the
+catalog, so dependency edits invalidate compiled callers as well. The first run
+after a source change still compiles; later processes reuse the cache. Numba
+remains optional, with Python/NumPy fallbacks.
+
+The 2026-10-10 measurements and validation coverage are recorded in
+[`docs/performance-validation-2026-10-10.json`](docs/performance-validation-2026-10-10.json).
+
+On the local arm64/Python 3.12 host, the 361-tick full-population comparison gave:
+
+| Operation | Before | After | Speedup |
+| --- | ---: | ---: | ---: |
+| Tick, mean | 176.46 ms | 88.86 ms | 1.99× |
+| Snapshot, mean | 41.63 ms | 14.19 ms | 2.93× |
+| Sort 60,000 firms by cash, median | 839.05 ms | 8.60 ms | 97.56× |
+| Sort 60,000 firms by equity, median | 858.09 ms | 12.84 ms | 66.85× |
+
+All 155 world arrays, ledgers, stats and snapshots matched the pre-pass working
+tree at tick zero and every one of the 361 ticks. Separate checks covered live
+configuration, player controls, multiple machines, checkpoint resume, research
+pricing and the no-Numba fallback. These are local measurements; results vary
+with hardware, configuration and machine load.

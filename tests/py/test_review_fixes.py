@@ -29,6 +29,9 @@ class _FakeWS:
     async def send_json(self, message):
         self.sent.append(message)
 
+    async def send_text(self, payload):
+        self.sent.append(json.loads(payload))
+
 
 class ReviewFixes(unittest.TestCase):
     def setUp(self):
@@ -41,6 +44,34 @@ class ReviewFixes(unittest.TestCase):
         rt = KernelRuntime(SMALL)
         rt.statsPath = Path(self.tmp.name) / 'stats.jsonl'
         return rt
+
+    def test_zero_sales_uses_remaining_pricing_signals_in_both_engines(self):
+        # Idle sellers still follow the market, including when out of stock.
+        for stock in (0., 100.):
+            for market, demand, expected in ((110., 0., 1), (90., 0., -1),
+                                             (100., 0., 0), (90., 1., 1)):
+                with self.subTest(stock=stock, market=market, demand=demand):
+                    args = dict(old_price=100., profit=10., previous_profit=10.,
+                                direction=1, sales=0., stock=stock, demand=demand,
+                                available=0., step_scale=1., market_price=market,
+                                band=.02, pricing_aggressiveness=.35, response=.05)
+                    result = M.adaptive_price(**args)
+                    fast = accelerated._adaptive_price(**args)
+                    self.assertEqual(fast, (result['price'], result['direction'],
+                                            result['stepScale']))
+                    self.assertEqual(np.sign(result['price'] - 100.), expected)
+
+    def test_browser_pricer_does_not_override_direction_for_zero_sales(self):
+        script = r"""
+require('./web/catalog.js');
+const assert = require('assert');
+for (const stock of [0, 100]) {
+  const result = globalThis.Phase0Model.adaptivePrice({oldPrice: 100, unitCost: 1,
+    profit: 10, previousProfit: 10, direction: 1, sales: 0, stock});
+  assert(result.price > 100);
+}
+"""
+        subprocess.run(['node', '-e', script], check=True, capture_output=True, text=True)
 
     def test_zero_refinery_quote_stays_positive_in_both_engines(self):
         for fast in (False, True):

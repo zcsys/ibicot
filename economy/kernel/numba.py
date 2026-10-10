@@ -23,7 +23,7 @@ from ..core.rng import random_ as _rand
 from ..kernel.tick import market_offers_table, _market_going_rate
 
 try:
-    from numba import njit as _njit
+    from ..core.jit import njit as _njit
     _HAVE_NUMBA = True
 except Exception:  # pragma: no cover
     _njit = None
@@ -59,6 +59,8 @@ def _build_flat():
 
 T2_COMPLEXITY, T2_SECTOR, T2_OUTPUT, T2_ING_M, T2_ING_Q, T2_ING_OFF = _build_flat()
 RATIOS = np.array(M.catalog_input_ratios, dtype=np.float64)
+T2_MATERIAL_MASK = np.array([sum(1 << m for m in {m for m, _ in p['ingredients']})
+                             for p in M.T2_PRODUCTS], dtype=np.int64)
 
 
 def _scale_key(cfg):
@@ -129,6 +131,9 @@ for _pi, _p in enumerate(M.PRODUCTS):
     for _e, _r in _p['inputs'].items():
         T1_INPUT_RATIO[_pi, _EI[_e]] = float(_r)
     T1_IS_BASIC[_pi] = 1 if len(_p['inputs']) == 1 else 0
+T1_ING_OFF = np.array([0] + list(np.cumsum([len(p['inputs']) for p in M.PRODUCTS])), dtype=np.int64)
+T1_ING_E = np.array([_EI[e] for p in M.PRODUCTS for e in p['inputs']], dtype=np.int64)
+T1_ING_Q = np.array([q for p in M.PRODUCTS for q in p['inputs'].values()], dtype=np.float64)
 
 
 def t1_scale_arrays(cfg):
@@ -137,6 +142,51 @@ def t1_scale_arrays(cfg):
 
 
 if _HAVE_NUMBA:
+
+    @_njit
+    def _operate_tier1_nb(capacity, storage, footprint, conversion, output, cost_sinks,
+                          operates, cash, raw, raw_basis, fin, fin_basis, price, unit_cost):
+        for company in range(N1):
+            count = 0
+            occupied = 0.0
+            for p in range(NP):
+                if operates[company * NP + p]:
+                    count += int(operates[company * NP + p])
+                    occupied += footprint[p]
+            target = (storage - occupied) / (2 * max(1, count))
+            for p in range(NP):
+                index = company * NP + p
+                if not operates[index]:
+                    continue
+                conv = conversion[p]
+                output_qty = output[p]
+                desired = min(capacity, max(0.0, target - fin[index]))
+                made = math.floor(desired / output_qty)
+                input_cost = 0.0
+                for gi in range(T1_ING_OFF[p], T1_ING_OFF[p + 1]):
+                    element, ratio = T1_ING_E[gi], T1_ING_Q[gi]
+                    ri = company * NE + element
+                    made = min(made, math.floor(raw[ri] / ratio))
+                    input_cost += ratio * raw_basis[ri]
+                input_cost /= output_qty
+                made = min(made, math.floor(max(0.0, cash[company]) / max(1e-9, conv * output_qty)))
+                if input_cost + conv > price[index] + 1e-9:
+                    made = 0
+                if made <= 0:
+                    continue
+                made_items = made * output_qty
+                for gi in range(T1_ING_OFF[p], T1_ING_OFF[p + 1]):
+                    raw[company * NE + T1_ING_E[gi]] -= made * T1_ING_Q[gi]
+                cash[company] -= made_items * conv
+                cost_sinks += made_items * conv
+                old_fin = fin[index]
+                old_basis = fin_basis[index]
+                unit = input_cost + conv
+                fin[index] = old_fin + made_items
+                fin_basis[index] = ((old_basis * old_fin + unit * made_items) / (old_fin + made_items)
+                                    if old_fin + made_items > 0 else 0.0)
+                unit_cost[index] = unit
+        return cost_sinks
 
     @_njit
     def _loyalty_surcharge(price, reliability):
@@ -175,12 +225,7 @@ if _HAVE_NUMBA:
         next_direction = -1 if direction < 0 else 1
         moved = False
         # Derivative-following with a dead band (see model.adaptive_price).
-        if sales <= 0:
-            if stock <= 0:
-                return price, next_direction, step_scale
-            next_direction = -1
-            moved = True
-        elif demand > available + 1e-9:
+        if demand > available + 1e-9:
             next_direction = 1
             moved = True
         elif market_price > 0:
@@ -268,6 +313,58 @@ if _HAVE_NUMBA:
                                 reliability, request, unit_cost, multiple, 1)
 
     @_njit
+    def _stock_index(offers, offsets, stock):
+        """Per-market maximum-stock trees, in the exact sorted offer order."""
+        width = 1
+        for market in range(NP):
+            while width < offsets[market + 1] - offsets[market]:
+                width *= 2
+        tree = np.zeros((NP, 2 * width), dtype=np.float64)
+        positions = np.zeros(len(stock), dtype=np.int64)
+        for market in range(NP):
+            start, end = offsets[market], offsets[market + 1]
+            for i in range(start, end):
+                supplier = offers[i]
+                leaf = width + i - start
+                positions[supplier] = leaf
+                tree[market, leaf] = stock[supplier] if stock[supplier] >= 1 else 0.0
+            for node in range(width - 1, 0, -1):
+                tree[market, node] = max(tree[market, node * 2], tree[market, node * 2 + 1])
+        return tree, positions, width
+
+    @_njit
+    def _indexed_supplier(tree, width, material, offers, start, end, stock, price,
+                          preferred, reliability, request, unit_cost, multiple):
+        quantity = max(1.0, request)
+        threshold = quantity if tree[material, 1] >= quantity else 1.0
+        if tree[material, 1] < threshold:
+            return offers[start] if start < end else -1
+        node = 1
+        while node < width:
+            node *= 2
+            if tree[material, node] < threshold:
+                node += 1
+        best = offers[start + node - width]
+        if preferred < 0 or not math.isfinite(price[preferred]) or stock[preferred] < quantity:
+            return best
+        charge = (multiple * unit_cost * (1 + min(1.0, max(0.0, reliability[preferred])))
+                  if request > 0 else 0.0)
+        if price[preferred] * quantity <= price[best] * quantity + charge:
+            return preferred
+        return best
+
+    @_njit
+    def _update_stock_index(tree, material, node, stock):
+        tree[material, node] = stock if stock >= 1 else 0.0
+        node //= 2
+        while node:
+            value = max(tree[material, node * 2], tree[material, node * 2 + 1])
+            if tree[material, node] == value:
+                break
+            tree[material, node] = value
+            node //= 2
+
+    @_njit
     def _demand_at_price(q_max, choke_price, price, elasticity):
         if q_max > 0 and choke_price > 0 and price >= 0 and elasticity > 0:
             return q_max / (1.0 + (price / choke_price) ** elasticity)
@@ -321,6 +418,7 @@ if _HAVE_NUMBA:
         plans = np.zeros(M4, dtype=np.float64)
         suppliers = np.zeros(NP, dtype=np.int64)
         offer_heads = np.zeros(NP, dtype=np.int64)
+        stock_tree, stock_positions, stock_width = _stock_index(t1_offers_flat, t1_offers_off, t1_fin)
         cost_sinks = 0.0
 
         for order in range(t2_firm_count):
@@ -341,14 +439,18 @@ if _HAVE_NUMBA:
             for s in range(t2_firm_line_count[firm]):
                 inv_units += t2_fin[t2_firm_lines[firm * M4 + s]]
             goods_space = storage
+            material_mask = 0
             for s in range(t2_firm_line_count[firm]):
                 pid = t2_line_product[t2_firm_lines[firm * M4 + s]]
                 goods_space -= storage - 2 * t2_target[pid]
+                material_mask |= T2_MATERIAL_MASK[pid]
             inventory_room = goods_space - inv_units
             if inventory_room < 0.0:
                 inventory_room = 0.0
 
             for material in range(NP):
+                if not (material_mask & (1 << material)):
+                    continue
                 start = t1_offers_off[material]
                 end = t1_offers_off[material + 1]
                 n_offers = end - start
@@ -358,9 +460,16 @@ if _HAVE_NUMBA:
                 offer_heads[material] = h
                 best = t1_offers_flat[start + h] if h < n_offers else -1
                 preferred = t2_preferred[firm * NP + material]
-                suppliers[material] = _choose_supplier_nb(
-                    t1_offers_flat, start, end, t1_fin, t1_price, preferred, t1_rel,
-                    best)
+                # Stock only decreases in this phase. The advancing market head
+                # already found the first stocked quote; do not scan it again
+                # for each of the 60,000 firms' ten planning lookups.
+                if best < 0:
+                    suppliers[material] = t1_offers_flat[start] if start < end else -1
+                elif (preferred >= 0 and math.isfinite(t1_price[preferred])
+                      and t1_fin[preferred] >= 1 and t1_price[preferred] <= t1_price[best]):
+                    suppliers[material] = preferred
+                else:
+                    suppliers[material] = best
 
             line_count = t2_firm_line_count[firm]
             for order2 in range(line_count):
@@ -377,7 +486,12 @@ if _HAVE_NUMBA:
                 desired = math.floor(desired / output_qty)
                 if desired < 0.0:
                     desired = 0.0
-                while desired > 0:
+                # Missing inputs are monotone in the batch count. Test the
+                # usual full plan once, then bisect only when storage binds;
+                # the old decrement loop could visit thousands of batches.
+                low_batches, high_batches = 0, desired
+                trial = desired
+                while trial > 0:
                     missing = 0.0
                     for material in range(NP):
                         ratio = RATIOS[pid, material]
@@ -385,10 +499,15 @@ if _HAVE_NUMBA:
                             held = t2_raw[firm * NE + material]
                         else:
                             held = t2_t1raw[firm * NP + material]
-                        missing += max(0.0, needs[material] + desired * ratio - held)
+                        missing += max(0.0, needs[material] + trial * ratio - held)
                     if missing <= inventory_room:
+                        low_batches = trial
+                    else:
+                        high_batches = trial - 1
+                    if low_batches >= high_batches:
                         break
-                    desired -= 1
+                    trial = (low_batches + high_batches + 1) // 2
+                desired = low_batches
                 replacement = t2_conversion[pid]
                 current_cost = t2_conversion[pid]
                 for gi in range(T2_ING_OFF[pid], T2_ING_OFF[pid + 1]):
@@ -462,8 +581,9 @@ if _HAVE_NUMBA:
                     if requested <= 0:
                         continue
                     pref = int(t2_preferred[firm * NP + material])
-                    supplier = _choose_supplier_nb(t1_offers_flat, t1_offers_off[material],
-                        t1_offers_off[material + 1], t1_fin, t1_price, pref, t1_rel, -1,
+                    supplier = _indexed_supplier(stock_tree, stock_width, material,
+                        t1_offers_flat, t1_offers_off[material],
+                        t1_offers_off[material + 1], t1_fin, t1_price, pref, t1_rel,
                         requested, t1_unit_cost, loyalty_multiple_t2[firm_cx])
                     if supplier < 0:
                         continue
@@ -491,6 +611,7 @@ if _HAVE_NUMBA:
                     t2_cash[firm] -= payment
                     t1_cash[supplier_firm] += payment
                     t1_fin[supplier] -= quantity
+                    _update_stock_index(stock_tree, material, stock_positions[supplier], t1_fin[supplier])
                     t1_sold[supplier] += quantity
                     t1_rev[supplier] += payment
                     t1_cogs[supplier] += quantity * t1_fin_basis[supplier]
@@ -582,17 +703,6 @@ if _HAVE_NUMBA:
         t2_cash, t2_last_sale_tick, t2_sold, t2_revenue, t2_cogs, t2_fin_basis,
         t2_opportunities, t2_potential_orders, complexity, valuation,
         loyalty_switches, loyalty_penalties):
-        total_lines = offers_off[n_t2]
-        cum = np.empty(total_lines, dtype=np.float64)
-        for m in range(n_t2):
-            start = offers_off[m]
-            end = offers_off[m + 1]
-            acc = 0.0
-            for i in range(start, end):
-                line = offers_flat[i]
-                acc += 1.0
-                cum[i] = acc
-
         cand = np.empty(1 + distributor_search_offers, dtype=np.int64)
         orders = 0
         filled = 0
@@ -631,16 +741,10 @@ if _HAVE_NUMBA:
             for sample in range(distributor_search_offers):
                 if start >= end:
                     break
-                draw = _rand(seed, tick, buyer + 8000000 + sample * 1100000) * cum[end - 1]
-                low = start
-                high = end - 1
-                while low < high:
-                    middle = (low + high) >> 1
-                    if draw < cum[middle]:
-                        high = middle
-                    else:
-                        low = middle + 1
-                candidate = offers_flat[low]
+                # Every offer has weight 1: the former upper-bound search in
+                # [1, 2, ..., count] is exactly floor(draw), even on boundaries.
+                draw = _rand(seed, tick, buyer + 8000000 + sample * 1100000) * (end - start)
+                candidate = offers_flat[start + int(draw)]
                 if not _contains(cand, 0, n_cand, candidate):
                     cand[n_cand] = candidate
                     n_cand += 1
@@ -652,7 +756,7 @@ if _HAVE_NUMBA:
                 friction = _loyalty_charge(reference, t2_rel[preferred], loyalty_multiple_t3) / order_q
             _sort_candidates(cand, n_cand, t2_price, preferred, friction)
             if preferred >= 0 and math.isfinite(t2_price[preferred]) \
-                    and t2_fin[preferred] >= _demand_units(latent, choke, t2_price[preferred], distributor_eta[buyer], qmax, rounding):
+                    and t2_fin[preferred] >= order_q:
                 preferred_can_fulfill = True
             else:
                 preferred_can_fulfill = False
@@ -662,7 +766,8 @@ if _HAVE_NUMBA:
             sellers = 0
             for ci in range(n_cand):
                 candidate = cand[ci]
-                q_at = _demand_units(latent, choke, t2_price[candidate], distributor_eta[buyer], qmax, rounding)
+                q_at = (order_q if candidate == preferred else
+                        _demand_units(latent, choke, t2_price[candidate], distributor_eta[buyer], qmax, rounding))
                 want = q_at - bought
                 if want < 0:
                     want = 0
@@ -721,6 +826,35 @@ if _HAVE_NUMBA:
             filled += 1 if bought >= total_desired else 0
 
         return orders, filled, activated, payments, purchases
+
+    @_njit
+    def _observe_opportunities_nb(profile_weights, firm_weights, t0_price, t0_opportunities, t0_learn,
+                                  t1_operates, t1_opportunities, t1_learn,
+                                  line_count, line_product, line_firm, firm_line_count,
+                                  t2_opportunities, t2_potential, t2_learn, t2_learn_potential):
+        weights0 = np.zeros(NE)
+        weights1 = np.zeros(NP)
+        weights2 = np.zeros(N_T2)
+        for firm in range(N0):
+            for element in range(NE):
+                weights0[element] += profile_weights[firm, element]
+        for i in range(N1 * NP):
+            if t1_operates[i]:
+                weights1[i % NP] += 1
+        for i in range(line_count):
+            weights2[line_product[i]] += 1 / firm_line_count[line_firm[i]]
+        for i in range(N0 * NE):
+            if math.isfinite(t0_price[i]):
+                element = i % NE
+                t0_learn[i] += t0_opportunities[element] * firm_weights[i // NE] / weights0[element]
+        for i in range(N1 * NP):
+            if t1_operates[i]:
+                t1_learn[i] += t1_opportunities[i % NP] * 1 / weights1[i % NP]
+        for i in range(line_count):
+            market = line_product[i]
+            weight = 1 / firm_line_count[line_firm[i]]
+            t2_learn[i] += t2_opportunities[market] * weight / weights2[market]
+            t2_learn_potential[i] += t2_potential[market] * weight / weights2[market]
 
     @_njit
     def _observe_markets_nb(alpha, t2_line_count,
@@ -950,12 +1084,28 @@ if _HAVE_NUMBA:
 # --------------------------------------------------------------------------
 # Python wrappers (flatten + dispatch).
 # --------------------------------------------------------------------------
+def operate_tier1(world, cfg):
+    output, _ = t1_scale_arrays(cfg)
+    conversion = np.array([M.conversion_cost(p['complexity'], cfg) for p in M.PRODUCTS])
+    footprint = np.array([cfg['footprint'][p['complexity']] for p in M.PRODUCTS], dtype=np.float64)
+    world.costSinks = _operate_tier1_nb(
+        cfg['t1Capacity'], float(cfg['storage']), footprint, conversion, output, world.costSinks,
+        world.t1Operates, world.t1Cash, world.raw, world.rawBasis,
+        world.t1Fin, world.t1FinBasis, world.t1Price, world.t1UnitCost)
+
+
 def observe_markets(world, cfg, profiles):
     if cfg['researchPriceMinimumOpportunities'] > 0:
-        # Research candidate only (off by default) — fall back to the faithful
-        # pure-Python path which computes the opportunity weights.
-        from ..kernel.tick import observe_markets as _pure
-        return _pure(world, cfg, profiles)
+        weights = np.zeros((N0, NE))
+        firm_weights = np.array([1 / len(profile['elements']) for profile in profiles])
+        for i, profile in enumerate(profiles):
+            for element in profile['elements']:
+                weights[i, M.ELEMENTS.index(element)] = 1 / len(profile['elements'])
+        _observe_opportunities_nb(
+            weights, firm_weights, world.t0Price, world.t0Opportunities, world.t0LearnOpportunity,
+            world.t1Operates, world.t1Opportunities, world.t1LearnOpportunity,
+            int(world.t2LineCount), world.t2LineProduct, world.t2LineFirm, world.t2FirmLineCount,
+            world.t2Opportunities, world.t2PotentialOrders, world.t2LearnOpportunity, world.t2LearnPotentialOpportunity)
     _observe_markets_nb(
         float(cfg['alpha']), int(world.t2LineCount),
         world.t0Price, world.t0Demand, world.t0Sold, world.t0DemandEMA, world.t0SalesEMA, world.t0Revenue, world.t0COGS,

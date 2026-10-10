@@ -276,17 +276,11 @@ def adaptive_price(old_price, profit, previous_profit, direction=1,
     price = round_to_cent(min(MAX_UNIT_PRICE, max(floor, old_price)))
     next_direction = -1 if direction < 0 else 1
     moved = False
-    # Derivative-following pricing (canon §12.6): a firm that is not selling lowers
-    # (if it has stock); unmet demand (demand > supplied) raises; a firm priced
+    # Derivative-following pricing (canon §12.2): unmet demand raises; a firm priced
     # above its market's going rate lowers (expensive → contest) and one priced
     # below raises (cheap → capture value); otherwise it follows the sign of the
     # realised profit change with a 2 % dead band, holding once profit flattens.
-    if sales <= 0:
-        if stock <= 0:
-            return {'price': price, 'direction': next_direction, 'stepScale': step_scale}
-        next_direction = -1
-        moved = True
-    elif demand > available + 1e-9:
+    if demand > available + 1e-9:
         # Scarce: unmet demand (demand exceeds what we supplied) → raise, even once
         # a profit baseline exists, so upstream tiers capture a lively market.
         next_direction = 1

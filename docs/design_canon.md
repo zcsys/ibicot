@@ -4,19 +4,6 @@
 > *what must be true* of the economy kernel and the game's entry into it, and records
 > the machine contract (§12) so the whole economy is specified in one document.
 > Where it conflicts with any implementation, the canon wins.
->
-> **Naming policy.** The game is **Star Business**; all catalog display names
-> (materials, companies, sectors, goods and equipment) follow the **Star Business**
-> naming catalog, which supersedes all earlier naming directions. House style is
-> **American English**: aluminum, fiber, mold, center, defense, maneuver,
-> pressurized, standardized. Use title case for catalog labels and lower case for
-> generic material, equipment, and product descriptions in sentences. The
-> agent-category display labels are **Resource Companies** (T0), **Refineries**
-> (T1), **Manufacturers** (T2) and **Distributors** (T3). Generated firms use a
-> sector-specific generic name plus a `0x`-prefixed hex serial number (e.g.
-> **Power Equipment 0x2a**); no house-name pool, location suffix, district, or
-> berth is appended. `T0`–`T3` remain the internal tier keys throughout this
-> document and the machine contract.
 
 ---
 
@@ -350,13 +337,11 @@ quoted in **whole cents** (rounded half away from zero via `round_to_cent`).
 the guardrails.
 
 **Decision (at a cadence tick), from the average realized profit/tick accumulated since
-the last observation.** A firm with no sales *and* no stock holds (degenerate — nothing
-to offer). Otherwise, in order:
-1. **No sales** → if stock remains, lower (attract demand); if no stock, hold.
-2. **Scarce** (unmet demand: `demand > sales`) → raise, *regardless of the profit baseline*,
+the last observation.** In order:
+1. **Scarce** (unmet demand: `demand > sales`) → raise, *regardless of the profit baseline*,
    so a lively downstream market is transmitted upstream (the incumbent supplier's 500k
    inventory buffer no longer hides demand pressure).
-3. **Market anchor** (leaked going rate): the firm compares its price to its market's
+2. **Market anchor** (leaked going rate): the firm compares its price to its market's
    sales-weighted average price. Above `going_rate × (1 + marketAnchorBand)` → lower
    (expensive → contest); below `going_rate × (1 − marketAnchorBand)` → raise (cheap →
    capture value). `marketAnchorBand = 0.02`. This lets a small, expensive seller drift
@@ -366,7 +351,7 @@ to offer). Otherwise, in order:
    no sales in the window. This is the firm's own positioning against observed competitor
    prices, not a shared target: no seller aims at the average as a goal, and no buyer is
    steered by it (axiom 2).
-4. **Profit baseline available** (a prior observation's realized profit exists) → pure
+3. **Profit baseline available** (a prior observation's realized profit exists) → pure
    derivative-following with a **2 % dead band**: reverse when profit fell ≥ 2 %, continue
    when it rose ≥ 2 %, and **hold inside the band** — flat profit is the profit-maximum,
    so the walk stops there instead of overshooting the flat peak and drifting past it.

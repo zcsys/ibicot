@@ -86,7 +86,7 @@ def hash_seed_vec(seed, ks):
 
 try:  # optional acceleration
     import numpy as _np
-    from numba import njit as _njit
+    from .jit import njit as _njit
     _U = _np.uint64
     _M64 = _np.uint64(MASK)
     _K1 = _np.uint64(0x85EBCA6B)
@@ -94,7 +94,7 @@ try:  # optional acceleration
     _K3 = _np.uint64(0x9E3779B1)
 
 
-    @_njit(cache=False)
+    @_njit
     def _mix_u64(x):
         x = x & _M64
         x = ((x ^ (x >> 16)) * _K1) & _M64
@@ -102,19 +102,19 @@ try:  # optional acceleration
         return (x ^ (x >> 16)) & _M64
 
 
-    @_njit(cache=False)
+    @_njit
     def _random_u64(seed, tick, stream):
         x = (_U(seed) & _M64) ^ (((_U(tick) + 1) & _M64) * _K3 & _M64) ^ (((_U(stream) + 1) & _M64) * _K1 & _M64)
         return float(_mix_u64(x & _M64)) / 4294967296.0
 
 
-    @_njit(cache=False)
+    @_njit
     def _normal_u64(seed, tick, stream):
         r = _random_u64(seed, tick, stream)
         return math.sqrt(-2.0 * math.log(max(1e-12, r))) * math.cos(2.0 * math.pi * _random_u64(seed, tick, stream + 1))
 
 
-    @_njit(cache=False)
+    @_njit
     def _hash_seed_u64(seed, k):
         return _mix_u64((_U(seed) & _M64) ^ (((_U(k) + 1) & _M64) * _K3 & _M64))
 

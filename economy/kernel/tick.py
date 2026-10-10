@@ -444,18 +444,28 @@ def _market_going_rate(prices, sales, market_of, count):
     Falls back to the simple average of finite prices when a market has no sales;
     a market with no finite price at all gets 0.0 (the anchor is then skipped).
     """
+    # Group finite quotes once, stably. Each reduction receives exactly the
+    # same sequence as the reference boolean gathers (including NumPy's
+    # pairwise summation order), without scanning every line for every market.
+    valid = np.flatnonzero(np.isfinite(prices))
+    markets = market_of[valid]
+    order = np.argsort(markets, kind='stable')
+    indices = valid[order]
+    grouped_prices = prices[indices]
+    grouped_sales = sales[indices]
+    offsets = np.empty(count + 1, dtype=np.int64)
+    offsets[0] = 0
+    offsets[1:] = np.cumsum(np.bincount(markets, minlength=count))
     rates = np.zeros(count)
     for m in range(count):
-        sel = market_of == m
-        p = prices[sel]
-        w = sales[sel]
-        finite = np.isfinite(p)
-        if not finite.any():
+        start, end = offsets[m:m + 2]
+        if start == end:
             continue
-        p = p[finite]
-        w = w[finite]
-        if w.sum() > 0:
-            rates[m] = float((p * w).sum() / w.sum())
+        p = grouped_prices[start:end]
+        w = grouped_sales[start:end]
+        volume = w.sum()
+        if volume > 0:
+            rates[m] = float((p * w).sum() / volume)
         else:
             rates[m] = float(p.mean())
     return rates
@@ -1155,7 +1165,10 @@ def tick(world: WorldState, cfg, tick, products=None, profiles=None, t2_products
         _numba.plan_and_buy_inputs(world, cfg, tick)
     else:
         plan_and_buy_inputs(world, cfg, products, profiles, tick)
-    operate_tier1(world, cfg, products)
+    if _numba._HAVE_NUMBA and products is M.PRODUCTS:
+        _numba.operate_tier1(world, cfg)
+    else:
+        operate_tier1(world, cfg, products)
     price_markets(world, cfg, profiles, products, tick)
 
     if _numba._HAVE_NUMBA:

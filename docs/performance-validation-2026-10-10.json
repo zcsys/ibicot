@@ -1,0 +1,210 @@
+{
+  "date": "2026-10-10",
+  "baseline": "Pre-pass working tree, including the user's uncommitted pricing changes",
+  "baseline_economy_source_sha256": "98a057c1c2b4d1c7210ec7deadf26c0c27c89f420c8b96c94b1f739aab0a3208",
+  "optimized_economy_source_sha256": "d4dc3d9dce455cf5ef8027c30c976d375965bb75e86fb741054af3cc09037c5d",
+  "environment": {
+    "python": "3.12.0",
+    "numpy": "2.5.3",
+    "machine": "arm64"
+  },
+  "workload": {
+    "seed": 137,
+    "manufacturers": 60000,
+    "distributors": 1000000,
+    "ticks": 361,
+    "publish_every": 1,
+    "fingerprint_every": 1,
+    "timed_steps": 360
+  },
+  "method": "Sequential before/after processes on the same host. Warm-up and fingerprinting excluded from steady-state timing. OS scheduling and machine load affect timings.",
+  "before": {
+    "construction_ms": 155.35766701214015,
+    "first_step_ms": 6629.424374958035,
+    "step": {
+      "median_ms": 169.2462500068359,
+      "mean_ms": 176.46184909260933,
+      "p95_ms": 223.03614311967976
+    },
+    "publish": {
+      "median_ms": 38.800875016022474,
+      "mean_ms": 41.63175658838839,
+      "p95_ms": 52.49145801644772
+    },
+    "json": {
+      "median_ms": 23.122415994293988,
+      "mean_ms": 21.23157642659192,
+      "p95_ms": 31.3541250070557
+    },
+    "queries": {
+      "id": {
+        "median_ms": 0.7219999679364264,
+        "mean_ms": 0.7599863262536625,
+        "p95_ms": 0.882462807931006,
+        "digest": "763b93430f402c49f1350c25691cb3b2c5ce78b0dcb393e75df3e8838d0efe47"
+      },
+      "name": {
+        "median_ms": 824.5323339942843,
+        "mean_ms": 823.2307086582296,
+        "p95_ms": 826.2232836859766,
+        "digest": "f5786e8f898fcae9727d00f88a0fcd48e4205866d7fc37b082e9ce44e735b51d"
+      },
+      "cash": {
+        "median_ms": 839.0508340089582,
+        "mean_ms": 838.849125643416,
+        "p95_ms": 847.4551464605611,
+        "digest": "2fb5ef754b31265ba3b0e033d33cf595bee6a2da56628382e41832e80064a5af"
+      },
+      "equity": {
+        "median_ms": 858.0925000132993,
+        "mean_ms": 850.7546943146735,
+        "p95_ms": 865.8752499730326,
+        "digest": "65689688fb94b0689d6959363c36327d19d2ab419c9bc6693ab57e11c14c55e7"
+      },
+      "inventory": {
+        "median_ms": 873.9377500023693,
+        "mean_ms": 859.5119723468088,
+        "p95_ms": 875.996500015026,
+        "digest": "763b93430f402c49f1350c25691cb3b2c5ce78b0dcb393e75df3e8838d0efe47"
+      },
+      "reliability": {
+        "median_ms": 868.5704579693265,
+        "mean_ms": 905.5299999890849,
+        "p95_ms": 969.5391332614236,
+        "digest": "4be4f6e95d73c7d8314cb177b03e761399a765083c6a48eb1f257f62b0ce563e"
+      }
+    }
+  },
+  "after": {
+    "construction_ms": 425.6327079492621,
+    "first_step_ms": 101.18295799475163,
+    "step": {
+      "median_ms": 84.66447898535989,
+      "mean_ms": 88.8580322011775,
+      "p95_ms": 122.94021874840837
+    },
+    "publish": {
+      "median_ms": 12.544750003144145,
+      "mean_ms": 14.192703696305752,
+      "p95_ms": 21.738915995229036
+    },
+    "json": {
+      "median_ms": 22.69725000951439,
+      "mean_ms": 20.984272839704015,
+      "p95_ms": 31.155709002632648
+    },
+    "queries": {
+      "id": {
+        "median_ms": 0.6298330263234675,
+        "mean_ms": 0.6417496867167453,
+        "p95_ms": 0.6836080166976899,
+        "digest": "763b93430f402c49f1350c25691cb3b2c5ce78b0dcb393e75df3e8838d0efe47"
+      },
+      "name": {
+        "median_ms": 43.77054201904684,
+        "mean_ms": 43.46448635139192,
+        "p95_ms": 44.27034170366824,
+        "digest": "f5786e8f898fcae9727d00f88a0fcd48e4205866d7fc37b082e9ce44e735b51d"
+      },
+      "cash": {
+        "median_ms": 8.600166998803616,
+        "mean_ms": 9.017347319362065,
+        "p95_ms": 10.075229196809232,
+        "digest": "2fb5ef754b31265ba3b0e033d33cf595bee6a2da56628382e41832e80064a5af"
+      },
+      "equity": {
+        "median_ms": 12.835833011195064,
+        "mean_ms": 12.863832991570234,
+        "p95_ms": 13.1336952035781,
+        "digest": "65689688fb94b0689d6959363c36327d19d2ab419c9bc6693ab57e11c14c55e7"
+      },
+      "inventory": {
+        "median_ms": 8.081250009126961,
+        "mean_ms": 9.546860974902907,
+        "p95_ms": 12.116962461732328,
+        "digest": "763b93430f402c49f1350c25691cb3b2c5ce78b0dcb393e75df3e8838d0efe47"
+      },
+      "reliability": {
+        "median_ms": 11.339042044710368,
+        "mean_ms": 11.599930682374785,
+        "p95_ms": 12.090317002730444,
+        "digest": "4be4f6e95d73c7d8314cb177b03e761399a765083c6a48eb1f257f62b0ce563e"
+      }
+    }
+  },
+  "speedup": {
+    "step_mean": 1.98588517797799,
+    "publish_mean": 2.933321055608651,
+    "step_plus_publish_mean": 2.1163711620454726,
+    "cached_construction_plus_first_step": 12.878853991200812,
+    "queries_median": {
+      "id": 1.1463355171305738,
+      "name": 18.837608491014056,
+      "cash": 97.56215595879476,
+      "equity": 66.85132934223236,
+      "inventory": 108.14388232208437,
+      "reliability": 76.59998565527079
+    }
+  },
+  "validation": {
+    "full_population": {
+      "passed": true,
+      "checkpoints": 362,
+      "world_arrays_per_checkpoint": 155,
+      "exact_comparisons": [
+        "world array bytes",
+        "world scalar ledgers",
+        "tick result",
+        "stats row",
+        "complete snapshot excluding elapsed-time telemetry",
+        "six company query results"
+      ]
+    },
+    "live_configuration_checkpoint_scenario": {
+      "passed": true,
+      "ticks": 61,
+      "manufacturers": 6000,
+      "distributors": 800,
+      "coverage": [
+        "all complexities",
+        "multiple machines",
+        "player controls on all three producer tiers",
+        "research pricing on/off",
+        "large capacity and storage constraints",
+        "loyalty configuration",
+        "checkpoint resume",
+        "all sortable columns and directions",
+        "filters and empty results"
+      ]
+    },
+    "no_numba": {
+      "passed": true,
+      "ticks": 32,
+      "checkpoints": 33,
+      "comparison": "exact world, ledgers, statistics and snapshots versus the original Python fallback"
+    },
+    "suite": "./run.sh test passed, including all existing tests and eight new performance regressions",
+    "syntax_and_whitespace": "Python AST parse, node --check, bash -n, and git diff --check passed",
+    "formatting": {
+      "locales": [
+        "en-US",
+        "tr-TR",
+        "de-DE"
+      ],
+      "exact_output": true,
+      "benchmark_calls": 50000,
+      "original_ms": 830.631709,
+      "cached_ms": 26.967916999999943
+    },
+    "jit_cache": {
+      "reuse_confirmed": true,
+      "dependency_invalidation_confirmed": true
+    }
+  },
+  "limits": [
+    "Measurements are local benchmark results, not a guarantee for other machines or configurations.",
+    "The first process after a source change still pays compilation cost; startup speedup refers to a populated cache.",
+    "Single-client JSON encoding and snapshot cadence are unchanged; multi-client broadcasts share the serialized payload."
+  ],
+  "reproduce": "./run.sh bench --ticks 361 --fingerprint-every 1 --output /tmp/after.json --verify /tmp/before.json"
+}

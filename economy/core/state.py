@@ -478,7 +478,8 @@ def reset_world(cfg):
     seed = cfg['seed']
     NE, NP, N0, N1 = M.NE, M.NP, M.N0, M.N1
 
-    zero(world)
+    # WorldState already allocates zeroed arrays. Re-filling every array here
+    # needlessly writes the entire state a second time (including spare lines).
     for tier, width in (('t0', NE), ('t1', NP), ('t2', None)):
         learn_dir = getattr(world, f'{tier}LearnDirection')
         getattr(world, f'{tier}LearnPrevious').fill(float('nan'))

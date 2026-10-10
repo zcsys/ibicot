@@ -52,7 +52,8 @@
   }
 
   const M = window.Phase0Model;
-  const displayProduct = (code) => M.PRODUCTS.find((p) => p.code === code)?.name || M.T2_PRODUCTS.find((p) => p.code === code)?.name || code;
+  const productNames = new Map([...M.T2_PRODUCTS, ...M.PRODUCTS].map(p => [p.code, p.name]));
+  const displayProduct = (code) => productNames.get(code) || code;
   const displayElement = code => M.ELEMENTS[['W','E','F','A'].indexOf(code)] || code;
   const controlId = () => $('playerTier').value === 'T2' ? Math.max(0, +$('t2PlayerCompany').value - 1) : +$('playerCompany').value;
   let t2Page = 0, t2Descending = false, controlDirty = false;
@@ -511,13 +512,22 @@
     return Number.isFinite(x) ? '$' + x.toFixed(2) : '—';
   }
   function fmtTick(value) { return String(Math.floor(value)); }
+  const moneyFormats = new Map();
+  const integerFormat = new Intl.NumberFormat();
+  const axisFormat = new Intl.NumberFormat(undefined, { maximumFractionDigits: 2 });
   function fmtMoney(x, d = 2) {
-    return Number.isFinite(x) ? '$' + x.toLocaleString(undefined, { minimumFractionDigits: d, maximumFractionDigits: d }) : '—';
+    if (!Number.isFinite(x)) return '—';
+    let format = moneyFormats.get(d);
+    if (!format) {
+      format = new Intl.NumberFormat(undefined, { minimumFractionDigits: d, maximumFractionDigits: d });
+      moneyFormats.set(d, format);
+    }
+    return '$' + format.format(x);
   }
   function fmtUnitPrice(x) { return fmtMoney(x, Math.abs(x) < 1 ? 5 : 2); }
   function fmtInt(x) {
     const n = Number(x);
-    return Number.isFinite(n) ? Math.round(n).toLocaleString() : '—';
+    return Number.isFinite(n) ? integerFormat.format(Math.round(n)) : '—';
   }
   function fmtFixed(x, d = 2) {
     const n = Number(x);
@@ -535,7 +545,7 @@
     const magnitude = Math.abs(value);
     const scale = magnitude >= 1e12 ? [1e12, 'T'] : magnitude >= 1e9 ? [1e9, 'B'] :
       magnitude >= 1e6 ? [1e6, 'M'] : magnitude >= 1e3 ? [1e3, 'k'] : [1, ''];
-    return (money ? '$' : '') + (value / scale[0]).toLocaleString(undefined, { maximumFractionDigits: 2 }) + scale[1];
+    return (money ? '$' : '') + axisFormat.format(value / scale[0]) + scale[1];
   }
   function drawLine(id, history, seriesList, labels, digits = 2, moneyAxis = false, percentAxis = false, zeroBaseline = true) {
     const cv = $(id);

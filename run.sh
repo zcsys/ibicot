@@ -29,6 +29,7 @@ Usage:
   ./run.sh run   [--seed N] [--ticks N] [--cfg JSON] [--out PATH]   headless run
   ./run.sh serve [--host H] [--port P]                              start backend + open browser UI
   ./run.sh test                                                      Python unit tests
+  ./run.sh bench [--ticks N] --output PATH [--verify BASELINE]         performance + exact behavior check
 
 Examples:
   ./run.sh run --seed 137 --ticks 30 --cfg '{"consumerCount":500,"t2FirmCount":1000}'
@@ -79,6 +80,12 @@ case "${1:-}" in
     "$PY" -W ignore tests/py/test_rng.py
     "$PY" -W ignore tests/py/test_kernel.py
     "$PY" -W ignore tests/py/test_review_fixes.py
+    "$PY" -W ignore tests/py/test_performance.py
+    node tests/js/test_formatting.js
+    ;;
+  bench)
+    shift
+    exec "$PY" -W ignore tools/performance.py "$@"
     ;;
   *)
     usage
