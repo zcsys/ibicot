@@ -122,6 +122,9 @@ def _array_spec(cfg):
     spec += _learn('t0', N0 * NE)
     spec += _learn('t1', N1 * NP)
     spec += _learn('t2', ML)
+    for tier, n in (('t0', N0), ('t1', N1), ('t2', N2F)):
+        spec += [(tier + name, 'f64', n) for name in
+                 ('SwitchingIncome', 'SwitchingExpense', 'SwitchingNetEMA')]
     spec += [
         ('difficulty', 'f64', NE),
         ('t0Inv', 'f64', N0 * NE),
@@ -144,6 +147,9 @@ def _array_spec(cfg):
         ('raw', 'f64', N1 * NE),
         ('rawBasis', 'f64', N1 * NE),
         ('t1Cash', 'f64', N1),
+        ('t1RentArrears', 'f64', N1),
+        ('t1RentPaid', 'f64', N1),
+        ('t1RentCharge', 'f64', N1),
         ('t1EqBook', 'f64', N1),
         ('t1Controller', 'u8', N1),
         ('t1Operates', 'u8', N1 * NP),
@@ -183,6 +189,9 @@ def _array_spec(cfg):
         ('t1RelPriceSum', 'f64', N1 * NP),
         ('t1RelPriceSamples', 'u32', N1 * NP),
         ('t2Cash', 'f64', N2F),
+        ('t2RentArrears', 'f64', N2F),
+        ('t2RentPaid', 'f64', N2F),
+        ('t2RentCharge', 'f64', N2F),
         ('t2Bought', 'f64', N2F),
         ('t2EqBook', 'f64', N2F),
         ('t2LastSaleTick', 'u32', N2F),
@@ -251,6 +260,7 @@ class WorldState:
         self.t2LineCount = 0
         self.costSinks = 0.0
         self.equipmentSinks = 0.0
+        self.netEarningsAvailable = True
         self._init_loyalty_regime(cfg)
 
     def _init_loyalty_regime(self, cfg):

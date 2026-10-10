@@ -292,8 +292,9 @@ def adaptive_price(old_price, profit, previous_profit, direction=1,
         elif price < market_price * (1 - band):
             next_direction = 1    # cheap → capture value
             moved = True
-    if not moved and math.isfinite(previous_profit) and previous_profit > 0:
-        change = (profit - previous_profit) / previous_profit
+    if not moved and math.isfinite(previous_profit):
+        # A loss shrinking is an improvement; zero is also a valid baseline.
+        change = (profit - previous_profit) / max(abs(previous_profit), 1e-9)
         if change < -0.02:
             next_direction = -next_direction
         elif change > 0.02:
@@ -360,3 +361,19 @@ def portfolio_options(products, max_width=T2_MAX_PRODUCTS_PER_FIRM):
 
 def related_sector(core, sector):
     return core == sector or sector in T2_ADJACENCY[core]
+
+
+def production_batches(batches, output_qty, unit_cost, price, overhead, margin_band):
+    """Gate feasible whole batches using inventory cost plus forecast period cost.
+
+    Period overhead stays outside inventory basis. Recheck the reduced output:
+    spreading a fixed bill over fewer units must not create a loss-making plan.
+    """
+    if batches <= 0 or unit_cost > price + 1e-9:
+        return 0
+    margin = (price - unit_cost - overhead / (batches * output_qty)) / max(price, 1e-9)
+    factor = min(1.0, max(0.0, margin / margin_band))
+    result = math.floor(batches * factor + 0.5)
+    if result <= 0 or (price - unit_cost) * result * output_qty - overhead < -1e-9:
+        return 0
+    return result

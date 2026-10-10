@@ -53,9 +53,11 @@ Time is a **30-tick month**, a **360-tick year**, and a **7,200-tick generation*
   T1 manufacture → pricing → T2 buy/make/price → consumer clearing → observe/reliability.
 - **Derivative-following pricing** — firms walk their price against realised profit and
   hold at the flat optimum; a 2 % dead band prevents overshoot.
-- **Margin-ramp input demand** — a producer throttles purchases by gross margin
+- **Margin-ramp production** — a producer throttles manufacturing by estimated net margin, including eligible storage expense and forecast switching income/expense
   (`productionMarginBand = 0.05`): full output at ≥ 5 % margin, tapering to 0 at
-  break-even, never producing at a loss.
+  break-even; reduced batches must cover allocated overhead. Purchasing instead
+  refills bounded input slots regardless of margin: half the goods space is for
+  finished output and half is divided equally among distinct inputs.
 - **Adaptive loyalty charge** — switching suppliers costs
   `M × unit_cost × (1 + reliability)`; `M` is re-derived once per year from an EMA of the
   observed average order value (`loyaltyEmaAlpha = 0.01`) so the charge tracks ~5 % of
@@ -107,6 +109,27 @@ Notable knobs: `productionMarginBand`, `loyaltyMultiple` (bootstrap) +
 `loyaltyEmaAlpha`, `elasticity`, `pricingAggressiveness`, `switchingStableBand`,
 `priceObservationTicks`. The exact settled values and their rationale live in
 `docs/design_canon.md`.
+
+Storage rent is **$2.80 per 1,000 allocated storage units per tick**: an eligible
+20,000-unit company pays $56 per tick. T0 is exempt. T1/T2 companies below
+$2M book equity immediately before billing pay nothing that tick, including
+no collection of old arrears. Existing debt is retained; eligibility is checked
+every tick; exactly $2M is eligible. The UI uses per-1,000-per-tick units; the compatible persisted key
+`storageRentPerUnitYear = 1.008` represents the same rate over 360 ticks/year.
+Changes apply prospectively, without retroactive bills or refunds.
+
+Price learning uses line **gross profit (sales minus COGS)**. Rent and switching
+transfers do not adjust its observations; production retains its net-margin gate
+and transfer forecast. T1/T2 production also gates existing inputs on feasible
+net margin, including eligible rent, and rejects reduced plans that cannot cover
+the allocated overhead. Checkpoint v5 clears older learning windows on load.
+
+Net profit is gross profit **plus switching income, minus switching expense,
+minus actual current-tick storage expense**. Net margin divides that result by
+sales revenue, or shows “—” for zero revenue or unavailable legacy postings. Product views
+allocate each company's charge across its own installed lines; company cohorts
+use the company's home sector. See [storage accounting and performance](docs/design_canon.md#per-tick-storage-rent)
+for formulas, checkpoint compatibility, and the vectorized implementation.
 
 ## Tests
 

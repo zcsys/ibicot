@@ -20,7 +20,7 @@ import numpy as np
 from ..core import model as M
 from ..core.trading import select_offer, affordable_order
 from ..core.rng import random_ as _rand
-from ..kernel.tick import market_offers_table, _market_going_rate
+from ..kernel.tick import market_offers_table, _market_going_rate, production_line_overhead
 
 try:
     from ..core.jit import njit as _njit
@@ -143,16 +143,24 @@ def t1_scale_arrays(cfg):
 
 if _HAVE_NUMBA:
 
+    _production_batches = _njit(M.production_batches)
+
     @_njit
-    def _operate_tier1_nb(capacity, storage, footprint, conversion, output, cost_sinks,
+    def _operate_tier1_nb(capacity, storage, footprint, conversion, output, cost_sinks, margin_band, line_overhead,
                           operates, cash, raw, raw_basis, fin, fin_basis, price, unit_cost):
         for company in range(N1):
             count = 0
             occupied = 0.0
+            input_mask = 0
             for p in range(NP):
                 if operates[company * NP + p]:
                     count += int(operates[company * NP + p])
                     occupied += footprint[p]
+                    for gi in range(T1_ING_OFF[p], T1_ING_OFF[p + 1]):
+                        input_mask |= 1 << T1_ING_E[gi]
+            input_count = 0
+            for e in range(NE):
+                input_count += 1 if input_mask & (1 << e) else 0
             target = (storage - occupied) / (2 * max(1, count))
             for p in range(NP):
                 index = company * NP + p
@@ -170,8 +178,8 @@ if _HAVE_NUMBA:
                     input_cost += ratio * raw_basis[ri]
                 input_cost /= output_qty
                 made = min(made, math.floor(max(0.0, cash[company]) / max(1e-9, conv * output_qty)))
-                if input_cost + conv > price[index] + 1e-9:
-                    made = 0
+                made = _production_batches(made, output_qty, input_cost + conv,
+                    price[index], line_overhead[company], margin_band)
                 if made <= 0:
                     continue
                 made_items = made * output_qty
@@ -235,8 +243,8 @@ if _HAVE_NUMBA:
             elif price < market_price * (1 - band):
                 next_direction = 1
                 moved = True
-        if not moved and math.isfinite(previous_profit) and previous_profit > 0:
-            change = (profit - previous_profit) / previous_profit
+        if not moved and math.isfinite(previous_profit):
+            change = (profit - previous_profit) / max(abs(previous_profit), 1e-9)
             if change < -0.02:
                 next_direction = -next_direction
             elif change > 0.02:
@@ -400,7 +408,7 @@ if _HAVE_NUMBA:
     def _operate_tier2_nb(
         seed, tick, t2_firm_count, storage,
         t2_conversion, switching_stable_band, t1_unit_cost, loyalty_multiple_t2, price_observation_ticks,
-        research_price_min_potential, research_price_max_obs, research_price_min_opp, pricing_aggressiveness, response, market_price, band, margin_band,
+        research_price_min_potential, research_price_max_obs, research_price_min_opp, pricing_aggressiveness, response, market_price, band, margin_band, line_rent,
         t1_fin, t1_price, t1_rel, t1_cash, t1_sold, t1_rev, t1_cogs, t1_fin_basis,
         t1_intermediate_sold, t1_intermediate_revenue, t1_demand, t1_rel_attempts,
         t1_rel_avail_checks, t1_rel_available, t1_opportunities,
@@ -413,7 +421,7 @@ if _HAVE_NUMBA:
         t2_learn_direction, t2_learn_demand, t2_learn_step,
         t2_learn_opportunity, t2_learn_potential_opportunity,
         t1_offers_flat, t1_offers_off, valuation, t2_capacity, t2_output, t2_footprint,
-        t2_mat_spend, t2_mat_orders, loyalty_switches, loyalty_penalties):
+        t2_mat_spend, t2_mat_orders, loyalty_switches, loyalty_penalties, switch0_income, switch1_income, switch1_expense, switch2_income, switch2_expense):
         needs = np.zeros(NP, dtype=np.float64)
         plans = np.zeros(M4, dtype=np.float64)
         suppliers = np.zeros(NP, dtype=np.int64)
@@ -472,13 +480,20 @@ if _HAVE_NUMBA:
                     suppliers[material] = best
 
             line_count = t2_firm_line_count[firm]
+            input_count = 0
+            for material in range(NP):
+                input_count += 1 if material_mask & (1 << material) else 0
+            storage_slot = goods_space / (2 * max(1, input_count))
+            for material in range(NP):
+                if material_mask & (1 << material):
+                    needs[material] = storage_slot
             for order2 in range(line_count):
                 slot = (order2 + tick) % line_count
                 line = t2_firm_lines[firm * M4 + slot]
                 pid = t2_line_product[line]
                 capacity = t2_capacity[pid]
                 output_qty = t2_output[pid]
-                target = goods_space / (2 * line_count)
+                target = goods_space / (2 * max(1, line_count))
                 desired = capacity
                 d2 = target - t2_fin[line]
                 if d2 < desired:
@@ -486,28 +501,6 @@ if _HAVE_NUMBA:
                 desired = math.floor(desired / output_qty)
                 if desired < 0.0:
                     desired = 0.0
-                # Missing inputs are monotone in the batch count. Test the
-                # usual full plan once, then bisect only when storage binds;
-                # the old decrement loop could visit thousands of batches.
-                low_batches, high_batches = 0, desired
-                trial = desired
-                while trial > 0:
-                    missing = 0.0
-                    for material in range(NP):
-                        ratio = RATIOS[pid, material]
-                        if material < NE:
-                            held = t2_raw[firm * NE + material]
-                        else:
-                            held = t2_t1raw[firm * NP + material]
-                        missing += max(0.0, needs[material] + trial * ratio - held)
-                    if missing <= inventory_room:
-                        low_batches = trial
-                    else:
-                        high_batches = trial - 1
-                    if low_batches >= high_batches:
-                        break
-                    trial = (low_batches + high_batches + 1) // 2
-                desired = low_batches
                 replacement = t2_conversion[pid]
                 current_cost = t2_conversion[pid]
                 for gi in range(T2_ING_OFF[pid], T2_ING_OFF[pid + 1]):
@@ -534,17 +527,7 @@ if _HAVE_NUMBA:
                     else:
                         replacement += (ratio / output_qty) * quote
                 t2_replacement_cost[line] = replacement
-                if replacement > t2_price[line] + 1e-9:
-                    desired = 0.0
-                # Elastic input demand (no hard freeze): throttle by the
-                # marginal-cost/price ratio — reversed T3 curve: 0 at/above break-even, full at zero cost.
-                r = current_cost / max(t2_price[line], 1e-9)
-                desired = math.floor(desired * min(1.0, max(0.0, (1.0 - r) / margin_band)) + 0.5)
                 plans[slot] = desired
-                for gi in range(T2_ING_OFF[pid], T2_ING_OFF[pid + 1]):
-                    material = T2_ING_M[gi]
-                    ratio = T2_ING_Q[gi]
-                    needs[material] += desired * ratio
 
             for material in range(NP):
                 basic = material < 4
@@ -569,10 +552,10 @@ if _HAVE_NUMBA:
                             inv_units += t2_t1raw[firm * NP + mm]
                     for ss in range(t2_firm_line_count[firm]):
                         inv_units += t2_fin[t2_firm_lines[firm * M4 + ss]]
-                    room = goods_space - inv_units
+                    room = min(goods_space - inv_units, storage_slot - raw_x[idx])
                     if room < 0.0:
                         room = 0.0
-                    requested = math.ceil(need)
+                    requested = math.floor(need)
                     if room < requested:
                         requested = room
                     requested = math.floor(requested)
@@ -620,6 +603,8 @@ if _HAVE_NUMBA:
                     if loyalty_charge > 0.0:
                         t2_cash[firm] -= loyalty_charge
                         t1_cash[pref // NP] += loyalty_charge
+                        switch1_income[pref // NP] += loyalty_charge
+                        switch2_expense[firm] += loyalty_charge
                         loyalty_switches[1] += 1.0
                         loyalty_penalties[1] += loyalty_charge
                     t2_preferred[firm * NP + material] = supplier
@@ -646,8 +631,8 @@ if _HAVE_NUMBA:
                     made = cash_avail
                 input_cost_per_item = input_cost / output_qty
                 conv_per_item = t2_conversion[pid]
-                if input_cost_per_item + conv_per_item > t2_price[line] + 1e-9:
-                    made = 0.0
+                made = _production_batches(made, output_qty, input_cost_per_item + conv_per_item,
+                    t2_price[line], line_rent[firm], margin_band)
                 if made > 0:
                     for gi in range(T2_ING_OFF[pid], T2_ING_OFF[pid + 1]):
                         material = T2_ING_M[gi]
@@ -702,7 +687,7 @@ if _HAVE_NUMBA:
         t2_fin, t2_price, t2_rel, t2_demand, t2_rel_attempts, t2_rel_available,
         t2_cash, t2_last_sale_tick, t2_sold, t2_revenue, t2_cogs, t2_fin_basis,
         t2_opportunities, t2_potential_orders, complexity, valuation,
-        loyalty_switches, loyalty_penalties):
+        loyalty_switches, loyalty_penalties, switch0_income, switch1_income, switch1_expense, switch2_income, switch2_expense):
         cand = np.empty(1 + distributor_search_offers, dtype=np.int64)
         orders = 0
         filled = 0
@@ -818,6 +803,7 @@ if _HAVE_NUMBA:
             if primary != preferred and preferred_can_fulfill:
                 charge = _loyalty_charge(reference, t2_rel[preferred], loyalty_multiple_t3)
                 t2_cash[t2_line_firm[preferred]] += charge
+                switch2_income[t2_line_firm[preferred]] += charge
                 payments += charge
                 loyalty_switches[2] += 1.0
                 loyalty_penalties[2] += charge
@@ -951,14 +937,14 @@ if _HAVE_NUMBA:
     @_njit
     def _plan_and_buy_inputs_nb(
         seed, tick, min_lot, base_cost, t1_capacity, t1_conversion,
-        storage, loyalty_multiple_t1, margin_band,
+        storage, loyalty_multiple_t1,
         t0_price, t0_inv, t0_inv_basis, t0_rel, t0_cash, t0_req, t0_funded_req,
         t0_opportunities, t0_demand, t0_rel_attempts, t0_rel_checks,
         t0_rel_available, t0_sold, t0_revenue, t0_cogs, t0_ful, difficulty,
         t1_cash, t1_fin, t1_fin_basis, t1_price, t1_replacement_cost, t1_operates,
         t1_input_need, t1_purchase_req, t1_last_buy, t1_bought, raw, raw_basis,
         preferred_wholesale, profile_has, profile_count, t1_input_ratio, t1_output, t1_footprint, t1_is_basic,
-        loyalty_switches, loyalty_penalties):
+        loyalty_switches, loyalty_penalties, switch0_income, switch1_income, switch1_expense, switch2_income, switch2_expense):
         t0_req[:] = 0.0
         t0_funded_req[:] = 0.0
         first_cohort = tick % NP
@@ -971,10 +957,18 @@ if _HAVE_NUMBA:
                 product_base = company * NP
                 goods_space = storage
                 line_count = 0
+                input_mask = 0
                 for p in range(NP):
                     if t1_operates[product_base + p]:
                         goods_space -= t1_footprint[p]
                         line_count += 1
+                        for element in range(NE):
+                            if t1_input_ratio[p, element] > 0:
+                                input_mask |= 1 << element
+                input_count = 0
+                for element in range(NE):
+                    input_count += 1 if input_mask & (1 << element) else 0
+                storage_slot = goods_space / (2 * max(1, input_count))
                 suppliers = np.empty(NE, dtype=np.int64)
                 for element in range(NE):
                     suppliers[element] = _tier0_supplier_nb(
@@ -1011,24 +1005,16 @@ if _HAVE_NUMBA:
                         else:
                             replacement += (ratio / output_qty) * (q if math.isfinite(q) else raw_basis[raw_base + element])
                     t1_replacement_cost[product_base + p] = replacement
-                    # Elastic input demand (no hard freeze): throttle by the
-                    # marginal-cost/price ratio — reversed T3 curve: 0 at/above break-even, full at zero cost.
-                    r = current_cost / max(t1_price[product_base + p], 1e-9)
-                    desired = math.floor(desired * min(1.0, max(0.0, (1.0 - r) / margin_band)) + 0.5)
-                    for element in range(NE):
-                        ratio = t1_input_ratio[p, element]
-                        if ratio == 0.0:
-                            continue
-                        need = desired * ratio / output_qty - raw[raw_base + element]
-                        if need < 0.0:
-                            need = 0.0
-                        if need > 0.0:
-                            t1_input_need[raw_base + element] += need if need > min_lot else min_lot
+                for element in range(NE):
+                    if input_mask & (1 << element):
+                        t1_input_need[raw_base + element] = max(0.0, storage_slot - raw[raw_base + element])
                 for element in range(NE):
                     need = t1_input_need[raw_base + element]
                     if need <= 0.0:
                         continue
-                    request = math.ceil(need / min_lot) * min_lot
+                    request = math.floor(need / min_lot) * min_lot
+                    if request <= 0:
+                        continue
                     t1_purchase_req[raw_base + element] = request
                     t0_req[element] += request
                     chosen = _tier0_supplier_nb(seed, tick, company, element,
@@ -1042,7 +1028,7 @@ if _HAVE_NUMBA:
                         held += raw[raw_base + material]
                     for output in range(NP):
                         held += t1_fin[product_base + output]
-                    storage_room = math.floor(max(0.0, goods_space - held) / min_lot) * min_lot
+                    storage_room = math.floor(max(0.0, min(goods_space - held, storage_slot - raw[raw_base + element])) / min_lot) * min_lot
                     chosen, funded, bought, loyalty_charge = _affordable_order_nb(
                         chosen, pref, min(request, storage_room), t1_cash[company],
                         t0_inv[element::NE], t0_price[element::NE], t0_rel[element::NE],
@@ -1077,6 +1063,8 @@ if _HAVE_NUMBA:
                     if loyalty_charge > 0.0:
                         t1_cash[company] -= loyalty_charge
                         t0_cash[pref] += loyalty_charge
+                        switch0_income[pref] += loyalty_charge
+                        switch1_expense[company] += loyalty_charge
                         loyalty_switches[0] += 1.0
                         loyalty_penalties[0] += loyalty_charge
                     preferred_wholesale[raw_base + element] = chosen
@@ -1089,6 +1077,7 @@ def operate_tier1(world, cfg):
     conversion = np.array([M.conversion_cost(p['complexity'], cfg) for p in M.PRODUCTS])
     world.costSinks = _operate_tier1_nb(
         cfg['t1Capacity'], float(cfg['storage']), footprint, conversion, output, world.costSinks,
+        float(cfg['productionMarginBand']), production_line_overhead(world, cfg, 't1'),
         world.t1Operates, world.t1Cash, world.raw, world.rawBasis,
         world.t1Fin, world.t1FinBasis, world.t1Price, world.t1UnitCost)
 
@@ -1122,14 +1111,14 @@ def plan_and_buy_inputs(world, cfg, tick):
     _plan_and_buy_inputs_nb(
         cfg['seed'], tick, cfg['minWholesaleLot'],
         cfg['baseCost'], cfg['t1Capacity'], t1_conv,
-        float(cfg['storage']), float(world.lm1), float(cfg['productionMarginBand']),
+        float(cfg['storage']), float(world.lm1),
         world.t0Price, world.t0Inv, world.t0InvBasis, world.t0Rel, world.t0Cash, world.t0Req, world.t0FundedReq,
         world.t0Opportunities, world.t0Demand, world.t0RelAttempts, world.t0RelChecks,
         world.t0RelAvailable, world.t0Sold, world.t0Revenue, world.t0COGS, world.t0Fulfilled, world.difficulty,
         world.t1Cash, world.t1Fin, world.t1FinBasis, world.t1Price, world.t1ReplacementCost, world.t1Operates,
         world.t1InputNeed, world.t1PurchaseReq, world.t1LastBuy, world.t1Bought, world.raw, world.rawBasis,
         world.preferredWholesale, PROF_HAS, PROF_N, T1_INPUT_RATIO, t1_output, t1_footprint, T1_IS_BASIC,
-        world.loyaltySwitches, world.loyaltyPenalties)
+        world.loyaltySwitches, world.loyaltyPenalties, world.t0SwitchingIncome, world.t1SwitchingIncome, world.t1SwitchingExpense, world.t2SwitchingIncome, world.t2SwitchingExpense)
 
 
 def operate_tier2(world, cfg, tick):
@@ -1146,7 +1135,7 @@ def operate_tier2(world, cfg, tick):
         t1_unit_cost, world.lm2, cfg['priceObservationTicks'],
         cfg['researchPriceMinimumPotentialOrders'], cfg['researchPriceMaxObservationTicks'],
         cfg['researchPriceMinimumOpportunities'], float(cfg['pricingAggressiveness']), float(cfg['wholesalePriceResponse']),
-        t2_going, float(cfg['marketAnchorBand']), float(cfg['productionMarginBand']),
+        t2_going, float(cfg['marketAnchorBand']), float(cfg['productionMarginBand']), production_line_overhead(world, cfg, 't2'),
         world.t1Fin, world.t1Price, world.t1Rel, world.t1Cash, world.t1Sold, world.t1Revenue, world.t1COGS, world.t1FinBasis,
         world.t1IntermediateSold, world.t1IntermediateRevenue, world.t1Demand, world.t1RelAttempts,
         world.t1RelAvailChecks, world.t1RelAvailable, world.t1Opportunities,
@@ -1159,7 +1148,7 @@ def operate_tier2(world, cfg, tick):
         world.t2LearnDirection, world.t2LearnDemand, world.t2LearnStep,
         world.t2LearnOpportunity, world.t2LearnPotentialOpportunity,
         flat, off, val, t2_cap, T2_OUTPUT, t2_footprint,
-        world.t2MatSpend, world.t2MatOrders, world.loyaltySwitches, world.loyaltyPenalties)
+        world.t2MatSpend, world.t2MatOrders, world.loyaltySwitches, world.loyaltyPenalties, world.t0SwitchingIncome, world.t1SwitchingIncome, world.t1SwitchingExpense, world.t2SwitchingIncome, world.t2SwitchingExpense)
     world.costSinks += cs
     return cs
 
@@ -1189,4 +1178,4 @@ def clear_distributors(world, cfg, tick):
         world.t2Fin, world.t2Price, world.t2Rel, world.t2Demand, world.t2RelAttempts, world.t2RelAvailable,
         world.t2Cash, world.t2LastSaleTick, world.t2Sold, world.t2Revenue, world.t2COGS, world.t2FinBasis,
         world.t2Opportunities, world.t2PotentialOrders, T2_COMPLEXITY, val,
-        world.loyaltySwitches, world.loyaltyPenalties)
+        world.loyaltySwitches, world.loyaltyPenalties, world.t0SwitchingIncome, world.t1SwitchingIncome, world.t1SwitchingExpense, world.t2SwitchingIncome, world.t2SwitchingExpense)

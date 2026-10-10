@@ -10,6 +10,7 @@ import math
 import numpy as np
 
 from ..core import model as M
+from ..core.accounting import line_counts, finalize_net_earnings
 from ..core.rng import random_, normal_
 from ..core.trading import select_offer, affordable_order
 from ..core.state import (T0P, WorldState, _has_tier2_product, add_tier2_line, tier1_goods_space, tier2_goods_space)
@@ -25,11 +26,22 @@ round_to_cent = M.round_to_cent
 M4 = M.T2_MAX_PRODUCTS_PER_FIRM
 
 
+def tier1_storage_layout(world, cfg, firm):
+    installed = np.flatnonzero(world.t1Operates[firm * NP:(firm + 1) * NP])
+    inputs = {M.ELEMENTS.index(e) for p in installed for e in M.PRODUCTS[p]['inputs']}
+    space = tier1_goods_space(world, cfg, firm)
+    return space / (2 * max(1, len(inputs))), space / (2 * max(1, len(installed))), inputs
+
+
+def tier2_storage_layout(world, cfg, firm):
+    lines = world.t2FirmLines[firm * M4:firm * M4 + int(world.t2FirmLineCount[firm])]
+    inputs = {m for line in lines for m, _ in M.T2_PRODUCTS[int(world.t2LineProduct[line])]['ingredients']}
+    space = tier2_goods_space(world, cfg, firm)
+    return space / (2 * max(1, len(inputs))), space / (2 * max(1, len(lines))), inputs
+
+
 def tier1_stock_target(world, cfg, product, index):
-    # canon: desired inventory = fill G, split 1:1 → finished target = G/2
-    firm = index // NP
-    count = int(world.t1Operates[firm * NP:(firm + 1) * NP].sum())
-    return tier1_goods_space(world, cfg, firm) / (2 * max(1, count))
+    return tier1_storage_layout(world, cfg, index // NP)[1]
 
 
 # --------------------------------------------------------------------------
@@ -52,6 +64,9 @@ def reset_tick(world: WorldState) -> None:
     world.t2Revenue.fill(0)
     world.t2COGS.fill(0)
     world.t2Made.fill(0)
+    for tier in ('t0', 't1', 't2'):
+        getattr(world, tier + 'SwitchingIncome').fill(0)
+        getattr(world, tier + 'SwitchingExpense').fill(0)
 
 
 # --------------------------------------------------------------------------
@@ -70,6 +85,7 @@ def update_environment(world, cfg, tick):
 # --------------------------------------------------------------------------
 def operate_tier0(world, cfg, profiles, tick):
     seed = cfg['seed']
+    line_overhead = production_line_overhead(world, cfg, 't0')
     for supplier in range(N0):
         elements = profiles[supplier]['element_indices']  # sorted ascending
         n_el = len(elements)
@@ -97,7 +113,8 @@ def operate_tier0(world, cfg, profiles, tick):
             if cost > price + 1e-9:
                 deficits[n] = 0.0
             else:
-                margin = (price - cost) / max(price, 1e-9)
+                planned = max(min(deficits[n], capacity), 1.0)
+                margin = (price - cost - line_overhead[supplier] / planned) / max(price, 1e-9)
                 deficits[n] *= min(1.0, max(0.0, margin / cfg['productionMarginBand']))
         positive = [n for n in range(n_el) if deficits[n] > 0]
         if not positive:
@@ -229,6 +246,7 @@ def plan_and_buy_inputs(world, cfg, products, profiles, tick):
             company = cohort * 100 + ((first_firm + rnd) % 100)
             raw_base = company * NE
             product_base = company * NP
+            storage_slot, output_slot, used_inputs = tier1_storage_layout(world, cfg, company)
             suppliers = [tier0_supplier(world, cfg, profiles, element,
                                         world.preferredWholesale[raw_base + element], company, tick)
                          for element in range(NE)]
@@ -255,20 +273,16 @@ def plan_and_buy_inputs(world, cfg, products, profiles, tick):
                     else:
                         replacement += (ratio / output_qty) * (quote if math.isfinite(quote) else world.rawBasis[raw_base + element])
                 world.t1ReplacementCost[product_base + p] = replacement
-                # Elastic input demand (no hard freeze): throttle the buy/produce
-                # quantity by the marginal-cost/price ratio — reversed T3 curve: 0 at/above break-even, full at zero cost.
-                r = current_cost / max(world.t1Price[product_base + p], 1e-9)
-                desired = math.floor(desired * min(1.0, max(0.0, (1.0 - r) / cfg['productionMarginBand'])) + 0.5)
-                for element_name, ratio in product['inputs'].items():
-                    element = M.ELEMENTS.index(element_name)
-                    need = max(0.0, desired * ratio / output_qty - world.raw[raw_base + element])
-                    if need > 0:
-                        world.t1InputNeed[raw_base + element] += max(need, cfg['minWholesaleLot'])
+            # Restock each distinct input independently of production profitability.
+            for element in used_inputs:
+                world.t1InputNeed[raw_base + element] = max(0.0, storage_slot - world.raw[raw_base + element])
             for element in range(NE):
                 need = world.t1InputNeed[raw_base + element]
                 if need <= 0:
                     continue
-                request = math.ceil(need / cfg['minWholesaleLot']) * cfg['minWholesaleLot']
+                request = math.floor(need / cfg['minWholesaleLot']) * cfg['minWholesaleLot']
+                if request <= 0:
+                    continue
                 world.t1PurchaseReq[raw_base + element] = request
                 world.t0Req[element] += request
                 chosen = tier0_supplier(world, cfg, profiles, element,
@@ -281,7 +295,7 @@ def plan_and_buy_inputs(world, cfg, products, profiles, tick):
                     held += world.raw[raw_base + material]
                 for output in range(NP):
                     held += world.t1Fin[product_base + output]
-                storage_room = math.floor(max(0.0, tier1_goods_space(world, cfg, company) - held)
+                storage_room = math.floor(max(0.0, min(tier1_goods_space(world, cfg, company) - held, storage_slot - world.raw[raw_base + element]))
                                           / cfg['minWholesaleLot']) * cfg['minWholesaleLot']
                 chosen, funded, bought, loyalty_charge = affordable_order(
                     chosen, preferred, min(request, storage_room), world.t1Cash[company],
@@ -317,6 +331,8 @@ def plan_and_buy_inputs(world, cfg, products, profiles, tick):
                 if loyalty_charge > 0.0:
                     world.t1Cash[company] -= loyalty_charge
                     world.t0Cash[preferred] += loyalty_charge
+                    world.t1SwitchingExpense[company] += loyalty_charge
+                    world.t0SwitchingIncome[preferred] += loyalty_charge
                     world.loyaltySwitches[0] += 1.0
                     world.loyaltyPenalties[0] += loyalty_charge
                 world.preferredWholesale[raw_base + element] = chosen
@@ -335,6 +351,7 @@ def operate_tier1(world, cfg, products):
     ratio_lists = [[float(r) for r in p['inputs'].values()] for p in products]
 
     cap = cfg['t1Capacity']
+    line_overhead = production_line_overhead(world, cfg, 't1')
     # Iterate only the operating firm-product slots (ascending index == the old
     # company-major, product-minor order, so shared raw/cash drain semantics are
     # unchanged while the ~9/10 no-op slots are skipped).
@@ -356,8 +373,8 @@ def operate_tier1(world, cfg, products):
         input_cost_per_item /= output_qty
         made = min(made, math.floor(max(0.0, world.t1Cash[company])
                                     / max(1e-9, conv * output_qty)))
-        if input_cost_per_item + conv > world.t1Price[index] + 1e-9:
-            made = 0
+        made = M.production_batches(made, output_qty, input_cost_per_item + conv,
+            world.t1Price[index], line_overhead[company], cfg['productionMarginBand'])
         if made <= 0:
             continue
         made_items = made * output_qty
@@ -637,7 +654,10 @@ def transfer_tier2_input(world, cfg, firm, material, supplier, request, offers=N
     stock = world.t1Fin
     prices = world.t1Price
     cash = world.t1Cash
-    requested = max(0.0, min(math.ceil(request),
+    storage_slot, output_slot, used_inputs = tier2_storage_layout(world, cfg, firm)
+    held_input = (world.t2Raw if is_basic else world.t2T1Raw)[firm * (NE if is_basic else NP) + material]
+    requested = max(0.0, min(math.floor(request),
+                             math.floor(storage_slot - held_input) if material in used_inputs else 0,
                              math.floor(tier2_goods_space(world, cfg, firm) - tier2_inventory_units(world, firm))))
     preferred = int(world.t2Preferred[firm * NP + material])
     firm_pid = int(world.t2LineProduct[int(world.t2FirmLines[firm * M4])])
@@ -689,6 +709,8 @@ def transfer_tier2_input(world, cfg, firm, material, supplier, request, offers=N
     if loyalty_charge > 0.0:
         world.t2Cash[firm] -= loyalty_charge
         world.t1Cash[preferred // NP] += loyalty_charge
+        world.t2SwitchingExpense[firm] += loyalty_charge
+        world.t1SwitchingIncome[preferred // NP] += loyalty_charge
         world.loyaltySwitches[1] += 1.0
         world.loyaltyPenalties[1] += loyalty_charge
     world.t2Preferred[firm * NP + material] = supplier
@@ -699,6 +721,7 @@ def transfer_tier2_input(world, cfg, firm, material, supplier, request, offers=N
 # 7. Tier 2 buy / make / price
 # --------------------------------------------------------------------------
 def operate_tier2(world, cfg, products, profiles, t2_products, tick):
+    line_rent = production_line_overhead(world, cfg, 't2')
     t2_learning = price_learning_view(world, 't2')
     n_lines = int(world.t2LineCount)
     t2_going = _market_going_rate(world.t2Price[:n_lines], world.t2LearnSales[:n_lines],
@@ -718,7 +741,9 @@ def operate_tier2(world, cfg, products, profiles, t2_products, tick):
         firm = (order + tick * 137) % cfg['t2FirmCount']
         needs = [0.0] * NP
         plans = [0.0] * M4
-        inventory_room = max(0.0, tier2_goods_space(world, cfg, firm) - tier2_inventory_units(world, firm))
+        storage_slot, output_slot, used_inputs = tier2_storage_layout(world, cfg, firm)
+        for material in used_inputs:
+            needs[material] = storage_slot
 
         for material in range(NP):
             offers = t1_offers[material]
@@ -737,20 +762,8 @@ def operate_tier2(world, cfg, products, profiles, t2_products, tick):
             c = product['complexity']
             output_qty = product['outputQty']              # count-preserving N→N
             capacity = cfg['t2Capacity'][c]                # per machine per tick
-            target = tier2_goods_space(world, cfg, firm) / (2 * line_count)
+            target = output_slot
             desired = math.floor(min(capacity, max(0.0, target - world.t2Fin[line])) / output_qty)
-            while desired > 0:
-                missing = 0.0
-                for material in range(NP):
-                    ratio = input_ratios[product['id']][material]
-                    if material < NE:
-                        held = world.t2Raw[firm * NE + material]
-                    else:
-                        held = world.t2T1Raw[firm * NP + material]
-                    missing += max(0.0, needs[material] + desired * ratio - held)
-                if missing <= inventory_room:
-                    break
-                desired -= 1
             replacement = M.conversion_cost(c, cfg)
             current_cost = M.conversion_cost(c, cfg)
             for material, ratio in product['ingredients']:
@@ -768,15 +781,7 @@ def operate_tier2(world, cfg, products, profiles, t2_products, tick):
                 else:
                     replacement += (ratio / output_qty) * quote
             world.t2ReplacementCost[line] = replacement
-            if replacement > world.t2Price[line] + 1e-9:
-                desired = 0
-            # Elastic input demand (no hard freeze): throttle the buy/produce
-            # quantity by the marginal-cost/price ratio — reversed T3 curve: 0 at/above break-even, full at zero cost.
-            r = current_cost / max(world.t2Price[line], 1e-9)
-            desired = math.floor(desired * min(1.0, max(0.0, (1.0 - r) / cfg['productionMarginBand'])) + 0.5)
-            plans[slot] = desired
-            for material, ratio in product['ingredients']:
-                needs[material] += desired * ratio
+            plans[slot] = desired  # Production is gated after actual input availability.
 
         for material in range(NP):
             basic = material < 4
@@ -804,8 +809,8 @@ def operate_tier2(world, cfg, products, profiles, t2_products, tick):
             conversion_cost = conv_per_item * output_qty
             made = min(made, math.floor(world.t2Cash[firm] / conversion_cost))
             input_cost_per_item = input_cost / output_qty
-            if input_cost_per_item + conv_per_item > world.t2Price[line] + 1e-9:
-                made = 0
+            made = M.production_batches(made, output_qty, input_cost_per_item + conv_per_item,
+                world.t2Price[line], line_rent[firm], cfg['productionMarginBand'])
             if made > 0:
                 for material, ratio in product['ingredients']:
                     if material < 4:
@@ -983,6 +988,7 @@ def clear_distributors(world, cfg, products, t2_products, tick):
             charge = M.loyalty_charge(reference, reliability[preferred],
                                      world.lm3)
             world.t2Cash[world.t2LineFirm[preferred]] += charge
+            world.t2SwitchingIncome[world.t2LineFirm[preferred]] += charge
             distributor_payments += charge
             world.loyaltySwitches[2] += 1.0
             world.loyaltyPenalties[2] += charge
@@ -1148,6 +1154,86 @@ def update_loyalty_regime(world, cfg, counts, tick):
         world.lm3 = 0.05 * world.aov3 / (world.lmUnitCost3 * 1.5)
 
 
+def storage_rent_equity(world, cfg, tier):
+    """Book equity immediately before billing, including inventory and arrears."""
+    n = N1 if tier == 't1' else cfg['t2FirmCount']
+    equity = (getattr(world, tier + 'Cash')[:n] + getattr(world, tier + 'EqBook')[:n]
+              + cfg[tier + 'License'] - getattr(world, tier + 'RentArrears')[:n])
+    if tier == 't1':
+        equity += (world.raw * world.rawBasis).reshape(N1, NE).sum(axis=1)
+        equity += (world.t1Fin * world.t1FinBasis * world.t1Operates).reshape(N1, NP).sum(axis=1)
+    else:
+        equity += (world.t2Raw[:n * NE] * world.t2RawBasis[:n * NE]).reshape(n, NE).sum(axis=1)
+        equity += (world.t2T1Raw[:n * NP] * world.t2T1Basis[:n * NP]).reshape(n, NP).sum(axis=1)
+        lc = int(world.t2LineCount)
+        equity += np.bincount(world.t2LineFirm[:lc], weights=world.t2Fin[:lc] * world.t2FinBasis[:lc], minlength=n)
+    return equity
+
+
+def production_line_rent(world, cfg, tier):
+    """Forecast per-installed-line tick rent for the net margin gate.
+
+    Snapshot eligibility once before each tier's procurement, using current book
+    equity. Trading can change eligibility before actual end-of-tick billing.
+    Split the full firm bill equally across its installed lines, as in reporting.
+    NumPy-only firm projection shared by the reference and compiled planners.
+    This does not post expense, collect cash, or include existing debt payments.
+    """
+    n = N1 if tier == 't1' else cfg['t2FirmCount']
+    bill = cfg['storage'] * cfg['storageRentPerUnitYear'] / M.TIME['ticksPerYear']
+    if bill == 0:
+        return np.zeros(n, dtype=np.float64)
+    counts = (world.t1Operates.reshape(N1, NP).sum(axis=1) if tier == 't1'
+              else world.t2FirmLineCount[:n])
+    eligible = storage_rent_equity(world, cfg, tier) >= 2_000_000
+    return np.where(eligible & (counts > 0), bill / np.maximum(counts, 1), 0.0)
+
+
+def production_line_overhead(world, cfg, tier):
+    """Forecast rent + switching expense - switching income, per installed line.
+
+    Switching uses the prior completed ticks' net-transfer EMA (cfg alpha),
+    initialized at zero, since the current tick's receipts/fills are unknown.
+    Exemption waives rent only; switching costs still enter exempt firms' plans.
+    """
+    counts = line_counts(world, cfg, tier)
+    n = len(counts)
+    rent = np.zeros(n) if tier == 't0' else production_line_rent(world, cfg, tier)
+    return rent - getattr(world, tier + 'SwitchingNetEMA')[:n] / np.maximum(counts, 1)
+
+
+def settle_storage_rent(world, cfg, tick):
+    """Bill the full T1/T2 pool every tick; collect cash, retain unpaid debt.
+
+    Eligibility uses pre-charge book equity >= $2M. Arrears collection is
+    suspended below this threshold, not forgiven; eligible firms retry every
+    tick even when the new-rent rate is zero. There are no per-firm Python loops.
+    Rent is an external cash sink, never inventory COGS. Debt reduces equity.
+    Both execution engines use this same settlement after trading.
+    """
+    result = {}
+    billable = tick > 0
+    bill = cfg['storage'] * cfg['storageRentPerUnitYear'] / M.TIME['ticksPerYear'] if billable else 0.0
+    for tier, n in (('t1', N1), ('t2', cfg['t2FirmCount'])):
+        paid_total = 0.0
+        eligible = storage_rent_equity(world, cfg, tier) >= 2_000_000
+        charges = getattr(world, tier + 'RentCharge')[:n]
+        charges[:] = np.where(eligible, bill, 0.0)
+        if billable:
+            cash = getattr(world, tier + 'Cash')[:n]
+            arrears = getattr(world, tier + 'RentArrears')[:n]
+            arrears += charges
+            paid = np.where(eligible, np.minimum(np.maximum(cash, 0.0), arrears), 0.0)
+            cash -= paid
+            arrears -= paid
+            getattr(world, tier + 'RentPaid')[:n] += paid
+            paid_total = float(paid.sum())
+            world.costSinks += paid_total
+        result[tier + 'RentExpense'] = float(charges.sum())
+        result[tier + 'RentPayment'] = paid_total
+    return result
+
+
 def tick(world: WorldState, cfg, tick, products=None, profiles=None, t2_products=None, state=None):
     products = products if products is not None else M.PRODUCTS
     profiles = profiles if profiles is not None else T0P
@@ -1186,6 +1272,8 @@ def tick(world: WorldState, cfg, tick, products=None, profiles=None, t2_products
     update_reliability(world, cfg, tick)
     expand_tier2_bots(world, cfg, t2_products, tick)
     update_loyalty_regime(world, cfg, counts, tick)
+    state.update(settle_storage_rent(world, cfg, tick))
+    state.update(finalize_net_earnings(world, cfg))
 
     state['activatedDistributors'] = counts['activated']
     state['distributorPayments'] = counts['distributorPayments']

@@ -144,6 +144,7 @@
     t2Capacity: Object.freeze({ 3: 30, 4: 20, 5: 10 }),
     t2MaterialCost: 1.875, conversionFactor: .25,
     storage: 20000,
+    storageRentPerUnitYear: 20.16,
     footprint: Object.freeze({ 1: 1000, 2: 1000, 3: 3000, 4: 4000, 5: 5000 }),
     distributorSearchOffers: 5,
     distributorActivation: .2,
@@ -694,25 +695,28 @@ const recipes = [
     0.2 * clamp(availability, 0, 1);
   const nextReliability = (current, score, alpha) =>
     clamp(current + clamp(alpha, 0, 1) * (score - current), 0, 1);
-  // Derivative-following pricebot: Kephart, Hanson & Greenwald (2000), §3.2.
-  // Total observed gross profit per tick is the objective, not margin per unit.
-  // No distributor value, normal t0Markup or market-wide ideal enters this rule.
-  const adaptivePrice = ({ oldPrice, unitCost, profit, previousProfit, direction = 1,
-    sales, stock, demand = sales, available = sales, stepScale = 1,
-    pricingAggressiveness = 0.35, response = 0.05 }) => {
-    const floor = Math.max(MIN_UNIT_PRICE, unitCost), price = Math.max(floor, oldPrice);
-    let nextDirection = direction < 0 ? -1 : 1;
-    // A received order which could not be served is evidence of scarcity,
-    // including windows with no deliveries. No target margin is inferred.
-    const scarce = demand > available + 1e-9;
-    if (scarce) nextDirection = 1;
-    else if (Number.isFinite(previousProfit) && profit < previousProfit) nextDirection *= -1;
-    // Adaptive derivative-following: grow on continuation, keep the step on
-    // reversal (no halving). This may still quote at cost.
-    const scale = clamp(stepScale * (nextDirection !== direction ? 1.0 : 1.2), 0.01, 1);
-    const next = Math.max(floor, price * Math.exp(nextDirection * clamp(pricingAggressiveness, 0, 1) * response * scale));
+  // Compatibility helper; the live Python server owns price decisions.
+  // Match its net-earnings objective, signed baselines, anchors and dead band.
+  const adaptivePrice = ({ oldPrice, profit, previousProfit, direction = 1,
+    sales = 0, stock = 0, demand = 0, available = 0, stepScale = 1,
+    marketPrice = null, band = .02, pricingAggressiveness = .35, response = .05 }) => {
+    const bounded = x => Math.round(clamp(x, MIN_UNIT_PRICE, 1e9) * 100) / 100;
+    const price = bounded(oldPrice);
+    let nextDirection = direction < 0 ? -1 : 1, moved = false;
+    if (demand > available + 1e-9) { nextDirection = 1; moved = true; }
+    else if (marketPrice != null && marketPrice > 0) {
+      if (price > marketPrice * (1 + band)) { nextDirection = -1; moved = true; }
+      else if (price < marketPrice * (1 - band)) { nextDirection = 1; moved = true; }
+    }
+    if (!moved && Number.isFinite(previousProfit)) {
+      const change = (profit - previousProfit) / Math.max(Math.abs(previousProfit), 1e-9);
+      if (change < -.02) nextDirection *= -1;
+      else if (change <= .02) return {price, direction: nextDirection, stepScale};
+    }
+    const scale = clamp(stepScale * (nextDirection !== direction ? 1 : 1.2), .01, 1);
+    const next = bounded(price * Math.exp(nextDirection * clamp(pricingAggressiveness, 0, 1) * response * scale));
     if (next === price && nextDirection < 0) nextDirection = 1;
-    return { price: next, direction: nextDirection, stepScale: scale };
+    return {price: next, direction: nextDirection, stepScale: scale};
   };
   // Exogenous recipe profiles may express repeatable compound-based batches
   // and rarer bespoke fabrication. These engineering coefficients are fixed

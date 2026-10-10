@@ -23,7 +23,7 @@ NE, NP, N1 = M.NE, M.NP, M.N1
 PRODUCT_COUNT, SECTOR_COUNT = len(M.T2_PRODUCTS), len(M.T2_SECTORS)
 _VIEW_FIELDS = ('t1Operates', 'raw', 'rawBasis', 't1Fin', 't1FinBasis', 't1Sold',
                 't1Revenue', 't1COGS', 't1Rel', 't1Cash', 't1EqBook', 't1Price',
-                't1UnitCost', 't1PriceStability')
+                't1UnitCost', 't1PriceStability', 't1RentArrears')
 RefineryView = namedtuple('RefineryView', _VIEW_FIELDS)
 COMPANY_FIELDS = ('raw', 'finished', 'sold', 'revenue', 'cogs', 'made', 'reliability',
                   'equity', 'inventoryValue')
@@ -44,7 +44,7 @@ def _project(w, made_by_line, controller, license_cost):
         rel_n = 0
         # Global equity historically starts from cash + machinery before
         # accumulating stock, whereas company equity adds inventory last.
-        eqv = w.t1Cash[cid] + w.t1EqBook[cid]
+        eqv = w.t1Cash[cid] + w.t1EqBook[cid] - w.t1RentArrears[cid]
         for e in range(NE):
             idx = cid * NE + e
             raw += w.raw[idx]
@@ -74,7 +74,7 @@ def _project(w, made_by_line, controller, license_cost):
             if math.isfinite(w.t1Price[idx]):
                 quotes[p] += w.t1Price[idx]
                 quote_counts[p] += 1
-        equity = w.t1Cash[cid] + w.t1EqBook[cid] + value + license_cost
+        equity = w.t1Cash[cid] + w.t1EqBook[cid] + value + license_cost - w.t1RentArrears[cid]
         companies[:, cid] = (raw, fin, sold, revenue, cogs, made, rel / rel_n if rel_n else 0.0, equity, value)
         totals[0] += raw
         totals[1] += fin
@@ -212,3 +212,46 @@ def _manufacturing_numpy(w, n, lc, capacity):
                                  w.t2COGS[:lc], capacity[pid], w.t2Fin[:lc] * basis), 8):
         sectors[i] = np.bincount(line_sector, weights=values, minlength=SECTOR_COUNT)
     return products, sectors
+
+
+# Stable catalog labels are built once, rather than rediscovered per snapshot.
+_RENT_T1_COMPLEXITY = np.array([p['complexity'] for p in M.PRODUCTS], dtype=np.int64)
+_RENT_T2_COMPLEXITY = np.array([p['complexity'] for p in M.T2_PRODUCTS], dtype=np.int64)
+_RENT_T2_SECTOR = np.array([M.T2_SECTORS.index(p['sector']) for p in M.T2_PRODUCTS], dtype=np.int64)
+
+
+def project_storage_rent(world, cfg):
+    return project_company_amounts(world, cfg, world.t1RentCharge, world.t2RentCharge[:cfg['t2FirmCount']])
+
+
+def project_company_amounts(world, cfg, rent1, rent2, amount0=None):
+    """Reduce actual charges into display groups without scanning firms per group.
+
+    Company overhead is split over that company's installed lines. A product's
+    sector differs from a company's home sector, so industry and cohort totals
+    deliberately use different grouping arrays. Zero-line overhead remains in
+    company/cohort/tier totals and is not assigned to a nonexistent product.
+    """
+    n = cfg['t2FirmCount']
+    operates = world.t1Operates.reshape(N1, NP)
+    market1 = (operates * (rent1 / np.maximum(operates.sum(axis=1), 1))[:, None]).sum(axis=0)
+    lc = int(world.t2LineCount)
+    owners = world.t2LineFirm[:lc]
+    market2 = np.bincount(world.t2LineProduct[:lc],
+        weights=rent2[owners] / np.maximum(world.t2FirmLineCount[owners], 1), minlength=PRODUCT_COUNT)
+    complexity = np.bincount(_RENT_T1_COMPLEXITY, weights=market1, minlength=6)
+    complexity += np.bincount(_RENT_T2_COMPLEXITY, weights=market2, minlength=6)
+    if amount0 is not None:
+        from ..core.accounting import allocate_to_lines
+        elements = allocate_to_lines(world, cfg, 't0', amount0).reshape(M.N0, NE).sum(axis=0)
+        complexity[0] = amount0.sum()
+    else:
+        elements = np.zeros(NE)
+    return {
+        'products': market2,
+        'cohorts1': rent1.reshape(NP, N1 // NP).sum(axis=1),
+        'cohorts2': np.bincount(world.t2Sector[:n], weights=rent2, minlength=SECTOR_COUNT),
+        'industries': np.bincount(_RENT_T2_SECTOR, weights=market2, minlength=SECTOR_COUNT),
+        'complexity': complexity,
+        'elements': elements,
+    }

@@ -581,6 +581,7 @@
             <div class="field"><label>Material cost / unit</label><input id="t2MaterialCost" type="number" min="0" step="any" value="1.875" /></div>
             <div class="field"><label>Conversion factor</label><input id="conversionFactor" type="number" min="0" step="any" value=".25" /></div>
             <div class="field"><label>Firm storage pool</label><input id="storage" type="number" min="1" step="any" value="20000" /></div>
+            <div class="field"><label>Storage rent ($/1,000 units/tick)</label><input id="storageRentPerUnitYear" type="number" min="0" step=".01" value="2.8" /></div>
           </div>
           <div class="param-group">
             <h3>Distributors · Demand</h3>
@@ -590,7 +591,7 @@
             <div class="field"><label>Value multiplier min</label><input id="chokeMin" type="number" step=".01" value="1.8" /></div>
             <div class="field"><label>Value multiplier max</label><input id="chokeMax" type="number" step=".01" value="3" /></div>
             <div class="field"><label>Elasticity η</label><input id="elasticity" type="number" step=".05" value="2" /></div>
-            <div class="field"><label>Production margin band</label><input id="productionMarginBand" type="number" min=".001" max="1" step=".005" value=".05" /></div>
+            <div class="field"><label title="Estimated margin after production cost, allocated per-tick rent, and forecast switching income/expense. The equity exemption waives rent only.">Production net margin band</label><input id="productionMarginBand" type="number" min=".001" max="1" step=".005" value=".05" /></div>
             <div class="field"><label>T2 reservation premium</label><input id="t2ReservationPremium" type="number" min="0" step=".05" value=".25" /></div>
           </div>
           <div class="param-group">
@@ -730,7 +731,7 @@
                     <th>Revenue / tick</th>
                     <th>Revenue / firm / tick</th>
                     <th>COGS / tick</th>
-                    <th>Gross profit / tick</th>
+                    <th>Gross profit / tick</th><th>Net profit / tick</th><th>Net margin</th>
                     <th>Gross margin</th>
                     <th>Reliability</th>
                   </tr>
@@ -738,6 +739,7 @@
                 <tbody id="tierComparison"></tbody>
               </table>
             </div>
+            <p class="analytics-note"><strong>Net profit = gross profit + switching income − switching expense − storage expense.</strong> Rent is charged every tick. Net margin = net profit ÷ revenue; undefined when revenue is zero. T0 is exempt. T1/T2 below $2M book equity before billing are exempt; at exactly $2M they are eligible. Existing arrears are held until eligible. Switching transfers are included as income for the incumbent and expense for the buyer. Historical snapshots without those postings show net earnings as unavailable. Product/complexity views allocate each paying company’s charge across its own installed lines; company views use each company’s full rent. Amounts shown are per tick.</p>
             <p class="analytics-note">Current tick · per-firm figures divide by all firms in the tier. COGS is the cost basis of units sold — for resource companies that is the cost of extracting raw elements from the environment — and gross profit is revenue minus COGS in every tier. Unsold extraction adds inventory rather than reducing gross profit. — means unavailable or no activity for a ratio.</p>
             <div class="table-toolbar">
               <label for="overviewTier">Chart scope</label>
@@ -803,10 +805,16 @@
             <div class="table-toolbar">
               <label for="categoryMetric">Compare categories by</label>
               <select id="categoryMetric">
-                <option value="profitPerLine">Gross profit / line · $ / tick</option>
+                <option value="grossProfitPerCompany">Gross profit / company · $ / tick</option>
+                <option value="netProfitPerCompany" selected>Net profit / company · $ / tick</option>
+                <option value="revenuePerCompany">Revenue / company · $ / tick</option>
+                <option value="rentPerCompany">Rent / company · $ / tick</option>
+                <option value="soldPerCompany">Sales / company · units / tick</option>
+                <option value="madePerCompany">Production / company · units / tick</option>
+                <option value="profitPerLine">Gross profit / line · $ / tick</option><option value="netProfitPerLine">Net profit / line · $ / tick</option>
                 <option value="soldPerLine">Sales / line · units / tick</option>
                 <option value="revenue">Revenue · $ / tick</option>
-                <option value="grossProfit">Gross profit · $ / tick</option>
+                <option value="grossProfit">Gross profit · $ / tick</option><option value="netProfit">Net profit</option><option value="netMargin">Net margin</option>
                 <option value="margin">Gross margin</option>
                 <option value="utilization">Capacity utilization</option>
                 <option value="machineryPrice">Machinery / line · $</option>
@@ -816,12 +824,11 @@
               </select>
               <button id="categorySplitMerge" type="button" title="Toggle split/merged category view">Merge</button>
             </div>
-            <span class="chart-caption" id="categoryComparisonCaption">Gross profit / line · $ / tick</span>
+            <span class="chart-caption" id="categoryComparisonCaption">Net profit / company · $ / tick</span>
+            <p class="analytics-note">Per-company values divide category totals by distinct companies with an installed line in that category, including idle companies. A company producing multiple complexities counts once in each relevant category; only that category’s activity and allocated expenses enter its average.</p>
             <div id="categoryChartsSplit">
-              <span class="chart-caption">Extractors · C-0</span>
-              <div class="chart"><canvas id="categoryComparisonChartT0" role="img" aria-label="Extractor category comparison"></canvas></div>
-              <span class="chart-caption">Refineries · C-1 and C-2</span>
-              <div class="chart"><canvas id="categoryComparisonChartT1" role="img" aria-label="Refinery category comparison"></canvas></div>
+              <span class="chart-caption">Extractors and Refineries · C-0, C-1 and C-2</span>
+              <div class="chart"><canvas id="categoryComparisonChartT01" role="img" aria-label="Extractor and refinery category comparison"></canvas></div>
               <span class="chart-caption">Manufacturers · C-3, C-4 and C-5</span>
               <div class="chart"><canvas id="categoryComparisonChartT2" role="img" aria-label="Manufacturer category comparison"></canvas></div>
             </div>
@@ -850,8 +857,8 @@
                     <th>Sold / line / tick</th>
                     <th>Revenue / tick</th>
                     <th>COGS / tick</th>
-                    <th>Gross profit / tick</th>
-                    <th>Profit / line / tick</th>
+                    <th>Gross profit / tick</th><th>Net profit / tick</th><th>Net margin</th>
+                    <th>Profit / line / tick</th><th>Net profit / line / tick</th>
                     <th>Gross margin</th>
                     <th>Customer desired / tick</th>
                     <th>Customer fill</th>
@@ -904,7 +911,7 @@
               </div>
               <div class="stat">
                 <span>Book equity · $</span>
-                <b id="t0Equity">—</b>
+                <b id="t0BookEquity">—</b>
               </div>
               <div class="stat">
                 <span>Extracted inventory · units</span>
@@ -930,6 +937,8 @@
                 <span>Gross profit · $ / tick</span>
                 <b id="t0GrossProfit">—</b>
               </div>
+              <div class="stat"><span>Net profit · $ / tick</span><b id="t0NP">—</b></div>
+              <div class="stat"><span>Net margin</span><b id="t0NM">—</b></div>
               <div class="stat">
                 <span>Utilization</span>
                 <b id="t0Utilization">—</b>
@@ -972,7 +981,7 @@
                     <th>Volume / tick</th>
                     <th>Revenue / tick</th>
                     <th>COGS / tick</th>
-                    <th>Gross profit / tick</th>
+                    <th>Gross profit / tick</th><th>Net profit / tick</th><th>Net margin</th>
                     <th>HHI</th>
                     <th>Reliability</th>
                   </tr>
@@ -1036,7 +1045,7 @@
                     <th>Sold / tick</th>
                     <th>Revenue / tick</th>
                     <th>COGS / tick</th>
-                    <th>Gross profit / tick</th>
+                    <th>Gross profit / tick</th><th>Net profit / tick</th><th>Net margin</th>
                     <th>Mean posted price</th>
                     <th>Reliability</th>
                   </tr>
@@ -1070,7 +1079,7 @@
               </div>
               <div class="stat">
                 <span>Book equity · $</span>
-                <b id="t1Equity">—</b>
+                <b id="t1BookEquity">—</b>
               </div>
               <div class="stat">
                 <span>Input inventory · units</span>
@@ -1109,6 +1118,11 @@
                 <span>Gross profit · $ / tick</span>
                 <b id="t1GP">—</b>
               </div>
+              <div class="stat"><span>Net profit · $ / tick</span><b id="t1NP">—</b></div>
+              <div class="stat"><span>Net margin</span><b id="t1NM">—</b></div>
+              <div class="stat"><span>Rent / eligible company / tick</span><b id="t1AnnualRent">—</b></div>
+              <div class="stat"><span>Storage rent paid · cumulative</span><b id="t1RentPaid">—</b></div>
+              <div class="stat"><span>Unpaid storage rent · liability</span><b id="t1RentArrears">—</b></div>
               <div class="stat">
                 <span>Realized gross margin</span>
                 <b id="t1Margin">—</b>
@@ -1223,7 +1237,7 @@
                     <th>Made / tick</th>
                     <th>Sold / tick</th>
                     <th>Revenue / tick</th>
-                    <th>Gross profit / tick</th>
+                    <th>Gross profit / tick</th><th>Net profit / tick</th><th>Net margin</th>
                     <th>Reliability</th>
                     <th>Market share</th>
                   </tr>
@@ -1289,7 +1303,7 @@
                     <th>Made / tick</th>
                     <th>Sold / tick</th>
                     <th>Revenue / tick</th>
-                    <th>GP / tick</th>
+                    <th>GP / tick</th><th>Net profit / tick</th><th>Net margin</th>
                     <th>Reliability</th>
                   </tr>
                 </thead>
@@ -1351,9 +1365,14 @@
                 <span>Gross profit · $ / tick</span>
                 <b id="t2GP">—</b>
               </div>
+              <div class="stat"><span>Net profit · $ / tick</span><b id="t2NP">—</b></div>
+              <div class="stat"><span>Net margin</span><b id="t2NM">—</b></div>
+              <div class="stat"><span>Rent / eligible company / tick</span><b id="t2AnnualRent">—</b></div>
+              <div class="stat"><span>Storage rent paid · cumulative</span><b id="t2RentPaid">—</b></div>
+              <div class="stat"><span>Unpaid storage rent · liability</span><b id="t2RentArrears">—</b></div>
               <div class="stat">
                 <span>Book equity · $</span>
-                <b id="t2Equity">—</b>
+                <b id="t2BookEquity">—</b>
               </div>
               <div class="stat">
                 <span>Installed capacity / tick</span>
@@ -1388,7 +1407,7 @@
               <label for="t2SectorMetric">Sector comparison</label>
               <select id="t2SectorMetric">
                 <option value="revenue">Revenue · $ / tick</option>
-                <option value="grossProfit">Gross profit · $ / tick</option>
+                <option value="grossProfit">Gross profit · $ / tick</option><option value="netProfit">Net profit</option><option value="netMargin">Net margin</option>
                 <option value="sold">Sales · units / tick</option>
                 <option value="utilization">Production utilization</option>
                 <option value="fillRate">Customer fulfillment</option>
@@ -1443,7 +1462,7 @@
                     <th>Sold / tick</th>
                     <th>Revenue / tick</th>
                     <th>COGS / tick</th>
-                    <th>Gross profit / tick</th>
+                    <th>Gross profit / tick</th><th>Net profit / tick</th><th>Net margin</th>
                     <th>Margin</th>
                     <th>Desired / tick</th>
                     <th>Fulfilled / tick</th>
@@ -1480,7 +1499,7 @@
                       <th>Made / tick</th>
                       <th>Sold / tick</th>
                       <th>Revenue / tick</th>
-                      <th>Gross profit / tick</th>
+                      <th>Gross profit / tick</th><th>Net profit / tick</th><th>Net margin</th>
                       <th>Margin</th>
                     </tr>
                   </thead>
@@ -1504,7 +1523,7 @@
                 <label for="t2ComplexityMetric">Band comparison</label>
                 <select id="t2ComplexityMetric">
                   <option value="revenue">Revenue · $ / tick</option>
-                  <option value="grossProfit">Gross profit · $ / tick</option>
+                  <option value="grossProfit">Gross profit · $ / tick</option><option value="netProfit">Net profit</option><option value="netMargin">Net margin</option>
                   <option value="sold">Sales · units / tick</option>
                   <option value="active">Desired demand · units / tick</option>
                   <option value="utilization">Production utilization</option>
@@ -1557,7 +1576,7 @@
                       <th>Made / tick</th>
                       <th>Sold / tick</th>
                       <th>Revenue / tick</th>
-                      <th>Gross profit / tick</th>
+                      <th>Gross profit / tick</th><th>Net profit / tick</th><th>Net margin</th>
                       <th>Margin</th>
                       <th>Desired / tick</th>
                       <th>Customer fill</th>
@@ -1614,7 +1633,7 @@
                     <th>Made / tick</th>
                     <th>Sold / tick</th>
                     <th>Revenue / tick</th>
-                    <th>Gross profit / tick</th>
+                    <th>Gross profit / tick</th><th>Net profit / tick</th><th>Net margin</th>
                     <th>Margin</th>
                     <th>Desired / tick</th>
                     <th>Customer fill</th>
@@ -1648,7 +1667,7 @@
                 <option value="cash">Cash</option>
                 <option value="equity">Book equity</option>
                 <option value="revenue">Revenue</option>
-                <option value="grossProfit">Gross profit</option>
+                <option value="grossProfit">Gross profit</option><option value="netProfit">Net profit</option>
                 <option value="margin">Margin</option>
                 <option value="utilization">Utilization</option>
                 <option value="capacity">Capacity</option>
@@ -1684,7 +1703,7 @@
                     <th>Made / tick</th>
                     <th>Sold / tick</th>
                     <th>Revenue / tick</th>
-                    <th>Gross profit / tick</th>
+                    <th>Gross profit / tick</th><th>Net profit / tick</th><th>Net margin</th>
                     <th>Margin</th>
                     <th>Reliability</th>
                     <th>
@@ -1842,6 +1861,7 @@
 
     <script src="./catalog.js"></script>
     <script src="./bridge.js"></script>
+    <script src="./profitability.js"></script>
     <script src="./app.js"></script>
   </body>
 </html>

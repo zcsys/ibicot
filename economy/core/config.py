@@ -53,6 +53,7 @@ def default_cfg() -> dict:
 
         # Storage (firm-level pool, raw + finished + machinery)
         'storage': 20_000.0,
+        'storageRentPerUnitYear': 1.008,  # T1/T2 full allocated pool; T0 exempt
         'footprint': {1: 1_000.0, 2: 1_000.0, 3: 3_000.0, 4: 4_000.0, 5: 5_000.0},
 
         # Demand / distributors (T3)
@@ -61,7 +62,7 @@ def default_cfg() -> dict:
         'chokeMin': 1.8,
         'chokeMax': 3.0,
         'elasticity': 2.0,              # eta = 2 (T3 distributor demand)
-        'productionMarginBand': 0.05,   # gross-margin fraction below which producer output tapers to 0 at break-even
+        'productionMarginBand': 0.05,   # estimated net margin: rent and forecast switching transfers included
         't2ReservationPremium': 0.25,
 
         # Market / pricing / reliability
@@ -149,6 +150,7 @@ def normalize_config(c) -> dict:
 
     # Storage
     d['storage'] = max(1, d['storage'])
+    d['storageRentPerUnitYear'] = max(0.0, d['storageRentPerUnitYear'])
 
     # Demand
     d['distributorSearchOffers'] = max(1, min(20, math.floor(d['distributorSearchOffers'])))

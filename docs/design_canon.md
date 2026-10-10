@@ -23,9 +23,14 @@ Every section below is a consequence of, or a requirement for, that sentence.
 1. **Conservation & accounting.** Money and goods are conserved; only *defined* external
    flows change the system total (distributor spend in; extraction, conversion, capital, and
    dividend-destruction out). Every firm is a double-entry entity: cash + license +
-   inventory-at-acquisition-basis + machinery = equity. **Cash and equity are the only
-   first-class financial quantities; net profit is derived** (revenue − COGS) and is
-   reporting, not a fairness target and not a score.
+   inventory-at-acquisition-basis + machinery − liabilities = equity. Gross profit is
+   sales revenue minus COGS. **Net earnings are independently totaled from income and
+   expense postings**, including switching receipts/expenses and storage expense.
+   With no owner contributions, distributions, or other direct-to-equity entries,
+   those earnings must equal the change in book equity. Reconciliation verifies the
+   books; it must never set earnings from the equity change or hide a residual.
+   Capitalized inventory and machinery purchases exchange assets rather than create
+   an immediate expense. These financial quantities are not a separate game score.
 
 2. **Decentralized emergence.** Prices, supplier choices, market shares, and firm
    survival emerge from many self-interested local agents with private information and
@@ -132,20 +137,231 @@ Every section below is a consequence of, or a requirement for, that sentence.
 - **Desired inventory = fill `G`:** the whole allocation is paid for, so empty space is
   pure waste. Companies fill the goods space to the brim (bounded by cash and capacity),
   rather than merely covering demand.
-- **Manufacture quantity (T1/T2):** `desired = min(capacity, G − finished)`, rounded down to
+- **Manufacture quantity (T1/T2):** `desired = min(capacity, G / (2 × installed_lines) − finished)`, rounded down to
   whole batches (`⌊desired ÷ output_qty⌋`), then capped by (a) the raw/materials on hand
   (`⌊stock ÷ recipe ratio⌋` per input) and (b) cash for conversion
   (`⌊cash ÷ (conversion × output_qty)⌋`). The economic gates (margin ramp, break-even) are
   in §12.2.
 - **Balanced pipeline:** recipes preserve item count (N inputs → N outputs), so the raw
-  to finished split within `G` is always **1 : 1** — `finished = raw = G/2`.
+  to finished allocation within `G` is **1 : 1**. Each distinct input gets
+  `G / (2 × distinct_inputs)` and each installed output line gets
+  `G / (2 × installed_lines)`. Shared inputs get one company-wide slot. Purchases
+  refill their own slots independently of production margin, output deficits, or
+  current demand, subject to cash, supply, switching fees, and total storage. T1
+  rounds down to whole wholesale lots; T2 rounds down to whole units. Existing
+  over-slot stock is retained and blocks further purchases of that input until
+  consumed. Changes to equipment rebalance allocations without deleting stock.
 - **Cost ladder (count-preserving):** material cost is flat per unit — $1.25 (T1), $1.875
   (T2). Each tier's material cost already includes the upstream tier's 0.25 markup, so the
   realized markup is a true 25 % at every tier. Conversion cost is
   `$0.25 × max(1, complexity−1)`: C-1/C-2 $0.25, C-3 $0.50, C-4 $0.75, C-5 $1.00.
   Unit cost: $1.50 / $1.50 / $2.375 / $2.625 / $2.875.
 
+### Per-tick storage rent
+
+The UI rate is **$2.80 per 1,000 allocated storage units per tick**. An eligible
+company with 20,000 storage pays $56/tick, equivalent to $20,160 over 360 ticks.
+The whole allocation is charged, including machinery and empty space; occupancy
+and product complexity do not change the rate. T0 remains subsidized and exempt.
+
+For each T1/T2 company, after trading and before billing:
+
+1. Compute book equity = cash + license + machinery book value + raw and finished
+   inventory at cost − existing rent arrears.
+2. If equity is below $2,000,000, set this tick's charge and collection to zero.
+   At exactly $2,000,000 the company is eligible. Eligibility is rechecked every
+   tick; a charge can take an eligible company below the threshold.
+3. For eligible companies, add `storage / 1000 * rate` to arrears, then collect
+   up to available nonnegative cash. The unpaid remainder stays a liability.
+
+Tick zero is not billed. Exemption freezes existing arrears rather than forgiving
+or collecting them. Eligible companies still repay old arrears when the new-rent
+rate is zero. Payments leave the economy through `costSinks`; rent never enters
+inventory cost basis or COGS. There is no interest, eviction or automatic bankruptcy.
+Rate and exemption changes apply to future ticks only; no retroactive rebilling or refunds occur.
+On 2026-10-11, the user raised the active exemption from $1.5M to $2M.
+The earlier 24-generation growth target is not enforced by this fixed policy.
+
+**Reporting.** `t1RentCharge`/`t2RentCharge` store actual current-tick expenses;
+`RentPaid` is cumulative cash paid and `RentArrears` is the unpaid balance. Snapshot
+`storageRentExpense` is expense, while `storageRentPayment` includes cash collected
+against older debt. Net profit = gross profit + switching income − switching
+expense − current storage expense; net margin = net profit / sales revenue,
+undefined when revenue is zero. Use the recorded expense, not an
+eligibility check against post-bill equity, to avoid reversing the crossing tick's
+charge in the UI. Each company's expense is split over its own installed lines.
+Product sectors group those lines; company cohorts group home sectors. Zero-line
+companies retain expense in company/cohort/tier totals without inventing a product.
+
+**Configuration and checkpoints.** The UI converts the per-1,000-per-tick rate to
+the legacy persisted `storageRentPerUnitYear` key: `rate * 360 / 1000` (default
+1.008), and converts back for display. Settlement divides this legacy annual rate
+by 360 once per tick; there is no annual payment cycle. Checkpoints preserve rates,
+paid totals, arrears and current charges. Pre-rent checkpoints without a rate load
+with zero rent. Older checkpoints missing only current-charge arrays initialize
+them to zero; the next tick records the new charge normally. Version 4 also
+preserves per-company switching income/expense and net-transfer forecast EMAs.
+Version 5 restores gross-profit price learning. Loading a pre-v5 checkpoint clears
+its learning windows to avoid mixing objectives. Pre-v4 checkpoints also mark
+current net earnings unavailable until the next complete tick. Historical
+switching postings cannot be reconstructed from equity; no such plug is used.
+
+**Performance.** Billing uses NumPy masks, row reductions and `bincount`, without
+Python loops over companies. T2 inventory work is limited to active firms and
+installed lines. Both Python and Numba trading paths call the same settlement.
+`project_storage_rent` in `economy/server/aggregates.py` groups charges with NumPy
+reductions; catalog complexity/sector labels are cached at module load. Each
+snapshot computes these groups once, then attaches scalars to the small display
+row collections. The browser formats supplied expenses and ratios for rendered
+rows; it does not scan all 60,000 companies to determine exemptions. Legacy
+snapshots have a rate-based fallback and cannot reconstruct missing charge history.
+
+Validation covers threshold equality/crossing, inventory valuation, frozen debt,
+zero rates, both engines' cash conservation, checkpoint loading, zero-revenue
+margins, repeated rendering, and differential multi-line/group allocations.
+The full-population benchmark in `tools/performance.py` checks world arrays,
+ledgers, statistics and snapshot fingerprints as well as timings. Use identical
+seed/configuration and tick counts when comparing results; exclude JIT warm-up. The
+2026-10-10 full-population 30-tick comparison matched all behavior fingerprints.
+An interleaved 100-sample allocation check (after 10 warm-ups) measured median
+1.132 ms before and 1.045 ms after (~8% reduction); this is the allocation stage,
+not an overall tick-speed claim. Local evidence: `stats/storage-performance-before.json`,
+`stats/storage-performance-after.json`, `stats/storage-allocation-performance.json`.
+These files are run artifacts, not portable timing guarantees.
+
 ---
+
+### Pending smart-rent reserve proposal (updated 2026-10-11)
+
+**Not active: the content tariffs and revised settlement await the requested final
+user green light.** The user selected a **$2,000,000 equity threshold** for
+all T1/T2 companies: $1,500,000 starting capital plus **$500,000 retained earnings**.
+This supersedes the earlier $1,560,000 proposal. The active flat-rent exemption
+uses the new threshold; the surplus cap below remains a separate pending proposal.
+The user also selected **$2.80 per 1,000 empty storage units per tick** for the
+future content tariff. Other item rates still need calibration.
+T0 remains subsidized. Published tariffs remain universal by stored substance
+complexity and machinery class; the exemption does not introduce company-specific
+prices.
+
+The proposed assessed expense is
+`min(nominal_content_tariff_bill, max(precharge_book_equity - 2_000_000, 0))`.
+A company at or below the threshold incurs no new charge; a company just above it
+pays only from its equity surplus. This replaces the existing full-bill cliff so
+that rent itself cannot consume the protected reserve. Exempt amounts never become
+deferred debt. Actual operating losses can still consume the reserve. Collection
+of existing arrears remains suspended below the threshold; paying a liability
+reduces cash and the liability equally, with no second expense or equity loss.
+
+**Rent-free evidence.** An isolated replay used the old run's seed 137 and full
+configuration for 7,203 ticks, covering all 1,000 T1 and 60,000 T2 companies. It
+exactly reproduced all **155 saved world arrays** at the old checkpoint. Research
+instrumentation posted switching income/expense beside each transfer; net earnings
+were sales revenue minus COGS plus switching receipts minus switching expense.
+No earnings were obtained by subtracting equity endpoints. Those independently
+posted earnings reconciled to assets less liabilities every tick, with a maximum
+per-company full-run residual of **$0.002196** from floating-point arithmetic.
+
+| Complexity | Largest cumulative earnings drawdown | Longest consecutive losing streak | Longest spell below a previous earnings peak |
+|---|---:|---:|---:|
+| C-1 | $138.22 | 1 ticks | 65 ticks |
+| C-2 | $193.78 | 1 ticks | 73 ticks |
+| C-3 | $13.57 | 1 ticks | 46 ticks |
+| C-4 | $6.84 | 2 ticks | 118 ticks |
+| C-5 | $2.59 | 2 ticks | 127 ticks |
+
+Drawdown includes all intervening gains and losses before recovery; it is not
+cash tied up in purchased inventory or equipment. The longest recovery spells
+above all completed within the replay; maxima in different columns need not refer
+to the same company or episode. No firm fell below starting book equity or had
+negative earnings over a rolling 360-tick year (using $0.000001 noise tolerance).
+The $500,000 buffer is about 2,580 times the largest observed drawdown. This buffer
+is the user's policy choice, not a statistical guarantee for other seeds or the
+24-generation target. Neither duration nor average daily cost is multiplied into
+the drawdown again: it already measures the accumulated loss.
+
+Evidence and reproducible scripts are in `stats/smart-rent-proposal/`:
+`audit_no_rent.py`, `no-rent-audit/results.json`, `no-rent-audit/per-company.npz`,
+`summarize_risk.py`, `finalize_reserve.py`, `reserve-proposal.json`, and
+`proposal.json`. Run `audit_no_rent.py`, then `finalize_reserve.py` to incorporate
+the completed evidence into the proposal. These tools operate on isolated worlds
+and proposal files; they do not reset or reconfigure the live server. The audit
+uses the accelerated kernel with additional transaction-site ledger postings;
+company risk statistics use NumPy reductions and masks, not Python company loops.
+
+**The previous tariff table is withdrawn.** It combined arbitrary empty/material
+rates with machinery tariffs fitted to a 360-tick mature continuation. That does
+not establish equal long-term earnings. The obsolete table is preserved only in
+`stats/smart-rent-proposal/withdrawn-360-tick-rates.json`;
+`proposed-rates.json` now explicitly marks the withdrawal. The user-selected
+$2,000,000 equity threshold supersedes its earlier $1,560,000 assumption.
+
+The proper starting evidence is independently posted company earnings over the
+entire rent-free run. The target is $1,500,000 / (24 × 7,200) = $8.680556 per tick.
+
+| Complexity | Mean full-run earnings per company | Mean earnings per company per tick | Static charge budget per company per tick |
+|---|---:|---:|---:|
+| C-1 | $40,199,000.09 | $5,580.87 | $5,572.19 |
+| C-2 | $21,678,455.45 | $3,009.64 | $3,000.96 |
+| C-3 | $906,755.71 | $125.89 | $117.21 |
+| C-4 | $900,295.66 | $124.99 | $116.31 |
+| C-5 | $606,537.49 | $84.21 | $75.53 |
+
+The budget column is observed mean earnings minus the target. It assumes
+unchanged earnings and an always-assessable charge, so it is **not an item rate
+card or a prediction after the exemption**. It includes switching income and
+expense. Source: `stats/smart-rent-proposal/full-run-earnings-baseline.json` and
+`rebuild_earnings_baseline.py`. Earnings are not stationary: C-1 averaged
+$1,045.28/tick in its first 360 ticks and $9,383.46 in its last complete year;
+C-3 rose from $24.16 to a yearly peak of $205.91, then ended near $99.42.
+
+Item-rate calibration must use accumulated **storage-unit-ticks** in disjoint
+empty, machinery and material bins for each company across the full run, not
+final stock quantities. `capture_no_rent_exposure.py` produces that evidence in
+`full-run-exposure/`, checks it against the original checkpoint and audited P&L,
+and operates on an isolated world. Universal rates, ordering constraints and the
+fit objective must be explicit; a short-window fit or arbitrary allocation among
+categories is not evidence of long-term equality. The $2M exemption, actual
+collection, changes in inventory/prices and out-of-period results must then be
+tested separately before approving a rate card.
+
+The completed exposure replay exactly matches all 155 original world arrays and
+the earlier independent earnings audit. Whole-run mean finished stock per company
+was **2,073.73 / 5,071.56 / 1,393.64 / 193.29 / 88.49 units** for C-1 through C-5.
+The endpoint quantities are not interchangeable with these exposure averages.
+
+`full-run-fit-diagnostics.json` tests the eight shared rates for empty space,
+common machinery and C-0 through C-5 substances. On the recorded trajectory,
+requiring `empty <= machinery <= C0 <= C1 <= ... <= C5` cannot satisfy all five
+class-average charge budgets. Even allowing any nonnegative rates, while keeping
+machinery no dearer than substances, the five class means do not uniquely identify
+eight tariffs. An explicit company-dispersion objective can select a historical
+fit, but that fit is not itself a policy validation.
+
+The exemption is material: an unconstrained-by-reserve historical fit can match
+every class mean by offsetting winners against large negative company earnings.
+The reserve prevents those rent-induced losses. `full-run-cap-diagnostic.json`
+rejects this shortcut; even a lower-bound reserve adjustment on unchanged source
+trajectories pushes C-1 mean earnings to $826.76/tick, far above the $8.68 target.
+That is a diagnostic bound under unchanged behavior, not a simulated outcome.
+
+`fit_long_horizon_projection.py` also solves an explicitly limited analytical
+model: every company repeats its observed full-run mean income and occupancy for
+172,800 ticks, with the $1.56M threshold and surplus cap applied each tick. Its
+closed-form settlement was checked against a literal per-tick loop. The model
+can match group means, but one feasible fit leaves 397/400 C-1 and 594/600 C-2
+companies at only $60,000 accumulated earnings while rare outliers determine the
+mean. This is not a simulation of future market behavior, nor evidence of similar
+company growth. Results in `long-horizon-projection.json` are a diagnostic seed,
+not an approved tariff. No claim of global dispersion optimality is made for its
+local constrained optimizer. Those historical diagnostics used the superseded
+$1.56M threshold; they have not been rerun for the $2M exemption or the selected
+$2.80 empty-space rate and do not validate those new settings.
+
+After approval, implement native per-tick tariffs, complete posted net earnings
+and net margins, vectorized settlement, and isolated generation-scale validation
+before any new live smart-rent run. The active flat-rent behavior above already
+uses the $2M exemption; content tariffs and the surplus cap await activation.
 
 ## 5. Product gradient (demand side)
 
@@ -156,7 +372,7 @@ discovered by the derivative-following pricer.
   (cost from §4) — the price at which demand halves. Each distributor's choke is
   `V × [1.8, 3]` (a per-distributor draw), so the choke is a band, not a point.
   `t2ReservationPremium = 0.25` gives more complex goods a higher reservation value
-  (C-3 ×1.5, C-4 ×1.75, C-5 ×2.0), so they clear at higher prices.
+  (C-3 ×1.5, C-4 ×1.72, C-5 ×2.0), so they clear at higher prices.
 - **Latent quantity:** `qmax = 20` (fixed per distributor, `DISTRIBUTOR_QMAX`). The
   per-distributor request therefore stays small (whole units), never exceeding a firm's
   fill-G stock.
@@ -248,8 +464,9 @@ not the absolute equity.
   over time** (no systematic drift like the observed T0-accelerates/T1-T2-decelerates
   pattern). The ~2× opening-equity-per-Age multiple is the *derived aggregate check*,
   not the primary metric.
-- Net profit is derived reporting; cash and equity are the only first-class financials.
-  There is no score.
+- Net earnings are reported from income and expense postings and independently
+  reconciled to equity as specified in §2. There is no separate score. The
+  dashboard includes posted switching income and expense in net profit (§4).
 
 ---
 
@@ -336,8 +553,10 @@ quoted in **whole cents** (rounded half away from zero via `round_to_cent`).
 (`priceObservationTicks = 30`). On all other ticks the price is simply held, clamped to
 the guardrails.
 
-**Decision (at a cadence tick), from the average realized profit/tick accumulated since
-the last observation.** In order:
+**Decision (at a cadence tick), from the average realized gross profit/tick accumulated since
+the last observation.** This is line sales revenue minus COGS. Rent and switching
+transfers remain in net financial reporting and production forecasts, but do not
+adjust the price-learning signal. In order:
 1. **Scarce** (unmet demand: `demand > sales`) → raise, *regardless of the profit baseline*,
    so a lively downstream market is transmitted upstream (the incumbent supplier's 500k
    inventory buffer no longer hides demand pressure).
@@ -353,27 +572,87 @@ the last observation.** In order:
    steered by it (axiom 2).
 3. **Profit baseline available** (a prior observation's realized profit exists) → pure
    derivative-following with a **2 % dead band**: reverse when profit fell ≥ 2 %, continue
-   when it rose ≥ 2 %, and **hold inside the band** — flat profit is the profit-maximum,
+   when it rose > 2 %, and **hold inside the band**. The change is
+   `(current_gross - previous_gross) / max(abs(previous_gross), 1e-9)`, including
+   negative and zero baselines. A shrinking loss is an improvement. Flat profit
+   within this local rule is treated as the profit-maximum,
    so the walk stops there instead of overshooting the flat peak and drifting past it.
 
 **Production & purchase gates (the quantity side of discovery).** A producer manufactures
-only while it can cover the *realized* cost of its current stock —
-`if input_cost_per_item + conversion > price`, output is 0 ("don't produce below cost").
+only while its feasible output covers material cost at inventory basis, conversion,
+and allocated forecast period overhead (eligible rent minus net switching forecast).
+T1/T2 apply the 5% net-margin ramp to actual feasible whole batches after input and
+cash constraints, including production from already-owned inputs. After rounding,
+they recheck total contribution against the fixed overhead and reject a reduced
+plan that would lose money. The variable-cost floor also remains in force.
+Procurement has no margin gate. It refills the bounded input allocations above;
+production assesses its own feasible plan after purchasing.
+Rent remains a period expense, never inventory cost. These planning estimates do
+not guarantee realized net profit: actual sales and end-of-tick rent eligibility
+can differ. Existing finished goods can still sell.
 Tier 0 extraction obeys the same hard gate against its *extraction* cost —
 `if baseCost × difficulty > raw price`, extraction is 0.
 
-A buyer (T1 raw, T2 material) throttles its input purchase, and Tier 0 throttles its
-extraction, with one shared **margin-ramp** instead of a hard buy/no-buy gate. The quantity
+T1/T2 throttle manufacturing, and Tier 0 throttles extraction, with the
+**margin-ramp**. Input restocking is independent of this gate. Production quantity
 is scaled by
 
 `factor = clamp( margin / productionMarginBand , 0, 1 )`,
 
-where `margin = (price − cost)/price`. For T1/T2, `cost = conversion + Σ (recipe ratio ÷
-output) × current supplier price`; for T0, `cost = baseCost × difficulty`.
-`productionMarginBand = 0.05`. So production/extraction stays **full while margin ≥ 5 %**,
-tapers linearly to **0 at break-even** (cost = price), and is 0 for any loss — a late
-cutoff, not an early throttle. The ceiling still transmits the downstream breakeven
-upstream: an overpricing supplier loses orders and is pulled back to a profitable level.
+where producers use **estimated net margin** (2026-10-11):
+
+`margin = 1 − (current_unit_production_cost + allocated_period_cost / planned_units) / price`,
+
+`allocated_period_cost = forecast_line_rent - forecast_line_net_switching_income`.
+
+`current_unit_production_cost = conversion + Σ (recipe ratio ÷ output) × inventory
+cost basis`. The denominator is the feasible **unthrottled** production plan,
+in finished units (T2 batch count × recipe output), not the reduced result or last
+tick's sales. A zero plan stays zero; the implementation guards its denominator at
+one unit. The fixed storage bill is split equally across the company's installed
+lines, matching expense reporting. Eligibility uses a vectorized equity snapshot
+at that tier's production phase entry (before procurement for combined T2): below $2M the estimated rent is zero. Each tier
+computes this projection once; the Python and Numba planners consume the same
+per-company line-expense array. Actual rent is still assessed after trading, when
+equity can differ. The forecast never posts expense or changes inventory cost basis.
+Arrears repayments are not new expenses and are excluded. Switching transfers
+are posted as buyer expense and incumbent income at the cash transfer in both
+engines. Producers' net-transfer forecasts use an EMA with `alpha` (default 0.15),
+updated after the tick from actual income minus expense, and initialized at zero.
+These are estimates of future transfers, not foreknowledge or guaranteed income;
+an unforeseen first switching fee is still included in actual earnings. The $2M
+exemption applies only to storage rent, never to switching expense. Expected net
+switching income/expense is divided across installed lines like storage overhead.
+
+T0 is storage-subsidized but includes forecast switching receipts in its net
+margin; extraction cost is `baseCost × difficulty`. Its planned units are capped
+at extraction capacity before allocating the period item. `productionMarginBand = 0.05`:
+full planned quantity at net margin ≥ 5%, half at 2.5%, zero at or below
+break-even. T1/T2 production additionally rejects a reduced batch plan if it no
+longer covers allocated period overhead. Existing finished stock can still be sold.
+Price learning uses **actual gross profit**, revenue minus COGS. Financial net
+earnings additionally include posted switching income minus switching expense
+minus actual rent. Company-period items are allocated over installed lines for
+reporting; planning forecasts never replace actual postings.
+
+**Pricing/demand audit.** Supplier ranking and order affordability already use
+the delivered order's total cost including the payable fixed switching fee; its
+stock-availability waiver and cash/lot caps remain. Consumer demand is a willingness-
+to-pay curve `qmax / (1 + (effective_price / choke)^elasticity)`, with switching
+friction in effective price. It is not based on producers' margins and should not
+be changed to one. Market-price anchoring, shortage-driven price increases, and
+initial markups are distinct from realized profit and remain unchanged. The
+below-unit-cost production guard is a variable-cost feasibility rule, not a net
+margin target: fixed rent is not capitalized or charged again there. Displayed
+gross margins remain explicitly gross; displayed net margins use all posted items.
+
+Validation: 49 Python tests and JavaScript profitability/formatting checks passed.
+An isolated 30-tick probe from the stopped tick-5,159 checkpoint covered 61,020
+companies. Maximum independent per-company earnings/equity residual was below
+$0.000001. Separate forced-switch fixtures exercised all three buyer tiers in
+both engines, including counterpart postings, exemptions, signed profit learning,
+and checkpoint migration. Earlier calibration artifacts describe the old decision
+rules and are not validation of this revised pricing/procurement policy.
 
 **Step size** adapts: ×1.2 on continuation, no halving on reversal (×1.0), clamped to `[0.01, 1]`.
 The price moves multiplicatively: `P ← clamp(P × exp(± pricingAggressiveness × response × scale))`, where

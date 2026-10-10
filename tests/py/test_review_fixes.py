@@ -68,7 +68,7 @@ const assert = require('assert');
 for (const stock of [0, 100]) {
   const result = globalThis.Phase0Model.adaptivePrice({oldPrice: 100, unitCost: 1,
     profit: 10, previousProfit: 10, direction: 1, sales: 0, stock});
-  assert(result.price > 100);
+  assert.equal(result.price, 100); // Flat net earnings hold inside the dead band.
 }
 """
         subprocess.run(['node', '-e', script], check=True, capture_output=True, text=True)
@@ -110,6 +110,7 @@ for (const stock of [0, 100]) {
             w.t0Inv[[0, 4]] = 10000
             w.t0Price[[0, 4]] = [2., 1.8]
             w.preferredWholesale[0] = 0
+            w.raw[0] = reference.tier1_storage_layout(w, cfg, 0)[0] - 2000
             w.lm1 = 500  # $750 charge exceeds $400 savings on the 2,000-unit order.
             if fast:
                 accelerated.plan_and_buy_inputs(w, cfg, 1)
@@ -124,6 +125,10 @@ for (const stock of [0, 100]) {
             cfg, w = reset_world(dict(SMALL, t2FirmCount=1, t2Capacity={3: 3, 4: 20, 5: 10}))
             w.t1Fin[w.t1Operates != 0] = 100
             w.t1Price[[0, 10]] = [2., 1.8]
+            slot, _, inputs = reference.tier2_storage_layout(w, cfg, 0)
+            for material in inputs:
+                (w.t2Raw if material < 4 else w.t2T1Raw)[material] = slot
+            w.t2Raw[0] -= 1  # Test the same one-unit order under slot-based restocking.
             w.t2Preferred[0] = 0
             w.t2Price[0] = 10
             if fast:

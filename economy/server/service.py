@@ -163,7 +163,7 @@ def _dispatch(rt: KernelRuntime, msg: dict) -> list[dict]:
                          'sort': msg.get('sort') if msg.get('sort') in (
                              'id', 'name', 'sector', 'cash', 'equity', 'inventory', 'raw',
                              'finished', 'capacity', 'utilization', 'margin', 'revenue',
-                             'grossProfit', 'reliability') else 'id',
+                             'grossProfit', 'netProfit', 'reliability') else 'id',
                          'descending': bool(msg.get('descending'))}
         return [{'type': 'snapshot', 'data': rt.publish()}]
     return [{'type': 'error', 'message': f'Unknown message type: {mtype}'}]

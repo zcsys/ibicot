@@ -32,10 +32,10 @@ def run(output):
         e0 = (w.t0Cash + cfg['t0License'] + cfg['t0Reserve']
               + np.array([len(p['elements']) * cfg['t0Machinery'] for p in T0P])
               + (w.t0Inv * w.t0InvBasis).reshape(M.N0, M.NE).sum(1))
-        e1 = (w.t1Cash + w.t1EqBook + cfg['t1License']
+        e1 = (w.t1Cash + w.t1EqBook + cfg['t1License'] - w.t1RentArrears
               + (w.raw * w.rawBasis).reshape(M.N1, M.NE).sum(1)
               + (w.t1Fin * w.t1FinBasis).reshape(M.N1, M.NP).sum(1))
-        e2 = (w.t2Cash[:n] + w.t2EqBook[:n] + cfg['t2License']
+        e2 = (w.t2Cash[:n] + w.t2EqBook[:n] + cfg['t2License'] - w.t2RentArrears[:n]
               + (w.t2Raw * w.t2RawBasis).reshape(M.N2_FIRMS, M.NE)[:n].sum(1)
               + (w.t2T1Raw * w.t2T1Basis).reshape(M.N2_FIRMS, M.NP)[:n].sum(1)
               + np.bincount(line_firms, weights=w.t2Fin[:lc] * w.t2FinBasis[:lc], minlength=n))
