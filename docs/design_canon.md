@@ -334,7 +334,7 @@ adaptive pricer**, plus a player/admin override. Prices are **unbounded economic
 they may go below unit cost (sell at a loss) and there is no ceiling or unit-cost floor —
 per axiom 6, a healthy price settles at an interior equilibrium. Two **numerical
 guardrails** only prevent degenerate values, and the simulation must never settle at them:
-`MIN_UNIT_PRICE = 1e-5` (floor) and `MAX_UNIT_PRICE = 1e9` (ceiling). Every price is
+`MIN_UNIT_PRICE = 0.01` (floor) and `MAX_UNIT_PRICE = 1e9` (ceiling). Every price is
 quoted in **whole cents** (rounded half away from zero via `round_to_cent`).
 
 **Initial price (tick 0)** — the flat first-guess markup from §5:
@@ -398,7 +398,9 @@ sampled sellers in total-cost order (incumbent first; the loyalty charge below a
 and at each seller computes `q_at = demand(price)` then buys `want = max(0, q_at − bought)`
 whole units (capped by that seller's `⌊stock⌋`), stopping once `bought ≥ q_at`. The total
 quantity is therefore pinned to the *marginal* seller's price — a rogue cheap seller
-cannot inflate demand. The unsatisfied remainder is recorded as `endStockUnmet`.
+cannot inflate demand. The unsatisfied remainder is recorded as `endStockUnmet`. An order counts as fulfilled
+only when its entire requested quantity was delivered; partial seller fills do not count
+as full availability for reliability.
 
 **Loyalty charge (real, paid to the incumbent).** A buyer's sampled offers are ranked by the total
 cost of filling its order `q` from each seller alone. Staying with the incumbent
@@ -420,8 +422,8 @@ transfer, not a sink.
 **Adaptive regime.** The per-complexity values above are *bootstrap seeds*, not constants.
 Each tick, after the tiers operate, the kernel folds the observed **average order value**
 (AOV) per buyer class — T1 raw (`raw revenue ÷ purchase events`), T2 material by buying
-complexity (`material spend ÷ purchases`), T3 distributor (`distributor payments ÷ fulfilled
-orders`) — into an EMA (`α = loyaltyEmaAlpha`, default 0.01). Once per **year**
+complexity (`material spend ÷ purchases`), T3 distributor (`distributor payments ÷ purchase
+events`, including partial fills) — into an EMA (`α = loyaltyEmaAlpha`, default 0.01). Once per **year**
 (every `ticksPerYear` ticks) it re-derives
 
 `M = 0.05 × AOV / (unit_cost × 1.5)`,

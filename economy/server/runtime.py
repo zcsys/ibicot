@@ -19,7 +19,7 @@ import numpy as np
 from ..core import model as M
 from ..core.config import normalize_config
 from ..core.rng import hash_seed_vec
-from ..core.state import (T0P, T1P, WorldState, _has_tier2_product, add_tier2_line,
+from ..core.state import (T0P, T1P, WorldState, tier1_goods_space, validate_storage, _has_tier2_product, add_tier2_line,
                           quantize_round, quantize_whole, reset_world)
 from ..kernel.tick import tick as run_tick
 
@@ -57,7 +57,10 @@ def stats_row(world, cfg, tick, month):
     row['t2Cash'] = float(world.t2Cash[:cfg['t2FirmCount']].sum())
     row['t2Equity'] = float(world.t2Cash[:cfg['t2FirmCount']].sum()
                             + world.t2EqBook[:cfg['t2FirmCount']].sum()
-                            + cfg['t2FirmCount'] * cfg['t2License'])
+                            + cfg['t2FirmCount'] * cfg['t2License']
+                            + np.dot(world.t2Fin[:lc], world.t2FinBasis[:lc])
+                            + np.dot(world.t2Raw, world.t2RawBasis)
+                            + np.dot(world.t2T1Raw, world.t2T1Basis))
     row['distributorsActive'] = float(world.marketActive.sum())
     row['distributorsFulfilled'] = float(world.marketFulfilled.sum())
     row['stockUnmet'] = float(world.marketStockUnmet.sum())
@@ -167,13 +170,42 @@ class KernelRuntime:
         self.publish()
 
     def _init_admin(self):
-        self.equipment = [[T1P[i // 100]['product']] for i in range(N1)]
-        self.controller = np.zeros(N1, dtype=np.uint8)
+        # World arrays are authoritative, including when reconstructing a checkpoint.
+        self.equipment = [[p['code'] for j, p in enumerate(M.PRODUCTS)
+                           if self.world.t1Operates[i * NP + j]] for i in range(N1)]
+        self.controller = self.world.t1Controller.copy()
         self.online = np.zeros(N1, dtype=np.uint8)
-        self.playerPrices = [{} for _ in range(N1)]
-        self.controllerT0 = np.zeros(N0, dtype=np.uint8)
+        self.playerPrices = [{p['code']: float(self.world.playerPrice[i * NP + j])
+                              for j, p in enumerate(M.PRODUCTS)
+                              if math.isfinite(self.world.playerPrice[i * NP + j])} for i in range(N1)]
+        self.controllerT0 = self.world.t0Controller.copy()
         self.onlineT0 = np.zeros(N0, dtype=np.uint8)
-        self.playerPricesT0 = [{} for _ in range(N0)]
+        self.playerPricesT0 = [{e: float(self.world.t0PlayerPrice[i * NE + j])
+                                for j, e in enumerate(M.ELEMENTS)
+                                if math.isfinite(self.world.t0PlayerPrice[i * NE + j])} for i in range(N0)]
+
+    def checkpoint_metadata(self):
+        return {
+            'playerLicenses': sorted(self.playerLicenses), 'playerHouse': self.playerHouse,
+            'ownershipAccounting': self.ownershipAccounting, 'ownershipEnforced': self.ownershipEnforced,
+            'adminAccounting': self.adminAccounting,
+            'online': self.online.tolist(), 'onlineT0': self.onlineT0.tolist(),
+            'selectedTierControl': self.selectedTierControl, 'selectedId': self.selectedId,
+            'selectedT0Id': self.selectedT0Id, 'selectedT2Id': self.selectedT2Id,
+            'lastTickT0Produced': self.lastTickT0Produced.tolist(),
+            'lastTickT1Made': self.lastTickT1Made.tolist(),
+        }
+
+    def restore_metadata(self, metadata):
+        for key in ('online', 'onlineT0', 'lastTickT0Produced', 'lastTickT1Made'):
+            if key in metadata:
+                getattr(self, key)[:] = metadata[key]
+        if 'playerLicenses' in metadata:
+            self.playerLicenses = set(metadata['playerLicenses'])
+        for key in ('playerHouse', 'ownershipAccounting', 'ownershipEnforced', 'adminAccounting',
+                    'selectedTierControl', 'selectedId', 'selectedT0Id', 'selectedT2Id'):
+            if key in metadata:
+                setattr(self, key, metadata[key])
 
     def _init_analytics_scratch(self):
         self.prevT0Inventory = np.zeros(N0 * NE, dtype=np.float64)
@@ -272,7 +304,16 @@ class KernelRuntime:
                 raise ValueError('Population changes require Reset.')
         merged = dict(self.cfg)
         merged.update(patch)
-        self.cfg = normalize_config(merged)
+        candidate = normalize_config(merged)
+        if candidate['storage'] != self.cfg['storage'] or candidate['footprint'] != self.cfg['footprint']:
+            validate_storage(self.world, candidate)
+        self.cfg = candidate
+        self.world.cfg = self.cfg
+        for p in M.T2_PRODUCTS:
+            self.world.t2ReferenceCost[p['id']] = M.unit_cost(p['complexity'], self.cfg)
+        self.world.lmUnitCost1 = self.cfg['baseCost']
+        self.world.lmUnitCost2 = self.cfg['t1MaterialCost'] + self.cfg['conversionFactor']
+        self.world.lmUnitCost3 = self.world._mean_t2_unit_cost(self.cfg)
         # Recomputed wholesale (vectorized): choke/eta are the only per-distributor
         # fields that respond to a live config change (routing is supply-driven
         # and gated on Reset by the population guard above).
@@ -379,7 +420,7 @@ class KernelRuntime:
                 for slot in range(int(self.world.t2FirmLineCount[id_])):
                     line = int(self.world.t2FirmLines[id_ * M4 + slot])
                     if self.world.t2LineProduct[line] == product['id']:
-                        self.world.t2PlayerPrice[line] = max(price, self.world.t2FinBasis[line] or self.world.t2UnitCost[line], M.MIN_UNIT_PRICE)
+                        self.world.t2PlayerPrice[line] = quantize_round(price)
                         self.world.t2Price[line] = self.world.t2PlayerPrice[line]
                         self.world.t2LearnOpportunity[line] = self.world.t2LearnPotentialOpportunity[line] = 0
                         self.world.t2LearnProfit[line] = self.world.t2LearnSales[line] = self.world.t2LearnDemand[line] = self.world.t2LearnTicks[line] = 0
@@ -419,16 +460,21 @@ class KernelRuntime:
             return self.publish()
         id_ = int(id_)
         product = M.PRODUCTS[_PI[code]] if code in _PI else None
-        if self.controller[id_] != 1 or product is None or code in self.equipment[id_]:
+        if not (0 <= id_ < N1) or self.controller[id_] != 1 or product is None or code in self.equipment[id_]:
             raise ValueError('Only PLAYER-controlled companies can buy new equipment.')
         if self.world.t1Cash[id_] + 1e-9 < self.cfg['t1Machinery']:
             raise ValueError('Insufficient cash.')
+        held = (self.world.raw[id_ * NE:(id_ + 1) * NE].sum()
+                + self.world.t1Fin[id_ * NP:(id_ + 1) * NP].sum())
+        if held + self.cfg['footprint'][M.complexity(product)] > tier1_goods_space(self.world, self.cfg, id_) + 1e-9:
+            raise ValueError('Insufficient storage space for machinery.')
         self.world.t1Cash[id_] -= self.cfg['t1Machinery']
+        self.world.equipmentSinks += self.cfg['t1Machinery']
         self.world.t1EqBook[id_] += self.cfg['t1Machinery']
         self.equipment[id_].append(code)
         index = id_ * NP + _PI[code]
         input_cost = sum(self._last_finite_wholesale(_EI[element]) * r for element, r in product['inputs'].items())
-        uc = input_cost + M.conversion_cost(product['complexity'], self.cfg)
+        uc = input_cost / product['outputQty'] + M.conversion_cost(product['complexity'], self.cfg)
         self.world.t1Operates[index] = 1
         self.world.t1UnitCost[index] = uc
         self.world.t1Rel[index] = 0.5
@@ -1314,6 +1360,7 @@ class KernelRuntime:
 
         lastSnapshot = {
             'world': dict(M.WORLD_STORY, population=cfg['distributorCount']),
+            'cfg': self.cfg,
             'tick': self.tick, 'month': self.month, 'calendar': M.calendar_at(self.tick),
             'invention': {'possible': M.T2_Catalog_COUNT, 'invented': len(M.T2_PRODUCTS),
                           'reserved': len(M.T2_UNINVENTED_PRODUCTS)},

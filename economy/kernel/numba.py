@@ -18,6 +18,7 @@ from functools import lru_cache
 import numpy as np
 
 from ..core import model as M
+from ..core.trading import select_offer, affordable_order
 from ..core.rng import random_ as _rand
 from ..kernel.tick import market_offers_table, _market_going_rate
 
@@ -257,21 +258,14 @@ if _HAVE_NUMBA:
                 return True
         return False
 
+    _select_offer_nb = _njit(select_offer)
+    _affordable_order_nb = _njit(affordable_order)
+
     @_njit
     def _choose_supplier_nb(offers_flat, start, end, stock, price, preferred, reliability,
-                            best):
-        if (preferred >= 0 and stock[preferred] >= 1 and math.isfinite(price[preferred])
-                and (best < 0 or price[preferred] <= price[best] + _loyalty_surcharge(price[best], reliability[preferred]))):
-            return preferred
-        if best >= 0:
-            return best
-        if start >= end:
-            return -1
-        empty = offers_flat[start]
-        if (preferred >= 0 and _contains(offers_flat, start, end, preferred)
-                and price[preferred] <= price[empty] + _loyalty_surcharge(price[empty], reliability[preferred])):
-            return preferred
-        return empty
+                            best, request=0.0, unit_cost=0.0, multiple=0.0):
+        return _select_offer_nb(offers_flat[start:end], stock, price, preferred,
+                                reliability, request, unit_cost, multiple, 1)
 
     @_njit
     def _demand_at_price(q_max, choke_price, price, elasticity):
@@ -346,7 +340,11 @@ if _HAVE_NUMBA:
                     inv_units += t2_t1raw[firm * NP + m]
             for s in range(t2_firm_line_count[firm]):
                 inv_units += t2_fin[t2_firm_lines[firm * M4 + s]]
-            inventory_room = storage - inv_units
+            goods_space = storage
+            for s in range(t2_firm_line_count[firm]):
+                pid = t2_line_product[t2_firm_lines[firm * M4 + s]]
+                goods_space -= storage - 2 * t2_target[pid]
+            inventory_room = goods_space - inv_units
             if inventory_room < 0.0:
                 inventory_room = 0.0
 
@@ -371,7 +369,7 @@ if _HAVE_NUMBA:
                 pid = t2_line_product[line]
                 capacity = t2_capacity[pid]
                 output_qty = t2_output[pid]
-                target = t2_target[pid]
+                target = goods_space / (2 * line_count)
                 desired = capacity
                 d2 = target - t2_fin[line]
                 if d2 < desired:
@@ -452,7 +450,7 @@ if _HAVE_NUMBA:
                             inv_units += t2_t1raw[firm * NP + mm]
                     for ss in range(t2_firm_line_count[firm]):
                         inv_units += t2_fin[t2_firm_lines[firm * M4 + ss]]
-                    room = storage - inv_units
+                    room = goods_space - inv_units
                     if room < 0.0:
                         room = 0.0
                     requested = math.ceil(need)
@@ -461,19 +459,19 @@ if _HAVE_NUMBA:
                     requested = math.floor(requested)
                     if requested < 0.0:
                         requested = 0.0
+                    if requested <= 0:
+                        continue
                     pref = int(t2_preferred[firm * NP + material])
-                    loyalty_charge = 0.0
-                    if supplier != pref and pref >= 0 and t1_fin[pref] >= requested:
-                        loyalty_charge = _loyalty_charge(t1_unit_cost, t1_rel[pref], loyalty_multiple_t2[firm_cx])
-                        if loyalty_charge > t2_cash[firm]:
-                            supplier = pref
-                            loyalty_charge = 0.0
+                    supplier = _choose_supplier_nb(t1_offers_flat, t1_offers_off[material],
+                        t1_offers_off[material + 1], t1_fin, t1_price, pref, t1_rel, -1,
+                        requested, t1_unit_cost, loyalty_multiple_t2[firm_cx])
+                    if supplier < 0:
+                        continue
+                    supplier, funded, quantity, loyalty_charge = _affordable_order_nb(
+                        supplier, pref, requested, t2_cash[firm], t1_fin, t1_price, t1_rel,
+                        t1_unit_cost, loyalty_multiple_t2[firm_cx], 1)
                     supplier_firm = supplier // NP
                     quote = t1_price[supplier]
-                    funded = min(requested, max(0.0, t2_cash[firm] - loyalty_charge) / quote)
-                    funded = math.floor(funded)
-                    quantity = min(funded, t1_fin[supplier])
-                    quantity = math.floor(quantity)
                     t1_demand[supplier] += funded
                     if funded > 0:
                         t1_opportunities[material] += 1
@@ -598,6 +596,7 @@ if _HAVE_NUMBA:
         cand = np.empty(1 + distributor_search_offers, dtype=np.int64)
         orders = 0
         filled = 0
+        purchases = 0
         activated = 0
         payments = 0.0
 
@@ -645,27 +644,22 @@ if _HAVE_NUMBA:
                 if not _contains(cand, 0, n_cand, candidate):
                     cand[n_cand] = candidate
                     n_cand += 1
+            order_q = 0
             if preferred >= 0:
-                friction = _loyalty_surcharge(t2_price[preferred], t2_rel[preferred])
-            else:
-                friction = 0.0
+                order_q = _demand_units(latent, choke, t2_price[preferred], distributor_eta[buyer], qmax, rounding)
+            friction = 0.0
+            if preferred >= 0 and order_q > 0 and t2_fin[preferred] >= order_q:
+                friction = _loyalty_charge(reference, t2_rel[preferred], loyalty_multiple_t3) / order_q
             _sort_candidates(cand, n_cand, t2_price, preferred, friction)
-            if n_cand > 0:
-                cheapest = cand[0]
-            else:
-                cheapest = -1
             if preferred >= 0 and math.isfinite(t2_price[preferred]) \
                     and t2_fin[preferred] >= _demand_units(latent, choke, t2_price[preferred], distributor_eta[buyer], qmax, rounding):
                 preferred_can_fulfill = True
             else:
                 preferred_can_fulfill = False
-            if cheapest >= 0 and t2_fin[cheapest] >= _demand_units(latent, choke, t2_price[cheapest], distributor_eta[buyer], qmax, rounding):
-                full_filler = cheapest
-            else:
-                full_filler = -1
             bought = 0
             total_desired = 0
             primary = -1
+            sellers = 0
             for ci in range(n_cand):
                 candidate = cand[ci]
                 q_at = _demand_units(latent, choke, t2_price[candidate], distributor_eta[buyer], qmax, rounding)
@@ -675,14 +669,19 @@ if _HAVE_NUMBA:
                 if want <= 0:
                     break
                 total_desired = q_at
-                t2_demand[candidate] += want
-                t2_rel_attempts[candidate] += 1
                 available = int(math.floor(t2_fin[candidate]))
                 take = want if want < available else available
+                if take > 0 and bought == 0 and candidate != preferred and preferred_can_fulfill:
+                    charge = _loyalty_charge(reference, t2_rel[preferred], loyalty_multiple_t3)
+                    if take * (t2_price[preferred] - t2_price[candidate]) <= charge:
+                        continue
+                t2_demand[candidate] += want
+                t2_rel_attempts[candidate] += 1
                 if take <= 0:
                     continue
                 if primary < 0:
                     primary = candidate
+                sellers += 1
                 t2_fin[candidate] -= take
                 payment = take * t2_price[candidate]
                 payments += payment
@@ -691,7 +690,7 @@ if _HAVE_NUMBA:
                 t2_sold[candidate] += take
                 t2_revenue[candidate] += payment
                 t2_cogs[candidate] += take * t2_fin_basis[candidate]
-                t2_rel_available[candidate] += 1
+                t2_rel_available[candidate] += 1 if take >= want else 0
                 bought += take
                 if bought >= q_at:
                     break
@@ -708,12 +707,7 @@ if _HAVE_NUMBA:
                 market_stock_unmet[market] += total_desired - bought
             if bought <= 0:
                 continue
-            if full_filler >= 0:
-                new_incumbent = full_filler
-            elif preferred >= 0:
-                new_incumbent = preferred
-            else:
-                new_incumbent = primary
+            new_incumbent = primary if sellers == 1 and bought >= total_desired else preferred
             distributor_preferred_supplier[buyer] = new_incumbent
             distributor_last_fulfilled[buyer] = bought
             if primary != preferred and preferred_can_fulfill:
@@ -723,9 +717,10 @@ if _HAVE_NUMBA:
                 loyalty_switches[2] += 1.0
                 loyalty_penalties[2] += charge
             market_fulfilled[market] += bought
-            filled += 1
+            purchases += 1
+            filled += 1 if bought >= total_desired else 0
 
-        return orders, filled, activated, payments
+        return orders, filled, activated, payments, purchases
 
     @_njit
     def _observe_markets_nb(alpha, t2_line_count,
@@ -768,7 +763,7 @@ if _HAVE_NUMBA:
 
     @_njit
     def _tier0_supplier_nb(seed, tick, buyer, element, preferred, profile_has, profile_count, t0_price, t0_rel,
-                           t0_inv, min_lot):
+                           t0_inv, min_lot, request=0.0, unit_cost=0.0, multiple=0.0):
         eff = np.empty(N0, dtype=np.float64)
         empty_price = 1.7976931348623157e308
         best = 1.7976931348623157e308
@@ -781,14 +776,9 @@ if _HAVE_NUMBA:
                 eff[s] = float('nan')
                 continue
             fric = 0.0
-            if s != preferred:
-                r = t0_rel[preferred * NE + element] if preferred >= 0 else 0.5
-                if r < 0.0:
-                    r = 0.0
-                elif r > 1.0:
-                    r = 1.0
-                fric = 0.05 * q * (1.0 + r) / 1.5
-            eff[s] = q + fric
+            if request > 0 and s != preferred and preferred >= 0 and t0_inv[preferred * NE + element] >= request:
+                fric = _loyalty_charge(unit_cost, t0_rel[preferred * NE + element], multiple)
+            eff[s] = q * max(request, min_lot) + fric
             if eff[s] < empty_price - 1e-12:
                 empty_price = eff[s]
             if t0_inv[s * NE + element] >= min_lot and eff[s] < best - 1e-12:
@@ -797,6 +787,9 @@ if _HAVE_NUMBA:
         tied_eff = best if has_stocked else empty_price
         if tied_eff == 1.7976931348623157e308:
             return -1
+        if request > 0 and preferred >= 0 and abs(eff[preferred] - tied_eff) <= 1e-12:
+            if not has_stocked or t0_inv[preferred * NE + element] >= min_lot:
+                return preferred
         total = 0.0
         for s in range(N0):
             if not math.isfinite(eff[s]) or abs(eff[s] - tied_eff) > 1e-12:
@@ -842,6 +835,12 @@ if _HAVE_NUMBA:
                 company = cohort * 100 + ((first_firm + rnd) % 100)
                 raw_base = company * NE
                 product_base = company * NP
+                goods_space = storage
+                line_count = 0
+                for p in range(NP):
+                    if t1_operates[product_base + p]:
+                        goods_space -= storage - 2 * t1_target[p]
+                        line_count += 1
                 suppliers = np.empty(NE, dtype=np.int64)
                 for element in range(NE):
                     suppliers[element] = _tier0_supplier_nb(
@@ -852,7 +851,7 @@ if _HAVE_NUMBA:
                         continue
                     cap = t1_capacity
                     output_qty = t1_output[p]
-                    target = t1_target[p]
+                    target = goods_space / (2 * max(1, line_count))
                     desired = cap
                     d2 = target - t1_fin[product_base + p]
                     if d2 < desired:
@@ -898,36 +897,29 @@ if _HAVE_NUMBA:
                     request = math.ceil(need / min_lot) * min_lot
                     t1_purchase_req[raw_base + element] = request
                     t0_req[element] += request
-                    chosen = suppliers[element]
+                    chosen = _tier0_supplier_nb(seed, tick, company, element,
+                        preferred_wholesale[raw_base + element], profile_has, profile_count,
+                        t0_price, t0_rel, t0_inv, min_lot, request, base_cost, loyalty_multiple_t1)
                     if chosen < 0:
                         continue
                     pref = int(preferred_wholesale[raw_base + element])
-                    loyalty_charge = 0.0
-                    if chosen != pref and pref >= 0 and t0_inv[pref * NE + element] >= request:
-                        loyalty_charge = _loyalty_charge(base_cost, t0_rel[pref * NE + element], loyalty_multiple_t1)
-                        if loyalty_charge > t1_cash[company]:
-                            chosen = pref
-                            loyalty_charge = 0.0
-                    supplier_index = chosen * NE + element
-                    quote = t0_price[supplier_index]
-                    if quote < 0.0:
-                        quote = 0.0
-                    affordable = math.floor(max(0.0, t1_cash[company] - loyalty_charge) / max(1e-9, quote))
-                    available = math.floor(max(0.0, t0_inv[supplier_index]))
                     held = 0.0
                     for material in range(NE):
                         held += raw[raw_base + material]
                     for output in range(NP):
                         held += t1_fin[product_base + output]
-                    storage_room = math.floor(max(0.0, storage - held) / min_lot) * min_lot
-                    funded = min(request, affordable, storage_room)
-                    funded = math.floor(funded / min_lot) * min_lot
+                    storage_room = math.floor(max(0.0, goods_space - held) / min_lot) * min_lot
+                    chosen, funded, bought, loyalty_charge = _affordable_order_nb(
+                        chosen, pref, min(request, storage_room), t1_cash[company],
+                        t0_inv[element::NE], t0_price[element::NE], t0_rel[element::NE],
+                        base_cost, loyalty_multiple_t1, min_lot)
+                    supplier_index = chosen * NE + element
+                    quote = t0_price[supplier_index]
+                    available = math.floor(t0_inv[supplier_index])
                     t0_funded_req[element] += funded
                     if funded > 0:
                         t0_opportunities[element] += 1
                     t0_demand[supplier_index] += funded
-                    bought = min(funded, available)
-                    bought = math.floor(bought / min_lot) * min_lot
                     attempt = 1 if request > 0 else 0
                     t0_rel_attempts[supplier_index] += attempt
                     t0_rel_checks[supplier_index] += attempt

@@ -67,17 +67,18 @@
     't2Equity', 't2License', 't2MaterialCost', 'conversionFactor', 'storage',
     'distributorActivation', 'distributorSearchOffers',
     'chokeMin', 'chokeMax', 'elasticity', 'productionMarginBand', 't2ReservationPremium',
-    'pricingAggressiveness', 'alpha', 'wholesalePriceResponse', 'priceObservationTicks',
+    'pricingAggressiveness', 'alpha', 'wholesalePriceResponse', 'marketAnchorBand', 'priceObservationTicks',
     'reliabilityAlpha', 'switchingStableBand', 'loyaltyEmaAlpha',
   ];
   for (const [id, value] of Object.entries(M.ECONOMY_DEFAULTS)) if ($(id)) $(id).value = value;
   const productCodes = ['W', 'E', 'F', 'A', 'W+E', 'W+F', 'W+A', 'E+F', 'E+A', 'F+A'];
+  let serverCfg = null;
   function readCfg() {
-    const c = { ...M.ECONOMY_DEFAULTS };
+    const c = { ...(serverCfg || M.ECONOMY_DEFAULTS) };
     for (const id of PARAMS) c[id] = +$(id).value;
     c.t2Machinery = { 3: +$('t2Machinery3').value, 4: +$('t2Machinery4').value, 5: +$('t2Machinery5').value };
     c.t2Capacity = { 3: +$('t2Capacity3').value, 4: +$('t2Capacity4').value, 5: +$('t2Capacity5').value };
-    c.footprint = { ...M.ECONOMY_DEFAULTS.footprint };
+    c.footprint = { ...(serverCfg || M.ECONOMY_DEFAULTS).footprint };
     return c;
   }
   for (let i = 0; i < 1000; i++) {
@@ -285,6 +286,12 @@
   worker.onmessage = (e) => {
     const m = e.data;
     if (m.type === 'snapshot') {
+      if (m.data.cfg && JSON.stringify(serverCfg) !== JSON.stringify(m.data.cfg)) {
+        serverCfg = m.data.cfg;
+        for (const id of PARAMS) if ($(id)) $(id).value = serverCfg[id];
+        for (const key of ['t2Machinery', 't2Capacity'])
+          for (const c of [3, 4, 5]) $(key + c).value = serverCfg[key][c];
+      }
       latestSnapshot = m.data;
       const key = selectedTier + ':' + selectedCompanyId;
       companyDetailData = m.data.expandedDetails?.[key] || companyDetailData;

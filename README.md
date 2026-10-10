@@ -22,8 +22,9 @@ goods) follow the **Star Business** naming catalog, and house style is
 
 `serve` starts a FastAPI + WebSocket service on `http://127.0.0.1:8000`, serves the
 dashboard at `/index.html`, and opens it in a browser. Use **Run / Run Max / Pause /
-Step / Reset / Apply Params** — the Python kernel is the world, and the first load
-resets to full population (~6 s).
+Step / Reset / Apply Params** — the Python kernel owns the world. Browsers attach
+to its current state; only **Reset** starts a new world. The server defaults to full
+population and accepts `ECONOMY_CFG` for its initial configuration.
 
 The launcher needs Python 3.12 with NumPy; Numba and FastAPI are vendored into
 `.pydeps/` (git-ignored). If `.pydeps/` is missing, run the `pip install` line the

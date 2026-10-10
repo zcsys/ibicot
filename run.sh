@@ -78,6 +78,7 @@ case "${1:-}" in
   test)
     "$PY" -W ignore tests/py/test_rng.py
     "$PY" -W ignore tests/py/test_kernel.py
+    "$PY" -W ignore tests/py/test_review_fixes.py
     ;;
   *)
     usage

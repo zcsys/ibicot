@@ -69,11 +69,11 @@ T1P = [{'name': p['companyName'], 'product': p['code']} for p in M.PRODUCTS]
 
 
 def quantize_whole(x: float, floor: float = 0.0) -> float:
-    return M.round_to_cent(x)
+    return M.round_to_cent(M.clamp(x, M.MIN_UNIT_PRICE, M.MAX_UNIT_PRICE))
 
 
 def quantize_round(x: float, floor: float = 0.0) -> float:
-    return M.round_to_cent(x)
+    return M.round_to_cent(M.clamp(x, M.MIN_UNIT_PRICE, M.MAX_UNIT_PRICE))
 
 
 # --------------------------------------------------------------------------
@@ -110,7 +110,7 @@ def _array_spec(cfg):
     # many entries are initialized and processed.
     N2F = M.N2_FIRMS
     NUF = M.N_DISTRIBUTORS
-    ML = min(M.MAX_T2_LINES, cfg['t2FirmCount'])  # single-machine: one line per firm
+    ML = min(M.MAX_T2_LINES, cfg['t2FirmCount'] * M.T2_MAX_PRODUCTS_PER_FIRM)
     n_t2 = len(M.T2_PRODUCTS)  # 200
 
     spec = [
@@ -121,9 +121,7 @@ def _array_spec(cfg):
     ]
     spec += _learn('t0', N0 * NE)
     spec += _learn('t1', N1 * NP)
-    # t2 learner/demand arrays are MAX_T2_LINES (sourceViews passes MAX_T2_LINES
-    # to priceLearningViews), NOT the cfg-scaled ML used by the line arrays.
-    spec += _learn('t2', M.MAX_T2_LINES)
+    spec += _learn('t2', ML)
     spec += [
         ('difficulty', 'f64', NE),
         ('t0Inv', 'f64', N0 * NE),
@@ -305,6 +303,45 @@ def _has_tier2_product(world, firm, product_id):
     return False
 
 
+def tier1_goods_space(world, cfg, firm):
+    footprint = sum(cfg['footprint'][M.complexity(p)] for i, p in enumerate(M.PRODUCTS)
+                    if world.t1Operates[firm * M.NP + i])
+    return cfg['storage'] - footprint
+
+
+def tier2_goods_space(world, cfg, firm):
+    lines = world.t2FirmLines[firm * M.T2_MAX_PRODUCTS_PER_FIRM:
+                              firm * M.T2_MAX_PRODUCTS_PER_FIRM + int(world.t2FirmLineCount[firm])]
+    footprint = sum(cfg['footprint'][M.T2_PRODUCTS[int(world.t2LineProduct[line])]['complexity']]
+                    for line in lines)
+    return cfg['storage'] - footprint
+
+
+def tier2_occupied_space(world, cfg, firm):
+    lines = world.t2FirmLines[firm * M.T2_MAX_PRODUCTS_PER_FIRM:
+                              firm * M.T2_MAX_PRODUCTS_PER_FIRM + int(world.t2FirmLineCount[firm])]
+    return (cfg['storage'] - tier2_goods_space(world, cfg, firm)
+            + world.t2Raw[firm * M.NE:(firm + 1) * M.NE].sum()
+            + world.t2T1Raw[firm * M.NP:(firm + 1) * M.NP].sum()
+            + world.t2Fin[lines].sum())
+
+
+def validate_storage(world, cfg):
+    """Reject a configuration that would put installed assets outside storage."""
+    footprint1 = np.array([cfg['footprint'][M.complexity(p)] for p in M.PRODUCTS])
+    occupied1 = (world.t1Operates.reshape(M.N1, M.NP) @ footprint1
+                 + world.raw.reshape(M.N1, M.NE).sum(axis=1)
+                 + world.t1Fin.reshape(M.N1, M.NP).sum(axis=1))
+    n, lc = cfg['t2FirmCount'], int(world.t2LineCount)
+    footprint2 = np.array([cfg['footprint'][p['complexity']] for p in M.T2_PRODUCTS])
+    occupied2 = (world.t2Raw.reshape(M.N2_FIRMS, M.NE)[:n].sum(axis=1)
+                 + world.t2T1Raw.reshape(M.N2_FIRMS, M.NP)[:n].sum(axis=1)
+                 + np.bincount(world.t2LineFirm[:lc], minlength=n,
+                               weights=world.t2Fin[:lc] + footprint2[world.t2LineProduct[:lc]]))
+    if (occupied1 > cfg['storage'] + 1e-9).any() or (occupied2 > cfg['storage'] + 1e-9).any():
+        raise ValueError('Storage must accommodate installed machinery and existing goods.')
+
+
 def add_tier2_line(world, cfg, firm, product, paid=True):
     firm = int(firm)
     if not (0 <= firm < cfg['t2FirmCount']) or product is None:
@@ -319,6 +356,8 @@ def add_tier2_line(world, cfg, firm, product, paid=True):
         raise ValueError('Machinery requires an eligible sector and capability.')
     if paid and world.t2Cash[firm] < cfg['t2Machinery'][product['complexity']]:
         raise ValueError('Insufficient cash.')
+    if tier2_occupied_space(world, cfg, firm) + cfg['footprint'][product['complexity']] > cfg['storage'] + 1e-9:
+        raise ValueError('Insufficient storage space for machinery.')
     line = world.t2LineCount
     world.t2LineCount += 1
     world.t2FirmLines[firm * M.T2_MAX_PRODUCTS_PER_FIRM + int(world.t2FirmLineCount[firm])] = line
@@ -367,8 +406,8 @@ def initialize_tier2(world, cfg):
 
     # Canon topology (§3): 60,000 single-machine firms — 1,800 C-3 / 300 C-4 /
     # 50 C-5 per product (reverse 6:3:1 ratio).  Each firm owns exactly one line.
-    # A reduced cfg['t2FirmCount'] takes a stratified prefix (C-3 first, then
-    # C-4, then C-5) so small regression fixtures stay representative.
+    # A reduced cfg['t2FirmCount'] takes a product prefix; small regression
+    # fixtures must explicitly assign products to cover every complexity.
     target_firms = cfg['t2FirmCount']
     per_product = M.T2_FIRMS_PER_PRODUCT
     assigned = []
@@ -508,4 +547,5 @@ def reset_world(cfg):
     initialize_tier2(world, cfg)
     initialize_distributors(world, cfg)
 
+    validate_storage(world, cfg)
     return cfg, world

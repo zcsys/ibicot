@@ -35,21 +35,20 @@ _runtime: KernelRuntime | None = None
 def runtime() -> KernelRuntime:
     global _runtime
     if _runtime is None:
-        # Bootstrap with a tiny population so first connect is instant; the UI's
-        # `init` message then resets to whatever population its config selects.
-        cfg = json.loads(os.environ.get('ECONOMY_CFG', '{"distributorCount":100,"t2FirmCount":200}'))
+        # The server owns the initial configuration; browser attachment is read-only.
+        cfg = json.loads(os.environ.get('ECONOMY_CFG', '{}'))
         _runtime = KernelRuntime(cfg)
     return _runtime
 
 
 @app.get('/health')
-def health():
+async def health():
     rt = runtime()
     return {'status': 'ok', 'tick': rt.tick, 'engine': 'python'}
 
 
 @app.get('/snapshot')
-def snapshot():
+async def snapshot():
     return runtime().publish()
 
 
@@ -58,14 +57,14 @@ class CheckpointRequest(BaseModel):
 
 
 @app.post('/checkpoint/save')
-def checkpoint_save(req: CheckpointRequest):
+async def checkpoint_save(req: CheckpointRequest):
     rt = runtime()
-    save_checkpoint(req.path, rt.cfg, rt.tick, rt.world, rt.state)
+    save_checkpoint(req.path, rt.cfg, rt.tick, rt.world, rt.state, rt.checkpoint_metadata())
     return {'ok': True, 'path': req.path, 'tick': rt.tick}
 
 
 @app.post('/checkpoint/load')
-def checkpoint_load(req: CheckpointRequest):
+async def checkpoint_load(req: CheckpointRequest):
     global _runtime
     cfg, tick, world, scalars = load_checkpoint(req.path)
     rt = KernelRuntime.__new__(KernelRuntime)
@@ -74,6 +73,7 @@ def checkpoint_load(req: CheckpointRequest):
     rt.running = False
     rt.mode = 'fixed'
     rt.targetTPS = 30
+    metadata = scalars.pop('runtimeMetadata', {})
     rt.state = scalars
     rt.selectedTierControl = 'T1'
     rt.selectedId = 0
@@ -99,8 +99,16 @@ def checkpoint_load(req: CheckpointRequest):
     rt.targetTick = int(os.environ.get('ECONOMY_MAX_TICK', str(M.TIME['ticksPerGeneration'])) or 0)
     rt._init_admin()
     rt._init_analytics_scratch()
+    rt.restore_metadata(metadata)
     rt.publish()
-    _runtime = rt
+    if _runtime is None:
+        _runtime = rt
+    else:
+        # Keep object identity: connected WebSockets hold this runtime reference.
+        # Routes execute on the event loop, so no tick can interleave this swap.
+        _runtime.pause()
+        _runtime.__dict__.clear()
+        _runtime.__dict__.update(rt.__dict__)
     return {'ok': True, 'path': req.path, 'tick': tick}
 
 
@@ -108,8 +116,7 @@ def _dispatch(rt: KernelRuntime, msg: dict) -> list[dict]:
     """Return the list of messages to send back for a command."""
     mtype = msg.get('type')
     if mtype == 'init':
-        rt.reset(msg.get('cfg') or rt.cfg)
-        return [{'type': 'snapshot', 'data': rt.lastSnapshot}]
+        return [{'type': 'snapshot', 'data': rt.publish()}]
     if mtype == 'reset':
         rt.reset(msg.get('cfg') or rt.cfg)
         return [{'type': 'snapshot', 'data': rt.lastSnapshot}]
@@ -209,7 +216,7 @@ async def _run_loop(ws: WebSocket, rt: KernelRuntime):
             # Switch mode on the fly (Run ⇄ Run Max) without leaving the loop.
             rt.run(pending.get('mode') or 'fixed')
             continue
-        if pending.get('type') in ('pause', 'reset', 'init'):
+        if pending.get('type') in ('pause', 'reset'):
             for resp in _dispatch(rt, pending):
                 await ws.send_json(resp)
             return

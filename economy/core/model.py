@@ -22,7 +22,8 @@ ELEMENTS: list[str] = _DATA['ELEMENTS']
 T1_BASIC_MACHINERY = _DATA['T1_BASIC_MACHINERY']
 T1_COMPOUND_MACHINERY = _DATA['T1_COMPOUND_MACHINERY']
 T2_ROUTE_SETUP = _DATA['T2_ROUTE_SETUP']
-MIN_UNIT_PRICE = _DATA['MIN_UNIT_PRICE']
+# Quotes are whole cents, so the smallest representable positive quote is $0.01.
+MIN_UNIT_PRICE = max(0.01, _DATA['MIN_UNIT_PRICE'])
 # Numerical guardrail ceiling for prices (never an economic bound — see canon
 # axiom 6: prices must settle at an interior equilibrium, not on a guardrail).
 MAX_UNIT_PRICE = 1e9
@@ -67,7 +68,7 @@ N0 = 20
 N1 = 1000
 N2_FIRMS = 60000            # canon: 60,000 single-machine T2 firms (was 61,950)
 N_DISTRIBUTORS = WORLD_STORY['population']          # 1,000,000
-MAX_T2_LINES = N2_FIRMS     # one machine/line per firm at start
+MAX_T2_LINES = N2_FIRMS * T2_MAX_PRODUCTS_PER_FIRM
 MONTH = TIME['ticksPerMonth']                     # 30
 # Firms per product by complexity (canon §3): C-3 1,800 · C-4 300 · C-5 50.
 T2_FIRMS_PER_PRODUCT = {3: 1800, 4: 300, 5: 50}

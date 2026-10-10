@@ -34,7 +34,7 @@
   const T2_ROUTE_SETUP = 1000;
   // Per-unit quotes support fractional cents for bulk inputs. At the
   // thousand-unit wholesale minimum this precision represents one cent.
-  const MIN_UNIT_PRICE = 0.00001;
+  const MIN_UNIT_PRICE = 0.01;
   const TIER_BOUNDARIES = Object.freeze({ T1: Object.freeze([1, 2]), T2: Object.freeze([3, 4, 5]) });
   // Authored refinery roster (Star Business naming catalog §5): compact
   // American corporate identities, in material order. The generic company

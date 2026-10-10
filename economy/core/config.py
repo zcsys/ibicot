@@ -161,21 +161,23 @@ def normalize_config(c) -> dict:
     d['reliabilityAlpha'] = M.clamp(d['reliabilityAlpha'], 0, 1)
     d['switchingStableBand'] = max(1e-9, d['switchingStableBand'])
     # loyaltyMultiple: {1: scalar (C-1/C-2 raw buyer), 2: {3,4,5: scalar}, 3: scalar}
-    _lm = d['loyaltyMultiple']
-    if not isinstance(_lm, dict):
-        _lm = dict(default_cfg()['loyaltyMultiple'])
-    for _k in (1, 3):
-        _v = float(_lm.get(_k, default_cfg()['loyaltyMultiple'][_k]))
-        _lm[_k] = max(0.0, _v) if math.isfinite(_v) else float(default_cfg()['loyaltyMultiple'][_k])
-    _sub = _lm.get(2)
-    if not isinstance(_sub, dict):
-        _sub = dict(default_cfg()['loyaltyMultiple'][2])
-    _out2 = {}
-    for _c in (3, 4, 5):
-        _v = float(_sub.get(_c, default_cfg()['loyaltyMultiple'][2][_c]))
-        _out2[int(_c)] = max(0.0, _v) if math.isfinite(_v) else float(default_cfg()['loyaltyMultiple'][2][_c])
-    _lm[2] = _out2
-    d['loyaltyMultiple'] = _lm
+    source = d['loyaltyMultiple'] if isinstance(d['loyaltyMultiple'], dict) else {}
+    def member(mapping, key, fallback):
+        return mapping.get(key, mapping.get(str(key), fallback))
+    def multiple(value, fallback):
+        try:
+            value = float(value)
+        except (TypeError, ValueError):
+            return fallback
+        return max(0.0, value) if math.isfinite(value) else fallback
+    base = defaults['loyaltyMultiple']
+    sub = member(source, 2, {})
+    sub = sub if isinstance(sub, dict) else {}
+    d['loyaltyMultiple'] = {
+        1: multiple(member(source, 1, base[1]), base[1]),
+        2: {c: multiple(member(sub, c, base[2][c]), base[2][c]) for c in (3, 4, 5)},
+        3: multiple(member(source, 3, base[3]), base[3]),
+    }
     d['loyaltyEmaAlpha'] = M.clamp(d['loyaltyEmaAlpha'], 0.0001, 1.0)
     d['priceObservationTicks'] = max(1, min(360, math.floor(d['priceObservationTicks'])))
     wpr = d['wholesalePriceResponse']
