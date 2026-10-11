@@ -17,8 +17,8 @@ from economy.kernel import tick as reference
 from economy.server.persistence import save_checkpoint, load_checkpoint
 from economy.server.runtime import KernelRuntime, stats_row
 
-# Keep legacy-rate scenarios explicit; the default-rate test below uses the current rate.
-SMALL = {'t2FirmCount': 12, 'distributorCount': 30, 'storageRentPerUnitYear': 20.16}
+# Keep paid-rent scenarios explicit while the current experiment disables rent.
+SMALL = {'t2FirmCount': 12, 'distributorCount': 30, 'storage': 20000, 'storageRentPerUnitYear': 20.16}
 
 
 class StorageRentTests(unittest.TestCase):
@@ -31,7 +31,8 @@ class StorageRentTests(unittest.TestCase):
         self.addCleanup(self.stats_patch.stop)
 
     def test_per_tick_full_pool_and_t0_exemption(self):
-        cfg, w = reset_world({k:v for k,v in SMALL.items() if k != 'storageRentPerUnitYear'})
+        cfg, w = reset_world({k:v for k,v in SMALL.items() if k not in ('storageRentPerUnitYear', 'storage')})
+        cfg['storageRentPerUnitYear'] = 1.008
         w.t1Cash += 1000000
         w.t2Cash[:12] += 1000000
         start0, start1, start2 = w.t0Cash.copy(), w.t1Cash.copy(), w.t2Cash.copy()
@@ -40,10 +41,11 @@ class StorageRentTests(unittest.TestCase):
             result = settle_storage_rent(w, cfg, t)
             self.assertAlmostEqual(result['t2RentExpense'], 56 * 12)
         np.testing.assert_array_equal(w.t0Cash, start0)
-        np.testing.assert_allclose(w.t1Cash, start1 - 20160)
+        annual1 = np.full(M.N1,50400)
+        np.testing.assert_allclose(w.t1Cash, start1 - annual1)
         np.testing.assert_allclose(w.t2Cash[:12], start2[:12] - 20160)
         np.testing.assert_array_equal(w.t2Cash[12:], start2[12:])
-        self.assertAlmostEqual(w.costSinks, 20160 * 1012, places=6)
+        self.assertAlmostEqual(w.costSinks, annual1.sum() + 20160 * cfg['t2FirmCount'], places=6)
         self.assertAlmostEqual(w.t2RentPaid[0], 20160)
 
     def test_unpaid_rent_is_collected_next_tick(self):
@@ -96,7 +98,7 @@ class StorageRentTests(unittest.TestCase):
         expected = {k: np.zeros_like(v) for k,v in actual.items()}
         for firm in range(M.N1):
             charge = w.t1RentCharge[firm]
-            expected['cohorts1'][firm // 100] += charge
+            expected['cohorts1'][firm // M.T1_FIRMS_PER_MATERIAL] += charge
             products = np.flatnonzero(w.t1Operates.reshape(M.N1, M.NP)[firm])
             for product in products:
                 expected['complexity'][M.PRODUCTS[product]['complexity']] += charge / len(products)
@@ -170,7 +172,7 @@ class StorageRentTests(unittest.TestCase):
 
     def test_normalization_and_zero_rate(self):
         self.assertEqual(normalize_config({'storageRentPerUnitYear': -5})['storageRentPerUnitYear'], 0)
-        self.assertEqual(normalize_config({'storageRentPerUnitYear': float('nan')})['storageRentPerUnitYear'], 1.008)
+        self.assertEqual(normalize_config({'storageRentPerUnitYear': float('nan')})['storageRentPerUnitYear'], 0)
         cfg, w = reset_world(dict(SMALL, storageRentPerUnitYear=0))
         before = w.t1Cash.copy()
         settle_storage_rent(w, cfg, 360)
@@ -223,6 +225,8 @@ class StorageRentTests(unittest.TestCase):
                 continue
             for eligible in (False, True):
                 cfg, w = reset_world(SMALL)
+                product = next(p for p in M.T2_PRODUCTS if p['complexity']==3)
+                w.t2LineProduct[:12] = product['id']
                 w.t1Fin[:] = 10000.0 * w.t1Operates
                 w.t1FinBasis[:] = 1.5
                 w.t1Price[:] = 1.5
@@ -245,7 +249,7 @@ class StorageRentTests(unittest.TestCase):
             for eligible in (False, True):
                 cfg, w = reset_world(dict(SMALL, storageRentPerUnitYear=1.008))
                 # Reproduce a refinery replacing eight daily sales from existing raw stock.
-                firm = 906
+                firm = 9 * M.T1_FIRMS_PER_MATERIAL + 6
                 product = M.PRODUCTS[9]
                 index = firm * M.NP + 9
                 w.t1Fin[index] = reference.tier1_stock_target(w, cfg, product, index) - 8
@@ -302,7 +306,7 @@ class StorageRentTests(unittest.TestCase):
                 w.t2Price[i] = round(w.t2UnitCost[i] * 1.25, 2)
             w.t1Cash[::2] += 1000000
             w.t2Cash[:200:2] += 1000000
-            extra = next(p for p in M.T2_PRODUCTS if p['sectorIndex'] == w.t2Sector[0] and p['complexity'] == 4)
+            extra = next(p for p in M.T2_PRODUCTS if p['sectorIndex'] == w.t2Sector[0] and p['complexity'] == 4 and p['id'] != w.t2LineProduct[0])
             add_tier2_line(w, cfg, 0, extra)
             w.t1Operates[1] = 1
             worlds.append(w)

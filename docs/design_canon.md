@@ -1,4 +1,9 @@
-# Design canon — Star Business kernel
+> **Naming only:** [Midbridge Colony Naming Catalog](Midbridge_Colony_Naming_Catalog.md) supplies names for existing entities; its invented setting, material interpretations, company roles, and additional supplier companies are not adopted. See [implementation mapping](naming-integration.md). Existing rules and company roles remain authoritative.
+
+
+> **2026-10-11 update:** The active fresh-world recipe, population, storage and cost-reference rules are specified in [Midbridge integration](midbridge-integration.md). Those rules supersede the 200-product, 60,000-company, count-preserving and equal-input-space assumptions below. Distributor activation is now 10.5%. Earlier economic calibration remains historical.
+
+# Design canon — Midbridge Colony kernel
 
 > **Status:** settled by review. This is the **single source of truth**: it states
 > *what must be true* of the economy kernel and the game's entry into it, and records
@@ -81,11 +86,11 @@ Every section below is a consequence of, or a requirement for, that sentence.
   single-machine firms** in the reverse 6:3:1 ratio: **C-3 = 36,000** (20 × 1,800),
   **C-4 = 18,000** (60 × 300), **C-5 = 6,000** (120 × 50).
 - **1,000,000 Tier 3 distributors** (resident distributors).
-- **The six two-element extractors are special-purpose**: Mudrock Machinery Co.
-  (machinery), Steam Ridge Financial Inc. (financial services), Dustline Spatial Solutions
+- **The six two-element extractors are special-purpose**: Claywell & Sons
+  (machinery), Hotwell Extraction Corp. (financial services), Dustline Spatial Solutions
   Corp. (warehouses, land, and industrial space — the Storage Concession Fee), Flare
   Basin Advertising Incorporated (advertising), Cloudline Games & Entertainment
-  Corporation (games and entertainment), and Hotrock Utility Company (utilities). The
+  Corporation (games and entertainment), and Cinder Ridge Mining, Inc. (utilities). The
   single-element extractors are pure extractors. These service layers are **deferred for
   the PoC** — documented, not active (mechanics TBD), except the machinery maker, which
   is active in the Machinery Market.
@@ -104,7 +109,7 @@ Every section below is a consequence of, or a requirement for, that sentence.
 - **Tier 2 machinery rises with complexity:** C-3 = **$75K**, C-4 = **$375K**, C-5 =
   **$420K** (Tier 1 flat at $15K). The size gradient lives in Tier 2; higher complexity ⇒
   larger machinery.
-- **Throughput (per machine, per tick):** Tier 0 extraction is **200,000** per firm per tick
+- **Throughput (per machine, per tick):** Tier 0 extraction is **250,000 per installed element machine per tick**, independently for each machine
   (extraction, not a machine line). Tier 1 is flat — C-1 = C-2 = **2,000**. Tier 2 falls with
   complexity — C-3 = **30**, C-4 = **20**, C-5 = **10**. One machine = one product line =
   this capacity; there is no separate "line" concept.
@@ -115,7 +120,7 @@ Every section below is a consequence of, or a requirement for, that sentence.
   `(price − cost)/price` falls below 5 % (`productionMarginBand`).
 - **Tier 0 extraction quantity:** per element, `made = min(deficit, capacity, headroom,
   ⌊cash ÷ cost⌋)`, where `deficit = target − inventory` (the element's even share of the
-  fill-to-brim 500,000 pool) and `headroom = storage − total inventory` (free space). When
+  fill-to-brim 20,000,000 pool) and `headroom = storage − total inventory` (free space). When
   the firm's capacity or cash cannot cover every element's deficit, the budget is
   **apportioned across elements proportionally to their deficits**, so no single element
   starves the others.
@@ -129,7 +134,7 @@ Every section below is a consequence of, or a requirement for, that sentence.
 - **Storage (working standard 20,000):** one firm-level pool shared by raw, finished,
   and machinery. Machinery footprint is fixed — C-1/C-2 = 1,000, C-3 = 3,000,
   C-4 = 4,000, C-5 = 5,000 — leaving goods space `G = 20,000 − machinery` for raw and
-  finished. **Tier 0 storage is a separate, fully-subsidized raw pool of 500,000 per firm**
+  finished. **Tier 0 storage is a separate, fully-subsidized raw pool of 20,000,000 per firm**
   (no machinery footprint; extraction equipment is an equity asset, not a storage cost).
 - **Storage Royalty (deferred for PoC):** Tier 0 is fully subsidized (no storage or
   machinery costs). Tier 1 and Tier 2 would pay a minuscule per-tick fee per storage
@@ -683,16 +688,16 @@ challenger costs `P_chal × q + loyaltyCharge`, where
 reference, independent of the current market price, so a price drop does not shrink the
 barrier — and `reliability_inc` is the incumbent's reliability (0–1), so the
 `(1 + reliability)` factor makes sourcing away from a reliable supplier cost up to 2× more. `M` is a **per-complexity** multiple, sized so the charge equals ~5 % of a typical
-order: **41.665** for the T1 raw buyer (C-1/C-2, equal), **{3: 0.605, 4: 0.325, 5: 0.13}**
-for T2 intermediate buyers by the buying firm's complexity, and **0.485** for T3 distributors.
+order at reliability 0.5. Starting multiples target $50 for T1 and $1.50 for T2/T3 at reliability 0.5; see the current calibration in
+[Midbridge integration](midbridge-integration.md).
 The charge is **fixed per disloyal purchase** (independent of order size, so
 a 1-unit order cannot dodge it) and is **paid to the incumbent**: deducted from the buyer's cash and credited to the incumbent — a
 transfer, not a sink.
 
 **Adaptive regime.** The per-complexity values above are *bootstrap seeds*, not constants.
 Each tick, after the tiers operate, the kernel folds the observed **average order value**
-(AOV) per buyer class — T1 raw (`raw revenue ÷ purchase events`), T2 material by buying
-complexity (`material spend ÷ purchases`), T3 distributor (`distributor payments ÷ purchase
+(AOV) per buyer class — T1 raw (`raw revenue ÷ successful purchase events`), T2 material by buying
+complexity (`material spend ÷ purchases`), T3 distributor (`merchandise payments excluding switching charges ÷ purchase
 events`, including partial fills) — into an EMA (`α = loyaltyEmaAlpha`, default 0.01). Once per **year**
 (every `ticksPerYear` ticks) it re-derives
 
@@ -700,7 +705,7 @@ events`, including partial fills) — into an EMA (`α = loyaltyEmaAlpha`, defau
 
 so the charge keeps tracking ~5 % of a typical order as prices and margins drift, with no
 per-generation bookkeeping. `unit_cost` here is the same canonical reference ($1 raw,
-$1.50 material, mean T2 unit cost).
+mean refined-material cost, routing-weighted mean T2 reference cost).
 
 The buyer sources from a challenger only when `P_chal × q + loyaltyCharge < P_inc × q`, i.e. a challenger
 must undercut the incumbent by more than `loyaltyCharge / q` per unit. The winner fills the
@@ -723,8 +728,8 @@ tick. Uniform across T0, T1 and T2.
 **Parameters.** `pricingAggressiveness` (0.35), `wholesalePriceResponse` (0.05, base step
 fraction), `priceObservationTicks` (30, cadence), `researchPriceMinimumOpportunities`
 (0, minimum traffic before repricing; 0 = repriced at cadence). `loyaltyMultiple`
-(per-complexity *bootstrap*: C-1/C-2 **41.665**, C-3 **0.605**, C-4 **0.325**, C-5 **0.13**,
-T3 **0.485**, × `unit_cost` × `(1 + reliability)` — the loyalty charge) and
+(per-buyer-class provisional bootstrap charges,
+× `unit_cost` × `(1 + reliability)` — the loyalty charge) and
 `loyaltyEmaAlpha` (**0.01**, the AOV-EMA smoothing driving the adaptive regime above).
 `switchingStableBand` (0.025) drives the
 price-stability *metric*, not the price itself.

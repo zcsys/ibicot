@@ -1,16 +1,25 @@
-# Star Business — Economy Kernel
+# Midbridge Colony — Economy Kernel
 
 A deterministic, fair-market simulation of a physical-goods supply chain, driven
 by autonomous firms and entered by players on equal footing. This repository is
 the authoritative server-side **economy kernel** in **Python (NumPy + Numba)**,
 with a live browser dashboard.
 
-The rulebook is [`docs/design_canon.md`](docs/design_canon.md) — it is the single
-source of truth for *what* the economy is. Everything here implements it.
+**Start here:** Read the [Workplace Standards](AGENTS.md) before working in this
+repository. They cover model authority, implementation, accounting, performance,
+experiments, verification, and collaboration.
 
-**Naming.** All display names (materials, companies, sectors, equipment, and
-goods) follow the **Star Business** naming catalog, and house style is
-**American English**. See the *House Style* section of `docs/design_canon.md`.
+**Current model:** Read [Midbridge integration](docs/midbridge-integration.md)
+alongside the [design canon](docs/design_canon.md). Some tables and examples below
+describe earlier versions; verify current values in the configuration, catalog,
+and the run being examined. Research documents, including the
+[buying behavior brief](docs/buying-behavior-research-brief.md), describe work to
+evaluate and do not automatically replace approved behavior.
+
+**Naming.** Display names follow the accepted [Midbridge Colony Naming Catalog](docs/Midbridge_Colony_Naming_Catalog.md). Regenerate validated named data with
+`python3 tools/apply_naming_catalog.py`, then browser metadata with
+`PYTHONPATH=.pydeps:. python3 tools/build_midbridge_web.py`.
+See [naming integration](docs/naming-integration.md) for identity and machinery mappings.
 
 ## Quickstart
 

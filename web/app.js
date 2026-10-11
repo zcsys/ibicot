@@ -16,7 +16,7 @@
     'Establishing uplink…',
     'Calibrating colony markets…',
     'Waking 1,000,000 distributors…',
-    'Spinning up 60,000 manufacturers…',
+    'Spinning up manufacturers…',
     'Aligning supply chains…',
     'Synchronizing sector indexes…',
   ];
@@ -52,10 +52,37 @@
   }
 
   const M = window.Phase0Model;
+  $('catalogWorld').textContent='Names for the existing companies, sectors, products and machinery.';
+  // Build the full reference once on opening, never during simulation updates.
+  $('namingCatalog').addEventListener('toggle', function() {
+    if (!this.open || $('catalogReference').childElementCount) return;
+    const n=M.NAMING_CATALOG;
+    const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    const table=(title,heads,rows)=>'<h3>'+esc(title)+'</h3><div class="table-wrap"><table class="mini-table"><thead><tr>'+heads.map(h=>'<th>'+esc(h)+'</th>').join('')+'</tr></thead><tbody>'+rows.map(r=>'<tr>'+r.map(v=>'<td>'+esc(v)+'</td>').join('')+'</tr>').join('')+'</tbody></table></div>';
+    $('catalogReference').innerHTML=
+      table('Main elements',['Element','Symbol'],n.main_elements.map(p=>[p.name,p.symbol]))+
+      table('Extractors',['Company','Resources'],n.t0_companies.map((p,i)=>[p.name+' '+M.companyNumber('T0',i),p.elements_extracted.join(', ')]))+
+      table('Refinery sectors & companies',['Sector','Material','Symbol','Flagship','Competitor stem'],n.materials.map((p,i)=>[p.refinery_sector_name,p.name,p.symbol,n.t1_companies[i].flagship_name,n.t1_companies[i].generic_stem]))+
+      table('Application sectors & companies',['Sector','Flagship','Competitor stem'],n.t2_sectors.map((p,i)=>[p.name,n.t2_companies[i].flagship_name,n.t2_companies[i].generic_stem]))+
+      table('Extraction equipment',['Equipment','Element ID'],n.extraction_equipment.map(p=>[p.name,p.element_id]))+
+      table('Equipment classes',['Complexity','Class'],n.equipment_classes.map(p=>[p.complexity,p.name]))+
+      table('Equipment families',['Sector','Complexity','Family','Recipes'],n.machine_families.map(p=>[p.sector_id,p.complexity,p.name,p.recipe_count]))+
+      table('All products & installations',['ID','Product','Complexity','Invented','Recipe','Installation','Family'],n.products.map(p=>[p.recipe_id,p.product_name,p.complexity,M.T2_UNINVENTED_PRODUCTS.some(x=>x.catalogId===p.recipe_id)?'No':'Yes',p.unchanged_formula,p.installation_name,p.machine_family]));
+  });
   const productNames = new Map([...M.T2_PRODUCTS, ...M.PRODUCTS].map(p => [p.code, p.name]));
   const displayProduct = (code) => productNames.get(code) || code;
+  const installations = new Map([...M.PRODUCTS,...M.T2_PRODUCTS].map(p=>[p.code,p.installationName]));
+  const displayInstallation = code => installations.get(code) || code;
   const displayElement = code => M.ELEMENTS[['W','E','F','A'].indexOf(code)] || code;
-  const controlId = () => $('playerTier').value === 'T2' ? Math.max(0, +$('t2PlayerCompany').value - 1) : +$('playerCompany').value;
+  const companyLabel = c => c.companyNumber && !c.name.endsWith(' '+c.companyNumber) ? c.name+' '+c.companyNumber : c.name;
+  const controlId = () => {
+    if ($('playerTier').value !== 'T2') return +$('playerCompany').value;
+    const input=$('t2PlayerCompany');
+    const id=M.companyLocalId('T2',input.value.trim());
+    const valid=id!==null && id<(serverCfg || M.ECONOMY_DEFAULTS).t2FirmCount;
+    input.setCustomValidity(valid?'':'Enter a manufacturer company number in hexadecimal.');
+    return valid?id:null;
+  };
   let t2Page = 0, t2Descending = false, controlDirty = false;
   const queryTier2 = () => worker.postMessage({ type: 'tier2Query', page: t2Page, search: $('t2Search').value,
     sector: $('t2SectorFilter').value, controller: $('t2ControllerFilter').value, sort: $('t2Sort').value, descending: t2Descending });
@@ -64,28 +91,30 @@
     'difficultyTarget', 'theta', 'sigma', 'difficultyMin', 'difficultyMax',
     't0Equity', 't0License', 't0Machinery', 't0Reserve', 't0Capacity', 't0Storage',
     'baseCost', 't0Markup', 'minWholesaleLot',
-    't1Equity', 't1License', 't1Machinery', 't1Capacity', 't1MaterialCost', 't1Markup',
-    't2Equity', 't2License', 't2MaterialCost', 'conversionFactor', 'storage', 'storageRentPerUnitYear',
+    't1Equity', 't1License', 't1Machinery', 't1Capacity', 't1CapacityC2', 't1MaterialCost', 't1Markup',
+    't2Equity', 't2License', 'conversionFactor', 'storage', 't1C1Storage', 't1C2Storage', 'storageRentPerUnitYear',
     'distributorActivation', 'distributorSearchOffers',
     'chokeMin', 'chokeMax', 'elasticity', 'productionMarginBand', 't2ReservationPremium',
     'pricingAggressiveness', 'alpha', 'wholesalePriceResponse', 'marketAnchorBand', 'priceObservationTicks',
     'reliabilityAlpha', 'switchingStableBand', 'loyaltyEmaAlpha',
   ];
   for (const [id, value] of Object.entries(M.ECONOMY_DEFAULTS)) if ($(id)) $(id).value = id === 'storageRentPerUnitYear' ? value * 1000 / 360 : value;
-  const productCodes = ['W', 'E', 'F', 'A', 'W+E', 'W+F', 'W+A', 'E+F', 'E+A', 'F+A'];
+  const productCodes = M.PRODUCTS.map(p => p.code);
   let serverCfg = null;
+  $('t2PlayerCompany').value=M.companyNumber('T2',0);
+  $('companyNumberingNote').textContent='Tier −1 · Gaia '+M.companyNumber('T-1',0)+' · Company numbers are global across all tiers.';
   function readCfg() {
     const c = { ...(serverCfg || M.ECONOMY_DEFAULTS) };
     for (const id of PARAMS) c[id] = +$(id).value * (id === 'storageRentPerUnitYear' ? 360 / 1000 : 1);
-    c.t2Machinery = { 3: +$('t2Machinery3').value, 4: +$('t2Machinery4').value, 5: +$('t2Machinery5').value };
-    c.t2Capacity = { 3: +$('t2Capacity3').value, 4: +$('t2Capacity4').value, 5: +$('t2Capacity5').value };
+    c.t2Machinery = { 3: +$('t2Machinery3').value, 4: +$('t2Machinery4').value };
+    c.t2Capacity = { 3: +$('t2Capacity3').value, 4: +$('t2Capacity4').value };
     c.footprint = { ...(serverCfg || M.ECONOMY_DEFAULTS).footprint };
     return c;
   }
-  for (let i = 0; i < 1000; i++) {
+  for (let i = 0; i < M.PRODUCTS.length * M.T1_FIRMS_PER_MATERIAL; i++) {
     const o = document.createElement('option');
     o.value = i;
-    o.textContent = `T1-${String(i + 1).padStart(4, '0')} · ${displayProduct(productCodes[Math.floor(i / 100)])}`;
+    o.textContent = `${M.companyNumber('T1',i)} · ${displayProduct(productCodes[Math.floor(i / M.T1_FIRMS_PER_MATERIAL)])}`;
     $('playerCompany').appendChild(o);
   }
   $('equipmentProduct').innerHTML = productCodes
@@ -93,6 +122,7 @@
     .map((x) => `<option value="${x}">${displayProduct(x)}</option>`)
     .join('');
   function sendSelect() {
+    if (controlId()===null) return;
     controlDirty = false;
     worker.postMessage({ type: 'select', tier: $('playerTier').value, id: controlId() });
   }
@@ -124,14 +154,14 @@
       (latestSnapshot?.t0Companies || []).forEach((c) => {
         const o = document.createElement('option');
         o.value = c.id;
-        o.textContent = `T0-${String(c.id + 1).padStart(2, '0')} · ${c.name}`;
+        o.textContent = companyLabel(c);
         sel.appendChild(o);
       });
     } else {
-      for (let i = 0; i < 1000; i++) {
+      for (let i = 0; i < M.PRODUCTS.length * M.T1_FIRMS_PER_MATERIAL; i++) {
         const o = document.createElement('option');
         o.value = i;
-        o.textContent = `T1-${String(i + 1).padStart(4, '0')} · ${displayProduct(productCodes[Math.floor(i / 100)])}`;
+        o.textContent = `${M.companyNumber('T1',i)} · ${displayProduct(productCodes[Math.floor(i / M.T1_FIRMS_PER_MATERIAL)])}`;
         sel.appendChild(o);
       }
     }
@@ -156,7 +186,7 @@
       'fillRate',
       'stockUnmet',
     ],
-    tierComparison: ['name','complexity','firms','cash','cashPerFirm','equity','inventory','bought','made','sold','revenue','revenuePerFirm','cogs','grossProfit','netProfit','netMargin','margin','reliability'],
+    tierComparison: ['name','complexity','firms','capacity','utilization','fillRate','cash','cashPerFirm','equity','inventory','bought','made','sold','revenue','revenuePerFirm','cogs','grossProfit','netProfit','netProfitPerCompany','netMargin','margin','reliability'],
     productCategories: ['name','tier','role','products','lines','machineryPrice','unitCapacity','avgPrice','avgUnitCost','capacity','utilization','readyStock','made','sold','soldPerLine','revenue','cogs','grossProfit','netProfit','netMargin','profitPerLine','netProfitPerLine','margin','active','fillRate','stockUnmet'],
     tier2Products: ['name','code','complexity','needType','sector','primaryMaterial','recipe','firms','machineryPrice','avgPrice','avgUnitCost','productionCapacity','utilization','readyStock','made','sold','revenue','grossProfit','netProfit','netMargin','margin','active','fillRate','stockUnmet','hhi','reliability'],
     tier2Industries: ['name','description','products','lines','capacity','utilization','readyStock','made','sold','revenue','cogs','grossProfit','netProfit','netMargin','margin','active','fulfilled','fillRate','stockUnmet','volumeShare','reliability'],
@@ -218,8 +248,9 @@
       { key: columns[0], direction: 1 },
     ]),
   );
-  // Producer comparison defaults to Firms ascending (smallest tier first).
-  tableSort.tierComparison = { key: 'firms', direction: 1 };
+  // Keep the default hierarchy in complexity order, including its child rows.
+  tableSort.tierComparison = { key: 'complexity', direction: 1 };
+  const collapsedProducerTiers = new Set();
 
   function compareTableValues(left, right) {
     const leftNumber = Number(left);
@@ -292,7 +323,7 @@
         serverCfg = m.data.cfg;
         for (const id of PARAMS) if ($(id)) $(id).value = id === 'storageRentPerUnitYear' ? serverCfg[id] * 1000 / 360 : serverCfg[id];
         for (const key of ['t2Machinery', 't2Capacity'])
-          for (const c of [3, 4, 5]) $(key + c).value = serverCfg[key][c];
+          for (const c of [3, 4]) $(key + c).value = serverCfg[key][c];
       }
       latestSnapshot = m.data;
       const key = selectedTier + ':' + selectedCompanyId;
@@ -336,6 +367,7 @@
         (x) =>
           !q ||
           x.name.toLowerCase().includes(q) ||
+          (x.companyNumber || '').includes(q) ||
           x.elements.some((e) => e.toLowerCase().includes(q)),
       );
     }
@@ -346,6 +378,7 @@
       (x) =>
         (!q ||
           x.name.toLowerCase().includes(q) ||
+          (x.companyNumber || '').includes(q) ||
           x.sector.toLowerCase().includes(q) ||
           x.controller.toLowerCase().includes(q) ||
           x.equipment.map(displayProduct).join(' ').toLowerCase().includes(q)) &&
@@ -389,7 +422,7 @@
           ? companyDetailData
           : null);
       return `<tr class="company-detail-row"><td colspan="15"><div class="company-detail-inner">
-      <div class="detail-section"><strong>${x.name} · current stocks & sell prices</strong></div>
+      <div class="detail-section"><strong>${companyLabel(x)} · current stocks & sell prices</strong></div>
       <table class="detail-table"><thead><tr><th>Element</th><th>Current stock</th><th>Unit cost</th><th>Sell price</th><th>Made / tick</th><th>Sold / tick</th><th>Revenue / tick</th><th>COGS / tick</th><th>Gross profit / tick</th><th>Net profit / tick</th><th>Net margin</th><th>Reliability</th><th>Price stability</th></tr></thead>
       <tbody>${(d?.elementData || []).map((v) => `<tr><th>${v.element}</th><td>${fmtInt(v.stock)}</td><td>${fmt5(v.cost)}</td><td>${fmt5(v.price)}</td><td>${fmtInt(v.production)}</td><td>${fmtInt(v.sold)}</td><td>${fmtMoney(v.revenue, 0)}</td><td>${fmtMoney(v.cogs, 0)}</td><td>${fmtMoney(v.grossProfit, 0)}</td><td>${fmtMoney(v.netProfit, 0)}</td><td>${pct(v.netMargin)}</td><td>${fmtFixed(v.reliability, 3)}</td><td>${fmtFixed(v.stability, 3)}</td></tr>`).join('')}</tbody></table>
       ${companyChartMarkup(x.id, "T0")}
@@ -404,8 +437,9 @@
           : null);
       return `<tr class="company-detail-row"><td colspan="17"><div class="company-detail-inner">
       <div class="detail-section"><strong>${x.name} · raw stocks & buy prices</strong></div>
+      <p class="analytics-note">Storage: ${fmtInt(d?.occupiedStorageSpace)} / ${fmtInt(d?.storageCapacitySpace)} spaces, including ${fmtInt(d?.machinerySpace)} machinery spaces. Stock quantities below count items.</p>
       <table class="detail-table"><thead><tr><th>Input</th><th>Current stock</th><th>Average basis</th><th>Last buy</th><th>Input need</th><th>Request</th><th>Preferred supplier</th></tr></thead>
-      <tbody>${(d?.raw || []).map((v) => `<tr><th>${v.element}</th><td>${fmtInt(v.stock)}</td><td>${fmtUnitPrice(v.basis)}</td><td>${v.lastBuy == null ? '—' : fmt5(v.lastBuy)}</td><td>${fmtInt(v.inputNeed)}</td><td>${fmtInt(v.purchaseRequest)}</td><td>${v.preferredSupplier >= 0 ? 'T0-' + String(v.preferredSupplier + 1).padStart(2, '0') : '—'}</td></tr>`).join('')}</tbody></table>
+      <tbody>${(d?.raw || []).map((v) => `<tr><th>${v.element}</th><td>${fmtInt(v.stock)}</td><td>${fmtUnitPrice(v.basis)}</td><td>${v.lastBuy == null ? '—' : fmt5(v.lastBuy)}</td><td>${fmtInt(v.inputNeed)}</td><td>${fmtInt(v.purchaseRequest)}</td><td>${v.preferredSupplier >= 0 ? M.companyNumber('T0',v.preferredSupplier) : '—'}</td></tr>`).join('')}</tbody></table>
       <div class="detail-section"><strong>Finished stocks & sell prices</strong></div>
       <table class="detail-table"><thead><tr><th>Product</th><th>Current stock</th><th>Unit cost</th><th>Sell price</th><th>Sales EMA</th><th>Orders EMA</th><th>Made / tick</th><th>Sold / tick</th><th>Revenue / tick</th><th>COGS / tick</th><th>Net profit / tick</th><th>Net margin</th><th>Customer desired / tick</th><th>Customer fill</th><th>Stock unmet / tick</th><th>Reliability</th><th>Price stability</th></tr></thead>
       <tbody>${(d?.products || []).map((v) => `<tr><th>${displayProduct(v.product)}</th><td>${fmtInt(v.finished)}</td><td>${fmtUnitPrice(v.unitCost)}</td><td>${fmtUnitPrice(v.price)}</td><td>${fmtFixed(v.salesEMA, 2)}</td><td>${fmtFixed(v.demandEMA, 2)}</td><td>${fmtInt(v.made)}</td><td>${fmtInt(v.sold)}</td><td>${fmtMoney(v.revenue, 0)}</td><td>${fmtMoney(v.cogs, 0)}</td><td>${fmtMoney(v.netProfit, 0)}</td><td>${pct(v.netMargin)}</td><td>${fmtInt(v.active)}</td><td>${pct(meaningfulRatio(v.fulfilled,v.active))}</td><td>${fmtInt(v.stockUnmet)}</td><td>${fmtFixed(v.reliability, 3)}</td><td>${fmtFixed(v.priceStability, 3)}</td></tr>`).join('')}</tbody></table>
@@ -416,7 +450,7 @@
     $('tier0Companies').innerHTML = t0
       .map((x) => {
         const row = `<tr class="clickable-row${selectedTier === 'T0' && selectedCompanyId === x.id ? ' selected' : ''}" data-tier="T0" data-id="${x.id}">
-      <th>▸ ${x.name}</th><td>${x.controller}</td><td>${x.elements.join(' · ')}</td><td>${fmtMoney(x.cash, 0)}</td><td>${fmtInt(x.inventory)}</td><td>${fmtMoney(x.equity, 0)}</td><td>${fmtInt(x.production)}</td><td>${fmtInt(x.sold)}</td><td>${fmtMoney(x.revenue, 0)}</td><td>${fmtMoney(x.cogs, 0)}</td><td>${fmtMoney(x.grossProfit, 0)}</td><td>${fmtMoney(x.netProfit, 0)}</td><td>${pct(x.netMargin)}</td><td>${fmt5(x.avgPrice)}</td><td>${fmtFixed(x.reliability, 3)}</td></tr>`;
+      <th>▸ ${companyLabel(x)}</th><td>${x.controller}</td><td>${x.elements.join(' · ')}</td><td>${fmtMoney(x.cash, 0)}</td><td>${fmtInt(x.inventory)}</td><td>${fmtMoney(x.equity, 0)}</td><td>${fmtInt(x.production)}</td><td>${fmtInt(x.sold)}</td><td>${fmtMoney(x.revenue, 0)}</td><td>${fmtMoney(x.cogs, 0)}</td><td>${fmtMoney(x.grossProfit, 0)}</td><td>${fmtMoney(x.netProfit, 0)}</td><td>${pct(x.netMargin)}</td><td>${fmt5(x.avgPrice)}</td><td>${fmtFixed(x.reliability, 3)}</td></tr>`;
         return row + (exp0.has(x.id) ? detailT0(x) : '');
       })
       .join('');
@@ -424,7 +458,7 @@
     $('tier1Companies').innerHTML = t1slice
       .map((x) => {
         const row = `<tr class="clickable-row${selectedTier === 'T1' && selectedCompanyId === x.id ? ' selected' : ''}" data-tier="T1" data-id="${x.id}">
-      <th>▸ ${x.name}</th><td>${x.controller}</td><td>${x.sector}</td><td>${x.equipment.map(displayProduct).join(' · ')}</td><td>${fmtMoney(x.cash, 0)}</td><td>${fmtInt(x.raw)}</td><td>${fmtInt(x.finished)}</td><td>${fmtInt(x.inventory)}</td><td>${fmtMoney(x.equity, 0)}</td><td>${fmtUnitPrice(x.price)}</td><td>${fmtInt(x.made)}</td><td>${fmtInt(x.sold)}</td><td>${fmtMoney(x.revenue, 0)}</td><td>${fmtMoney(x.grossProfit, 0)}</td><td>${fmtMoney(x.netProfit, 0)}</td><td>${pct(x.netMargin)}</td><td>${fmtFixed(x.reliability, 3)}</td></tr>`;
+      <th>▸ ${companyLabel(x)}</th><td>${x.controller}</td><td>${x.sector}</td><td>${x.equipment.map(displayInstallation).join(' · ')}</td><td>${fmtMoney(x.cash, 0)}</td><td>${fmtInt(x.raw)}</td><td>${fmtInt(x.finished)}</td><td>${fmtInt(x.inventory)}</td><td>${fmtMoney(x.equity, 0)}</td><td>${fmtUnitPrice(x.price)}</td><td>${fmtInt(x.made)}</td><td>${fmtInt(x.sold)}</td><td>${fmtMoney(x.revenue, 0)}</td><td>${fmtMoney(x.grossProfit, 0)}</td><td>${fmtMoney(x.netProfit, 0)}</td><td>${pct(x.netMargin)}</td><td>${fmtFixed(x.reliability, 3)}</td></tr>`;
         return row + (exp1.has(x.id) ? detailT1(x) : '');
       })
       .join('');
@@ -442,7 +476,7 @@
     }
     if (d.tier === 'T0') {
       const txt = [
-        `${d.name} · Resource company`,
+        `${companyLabel(d)} · Resource company`,
         `status: ${d.status}`,
         `cash: ${fmtMoney(d.cash, 2)}`,
         `inventory: ${fmtInt(d.inventory)}`,
@@ -474,7 +508,7 @@
         `sector: ${d.sector}`,
         `cash: ${fmtMoney(d.cash, 2)}`,
         `equipment book: ${fmtMoney(d.equipmentBookValue, 2)}`,
-        `equipment: ${d.equipment.map(displayProduct).join(', ')}`,
+        `equipment: ${d.equipment.map(displayInstallation).join(', ')}`,
         `inventory: ${fmtInt(d.inventory)}`,
         `equity: ${fmtMoney(d.equity, 2)}`,
         `made: ${fmtInt(d.made)}`,
@@ -742,25 +776,54 @@
     drawLine('distributorSpendingChart', hist, [hist.map(point => point.tiers.distributors.revenue)], ['Spending'], 0, true);
   }
   function renderComparisons(s) {
-    const moneyKeys = new Set(['cash','cashPerFirm','equity','revenue','revenuePerFirm','cogs','grossProfit','netProfit','machineryPrice','avgPrice','avgUnitCost','profitPerLine','netProfitPerLine']);
+    const moneyKeys = new Set(['cash','cashPerFirm','equity','revenue','revenuePerFirm','cogs','grossProfit','netProfit','netProfitPerCompany','machineryPrice','avgPrice','avgUnitCost','profitPerLine','netProfitPerLine']);
     const ratioKeys = new Set(['netMargin','margin','utilization','fillRate','reliability']);
     const cells = (row, keys) => keys.map(key => {
       const value = row[key];
       const text = value == null ? '—' : typeof value === 'string' ? value :
-        ratioKeys.has(key) ? pct(value) : moneyKeys.has(key) ? (['avgPrice','avgUnitCost'].includes(key) ? fmtUnitPrice(value) : fmtMoney(value,['profitPerLine','netProfitPerLine'].includes(key)?2:0)) :
+        ratioKeys.has(key) ? pct(value) : moneyKeys.has(key) ? (['avgPrice','avgUnitCost'].includes(key) ? fmtUnitPrice(value) : fmtMoney(value,['profitPerLine','netProfitPerLine','netProfitPerCompany'].includes(key)?2:0)) :
         key === 'soldPerLine' ? fmtFixed(value, 2) : fmtInt(value);
       return '<td>' + text + '</td>';
     }).join('');
     const tiers = ['t0','t1','t2'].map((key, index) => {
       const t = s.tiers[key];
-      return { ...t, name: ['Resource Companies','Refineries','Manufacturers'][index],
-        complexity: ['Raw elements','C-1–C-2','C-3–C-5'][index],
+      const bands = s.productCategories.filter(row => index === 0 ? row.complexity === 0 :
+        index === 1 ? row.complexity === 1 || row.complexity === 2 : row.complexity === 3 || row.complexity === 4);
+      const desired = sum(bands.map(row => row.active));
+      return { ...t, tierKey: key, name: ['T0 · Extractors','T1 · Refineries','T2 · Manufacturers'][index],
+        complexity: ['C-0','C-1–C-2','C-3–C-4'][index],
+        utilization: t.capacity > 0 ? t.made / t.capacity : null,
+        fillRate: desired > 0 ? sum(bands.map(row => row.fulfilled)) / desired : null,
         bought: index === 0 ? null : t.bought,
         cashPerFirm: meaningfulRatio(t.cash, t.firms), revenuePerFirm: meaningfulRatio(t.revenue, t.firms),
+        netProfitPerCompany: t.netProfit == null || !t.firms ? null : t.netProfit / t.firms,
         margin: meaningfulRatio(t.grossProfit, t.revenue),
         reliability: index === 2 ? meaningfulRatio(sum(s.tier2Products.map(p => p.reliability * p.firms)), sum(s.tier2Products.map(p => p.firms))) : t.reliability };
     });
-    $('tierComparison').innerHTML = sortedTableRows('tierComparison', tiers).map(row => '<tr><th>' + row.name + '</th>' + cells(row, tableSortColumns.tierComparison.slice(1)) + '</tr>').join('');
+    // Keep each complexity beneath its tier when sorting; tier rows are totals,
+    // not additional producers. Balance allocations come from the kernel.
+    $('tierComparison').innerHTML = sortedTableRows('tierComparison', tiers).map(tier => {
+      const children = s.productCategories.filter(row => tier.tierKey === 't1'
+        ? row.complexity === 1 || row.complexity === 2
+        : tier.tierKey === 't2' && (row.complexity === 3 || row.complexity === 4))
+        .map(row => ({ ...row, name: row.name + (row.complexity < 3 ? ' · Refineries' : ' · Manufacturers'),
+          complexity: row.name, cashPerFirm: meaningfulRatio(row.cash, row.firms),
+          utilization: row.capacity > 0 ? row.made / row.capacity : null,
+          fillRate: row.active > 0 ? row.fulfilled / row.active : null,
+          revenuePerFirm: meaningfulRatio(row.revenue, row.firms),
+          netProfitPerCompany: row.netProfit == null || !row.firms ? null : row.netProfit / row.firms,
+          margin: meaningfulRatio(row.grossProfit, row.revenue) }));
+      const collapsed = collapsedProducerTiers.has(tier.tierKey);
+      const renderRow = (row, child) => {
+        const label = !child && children.length ? '<button type="button" class="producer-toggle" data-producer-tier="' +
+          tier.tierKey + '" aria-expanded="' + !collapsed + '" aria-label="' +
+          (collapsed ? 'Expand ' : 'Collapse ') + row.name + '"><span aria-hidden="true">' +
+          (collapsed ? '▸' : '▾') + '</span> ' + row.name + '</button>' : row.name;
+        return '<tr class="' + (child ? 'producer-complexity' : 'producer-tier') +
+          '"><th scope="row">' + label + '</th>' + cells(row, tableSortColumns.tierComparison.slice(1)) + '</tr>';
+      };
+      return renderRow(tier, false) + (collapsed ? '' : sortedTableRows('tierComparison', children).map(row => renderRow(row, true)).join(''));
+    }).join('');
     const categories = s.productCategories.map(row => ({ ...row,
       grossProfitPerCompany: meaningfulRatio(row.grossProfit, row.firms),
       netProfitPerCompany: row.netProfit == null ? NaN : meaningfulRatio(row.netProfit, row.firms),
@@ -807,7 +870,9 @@
     }
     for (const tier of ['t1', 't2']) {
       const t = s.tiers[tier];
-      $(tier + 'AnnualRent').textContent = fmtMoney((t.annualStorageRentPerFirm ?? 0) / 360, 2);
+      $(tier + 'AnnualRent').textContent = t.annualStorageRentPerFirmMin !== t.annualStorageRentPerFirmMax
+        ? fmtMoney(t.annualStorageRentPerFirmMin / 360, 2) + '–' + fmtMoney(t.annualStorageRentPerFirmMax / 360, 2)
+        : fmtMoney((t.annualStorageRentPerFirm ?? 0) / 360, 2);
       $(tier + 'RentPaid').textContent = fmtMoney(t.storageRentPaid ?? 0, 0);
       $(tier + 'RentArrears').textContent = fmtMoney(t.storageRentArrears ?? 0, 0);
     }
@@ -860,12 +925,12 @@
     $('equipmentProduct').hidden = isT0;
     const eligible = s.selected.tier === 'T2' ? s.selected.eligibleEquipment :
       M.PRODUCTS.filter((p) => !s.selected.equipment.includes(p.code)).map((p) => ({ ...p, price: p.equipmentPrice }));
-    const machineryOptions = eligible.map((p) => `<option value="${p.code}">${p.name} · ${fmtMoney(p.price, 0)}</option>`).join('');
+    const machineryOptions = eligible.map((p) => `<option value="${p.code}">${p.installationName || displayInstallation(p.code)} · ${fmtMoney(p.price, 0)}</option>`).join('');
     const equipmentChoice = $('equipmentProduct').value;
     if ($('equipmentProduct').innerHTML !== machineryOptions) $('equipmentProduct').innerHTML = machineryOptions;
     if (eligible.some((p) => p.code === equipmentChoice)) $('equipmentProduct').value = equipmentChoice;
     $('playerStatus').textContent =
-      `${s.selected.name} · ${fmtMoney(s.selected.cash, 2)} cash · eq ${fmtMoney(s.selected.eqBook, 2)}`;
+      `${companyLabel(s.selected)} · ${fmtMoney(s.selected.cash, 2)} cash · eq ${fmtMoney(s.selected.eqBook, 2)}`;
   }
   function renderTier2(s) {
     const t2 = s.tiers.t2;
@@ -901,12 +966,12 @@
     if (s.selected.tier === 'T2') {
       const c = s.selected;
       const metrics = [['Net profit / tick',fmtMoney(c.netProfit,2)],['Net margin',pct(c.netMargin)],['Cash',fmtMoney(c.cash,0)],['Equipment book',fmtMoney(c.eqBook,0)],['Book equity',fmtMoney(c.equity,0)],
-        ['Input stock',fmtInt(c.raw)],['Finished stock',fmtInt(c.finished)],['Capacity / tick',fmtInt(c.capacity)],
+        ['Storage used / space',fmtInt(c.occupiedStorageSpace)+' / '+fmtInt(c.storageCapacitySpace)],['Machinery / space',fmtInt(c.machinerySpace)],['Input stock / items',fmtInt(c.raw)],['Finished stock',fmtInt(c.finished)],['Capacity / tick',fmtInt(c.capacity)],
         ['Production utilization',pct(c.utilization)],['Realized margin',pct(meaningfulRatio(c.grossProfit,c.revenue))],['Stock sell-through',pct(meaningfulRatio(c.sold,c.sold+c.finished))]];
       $('t2CompanyDetail').innerHTML = '<strong>'+c.name+'</strong> · '+c.controller+' · '+(c.controller==='BOT'?'Automated':c.online?'Player online':'Player offline; automatic production')+' · Capability '+c.capability+' · '+c.lineCount+' / '+M.T2_MAX_PRODUCTS_PER_FIRM+' lines'+
         '<div class="stat-grid industry-kpis" style="margin:10px 0">'+metrics.map(([label,value])=>'<div class="stat"><span>'+label+'</span><b>'+value+'</b></div>').join('')+'</div>'+
         '<strong>Installed product lines</strong><div class="table-wrap industry-table"><table class="mini-table"><thead><tr><th>Product</th><th>Recipe</th><th>Complexity</th><th>Price</th><th>Unit cost</th><th>Capacity / tick</th><th>Utilization</th><th>Finished stock</th><th>Stock / sales EMA (ticks)</th><th>Made / tick</th><th>Sold / tick</th><th>Revenue / tick</th><th>COGS / tick</th><th>Gross profit / tick</th><th>Net profit / tick</th><th>Net margin</th><th>Margin</th><th>Reliability</th></tr></thead><tbody>'+
-        c.products.map((p)=>'<tr><th>'+p.name+'</th><td class="recipe-cell">'+p.recipe+'</td><td>'+p.complexity+'</td><td>'+fmtUnitPrice(p.price)+'</td><td>'+fmtUnitPrice(p.unitCost)+'</td><td>'+fmtInt(p.capacity)+'</td><td>'+pct(p.utilization)+'</td><td>'+fmtInt(p.finished)+'</td><td>'+(p.stockCoverage === null ? '—' : p.stockCoverage.toFixed(1))+'</td><td>'+fmtInt(p.made)+'</td><td>'+fmtInt(p.sold)+'</td><td>'+fmtMoney(p.revenue,0)+'</td><td>'+fmtMoney(p.cogs,0)+'</td><td>'+fmtMoney(p.grossProfit,0)+'</td><td>'+fmtMoney(p.netProfit,0)+'</td><td>'+pct(p.netMargin)+'</td><td>'+pct(meaningfulRatio(p.grossProfit,p.revenue))+'</td><td>'+pct(p.reliability)+'</td></tr>').join('')+'</tbody></table></div>'+
+        c.products.map((p)=>'<tr><th>'+p.name+'<div class="analytics-note">'+displayInstallation(p.code)+'</div></th><td class="recipe-cell">'+p.recipe+'</td><td>'+p.complexity+'</td><td>'+fmtUnitPrice(p.price)+'</td><td>'+fmtUnitPrice(p.unitCost)+'</td><td>'+fmtInt(p.capacity)+'</td><td>'+pct(p.utilization)+'</td><td>'+fmtInt(p.finished)+'</td><td>'+(p.stockCoverage === null ? '—' : p.stockCoverage.toFixed(1))+'</td><td>'+fmtInt(p.made)+'</td><td>'+fmtInt(p.sold)+'</td><td>'+fmtMoney(p.revenue,0)+'</td><td>'+fmtMoney(p.cogs,0)+'</td><td>'+fmtMoney(p.grossProfit,0)+'</td><td>'+fmtMoney(p.netProfit,0)+'</td><td>'+pct(p.netMargin)+'</td><td>'+pct(meaningfulRatio(p.grossProfit,p.revenue))+'</td><td>'+pct(p.reliability)+'</td></tr>').join('')+'</tbody></table></div>'+
         '<p class="analytics-note">Gross margin = gross profit / revenue; stock sell-through = sales / (sales + remaining finished stock). Equipment is at book value; all inventory in book equity uses its acquisition or production cost basis.</p>'+
         '<strong>Inputs & upstream supplier relationships</strong><div class="table-wrap industry-table"><table class="mini-table"><thead><tr><th>Material</th><th>Source</th><th>Stock</th><th>Inventory basis / unit</th><th>Book value</th><th>Consumed / tick</th><th>Full-capacity need / tick</th><th>Full-capacity coverage (ticks)</th><th>Last supplier</th><th>Current quote</th><th>Supplier reliability</th></tr></thead><tbody>'+
         c.inputs.map((x)=>'<tr><th>'+x.name+'</th><td>'+x.sourceTier+'</td><td>'+fmtInt(x.stock)+'</td><td>'+fmtUnitPrice(x.basis)+'</td><td>'+fmtMoney(x.value,0)+'</td><td>'+fmtInt(x.consumed)+'</td><td>'+fmtInt(x.capacityNeed)+'</td><td>'+x.capacityCoverage.toFixed(1)+'</td><td>'+(x.supplierName || 'No successful supplier yet')+'</td><td>'+(x.supplierPrice===null?'—':fmtUnitPrice(x.supplierPrice))+'</td><td>'+(x.supplierReliability===null?'—':pct(x.supplierReliability))+'</td></tr>').join('')+'</tbody></table></div>';
@@ -950,6 +1015,15 @@
   }
   $('t1PriceProduct').innerHTML += M.PRODUCTS.map((p,i)=>`<option value="${i}">${p.name}</option>`).join('');
   for (const id of ['overviewTier','t1PriceProduct']) $(id).addEventListener('change',()=>{if(latestSnapshot)renderDashboard(latestSnapshot);});
+  $('tierComparison').addEventListener('click', event => {
+    const button = event.target.closest('[data-producer-tier]');
+    if (!button) return;
+    const tier = button.dataset.producerTier;
+    if (collapsedProducerTiers.has(tier)) collapsedProducerTiers.delete(tier);
+    else collapsedProducerTiers.add(tier);
+    if (latestSnapshot) renderComparisons(latestSnapshot);
+    $('tierComparison').querySelector('[data-producer-tier="' + tier + '"]')?.focus({preventScroll:true});
+  });
   $('categoryMetric').addEventListener('change',()=>{if(latestSnapshot)renderComparisons(latestSnapshot);});
   $('categorySplitMerge').addEventListener('click',()=>{
     categorySplit = !categorySplit;
@@ -964,7 +1038,7 @@
     const sector=event.target.closest('[data-catalog-sector]')?.dataset.catalogSector;
     if(sector){$('t2ProductSector').value=sector;if(latestSnapshot)renderTier2(latestSnapshot);}
   });
-  $('recipePoolSummary').textContent = M.T2_PRODUCTS.length+' goods · '+M.T2_UNINVENTED_PRODUCTS.length+' reserved recipes · '+[3,4,5].map(c=>M.T2_COMPLEXITY_COUNTS[c-1]+' C-'+c).join(' · ');
+  $('recipePoolSummary').textContent = M.T2_PRODUCTS.length+' goods · '+M.T2_UNINVENTED_PRODUCTS.length+' reserved recipes · '+[3,4].map(c=>M.T2_COMPLEXITY_COUNTS[c-1]+' C-'+c).join(' · ');
   $('t2SectorFilter').innerHTML += M.T2_SECTORS.map((s)=>`<option>${s}</option>`).join('');
   $('t2IndustrySector').innerHTML += M.T2_SECTORS.map((s)=>`<option>${s}</option>`).join('');
   for (const id of ['t2IndustrySector','t2SectorMetric']) $(id).addEventListener('change',()=>{if(latestSnapshot)renderTier2(latestSnapshot);});
@@ -989,7 +1063,7 @@
   for (const id of ['t2ProductSearch','t2ComplexityFilter','t2ProductSector','t2ProductNeed']) $(id).addEventListener('input',()=>{if(latestSnapshot)renderTier2(latestSnapshot);});
   $('tier2Companies').addEventListener('click',(event)=>{
     const row=event.target.closest('[data-id]');if(!row)return;
-    $('playerTier').value='T2';$('t2PlayerCompany').value=+row.dataset.id+1;
+    $('playerTier').value='T2';$('t2PlayerCompany').value=M.companyNumber('T2',+row.dataset.id);
     $('playerCompany').hidden=true;$('playerCompanyLabel').hidden=true;$('t2ControlId').hidden=false;
     sendSelect();
   });
@@ -1022,7 +1096,7 @@
   });
   $('t1CohortFilter').innerHTML =
     '<option value="">All sectors</option>' +
-    M.T2_SECTORS.map((sector) => `<option value="${sector}">${sector}</option>`).join('');
+    M.PRODUCTS.map(p=>p.sector).map((sector) => `<option value="${sector}">${sector}</option>`).join('');
   $('t1CohortFilter').addEventListener('change', () => {
     t1Page = 0;
     renderCompanyTables();
@@ -1068,6 +1142,7 @@
     worker.postMessage({ type: 'applyConfig', cfg: readCfg() });
   };
   $('applyPlayer').onclick = () => {
+    if(controlId()===null) { $('t2PlayerCompany').reportValidity(); return; }
     controlDirty = false;
     worker.postMessage({
       type: 'player',
@@ -1080,6 +1155,7 @@
     });
   };
   $('buyEquipment').onclick = () => {
+    if(controlId()===null) { $('t2PlayerCompany').reportValidity(); return; }
     worker.postMessage({
       type: 'buyEquipment',
       id: controlId(),

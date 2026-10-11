@@ -38,7 +38,7 @@ def scenario():
         rt.statsPath = Path(tmp) / 'stats.jsonl'
         for tick in range(1, 62):
             if tick == 17:
-                rt.apply_config({'t2MaterialCost': 2.17, 'conversionFactor': .43,
+                rt.apply_config({'t1MaterialCost': 2.17, 'conversionFactor': .43,
                                  't2Capacity': {3: 23000, 4: 12000, 5: 8000},
                                  'loyaltyMultiple': {1: 9, 2: {3: .3, 4: 2, 5: .8}, 3: .9},
                                  'researchPriceMinimumOpportunities': 2, 'researchPriceMaxObservationTicks': 14})

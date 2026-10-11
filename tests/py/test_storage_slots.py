@@ -11,13 +11,13 @@ class StorageSlotTests(unittest.TestCase):
         cfg,w=reset_world({'t2FirmCount':200,'distributorCount':30})
         w.t1Operates[4]=1  # Shared element across installed refinery lines.
         raw,finished,inputs=K.tier1_storage_layout(w,cfg,0)
-        self.assertEqual(raw*len(inputs),tier1_goods_space(w,cfg,0)/2)
+        self.assertEqual(raw.sum(),tier1_goods_space(w,cfg,0)/2)
         self.assertEqual(finished*2,tier1_goods_space(w,cfg,0)/2)
-        p=next(p for p in M.T2_PRODUCTS if len(p['ingredients'])==3)
+        p=next(p for p in M.T2_PRODUCTS if len(p['ingredients'])==2)
         w.t2LineProduct[0]=p['id']
         raw,finished,inputs=K.tier2_storage_layout(w,cfg,0)
-        self.assertEqual(len(inputs),3)
-        self.assertAlmostEqual(raw,tier2_goods_space(w,cfg,0)/6)
+        self.assertEqual(len(inputs),2)
+        self.assertAlmostEqual(sum(raw[m]*M.T2_INPUT_PRODUCTS[m]['complexity'] for m in inputs),tier2_goods_space(w,cfg,0)/2)
         self.assertEqual(finished,tier2_goods_space(w,cfg,0)/2)
 
     def test_both_engines_buy_into_slots_even_when_production_is_unprofitable(self):
@@ -37,7 +37,7 @@ class StorageSlotTests(unittest.TestCase):
             self.assertGreater(w.t1Bought.sum(),0)
             for firm in range(M.N1):
                 slot,_,inputs=K.tier1_storage_layout(w,cfg,firm)
-                for e in range(M.NE):self.assertLessEqual(w.raw[firm*M.NE+e],slot if e in inputs else 0)
+                for e in range(M.NE):self.assertLessEqual(w.raw[firm*M.NE+e],slot[e] if e in inputs else 0)
             # Sell plenty of refinery goods, while manufacturers' output price is below cost.
             w.t1Fin[:]=w.t1Operates*100000.;w.t1FinBasis[:]=1.;w.t1Price[:]=1.
             w.t2Price[:200]=.01
@@ -47,9 +47,9 @@ class StorageSlotTests(unittest.TestCase):
             self.assertEqual(w.t2Made.sum(),0)
             for firm in range(200):
                 slot,_,inputs=K.tier2_storage_layout(w,cfg,firm)
-                for m in range(M.NP):
-                    held=(w.t2Raw if m<4 else w.t2T1Raw)[firm*(M.NE if m<4 else M.NP)+m]
-                    self.assertLessEqual(held,slot if m in inputs else 0)
+                for m in range(M.NI):
+                    held=(w.t2Raw if m<4 else w.t2T1Raw)[firm*(M.NE if m<4 else M.NI)+m]
+                    self.assertLessEqual(held,slot[m] if m in inputs else 0)
             worlds.append(w)
         if len(worlds)==2:
             for name in worlds[0].array_names:
@@ -59,6 +59,6 @@ class StorageSlotTests(unittest.TestCase):
         cfg,w=reset_world({'t2FirmCount':12,'distributorCount':30})
         slot,_,inputs=K.tier2_storage_layout(w,cfg,0)
         m=next(iter(inputs));arr=w.t2Raw if m<4 else w.t2T1Raw
-        arr[m]=slot+10
+        arr[m]=slot[m]+10
         self.assertEqual(K.transfer_tier2_input(w,cfg,0,m,0,100),0)
-        self.assertEqual(arr[m],slot+10)
+        self.assertEqual(arr[m],slot[m]+10)

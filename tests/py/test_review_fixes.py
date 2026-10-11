@@ -11,7 +11,7 @@ import numpy as np
 
 from economy.core import model as M
 from economy.core.config import normalize_config
-from economy.core.state import reset_world, T0P, add_tier2_line, tier1_goods_space, tier2_occupied_space
+from economy.core.state import tier2_goods_space, reset_world, T0P, add_tier2_line, tier1_goods_space, tier2_occupied_space
 from economy.core.trading import select_offer, affordable_order
 from economy.kernel import tick as reference
 from economy.kernel import numba as accelerated
@@ -110,7 +110,7 @@ for (const stock of [0, 100]) {
             w.t0Inv[[0, 4]] = 10000
             w.t0Price[[0, 4]] = [2., 1.8]
             w.preferredWholesale[0] = 0
-            w.raw[0] = reference.tier1_storage_layout(w, cfg, 0)[0] - 2000
+            w.raw[0] = reference.tier1_storage_layout(w, cfg, 0)[0][0] - 2000
             w.lm1 = 500  # $750 charge exceeds $400 savings on the 2,000-unit order.
             if fast:
                 accelerated.plan_and_buy_inputs(w, cfg, 1)
@@ -127,7 +127,7 @@ for (const stock of [0, 100]) {
             w.t1Price[[0, 10]] = [2., 1.8]
             slot, _, inputs = reference.tier2_storage_layout(w, cfg, 0)
             for material in inputs:
-                (w.t2Raw if material < 4 else w.t2T1Raw)[material] = slot
+                (w.t2Raw if material < 4 else w.t2T1Raw)[material] = slot[material]
             w.t2Raw[0] -= 1  # Test the same one-unit order under slot-based restocking.
             w.t2Preferred[0] = 0
             w.t2Price[0] = 10
@@ -257,7 +257,7 @@ for (const stock of [0, 100]) {
         rt.world.raw[0] = 18000
         original = dict(rt.cfg)
         with self.assertRaisesRegex(ValueError, 'Storage'):
-            rt.apply_config({'storage': 5000})
+            rt.apply_config({'t1C1Storage': 5000})
         self.assertEqual(rt.cfg, original)
         with self.assertRaisesRegex(ValueError, 'Storage'):
             reset_world(dict(SMALL, storage=100))
@@ -316,17 +316,18 @@ if (ctx.result.marketAnchorBand !== .123) throw Error('anchor omitted');
     def test_expansion_storage_and_money_accounting(self):
         rt = self.runtime()
         w = rt.world
+        w.t2Cash[0]=500000
         rt.player('T2', 0, M.T2_PRODUCTS[0]['code'], 3, True, 'PLAYER')
         product = next(p for p in M.T2_PRODUCTS if p['sectorIndex'] == w.t2Sector[0]
-                       and p['id'] != w.t2LineProduct[0] and p['complexity'] == 3)
+                       and p['id'] != w.t2LineProduct[0] and p['complexity'] == 4)
         cash, book = w.t2Cash[0], w.t2EqBook[0]
         rt.buy_equipment('T2', 0, product['code'])
         self.assertEqual(w.t2FirmLineCount[0], 2)
         self.assertEqual(w.t2LineCount, SMALL['t2FirmCount'] + 1)
         self.assertEqual(w.t2Cash[0] + w.t2EqBook[0], cash + book)
-        self.assertEqual(w.equipmentSinks, rt.cfg['t2Machinery'][3])
+        self.assertEqual(w.equipmentSinks, rt.cfg['t2Machinery'][4])
         other = next(p for p in M.T2_PRODUCTS if p['sectorIndex'] == w.t2Sector[0]
-                     and p['complexity'] == 4)
+                     and p['complexity'] == 4 and p['id'] not in [w.t2LineProduct[0],product['id']])
         w.t2Raw[0] = rt.cfg['storage'] - tier2_occupied_space(w, rt.cfg, 0)
         cash, count = w.t2Cash[0], w.t2LineCount
         # Give enough cash to isolate the space check.
@@ -355,7 +356,7 @@ if (ctx.result.marketAnchorBand !== .123) throw Error('anchor omitted');
                 reference.plan_and_buy_inputs(w, cfg, M.PRODUCTS, T0P, 1)
             self.assertLessEqual(w.raw[:M.NE].sum() + w.t1Fin[:M.NP].sum(), 19000)
             w.t1Fin[w.t1Operates != 0] = 100000
-            w.t2Raw[0] = 16999
+            w.t2Raw[0] = tier2_goods_space(w,cfg,0)-1
             w.t2Price[0] = 100
             if fast:
                 accelerated.operate_tier2(w, cfg, 1)
@@ -403,12 +404,13 @@ if (ctx.result.marketAnchorBand !== .123) throw Error('anchor omitted');
                 w.t2Sector[i] = p['sectorIndex']
                 w.t2UnitCost[i] = M.unit_cost(p['complexity'], rt.cfg)
                 w.t2Price[i] = round(w.t2UnitCost[i] * 1.25, 2)
-            other = next(p for p in M.T2_PRODUCTS if p['sectorIndex'] == w.t2Sector[0] and p['complexity'] == 4)
+            other = next(p for p in M.T2_PRODUCTS if p['sectorIndex'] == w.t2Sector[0] and p['complexity'] == 4 and p['id'] != w.t2LineProduct[0])
+            w.t2Cash[0] += rt.cfg['t2Machinery'][other['complexity']]
             add_tier2_line(w, rt.cfg, 0, other)
             with patch.object(rt, 'publish'):
-                rt.apply_config({'t2MaterialCost': 3.5, 'conversionFactor': .4})
-            w.distributorPreferredSupplier[:200] = np.arange(200)
-            w.distributorProduct[:200] = np.arange(200) + M.NP
+                rt.apply_config({'t1MaterialCost': 3.5, 'conversionFactor': .4})
+            w.distributorPreferredSupplier[:len(M.T2_PRODUCTS)] = np.arange(len(M.T2_PRODUCTS))
+            w.distributorProduct[:len(M.T2_PRODUCTS)] = M.NP + np.arange(len(M.T2_PRODUCTS))
         for t in range(1, 33):
             with patch.object(accelerated, '_HAVE_NUMBA', True):
                 sa = reference.tick(a.world, a.cfg, t)
@@ -420,15 +422,56 @@ if (ctx.result.marketAnchorBand !== .123) throw Error('anchor omitted');
                 np.testing.assert_array_equal(getattr(a.world, name), getattr(b.world, name), err_msg=f'{t}: {name}')
             self.assertAlmostEqual(a.world.costSinks, b.world.costSinks, delta=1e-6)
 
+    def test_normalization_drops_obsolete_fields(self):
+        cfg = normalize_config({'obsoleteCostReference': 3.5, 'conversionFactor': .4})
+        self.assertNotIn('obsoleteCostReference', cfg)
+        self.assertEqual(cfg['conversionFactor'], .4)
+        rt = self.runtime()
+        rt.apply_config({'obsoleteCostReference': 3.5})
+        self.assertNotIn('obsoleteCostReference', rt.cfg)
+
     def test_partial_nested_config_is_total_and_atomic(self):
         cfg = normalize_config({'t2Capacity': {'3': 30}})
         self.assertEqual(sorted(cfg['t2Capacity']), [3, 4, 5])
-        self.assertEqual(cfg['t2Capacity'][4], 20)
+        self.assertEqual(cfg['t2Capacity'][4], 24)
         rt = self.runtime()
         rt.apply_config({'t2Capacity': {'3': 30}})
         self.assertEqual(sorted(rt.cfg['t2Capacity']), [3, 4, 5])
         self.assertEqual(rt.cfg['t2Capacity'][3], 30)
-        self.assertEqual(rt.cfg['t2Capacity'][4], 20)
+        self.assertEqual(rt.cfg['t2Capacity'][4], 24)
+
+    def test_loyalty_starting_fees_and_reliability_scaling(self):
+        cfg, w = reset_world(SMALL)
+        self.assertAlmostEqual(w.aov1,1000)
+        np.testing.assert_allclose(w.aov2[:2],[30,30])
+        self.assertAlmostEqual(w.aov3,30)
+        for reliability in (0, .5, 1):
+            scale = (1+reliability)/1.5
+            self.assertAlmostEqual(M.loyalty_charge(w.lmUnitCost1,reliability,w.lm1),50*scale)
+            for multiple in w.lm2[:2]:
+                self.assertAlmostEqual(M.loyalty_charge(w.lmUnitCost2,reliability,multiple),1.5*scale)
+            self.assertAlmostEqual(M.loyalty_charge(w.lmUnitCost3,reliability,w.lm3),1.5*scale)
+        custom = normalize_config({'baseCost':2,'t1MaterialCost':3})
+        self.assertAlmostEqual(custom['loyaltyMultiple'][1]*2*1.5,50)
+        self.assertAlmostEqual(custom['loyaltyMultiple'][2][3]*M.material_switching_reference(custom)*1.5,1.5)
+
+    def test_loyalty_observations_exclude_failed_orders_and_switching_fees(self):
+        cfg, w = reset_world(dict(SMALL, loyaltyEmaAlpha=1))
+        w.t0Revenue.fill(0)
+        w.t0Revenue[0] = 200
+        w.t0Opportunities.fill(100)  # Attempts are not paid purchase events.
+        w.t1Bought.fill(0)
+        w.t1Bought[:2] = 1
+        w.t2MatSpend[0] = 170
+        w.t2MatOrders[0] = 2
+        w.loyaltyPenalties[2] = 20
+        reference.update_loyalty_regime(w,cfg,{'purchaseOrders':2,'distributorPayments':200},M.TIME['ticksPerYear'])
+        self.assertAlmostEqual(w.aov1,100)
+        self.assertAlmostEqual(w.aov2[0],85)
+        self.assertAlmostEqual(w.aov3,90)
+        self.assertAlmostEqual(w.lm1*w.lmUnitCost1*1.5,5)
+        self.assertAlmostEqual(w.lm2[0]*w.lmUnitCost2*1.5,4.25)
+        self.assertAlmostEqual(w.lm3*w.lmUnitCost3*1.5,4.5)
 
     def test_loyalty_aov_bootstrap_is_five_percent(self):
         cfg, w = reset_world(SMALL)

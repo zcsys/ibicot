@@ -8,11 +8,13 @@ config/tick/scalars go in a JSON sidecar.  See
 from __future__ import annotations
 
 import json
+from ..core import model as M
 import os
 
 import numpy as np
 
 from ..core.config import normalize_config
+from ..core.model import CATALOG_REVISION
 from ..core.state import WorldState
 
 
@@ -23,10 +25,14 @@ def save_checkpoint(path, cfg, tick, world, scalars=None, runtime_metadata=None)
     np.savez(path + '.npz', **arr)
     meta = {
         'format': 'economy-checkpoint',
-        'version': 5,
+        'version': 8,
+        'catalogRevision': CATALOG_REVISION,
+        'companyNumbering': M.COMPANY_NUMBERING,
         'tick': int(tick),
         'cfg': cfg,
         'runtime': runtime_metadata or {},
+        'distributorSupplierHistory': [[buyer, market, supplier] for (buyer, market), supplier
+                                       in sorted(world.distributorSupplierHistory.items())],
         'extras': {name: getattr(world, name).tolist() for name in
                    ('t2MatSpend', 't2MatOrders', 'loyaltySwitches', 'loyaltyPenalties')},
         'scalars': {**scalars, 'netEarningsAvailable': bool(world.netEarningsAvailable),
@@ -50,6 +56,10 @@ def load_checkpoint(path):
     with open(path + '.json') as f:
         meta = json.load(f)
     assert meta['format'] == 'economy-checkpoint', 'unsupported checkpoint format'
+    if meta.get('catalogRevision') != CATALOG_REVISION:
+        raise ValueError('Checkpoint uses an older recipe/storage model. Start a fresh Midbridge world; the old checkpoint is preserved.')
+    if meta.get('companyNumbering',M.COMPANY_NUMBERING) != M.COMPANY_NUMBERING:
+        raise ValueError('Checkpoint company numbering does not match this catalog.')
     # JSON turns the int keys of nested config mappings (t2Machinery, t2Capacity,
     # footprint, loyaltyMultiple) into strings — re-normalize to restore them.
     cfg = normalize_config(meta['cfg'])
@@ -61,6 +71,8 @@ def load_checkpoint(path):
     world = WorldState(cfg)
     with np.load(path + '.npz') as data:
         for name in world.array_names:
+            if name == 'distributorPreferredMarket' and name not in data:
+                continue
             if name not in data and meta.get('version', 1) < 4 and 'Switching' in name:
                 continue
             if name not in data and meta.get('version', 1) < 3 and name in (
@@ -84,6 +96,8 @@ def load_checkpoint(path):
                 target[:count] = saved[:count]
             else:
                 raise ValueError(f'Checkpoint array shape mismatch: {name}')
+    world.distributorSupplierHistory = {(int(b), int(m)): int(s)
+                                        for b, m, s in meta.get('distributorSupplierHistory', [])}
     world.t2LineCount = int(scalars['t2LineCount'])
     world.netEarningsAvailable = bool(scalars.get('netEarningsAvailable', False)) if meta.get('version', 1) >= 4 else False
     if meta.get('version', 1) < 5:
@@ -121,4 +135,4 @@ def checkpoint_roundtrip_identical(cfg, world):
     for name in world.array_names:
         if not np.array_equal(getattr(world, name), getattr(W2, name), equal_nan=True):
             return False
-    return W2.t2LineCount == world.t2LineCount and W2.costSinks == world.costSinks and W2.equipmentSinks == world.equipmentSinks
+    return W2.distributorSupplierHistory == world.distributorSupplierHistory and W2.t2LineCount == world.t2LineCount and W2.costSinks == world.costSinks and W2.equipmentSinks == world.equipmentSinks

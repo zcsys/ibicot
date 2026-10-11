@@ -49,10 +49,10 @@ class PerformanceTests(unittest.TestCase):
         reliability = rng.random(n) * 3 - 1
         reliability[::33] = np.nan
         offers = np.concatenate([np.arange(off[m], off[m + 1])[np.argsort(prices[off[m]:off[m + 1]], kind='stable')]
-                                 for m in range(M.NP)])
+                                 for m in range(len(sizes))])
         tree, positions, width = fast._stock_index(offers, off, stocks)
         for step in range(2500):
-            m = step % M.NP
+            m = step % len(sizes)
             preferred = int(rng.integers(-1, n))
             request = float(rng.choice([0, .5, 1, 2, 17, 100, 150]))
             unit, multiple = 1.87, .735
@@ -69,7 +69,7 @@ class PerformanceTests(unittest.TestCase):
     @unittest.skipUnless(fast._HAVE_NUMBA, 'Numba not installed')
     def test_refinery_production_and_research_observation_match_reference(self):
         cfg, w = reset_world({'t2FirmCount': 200, 'distributorCount': 400,
-                              'storage': 70000, 't1Capacity': 17433, 'conversionFactor': .371,
+                              'storage': 70000, 't1Capacity': 17433, 't1CapacityC2': 8137, 'conversionFactor': .371,
                               'researchPriceMinimumOpportunities': 2})
         rng = np.random.default_rng(618)
         w.t1Operates[:] = rng.integers(0, 2, len(w.t1Operates))
@@ -85,7 +85,7 @@ class PerformanceTests(unittest.TestCase):
         self.assertEqual(w.costSinks, expected.costSinks)
         # All products and unequal line counts make opportunity denominators
         # sensitive to accumulation order, unlike a single-product smoke test.
-        w.t2LineProduct[:200] = np.arange(200)
+        w.t2LineProduct[:len(M.T2_PRODUCTS)] = np.arange(len(M.T2_PRODUCTS))
         other = next(p for p in M.T2_PRODUCTS if p['sectorIndex'] == 0 and p['id'] != 0)
         add_tier2_line(w, cfg, 0, other, paid=False)
         for tier in ('t0', 't1', 't2'):
@@ -138,7 +138,7 @@ class PerformanceTests(unittest.TestCase):
             add_tier2_line(w, cfg, 0, p, paid=False)
         rng = np.random.default_rng(313)
         w.t2Raw[:40 * M.NE] = rng.random(40 * M.NE) * 1000
-        w.t2T1Raw[:40 * M.NP] = rng.random(40 * M.NP) * 1000
+        w.t2T1Raw[:40 * M.NI] = rng.random(40 * M.NI) * 1000
         w.t2RawBasis[:] = 1.17
         w.t2T1Basis[:] = 1.37
         w.t2Price[:w.t2LineCount] = 100

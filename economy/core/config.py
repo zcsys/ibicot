@@ -13,7 +13,7 @@ from . import model as M
 
 
 def default_cfg() -> dict:
-    return {
+    cfg = {
         # Global / environment
         'seed': 137,
         'difficultyTarget': 1.0,
@@ -29,8 +29,8 @@ def default_cfg() -> dict:
         't0License': 22_000_000.0,      # $22m Tier 0 license (equity asset)
         't0Machinery': 12_250_000.0,    # $12.25m per extraction system (equity asset; ×4 = $49m full rig)
         't0Reserve': 1_000_000.0,       # $1m reserved for other business operations
-        't0Capacity': 200_000,          # extraction throughput per tick
-        't0Storage': 500_000,           # storage capacity (fill to the brim, like T1/T2)
+        't0Capacity': 500_000,           # throughput per installed element machine per tick
+        't0Storage': 40_000_000,           # storage capacity (fill to the brim, like T1/T2)
         'baseCost': 1.0,                # $1 per raw element
         't0Markup': 0.25,                 # T0 first-guess markup
         'minWholesaleLot': 1000,
@@ -39,7 +39,8 @@ def default_cfg() -> dict:
         't1Equity': 1_500_000.0,
         't1License': 1_000_000.0,
         't1Machinery': 15_000.0,
-        't1Capacity': 2_000.0,          # C-1/C-2 throughput per machine/tick
+        't1Capacity': M.T1_DEFAULT_CAPACITY,          # C-1 throughput per machine/tick
+        't1CapacityC2': M.T1_C2_DEFAULT_CAPACITY,     # C-2 throughput per machine/tick
         't1MaterialCost': 1.25,         # $1.25 per raw element (baseCost × (1 + t0Markup): T1 pays T0's marked-up price)
         't1Markup': 0.25,               # T1 first-guess markup (flat)
 
@@ -47,18 +48,19 @@ def default_cfg() -> dict:
         't2Equity': 1_500_000.0,
         't2License': 1_000_000.0,
         't2Machinery': {3: 75_000.0, 4: 375_000.0, 5: 420_000.0},
-        't2Capacity': {3: 30.0, 4: 20.0, 5: 10.0},
-        't2MaterialCost': 1.875,        # $1.875 per T1 material item ((t1MaterialCost + conversion) × (1 + t1Markup))
+        't2Capacity': {3: float(M.T2_ALLOCATION_CAPACITIES[3]), 4: float(M.T2_ALLOCATION_CAPACITIES[4]), 5: 10.0},
         'conversionFactor': 0.25,       # conversion = 0.25 × max(1, c−1) for all tiers
 
         # Storage (firm-level pool, raw + finished + machinery)
-        'storage': 20_000.0,
-        'storageRentPerUnitYear': 1.008,  # T1/T2 full allocated pool; T0 exempt
+        'storage': 20_000.0,             # T2 manufacturers
+        't1C1Storage': 50_000.0,         # C1 refinery cohorts
+        't1C2Storage': 50_000.0,         # C2 refinery cohorts only
+        'storageRentPerUnitYear': 0.0,    # rent disabled for the current experiment
         'footprint': {1: 1_000.0, 2: 1_000.0, 3: 3_000.0, 4: 4_000.0, 5: 5_000.0},
 
         # Demand / distributors (T3)
         'distributorSearchOffers': 5,
-        'distributorActivation': 0.2,       # fraction of distributors that activate each tick
+        'distributorActivation': 0.105,       # fraction of distributors that activate each tick
         'chokeMin': 1.8,
         'chokeMax': 3.0,
         'elasticity': 2.0,              # eta = 2 (T3 distributor demand)
@@ -73,7 +75,6 @@ def default_cfg() -> dict:
         'wholesalePriceResponse': 0.05,
         'marketAnchorBand': 0.02,        # ± fraction around the market going rate where a firm holds instead of re-pricing
         'priceObservationTicks': 30,
-        'loyaltyMultiple': {1: 41.665, 2: {3: 0.605, 4: 0.325, 5: 0.13}, 3: 0.485},
         'loyaltyEmaAlpha': 0.01,         # EMA smoothing for the adaptive loyalty-multiple regime
 
         # Research pricing (off by default)
@@ -82,6 +83,8 @@ def default_cfg() -> dict:
         'researchPriceMaxObservationTicks': 3600,
     }
 
+    cfg['loyaltyMultiple'] = M.initial_loyalty_multiples(cfg)
+    return cfg
 
 def _is_number(v):
     return isinstance(v, (int, float)) and not isinstance(v, bool)
@@ -109,7 +112,16 @@ def _clamp_mapping(d, key, low, high=None):
 def normalize_config(c) -> dict:
     defaults = default_cfg()
     d = dict(defaults)
-    d.update(c or {})
+    # Ignore obsolete/unknown fields from saved configurations and UI patches.
+    d.update({key: value for key, value in (c or {}).items() if key in defaults})
+    # Old saves/custom configurations used one capacity for both complexities.
+    if c and 't1Capacity' in c and 't1CapacityC2' not in c:
+        d['t1CapacityC2'] = c['t1Capacity']
+
+    # Preserve shared-storage configurations saved before the C2 override.
+    for key in ('t1C1Storage', 't1C2Storage'):
+        if c and 'storage' in c and key not in c:
+            d[key] = c['storage']
 
     for key in defaults:
         if _is_number(defaults[key]) and not math.isfinite(d[key]):
@@ -137,12 +149,12 @@ def normalize_config(c) -> dict:
     d['t0Markup'] = max(0, d['t0Markup'])
 
     # Tier 1
-    for key in ('t1Equity', 't1License', 't1Machinery', 't1Capacity', 't1MaterialCost'):
+    for key in ('t1Equity', 't1License', 't1Machinery', 't1Capacity', 't1CapacityC2', 't1MaterialCost'):
         d[key] = max(0.000001, d[key])
     d['t1Markup'] = max(0, d['t1Markup'])
 
     # Tier 2
-    for key in ('t2Equity', 't2License', 't2MaterialCost', 'conversionFactor'):
+    for key in ('t2Equity', 't2License', 'conversionFactor'):
         d[key] = max(0.000001, d[key])
     _clamp_mapping(d, 't2Machinery', 1)
     _clamp_mapping(d, 't2Capacity', 1)
@@ -150,6 +162,8 @@ def normalize_config(c) -> dict:
 
     # Storage
     d['storage'] = max(1, d['storage'])
+    d['t1C2Storage'] = max(1, d['t1C2Storage'])
+    d['t1C1Storage'] = max(1, d['t1C1Storage'])
     d['storageRentPerUnitYear'] = max(0.0, d['storageRentPerUnitYear'])
 
     # Demand
@@ -167,7 +181,8 @@ def normalize_config(c) -> dict:
     d['reliabilityAlpha'] = M.clamp(d['reliabilityAlpha'], 0, 1)
     d['switchingStableBand'] = max(1e-9, d['switchingStableBand'])
     # loyaltyMultiple: {1: scalar (C-1/C-2 raw buyer), 2: {3,4,5: scalar}, 3: scalar}
-    source = d['loyaltyMultiple'] if isinstance(d['loyaltyMultiple'], dict) else {}
+    source = (c or {}).get('loyaltyMultiple', {})
+    source = source if isinstance(source, dict) else {}
     def member(mapping, key, fallback):
         return mapping.get(key, mapping.get(str(key), fallback))
     def multiple(value, fallback):
@@ -176,7 +191,7 @@ def normalize_config(c) -> dict:
         except (TypeError, ValueError):
             return fallback
         return max(0.0, value) if math.isfinite(value) else fallback
-    base = defaults['loyaltyMultiple']
+    base = M.initial_loyalty_multiples(d)
     sub = member(source, 2, {})
     sub = sub if isinstance(sub, dict) else {}
     d['loyaltyMultiple'] = {

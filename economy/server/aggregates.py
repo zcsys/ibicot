@@ -10,6 +10,38 @@ import math
 import numpy as np
 
 from ..core import model as M
+from ..core.accounting import allocate_to_lines
+
+
+def project_complexity_balances(world, cfg):
+    """Actual company balances/purchases, shared by installed line count.
+
+    With the starting one-line fleet these are exact company-cohort totals.
+    Multi-complexity owners share their common balances equally across lines,
+    matching the existing overhead allocation and avoiding double counting.
+    """
+    from ..kernel.tick import storage_rent_equity
+    result = {}
+    for tier in ('t1', 't2'):
+        n = M.N1 if tier == 't1' else cfg['t2FirmCount']
+        if tier == 't1':
+            comp = np.tile([p['complexity'] for p in M.PRODUCTS], n)
+            inventory = world.raw.reshape(n,M.NE).sum(axis=1)
+            inventory += (world.t1Fin*world.t1Operates).reshape(n,M.NP).sum(axis=1)
+        else:
+            lc = int(world.t2LineCount)
+            comp = np.asarray([p['complexity'] for p in M.T2_PRODUCTS])[world.t2LineProduct[:lc]]
+            inventory = world.t2Raw[:n*M.NE].reshape(n,M.NE).sum(axis=1)
+            inventory += world.t2T1Raw[:n*M.NI].reshape(n,M.NI).sum(axis=1)
+            inventory += np.bincount(world.t2LineFirm[:lc],weights=world.t2Fin[:lc],minlength=n)
+        values = dict(cash=getattr(world,tier+'Cash')[:n],
+                      equity=storage_rent_equity(world,cfg,tier), inventory=inventory,
+                      bought=getattr(world,tier+'Bought')[:n])
+        for key,value in values.items():
+            totals=np.bincount(comp,weights=allocate_to_lines(world,cfg,tier,value),minlength=5)
+            for complexity in ((1,2) if tier=='t1' else (3,4)):
+                result.setdefault(complexity,{})[key]=float(totals[complexity])
+    return result
 
 try:
     from ..core.jit import njit
@@ -20,6 +52,8 @@ except Exception:  # pragma: no cover - Numba/LLVM is optional
         return fn
 
 NE, NP, N1 = M.NE, M.NP, M.N1
+T1_FIRMS_PER_MATERIAL = M.T1_FIRMS_PER_MATERIAL
+NI = M.NI
 PRODUCT_COUNT, SECTOR_COUNT = len(M.T2_PRODUCTS), len(M.T2_SECTORS)
 _VIEW_FIELDS = ('t1Operates', 'raw', 'rawBasis', 't1Fin', 't1FinBasis', 't1Sold',
                 't1Revenue', 't1COGS', 't1Rel', 't1Cash', 't1EqBook', 't1Price',
@@ -83,7 +117,7 @@ def _project(w, made_by_line, controller, license_cost):
         totals[8] += int(rel_n > 0)
         totals[9] += int(controller[cid] != 0)
     for cohort in range(NP):
-        for cid in range(cohort * 100, (cohort + 1) * 100):
+        for cid in range(cohort * T1_FIRMS_PER_MATERIAL, (cohort + 1) * T1_FIRMS_PER_MATERIAL):
             b = cid * NP + cohort
             if math.isfinite(w.t1Price[b]):
                 cohorts[0, cohort] += w.t1Price[b]
@@ -135,7 +169,7 @@ def _manufacturing(w, n, line_count, capacity):
         sectors[4, sector] += w.t2EqBook[firm]
     # Keep the original material-major reduction order: sum each material
     # across firms before adding its sector totals to the inventory value.
-    for material in range(NP):
+    for material in range(NI):
         raw = np.zeros(SECTOR_COUNT)
         value = np.zeros(SECTOR_COUNT)
         for firm in range(n):
@@ -144,7 +178,7 @@ def _manufacturing(w, n, line_count, capacity):
                 idx = firm * NE + material
                 q, b = w.t2Raw[idx], w.t2RawBasis[idx]
             else:
-                idx = firm * NP + material
+                idx = firm * NI + material
                 q, b = w.t2T1Raw[idx], w.t2T1Basis[idx]
             raw[sector] += q
             value[sector] += q * b
@@ -199,11 +233,11 @@ def _manufacturing_numpy(w, n, lc, capacity):
     for i, values in enumerate((w.t2Controller[:n], w.t2Controller[:n] & w.t2Online[:n],
                                  w.t2Cash[:n], w.t2EqBook[:n]), 1):
         sectors[i] = np.bincount(sector, weights=values, minlength=SECTOR_COUNT)
-    for material in range(NP):
+    for material in range(NI):
         if material < NE:
             quantity, cost = w.t2Raw[material::NE][:n], w.t2RawBasis[material::NE][:n]
         else:
-            quantity, cost = w.t2T1Raw[material::NP][:n], w.t2T1Basis[material::NP][:n]
+            quantity, cost = w.t2T1Raw[material::NI][:n], w.t2T1Basis[material::NI][:n]
         sectors[5] += np.bincount(sector, weights=quantity, minlength=SECTOR_COUNT)
         sectors[6] += np.bincount(sector, weights=quantity * cost, minlength=SECTOR_COUNT)
     line_sector = sector[w.t2LineFirm[:lc]]

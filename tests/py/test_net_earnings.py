@@ -78,7 +78,7 @@ class NetEarningsTests(unittest.TestCase):
             w.t1Price[np.isfinite(w.t1Price)]=3
             for m in range(M.NP):
                 sellers=np.flatnonzero(w.t1Operates[m::M.NP])*M.NP+m
-                w.t2Preferred[m::M.NP]=sellers[0]
+                w.t2Preferred[m::M.NI]=sellers[0]
                 w.t1Price[sellers[0]]=5
             for i in range(400):
                 pid=i%len(M.T2_PRODUCTS)
@@ -89,8 +89,8 @@ class NetEarningsTests(unittest.TestCase):
                 w.t2FinBasis[i]=2
             w.t1Cash[:]+=1000000
             w.t2Cash[:400]+=1000000
-            w.distributorProduct[:800]=np.arange(800)%200+M.NP
-            w.distributorPreferredSupplier[:800]=np.arange(800)%200
+            w.distributorProduct[:800]=np.arange(800)%len(M.T2_PRODUCTS)+M.NP
+            w.distributorPreferredSupplier[:800]=np.arange(800)%len(M.T2_PRODUCTS)
             seen=np.zeros(3)
             for tick in range(1,5):
                 before={t:equity(w,cfg,t).copy() for t in ['t0','t1','t2']}

@@ -20,10 +20,11 @@ from ..core import model as M
 from ..core.accounting import company_earnings, firm_count
 from ..core.config import normalize_config
 from ..core.rng import hash_seed_vec
-from ..core.state import (T0P, T1P, WorldState, tier1_goods_space, validate_storage, _has_tier2_product, add_tier2_line,
+from ..core.state import (T0P, T1P, WorldState, tier1_goods_space, tier1_storage_capacities, validate_storage, _has_tier2_product, add_tier2_line,
                           quantize_round, quantize_whole, reset_world)
 from ..kernel.tick import tick as run_tick
-from .aggregates import project_refineries, project_manufacturing, project_storage_rent, project_company_amounts
+from .aggregates import project_refineries, project_manufacturing, project_storage_rent, project_company_amounts, project_complexity_balances
+from .recording import profitability_rows, CompanyHistory
 
 _STATS_DIR = Path(__file__).resolve().parents[2] / 'stats'
 _T2_COMP = np.array([p['complexity'] for p in M.T2_PRODUCTS], dtype=np.int64)
@@ -42,6 +43,8 @@ def stats_row(world, cfg, tick, month):
     t1p = world.t1Price
     row = {'tick': tick, 'month': month, 'year': month // 12 + 1,
            'gen': month // 240 + 1}
+    row['statsVersion'] = 2
+    row['productProfitability'] = profitability_rows(world,cfg)
     row['netEarningsAvailable'] = world.netEarningsAvailable
     for tier in ('t0', 't1', 't2'):
         n = firm_count(cfg, tier)
@@ -52,7 +55,7 @@ def stats_row(world, cfg, tick, month):
     row['t0Price'] = round(float(t0p[mask].mean()), 4) if mask.any() else None
     mask = np.isfinite(t1p)
     row['t1Price'] = round(float(t1p[mask].mean()), 4) if mask.any() else None
-    for c in (3, 4, 5):
+    for c in M.TIER_BOUNDARIES['T2']:
         sel = comp == c
         cap = float(cfg['t2Capacity'][c])
         if sel.any():
@@ -85,6 +88,9 @@ def stats_row(world, cfg, tick, month):
     row['t2Demand'] = float(world.t2Demand[:lc].sum())
     row['t2Sold'] = float(world.t2Sold[:lc].sum())
     row['t2Unmet'] = float(np.maximum(0.0, world.t2Demand[:lc] - world.t2Sold[:lc]).sum())
+    for m,p in enumerate(M.T2_INPUT_PRODUCTS):
+        row['consumed_'+p['catalogId']] = float(world.t2InputConsumed[m])
+    row['t2IntermediateSold'] = float(world.t2IntermediateSold.sum())
     row['loyaltySwitches'] = int(world.loyaltySwitches.sum())
     row['loyaltyPenalties'] = float(world.loyaltyPenalties.sum())
     row['loyaltySwitchesT1'] = int(world.loyaltySwitches[0])
@@ -96,6 +102,7 @@ def stats_row(world, cfg, tick, month):
     return row
 
 NE, NP, N0, N1 = M.NE, M.NP, M.N0, M.N1
+NI = M.NI
 M4 = M.T2_MAX_PRODUCTS_PER_FIRM
 MONTH = M.MONTH
 N2_FIRMS = M.N2_FIRMS
@@ -104,7 +111,7 @@ N_DISTRIBUTORS = M.N_DISTRIBUTORS
 _EI = {element: i for i, element in enumerate(M.ELEMENTS)}
 _PI = {p['code']: i for i, p in enumerate(M.PRODUCTS)}
 
-# Generic firm names come from ``core.model`` (Star Business naming catalog §9):
+# Generic firm names come from ``core.model`` (Midbridge naming catalog):
 # a sector-specific generic base plus a hex serial number.
 
 
@@ -232,6 +239,9 @@ class KernelRuntime:
     # Lifecycle
     # ------------------------------------------------------------------
     def reset(self, cfg=None):
+        if getattr(self, '_companyStats', None) is not None:
+            self._companyStats.flush(self.world,self.cfg)
+        self._companyStats = None
         self.tick = 0
         self.month = 0
         self.running = False
@@ -281,6 +291,10 @@ class KernelRuntime:
             self.flush_stats()
         if self.targetTick and self.tick >= self.targetTick:
             self.flush_stats()
+            self._companyStats.flush(self.world,self.cfg)
+            from .persistence import save_checkpoint
+            save_checkpoint(str(self._companyStats.path/'final-checkpoint'), self.cfg,
+                            self.tick, self.world, self.state, self.checkpoint_metadata())
             self.running = False
 
     def run(self, mode='fixed'):
@@ -290,8 +304,13 @@ class KernelRuntime:
     def pause(self):
         self.running = False
         self.flush_stats()
+        if getattr(self, '_companyStats', None) is not None:
+            self._companyStats.flush(self.world,self.cfg)
 
     def _record_stats(self):
+        if getattr(self, '_companyStats', None) is None:
+            self._companyStats = CompanyHistory(self.statsPath.parent,self.cfg)
+        self._companyStats.record(self.world,self.cfg,self.tick)
         self.statsLog.append(stats_row(self.world, self.cfg, self.tick, self.month))
 
     def flush_stats(self):
@@ -315,12 +334,12 @@ class KernelRuntime:
         merged = dict(self.cfg)
         merged.update(patch)
         candidate = normalize_config(merged)
-        if candidate['storage'] != self.cfg['storage'] or candidate['footprint'] != self.cfg['footprint']:
+        if any(candidate[key] != self.cfg[key] for key in ('storage', 't1C1Storage', 't1C2Storage', 'footprint')):
             validate_storage(self.world, candidate)
         # Precompute every derived value against ``candidate`` before mutating the
         # runtime, so a failure cannot leave the world half-configured.
-        ref_costs = {p['id']: M.unit_cost(p['complexity'], candidate) for p in M.T2_PRODUCTS}
-        lm_unit2 = candidate['t1MaterialCost'] + candidate['conversionFactor']
+        ref_costs = {p['id']: M.reference_tier2_cost(p, candidate) for p in M.T2_PRODUCTS}
+        lm_unit2 = M.material_switching_reference(candidate)
         lm_unit3 = self.world._mean_t2_unit_cost(candidate)
         n = candidate['distributorCount']
         cids = np.arange(n)
@@ -482,7 +501,7 @@ class KernelRuntime:
         if self.world.t1Cash[id_] + 1e-9 < self.cfg['t1Machinery']:
             raise ValueError('Insufficient cash.')
         held = (self.world.raw[id_ * NE:(id_ + 1) * NE].sum()
-                + self.world.t1Fin[id_ * NP:(id_ + 1) * NP].sum())
+                + self.world.t1Fin[id_ * NP:(id_ + 1) * NP] @ np.array([p['complexity'] for p in M.PRODUCTS]))
         if held + self.cfg['footprint'][M.complexity(product)] > tier1_goods_space(self.world, self.cfg, id_) + 1e-9:
             raise ValueError('Insufficient storage space for machinery.')
         self.world.t1Cash[id_] -= self.cfg['t1Machinery']
@@ -507,6 +526,11 @@ class KernelRuntime:
         return best if math.isfinite(best) else self.cfg['baseCost']
 
     def company_detail(self, tier, id_):
+        if isinstance(id_,str) and id_.lower().startswith('0x'):
+            actual_tier,id_ = M.company_from_number(id_)
+            if tier is not None and tier != actual_tier:
+                raise ValueError('Company number belongs to another tier')
+            tier = actual_tier
         return self._company_detail(tier, int(id_))
 
     # ------------------------------------------------------------------
@@ -569,8 +593,8 @@ class KernelRuntime:
         world = self.world
         cohorts = []
         for cidx in range(NP):
-            start = cidx * 100
-            end = start + 100
+            start = cidx * M.T1_FIRMS_PER_MATERIAL
+            end = start + M.T1_FIRMS_PER_MATERIAL
             pIdx = _PI[T1P[cidx]['product']]
             product = T1P[cidx]['product']
             price, uc = values['price'][cidx], values['unitCost'][cidx]
@@ -642,9 +666,9 @@ class KernelRuntime:
         t2Revenue = _array_sum(world.t2Revenue, lc)
         t2COGS = _array_sum(world.t2COGS, lc)
         t2Equity += float((world.t2Fin[:lc] * world.t2FinBasis[:lc]).sum())
-        t2Inventory += _array_sum(world.t2Raw, n2 * NE) + _array_sum(world.t2T1Raw, n2 * NP)
+        t2Inventory += _array_sum(world.t2Raw, n2 * NE) + _array_sum(world.t2T1Raw, n2 * NI)
         t2Equity += float((world.t2Raw[:n2 * NE] * world.t2RawBasis[:n2 * NE]).sum())
-        t2Equity += float((world.t2T1Raw[:n2 * NP] * world.t2T1Basis[:n2 * NP]).sum())
+        t2Equity += float((world.t2T1Raw[:n2 * NI] * world.t2T1Basis[:n2 * NI]).sum())
         potential = _array_sum(world.marketPotential)
         active = _array_sum(world.marketActive)
         fulfilled = _array_sum(world.marketFulfilled)
@@ -706,9 +730,11 @@ class KernelRuntime:
             product = M.T2_PRODUCTS[int(world.t2LineProduct[line])]
             products.append({
                 'line': line, 'code': product['code'], 'name': product['name'],
+                'installationName':product['installationName'], 'equipmentClass':product['equipmentClass'],
+                'machineFamily':product['machineFamily'],
                 'primaryMaterial': next(p['name'] for p in M.PRODUCTS if p['code'] == product['primaryMaterial']),
                 'complexity': product['complexity'],
-                'recipe': ' + '.join(f'{q} {M.PRODUCTS[material_idx]["name"]}' for material_idx, q in product['ingredients']),
+                'recipe': ' + '.join(f'{q} {M.T2_INPUT_PRODUCTS[material_idx]["name"]}' for material_idx, q in product['ingredients']),
                 'price': float(world.t2Price[line]),
                 'unitCost': float(world.t2FinBasis[line] or world.t2UnitCost[line]),
                 'capacity': self.cfg['t2Capacity'][product['complexity']],
@@ -730,32 +756,35 @@ class KernelRuntime:
             cogs += world.t2COGS[line]
             value += world.t2Fin[line] * world.t2FinBasis[line]
         inputs = []
-        for material in range(NP):
+        for material in range(NI):
             basic = material < NE
-            index = id_ * (NE if basic else NP) + material
+            index = id_ * (NE if basic else NI) + material
             q = (world.t2Raw if basic else world.t2T1Raw)[index]
             b = (world.t2RawBasis if basic else world.t2T1Basis)[index]
             raw += q
             value += q * b
             if detailed:
-                supplier = int(world.t2Preferred[id_ * NP + material])
-                seller = supplier // NP if supplier >= 0 else -1
+                supplier = int(world.t2Preferred[id_ * NI + material])
+                from_t2 = supplier >= N1 * NP
+                line = supplier - N1 * NP if from_t2 else -1
+                seller = int(world.t2LineFirm[line]) if from_t2 else (supplier // NP if supplier >= 0 else -1)
                 inputs.append({
-                    'name': M.PRODUCTS[material]['name'], 'sourceTier': 'T1',
+                    'name': M.T2_INPUT_PRODUCTS[material]['name'], 'sourceTier': 'T2' if material >= NP else 'T1',
                     'stock': float(q), 'basis': float(b), 'value': float(q * b),
                     'supplier': supplier, 'supplierId': seller,
-                    'supplierName': M.t1_firm_name(seller) if seller >= 0 else None,
-                    'supplierPrice': float(world.t1Price[supplier]) if supplier >= 0 else None,
-                    'supplierReliability': float(world.t1Rel[supplier]) if supplier >= 0 else None,
+                    'supplierCompanyNumber': M.company_number('T2' if from_t2 else 'T1',seller) if seller>=0 else None,
+                    'supplierName': (M.t2_firm_name(world.t2Sector[seller],seller) if from_t2 else M.t1_firm_name(seller)) if seller >= 0 else None,
+                    'supplierPrice': float(world.t2Price[line] if from_t2 else world.t1Price[supplier]) if supplier >= 0 else None,
+                    'supplierReliability': float(world.t2Rel[line] if from_t2 else world.t1Rel[supplier]) if supplier >= 0 else None,
                 })
         eligible = []
         if detailed:
-            eligible = [{'code': p['code'], 'name': p['name'], 'price': self.cfg['t2Machinery'][p['complexity']],
+            eligible = [{'code': p['code'], 'name': p['name'], 'installationName':p['installationName'], 'price': self.cfg['t2Machinery'][p['complexity']],
                          'complexity': p['complexity']}
                         for p in M.T2_PRODUCTS
                         if p['complexity'] <= world.t2Capability[id_] and world.t2Sector[id_] == p['sectorIndex']
                         and not _has_tier2_product(world, id_, p['id'])]
-        return {'tier': 'T2', 'id': id_,
+        return {'tier': 'T2', 'id': id_, 'companyNumber':M.company_number('T2',id_),
                 'name': M.t2_firm_name(int(world.t2Sector[id_]), id_),
                 'sector': M.T2_SECTORS[int(world.t2Sector[id_])], 'capability': int(world.t2Capability[id_]),
                 'controller': 'PLAYER' if world.t2Controller[id_] else 'BOT',
@@ -764,6 +793,7 @@ class KernelRuntime:
                 'equipmentBookValue': float(world.t2EqBook[id_]),
                 'equity': float(world.t2Cash[id_] + world.t2EqBook[id_] + value + self.cfg['t2License'] - world.t2RentArrears[id_]),
                 **self._company_rent('t2', id_),
+                **self._storage_view('t2', id_),
                 'inventory': float(raw + finished), 'inventoryCapacity': self.cfg['storage'],
                 'raw': float(raw), 'finished': float(finished), 'made': float(made), 'sold': float(sold),
                 'revenue': float(revenue), 'cogs': float(cogs),
@@ -819,9 +849,9 @@ class KernelRuntime:
                         total[active] += fields[field][lines]
         if key in ('raw', 'inventory', 'equity'):
             raw = np.zeros(len(ids))
-            for material in range(NP):
+            for material in range(NI):
                 basic = material < NE
-                index = ids * (NE if basic else NP) + material
+                index = ids * (NE if basic else NI) + material
                 quantity = (w.t2Raw if basic else w.t2T1Raw)[index]
                 raw += quantity
                 if key == 'equity':
@@ -906,6 +936,13 @@ class KernelRuntime:
 
     def _company_detail(self, tier, id_):
         world = self.world
+        if tier == 'T-1':
+            return M.company_registry(self.cfg)['gaia'] if id_ == 0 else None
+        if tier == 'T3':
+            if not 0 <= id_ < self.cfg['distributorCount']:
+                return None
+            return {'tier':'T3','id':id_,'companyNumber':M.company_number('T3',id_),
+                    'name':M.company_display_name('T3','Distributor',id_)}
         if tier == 'T2':
             return self._tier2_company(id_)
         id_ = max(0, id_)
@@ -937,7 +974,7 @@ class KernelRuntime:
                     'reliability': float(world.t0Rel[idx]), 'stability': float(world.t0Stability[idx]),
                     'reliabilityAttempts': int(world.t0RelAttempts[idx]),
                 })
-            return {'tier': 'T0', 'id': id_, 'name': co['name'], 'elements': list(co['elements']),
+            return {'tier': 'T0', 'id': id_, 'companyNumber':M.company_number('T0',id_), 'name': co['name'], 'elements': list(co['elements']),
                     **self._company_rent('t0', id_),
                     'controller': 'PLAYER' if self.controllerT0[id_] else 'BOT',
                     'online': bool(self.onlineT0[id_]),
@@ -945,11 +982,12 @@ class KernelRuntime:
                     'made': float(prod), 'sold': float(sold), 'revenue': float(revenue),
                     'cogs': float(sum(x['cogs'] for x in elements)),
                     'grossProfit': float(revenue - sum(x['cogs'] for x in elements)),
-                    'capacity': self.cfg['t0Capacity'], 'targetInventory': self.cfg['t0Storage'],
+                    'capacity': self.cfg['t0Capacity'] * len(co['elements']),
+                    'machineCapacity': self.cfg['t0Capacity'], 'machineCount': len(co['elements']), 'targetInventory': self.cfg['t0Storage'],
                     'maxInventory': self.cfg['t0Storage'], 'status': 'ACTIVE', 'elementData': elements}
         if id_ >= N1:
             return None
-        piBase = T1P[id_ // 100]
+        piBase = T1P[id_ // M.T1_FIRMS_PER_MATERIAL]
         raw = []
         for element in M.ELEMENTS:
             i = _EI[element]
@@ -957,7 +995,8 @@ class KernelRuntime:
             raw.append({'element': element, 'stock': float(world.raw[idx]), 'basis': float(world.rawBasis[idx]),
                         'lastBuy': float(world.t1LastBuy[idx]) if math.isfinite(world.t1LastBuy[idx]) else None,
                         'inputNeed': float(world.t1InputNeed[idx]), 'purchaseRequest': float(world.t1PurchaseReq[idx]),
-                        'preferredSupplier': int(world.preferredWholesale[idx])})
+                        'preferredSupplier': int(world.preferredWholesale[idx]),
+                        'preferredSupplierCompanyNumber': M.company_number('T0',int(world.preferredWholesale[idx])) if world.preferredWholesale[idx]>=0 else None})
         products = []
         inv = eqv = made = sold = revenue = cogs = 0.0
         eqv = world.t1Cash[id_] + world.t1EqBook[id_] + self.cfg['t1License'] - world.t1RentArrears[id_]
@@ -972,7 +1011,10 @@ class KernelRuntime:
                 revenue += world.t1Revenue[idx]
                 cogs += world.t1COGS[idx]
                 products.append({
-                    'product': M.PRODUCTS[p]['code'], 'price': float(world.t1Price[idx]),
+                    'product': M.PRODUCTS[p]['code'], 'name':M.PRODUCTS[p]['name'],
+                    'installationName':M.PRODUCTS[p]['installationName'],
+                    'machineFamily':M.PRODUCTS[p]['machineFamily'],
+                    'price': float(world.t1Price[idx]),
                     'unitCost': float(world.t1UnitCost[idx]), 'finished': float(fin),
                     'finishedBasis': float(world.t1FinBasis[idx]),
                     'salesEMA': float(world.t1SalesEMA[idx]), 'demandEMA': float(world.t1DemandEMA[idx]),
@@ -987,16 +1029,38 @@ class KernelRuntime:
             inv += x['stock']
         for element in M.ELEMENTS:
             eqv += world.raw[id_ * NE + _EI[element]] * world.rawBasis[id_ * NE + _EI[element]]
-        return {'tier': 'T1', 'id': id_, 'name': M.t1_firm_name(id_),
+        return {'tier': 'T1', 'id': id_, 'companyNumber':M.company_number('T1',id_), 'name': M.t1_firm_name(id_),
                 'sector': M.t1_sector(piBase['product']),
                 'controller': 'PLAYER' if self.controller[id_] else 'BOT',
                 'online': bool(self.online[id_]), 'cash': float(world.t1Cash[id_]),
                 'equipment': list(self.equipment[id_]), 'equipmentBookValue': float(world.t1EqBook[id_]),
                 'inventory': float(inv), 'equity': float(eqv), 'raw': raw, 'products': products,
                 **self._company_rent('t1', id_),
+                **self._storage_view('t1', id_),
                 'made': float(made), 'sold': float(sold), 'revenue': float(revenue), 'cogs': float(cogs),
                 'grossProfit': float(revenue - cogs),
                 'reliability': float(np.mean([p['reliability'] for p in products])) if products else 0.0}
+
+    def _storage_view(self, tier, firm):
+        """Space measures are distinct from inventory item counts and book value."""
+        from ..kernel.tick import tier1_storage_layout, tier2_storage_layout
+        w, cfg = self.world, self.cfg
+        if tier == 't1':
+            targets, output_space, _ = tier1_storage_layout(w, cfg, firm)
+            goods = tier1_goods_space(w, cfg, firm)
+            occupied = (w.raw[firm*NE:(firm+1)*NE].sum()
+                        + w.t1Fin[firm*NP:(firm+1)*NP] @ np.array([p['complexity'] for p in M.PRODUCTS]))
+        else:
+            from ..core.state import tier2_goods_space
+            from ..kernel.tick import tier2_inventory_units
+            targets, output_space, _ = tier2_storage_layout(w, cfg, firm)
+            goods = tier2_goods_space(w, cfg, firm)
+            occupied = tier2_inventory_units(w, firm)
+        capacity = M.refinery_storage(cfg, firm) if tier == 't1' else cfg['storage']
+        return {'storageCapacitySpace': capacity, 'machinerySpace': capacity - goods,
+                'goodsSpace': goods, 'occupiedGoodsSpace': float(occupied),
+                'occupiedStorageSpace': float(occupied + capacity - goods),
+                'inputTargetItems': targets.tolist(), 'finishedSpacePerLine': output_space}
 
     def _company_rent(self, tier, id_):
         transfers = {'switchingIncome': float(getattr(self.world, tier + 'SwitchingIncome')[id_]),
@@ -1005,7 +1069,7 @@ class KernelRuntime:
         if tier == 't0':
             return {**transfers, 'storageRentExpense': 0.0}
         return {**transfers, 'storageRentExpense': float(getattr(self.world, tier + 'RentCharge')[id_]),
-                'annualStorageRent': float(self.cfg['storage'] * self.cfg['storageRentPerUnitYear']),
+                'annualStorageRent': float((M.refinery_storage(self.cfg, id_) if tier == 't1' else self.cfg['storage']) * self.cfg['storageRentPerUnitYear']),
                 'storageRentPaid': float(getattr(self.world, tier + 'RentPaid')[id_]),
                 'storageRentArrears': float(getattr(self.world, tier + 'RentArrears')[id_])}
 
@@ -1055,7 +1119,7 @@ class KernelRuntime:
                     rel += world.t0Rel[idx]
                     n += 1
                     eq += world.t0Inv[idx] * world.t0InvBasis[idx]
-            out.append({'id': id_, 'name': prof['name'], 'elements': list(prof['elements']),
+            out.append({'id': id_, 'companyNumber':M.company_number('T0',id_), 'name': prof['name'], 'elements': list(prof['elements']),
                         **self._company_rent('t0', id_),
                         'controller': 'PLAYER' if self.controllerT0[id_] else 'BOT',
                         'online': bool(self.onlineT0[id_]),
@@ -1070,7 +1134,7 @@ class KernelRuntime:
         return float(self.world.t1Fin[pi::NP].sum())
 
     def _product_supply_capacity(self, pi):
-        cap = self.cfg['t1Capacity']
+        cap = M.refinery_capacity(M.PRODUCTS[pi], self.cfg)
         return float(np.count_nonzero(self.world.t1Operates[pi::NP])) * cap
 
     def publish(self):
@@ -1087,20 +1151,20 @@ class KernelRuntime:
         analytics = self._build_analytics(analytics, refinery)
 
         sid = max(0, min(N1 - 1, self.selectedId))
-        scode = T1P[sid // 100]['product']
+        scode = T1P[sid // M.T1_FIRMS_PER_MATERIAL]['product']
         spi = _PI[scode]
 
         companies = []
         for cid in range(N1):
-            pi = _PI[T1P[cid // 100]['product']]
+            pi = _PI[T1P[cid // M.T1_FIRMS_PER_MATERIAL]['product']]
             b = cid * NP
             columns = refinery[0]
             raw, fin = columns['raw'][cid], columns['finished'][cid]
             totalSold, totalRevenue = columns['sold'][cid], columns['revenue'][cid]
             totalCOGS, totalMade = columns['cogs'][cid], columns['made'][cid]
             companies.append({
-                'id': cid, 'name': M.t1_firm_name(cid),
-                'sector': M.t1_sector(T1P[cid // 100]['product']),
+                'id': cid, 'companyNumber':M.company_number('T1',cid), 'name': M.t1_firm_name(cid),
+                'sector': M.t1_sector(T1P[cid // M.T1_FIRMS_PER_MATERIAL]['product']),
                 'controller': 'PLAYER' if self.controller[cid] else 'BOT',
                 'equipment': list(self.equipment[cid]), 'price': float(world.t1Price[b + pi]),
                 'raw': float(raw), 'finished': float(fin), 'inventory': float(raw + fin),
@@ -1139,13 +1203,14 @@ class KernelRuntime:
             productStats.append({
                 'code': prod['code'], 'name': prod['name'], 'complexity': prod['complexity'],
                 'role': prod['role'], 'firms': firms, 'machineryPrice': self.cfg['t1Machinery'],
-                'capacity': cfg['t1Capacity'],
+                'capacity': M.refinery_capacity(prod, cfg),
                 'productionCapacity': self._product_supply_capacity(p),
                 'made': made, 'sold': float(analytics['rVol'][p]), 'cogs': cogs,
                 'avgPrice': avg_price, 'avgUnitCost': avg_uc,
                 'retailPrice': float(analytics['rP'][p]), 'volume': float(analytics['rVol'][p]),
                 'distributorVolume': float(world.marketFulfilled[p]),
                 'intermediateVolume': float(world.t1IntermediateSold[p]),
+                'consumedByT2': float(world.t2InputConsumed[p]),
                 'intermediateRevenue': float(world.t1IntermediateRevenue[p]),
                 'revenue': float(analytics['rRev'][p]), 'supplyCapacity': self._product_supply_capacity(p),
                 'readyStock': self._product_ready_stock(p), 'customerType': 'Companies',
@@ -1156,13 +1221,16 @@ class KernelRuntime:
 
         t2ProductStats = []
         for p in M.T2_PRODUCTS:
-            t2ProductStats.append({'customerType': 'Distributors', 'code': p['code'], 'name': p['name'],
+            t2ProductStats.append({'customerType': 'Companies + Distributors' if p['complexity']==3 else 'Distributors', 'code': p['code'], 'name': p['name'],
                                    'needType': p['needType'], 'kind': p['kind'], 'sector': p['sector'],
+                                   'demandGroup':p['demandGroup'], 'distributorWeight':p['distributorWeight'],
+                                   'intermediateVolume':float(world.t2IntermediateSold[p['id']]),
+                                   'intermediateRevenue':float(world.t2IntermediateRevenue[p['id']]),
                                    'complexity': p['complexity'],
                                    'primaryMaterial': next(x['name'] for x in M.PRODUCTS if x['code'] == p['primaryMaterial']),
                                    'machineryPrice': self.cfg['t2Machinery'][p['complexity']],
                                    'capacity': self.cfg['t2Capacity'][p['complexity']],
-                                   'recipe': ' + '.join(f'{q} {M.PRODUCTS[material_idx]["name"]}' for material_idx, q in p['ingredients']),
+                                   'recipe': ' + '.join(f'{q} {M.T2_INPUT_PRODUCTS[material_idx]["name"]}' for material_idx, q in p['ingredients']),
                                    'firms': 0, 'avgPrice': 0.0, 'avgUnitCost': 0.0, 'productionCapacity': 0.0,
                                    'readyStock': 0.0, 'made': 0.0, 'sold': 0.0, 'revenue': 0.0, 'cogs': 0.0,
                                    'reliability': 0.0, 'hhi': 0.0,
@@ -1202,7 +1270,7 @@ class KernelRuntime:
                               weights=world.t2RentArrears[:cfg['t2FirmCount']], minlength=len(equity))
 
         t2Cohorts = []
-        for s in range(10):
+        for s in range(len(M.T2_SECTORS)):
             t2Cohorts.append({
                 'name': M.T2_SECTORS[s], 'firms': int(firms[s]), 'lines': int(lines[s]),
                 'players': int(players[s]), 'online': int(online[s]), 'cash': float(cash[s]),
@@ -1248,8 +1316,9 @@ class KernelRuntime:
         t0_sold = analytics['t0Sold']
         t0_revenue = analytics['t0Revenue']
         t0_cogs = _array_sum(world.t0COGS)
-        t0_capacity = float(cfg['t0Capacity'] * N0)
-        c0 = {'name': 'C-0', 'products': NE, 'lines': N0, 'firms': N0, 'capacity': t0_capacity,
+        t0_machines = sum(len(p['elements']) for p in T0P)
+        t0_capacity = float(cfg['t0Capacity'] * t0_machines)
+        c0 = {'name': 'C-0', 'products': NE, 'lines': t0_machines, 'firms': N0, 'capacity': t0_capacity,
               'readyStock': analytics['t0Inventory'], 'made': t0_made, 'sold': t0_sold,
               'revenue': t0_revenue, 'cogs': t0_cogs,
               'active': float(world.t0Demand.sum()), 'fulfilled': t0_sold,
@@ -1267,17 +1336,19 @@ class KernelRuntime:
         c0['unitCapacity'] = float(cfg['t0Capacity'])
         c0['avgPrice'] = t0_revenue / t0_sold if t0_sold else 0.0
         c0['avgUnitCost'] = t0_cogs / t0_sold if t0_sold else 0.0
-        c0['soldPerLine'] = t0_sold / N0 if N0 else None
-        c0['profitPerLine'] = (t0_revenue - t0_cogs) / N0 if N0 else None
+        c0['soldPerLine'] = t0_sold / t0_machines if t0_machines else None
+        c0['profitPerLine'] = (t0_revenue - t0_cogs) / t0_machines if t0_machines else None
         productCategories.append(c0)
         # Count distinct owners per complexity, not installed production lines.
         t2_owner_complexity = (world.t2LineFirm[:lc].astype(np.int64) * 6
             + np.asarray([p['complexity'] for p in M.T2_PRODUCTS])[world.t2LineProduct[:lc]])
         category_firms2 = np.bincount(np.unique(t2_owner_complexity) % 6, minlength=6)
-        for c in [1, 2, 3, 4, 5]:
+        complexity_balances = project_complexity_balances(world,cfg)
+        for c in [1, 2, 3, 4]:
             products = [p for p in (productStats if c < 3 else t2ProductStats) if p['complexity'] == c]
             s = summarize_markets(products, 'C-' + str(c))
             s['complexity'] = c
+            s.update(complexity_balances[c])
             s['firms'] = (int(np.count_nonzero(np.any(_op[:, [i for i, p in enumerate(M.PRODUCTS) if p['complexity'] == c]], axis=1)))
                           if c < 3 else int(category_firms2[c]))
             s['tier'] = 'Refinery' if c < 3 else 'Manufacturer'
@@ -1343,7 +1414,7 @@ class KernelRuntime:
                 t0_products.append({'code': element, 'price': float(world.t0Price[tid * NE + ei])})
             first = prof['elements'][0] if prof['elements'] else None
             selected = {
-                'tier': 'T0', 'id': tid, 'name': prof['name'],
+                'tier': 'T0', 'id': tid, 'companyNumber':M.company_number('T0',tid), 'name': prof['name'],
                 'controller': 'PLAYER' if self.controllerT0[tid] else 'BOT',
                 'online': bool(self.onlineT0[tid]),
                 'price': float(world.t0Price[tid * NE + _EI[first]]) if first else None,
@@ -1353,6 +1424,7 @@ class KernelRuntime:
         else:
             selected = {
                 'tier': 'T1', 'products': self._company_detail('T1', sid)['products'], 'id': sid,
+                'companyNumber':M.company_number('T1',sid),
                 **self._company_rent('t1', sid),
                 'name': M.t1_firm_name(sid),
                 'sector': M.t1_sector(scode), 'controller': 'PLAYER' if self.controller[sid] else 'BOT',
@@ -1364,6 +1436,7 @@ class KernelRuntime:
 
         lastSnapshot = {
             'world': dict(M.WORLD_STORY, population=cfg['distributorCount']),
+            'companyRegistry':M.company_registry(cfg),
             'cfg': self.cfg,
             'tick': self.tick, 'month': self.month, 'calendar': M.calendar_at(self.tick),
             'invention': {'possible': M.T2_Catalog_COUNT, 'invented': len(M.T2_PRODUCTS),
@@ -1394,8 +1467,8 @@ class KernelRuntime:
             'analyticsHistory': self.analyticsHistory,
             'tiers': {
                 't0': {'firms': N0, 'bought': 0, 'made': float(analytics['t0Produced'].sum()),
-                       'capacity': float(cfg['t0Capacity'] * N0),
-                       'utilization': float(analytics['t0Produced'].sum() / (cfg['t0Capacity'] * N0)) if cfg['t0Capacity'] > 0 else 0.0,
+                       'capacity': t0_capacity,
+                       'utilization': float(analytics['t0Produced'].sum() / t0_capacity) if t0_capacity > 0 else 0.0,
                        'cogs': _array_sum(world.t0COGS), 'grossProfit': analytics['t0Revenue'] - _array_sum(world.t0COGS),
                        'inventory': analytics['t0Inventory'], 'cash': analytics['t0Cash'],
                        'equity': analytics['t0Equity'], 'sold': analytics['t0Sold'],
@@ -1405,8 +1478,8 @@ class KernelRuntime:
                        'raw': analytics['t1Raw'], 'finished': analytics['t1Finished'],
                        'cash': analytics['t1Cash'], 'equity': analytics['t1Equity'],
                        'bought': _array_sum(world.t1Bought), 'made': analytics['t1Made'],
-                       'capacity': float(cfg['t1Capacity'] * int(world.t1Operates.sum())),
-                       'utilization': float(analytics['t1Made'] / (cfg['t1Capacity'] * int(world.t1Operates.sum()))) if (cfg['t1Capacity'] > 0 and world.t1Operates.sum() > 0) else 0.0,
+                       'capacity': float(sum(p['productionCapacity'] for p in productStats)),
+                       'utilization': float(analytics['t1Made'] / sum(p['productionCapacity'] for p in productStats)) if sum(p['productionCapacity'] for p in productStats) > 0 else 0.0,
                        'sold': analytics['t1Sold'], 'revenue': analytics['t1Revenue'],
                        'cogs': analytics['t1COGS'], 'grossProfit': analytics['t1Revenue'] - analytics['t1COGS'],
                        'desired': float(sum(p['active'] for p in productStats)),
@@ -1436,11 +1509,16 @@ class KernelRuntime:
             },
             'companies': companies,
             'selected': selected,
+            'demandCalibration': {'perProductWeights': dict(M.T2_FINAL_DEMAND_WEIGHTS),
+                't1Consumption': [{'code':p['code'],'consumed':float(world.t2InputConsumed[m])} for m,p in enumerate(M.PRODUCTS)],
+                'basis':'latent Distributor demand; realized demand remains price- and stock-sensitive'},
             'engine': 'python', 'expandedDetails': self._watched_details(),
         }
         for tier, n in (('t1', N1), ('t2', cfg['t2FirmCount'])):
             lastSnapshot['tiers'][tier].update({
-                'annualStorageRentPerFirm': float(cfg['storage'] * cfg['storageRentPerUnitYear']),
+                'annualStorageRentPerFirm': float((tier1_storage_capacities(cfg).mean() if tier == 't1' else cfg['storage']) * cfg['storageRentPerUnitYear']),
+                'annualStorageRentPerFirmMin': float((tier1_storage_capacities(cfg).min() if tier == 't1' else cfg['storage']) * cfg['storageRentPerUnitYear']),
+                'annualStorageRentPerFirmMax': float((tier1_storage_capacities(cfg).max() if tier == 't1' else cfg['storage']) * cfg['storageRentPerUnitYear']),
                 'storageRentPaid': float(getattr(world, tier + 'RentPaid')[:n].sum()),
                 'storageRentArrears': float(getattr(world, tier + 'RentArrears')[:n].sum()),
                 'storageRentExpense': self.state.get(tier + 'RentExpense', 0.0),

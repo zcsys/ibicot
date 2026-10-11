@@ -1,0 +1,270 @@
+recipe_id,product_name,tier,complexity,sector_id,unchanged_formula,machine_family,installation_name
+C1-001,Process Water,T1,C-1,S1-01,1 raw(W) → 1 W,Clarity Refining Skids,Clarity R1-001 Water Conditioning Skid
+C1-002,Mineral Stock,T1,C-1,S1-02,1 raw(E) → 1 E,Grainmill Preparation Skids,Grainmill R1-002 Mineral Grading Skid
+C1-003,Thermal Charge,T1,C-1,S1-03,1 raw(F) → 1 F,Hearthset Conditioning Skids,Hearthset R1-003 Thermal Stabilizing Skid
+C1-004,Service Gas,T1,C-1,S1-04,1 raw(A) → 1 A,Draftwell Gas Skids,Draftwell R1-004 Gas Balancing Skid
+C2-001,Water Gel,T1,C-2,S1-05,2 raw(W) → 1 (W+W),Softset Gel Processors,Softset R2-001 Gel Structuring Vessel
+C2-002,Mineral Paste,T1,C-2,S1-06,1 raw(W) + 1 raw(E) → 1 (W+E),Mudline Paste Processors,Mudline R2-002 Paste Kneading Vessel
+C2-003,Thermal Fluid,T1,C-2,S1-07,1 raw(W) + 1 raw(F) → 1 (W+F),Loopblend Fluid Processors,Loopblend R2-003 Thermal Blending Vessel
+C2-004,Foam Base,T1,C-2,S1-08,1 raw(W) + 1 raw(A) → 1 (W+A),Frothline Foam Processors,Frothline R2-004 Foam Nucleating Vessel
+C2-005,Structural Ceramic,T1,C-2,S1-09,2 raw(E) → 1 (E+E),Stonepress Ceramic Processors,Stonepress R2-005 Ceramic Consolidation Press
+C2-006,Conductive Alloy,T1,C-2,S1-10,1 raw(E) + 1 raw(F) → 1 (E+F),Meltway Alloy Processors,Meltway R2-006 Alloy Induction Furnace
+C2-007,Porous Mineral,T1,C-2,S1-11,1 raw(E) + 1 raw(A) → 1 (E+A),Porecast Media Processors,Porecast R2-007 Pore Forming Chamber
+C2-008,Storage Salt,T1,C-2,S1-12,2 raw(F) → 1 (F+F),Saltbed Thermal Processors,Saltbed R2-008 Salt Conditioning Retort
+C2-009,Discharge Gas,T1,C-2,S1-13,1 raw(F) + 1 raw(A) → 1 (F+A),Arcwell Gas Processors,Arcwell R2-009 Discharge Gas Conditioning Chamber
+C2-010,Pressure Gas,T1,C-2,S1-14,2 raw(A) → 1 (A+A),Deepfill Compression Processors,Deepfill R2-010 Pressure Gas Compression Train
+C3-001,Reservoir Gel,T2,C-3,S2-05,1 W + 1 (W+W) → 1 (W+(W+W)),Gelcraft Forming Cells,Gelcraft 3-001 Reservoir Gelation Cell
+C3-002,Casting Slip,T2,C-3,S2-06,1 W + 1 (W+E) → 1 (W+(W+E)),Castcraft Molding Cells,Castcraft 3-002 Slip Mixing Cell
+C3-003,Cooling Charge,T2,C-3,S2-07,1 W + 1 (W+F) → 1 (W+(W+F)),Loopcraft Forming Cells,Loopcraft 3-003 Coolant Blending Cell
+C3-004,Wash Foam,T2,C-3,S2-08,1 W + 1 (W+A) → 1 (W+(W+A)),Foamcraft Forming Cells,Foamcraft 3-004 Wash Foam Mixing Cell
+C3-005,Wick Tile,T2,C-3,S2-09,1 W + 1 (E+E) → 1 (W+(E+E)),Kilncraft Shaping Cells,Kilncraft 3-005 Wick Channel Forming Cell
+C3-006,Cooling Strip,T2,C-3,S2-10,1 W + 1 (E+F) → 1 (W+(E+F)),Wirecraft Drawing Cells,Wirecraft 3-006 Strip Channel Forming Cell
+C3-007,Filter Stone,T2,C-3,S2-11,1 W + 1 (E+A) → 1 (W+(E+A)),Porecraft Shaping Cells,Porecraft 3-007 Filter Wetting Cell
+C3-008,Heat Buffer Slush,T2,C-3,S2-12,1 W + 1 (F+F) → 1 (W+(F+F)),Saltcraft Forming Cells,Saltcraft 3-008 Slush Mixing Cell
+C3-009,Quench Mist,T2,C-3,S2-13,1 W + 1 (F+A) → 1 (W+(F+A)),Sparkcraft Conditioning Cells,Sparkcraft 3-009 Quench Atomizing Cell
+C3-010,Mist Charge,T2,C-3,S2-14,1 W + 1 (A+A) → 1 (W+(A+A)),Presscraft Forming Cells,Presscraft 3-010 Mist Loading Cell
+C3-011,Absorbent Pad,T2,C-3,S2-05,1 E + 1 (W+W) → 1 (E+(W+W)),Gelcraft Forming Cells,Gelcraft 3-011 Pad Forming Cell
+C3-012,Green Tile,T2,C-3,S2-06,1 E + 1 (W+E) → 1 (E+(W+E)),Castcraft Molding Cells,Castcraft 3-012 Tile Blank Press
+C3-013,Heat Transfer Plate,T2,C-3,S2-07,1 E + 1 (W+F) → 1 (E+(W+F)),Loopcraft Forming Cells,Loopcraft 3-013 Plate Channel Casting Cell
+C3-014,Foam Seal,T2,C-3,S2-08,1 E + 1 (W+A) → 1 (E+(W+A)),Foamcraft Forming Cells,Foamcraft 3-014 Seal Molding Cell
+C3-015,Wear Plate,T2,C-3,S2-09,1 E + 1 (E+E) → 1 (E+(E+E)),Kilncraft Shaping Cells,Kilncraft 3-015 Wear Face Press
+C3-016,Busbar Blank,T2,C-3,S2-10,1 E + 1 (E+F) → 1 (E+(E+F)),Wirecraft Drawing Cells,Wirecraft 3-016 Busbar Extrusion Cell
+C3-017,Porous Core,T2,C-3,S2-11,1 E + 1 (E+A) → 1 (E+(E+A)),Porecraft Shaping Cells,Porecraft 3-017 Core Consolidation Cell
+C3-018,Heat Storage Block,T2,C-3,S2-12,1 E + 1 (F+F) → 1 (E+(F+F)),Saltcraft Forming Cells,Saltcraft 3-018 Storage Block Casting Cell
+C3-019,Electrode Blank,T2,C-3,S2-13,1 E + 1 (F+A) → 1 (E+(F+A)),Sparkcraft Conditioning Cells,Sparkcraft 3-019 Electrode Pore Charging Cell
+C3-020,Gas Spring Core,T2,C-3,S2-14,1 E + 1 (A+A) → 1 (E+(A+A)),Presscraft Forming Cells,Presscraft 3-020 Spring Core Charging Cell
+C3-021,Heat Buffer Gel,T2,C-3,S2-05,1 F + 1 (W+W) → 1 (F+(W+W)),Gelcraft Forming Cells,Gelcraft 3-021 Thermal Gel Loading Cell
+C3-022,Furnace Patch,T2,C-3,S2-06,1 F + 1 (W+E) → 1 (F+(W+E)),Castcraft Molding Cells,Castcraft 3-022 Patch Conditioning Cell
+C3-023,Hot Loop Charge,T2,C-3,S2-07,1 F + 1 (W+F) → 1 (F+(W+F)),Loopcraft Forming Cells,Loopcraft 3-023 Hot Fluid Loading Cell
+C3-024,Firebreak Foam,T2,C-3,S2-08,1 F + 1 (W+A) → 1 (F+(W+A)),Foamcraft Forming Cells,Foamcraft 3-024 Barrier Foam Conditioning Cell
+C3-025,Hot Face Brick,T2,C-3,S2-09,1 F + 1 (E+E) → 1 (F+(E+E)),Kilncraft Shaping Cells,Kilncraft 3-025 Brick Thermal Loading Cell
+C3-026,Heater Ribbon,T2,C-3,S2-10,1 F + 1 (E+F) → 1 (F+(E+F)),Wirecraft Drawing Cells,Wirecraft 3-026 Ribbon Drawing Cell
+C3-027,Kiln Screen,T2,C-3,S2-11,1 F + 1 (E+A) → 1 (F+(E+A)),Porecraft Shaping Cells,Porecraft 3-027 Screen Heat Setting Cell
+C3-028,High Heat Charge,T2,C-3,S2-12,1 F + 1 (F+F) → 1 (F+(F+F)),Saltcraft Forming Cells,Saltcraft 3-028 Salt Thermal Loading Cell
+C3-029,Ignition Charge,T2,C-3,S2-13,1 F + 1 (F+A) → 1 (F+(F+A)),Sparkcraft Conditioning Cells,Sparkcraft 3-029 Ignition Media Loading Cell
+C3-030,Expansion Charge,T2,C-3,S2-14,1 F + 1 (A+A) → 1 (F+(A+A)),Presscraft Forming Cells,Presscraft 3-030 Expansion Media Loading Cell
+C3-031,Cushion Gel,T2,C-3,S2-05,1 A + 1 (W+W) → 1 (A+(W+W)),Gelcraft Forming Cells,Gelcraft 3-031 Cushion Gel Aeration Cell
+C3-032,Lightweight Fill,T2,C-3,S2-06,1 A + 1 (W+E) → 1 (A+(W+E)),Castcraft Molding Cells,Castcraft 3-032 Fill Aeration Cell
+C3-033,Expansion Fluid,T2,C-3,S2-07,1 A + 1 (W+F) → 1 (A+(W+F)),Loopcraft Forming Cells,Loopcraft 3-033 Expansion Fluid Aeration Cell
+C3-034,Cushion Foam,T2,C-3,S2-08,1 A + 1 (W+A) → 1 (A+(W+A)),Foamcraft Forming Cells,Foamcraft 3-034 Packing Foam Expansion Cell
+C3-035,Hollow Insulator,T2,C-3,S2-09,1 A + 1 (E+E) → 1 (A+(E+E)),Kilncraft Shaping Cells,Kilncraft 3-035 Cavity Ceramic Forming Cell
+C3-036,Contact Mesh,T2,C-3,S2-10,1 A + 1 (E+F) → 1 (A+(E+F)),Wirecraft Drawing Cells,Wirecraft 3-036 Contact Mesh Forming Cell
+C3-037,Diffuser Stone,T2,C-3,S2-11,1 A + 1 (E+A) → 1 (A+(E+A)),Porecraft Shaping Cells,Porecraft 3-037 Diffuser Pore Balancing Cell
+C3-038,Insulating Granules,T2,C-3,S2-12,1 A + 1 (F+F) → 1 (A+(F+F)),Saltcraft Forming Cells,Saltcraft 3-038 Salt Granulation Cell
+C3-039,Lamp Fill,T2,C-3,S2-13,1 A + 1 (F+A) → 1 (A+(F+A)),Sparkcraft Conditioning Cells,Sparkcraft 3-039 Lamp Gas Blending Cell
+C3-040,Pneumatic Charge,T2,C-3,S2-14,1 A + 1 (A+A) → 1 (A+(A+A)),Presscraft Forming Cells,Presscraft 3-040 Pneumatic Gas Blending Cell
+C4-001,Wetting Reserve,T2,C-4,S2-01,1 W + 1 (W+(W+W)) → 1 (W+(W+(W+W))),Wetbench Finishing Lines,Wetbench 4-001 Reserve Saturation Station
+C4-002,Pouring Slip,T2,C-4,S2-01,1 W + 1 (W+(W+E)) → 1 (W+(W+(W+E))),Wetbench Finishing Lines,Wetbench 4-002 Fine Slip Mixing Station
+C4-003,Cold Loop Fill,T2,C-4,S2-01,1 W + 1 (W+(W+F)) → 1 (W+(W+(W+F))),Wetbench Finishing Lines,Wetbench 4-003 Cold Loop Blending Station
+C4-004,Rinse Foam,T2,C-4,S2-01,1 W + 1 (W+(W+A)) → 1 (W+(W+(W+A))),Wetbench Finishing Lines,Wetbench 4-004 Rinse Foam Blending Station
+C4-005,Wet Contact Tile,T2,C-4,S2-01,1 W + 1 (W+(E+E)) → 1 (W+(W+(E+E))),Wetbench Finishing Lines,Wetbench 4-005 Contact Tile Saturation Station
+C4-006,Liquid Contact Strip,T2,C-4,S2-01,1 W + 1 (W+(E+F)) → 1 (W+(W+(E+F))),Wetbench Finishing Lines,Wetbench 4-006 Contact Strip Filling Station
+C4-007,Primed Filter Stone,T2,C-4,S2-01,1 W + 1 (W+(E+A)) → 1 (W+(W+(E+A))),Wetbench Finishing Lines,Wetbench 4-007 Filter Priming Station
+C4-008,Cooling Slush,T2,C-4,S2-01,1 W + 1 (W+(F+F)) → 1 (W+(W+(F+F))),Wetbench Finishing Lines,Wetbench 4-008 Cooling Slush Blending Station
+C4-009,Arc Quench Spray,T2,C-4,S2-01,1 W + 1 (W+(F+A)) → 1 (W+(W+(F+A))),Wetbench Finishing Lines,Wetbench 4-009 Quench Spray Balancing Station
+C4-010,Fine Spray Charge,T2,C-4,S2-01,1 W + 1 (W+(A+A)) → 1 (W+(W+(A+A))),Wetbench Finishing Lines,Wetbench 4-010 Spray Charge Balancing Station
+C4-011,Wet Wipe Pad,T2,C-4,S2-01,1 W + 1 (E+(W+W)) → 1 (W+(E+(W+W))),Wetbench Finishing Lines,Wetbench 4-011 Wipe Pad Saturation Station
+C4-012,Slip Joint Tile,T2,C-4,S2-01,1 W + 1 (E+(W+E)) → 1 (W+(E+(W+E))),Wetbench Finishing Lines,Wetbench 4-012 Joint Tile Conditioning Station
+C4-013,Liquid Transfer Plate,T2,C-4,S2-01,1 W + 1 (E+(W+F)) → 1 (W+(E+(W+F))),Wetbench Finishing Lines,Wetbench 4-013 Transfer Plate Filling Station
+C4-014,Wet Seat Seal,T2,C-4,S2-01,1 W + 1 (E+(W+A)) → 1 (W+(E+(W+A))),Wetbench Finishing Lines,Wetbench 4-014 Seat Seal Wetting Station
+C4-015,Lubricated Wear Face,T2,C-4,S2-01,1 W + 1 (E+(E+E)) → 1 (W+(E+(E+E))),Wetbench Finishing Lines,Wetbench 4-015 Wear Face Wetting Station
+C4-016,Cooled Busbar Stock,T2,C-4,S2-01,1 W + 1 (E+(E+F)) → 1 (W+(E+(E+F))),Wetbench Finishing Lines,Wetbench 4-016 Busbar Channel Filling Station
+C4-017,Wet Flow Core,T2,C-4,S2-01,1 W + 1 (E+(E+A)) → 1 (W+(E+(E+A))),Wetbench Finishing Lines,Wetbench 4-017 Flow Core Saturation Station
+C4-018,Wet Buffer Block,T2,C-4,S2-01,1 W + 1 (E+(F+F)) → 1 (W+(E+(F+F))),Wetbench Finishing Lines,Wetbench 4-018 Buffer Block Infusion Station
+C4-019,Quench Electrode Stock,T2,C-4,S2-01,1 W + 1 (E+(F+A)) → 1 (W+(E+(F+A))),Wetbench Finishing Lines,Wetbench 4-019 Electrode Wetting Station
+C4-020,Hydraulic Spring Core,T2,C-4,S2-01,1 W + 1 (E+(A+A)) → 1 (W+(E+(A+A))),Wetbench Finishing Lines,Wetbench 4-020 Hydraulic Core Infusion Station
+C4-021,Warm Contact Gel,T2,C-4,S2-01,1 W + 1 (F+(W+W)) → 1 (W+(F+(W+W))),Wetbench Finishing Lines,Wetbench 4-021 Contact Gel Blending Station
+C4-022,Wet Repair Mortar,T2,C-4,S2-01,1 W + 1 (F+(W+E)) → 1 (W+(F+(W+E))),Wetbench Finishing Lines,Wetbench 4-022 Repair Mortar Mixing Station
+C4-023,Tempered Loop Fill,T2,C-4,S2-01,1 W + 1 (F+(W+F)) → 1 (W+(F+(W+F))),Wetbench Finishing Lines,Wetbench 4-023 Tempered Fluid Blending Station
+C4-024,Wet Firebreak Packing,T2,C-4,S2-01,1 W + 1 (F+(W+A)) → 1 (W+(F+(W+A))),Wetbench Finishing Lines,Wetbench 4-024 Barrier Packing Saturation Station
+C4-025,Quench Face Brick,T2,C-4,S2-01,1 W + 1 (F+(E+E)) → 1 (W+(F+(E+E))),Wetbench Finishing Lines,Wetbench 4-025 Brick Quench Loading Station
+C4-026,Wet Heater Strip,T2,C-4,S2-01,1 W + 1 (F+(E+F)) → 1 (W+(F+(E+F))),Wetbench Finishing Lines,Wetbench 4-026 Heater Strip Wetting Station
+C4-027,Wet Scrubber Screen,T2,C-4,S2-01,1 W + 1 (F+(E+A)) → 1 (W+(F+(E+A))),Wetbench Finishing Lines,Wetbench 4-027 Scrubber Screen Wetting Station
+C4-028,Thermal Buffer Fill,T2,C-4,S2-01,1 W + 1 (F+(F+F)) → 1 (W+(F+(F+F))),Wetbench Finishing Lines,Wetbench 4-028 Buffer Fill Blending Station
+C4-029,Wetted Ignition Stock,T2,C-4,S2-01,1 W + 1 (F+(F+A)) → 1 (W+(F+(F+A))),Wetbench Finishing Lines,Wetbench 4-029 Ignition Stock Wetting Station
+C4-030,Expansion Spray Fill,T2,C-4,S2-01,1 W + 1 (F+(A+A)) → 1 (W+(F+(A+A))),Wetbench Finishing Lines,Wetbench 4-030 Expansion Spray Loading Station
+C4-031,Damping Gel Fill,T2,C-4,S2-01,1 W + 1 (A+(W+W)) → 1 (W+(A+(W+W))),Wetbench Finishing Lines,Wetbench 4-031 Damping Gel Blending Station
+C4-032,Pourable Light Grout,T2,C-4,S2-01,1 W + 1 (A+(W+E)) → 1 (W+(A+(W+E))),Wetbench Finishing Lines,Wetbench 4-032 Light Grout Mixing Station
+C4-033,Loop Balancing Fluid,T2,C-4,S2-01,1 W + 1 (A+(W+F)) → 1 (W+(A+(W+F))),Wetbench Finishing Lines,Wetbench 4-033 Balancing Fluid Mixing Station
+C4-034,Wet Cushion Packing,T2,C-4,S2-01,1 W + 1 (A+(W+A)) → 1 (W+(A+(W+A))),Wetbench Finishing Lines,Wetbench 4-034 Cushion Packing Saturation Station
+C4-035,Cooling Cavity Tile,T2,C-4,S2-01,1 W + 1 (A+(E+E)) → 1 (W+(A+(E+E))),Wetbench Finishing Lines,Wetbench 4-035 Cavity Tile Infusion Station
+C4-036,Wetted Contact Mesh,T2,C-4,S2-01,1 W + 1 (A+(E+F)) → 1 (W+(A+(E+F))),Wetbench Finishing Lines,Wetbench 4-036 Contact Mesh Wetting Station
+C4-037,Water Diffuser Insert,T2,C-4,S2-01,1 W + 1 (A+(E+A)) → 1 (W+(A+(E+A))),Wetbench Finishing Lines,Wetbench 4-037 Diffuser Insert Saturation Station
+C4-038,Wetted Salt Bed,T2,C-4,S2-01,1 W + 1 (A+(F+F)) → 1 (W+(A+(F+F))),Wetbench Finishing Lines,Wetbench 4-038 Salt Bed Infusion Station
+C4-039,Luminous Spray Fill,T2,C-4,S2-01,1 W + 1 (A+(F+A)) → 1 (W+(A+(F+A))),Wetbench Finishing Lines,Wetbench 4-039 Luminous Spray Blending Station
+C4-040,Pneumatic Mist Fill,T2,C-4,S2-01,1 W + 1 (A+(A+A)) → 1 (W+(A+(A+A))),Wetbench Finishing Lines,Wetbench 4-040 Pneumatic Mist Loading Station
+C4-041,Reservoir Insert,T2,C-4,S2-02,1 E + 1 (W+(W+W)) → 1 (E+(W+(W+W))),Fitbench Integration Lines,Fitbench 4-041 Reservoir Insert Casting Station
+C4-042,Mold Liner Blank,T2,C-4,S2-02,1 E + 1 (W+(W+E)) → 1 (E+(W+(W+E))),Fitbench Integration Lines,Fitbench 4-042 Mold Liner Press
+C4-043,Cooling Core Blank,T2,C-4,S2-02,1 E + 1 (W+(W+F)) → 1 (E+(W+(W+F))),Fitbench Integration Lines,Fitbench 4-043 Cooling Core Casting Station
+C4-044,Scrub Block,T2,C-4,S2-02,1 E + 1 (W+(W+A)) → 1 (E+(W+(W+A))),Fitbench Integration Lines,Fitbench 4-044 Scrub Block Molding Station
+C4-045,Wick Mount Tile,T2,C-4,S2-02,1 E + 1 (W+(E+E)) → 1 (E+(W+(E+E))),Fitbench Integration Lines,Fitbench 4-045 Wick Mount Press
+C4-046,Cooling Terminal Blank,T2,C-4,S2-02,1 E + 1 (W+(E+F)) → 1 (E+(W+(E+F))),Fitbench Integration Lines,Fitbench 4-046 Terminal Body Casting Station
+C4-047,Filter Mount Block,T2,C-4,S2-02,1 E + 1 (W+(E+A)) → 1 (E+(W+(E+A))),Fitbench Integration Lines,Fitbench 4-047 Filter Mount Casting Station
+C4-048,Slush Buffer Slab,T2,C-4,S2-02,1 E + 1 (W+(F+F)) → 1 (E+(W+(F+F))),Fitbench Integration Lines,Fitbench 4-048 Slush Slab Casting Station
+C4-049,Arc Quench Pellet,T2,C-4,S2-02,1 E + 1 (W+(F+A)) → 1 (E+(W+(F+A))),Fitbench Integration Lines,Fitbench 4-049 Quench Pellet Forming Station
+C4-050,Spray Feed Pellet,T2,C-4,S2-02,1 E + 1 (W+(A+A)) → 1 (E+(W+(A+A))),Fitbench Integration Lines,Fitbench 4-050 Spray Pellet Forming Station
+C4-051,Spill Tray Insert,T2,C-4,S2-02,1 E + 1 (E+(W+W)) → 1 (E+(E+(W+W))),Fitbench Integration Lines,Fitbench 4-051 Tray Insert Press
+C4-052,Dense Tile Blank,T2,C-4,S2-02,1 E + 1 (E+(W+E)) → 1 (E+(E+(W+E))),Fitbench Integration Lines,Fitbench 4-052 Dense Tile Press
+C4-053,Transfer Plate Mount,T2,C-4,S2-02,1 E + 1 (E+(W+F)) → 1 (E+(E+(W+F))),Fitbench Integration Lines,Fitbench 4-053 Plate Mount Casting Station
+C4-054,Gasket Carrier,T2,C-4,S2-02,1 E + 1 (E+(W+A)) → 1 (E+(E+(W+A))),Fitbench Integration Lines,Fitbench 4-054 Gasket Carrier Molding Station
+C4-055,Wear Rail,T2,C-4,S2-02,1 E + 1 (E+(E+E)) → 1 (E+(E+(E+E))),Fitbench Integration Lines,Fitbench 4-055 Wear Rail Forming Station
+C4-056,Busbar Mounting Stock,T2,C-4,S2-02,1 E + 1 (E+(E+F)) → 1 (E+(E+(E+F))),Fitbench Integration Lines,Fitbench 4-056 Busbar Mount Extrusion Station
+C4-057,Filter Core Sleeve,T2,C-4,S2-02,1 E + 1 (E+(E+A)) → 1 (E+(E+(E+A))),Fitbench Integration Lines,Fitbench 4-057 Core Sleeve Casting Station
+C4-058,Thermal Mass Plinth,T2,C-4,S2-02,1 E + 1 (E+(F+F)) → 1 (E+(E+(F+F))),Fitbench Integration Lines,Fitbench 4-058 Plinth Casting Station
+C4-059,Electrode Holder Stock,T2,C-4,S2-02,1 E + 1 (E+(F+A)) → 1 (E+(E+(F+A))),Fitbench Integration Lines,Fitbench 4-059 Electrode Holder Forming Station
+C4-060,Spring Seat Insert,T2,C-4,S2-02,1 E + 1 (E+(A+A)) → 1 (E+(E+(A+A))),Fitbench Integration Lines,Fitbench 4-060 Spring Seat Forming Station
+C4-061,Gel Heat Tile,T2,C-4,S2-02,1 E + 1 (F+(W+W)) → 1 (E+(F+(W+W))),Fitbench Integration Lines,Fitbench 4-061 Gel Tile Casting Station
+C4-062,Furnace Joint Block,T2,C-4,S2-02,1 E + 1 (F+(W+E)) → 1 (E+(F+(W+E))),Fitbench Integration Lines,Fitbench 4-062 Furnace Joint Press
+C4-063,Hot Loop Core,T2,C-4,S2-02,1 E + 1 (F+(W+F)) → 1 (E+(F+(W+F))),Fitbench Integration Lines,Fitbench 4-063 Hot Core Casting Station
+C4-064,Firestop Block,T2,C-4,S2-02,1 E + 1 (F+(W+A)) → 1 (E+(F+(W+A))),Fitbench Integration Lines,Fitbench 4-064 Firestop Block Molding Station
+C4-065,Furnace Face Anchor,T2,C-4,S2-02,1 E + 1 (F+(E+E)) → 1 (E+(F+(E+E))),Fitbench Integration Lines,Fitbench 4-065 Face Anchor Press
+C4-066,Heater Mount Stock,T2,C-4,S2-02,1 E + 1 (F+(E+F)) → 1 (E+(F+(E+F))),Fitbench Integration Lines,Fitbench 4-066 Heater Mount Forming Station
+C4-067,Screen Frame Stock,T2,C-4,S2-02,1 E + 1 (F+(E+A)) → 1 (E+(F+(E+A))),Fitbench Integration Lines,Fitbench 4-067 Screen Rim Forming Station
+C4-068,Heat Reserve Slab,T2,C-4,S2-02,1 E + 1 (F+(F+F)) → 1 (E+(F+(F+F))),Fitbench Integration Lines,Fitbench 4-068 Reserve Slab Casting Station
+C4-069,Igniter Core,T2,C-4,S2-02,1 E + 1 (F+(F+A)) → 1 (E+(F+(F+A))),Fitbench Integration Lines,Fitbench 4-069 Igniter Core Forming Station
+C4-070,Expansion Piston Insert,T2,C-4,S2-02,1 E + 1 (F+(A+A)) → 1 (E+(F+(A+A))),Fitbench Integration Lines,Fitbench 4-070 Piston Insert Charging Station
+C4-071,Damping Foot Blank,T2,C-4,S2-02,1 E + 1 (A+(W+W)) → 1 (E+(A+(W+W))),Fitbench Integration Lines,Fitbench 4-071 Damping Foot Molding Station
+C4-072,Light Panel Blank,T2,C-4,S2-02,1 E + 1 (A+(W+E)) → 1 (E+(A+(W+E))),Fitbench Integration Lines,Fitbench 4-072 Light Panel Press
+C4-073,Expansion Buffer Block,T2,C-4,S2-02,1 E + 1 (A+(W+F)) → 1 (E+(A+(W+F))),Fitbench Integration Lines,Fitbench 4-073 Expansion Block Casting Station
+C4-074,Packing Corner,T2,C-4,S2-02,1 E + 1 (A+(W+A)) → 1 (E+(A+(W+A))),Fitbench Integration Lines,Fitbench 4-074 Packing Corner Molding Station
+C4-075,Insulator Mount,T2,C-4,S2-02,1 E + 1 (A+(E+E)) → 1 (E+(A+(E+E))),Fitbench Integration Lines,Fitbench 4-075 Insulator Mount Press
+C4-076,Contact Lattice Blank,T2,C-4,S2-02,1 E + 1 (A+(E+F)) → 1 (E+(A+(E+F))),Fitbench Integration Lines,Fitbench 4-076 Contact Lattice Forming Station
+C4-077,Diffuser Manifold Blank,T2,C-4,S2-02,1 E + 1 (A+(E+A)) → 1 (E+(A+(E+A))),Fitbench Integration Lines,Fitbench 4-077 Diffuser Manifold Casting Station
+C4-078,Insulating Fill Brick,T2,C-4,S2-02,1 E + 1 (A+(F+F)) → 1 (E+(A+(F+F))),Fitbench Integration Lines,Fitbench 4-078 Fill Brick Press
+C4-079,Lamp Electrode Stock,T2,C-4,S2-02,1 E + 1 (A+(F+A)) → 1 (E+(A+(F+A))),Fitbench Integration Lines,Fitbench 4-079 Lamp Electrode Forming Station
+C4-080,Pneumatic Buffer Core,T2,C-4,S2-02,1 E + 1 (A+(A+A)) → 1 (E+(A+(A+A))),Fitbench Integration Lines,Fitbench 4-080 Pneumatic Core Charging Station
+C4-081,Warm Release Gel,T2,C-4,S2-03,1 F + 1 (W+(W+W)) → 1 (F+(W+(W+W))),Heatbench Finishing Lines,Heatbench 4-081 Warm Gel Charging Station
+C4-082,Hot Pour Slip,T2,C-4,S2-03,1 F + 1 (W+(W+E)) → 1 (F+(W+(W+E))),Heatbench Finishing Lines,Heatbench 4-082 Hot Slip Conditioning Station
+C4-083,Tempering Charge,T2,C-4,S2-03,1 F + 1 (W+(W+F)) → 1 (F+(W+(W+F))),Heatbench Finishing Lines,Heatbench 4-083 Tempering Media Loading Station
+C4-084,Hot Wash Foam,T2,C-4,S2-03,1 F + 1 (W+(W+A)) → 1 (F+(W+(W+A))),Heatbench Finishing Lines,Heatbench 4-084 Hot Wash Conditioning Station
+C4-085,Heated Wick Tile,T2,C-4,S2-03,1 F + 1 (W+(E+E)) → 1 (F+(W+(E+E))),Heatbench Finishing Lines,Heatbench 4-085 Wick Thermal Loading Station
+C4-086,Thermal Contact Strip,T2,C-4,S2-03,1 F + 1 (W+(E+F)) → 1 (F+(W+(E+F))),Heatbench Finishing Lines,Heatbench 4-086 Contact Strip Thermal Loading Station
+C4-087,Warm Filter Stone,T2,C-4,S2-03,1 F + 1 (W+(E+A)) → 1 (F+(W+(E+A))),Heatbench Finishing Lines,Heatbench 4-087 Filter Thermal Loading Station
+C4-088,Heat Holding Slush,T2,C-4,S2-03,1 F + 1 (W+(F+F)) → 1 (F+(W+(F+F))),Heatbench Finishing Lines,Heatbench 4-088 Slush Thermal Loading Station
+C4-089,Tempered Quench Mist,T2,C-4,S2-03,1 F + 1 (W+(F+A)) → 1 (F+(W+(F+A))),Heatbench Finishing Lines,Heatbench 4-089 Quench Mist Tempering Station
+C4-090,Warm Spray Charge,T2,C-4,S2-03,1 F + 1 (W+(A+A)) → 1 (F+(W+(A+A))),Heatbench Finishing Lines,Heatbench 4-090 Warm Spray Loading Station
+C4-091,Heated Wipe Pad,T2,C-4,S2-03,1 F + 1 (E+(W+W)) → 1 (F+(E+(W+W))),Heatbench Finishing Lines,Heatbench 4-091 Wipe Pad Thermal Loading Station
+C4-092,Heat Set Tile,T2,C-4,S2-03,1 F + 1 (E+(W+E)) → 1 (F+(E+(W+E))),Heatbench Finishing Lines,Heatbench 4-092 Tile Heat Setting Station
+C4-093,Charged Transfer Plate,T2,C-4,S2-03,1 F + 1 (E+(W+F)) → 1 (F+(E+(W+F))),Heatbench Finishing Lines,Heatbench 4-093 Transfer Plate Thermal Loading Station
+C4-094,Thermal Seat Seal,T2,C-4,S2-03,1 F + 1 (E+(W+A)) → 1 (F+(E+(W+A))),Heatbench Finishing Lines,Heatbench 4-094 Seat Seal Heat Setting Station
+C4-095,Warm Guide Plate,T2,C-4,S2-03,1 F + 1 (E+(E+E)) → 1 (F+(E+(E+E))),Heatbench Finishing Lines,Heatbench 4-095 Guide Plate Thermal Loading Station
+C4-096,Warm Service Busbar,T2,C-4,S2-03,1 F + 1 (E+(E+F)) → 1 (F+(E+(E+F))),Heatbench Finishing Lines,Heatbench 4-096 Busbar Thermal Loading Station
+C4-097,Thermal Flow Core,T2,C-4,S2-03,1 F + 1 (E+(E+A)) → 1 (F+(E+(E+A))),Heatbench Finishing Lines,Heatbench 4-097 Flow Core Thermal Loading Station
+C4-098,Charged Storage Block,T2,C-4,S2-03,1 F + 1 (E+(F+F)) → 1 (F+(E+(F+F))),Heatbench Finishing Lines,Heatbench 4-098 Storage Block Charging Station
+C4-099,Hot Electrode Stock,T2,C-4,S2-03,1 F + 1 (E+(F+A)) → 1 (F+(E+(F+A))),Heatbench Finishing Lines,Heatbench 4-099 Electrode Thermal Loading Station
+C4-100,Thermal Spring Core,T2,C-4,S2-03,1 F + 1 (E+(A+A)) → 1 (F+(E+(A+A))),Heatbench Finishing Lines,Heatbench 4-100 Spring Core Thermal Loading Station
+C4-101,Long Hold Heat Gel,T2,C-4,S2-03,1 F + 1 (F+(W+W)) → 1 (F+(F+(W+W))),Heatbench Finishing Lines,Heatbench 4-101 Reserve Gel Charging Station
+C4-102,Hot Joint Mortar,T2,C-4,S2-03,1 F + 1 (F+(W+E)) → 1 (F+(F+(W+E))),Heatbench Finishing Lines,Heatbench 4-102 Joint Mortar Thermal Loading Station
+C4-103,High Temperature Loop Fill,T2,C-4,S2-03,1 F + 1 (F+(W+F)) → 1 (F+(F+(W+F))),Heatbench Finishing Lines,Heatbench 4-103 High Temperature Fluid Loading Station
+C4-104,Thermal Barrier Foam,T2,C-4,S2-03,1 F + 1 (F+(W+A)) → 1 (F+(F+(W+A))),Heatbench Finishing Lines,Heatbench 4-104 Barrier Foam Heat Setting Station
+C4-105,Heat Reserve Brick,T2,C-4,S2-03,1 F + 1 (F+(E+E)) → 1 (F+(F+(E+E))),Heatbench Finishing Lines,Heatbench 4-105 Reserve Brick Charging Station
+C4-106,Reserve Heater Ribbon,T2,C-4,S2-03,1 F + 1 (F+(E+F)) → 1 (F+(F+(E+F))),Heatbench Finishing Lines,Heatbench 4-106 Heater Ribbon Charging Station
+C4-107,Thermal Screen Insert,T2,C-4,S2-03,1 F + 1 (F+(E+A)) → 1 (F+(F+(E+A))),Heatbench Finishing Lines,Heatbench 4-107 Screen Insert Thermal Loading Station
+C4-108,Deep Heat Reserve,T2,C-4,S2-03,1 F + 1 (F+(F+F)) → 1 (F+(F+(F+F))),Heatbench Finishing Lines,Heatbench 4-108 Deep Reserve Loading Station
+C4-109,Hot Start Charge,T2,C-4,S2-03,1 F + 1 (F+(F+A)) → 1 (F+(F+(F+A))),Heatbench Finishing Lines,Heatbench 4-109 Hot Start Loading Station
+C4-110,Drive Expansion Fill,T2,C-4,S2-03,1 F + 1 (F+(A+A)) → 1 (F+(F+(A+A))),Heatbench Finishing Lines,Heatbench 4-110 Drive Fill Thermal Loading Station
+C4-111,Warm Damping Gel,T2,C-4,S2-03,1 F + 1 (A+(W+W)) → 1 (F+(A+(W+W))),Heatbench Finishing Lines,Heatbench 4-111 Damping Gel Thermal Loading Station
+C4-112,Heat Set Light Fill,T2,C-4,S2-03,1 F + 1 (A+(W+E)) → 1 (F+(A+(W+E))),Heatbench Finishing Lines,Heatbench 4-112 Light Fill Heat Setting Station
+C4-113,Thermal Expansion Fluid,T2,C-4,S2-03,1 F + 1 (A+(W+F)) → 1 (F+(A+(W+F))),Heatbench Finishing Lines,Heatbench 4-113 Expansion Fluid Thermal Loading Station
+C4-114,Heat Stable Cushion,T2,C-4,S2-03,1 F + 1 (A+(W+A)) → 1 (F+(A+(W+A))),Heatbench Finishing Lines,Heatbench 4-114 Cushion Heat Setting Station
+C4-115,Charged Hollow Tile,T2,C-4,S2-03,1 F + 1 (A+(E+E)) → 1 (F+(A+(E+E))),Heatbench Finishing Lines,Heatbench 4-115 Hollow Tile Charging Station
+C4-116,Mesh Heater Stock,T2,C-4,S2-03,1 F + 1 (A+(E+F)) → 1 (F+(A+(E+F))),Heatbench Finishing Lines,Heatbench 4-116 Mesh Thermal Loading Station
+C4-117,Warm Gas Diffuser,T2,C-4,S2-03,1 F + 1 (A+(E+A)) → 1 (F+(A+(E+A))),Heatbench Finishing Lines,Heatbench 4-117 Diffuser Thermal Loading Station
+C4-118,Warm Granular Fill,T2,C-4,S2-03,1 F + 1 (A+(F+F)) → 1 (F+(A+(F+F))),Heatbench Finishing Lines,Heatbench 4-118 Granular Fill Thermal Loading Station
+C4-119,Warm Start Lamp Gas,T2,C-4,S2-03,1 F + 1 (A+(F+A)) → 1 (F+(A+(F+A))),Heatbench Finishing Lines,Heatbench 4-119 Lamp Gas Thermal Loading Station
+C4-120,Thermal Pneumatic Fill,T2,C-4,S2-03,1 F + 1 (A+(A+A)) → 1 (F+(A+(A+A))),Heatbench Finishing Lines,Heatbench 4-120 Pneumatic Fill Thermal Loading Station
+C4-121,Breathing Reservoir Gel,T2,C-4,S2-04,1 A + 1 (W+(W+W)) → 1 (A+(W+(W+W))),Airbench Charging Lines,Airbench 4-121 Reservoir Gel Gas Loading Station
+C4-122,Aerated Casting Slip,T2,C-4,S2-04,1 A + 1 (W+(W+E)) → 1 (A+(W+(W+E))),Airbench Charging Lines,Airbench 4-122 Casting Slip Aeration Station
+C4-123,Gas Buffered Coolant,T2,C-4,S2-04,1 A + 1 (W+(W+F)) → 1 (A+(W+(W+F))),Airbench Charging Lines,Airbench 4-123 Coolant Gas Loading Station
+C4-124,Light Wash Foam,T2,C-4,S2-04,1 A + 1 (W+(W+A)) → 1 (A+(W+(W+A))),Airbench Charging Lines,Airbench 4-124 Wash Foam Expansion Station
+C4-125,Breathing Wick Tile,T2,C-4,S2-04,1 A + 1 (W+(E+E)) → 1 (A+(W+(E+E))),Airbench Charging Lines,Airbench 4-125 Wick Tile Pore Balancing Station
+C4-126,Vented Cooling Strip,T2,C-4,S2-04,1 A + 1 (W+(E+F)) → 1 (A+(W+(E+F))),Airbench Charging Lines,Airbench 4-126 Cooling Strip Vent Forming Station
+C4-127,Gas Lift Filter Stone,T2,C-4,S2-04,1 A + 1 (W+(E+A)) → 1 (A+(W+(E+A))),Airbench Charging Lines,Airbench 4-127 Filter Gas Loading Station
+C4-128,Aerated Buffer Slush,T2,C-4,S2-04,1 A + 1 (W+(F+F)) → 1 (A+(W+(F+F))),Airbench Charging Lines,Airbench 4-128 Buffer Slush Aeration Station
+C4-129,Arc Purge Mist,T2,C-4,S2-04,1 A + 1 (W+(F+A)) → 1 (A+(W+(F+A))),Airbench Charging Lines,Airbench 4-129 Purge Mist Gas Balancing Station
+C4-130,Wide Spray Charge,T2,C-4,S2-04,1 A + 1 (W+(A+A)) → 1 (A+(W+(A+A))),Airbench Charging Lines,Airbench 4-130 Wide Spray Balancing Station
+C4-131,Breathing Absorbent Pad,T2,C-4,S2-04,1 A + 1 (E+(W+W)) → 1 (A+(E+(W+W))),Airbench Charging Lines,Airbench 4-131 Absorbent Pad Aeration Station
+C4-132,Cellular Tile Blank,T2,C-4,S2-04,1 A + 1 (E+(W+E)) → 1 (A+(E+(W+E))),Airbench Charging Lines,Airbench 4-132 Cellular Tile Forming Station
+C4-133,Gas Cushioned Transfer Plate,T2,C-4,S2-04,1 A + 1 (E+(W+F)) → 1 (A+(E+(W+F))),Airbench Charging Lines,Airbench 4-133 Transfer Plate Gas Loading Station
+C4-134,Pneumatic Seat Seal,T2,C-4,S2-04,1 A + 1 (E+(W+A)) → 1 (A+(E+(W+A))),Airbench Charging Lines,Airbench 4-134 Seat Seal Gas Loading Station
+C4-135,Air Bearing Face,T2,C-4,S2-04,1 A + 1 (E+(E+E)) → 1 (A+(E+(E+E))),Airbench Charging Lines,Airbench 4-135 Bearing Face Channel Forming Station
+C4-136,Vented Busbar Stock,T2,C-4,S2-04,1 A + 1 (E+(E+F)) → 1 (A+(E+(E+F))),Airbench Charging Lines,Airbench 4-136 Busbar Vent Forming Station
+C4-137,Purge Flow Core,T2,C-4,S2-04,1 A + 1 (E+(E+A)) → 1 (A+(E+(E+A))),Airbench Charging Lines,Airbench 4-137 Flow Core Gas Loading Station
+C4-138,Breathing Storage Block,T2,C-4,S2-04,1 A + 1 (E+(F+F)) → 1 (A+(E+(F+F))),Airbench Charging Lines,Airbench 4-138 Storage Block Pore Balancing Station
+C4-139,Purge Electrode Stock,T2,C-4,S2-04,1 A + 1 (E+(F+A)) → 1 (A+(E+(F+A))),Airbench Charging Lines,Airbench 4-139 Electrode Purge Forming Station
+C4-140,Preloaded Spring Core,T2,C-4,S2-04,1 A + 1 (E+(A+A)) → 1 (A+(E+(A+A))),Airbench Charging Lines,Airbench 4-140 Spring Core Preload Station
+C4-141,Breathing Heat Gel,T2,C-4,S2-04,1 A + 1 (F+(W+W)) → 1 (A+(F+(W+W))),Airbench Charging Lines,Airbench 4-141 Heat Gel Aeration Station
+C4-142,Cellular Furnace Patch,T2,C-4,S2-04,1 A + 1 (F+(W+E)) → 1 (A+(F+(W+E))),Airbench Charging Lines,Airbench 4-142 Furnace Patch Aeration Station
+C4-143,Gas Buffered Hot Fill,T2,C-4,S2-04,1 A + 1 (F+(W+F)) → 1 (A+(F+(W+F))),Airbench Charging Lines,Airbench 4-143 Hot Fill Gas Loading Station
+C4-144,Expanded Firebreak Packing,T2,C-4,S2-04,1 A + 1 (F+(W+A)) → 1 (A+(F+(W+A))),Airbench Charging Lines,Airbench 4-144 Firebreak Packing Expansion Station
+C4-145,Vented Hot Face Brick,T2,C-4,S2-04,1 A + 1 (F+(E+E)) → 1 (A+(F+(E+E))),Airbench Charging Lines,Airbench 4-145 Hot Brick Vent Forming Station
+C4-146,Vented Heater Ribbon,T2,C-4,S2-04,1 A + 1 (F+(E+F)) → 1 (A+(F+(E+F))),Airbench Charging Lines,Airbench 4-146 Heater Ribbon Vent Forming Station
+C4-147,Purge Screen Insert,T2,C-4,S2-04,1 A + 1 (F+(E+A)) → 1 (A+(F+(E+A))),Airbench Charging Lines,Airbench 4-147 Screen Purge Loading Station
+C4-148,Gas Buffered Heat Reserve,T2,C-4,S2-04,1 A + 1 (F+(F+F)) → 1 (A+(F+(F+F))),Airbench Charging Lines,Airbench 4-148 Heat Reserve Gas Loading Station
+C4-149,Diluted Ignition Fill,T2,C-4,S2-04,1 A + 1 (F+(F+A)) → 1 (A+(F+(F+A))),Airbench Charging Lines,Airbench 4-149 Ignition Fill Gas Balancing Station
+C4-150,Balanced Expansion Fill,T2,C-4,S2-04,1 A + 1 (F+(A+A)) → 1 (A+(F+(A+A))),Airbench Charging Lines,Airbench 4-150 Expansion Fill Gas Balancing Station
+C4-151,Soft Damping Gel,T2,C-4,S2-04,1 A + 1 (A+(W+W)) → 1 (A+(A+(W+W))),Airbench Charging Lines,Airbench 4-151 Soft Gel Expansion Station
+C4-152,Void Fill Grout,T2,C-4,S2-04,1 A + 1 (A+(W+E)) → 1 (A+(A+(W+E))),Airbench Charging Lines,Airbench 4-152 Void Grout Expansion Station
+C4-153,Gas Rich Expansion Fluid,T2,C-4,S2-04,1 A + 1 (A+(W+F)) → 1 (A+(A+(W+F))),Airbench Charging Lines,Airbench 4-153 Expansion Fluid Gas Balancing Station
+C4-154,Deep Cushion Packing,T2,C-4,S2-04,1 A + 1 (A+(W+A)) → 1 (A+(A+(W+A))),Airbench Charging Lines,Airbench 4-154 Deep Packing Expansion Station
+C4-155,Pneumatic Insulator Insert,T2,C-4,S2-04,1 A + 1 (A+(E+E)) → 1 (A+(A+(E+E))),Airbench Charging Lines,Airbench 4-155 Insulator Gas Loading Station
+C4-156,Gas Contact Mesh,T2,C-4,S2-04,1 A + 1 (A+(E+F)) → 1 (A+(A+(E+F))),Airbench Charging Lines,Airbench 4-156 Contact Mesh Gas Loading Station
+C4-157,Fine Gas Diffuser,T2,C-4,S2-04,1 A + 1 (A+(E+A)) → 1 (A+(A+(E+A))),Airbench Charging Lines,Airbench 4-157 Fine Diffuser Balancing Station
+C4-158,Light Thermal Packing,T2,C-4,S2-04,1 A + 1 (A+(F+F)) → 1 (A+(A+(F+F))),Airbench Charging Lines,Airbench 4-158 Thermal Packing Expansion Station
+C4-159,Diffuse Lamp Gas,T2,C-4,S2-04,1 A + 1 (A+(F+A)) → 1 (A+(A+(F+A))),Airbench Charging Lines,Airbench 4-159 Diffuse Lamp Blending Station
+C4-160,Balanced Pneumatic Fill,T2,C-4,S2-04,1 A + 1 (A+(A+A)) → 1 (A+(A+(A+A))),Airbench Charging Lines,Airbench 4-160 Pneumatic Fill Balancing Station
+C4-161,Deep Reservoir Gel,T2,C-4,S2-05,2 (W+W) → 1 ((W+W)+(W+W)),Gelcraft Finishing Lines,Gelcraft 4-161 Deep Gel Consolidation Station
+C4-162,Joint Packing Putty,T2,C-4,S2-05,1 (W+W) + 1 (W+E) → 1 ((W+W)+(W+E)),Gelcraft Finishing Lines,Gelcraft 4-162 Joint Putty Kneading Station
+C4-163,Thermal Contact Gel,T2,C-4,S2-07,1 (W+W) + 1 (W+F) → 1 ((W+W)+(W+F)),Loopcraft Coupling Lines,Loopcraft 4-163 Contact Gel Infusion Station
+C4-164,Cushion Liner,T2,C-4,S2-08,1 (W+W) + 1 (W+A) → 1 ((W+W)+(W+A)),Foamcraft Finishing Lines,Foamcraft 4-164 Cushion Liner Forming Station
+C4-165,Wet Seal Tile,T2,C-4,S2-09,1 (W+W) + 1 (E+E) → 1 ((W+W)+(E+E)),Kilncraft Bonding Lines,Kilncraft 4-165 Seal Tile Bonding Station
+C4-166,Gel Contact Pad,T2,C-4,S2-10,1 (W+W) + 1 (E+F) → 1 ((W+W)+(E+F)),Wirecraft Joining Lines,Wirecraft 4-166 Contact Pad Bonding Station
+C4-167,Retention Filter Pad,T2,C-4,S2-11,1 (W+W) + 1 (E+A) → 1 ((W+W)+(E+A)),Porecraft Infusion Lines,Porecraft 4-167 Retention Pad Infusion Station
+C4-168,Phase Buffer Gel,T2,C-4,S2-12,1 (W+W) + 1 (F+F) → 1 ((W+W)+(F+F)),Saltcraft Packing Lines,Saltcraft 4-168 Phase Gel Mixing Station
+C4-169,Quench Gel,T2,C-4,S2-13,1 (W+W) + 1 (F+A) → 1 ((W+W)+(F+A)),Sparkcraft Charging Lines,Sparkcraft 4-169 Quench Gel Gas Loading Station
+C4-170,Pressure Cushion Gel,T2,C-4,S2-14,1 (W+W) + 1 (A+A) → 1 ((W+W)+(A+A)),Presscraft Charging Lines,Presscraft 4-170 Pressure Gel Charging Station
+C4-171,Dense Cast Stock,T2,C-4,S2-06,2 (W+E) → 1 ((W+E)+(W+E)),Castcraft Consolidation Lines,Castcraft 4-171 Dense Stock Consolidation Station
+C4-172,Thermal Bedding Compound,T2,C-4,S2-06,1 (W+E) + 1 (W+F) → 1 ((W+E)+(W+F)),Castcraft Consolidation Lines,Castcraft 4-172 Bedding Compound Mixing Station
+C4-173,Foam Mold Compound,T2,C-4,S2-06,1 (W+E) + 1 (W+A) → 1 ((W+E)+(W+A)),Castcraft Consolidation Lines,Castcraft 4-173 Cellular Mix Kneading Station
+C4-174,Ceramic Bed Tile,T2,C-4,S2-09,1 (W+E) + 1 (E+E) → 1 ((W+E)+(E+E)),Kilncraft Bonding Lines,Kilncraft 4-174 Bed Tile Bonding Station
+C4-175,Bonding Contact Paste,T2,C-4,S2-10,1 (W+E) + 1 (E+F) → 1 ((W+E)+(E+F)),Wirecraft Joining Lines,Wirecraft 4-175 Contact Paste Compounding Station
+C4-176,Porous Repair Mortar,T2,C-4,S2-11,1 (W+E) + 1 (E+A) → 1 ((W+E)+(E+A)),Porecraft Infusion Lines,Porecraft 4-176 Porous Mortar Mixing Station
+C4-177,Heat Storage Mortar,T2,C-4,S2-12,1 (W+E) + 1 (F+F) → 1 ((W+E)+(F+F)),Saltcraft Packing Lines,Saltcraft 4-177 Storage Mortar Mixing Station
+C4-178,Electrode Bedding Paste,T2,C-4,S2-13,1 (W+E) + 1 (F+A) → 1 ((W+E)+(F+A)),Sparkcraft Charging Lines,Sparkcraft 4-178 Electrode Paste Gas Loading Station
+C4-179,Pressure Cast Fill,T2,C-4,S2-14,1 (W+E) + 1 (A+A) → 1 ((W+E)+(A+A)),Presscraft Charging Lines,Presscraft 4-179 Cast Fill Pressure Loading Station
+C4-180,Long Loop Fluid,T2,C-4,S2-07,2 (W+F) → 1 ((W+F)+(W+F)),Loopcraft Coupling Lines,Loopcraft 4-180 Long Loop Blending Station
+C4-181,Thermal Foam Fill,T2,C-4,S2-07,1 (W+F) + 1 (W+A) → 1 ((W+F)+(W+A)),Loopcraft Coupling Lines,Loopcraft 4-181 Thermal Foam Mixing Station
+C4-182,Ceramic Exchange Tile,T2,C-4,S2-07,1 (W+F) + 1 (E+E) → 1 ((W+F)+(E+E)),Loopcraft Coupling Lines,Loopcraft 4-182 Exchange Tile Infusion Station
+C4-183,Liquid Busbar Plate,T2,C-4,S2-10,1 (W+F) + 1 (E+F) → 1 ((W+F)+(E+F)),Wirecraft Joining Lines,Wirecraft 4-183 Liquid Busbar Bonding Station
+C4-184,Cooling Diffuser Core,T2,C-4,S2-11,1 (W+F) + 1 (E+A) → 1 ((W+F)+(E+A)),Porecraft Infusion Lines,Porecraft 4-184 Cooling Diffuser Infusion Station
+C4-185,Heat Bank Fluid,T2,C-4,S2-12,1 (W+F) + 1 (F+F) → 1 ((W+F)+(F+F)),Saltcraft Packing Lines,Saltcraft 4-185 Heat Bank Mixing Station
+C4-186,Discharge Cooling Fill,T2,C-4,S2-13,1 (W+F) + 1 (F+A) → 1 ((W+F)+(F+A)),Sparkcraft Charging Lines,Sparkcraft 4-186 Discharge Fluid Gas Loading Station
+C4-187,Pressure Transfer Fluid,T2,C-4,S2-14,1 (W+F) + 1 (A+A) → 1 ((W+F)+(A+A)),Presscraft Charging Lines,Presscraft 4-187 Transfer Fluid Pressure Loading Station
+C4-188,Bulk Cushion Foam,T2,C-4,S2-08,2 (W+A) → 1 ((W+A)+(W+A)),Foamcraft Finishing Lines,Foamcraft 4-188 Bulk Foam Consolidation Station
+C4-189,Ceramic Foam Panel,T2,C-4,S2-08,1 (W+A) + 1 (E+E) → 1 ((W+A)+(E+E)),Foamcraft Finishing Lines,Foamcraft 4-189 Ceramic Foam Bonding Station
+C4-190,Conductive Foam Sheet,T2,C-4,S2-08,1 (W+A) + 1 (E+F) → 1 ((W+A)+(E+F)),Foamcraft Finishing Lines,Foamcraft 4-190 Conductive Foam Forming Station
+C4-191,Breather Foam Panel,T2,C-4,S2-08,1 (W+A) + 1 (E+A) → 1 ((W+A)+(E+A)),Foamcraft Finishing Lines,Foamcraft 4-191 Breather Panel Forming Station
+C4-192,Thermal Reserve Foam,T2,C-4,S2-12,1 (W+A) + 1 (F+F) → 1 ((W+A)+(F+F)),Saltcraft Packing Lines,Saltcraft 4-192 Reserve Foam Infusion Station
+C4-193,Arc Quench Foam,T2,C-4,S2-13,1 (W+A) + 1 (F+A) → 1 ((W+A)+(F+A)),Sparkcraft Charging Lines,Sparkcraft 4-193 Arc Foam Gas Loading Station
+C4-194,Pressure Cushion Foam,T2,C-4,S2-14,1 (W+A) + 1 (A+A) → 1 ((W+A)+(A+A)),Presscraft Charging Lines,Presscraft 4-194 Pressure Foam Charging Station
+C4-195,Laminated Wear Slab,T2,C-4,S2-09,2 (E+E) → 1 ((E+E)+(E+E)),Kilncraft Bonding Lines,Kilncraft 4-195 Wear Slab Laminating Station
+C4-196,Insulated Contact Plate,T2,C-4,S2-09,1 (E+E) + 1 (E+F) → 1 ((E+E)+(E+F)),Kilncraft Bonding Lines,Kilncraft 4-196 Contact Plate Bonding Station
+C4-197,Filter Support Tile,T2,C-4,S2-09,1 (E+E) + 1 (E+A) → 1 ((E+E)+(E+A)),Kilncraft Bonding Lines,Kilncraft 4-197 Filter Tile Bonding Station
+C4-198,Thermal Reserve Tile,T2,C-4,S2-09,1 (E+E) + 1 (F+F) → 1 ((E+E)+(F+F)),Kilncraft Bonding Lines,Kilncraft 4-198 Reserve Tile Infusion Station
+C4-199,Discharge Liner,T2,C-4,S2-13,1 (E+E) + 1 (F+A) → 1 ((E+E)+(F+A)),Sparkcraft Charging Lines,Sparkcraft 4-199 Discharge Liner Charging Station
+C4-200,Ceramic Pressure Core,T2,C-4,S2-14,1 (E+E) + 1 (A+A) → 1 ((E+E)+(A+A)),Presscraft Charging Lines,Presscraft 4-200 Ceramic Core Pressure Loading Station
+C4-201,Heavy Current Bar,T2,C-4,S2-10,2 (E+F) → 1 ((E+F)+(E+F)),Wirecraft Joining Lines,Wirecraft 4-201 Heavy Bar Consolidation Station
+C4-202,Porous Contact Plate,T2,C-4,S2-10,1 (E+F) + 1 (E+A) → 1 ((E+F)+(E+A)),Wirecraft Joining Lines,Wirecraft 4-202 Porous Contact Bonding Station
+C4-203,Thermal Busbar Insert,T2,C-4,S2-10,1 (E+F) + 1 (F+F) → 1 ((E+F)+(F+F)),Wirecraft Joining Lines,Wirecraft 4-203 Thermal Busbar Bonding Station
+C4-204,Discharge Contact Stock,T2,C-4,S2-10,1 (E+F) + 1 (F+A) → 1 ((E+F)+(F+A)),Wirecraft Joining Lines,Wirecraft 4-204 Discharge Contact Charging Station
+C4-205,Pressure Contact Bellows,T2,C-4,S2-14,1 (E+F) + 1 (A+A) → 1 ((E+F)+(A+A)),Presscraft Charging Lines,Presscraft 4-205 Contact Bellows Forming Station
+C4-206,Deep Filter Core,T2,C-4,S2-11,2 (E+A) → 1 ((E+A)+(E+A)),Porecraft Infusion Lines,Porecraft 4-206 Deep Core Consolidation Station
+C4-207,Heat Storage Matrix,T2,C-4,S2-11,1 (E+A) + 1 (F+F) → 1 ((E+A)+(F+F)),Porecraft Infusion Lines,Porecraft 4-207 Storage Matrix Infusion Station
+C4-208,Discharge Diffuser,T2,C-4,S2-11,1 (E+A) + 1 (F+A) → 1 ((E+A)+(F+A)),Porecraft Infusion Lines,Porecraft 4-208 Discharge Diffuser Charging Station
+C4-209,Pressure Diffuser,T2,C-4,S2-11,1 (E+A) + 1 (A+A) → 1 ((E+A)+(A+A)),Porecraft Infusion Lines,Porecraft 4-209 Pressure Diffuser Charging Station
+C4-210,Long Hold Thermal Reserve,T2,C-4,S2-12,2 (F+F) → 1 ((F+F)+(F+F)),Saltcraft Packing Lines,Saltcraft 4-210 Long Hold Reserve Packing Station
+C4-211,Ignition Reserve Fill,T2,C-4,S2-12,1 (F+F) + 1 (F+A) → 1 ((F+F)+(F+A)),Saltcraft Packing Lines,Saltcraft 4-211 Ignition Reserve Gas Loading Station
+C4-212,Thermal Expansion Reserve,T2,C-4,S2-12,1 (F+F) + 1 (A+A) → 1 ((F+F)+(A+A)),Saltcraft Packing Lines,Saltcraft 4-212 Expansion Reserve Charging Station
+C4-213,Sustained Arc Fill,T2,C-4,S2-13,2 (F+A) → 1 ((F+A)+(F+A)),Sparkcraft Charging Lines,Sparkcraft 4-213 Sustained Arc Blending Station
+C4-214,Pressure Arc Fill,T2,C-4,S2-13,1 (F+A) + 1 (A+A) → 1 ((F+A)+(A+A)),Sparkcraft Charging Lines,Sparkcraft 4-214 Pressure Arc Blending Station
+C4-215,Deep Pressure Reserve,T2,C-4,S2-14,2 (A+A) → 1 ((A+A)+(A+A)),Presscraft Charging Lines,Presscraft 4-215 Deep Reserve Compression Station

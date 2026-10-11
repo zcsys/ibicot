@@ -1,0 +1,570 @@
+{
+  "status": "proposal only; not applied",
+  "totalT2": 105,
+  "unresearched": 150,
+  "finalDemand": "1 per product",
+  "t1ConsumptionPerMaterial": {
+    "C1-001": 16,
+    "C2-001": 16,
+    "C2-002": 16,
+    "C2-003": 16,
+    "C2-004": 16,
+    "C2-005": 16,
+    "C2-006": 16,
+    "C2-007": 16,
+    "C2-008": 16,
+    "C2-010": 16,
+    "C1-002": 16,
+    "C2-009": 16,
+    "C1-003": 16,
+    "C1-004": 16
+  },
+  "routes": {
+    "C3": 36,
+    "C4_C1_C3": 14,
+    "C4_C2_C2": 55
+  },
+  "sectors": {
+    "S2-05": 6,
+    "S2-06": 6,
+    "S2-07": 8,
+    "S2-08": 9,
+    "S2-09": 10,
+    "S2-10": 10,
+    "S2-11": 11,
+    "S2-12": 11,
+    "S2-14": 10,
+    "S2-13": 10,
+    "S2-01": 4,
+    "S2-02": 4,
+    "S2-03": 3,
+    "S2-04": 3
+  },
+  "products": [
+    {
+      "id": "C3-001",
+      "formula": "1 W + 1 (W+W) \u2192 1 (W+(W+W))",
+      "productionWeight": 2
+    },
+    {
+      "id": "C3-002",
+      "formula": "1 W + 1 (W+E) \u2192 1 (W+(W+E))",
+      "productionWeight": 1
+    },
+    {
+      "id": "C3-003",
+      "formula": "1 W + 1 (W+F) \u2192 1 (W+(W+F))",
+      "productionWeight": 1
+    },
+    {
+      "id": "C3-004",
+      "formula": "1 W + 1 (W+A) \u2192 1 (W+(W+A))",
+      "productionWeight": 1
+    },
+    {
+      "id": "C3-005",
+      "formula": "1 W + 1 (E+E) \u2192 1 (W+(E+E))",
+      "productionWeight": 1
+    },
+    {
+      "id": "C3-006",
+      "formula": "1 W + 1 (E+F) \u2192 1 (W+(E+F))",
+      "productionWeight": 2
+    },
+    {
+      "id": "C3-007",
+      "formula": "1 W + 1 (E+A) \u2192 1 (W+(E+A))",
+      "productionWeight": 1
+    },
+    {
+      "id": "C3-008",
+      "formula": "1 W + 1 (F+F) \u2192 1 (W+(F+F))",
+      "productionWeight": 1
+    },
+    {
+      "id": "C3-010",
+      "formula": "1 W + 1 (A+A) \u2192 1 (W+(A+A))",
+      "productionWeight": 2
+    },
+    {
+      "id": "C3-011",
+      "formula": "1 E + 1 (W+W) \u2192 1 (E+(W+W))",
+      "productionWeight": 1
+    },
+    {
+      "id": "C3-012",
+      "formula": "1 E + 1 (W+E) \u2192 1 (E+(W+E))",
+      "productionWeight": 2
+    },
+    {
+      "id": "C3-013",
+      "formula": "1 E + 1 (W+F) \u2192 1 (E+(W+F))",
+      "productionWeight": 1
+    },
+    {
+      "id": "C3-014",
+      "formula": "1 E + 1 (W+A) \u2192 1 (E+(W+A))",
+      "productionWeight": 2
+    },
+    {
+      "id": "C3-015",
+      "formula": "1 E + 1 (E+E) \u2192 1 (E+(E+E))",
+      "productionWeight": 1
+    },
+    {
+      "id": "C3-017",
+      "formula": "1 E + 1 (E+A) \u2192 1 (E+(E+A))",
+      "productionWeight": 2
+    },
+    {
+      "id": "C3-018",
+      "formula": "1 E + 1 (F+F) \u2192 1 (E+(F+F))",
+      "productionWeight": 1
+    },
+    {
+      "id": "C3-019",
+      "formula": "1 E + 1 (F+A) \u2192 1 (E+(F+A))",
+      "productionWeight": 1
+    },
+    {
+      "id": "C3-020",
+      "formula": "1 E + 1 (A+A) \u2192 1 (E+(A+A))",
+      "productionWeight": 1
+    },
+    {
+      "id": "C3-021",
+      "formula": "1 F + 1 (W+W) \u2192 1 (F+(W+W))",
+      "productionWeight": 1
+    },
+    {
+      "id": "C3-023",
+      "formula": "1 F + 1 (W+F) \u2192 1 (F+(W+F))",
+      "productionWeight": 2
+    },
+    {
+      "id": "C3-024",
+      "formula": "1 F + 1 (W+A) \u2192 1 (F+(W+A))",
+      "productionWeight": 1
+    },
+    {
+      "id": "C3-025",
+      "formula": "1 F + 1 (E+E) \u2192 1 (F+(E+E))",
+      "productionWeight": 1
+    },
+    {
+      "id": "C3-026",
+      "formula": "1 F + 1 (E+F) \u2192 1 (F+(E+F))",
+      "productionWeight": 1
+    },
+    {
+      "id": "C3-027",
+      "formula": "1 F + 1 (E+A) \u2192 1 (F+(E+A))",
+      "productionWeight": 1
+    },
+    {
+      "id": "C3-028",
+      "formula": "1 F + 1 (F+F) \u2192 1 (F+(F+F))",
+      "productionWeight": 2
+    },
+    {
+      "id": "C3-029",
+      "formula": "1 F + 1 (F+A) \u2192 1 (F+(F+A))",
+      "productionWeight": 2
+    },
+    {
+      "id": "C3-030",
+      "formula": "1 F + 1 (A+A) \u2192 1 (F+(A+A))",
+      "productionWeight": 2
+    },
+    {
+      "id": "C3-031",
+      "formula": "1 A + 1 (W+W) \u2192 1 (A+(W+W))",
+      "productionWeight": 1
+    },
+    {
+      "id": "C3-032",
+      "formula": "1 A + 1 (W+E) \u2192 1 (A+(W+E))",
+      "productionWeight": 2
+    },
+    {
+      "id": "C3-033",
+      "formula": "1 A + 1 (W+F) \u2192 1 (A+(W+F))",
+      "productionWeight": 1
+    },
+    {
+      "id": "C3-034",
+      "formula": "1 A + 1 (W+A) \u2192 1 (A+(W+A))",
+      "productionWeight": 1
+    },
+    {
+      "id": "C3-035",
+      "formula": "1 A + 1 (E+E) \u2192 1 (A+(E+E))",
+      "productionWeight": 2
+    },
+    {
+      "id": "C3-036",
+      "formula": "1 A + 1 (E+F) \u2192 1 (A+(E+F))",
+      "productionWeight": 2
+    },
+    {
+      "id": "C3-037",
+      "formula": "1 A + 1 (E+A) \u2192 1 (A+(E+A))",
+      "productionWeight": 1
+    },
+    {
+      "id": "C3-038",
+      "formula": "1 A + 1 (F+F) \u2192 1 (A+(F+F))",
+      "productionWeight": 1
+    },
+    {
+      "id": "C3-039",
+      "formula": "1 A + 1 (F+A) \u2192 1 (A+(F+A))",
+      "productionWeight": 2
+    },
+    {
+      "id": "C4-001",
+      "formula": "1 W + 1 (W+(W+W)) \u2192 1 (W+(W+(W+W)))",
+      "productionWeight": 1
+    },
+    {
+      "id": "C4-017",
+      "formula": "1 W + 1 (E+(E+A)) \u2192 1 (W+(E+(E+A)))",
+      "productionWeight": 1
+    },
+    {
+      "id": "C4-023",
+      "formula": "1 W + 1 (F+(W+F)) \u2192 1 (W+(F+(W+F)))",
+      "productionWeight": 1
+    },
+    {
+      "id": "C4-030",
+      "formula": "1 W + 1 (F+(A+A)) \u2192 1 (W+(F+(A+A)))",
+      "productionWeight": 1
+    },
+    {
+      "id": "C4-046",
+      "formula": "1 E + 1 (W+(E+F)) \u2192 1 (E+(W+(E+F)))",
+      "productionWeight": 1
+    },
+    {
+      "id": "C4-052",
+      "formula": "1 E + 1 (E+(W+E)) \u2192 1 (E+(E+(W+E)))",
+      "productionWeight": 1
+    },
+    {
+      "id": "C4-068",
+      "formula": "1 E + 1 (F+(F+F)) \u2192 1 (E+(F+(F+F)))",
+      "productionWeight": 1
+    },
+    {
+      "id": "C4-075",
+      "formula": "1 E + 1 (A+(E+E)) \u2192 1 (E+(A+(E+E)))",
+      "productionWeight": 1
+    },
+    {
+      "id": "C4-090",
+      "formula": "1 F + 1 (W+(A+A)) \u2192 1 (F+(W+(A+A)))",
+      "productionWeight": 1
+    },
+    {
+      "id": "C4-109",
+      "formula": "1 F + 1 (F+(F+A)) \u2192 1 (F+(F+(F+A)))",
+      "productionWeight": 1
+    },
+    {
+      "id": "C4-116",
+      "formula": "1 F + 1 (A+(E+F)) \u2192 1 (F+(A+(E+F)))",
+      "productionWeight": 1
+    },
+    {
+      "id": "C4-134",
+      "formula": "1 A + 1 (E+(W+A)) \u2192 1 (A+(E+(W+A)))",
+      "productionWeight": 1
+    },
+    {
+      "id": "C4-152",
+      "formula": "1 A + 1 (A+(W+E)) \u2192 1 (A+(A+(W+E)))",
+      "productionWeight": 1
+    },
+    {
+      "id": "C4-159",
+      "formula": "1 A + 1 (A+(F+A)) \u2192 1 (A+(A+(F+A)))",
+      "productionWeight": 1
+    },
+    {
+      "id": "C4-161",
+      "formula": "2 (W+W) \u2192 1 ((W+W)+(W+W))",
+      "productionWeight": 1
+    },
+    {
+      "id": "C4-162",
+      "formula": "1 (W+W) + 1 (W+E) \u2192 1 ((W+W)+(W+E))",
+      "productionWeight": 1
+    },
+    {
+      "id": "C4-163",
+      "formula": "1 (W+W) + 1 (W+F) \u2192 1 ((W+W)+(W+F))",
+      "productionWeight": 1
+    },
+    {
+      "id": "C4-164",
+      "formula": "1 (W+W) + 1 (W+A) \u2192 1 ((W+W)+(W+A))",
+      "productionWeight": 1
+    },
+    {
+      "id": "C4-165",
+      "formula": "1 (W+W) + 1 (E+E) \u2192 1 ((W+W)+(E+E))",
+      "productionWeight": 1
+    },
+    {
+      "id": "C4-166",
+      "formula": "1 (W+W) + 1 (E+F) \u2192 1 ((W+W)+(E+F))",
+      "productionWeight": 1
+    },
+    {
+      "id": "C4-167",
+      "formula": "1 (W+W) + 1 (E+A) \u2192 1 ((W+W)+(E+A))",
+      "productionWeight": 1
+    },
+    {
+      "id": "C4-168",
+      "formula": "1 (W+W) + 1 (F+F) \u2192 1 ((W+W)+(F+F))",
+      "productionWeight": 1
+    },
+    {
+      "id": "C4-169",
+      "formula": "1 (W+W) + 1 (F+A) \u2192 1 ((W+W)+(F+A))",
+      "productionWeight": 1
+    },
+    {
+      "id": "C4-170",
+      "formula": "1 (W+W) + 1 (A+A) \u2192 1 ((W+W)+(A+A))",
+      "productionWeight": 1
+    },
+    {
+      "id": "C4-171",
+      "formula": "2 (W+E) \u2192 1 ((W+E)+(W+E))",
+      "productionWeight": 1
+    },
+    {
+      "id": "C4-172",
+      "formula": "1 (W+E) + 1 (W+F) \u2192 1 ((W+E)+(W+F))",
+      "productionWeight": 1
+    },
+    {
+      "id": "C4-173",
+      "formula": "1 (W+E) + 1 (W+A) \u2192 1 ((W+E)+(W+A))",
+      "productionWeight": 1
+    },
+    {
+      "id": "C4-174",
+      "formula": "1 (W+E) + 1 (E+E) \u2192 1 ((W+E)+(E+E))",
+      "productionWeight": 1
+    },
+    {
+      "id": "C4-175",
+      "formula": "1 (W+E) + 1 (E+F) \u2192 1 ((W+E)+(E+F))",
+      "productionWeight": 1
+    },
+    {
+      "id": "C4-176",
+      "formula": "1 (W+E) + 1 (E+A) \u2192 1 ((W+E)+(E+A))",
+      "productionWeight": 1
+    },
+    {
+      "id": "C4-177",
+      "formula": "1 (W+E) + 1 (F+F) \u2192 1 ((W+E)+(F+F))",
+      "productionWeight": 1
+    },
+    {
+      "id": "C4-178",
+      "formula": "1 (W+E) + 1 (F+A) \u2192 1 ((W+E)+(F+A))",
+      "productionWeight": 1
+    },
+    {
+      "id": "C4-179",
+      "formula": "1 (W+E) + 1 (A+A) \u2192 1 ((W+E)+(A+A))",
+      "productionWeight": 1
+    },
+    {
+      "id": "C4-180",
+      "formula": "2 (W+F) \u2192 1 ((W+F)+(W+F))",
+      "productionWeight": 1
+    },
+    {
+      "id": "C4-181",
+      "formula": "1 (W+F) + 1 (W+A) \u2192 1 ((W+F)+(W+A))",
+      "productionWeight": 1
+    },
+    {
+      "id": "C4-182",
+      "formula": "1 (W+F) + 1 (E+E) \u2192 1 ((W+F)+(E+E))",
+      "productionWeight": 1
+    },
+    {
+      "id": "C4-183",
+      "formula": "1 (W+F) + 1 (E+F) \u2192 1 ((W+F)+(E+F))",
+      "productionWeight": 1
+    },
+    {
+      "id": "C4-184",
+      "formula": "1 (W+F) + 1 (E+A) \u2192 1 ((W+F)+(E+A))",
+      "productionWeight": 1
+    },
+    {
+      "id": "C4-185",
+      "formula": "1 (W+F) + 1 (F+F) \u2192 1 ((W+F)+(F+F))",
+      "productionWeight": 1
+    },
+    {
+      "id": "C4-186",
+      "formula": "1 (W+F) + 1 (F+A) \u2192 1 ((W+F)+(F+A))",
+      "productionWeight": 1
+    },
+    {
+      "id": "C4-187",
+      "formula": "1 (W+F) + 1 (A+A) \u2192 1 ((W+F)+(A+A))",
+      "productionWeight": 1
+    },
+    {
+      "id": "C4-188",
+      "formula": "2 (W+A) \u2192 1 ((W+A)+(W+A))",
+      "productionWeight": 1
+    },
+    {
+      "id": "C4-189",
+      "formula": "1 (W+A) + 1 (E+E) \u2192 1 ((W+A)+(E+E))",
+      "productionWeight": 1
+    },
+    {
+      "id": "C4-190",
+      "formula": "1 (W+A) + 1 (E+F) \u2192 1 ((W+A)+(E+F))",
+      "productionWeight": 1
+    },
+    {
+      "id": "C4-191",
+      "formula": "1 (W+A) + 1 (E+A) \u2192 1 ((W+A)+(E+A))",
+      "productionWeight": 1
+    },
+    {
+      "id": "C4-192",
+      "formula": "1 (W+A) + 1 (F+F) \u2192 1 ((W+A)+(F+F))",
+      "productionWeight": 1
+    },
+    {
+      "id": "C4-193",
+      "formula": "1 (W+A) + 1 (F+A) \u2192 1 ((W+A)+(F+A))",
+      "productionWeight": 1
+    },
+    {
+      "id": "C4-194",
+      "formula": "1 (W+A) + 1 (A+A) \u2192 1 ((W+A)+(A+A))",
+      "productionWeight": 1
+    },
+    {
+      "id": "C4-195",
+      "formula": "2 (E+E) \u2192 1 ((E+E)+(E+E))",
+      "productionWeight": 1
+    },
+    {
+      "id": "C4-196",
+      "formula": "1 (E+E) + 1 (E+F) \u2192 1 ((E+E)+(E+F))",
+      "productionWeight": 1
+    },
+    {
+      "id": "C4-197",
+      "formula": "1 (E+E) + 1 (E+A) \u2192 1 ((E+E)+(E+A))",
+      "productionWeight": 1
+    },
+    {
+      "id": "C4-198",
+      "formula": "1 (E+E) + 1 (F+F) \u2192 1 ((E+E)+(F+F))",
+      "productionWeight": 1
+    },
+    {
+      "id": "C4-199",
+      "formula": "1 (E+E) + 1 (F+A) \u2192 1 ((E+E)+(F+A))",
+      "productionWeight": 1
+    },
+    {
+      "id": "C4-200",
+      "formula": "1 (E+E) + 1 (A+A) \u2192 1 ((E+E)+(A+A))",
+      "productionWeight": 1
+    },
+    {
+      "id": "C4-201",
+      "formula": "2 (E+F) \u2192 1 ((E+F)+(E+F))",
+      "productionWeight": 1
+    },
+    {
+      "id": "C4-202",
+      "formula": "1 (E+F) + 1 (E+A) \u2192 1 ((E+F)+(E+A))",
+      "productionWeight": 1
+    },
+    {
+      "id": "C4-203",
+      "formula": "1 (E+F) + 1 (F+F) \u2192 1 ((E+F)+(F+F))",
+      "productionWeight": 1
+    },
+    {
+      "id": "C4-204",
+      "formula": "1 (E+F) + 1 (F+A) \u2192 1 ((E+F)+(F+A))",
+      "productionWeight": 1
+    },
+    {
+      "id": "C4-205",
+      "formula": "1 (E+F) + 1 (A+A) \u2192 1 ((E+F)+(A+A))",
+      "productionWeight": 1
+    },
+    {
+      "id": "C4-206",
+      "formula": "2 (E+A) \u2192 1 ((E+A)+(E+A))",
+      "productionWeight": 1
+    },
+    {
+      "id": "C4-207",
+      "formula": "1 (E+A) + 1 (F+F) \u2192 1 ((E+A)+(F+F))",
+      "productionWeight": 1
+    },
+    {
+      "id": "C4-208",
+      "formula": "1 (E+A) + 1 (F+A) \u2192 1 ((E+A)+(F+A))",
+      "productionWeight": 1
+    },
+    {
+      "id": "C4-209",
+      "formula": "1 (E+A) + 1 (A+A) \u2192 1 ((E+A)+(A+A))",
+      "productionWeight": 1
+    },
+    {
+      "id": "C4-210",
+      "formula": "2 (F+F) \u2192 1 ((F+F)+(F+F))",
+      "productionWeight": 1
+    },
+    {
+      "id": "C4-211",
+      "formula": "1 (F+F) + 1 (F+A) \u2192 1 ((F+F)+(F+A))",
+      "productionWeight": 1
+    },
+    {
+      "id": "C4-212",
+      "formula": "1 (F+F) + 1 (A+A) \u2192 1 ((F+F)+(A+A))",
+      "productionWeight": 1
+    },
+    {
+      "id": "C4-213",
+      "formula": "2 (F+A) \u2192 1 ((F+A)+(F+A))",
+      "productionWeight": 1
+    },
+    {
+      "id": "C4-214",
+      "formula": "1 (F+A) + 1 (A+A) \u2192 1 ((F+A)+(A+A))",
+      "productionWeight": 1
+    },
+    {
+      "id": "C4-215",
+      "formula": "2 (A+A) \u2192 1 ((A+A)+(A+A))",
+      "productionWeight": 1
+    }
+  ]
+}

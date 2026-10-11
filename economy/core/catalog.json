@@ -439,15 +439,16 @@
   "t0License": 22000000,
   "t0Machinery": 12250000,
   "t0Reserve": 1000000,
-  "t0Capacity": 200000,
-  "t0Storage": 500000,
+  "t0Capacity": 500000,
+  "t0Storage": 40000000,
   "baseCost": 1,
   "t0Markup": 0.25,
   "minWholesaleLot": 1000,
   "t1Equity": 1500000,
   "t1License": 1000000,
   "t1Machinery": 15000,
-  "t1Capacity": 2000,
+  "t1Capacity": 6000,
+  "t1CapacityC2": 6000,
   "t1MaterialCost": 1.25,
   "t1Markup": 0.25,
   "t2Equity": 1500000,
@@ -458,14 +459,15 @@
    "5": 420000
   },
   "t2Capacity": {
-   "3": 30,
-   "4": 20,
+   "3": 32,
+   "4": 24,
    "5": 10
   },
-  "t2MaterialCost": 1.875,
   "conversionFactor": 0.25,
   "storage": 20000,
-  "storageRentPerUnitYear": 1.008,
+  "t1C1Storage": 50000,
+  "t1C2Storage": 50000,
+  "storageRentPerUnitYear": 0.0,
   "footprint": {
    "1": 1000,
    "2": 1000,
@@ -488,14 +490,14 @@
   "marketAnchorBand": 0.02,
   "priceObservationTicks": 30,
   "loyaltyMultiple": {
-   "1": 41.665,
-   "2": {
-    "3": 0.605,
-    "4": 0.325,
-    "5": 0.13
-   },
-   "3": 0.485
+  "1": 33.333333333333336,
+  "2": {
+    "3": 0.417910447761194,
+    "4": 0.417910447761194,
+    "5": 0.0
   },
+  "3": 0.1540682295367535
+},
   "loyaltyEmaAlpha": 0.01,
   "researchPriceMinimumOpportunities": 0,
   "researchPriceMinimumPotentialOrders": 0,
