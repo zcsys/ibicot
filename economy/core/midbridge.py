@@ -44,7 +44,9 @@ def load_catalog(legacy):
     inputs = materials + [p for p in outputs if p['complexity'] == 3 and p['id'] in invented]
     lookup = {p['id']: i for i, p in enumerate(inputs)}
     codes = {p['id']: p['symbol'].strip('()') if p['tier'] == 1 else p['id'] for p in rows}
-    elements = dict(zip('WEFA', legacy['ELEMENTS']))
+    raw = {p['symbol']: p['name'] for p in names['main_elements']}
+    data['ELEMENTS'] = [raw[slot] for slot in 'WEFA']
+    elements = dict(zip('WEFA', data['ELEMENTS']))
     data['PRODUCTS'] = [{**legacy['PRODUCTS'][0], 'code': codes[p['id']],
         **equipment(p), 'catalogId': p['id'], 'name': recipe_names[p['id']]['product_name'],
         'symbol': material_names[p['id']]['symbol'], 'sector':material_names[p['id']]['refinery_sector_name'],
@@ -67,7 +69,7 @@ def load_catalog(legacy):
             'ingredients': sorted([[lookup[k], q] for k, q in p['ingredientQuantities'].items()]) if p['id'] in invented else [],
             'recipeKey': p['id'], 'complexity': p['complexity'], 'outputQty': 1,
             'storageSpacePerUnit': p['complexity'], 'sectorIndex': sector, 'sector': sectors[sector],
-            'manufacturer': t2_companies[p['sectorId']]['generic_stem'],
+            'manufacturer': t2_companies[p['sectorId']]['facility_stem'],
             'invented': p['id'] in invented,
             'demandGroup': group, 'distributorWeight': 0})
     all_products=products
@@ -80,8 +82,8 @@ def load_catalog(legacy):
         INVENTED_PER_COMPLEXITY={str(c): sum(p['complexity'] == c for p in products) for c in (3,4,5)},
         T2_SECTORS=sectors, T2_SECTOR_WEIGHTS=[1]*14, T2_ADJACENCY=[[] for _ in sectors],
         T2_SECTOR_DEFINITIONS=[{'name':p['name'],'description':'Preferred input: '+material_names[p['preferred_material_id']]['name']} for p in names['t2_sectors']],
-        T2_SECTOR_MANUFACTURERS=[{'sector':s,'company':p['flagship_name']} for s,p in zip(sectors,names['t2_companies'])],
-        T2_MANUFACTURER_BY_SECTOR={s:p['flagship_name'] for s,p in zip(sectors,names['t2_companies'])},
+        T2_SECTOR_MANUFACTURERS=[{'sector':s,'company':p['facility_stem']} for s,p in zip(sectors,names['t2_companies'])],
+        T2_MANUFACTURER_BY_SECTOR={s:p['facility_stem'] for s,p in zip(sectors,names['t2_companies'])},
         T1_COMPANY_NAMES=[p['companyName'] for p in data['PRODUCTS']],
         # Existing machinery supplier is T0 company 6; rename it, do not add the
         # commission's four independent maker companies. Its role stays intact.

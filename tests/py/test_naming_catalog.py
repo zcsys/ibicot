@@ -11,7 +11,7 @@ ROOT=Path(__file__).resolve().parents[2]
 
 class NamingCatalogTests(unittest.TestCase):
     def test_every_existing_recipe_has_accepted_name_and_machine(self):
-        source=json.loads((ROOT/'catalogs/midbridge-4259-recursive/naming.json').read_text())
+        source=json.loads((ROOT/'docs/midbridge_complete_naming_catalog.json').read_text())
         names={p['recipe_id']:p for p in source['products']}
         rows=M.PRODUCTS+M.T2_Catalog
         self.assertEqual({p['catalogId'] for p in rows},set(names))
@@ -22,8 +22,8 @@ class NamingCatalogTests(unittest.TestCase):
             self.assertEqual(p['machineFamily'],n['machine_family'])
             self.assertEqual(p['formula'],n['unchanged_formula'])
         for sector,offset in enumerate(M.T2_SECTOR_FIRM_OFFSETS):
-            self.assertEqual(M.t2_firm_name(sector,offset),source['t2_companies'][sector]['flagship_name']+' '+M.company_number('T2',offset))
-            self.assertEqual(M.t2_firm_name(sector,offset+1),source['t2_companies'][sector]['generic_stem']+' '+M.company_number('T2',offset+1))
+            self.assertEqual(M.t2_firm_name(sector,offset),source['t2_companies'][sector]['facility_stem']+' '+M.company_number('T2',offset))
+            self.assertEqual(M.t2_firm_name(sector,offset+1),source['t2_companies'][sector]['facility_stem']+' '+M.company_number('T2',offset+1))
         for i,c in enumerate(T0P):self.assertEqual(c['name'],source['t0_companies'][i]['name'])
 
     def test_no_new_fiction_roles_or_economic_fields(self):
@@ -46,6 +46,37 @@ class NamingCatalogTests(unittest.TestCase):
         self.assertEqual(M.N2_FIRMS,57960)
 
     def test_browser_names_and_symbols_match_python(self):
-        script="require('./web/catalog.js');require('./web/midbridge-catalog.js'); const m=globalThis.Phase0Model; console.log(JSON.stringify([m.PRODUCTS,m.T2_PRODUCTS,m.NAMING_CATALOG,m.T2_NEED_TYPES,m.EQUIPMENT_MAKERS]));"
+        script="require('./web/catalog.js');require('./web/midbridge-catalog.js'); const m=globalThis.Phase0Model; console.log(JSON.stringify([m.PRODUCTS,m.T2_Catalog,m.NAMING_CATALOG,m.T2_NEED_TYPES,m.EQUIPMENT_MAKERS,m.ELEMENTS]));"
         data=json.loads(subprocess.check_output(['node','-e',script],cwd=ROOT,text=True))
-        self.assertEqual(data,[M.PRODUCTS,M.T2_PRODUCTS,M.NAMING_CATALOG,M.T2_NEED_TYPES,M.EQUIPMENT_MAKERS])
+        self.assertEqual(data,[M.PRODUCTS,M.T2_Catalog,M.NAMING_CATALOG,M.T2_NEED_TYPES,M.EQUIPMENT_MAKERS,M.ELEMENTS])
+
+    def test_all_company_stems_resources_and_equipment(self):
+        source=json.loads((ROOT/'docs/midbridge_complete_naming_catalog.json').read_text())
+        self.assertEqual(M.ELEMENTS, ['Organics','Inorganics','Metals','Radioactives'])
+        for cid in range(M.N1):
+            stem=source['t1_companies'][cid//M.T1_FIRMS_PER_MATERIAL]['generic_stem']
+            self.assertEqual(M.t1_firm_name(cid),stem+' '+M.company_number('T1',cid))
+        for sector,(offset,count) in enumerate(zip(M.T2_SECTOR_FIRM_OFFSETS,M.T2_SECTOR_FIRM_COUNTS)):
+            stem=source['t2_companies'][sector]['facility_stem']
+            for cid in range(offset,offset+count):
+                self.assertEqual(M.t2_firm_name(sector,cid),stem+' '+M.company_number('T2',cid))
+        for i,c in enumerate(T0P):
+            self.assertEqual(c['element_indices'],['WEFA'.index(e[-1]) for e in source['t0_companies'][i]['element_ids']])
+        for key in ('equipment_classes','extraction_equipment','machine_families','t2_sectors'):
+            self.assertEqual(M.NAMING_CATALOG[key],source[key])
+        self.assertNotIn('flagship_name',json.dumps(M.NAMING_CATALOG))
+
+    def test_generator_validates_structure_and_rejects_coverage_changes(self):
+        import copy
+        from tools.build_naming_metadata import apply_names, read_names, names_only
+        source=read_names()
+        catalog=json.loads((ROOT/'catalogs/midbridge-4259-recursive/catalog.json').read_text())
+        apply_names(copy.deepcopy(catalog), source)
+        self.assertEqual(names_only(source),M.NAMING_CATALOG)
+        for mutate in (
+            lambda n: n['products'][0]['ingredient_quantities'].update({'RAW-W':2}),
+            lambda n: n['t0_companies'][0]['element_ids'].pop(),
+            lambda n: n['products'][0].update(invented_at_start=False),
+        ):
+            changed=copy.deepcopy(source); mutate(changed)
+            with self.assertRaises(AssertionError):apply_names(copy.deepcopy(catalog),changed)

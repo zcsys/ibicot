@@ -1,15 +1,13 @@
-"""Build the complete unnamed, binary-recipe catalog without changing the engine.
+"""Build and validate the complete binary-recipe catalog in memory.
 
 Run: python3 tools/build_recursive_catalog.py
+Prints a validation report without writing catalogs or modifying runtime data.
 Stable IDs are determined by complexity and canonical unordered input pairs.
 C-1 refining remains the one-input foundation; C-2 refines raw inputs from T0.
 """
 from collections import Counter
 from itertools import combinations_with_replacement, product
 from pathlib import Path
-import csv
-import hashlib
-import io
 import json
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -191,63 +189,5 @@ def validate(catalog):
             'C4RepeatedCompoundPairs': sum(len(p['ingredientQuantities']) == 1 and p['inputComplexities']==[2,2] for p in rows if p['complexity']==4)}
 
 
-def write(catalog, report, prefix=""):
-    DEST.mkdir(parents=True, exist_ok=True)
-    rows = catalog['products']
-    payload = json.dumps(catalog, indent=2)+'\n'
-    (DEST/(prefix+'catalog.json')).write_text(payload)
-    fields = ['id','tier','complexity','sector_id','preferred_material_id','input_1','input_2','output_quantity','space_per_item','output_formula','recipe','invented_at_start','name','installation_name']
-    out=io.StringIO(); writer=csv.DictWriter(out,fieldnames=fields); writer.writeheader()
-    for p in rows:
-        writer.writerow(dict(zip(fields,[p['id'],p['tier'],p['complexity'],p['sectorId'],p.get('preferredMaterialId',p['id']),p['inputs'][0],p['inputs'][1] if len(p['inputs'])==2 else '',1,p['spacePerItem'],p['symbol'],p['formula'],p['selectedAtStart'],p.get('name',''),p.get('installationName','')])))
-    (DEST/(prefix+'catalog.csv')).write_text(out.getvalue())
-    balanced = catalog['selection'] == 'equal-direct-appearances'
-    scope = 'Balanced' if balanced else 'Complete candidate'
-    intro = f"# {scope} recursive recipe catalog\n\n**Midbridge Colony · 4259**\n\n"
-    intro += f"{len(rows)} production recipes: 14 T1 and {report['T2']} T2. Four raw resources are source nodes, not production recipes. Names, when assigned, are included in the CSV. Starting invention flags are preserved. This export does not modify or restart the engine.\n\n"
-    if catalog.get('startingSelectionId'):
-        intro += 'Starting selection: 105 invented T2 products (36 C3 and 69 C4), 150 uninvented. All 14 T1 recipes are invented. Company shares reverse the product-count shares across complexities. Distributor routing follows default capacity less intermediate use; activation is 10.5% per tick. See starting-selection.json and docs/midbridge-integration.md for calibration details.\n\n'
-    intro += '| Output class | Recipe count |\n|---|---:|\n'
-    for c, count in report['complexityCounts'].items():
-        intro += f'| C-{c} | {count} |\n'
-    intro += f'| **Total** | **{len(rows)}** |\n\n'
-    if balanced:
-        intro += "Every T1 material appears as a direct ingredient in exactly **14 distinct T2 recipes**. Repeating a material within one recipe counts as one appearance. Compound quantities total 15 per material, versus 14 for basics: appearance equality is not consumption equality.\n\nAll 40 C-3 recipes and all 55 C-2+C-2 recipes are retained. The remaining 16 C-4 recipes are `B + (B + (X+X))`, for each of four basics B and four raw symbols X. Every T2 ingredient has its own production recipe in this catalog.\n\nThis is the largest unique subset satisfying equal direct appearances: each compound can appear in at most 4 C-3 plus 10 C-4 recipes, limiting the common appearance count to 14. Basic-containing recipes therefore number at most 4×14=56, and compound-pair recipes at most 55, giving 111 T2 recipes. The full 255-T2 candidate pool is retained in universe-catalog.json, universe-catalog.csv and universe-CATALOG.md.\n\n"
-    intro += "C-1 refining uses one raw item; C-2 uses two raw items directly from T0. Every T2 recipe uses two items from lower-complexity products and yields one item. Repeats are allowed in both tiers; reversing an ingredient pair does not create a new recipe. Parenthesized structures remain distinct even when raw ancestry is equal. Every output occupies its complexity in storage spaces. Half of goods space is reserved for finished goods; input space is weighted by quantity × item space.\n\nProduct IDs come from the full universe and are retained in the subset, so gaps are intentional. Input IDs specify immediate products, not flattened ancestry. Sector membership requires its preferred material to be a direct input.\n\n"
-    md=intro
-    md += '## Fourteen paired sectors\n\nEach refinery material has one T1 sector and one corresponding T2 application sector. All recipes are assigned. Every T2 recipe directly consumes its sector’s preferred T1 material. Recipes with a single eligible sector are assigned first; those with two eligible sectors go to the less populated eligible sector, breaking ties by sector ID. This replaces round-robin allocation. Sector sizes follow ingredient eligibility and are not forced equal.\n\n'
-    md += '| T1 sector | Material ID | Material formula | T2 sector | C-3 | C-4 | T2 total |\n|---|---|---|---|---:|---:|---:|\n'
-    sector_rows=[]
-    for sector in catalog['sectors']:
-        if sector['tier']!=1: continue
-        material=next(p for p in rows if p['id']==sector['materialId'])
-        counts=report['T2SectorComplexityCounts'][sector['pairedSectorId']]
-        sector_rows.append([sector['id'],material['id'],material['symbol'],sector['pairedSectorId'],counts[3],counts[4],sum(counts.values())])
-        md += '| ' + ' | '.join(str(v) for v in sector_rows[-1]) + ' |\n'
-    md += '\n'
-    sector_csv=io.StringIO(); sector_writer=csv.writer(sector_csv)
-    sector_writer.writerow(['t1_sector','material_id','material_formula','t2_sector','c3_products','c4_products','t2_total'])
-    sector_writer.writerows(sector_rows)
-    (DEST/(prefix+'sectors.csv')).write_text(sector_csv.getvalue())
-    for c in range(1,5):
-        md+=f'## C-{c} · {report["complexityCounts"][c]} recipes\n\n| Product / recipe ID | Sector | Input item 1 | Input item 2 | Recipe → one output |\n|---|---|---|---|---|\n'
-        for p in rows:
-            if p['complexity']==c:
-                md+=f"| {p['id']} | {p['sectorId']} | {p['inputs'][0]} | {p['inputs'][1] if len(p['inputs'])==2 else '—'} | `{p['formula']}` |\n"
-        md+='\n'
-    (DEST/(prefix+'CATALOG.md')).write_text(md)
-    report['catalogSha256']=hashlib.sha256(payload.encode()).hexdigest()
-    (DEST/(prefix+'validation.json')).write_text(json.dumps(report,indent=2)+'\n')
-    # Verify the human-readable/CSV delivery contains every exported ID.
-    parsed=list(csv.DictReader(io.StringIO((DEST/(prefix+'catalog.csv')).read_text())))
-    assert [r['id'] for r in parsed] == [p['id'] for p in rows]
-    assert [r['sector_id'] for r in parsed] == [p['sectorId'] for p in rows]
-    assert len([line for line in md.splitlines() if line.startswith('| C') and ' | RAW-' in line or line.startswith('| C') and ' | C' in line]) == len(rows)
-    print(json.dumps(report,indent=2))
-
-
-if __name__=='__main__':
-    catalog=build()
-    write(catalog,validate(catalog))
-    universe=build(balanced=False)
-    write(universe,validate(universe),prefix='universe-')
+if __name__ == '__main__':
+    print(json.dumps(validate(build()), indent=2))

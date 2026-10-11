@@ -1,4 +1,4 @@
-> **Naming only:** [Midbridge Colony Naming Catalog](Midbridge_Colony_Naming_Catalog.md) supplies names for existing entities; its invented setting, material interpretations, company roles, and additional supplier companies are not adopted. See [implementation mapping](naming-integration.md). Existing rules and company roles remain authoritative.
+> **Naming only:** The [complete naming catalog](midbridge_complete_naming_catalog.md) and [JSON source](midbridge_complete_naming_catalog.json) supply the implemented display names. Every T1/T2 company uses its sector stem plus its existing global hex number; no flagships. See [naming integration](naming-integration.md). Economic rules and company duties remain unchanged.
 
 
 > **2026-10-11 update:** The active fresh-world recipe, population, storage and cost-reference rules are specified in [Midbridge integration](midbridge-integration.md). Those rules supersede the 200-product, 60,000-company, count-preserving and equal-input-space assumptions below. Distributor activation is now 10.5%. Earlier economic calibration remains historical.

@@ -193,7 +193,7 @@ for (const stock of [0, 100]) {
         rt = self.runtime()
         rt.player('T1', 0, 'W', .02, True, 'PLAYER')
         rt.buy_equipment('T1', 0, 'W+E')
-        rt.player('T0', 0, 'Water', .03, True, 'PLAYER')
+        rt.player('T0', 0, M.ELEMENTS[0], .03, True, 'PLAYER')
         rt.player('T2', 0, M.T2_PRODUCTS[0]['code'], .04, True, 'PLAYER')
         rt.playerLicenses = {'T0', 'T1', 'T2'}
         rt.playerHouse = {'name': 'Checkpoint test'}

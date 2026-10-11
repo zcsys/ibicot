@@ -202,7 +202,7 @@ T2_EQUIPMENT_CONFIG: dict = {int(k): v for k, v in _DATA['EQUIPMENT_CONFIG'].ite
 # added.  The twenty authored identities stay separate and are never prepended.
 # ---------------------------------------------------------------------------
 T1_GENERIC_BASES = {p['code']:n['generic_stem'] for p,n in zip(PRODUCTS,NAMING_CATALOG['t1_companies'])}
-T2_GENERIC_BASES = [p['generic_stem'] for p in NAMING_CATALOG['t2_companies']]
+T2_GENERIC_BASES = [p['facility_stem'] for p in NAMING_CATALOG['t2_companies']]
 
 # Cohort sizes and offsets remain useful for population allocation.
 T2_SECTOR_FIRM_COUNTS = [sum(T2_PRODUCT_FIRM_COUNTS[p['id']] for p in T2_PRODUCTS if p['sectorIndex'] == s) for s in range(len(T2_SECTORS))]
@@ -249,12 +249,12 @@ def company_display_name(tier, generic_base, local_id):
 
 def t1_firm_name(cid):
     code = PRODUCTS[int(cid) // T1_FIRMS_PER_MATERIAL]['code']
-    base = NAMING_CATALOG['t1_companies'][int(cid)//T1_FIRMS_PER_MATERIAL]['flagship_name'] if int(cid)%T1_FIRMS_PER_MATERIAL == 0 else T1_GENERIC_BASES[code]
+    base = T1_GENERIC_BASES[code]
     return company_display_name('T1',base,int(cid))
 
 
 def t2_firm_name(sector, firm_id):
-    base = NAMING_CATALOG['t2_companies'][int(sector)]['flagship_name'] if int(firm_id)==T2_SECTOR_FIRM_OFFSETS[int(sector)] else T2_GENERIC_BASES[int(sector)]
+    base = T2_GENERIC_BASES[int(sector)]
     return company_display_name('T2',base,int(firm_id))
 
 

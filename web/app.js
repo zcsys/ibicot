@@ -62,8 +62,8 @@
     $('catalogReference').innerHTML=
       table('Main elements',['Element','Symbol'],n.main_elements.map(p=>[p.name,p.symbol]))+
       table('Extractors',['Company','Resources'],n.t0_companies.map((p,i)=>[p.name+' '+M.companyNumber('T0',i),p.elements_extracted.join(', ')]))+
-      table('Refinery sectors & companies',['Sector','Material','Symbol','Flagship','Competitor stem'],n.materials.map((p,i)=>[p.refinery_sector_name,p.name,p.symbol,n.t1_companies[i].flagship_name,n.t1_companies[i].generic_stem]))+
-      table('Application sectors & companies',['Sector','Flagship','Competitor stem'],n.t2_sectors.map((p,i)=>[p.name,n.t2_companies[i].flagship_name,n.t2_companies[i].generic_stem]))+
+      table('Refinery sectors & companies',['Sector','Material','Symbol','Company stem'],n.materials.map((p,i)=>[p.refinery_sector_name,p.name,p.symbol,n.t1_companies[i].generic_stem]))+
+      table('Application sectors & companies',['Sector','Company stem'],n.t2_sectors.map((p,i)=>[p.name,n.t2_companies[i].facility_stem]))+
       table('Extraction equipment',['Equipment','Element ID'],n.extraction_equipment.map(p=>[p.name,p.element_id]))+
       table('Equipment classes',['Complexity','Class'],n.equipment_classes.map(p=>[p.complexity,p.name]))+
       table('Equipment families',['Sector','Complexity','Family','Recipes'],n.machine_families.map(p=>[p.sector_id,p.complexity,p.name,p.recipe_count]))+

@@ -73,8 +73,8 @@ def test_invariants_conservation():
 def test_generated_names():
     assert len(M.T1_GENERIC_BASES) == 14
     assert len(M.T2_GENERIC_BASES) == 14
-    assert M.t1_firm_name(0) == 'Clearwell Refining Company 0x15'
-    assert M.t1_firm_name(71) == 'Waterline Processing, Inc. 0x5c'
+    assert M.t1_firm_name(0) == 'Biochemical Plant 0x15'
+    assert M.t1_firm_name(71) == 'Biochemical Plant 0x5c'
     for sector, offset in enumerate(M.T2_SECTOR_FIRM_OFFSETS):
         assert M.t2_firm_name(sector, offset).endswith(' '+M.company_number('T2',offset))
     assert sum(M.T2_SECTOR_FIRM_COUNTS) == 57960

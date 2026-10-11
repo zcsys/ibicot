@@ -15,11 +15,18 @@ describe earlier versions; verify current values in the configuration, catalog,
 and the run being examined. Research documents, including the
 [buying behavior brief](docs/buying-behavior-research-brief.md), describe work to
 evaluate and do not automatically replace approved behavior.
+The isolated [buying-behavior research report](docs/buying-behavior-research-report.md)
+and [experimental contract](docs/buying-behavior-model.md) record the purchasing
+study. The completed study rejects candidate R1; production purchasing remains
+unchanged. The [completion audit](docs/buying-behavior-requirements-audit.md)
+maps the brief to the preserved evidence and failed adoption gates.
 
-**Naming.** Display names follow the accepted [Midbridge Colony Naming Catalog](docs/Midbridge_Colony_Naming_Catalog.md). Regenerate validated named data with
-`python3 tools/apply_naming_catalog.py`, then browser metadata with
-`PYTHONPATH=.pydeps:. python3 tools/build_midbridge_web.py`.
-See [naming integration](docs/naming-integration.md) for identity and machinery mappings.
+**Naming.** Display names follow the approved [complete naming catalog](docs/midbridge_complete_naming_catalog.md)
+and [JSON source](docs/midbridge_complete_naming_catalog.json). Every T1/T2 company
+uses its sector's activity-based stem and its existing global hexadecimal number.
+Regenerate runtime names with `python3 tools/build_naming_metadata.py`, then browser
+metadata with `PYTHONPATH=.pydeps:. python3 tools/build_midbridge_web.py`.
+See [naming integration](docs/naming-integration.md) for compatibility and verification.
 
 ## Quickstart
 
@@ -46,7 +53,7 @@ can actually feed the next):
 
 | Tier | Who | Count |
 | --- | --- | --- |
-| **T0 — Resource Companies** | extract the four raw elements (Water, Earth, Fire, Air) | 20 companies |
+| **T0 — Resource Companies** | extract the four raw elements (Organics, Inorganics, Metals, Radioactives) | 20 companies |
 | **T1 — Refineries** | 10 refined materials (4 C-1 basic + 6 C-2 compound) | 1,000 firms |
 | **T2 — Manufacturers** | 200 manufactured goods, complexity C-3 / C-4 / C-5 | 60,000 firms |
 | **T3 — Consumers** | resident consumers | 1,000,000 |

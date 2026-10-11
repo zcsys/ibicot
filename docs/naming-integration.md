@@ -1,23 +1,65 @@
-# Midbridge Colony: names only
+# Midbridge Colony naming integration
 
-The accepted names come from `docs/Midbridge_Colony_Naming_Catalog.md`, Appendix B. The user's restriction is authoritative: **apply names only**. The document is not a source of new game rules, fiction, company roles or entities.
+The [complete naming catalog](midbridge_complete_naming_catalog.md) and its
+[JSON companion](midbridge_complete_naming_catalog.json) are the approved naming
+sources. Their original delivery status says “not implemented”; the copies are
+preserved unchanged as approval evidence. This document records implementation.
 
-`tools/apply_naming_catalog.py` verifies all 269 recipe IDs, formulas, input quantities, complexities, sector assignments and preferred materials against the existing structural generator. It writes the named catalog and `named-products.csv` under `catalogs/midbridge-4259-recursive/`. An explicit allowlist produces `naming.json`: only names, display symbols and the identifiers/structural facts needed to bind them to existing entities survive. `tools/build_midbridge_web.py` generates browser metadata from the same Python adapter. Run those two commands in that order. The original delivered document remains unmodified as source material.
+## Display contract
 
-## Applied mappings
+- Raw slots remain W, E, F, A, in that order: Organics, Inorganics, Metals,
+  Radioactives. These are distinct from their C1 refined outputs.
+- All 269 recipes (including 150 uninvented T2 products), installations, 42 machine
+  families, four equipment classes, four extraction machines, fourteen refinery
+  sectors and fourteen manufacturing sectors use their approved names.
+- All twenty T0 firms retain their IDs and resource coverage. The machinery
+  supplier remains local ID 6, global `0x7`: Standard Fiber & Mineral, Inc.
+- Every T1 firm uses its sector's `generic_stem`; every T2 firm uses its sector's
+  `facility_stem`, followed by its existing lowercase global hexadecimal number.
+  The first company follows the same rule. There are no flagships.
+- Gaia remains `Gaia 0x0`; T3 remains `Distributor <global hex number>`.
 
-- All 269 products and recipe-specific installations, fourteen material symbols, fourteen refinery sectors, fourteen application sectors, equipment classes, families and existing extraction-equipment types receive the supplied names.
-- All twenty T0 companies are renamed in their existing roster positions. Resource coverage and auxiliary roles stay attached to the same companies. The existing machinery supplier, T0 local ID 6, becomes Claywell & Sons; it retains its machinery role.
-- The first existing company in each T1 cohort and T2 sector uses the supplied flagship name. Others use the sector's generic stem. These are display-name assignments, not new company roles, privileges or populations.
-- Global hex company numbers remain unchanged, starting with Gaia `0x0`. The document's per-stem suffix examples do not override global numbering.
-- The game title is Midbridge Colony. Distributors retain their established role and name.
+## Generation and runtime
 
-## Explicitly excluded
+Using the interpreter selected by `run.sh`:
 
-The Common Reserve Program, replacement tagline/setting prose, new material interpretations and product-use descriptions, extraction-only company roles, and four additional independent equipment makers are not imported into the game. The existing company duties remain intact. The source's rule section is not used to configure the economy.
+```sh
+python3 tools/build_naming_metadata.py
+PYTHONPATH=.pydeps:. python3 tools/build_midbridge_web.py
+```
 
-## Compatibility and performance
+The first command validates approved recipe IDs, formulas, ingredient quantities,
+complexity, sector assignments, preferred materials, invention flags, machine
+bindings and extractor coverage against the existing structure, then writes only
+`catalogs/midbridge-4259-recursive/naming.json`. An allowlist excludes narrative,
+new roles and economic settings. It does not regenerate structural catalogs,
+calibration reports or historical exports.
 
-Recipes, market indices, populations, production, prices, costs, storage, rent, demand calibration and company numbering are unchanged by this naming pass. Existing checkpoints retain their structural catalog revision; current names are resolved when snapshots are published. A running backend must reload code to publish the new roster; browser refresh alone cannot update backend metadata.
+`economy/core/midbridge.py` applies that metadata over the retained baseline
+catalog. Raw display names, raw input keys and extractor coverage share the same
+slot mapping. `economy/core/model.py` resolves company stems and global numbers.
+The browser generator exports the adapted metadata, including `ELEMENTS`, to
+`web/midbridge-catalog.js`; the dashboard's full reference uses one company-stem
+column per tier. Names are resolved at startup, outside simulation loops.
 
-Names are startup metadata. The full browser reference renders once on expansion, not per tick. No strings are added to numeric simulation kernels or million-entry Distributor arrays. Tests check complete name coverage, machinery-family bindings, browser/Python parity, absence of excluded metadata and preservation of economic fields and company identity.
+`economy/core/catalog.json` and `web/catalog.js` retain template labels; they are
+not current naming sources. Browser pages must load `midbridge-catalog.js` after
+`catalog.js`. Superseded creative briefs and duplicate structural exports remain
+removed. `tools/build_recursive_catalog.py` validates in memory without writing
+runtime data; its `build` and `validate` functions remain available for calibration.
+`starting-selection.json` and `consumption-calibration.json` remain unchanged.
+The new naming generator replaces the deleted legacy `apply_naming_catalog.py`
+workflow without restoring it or its duplicate exports.
+
+## Compatibility and review
+
+Stable recipe/equipment/family IDs, compact market indices, raw slot order,
+company numbering, recipes, configuration, allocations and economic behavior are
+unchanged. Checkpoint version 8 and catalog revision
+`midbridge-invented-105-reverse-v7` remain unchanged. Old compatible checkpoints
+resolve to the current display names when loaded by the updated backend. Existing
+processes continue using their loaded metadata; this work does not restart them.
+
+The reviewed implementation was reconciled into `new-recipes` on 12 October 2026,
+preserving its existing research work and cleanup. See
+[naming verification](naming-verification.md) for the baseline, checks and UI review.

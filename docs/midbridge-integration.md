@@ -201,7 +201,16 @@ Allocation and dependency propagation run once at import/startup. Trading remain
 
 ## Handoff and verification
 
-The naming brief and JSON/CSV attachments retain all 269 formulas, add explicit invention flags, and assign zero companies to uninvented recipes. All naming-only constraints remain intact. Run `tools/export_naming_brief.py` and `tools/build_midbridge_web.py` after metadata changes. The accepted naming source does not control mechanics; see `naming-integration.md`.
+The [complete naming catalog](midbridge_complete_naming_catalog.md) and its
+[JSON companion](midbridge_complete_naming_catalog.json) are now implemented for
+all 269 recipes, resources, sectors, existing companies and equipment. Every
+T1/T2 company uses its activity-based sector stem and existing global hex number,
+with no flagships. Structural data and checkpoint compatibility remain unchanged.
+Superseded naming briefs and duplicate exports remain removed. Use
+`python3 tools/build_recursive_catalog.py` for an in-memory structural check,
+`python3 tools/build_naming_metadata.py` for runtime names, and
+`tools/build_midbridge_web.py` for browser metadata. See
+[naming integration](naming-integration.md).
 
 Tests check weighted material consumption, dependency closure, uninvented-installation rejection, weighted routing, full-population allocation, sector identity, reference/Numba parity, storage, rent, accounting and checkpoints. Remaining calibration concerns are overall demand scale and realized price/stock-dependent flows, including unequal refined-material demand under the simpler-product capacity concentration.
 

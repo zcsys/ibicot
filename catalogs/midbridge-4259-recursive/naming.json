@@ -5,22 +5,22 @@
   "main_elements": [
     {
       "element_id": "RAW-W",
-      "name": "Water",
+      "name": "Organics",
       "symbol": "W"
     },
     {
       "element_id": "RAW-E",
-      "name": "Earth",
+      "name": "Inorganics",
       "symbol": "E"
     },
     {
       "element_id": "RAW-F",
-      "name": "Fire",
+      "name": "Metals",
       "symbol": "F"
     },
     {
       "element_id": "RAW-A",
-      "name": "Air",
+      "name": "Radioactives",
       "symbol": "A"
     }
   ],
@@ -28,100 +28,100 @@
     {
       "material_id": "C1-001",
       "sector_id": "S1-01",
-      "name": "Process Water",
-      "symbol": "PW",
-      "refinery_sector_name": "Water Conditioning"
+      "name": "Biochemical Feedstock",
+      "symbol": "W",
+      "refinery_sector_name": "Biochemical Refining"
     },
     {
       "material_id": "C1-002",
       "sector_id": "S1-02",
-      "name": "Mineral Stock",
-      "symbol": "MS",
-      "refinery_sector_name": "Mineral Preparation"
+      "name": "Inorganic Concentrate",
+      "symbol": "E",
+      "refinery_sector_name": "Inorganic Refining"
     },
     {
       "material_id": "C1-003",
       "sector_id": "S1-03",
-      "name": "Thermal Charge",
-      "symbol": "TC",
-      "refinery_sector_name": "Thermal Feed Conditioning"
+      "name": "Metal Ingots",
+      "symbol": "F",
+      "refinery_sector_name": "Metal Smelting"
     },
     {
       "material_id": "C1-004",
       "sector_id": "S1-04",
-      "name": "Service Gas",
-      "symbol": "SG",
-      "refinery_sector_name": "Gas Conditioning"
+      "name": "Isotope Feed",
+      "symbol": "A",
+      "refinery_sector_name": "Isotope Refining"
     },
     {
       "material_id": "C2-001",
       "sector_id": "S1-05",
-      "name": "Water Gel",
-      "symbol": "WG",
-      "refinery_sector_name": "Gel Refining"
+      "name": "Engineered Polymers",
+      "symbol": "WW",
+      "refinery_sector_name": "Polymer Processing"
     },
     {
       "material_id": "C2-002",
       "sector_id": "S1-06",
-      "name": "Mineral Paste",
-      "symbol": "MP",
-      "refinery_sector_name": "Paste Refining"
+      "name": "Fine Chemicals",
+      "symbol": "WE",
+      "refinery_sector_name": "Fine Chemical Refining"
     },
     {
       "material_id": "C2-003",
       "sector_id": "S1-07",
-      "name": "Thermal Fluid",
-      "symbol": "TF",
-      "refinery_sector_name": "Thermal Fluid Refining"
+      "name": "Catalysts",
+      "symbol": "WF",
+      "refinery_sector_name": "Catalyst Production"
     },
     {
       "material_id": "C2-004",
       "sector_id": "S1-08",
-      "name": "Foam Base",
-      "symbol": "FB",
-      "refinery_sector_name": "Foam Refining"
+      "name": "Radiopharmaceuticals",
+      "symbol": "WA",
+      "refinery_sector_name": "Radiopharmaceutical Processing"
     },
     {
       "material_id": "C2-005",
       "sector_id": "S1-09",
-      "name": "Structural Ceramic",
-      "symbol": "SC",
-      "refinery_sector_name": "Ceramic Refining"
+      "name": "Technical Ceramics",
+      "symbol": "EE",
+      "refinery_sector_name": "Ceramic Processing"
     },
     {
       "material_id": "C2-006",
       "sector_id": "S1-10",
-      "name": "Conductive Alloy",
-      "symbol": "CA",
-      "refinery_sector_name": "Alloy Refining"
+      "name": "Semiconductor Wafers",
+      "symbol": "EF",
+      "refinery_sector_name": "Semiconductor Fabrication"
     },
     {
       "material_id": "C2-007",
       "sector_id": "S1-11",
-      "name": "Porous Mineral",
-      "symbol": "PM",
-      "refinery_sector_name": "Porous Media Refining"
+      "name": "Radiation Shielding",
+      "symbol": "EA",
+      "refinery_sector_name": "Shielding Material Production"
     },
     {
       "material_id": "C2-008",
       "sector_id": "S1-12",
-      "name": "Storage Salt",
-      "symbol": "SS",
-      "refinery_sector_name": "Thermal Salt Refining"
+      "name": "Structural Alloys",
+      "symbol": "FF",
+      "refinery_sector_name": "Alloy Refining"
     },
     {
       "material_id": "C2-009",
       "sector_id": "S1-13",
-      "name": "Discharge Gas",
-      "symbol": "DG",
-      "refinery_sector_name": "Discharge Media Refining"
+      "name": "Reactor Fuel",
+      "symbol": "FA",
+      "refinery_sector_name": "Reactor Fuel Processing"
     },
     {
       "material_id": "C2-010",
       "sector_id": "S1-14",
-      "name": "Pressure Gas",
-      "symbol": "PG",
-      "refinery_sector_name": "Pressure Gas Refining"
+      "name": "Isotope Power Cells",
+      "symbol": "AA",
+      "refinery_sector_name": "Isotope Cell Production"
     }
   ],
   "t0_companies": [
@@ -129,160 +129,160 @@
       "company_id": "T0-01",
       "name": "Raw Materials Corp.",
       "elements_extracted": [
-        "Water",
-        "Earth",
-        "Fire",
-        "Air"
+        "Organics",
+        "Inorganics",
+        "Metals",
+        "Radioactives"
       ]
     },
     {
       "company_id": "T0-02",
       "name": "Elements Inc.",
       "elements_extracted": [
-        "Water",
-        "Earth",
-        "Fire",
-        "Air"
+        "Organics",
+        "Inorganics",
+        "Metals",
+        "Radioactives"
       ]
     },
     {
       "company_id": "T0-03",
-      "name": "Three Forks Extraction Company",
+      "name": "General Resources Corporation",
       "elements_extracted": [
-        "Water",
-        "Earth",
-        "Fire"
+        "Organics",
+        "Inorganics",
+        "Metals"
       ]
     },
     {
       "company_id": "T0-04",
-      "name": "Meadowline Resources, Inc.",
+      "name": "Integrated Extraction Corp., Inc.",
       "elements_extracted": [
-        "Water",
-        "Earth",
-        "Air"
+        "Organics",
+        "Inorganics",
+        "Radioactives"
       ]
     },
     {
       "company_id": "T0-05",
-      "name": "Tide & Draft Ltd.",
+      "name": "Planetary Industries, Inc.",
       "elements_extracted": [
-        "Water",
-        "Fire",
-        "Air"
+        "Organics",
+        "Metals",
+        "Radioactives"
       ]
     },
     {
       "company_id": "T0-06",
-      "name": "Ridgefire Resources LLC",
+      "name": "Federated Supply Incorporated",
       "elements_extracted": [
-        "Earth",
-        "Fire",
-        "Air"
+        "Inorganics",
+        "Metals",
+        "Radioactives"
       ]
     },
     {
       "company_id": "T0-07",
-      "name": "Claywell & Sons",
+      "name": "Standard Fiber & Mineral, Inc.",
       "elements_extracted": [
-        "Water",
-        "Earth"
+        "Organics",
+        "Inorganics"
       ]
     },
     {
       "company_id": "T0-08",
-      "name": "Hotwell Extraction Corp.",
+      "name": "Advanced Materials, Inc.",
       "elements_extracted": [
-        "Water",
-        "Fire"
+        "Organics",
+        "Metals"
       ]
     },
     {
       "company_id": "T0-09",
-      "name": "Shorewind Resources Co.",
+      "name": "The People's Extraction Co., Inc.",
       "elements_extracted": [
-        "Water",
-        "Air"
+        "Organics",
+        "Radioactives"
       ]
     },
     {
       "company_id": "T0-10",
-      "name": "Cinder Ridge Mining, Inc.",
+      "name": "Premier Harvest, Inc.",
       "elements_extracted": [
-        "Earth",
-        "Fire"
+        "Inorganics",
+        "Metals"
       ]
     },
     {
       "company_id": "T0-11",
-      "name": "Highbank Earth & Air Company",
+      "name": "Universal Material Extraction Corp.",
       "elements_extracted": [
-        "Earth",
-        "Air"
+        "Inorganics",
+        "Radioactives"
       ]
     },
     {
       "company_id": "T0-12",
-      "name": "Ventfield Recovery Ltd.",
+      "name": "The Oligarch",
       "elements_extracted": [
-        "Fire",
-        "Air"
+        "Metals",
+        "Radioactives"
       ]
     },
     {
       "company_id": "T0-13",
-      "name": "Alder Wells & Co.",
+      "name": "Meta Organics, Inc.",
       "elements_extracted": [
-        "Water"
+        "Organics"
       ]
     },
     {
       "company_id": "T0-14",
-      "name": "Deepwater Extraction LLC",
+      "name": "Old Toby & Daughters, Inc.",
       "elements_extracted": [
-        "Water"
+        "Organics"
       ]
     },
     {
       "company_id": "T0-15",
-      "name": "Red Acre Mining Company",
+      "name": "Planetary Salt Corporation",
       "elements_extracted": [
-        "Earth"
+        "Inorganics"
       ]
     },
     {
       "company_id": "T0-16",
-      "name": "Basalt Reach Corp.",
+      "name": "Associated Silica, Incorporated",
       "elements_extracted": [
-        "Earth"
+        "Inorganics"
       ]
     },
     {
       "company_id": "T0-17",
-      "name": "Hearth Basin Energy, Inc.",
+      "name": "The Metal Mining Co., Inc.",
       "elements_extracted": [
-        "Fire"
+        "Metals"
       ]
     },
     {
       "company_id": "T0-18",
-      "name": "Caldera Heat Associates",
+      "name": "The Union Metal, Inc.",
       "elements_extracted": [
-        "Fire"
+        "Metals"
       ]
     },
     {
       "company_id": "T0-19",
-      "name": "Open Sky Gas Company",
+      "name": "Amalgamated Isotopes Corp.",
       "elements_extracted": [
-        "Air"
+        "Radioactives"
       ]
     },
     {
       "company_id": "T0-20",
-      "name": "Northdraft Collection, Ltd.",
+      "name": "United Radioactives Company",
       "elements_extracted": [
-        "Air"
+        "Radioactives"
       ]
     }
   ],
@@ -290,86 +290,72 @@
     {
       "sector_id": "S1-01",
       "material_id": "C1-001",
-      "flagship_name": "Clearwell Refining Company",
-      "generic_stem": "Waterline Processing, Inc."
+      "generic_stem": "Biochemical Plant"
     },
     {
       "sector_id": "S1-02",
       "material_id": "C1-002",
-      "flagship_name": "Bramble Rock & Co.",
-      "generic_stem": "Bedrock Materials LLC"
+      "generic_stem": "Concentrate Works"
     },
     {
       "sector_id": "S1-03",
       "material_id": "C1-003",
-      "flagship_name": "Kilncrest Energy Corp.",
-      "generic_stem": "Heatbank Refining Ltd."
+      "generic_stem": "Metal Smelter"
     },
     {
       "sector_id": "S1-04",
       "material_id": "C1-004",
-      "flagship_name": "Fairweather Gas, Inc.",
-      "generic_stem": "Atmosphere Processing Company"
+      "generic_stem": "Isotope Plant"
     },
     {
       "sector_id": "S1-05",
       "material_id": "C2-001",
-      "flagship_name": "Bluefold Chemical Company",
-      "generic_stem": "Gelstock Refiners, Inc."
+      "generic_stem": "Polymer Works"
     },
     {
       "sector_id": "S1-06",
       "material_id": "C2-002",
-      "flagship_name": "Mason Creek & Associates",
-      "generic_stem": "Pasteworks Refining LLC"
+      "generic_stem": "Fine Chemical Plant"
     },
     {
       "sector_id": "S1-07",
       "material_id": "C2-003",
-      "flagship_name": "Redwell Fluids Ltd.",
-      "generic_stem": "Loopstock Chemical Co."
+      "generic_stem": "Catalyst Works"
     },
     {
       "sector_id": "S1-08",
       "material_id": "C2-004",
-      "flagship_name": "Loftwell Chemical, Inc.",
-      "generic_stem": "Cellbase Refining Company"
+      "generic_stem": "Radiochemical Lab"
     },
     {
       "sector_id": "S1-09",
       "material_id": "C2-005",
-      "flagship_name": "Talbot Ceramic Corporation",
-      "generic_stem": "Hardstock Refining, Ltd."
+      "generic_stem": "Ceramic Kiln"
     },
     {
       "sector_id": "S1-10",
       "material_id": "C2-006",
-      "flagship_name": "Copperbend Metals & Co.",
-      "generic_stem": "Currentstock Smelting Inc."
+      "generic_stem": "Wafer Fab"
     },
     {
       "sector_id": "S1-11",
       "material_id": "C2-007",
-      "flagship_name": "Porefield Materials LLC",
-      "generic_stem": "Openstone Refiners Assoc."
+      "generic_stem": "Shielding Plant"
     },
     {
       "sector_id": "S1-12",
       "material_id": "C2-008",
-      "flagship_name": "Ashford Salt Company, Inc.",
-      "generic_stem": "Reserve Salt Refining Co."
+      "generic_stem": "Alloy Foundry"
     },
     {
       "sector_id": "S1-13",
       "material_id": "C2-009",
-      "flagship_name": "Brightmere Gases Ltd.",
-      "generic_stem": "Arcstock Refining, Inc."
+      "generic_stem": "Fuel Fabrication Plant"
     },
     {
       "sector_id": "S1-14",
       "material_id": "C2-010",
-      "flagship_name": "Longreach Gas & Sons",
-      "generic_stem": "Pressurestock Gas LLC"
+      "generic_stem": "Power Cell Plant"
     }
   ],
   "t2_sectors": [
@@ -377,49 +363,49 @@
       "sector_id": "S2-01",
       "preferred_material_id": "C1-001",
       "paired_t1_sector_id": "S1-01",
-      "name": "Fluid Service Parts"
+      "name": "Biochemical Products"
     },
     {
       "sector_id": "S2-02",
       "preferred_material_id": "C1-002",
       "paired_t1_sector_id": "S1-02",
-      "name": "Industrial Fittings"
+      "name": "Inorganic Products"
     },
     {
       "sector_id": "S2-03",
       "preferred_material_id": "C1-003",
       "paired_t1_sector_id": "S1-03",
-      "name": "Thermal Service Parts"
+      "name": "Metal Products"
     },
     {
       "sector_id": "S2-04",
       "preferred_material_id": "C1-004",
       "paired_t1_sector_id": "S1-04",
-      "name": "Pneumatic Service Parts"
+      "name": "Isotope Products"
     },
     {
       "sector_id": "S2-05",
       "preferred_material_id": "C2-001",
       "paired_t1_sector_id": "S1-05",
-      "name": "Gel Goods"
+      "name": "Polymer Goods"
     },
     {
       "sector_id": "S2-06",
       "preferred_material_id": "C2-002",
       "paired_t1_sector_id": "S1-06",
-      "name": "Cast Goods"
+      "name": "Specialty Chemicals"
     },
     {
       "sector_id": "S2-07",
       "preferred_material_id": "C2-003",
       "paired_t1_sector_id": "S1-07",
-      "name": "Heat Transfer Goods"
+      "name": "Catalytic Products"
     },
     {
       "sector_id": "S2-08",
       "preferred_material_id": "C2-004",
       "paired_t1_sector_id": "S1-08",
-      "name": "Cellular Goods"
+      "name": "Medical Isotope Products"
     },
     {
       "sector_id": "S2-09",
@@ -431,103 +417,89 @@
       "sector_id": "S2-10",
       "preferred_material_id": "C2-006",
       "paired_t1_sector_id": "S1-10",
-      "name": "Electrical Stock & Contacts"
+      "name": "Electronic Components"
     },
     {
       "sector_id": "S2-11",
       "preferred_material_id": "C2-007",
       "paired_t1_sector_id": "S1-11",
-      "name": "Permeable Goods"
+      "name": "Radiation Protection"
     },
     {
       "sector_id": "S2-12",
       "preferred_material_id": "C2-008",
       "paired_t1_sector_id": "S1-12",
-      "name": "Heat Storage Goods"
+      "name": "Alloy Components"
     },
     {
       "sector_id": "S2-13",
       "preferred_material_id": "C2-009",
       "paired_t1_sector_id": "S1-13",
-      "name": "Discharge & Ignition Goods"
+      "name": "Reactor Fuel Products"
     },
     {
       "sector_id": "S2-14",
       "preferred_material_id": "C2-010",
       "paired_t1_sector_id": "S1-14",
-      "name": "Pressure Storage Goods"
+      "name": "Isotope Power Systems"
     }
   ],
   "t2_companies": [
     {
       "sector_id": "S2-01",
-      "flagship_name": "Brookrail Industrial Company",
-      "generic_stem": "Wet Service Products, Inc."
+      "facility_stem": "Biochemical processing facility"
     },
     {
       "sector_id": "S2-02",
-      "flagship_name": "Rivetstone Manufacturing, Inc.",
-      "generic_stem": "Fixture Stock Company"
+      "facility_stem": "Inorganic processing facility"
     },
     {
       "sector_id": "S2-03",
-      "flagship_name": "Hollis Thermal & Co.",
-      "generic_stem": "Thermal Service Manufacturing LLC"
+      "facility_stem": "Metal fabrication facility"
     },
     {
       "sector_id": "S2-04",
-      "flagship_name": "Crosswind Controls Ltd.",
-      "generic_stem": "Pneumatic Service Products Corp."
+      "facility_stem": "Isotope processing facility"
     },
     {
       "sector_id": "S2-05",
-      "flagship_name": "Willowbend Products Company",
-      "generic_stem": "Gel Goods Manufacturing, Inc."
+      "facility_stem": "Polymer fabrication facility"
     },
     {
       "sector_id": "S2-06",
-      "flagship_name": "Bedford Castings & Sons",
-      "generic_stem": "Cast Mineral Products LLC"
+      "facility_stem": "Specialty chemical processing facility"
     },
     {
       "sector_id": "S2-07",
-      "flagship_name": "Evenflow Thermal, Inc.",
-      "generic_stem": "Heat Loop Products Company"
+      "facility_stem": "Catalyst fabrication facility"
     },
     {
       "sector_id": "S2-08",
-      "flagship_name": "Baffle & Bell Manufacturing Co.",
-      "generic_stem": "Cellular Products Ltd."
+      "facility_stem": "Medical isotope processing facility"
     },
     {
       "sector_id": "S2-09",
-      "flagship_name": "Norcross Ceramics LLC",
-      "generic_stem": "Ceramic Parts Company, Inc."
+      "facility_stem": "Ceramic fabrication facility"
     },
     {
       "sector_id": "S2-10",
-      "flagship_name": "Fenn Wire & Metal Company",
-      "generic_stem": "Contact Stock Manufacturing Corp."
+      "facility_stem": "Electronic component fabrication facility"
     },
     {
       "sector_id": "S2-11",
-      "flagship_name": "Sievewell Industrial, Inc.",
-      "generic_stem": "Permeable Products & Co."
+      "facility_stem": "Radiation shielding fabrication facility"
     },
     {
       "sector_id": "S2-12",
-      "flagship_name": "Calder Reserve Systems Ltd.",
-      "generic_stem": "Heat Reserve Products LLC"
+      "facility_stem": "Alloy fabrication facility"
     },
     {
       "sector_id": "S2-13",
-      "flagship_name": "Beacon Lane Electric & Co.",
-      "generic_stem": "Discharge Products, Inc."
+      "facility_stem": "Reactor fuel fabrication facility"
     },
     {
       "sector_id": "S2-14",
-      "flagship_name": "Harrow Pneumatics Company",
-      "generic_stem": "Pressure Reserve Manufacturing Ltd."
+      "facility_stem": "Isotope power assembly facility"
     }
   ],
   "equipment_classes": [
@@ -552,22 +524,22 @@
     {
       "equipment_id": "EX-W",
       "element_id": "RAW-W",
-      "name": "Springhead Water Intake"
+      "name": "Organic Matter Harvester"
     },
     {
       "equipment_id": "EX-E",
       "element_id": "RAW-E",
-      "name": "Cutbank Mineral Harvester"
+      "name": "Inorganic Material Extractor"
     },
     {
       "equipment_id": "EX-F",
       "element_id": "RAW-F",
-      "name": "Venttap Thermal Collector"
+      "name": "Metal Extractor"
     },
     {
       "equipment_id": "EX-A",
       "element_id": "RAW-A",
-      "name": "Skywell Gas Harvester"
+      "name": "Radioactive Material Extractor"
     }
   ],
   "machine_families": [
@@ -576,8 +548,8 @@
       "sector_id": "S1-01",
       "tier": "T1",
       "complexity": "C-1",
-      "name": "Clarity Refining Skids",
-      "series": "Clarity",
+      "name": "Biochemical Refining Units",
+      "series": "Biochemical",
       "recipe_count": 1
     },
     {
@@ -585,8 +557,8 @@
       "sector_id": "S2-01",
       "tier": "T2",
       "complexity": "C-3",
-      "name": "Wetbench Component Cells",
-      "series": "Wetbench",
+      "name": "Biochemical Component Cells",
+      "series": "Biochemical",
       "recipe_count": 0
     },
     {
@@ -594,8 +566,8 @@
       "sector_id": "S2-01",
       "tier": "T2",
       "complexity": "C-4",
-      "name": "Wetbench Finishing Lines",
-      "series": "Wetbench",
+      "name": "Biochemical Finishing Lines",
+      "series": "Biochemical",
       "recipe_count": 40
     },
     {
@@ -603,8 +575,8 @@
       "sector_id": "S1-02",
       "tier": "T1",
       "complexity": "C-1",
-      "name": "Grainmill Preparation Skids",
-      "series": "Grainmill",
+      "name": "Inorganic Concentration Units",
+      "series": "Inorganic",
       "recipe_count": 1
     },
     {
@@ -612,8 +584,8 @@
       "sector_id": "S2-02",
       "tier": "T2",
       "complexity": "C-3",
-      "name": "Fitbench Forming Cells",
-      "series": "Fitbench",
+      "name": "Inorganic Component Cells",
+      "series": "Inorganic",
       "recipe_count": 0
     },
     {
@@ -621,8 +593,8 @@
       "sector_id": "S2-02",
       "tier": "T2",
       "complexity": "C-4",
-      "name": "Fitbench Integration Lines",
-      "series": "Fitbench",
+      "name": "Inorganic Finishing Lines",
+      "series": "Inorganic",
       "recipe_count": 40
     },
     {
@@ -630,8 +602,8 @@
       "sector_id": "S1-03",
       "tier": "T1",
       "complexity": "C-1",
-      "name": "Hearthset Conditioning Skids",
-      "series": "Hearthset",
+      "name": "Metal Casting Units",
+      "series": "Metal",
       "recipe_count": 1
     },
     {
@@ -639,8 +611,8 @@
       "sector_id": "S2-03",
       "tier": "T2",
       "complexity": "C-3",
-      "name": "Heatbench Component Cells",
-      "series": "Heatbench",
+      "name": "Metal Component Cells",
+      "series": "Metal",
       "recipe_count": 0
     },
     {
@@ -648,8 +620,8 @@
       "sector_id": "S2-03",
       "tier": "T2",
       "complexity": "C-4",
-      "name": "Heatbench Finishing Lines",
-      "series": "Heatbench",
+      "name": "Metal Finishing Lines",
+      "series": "Metal",
       "recipe_count": 40
     },
     {
@@ -657,8 +629,8 @@
       "sector_id": "S1-04",
       "tier": "T1",
       "complexity": "C-1",
-      "name": "Draftwell Gas Skids",
-      "series": "Draftwell",
+      "name": "Isotope Separation Units",
+      "series": "Isotope",
       "recipe_count": 1
     },
     {
@@ -666,8 +638,8 @@
       "sector_id": "S2-04",
       "tier": "T2",
       "complexity": "C-3",
-      "name": "Airbench Component Cells",
-      "series": "Airbench",
+      "name": "Isotope Component Cells",
+      "series": "Isotope",
       "recipe_count": 0
     },
     {
@@ -675,8 +647,8 @@
       "sector_id": "S2-04",
       "tier": "T2",
       "complexity": "C-4",
-      "name": "Airbench Charging Lines",
-      "series": "Airbench",
+      "name": "Isotope Finishing Lines",
+      "series": "Isotope",
       "recipe_count": 40
     },
     {
@@ -684,8 +656,8 @@
       "sector_id": "S1-05",
       "tier": "T1",
       "complexity": "C-2",
-      "name": "Softset Gel Processors",
-      "series": "Softset",
+      "name": "Polymer Processing Units",
+      "series": "Polymer",
       "recipe_count": 1
     },
     {
@@ -693,8 +665,8 @@
       "sector_id": "S2-05",
       "tier": "T2",
       "complexity": "C-3",
-      "name": "Gelcraft Forming Cells",
-      "series": "Gelcraft",
+      "name": "Polymer Component Cells",
+      "series": "Polymer",
       "recipe_count": 4
     },
     {
@@ -702,8 +674,8 @@
       "sector_id": "S2-05",
       "tier": "T2",
       "complexity": "C-4",
-      "name": "Gelcraft Finishing Lines",
-      "series": "Gelcraft",
+      "name": "Polymer Finishing Lines",
+      "series": "Polymer",
       "recipe_count": 2
     },
     {
@@ -711,8 +683,8 @@
       "sector_id": "S1-06",
       "tier": "T1",
       "complexity": "C-2",
-      "name": "Mudline Paste Processors",
-      "series": "Mudline",
+      "name": "Fine Chemical Processing Units",
+      "series": "Chemical",
       "recipe_count": 1
     },
     {
@@ -720,8 +692,8 @@
       "sector_id": "S2-06",
       "tier": "T2",
       "complexity": "C-3",
-      "name": "Castcraft Molding Cells",
-      "series": "Castcraft",
+      "name": "Chemical Component Cells",
+      "series": "Chemical",
       "recipe_count": 4
     },
     {
@@ -729,8 +701,8 @@
       "sector_id": "S2-06",
       "tier": "T2",
       "complexity": "C-4",
-      "name": "Castcraft Consolidation Lines",
-      "series": "Castcraft",
+      "name": "Chemical Finishing Lines",
+      "series": "Chemical",
       "recipe_count": 3
     },
     {
@@ -738,8 +710,8 @@
       "sector_id": "S1-07",
       "tier": "T1",
       "complexity": "C-2",
-      "name": "Loopblend Fluid Processors",
-      "series": "Loopblend",
+      "name": "Catalyst Preparation Units",
+      "series": "Catalytic",
       "recipe_count": 1
     },
     {
@@ -747,8 +719,8 @@
       "sector_id": "S2-07",
       "tier": "T2",
       "complexity": "C-3",
-      "name": "Loopcraft Forming Cells",
-      "series": "Loopcraft",
+      "name": "Catalytic Component Cells",
+      "series": "Catalytic",
       "recipe_count": 4
     },
     {
@@ -756,8 +728,8 @@
       "sector_id": "S2-07",
       "tier": "T2",
       "complexity": "C-4",
-      "name": "Loopcraft Coupling Lines",
-      "series": "Loopcraft",
+      "name": "Catalytic Finishing Lines",
+      "series": "Catalytic",
       "recipe_count": 4
     },
     {
@@ -765,8 +737,8 @@
       "sector_id": "S1-08",
       "tier": "T1",
       "complexity": "C-2",
-      "name": "Frothline Foam Processors",
-      "series": "Frothline",
+      "name": "Radiopharmaceutical Processing Units",
+      "series": "Medical Isotope",
       "recipe_count": 1
     },
     {
@@ -774,8 +746,8 @@
       "sector_id": "S2-08",
       "tier": "T2",
       "complexity": "C-3",
-      "name": "Foamcraft Forming Cells",
-      "series": "Foamcraft",
+      "name": "Medical Isotope Component Cells",
+      "series": "Medical Isotope",
       "recipe_count": 4
     },
     {
@@ -783,8 +755,8 @@
       "sector_id": "S2-08",
       "tier": "T2",
       "complexity": "C-4",
-      "name": "Foamcraft Finishing Lines",
-      "series": "Foamcraft",
+      "name": "Medical Isotope Finishing Lines",
+      "series": "Medical Isotope",
       "recipe_count": 5
     },
     {
@@ -792,8 +764,8 @@
       "sector_id": "S1-09",
       "tier": "T1",
       "complexity": "C-2",
-      "name": "Stonepress Ceramic Processors",
-      "series": "Stonepress",
+      "name": "Ceramic Processing Units",
+      "series": "Ceramic",
       "recipe_count": 1
     },
     {
@@ -801,8 +773,8 @@
       "sector_id": "S2-09",
       "tier": "T2",
       "complexity": "C-3",
-      "name": "Kilncraft Shaping Cells",
-      "series": "Kilncraft",
+      "name": "Ceramic Component Cells",
+      "series": "Ceramic",
       "recipe_count": 4
     },
     {
@@ -810,8 +782,8 @@
       "sector_id": "S2-09",
       "tier": "T2",
       "complexity": "C-4",
-      "name": "Kilncraft Bonding Lines",
-      "series": "Kilncraft",
+      "name": "Ceramic Finishing Lines",
+      "series": "Ceramic",
       "recipe_count": 6
     },
     {
@@ -819,8 +791,8 @@
       "sector_id": "S1-10",
       "tier": "T1",
       "complexity": "C-2",
-      "name": "Meltway Alloy Processors",
-      "series": "Meltway",
+      "name": "Wafer Fabrication Units",
+      "series": "Electronic",
       "recipe_count": 1
     },
     {
@@ -828,8 +800,8 @@
       "sector_id": "S2-10",
       "tier": "T2",
       "complexity": "C-3",
-      "name": "Wirecraft Drawing Cells",
-      "series": "Wirecraft",
+      "name": "Electronic Component Cells",
+      "series": "Electronic",
       "recipe_count": 4
     },
     {
@@ -837,8 +809,8 @@
       "sector_id": "S2-10",
       "tier": "T2",
       "complexity": "C-4",
-      "name": "Wirecraft Joining Lines",
-      "series": "Wirecraft",
+      "name": "Electronic Finishing Lines",
+      "series": "Electronic",
       "recipe_count": 7
     },
     {
@@ -846,8 +818,8 @@
       "sector_id": "S1-11",
       "tier": "T1",
       "complexity": "C-2",
-      "name": "Porecast Media Processors",
-      "series": "Porecast",
+      "name": "Shielding Material Processing Units",
+      "series": "Shielding",
       "recipe_count": 1
     },
     {
@@ -855,8 +827,8 @@
       "sector_id": "S2-11",
       "tier": "T2",
       "complexity": "C-3",
-      "name": "Porecraft Shaping Cells",
-      "series": "Porecraft",
+      "name": "Shielding Component Cells",
+      "series": "Shielding",
       "recipe_count": 4
     },
     {
@@ -864,8 +836,8 @@
       "sector_id": "S2-11",
       "tier": "T2",
       "complexity": "C-4",
-      "name": "Porecraft Infusion Lines",
-      "series": "Porecraft",
+      "name": "Shielding Finishing Lines",
+      "series": "Shielding",
       "recipe_count": 7
     },
     {
@@ -873,8 +845,8 @@
       "sector_id": "S1-12",
       "tier": "T1",
       "complexity": "C-2",
-      "name": "Saltbed Thermal Processors",
-      "series": "Saltbed",
+      "name": "Alloy Casting Units",
+      "series": "Alloy",
       "recipe_count": 1
     },
     {
@@ -882,8 +854,8 @@
       "sector_id": "S2-12",
       "tier": "T2",
       "complexity": "C-3",
-      "name": "Saltcraft Forming Cells",
-      "series": "Saltcraft",
+      "name": "Alloy Component Cells",
+      "series": "Alloy",
       "recipe_count": 4
     },
     {
@@ -891,8 +863,8 @@
       "sector_id": "S2-12",
       "tier": "T2",
       "complexity": "C-4",
-      "name": "Saltcraft Packing Lines",
-      "series": "Saltcraft",
+      "name": "Alloy Finishing Lines",
+      "series": "Alloy",
       "recipe_count": 7
     },
     {
@@ -900,8 +872,8 @@
       "sector_id": "S1-13",
       "tier": "T1",
       "complexity": "C-2",
-      "name": "Arcwell Gas Processors",
-      "series": "Arcwell",
+      "name": "Reactor Fuel Processing Units",
+      "series": "Fuel",
       "recipe_count": 1
     },
     {
@@ -909,8 +881,8 @@
       "sector_id": "S2-13",
       "tier": "T2",
       "complexity": "C-3",
-      "name": "Sparkcraft Conditioning Cells",
-      "series": "Sparkcraft",
+      "name": "Fuel Component Cells",
+      "series": "Fuel",
       "recipe_count": 4
     },
     {
@@ -918,8 +890,8 @@
       "sector_id": "S2-13",
       "tier": "T2",
       "complexity": "C-4",
-      "name": "Sparkcraft Charging Lines",
-      "series": "Sparkcraft",
+      "name": "Fuel Finishing Lines",
+      "series": "Fuel",
       "recipe_count": 7
     },
     {
@@ -927,8 +899,8 @@
       "sector_id": "S1-14",
       "tier": "T1",
       "complexity": "C-2",
-      "name": "Deepfill Compression Processors",
-      "series": "Deepfill",
+      "name": "Isotope Cell Fabrication Units",
+      "series": "Isotope Power",
       "recipe_count": 1
     },
     {
@@ -936,8 +908,8 @@
       "sector_id": "S2-14",
       "tier": "T2",
       "complexity": "C-3",
-      "name": "Presscraft Forming Cells",
-      "series": "Presscraft",
+      "name": "Isotope Power Component Cells",
+      "series": "Isotope Power",
       "recipe_count": 4
     },
     {
@@ -945,8 +917,8 @@
       "sector_id": "S2-14",
       "tier": "T2",
       "complexity": "C-4",
-      "name": "Presscraft Charging Lines",
-      "series": "Presscraft",
+      "name": "Isotope Power Finishing Lines",
+      "series": "Isotope Power",
       "recipe_count": 7
     }
   ],
@@ -958,9 +930,9 @@
       "sector_id": "S1-01",
       "preferred_material_id": "C1-001",
       "unchanged_formula": "1 raw(W) \u2192 1 W",
-      "product_name": "Process Water",
-      "machine_family": "Clarity Refining Skids",
-      "installation_name": "Clarity R1-001 Water Conditioning Skid",
+      "product_name": "Biochemical Feedstock",
+      "machine_family": "Biochemical Refining Units",
+      "installation_name": "Biochemical Feedstock Refining Unit",
       "machine_family_id": "MF-S1-01-C1",
       "inputs": [
         "RAW-W"
@@ -979,9 +951,9 @@
       "sector_id": "S1-02",
       "preferred_material_id": "C1-002",
       "unchanged_formula": "1 raw(E) \u2192 1 E",
-      "product_name": "Mineral Stock",
-      "machine_family": "Grainmill Preparation Skids",
-      "installation_name": "Grainmill R1-002 Mineral Grading Skid",
+      "product_name": "Inorganic Concentrate",
+      "machine_family": "Inorganic Concentration Units",
+      "installation_name": "Inorganic Concentration Unit",
       "machine_family_id": "MF-S1-02-C1",
       "inputs": [
         "RAW-E"
@@ -1000,9 +972,9 @@
       "sector_id": "S1-03",
       "preferred_material_id": "C1-003",
       "unchanged_formula": "1 raw(F) \u2192 1 F",
-      "product_name": "Thermal Charge",
-      "machine_family": "Hearthset Conditioning Skids",
-      "installation_name": "Hearthset R1-003 Thermal Stabilizing Skid",
+      "product_name": "Metal Ingots",
+      "machine_family": "Metal Casting Units",
+      "installation_name": "Metal Ingot Casting Unit",
       "machine_family_id": "MF-S1-03-C1",
       "inputs": [
         "RAW-F"
@@ -1021,9 +993,9 @@
       "sector_id": "S1-04",
       "preferred_material_id": "C1-004",
       "unchanged_formula": "1 raw(A) \u2192 1 A",
-      "product_name": "Service Gas",
-      "machine_family": "Draftwell Gas Skids",
-      "installation_name": "Draftwell R1-004 Gas Balancing Skid",
+      "product_name": "Isotope Feed",
+      "machine_family": "Isotope Separation Units",
+      "installation_name": "Isotope Feed Separation Unit",
       "machine_family_id": "MF-S1-04-C1",
       "inputs": [
         "RAW-A"
@@ -1042,9 +1014,9 @@
       "sector_id": "S1-05",
       "preferred_material_id": "C2-001",
       "unchanged_formula": "2 raw(W) \u2192 1 (W+W)",
-      "product_name": "Water Gel",
-      "machine_family": "Softset Gel Processors",
-      "installation_name": "Softset R2-001 Gel Structuring Vessel",
+      "product_name": "Engineered Polymers",
+      "machine_family": "Polymer Processing Units",
+      "installation_name": "Engineered Polymer Processor",
       "machine_family_id": "MF-S1-05-C2",
       "inputs": [
         "RAW-W",
@@ -1064,9 +1036,9 @@
       "sector_id": "S1-06",
       "preferred_material_id": "C2-002",
       "unchanged_formula": "1 raw(W) + 1 raw(E) \u2192 1 (W+E)",
-      "product_name": "Mineral Paste",
-      "machine_family": "Mudline Paste Processors",
-      "installation_name": "Mudline R2-002 Paste Kneading Vessel",
+      "product_name": "Fine Chemicals",
+      "machine_family": "Fine Chemical Processing Units",
+      "installation_name": "Fine Chemical Processor",
       "machine_family_id": "MF-S1-06-C2",
       "inputs": [
         "RAW-W",
@@ -1087,9 +1059,9 @@
       "sector_id": "S1-07",
       "preferred_material_id": "C2-003",
       "unchanged_formula": "1 raw(W) + 1 raw(F) \u2192 1 (W+F)",
-      "product_name": "Thermal Fluid",
-      "machine_family": "Loopblend Fluid Processors",
-      "installation_name": "Loopblend R2-003 Thermal Blending Vessel",
+      "product_name": "Catalysts",
+      "machine_family": "Catalyst Preparation Units",
+      "installation_name": "Catalyst Preparation Unit",
       "machine_family_id": "MF-S1-07-C2",
       "inputs": [
         "RAW-W",
@@ -1110,9 +1082,9 @@
       "sector_id": "S1-08",
       "preferred_material_id": "C2-004",
       "unchanged_formula": "1 raw(W) + 1 raw(A) \u2192 1 (W+A)",
-      "product_name": "Foam Base",
-      "machine_family": "Frothline Foam Processors",
-      "installation_name": "Frothline R2-004 Foam Nucleating Vessel",
+      "product_name": "Radiopharmaceuticals",
+      "machine_family": "Radiopharmaceutical Processing Units",
+      "installation_name": "Radiopharmaceutical Processor",
       "machine_family_id": "MF-S1-08-C2",
       "inputs": [
         "RAW-W",
@@ -1133,9 +1105,9 @@
       "sector_id": "S1-09",
       "preferred_material_id": "C2-005",
       "unchanged_formula": "2 raw(E) \u2192 1 (E+E)",
-      "product_name": "Structural Ceramic",
-      "machine_family": "Stonepress Ceramic Processors",
-      "installation_name": "Stonepress R2-005 Ceramic Consolidation Press",
+      "product_name": "Technical Ceramics",
+      "machine_family": "Ceramic Processing Units",
+      "installation_name": "Technical Ceramic Kiln",
       "machine_family_id": "MF-S1-09-C2",
       "inputs": [
         "RAW-E",
@@ -1155,9 +1127,9 @@
       "sector_id": "S1-10",
       "preferred_material_id": "C2-006",
       "unchanged_formula": "1 raw(E) + 1 raw(F) \u2192 1 (E+F)",
-      "product_name": "Conductive Alloy",
-      "machine_family": "Meltway Alloy Processors",
-      "installation_name": "Meltway R2-006 Alloy Induction Furnace",
+      "product_name": "Semiconductor Wafers",
+      "machine_family": "Wafer Fabrication Units",
+      "installation_name": "Semiconductor Wafer Fabricator",
       "machine_family_id": "MF-S1-10-C2",
       "inputs": [
         "RAW-E",
@@ -1178,9 +1150,9 @@
       "sector_id": "S1-11",
       "preferred_material_id": "C2-007",
       "unchanged_formula": "1 raw(E) + 1 raw(A) \u2192 1 (E+A)",
-      "product_name": "Porous Mineral",
-      "machine_family": "Porecast Media Processors",
-      "installation_name": "Porecast R2-007 Pore Forming Chamber",
+      "product_name": "Radiation Shielding",
+      "machine_family": "Shielding Material Processing Units",
+      "installation_name": "Radiation Shielding Press",
       "machine_family_id": "MF-S1-11-C2",
       "inputs": [
         "RAW-E",
@@ -1201,9 +1173,9 @@
       "sector_id": "S1-12",
       "preferred_material_id": "C2-008",
       "unchanged_formula": "2 raw(F) \u2192 1 (F+F)",
-      "product_name": "Storage Salt",
-      "machine_family": "Saltbed Thermal Processors",
-      "installation_name": "Saltbed R2-008 Salt Conditioning Retort",
+      "product_name": "Structural Alloys",
+      "machine_family": "Alloy Casting Units",
+      "installation_name": "Structural Alloy Furnace",
       "machine_family_id": "MF-S1-12-C2",
       "inputs": [
         "RAW-F",
@@ -1223,9 +1195,9 @@
       "sector_id": "S1-13",
       "preferred_material_id": "C2-009",
       "unchanged_formula": "1 raw(F) + 1 raw(A) \u2192 1 (F+A)",
-      "product_name": "Discharge Gas",
-      "machine_family": "Arcwell Gas Processors",
-      "installation_name": "Arcwell R2-009 Discharge Gas Conditioning Chamber",
+      "product_name": "Reactor Fuel",
+      "machine_family": "Reactor Fuel Processing Units",
+      "installation_name": "Reactor Fuel Processor",
       "machine_family_id": "MF-S1-13-C2",
       "inputs": [
         "RAW-F",
@@ -1246,9 +1218,9 @@
       "sector_id": "S1-14",
       "preferred_material_id": "C2-010",
       "unchanged_formula": "2 raw(A) \u2192 1 (A+A)",
-      "product_name": "Pressure Gas",
-      "machine_family": "Deepfill Compression Processors",
-      "installation_name": "Deepfill R2-010 Pressure Gas Compression Train",
+      "product_name": "Isotope Power Cells",
+      "machine_family": "Isotope Cell Fabrication Units",
+      "installation_name": "Isotope Power Cell Assembler",
       "machine_family_id": "MF-S1-14-C2",
       "inputs": [
         "RAW-A",
@@ -1268,9 +1240,9 @@
       "sector_id": "S2-05",
       "preferred_material_id": "C2-001",
       "unchanged_formula": "1 W + 1 (W+W) \u2192 1 (W+(W+W))",
-      "product_name": "Reservoir Gel",
-      "machine_family": "Gelcraft Forming Cells",
-      "installation_name": "Gelcraft 3-001 Reservoir Gelation Cell",
+      "product_name": "Biopolymer Resin",
+      "machine_family": "Polymer Component Cells",
+      "installation_name": "Biopolymer Resin Processor",
       "machine_family_id": "MF-S2-05-C3",
       "inputs": [
         "C1-001",
@@ -1291,9 +1263,9 @@
       "sector_id": "S2-06",
       "preferred_material_id": "C2-002",
       "unchanged_formula": "1 W + 1 (W+E) \u2192 1 (W+(W+E))",
-      "product_name": "Casting Slip",
-      "machine_family": "Castcraft Molding Cells",
-      "installation_name": "Castcraft 3-002 Slip Mixing Cell",
+      "product_name": "Culture Nutrients",
+      "machine_family": "Chemical Component Cells",
+      "installation_name": "Culture Nutrient Mixer",
       "machine_family_id": "MF-S2-06-C3",
       "inputs": [
         "C1-001",
@@ -1314,9 +1286,9 @@
       "sector_id": "S2-07",
       "preferred_material_id": "C2-003",
       "unchanged_formula": "1 W + 1 (W+F) \u2192 1 (W+(W+F))",
-      "product_name": "Cooling Charge",
-      "machine_family": "Loopcraft Forming Cells",
-      "installation_name": "Loopcraft 3-003 Coolant Blending Cell",
+      "product_name": "Enzyme Catalysts",
+      "machine_family": "Catalytic Component Cells",
+      "installation_name": "Enzyme Catalyst Processor",
       "machine_family_id": "MF-S2-07-C3",
       "inputs": [
         "C1-001",
@@ -1337,9 +1309,9 @@
       "sector_id": "S2-08",
       "preferred_material_id": "C2-004",
       "unchanged_formula": "1 W + 1 (W+A) \u2192 1 (W+(W+A))",
-      "product_name": "Wash Foam",
-      "machine_family": "Foamcraft Forming Cells",
-      "installation_name": "Foamcraft 3-004 Wash Foam Mixing Cell",
+      "product_name": "Diagnostic Tracers",
+      "machine_family": "Medical Isotope Component Cells",
+      "installation_name": "Diagnostic Tracer Processor",
       "machine_family_id": "MF-S2-08-C3",
       "inputs": [
         "C1-001",
@@ -1360,9 +1332,9 @@
       "sector_id": "S2-09",
       "preferred_material_id": "C2-005",
       "unchanged_formula": "1 W + 1 (E+E) \u2192 1 (W+(E+E))",
-      "product_name": "Wick Tile",
-      "machine_family": "Kilncraft Shaping Cells",
-      "installation_name": "Kilncraft 3-005 Wick Channel Forming Cell",
+      "product_name": "Porous Ceramic Filters",
+      "machine_family": "Ceramic Component Cells",
+      "installation_name": "Porous Ceramic Filter Former",
       "machine_family_id": "MF-S2-09-C3",
       "inputs": [
         "C1-001",
@@ -1383,9 +1355,9 @@
       "sector_id": "S2-10",
       "preferred_material_id": "C2-006",
       "unchanged_formula": "1 W + 1 (E+F) \u2192 1 (W+(E+F))",
-      "product_name": "Cooling Strip",
-      "machine_family": "Wirecraft Drawing Cells",
-      "installation_name": "Wirecraft 3-006 Strip Channel Forming Cell",
+      "product_name": "Biosensor Chips",
+      "machine_family": "Electronic Component Cells",
+      "installation_name": "Biosensor Chip Fabricator",
       "machine_family_id": "MF-S2-10-C3",
       "inputs": [
         "C1-001",
@@ -1406,9 +1378,9 @@
       "sector_id": "S2-11",
       "preferred_material_id": "C2-007",
       "unchanged_formula": "1 W + 1 (E+A) \u2192 1 (W+(E+A))",
-      "product_name": "Filter Stone",
-      "machine_family": "Porecraft Shaping Cells",
-      "installation_name": "Porecraft 3-007 Filter Wetting Cell",
+      "product_name": "Organic Shielding Blocks",
+      "machine_family": "Shielding Component Cells",
+      "installation_name": "Organic Shielding Block Press",
       "machine_family_id": "MF-S2-11-C3",
       "inputs": [
         "C1-001",
@@ -1429,9 +1401,9 @@
       "sector_id": "S2-12",
       "preferred_material_id": "C2-008",
       "unchanged_formula": "1 W + 1 (F+F) \u2192 1 (W+(F+F))",
-      "product_name": "Heat Buffer Slush",
-      "machine_family": "Saltcraft Forming Cells",
-      "installation_name": "Saltcraft 3-008 Slush Mixing Cell",
+      "product_name": "Composite Beams",
+      "machine_family": "Alloy Component Cells",
+      "installation_name": "Composite Beam Former",
       "machine_family_id": "MF-S2-12-C3",
       "inputs": [
         "C1-001",
@@ -1452,9 +1424,9 @@
       "sector_id": "S2-13",
       "preferred_material_id": "C2-009",
       "unchanged_formula": "1 W + 1 (F+A) \u2192 1 (W+(F+A))",
-      "product_name": "Quench Mist",
-      "machine_family": "Sparkcraft Conditioning Cells",
-      "installation_name": "Sparkcraft 3-009 Quench Atomizing Cell",
+      "product_name": "Carbon Fuel Pellets",
+      "machine_family": "Fuel Component Cells",
+      "installation_name": "Carbon Fuel Pellet Press",
       "machine_family_id": "MF-S2-13-C3",
       "inputs": [
         "C1-001",
@@ -1475,9 +1447,9 @@
       "sector_id": "S2-14",
       "preferred_material_id": "C2-010",
       "unchanged_formula": "1 W + 1 (A+A) \u2192 1 (W+(A+A))",
-      "product_name": "Mist Charge",
-      "machine_family": "Presscraft Forming Cells",
-      "installation_name": "Presscraft 3-010 Mist Loading Cell",
+      "product_name": "Encapsulated Power Cells",
+      "machine_family": "Isotope Power Component Cells",
+      "installation_name": "Power Cell Encapsulation Unit",
       "machine_family_id": "MF-S2-14-C3",
       "inputs": [
         "C1-001",
@@ -1498,9 +1470,9 @@
       "sector_id": "S2-05",
       "preferred_material_id": "C2-001",
       "unchanged_formula": "1 E + 1 (W+W) \u2192 1 (E+(W+W))",
-      "product_name": "Absorbent Pad",
-      "machine_family": "Gelcraft Forming Cells",
-      "installation_name": "Gelcraft 3-011 Pad Forming Cell",
+      "product_name": "Mineral Insulation Foam",
+      "machine_family": "Polymer Component Cells",
+      "installation_name": "Mineral Insulation Foam Processor",
       "machine_family_id": "MF-S2-05-C3",
       "inputs": [
         "C1-002",
@@ -1521,9 +1493,9 @@
       "sector_id": "S2-06",
       "preferred_material_id": "C2-002",
       "unchanged_formula": "1 E + 1 (W+E) \u2192 1 (E+(W+E))",
-      "product_name": "Green Tile",
-      "machine_family": "Castcraft Molding Cells",
-      "installation_name": "Castcraft 3-012 Tile Blank Press",
+      "product_name": "Process Electrolytes",
+      "machine_family": "Chemical Component Cells",
+      "installation_name": "Process Electrolyte Mixer",
       "machine_family_id": "MF-S2-06-C3",
       "inputs": [
         "C1-002",
@@ -1544,9 +1516,9 @@
       "sector_id": "S2-07",
       "preferred_material_id": "C2-003",
       "unchanged_formula": "1 E + 1 (W+F) \u2192 1 (E+(W+F))",
-      "product_name": "Heat Transfer Plate",
-      "machine_family": "Loopcraft Forming Cells",
-      "installation_name": "Loopcraft 3-013 Plate Channel Casting Cell",
+      "product_name": "Supported Catalysts",
+      "machine_family": "Catalytic Component Cells",
+      "installation_name": "Supported Catalyst Processor",
       "machine_family_id": "MF-S2-07-C3",
       "inputs": [
         "C1-002",
@@ -1567,9 +1539,9 @@
       "sector_id": "S2-08",
       "preferred_material_id": "C2-004",
       "unchanged_formula": "1 E + 1 (W+A) \u2192 1 (E+(W+A))",
-      "product_name": "Foam Seal",
-      "machine_family": "Foamcraft Forming Cells",
-      "installation_name": "Foamcraft 3-014 Seal Molding Cell",
+      "product_name": "Mineral Tracer Beads",
+      "machine_family": "Medical Isotope Component Cells",
+      "installation_name": "Mineral Tracer Bead Former",
       "machine_family_id": "MF-S2-08-C3",
       "inputs": [
         "C1-002",
@@ -1590,9 +1562,9 @@
       "sector_id": "S2-09",
       "preferred_material_id": "C2-005",
       "unchanged_formula": "1 E + 1 (E+E) \u2192 1 (E+(E+E))",
-      "product_name": "Wear Plate",
-      "machine_family": "Kilncraft Shaping Cells",
-      "installation_name": "Kilncraft 3-015 Wear Face Press",
+      "product_name": "Ceramic Insulators",
+      "machine_family": "Ceramic Component Cells",
+      "installation_name": "Ceramic Insulator Former",
       "machine_family_id": "MF-S2-09-C3",
       "inputs": [
         "C1-002",
@@ -1613,9 +1585,9 @@
       "sector_id": "S2-10",
       "preferred_material_id": "C2-006",
       "unchanged_formula": "1 E + 1 (E+F) \u2192 1 (E+(E+F))",
-      "product_name": "Busbar Blank",
-      "machine_family": "Wirecraft Drawing Cells",
-      "installation_name": "Wirecraft 3-016 Busbar Extrusion Cell",
+      "product_name": "Doped Semiconductor Dies",
+      "machine_family": "Electronic Component Cells",
+      "installation_name": "Semiconductor Die Processor",
       "machine_family_id": "MF-S2-10-C3",
       "inputs": [
         "C1-002",
@@ -1636,9 +1608,9 @@
       "sector_id": "S2-11",
       "preferred_material_id": "C2-007",
       "unchanged_formula": "1 E + 1 (E+A) \u2192 1 (E+(E+A))",
-      "product_name": "Porous Core",
-      "machine_family": "Porecraft Shaping Cells",
-      "installation_name": "Porecraft 3-017 Core Consolidation Cell",
+      "product_name": "Shielding Tiles",
+      "machine_family": "Shielding Component Cells",
+      "installation_name": "Shielding Tile Press",
       "machine_family_id": "MF-S2-11-C3",
       "inputs": [
         "C1-002",
@@ -1659,9 +1631,9 @@
       "sector_id": "S2-12",
       "preferred_material_id": "C2-008",
       "unchanged_formula": "1 E + 1 (F+F) \u2192 1 (E+(F+F))",
-      "product_name": "Heat Storage Block",
-      "machine_family": "Saltcraft Forming Cells",
-      "installation_name": "Saltcraft 3-018 Storage Block Casting Cell",
+      "product_name": "Corrosion Resistant Plates",
+      "machine_family": "Alloy Component Cells",
+      "installation_name": "Corrosion Resistant Plate Processor",
       "machine_family_id": "MF-S2-12-C3",
       "inputs": [
         "C1-002",
@@ -1682,9 +1654,9 @@
       "sector_id": "S2-13",
       "preferred_material_id": "C2-009",
       "unchanged_formula": "1 E + 1 (F+A) \u2192 1 (E+(F+A))",
-      "product_name": "Electrode Blank",
-      "machine_family": "Sparkcraft Conditioning Cells",
-      "installation_name": "Sparkcraft 3-019 Electrode Pore Charging Cell",
+      "product_name": "Ceramic Fuel Pellets",
+      "machine_family": "Fuel Component Cells",
+      "installation_name": "Ceramic Fuel Pellet Press",
       "machine_family_id": "MF-S2-13-C3",
       "inputs": [
         "C1-002",
@@ -1705,9 +1677,9 @@
       "sector_id": "S2-14",
       "preferred_material_id": "C2-010",
       "unchanged_formula": "1 E + 1 (A+A) \u2192 1 (E+(A+A))",
-      "product_name": "Gas Spring Core",
-      "machine_family": "Presscraft Forming Cells",
-      "installation_name": "Presscraft 3-020 Spring Core Charging Cell",
+      "product_name": "Ceramic Power Capsules",
+      "machine_family": "Isotope Power Component Cells",
+      "installation_name": "Ceramic Power Capsule Assembler",
       "machine_family_id": "MF-S2-14-C3",
       "inputs": [
         "C1-002",
@@ -1728,9 +1700,9 @@
       "sector_id": "S2-05",
       "preferred_material_id": "C2-001",
       "unchanged_formula": "1 F + 1 (W+W) \u2192 1 (F+(W+W))",
-      "product_name": "Heat Buffer Gel",
-      "machine_family": "Gelcraft Forming Cells",
-      "installation_name": "Gelcraft 3-021 Thermal Gel Loading Cell",
+      "product_name": "Reinforced Polymer Panels",
+      "machine_family": "Polymer Component Cells",
+      "installation_name": "Reinforced Polymer Panel Press",
       "machine_family_id": "MF-S2-05-C3",
       "inputs": [
         "C1-003",
@@ -1751,9 +1723,9 @@
       "sector_id": "S2-06",
       "preferred_material_id": "C2-002",
       "unchanged_formula": "1 F + 1 (W+E) \u2192 1 (F+(W+E))",
-      "product_name": "Furnace Patch",
-      "machine_family": "Castcraft Molding Cells",
-      "installation_name": "Castcraft 3-022 Patch Conditioning Cell",
+      "product_name": "Electroplating Salts",
+      "machine_family": "Chemical Component Cells",
+      "installation_name": "Electroplating Salt Processor",
       "machine_family_id": "MF-S2-06-C3",
       "inputs": [
         "C1-003",
@@ -1774,9 +1746,9 @@
       "sector_id": "S2-07",
       "preferred_material_id": "C2-003",
       "unchanged_formula": "1 F + 1 (W+F) \u2192 1 (F+(W+F))",
-      "product_name": "Hot Loop Charge",
-      "machine_family": "Loopcraft Forming Cells",
-      "installation_name": "Loopcraft 3-023 Hot Fluid Loading Cell",
+      "product_name": "Catalytic Mesh",
+      "machine_family": "Catalytic Component Cells",
+      "installation_name": "Catalytic Mesh Fabricator",
       "machine_family_id": "MF-S2-07-C3",
       "inputs": [
         "C1-003",
@@ -1797,9 +1769,9 @@
       "sector_id": "S2-08",
       "preferred_material_id": "C2-004",
       "unchanged_formula": "1 F + 1 (W+A) \u2192 1 (F+(W+A))",
-      "product_name": "Firebreak Foam",
-      "machine_family": "Foamcraft Forming Cells",
-      "installation_name": "Foamcraft 3-024 Barrier Foam Conditioning Cell",
+      "product_name": "Tracer Capsules",
+      "machine_family": "Medical Isotope Component Cells",
+      "installation_name": "Tracer Capsule Assembler",
       "machine_family_id": "MF-S2-08-C3",
       "inputs": [
         "C1-003",
@@ -1820,9 +1792,9 @@
       "sector_id": "S2-09",
       "preferred_material_id": "C2-005",
       "unchanged_formula": "1 F + 1 (E+E) \u2192 1 (F+(E+E))",
-      "product_name": "Hot Face Brick",
-      "machine_family": "Kilncraft Shaping Cells",
-      "installation_name": "Kilncraft 3-025 Brick Thermal Loading Cell",
+      "product_name": "Ceramic Bearing Inserts",
+      "machine_family": "Ceramic Component Cells",
+      "installation_name": "Ceramic Bearing Insert Grinder",
       "machine_family_id": "MF-S2-09-C3",
       "inputs": [
         "C1-003",
@@ -1843,9 +1815,9 @@
       "sector_id": "S2-10",
       "preferred_material_id": "C2-006",
       "unchanged_formula": "1 F + 1 (E+F) \u2192 1 (F+(E+F))",
-      "product_name": "Heater Ribbon",
-      "machine_family": "Wirecraft Drawing Cells",
-      "installation_name": "Wirecraft 3-026 Ribbon Drawing Cell",
+      "product_name": "Power Transistors",
+      "machine_family": "Electronic Component Cells",
+      "installation_name": "Power Transistor Fabricator",
       "machine_family_id": "MF-S2-10-C3",
       "inputs": [
         "C1-003",
@@ -1866,9 +1838,9 @@
       "sector_id": "S2-11",
       "preferred_material_id": "C2-007",
       "unchanged_formula": "1 F + 1 (E+A) \u2192 1 (F+(E+A))",
-      "product_name": "Kiln Screen",
-      "machine_family": "Porecraft Shaping Cells",
-      "installation_name": "Porecraft 3-027 Screen Heat Setting Cell",
+      "product_name": "Shielded Containers",
+      "machine_family": "Shielding Component Cells",
+      "installation_name": "Shielded Container Assembler",
       "machine_family_id": "MF-S2-11-C3",
       "inputs": [
         "C1-003",
@@ -1889,9 +1861,9 @@
       "sector_id": "S2-12",
       "preferred_material_id": "C2-008",
       "unchanged_formula": "1 F + 1 (F+F) \u2192 1 (F+(F+F))",
-      "product_name": "High Heat Charge",
-      "machine_family": "Saltcraft Forming Cells",
-      "installation_name": "Saltcraft 3-028 Salt Thermal Loading Cell",
+      "product_name": "Precision Gears",
+      "machine_family": "Alloy Component Cells",
+      "installation_name": "Precision Gear Cutter",
       "machine_family_id": "MF-S2-12-C3",
       "inputs": [
         "C1-003",
@@ -1912,9 +1884,9 @@
       "sector_id": "S2-13",
       "preferred_material_id": "C2-009",
       "unchanged_formula": "1 F + 1 (F+A) \u2192 1 (F+(F+A))",
-      "product_name": "Ignition Charge",
-      "machine_family": "Sparkcraft Conditioning Cells",
-      "installation_name": "Sparkcraft 3-029 Ignition Media Loading Cell",
+      "product_name": "Fuel Rods",
+      "machine_family": "Fuel Component Cells",
+      "installation_name": "Fuel Rod Assembler",
       "machine_family_id": "MF-S2-13-C3",
       "inputs": [
         "C1-003",
@@ -1935,9 +1907,9 @@
       "sector_id": "S2-14",
       "preferred_material_id": "C2-010",
       "unchanged_formula": "1 F + 1 (A+A) \u2192 1 (F+(A+A))",
-      "product_name": "Expansion Charge",
-      "machine_family": "Presscraft Forming Cells",
-      "installation_name": "Presscraft 3-030 Expansion Media Loading Cell",
+      "product_name": "Nuclear Battery Packs",
+      "machine_family": "Isotope Power Component Cells",
+      "installation_name": "Nuclear Battery Pack Assembler",
       "machine_family_id": "MF-S2-14-C3",
       "inputs": [
         "C1-003",
@@ -1958,9 +1930,9 @@
       "sector_id": "S2-05",
       "preferred_material_id": "C2-001",
       "unchanged_formula": "1 A + 1 (W+W) \u2192 1 (A+(W+W))",
-      "product_name": "Cushion Gel",
-      "machine_family": "Gelcraft Forming Cells",
-      "installation_name": "Gelcraft 3-031 Cushion Gel Aeration Cell",
+      "product_name": "Radioactive Polymer Standards",
+      "machine_family": "Polymer Component Cells",
+      "installation_name": "Radioactive Polymer Standard Processor",
       "machine_family_id": "MF-S2-05-C3",
       "inputs": [
         "C1-004",
@@ -1981,9 +1953,9 @@
       "sector_id": "S2-06",
       "preferred_material_id": "C2-002",
       "unchanged_formula": "1 A + 1 (W+E) \u2192 1 (A+(W+E))",
-      "product_name": "Lightweight Fill",
-      "machine_family": "Castcraft Molding Cells",
-      "installation_name": "Castcraft 3-032 Fill Aeration Cell",
+      "product_name": "Isotope Reagents",
+      "machine_family": "Chemical Component Cells",
+      "installation_name": "Isotope Reagent Mixer",
       "machine_family_id": "MF-S2-06-C3",
       "inputs": [
         "C1-004",
@@ -2004,9 +1976,9 @@
       "sector_id": "S2-07",
       "preferred_material_id": "C2-003",
       "unchanged_formula": "1 A + 1 (W+F) \u2192 1 (A+(W+F))",
-      "product_name": "Expansion Fluid",
-      "machine_family": "Loopcraft Forming Cells",
-      "installation_name": "Loopcraft 3-033 Expansion Fluid Aeration Cell",
+      "product_name": "Radiolabeled Catalysts",
+      "machine_family": "Catalytic Component Cells",
+      "installation_name": "Radiolabeled Catalyst Processor",
       "machine_family_id": "MF-S2-07-C3",
       "inputs": [
         "C1-004",
@@ -2027,9 +1999,9 @@
       "sector_id": "S2-08",
       "preferred_material_id": "C2-004",
       "unchanged_formula": "1 A + 1 (W+A) \u2192 1 (A+(W+A))",
-      "product_name": "Cushion Foam",
-      "machine_family": "Foamcraft Forming Cells",
-      "installation_name": "Foamcraft 3-034 Packing Foam Expansion Cell",
+      "product_name": "Therapeutic Isotope Doses",
+      "machine_family": "Medical Isotope Component Cells",
+      "installation_name": "Therapeutic Isotope Dose Processor",
       "machine_family_id": "MF-S2-08-C3",
       "inputs": [
         "C1-004",
@@ -2050,9 +2022,9 @@
       "sector_id": "S2-09",
       "preferred_material_id": "C2-005",
       "unchanged_formula": "1 A + 1 (E+E) \u2192 1 (A+(E+E))",
-      "product_name": "Hollow Insulator",
-      "machine_family": "Kilncraft Shaping Cells",
-      "installation_name": "Kilncraft 3-035 Cavity Ceramic Forming Cell",
+      "product_name": "Ceramic Radiation Sources",
+      "machine_family": "Ceramic Component Cells",
+      "installation_name": "Ceramic Radiation Source Former",
       "machine_family_id": "MF-S2-09-C3",
       "inputs": [
         "C1-004",
@@ -2073,9 +2045,9 @@
       "sector_id": "S2-10",
       "preferred_material_id": "C2-006",
       "unchanged_formula": "1 A + 1 (E+F) \u2192 1 (A+(E+F))",
-      "product_name": "Contact Mesh",
-      "machine_family": "Wirecraft Drawing Cells",
-      "installation_name": "Wirecraft 3-036 Contact Mesh Forming Cell",
+      "product_name": "Radiation Detector Dies",
+      "machine_family": "Electronic Component Cells",
+      "installation_name": "Radiation Detector Die Fabricator",
       "machine_family_id": "MF-S2-10-C3",
       "inputs": [
         "C1-004",
@@ -2096,9 +2068,9 @@
       "sector_id": "S2-11",
       "preferred_material_id": "C2-007",
       "unchanged_formula": "1 A + 1 (E+A) \u2192 1 (A+(E+A))",
-      "product_name": "Diffuser Stone",
-      "machine_family": "Porecraft Shaping Cells",
-      "installation_name": "Porecraft 3-037 Diffuser Pore Balancing Cell",
+      "product_name": "Shielded Source Capsules",
+      "machine_family": "Shielding Component Cells",
+      "installation_name": "Shielded Source Capsule Assembler",
       "machine_family_id": "MF-S2-11-C3",
       "inputs": [
         "C1-004",
@@ -2119,9 +2091,9 @@
       "sector_id": "S2-12",
       "preferred_material_id": "C2-008",
       "unchanged_formula": "1 A + 1 (F+F) \u2192 1 (A+(F+F))",
-      "product_name": "Insulating Granules",
-      "machine_family": "Saltcraft Forming Cells",
-      "installation_name": "Saltcraft 3-038 Salt Granulation Cell",
+      "product_name": "Alloy Source Pellets",
+      "machine_family": "Alloy Component Cells",
+      "installation_name": "Alloy Source Pellet Press",
       "machine_family_id": "MF-S2-12-C3",
       "inputs": [
         "C1-004",
@@ -2142,9 +2114,9 @@
       "sector_id": "S2-13",
       "preferred_material_id": "C2-009",
       "unchanged_formula": "1 A + 1 (F+A) \u2192 1 (A+(F+A))",
-      "product_name": "Lamp Fill",
-      "machine_family": "Sparkcraft Conditioning Cells",
-      "installation_name": "Sparkcraft 3-039 Lamp Gas Blending Cell",
+      "product_name": "Enriched Fuel Pellets",
+      "machine_family": "Fuel Component Cells",
+      "installation_name": "Enriched Fuel Pellet Press",
       "machine_family_id": "MF-S2-13-C3",
       "inputs": [
         "C1-004",
@@ -2165,9 +2137,9 @@
       "sector_id": "S2-14",
       "preferred_material_id": "C2-010",
       "unchanged_formula": "1 A + 1 (A+A) \u2192 1 (A+(A+A))",
-      "product_name": "Pneumatic Charge",
-      "machine_family": "Presscraft Forming Cells",
-      "installation_name": "Presscraft 3-040 Pneumatic Gas Blending Cell",
+      "product_name": "High Output Isotope Cells",
+      "machine_family": "Isotope Power Component Cells",
+      "installation_name": "High Output Isotope Cell Assembler",
       "machine_family_id": "MF-S2-14-C3",
       "inputs": [
         "C1-004",
@@ -2188,9 +2160,9 @@
       "sector_id": "S2-01",
       "preferred_material_id": "C1-001",
       "unchanged_formula": "1 W + 1 (W+(W+W)) \u2192 1 (W+(W+(W+W)))",
-      "product_name": "Wetting Reserve",
-      "machine_family": "Wetbench Finishing Lines",
-      "installation_name": "Wetbench 4-001 Reserve Saturation Station",
+      "product_name": "Bioplastic Sheets",
+      "machine_family": "Biochemical Finishing Lines",
+      "installation_name": "Bioplastic Sheet Production Line",
       "machine_family_id": "MF-S2-01-C4",
       "inputs": [
         "C1-001",
@@ -2211,9 +2183,9 @@
       "sector_id": "S2-01",
       "preferred_material_id": "C1-001",
       "unchanged_formula": "1 W + 1 (W+(W+E)) \u2192 1 (W+(W+(W+E)))",
-      "product_name": "Pouring Slip",
-      "machine_family": "Wetbench Finishing Lines",
-      "installation_name": "Wetbench 4-002 Fine Slip Mixing Station",
+      "product_name": "Fermentation Feed",
+      "machine_family": "Biochemical Finishing Lines",
+      "installation_name": "Fermentation Feed Production Line",
       "machine_family_id": "MF-S2-01-C4",
       "inputs": [
         "C1-001",
@@ -2234,9 +2206,9 @@
       "sector_id": "S2-01",
       "preferred_material_id": "C1-001",
       "unchanged_formula": "1 W + 1 (W+(W+F)) \u2192 1 (W+(W+(W+F)))",
-      "product_name": "Cold Loop Fill",
-      "machine_family": "Wetbench Finishing Lines",
-      "installation_name": "Wetbench 4-003 Cold Loop Blending Station",
+      "product_name": "Immobilized Enzyme Beads",
+      "machine_family": "Biochemical Finishing Lines",
+      "installation_name": "Immobilized Enzyme Bead Production Line",
       "machine_family_id": "MF-S2-01-C4",
       "inputs": [
         "C1-001",
@@ -2257,9 +2229,9 @@
       "sector_id": "S2-01",
       "preferred_material_id": "C1-001",
       "unchanged_formula": "1 W + 1 (W+(W+A)) \u2192 1 (W+(W+(W+A)))",
-      "product_name": "Rinse Foam",
-      "machine_family": "Wetbench Finishing Lines",
-      "installation_name": "Wetbench 4-004 Rinse Foam Blending Station",
+      "product_name": "Assay Tracer Kits",
+      "machine_family": "Biochemical Finishing Lines",
+      "installation_name": "Assay Tracer Kit Production Line",
       "machine_family_id": "MF-S2-01-C4",
       "inputs": [
         "C1-001",
@@ -2280,9 +2252,9 @@
       "sector_id": "S2-01",
       "preferred_material_id": "C1-001",
       "unchanged_formula": "1 W + 1 (W+(E+E)) \u2192 1 (W+(W+(E+E)))",
-      "product_name": "Wet Contact Tile",
-      "machine_family": "Wetbench Finishing Lines",
-      "installation_name": "Wetbench 4-005 Contact Tile Saturation Station",
+      "product_name": "Bioactive Filter Cartridges",
+      "machine_family": "Biochemical Finishing Lines",
+      "installation_name": "Bioactive Filter Cartridge Production Line",
       "machine_family_id": "MF-S2-01-C4",
       "inputs": [
         "C1-001",
@@ -2303,9 +2275,9 @@
       "sector_id": "S2-01",
       "preferred_material_id": "C1-001",
       "unchanged_formula": "1 W + 1 (W+(E+F)) \u2192 1 (W+(W+(E+F)))",
-      "product_name": "Liquid Contact Strip",
-      "machine_family": "Wetbench Finishing Lines",
-      "installation_name": "Wetbench 4-006 Contact Strip Filling Station",
+      "product_name": "Bioassay Sensors",
+      "machine_family": "Biochemical Finishing Lines",
+      "installation_name": "Bioassay Sensor Production Line",
       "machine_family_id": "MF-S2-01-C4",
       "inputs": [
         "C1-001",
@@ -2326,9 +2298,9 @@
       "sector_id": "S2-01",
       "preferred_material_id": "C1-001",
       "unchanged_formula": "1 W + 1 (W+(E+A)) \u2192 1 (W+(W+(E+A)))",
-      "product_name": "Primed Filter Stone",
-      "machine_family": "Wetbench Finishing Lines",
-      "installation_name": "Wetbench 4-007 Filter Priming Station",
+      "product_name": "Fiber Shielding Boards",
+      "machine_family": "Biochemical Finishing Lines",
+      "installation_name": "Fiber Shielding Board Production Line",
       "machine_family_id": "MF-S2-01-C4",
       "inputs": [
         "C1-001",
@@ -2349,9 +2321,9 @@
       "sector_id": "S2-01",
       "preferred_material_id": "C1-001",
       "unchanged_formula": "1 W + 1 (W+(F+F)) \u2192 1 (W+(W+(F+F)))",
-      "product_name": "Cooling Slush",
-      "machine_family": "Wetbench Finishing Lines",
-      "installation_name": "Wetbench 4-008 Cooling Slush Blending Station",
+      "product_name": "Carbon Composite Trusses",
+      "machine_family": "Biochemical Finishing Lines",
+      "installation_name": "Carbon Composite Trusse Production Line",
       "machine_family_id": "MF-S2-01-C4",
       "inputs": [
         "C1-001",
@@ -2372,9 +2344,9 @@
       "sector_id": "S2-01",
       "preferred_material_id": "C1-001",
       "unchanged_formula": "1 W + 1 (W+(F+A)) \u2192 1 (W+(W+(F+A)))",
-      "product_name": "Arc Quench Spray",
-      "machine_family": "Wetbench Finishing Lines",
-      "installation_name": "Wetbench 4-009 Quench Spray Balancing Station",
+      "product_name": "Carbon Matrix Fuel Blocks",
+      "machine_family": "Biochemical Finishing Lines",
+      "installation_name": "Carbon Matrix Fuel Block Production Line",
       "machine_family_id": "MF-S2-01-C4",
       "inputs": [
         "C1-001",
@@ -2395,9 +2367,9 @@
       "sector_id": "S2-01",
       "preferred_material_id": "C1-001",
       "unchanged_formula": "1 W + 1 (W+(A+A)) \u2192 1 (W+(W+(A+A)))",
-      "product_name": "Fine Spray Charge",
-      "machine_family": "Wetbench Finishing Lines",
-      "installation_name": "Wetbench 4-010 Spray Charge Balancing Station",
+      "product_name": "Polymer Sealed Power Modules",
+      "machine_family": "Biochemical Finishing Lines",
+      "installation_name": "Polymer Sealed Power Module Production Line",
       "machine_family_id": "MF-S2-01-C4",
       "inputs": [
         "C1-001",
@@ -2418,9 +2390,9 @@
       "sector_id": "S2-01",
       "preferred_material_id": "C1-001",
       "unchanged_formula": "1 W + 1 (E+(W+W)) \u2192 1 (W+(E+(W+W)))",
-      "product_name": "Wet Wipe Pad",
-      "machine_family": "Wetbench Finishing Lines",
-      "installation_name": "Wetbench 4-011 Wipe Pad Saturation Station",
+      "product_name": "Biofiber Insulation Panels",
+      "machine_family": "Biochemical Finishing Lines",
+      "installation_name": "Biofiber Insulation Panel Production Line",
       "machine_family_id": "MF-S2-01-C4",
       "inputs": [
         "C1-001",
@@ -2441,9 +2413,9 @@
       "sector_id": "S2-01",
       "preferred_material_id": "C1-001",
       "unchanged_formula": "1 W + 1 (E+(W+E)) \u2192 1 (W+(E+(W+E)))",
-      "product_name": "Slip Joint Tile",
-      "machine_family": "Wetbench Finishing Lines",
-      "installation_name": "Wetbench 4-012 Joint Tile Conditioning Station",
+      "product_name": "Bioprocess Electrolytes",
+      "machine_family": "Biochemical Finishing Lines",
+      "installation_name": "Bioprocess Electrolyte Production Line",
       "machine_family_id": "MF-S2-01-C4",
       "inputs": [
         "C1-001",
@@ -2464,9 +2436,9 @@
       "sector_id": "S2-01",
       "preferred_material_id": "C1-001",
       "unchanged_formula": "1 W + 1 (E+(W+F)) \u2192 1 (W+(E+(W+F)))",
-      "product_name": "Liquid Transfer Plate",
-      "machine_family": "Wetbench Finishing Lines",
-      "installation_name": "Wetbench 4-013 Transfer Plate Filling Station",
+      "product_name": "Bioprocess Catalyst Beads",
+      "machine_family": "Biochemical Finishing Lines",
+      "installation_name": "Bioprocess Catalyst Bead Production Line",
       "machine_family_id": "MF-S2-01-C4",
       "inputs": [
         "C1-001",
@@ -2487,9 +2459,9 @@
       "sector_id": "S2-01",
       "preferred_material_id": "C1-001",
       "unchanged_formula": "1 W + 1 (E+(W+A)) \u2192 1 (W+(E+(W+A)))",
-      "product_name": "Wet Seat Seal",
-      "machine_family": "Wetbench Finishing Lines",
-      "installation_name": "Wetbench 4-014 Seat Seal Wetting Station",
+      "product_name": "Biological Tracer Beads",
+      "machine_family": "Biochemical Finishing Lines",
+      "installation_name": "Biological Tracer Bead Production Line",
       "machine_family_id": "MF-S2-01-C4",
       "inputs": [
         "C1-001",
@@ -2510,9 +2482,9 @@
       "sector_id": "S2-01",
       "preferred_material_id": "C1-001",
       "unchanged_formula": "1 W + 1 (E+(E+E)) \u2192 1 (W+(E+(E+E)))",
-      "product_name": "Lubricated Wear Face",
-      "machine_family": "Wetbench Finishing Lines",
-      "installation_name": "Wetbench 4-015 Wear Face Wetting Station",
+      "product_name": "Bioceramic Scaffolds",
+      "machine_family": "Biochemical Finishing Lines",
+      "installation_name": "Bioceramic Scaffold Production Line",
       "machine_family_id": "MF-S2-01-C4",
       "inputs": [
         "C1-001",
@@ -2533,9 +2505,9 @@
       "sector_id": "S2-01",
       "preferred_material_id": "C1-001",
       "unchanged_formula": "1 W + 1 (E+(E+F)) \u2192 1 (W+(E+(E+F)))",
-      "product_name": "Cooled Busbar Stock",
-      "machine_family": "Wetbench Finishing Lines",
-      "installation_name": "Wetbench 4-016 Busbar Channel Filling Station",
+      "product_name": "Organic Interface Chips",
+      "machine_family": "Biochemical Finishing Lines",
+      "installation_name": "Organic Interface Chip Production Line",
       "machine_family_id": "MF-S2-01-C4",
       "inputs": [
         "C1-001",
@@ -2556,9 +2528,9 @@
       "sector_id": "S2-01",
       "preferred_material_id": "C1-001",
       "unchanged_formula": "1 W + 1 (E+(E+A)) \u2192 1 (W+(E+(E+A)))",
-      "product_name": "Wet Flow Core",
-      "machine_family": "Wetbench Finishing Lines",
-      "installation_name": "Wetbench 4-017 Flow Core Saturation Station",
+      "product_name": "Fiber Backed Shielding Tiles",
+      "machine_family": "Biochemical Finishing Lines",
+      "installation_name": "Fiber Backed Shielding Tile Production Line",
       "machine_family_id": "MF-S2-01-C4",
       "inputs": [
         "C1-001",
@@ -2579,9 +2551,9 @@
       "sector_id": "S2-01",
       "preferred_material_id": "C1-001",
       "unchanged_formula": "1 W + 1 (E+(F+F)) \u2192 1 (W+(E+(F+F)))",
-      "product_name": "Wet Buffer Block",
-      "machine_family": "Wetbench Finishing Lines",
-      "installation_name": "Wetbench 4-018 Buffer Block Infusion Station",
+      "product_name": "Composite Hull Panels",
+      "machine_family": "Biochemical Finishing Lines",
+      "installation_name": "Composite Hull Panel Production Line",
       "machine_family_id": "MF-S2-01-C4",
       "inputs": [
         "C1-001",
@@ -2602,9 +2574,9 @@
       "sector_id": "S2-01",
       "preferred_material_id": "C1-001",
       "unchanged_formula": "1 W + 1 (E+(F+A)) \u2192 1 (W+(E+(F+A)))",
-      "product_name": "Quench Electrode Stock",
-      "machine_family": "Wetbench Finishing Lines",
-      "installation_name": "Wetbench 4-019 Electrode Wetting Station",
+      "product_name": "Carbon Coated Fuel Pellets",
+      "machine_family": "Biochemical Finishing Lines",
+      "installation_name": "Carbon Coated Fuel Pellet Production Line",
       "machine_family_id": "MF-S2-01-C4",
       "inputs": [
         "C1-001",
@@ -2625,9 +2597,9 @@
       "sector_id": "S2-01",
       "preferred_material_id": "C1-001",
       "unchanged_formula": "1 W + 1 (E+(A+A)) \u2192 1 (W+(E+(A+A)))",
-      "product_name": "Hydraulic Spring Core",
-      "machine_family": "Wetbench Finishing Lines",
-      "installation_name": "Wetbench 4-020 Hydraulic Core Infusion Station",
+      "product_name": "Resin Potted Power Capsules",
+      "machine_family": "Biochemical Finishing Lines",
+      "installation_name": "Resin Potted Power Capsule Production Line",
       "machine_family_id": "MF-S2-01-C4",
       "inputs": [
         "C1-001",
@@ -2648,9 +2620,9 @@
       "sector_id": "S2-01",
       "preferred_material_id": "C1-001",
       "unchanged_formula": "1 W + 1 (F+(W+W)) \u2192 1 (W+(F+(W+W)))",
-      "product_name": "Warm Contact Gel",
-      "machine_family": "Wetbench Finishing Lines",
-      "installation_name": "Wetbench 4-021 Contact Gel Blending Station",
+      "product_name": "Fiber Reinforced Body Panels",
+      "machine_family": "Biochemical Finishing Lines",
+      "installation_name": "Fiber Reinforced Body Panel Production Line",
       "machine_family_id": "MF-S2-01-C4",
       "inputs": [
         "C1-001",
@@ -2671,9 +2643,9 @@
       "sector_id": "S2-01",
       "preferred_material_id": "C1-001",
       "unchanged_formula": "1 W + 1 (F+(W+E)) \u2192 1 (W+(F+(W+E)))",
-      "product_name": "Wet Repair Mortar",
-      "machine_family": "Wetbench Finishing Lines",
-      "installation_name": "Wetbench 4-022 Repair Mortar Mixing Station",
+      "product_name": "Organic Plating Baths",
+      "machine_family": "Biochemical Finishing Lines",
+      "installation_name": "Organic Plating Bath Production Line",
       "machine_family_id": "MF-S2-01-C4",
       "inputs": [
         "C1-001",
@@ -2694,9 +2666,9 @@
       "sector_id": "S2-01",
       "preferred_material_id": "C1-001",
       "unchanged_formula": "1 W + 1 (F+(W+F)) \u2192 1 (W+(F+(W+F)))",
-      "product_name": "Tempered Loop Fill",
-      "machine_family": "Wetbench Finishing Lines",
-      "installation_name": "Wetbench 4-023 Tempered Fluid Blending Station",
+      "product_name": "Biocatalytic Mesh",
+      "machine_family": "Biochemical Finishing Lines",
+      "installation_name": "Biocatalytic Mesh Production Line",
       "machine_family_id": "MF-S2-01-C4",
       "inputs": [
         "C1-001",
@@ -2717,9 +2689,9 @@
       "sector_id": "S2-01",
       "preferred_material_id": "C1-001",
       "unchanged_formula": "1 W + 1 (F+(W+A)) \u2192 1 (W+(F+(W+A)))",
-      "product_name": "Wet Firebreak Packing",
-      "machine_family": "Wetbench Finishing Lines",
-      "installation_name": "Wetbench 4-024 Barrier Packing Saturation Station",
+      "product_name": "Tissue Tracer Capsules",
+      "machine_family": "Biochemical Finishing Lines",
+      "installation_name": "Tissue Tracer Capsule Production Line",
       "machine_family_id": "MF-S2-01-C4",
       "inputs": [
         "C1-001",
@@ -2740,9 +2712,9 @@
       "sector_id": "S2-01",
       "preferred_material_id": "C1-001",
       "unchanged_formula": "1 W + 1 (F+(E+E)) \u2192 1 (W+(F+(E+E)))",
-      "product_name": "Quench Face Brick",
-      "machine_family": "Wetbench Finishing Lines",
-      "installation_name": "Wetbench 4-025 Brick Quench Loading Station",
+      "product_name": "Self Lubricating Bearing Inserts",
+      "machine_family": "Biochemical Finishing Lines",
+      "installation_name": "Self Lubricating Bearing Insert Production Line",
       "machine_family_id": "MF-S2-01-C4",
       "inputs": [
         "C1-001",
@@ -2763,9 +2735,9 @@
       "sector_id": "S2-01",
       "preferred_material_id": "C1-001",
       "unchanged_formula": "1 W + 1 (F+(E+F)) \u2192 1 (W+(F+(E+F)))",
-      "product_name": "Wet Heater Strip",
-      "machine_family": "Wetbench Finishing Lines",
-      "installation_name": "Wetbench 4-026 Heater Strip Wetting Station",
+      "product_name": "Resin Encapsulated Transistors",
+      "machine_family": "Biochemical Finishing Lines",
+      "installation_name": "Resin Encapsulated Transistor Production Line",
       "machine_family_id": "MF-S2-01-C4",
       "inputs": [
         "C1-001",
@@ -2786,9 +2758,9 @@
       "sector_id": "S2-01",
       "preferred_material_id": "C1-001",
       "unchanged_formula": "1 W + 1 (F+(E+A)) \u2192 1 (W+(F+(E+A)))",
-      "product_name": "Wet Scrubber Screen",
-      "machine_family": "Wetbench Finishing Lines",
-      "installation_name": "Wetbench 4-027 Scrubber Screen Wetting Station",
+      "product_name": "Resin Lined Shielded Containers",
+      "machine_family": "Biochemical Finishing Lines",
+      "installation_name": "Resin Lined Shielded Container Production Line",
       "machine_family_id": "MF-S2-01-C4",
       "inputs": [
         "C1-001",
@@ -2809,9 +2781,9 @@
       "sector_id": "S2-01",
       "preferred_material_id": "C1-001",
       "unchanged_formula": "1 W + 1 (F+(F+F)) \u2192 1 (W+(F+(F+F)))",
-      "product_name": "Thermal Buffer Fill",
-      "machine_family": "Wetbench Finishing Lines",
-      "installation_name": "Wetbench 4-028 Buffer Fill Blending Station",
+      "product_name": "Composite Drive Gears",
+      "machine_family": "Biochemical Finishing Lines",
+      "installation_name": "Composite Drive Gear Production Line",
       "machine_family_id": "MF-S2-01-C4",
       "inputs": [
         "C1-001",
@@ -2832,9 +2804,9 @@
       "sector_id": "S2-01",
       "preferred_material_id": "C1-001",
       "unchanged_formula": "1 W + 1 (F+(F+A)) \u2192 1 (W+(F+(F+A)))",
-      "product_name": "Wetted Ignition Stock",
-      "machine_family": "Wetbench Finishing Lines",
-      "installation_name": "Wetbench 4-029 Ignition Stock Wetting Station",
+      "product_name": "Carbon Sleeved Fuel Rods",
+      "machine_family": "Biochemical Finishing Lines",
+      "installation_name": "Carbon Sleeved Fuel Rod Production Line",
       "machine_family_id": "MF-S2-01-C4",
       "inputs": [
         "C1-001",
@@ -2855,9 +2827,9 @@
       "sector_id": "S2-01",
       "preferred_material_id": "C1-001",
       "unchanged_formula": "1 W + 1 (F+(A+A)) \u2192 1 (W+(F+(A+A)))",
-      "product_name": "Expansion Spray Fill",
-      "machine_family": "Wetbench Finishing Lines",
-      "installation_name": "Wetbench 4-030 Expansion Spray Loading Station",
+      "product_name": "Resin Potted Nuclear Batteries",
+      "machine_family": "Biochemical Finishing Lines",
+      "installation_name": "Resin Potted Nuclear Battery Production Line",
       "machine_family_id": "MF-S2-01-C4",
       "inputs": [
         "C1-001",
@@ -2878,9 +2850,9 @@
       "sector_id": "S2-01",
       "preferred_material_id": "C1-001",
       "unchanged_formula": "1 W + 1 (A+(W+W)) \u2192 1 (W+(A+(W+W)))",
-      "product_name": "Damping Gel Fill",
-      "machine_family": "Wetbench Finishing Lines",
-      "installation_name": "Wetbench 4-031 Damping Gel Blending Station",
+      "product_name": "Polymer Tracer Films",
+      "machine_family": "Biochemical Finishing Lines",
+      "installation_name": "Polymer Tracer Film Production Line",
       "machine_family_id": "MF-S2-01-C4",
       "inputs": [
         "C1-001",
@@ -2901,9 +2873,9 @@
       "sector_id": "S2-01",
       "preferred_material_id": "C1-001",
       "unchanged_formula": "1 W + 1 (A+(W+E)) \u2192 1 (W+(A+(W+E)))",
-      "product_name": "Pourable Light Grout",
-      "machine_family": "Wetbench Finishing Lines",
-      "installation_name": "Wetbench 4-032 Light Grout Mixing Station",
+      "product_name": "Biological Isotope Reagents",
+      "machine_family": "Biochemical Finishing Lines",
+      "installation_name": "Biological Isotope Reagent Production Line",
       "machine_family_id": "MF-S2-01-C4",
       "inputs": [
         "C1-001",
@@ -2924,9 +2896,9 @@
       "sector_id": "S2-01",
       "preferred_material_id": "C1-001",
       "unchanged_formula": "1 W + 1 (A+(W+F)) \u2192 1 (W+(A+(W+F)))",
-      "product_name": "Loop Balancing Fluid",
-      "machine_family": "Wetbench Finishing Lines",
-      "installation_name": "Wetbench 4-033 Balancing Fluid Mixing Station",
+      "product_name": "Tagged Enzyme Preparations",
+      "machine_family": "Biochemical Finishing Lines",
+      "installation_name": "Tagged Enzyme Preparation Production Line",
       "machine_family_id": "MF-S2-01-C4",
       "inputs": [
         "C1-001",
@@ -2947,9 +2919,9 @@
       "sector_id": "S2-01",
       "preferred_material_id": "C1-001",
       "unchanged_formula": "1 W + 1 (A+(W+A)) \u2192 1 (W+(A+(W+A)))",
-      "product_name": "Wet Cushion Packing",
-      "machine_family": "Wetbench Finishing Lines",
-      "installation_name": "Wetbench 4-034 Cushion Packing Saturation Station",
+      "product_name": "Targeted Isotope Doses",
+      "machine_family": "Biochemical Finishing Lines",
+      "installation_name": "Targeted Isotope Dose Production Line",
       "machine_family_id": "MF-S2-01-C4",
       "inputs": [
         "C1-001",
@@ -2970,9 +2942,9 @@
       "sector_id": "S2-01",
       "preferred_material_id": "C1-001",
       "unchanged_formula": "1 W + 1 (A+(E+E)) \u2192 1 (W+(A+(E+E)))",
-      "product_name": "Cooling Cavity Tile",
-      "machine_family": "Wetbench Finishing Lines",
-      "installation_name": "Wetbench 4-035 Cavity Tile Infusion Station",
+      "product_name": "Resin Bound Radiation Sources",
+      "machine_family": "Biochemical Finishing Lines",
+      "installation_name": "Resin Bound Radiation Source Production Line",
       "machine_family_id": "MF-S2-01-C4",
       "inputs": [
         "C1-001",
@@ -2993,9 +2965,9 @@
       "sector_id": "S2-01",
       "preferred_material_id": "C1-001",
       "unchanged_formula": "1 W + 1 (A+(E+F)) \u2192 1 (W+(A+(E+F)))",
-      "product_name": "Wetted Contact Mesh",
-      "machine_family": "Wetbench Finishing Lines",
-      "installation_name": "Wetbench 4-036 Contact Mesh Wetting Station",
+      "product_name": "Bioassay Detector Chips",
+      "machine_family": "Biochemical Finishing Lines",
+      "installation_name": "Bioassay Detector Chip Production Line",
       "machine_family_id": "MF-S2-01-C4",
       "inputs": [
         "C1-001",
@@ -3016,9 +2988,9 @@
       "sector_id": "S2-01",
       "preferred_material_id": "C1-001",
       "unchanged_formula": "1 W + 1 (A+(E+A)) \u2192 1 (W+(A+(E+A)))",
-      "product_name": "Water Diffuser Insert",
-      "machine_family": "Wetbench Finishing Lines",
-      "installation_name": "Wetbench 4-037 Diffuser Insert Saturation Station",
+      "product_name": "Polymer Encased Source Capsules",
+      "machine_family": "Biochemical Finishing Lines",
+      "installation_name": "Polymer Encased Source Capsule Production Line",
       "machine_family_id": "MF-S2-01-C4",
       "inputs": [
         "C1-001",
@@ -3039,9 +3011,9 @@
       "sector_id": "S2-01",
       "preferred_material_id": "C1-001",
       "unchanged_formula": "1 W + 1 (A+(F+F)) \u2192 1 (W+(A+(F+F)))",
-      "product_name": "Wetted Salt Bed",
-      "machine_family": "Wetbench Finishing Lines",
-      "installation_name": "Wetbench 4-038 Salt Bed Infusion Station",
+      "product_name": "Carbon Bound Source Pellets",
+      "machine_family": "Biochemical Finishing Lines",
+      "installation_name": "Carbon Bound Source Pellet Production Line",
       "machine_family_id": "MF-S2-01-C4",
       "inputs": [
         "C1-001",
@@ -3062,9 +3034,9 @@
       "sector_id": "S2-01",
       "preferred_material_id": "C1-001",
       "unchanged_formula": "1 W + 1 (A+(F+A)) \u2192 1 (W+(A+(F+A)))",
-      "product_name": "Luminous Spray Fill",
-      "machine_family": "Wetbench Finishing Lines",
-      "installation_name": "Wetbench 4-039 Luminous Spray Blending Station",
+      "product_name": "Organic Matrix Fuel Pellets",
+      "machine_family": "Biochemical Finishing Lines",
+      "installation_name": "Organic Matrix Fuel Pellet Production Line",
       "machine_family_id": "MF-S2-01-C4",
       "inputs": [
         "C1-001",
@@ -3085,9 +3057,9 @@
       "sector_id": "S2-01",
       "preferred_material_id": "C1-001",
       "unchanged_formula": "1 W + 1 (A+(A+A)) \u2192 1 (W+(A+(A+A)))",
-      "product_name": "Pneumatic Mist Fill",
-      "machine_family": "Wetbench Finishing Lines",
-      "installation_name": "Wetbench 4-040 Pneumatic Mist Loading Station",
+      "product_name": "Resin Sealed Isotope Cells",
+      "machine_family": "Biochemical Finishing Lines",
+      "installation_name": "Resin Sealed Isotope Cell Production Line",
       "machine_family_id": "MF-S2-01-C4",
       "inputs": [
         "C1-001",
@@ -3108,9 +3080,9 @@
       "sector_id": "S2-02",
       "preferred_material_id": "C1-002",
       "unchanged_formula": "1 E + 1 (W+(W+W)) \u2192 1 (E+(W+(W+W)))",
-      "product_name": "Reservoir Insert",
-      "machine_family": "Fitbench Integration Lines",
-      "installation_name": "Fitbench 4-041 Reservoir Insert Casting Station",
+      "product_name": "Mineral Filled Resin",
+      "machine_family": "Inorganic Finishing Lines",
+      "installation_name": "Mineral Filled Resin Production Line",
       "machine_family_id": "MF-S2-02-C4",
       "inputs": [
         "C1-002",
@@ -3131,9 +3103,9 @@
       "sector_id": "S2-02",
       "preferred_material_id": "C1-002",
       "unchanged_formula": "1 E + 1 (W+(W+E)) \u2192 1 (E+(W+(W+E)))",
-      "product_name": "Mold Liner Blank",
-      "machine_family": "Fitbench Integration Lines",
-      "installation_name": "Fitbench 4-042 Mold Liner Press",
+      "product_name": "Buffered Culture Media",
+      "machine_family": "Inorganic Finishing Lines",
+      "installation_name": "Buffered Culture Medium Production Line",
       "machine_family_id": "MF-S2-02-C4",
       "inputs": [
         "C1-002",
@@ -3154,9 +3126,9 @@
       "sector_id": "S2-02",
       "preferred_material_id": "C1-002",
       "unchanged_formula": "1 E + 1 (W+(W+F)) \u2192 1 (E+(W+(W+F)))",
-      "product_name": "Cooling Core Blank",
-      "machine_family": "Fitbench Integration Lines",
-      "installation_name": "Fitbench 4-043 Cooling Core Casting Station",
+      "product_name": "Mineral Bound Enzymes",
+      "machine_family": "Inorganic Finishing Lines",
+      "installation_name": "Mineral Bound Enzyme Production Line",
       "machine_family_id": "MF-S2-02-C4",
       "inputs": [
         "C1-002",
@@ -3177,9 +3149,9 @@
       "sector_id": "S2-02",
       "preferred_material_id": "C1-002",
       "unchanged_formula": "1 E + 1 (W+(W+A)) \u2192 1 (E+(W+(W+A)))",
-      "product_name": "Scrub Block",
-      "machine_family": "Fitbench Integration Lines",
-      "installation_name": "Fitbench 4-044 Scrub Block Molding Station",
+      "product_name": "Buffered Diagnostic Tracers",
+      "machine_family": "Inorganic Finishing Lines",
+      "installation_name": "Buffered Diagnostic Tracer Production Line",
       "machine_family_id": "MF-S2-02-C4",
       "inputs": [
         "C1-002",
@@ -3200,9 +3172,9 @@
       "sector_id": "S2-02",
       "preferred_material_id": "C1-002",
       "unchanged_formula": "1 E + 1 (W+(E+E)) \u2192 1 (E+(W+(E+E)))",
-      "product_name": "Wick Mount Tile",
-      "machine_family": "Fitbench Integration Lines",
-      "installation_name": "Fitbench 4-045 Wick Mount Press",
+      "product_name": "Mineral Adsorption Filters",
+      "machine_family": "Inorganic Finishing Lines",
+      "installation_name": "Mineral Adsorption Filter Production Line",
       "machine_family_id": "MF-S2-02-C4",
       "inputs": [
         "C1-002",
@@ -3223,9 +3195,9 @@
       "sector_id": "S2-02",
       "preferred_material_id": "C1-002",
       "unchanged_formula": "1 E + 1 (W+(E+F)) \u2192 1 (E+(W+(E+F)))",
-      "product_name": "Cooling Terminal Blank",
-      "machine_family": "Fitbench Integration Lines",
-      "installation_name": "Fitbench 4-046 Terminal Body Casting Station",
+      "product_name": "Microfluidic Biosensor Chips",
+      "machine_family": "Inorganic Finishing Lines",
+      "installation_name": "Microfluidic Biosensor Chip Production Line",
       "machine_family_id": "MF-S2-02-C4",
       "inputs": [
         "C1-002",
@@ -3246,9 +3218,9 @@
       "sector_id": "S2-02",
       "preferred_material_id": "C1-002",
       "unchanged_formula": "1 E + 1 (W+(E+A)) \u2192 1 (E+(W+(E+A)))",
-      "product_name": "Filter Mount Block",
-      "machine_family": "Fitbench Integration Lines",
-      "installation_name": "Fitbench 4-047 Filter Mount Casting Station",
+      "product_name": "Mineral Composite Shielding",
+      "machine_family": "Inorganic Finishing Lines",
+      "installation_name": "Mineral Composite Shielding Production Line",
       "machine_family_id": "MF-S2-02-C4",
       "inputs": [
         "C1-002",
@@ -3269,9 +3241,9 @@
       "sector_id": "S2-02",
       "preferred_material_id": "C1-002",
       "unchanged_formula": "1 E + 1 (W+(F+F)) \u2192 1 (E+(W+(F+F)))",
-      "product_name": "Slush Buffer Slab",
-      "machine_family": "Fitbench Integration Lines",
-      "installation_name": "Fitbench 4-048 Slush Slab Casting Station",
+      "product_name": "Ceramic Coated Composite Beams",
+      "machine_family": "Inorganic Finishing Lines",
+      "installation_name": "Ceramic Coated Composite Beam Production Line",
       "machine_family_id": "MF-S2-02-C4",
       "inputs": [
         "C1-002",
@@ -3292,9 +3264,9 @@
       "sector_id": "S2-02",
       "preferred_material_id": "C1-002",
       "unchanged_formula": "1 E + 1 (W+(F+A)) \u2192 1 (E+(W+(F+A)))",
-      "product_name": "Arc Quench Pellet",
-      "machine_family": "Fitbench Integration Lines",
-      "installation_name": "Fitbench 4-049 Quench Pellet Forming Station",
+      "product_name": "Ceramic Coated Carbon Fuel",
+      "machine_family": "Inorganic Finishing Lines",
+      "installation_name": "Ceramic Coated Carbon Fuel Production Line",
       "machine_family_id": "MF-S2-02-C4",
       "inputs": [
         "C1-002",
@@ -3315,9 +3287,9 @@
       "sector_id": "S2-02",
       "preferred_material_id": "C1-002",
       "unchanged_formula": "1 E + 1 (W+(A+A)) \u2192 1 (E+(W+(A+A)))",
-      "product_name": "Spray Feed Pellet",
-      "machine_family": "Fitbench Integration Lines",
-      "installation_name": "Fitbench 4-050 Spray Pellet Forming Station",
+      "product_name": "Mineral Encased Power Cells",
+      "machine_family": "Inorganic Finishing Lines",
+      "installation_name": "Mineral Encased Power Cell Production Line",
       "machine_family_id": "MF-S2-02-C4",
       "inputs": [
         "C1-002",
@@ -3338,9 +3310,9 @@
       "sector_id": "S2-02",
       "preferred_material_id": "C1-002",
       "unchanged_formula": "1 E + 1 (E+(W+W)) \u2192 1 (E+(E+(W+W)))",
-      "product_name": "Spill Tray Insert",
-      "machine_family": "Fitbench Integration Lines",
-      "installation_name": "Fitbench 4-051 Tray Insert Press",
+      "product_name": "Fire Barrier Foam Boards",
+      "machine_family": "Inorganic Finishing Lines",
+      "installation_name": "Fire Barrier Foam Board Production Line",
       "machine_family_id": "MF-S2-02-C4",
       "inputs": [
         "C1-002",
@@ -3361,9 +3333,9 @@
       "sector_id": "S2-02",
       "preferred_material_id": "C1-002",
       "unchanged_formula": "1 E + 1 (E+(W+E)) \u2192 1 (E+(E+(W+E)))",
-      "product_name": "Dense Tile Blank",
-      "machine_family": "Fitbench Integration Lines",
-      "installation_name": "Fitbench 4-052 Dense Tile Press",
+      "product_name": "Battery Electrolytes",
+      "machine_family": "Inorganic Finishing Lines",
+      "installation_name": "Battery Electrolyte Production Line",
       "machine_family_id": "MF-S2-02-C4",
       "inputs": [
         "C1-002",
@@ -3384,9 +3356,9 @@
       "sector_id": "S2-02",
       "preferred_material_id": "C1-002",
       "unchanged_formula": "1 E + 1 (E+(W+F)) \u2192 1 (E+(E+(W+F)))",
-      "product_name": "Transfer Plate Mount",
-      "machine_family": "Fitbench Integration Lines",
-      "installation_name": "Fitbench 4-053 Plate Mount Casting Station",
+      "product_name": "Mineral Catalyst Granules",
+      "machine_family": "Inorganic Finishing Lines",
+      "installation_name": "Mineral Catalyst Granule Production Line",
       "machine_family_id": "MF-S2-02-C4",
       "inputs": [
         "C1-002",
@@ -3407,9 +3379,9 @@
       "sector_id": "S2-02",
       "preferred_material_id": "C1-002",
       "unchanged_formula": "1 E + 1 (E+(W+A)) \u2192 1 (E+(E+(W+A)))",
-      "product_name": "Gasket Carrier",
-      "machine_family": "Fitbench Integration Lines",
-      "installation_name": "Fitbench 4-054 Gasket Carrier Molding Station",
+      "product_name": "Radiotracer Calibration Beads",
+      "machine_family": "Inorganic Finishing Lines",
+      "installation_name": "Radiotracer Calibration Bead Production Line",
       "machine_family_id": "MF-S2-02-C4",
       "inputs": [
         "C1-002",
@@ -3430,9 +3402,9 @@
       "sector_id": "S2-02",
       "preferred_material_id": "C1-002",
       "unchanged_formula": "1 E + 1 (E+(E+E)) \u2192 1 (E+(E+(E+E)))",
-      "product_name": "Wear Rail",
-      "machine_family": "Fitbench Integration Lines",
-      "installation_name": "Fitbench 4-055 Wear Rail Forming Station",
+      "product_name": "High Voltage Insulators",
+      "machine_family": "Inorganic Finishing Lines",
+      "installation_name": "High Voltage Insulator Production Line",
       "machine_family_id": "MF-S2-02-C4",
       "inputs": [
         "C1-002",
@@ -3453,9 +3425,9 @@
       "sector_id": "S2-02",
       "preferred_material_id": "C1-002",
       "unchanged_formula": "1 E + 1 (E+(E+F)) \u2192 1 (E+(E+(E+F)))",
-      "product_name": "Busbar Mounting Stock",
-      "machine_family": "Fitbench Integration Lines",
-      "installation_name": "Fitbench 4-056 Busbar Mount Extrusion Station",
+      "product_name": "Semiconductor Sensor Dies",
+      "machine_family": "Inorganic Finishing Lines",
+      "installation_name": "Semiconductor Sensor Die Production Line",
       "machine_family_id": "MF-S2-02-C4",
       "inputs": [
         "C1-002",
@@ -3476,9 +3448,9 @@
       "sector_id": "S2-02",
       "preferred_material_id": "C1-002",
       "unchanged_formula": "1 E + 1 (E+(E+A)) \u2192 1 (E+(E+(E+A)))",
-      "product_name": "Filter Core Sleeve",
-      "machine_family": "Fitbench Integration Lines",
-      "installation_name": "Fitbench 4-057 Core Sleeve Casting Station",
+      "product_name": "Dense Shielding Tiles",
+      "machine_family": "Inorganic Finishing Lines",
+      "installation_name": "Dense Shielding Tile Production Line",
       "machine_family_id": "MF-S2-02-C4",
       "inputs": [
         "C1-002",
@@ -3499,9 +3471,9 @@
       "sector_id": "S2-02",
       "preferred_material_id": "C1-002",
       "unchanged_formula": "1 E + 1 (E+(F+F)) \u2192 1 (E+(E+(F+F)))",
-      "product_name": "Thermal Mass Plinth",
-      "machine_family": "Fitbench Integration Lines",
-      "installation_name": "Fitbench 4-058 Plinth Casting Station",
+      "product_name": "Mineral Coated Armor Plates",
+      "machine_family": "Inorganic Finishing Lines",
+      "installation_name": "Mineral Coated Armor Plate Production Line",
       "machine_family_id": "MF-S2-02-C4",
       "inputs": [
         "C1-002",
@@ -3522,9 +3494,9 @@
       "sector_id": "S2-02",
       "preferred_material_id": "C1-002",
       "unchanged_formula": "1 E + 1 (E+(F+A)) \u2192 1 (E+(E+(F+A)))",
-      "product_name": "Electrode Holder Stock",
-      "machine_family": "Fitbench Integration Lines",
-      "installation_name": "Fitbench 4-059 Electrode Holder Forming Station",
+      "product_name": "Oxide Fuel Pellets",
+      "machine_family": "Inorganic Finishing Lines",
+      "installation_name": "Oxide Fuel Pellet Production Line",
       "machine_family_id": "MF-S2-02-C4",
       "inputs": [
         "C1-002",
@@ -3545,9 +3517,9 @@
       "sector_id": "S2-02",
       "preferred_material_id": "C1-002",
       "unchanged_formula": "1 E + 1 (E+(A+A)) \u2192 1 (E+(E+(A+A)))",
-      "product_name": "Spring Seat Insert",
-      "machine_family": "Fitbench Integration Lines",
-      "installation_name": "Fitbench 4-060 Spring Seat Forming Station",
+      "product_name": "Sealed Ceramic Power Capsules",
+      "machine_family": "Inorganic Finishing Lines",
+      "installation_name": "Sealed Ceramic Power Capsule Production Line",
       "machine_family_id": "MF-S2-02-C4",
       "inputs": [
         "C1-002",
@@ -3568,9 +3540,9 @@
       "sector_id": "S2-02",
       "preferred_material_id": "C1-002",
       "unchanged_formula": "1 E + 1 (F+(W+W)) \u2192 1 (E+(F+(W+W)))",
-      "product_name": "Gel Heat Tile",
-      "machine_family": "Fitbench Integration Lines",
-      "installation_name": "Fitbench 4-061 Gel Tile Casting Station",
+      "product_name": "Mineral Coated Polymer Panels",
+      "machine_family": "Inorganic Finishing Lines",
+      "installation_name": "Mineral Coated Polymer Panel Production Line",
       "machine_family_id": "MF-S2-02-C4",
       "inputs": [
         "C1-002",
@@ -3591,9 +3563,9 @@
       "sector_id": "S2-02",
       "preferred_material_id": "C1-002",
       "unchanged_formula": "1 E + 1 (F+(W+E)) \u2192 1 (E+(F+(W+E)))",
-      "product_name": "Furnace Joint Block",
-      "machine_family": "Fitbench Integration Lines",
-      "installation_name": "Fitbench 4-062 Furnace Joint Press",
+      "product_name": "Plating Bath Concentrates",
+      "machine_family": "Inorganic Finishing Lines",
+      "installation_name": "Plating Bath Concentrate Production Line",
       "machine_family_id": "MF-S2-02-C4",
       "inputs": [
         "C1-002",
@@ -3614,9 +3586,9 @@
       "sector_id": "S2-02",
       "preferred_material_id": "C1-002",
       "unchanged_formula": "1 E + 1 (F+(W+F)) \u2192 1 (E+(F+(W+F)))",
-      "product_name": "Hot Loop Core",
-      "machine_family": "Fitbench Integration Lines",
-      "installation_name": "Fitbench 4-063 Hot Core Casting Station",
+      "product_name": "Ceramic Supported Catalyst Mesh",
+      "machine_family": "Inorganic Finishing Lines",
+      "installation_name": "Ceramic Supported Catalyst Mesh Production Line",
       "machine_family_id": "MF-S2-02-C4",
       "inputs": [
         "C1-002",
@@ -3637,9 +3609,9 @@
       "sector_id": "S2-02",
       "preferred_material_id": "C1-002",
       "unchanged_formula": "1 E + 1 (F+(W+A)) \u2192 1 (E+(F+(W+A)))",
-      "product_name": "Firestop Block",
-      "machine_family": "Fitbench Integration Lines",
-      "installation_name": "Fitbench 4-064 Firestop Block Molding Station",
+      "product_name": "Mineral Filled Tracer Capsules",
+      "machine_family": "Inorganic Finishing Lines",
+      "installation_name": "Mineral Filled Tracer Capsule Production Line",
       "machine_family_id": "MF-S2-02-C4",
       "inputs": [
         "C1-002",
@@ -3660,9 +3632,9 @@
       "sector_id": "S2-02",
       "preferred_material_id": "C1-002",
       "unchanged_formula": "1 E + 1 (F+(E+E)) \u2192 1 (E+(F+(E+E)))",
-      "product_name": "Furnace Face Anchor",
-      "machine_family": "Fitbench Integration Lines",
-      "installation_name": "Fitbench 4-065 Face Anchor Press",
+      "product_name": "Ceramic Thrust Bearings",
+      "machine_family": "Inorganic Finishing Lines",
+      "installation_name": "Ceramic Thrust Bearing Production Line",
       "machine_family_id": "MF-S2-02-C4",
       "inputs": [
         "C1-002",
@@ -3683,9 +3655,9 @@
       "sector_id": "S2-02",
       "preferred_material_id": "C1-002",
       "unchanged_formula": "1 E + 1 (F+(E+F)) \u2192 1 (E+(F+(E+F)))",
-      "product_name": "Heater Mount Stock",
-      "machine_family": "Fitbench Integration Lines",
-      "installation_name": "Fitbench 4-066 Heater Mount Forming Station",
+      "product_name": "Passivated Power Transistors",
+      "machine_family": "Inorganic Finishing Lines",
+      "installation_name": "Passivated Power Transistor Production Line",
       "machine_family_id": "MF-S2-02-C4",
       "inputs": [
         "C1-002",
@@ -3706,9 +3678,9 @@
       "sector_id": "S2-02",
       "preferred_material_id": "C1-002",
       "unchanged_formula": "1 E + 1 (F+(E+A)) \u2192 1 (E+(F+(E+A)))",
-      "product_name": "Screen Frame Stock",
-      "machine_family": "Fitbench Integration Lines",
-      "installation_name": "Fitbench 4-067 Screen Rim Forming Station",
+      "product_name": "Ceramic Lined Shielded Containers",
+      "machine_family": "Inorganic Finishing Lines",
+      "installation_name": "Ceramic Lined Shielded Container Production Line",
       "machine_family_id": "MF-S2-02-C4",
       "inputs": [
         "C1-002",
@@ -3729,9 +3701,9 @@
       "sector_id": "S2-02",
       "preferred_material_id": "C1-002",
       "unchanged_formula": "1 E + 1 (F+(F+F)) \u2192 1 (E+(F+(F+F)))",
-      "product_name": "Heat Reserve Slab",
-      "machine_family": "Fitbench Integration Lines",
-      "installation_name": "Fitbench 4-068 Reserve Slab Casting Station",
+      "product_name": "Ceramic Coated Precision Gears",
+      "machine_family": "Inorganic Finishing Lines",
+      "installation_name": "Ceramic Coated Precision Gear Production Line",
       "machine_family_id": "MF-S2-02-C4",
       "inputs": [
         "C1-002",
@@ -3752,9 +3724,9 @@
       "sector_id": "S2-02",
       "preferred_material_id": "C1-002",
       "unchanged_formula": "1 E + 1 (F+(F+A)) \u2192 1 (E+(F+(F+A)))",
-      "product_name": "Igniter Core",
-      "machine_family": "Fitbench Integration Lines",
-      "installation_name": "Fitbench 4-069 Igniter Core Forming Station",
+      "product_name": "Oxide Coated Fuel Rods",
+      "machine_family": "Inorganic Finishing Lines",
+      "installation_name": "Oxide Coated Fuel Rod Production Line",
       "machine_family_id": "MF-S2-02-C4",
       "inputs": [
         "C1-002",
@@ -3775,9 +3747,9 @@
       "sector_id": "S2-02",
       "preferred_material_id": "C1-002",
       "unchanged_formula": "1 E + 1 (F+(A+A)) \u2192 1 (E+(F+(A+A)))",
-      "product_name": "Expansion Piston Insert",
-      "machine_family": "Fitbench Integration Lines",
-      "installation_name": "Fitbench 4-070 Piston Insert Charging Station",
+      "product_name": "Ceramic Encased Nuclear Batteries",
+      "machine_family": "Inorganic Finishing Lines",
+      "installation_name": "Ceramic Encased Nuclear Battery Production Line",
       "machine_family_id": "MF-S2-02-C4",
       "inputs": [
         "C1-002",
@@ -3798,9 +3770,9 @@
       "sector_id": "S2-02",
       "preferred_material_id": "C1-002",
       "unchanged_formula": "1 E + 1 (A+(W+W)) \u2192 1 (E+(A+(W+W)))",
-      "product_name": "Damping Foot Blank",
-      "machine_family": "Fitbench Integration Lines",
-      "installation_name": "Fitbench 4-071 Damping Foot Molding Station",
+      "product_name": "Radioactive Mineral Polymer Standards",
+      "machine_family": "Inorganic Finishing Lines",
+      "installation_name": "Radioactive Mineral Polymer Standard Production Line",
       "machine_family_id": "MF-S2-02-C4",
       "inputs": [
         "C1-002",
@@ -3821,9 +3793,9 @@
       "sector_id": "S2-02",
       "preferred_material_id": "C1-002",
       "unchanged_formula": "1 E + 1 (A+(W+E)) \u2192 1 (E+(A+(W+E)))",
-      "product_name": "Light Panel Blank",
-      "machine_family": "Fitbench Integration Lines",
-      "installation_name": "Fitbench 4-072 Light Panel Press",
+      "product_name": "Isotope Calibration Solutions",
+      "machine_family": "Inorganic Finishing Lines",
+      "installation_name": "Isotope Calibration Solution Production Line",
       "machine_family_id": "MF-S2-02-C4",
       "inputs": [
         "C1-002",
@@ -3844,9 +3816,9 @@
       "sector_id": "S2-02",
       "preferred_material_id": "C1-002",
       "unchanged_formula": "1 E + 1 (A+(W+F)) \u2192 1 (E+(A+(W+F)))",
-      "product_name": "Expansion Buffer Block",
-      "machine_family": "Fitbench Integration Lines",
-      "installation_name": "Fitbench 4-073 Expansion Block Casting Station",
+      "product_name": "Mineral Bound Radiocatalysts",
+      "machine_family": "Inorganic Finishing Lines",
+      "installation_name": "Mineral Bound Radiocatalyst Production Line",
       "machine_family_id": "MF-S2-02-C4",
       "inputs": [
         "C1-002",
@@ -3867,9 +3839,9 @@
       "sector_id": "S2-02",
       "preferred_material_id": "C1-002",
       "unchanged_formula": "1 E + 1 (A+(W+A)) \u2192 1 (E+(A+(W+A)))",
-      "product_name": "Packing Corner",
-      "machine_family": "Fitbench Integration Lines",
-      "installation_name": "Fitbench 4-074 Packing Corner Molding Station",
+      "product_name": "Buffered Therapeutic Isotopes",
+      "machine_family": "Inorganic Finishing Lines",
+      "installation_name": "Buffered Therapeutic Isotope Production Line",
       "machine_family_id": "MF-S2-02-C4",
       "inputs": [
         "C1-002",
@@ -3890,9 +3862,9 @@
       "sector_id": "S2-02",
       "preferred_material_id": "C1-002",
       "unchanged_formula": "1 E + 1 (A+(E+E)) \u2192 1 (E+(A+(E+E)))",
-      "product_name": "Insulator Mount",
-      "machine_family": "Fitbench Integration Lines",
-      "installation_name": "Fitbench 4-075 Insulator Mount Press",
+      "product_name": "Glass Sealed Radiation Sources",
+      "machine_family": "Inorganic Finishing Lines",
+      "installation_name": "Glass Sealed Radiation Source Production Line",
       "machine_family_id": "MF-S2-02-C4",
       "inputs": [
         "C1-002",
@@ -3913,9 +3885,9 @@
       "sector_id": "S2-02",
       "preferred_material_id": "C1-002",
       "unchanged_formula": "1 E + 1 (A+(E+F)) \u2192 1 (E+(A+(E+F)))",
-      "product_name": "Contact Lattice Blank",
-      "machine_family": "Fitbench Integration Lines",
-      "installation_name": "Fitbench 4-076 Contact Lattice Forming Station",
+      "product_name": "Passivated Radiation Detector Dies",
+      "machine_family": "Inorganic Finishing Lines",
+      "installation_name": "Passivated Radiation Detector Die Production Line",
       "machine_family_id": "MF-S2-02-C4",
       "inputs": [
         "C1-002",
@@ -3936,9 +3908,9 @@
       "sector_id": "S2-02",
       "preferred_material_id": "C1-002",
       "unchanged_formula": "1 E + 1 (A+(E+A)) \u2192 1 (E+(A+(E+A)))",
-      "product_name": "Diffuser Manifold Blank",
-      "machine_family": "Fitbench Integration Lines",
-      "installation_name": "Fitbench 4-077 Diffuser Manifold Casting Station",
+      "product_name": "Ceramic Encased Source Capsules",
+      "machine_family": "Inorganic Finishing Lines",
+      "installation_name": "Ceramic Encased Source Capsule Production Line",
       "machine_family_id": "MF-S2-02-C4",
       "inputs": [
         "C1-002",
@@ -3959,9 +3931,9 @@
       "sector_id": "S2-02",
       "preferred_material_id": "C1-002",
       "unchanged_formula": "1 E + 1 (A+(F+F)) \u2192 1 (E+(A+(F+F)))",
-      "product_name": "Insulating Fill Brick",
-      "machine_family": "Fitbench Integration Lines",
-      "installation_name": "Fitbench 4-078 Fill Brick Press",
+      "product_name": "Mineral Bound Source Pellets",
+      "machine_family": "Inorganic Finishing Lines",
+      "installation_name": "Mineral Bound Source Pellet Production Line",
       "machine_family_id": "MF-S2-02-C4",
       "inputs": [
         "C1-002",
@@ -3982,9 +3954,9 @@
       "sector_id": "S2-02",
       "preferred_material_id": "C1-002",
       "unchanged_formula": "1 E + 1 (A+(F+A)) \u2192 1 (E+(A+(F+A)))",
-      "product_name": "Lamp Electrode Stock",
-      "machine_family": "Fitbench Integration Lines",
-      "installation_name": "Fitbench 4-079 Lamp Electrode Forming Station",
+      "product_name": "Enriched Ceramic Fuel",
+      "machine_family": "Inorganic Finishing Lines",
+      "installation_name": "Enriched Ceramic Fuel Production Line",
       "machine_family_id": "MF-S2-02-C4",
       "inputs": [
         "C1-002",
@@ -4005,9 +3977,9 @@
       "sector_id": "S2-02",
       "preferred_material_id": "C1-002",
       "unchanged_formula": "1 E + 1 (A+(A+A)) \u2192 1 (E+(A+(A+A)))",
-      "product_name": "Pneumatic Buffer Core",
-      "machine_family": "Fitbench Integration Lines",
-      "installation_name": "Fitbench 4-080 Pneumatic Core Charging Station",
+      "product_name": "Ceramic Sealed Isotope Cells",
+      "machine_family": "Inorganic Finishing Lines",
+      "installation_name": "Ceramic Sealed Isotope Cell Production Line",
       "machine_family_id": "MF-S2-02-C4",
       "inputs": [
         "C1-002",
@@ -4028,9 +4000,9 @@
       "sector_id": "S2-03",
       "preferred_material_id": "C1-003",
       "unchanged_formula": "1 F + 1 (W+(W+W)) \u2192 1 (F+(W+(W+W)))",
-      "product_name": "Warm Release Gel",
-      "machine_family": "Heatbench Finishing Lines",
-      "installation_name": "Heatbench 4-081 Warm Gel Charging Station",
+      "product_name": "Conductive Polymer Sheets",
+      "machine_family": "Metal Finishing Lines",
+      "installation_name": "Conductive Polymer Sheet Production Line",
       "machine_family_id": "MF-S2-03-C4",
       "inputs": [
         "C1-003",
@@ -4051,9 +4023,9 @@
       "sector_id": "S2-03",
       "preferred_material_id": "C1-003",
       "unchanged_formula": "1 F + 1 (W+(W+E)) \u2192 1 (F+(W+(W+E)))",
-      "product_name": "Hot Pour Slip",
-      "machine_family": "Heatbench Finishing Lines",
-      "installation_name": "Heatbench 4-082 Hot Slip Conditioning Station",
+      "product_name": "Metal Enriched Culture Nutrients",
+      "machine_family": "Metal Finishing Lines",
+      "installation_name": "Metal Enriched Culture Nutrient Production Line",
       "machine_family_id": "MF-S2-03-C4",
       "inputs": [
         "C1-003",
@@ -4074,9 +4046,9 @@
       "sector_id": "S2-03",
       "preferred_material_id": "C1-003",
       "unchanged_formula": "1 F + 1 (W+(W+F)) \u2192 1 (F+(W+(W+F)))",
-      "product_name": "Tempering Charge",
-      "machine_family": "Heatbench Finishing Lines",
-      "installation_name": "Heatbench 4-083 Tempering Media Loading Station",
+      "product_name": "Metal Supported Enzyme Catalysts",
+      "machine_family": "Metal Finishing Lines",
+      "installation_name": "Metal Supported Enzyme Catalyst Production Line",
       "machine_family_id": "MF-S2-03-C4",
       "inputs": [
         "C1-003",
@@ -4097,9 +4069,9 @@
       "sector_id": "S2-03",
       "preferred_material_id": "C1-003",
       "unchanged_formula": "1 F + 1 (W+(W+A)) \u2192 1 (F+(W+(W+A)))",
-      "product_name": "Hot Wash Foam",
-      "machine_family": "Heatbench Finishing Lines",
-      "installation_name": "Heatbench 4-084 Hot Wash Conditioning Station",
+      "product_name": "Metal Bound Diagnostic Tracers",
+      "machine_family": "Metal Finishing Lines",
+      "installation_name": "Metal Bound Diagnostic Tracer Production Line",
       "machine_family_id": "MF-S2-03-C4",
       "inputs": [
         "C1-003",
@@ -4120,9 +4092,9 @@
       "sector_id": "S2-03",
       "preferred_material_id": "C1-003",
       "unchanged_formula": "1 F + 1 (W+(E+E)) \u2192 1 (F+(W+(E+E)))",
-      "product_name": "Heated Wick Tile",
-      "machine_family": "Heatbench Finishing Lines",
-      "installation_name": "Heatbench 4-085 Wick Thermal Loading Station",
+      "product_name": "Cased Ceramic Filters",
+      "machine_family": "Metal Finishing Lines",
+      "installation_name": "Cased Ceramic Filter Production Line",
       "machine_family_id": "MF-S2-03-C4",
       "inputs": [
         "C1-003",
@@ -4143,9 +4115,9 @@
       "sector_id": "S2-03",
       "preferred_material_id": "C1-003",
       "unchanged_formula": "1 F + 1 (W+(E+F)) \u2192 1 (F+(W+(E+F)))",
-      "product_name": "Thermal Contact Strip",
-      "machine_family": "Heatbench Finishing Lines",
-      "installation_name": "Heatbench 4-086 Contact Strip Thermal Loading Station",
+      "product_name": "Packaged Biosensor Chips",
+      "machine_family": "Metal Finishing Lines",
+      "installation_name": "Packaged Biosensor Chip Production Line",
       "machine_family_id": "MF-S2-03-C4",
       "inputs": [
         "C1-003",
@@ -4166,9 +4138,9 @@
       "sector_id": "S2-03",
       "preferred_material_id": "C1-003",
       "unchanged_formula": "1 F + 1 (W+(E+A)) \u2192 1 (F+(W+(E+A)))",
-      "product_name": "Warm Filter Stone",
-      "machine_family": "Heatbench Finishing Lines",
-      "installation_name": "Heatbench 4-087 Filter Thermal Loading Station",
+      "product_name": "Shielding Door Panels",
+      "machine_family": "Metal Finishing Lines",
+      "installation_name": "Shielding Door Panel Production Line",
       "machine_family_id": "MF-S2-03-C4",
       "inputs": [
         "C1-003",
@@ -4189,9 +4161,9 @@
       "sector_id": "S2-03",
       "preferred_material_id": "C1-003",
       "unchanged_formula": "1 F + 1 (W+(F+F)) \u2192 1 (F+(W+(F+F)))",
-      "product_name": "Heat Holding Slush",
-      "machine_family": "Heatbench Finishing Lines",
-      "installation_name": "Heatbench 4-088 Slush Thermal Loading Station",
+      "product_name": "Composite Structural Frames",
+      "machine_family": "Metal Finishing Lines",
+      "installation_name": "Composite Structural Frame Production Line",
       "machine_family_id": "MF-S2-03-C4",
       "inputs": [
         "C1-003",
@@ -4212,9 +4184,9 @@
       "sector_id": "S2-03",
       "preferred_material_id": "C1-003",
       "unchanged_formula": "1 F + 1 (W+(F+A)) \u2192 1 (F+(W+(F+A)))",
-      "product_name": "Tempered Quench Mist",
-      "machine_family": "Heatbench Finishing Lines",
-      "installation_name": "Heatbench 4-089 Quench Mist Tempering Station",
+      "product_name": "Canned Carbon Fuel Pellets",
+      "machine_family": "Metal Finishing Lines",
+      "installation_name": "Canned Carbon Fuel Pellet Production Line",
       "machine_family_id": "MF-S2-03-C4",
       "inputs": [
         "C1-003",
@@ -4235,9 +4207,9 @@
       "sector_id": "S2-03",
       "preferred_material_id": "C1-003",
       "unchanged_formula": "1 F + 1 (W+(A+A)) \u2192 1 (F+(W+(A+A)))",
-      "product_name": "Warm Spray Charge",
-      "machine_family": "Heatbench Finishing Lines",
-      "installation_name": "Heatbench 4-090 Warm Spray Loading Station",
+      "product_name": "Armored Power Cell Modules",
+      "machine_family": "Metal Finishing Lines",
+      "installation_name": "Armored Power Cell Module Production Line",
       "machine_family_id": "MF-S2-03-C4",
       "inputs": [
         "C1-003",
@@ -4258,9 +4230,9 @@
       "sector_id": "S2-03",
       "preferred_material_id": "C1-003",
       "unchanged_formula": "1 F + 1 (E+(W+W)) \u2192 1 (F+(E+(W+W)))",
-      "product_name": "Heated Wipe Pad",
-      "machine_family": "Heatbench Finishing Lines",
-      "installation_name": "Heatbench 4-091 Wipe Pad Thermal Loading Station",
+      "product_name": "Metal Faced Insulation Panels",
+      "machine_family": "Metal Finishing Lines",
+      "installation_name": "Metal Faced Insulation Panel Production Line",
       "machine_family_id": "MF-S2-03-C4",
       "inputs": [
         "C1-003",
@@ -4281,9 +4253,9 @@
       "sector_id": "S2-03",
       "preferred_material_id": "C1-003",
       "unchanged_formula": "1 F + 1 (E+(W+E)) \u2192 1 (F+(E+(W+E)))",
-      "product_name": "Heat Set Tile",
-      "machine_family": "Heatbench Finishing Lines",
-      "installation_name": "Heatbench 4-092 Tile Heat Setting Station",
+      "product_name": "Electrochemical Electrode Packs",
+      "machine_family": "Metal Finishing Lines",
+      "installation_name": "Electrochemical Electrode Pack Production Line",
       "machine_family_id": "MF-S2-03-C4",
       "inputs": [
         "C1-003",
@@ -4304,9 +4276,9 @@
       "sector_id": "S2-03",
       "preferred_material_id": "C1-003",
       "unchanged_formula": "1 F + 1 (E+(W+F)) \u2192 1 (F+(E+(W+F)))",
-      "product_name": "Charged Transfer Plate",
-      "machine_family": "Heatbench Finishing Lines",
-      "installation_name": "Heatbench 4-093 Transfer Plate Thermal Loading Station",
+      "product_name": "Catalyst Grids",
+      "machine_family": "Metal Finishing Lines",
+      "installation_name": "Catalyst Grid Production Line",
       "machine_family_id": "MF-S2-03-C4",
       "inputs": [
         "C1-003",
@@ -4327,9 +4299,9 @@
       "sector_id": "S2-03",
       "preferred_material_id": "C1-003",
       "unchanged_formula": "1 F + 1 (E+(W+A)) \u2192 1 (F+(E+(W+A)))",
-      "product_name": "Thermal Seat Seal",
-      "machine_family": "Heatbench Finishing Lines",
-      "installation_name": "Heatbench 4-094 Seat Seal Heat Setting Station",
+      "product_name": "Sealed Mineral Tracer Sources",
+      "machine_family": "Metal Finishing Lines",
+      "installation_name": "Sealed Mineral Tracer Source Production Line",
       "machine_family_id": "MF-S2-03-C4",
       "inputs": [
         "C1-003",
@@ -4350,9 +4322,9 @@
       "sector_id": "S2-03",
       "preferred_material_id": "C1-003",
       "unchanged_formula": "1 F + 1 (E+(E+E)) \u2192 1 (F+(E+(E+E)))",
-      "product_name": "Warm Guide Plate",
-      "machine_family": "Heatbench Finishing Lines",
-      "installation_name": "Heatbench 4-095 Guide Plate Thermal Loading Station",
+      "product_name": "Ceramic Feedthrough Assemblies",
+      "machine_family": "Metal Finishing Lines",
+      "installation_name": "Ceramic Feedthrough Assembly Production Line",
       "machine_family_id": "MF-S2-03-C4",
       "inputs": [
         "C1-003",
@@ -4373,9 +4345,9 @@
       "sector_id": "S2-03",
       "preferred_material_id": "C1-003",
       "unchanged_formula": "1 F + 1 (E+(E+F)) \u2192 1 (F+(E+(E+F)))",
-      "product_name": "Warm Service Busbar",
-      "machine_family": "Heatbench Finishing Lines",
-      "installation_name": "Heatbench 4-096 Busbar Thermal Loading Station",
+      "product_name": "Packaged Semiconductor Devices",
+      "machine_family": "Metal Finishing Lines",
+      "installation_name": "Packaged Semiconductor Device Production Line",
       "machine_family_id": "MF-S2-03-C4",
       "inputs": [
         "C1-003",
@@ -4396,9 +4368,9 @@
       "sector_id": "S2-03",
       "preferred_material_id": "C1-003",
       "unchanged_formula": "1 F + 1 (E+(E+A)) \u2192 1 (F+(E+(E+A)))",
-      "product_name": "Thermal Flow Core",
-      "machine_family": "Heatbench Finishing Lines",
-      "installation_name": "Heatbench 4-097 Flow Core Thermal Loading Station",
+      "product_name": "Shielding Wall Panels",
+      "machine_family": "Metal Finishing Lines",
+      "installation_name": "Shielding Wall Panel Production Line",
       "machine_family_id": "MF-S2-03-C4",
       "inputs": [
         "C1-003",
@@ -4419,9 +4391,9 @@
       "sector_id": "S2-03",
       "preferred_material_id": "C1-003",
       "unchanged_formula": "1 F + 1 (E+(F+F)) \u2192 1 (F+(E+(F+F)))",
-      "product_name": "Charged Storage Block",
-      "machine_family": "Heatbench Finishing Lines",
-      "installation_name": "Heatbench 4-098 Storage Block Charging Station",
+      "product_name": "Structural Armor Sections",
+      "machine_family": "Metal Finishing Lines",
+      "installation_name": "Structural Armor Section Production Line",
       "machine_family_id": "MF-S2-03-C4",
       "inputs": [
         "C1-003",
@@ -4442,9 +4414,9 @@
       "sector_id": "S2-03",
       "preferred_material_id": "C1-003",
       "unchanged_formula": "1 F + 1 (E+(F+A)) \u2192 1 (F+(E+(F+A)))",
-      "product_name": "Hot Electrode Stock",
-      "machine_family": "Heatbench Finishing Lines",
-      "installation_name": "Heatbench 4-099 Electrode Thermal Loading Station",
+      "product_name": "Clad Ceramic Fuel Pellets",
+      "machine_family": "Metal Finishing Lines",
+      "installation_name": "Clad Ceramic Fuel Pellet Production Line",
       "machine_family_id": "MF-S2-03-C4",
       "inputs": [
         "C1-003",
@@ -4465,9 +4437,9 @@
       "sector_id": "S2-03",
       "preferred_material_id": "C1-003",
       "unchanged_formula": "1 F + 1 (E+(A+A)) \u2192 1 (F+(E+(A+A)))",
-      "product_name": "Thermal Spring Core",
-      "machine_family": "Heatbench Finishing Lines",
-      "installation_name": "Heatbench 4-100 Spring Core Thermal Loading Station",
+      "product_name": "Metal Cased Power Capsules",
+      "machine_family": "Metal Finishing Lines",
+      "installation_name": "Metal Cased Power Capsule Production Line",
       "machine_family_id": "MF-S2-03-C4",
       "inputs": [
         "C1-003",
@@ -4488,9 +4460,9 @@
       "sector_id": "S2-03",
       "preferred_material_id": "C1-003",
       "unchanged_formula": "1 F + 1 (F+(W+W)) \u2192 1 (F+(F+(W+W)))",
-      "product_name": "Long Hold Heat Gel",
-      "machine_family": "Heatbench Finishing Lines",
-      "installation_name": "Heatbench 4-101 Reserve Gel Charging Station",
+      "product_name": "Reinforced Equipment Housings",
+      "machine_family": "Metal Finishing Lines",
+      "installation_name": "Reinforced Equipment Housing Production Line",
       "machine_family_id": "MF-S2-03-C4",
       "inputs": [
         "C1-003",
@@ -4511,9 +4483,9 @@
       "sector_id": "S2-03",
       "preferred_material_id": "C1-003",
       "unchanged_formula": "1 F + 1 (F+(W+E)) \u2192 1 (F+(F+(W+E)))",
-      "product_name": "Hot Joint Mortar",
-      "machine_family": "Heatbench Finishing Lines",
-      "installation_name": "Heatbench 4-102 Joint Mortar Thermal Loading Station",
+      "product_name": "Electroplating Anode Kits",
+      "machine_family": "Metal Finishing Lines",
+      "installation_name": "Electroplating Anode Kit Production Line",
       "machine_family_id": "MF-S2-03-C4",
       "inputs": [
         "C1-003",
@@ -4534,9 +4506,9 @@
       "sector_id": "S2-03",
       "preferred_material_id": "C1-003",
       "unchanged_formula": "1 F + 1 (F+(W+F)) \u2192 1 (F+(F+(W+F)))",
-      "product_name": "High Temperature Loop Fill",
-      "machine_family": "Heatbench Finishing Lines",
-      "installation_name": "Heatbench 4-103 High Temperature Fluid Loading Station",
+      "product_name": "Catalytic Converter Cores",
+      "machine_family": "Metal Finishing Lines",
+      "installation_name": "Catalytic Converter Core Production Line",
       "machine_family_id": "MF-S2-03-C4",
       "inputs": [
         "C1-003",
@@ -4557,9 +4529,9 @@
       "sector_id": "S2-03",
       "preferred_material_id": "C1-003",
       "unchanged_formula": "1 F + 1 (F+(W+A)) \u2192 1 (F+(F+(W+A)))",
-      "product_name": "Thermal Barrier Foam",
-      "machine_family": "Heatbench Finishing Lines",
-      "installation_name": "Heatbench 4-104 Barrier Foam Heat Setting Station",
+      "product_name": "Sealed Tracer Source Assemblies",
+      "machine_family": "Metal Finishing Lines",
+      "installation_name": "Sealed Tracer Source Assembly Production Line",
       "machine_family_id": "MF-S2-03-C4",
       "inputs": [
         "C1-003",
@@ -4580,9 +4552,9 @@
       "sector_id": "S2-03",
       "preferred_material_id": "C1-003",
       "unchanged_formula": "1 F + 1 (F+(E+E)) \u2192 1 (F+(F+(E+E)))",
-      "product_name": "Heat Reserve Brick",
-      "machine_family": "Heatbench Finishing Lines",
-      "installation_name": "Heatbench 4-105 Reserve Brick Charging Station",
+      "product_name": "Bearing Assemblies",
+      "machine_family": "Metal Finishing Lines",
+      "installation_name": "Bearing Assembly Production Line",
       "machine_family_id": "MF-S2-03-C4",
       "inputs": [
         "C1-003",
@@ -4603,9 +4575,9 @@
       "sector_id": "S2-03",
       "preferred_material_id": "C1-003",
       "unchanged_formula": "1 F + 1 (F+(E+F)) \u2192 1 (F+(F+(E+F)))",
-      "product_name": "Reserve Heater Ribbon",
-      "machine_family": "Heatbench Finishing Lines",
-      "installation_name": "Heatbench 4-106 Heater Ribbon Charging Station",
+      "product_name": "Power Switching Modules",
+      "machine_family": "Metal Finishing Lines",
+      "installation_name": "Power Switching Module Production Line",
       "machine_family_id": "MF-S2-03-C4",
       "inputs": [
         "C1-003",
@@ -4626,9 +4598,9 @@
       "sector_id": "S2-03",
       "preferred_material_id": "C1-003",
       "unchanged_formula": "1 F + 1 (F+(E+A)) \u2192 1 (F+(F+(E+A)))",
-      "product_name": "Thermal Screen Insert",
-      "machine_family": "Heatbench Finishing Lines",
-      "installation_name": "Heatbench 4-107 Screen Insert Thermal Loading Station",
+      "product_name": "Shielded Transport Casks",
+      "machine_family": "Metal Finishing Lines",
+      "installation_name": "Shielded Transport Cask Production Line",
       "machine_family_id": "MF-S2-03-C4",
       "inputs": [
         "C1-003",
@@ -4649,9 +4621,9 @@
       "sector_id": "S2-03",
       "preferred_material_id": "C1-003",
       "unchanged_formula": "1 F + 1 (F+(F+F)) \u2192 1 (F+(F+(F+F)))",
-      "product_name": "Deep Heat Reserve",
-      "machine_family": "Heatbench Finishing Lines",
-      "installation_name": "Heatbench 4-108 Deep Reserve Loading Station",
+      "product_name": "Gearbox Assemblies",
+      "machine_family": "Metal Finishing Lines",
+      "installation_name": "Gearbox Assembly Production Line",
       "machine_family_id": "MF-S2-03-C4",
       "inputs": [
         "C1-003",
@@ -4672,9 +4644,9 @@
       "sector_id": "S2-03",
       "preferred_material_id": "C1-003",
       "unchanged_formula": "1 F + 1 (F+(F+A)) \u2192 1 (F+(F+(F+A)))",
-      "product_name": "Hot Start Charge",
-      "machine_family": "Heatbench Finishing Lines",
-      "installation_name": "Heatbench 4-109 Hot Start Loading Station",
+      "product_name": "Fuel Rod Bundles",
+      "machine_family": "Metal Finishing Lines",
+      "installation_name": "Fuel Rod Bundle Production Line",
       "machine_family_id": "MF-S2-03-C4",
       "inputs": [
         "C1-003",
@@ -4695,9 +4667,9 @@
       "sector_id": "S2-03",
       "preferred_material_id": "C1-003",
       "unchanged_formula": "1 F + 1 (F+(A+A)) \u2192 1 (F+(F+(A+A)))",
-      "product_name": "Drive Expansion Fill",
-      "machine_family": "Heatbench Finishing Lines",
-      "installation_name": "Heatbench 4-110 Drive Fill Thermal Loading Station",
+      "product_name": "Nuclear Battery Banks",
+      "machine_family": "Metal Finishing Lines",
+      "installation_name": "Nuclear Battery Bank Production Line",
       "machine_family_id": "MF-S2-03-C4",
       "inputs": [
         "C1-003",
@@ -4718,9 +4690,9 @@
       "sector_id": "S2-03",
       "preferred_material_id": "C1-003",
       "unchanged_formula": "1 F + 1 (A+(W+W)) \u2192 1 (F+(A+(W+W)))",
-      "product_name": "Warm Damping Gel",
-      "machine_family": "Heatbench Finishing Lines",
-      "installation_name": "Heatbench 4-111 Damping Gel Thermal Loading Station",
+      "product_name": "Metal Backed Radioactive Standards",
+      "machine_family": "Metal Finishing Lines",
+      "installation_name": "Metal Backed Radioactive Standard Production Line",
       "machine_family_id": "MF-S2-03-C4",
       "inputs": [
         "C1-003",
@@ -4741,9 +4713,9 @@
       "sector_id": "S2-03",
       "preferred_material_id": "C1-003",
       "unchanged_formula": "1 F + 1 (A+(W+E)) \u2192 1 (F+(A+(W+E)))",
-      "product_name": "Heat Set Light Fill",
-      "machine_family": "Heatbench Finishing Lines",
-      "installation_name": "Heatbench 4-112 Light Fill Heat Setting Station",
+      "product_name": "Metal Isotope Reagents",
+      "machine_family": "Metal Finishing Lines",
+      "installation_name": "Metal Isotope Reagent Production Line",
       "machine_family_id": "MF-S2-03-C4",
       "inputs": [
         "C1-003",
@@ -4764,9 +4736,9 @@
       "sector_id": "S2-03",
       "preferred_material_id": "C1-003",
       "unchanged_formula": "1 F + 1 (A+(W+F)) \u2192 1 (F+(A+(W+F)))",
-      "product_name": "Thermal Expansion Fluid",
-      "machine_family": "Heatbench Finishing Lines",
-      "installation_name": "Heatbench 4-113 Expansion Fluid Thermal Loading Station",
+      "product_name": "Tagged Catalyst Grids",
+      "machine_family": "Metal Finishing Lines",
+      "installation_name": "Tagged Catalyst Grid Production Line",
       "machine_family_id": "MF-S2-03-C4",
       "inputs": [
         "C1-003",
@@ -4787,9 +4759,9 @@
       "sector_id": "S2-03",
       "preferred_material_id": "C1-003",
       "unchanged_formula": "1 F + 1 (A+(W+A)) \u2192 1 (F+(A+(W+A)))",
-      "product_name": "Heat Stable Cushion",
-      "machine_family": "Heatbench Finishing Lines",
-      "installation_name": "Heatbench 4-114 Cushion Heat Setting Station",
+      "product_name": "Sealed Therapeutic Sources",
+      "machine_family": "Metal Finishing Lines",
+      "installation_name": "Sealed Therapeutic Source Production Line",
       "machine_family_id": "MF-S2-03-C4",
       "inputs": [
         "C1-003",
@@ -4810,9 +4782,9 @@
       "sector_id": "S2-03",
       "preferred_material_id": "C1-003",
       "unchanged_formula": "1 F + 1 (A+(E+E)) \u2192 1 (F+(A+(E+E)))",
-      "product_name": "Charged Hollow Tile",
-      "machine_family": "Heatbench Finishing Lines",
-      "installation_name": "Heatbench 4-115 Hollow Tile Charging Station",
+      "product_name": "Radiation Source Holders",
+      "machine_family": "Metal Finishing Lines",
+      "installation_name": "Radiation Source Holder Production Line",
       "machine_family_id": "MF-S2-03-C4",
       "inputs": [
         "C1-003",
@@ -4833,9 +4805,9 @@
       "sector_id": "S2-03",
       "preferred_material_id": "C1-003",
       "unchanged_formula": "1 F + 1 (A+(E+F)) \u2192 1 (F+(A+(E+F)))",
-      "product_name": "Mesh Heater Stock",
-      "machine_family": "Heatbench Finishing Lines",
-      "installation_name": "Heatbench 4-116 Mesh Thermal Loading Station",
+      "product_name": "Radiation Detector Modules",
+      "machine_family": "Metal Finishing Lines",
+      "installation_name": "Radiation Detector Module Production Line",
       "machine_family_id": "MF-S2-03-C4",
       "inputs": [
         "C1-003",
@@ -4856,9 +4828,9 @@
       "sector_id": "S2-03",
       "preferred_material_id": "C1-003",
       "unchanged_formula": "1 F + 1 (A+(E+A)) \u2192 1 (F+(A+(E+A)))",
-      "product_name": "Warm Gas Diffuser",
-      "machine_family": "Heatbench Finishing Lines",
-      "installation_name": "Heatbench 4-117 Diffuser Thermal Loading Station",
+      "product_name": "Source Storage Casks",
+      "machine_family": "Metal Finishing Lines",
+      "installation_name": "Source Storage Cask Production Line",
       "machine_family_id": "MF-S2-03-C4",
       "inputs": [
         "C1-003",
@@ -4879,9 +4851,9 @@
       "sector_id": "S2-03",
       "preferred_material_id": "C1-003",
       "unchanged_formula": "1 F + 1 (A+(F+F)) \u2192 1 (F+(A+(F+F)))",
-      "product_name": "Warm Granular Fill",
-      "machine_family": "Heatbench Finishing Lines",
-      "installation_name": "Heatbench 4-118 Granular Fill Thermal Loading Station",
+      "product_name": "Alloy Source Cartridges",
+      "machine_family": "Metal Finishing Lines",
+      "installation_name": "Alloy Source Cartridge Production Line",
       "machine_family_id": "MF-S2-03-C4",
       "inputs": [
         "C1-003",
@@ -4902,9 +4874,9 @@
       "sector_id": "S2-03",
       "preferred_material_id": "C1-003",
       "unchanged_formula": "1 F + 1 (A+(F+A)) \u2192 1 (F+(A+(F+A)))",
-      "product_name": "Warm Start Lamp Gas",
-      "machine_family": "Heatbench Finishing Lines",
-      "installation_name": "Heatbench 4-119 Lamp Gas Thermal Loading Station",
+      "product_name": "Clad Enriched Fuel Pellets",
+      "machine_family": "Metal Finishing Lines",
+      "installation_name": "Clad Enriched Fuel Pellet Production Line",
       "machine_family_id": "MF-S2-03-C4",
       "inputs": [
         "C1-003",
@@ -4925,9 +4897,9 @@
       "sector_id": "S2-03",
       "preferred_material_id": "C1-003",
       "unchanged_formula": "1 F + 1 (A+(A+A)) \u2192 1 (F+(A+(A+A)))",
-      "product_name": "Thermal Pneumatic Fill",
-      "machine_family": "Heatbench Finishing Lines",
-      "installation_name": "Heatbench 4-120 Pneumatic Fill Thermal Loading Station",
+      "product_name": "High Output Nuclear Battery Modules",
+      "machine_family": "Metal Finishing Lines",
+      "installation_name": "High Output Nuclear Battery Module Production Line",
       "machine_family_id": "MF-S2-03-C4",
       "inputs": [
         "C1-003",
@@ -4948,9 +4920,9 @@
       "sector_id": "S2-04",
       "preferred_material_id": "C1-004",
       "unchanged_formula": "1 A + 1 (W+(W+W)) \u2192 1 (A+(W+(W+W)))",
-      "product_name": "Breathing Reservoir Gel",
-      "machine_family": "Airbench Charging Lines",
-      "installation_name": "Airbench 4-121 Reservoir Gel Gas Loading Station",
+      "product_name": "Radioactive Resin Standards",
+      "machine_family": "Isotope Finishing Lines",
+      "installation_name": "Radioactive Resin Standard Production Line",
       "machine_family_id": "MF-S2-04-C4",
       "inputs": [
         "C1-004",
@@ -4971,9 +4943,9 @@
       "sector_id": "S2-04",
       "preferred_material_id": "C1-004",
       "unchanged_formula": "1 A + 1 (W+(W+E)) \u2192 1 (A+(W+(W+E)))",
-      "product_name": "Aerated Casting Slip",
-      "machine_family": "Airbench Charging Lines",
-      "installation_name": "Airbench 4-122 Casting Slip Aeration Station",
+      "product_name": "Radiolabeled Culture Nutrients",
+      "machine_family": "Isotope Finishing Lines",
+      "installation_name": "Radiolabeled Culture Nutrient Production Line",
       "machine_family_id": "MF-S2-04-C4",
       "inputs": [
         "C1-004",
@@ -4994,9 +4966,9 @@
       "sector_id": "S2-04",
       "preferred_material_id": "C1-004",
       "unchanged_formula": "1 A + 1 (W+(W+F)) \u2192 1 (A+(W+(W+F)))",
-      "product_name": "Gas Buffered Coolant",
-      "machine_family": "Airbench Charging Lines",
-      "installation_name": "Airbench 4-123 Coolant Gas Loading Station",
+      "product_name": "Tracer Enzyme Catalysts",
+      "machine_family": "Isotope Finishing Lines",
+      "installation_name": "Tracer Enzyme Catalyst Production Line",
       "machine_family_id": "MF-S2-04-C4",
       "inputs": [
         "C1-004",
@@ -5017,9 +4989,9 @@
       "sector_id": "S2-04",
       "preferred_material_id": "C1-004",
       "unchanged_formula": "1 A + 1 (W+(W+A)) \u2192 1 (A+(W+(W+A)))",
-      "product_name": "Light Wash Foam",
-      "machine_family": "Airbench Charging Lines",
-      "installation_name": "Airbench 4-124 Wash Foam Expansion Station",
+      "product_name": "Dual Isotope Diagnostic Tracers",
+      "machine_family": "Isotope Finishing Lines",
+      "installation_name": "Dual Isotope Diagnostic Tracer Production Line",
       "machine_family_id": "MF-S2-04-C4",
       "inputs": [
         "C1-004",
@@ -5040,9 +5012,9 @@
       "sector_id": "S2-04",
       "preferred_material_id": "C1-004",
       "unchanged_formula": "1 A + 1 (W+(E+E)) \u2192 1 (A+(W+(E+E)))",
-      "product_name": "Breathing Wick Tile",
-      "machine_family": "Airbench Charging Lines",
-      "installation_name": "Airbench 4-125 Wick Tile Pore Balancing Station",
+      "product_name": "Ceramic Tracer Filters",
+      "machine_family": "Isotope Finishing Lines",
+      "installation_name": "Ceramic Tracer Filter Production Line",
       "machine_family_id": "MF-S2-04-C4",
       "inputs": [
         "C1-004",
@@ -5063,9 +5035,9 @@
       "sector_id": "S2-04",
       "preferred_material_id": "C1-004",
       "unchanged_formula": "1 A + 1 (W+(E+F)) \u2192 1 (A+(W+(E+F)))",
-      "product_name": "Vented Cooling Strip",
-      "machine_family": "Airbench Charging Lines",
-      "installation_name": "Airbench 4-126 Cooling Strip Vent Forming Station",
+      "product_name": "Isotope Reference Biosensors",
+      "machine_family": "Isotope Finishing Lines",
+      "installation_name": "Isotope Reference Biosensor Production Line",
       "machine_family_id": "MF-S2-04-C4",
       "inputs": [
         "C1-004",
@@ -5086,9 +5058,9 @@
       "sector_id": "S2-04",
       "preferred_material_id": "C1-004",
       "unchanged_formula": "1 A + 1 (W+(E+A)) \u2192 1 (A+(W+(E+A)))",
-      "product_name": "Gas Lift Filter Stone",
-      "machine_family": "Airbench Charging Lines",
-      "installation_name": "Airbench 4-127 Filter Gas Loading Station",
+      "product_name": "Source Loaded Organic Shields",
+      "machine_family": "Isotope Finishing Lines",
+      "installation_name": "Source Loaded Organic Shield Production Line",
       "machine_family_id": "MF-S2-04-C4",
       "inputs": [
         "C1-004",
@@ -5109,9 +5081,9 @@
       "sector_id": "S2-04",
       "preferred_material_id": "C1-004",
       "unchanged_formula": "1 A + 1 (W+(F+F)) \u2192 1 (A+(W+(F+F)))",
-      "product_name": "Aerated Buffer Slush",
-      "machine_family": "Airbench Charging Lines",
-      "installation_name": "Airbench 4-128 Buffer Slush Aeration Station",
+      "product_name": "Composite Source Supports",
+      "machine_family": "Isotope Finishing Lines",
+      "installation_name": "Composite Source Support Production Line",
       "machine_family_id": "MF-S2-04-C4",
       "inputs": [
         "C1-004",
@@ -5132,9 +5104,9 @@
       "sector_id": "S2-04",
       "preferred_material_id": "C1-004",
       "unchanged_formula": "1 A + 1 (W+(F+A)) \u2192 1 (A+(W+(F+A)))",
-      "product_name": "Arc Purge Mist",
-      "machine_family": "Airbench Charging Lines",
-      "installation_name": "Airbench 4-129 Purge Mist Gas Balancing Station",
+      "product_name": "Enriched Carbon Fuel",
+      "machine_family": "Isotope Finishing Lines",
+      "installation_name": "Enriched Carbon Fuel Production Line",
       "machine_family_id": "MF-S2-04-C4",
       "inputs": [
         "C1-004",
@@ -5155,9 +5127,9 @@
       "sector_id": "S2-04",
       "preferred_material_id": "C1-004",
       "unchanged_formula": "1 A + 1 (W+(A+A)) \u2192 1 (A+(W+(A+A)))",
-      "product_name": "Wide Spray Charge",
-      "machine_family": "Airbench Charging Lines",
-      "installation_name": "Airbench 4-130 Wide Spray Balancing Station",
+      "product_name": "Dual Source Encapsulated Cells",
+      "machine_family": "Isotope Finishing Lines",
+      "installation_name": "Dual Source Encapsulated Cell Production Line",
       "machine_family_id": "MF-S2-04-C4",
       "inputs": [
         "C1-004",
@@ -5178,9 +5150,9 @@
       "sector_id": "S2-04",
       "preferred_material_id": "C1-004",
       "unchanged_formula": "1 A + 1 (E+(W+W)) \u2192 1 (A+(E+(W+W)))",
-      "product_name": "Breathing Absorbent Pad",
-      "machine_family": "Airbench Charging Lines",
-      "installation_name": "Airbench 4-131 Absorbent Pad Aeration Station",
+      "product_name": "Radioactive Foam Standards",
+      "machine_family": "Isotope Finishing Lines",
+      "installation_name": "Radioactive Foam Standard Production Line",
       "machine_family_id": "MF-S2-04-C4",
       "inputs": [
         "C1-004",
@@ -5201,9 +5173,9 @@
       "sector_id": "S2-04",
       "preferred_material_id": "C1-004",
       "unchanged_formula": "1 A + 1 (E+(W+E)) \u2192 1 (A+(E+(W+E)))",
-      "product_name": "Cellular Tile Blank",
-      "machine_family": "Airbench Charging Lines",
-      "installation_name": "Airbench 4-132 Cellular Tile Forming Station",
+      "product_name": "Radiolabeled Electrolytes",
+      "machine_family": "Isotope Finishing Lines",
+      "installation_name": "Radiolabeled Electrolyte Production Line",
       "machine_family_id": "MF-S2-04-C4",
       "inputs": [
         "C1-004",
@@ -5224,9 +5196,9 @@
       "sector_id": "S2-04",
       "preferred_material_id": "C1-004",
       "unchanged_formula": "1 A + 1 (E+(W+F)) \u2192 1 (A+(E+(W+F)))",
-      "product_name": "Gas Cushioned Transfer Plate",
-      "machine_family": "Airbench Charging Lines",
-      "installation_name": "Airbench 4-133 Transfer Plate Gas Loading Station",
+      "product_name": "Tagged Supported Catalysts",
+      "machine_family": "Isotope Finishing Lines",
+      "installation_name": "Tagged Supported Catalyst Production Line",
       "machine_family_id": "MF-S2-04-C4",
       "inputs": [
         "C1-004",
@@ -5247,9 +5219,9 @@
       "sector_id": "S2-04",
       "preferred_material_id": "C1-004",
       "unchanged_formula": "1 A + 1 (E+(W+A)) \u2192 1 (A+(E+(W+A)))",
-      "product_name": "Pneumatic Seat Seal",
-      "machine_family": "Airbench Charging Lines",
-      "installation_name": "Airbench 4-134 Seat Seal Gas Loading Station",
+      "product_name": "Dual Isotope Tracer Beads",
+      "machine_family": "Isotope Finishing Lines",
+      "installation_name": "Dual Isotope Tracer Bead Production Line",
       "machine_family_id": "MF-S2-04-C4",
       "inputs": [
         "C1-004",
@@ -5270,9 +5242,9 @@
       "sector_id": "S2-04",
       "preferred_material_id": "C1-004",
       "unchanged_formula": "1 A + 1 (E+(E+E)) \u2192 1 (A+(E+(E+E)))",
-      "product_name": "Air Bearing Face",
-      "machine_family": "Airbench Charging Lines",
-      "installation_name": "Airbench 4-135 Bearing Face Channel Forming Station",
+      "product_name": "Ceramic Source Insulators",
+      "machine_family": "Isotope Finishing Lines",
+      "installation_name": "Ceramic Source Insulator Production Line",
       "machine_family_id": "MF-S2-04-C4",
       "inputs": [
         "C1-004",
@@ -5293,9 +5265,9 @@
       "sector_id": "S2-04",
       "preferred_material_id": "C1-004",
       "unchanged_formula": "1 A + 1 (E+(E+F)) \u2192 1 (A+(E+(E+F)))",
-      "product_name": "Vented Busbar Stock",
-      "machine_family": "Airbench Charging Lines",
-      "installation_name": "Airbench 4-136 Busbar Vent Forming Station",
+      "product_name": "Isotope Reference Sensor Dies",
+      "machine_family": "Isotope Finishing Lines",
+      "installation_name": "Isotope Reference Sensor Die Production Line",
       "machine_family_id": "MF-S2-04-C4",
       "inputs": [
         "C1-004",
@@ -5316,9 +5288,9 @@
       "sector_id": "S2-04",
       "preferred_material_id": "C1-004",
       "unchanged_formula": "1 A + 1 (E+(E+A)) \u2192 1 (A+(E+(E+A)))",
-      "product_name": "Purge Flow Core",
-      "machine_family": "Airbench Charging Lines",
-      "installation_name": "Airbench 4-137 Flow Core Gas Loading Station",
+      "product_name": "Source Loaded Shielding Tiles",
+      "machine_family": "Isotope Finishing Lines",
+      "installation_name": "Source Loaded Shielding Tile Production Line",
       "machine_family_id": "MF-S2-04-C4",
       "inputs": [
         "C1-004",
@@ -5339,9 +5311,9 @@
       "sector_id": "S2-04",
       "preferred_material_id": "C1-004",
       "unchanged_formula": "1 A + 1 (E+(F+F)) \u2192 1 (A+(E+(F+F)))",
-      "product_name": "Breathing Storage Block",
-      "machine_family": "Airbench Charging Lines",
-      "installation_name": "Airbench 4-138 Storage Block Pore Balancing Station",
+      "product_name": "Alloy Source Plates",
+      "machine_family": "Isotope Finishing Lines",
+      "installation_name": "Alloy Source Plate Production Line",
       "machine_family_id": "MF-S2-04-C4",
       "inputs": [
         "C1-004",
@@ -5362,9 +5334,9 @@
       "sector_id": "S2-04",
       "preferred_material_id": "C1-004",
       "unchanged_formula": "1 A + 1 (E+(F+A)) \u2192 1 (A+(E+(F+A)))",
-      "product_name": "Purge Electrode Stock",
-      "machine_family": "Airbench Charging Lines",
-      "installation_name": "Airbench 4-139 Electrode Purge Forming Station",
+      "product_name": "Enriched Oxide Fuel",
+      "machine_family": "Isotope Finishing Lines",
+      "installation_name": "Enriched Oxide Fuel Production Line",
       "machine_family_id": "MF-S2-04-C4",
       "inputs": [
         "C1-004",
@@ -5385,9 +5357,9 @@
       "sector_id": "S2-04",
       "preferred_material_id": "C1-004",
       "unchanged_formula": "1 A + 1 (E+(A+A)) \u2192 1 (A+(E+(A+A)))",
-      "product_name": "Preloaded Spring Core",
-      "machine_family": "Airbench Charging Lines",
-      "installation_name": "Airbench 4-140 Spring Core Preload Station",
+      "product_name": "Dual Source Ceramic Cells",
+      "machine_family": "Isotope Finishing Lines",
+      "installation_name": "Dual Source Ceramic Cell Production Line",
       "machine_family_id": "MF-S2-04-C4",
       "inputs": [
         "C1-004",
@@ -5408,9 +5380,9 @@
       "sector_id": "S2-04",
       "preferred_material_id": "C1-004",
       "unchanged_formula": "1 A + 1 (F+(W+W)) \u2192 1 (A+(F+(W+W)))",
-      "product_name": "Breathing Heat Gel",
-      "machine_family": "Airbench Charging Lines",
-      "installation_name": "Airbench 4-141 Heat Gel Aeration Station",
+      "product_name": "Radioactive Panel Standards",
+      "machine_family": "Isotope Finishing Lines",
+      "installation_name": "Radioactive Panel Standard Production Line",
       "machine_family_id": "MF-S2-04-C4",
       "inputs": [
         "C1-004",
@@ -5431,9 +5403,9 @@
       "sector_id": "S2-04",
       "preferred_material_id": "C1-004",
       "unchanged_formula": "1 A + 1 (F+(W+E)) \u2192 1 (A+(F+(W+E)))",
-      "product_name": "Cellular Furnace Patch",
-      "machine_family": "Airbench Charging Lines",
-      "installation_name": "Airbench 4-142 Furnace Patch Aeration Station",
+      "product_name": "Radiolabeled Plating Salts",
+      "machine_family": "Isotope Finishing Lines",
+      "installation_name": "Radiolabeled Plating Salt Production Line",
       "machine_family_id": "MF-S2-04-C4",
       "inputs": [
         "C1-004",
@@ -5454,9 +5426,9 @@
       "sector_id": "S2-04",
       "preferred_material_id": "C1-004",
       "unchanged_formula": "1 A + 1 (F+(W+F)) \u2192 1 (A+(F+(W+F)))",
-      "product_name": "Gas Buffered Hot Fill",
-      "machine_family": "Airbench Charging Lines",
-      "installation_name": "Airbench 4-143 Hot Fill Gas Loading Station",
+      "product_name": "Tagged Catalytic Mesh",
+      "machine_family": "Isotope Finishing Lines",
+      "installation_name": "Tagged Catalytic Mesh Production Line",
       "machine_family_id": "MF-S2-04-C4",
       "inputs": [
         "C1-004",
@@ -5477,9 +5449,9 @@
       "sector_id": "S2-04",
       "preferred_material_id": "C1-004",
       "unchanged_formula": "1 A + 1 (F+(W+A)) \u2192 1 (A+(F+(W+A)))",
-      "product_name": "Expanded Firebreak Packing",
-      "machine_family": "Airbench Charging Lines",
-      "installation_name": "Airbench 4-144 Firebreak Packing Expansion Station",
+      "product_name": "Dual Isotope Tracer Capsules",
+      "machine_family": "Isotope Finishing Lines",
+      "installation_name": "Dual Isotope Tracer Capsule Production Line",
       "machine_family_id": "MF-S2-04-C4",
       "inputs": [
         "C1-004",
@@ -5500,9 +5472,9 @@
       "sector_id": "S2-04",
       "preferred_material_id": "C1-004",
       "unchanged_formula": "1 A + 1 (F+(E+E)) \u2192 1 (A+(F+(E+E)))",
-      "product_name": "Vented Hot Face Brick",
-      "machine_family": "Airbench Charging Lines",
-      "installation_name": "Airbench 4-145 Hot Brick Vent Forming Station",
+      "product_name": "Ceramic Wear Tracer Inserts",
+      "machine_family": "Isotope Finishing Lines",
+      "installation_name": "Ceramic Wear Tracer Insert Production Line",
       "machine_family_id": "MF-S2-04-C4",
       "inputs": [
         "C1-004",
@@ -5523,9 +5495,9 @@
       "sector_id": "S2-04",
       "preferred_material_id": "C1-004",
       "unchanged_formula": "1 A + 1 (F+(E+F)) \u2192 1 (A+(F+(E+F)))",
-      "product_name": "Vented Heater Ribbon",
-      "machine_family": "Airbench Charging Lines",
-      "installation_name": "Airbench 4-146 Heater Ribbon Vent Forming Station",
+      "product_name": "Isotope Reference Transistors",
+      "machine_family": "Isotope Finishing Lines",
+      "installation_name": "Isotope Reference Transistor Production Line",
       "machine_family_id": "MF-S2-04-C4",
       "inputs": [
         "C1-004",
@@ -5546,9 +5518,9 @@
       "sector_id": "S2-04",
       "preferred_material_id": "C1-004",
       "unchanged_formula": "1 A + 1 (F+(E+A)) \u2192 1 (A+(F+(E+A)))",
-      "product_name": "Purge Screen Insert",
-      "machine_family": "Airbench Charging Lines",
-      "installation_name": "Airbench 4-147 Screen Purge Loading Station",
+      "product_name": "Shielded Irradiation Containers",
+      "machine_family": "Isotope Finishing Lines",
+      "installation_name": "Shielded Irradiation Container Production Line",
       "machine_family_id": "MF-S2-04-C4",
       "inputs": [
         "C1-004",
@@ -5569,9 +5541,9 @@
       "sector_id": "S2-04",
       "preferred_material_id": "C1-004",
       "unchanged_formula": "1 A + 1 (F+(F+F)) \u2192 1 (A+(F+(F+F)))",
-      "product_name": "Gas Buffered Heat Reserve",
-      "machine_family": "Airbench Charging Lines",
-      "installation_name": "Airbench 4-148 Heat Reserve Gas Loading Station",
+      "product_name": "Gear Wear Tracers",
+      "machine_family": "Isotope Finishing Lines",
+      "installation_name": "Gear Wear Tracer Production Line",
       "machine_family_id": "MF-S2-04-C4",
       "inputs": [
         "C1-004",
@@ -5592,9 +5564,9 @@
       "sector_id": "S2-04",
       "preferred_material_id": "C1-004",
       "unchanged_formula": "1 A + 1 (F+(F+A)) \u2192 1 (A+(F+(F+A)))",
-      "product_name": "Diluted Ignition Fill",
-      "machine_family": "Airbench Charging Lines",
-      "installation_name": "Airbench 4-149 Ignition Fill Gas Balancing Station",
+      "product_name": "Enriched Fuel Rods",
+      "machine_family": "Isotope Finishing Lines",
+      "installation_name": "Enriched Fuel Rod Production Line",
       "machine_family_id": "MF-S2-04-C4",
       "inputs": [
         "C1-004",
@@ -5615,9 +5587,9 @@
       "sector_id": "S2-04",
       "preferred_material_id": "C1-004",
       "unchanged_formula": "1 A + 1 (F+(A+A)) \u2192 1 (A+(F+(A+A)))",
-      "product_name": "Balanced Expansion Fill",
-      "machine_family": "Airbench Charging Lines",
-      "installation_name": "Airbench 4-150 Expansion Fill Gas Balancing Station",
+      "product_name": "Dual Source Nuclear Batteries",
+      "machine_family": "Isotope Finishing Lines",
+      "installation_name": "Dual Source Nuclear Battery Production Line",
       "machine_family_id": "MF-S2-04-C4",
       "inputs": [
         "C1-004",
@@ -5638,9 +5610,9 @@
       "sector_id": "S2-04",
       "preferred_material_id": "C1-004",
       "unchanged_formula": "1 A + 1 (A+(W+W)) \u2192 1 (A+(A+(W+W)))",
-      "product_name": "Soft Damping Gel",
-      "machine_family": "Airbench Charging Lines",
-      "installation_name": "Airbench 4-151 Soft Gel Expansion Station",
+      "product_name": "Multi Isotope Polymer Standards",
+      "machine_family": "Isotope Finishing Lines",
+      "installation_name": "Multi Isotope Polymer Standard Production Line",
       "machine_family_id": "MF-S2-04-C4",
       "inputs": [
         "C1-004",
@@ -5661,9 +5633,9 @@
       "sector_id": "S2-04",
       "preferred_material_id": "C1-004",
       "unchanged_formula": "1 A + 1 (A+(W+E)) \u2192 1 (A+(A+(W+E)))",
-      "product_name": "Void Fill Grout",
-      "machine_family": "Airbench Charging Lines",
-      "installation_name": "Airbench 4-152 Void Grout Expansion Station",
+      "product_name": "Multi Isotope Reagent Sets",
+      "machine_family": "Isotope Finishing Lines",
+      "installation_name": "Multi Isotope Reagent Set Production Line",
       "machine_family_id": "MF-S2-04-C4",
       "inputs": [
         "C1-004",
@@ -5684,9 +5656,9 @@
       "sector_id": "S2-04",
       "preferred_material_id": "C1-004",
       "unchanged_formula": "1 A + 1 (A+(W+F)) \u2192 1 (A+(A+(W+F)))",
-      "product_name": "Gas Rich Expansion Fluid",
-      "machine_family": "Airbench Charging Lines",
-      "installation_name": "Airbench 4-153 Expansion Fluid Gas Balancing Station",
+      "product_name": "Multi Isotope Catalyst Standards",
+      "machine_family": "Isotope Finishing Lines",
+      "installation_name": "Multi Isotope Catalyst Standard Production Line",
       "machine_family_id": "MF-S2-04-C4",
       "inputs": [
         "C1-004",
@@ -5707,9 +5679,9 @@
       "sector_id": "S2-04",
       "preferred_material_id": "C1-004",
       "unchanged_formula": "1 A + 1 (A+(W+A)) \u2192 1 (A+(A+(W+A)))",
-      "product_name": "Deep Cushion Packing",
-      "machine_family": "Airbench Charging Lines",
-      "installation_name": "Airbench 4-154 Deep Packing Expansion Station",
+      "product_name": "Combined Isotope Therapy Doses",
+      "machine_family": "Isotope Finishing Lines",
+      "installation_name": "Combined Isotope Therapy Dose Production Line",
       "machine_family_id": "MF-S2-04-C4",
       "inputs": [
         "C1-004",
@@ -5730,9 +5702,9 @@
       "sector_id": "S2-04",
       "preferred_material_id": "C1-004",
       "unchanged_formula": "1 A + 1 (A+(E+E)) \u2192 1 (A+(A+(E+E)))",
-      "product_name": "Pneumatic Insulator Insert",
-      "machine_family": "Airbench Charging Lines",
-      "installation_name": "Airbench 4-155 Insulator Gas Loading Station",
+      "product_name": "Multi Isotope Ceramic Sources",
+      "machine_family": "Isotope Finishing Lines",
+      "installation_name": "Multi Isotope Ceramic Source Production Line",
       "machine_family_id": "MF-S2-04-C4",
       "inputs": [
         "C1-004",
@@ -5753,9 +5725,9 @@
       "sector_id": "S2-04",
       "preferred_material_id": "C1-004",
       "unchanged_formula": "1 A + 1 (A+(E+F)) \u2192 1 (A+(A+(E+F)))",
-      "product_name": "Gas Contact Mesh",
-      "machine_family": "Airbench Charging Lines",
-      "installation_name": "Airbench 4-156 Contact Mesh Gas Loading Station",
+      "product_name": "Calibrated Isotope Detector Dies",
+      "machine_family": "Isotope Finishing Lines",
+      "installation_name": "Calibrated Isotope Detector Die Production Line",
       "machine_family_id": "MF-S2-04-C4",
       "inputs": [
         "C1-004",
@@ -5776,9 +5748,9 @@
       "sector_id": "S2-04",
       "preferred_material_id": "C1-004",
       "unchanged_formula": "1 A + 1 (A+(E+A)) \u2192 1 (A+(A+(E+A)))",
-      "product_name": "Fine Gas Diffuser",
-      "machine_family": "Airbench Charging Lines",
-      "installation_name": "Airbench 4-157 Fine Diffuser Balancing Station",
+      "product_name": "Multi Isotope Source Capsules",
+      "machine_family": "Isotope Finishing Lines",
+      "installation_name": "Multi Isotope Source Capsule Production Line",
       "machine_family_id": "MF-S2-04-C4",
       "inputs": [
         "C1-004",
@@ -5799,9 +5771,9 @@
       "sector_id": "S2-04",
       "preferred_material_id": "C1-004",
       "unchanged_formula": "1 A + 1 (A+(F+F)) \u2192 1 (A+(A+(F+F)))",
-      "product_name": "Light Thermal Packing",
-      "machine_family": "Airbench Charging Lines",
-      "installation_name": "Airbench 4-158 Thermal Packing Expansion Station",
+      "product_name": "Multi Isotope Alloy Sources",
+      "machine_family": "Isotope Finishing Lines",
+      "installation_name": "Multi Isotope Alloy Source Production Line",
       "machine_family_id": "MF-S2-04-C4",
       "inputs": [
         "C1-004",
@@ -5822,9 +5794,9 @@
       "sector_id": "S2-04",
       "preferred_material_id": "C1-004",
       "unchanged_formula": "1 A + 1 (A+(F+A)) \u2192 1 (A+(A+(F+A)))",
-      "product_name": "Diffuse Lamp Gas",
-      "machine_family": "Airbench Charging Lines",
-      "installation_name": "Airbench 4-159 Diffuse Lamp Blending Station",
+      "product_name": "Blended Isotope Reactor Fuel",
+      "machine_family": "Isotope Finishing Lines",
+      "installation_name": "Blended Isotope Reactor Fuel Production Line",
       "machine_family_id": "MF-S2-04-C4",
       "inputs": [
         "C1-004",
@@ -5845,9 +5817,9 @@
       "sector_id": "S2-04",
       "preferred_material_id": "C1-004",
       "unchanged_formula": "1 A + 1 (A+(A+A)) \u2192 1 (A+(A+(A+A)))",
-      "product_name": "Balanced Pneumatic Fill",
-      "machine_family": "Airbench Charging Lines",
-      "installation_name": "Airbench 4-160 Pneumatic Fill Balancing Station",
+      "product_name": "Multi Source Isotope Power Modules",
+      "machine_family": "Isotope Finishing Lines",
+      "installation_name": "Multi Source Isotope Power Module Production Line",
       "machine_family_id": "MF-S2-04-C4",
       "inputs": [
         "C1-004",
@@ -5868,9 +5840,9 @@
       "sector_id": "S2-05",
       "preferred_material_id": "C2-001",
       "unchanged_formula": "2 (W+W) \u2192 1 ((W+W)+(W+W))",
-      "product_name": "Deep Reservoir Gel",
-      "machine_family": "Gelcraft Finishing Lines",
-      "installation_name": "Gelcraft 4-161 Deep Gel Consolidation Station",
+      "product_name": "Polymer Laminates",
+      "machine_family": "Polymer Finishing Lines",
+      "installation_name": "Polymer Laminate Production Line",
       "machine_family_id": "MF-S2-05-C4",
       "inputs": [
         "C2-001",
@@ -5890,9 +5862,9 @@
       "sector_id": "S2-05",
       "preferred_material_id": "C2-001",
       "unchanged_formula": "1 (W+W) + 1 (W+E) \u2192 1 ((W+W)+(W+E))",
-      "product_name": "Joint Packing Putty",
-      "machine_family": "Gelcraft Finishing Lines",
-      "installation_name": "Gelcraft 4-162 Joint Putty Kneading Station",
+      "product_name": "Adhesive Sealants",
+      "machine_family": "Polymer Finishing Lines",
+      "installation_name": "Adhesive Sealant Production Line",
       "machine_family_id": "MF-S2-05-C4",
       "inputs": [
         "C2-001",
@@ -5913,9 +5885,9 @@
       "sector_id": "S2-07",
       "preferred_material_id": "C2-003",
       "unchanged_formula": "1 (W+W) + 1 (W+F) \u2192 1 ((W+W)+(W+F))",
-      "product_name": "Thermal Contact Gel",
-      "machine_family": "Loopcraft Coupling Lines",
-      "installation_name": "Loopcraft 4-163 Contact Gel Infusion Station",
+      "product_name": "Catalytic Membranes",
+      "machine_family": "Catalytic Finishing Lines",
+      "installation_name": "Catalytic Membrane Production Line",
       "machine_family_id": "MF-S2-07-C4",
       "inputs": [
         "C2-001",
@@ -5936,9 +5908,9 @@
       "sector_id": "S2-08",
       "preferred_material_id": "C2-004",
       "unchanged_formula": "1 (W+W) + 1 (W+A) \u2192 1 ((W+W)+(W+A))",
-      "product_name": "Cushion Liner",
-      "machine_family": "Foamcraft Finishing Lines",
-      "installation_name": "Foamcraft 4-164 Cushion Liner Forming Station",
+      "product_name": "Tracer Patches",
+      "machine_family": "Medical Isotope Finishing Lines",
+      "installation_name": "Tracer Patche Production Line",
       "machine_family_id": "MF-S2-08-C4",
       "inputs": [
         "C2-001",
@@ -5959,9 +5931,9 @@
       "sector_id": "S2-09",
       "preferred_material_id": "C2-005",
       "unchanged_formula": "1 (W+W) + 1 (E+E) \u2192 1 ((W+W)+(E+E))",
-      "product_name": "Wet Seal Tile",
-      "machine_family": "Kilncraft Bonding Lines",
-      "installation_name": "Kilncraft 4-165 Seal Tile Bonding Station",
+      "product_name": "Ceramic Polymer Composites",
+      "machine_family": "Ceramic Finishing Lines",
+      "installation_name": "Ceramic Polymer Composite Production Line",
       "machine_family_id": "MF-S2-09-C4",
       "inputs": [
         "C2-001",
@@ -5982,9 +5954,9 @@
       "sector_id": "S2-10",
       "preferred_material_id": "C2-006",
       "unchanged_formula": "1 (W+W) + 1 (E+F) \u2192 1 ((W+W)+(E+F))",
-      "product_name": "Gel Contact Pad",
-      "machine_family": "Wirecraft Joining Lines",
-      "installation_name": "Wirecraft 4-166 Contact Pad Bonding Station",
+      "product_name": "Flexible Circuit Sheets",
+      "machine_family": "Electronic Finishing Lines",
+      "installation_name": "Flexible Circuit Sheet Production Line",
       "machine_family_id": "MF-S2-10-C4",
       "inputs": [
         "C2-001",
@@ -6005,9 +5977,9 @@
       "sector_id": "S2-11",
       "preferred_material_id": "C2-007",
       "unchanged_formula": "1 (W+W) + 1 (E+A) \u2192 1 ((W+W)+(E+A))",
-      "product_name": "Retention Filter Pad",
-      "machine_family": "Porecraft Infusion Lines",
-      "installation_name": "Porecraft 4-167 Retention Pad Infusion Station",
+      "product_name": "Shielding Blankets",
+      "machine_family": "Shielding Finishing Lines",
+      "installation_name": "Shielding Blanket Production Line",
       "machine_family_id": "MF-S2-11-C4",
       "inputs": [
         "C2-001",
@@ -6028,9 +6000,9 @@
       "sector_id": "S2-12",
       "preferred_material_id": "C2-008",
       "unchanged_formula": "1 (W+W) + 1 (F+F) \u2192 1 ((W+W)+(F+F))",
-      "product_name": "Phase Buffer Gel",
-      "machine_family": "Saltcraft Packing Lines",
-      "installation_name": "Saltcraft 4-168 Phase Gel Mixing Station",
+      "product_name": "Composite Pressure Housings",
+      "machine_family": "Alloy Finishing Lines",
+      "installation_name": "Composite Pressure Housing Production Line",
       "machine_family_id": "MF-S2-12-C4",
       "inputs": [
         "C2-001",
@@ -6051,9 +6023,9 @@
       "sector_id": "S2-13",
       "preferred_material_id": "C2-009",
       "unchanged_formula": "1 (W+W) + 1 (F+A) \u2192 1 ((W+W)+(F+A))",
-      "product_name": "Quench Gel",
-      "machine_family": "Sparkcraft Charging Lines",
-      "installation_name": "Sparkcraft 4-169 Quench Gel Gas Loading Station",
+      "product_name": "Polymer Bound Fuel Blocks",
+      "machine_family": "Fuel Finishing Lines",
+      "installation_name": "Polymer Bound Fuel Block Production Line",
       "machine_family_id": "MF-S2-13-C4",
       "inputs": [
         "C2-001",
@@ -6074,9 +6046,9 @@
       "sector_id": "S2-14",
       "preferred_material_id": "C2-010",
       "unchanged_formula": "1 (W+W) + 1 (A+A) \u2192 1 ((W+W)+(A+A))",
-      "product_name": "Pressure Cushion Gel",
-      "machine_family": "Presscraft Charging Lines",
-      "installation_name": "Presscraft 4-170 Pressure Gel Charging Station",
+      "product_name": "Flexible Isotope Battery Mats",
+      "machine_family": "Isotope Power Finishing Lines",
+      "installation_name": "Flexible Isotope Battery Mat Production Line",
       "machine_family_id": "MF-S2-14-C4",
       "inputs": [
         "C2-001",
@@ -6097,9 +6069,9 @@
       "sector_id": "S2-06",
       "preferred_material_id": "C2-002",
       "unchanged_formula": "2 (W+E) \u2192 1 ((W+E)+(W+E))",
-      "product_name": "Dense Cast Stock",
-      "machine_family": "Castcraft Consolidation Lines",
-      "installation_name": "Castcraft 4-171 Dense Stock Consolidation Station",
+      "product_name": "Laboratory Reagent Sets",
+      "machine_family": "Chemical Finishing Lines",
+      "installation_name": "Laboratory Reagent Set Production Line",
       "machine_family_id": "MF-S2-06-C4",
       "inputs": [
         "C2-002",
@@ -6119,9 +6091,9 @@
       "sector_id": "S2-06",
       "preferred_material_id": "C2-002",
       "unchanged_formula": "1 (W+E) + 1 (W+F) \u2192 1 ((W+E)+(W+F))",
-      "product_name": "Thermal Bedding Compound",
-      "machine_family": "Castcraft Consolidation Lines",
-      "installation_name": "Castcraft 4-172 Bedding Compound Mixing Station",
+      "product_name": "Chemical Synthesis Catalysts",
+      "machine_family": "Chemical Finishing Lines",
+      "installation_name": "Chemical Synthesis Catalyst Production Line",
       "machine_family_id": "MF-S2-06-C4",
       "inputs": [
         "C2-002",
@@ -6142,9 +6114,9 @@
       "sector_id": "S2-06",
       "preferred_material_id": "C2-002",
       "unchanged_formula": "1 (W+E) + 1 (W+A) \u2192 1 ((W+E)+(W+A))",
-      "product_name": "Foam Mold Compound",
-      "machine_family": "Castcraft Consolidation Lines",
-      "installation_name": "Castcraft 4-173 Cellular Mix Kneading Station",
+      "product_name": "Diagnostic Contrast Reagents",
+      "machine_family": "Chemical Finishing Lines",
+      "installation_name": "Diagnostic Contrast Reagent Production Line",
       "machine_family_id": "MF-S2-06-C4",
       "inputs": [
         "C2-002",
@@ -6165,9 +6137,9 @@
       "sector_id": "S2-09",
       "preferred_material_id": "C2-005",
       "unchanged_formula": "1 (W+E) + 1 (E+E) \u2192 1 ((W+E)+(E+E))",
-      "product_name": "Ceramic Bed Tile",
-      "machine_family": "Kilncraft Bonding Lines",
-      "installation_name": "Kilncraft 4-174 Bed Tile Bonding Station",
+      "product_name": "Chemical Filter Monoliths",
+      "machine_family": "Ceramic Finishing Lines",
+      "installation_name": "Chemical Filter Monolith Production Line",
       "machine_family_id": "MF-S2-09-C4",
       "inputs": [
         "C2-002",
@@ -6188,9 +6160,9 @@
       "sector_id": "S2-10",
       "preferred_material_id": "C2-006",
       "unchanged_formula": "1 (W+E) + 1 (E+F) \u2192 1 ((W+E)+(E+F))",
-      "product_name": "Bonding Contact Paste",
-      "machine_family": "Wirecraft Joining Lines",
-      "installation_name": "Wirecraft 4-175 Contact Paste Compounding Station",
+      "product_name": "Chemical Sensor Chips",
+      "machine_family": "Electronic Finishing Lines",
+      "installation_name": "Chemical Sensor Chip Production Line",
       "machine_family_id": "MF-S2-10-C4",
       "inputs": [
         "C2-002",
@@ -6211,9 +6183,9 @@
       "sector_id": "S2-11",
       "preferred_material_id": "C2-007",
       "unchanged_formula": "1 (W+E) + 1 (E+A) \u2192 1 ((W+E)+(E+A))",
-      "product_name": "Porous Repair Mortar",
-      "machine_family": "Porecraft Infusion Lines",
-      "installation_name": "Porecraft 4-176 Porous Mortar Mixing Station",
+      "product_name": "Shielding Grout",
+      "machine_family": "Shielding Finishing Lines",
+      "installation_name": "Shielding Grout Production Line",
       "machine_family_id": "MF-S2-11-C4",
       "inputs": [
         "C2-002",
@@ -6234,9 +6206,9 @@
       "sector_id": "S2-12",
       "preferred_material_id": "C2-008",
       "unchanged_formula": "1 (W+E) + 1 (F+F) \u2192 1 ((W+E)+(F+F))",
-      "product_name": "Heat Storage Mortar",
-      "machine_family": "Saltcraft Packing Lines",
-      "installation_name": "Saltcraft 4-177 Storage Mortar Mixing Station",
+      "product_name": "Passivated Alloy Plates",
+      "machine_family": "Alloy Finishing Lines",
+      "installation_name": "Passivated Alloy Plate Production Line",
       "machine_family_id": "MF-S2-12-C4",
       "inputs": [
         "C2-002",
@@ -6257,9 +6229,9 @@
       "sector_id": "S2-13",
       "preferred_material_id": "C2-009",
       "unchanged_formula": "1 (W+E) + 1 (F+A) \u2192 1 ((W+E)+(F+A))",
-      "product_name": "Electrode Bedding Paste",
-      "machine_family": "Sparkcraft Charging Lines",
-      "installation_name": "Sparkcraft 4-178 Electrode Paste Gas Loading Station",
+      "product_name": "Fuel Conditioning Compounds",
+      "machine_family": "Fuel Finishing Lines",
+      "installation_name": "Fuel Conditioning Compound Production Line",
       "machine_family_id": "MF-S2-13-C4",
       "inputs": [
         "C2-002",
@@ -6280,9 +6252,9 @@
       "sector_id": "S2-14",
       "preferred_material_id": "C2-010",
       "unchanged_formula": "1 (W+E) + 1 (A+A) \u2192 1 ((W+E)+(A+A))",
-      "product_name": "Pressure Cast Fill",
-      "machine_family": "Presscraft Charging Lines",
-      "installation_name": "Presscraft 4-179 Cast Fill Pressure Loading Station",
+      "product_name": "Sealed Isotope Power Cartridges",
+      "machine_family": "Isotope Power Finishing Lines",
+      "installation_name": "Sealed Isotope Power Cartridge Production Line",
       "machine_family_id": "MF-S2-14-C4",
       "inputs": [
         "C2-002",
@@ -6303,9 +6275,9 @@
       "sector_id": "S2-07",
       "preferred_material_id": "C2-003",
       "unchanged_formula": "2 (W+F) \u2192 1 ((W+F)+(W+F))",
-      "product_name": "Long Loop Fluid",
-      "machine_family": "Loopcraft Coupling Lines",
-      "installation_name": "Loopcraft 4-180 Long Loop Blending Station",
+      "product_name": "Multistage Catalyst Charges",
+      "machine_family": "Catalytic Finishing Lines",
+      "installation_name": "Multistage Catalyst Charge Production Line",
       "machine_family_id": "MF-S2-07-C4",
       "inputs": [
         "C2-003",
@@ -6325,9 +6297,9 @@
       "sector_id": "S2-07",
       "preferred_material_id": "C2-003",
       "unchanged_formula": "1 (W+F) + 1 (W+A) \u2192 1 ((W+F)+(W+A))",
-      "product_name": "Thermal Foam Fill",
-      "machine_family": "Loopcraft Coupling Lines",
-      "installation_name": "Loopcraft 4-181 Thermal Foam Mixing Station",
+      "product_name": "Radiotracer Synthesis Cartridges",
+      "machine_family": "Catalytic Finishing Lines",
+      "installation_name": "Radiotracer Synthesis Cartridge Production Line",
       "machine_family_id": "MF-S2-07-C4",
       "inputs": [
         "C2-003",
@@ -6348,9 +6320,9 @@
       "sector_id": "S2-07",
       "preferred_material_id": "C2-003",
       "unchanged_formula": "1 (W+F) + 1 (E+E) \u2192 1 ((W+F)+(E+E))",
-      "product_name": "Ceramic Exchange Tile",
-      "machine_family": "Loopcraft Coupling Lines",
-      "installation_name": "Loopcraft 4-182 Exchange Tile Infusion Station",
+      "product_name": "Catalytic Ceramic Monoliths",
+      "machine_family": "Catalytic Finishing Lines",
+      "installation_name": "Catalytic Ceramic Monolith Production Line",
       "machine_family_id": "MF-S2-07-C4",
       "inputs": [
         "C2-003",
@@ -6371,9 +6343,9 @@
       "sector_id": "S2-10",
       "preferred_material_id": "C2-006",
       "unchanged_formula": "1 (W+F) + 1 (E+F) \u2192 1 ((W+F)+(E+F))",
-      "product_name": "Liquid Busbar Plate",
-      "machine_family": "Wirecraft Joining Lines",
-      "installation_name": "Wirecraft 4-183 Liquid Busbar Bonding Station",
+      "product_name": "Gas Sensor Elements",
+      "machine_family": "Electronic Finishing Lines",
+      "installation_name": "Gas Sensor Element Production Line",
       "machine_family_id": "MF-S2-10-C4",
       "inputs": [
         "C2-003",
@@ -6394,9 +6366,9 @@
       "sector_id": "S2-11",
       "preferred_material_id": "C2-007",
       "unchanged_formula": "1 (W+F) + 1 (E+A) \u2192 1 ((W+F)+(E+A))",
-      "product_name": "Cooling Diffuser Core",
-      "machine_family": "Porecraft Infusion Lines",
-      "installation_name": "Porecraft 4-184 Cooling Diffuser Infusion Station",
+      "product_name": "Shielded Catalyst Cartridges",
+      "machine_family": "Shielding Finishing Lines",
+      "installation_name": "Shielded Catalyst Cartridge Production Line",
       "machine_family_id": "MF-S2-11-C4",
       "inputs": [
         "C2-003",
@@ -6417,9 +6389,9 @@
       "sector_id": "S2-12",
       "preferred_material_id": "C2-008",
       "unchanged_formula": "1 (W+F) + 1 (F+F) \u2192 1 ((W+F)+(F+F))",
-      "product_name": "Heat Bank Fluid",
-      "machine_family": "Saltcraft Packing Lines",
-      "installation_name": "Saltcraft 4-185 Heat Bank Mixing Station",
+      "product_name": "Catalytic Alloy Screens",
+      "machine_family": "Alloy Finishing Lines",
+      "installation_name": "Catalytic Alloy Screen Production Line",
       "machine_family_id": "MF-S2-12-C4",
       "inputs": [
         "C2-003",
@@ -6440,9 +6412,9 @@
       "sector_id": "S2-13",
       "preferred_material_id": "C2-009",
       "unchanged_formula": "1 (W+F) + 1 (F+A) \u2192 1 ((W+F)+(F+A))",
-      "product_name": "Discharge Cooling Fill",
-      "machine_family": "Sparkcraft Charging Lines",
-      "installation_name": "Sparkcraft 4-186 Discharge Fluid Gas Loading Station",
+      "product_name": "Catalyst Bound Reactor Fuel",
+      "machine_family": "Fuel Finishing Lines",
+      "installation_name": "Catalyst Bound Reactor Fuel Production Line",
       "machine_family_id": "MF-S2-13-C4",
       "inputs": [
         "C2-003",
@@ -6463,9 +6435,9 @@
       "sector_id": "S2-14",
       "preferred_material_id": "C2-010",
       "unchanged_formula": "1 (W+F) + 1 (A+A) \u2192 1 ((W+F)+(A+A))",
-      "product_name": "Pressure Transfer Fluid",
-      "machine_family": "Presscraft Charging Lines",
-      "installation_name": "Presscraft 4-187 Transfer Fluid Pressure Loading Station",
+      "product_name": "Isotope Powered Catalyst Cartridges",
+      "machine_family": "Isotope Power Finishing Lines",
+      "installation_name": "Isotope Powered Catalyst Cartridge Production Line",
       "machine_family_id": "MF-S2-14-C4",
       "inputs": [
         "C2-003",
@@ -6486,9 +6458,9 @@
       "sector_id": "S2-08",
       "preferred_material_id": "C2-004",
       "unchanged_formula": "2 (W+A) \u2192 1 ((W+A)+(W+A))",
-      "product_name": "Bulk Cushion Foam",
-      "machine_family": "Foamcraft Finishing Lines",
-      "installation_name": "Foamcraft 4-188 Bulk Foam Consolidation Station",
+      "product_name": "Multi Tracer Diagnostic Sets",
+      "machine_family": "Medical Isotope Finishing Lines",
+      "installation_name": "Multi Tracer Diagnostic Set Production Line",
       "machine_family_id": "MF-S2-08-C4",
       "inputs": [
         "C2-004",
@@ -6508,9 +6480,9 @@
       "sector_id": "S2-08",
       "preferred_material_id": "C2-004",
       "unchanged_formula": "1 (W+A) + 1 (E+E) \u2192 1 ((W+A)+(E+E))",
-      "product_name": "Ceramic Foam Panel",
-      "machine_family": "Foamcraft Finishing Lines",
-      "installation_name": "Foamcraft 4-189 Ceramic Foam Bonding Station",
+      "product_name": "Ceramic Tracer Implants",
+      "machine_family": "Medical Isotope Finishing Lines",
+      "installation_name": "Ceramic Tracer Implant Production Line",
       "machine_family_id": "MF-S2-08-C4",
       "inputs": [
         "C2-004",
@@ -6531,9 +6503,9 @@
       "sector_id": "S2-08",
       "preferred_material_id": "C2-004",
       "unchanged_formula": "1 (W+A) + 1 (E+F) \u2192 1 ((W+A)+(E+F))",
-      "product_name": "Conductive Foam Sheet",
-      "machine_family": "Foamcraft Finishing Lines",
-      "installation_name": "Foamcraft 4-190 Conductive Foam Forming Station",
+      "product_name": "Radiotracer Sensor Chips",
+      "machine_family": "Medical Isotope Finishing Lines",
+      "installation_name": "Radiotracer Sensor Chip Production Line",
       "machine_family_id": "MF-S2-08-C4",
       "inputs": [
         "C2-004",
@@ -6554,9 +6526,9 @@
       "sector_id": "S2-08",
       "preferred_material_id": "C2-004",
       "unchanged_formula": "1 (W+A) + 1 (E+A) \u2192 1 ((W+A)+(E+A))",
-      "product_name": "Breather Foam Panel",
-      "machine_family": "Foamcraft Finishing Lines",
-      "installation_name": "Foamcraft 4-191 Breather Panel Forming Station",
+      "product_name": "Shielded Medical Isotope Packs",
+      "machine_family": "Medical Isotope Finishing Lines",
+      "installation_name": "Shielded Medical Isotope Pack Production Line",
       "machine_family_id": "MF-S2-08-C4",
       "inputs": [
         "C2-004",
@@ -6577,9 +6549,9 @@
       "sector_id": "S2-12",
       "preferred_material_id": "C2-008",
       "unchanged_formula": "1 (W+A) + 1 (F+F) \u2192 1 ((W+A)+(F+F))",
-      "product_name": "Thermal Reserve Foam",
-      "machine_family": "Saltcraft Packing Lines",
-      "installation_name": "Saltcraft 4-192 Reserve Foam Infusion Station",
+      "product_name": "Radiotherapy Applicators",
+      "machine_family": "Alloy Finishing Lines",
+      "installation_name": "Radiotherapy Applicator Production Line",
       "machine_family_id": "MF-S2-12-C4",
       "inputs": [
         "C2-004",
@@ -6600,9 +6572,9 @@
       "sector_id": "S2-13",
       "preferred_material_id": "C2-009",
       "unchanged_formula": "1 (W+A) + 1 (F+A) \u2192 1 ((W+A)+(F+A))",
-      "product_name": "Arc Quench Foam",
-      "machine_family": "Sparkcraft Charging Lines",
-      "installation_name": "Sparkcraft 4-193 Arc Foam Gas Loading Station",
+      "product_name": "Medical Isotope Target Fuel",
+      "machine_family": "Fuel Finishing Lines",
+      "installation_name": "Medical Isotope Target Fuel Production Line",
       "machine_family_id": "MF-S2-13-C4",
       "inputs": [
         "C2-004",
@@ -6623,9 +6595,9 @@
       "sector_id": "S2-14",
       "preferred_material_id": "C2-010",
       "unchanged_formula": "1 (W+A) + 1 (A+A) \u2192 1 ((W+A)+(A+A))",
-      "product_name": "Pressure Cushion Foam",
-      "machine_family": "Presscraft Charging Lines",
-      "installation_name": "Presscraft 4-194 Pressure Foam Charging Station",
+      "product_name": "Isotope Heated Tracer Packs",
+      "machine_family": "Isotope Power Finishing Lines",
+      "installation_name": "Isotope Heated Tracer Pack Production Line",
       "machine_family_id": "MF-S2-14-C4",
       "inputs": [
         "C2-004",
@@ -6646,9 +6618,9 @@
       "sector_id": "S2-09",
       "preferred_material_id": "C2-005",
       "unchanged_formula": "2 (E+E) \u2192 1 ((E+E)+(E+E))",
-      "product_name": "Laminated Wear Slab",
-      "machine_family": "Kilncraft Bonding Lines",
-      "installation_name": "Kilncraft 4-195 Wear Slab Laminating Station",
+      "product_name": "Ceramic Tool Blanks",
+      "machine_family": "Ceramic Finishing Lines",
+      "installation_name": "Ceramic Tool Blank Production Line",
       "machine_family_id": "MF-S2-09-C4",
       "inputs": [
         "C2-005",
@@ -6668,9 +6640,9 @@
       "sector_id": "S2-09",
       "preferred_material_id": "C2-005",
       "unchanged_formula": "1 (E+E) + 1 (E+F) \u2192 1 ((E+E)+(E+F))",
-      "product_name": "Insulated Contact Plate",
-      "machine_family": "Kilncraft Bonding Lines",
-      "installation_name": "Kilncraft 4-196 Contact Plate Bonding Station",
+      "product_name": "Ceramic Circuit Substrates",
+      "machine_family": "Ceramic Finishing Lines",
+      "installation_name": "Ceramic Circuit Substrate Production Line",
       "machine_family_id": "MF-S2-09-C4",
       "inputs": [
         "C2-005",
@@ -6691,9 +6663,9 @@
       "sector_id": "S2-09",
       "preferred_material_id": "C2-005",
       "unchanged_formula": "1 (E+E) + 1 (E+A) \u2192 1 ((E+E)+(E+A))",
-      "product_name": "Filter Support Tile",
-      "machine_family": "Kilncraft Bonding Lines",
-      "installation_name": "Kilncraft 4-197 Filter Tile Bonding Station",
+      "product_name": "Shielding Bricks",
+      "machine_family": "Ceramic Finishing Lines",
+      "installation_name": "Shielding Brick Production Line",
       "machine_family_id": "MF-S2-09-C4",
       "inputs": [
         "C2-005",
@@ -6714,9 +6686,9 @@
       "sector_id": "S2-09",
       "preferred_material_id": "C2-005",
       "unchanged_formula": "1 (E+E) + 1 (F+F) \u2192 1 ((E+E)+(F+F))",
-      "product_name": "Thermal Reserve Tile",
-      "machine_family": "Kilncraft Bonding Lines",
-      "installation_name": "Kilncraft 4-198 Reserve Tile Infusion Station",
+      "product_name": "Ceramic Armor Panels",
+      "machine_family": "Ceramic Finishing Lines",
+      "installation_name": "Ceramic Armor Panel Production Line",
       "machine_family_id": "MF-S2-09-C4",
       "inputs": [
         "C2-005",
@@ -6737,9 +6709,9 @@
       "sector_id": "S2-13",
       "preferred_material_id": "C2-009",
       "unchanged_formula": "1 (E+E) + 1 (F+A) \u2192 1 ((E+E)+(F+A))",
-      "product_name": "Discharge Liner",
-      "machine_family": "Sparkcraft Charging Lines",
-      "installation_name": "Sparkcraft 4-199 Discharge Liner Charging Station",
+      "product_name": "Reactor Fuel Tiles",
+      "machine_family": "Fuel Finishing Lines",
+      "installation_name": "Reactor Fuel Tile Production Line",
       "machine_family_id": "MF-S2-13-C4",
       "inputs": [
         "C2-005",
@@ -6760,9 +6732,9 @@
       "sector_id": "S2-14",
       "preferred_material_id": "C2-010",
       "unchanged_formula": "1 (E+E) + 1 (A+A) \u2192 1 ((E+E)+(A+A))",
-      "product_name": "Ceramic Pressure Core",
-      "machine_family": "Presscraft Charging Lines",
-      "installation_name": "Presscraft 4-200 Ceramic Core Pressure Loading Station",
+      "product_name": "Ceramic Isotope Generators",
+      "machine_family": "Isotope Power Finishing Lines",
+      "installation_name": "Ceramic Isotope Generator Production Line",
       "machine_family_id": "MF-S2-14-C4",
       "inputs": [
         "C2-005",
@@ -6783,9 +6755,9 @@
       "sector_id": "S2-10",
       "preferred_material_id": "C2-006",
       "unchanged_formula": "2 (E+F) \u2192 1 ((E+F)+(E+F))",
-      "product_name": "Heavy Current Bar",
-      "machine_family": "Wirecraft Joining Lines",
-      "installation_name": "Wirecraft 4-201 Heavy Bar Consolidation Station",
+      "product_name": "Integrated Circuit Arrays",
+      "machine_family": "Electronic Finishing Lines",
+      "installation_name": "Integrated Circuit Array Production Line",
       "machine_family_id": "MF-S2-10-C4",
       "inputs": [
         "C2-006",
@@ -6805,9 +6777,9 @@
       "sector_id": "S2-10",
       "preferred_material_id": "C2-006",
       "unchanged_formula": "1 (E+F) + 1 (E+A) \u2192 1 ((E+F)+(E+A))",
-      "product_name": "Porous Contact Plate",
-      "machine_family": "Wirecraft Joining Lines",
-      "installation_name": "Wirecraft 4-202 Porous Contact Bonding Station",
+      "product_name": "Shielded Sensor Arrays",
+      "machine_family": "Electronic Finishing Lines",
+      "installation_name": "Shielded Sensor Array Production Line",
       "machine_family_id": "MF-S2-10-C4",
       "inputs": [
         "C2-006",
@@ -6828,9 +6800,9 @@
       "sector_id": "S2-10",
       "preferred_material_id": "C2-006",
       "unchanged_formula": "1 (E+F) + 1 (F+F) \u2192 1 ((E+F)+(F+F))",
-      "product_name": "Thermal Busbar Insert",
-      "machine_family": "Wirecraft Joining Lines",
-      "installation_name": "Wirecraft 4-203 Thermal Busbar Bonding Station",
+      "product_name": "Industrial Control Boards",
+      "machine_family": "Electronic Finishing Lines",
+      "installation_name": "Industrial Control Board Production Line",
       "machine_family_id": "MF-S2-10-C4",
       "inputs": [
         "C2-006",
@@ -6851,9 +6823,9 @@
       "sector_id": "S2-10",
       "preferred_material_id": "C2-006",
       "unchanged_formula": "1 (E+F) + 1 (F+A) \u2192 1 ((E+F)+(F+A))",
-      "product_name": "Discharge Contact Stock",
-      "machine_family": "Wirecraft Joining Lines",
-      "installation_name": "Wirecraft 4-204 Discharge Contact Charging Station",
+      "product_name": "Instrumented Fuel Elements",
+      "machine_family": "Electronic Finishing Lines",
+      "installation_name": "Instrumented Fuel Element Production Line",
       "machine_family_id": "MF-S2-10-C4",
       "inputs": [
         "C2-006",
@@ -6874,9 +6846,9 @@
       "sector_id": "S2-14",
       "preferred_material_id": "C2-010",
       "unchanged_formula": "1 (E+F) + 1 (A+A) \u2192 1 ((E+F)+(A+A))",
-      "product_name": "Pressure Contact Bellows",
-      "machine_family": "Presscraft Charging Lines",
-      "installation_name": "Presscraft 4-205 Contact Bellows Forming Station",
+      "product_name": "Autonomous Sensor Nodes",
+      "machine_family": "Isotope Power Finishing Lines",
+      "installation_name": "Autonomous Sensor Node Production Line",
       "machine_family_id": "MF-S2-14-C4",
       "inputs": [
         "C2-006",
@@ -6897,9 +6869,9 @@
       "sector_id": "S2-11",
       "preferred_material_id": "C2-007",
       "unchanged_formula": "2 (E+A) \u2192 1 ((E+A)+(E+A))",
-      "product_name": "Deep Filter Core",
-      "machine_family": "Porecraft Infusion Lines",
-      "installation_name": "Porecraft 4-206 Deep Core Consolidation Station",
+      "product_name": "Shielding Vault Blocks",
+      "machine_family": "Shielding Finishing Lines",
+      "installation_name": "Shielding Vault Block Production Line",
       "machine_family_id": "MF-S2-11-C4",
       "inputs": [
         "C2-007",
@@ -6919,9 +6891,9 @@
       "sector_id": "S2-11",
       "preferred_material_id": "C2-007",
       "unchanged_formula": "1 (E+A) + 1 (F+F) \u2192 1 ((E+A)+(F+F))",
-      "product_name": "Heat Storage Matrix",
-      "machine_family": "Porecraft Infusion Lines",
-      "installation_name": "Porecraft 4-207 Storage Matrix Infusion Station",
+      "product_name": "Reactor Shield Assemblies",
+      "machine_family": "Shielding Finishing Lines",
+      "installation_name": "Reactor Shield Assembly Production Line",
       "machine_family_id": "MF-S2-11-C4",
       "inputs": [
         "C2-007",
@@ -6942,9 +6914,9 @@
       "sector_id": "S2-11",
       "preferred_material_id": "C2-007",
       "unchanged_formula": "1 (E+A) + 1 (F+A) \u2192 1 ((E+A)+(F+A))",
-      "product_name": "Discharge Diffuser",
-      "machine_family": "Porecraft Infusion Lines",
-      "installation_name": "Porecraft 4-208 Discharge Diffuser Charging Station",
+      "product_name": "Shielded Fuel Cartridges",
+      "machine_family": "Shielding Finishing Lines",
+      "installation_name": "Shielded Fuel Cartridge Production Line",
       "machine_family_id": "MF-S2-11-C4",
       "inputs": [
         "C2-007",
@@ -6965,9 +6937,9 @@
       "sector_id": "S2-11",
       "preferred_material_id": "C2-007",
       "unchanged_formula": "1 (E+A) + 1 (A+A) \u2192 1 ((E+A)+(A+A))",
-      "product_name": "Pressure Diffuser",
-      "machine_family": "Porecraft Infusion Lines",
-      "installation_name": "Porecraft 4-209 Pressure Diffuser Charging Station",
+      "product_name": "Shielded Power Modules",
+      "machine_family": "Shielding Finishing Lines",
+      "installation_name": "Shielded Power Module Production Line",
       "machine_family_id": "MF-S2-11-C4",
       "inputs": [
         "C2-007",
@@ -6988,9 +6960,9 @@
       "sector_id": "S2-12",
       "preferred_material_id": "C2-008",
       "unchanged_formula": "2 (F+F) \u2192 1 ((F+F)+(F+F))",
-      "product_name": "Long Hold Thermal Reserve",
-      "machine_family": "Saltcraft Packing Lines",
-      "installation_name": "Saltcraft 4-210 Long Hold Reserve Packing Station",
+      "product_name": "Heavy Structural Frames",
+      "machine_family": "Alloy Finishing Lines",
+      "installation_name": "Heavy Structural Frame Production Line",
       "machine_family_id": "MF-S2-12-C4",
       "inputs": [
         "C2-008",
@@ -7010,9 +6982,9 @@
       "sector_id": "S2-12",
       "preferred_material_id": "C2-008",
       "unchanged_formula": "1 (F+F) + 1 (F+A) \u2192 1 ((F+F)+(F+A))",
-      "product_name": "Ignition Reserve Fill",
-      "machine_family": "Saltcraft Packing Lines",
-      "installation_name": "Saltcraft 4-211 Ignition Reserve Gas Loading Station",
+      "product_name": "Reactor Core Cassettes",
+      "machine_family": "Alloy Finishing Lines",
+      "installation_name": "Reactor Core Cassette Production Line",
       "machine_family_id": "MF-S2-12-C4",
       "inputs": [
         "C2-008",
@@ -7033,9 +7005,9 @@
       "sector_id": "S2-12",
       "preferred_material_id": "C2-008",
       "unchanged_formula": "1 (F+F) + 1 (A+A) \u2192 1 ((F+F)+(A+A))",
-      "product_name": "Thermal Expansion Reserve",
-      "machine_family": "Saltcraft Packing Lines",
-      "installation_name": "Saltcraft 4-212 Expansion Reserve Charging Station",
+      "product_name": "Structural Power Modules",
+      "machine_family": "Alloy Finishing Lines",
+      "installation_name": "Structural Power Module Production Line",
       "machine_family_id": "MF-S2-12-C4",
       "inputs": [
         "C2-008",
@@ -7056,9 +7028,9 @@
       "sector_id": "S2-13",
       "preferred_material_id": "C2-009",
       "unchanged_formula": "2 (F+A) \u2192 1 ((F+A)+(F+A))",
-      "product_name": "Sustained Arc Fill",
-      "machine_family": "Sparkcraft Charging Lines",
-      "installation_name": "Sparkcraft 4-213 Sustained Arc Blending Station",
+      "product_name": "Reactor Fuel Assemblies",
+      "machine_family": "Fuel Finishing Lines",
+      "installation_name": "Reactor Fuel Assembly Production Line",
       "machine_family_id": "MF-S2-13-C4",
       "inputs": [
         "C2-009",
@@ -7078,9 +7050,9 @@
       "sector_id": "S2-13",
       "preferred_material_id": "C2-009",
       "unchanged_formula": "1 (F+A) + 1 (A+A) \u2192 1 ((F+A)+(A+A))",
-      "product_name": "Pressure Arc Fill",
-      "machine_family": "Sparkcraft Charging Lines",
-      "installation_name": "Sparkcraft 4-214 Pressure Arc Blending Station",
+      "product_name": "Heated Fuel Cartridges",
+      "machine_family": "Fuel Finishing Lines",
+      "installation_name": "Heated Fuel Cartridge Production Line",
       "machine_family_id": "MF-S2-13-C4",
       "inputs": [
         "C2-009",
@@ -7101,9 +7073,9 @@
       "sector_id": "S2-14",
       "preferred_material_id": "C2-010",
       "unchanged_formula": "2 (A+A) \u2192 1 ((A+A)+(A+A))",
-      "product_name": "Deep Pressure Reserve",
-      "machine_family": "Presscraft Charging Lines",
-      "installation_name": "Presscraft 4-215 Deep Reserve Compression Station",
+      "product_name": "Isotope Power Banks",
+      "machine_family": "Isotope Power Finishing Lines",
+      "installation_name": "Isotope Power Bank Production Line",
       "machine_family_id": "MF-S2-14-C4",
       "inputs": [
         "C2-010",
