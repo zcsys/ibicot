@@ -1,28 +1,18 @@
-"""Static catalog and economic primitives.
-
-The catalog data is extracted one-for-one from ``web/catalog.js`` into
-``catalog.json`` (see ``tools/dump_catalog.js``), so the counts, order,
-codes, recipes and invented-market selection are bit-identical to the JS
-oracle without hand transcription.  This module adds the small pure-math
-primitives (``adaptivePrice``, ``finishedStockTarget``, ``procurementProfile``,
-…) transcribed from the same file.
-"""
+"""Current catalog and economic primitives, loaded from the active catalog directory."""
 from __future__ import annotations
 
-import json
 import math
-import os
 
-_HERE = os.path.dirname(os.path.abspath(__file__))
-with open(os.path.join(_HERE, 'catalog.json'), 'r', encoding='utf-8') as _f:
-    _DATA = json.load(_f)
+from .midbridge import load_catalog, CATALOG_REVISION
+_DATA = load_catalog()
 
 TIME = _DATA['TIME']
 ELEMENTS: list[str] = _DATA['ELEMENTS']
 T1_BASIC_MACHINERY = _DATA['T1_BASIC_MACHINERY']
 T1_COMPOUND_MACHINERY = _DATA['T1_COMPOUND_MACHINERY']
 T2_ROUTE_SETUP = _DATA['T2_ROUTE_SETUP']
-MIN_UNIT_PRICE = _DATA['MIN_UNIT_PRICE']
+# Quotes are whole cents, so the smallest representable positive quote is $0.01.
+MIN_UNIT_PRICE = max(0.01, _DATA['MIN_UNIT_PRICE'])
 # Numerical guardrail ceiling for prices (never an economic bound — see canon
 # axiom 6: prices must settle at an interior equilibrium, not on a guardrail).
 MAX_UNIT_PRICE = 1e9
@@ -40,7 +30,6 @@ T2_SECTOR_WEIGHTS: list = _DATA['T2_SECTOR_WEIGHTS']
 T2_ADJACENCY: list = _DATA['T2_ADJACENCY']
 T2_NEED_TYPES: list = _DATA['T2_NEED_TYPES']
 T2_MAX_PRODUCTS_PER_FIRM = _DATA['T2_MAX_PRODUCTS_PER_FIRM']
-ECONOMY_DEFAULTS = _DATA['ECONOMY_DEFAULTS']
 PROGRESSION_DEFAULTS = _DATA['PROGRESSION_DEFAULTS']
 INVENTED_PER_COMPLEXITY = {int(k): v for k, v in _DATA['INVENTED_PER_COMPLEXITY'].items()}
 T2_PRODUCTS: list[dict] = _DATA['T2_PRODUCTS']
@@ -55,22 +44,69 @@ WORLD_STORY = _DATA['WORLD_STORY']
 
 # ===========================================================================
 # Canon parameter pass (design_canon.md §3–§6 / handoff "settled parameters").
-# These override the JS oracle's *stale* values.  The topology (§3) is settled
-# canon; the supply-side numbers (§4, §6) are pinned working values; the
-# demand-side (§5) structure is canon while its exact scale/markup are
-# calibration (see §9).  The JS-equivalence gate is retired once this pass is
-# applied — the canon deliberately diverges from the old JS kernel.
+# The topology is defined by the current catalog. Supply-side working values
+# and demand calibration below preserve the approved production behavior.
 # ===========================================================================
 NE = len(ELEMENTS)          # 4
-NP = len(PRODUCTS)          # 10
+NP = len(PRODUCTS)          # 14
 N0 = 20
-N1 = 1000
-N2_FIRMS = 60000            # canon: 60,000 single-machine T2 firms (was 61,950)
+T1_FIRMS_PER_MATERIAL = 72
+T1_DEFAULT_CAPACITY = 6_000.0
+T1_C2_DEFAULT_CAPACITY = 6_000.0
+
+def refinery_capacity(product, cfg):
+    """Per-machine throughput; legacy scalar configurations cover both classes."""
+    return cfg['t1Capacity'] if product['complexity'] == 1 else cfg.get('t1CapacityC2', cfg['t1Capacity'])
+
+N1 = NP * T1_FIRMS_PER_MATERIAL
+# Reverse product-count shares across complexities to favor simpler production.
+# Exact reversed-count allocation requires multiples of 28,980:
+# 36*x : 69*y = 23:12 => x:y = 529:144. Two blocks are nearest 50k.
+N2_FIRMS = 57_960
+T2_ALLOCATION_CAPACITIES = {3:32, 4:24}
+
+
+def _apportion(total, weights):
+    denominator = sum(weights.values())
+    result = {key:total*weight//denominator for key,weight in weights.items()}
+    order = sorted(weights, key=lambda key:(-(total*weights[key]%denominator),key))
+    for key in order[:total-sum(result.values())]:
+        result[key] += 1
+    return result
+
+
+# Main-branch principle: product shares increase with complexity, while total
+# company shares use those same counts in reverse. Divide each complexity's
+# population equally across its products; stable catalog IDs break integer ties.
+_complexities = sorted({p['complexity'] for p in T2_PRODUCTS})
+_product_counts = {c:sum(p['complexity'] == c for p in T2_PRODUCTS) for c in _complexities}
+_reverse_counts = dict(zip(_complexities, reversed(list(_product_counts.values()))))
+T2_COMPLEXITY_FIRM_COUNTS = _apportion(N2_FIRMS, _reverse_counts)
+_capacity_multiple = math.lcm(*_product_counts.values())
+T2_COMPANY_WEIGHTS = {p['catalogId']:_reverse_counts[p['complexity']]*_capacity_multiple//_product_counts[p['complexity']] for p in T2_PRODUCTS}
+_allocation = {}
+for _c in _complexities:
+    _allocation.update(_apportion(T2_COMPLEXITY_FIRM_COUNTS[_c],
+                                 {p['catalogId']:1 for p in T2_PRODUCTS if p['complexity'] == _c}))
+T2_PRODUCT_FIRM_COUNTS = {p['id']:_allocation[p['catalogId']] for p in T2_PRODUCTS}
+T2_PRODUCTION_WEIGHTS = {p['catalogId']:_allocation[p['catalogId']]*T2_ALLOCATION_CAPACITIES[p['complexity']] for p in T2_PRODUCTS}
+# Route final demand to saleable output after reserving intermediates. At a
+# common utilization, recursive final demand then exactly matches every line's
+# nominal production. Gross capacity remains uniform within each complexity.
+T2_FINAL_DEMAND_WEIGHTS = dict(T2_PRODUCTION_WEIGHTS)
+for _p in T2_PRODUCTS:
+    for _ingredient,_quantity in _p['ingredientCatalogIds'].items():
+        if _ingredient in T2_FINAL_DEMAND_WEIGHTS:
+            T2_FINAL_DEMAND_WEIGHTS[_ingredient] -= _quantity*T2_PRODUCTION_WEIGHTS[_p['catalogId']]
+if min(T2_FINAL_DEMAND_WEIGHTS.values()) <= 0:
+    raise ValueError('Manufacturer allocation leaves insufficient capacity for final demand.')
+for _p in T2_PRODUCTS:
+    _p['distributorWeight'] = T2_FINAL_DEMAND_WEIGHTS[_p['catalogId']]
+T2_ROUTE_FIRM_COUNTS = {g:sum(T2_PRODUCT_FIRM_COUNTS[p['id']] for p in T2_PRODUCTS if p['demandGroup']==g) for g in ('c3','c4_basic_c3','c4_compound_pair')}
 N_DISTRIBUTORS = WORLD_STORY['population']          # 1,000,000
-MAX_T2_LINES = N2_FIRMS     # one machine/line per firm at start
+MAX_T2_LINES = N2_FIRMS * T2_MAX_PRODUCTS_PER_FIRM
 MONTH = TIME['ticksPerMonth']                     # 30
-# Firms per product by complexity (canon §3): C-3 1,800 · C-4 300 · C-5 50.
-T2_FIRMS_PER_PRODUCT = {3: 1800, 4: 300, 5: 50}
+LOYALTY_ORDER_SHARE = 0.05
 DISTRIBUTOR_QMAX = 20                           # canon §5: fixed per-distributor quantity
 
 # Supply-side scale values (equity, license, machinery, capacity, costs, storage)
@@ -83,115 +119,149 @@ def conversion_cost(complexity: int, cfg) -> float:
     return cfg['conversionFactor'] * max(1, complexity - 1)
 
 
+def refinery_unit_cost(product, cfg):
+    return (sum(product['inputs'].values()) * cfg['t1MaterialCost']
+            / product['outputQty'] + conversion_cost(product['complexity'], cfg))
+
+
 def unit_cost(complexity: int, cfg) -> float:
-    # canon cost ladder: $1.25 / $1.25 / $1.75 / $2.00 / $2.25 (per output item)
-    material = cfg['t1MaterialCost'] if complexity <= 2 else cfg['t2MaterialCost']
-    return material + conversion_cost(complexity, cfg)
+    """Class mean reference; use recipe-specific helpers for an actual product."""
+    rows = PRODUCTS if complexity <= 2 else T2_PRODUCTS
+    values = [(refinery_unit_cost(p, cfg) if complexity <= 2 else initial_tier2_cost(p, cfg))
+              for p in rows if p['complexity'] == complexity]
+    return sum(values) / len(values)
+
+
+def material_switching_reference(cfg):
+    # One common material reference matches the buyer-class AOV adaptation.
+    return sum(refinery_unit_cost(p, cfg) for p in PRODUCTS) / len(PRODUCTS)
 
 
 def t2_markup(complexity: int, cfg) -> float:
     # First-guess markup is uniform across tiers/complexities (flat 0.25): the
-    # complexity gradient lives in demand *volume* (supply-scaled distributor routing,
-    # 108:12:1), not in the seed price.  Prices then rise to their own equilibrium via the
+    # net final-output capacity sets Distributor routing independently of seed
+    # prices. Prices then rise to their own equilibrium via the
     # derivative-following pricer.
     return cfg['t1Markup']
 
 
+def refinery_storage(cfg, firm):
+    """Storage belongs to the firm's native material cohort, not added machines."""
+    return cfg.get('t1C2Storage', cfg['storage']) if PRODUCTS[int(firm)//T1_FIRMS_PER_MATERIAL]['complexity'] == 2 else cfg.get('t1C1Storage', cfg['storage'])
+
+
 def goods_space(complexity: int, cfg) -> float:
     # canon: G = storage − machinery footprint (shared by raw+finished+machinery)
-    return cfg['storage'] - cfg['footprint'][complexity]
+    return (cfg.get(f't1C{complexity}Storage', cfg['storage']) if complexity <= 2 else cfg['storage']) - cfg['footprint'][complexity]
 
 
 def inventory_target(complexity: int, cfg) -> float:
     # canon: desired inventory = fill G, split 1:1 → finished = raw = G/2
-    return goods_space(complexity, cfg) / 2.0
+    return math.floor(goods_space(complexity, cfg) / (2.0 * complexity))
 
 
-# Tier 1 material -> manufacturing sector (Star Business 1:1 mapping).  Each of
-# the ten refined materials feeds one distinct Tier 2 application sector; this is
-# the sector a Tier 1 firm is grouped under in the dashboard.
-T1_SECTOR_BY_CODE: dict = {
-    'W': 3,    # Industrial Fluid      -> Housing & Life Support
-    'E': 7,    # Bulk Alloy            -> Industrial Tooling & Mining Supplies
-    'F': 0,    # Energy Carrier        -> Power & Utilities
-    'A': 6,    # Process Gas           -> Sensors & Medical Equipment
-    'W+E': 2,  # Ceramic Stock         -> Shipbuilding & Orbital Structures
-    'W+F': 1,  # Thermal Compound      -> Propulsion & Flight Systems
-    'W+A': 8,  # Technical Fiber       -> Freight & Warehouse Equipment
-    'E+F': 5,  # Semiconductor Crystal -> Computing & Communications
-    'E+A': 4,  # Polymer Composite     -> Robotics & Field Services
-    'F+A': 9,  # Active Reagent        -> Defense & Emergency Systems
-}
+# Stable material indices pair the fourteen refinery and application sectors.
+T1_SECTOR_BY_CODE = {p['code']: i for i, p in enumerate(PRODUCTS)}
 
-# Market symbols (Star Business naming catalog §3), keyed by the legacy recipe code.
+# Market symbols (Midbridge naming catalog), keyed by the legacy recipe code.
 MATERIAL_SYMBOLS: dict = {p['code']: p['symbol'] for p in PRODUCTS}
 
 # ---------------------------------------------------------------------------
-# Tier 1 refining installations (Star Business naming catalog §7).  "Refining"
-# identifies the operation; "bench" and "cell" express increasing installation
-# scale.  These are equipment classes within the Machinery Market, not separate
-# markets.  The maker is kept separate: Mudrock Machinery Co.
-# ---------------------------------------------------------------------------
-T1_EQUIPMENT_CLASS: dict = {1: 'Refining Bench', 2: 'Refining Cell'}
-T1_EQUIPMENT_CONFIG: dict = {1: 'Single-Element Refining', 2: 'Paired-Element Refining'}
+# Accepted equipment classes and recipe-specific installation names.
+NAMING_CATALOG = _DATA['NAMING_CATALOG']
+T1_EQUIPMENT_CLASS = {int(p['complexity'][2:]):p['name'] for p in NAMING_CATALOG['equipment_classes'] if p['complexity'] in ('C-1','C-2')}
+T1_EQUIPMENT_CONFIG = dict(T1_EQUIPMENT_CLASS)
 T1_EQUIPMENT_INSTALLATION: dict = {
-    p['code']: f"{p['name']} {T1_EQUIPMENT_CLASS[p['complexity']]}"
+    p['code']: p['installationName']
     for p in PRODUCTS
 }
 T2_EQUIPMENT_CONFIG: dict = {int(k): v for k, v in _DATA['EQUIPMENT_CONFIG'].items()}
 
 # ---------------------------------------------------------------------------
-# Numbered companies (Star Business naming catalog §9).  Each sector has one
-# recognizable generic business name; a `0x`-prefixed hex sector serial identifies
-# the individual firm.  No house-name pool, location suffix, district, or berth is
-# added.  The twenty authored identities stay separate and are never prepended.
+# Numbered companies (Midbridge naming catalog).  Each T1 sector uses one
+# generic stem and each T2 sector uses one facility stem; a global `0x`
+# company number identifies the individual firm.  Neither tier has flagship
+# names.  No house-name pool, location suffix, district, or berth is added.
+# The twenty authored T0 identities stay separate and are never prepended.
 # ---------------------------------------------------------------------------
-T1_GENERIC_BASES: dict = {
-    'W': 'Industrial Fluids', 'E': 'Alloy Refining', 'F': 'Energy Materials',
-    'A': 'Process Gases', 'W+E': 'Ceramic Materials', 'W+F': 'Thermal Materials',
-    'W+A': 'Technical Fibers', 'E+F': 'Semiconductor Materials', 'E+A': 'Composite Materials',
-    'F+A': 'Active Chemicals',
-}
-T2_GENERIC_BASES: list[str] = [
-    'Power Equipment', 'Propulsion Systems', 'Shipbuilding Works', 'Habitat Systems',
-    'Service Robotics', 'Computing Systems', 'Scientific Instruments', 'Industrial Tooling',
-    'Freight Equipment', 'Defense Systems',
-]
+T1_GENERIC_BASES = {p['code']:n['generic_stem'] for p,n in zip(PRODUCTS,NAMING_CATALOG['t1_companies'])}
+T2_GENERIC_BASES = [p['facility_stem'] for p in NAMING_CATALOG['t2_companies']]
 
-# Cohort sizes used to derive a firm's 1-based sector serial for the display name.
-T1_FIRMS_PER_MATERIAL: int = N1 // len(PRODUCTS)          # 100
-T2_FIRMS_PER_SECTOR: int = N2_FIRMS // len(T2_SECTORS)    # 6000
+# Cohort sizes and offsets remain useful for population allocation.
+T2_SECTOR_FIRM_COUNTS = [sum(T2_PRODUCT_FIRM_COUNTS[p['id']] for p in T2_PRODUCTS if p['sectorIndex'] == s) for s in range(len(T2_SECTORS))]
+T2_SECTOR_FIRM_OFFSETS = [sum(T2_SECTOR_FIRM_COUNTS[:s]) for s in range(len(T2_SECTORS))]
 
 
-def company_display_name(tier: int, generic_base: str, sector_serial: int) -> str:
-    if tier not in (1, 2) or sector_serial < 1:
-        raise ValueError("Invalid tier or sector serial")
-    return f"{generic_base} 0x{sector_serial:x}"
+# One namespace across the full catalog population. Reduced test worlds reserve
+# the same ranges, so a company's number never depends on a run's sample size.
+COMPANY_NUMBERING = {}
+_next_company_number = 0
+for _tier, _count in [('T-1',1),('T0',N0),('T1',N1),('T2',N2_FIRMS),('T3',N_DISTRIBUTORS)]:
+    COMPANY_NUMBERING[_tier] = {'start':_next_company_number, 'count':_count}
+    _next_company_number += _count
 
 
-def t1_firm_name(cid: int) -> str:
-    """Display name for a Tier 1 refinery: generic base + hex sector serial."""
-    code = PRODUCTS[int(cid) // 100]['code']
-    serial = int(cid) % T1_FIRMS_PER_MATERIAL + 1
-    return company_display_name(1, T1_GENERIC_BASES[code], serial)
+def company_number(tier, local_id=0):
+    """Globally unique lower-case hexadecimal number; array IDs stay local."""
+    import operator
+    key = tier if isinstance(tier,str) else f'T{tier}'
+    if key not in COMPANY_NUMBERING:
+        raise ValueError('Unknown company tier')
+    cid = operator.index(local_id)
+    block = COMPANY_NUMBERING[key]
+    if isinstance(local_id,bool) or not 0 <= cid < block['count']:
+        raise ValueError('Company ID outside its tier range')
+    return hex(block['start'] + cid)
 
 
-def t2_firm_name(sector: int, firm_id: int) -> str:
-    """Display name for a Tier 2 manufacturer: generic base + hex sector serial."""
-    sector = int(sector)
-    serial = int(firm_id) - sector * T2_FIRMS_PER_SECTOR + 1
-    return company_display_name(2, T2_GENERIC_BASES[sector], serial)
+def company_from_number(number):
+    """Resolve a public hex company number to its existing (tier, local ID)."""
+    import re
+    if not isinstance(number,str) or not re.fullmatch(r'0[xX][0-9a-fA-F]+',number):
+        raise ValueError('Company number must be hexadecimal with a 0x prefix')
+    value = int(number,16)
+    for tier,block in COMPANY_NUMBERING.items():
+        if block['start'] <= value < block['start'] + block['count']:
+            return tier,value-block['start']
+    raise ValueError('Unknown company number')
+
+
+def company_display_name(tier, generic_base, local_id):
+    return f'{generic_base} {company_number(tier,local_id)}'
+
+
+def t1_firm_name(cid):
+    code = PRODUCTS[int(cid) // T1_FIRMS_PER_MATERIAL]['code']
+    base = T1_GENERIC_BASES[code]
+    return company_display_name('T1',base,int(cid))
+
+
+def t2_firm_name(sector, firm_id):
+    base = T2_GENERIC_BASES[int(sector)]
+    return company_display_name('T2',base,int(firm_id))
+
+
+def company_registry(cfg):
+    """Compact identities/ranges; never allocate a million display strings."""
+    active = {'T-1':1,'T0':N0,'T1':N1,'T2':cfg['t2FirmCount'],'T3':cfg['distributorCount']}
+    return {'format':'global-hex-v1',
+            'gaia':{'tier':'T-1','id':0,'name':'Gaia','companyNumber':'0x0'},
+            'ranges':{tier:{**block,'activeCount':active[tier],
+                'first':hex(block['start']), 'last':hex(block['start']+block['count']-1)}
+                for tier,block in COMPANY_NUMBERING.items()}}
 
 
 def t1_sector(code: str) -> str:
-    return T2_SECTORS[T1_SECTOR_BY_CODE[code]]
+    return PRODUCTS[T1_SECTOR_BY_CODE[code]]['sector']
 
 
-# Count-preserving output quantity (structural, from the recipe).
-for _p in T2_PRODUCTS:
-    _p['outputQty'] = sum(int(q) for _m, q in _p['ingredients'])
+# Every recipe yields one item; ancestry determines its occupied space.
+for _p in T2_Catalog:
+    _p['outputQty'] = 1
+    _p['capacity'] = T2_ALLOCATION_CAPACITIES[_p['complexity']]
 for _p in PRODUCTS:
-    _p['outputQty'] = sum(int(q) for q in _p['inputs'].values())
+    _p['outputQty'] = 1
+    _p['capacity'] = T1_DEFAULT_CAPACITY if _p['complexity'] == 1 else T1_C2_DEFAULT_CAPACITY
 
 # Per-product precomputed *structural* flat structure used by the hot loops.
 # (Scale values — conversion, machinery, capacity, target — are cfg-driven.)
@@ -201,7 +271,9 @@ _T2_OUTPUT = [p['outputQty'] for p in T2_PRODUCTS]
 # ingredients: list per product of (material_index, quantity) tuples
 _T2_INGREDIENTS = [[(int(m), int(q)) for (m, q) in p['ingredients']] for p in T2_PRODUCTS]
 # catalogInputRatios: T2_PRODUCTS x PRODUCTS ratio matrix
-_T2_RATIOS = [[0.0] * NP for _ in range(len(T2_PRODUCTS))]
+T2_INPUT_PRODUCTS = _DATA['T2_INPUT_PRODUCTS']
+NI = len(T2_INPUT_PRODUCTS)
+_T2_RATIOS = [[0.0] * NI for _ in range(len(T2_PRODUCTS))]
 for _pid, _ing in enumerate(_T2_INGREDIENTS):
     for _m, _q in _ing:
         _T2_RATIOS[_pid][_m] = float(_q)
@@ -242,7 +314,7 @@ def loyalty_surcharge(price, reliability) -> float:
     # Per-unit surcharge used in supplier ranking: the fixed switching charge spread
     # over one typical order ≈ 5 % of price at reliability 0.5 (the charge ≈ 5 % of
     # a typical order's value, so a challenger must undercut by ~5 % to win).
-    return 0.05 * price * (1.0 + clamp(reliability, 0.0, 1.0)) / 1.5
+    return LOYALTY_ORDER_SHARE * price * (1.0 + clamp(reliability, 0.0, 1.0)) / 1.5
 
 
 def loyalty_charge(unit_cost, reliability, multiple) -> float:
@@ -275,17 +347,11 @@ def adaptive_price(old_price, profit, previous_profit, direction=1,
     price = round_to_cent(min(MAX_UNIT_PRICE, max(floor, old_price)))
     next_direction = -1 if direction < 0 else 1
     moved = False
-    # Derivative-following pricing (canon §12.6): a firm that is not selling lowers
-    # (if it has stock); unmet demand (demand > supplied) raises; a firm priced
+    # Derivative-following pricing (canon §12.2): unmet demand raises; a firm priced
     # above its market's going rate lowers (expensive → contest) and one priced
     # below raises (cheap → capture value); otherwise it follows the sign of the
     # realised profit change with a 2 % dead band, holding once profit flattens.
-    if sales <= 0:
-        if stock <= 0:
-            return {'price': price, 'direction': next_direction, 'stepScale': step_scale}
-        next_direction = -1
-        moved = True
-    elif demand > available + 1e-9:
+    if demand > available + 1e-9:
         # Scarce: unmet demand (demand exceeds what we supplied) → raise, even once
         # a profit baseline exists, so upstream tiers capture a lively market.
         next_direction = 1
@@ -297,8 +363,9 @@ def adaptive_price(old_price, profit, previous_profit, direction=1,
         elif price < market_price * (1 - band):
             next_direction = 1    # cheap → capture value
             moved = True
-    if not moved and math.isfinite(previous_profit) and previous_profit > 0:
-        change = (profit - previous_profit) / previous_profit
+    if not moved and math.isfinite(previous_profit):
+        # A loss shrinking is an improvement; zero is also a valid baseline.
+        change = (profit - previous_profit) / max(abs(previous_profit), 1e-9)
         if change < -0.02:
             next_direction = -next_direction
         elif change > 0.02:
@@ -330,18 +397,53 @@ def tier2_starting_markup(product, cfg) -> float:
 
 def procurement_profile(product, cfg, reference_cost) -> dict:
     # canon demand side (§5): V = unit cost; η = 2. Per-distributor quantity is
-    # fixed at DISTRIBUTOR_QMAX; the complexity gradient (demand ∝ supply = firms ×
-    # capacity, 108:12:1) lives in *distributor routing* (initialize_distributors).
+    # fixed at DISTRIBUTOR_QMAX; weighted invented-product routing lives in
+    # initialize_distributors, using default capacity less intermediate use.
     return {'markup': cfg['t1Markup'],
             'valuation': reference_cost}
 
 
 def initial_tier2_cost(product, cfg) -> float:
-    return unit_cost(product['complexity'], cfg)
+    return (sum(q * (refinery_unit_cost(T2_INPUT_PRODUCTS[m], cfg) if m < NP else initial_tier2_cost(T2_INPUT_PRODUCTS[m], cfg)) * (1 + cfg['t1Markup'])
+                for m, q in product['ingredients']) / product['outputQty']
+            + conversion_cost(product['complexity'], cfg))
+
+
+def input_reference_cost(material, cfg) -> float:
+    """Canon demand-side reference (V = unit cost) for one input material.
+
+    Serves as the halving price of the price-sensitive fill-to-brim buying rule:
+    latent demand is the storage slot and the request follows the Tier 3 curve
+    q = q_max / (1 + (price / V) ** 2). Basic elements use the raw-material cost,
+    refinery products their unit cost, and T2 intermediates their initial cost.
+    """
+    p = T2_INPUT_PRODUCTS[material]
+    if material < NE:
+        return cfg['t1MaterialCost']
+    if material < NP:
+        return refinery_unit_cost(p, cfg)
+    return initial_tier2_cost(p, cfg)
+
+
+def distributor_switching_reference(cfg):
+    """Order-routing-weighted reference, matching the Distributor buyer class."""
+    weight = sum(p['distributorWeight'] for p in T2_PRODUCTS)
+    return sum(p['distributorWeight'] * initial_tier2_cost(p, cfg) for p in T2_PRODUCTS) / weight
+
+
+def initial_loyalty_multiples(cfg):
+    """Provisional starting fees at reliability 0.5; annual 5% AOV still adapts."""
+    raw = 50.0 / (cfg['baseCost'] * 1.5)
+    material = 1.5 / (material_switching_reference(cfg) * 1.5)
+    distributor = 1.5 / (distributor_switching_reference(cfg) * 1.5)
+    return {1:raw, 2:{3:material, 4:material, 5:0.0}, 3:distributor}
 
 
 def reference_tier2_cost(product, cfg=None) -> float:
-    return unit_cost(product['complexity'], cfg or {})
+    if cfg is None:
+        from .config import default_cfg
+        cfg = default_cfg()
+    return initial_tier2_cost(product, cfg)
 
 
 def portfolio_options(products, max_width=T2_MAX_PRODUCTS_PER_FIRM):
@@ -365,3 +467,19 @@ def portfolio_options(products, max_width=T2_MAX_PRODUCTS_PER_FIRM):
 
 def related_sector(core, sector):
     return core == sector or sector in T2_ADJACENCY[core]
+
+
+def production_batches(batches, output_qty, unit_cost, price, overhead, margin_band):
+    """Gate feasible whole batches using inventory cost plus forecast period cost.
+
+    Period overhead stays outside inventory basis. Recheck the reduced output:
+    spreading a fixed bill over fewer units must not create a loss-making plan.
+    """
+    if batches <= 0 or unit_cost > price + 1e-9:
+        return 0
+    margin = (price - unit_cost - overhead / (batches * output_qty)) / max(price, 1e-9)
+    factor = min(1.0, max(0.0, margin / margin_band))
+    result = math.floor(batches * factor + 0.5)
+    if result <= 0 or (price - unit_cost) * result * output_qty - overhead < -1e-9:
+        return 0
+    return result

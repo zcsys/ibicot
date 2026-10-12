@@ -1,17 +1,15 @@
 /*
- * Worker bridge: makes app.js talk to the Python kernel over WebSocket instead
- * of a browser Web Worker.  It replaces the global `Worker` constructor before
- * app.js loads, keeping the app's postMessage / onmessage protocol unchanged.
- *
- * Load this after catalog.js and before app.js.
+ * Browser-to-backend transport: exposes a `Backend` object that speaks the
+ * dashboard's postMessage / onmessage protocol over WebSocket to the Python
+ * kernel. Load this after catalog.js and before app.js.
  */
 (function () {
   'use strict';
   const proto = location.protocol === 'https:' ? 'wss://' : 'ws://';
   const WS_URL = proto + location.host + '/ws';
 
-  class RemoteWorker {
-    constructor(url) {
+  class Backend {
+    constructor() {
       this.onmessage = null;
       this.onerror = null;
       this._listeners = {};
@@ -60,5 +58,5 @@
     }
   }
 
-  window.Worker = RemoteWorker;
+  window.Backend = Backend;
 })();

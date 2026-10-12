@@ -1,0 +1,3744 @@
+{
+  "game": "Midbridge Colony \u00b7 4263",
+  "elements": [
+    {
+      "symbol": "W",
+      "name": "Organics",
+      "raw": "raw(W)"
+    },
+    {
+      "symbol": "E",
+      "name": "Inorganics",
+      "raw": "raw(E)"
+    },
+    {
+      "symbol": "F",
+      "name": "Metals",
+      "raw": "raw(F)"
+    },
+    {
+      "symbol": "A",
+      "name": "Radioactives",
+      "raw": "raw(A)"
+    }
+  ],
+  "tier_labels": {
+    "T-1": "Gaia",
+    "T0": "Extractors",
+    "T1": "Refineries",
+    "T2": "Manufacturers",
+    "T3": "Distributors"
+  },
+  "refined_materials": [
+    {
+      "material_id": "C1-001",
+      "symbol": "W",
+      "formula": "W",
+      "public_name": "Biochemical Feedstock",
+      "refinery_sector_id": "S1-01",
+      "refinery_sector_name": "Biochemical Refining"
+    },
+    {
+      "material_id": "C1-002",
+      "symbol": "E",
+      "formula": "E",
+      "public_name": "Inorganic Concentrate",
+      "refinery_sector_id": "S1-02",
+      "refinery_sector_name": "Inorganic Processing"
+    },
+    {
+      "material_id": "C1-003",
+      "symbol": "F",
+      "formula": "F",
+      "public_name": "Metal Ingots",
+      "refinery_sector_id": "S1-03",
+      "refinery_sector_name": "Smelting"
+    },
+    {
+      "material_id": "C1-004",
+      "symbol": "A",
+      "formula": "A",
+      "public_name": "Isotope Feed",
+      "refinery_sector_id": "S1-04",
+      "refinery_sector_name": "Isotope Separation"
+    },
+    {
+      "material_id": "C2-001",
+      "symbol": "WW",
+      "formula": "(W+W)",
+      "public_name": "Engineered Polymers",
+      "refinery_sector_id": "S1-05",
+      "refinery_sector_name": "Polymer Production"
+    },
+    {
+      "material_id": "C2-002",
+      "symbol": "WE",
+      "formula": "(W+E)",
+      "public_name": "Fine Chemicals",
+      "refinery_sector_id": "S1-06",
+      "refinery_sector_name": "Chemical Synthesis"
+    },
+    {
+      "material_id": "C2-003",
+      "symbol": "WF",
+      "formula": "(W+F)",
+      "public_name": "Catalysts",
+      "refinery_sector_id": "S1-07",
+      "refinery_sector_name": "Catalyst Production"
+    },
+    {
+      "material_id": "C2-004",
+      "symbol": "WA",
+      "formula": "(W+A)",
+      "public_name": "Radiopharmaceuticals",
+      "refinery_sector_id": "S1-08",
+      "refinery_sector_name": "Radiochemical Production"
+    },
+    {
+      "material_id": "C2-005",
+      "symbol": "EE",
+      "formula": "(E+E)",
+      "public_name": "Technical Ceramics",
+      "refinery_sector_id": "S1-09",
+      "refinery_sector_name": "Ceramics Production"
+    },
+    {
+      "material_id": "C2-006",
+      "symbol": "EF",
+      "formula": "(E+F)",
+      "public_name": "Semiconductor Wafers",
+      "refinery_sector_id": "S1-10",
+      "refinery_sector_name": "Semiconductor Fabrication"
+    },
+    {
+      "material_id": "C2-007",
+      "symbol": "EA",
+      "formula": "(E+A)",
+      "public_name": "Radiation Shielding",
+      "refinery_sector_id": "S1-11",
+      "refinery_sector_name": "Shielding Production"
+    },
+    {
+      "material_id": "C2-008",
+      "symbol": "FF",
+      "formula": "(F+F)",
+      "public_name": "Structural Alloys",
+      "refinery_sector_id": "S1-12",
+      "refinery_sector_name": "Alloy Production"
+    },
+    {
+      "material_id": "C2-009",
+      "symbol": "FA",
+      "formula": "(F+A)",
+      "public_name": "Reactor Fuel",
+      "refinery_sector_id": "S1-13",
+      "refinery_sector_name": "Fuel Fabrication"
+    },
+    {
+      "material_id": "C2-010",
+      "symbol": "AA",
+      "formula": "(A+A)",
+      "public_name": "Isotope Power Cells",
+      "refinery_sector_id": "S1-14",
+      "refinery_sector_name": "Power Cell Production"
+    }
+  ],
+  "t0_companies": [
+    {
+      "company_number": "0x1",
+      "name": "Raw Materials Corp.",
+      "extracts": "Organics + Inorganics + Metals + Radioactives",
+      "fixed": true
+    },
+    {
+      "company_number": "0x2",
+      "name": "Elements Inc.",
+      "extracts": "Organics + Inorganics + Metals + Radioactives",
+      "fixed": true
+    },
+    {
+      "company_number": "0x3",
+      "name": "General Resources Corporation",
+      "extracts": "Organics + Inorganics + Metals",
+      "fixed": false
+    },
+    {
+      "company_number": "0x4",
+      "name": "Integrated Extraction Corp., Inc.",
+      "extracts": "Organics + Inorganics + Radioactives",
+      "fixed": false
+    },
+    {
+      "company_number": "0x5",
+      "name": "Planetary Industries, Inc.",
+      "extracts": "Organics + Metals + Radioactives",
+      "fixed": false
+    },
+    {
+      "company_number": "0x6",
+      "name": "Federated Supply Incorporated",
+      "extracts": "Inorganics + Metals + Radioactives",
+      "fixed": false
+    },
+    {
+      "company_number": "0x7",
+      "name": "Standard Fiber & Mineral, Inc.",
+      "extracts": "Organics + Inorganics",
+      "fixed": false
+    },
+    {
+      "company_number": "0x8",
+      "name": "Advanced Materials, Inc.",
+      "extracts": "Organics + Metals",
+      "fixed": false
+    },
+    {
+      "company_number": "0x9",
+      "name": "The People's Extraction Co., Inc.",
+      "extracts": "Organics + Radioactives",
+      "fixed": false
+    },
+    {
+      "company_number": "0xa",
+      "name": "Premier Harvest, Inc.",
+      "extracts": "Inorganics + Metals",
+      "fixed": false
+    },
+    {
+      "company_number": "0xb",
+      "name": "Universal Material Extraction Corp.",
+      "extracts": "Inorganics + Radioactives",
+      "fixed": false
+    },
+    {
+      "company_number": "0xc",
+      "name": "The Oligarch",
+      "extracts": "Metals + Radioactives",
+      "fixed": false
+    },
+    {
+      "company_number": "0xd",
+      "name": "Meta Organics, Inc.",
+      "extracts": "Organics",
+      "fixed": false
+    },
+    {
+      "company_number": "0xe",
+      "name": "Old Toby & Daughters, Inc.",
+      "extracts": "Organics",
+      "fixed": false
+    },
+    {
+      "company_number": "0xf",
+      "name": "Planetary Salt Corporation",
+      "extracts": "Inorganics",
+      "fixed": false
+    },
+    {
+      "company_number": "0x10",
+      "name": "Associated Silica, Incorporated",
+      "extracts": "Inorganics",
+      "fixed": false
+    },
+    {
+      "company_number": "0x11",
+      "name": "The Metal Mining Co., Inc.",
+      "extracts": "Metals",
+      "fixed": false
+    },
+    {
+      "company_number": "0x12",
+      "name": "The Union Metal, Inc.",
+      "extracts": "Metals",
+      "fixed": false
+    },
+    {
+      "company_number": "0x13",
+      "name": "Amalgamated Isotopes Corp.",
+      "extracts": "Radioactives",
+      "fixed": false
+    },
+    {
+      "company_number": "0x14",
+      "name": "United Radioactives Company",
+      "extracts": "Radioactives",
+      "fixed": false
+    }
+  ],
+  "t1_companies": [
+    {
+      "sector_id": "S1-01",
+      "material_id": "C1-001",
+      "generic_stem": "Biochemical Plant"
+    },
+    {
+      "sector_id": "S1-02",
+      "material_id": "C1-002",
+      "generic_stem": "Concentrate Works"
+    },
+    {
+      "sector_id": "S1-03",
+      "material_id": "C1-003",
+      "generic_stem": "Metal Smelter"
+    },
+    {
+      "sector_id": "S1-04",
+      "material_id": "C1-004",
+      "generic_stem": "Isotope Plant"
+    },
+    {
+      "sector_id": "S1-05",
+      "material_id": "C2-001",
+      "generic_stem": "Polymer Works"
+    },
+    {
+      "sector_id": "S1-06",
+      "material_id": "C2-002",
+      "generic_stem": "Fine Chemical Plant"
+    },
+    {
+      "sector_id": "S1-07",
+      "material_id": "C2-003",
+      "generic_stem": "Catalyst Works"
+    },
+    {
+      "sector_id": "S1-08",
+      "material_id": "C2-004",
+      "generic_stem": "Radiochemical Lab"
+    },
+    {
+      "sector_id": "S1-09",
+      "material_id": "C2-005",
+      "generic_stem": "Ceramic Kiln"
+    },
+    {
+      "sector_id": "S1-10",
+      "material_id": "C2-006",
+      "generic_stem": "Wafer Fab"
+    },
+    {
+      "sector_id": "S1-11",
+      "material_id": "C2-007",
+      "generic_stem": "Shielding Plant"
+    },
+    {
+      "sector_id": "S1-12",
+      "material_id": "C2-008",
+      "generic_stem": "Alloy Foundry"
+    },
+    {
+      "sector_id": "S1-13",
+      "material_id": "C2-009",
+      "generic_stem": "Fuel Fabrication Plant"
+    },
+    {
+      "sector_id": "S1-14",
+      "material_id": "C2-010",
+      "generic_stem": "Power Cell Plant"
+    }
+  ],
+  "t2_sectors": [
+    {
+      "sector_id": "S2-01",
+      "name": "Medical Supplies"
+    },
+    {
+      "sector_id": "S2-02",
+      "name": "Construction Materials"
+    },
+    {
+      "sector_id": "S2-03",
+      "name": "Weapons"
+    },
+    {
+      "sector_id": "S2-04",
+      "name": "Sensors and Detection"
+    },
+    {
+      "sector_id": "S2-05",
+      "name": "Protective Equipment"
+    },
+    {
+      "sector_id": "S2-06",
+      "name": "Explosives and Propellants"
+    },
+    {
+      "sector_id": "S2-07",
+      "name": "Fuels and Lubricants"
+    },
+    {
+      "sector_id": "S2-08",
+      "name": "Diagnostic Equipment"
+    },
+    {
+      "sector_id": "S2-09",
+      "name": "Armor Plating"
+    },
+    {
+      "sector_id": "S2-10",
+      "name": "Electronics"
+    },
+    {
+      "sector_id": "S2-11",
+      "name": "Shelter Systems"
+    },
+    {
+      "sector_id": "S2-12",
+      "name": "Ground Vehicles"
+    },
+    {
+      "sector_id": "S2-13",
+      "name": "Power Systems"
+    },
+    {
+      "sector_id": "S2-14",
+      "name": "Aerospace Systems"
+    }
+  ],
+  "t2_companies": [
+    {
+      "sector_id": "S2-01",
+      "facility_stem": "Medical supply manufacturing facility"
+    },
+    {
+      "sector_id": "S2-02",
+      "facility_stem": "Construction material production facility"
+    },
+    {
+      "sector_id": "S2-03",
+      "facility_stem": "Weapons assembly facility"
+    },
+    {
+      "sector_id": "S2-04",
+      "facility_stem": "Sensor assembly facility"
+    },
+    {
+      "sector_id": "S2-05",
+      "facility_stem": "Protective gear manufacturing facility"
+    },
+    {
+      "sector_id": "S2-06",
+      "facility_stem": "Explosives manufacturing facility"
+    },
+    {
+      "sector_id": "S2-07",
+      "facility_stem": "Fuel and lubricant production facility"
+    },
+    {
+      "sector_id": "S2-08",
+      "facility_stem": "Diagnostic equipment assembly facility"
+    },
+    {
+      "sector_id": "S2-09",
+      "facility_stem": "Armor plate fabrication facility"
+    },
+    {
+      "sector_id": "S2-10",
+      "facility_stem": "Electronics assembly facility"
+    },
+    {
+      "sector_id": "S2-11",
+      "facility_stem": "Shelter fabrication facility"
+    },
+    {
+      "sector_id": "S2-12",
+      "facility_stem": "Vehicle assembly facility"
+    },
+    {
+      "sector_id": "S2-13",
+      "facility_stem": "Power equipment manufacturing facility"
+    },
+    {
+      "sector_id": "S2-14",
+      "facility_stem": "Aerospace assembly facility"
+    }
+  ],
+  "equipment_classes": [
+    {
+      "complexity": "C-1",
+      "name": "Primary Refining Unit"
+    },
+    {
+      "complexity": "C-2",
+      "name": "Compound Refining Unit"
+    },
+    {
+      "complexity": "C-3",
+      "name": "Component Fabrication Unit"
+    },
+    {
+      "complexity": "C-4",
+      "name": "Final Assembly Unit"
+    }
+  ],
+  "extraction_equipment": [
+    {
+      "raw": "raw(W)",
+      "resource": "Organics",
+      "equipment": "Biomass Harvester"
+    },
+    {
+      "raw": "raw(E)",
+      "resource": "Inorganics",
+      "equipment": "Quarry and Pump Rig"
+    },
+    {
+      "raw": "raw(F)",
+      "resource": "Metals",
+      "equipment": "Mining Rig"
+    },
+    {
+      "raw": "raw(A)",
+      "resource": "Radioactives",
+      "equipment": "Deep Shaft Miner"
+    }
+  ],
+  "t1_equipment_families": [
+    {
+      "sector_id": "S1-01",
+      "family": "Fermentation Line"
+    },
+    {
+      "sector_id": "S1-02",
+      "family": "Crushing and Washing Line"
+    },
+    {
+      "sector_id": "S1-03",
+      "family": "Smelting Furnace"
+    },
+    {
+      "sector_id": "S1-04",
+      "family": "Centrifuge Line"
+    },
+    {
+      "sector_id": "S1-05",
+      "family": "Extrusion Line"
+    },
+    {
+      "sector_id": "S1-06",
+      "family": "Batch Reactor"
+    },
+    {
+      "sector_id": "S1-07",
+      "family": "Fixed-Bed Reactor"
+    },
+    {
+      "sector_id": "S1-08",
+      "family": "Hot Cell Line"
+    },
+    {
+      "sector_id": "S1-09",
+      "family": "Sintering Kiln"
+    },
+    {
+      "sector_id": "S1-10",
+      "family": "Crystal Furnace"
+    },
+    {
+      "sector_id": "S1-11",
+      "family": "Casting Line"
+    },
+    {
+      "sector_id": "S1-12",
+      "family": "Arc Furnace"
+    },
+    {
+      "sector_id": "S1-13",
+      "family": "Pellet Line"
+    },
+    {
+      "sector_id": "S1-14",
+      "family": "Cell Stacking Line"
+    }
+  ],
+  "t2_equipment_families": [
+    {
+      "sector_id": "S2-01",
+      "complexity": "C-3",
+      "family": "Compounding Station",
+      "has_current_recipes": false
+    },
+    {
+      "sector_id": "S2-01",
+      "complexity": "C-4",
+      "family": "Sterile Production Line",
+      "has_current_recipes": true
+    },
+    {
+      "sector_id": "S2-02",
+      "complexity": "C-3",
+      "family": "Batching Plant",
+      "has_current_recipes": false
+    },
+    {
+      "sector_id": "S2-02",
+      "complexity": "C-4",
+      "family": "Casting and Finishing Line",
+      "has_current_recipes": true
+    },
+    {
+      "sector_id": "S2-03",
+      "complexity": "C-3",
+      "family": "Machining Cell",
+      "has_current_recipes": false
+    },
+    {
+      "sector_id": "S2-03",
+      "complexity": "C-4",
+      "family": "Armament Assembly Line",
+      "has_current_recipes": true
+    },
+    {
+      "sector_id": "S2-04",
+      "complexity": "C-3",
+      "family": "Sensor Bench",
+      "has_current_recipes": false
+    },
+    {
+      "sector_id": "S2-04",
+      "complexity": "C-4",
+      "family": "Calibration Line",
+      "has_current_recipes": true
+    },
+    {
+      "sector_id": "S2-05",
+      "complexity": "C-3",
+      "family": "Lamination Press",
+      "has_current_recipes": true
+    },
+    {
+      "sector_id": "S2-05",
+      "complexity": "C-4",
+      "family": "Gear Assembly Line",
+      "has_current_recipes": true
+    },
+    {
+      "sector_id": "S2-06",
+      "complexity": "C-3",
+      "family": "Mixing Bay",
+      "has_current_recipes": true
+    },
+    {
+      "sector_id": "S2-06",
+      "complexity": "C-4",
+      "family": "Charge Loading Line",
+      "has_current_recipes": true
+    },
+    {
+      "sector_id": "S2-07",
+      "complexity": "C-3",
+      "family": "Blending Plant",
+      "has_current_recipes": true
+    },
+    {
+      "sector_id": "S2-07",
+      "complexity": "C-4",
+      "family": "Filling Line",
+      "has_current_recipes": true
+    },
+    {
+      "sector_id": "S2-08",
+      "complexity": "C-3",
+      "family": "Detector Bench",
+      "has_current_recipes": true
+    },
+    {
+      "sector_id": "S2-08",
+      "complexity": "C-4",
+      "family": "Imaging Assembly Line",
+      "has_current_recipes": true
+    },
+    {
+      "sector_id": "S2-09",
+      "complexity": "C-3",
+      "family": "Plate Press",
+      "has_current_recipes": true
+    },
+    {
+      "sector_id": "S2-09",
+      "complexity": "C-4",
+      "family": "Armor Finishing Line",
+      "has_current_recipes": true
+    },
+    {
+      "sector_id": "S2-10",
+      "complexity": "C-3",
+      "family": "Board Assembly Line",
+      "has_current_recipes": true
+    },
+    {
+      "sector_id": "S2-10",
+      "complexity": "C-4",
+      "family": "Systems Integration Line",
+      "has_current_recipes": true
+    },
+    {
+      "sector_id": "S2-11",
+      "complexity": "C-3",
+      "family": "Panel Fabrication Line",
+      "has_current_recipes": true
+    },
+    {
+      "sector_id": "S2-11",
+      "complexity": "C-4",
+      "family": "Module Assembly Hall",
+      "has_current_recipes": true
+    },
+    {
+      "sector_id": "S2-12",
+      "complexity": "C-3",
+      "family": "Chassis Fabrication Line",
+      "has_current_recipes": true
+    },
+    {
+      "sector_id": "S2-12",
+      "complexity": "C-4",
+      "family": "Vehicle Assembly Line",
+      "has_current_recipes": true
+    },
+    {
+      "sector_id": "S2-13",
+      "complexity": "C-3",
+      "family": "Winding and Machining Cell",
+      "has_current_recipes": true
+    },
+    {
+      "sector_id": "S2-13",
+      "complexity": "C-4",
+      "family": "Generator Assembly Line",
+      "has_current_recipes": true
+    },
+    {
+      "sector_id": "S2-14",
+      "complexity": "C-3",
+      "family": "Airframe Fabrication Cell",
+      "has_current_recipes": true
+    },
+    {
+      "sector_id": "S2-14",
+      "complexity": "C-4",
+      "family": "Aerospace Assembly Hall",
+      "has_current_recipes": true
+    }
+  ],
+  "recipes": [
+    {
+      "recipe_id": "C1-001",
+      "tier": "T1",
+      "complexity": "C-1",
+      "sector_id": "S1-01",
+      "preferred_material_id": "C1-001",
+      "unchanged_formula": "1 raw(W) \u2192 1 W",
+      "product_name": "Biochemical Feedstock",
+      "machine_family": "Fermentation Line",
+      "installation_name": "Biochemical Fermentation Line"
+    },
+    {
+      "recipe_id": "C1-002",
+      "tier": "T1",
+      "complexity": "C-1",
+      "sector_id": "S1-02",
+      "preferred_material_id": "C1-002",
+      "unchanged_formula": "1 raw(E) \u2192 1 E",
+      "product_name": "Inorganic Concentrate",
+      "machine_family": "Crushing and Washing Line",
+      "installation_name": "Concentrate Crushing and Washing Line"
+    },
+    {
+      "recipe_id": "C1-003",
+      "tier": "T1",
+      "complexity": "C-1",
+      "sector_id": "S1-03",
+      "preferred_material_id": "C1-003",
+      "unchanged_formula": "1 raw(F) \u2192 1 F",
+      "product_name": "Metal Ingots",
+      "machine_family": "Smelting Furnace",
+      "installation_name": "Ingot Smelting Furnace"
+    },
+    {
+      "recipe_id": "C1-004",
+      "tier": "T1",
+      "complexity": "C-1",
+      "sector_id": "S1-04",
+      "preferred_material_id": "C1-004",
+      "unchanged_formula": "1 raw(A) \u2192 1 A",
+      "product_name": "Isotope Feed",
+      "machine_family": "Centrifuge Line",
+      "installation_name": "Isotope Centrifuge Line"
+    },
+    {
+      "recipe_id": "C2-001",
+      "tier": "T1",
+      "complexity": "C-2",
+      "sector_id": "S1-05",
+      "preferred_material_id": "C2-001",
+      "unchanged_formula": "2 raw(W) \u2192 1 (W+W)",
+      "product_name": "Engineered Polymers",
+      "machine_family": "Extrusion Line",
+      "installation_name": "Polymer Extrusion Line"
+    },
+    {
+      "recipe_id": "C2-002",
+      "tier": "T1",
+      "complexity": "C-2",
+      "sector_id": "S1-06",
+      "preferred_material_id": "C2-002",
+      "unchanged_formula": "1 raw(W) + 1 raw(E) \u2192 1 (W+E)",
+      "product_name": "Fine Chemicals",
+      "machine_family": "Batch Reactor",
+      "installation_name": "Fine Chemical Batch Reactor"
+    },
+    {
+      "recipe_id": "C2-003",
+      "tier": "T1",
+      "complexity": "C-2",
+      "sector_id": "S1-07",
+      "preferred_material_id": "C2-003",
+      "unchanged_formula": "1 raw(W) + 1 raw(F) \u2192 1 (W+F)",
+      "product_name": "Catalysts",
+      "machine_family": "Fixed-Bed Reactor",
+      "installation_name": "Catalyst Fixed-Bed Reactor"
+    },
+    {
+      "recipe_id": "C2-004",
+      "tier": "T1",
+      "complexity": "C-2",
+      "sector_id": "S1-08",
+      "preferred_material_id": "C2-004",
+      "unchanged_formula": "1 raw(W) + 1 raw(A) \u2192 1 (W+A)",
+      "product_name": "Radiopharmaceuticals",
+      "machine_family": "Hot Cell Line",
+      "installation_name": "Radiopharmaceutical Hot Cell Line"
+    },
+    {
+      "recipe_id": "C2-005",
+      "tier": "T1",
+      "complexity": "C-2",
+      "sector_id": "S1-09",
+      "preferred_material_id": "C2-005",
+      "unchanged_formula": "2 raw(E) \u2192 1 (E+E)",
+      "product_name": "Technical Ceramics",
+      "machine_family": "Sintering Kiln",
+      "installation_name": "Ceramic Sintering Kiln"
+    },
+    {
+      "recipe_id": "C2-006",
+      "tier": "T1",
+      "complexity": "C-2",
+      "sector_id": "S1-10",
+      "preferred_material_id": "C2-006",
+      "unchanged_formula": "1 raw(E) + 1 raw(F) \u2192 1 (E+F)",
+      "product_name": "Semiconductor Wafers",
+      "machine_family": "Crystal Furnace",
+      "installation_name": "Wafer Crystal Furnace"
+    },
+    {
+      "recipe_id": "C2-007",
+      "tier": "T1",
+      "complexity": "C-2",
+      "sector_id": "S1-11",
+      "preferred_material_id": "C2-007",
+      "unchanged_formula": "1 raw(E) + 1 raw(A) \u2192 1 (E+A)",
+      "product_name": "Radiation Shielding",
+      "machine_family": "Casting Line",
+      "installation_name": "Shielding Casting Line"
+    },
+    {
+      "recipe_id": "C2-008",
+      "tier": "T1",
+      "complexity": "C-2",
+      "sector_id": "S1-12",
+      "preferred_material_id": "C2-008",
+      "unchanged_formula": "2 raw(F) \u2192 1 (F+F)",
+      "product_name": "Structural Alloys",
+      "machine_family": "Arc Furnace",
+      "installation_name": "Alloy Arc Furnace"
+    },
+    {
+      "recipe_id": "C2-009",
+      "tier": "T1",
+      "complexity": "C-2",
+      "sector_id": "S1-13",
+      "preferred_material_id": "C2-009",
+      "unchanged_formula": "1 raw(F) + 1 raw(A) \u2192 1 (F+A)",
+      "product_name": "Reactor Fuel",
+      "machine_family": "Pellet Line",
+      "installation_name": "Fuel Pellet Line"
+    },
+    {
+      "recipe_id": "C2-010",
+      "tier": "T1",
+      "complexity": "C-2",
+      "sector_id": "S1-14",
+      "preferred_material_id": "C2-010",
+      "unchanged_formula": "2 raw(A) \u2192 1 (A+A)",
+      "product_name": "Isotope Power Cells",
+      "machine_family": "Cell Stacking Line",
+      "installation_name": "Power Cell Stacking Line"
+    },
+    {
+      "recipe_id": "C3-001",
+      "tier": "T2",
+      "complexity": "C-3",
+      "sector_id": "S2-05",
+      "preferred_material_id": "C2-001",
+      "unchanged_formula": "1 W + 1 (W+W) \u2192 1 (W+(W+W))",
+      "product_name": "Ballistic Fabric",
+      "machine_family": "Lamination Press",
+      "installation_name": "Ballistic Fabric Press"
+    },
+    {
+      "recipe_id": "C3-002",
+      "tier": "T2",
+      "complexity": "C-3",
+      "sector_id": "S2-06",
+      "preferred_material_id": "C2-002",
+      "unchanged_formula": "1 W + 1 (W+E) \u2192 1 (W+(W+E))",
+      "product_name": "Smokeless Powder",
+      "machine_family": "Mixing Bay",
+      "installation_name": "Smokeless Powder Bay"
+    },
+    {
+      "recipe_id": "C3-003",
+      "tier": "T2",
+      "complexity": "C-3",
+      "sector_id": "S2-07",
+      "preferred_material_id": "C2-003",
+      "unchanged_formula": "1 W + 1 (W+F) \u2192 1 (W+(W+F))",
+      "product_name": "Diesel Fuel",
+      "machine_family": "Blending Plant",
+      "installation_name": "Diesel Fuel Plant"
+    },
+    {
+      "recipe_id": "C3-004",
+      "tier": "T2",
+      "complexity": "C-3",
+      "sector_id": "S2-08",
+      "preferred_material_id": "C2-004",
+      "unchanged_formula": "1 W + 1 (W+A) \u2192 1 (W+(W+A))",
+      "product_name": "X-ray Tube",
+      "machine_family": "Detector Bench",
+      "installation_name": "X-ray Tube Bench"
+    },
+    {
+      "recipe_id": "C3-005",
+      "tier": "T2",
+      "complexity": "C-3",
+      "sector_id": "S2-09",
+      "preferred_material_id": "C2-005",
+      "unchanged_formula": "1 W + 1 (E+E) \u2192 1 (W+(E+E))",
+      "product_name": "Ceramic Armor Tile",
+      "machine_family": "Plate Press",
+      "installation_name": "Ceramic Armor Tile Press"
+    },
+    {
+      "recipe_id": "C3-006",
+      "tier": "T2",
+      "complexity": "C-3",
+      "sector_id": "S2-10",
+      "preferred_material_id": "C2-006",
+      "unchanged_formula": "1 W + 1 (E+F) \u2192 1 (W+(E+F))",
+      "product_name": "Circuit Board",
+      "machine_family": "Board Assembly Line",
+      "installation_name": "Circuit Board Line"
+    },
+    {
+      "recipe_id": "C3-007",
+      "tier": "T2",
+      "complexity": "C-3",
+      "sector_id": "S2-11",
+      "preferred_material_id": "C2-007",
+      "unchanged_formula": "1 W + 1 (E+A) \u2192 1 (W+(E+A))",
+      "product_name": "Blast Door",
+      "machine_family": "Panel Fabrication Line",
+      "installation_name": "Blast Door Line"
+    },
+    {
+      "recipe_id": "C3-008",
+      "tier": "T2",
+      "complexity": "C-3",
+      "sector_id": "S2-12",
+      "preferred_material_id": "C2-008",
+      "unchanged_formula": "1 W + 1 (F+F) \u2192 1 (W+(F+F))",
+      "product_name": "Chassis Frame",
+      "machine_family": "Chassis Fabrication Line",
+      "installation_name": "Chassis Frame Line"
+    },
+    {
+      "recipe_id": "C3-009",
+      "tier": "T2",
+      "complexity": "C-3",
+      "sector_id": "S2-13",
+      "preferred_material_id": "C2-009",
+      "unchanged_formula": "1 W + 1 (F+A) \u2192 1 (W+(F+A))",
+      "product_name": "Turbine Blade Set",
+      "machine_family": "Winding and Machining Cell",
+      "installation_name": "Turbine Blade Set Cell"
+    },
+    {
+      "recipe_id": "C3-010",
+      "tier": "T2",
+      "complexity": "C-3",
+      "sector_id": "S2-14",
+      "preferred_material_id": "C2-010",
+      "unchanged_formula": "1 W + 1 (A+A) \u2192 1 (W+(A+A))",
+      "product_name": "Airframe Section",
+      "machine_family": "Airframe Fabrication Cell",
+      "installation_name": "Airframe Section Cell"
+    },
+    {
+      "recipe_id": "C3-011",
+      "tier": "T2",
+      "complexity": "C-3",
+      "sector_id": "S2-05",
+      "preferred_material_id": "C2-001",
+      "unchanged_formula": "1 E + 1 (W+W) \u2192 1 (E+(W+W))",
+      "product_name": "Visor Lens",
+      "machine_family": "Lamination Press",
+      "installation_name": "Visor Lens Press"
+    },
+    {
+      "recipe_id": "C3-012",
+      "tier": "T2",
+      "complexity": "C-3",
+      "sector_id": "S2-06",
+      "preferred_material_id": "C2-002",
+      "unchanged_formula": "1 E + 1 (W+E) \u2192 1 (E+(W+E))",
+      "product_name": "Detonator Cap",
+      "machine_family": "Mixing Bay",
+      "installation_name": "Detonator Cap Bay"
+    },
+    {
+      "recipe_id": "C3-013",
+      "tier": "T2",
+      "complexity": "C-3",
+      "sector_id": "S2-07",
+      "preferred_material_id": "C2-003",
+      "unchanged_formula": "1 E + 1 (W+F) \u2192 1 (E+(W+F))",
+      "product_name": "Jet Fuel",
+      "machine_family": "Blending Plant",
+      "installation_name": "Jet Fuel Plant"
+    },
+    {
+      "recipe_id": "C3-014",
+      "tier": "T2",
+      "complexity": "C-3",
+      "sector_id": "S2-08",
+      "preferred_material_id": "C2-004",
+      "unchanged_formula": "1 E + 1 (W+A) \u2192 1 (E+(W+A))",
+      "product_name": "Ultrasound Probe",
+      "machine_family": "Detector Bench",
+      "installation_name": "Ultrasound Probe Bench"
+    },
+    {
+      "recipe_id": "C3-015",
+      "tier": "T2",
+      "complexity": "C-3",
+      "sector_id": "S2-09",
+      "preferred_material_id": "C2-005",
+      "unchanged_formula": "1 E + 1 (E+E) \u2192 1 (E+(E+E))",
+      "product_name": "Steel Armor Plate",
+      "machine_family": "Plate Press",
+      "installation_name": "Steel Armor Plate Press"
+    },
+    {
+      "recipe_id": "C3-016",
+      "tier": "T2",
+      "complexity": "C-3",
+      "sector_id": "S2-10",
+      "preferred_material_id": "C2-006",
+      "unchanged_formula": "1 E + 1 (E+F) \u2192 1 (E+(E+F))",
+      "product_name": "Memory Module",
+      "machine_family": "Board Assembly Line",
+      "installation_name": "Memory Module Line"
+    },
+    {
+      "recipe_id": "C3-017",
+      "tier": "T2",
+      "complexity": "C-3",
+      "sector_id": "S2-11",
+      "preferred_material_id": "C2-007",
+      "unchanged_formula": "1 E + 1 (E+A) \u2192 1 (E+(E+A))",
+      "product_name": "Pressure Seal",
+      "machine_family": "Panel Fabrication Line",
+      "installation_name": "Pressure Seal Line"
+    },
+    {
+      "recipe_id": "C3-018",
+      "tier": "T2",
+      "complexity": "C-3",
+      "sector_id": "S2-12",
+      "preferred_material_id": "C2-008",
+      "unchanged_formula": "1 E + 1 (F+F) \u2192 1 (E+(F+F))",
+      "product_name": "Track Assembly",
+      "machine_family": "Chassis Fabrication Line",
+      "installation_name": "Track Assembly Line"
+    },
+    {
+      "recipe_id": "C3-019",
+      "tier": "T2",
+      "complexity": "C-3",
+      "sector_id": "S2-13",
+      "preferred_material_id": "C2-009",
+      "unchanged_formula": "1 E + 1 (F+A) \u2192 1 (E+(F+A))",
+      "product_name": "Generator Rotor",
+      "machine_family": "Winding and Machining Cell",
+      "installation_name": "Generator Rotor Cell"
+    },
+    {
+      "recipe_id": "C3-020",
+      "tier": "T2",
+      "complexity": "C-3",
+      "sector_id": "S2-14",
+      "preferred_material_id": "C2-010",
+      "unchanged_formula": "1 E + 1 (A+A) \u2192 1 (E+(A+A))",
+      "product_name": "Jet Engine Core",
+      "machine_family": "Airframe Fabrication Cell",
+      "installation_name": "Jet Engine Core Cell"
+    },
+    {
+      "recipe_id": "C3-021",
+      "tier": "T2",
+      "complexity": "C-3",
+      "sector_id": "S2-05",
+      "preferred_material_id": "C2-001",
+      "unchanged_formula": "1 F + 1 (W+W) \u2192 1 (F+(W+W))",
+      "product_name": "Helmet Shell",
+      "machine_family": "Lamination Press",
+      "installation_name": "Helmet Shell Press"
+    },
+    {
+      "recipe_id": "C3-022",
+      "tier": "T2",
+      "complexity": "C-3",
+      "sector_id": "S2-06",
+      "preferred_material_id": "C2-002",
+      "unchanged_formula": "1 F + 1 (W+E) \u2192 1 (F+(W+E))",
+      "product_name": "Propellant Grain",
+      "machine_family": "Mixing Bay",
+      "installation_name": "Propellant Grain Bay"
+    },
+    {
+      "recipe_id": "C3-023",
+      "tier": "T2",
+      "complexity": "C-3",
+      "sector_id": "S2-07",
+      "preferred_material_id": "C2-003",
+      "unchanged_formula": "1 F + 1 (W+F) \u2192 1 (F+(W+F))",
+      "product_name": "Lubricating Oil",
+      "machine_family": "Blending Plant",
+      "installation_name": "Lubricating Oil Plant"
+    },
+    {
+      "recipe_id": "C3-024",
+      "tier": "T2",
+      "complexity": "C-3",
+      "sector_id": "S2-08",
+      "preferred_material_id": "C2-004",
+      "unchanged_formula": "1 F + 1 (W+A) \u2192 1 (F+(W+A))",
+      "product_name": "Blood Analyzer Cartridge",
+      "machine_family": "Detector Bench",
+      "installation_name": "Blood Analyzer Cartridge Bench"
+    },
+    {
+      "recipe_id": "C3-025",
+      "tier": "T2",
+      "complexity": "C-3",
+      "sector_id": "S2-09",
+      "preferred_material_id": "C2-005",
+      "unchanged_formula": "1 F + 1 (E+E) \u2192 1 (F+(E+E))",
+      "product_name": "Composite Armor Layer",
+      "machine_family": "Plate Press",
+      "installation_name": "Composite Armor Layer Press"
+    },
+    {
+      "recipe_id": "C3-026",
+      "tier": "T2",
+      "complexity": "C-3",
+      "sector_id": "S2-10",
+      "preferred_material_id": "C2-006",
+      "unchanged_formula": "1 F + 1 (E+F) \u2192 1 (F+(E+F))",
+      "product_name": "Processor Chip",
+      "machine_family": "Board Assembly Line",
+      "installation_name": "Processor Chip Line"
+    },
+    {
+      "recipe_id": "C3-027",
+      "tier": "T2",
+      "complexity": "C-3",
+      "sector_id": "S2-11",
+      "preferred_material_id": "C2-007",
+      "unchanged_formula": "1 F + 1 (E+A) \u2192 1 (F+(E+A))",
+      "product_name": "Shelter Frame",
+      "machine_family": "Panel Fabrication Line",
+      "installation_name": "Shelter Frame Line"
+    },
+    {
+      "recipe_id": "C3-028",
+      "tier": "T2",
+      "complexity": "C-3",
+      "sector_id": "S2-12",
+      "preferred_material_id": "C2-008",
+      "unchanged_formula": "1 F + 1 (F+F) \u2192 1 (F+(F+F))",
+      "product_name": "Axle Assembly",
+      "machine_family": "Chassis Fabrication Line",
+      "installation_name": "Axle Assembly Line"
+    },
+    {
+      "recipe_id": "C3-029",
+      "tier": "T2",
+      "complexity": "C-3",
+      "sector_id": "S2-13",
+      "preferred_material_id": "C2-009",
+      "unchanged_formula": "1 F + 1 (F+A) \u2192 1 (F+(F+A))",
+      "product_name": "Transformer Core",
+      "machine_family": "Winding and Machining Cell",
+      "installation_name": "Transformer Core Cell"
+    },
+    {
+      "recipe_id": "C3-030",
+      "tier": "T2",
+      "complexity": "C-3",
+      "sector_id": "S2-14",
+      "preferred_material_id": "C2-010",
+      "unchanged_formula": "1 F + 1 (A+A) \u2192 1 (F+(A+A))",
+      "product_name": "Propellant Tank",
+      "machine_family": "Airframe Fabrication Cell",
+      "installation_name": "Propellant Tank Cell"
+    },
+    {
+      "recipe_id": "C3-031",
+      "tier": "T2",
+      "complexity": "C-3",
+      "sector_id": "S2-05",
+      "preferred_material_id": "C2-001",
+      "unchanged_formula": "1 A + 1 (W+W) \u2192 1 (A+(W+W))",
+      "product_name": "Respirator Filter",
+      "machine_family": "Lamination Press",
+      "installation_name": "Respirator Filter Press"
+    },
+    {
+      "recipe_id": "C3-032",
+      "tier": "T2",
+      "complexity": "C-3",
+      "sector_id": "S2-06",
+      "preferred_material_id": "C2-002",
+      "unchanged_formula": "1 A + 1 (W+E) \u2192 1 (A+(W+E))",
+      "product_name": "Plastic Explosive",
+      "machine_family": "Mixing Bay",
+      "installation_name": "Plastic Explosive Bay"
+    },
+    {
+      "recipe_id": "C3-033",
+      "tier": "T2",
+      "complexity": "C-3",
+      "sector_id": "S2-07",
+      "preferred_material_id": "C2-003",
+      "unchanged_formula": "1 A + 1 (W+F) \u2192 1 (A+(W+F))",
+      "product_name": "Hydraulic Fluid",
+      "machine_family": "Blending Plant",
+      "installation_name": "Hydraulic Fluid Plant"
+    },
+    {
+      "recipe_id": "C3-034",
+      "tier": "T2",
+      "complexity": "C-3",
+      "sector_id": "S2-08",
+      "preferred_material_id": "C2-004",
+      "unchanged_formula": "1 A + 1 (W+A) \u2192 1 (A+(W+A))",
+      "product_name": "Detector Panel",
+      "machine_family": "Detector Bench",
+      "installation_name": "Detector Panel Bench"
+    },
+    {
+      "recipe_id": "C3-035",
+      "tier": "T2",
+      "complexity": "C-3",
+      "sector_id": "S2-09",
+      "preferred_material_id": "C2-005",
+      "unchanged_formula": "1 A + 1 (E+E) \u2192 1 (A+(E+E))",
+      "product_name": "Armor Backing Plate",
+      "machine_family": "Plate Press",
+      "installation_name": "Armor Backing Plate Press"
+    },
+    {
+      "recipe_id": "C3-036",
+      "tier": "T2",
+      "complexity": "C-3",
+      "sector_id": "S2-10",
+      "preferred_material_id": "C2-006",
+      "unchanged_formula": "1 A + 1 (E+F) \u2192 1 (A+(E+F))",
+      "product_name": "Power Regulator",
+      "machine_family": "Board Assembly Line",
+      "installation_name": "Power Regulator Line"
+    },
+    {
+      "recipe_id": "C3-037",
+      "tier": "T2",
+      "complexity": "C-3",
+      "sector_id": "S2-11",
+      "preferred_material_id": "C2-007",
+      "unchanged_formula": "1 A + 1 (E+A) \u2192 1 (A+(E+A))",
+      "product_name": "Ventilation Duct",
+      "machine_family": "Panel Fabrication Line",
+      "installation_name": "Ventilation Duct Line"
+    },
+    {
+      "recipe_id": "C3-038",
+      "tier": "T2",
+      "complexity": "C-3",
+      "sector_id": "S2-12",
+      "preferred_material_id": "C2-008",
+      "unchanged_formula": "1 A + 1 (F+F) \u2192 1 (A+(F+F))",
+      "product_name": "Engine Block",
+      "machine_family": "Chassis Fabrication Line",
+      "installation_name": "Engine Block Line"
+    },
+    {
+      "recipe_id": "C3-039",
+      "tier": "T2",
+      "complexity": "C-3",
+      "sector_id": "S2-13",
+      "preferred_material_id": "C2-009",
+      "unchanged_formula": "1 A + 1 (F+A) \u2192 1 (A+(F+A))",
+      "product_name": "Power Cable",
+      "machine_family": "Winding and Machining Cell",
+      "installation_name": "Power Cable Cell"
+    },
+    {
+      "recipe_id": "C3-040",
+      "tier": "T2",
+      "complexity": "C-3",
+      "sector_id": "S2-14",
+      "preferred_material_id": "C2-010",
+      "unchanged_formula": "1 A + 1 (A+A) \u2192 1 (A+(A+A))",
+      "product_name": "Landing Gear",
+      "machine_family": "Airframe Fabrication Cell",
+      "installation_name": "Landing Gear Cell"
+    },
+    {
+      "recipe_id": "C4-001",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-01",
+      "preferred_material_id": "C1-001",
+      "unchanged_formula": "1 W + 1 (W+(W+W)) \u2192 1 (W+(W+(W+W)))",
+      "product_name": "Field Dressing",
+      "machine_family": "Sterile Production Line",
+      "installation_name": "Field Dressing Line"
+    },
+    {
+      "recipe_id": "C4-002",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-01",
+      "preferred_material_id": "C1-001",
+      "unchanged_formula": "1 W + 1 (W+(W+E)) \u2192 1 (W+(W+(W+E)))",
+      "product_name": "Trauma Bandage",
+      "machine_family": "Sterile Production Line",
+      "installation_name": "Trauma Bandage Line"
+    },
+    {
+      "recipe_id": "C4-003",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-01",
+      "preferred_material_id": "C1-001",
+      "unchanged_formula": "1 W + 1 (W+(W+F)) \u2192 1 (W+(W+(W+F)))",
+      "product_name": "Combat Tourniquet",
+      "machine_family": "Sterile Production Line",
+      "installation_name": "Combat Tourniquet Line"
+    },
+    {
+      "recipe_id": "C4-004",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-01",
+      "preferred_material_id": "C1-001",
+      "unchanged_formula": "1 W + 1 (W+(W+A)) \u2192 1 (W+(W+(W+A)))",
+      "product_name": "Hemostatic Gauze",
+      "machine_family": "Sterile Production Line",
+      "installation_name": "Hemostatic Gauze Line"
+    },
+    {
+      "recipe_id": "C4-005",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-01",
+      "preferred_material_id": "C1-001",
+      "unchanged_formula": "1 W + 1 (W+(E+E)) \u2192 1 (W+(W+(E+E)))",
+      "product_name": "Surgical Gloves",
+      "machine_family": "Sterile Production Line",
+      "installation_name": "Surgical Gloves Line"
+    },
+    {
+      "recipe_id": "C4-006",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-01",
+      "preferred_material_id": "C1-001",
+      "unchanged_formula": "1 W + 1 (W+(E+F)) \u2192 1 (W+(W+(E+F)))",
+      "product_name": "Sterile Syringe",
+      "machine_family": "Sterile Production Line",
+      "installation_name": "Sterile Syringe Line"
+    },
+    {
+      "recipe_id": "C4-007",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-01",
+      "preferred_material_id": "C1-001",
+      "unchanged_formula": "1 W + 1 (W+(E+A)) \u2192 1 (W+(W+(E+A)))",
+      "product_name": "IV Fluid Bag",
+      "machine_family": "Sterile Production Line",
+      "installation_name": "IV Fluid Bag Line"
+    },
+    {
+      "recipe_id": "C4-008",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-01",
+      "preferred_material_id": "C1-001",
+      "unchanged_formula": "1 W + 1 (W+(F+F)) \u2192 1 (W+(W+(F+F)))",
+      "product_name": "Blood Plasma Pack",
+      "machine_family": "Sterile Production Line",
+      "installation_name": "Blood Plasma Pack Line"
+    },
+    {
+      "recipe_id": "C4-009",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-01",
+      "preferred_material_id": "C1-001",
+      "unchanged_formula": "1 W + 1 (W+(F+A)) \u2192 1 (W+(W+(F+A)))",
+      "product_name": "Antibiotic Ampoule",
+      "machine_family": "Sterile Production Line",
+      "installation_name": "Antibiotic Ampoule Line"
+    },
+    {
+      "recipe_id": "C4-010",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-01",
+      "preferred_material_id": "C1-001",
+      "unchanged_formula": "1 W + 1 (W+(A+A)) \u2192 1 (W+(W+(A+A)))",
+      "product_name": "Pain Relief Auto-Injector",
+      "machine_family": "Sterile Production Line",
+      "installation_name": "Pain Relief Auto-Injector Line"
+    },
+    {
+      "recipe_id": "C4-011",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-01",
+      "preferred_material_id": "C1-001",
+      "unchanged_formula": "1 W + 1 (E+(W+W)) \u2192 1 (W+(E+(W+W)))",
+      "product_name": "Burn Dressing",
+      "machine_family": "Sterile Production Line",
+      "installation_name": "Burn Dressing Line"
+    },
+    {
+      "recipe_id": "C4-012",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-01",
+      "preferred_material_id": "C1-001",
+      "unchanged_formula": "1 W + 1 (E+(W+E)) \u2192 1 (W+(E+(W+E)))",
+      "product_name": "Splint Kit",
+      "machine_family": "Sterile Production Line",
+      "installation_name": "Splint Kit Line"
+    },
+    {
+      "recipe_id": "C4-013",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-01",
+      "preferred_material_id": "C1-001",
+      "unchanged_formula": "1 W + 1 (E+(W+F)) \u2192 1 (W+(E+(W+F)))",
+      "product_name": "Combat Medic Bag",
+      "machine_family": "Sterile Production Line",
+      "installation_name": "Combat Medic Bag Line"
+    },
+    {
+      "recipe_id": "C4-014",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-01",
+      "preferred_material_id": "C1-001",
+      "unchanged_formula": "1 W + 1 (E+(W+A)) \u2192 1 (W+(E+(W+A)))",
+      "product_name": "Triage Kit",
+      "machine_family": "Sterile Production Line",
+      "installation_name": "Triage Kit Line"
+    },
+    {
+      "recipe_id": "C4-015",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-01",
+      "preferred_material_id": "C1-001",
+      "unchanged_formula": "1 W + 1 (E+(E+E)) \u2192 1 (W+(E+(E+E)))",
+      "product_name": "Oxygen Mask",
+      "machine_family": "Sterile Production Line",
+      "installation_name": "Oxygen Mask Line"
+    },
+    {
+      "recipe_id": "C4-016",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-01",
+      "preferred_material_id": "C1-001",
+      "unchanged_formula": "1 W + 1 (E+(E+F)) \u2192 1 (W+(E+(E+F)))",
+      "product_name": "Field Ventilator",
+      "machine_family": "Sterile Production Line",
+      "installation_name": "Field Ventilator Line"
+    },
+    {
+      "recipe_id": "C4-017",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-01",
+      "preferred_material_id": "C1-001",
+      "unchanged_formula": "1 W + 1 (E+(E+A)) \u2192 1 (W+(E+(E+A)))",
+      "product_name": "Field Defibrillator",
+      "machine_family": "Sterile Production Line",
+      "installation_name": "Field Defibrillator Line"
+    },
+    {
+      "recipe_id": "C4-018",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-01",
+      "preferred_material_id": "C1-001",
+      "unchanged_formula": "1 W + 1 (E+(F+F)) \u2192 1 (W+(E+(F+F)))",
+      "product_name": "Surgical Instrument Set",
+      "machine_family": "Sterile Production Line",
+      "installation_name": "Surgical Instrument Set Line"
+    },
+    {
+      "recipe_id": "C4-019",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-01",
+      "preferred_material_id": "C1-001",
+      "unchanged_formula": "1 W + 1 (E+(F+A)) \u2192 1 (W+(E+(F+A)))",
+      "product_name": "Suture Pack",
+      "machine_family": "Sterile Production Line",
+      "installation_name": "Suture Pack Line"
+    },
+    {
+      "recipe_id": "C4-020",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-01",
+      "preferred_material_id": "C1-001",
+      "unchanged_formula": "1 W + 1 (E+(A+A)) \u2192 1 (W+(E+(A+A)))",
+      "product_name": "Anesthesia Kit",
+      "machine_family": "Sterile Production Line",
+      "installation_name": "Anesthesia Kit Line"
+    },
+    {
+      "recipe_id": "C4-021",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-01",
+      "preferred_material_id": "C1-001",
+      "unchanged_formula": "1 W + 1 (F+(W+W)) \u2192 1 (W+(F+(W+W)))",
+      "product_name": "Antiviral Vial",
+      "machine_family": "Sterile Production Line",
+      "installation_name": "Antiviral Vial Line"
+    },
+    {
+      "recipe_id": "C4-022",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-01",
+      "preferred_material_id": "C1-001",
+      "unchanged_formula": "1 W + 1 (F+(W+E)) \u2192 1 (W+(F+(W+E)))",
+      "product_name": "Vaccine Dose Pack",
+      "machine_family": "Sterile Production Line",
+      "installation_name": "Vaccine Dose Pack Line"
+    },
+    {
+      "recipe_id": "C4-023",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-01",
+      "preferred_material_id": "C1-001",
+      "unchanged_formula": "1 W + 1 (F+(W+F)) \u2192 1 (W+(F+(W+F)))",
+      "product_name": "Antitoxin Injector",
+      "machine_family": "Sterile Production Line",
+      "installation_name": "Antitoxin Injector Line"
+    },
+    {
+      "recipe_id": "C4-024",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-01",
+      "preferred_material_id": "C1-001",
+      "unchanged_formula": "1 W + 1 (F+(W+A)) \u2192 1 (W+(F+(W+A)))",
+      "product_name": "Decontamination Kit",
+      "machine_family": "Sterile Production Line",
+      "installation_name": "Decontamination Kit Line"
+    },
+    {
+      "recipe_id": "C4-025",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-01",
+      "preferred_material_id": "C1-001",
+      "unchanged_formula": "1 W + 1 (F+(E+E)) \u2192 1 (W+(F+(E+E)))",
+      "product_name": "Folding Stretcher",
+      "machine_family": "Sterile Production Line",
+      "installation_name": "Folding Stretcher Line"
+    },
+    {
+      "recipe_id": "C4-026",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-01",
+      "preferred_material_id": "C1-001",
+      "unchanged_formula": "1 W + 1 (F+(E+F)) \u2192 1 (W+(F+(E+F)))",
+      "product_name": "Surgical Table",
+      "machine_family": "Sterile Production Line",
+      "installation_name": "Surgical Table Line"
+    },
+    {
+      "recipe_id": "C4-027",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-01",
+      "preferred_material_id": "C1-001",
+      "unchanged_formula": "1 W + 1 (F+(E+A)) \u2192 1 (W+(F+(E+A)))",
+      "product_name": "Field Sterilizer",
+      "machine_family": "Sterile Production Line",
+      "installation_name": "Field Sterilizer Line"
+    },
+    {
+      "recipe_id": "C4-028",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-01",
+      "preferred_material_id": "C1-001",
+      "unchanged_formula": "1 W + 1 (F+(F+F)) \u2192 1 (W+(F+(F+F)))",
+      "product_name": "Cold Storage Case",
+      "machine_family": "Sterile Production Line",
+      "installation_name": "Cold Storage Case Line"
+    },
+    {
+      "recipe_id": "C4-029",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-01",
+      "preferred_material_id": "C1-001",
+      "unchanged_formula": "1 W + 1 (F+(F+A)) \u2192 1 (W+(F+(F+A)))",
+      "product_name": "Rescue Harness",
+      "machine_family": "Sterile Production Line",
+      "installation_name": "Rescue Harness Line"
+    },
+    {
+      "recipe_id": "C4-030",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-01",
+      "preferred_material_id": "C1-001",
+      "unchanged_formula": "1 W + 1 (F+(A+A)) \u2192 1 (W+(F+(A+A)))",
+      "product_name": "Eye Wash Station",
+      "machine_family": "Sterile Production Line",
+      "installation_name": "Eye Wash Station Line"
+    },
+    {
+      "recipe_id": "C4-031",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-01",
+      "preferred_material_id": "C1-001",
+      "unchanged_formula": "1 W + 1 (A+(W+W)) \u2192 1 (W+(A+(W+W)))",
+      "product_name": "Dental Emergency Kit",
+      "machine_family": "Sterile Production Line",
+      "installation_name": "Dental Emergency Kit Line"
+    },
+    {
+      "recipe_id": "C4-032",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-01",
+      "preferred_material_id": "C1-001",
+      "unchanged_formula": "1 W + 1 (A+(W+E)) \u2192 1 (W+(A+(W+E)))",
+      "product_name": "Orthopedic Brace",
+      "machine_family": "Sterile Production Line",
+      "installation_name": "Orthopedic Brace Line"
+    },
+    {
+      "recipe_id": "C4-033",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-01",
+      "preferred_material_id": "C1-001",
+      "unchanged_formula": "1 W + 1 (A+(W+F)) \u2192 1 (W+(A+(W+F)))",
+      "product_name": "Prosthetic Limb",
+      "machine_family": "Sterile Production Line",
+      "installation_name": "Prosthetic Limb Line"
+    },
+    {
+      "recipe_id": "C4-034",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-01",
+      "preferred_material_id": "C1-001",
+      "unchanged_formula": "1 W + 1 (A+(W+A)) \u2192 1 (W+(A+(W+A)))",
+      "product_name": "Synthetic Tissue Graft",
+      "machine_family": "Sterile Production Line",
+      "installation_name": "Synthetic Tissue Graft Line"
+    },
+    {
+      "recipe_id": "C4-035",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-01",
+      "preferred_material_id": "C1-001",
+      "unchanged_formula": "1 W + 1 (A+(E+E)) \u2192 1 (W+(A+(E+E)))",
+      "product_name": "Recovery Bed",
+      "machine_family": "Sterile Production Line",
+      "installation_name": "Recovery Bed Line"
+    },
+    {
+      "recipe_id": "C4-036",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-01",
+      "preferred_material_id": "C1-001",
+      "unchanged_formula": "1 W + 1 (A+(E+F)) \u2192 1 (W+(A+(E+F)))",
+      "product_name": "Chemical Antidote Kit",
+      "machine_family": "Sterile Production Line",
+      "installation_name": "Chemical Antidote Kit Line"
+    },
+    {
+      "recipe_id": "C4-037",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-01",
+      "preferred_material_id": "C1-001",
+      "unchanged_formula": "1 W + 1 (A+(E+A)) \u2192 1 (W+(A+(E+A)))",
+      "product_name": "Radiation Treatment Pack",
+      "machine_family": "Sterile Production Line",
+      "installation_name": "Radiation Treatment Pack Line"
+    },
+    {
+      "recipe_id": "C4-038",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-01",
+      "preferred_material_id": "C1-001",
+      "unchanged_formula": "1 W + 1 (A+(F+F)) \u2192 1 (W+(A+(F+F)))",
+      "product_name": "Combat Stimulant Pack",
+      "machine_family": "Sterile Production Line",
+      "installation_name": "Combat Stimulant Pack Line"
+    },
+    {
+      "recipe_id": "C4-039",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-01",
+      "preferred_material_id": "C1-001",
+      "unchanged_formula": "1 W + 1 (A+(F+A)) \u2192 1 (W+(A+(F+A)))",
+      "product_name": "Rehydration Pack",
+      "machine_family": "Sterile Production Line",
+      "installation_name": "Rehydration Pack Line"
+    },
+    {
+      "recipe_id": "C4-040",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-01",
+      "preferred_material_id": "C1-001",
+      "unchanged_formula": "1 W + 1 (A+(A+A)) \u2192 1 (W+(A+(A+A)))",
+      "product_name": "Field Hospital Supply Crate",
+      "machine_family": "Sterile Production Line",
+      "installation_name": "Field Hospital Supply Crate Line"
+    },
+    {
+      "recipe_id": "C4-041",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-02",
+      "preferred_material_id": "C1-002",
+      "unchanged_formula": "1 E + 1 (W+(W+W)) \u2192 1 (E+(W+(W+W)))",
+      "product_name": "Cement Mix",
+      "machine_family": "Casting and Finishing Line",
+      "installation_name": "Cement Mix Line"
+    },
+    {
+      "recipe_id": "C4-042",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-02",
+      "preferred_material_id": "C1-002",
+      "unchanged_formula": "1 E + 1 (W+(W+E)) \u2192 1 (E+(W+(W+E)))",
+      "product_name": "Structural Concrete",
+      "machine_family": "Casting and Finishing Line",
+      "installation_name": "Structural Concrete Line"
+    },
+    {
+      "recipe_id": "C4-043",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-02",
+      "preferred_material_id": "C1-002",
+      "unchanged_formula": "1 E + 1 (W+(W+F)) \u2192 1 (E+(W+(W+F)))",
+      "product_name": "Reinforced Concrete Block",
+      "machine_family": "Casting and Finishing Line",
+      "installation_name": "Reinforced Concrete Block Line"
+    },
+    {
+      "recipe_id": "C4-044",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-02",
+      "preferred_material_id": "C1-002",
+      "unchanged_formula": "1 E + 1 (W+(W+A)) \u2192 1 (E+(W+(W+A)))",
+      "product_name": "Precast Wall Panel",
+      "machine_family": "Casting and Finishing Line",
+      "installation_name": "Precast Wall Panel Line"
+    },
+    {
+      "recipe_id": "C4-045",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-02",
+      "preferred_material_id": "C1-002",
+      "unchanged_formula": "1 E + 1 (W+(E+E)) \u2192 1 (E+(W+(E+E)))",
+      "product_name": "Concrete Barrier",
+      "machine_family": "Casting and Finishing Line",
+      "installation_name": "Concrete Barrier Line"
+    },
+    {
+      "recipe_id": "C4-046",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-02",
+      "preferred_material_id": "C1-002",
+      "unchanged_formula": "1 E + 1 (W+(E+F)) \u2192 1 (E+(W+(E+F)))",
+      "product_name": "Armored Glass Pane",
+      "machine_family": "Casting and Finishing Line",
+      "installation_name": "Armored Glass Pane Line"
+    },
+    {
+      "recipe_id": "C4-047",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-02",
+      "preferred_material_id": "C1-002",
+      "unchanged_formula": "1 E + 1 (W+(E+A)) \u2192 1 (E+(W+(E+A)))",
+      "product_name": "Safety Glass",
+      "machine_family": "Casting and Finishing Line",
+      "installation_name": "Safety Glass Line"
+    },
+    {
+      "recipe_id": "C4-048",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-02",
+      "preferred_material_id": "C1-002",
+      "unchanged_formula": "1 E + 1 (W+(F+F)) \u2192 1 (E+(W+(F+F)))",
+      "product_name": "Insulated Panel",
+      "machine_family": "Casting and Finishing Line",
+      "installation_name": "Insulated Panel Line"
+    },
+    {
+      "recipe_id": "C4-049",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-02",
+      "preferred_material_id": "C1-002",
+      "unchanged_formula": "1 E + 1 (W+(F+A)) \u2192 1 (E+(W+(F+A)))",
+      "product_name": "Fired Brick",
+      "machine_family": "Casting and Finishing Line",
+      "installation_name": "Fired Brick Line"
+    },
+    {
+      "recipe_id": "C4-050",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-02",
+      "preferred_material_id": "C1-002",
+      "unchanged_formula": "1 E + 1 (W+(A+A)) \u2192 1 (E+(W+(A+A)))",
+      "product_name": "Firebrick",
+      "machine_family": "Casting and Finishing Line",
+      "installation_name": "Firebrick Line"
+    },
+    {
+      "recipe_id": "C4-051",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-02",
+      "preferred_material_id": "C1-002",
+      "unchanged_formula": "1 E + 1 (E+(W+W)) \u2192 1 (E+(E+(W+W)))",
+      "product_name": "Gravel Aggregate",
+      "machine_family": "Casting and Finishing Line",
+      "installation_name": "Gravel Aggregate Line"
+    },
+    {
+      "recipe_id": "C4-052",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-02",
+      "preferred_material_id": "C1-002",
+      "unchanged_formula": "1 E + 1 (E+(W+E)) \u2192 1 (E+(E+(W+E)))",
+      "product_name": "Asphalt Mix",
+      "machine_family": "Casting and Finishing Line",
+      "installation_name": "Asphalt Mix Line"
+    },
+    {
+      "recipe_id": "C4-053",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-02",
+      "preferred_material_id": "C1-002",
+      "unchanged_formula": "1 E + 1 (E+(W+F)) \u2192 1 (E+(E+(W+F)))",
+      "product_name": "Road Slab",
+      "machine_family": "Casting and Finishing Line",
+      "installation_name": "Road Slab Line"
+    },
+    {
+      "recipe_id": "C4-054",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-02",
+      "preferred_material_id": "C1-002",
+      "unchanged_formula": "1 E + 1 (E+(W+A)) \u2192 1 (E+(E+(W+A)))",
+      "product_name": "Rebar Cage",
+      "machine_family": "Casting and Finishing Line",
+      "installation_name": "Rebar Cage Line"
+    },
+    {
+      "recipe_id": "C4-055",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-02",
+      "preferred_material_id": "C1-002",
+      "unchanged_formula": "1 E + 1 (E+(E+E)) \u2192 1 (E+(E+(E+E)))",
+      "product_name": "Steel Mesh",
+      "machine_family": "Casting and Finishing Line",
+      "installation_name": "Steel Mesh Line"
+    },
+    {
+      "recipe_id": "C4-056",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-02",
+      "preferred_material_id": "C1-002",
+      "unchanged_formula": "1 E + 1 (E+(E+F)) \u2192 1 (E+(E+(E+F)))",
+      "product_name": "Fortification Block",
+      "machine_family": "Casting and Finishing Line",
+      "installation_name": "Fortification Block Line"
+    },
+    {
+      "recipe_id": "C4-057",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-02",
+      "preferred_material_id": "C1-002",
+      "unchanged_formula": "1 E + 1 (E+(E+A)) \u2192 1 (E+(E+(E+A)))",
+      "product_name": "Blast Wall Section",
+      "machine_family": "Casting and Finishing Line",
+      "installation_name": "Blast Wall Section Line"
+    },
+    {
+      "recipe_id": "C4-058",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-02",
+      "preferred_material_id": "C1-002",
+      "unchanged_formula": "1 E + 1 (E+(F+F)) \u2192 1 (E+(E+(F+F)))",
+      "product_name": "Paving Stone",
+      "machine_family": "Casting and Finishing Line",
+      "installation_name": "Paving Stone Line"
+    },
+    {
+      "recipe_id": "C4-059",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-02",
+      "preferred_material_id": "C1-002",
+      "unchanged_formula": "1 E + 1 (E+(F+A)) \u2192 1 (E+(E+(F+A)))",
+      "product_name": "Drainage Pipe",
+      "machine_family": "Casting and Finishing Line",
+      "installation_name": "Drainage Pipe Line"
+    },
+    {
+      "recipe_id": "C4-060",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-02",
+      "preferred_material_id": "C1-002",
+      "unchanged_formula": "1 E + 1 (E+(A+A)) \u2192 1 (E+(E+(A+A)))",
+      "product_name": "Culvert Section",
+      "machine_family": "Casting and Finishing Line",
+      "installation_name": "Culvert Section Line"
+    },
+    {
+      "recipe_id": "C4-061",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-02",
+      "preferred_material_id": "C1-002",
+      "unchanged_formula": "1 E + 1 (F+(W+W)) \u2192 1 (E+(F+(W+W)))",
+      "product_name": "Bridge Deck Panel",
+      "machine_family": "Casting and Finishing Line",
+      "installation_name": "Bridge Deck Panel Line"
+    },
+    {
+      "recipe_id": "C4-062",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-02",
+      "preferred_material_id": "C1-002",
+      "unchanged_formula": "1 E + 1 (F+(W+E)) \u2192 1 (E+(F+(W+E)))",
+      "product_name": "Runway Slab",
+      "machine_family": "Casting and Finishing Line",
+      "installation_name": "Runway Slab Line"
+    },
+    {
+      "recipe_id": "C4-063",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-02",
+      "preferred_material_id": "C1-002",
+      "unchanged_formula": "1 E + 1 (F+(W+F)) \u2192 1 (E+(F+(W+F)))",
+      "product_name": "Landing Pad Tile",
+      "machine_family": "Casting and Finishing Line",
+      "installation_name": "Landing Pad Tile Line"
+    },
+    {
+      "recipe_id": "C4-064",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-02",
+      "preferred_material_id": "C1-002",
+      "unchanged_formula": "1 E + 1 (F+(W+A)) \u2192 1 (E+(F+(W+A)))",
+      "product_name": "Roof Tile",
+      "machine_family": "Casting and Finishing Line",
+      "installation_name": "Roof Tile Line"
+    },
+    {
+      "recipe_id": "C4-065",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-02",
+      "preferred_material_id": "C1-002",
+      "unchanged_formula": "1 E + 1 (F+(E+E)) \u2192 1 (E+(F+(E+E)))",
+      "product_name": "Window Frame",
+      "machine_family": "Casting and Finishing Line",
+      "installation_name": "Window Frame Line"
+    },
+    {
+      "recipe_id": "C4-066",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-02",
+      "preferred_material_id": "C1-002",
+      "unchanged_formula": "1 E + 1 (F+(E+F)) \u2192 1 (E+(F+(E+F)))",
+      "product_name": "Foundation Pile",
+      "machine_family": "Casting and Finishing Line",
+      "installation_name": "Foundation Pile Line"
+    },
+    {
+      "recipe_id": "C4-067",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-02",
+      "preferred_material_id": "C1-002",
+      "unchanged_formula": "1 E + 1 (F+(E+A)) \u2192 1 (E+(F+(E+A)))",
+      "product_name": "Retaining Wall Block",
+      "machine_family": "Casting and Finishing Line",
+      "installation_name": "Retaining Wall Block Line"
+    },
+    {
+      "recipe_id": "C4-068",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-02",
+      "preferred_material_id": "C1-002",
+      "unchanged_formula": "1 E + 1 (F+(F+F)) \u2192 1 (E+(F+(F+F)))",
+      "product_name": "Tunnel Lining Segment",
+      "machine_family": "Casting and Finishing Line",
+      "installation_name": "Tunnel Lining Segment Line"
+    },
+    {
+      "recipe_id": "C4-069",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-02",
+      "preferred_material_id": "C1-002",
+      "unchanged_formula": "1 E + 1 (F+(F+A)) \u2192 1 (E+(F+(F+A)))",
+      "product_name": "Pipe Segment",
+      "machine_family": "Casting and Finishing Line",
+      "installation_name": "Pipe Segment Line"
+    },
+    {
+      "recipe_id": "C4-070",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-02",
+      "preferred_material_id": "C1-002",
+      "unchanged_formula": "1 E + 1 (F+(A+A)) \u2192 1 (E+(F+(A+A)))",
+      "product_name": "Glass Tube",
+      "machine_family": "Casting and Finishing Line",
+      "installation_name": "Glass Tube Line"
+    },
+    {
+      "recipe_id": "C4-071",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-02",
+      "preferred_material_id": "C1-002",
+      "unchanged_formula": "1 E + 1 (A+(W+W)) \u2192 1 (E+(A+(W+W)))",
+      "product_name": "Insulation Batt",
+      "machine_family": "Casting and Finishing Line",
+      "installation_name": "Insulation Batt Line"
+    },
+    {
+      "recipe_id": "C4-072",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-02",
+      "preferred_material_id": "C1-002",
+      "unchanged_formula": "1 E + 1 (A+(W+E)) \u2192 1 (E+(A+(W+E)))",
+      "product_name": "Mortar Mix",
+      "machine_family": "Casting and Finishing Line",
+      "installation_name": "Mortar Mix Line"
+    },
+    {
+      "recipe_id": "C4-073",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-02",
+      "preferred_material_id": "C1-002",
+      "unchanged_formula": "1 E + 1 (A+(W+F)) \u2192 1 (E+(A+(W+F)))",
+      "product_name": "Plasterboard",
+      "machine_family": "Casting and Finishing Line",
+      "installation_name": "Plasterboard Line"
+    },
+    {
+      "recipe_id": "C4-074",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-02",
+      "preferred_material_id": "C1-002",
+      "unchanged_formula": "1 E + 1 (A+(W+A)) \u2192 1 (E+(A+(W+A)))",
+      "product_name": "Tower Footing",
+      "machine_family": "Casting and Finishing Line",
+      "installation_name": "Tower Footing Line"
+    },
+    {
+      "recipe_id": "C4-075",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-02",
+      "preferred_material_id": "C1-002",
+      "unchanged_formula": "1 E + 1 (A+(E+E)) \u2192 1 (E+(A+(E+E)))",
+      "product_name": "Vehicle Barrier",
+      "machine_family": "Casting and Finishing Line",
+      "installation_name": "Vehicle Barrier Line"
+    },
+    {
+      "recipe_id": "C4-076",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-02",
+      "preferred_material_id": "C1-002",
+      "unchanged_formula": "1 E + 1 (A+(E+F)) \u2192 1 (E+(A+(E+F)))",
+      "product_name": "Gate Post",
+      "machine_family": "Casting and Finishing Line",
+      "installation_name": "Gate Post Line"
+    },
+    {
+      "recipe_id": "C4-077",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-02",
+      "preferred_material_id": "C1-002",
+      "unchanged_formula": "1 E + 1 (A+(E+A)) \u2192 1 (E+(A+(E+A)))",
+      "product_name": "Watchtower Segment",
+      "machine_family": "Casting and Finishing Line",
+      "installation_name": "Watchtower Segment Line"
+    },
+    {
+      "recipe_id": "C4-078",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-02",
+      "preferred_material_id": "C1-002",
+      "unchanged_formula": "1 E + 1 (A+(F+F)) \u2192 1 (E+(A+(F+F)))",
+      "product_name": "Sandbag",
+      "machine_family": "Casting and Finishing Line",
+      "installation_name": "Sandbag Line"
+    },
+    {
+      "recipe_id": "C4-079",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-02",
+      "preferred_material_id": "C1-002",
+      "unchanged_formula": "1 E + 1 (A+(F+A)) \u2192 1 (E+(A+(F+A)))",
+      "product_name": "Anchor Bolt Set",
+      "machine_family": "Casting and Finishing Line",
+      "installation_name": "Anchor Bolt Set Line"
+    },
+    {
+      "recipe_id": "C4-080",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-02",
+      "preferred_material_id": "C1-002",
+      "unchanged_formula": "1 E + 1 (A+(A+A)) \u2192 1 (E+(A+(A+A)))",
+      "product_name": "Corrugated Roof Sheet",
+      "machine_family": "Casting and Finishing Line",
+      "installation_name": "Corrugated Roof Sheet Line"
+    },
+    {
+      "recipe_id": "C4-081",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-03",
+      "preferred_material_id": "C1-003",
+      "unchanged_formula": "1 F + 1 (W+(W+W)) \u2192 1 (F+(W+(W+W)))",
+      "product_name": "Assault Rifle",
+      "machine_family": "Armament Assembly Line",
+      "installation_name": "Assault Rifle Line"
+    },
+    {
+      "recipe_id": "C4-082",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-03",
+      "preferred_material_id": "C1-003",
+      "unchanged_formula": "1 F + 1 (W+(W+E)) \u2192 1 (F+(W+(W+E)))",
+      "product_name": "Carbine",
+      "machine_family": "Armament Assembly Line",
+      "installation_name": "Carbine Line"
+    },
+    {
+      "recipe_id": "C4-083",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-03",
+      "preferred_material_id": "C1-003",
+      "unchanged_formula": "1 F + 1 (W+(W+F)) \u2192 1 (F+(W+(W+F)))",
+      "product_name": "Service Pistol",
+      "machine_family": "Armament Assembly Line",
+      "installation_name": "Service Pistol Line"
+    },
+    {
+      "recipe_id": "C4-084",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-03",
+      "preferred_material_id": "C1-003",
+      "unchanged_formula": "1 F + 1 (W+(W+A)) \u2192 1 (F+(W+(W+A)))",
+      "product_name": "Sniper Rifle",
+      "machine_family": "Armament Assembly Line",
+      "installation_name": "Sniper Rifle Line"
+    },
+    {
+      "recipe_id": "C4-085",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-03",
+      "preferred_material_id": "C1-003",
+      "unchanged_formula": "1 F + 1 (W+(E+E)) \u2192 1 (F+(W+(E+E)))",
+      "product_name": "Light Machine Gun",
+      "machine_family": "Armament Assembly Line",
+      "installation_name": "Light Machine Gun Line"
+    },
+    {
+      "recipe_id": "C4-086",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-03",
+      "preferred_material_id": "C1-003",
+      "unchanged_formula": "1 F + 1 (W+(E+F)) \u2192 1 (F+(W+(E+F)))",
+      "product_name": "Heavy Machine Gun",
+      "machine_family": "Armament Assembly Line",
+      "installation_name": "Heavy Machine Gun Line"
+    },
+    {
+      "recipe_id": "C4-087",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-03",
+      "preferred_material_id": "C1-003",
+      "unchanged_formula": "1 F + 1 (W+(E+A)) \u2192 1 (F+(W+(E+A)))",
+      "product_name": "Combat Shotgun",
+      "machine_family": "Armament Assembly Line",
+      "installation_name": "Combat Shotgun Line"
+    },
+    {
+      "recipe_id": "C4-088",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-03",
+      "preferred_material_id": "C1-003",
+      "unchanged_formula": "1 F + 1 (W+(F+F)) \u2192 1 (F+(W+(F+F)))",
+      "product_name": "Grenade Launcher",
+      "machine_family": "Armament Assembly Line",
+      "installation_name": "Grenade Launcher Line"
+    },
+    {
+      "recipe_id": "C4-089",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-03",
+      "preferred_material_id": "C1-003",
+      "unchanged_formula": "1 F + 1 (W+(F+A)) \u2192 1 (F+(W+(F+A)))",
+      "product_name": "Mortar Tube",
+      "machine_family": "Armament Assembly Line",
+      "installation_name": "Mortar Tube Line"
+    },
+    {
+      "recipe_id": "C4-090",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-03",
+      "preferred_material_id": "C1-003",
+      "unchanged_formula": "1 F + 1 (W+(A+A)) \u2192 1 (F+(W+(A+A)))",
+      "product_name": "Howitzer",
+      "machine_family": "Armament Assembly Line",
+      "installation_name": "Howitzer Line"
+    },
+    {
+      "recipe_id": "C4-091",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-03",
+      "preferred_material_id": "C1-003",
+      "unchanged_formula": "1 F + 1 (E+(W+W)) \u2192 1 (F+(E+(W+W)))",
+      "product_name": "Field Gun",
+      "machine_family": "Armament Assembly Line",
+      "installation_name": "Field Gun Line"
+    },
+    {
+      "recipe_id": "C4-092",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-03",
+      "preferred_material_id": "C1-003",
+      "unchanged_formula": "1 F + 1 (E+(W+E)) \u2192 1 (F+(E+(W+E)))",
+      "product_name": "Tank Cannon",
+      "machine_family": "Armament Assembly Line",
+      "installation_name": "Tank Cannon Line"
+    },
+    {
+      "recipe_id": "C4-093",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-03",
+      "preferred_material_id": "C1-003",
+      "unchanged_formula": "1 F + 1 (E+(W+F)) \u2192 1 (F+(E+(W+F)))",
+      "product_name": "Anti-Tank Launcher",
+      "machine_family": "Armament Assembly Line",
+      "installation_name": "Anti-Tank Launcher Line"
+    },
+    {
+      "recipe_id": "C4-094",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-03",
+      "preferred_material_id": "C1-003",
+      "unchanged_formula": "1 F + 1 (E+(W+A)) \u2192 1 (F+(E+(W+A)))",
+      "product_name": "Rocket Launcher",
+      "machine_family": "Armament Assembly Line",
+      "installation_name": "Rocket Launcher Line"
+    },
+    {
+      "recipe_id": "C4-095",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-03",
+      "preferred_material_id": "C1-003",
+      "unchanged_formula": "1 F + 1 (E+(E+E)) \u2192 1 (F+(E+(E+E)))",
+      "product_name": "Missile Launcher",
+      "machine_family": "Armament Assembly Line",
+      "installation_name": "Missile Launcher Line"
+    },
+    {
+      "recipe_id": "C4-096",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-03",
+      "preferred_material_id": "C1-003",
+      "unchanged_formula": "1 F + 1 (E+(E+F)) \u2192 1 (F+(E+(E+F)))",
+      "product_name": "Anti-Aircraft Gun",
+      "machine_family": "Armament Assembly Line",
+      "installation_name": "Anti-Aircraft Gun Line"
+    },
+    {
+      "recipe_id": "C4-097",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-03",
+      "preferred_material_id": "C1-003",
+      "unchanged_formula": "1 F + 1 (E+(E+A)) \u2192 1 (F+(E+(E+A)))",
+      "product_name": "Naval Cannon",
+      "machine_family": "Armament Assembly Line",
+      "installation_name": "Naval Cannon Line"
+    },
+    {
+      "recipe_id": "C4-098",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-03",
+      "preferred_material_id": "C1-003",
+      "unchanged_formula": "1 F + 1 (E+(F+F)) \u2192 1 (F+(E+(F+F)))",
+      "product_name": "Rifle Barrel",
+      "machine_family": "Armament Assembly Line",
+      "installation_name": "Rifle Barrel Line"
+    },
+    {
+      "recipe_id": "C4-099",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-03",
+      "preferred_material_id": "C1-003",
+      "unchanged_formula": "1 F + 1 (E+(F+A)) \u2192 1 (F+(E+(F+A)))",
+      "product_name": "Gun Receiver",
+      "machine_family": "Armament Assembly Line",
+      "installation_name": "Gun Receiver Line"
+    },
+    {
+      "recipe_id": "C4-100",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-03",
+      "preferred_material_id": "C1-003",
+      "unchanged_formula": "1 F + 1 (E+(A+A)) \u2192 1 (F+(E+(A+A)))",
+      "product_name": "Breech Assembly",
+      "machine_family": "Armament Assembly Line",
+      "installation_name": "Breech Assembly Line"
+    },
+    {
+      "recipe_id": "C4-101",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-03",
+      "preferred_material_id": "C1-003",
+      "unchanged_formula": "1 F + 1 (F+(W+W)) \u2192 1 (F+(F+(W+W)))",
+      "product_name": "Recoil Mechanism",
+      "machine_family": "Armament Assembly Line",
+      "installation_name": "Recoil Mechanism Line"
+    },
+    {
+      "recipe_id": "C4-102",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-03",
+      "preferred_material_id": "C1-003",
+      "unchanged_formula": "1 F + 1 (F+(W+E)) \u2192 1 (F+(F+(W+E)))",
+      "product_name": "Gun Mount",
+      "machine_family": "Armament Assembly Line",
+      "installation_name": "Gun Mount Line"
+    },
+    {
+      "recipe_id": "C4-103",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-03",
+      "preferred_material_id": "C1-003",
+      "unchanged_formula": "1 F + 1 (F+(W+F)) \u2192 1 (F+(F+(W+F)))",
+      "product_name": "Turret Ring",
+      "machine_family": "Armament Assembly Line",
+      "installation_name": "Turret Ring Line"
+    },
+    {
+      "recipe_id": "C4-104",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-03",
+      "preferred_material_id": "C1-003",
+      "unchanged_formula": "1 F + 1 (F+(W+A)) \u2192 1 (F+(F+(W+A)))",
+      "product_name": "Autoloader",
+      "machine_family": "Armament Assembly Line",
+      "installation_name": "Autoloader Line"
+    },
+    {
+      "recipe_id": "C4-105",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-03",
+      "preferred_material_id": "C1-003",
+      "unchanged_formula": "1 F + 1 (F+(E+E)) \u2192 1 (F+(F+(E+E)))",
+      "product_name": "Magazine",
+      "machine_family": "Armament Assembly Line",
+      "installation_name": "Magazine Line"
+    },
+    {
+      "recipe_id": "C4-106",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-03",
+      "preferred_material_id": "C1-003",
+      "unchanged_formula": "1 F + 1 (F+(E+F)) \u2192 1 (F+(F+(E+F)))",
+      "product_name": "Ammunition Belt",
+      "machine_family": "Armament Assembly Line",
+      "installation_name": "Ammunition Belt Line"
+    },
+    {
+      "recipe_id": "C4-107",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-03",
+      "preferred_material_id": "C1-003",
+      "unchanged_formula": "1 F + 1 (F+(E+A)) \u2192 1 (F+(F+(E+A)))",
+      "product_name": "Rifle Cartridge",
+      "machine_family": "Armament Assembly Line",
+      "installation_name": "Rifle Cartridge Line"
+    },
+    {
+      "recipe_id": "C4-108",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-03",
+      "preferred_material_id": "C1-003",
+      "unchanged_formula": "1 F + 1 (F+(F+F)) \u2192 1 (F+(F+(F+F)))",
+      "product_name": "Pistol Cartridge",
+      "machine_family": "Armament Assembly Line",
+      "installation_name": "Pistol Cartridge Line"
+    },
+    {
+      "recipe_id": "C4-109",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-03",
+      "preferred_material_id": "C1-003",
+      "unchanged_formula": "1 F + 1 (F+(F+A)) \u2192 1 (F+(F+(F+A)))",
+      "product_name": "Cannon Shell",
+      "machine_family": "Armament Assembly Line",
+      "installation_name": "Cannon Shell Line"
+    },
+    {
+      "recipe_id": "C4-110",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-03",
+      "preferred_material_id": "C1-003",
+      "unchanged_formula": "1 F + 1 (F+(A+A)) \u2192 1 (F+(F+(A+A)))",
+      "product_name": "Armor-Piercing Round",
+      "machine_family": "Armament Assembly Line",
+      "installation_name": "Armor-Piercing Round Line"
+    },
+    {
+      "recipe_id": "C4-111",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-03",
+      "preferred_material_id": "C1-003",
+      "unchanged_formula": "1 F + 1 (A+(W+W)) \u2192 1 (F+(A+(W+W)))",
+      "product_name": "Hand Grenade",
+      "machine_family": "Armament Assembly Line",
+      "installation_name": "Hand Grenade Line"
+    },
+    {
+      "recipe_id": "C4-112",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-03",
+      "preferred_material_id": "C1-003",
+      "unchanged_formula": "1 F + 1 (A+(W+E)) \u2192 1 (F+(A+(W+E)))",
+      "product_name": "Mortar Round",
+      "machine_family": "Armament Assembly Line",
+      "installation_name": "Mortar Round Line"
+    },
+    {
+      "recipe_id": "C4-113",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-03",
+      "preferred_material_id": "C1-003",
+      "unchanged_formula": "1 F + 1 (A+(W+F)) \u2192 1 (F+(A+(W+F)))",
+      "product_name": "Rocket Warhead",
+      "machine_family": "Armament Assembly Line",
+      "installation_name": "Rocket Warhead Line"
+    },
+    {
+      "recipe_id": "C4-114",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-03",
+      "preferred_material_id": "C1-003",
+      "unchanged_formula": "1 F + 1 (A+(W+A)) \u2192 1 (F+(A+(W+A)))",
+      "product_name": "Combat Knife",
+      "machine_family": "Armament Assembly Line",
+      "installation_name": "Combat Knife Line"
+    },
+    {
+      "recipe_id": "C4-115",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-03",
+      "preferred_material_id": "C1-003",
+      "unchanged_formula": "1 F + 1 (A+(E+E)) \u2192 1 (F+(A+(E+E)))",
+      "product_name": "Bayonet",
+      "machine_family": "Armament Assembly Line",
+      "installation_name": "Bayonet Line"
+    },
+    {
+      "recipe_id": "C4-116",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-03",
+      "preferred_material_id": "C1-003",
+      "unchanged_formula": "1 F + 1 (A+(E+F)) \u2192 1 (F+(A+(E+F)))",
+      "product_name": "Suppressor",
+      "machine_family": "Armament Assembly Line",
+      "installation_name": "Suppressor Line"
+    },
+    {
+      "recipe_id": "C4-117",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-03",
+      "preferred_material_id": "C1-003",
+      "unchanged_formula": "1 F + 1 (A+(E+A)) \u2192 1 (F+(A+(E+A)))",
+      "product_name": "Scope Mount",
+      "machine_family": "Armament Assembly Line",
+      "installation_name": "Scope Mount Line"
+    },
+    {
+      "recipe_id": "C4-118",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-03",
+      "preferred_material_id": "C1-003",
+      "unchanged_formula": "1 F + 1 (A+(F+F)) \u2192 1 (F+(A+(F+F)))",
+      "product_name": "Bipod",
+      "machine_family": "Armament Assembly Line",
+      "installation_name": "Bipod Line"
+    },
+    {
+      "recipe_id": "C4-119",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-03",
+      "preferred_material_id": "C1-003",
+      "unchanged_formula": "1 F + 1 (A+(F+A)) \u2192 1 (F+(A+(F+A)))",
+      "product_name": "Rail Kit",
+      "machine_family": "Armament Assembly Line",
+      "installation_name": "Rail Kit Line"
+    },
+    {
+      "recipe_id": "C4-120",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-03",
+      "preferred_material_id": "C1-003",
+      "unchanged_formula": "1 F + 1 (A+(A+A)) \u2192 1 (F+(A+(A+A)))",
+      "product_name": "Gun Cradle",
+      "machine_family": "Armament Assembly Line",
+      "installation_name": "Gun Cradle Line"
+    },
+    {
+      "recipe_id": "C4-121",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-04",
+      "preferred_material_id": "C1-004",
+      "unchanged_formula": "1 A + 1 (W+(W+W)) \u2192 1 (A+(W+(W+W)))",
+      "product_name": "Radar Unit",
+      "machine_family": "Calibration Line",
+      "installation_name": "Radar Unit Line"
+    },
+    {
+      "recipe_id": "C4-122",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-04",
+      "preferred_material_id": "C1-004",
+      "unchanged_formula": "1 A + 1 (W+(W+E)) \u2192 1 (A+(W+(W+E)))",
+      "product_name": "Radar Antenna",
+      "machine_family": "Calibration Line",
+      "installation_name": "Radar Antenna Line"
+    },
+    {
+      "recipe_id": "C4-123",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-04",
+      "preferred_material_id": "C1-004",
+      "unchanged_formula": "1 A + 1 (W+(W+F)) \u2192 1 (A+(W+(W+F)))",
+      "product_name": "Sonar Array",
+      "machine_family": "Calibration Line",
+      "installation_name": "Sonar Array Line"
+    },
+    {
+      "recipe_id": "C4-124",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-04",
+      "preferred_material_id": "C1-004",
+      "unchanged_formula": "1 A + 1 (W+(W+A)) \u2192 1 (A+(W+(W+A)))",
+      "product_name": "Thermal Camera",
+      "machine_family": "Calibration Line",
+      "installation_name": "Thermal Camera Line"
+    },
+    {
+      "recipe_id": "C4-125",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-04",
+      "preferred_material_id": "C1-004",
+      "unchanged_formula": "1 A + 1 (W+(E+E)) \u2192 1 (A+(W+(E+E)))",
+      "product_name": "Night Vision Goggles",
+      "machine_family": "Calibration Line",
+      "installation_name": "Night Vision Goggles Line"
+    },
+    {
+      "recipe_id": "C4-126",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-04",
+      "preferred_material_id": "C1-004",
+      "unchanged_formula": "1 A + 1 (W+(E+F)) \u2192 1 (A+(W+(E+F)))",
+      "product_name": "Laser Rangefinder",
+      "machine_family": "Calibration Line",
+      "installation_name": "Laser Rangefinder Line"
+    },
+    {
+      "recipe_id": "C4-127",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-04",
+      "preferred_material_id": "C1-004",
+      "unchanged_formula": "1 A + 1 (W+(E+A)) \u2192 1 (A+(W+(E+A)))",
+      "product_name": "Targeting Scope",
+      "machine_family": "Calibration Line",
+      "installation_name": "Targeting Scope Line"
+    },
+    {
+      "recipe_id": "C4-128",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-04",
+      "preferred_material_id": "C1-004",
+      "unchanged_formula": "1 A + 1 (W+(F+F)) \u2192 1 (A+(W+(F+F)))",
+      "product_name": "Gyroscope",
+      "machine_family": "Calibration Line",
+      "installation_name": "Gyroscope Line"
+    },
+    {
+      "recipe_id": "C4-129",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-04",
+      "preferred_material_id": "C1-004",
+      "unchanged_formula": "1 A + 1 (W+(F+A)) \u2192 1 (A+(W+(F+A)))",
+      "product_name": "Accelerometer",
+      "machine_family": "Calibration Line",
+      "installation_name": "Accelerometer Line"
+    },
+    {
+      "recipe_id": "C4-130",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-04",
+      "preferred_material_id": "C1-004",
+      "unchanged_formula": "1 A + 1 (W+(A+A)) \u2192 1 (A+(W+(A+A)))",
+      "product_name": "Compass Unit",
+      "machine_family": "Calibration Line",
+      "installation_name": "Compass Unit Line"
+    },
+    {
+      "recipe_id": "C4-131",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-04",
+      "preferred_material_id": "C1-004",
+      "unchanged_formula": "1 A + 1 (E+(W+W)) \u2192 1 (A+(E+(W+W)))",
+      "product_name": "Navigation Receiver",
+      "machine_family": "Calibration Line",
+      "installation_name": "Navigation Receiver Line"
+    },
+    {
+      "recipe_id": "C4-132",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-04",
+      "preferred_material_id": "C1-004",
+      "unchanged_formula": "1 A + 1 (E+(W+E)) \u2192 1 (A+(E+(W+E)))",
+      "product_name": "Seismic Sensor",
+      "machine_family": "Calibration Line",
+      "installation_name": "Seismic Sensor Line"
+    },
+    {
+      "recipe_id": "C4-133",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-04",
+      "preferred_material_id": "C1-004",
+      "unchanged_formula": "1 A + 1 (E+(W+F)) \u2192 1 (A+(E+(W+F)))",
+      "product_name": "Motion Detector",
+      "machine_family": "Calibration Line",
+      "installation_name": "Motion Detector Line"
+    },
+    {
+      "recipe_id": "C4-134",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-04",
+      "preferred_material_id": "C1-004",
+      "unchanged_formula": "1 A + 1 (E+(W+A)) \u2192 1 (A+(E+(W+A)))",
+      "product_name": "Metal Detector",
+      "machine_family": "Calibration Line",
+      "installation_name": "Metal Detector Line"
+    },
+    {
+      "recipe_id": "C4-135",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-04",
+      "preferred_material_id": "C1-004",
+      "unchanged_formula": "1 A + 1 (E+(E+E)) \u2192 1 (A+(E+(E+E)))",
+      "product_name": "Geiger Counter",
+      "machine_family": "Calibration Line",
+      "installation_name": "Geiger Counter Line"
+    },
+    {
+      "recipe_id": "C4-136",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-04",
+      "preferred_material_id": "C1-004",
+      "unchanged_formula": "1 A + 1 (E+(E+F)) \u2192 1 (A+(E+(E+F)))",
+      "product_name": "Radiation Dosimeter",
+      "machine_family": "Calibration Line",
+      "installation_name": "Radiation Dosimeter Line"
+    },
+    {
+      "recipe_id": "C4-137",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-04",
+      "preferred_material_id": "C1-004",
+      "unchanged_formula": "1 A + 1 (E+(E+A)) \u2192 1 (A+(E+(E+A)))",
+      "product_name": "Gas Detector",
+      "machine_family": "Calibration Line",
+      "installation_name": "Gas Detector Line"
+    },
+    {
+      "recipe_id": "C4-138",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-04",
+      "preferred_material_id": "C1-004",
+      "unchanged_formula": "1 A + 1 (E+(F+F)) \u2192 1 (A+(E+(F+F)))",
+      "product_name": "Chemical Agent Detector",
+      "machine_family": "Calibration Line",
+      "installation_name": "Chemical Agent Detector Line"
+    },
+    {
+      "recipe_id": "C4-139",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-04",
+      "preferred_material_id": "C1-004",
+      "unchanged_formula": "1 A + 1 (E+(F+A)) \u2192 1 (A+(E+(F+A)))",
+      "product_name": "Biohazard Sensor",
+      "machine_family": "Calibration Line",
+      "installation_name": "Biohazard Sensor Line"
+    },
+    {
+      "recipe_id": "C4-140",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-04",
+      "preferred_material_id": "C1-004",
+      "unchanged_formula": "1 A + 1 (E+(A+A)) \u2192 1 (A+(E+(A+A)))",
+      "product_name": "Smoke Detector",
+      "machine_family": "Calibration Line",
+      "installation_name": "Smoke Detector Line"
+    },
+    {
+      "recipe_id": "C4-141",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-04",
+      "preferred_material_id": "C1-004",
+      "unchanged_formula": "1 A + 1 (F+(W+W)) \u2192 1 (A+(F+(W+W)))",
+      "product_name": "Infrared Sensor",
+      "machine_family": "Calibration Line",
+      "installation_name": "Infrared Sensor Line"
+    },
+    {
+      "recipe_id": "C4-142",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-04",
+      "preferred_material_id": "C1-004",
+      "unchanged_formula": "1 A + 1 (F+(W+E)) \u2192 1 (A+(F+(W+E)))",
+      "product_name": "Flaw Detector",
+      "machine_family": "Calibration Line",
+      "installation_name": "Flaw Detector Line"
+    },
+    {
+      "recipe_id": "C4-143",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-04",
+      "preferred_material_id": "C1-004",
+      "unchanged_formula": "1 A + 1 (F+(W+F)) \u2192 1 (A+(F+(W+F)))",
+      "product_name": "Lidar Unit",
+      "machine_family": "Calibration Line",
+      "installation_name": "Lidar Unit Line"
+    },
+    {
+      "recipe_id": "C4-144",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-04",
+      "preferred_material_id": "C1-004",
+      "unchanged_formula": "1 A + 1 (F+(W+A)) \u2192 1 (A+(F+(W+A)))",
+      "product_name": "Surveillance Camera",
+      "machine_family": "Calibration Line",
+      "installation_name": "Surveillance Camera Line"
+    },
+    {
+      "recipe_id": "C4-145",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-04",
+      "preferred_material_id": "C1-004",
+      "unchanged_formula": "1 A + 1 (F+(E+E)) \u2192 1 (A+(F+(E+E)))",
+      "product_name": "Periscope",
+      "machine_family": "Calibration Line",
+      "installation_name": "Periscope Line"
+    },
+    {
+      "recipe_id": "C4-146",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-04",
+      "preferred_material_id": "C1-004",
+      "unchanged_formula": "1 A + 1 (F+(E+F)) \u2192 1 (A+(F+(E+F)))",
+      "product_name": "Spotting Telescope",
+      "machine_family": "Calibration Line",
+      "installation_name": "Spotting Telescope Line"
+    },
+    {
+      "recipe_id": "C4-147",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-04",
+      "preferred_material_id": "C1-004",
+      "unchanged_formula": "1 A + 1 (F+(E+A)) \u2192 1 (A+(F+(E+A)))",
+      "product_name": "Optical Lens Assembly",
+      "machine_family": "Calibration Line",
+      "installation_name": "Optical Lens Assembly Line"
+    },
+    {
+      "recipe_id": "C4-148",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-04",
+      "preferred_material_id": "C1-004",
+      "unchanged_formula": "1 A + 1 (F+(F+F)) \u2192 1 (A+(F+(F+F)))",
+      "product_name": "Acoustic Sensor",
+      "machine_family": "Calibration Line",
+      "installation_name": "Acoustic Sensor Line"
+    },
+    {
+      "recipe_id": "C4-149",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-04",
+      "preferred_material_id": "C1-004",
+      "unchanged_formula": "1 A + 1 (F+(F+A)) \u2192 1 (A+(F+(F+A)))",
+      "product_name": "Magnetometer",
+      "machine_family": "Calibration Line",
+      "installation_name": "Magnetometer Line"
+    },
+    {
+      "recipe_id": "C4-150",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-04",
+      "preferred_material_id": "C1-004",
+      "unchanged_formula": "1 A + 1 (F+(A+A)) \u2192 1 (A+(F+(A+A)))",
+      "product_name": "Weather Station",
+      "machine_family": "Calibration Line",
+      "installation_name": "Weather Station Line"
+    },
+    {
+      "recipe_id": "C4-151",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-04",
+      "preferred_material_id": "C1-004",
+      "unchanged_formula": "1 A + 1 (A+(W+W)) \u2192 1 (A+(A+(W+W)))",
+      "product_name": "Depth Sounder",
+      "machine_family": "Calibration Line",
+      "installation_name": "Depth Sounder Line"
+    },
+    {
+      "recipe_id": "C4-152",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-04",
+      "preferred_material_id": "C1-004",
+      "unchanged_formula": "1 A + 1 (A+(W+E)) \u2192 1 (A+(A+(W+E)))",
+      "product_name": "Tracking Antenna",
+      "machine_family": "Calibration Line",
+      "installation_name": "Tracking Antenna Line"
+    },
+    {
+      "recipe_id": "C4-153",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-04",
+      "preferred_material_id": "C1-004",
+      "unchanged_formula": "1 A + 1 (A+(W+F)) \u2192 1 (A+(A+(W+F)))",
+      "product_name": "Early Warning Mast",
+      "machine_family": "Calibration Line",
+      "installation_name": "Early Warning Mast Line"
+    },
+    {
+      "recipe_id": "C4-154",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-04",
+      "preferred_material_id": "C1-004",
+      "unchanged_formula": "1 A + 1 (A+(W+A)) \u2192 1 (A+(A+(W+A)))",
+      "product_name": "Camera Gimbal",
+      "machine_family": "Calibration Line",
+      "installation_name": "Camera Gimbal Line"
+    },
+    {
+      "recipe_id": "C4-155",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-04",
+      "preferred_material_id": "C1-004",
+      "unchanged_formula": "1 A + 1 (A+(E+E)) \u2192 1 (A+(A+(E+E)))",
+      "product_name": "Targeting Pod",
+      "machine_family": "Calibration Line",
+      "installation_name": "Targeting Pod Line"
+    },
+    {
+      "recipe_id": "C4-156",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-04",
+      "preferred_material_id": "C1-004",
+      "unchanged_formula": "1 A + 1 (A+(E+F)) \u2192 1 (A+(A+(E+F)))",
+      "product_name": "Proximity Sensor",
+      "machine_family": "Calibration Line",
+      "installation_name": "Proximity Sensor Line"
+    },
+    {
+      "recipe_id": "C4-157",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-04",
+      "preferred_material_id": "C1-004",
+      "unchanged_formula": "1 A + 1 (A+(E+A)) \u2192 1 (A+(A+(E+A)))",
+      "product_name": "Binoculars",
+      "machine_family": "Calibration Line",
+      "installation_name": "Binoculars Line"
+    },
+    {
+      "recipe_id": "C4-158",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-04",
+      "preferred_material_id": "C1-004",
+      "unchanged_formula": "1 A + 1 (A+(F+F)) \u2192 1 (A+(A+(F+F)))",
+      "product_name": "Pressure Sensor",
+      "machine_family": "Calibration Line",
+      "installation_name": "Pressure Sensor Line"
+    },
+    {
+      "recipe_id": "C4-159",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-04",
+      "preferred_material_id": "C1-004",
+      "unchanged_formula": "1 A + 1 (A+(F+A)) \u2192 1 (A+(A+(F+A)))",
+      "product_name": "Vibration Sensor",
+      "machine_family": "Calibration Line",
+      "installation_name": "Vibration Sensor Line"
+    },
+    {
+      "recipe_id": "C4-160",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-04",
+      "preferred_material_id": "C1-004",
+      "unchanged_formula": "1 A + 1 (A+(A+A)) \u2192 1 (A+(A+(A+A)))",
+      "product_name": "Fire Control Sensor Pack",
+      "machine_family": "Calibration Line",
+      "installation_name": "Fire Control Sensor Pack Line"
+    },
+    {
+      "recipe_id": "C4-161",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-05",
+      "preferred_material_id": "C2-001",
+      "unchanged_formula": "2 (W+W) \u2192 1 ((W+W)+(W+W))",
+      "product_name": "Body Armor Vest",
+      "machine_family": "Gear Assembly Line",
+      "installation_name": "Body Armor Vest Line"
+    },
+    {
+      "recipe_id": "C4-162",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-05",
+      "preferred_material_id": "C2-001",
+      "unchanged_formula": "1 (W+W) + 1 (W+E) \u2192 1 ((W+W)+(W+E))",
+      "product_name": "Chemical Protection Suit",
+      "machine_family": "Gear Assembly Line",
+      "installation_name": "Chemical Protection Suit Line"
+    },
+    {
+      "recipe_id": "C4-163",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-07",
+      "preferred_material_id": "C2-003",
+      "unchanged_formula": "1 (W+W) + 1 (W+F) \u2192 1 ((W+W)+(W+F))",
+      "product_name": "Engine Coolant",
+      "machine_family": "Filling Line",
+      "installation_name": "Engine Coolant Line"
+    },
+    {
+      "recipe_id": "C4-164",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-08",
+      "preferred_material_id": "C2-004",
+      "unchanged_formula": "1 (W+W) + 1 (W+A) \u2192 1 ((W+W)+(W+A))",
+      "product_name": "Portable X-ray Unit",
+      "machine_family": "Imaging Assembly Line",
+      "installation_name": "Portable X-ray Unit Line"
+    },
+    {
+      "recipe_id": "C4-165",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-09",
+      "preferred_material_id": "C2-005",
+      "unchanged_formula": "1 (W+W) + 1 (E+E) \u2192 1 ((W+W)+(E+E))",
+      "product_name": "Vehicle Armor Panel",
+      "machine_family": "Armor Finishing Line",
+      "installation_name": "Vehicle Armor Panel Line"
+    },
+    {
+      "recipe_id": "C4-166",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-10",
+      "preferred_material_id": "C2-006",
+      "unchanged_formula": "1 (W+W) + 1 (E+F) \u2192 1 ((W+W)+(E+F))",
+      "product_name": "Radio Transceiver",
+      "machine_family": "Systems Integration Line",
+      "installation_name": "Radio Transceiver Line"
+    },
+    {
+      "recipe_id": "C4-167",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-11",
+      "preferred_material_id": "C2-007",
+      "unchanged_formula": "1 (W+W) + 1 (E+A) \u2192 1 ((W+W)+(E+A))",
+      "product_name": "Command Bunker Module",
+      "machine_family": "Module Assembly Hall",
+      "installation_name": "Command Bunker Module Hall"
+    },
+    {
+      "recipe_id": "C4-168",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-12",
+      "preferred_material_id": "C2-008",
+      "unchanged_formula": "1 (W+W) + 1 (F+F) \u2192 1 ((W+W)+(F+F))",
+      "product_name": "Armored Personnel Carrier",
+      "machine_family": "Vehicle Assembly Line",
+      "installation_name": "Armored Personnel Carrier Line"
+    },
+    {
+      "recipe_id": "C4-169",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-13",
+      "preferred_material_id": "C2-009",
+      "unchanged_formula": "1 (W+W) + 1 (F+A) \u2192 1 ((W+W)+(F+A))",
+      "product_name": "Diesel Generator",
+      "machine_family": "Generator Assembly Line",
+      "installation_name": "Diesel Generator Line"
+    },
+    {
+      "recipe_id": "C4-170",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-14",
+      "preferred_material_id": "C2-010",
+      "unchanged_formula": "1 (W+W) + 1 (A+A) \u2192 1 ((W+W)+(A+A))",
+      "product_name": "Fighter Aircraft",
+      "machine_family": "Aerospace Assembly Hall",
+      "installation_name": "Fighter Aircraft Hall"
+    },
+    {
+      "recipe_id": "C4-171",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-06",
+      "preferred_material_id": "C2-002",
+      "unchanged_formula": "2 (W+E) \u2192 1 ((W+E)+(W+E))",
+      "product_name": "Demolition Charge",
+      "machine_family": "Charge Loading Line",
+      "installation_name": "Demolition Charge Line"
+    },
+    {
+      "recipe_id": "C4-172",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-06",
+      "preferred_material_id": "C2-002",
+      "unchanged_formula": "1 (W+E) + 1 (W+F) \u2192 1 ((W+E)+(W+F))",
+      "product_name": "Propellant Charge Bag",
+      "machine_family": "Charge Loading Line",
+      "installation_name": "Propellant Charge Bag Line"
+    },
+    {
+      "recipe_id": "C4-173",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-06",
+      "preferred_material_id": "C2-002",
+      "unchanged_formula": "1 (W+E) + 1 (W+A) \u2192 1 ((W+E)+(W+A))",
+      "product_name": "Detonating Cord",
+      "machine_family": "Charge Loading Line",
+      "installation_name": "Detonating Cord Line"
+    },
+    {
+      "recipe_id": "C4-174",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-09",
+      "preferred_material_id": "C2-005",
+      "unchanged_formula": "1 (W+E) + 1 (E+E) \u2192 1 ((W+E)+(E+E))",
+      "product_name": "Turret Armor Module",
+      "machine_family": "Armor Finishing Line",
+      "installation_name": "Turret Armor Module Line"
+    },
+    {
+      "recipe_id": "C4-175",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-10",
+      "preferred_material_id": "C2-006",
+      "unchanged_formula": "1 (W+E) + 1 (E+F) \u2192 1 ((W+E)+(E+F))",
+      "product_name": "Tactical Computer",
+      "machine_family": "Systems Integration Line",
+      "installation_name": "Tactical Computer Line"
+    },
+    {
+      "recipe_id": "C4-176",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-11",
+      "preferred_material_id": "C2-007",
+      "unchanged_formula": "1 (W+E) + 1 (E+A) \u2192 1 ((W+E)+(E+A))",
+      "product_name": "Prefab Barracks Unit",
+      "machine_family": "Module Assembly Hall",
+      "installation_name": "Prefab Barracks Unit Hall"
+    },
+    {
+      "recipe_id": "C4-177",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-12",
+      "preferred_material_id": "C2-008",
+      "unchanged_formula": "1 (W+E) + 1 (F+F) \u2192 1 ((W+E)+(F+F))",
+      "product_name": "Main Battle Tank",
+      "machine_family": "Vehicle Assembly Line",
+      "installation_name": "Main Battle Tank Line"
+    },
+    {
+      "recipe_id": "C4-178",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-13",
+      "preferred_material_id": "C2-009",
+      "unchanged_formula": "1 (W+E) + 1 (F+A) \u2192 1 ((W+E)+(F+A))",
+      "product_name": "Reactor Core Module",
+      "machine_family": "Generator Assembly Line",
+      "installation_name": "Reactor Core Module Line"
+    },
+    {
+      "recipe_id": "C4-179",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-14",
+      "preferred_material_id": "C2-010",
+      "unchanged_formula": "1 (W+E) + 1 (A+A) \u2192 1 ((W+E)+(A+A))",
+      "product_name": "Bomber Aircraft",
+      "machine_family": "Aerospace Assembly Hall",
+      "installation_name": "Bomber Aircraft Hall"
+    },
+    {
+      "recipe_id": "C4-180",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-07",
+      "preferred_material_id": "C2-003",
+      "unchanged_formula": "2 (W+F) \u2192 1 ((W+F)+(W+F))",
+      "product_name": "Rocket Fuel",
+      "machine_family": "Filling Line",
+      "installation_name": "Rocket Fuel Line"
+    },
+    {
+      "recipe_id": "C4-181",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-07",
+      "preferred_material_id": "C2-003",
+      "unchanged_formula": "1 (W+F) + 1 (W+A) \u2192 1 ((W+F)+(W+A))",
+      "product_name": "Heavy Gear Oil",
+      "machine_family": "Filling Line",
+      "installation_name": "Heavy Gear Oil Line"
+    },
+    {
+      "recipe_id": "C4-182",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-07",
+      "preferred_material_id": "C2-003",
+      "unchanged_formula": "1 (W+F) + 1 (E+E) \u2192 1 ((W+F)+(E+E))",
+      "product_name": "Cold Weather Fuel",
+      "machine_family": "Filling Line",
+      "installation_name": "Cold Weather Fuel Line"
+    },
+    {
+      "recipe_id": "C4-183",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-10",
+      "preferred_material_id": "C2-006",
+      "unchanged_formula": "1 (W+F) + 1 (E+F) \u2192 1 ((W+F)+(E+F))",
+      "product_name": "Encrypted Communicator",
+      "machine_family": "Systems Integration Line",
+      "installation_name": "Encrypted Communicator Line"
+    },
+    {
+      "recipe_id": "C4-184",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-11",
+      "preferred_material_id": "C2-007",
+      "unchanged_formula": "1 (W+F) + 1 (E+A) \u2192 1 ((W+F)+(E+A))",
+      "product_name": "Mobile Command Post",
+      "machine_family": "Module Assembly Hall",
+      "installation_name": "Mobile Command Post Hall"
+    },
+    {
+      "recipe_id": "C4-185",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-12",
+      "preferred_material_id": "C2-008",
+      "unchanged_formula": "1 (W+F) + 1 (F+F) \u2192 1 ((W+F)+(F+F))",
+      "product_name": "Supply Truck",
+      "machine_family": "Vehicle Assembly Line",
+      "installation_name": "Supply Truck Line"
+    },
+    {
+      "recipe_id": "C4-186",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-13",
+      "preferred_material_id": "C2-009",
+      "unchanged_formula": "1 (W+F) + 1 (F+A) \u2192 1 ((W+F)+(F+A))",
+      "product_name": "Portable Generator",
+      "machine_family": "Generator Assembly Line",
+      "installation_name": "Portable Generator Line"
+    },
+    {
+      "recipe_id": "C4-187",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-14",
+      "preferred_material_id": "C2-010",
+      "unchanged_formula": "1 (W+F) + 1 (A+A) \u2192 1 ((W+F)+(A+A))",
+      "product_name": "Transport Helicopter",
+      "machine_family": "Aerospace Assembly Hall",
+      "installation_name": "Transport Helicopter Hall"
+    },
+    {
+      "recipe_id": "C4-188",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-08",
+      "preferred_material_id": "C2-004",
+      "unchanged_formula": "2 (W+A) \u2192 1 ((W+A)+(W+A))",
+      "product_name": "Field Ultrasound Scanner",
+      "machine_family": "Imaging Assembly Line",
+      "installation_name": "Field Ultrasound Scanner Line"
+    },
+    {
+      "recipe_id": "C4-189",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-08",
+      "preferred_material_id": "C2-004",
+      "unchanged_formula": "1 (W+A) + 1 (E+E) \u2192 1 ((W+A)+(E+E))",
+      "product_name": "Blood Analyzer",
+      "machine_family": "Imaging Assembly Line",
+      "installation_name": "Blood Analyzer Line"
+    },
+    {
+      "recipe_id": "C4-190",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-08",
+      "preferred_material_id": "C2-004",
+      "unchanged_formula": "1 (W+A) + 1 (E+F) \u2192 1 ((W+A)+(E+F))",
+      "product_name": "Imaging Scanner",
+      "machine_family": "Imaging Assembly Line",
+      "installation_name": "Imaging Scanner Line"
+    },
+    {
+      "recipe_id": "C4-191",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-08",
+      "preferred_material_id": "C2-004",
+      "unchanged_formula": "1 (W+A) + 1 (E+A) \u2192 1 ((W+A)+(E+A))",
+      "product_name": "Patient Monitor",
+      "machine_family": "Imaging Assembly Line",
+      "installation_name": "Patient Monitor Line"
+    },
+    {
+      "recipe_id": "C4-192",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-12",
+      "preferred_material_id": "C2-008",
+      "unchanged_formula": "1 (W+A) + 1 (F+F) \u2192 1 ((W+A)+(F+F))",
+      "product_name": "Recovery Vehicle",
+      "machine_family": "Vehicle Assembly Line",
+      "installation_name": "Recovery Vehicle Line"
+    },
+    {
+      "recipe_id": "C4-193",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-13",
+      "preferred_material_id": "C2-009",
+      "unchanged_formula": "1 (W+A) + 1 (F+A) \u2192 1 ((W+A)+(F+A))",
+      "product_name": "Substation Transformer",
+      "machine_family": "Generator Assembly Line",
+      "installation_name": "Substation Transformer Line"
+    },
+    {
+      "recipe_id": "C4-194",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-14",
+      "preferred_material_id": "C2-010",
+      "unchanged_formula": "1 (W+A) + 1 (A+A) \u2192 1 ((W+A)+(A+A))",
+      "product_name": "Cargo Shuttle",
+      "machine_family": "Aerospace Assembly Hall",
+      "installation_name": "Cargo Shuttle Hall"
+    },
+    {
+      "recipe_id": "C4-195",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-09",
+      "preferred_material_id": "C2-005",
+      "unchanged_formula": "2 (E+E) \u2192 1 ((E+E)+(E+E))",
+      "product_name": "Hull Armor Section",
+      "machine_family": "Armor Finishing Line",
+      "installation_name": "Hull Armor Section Line"
+    },
+    {
+      "recipe_id": "C4-196",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-09",
+      "preferred_material_id": "C2-005",
+      "unchanged_formula": "1 (E+E) + 1 (E+F) \u2192 1 ((E+E)+(E+F))",
+      "product_name": "Add-On Armor Kit",
+      "machine_family": "Armor Finishing Line",
+      "installation_name": "Add-On Armor Kit Line"
+    },
+    {
+      "recipe_id": "C4-197",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-09",
+      "preferred_material_id": "C2-005",
+      "unchanged_formula": "1 (E+E) + 1 (E+A) \u2192 1 ((E+E)+(E+A))",
+      "product_name": "Reactive Armor Block",
+      "machine_family": "Armor Finishing Line",
+      "installation_name": "Reactive Armor Block Line"
+    },
+    {
+      "recipe_id": "C4-198",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-09",
+      "preferred_material_id": "C2-005",
+      "unchanged_formula": "1 (E+E) + 1 (F+F) \u2192 1 ((E+E)+(F+F))",
+      "product_name": "Armored Door",
+      "machine_family": "Armor Finishing Line",
+      "installation_name": "Armored Door Line"
+    },
+    {
+      "recipe_id": "C4-199",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-13",
+      "preferred_material_id": "C2-009",
+      "unchanged_formula": "1 (E+E) + 1 (F+A) \u2192 1 ((E+E)+(F+A))",
+      "product_name": "Battery Bank",
+      "machine_family": "Generator Assembly Line",
+      "installation_name": "Battery Bank Line"
+    },
+    {
+      "recipe_id": "C4-200",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-14",
+      "preferred_material_id": "C2-010",
+      "unchanged_formula": "1 (E+E) + 1 (A+A) \u2192 1 ((E+E)+(A+A))",
+      "product_name": "Combat Drone",
+      "machine_family": "Aerospace Assembly Hall",
+      "installation_name": "Combat Drone Hall"
+    },
+    {
+      "recipe_id": "C4-201",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-10",
+      "preferred_material_id": "C2-006",
+      "unchanged_formula": "2 (E+F) \u2192 1 ((E+F)+(E+F))",
+      "product_name": "Control Unit",
+      "machine_family": "Systems Integration Line",
+      "installation_name": "Control Unit Line"
+    },
+    {
+      "recipe_id": "C4-202",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-10",
+      "preferred_material_id": "C2-006",
+      "unchanged_formula": "1 (E+F) + 1 (E+A) \u2192 1 ((E+F)+(E+A))",
+      "product_name": "Display Console",
+      "machine_family": "Systems Integration Line",
+      "installation_name": "Display Console Line"
+    },
+    {
+      "recipe_id": "C4-203",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-10",
+      "preferred_material_id": "C2-006",
+      "unchanged_formula": "1 (E+F) + 1 (F+F) \u2192 1 ((E+F)+(F+F))",
+      "product_name": "Signal Processor",
+      "machine_family": "Systems Integration Line",
+      "installation_name": "Signal Processor Line"
+    },
+    {
+      "recipe_id": "C4-204",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-10",
+      "preferred_material_id": "C2-006",
+      "unchanged_formula": "1 (E+F) + 1 (F+A) \u2192 1 ((E+F)+(F+A))",
+      "product_name": "Data Storage Unit",
+      "machine_family": "Systems Integration Line",
+      "installation_name": "Data Storage Unit Line"
+    },
+    {
+      "recipe_id": "C4-205",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-14",
+      "preferred_material_id": "C2-010",
+      "unchanged_formula": "1 (E+F) + 1 (A+A) \u2192 1 ((E+F)+(A+A))",
+      "product_name": "Rocket Booster",
+      "machine_family": "Aerospace Assembly Hall",
+      "installation_name": "Rocket Booster Hall"
+    },
+    {
+      "recipe_id": "C4-206",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-11",
+      "preferred_material_id": "C2-007",
+      "unchanged_formula": "2 (E+A) \u2192 1 ((E+A)+(E+A))",
+      "product_name": "Blast Shelter Pod",
+      "machine_family": "Module Assembly Hall",
+      "installation_name": "Blast Shelter Pod Hall"
+    },
+    {
+      "recipe_id": "C4-207",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-11",
+      "preferred_material_id": "C2-007",
+      "unchanged_formula": "1 (E+A) + 1 (F+F) \u2192 1 ((E+A)+(F+F))",
+      "product_name": "Air Filtration Unit",
+      "machine_family": "Module Assembly Hall",
+      "installation_name": "Air Filtration Unit Hall"
+    },
+    {
+      "recipe_id": "C4-208",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-11",
+      "preferred_material_id": "C2-007",
+      "unchanged_formula": "1 (E+A) + 1 (F+A) \u2192 1 ((E+A)+(F+A))",
+      "product_name": "Supply Depot Hut",
+      "machine_family": "Module Assembly Hall",
+      "installation_name": "Supply Depot Hut Hall"
+    },
+    {
+      "recipe_id": "C4-209",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-11",
+      "preferred_material_id": "C2-007",
+      "unchanged_formula": "1 (E+A) + 1 (A+A) \u2192 1 ((E+A)+(A+A))",
+      "product_name": "Emergency Shelter Module",
+      "machine_family": "Module Assembly Hall",
+      "installation_name": "Emergency Shelter Module Hall"
+    },
+    {
+      "recipe_id": "C4-210",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-12",
+      "preferred_material_id": "C2-008",
+      "unchanged_formula": "2 (F+F) \u2192 1 ((F+F)+(F+F))",
+      "product_name": "Scout Car",
+      "machine_family": "Vehicle Assembly Line",
+      "installation_name": "Scout Car Line"
+    },
+    {
+      "recipe_id": "C4-211",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-12",
+      "preferred_material_id": "C2-008",
+      "unchanged_formula": "1 (F+F) + 1 (F+A) \u2192 1 ((F+F)+(F+A))",
+      "product_name": "Engineering Tractor",
+      "machine_family": "Vehicle Assembly Line",
+      "installation_name": "Engineering Tractor Line"
+    },
+    {
+      "recipe_id": "C4-212",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-12",
+      "preferred_material_id": "C2-008",
+      "unchanged_formula": "1 (F+F) + 1 (A+A) \u2192 1 ((F+F)+(A+A))",
+      "product_name": "Artillery Tractor",
+      "machine_family": "Vehicle Assembly Line",
+      "installation_name": "Artillery Tractor Line"
+    },
+    {
+      "recipe_id": "C4-213",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-13",
+      "preferred_material_id": "C2-009",
+      "unchanged_formula": "2 (F+A) \u2192 1 ((F+A)+(F+A))",
+      "product_name": "Turbine Generator Set",
+      "machine_family": "Generator Assembly Line",
+      "installation_name": "Turbine Generator Set Line"
+    },
+    {
+      "recipe_id": "C4-214",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-13",
+      "preferred_material_id": "C2-009",
+      "unchanged_formula": "1 (F+A) + 1 (A+A) \u2192 1 ((F+A)+(A+A))",
+      "product_name": "Power Distribution Panel",
+      "machine_family": "Generator Assembly Line",
+      "installation_name": "Power Distribution Panel Line"
+    },
+    {
+      "recipe_id": "C4-215",
+      "tier": "T2",
+      "complexity": "C-4",
+      "sector_id": "S2-14",
+      "preferred_material_id": "C2-010",
+      "unchanged_formula": "2 (A+A) \u2192 1 ((A+A)+(A+A))",
+      "product_name": "Surveillance Satellite",
+      "machine_family": "Aerospace Assembly Hall",
+      "installation_name": "Surveillance Satellite Hall"
+    }
+  ],
+  "audit": {
+    "main_elements": 4,
+    "intermediary_products_and_refinery_sectors": 14,
+    "t0_companies": 20,
+    "t1_flagships": 0,
+    "t1_generic_stems": 14,
+    "t2_sectors": 14,
+    "t2_facility_stems": 14,
+    "t2_flagships": 0,
+    "t2_products": 255,
+    "recipe_linked_installation_names": 269,
+    "complexity_level_equipment_classes": 4,
+    "t1_sector_equipment_families": 14,
+    "t2_sector_complexity_equipment_families": 28,
+    "extraction_equipment_types": 4,
+    "additional_equipment_maker_companies": 0,
+    "recipes_total": 269,
+    "by_tier": {
+      "T1": 14,
+      "T2": 255
+    },
+    "by_complexity": {
+      "C-1": 4,
+      "C-2": 10,
+      "C-3": 40,
+      "C-4": 215
+    },
+    "by_sector": {
+      "S1-01": 1,
+      "S1-02": 1,
+      "S1-03": 1,
+      "S1-04": 1,
+      "S1-05": 1,
+      "S1-06": 1,
+      "S1-07": 1,
+      "S1-08": 1,
+      "S1-09": 1,
+      "S1-10": 1,
+      "S1-11": 1,
+      "S1-12": 1,
+      "S1-13": 1,
+      "S1-14": 1,
+      "S2-01": 40,
+      "S2-02": 40,
+      "S2-03": 40,
+      "S2-04": 40,
+      "S2-05": 6,
+      "S2-06": 7,
+      "S2-07": 8,
+      "S2-08": 9,
+      "S2-09": 10,
+      "S2-10": 11,
+      "S2-11": 11,
+      "S2-12": 11,
+      "S2-13": 11,
+      "S2-14": 11
+    },
+    "errors": []
+  }
+}

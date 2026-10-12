@@ -1,117 +1,97 @@
-# Star Business — Economy Kernel
+# Midbridge Colony
 
-A deterministic, fair-market simulation of a physical-goods supply chain, driven
-by autonomous firms and entered by players on equal footing. This repository is
-the authoritative server-side **economy kernel** in **Python (NumPy + Numba)**,
-with a live browser dashboard.
+An economic simulation of a manufacturing colony in 4263. Extractors, refineries, and manufacturers trade physical inventory; one million simulated distributors provide final demand. Companies share finite cash and storage across their machines, choose suppliers, and adjust prices from trading results.
 
-The rulebook is [`docs/design_canon.md`](docs/design_canon.md) — it is the single
-source of truth for *what* the economy is. Everything here implements it.
-
-**Naming.** All display names (materials, companies, sectors, equipment, and
-goods) follow the **Star Business** naming catalog, and house style is
-**American English**. See the *House Style* section of `docs/design_canon.md`.
-
-## Quickstart
-
-```sh
-./run.sh serve             # start the Python backend AND open the browser dashboard
-./run.sh run --ticks 360   # headless run (append --stats path to write a JSONL log)
-./run.sh test              # run the Python test suite
-```
-
-`serve` starts a FastAPI + WebSocket service on `http://127.0.0.1:8000`, serves the
-dashboard at `/index.html`, and opens it in a browser. Use **Run / Run Max / Pause /
-Step / Reset / Apply Params** — the Python kernel is the world, and the first load
-resets to full population (~6 s).
-
-The launcher needs Python 3.12 with NumPy; Numba and FastAPI are vendored into
-`.pydeps/` (git-ignored). If `.pydeps/` is missing, run the `pip install` line the
-launcher prints.
+The Python backend owns the simulation. The browser is a dashboard and control surface. This README describes the running system; the [design canon](docs/design_canon.md) specifies its calculations from the implementation.
 
 ## The economy
 
-A four-tier physical supply chain, calibrated to be *supply-consistent* (every tier
-can actually feed the next):
+**Tier is a business role; complexity is a product's raw ancestry and storage footprint.** Every recipe produces one item. A C4 item occupies four storage units, even when its immediate recipe has only two ingredients.
 
-| Tier | Who | Count |
-| --- | --- | --- |
-| **T0 — Resource Companies** | extract the four raw elements (Water, Earth, Fire, Air) | 20 companies |
-| **T1 — Refineries** | 10 refined materials (4 C-1 basic + 6 C-2 compound) | 1,000 firms |
-| **T2 — Manufacturers** | 200 manufactured goods, complexity C-3 / C-4 / C-5 | 60,000 firms |
-| **T3 — Consumers** | resident consumers | 1,000,000 |
+| Tier | Role | Default population | Activity |
+| --- | --- | ---: | --- |
+| T−1 | Gaia | 1 identity | Origin of four raw resources; no trading agent |
+| T0 | Extraction | 20 companies, 40 element machines | Extract Organics, Inorganics, Metals, and Radioactives; sell raw to T1 |
+| T1 | Refining | 1,008 companies | 72 per material; make four C1 and ten C2 materials directly from raw |
+| T2 | Manufacturing | 57,960 companies | Make 36 invented C3 and 69 invented C4 products; buy T1 materials and, for some C4 recipes, C3 goods |
+| T3 | Distribution | 1,000,000 buyers | Buy and consume invented T2 goods; external spending funds the economy |
 
-Time is a **30-tick month**, a **360-tick year**, and a **7,200-tick generation**
-(20 years). The T2 firm count follows a reverse 6:3:1 ratio — 36,000 C-3, 18,000 C-4,
-6,000 C-5 — so more complex goods have fewer, higher-capacity producers.
+The full catalog contains 269 recipes: 14 T1 materials and 255 T2 products. Only 105 T2 products are invented and tradable; 150 remain catalog entries. C5 is inactive. Bots start with one machine each in T1/T2 and do not automatically expand.
 
-## Key mechanisms
+A tick updates extraction difficulty, extracts raw, buys T1 inputs, refines, updates T0/T1 quotes, clears distributor purchases, then buys and manufactures C3 followed by C4. It ends with observation, reliability, switching-fee adaptation, rent, and earnings. Distributors buy **opening T2 stock**; C4 factories can buy **fresh C3 production** in the same tick. There are 30 ticks per month and 360 per year.
 
-- **Deterministic** — SplitMix32 RNG; identical `(seed, config)` ⇒ byte-identical state.
-- **9-phase tick** — reset → environment (difficulty) → T0 extraction → T1 purchase →
-  T1 manufacture → pricing → T2 buy/make/price → consumer clearing → observe/reliability.
-- **Derivative-following pricing** — firms walk their price against realised profit and
-  hold at the flat optimum; a 2 % dead band prevents overshoot.
-- **Margin-ramp input demand** — a producer throttles purchases by gross margin
-  (`productionMarginBand = 0.05`): full output at ≥ 5 % margin, tapering to 0 at
-  break-even, never producing at a loss.
-- **Adaptive loyalty charge** — switching suppliers costs
-  `M × unit_cost × (1 + reliability)`; `M` is re-derived once per year from an EMA of the
-  observed average order value (`loyaltyEmaAlpha = 0.01`) so the charge tracks ~10 % of
-  a typical order as prices drift.
-- **Reliability** — `0.5 × price-stability + 0.5 × availability`, EMA-smoothed monthly.
+## Core calculations
 
-## Repository layout
+| Mechanism | Implemented rule |
+| --- | --- |
+| Storage | T1/T2 goods space = storage − installed machinery footprint. Half is allocated to recipe-weighted inputs, half equally to output lines. |
+| T1 buying | Fill raw-input slots in lots of 1,000, capped by cash, stock, and space. |
+| T2 buying | Input request = min(slot shortage, space, `slot / (1 + (price / reference cost)²)`), then whole-unit cash/stock limits. |
+| Production | Whole batches bounded by capacity, finished-stock target, ingredients, conversion cash, and estimated net margin. T0 has its own proportional extraction allocator. |
+| Conversion | `$0.25 × max(1, complexity − 1)` per output item. |
+| Sales | Posted seller quote × delivered units; seller recognizes inventory book cost as COGS. |
+| Distributor demand | `20 / (1 + (price / buyer halving-price)^elasticity)`, stochastically rounded; five sampled offers plus the incumbent by default. |
+| Switching | A fixed transfer to the former supplier when it can fill the relevant order; actual-fill savings must justify switching. |
+| Prices | Staggered observation windows; shortages, market quotes, then changes in realized gross profit determine movement. |
+| Earnings | Sales − COGS + switching income − switching expense − accrued rent. |
 
-```
-economy/                  # the Python kernel
-  core/                   #   catalog + canon parameters, config, RNG, WorldState
-    config.py             #   every tunable parameter (single place to change them)
-    model.py              #   catalog, cost ladder, pricing/loyalty primitives
-    state.py              #   WorldState (NumPy arrays) + world construction
-    rng.py                #   SplitMix32 (scalar + vectorised, bit-exact)
-  kernel/
-    tick.py               #   the 9-phase tick (pure-Python reference)
-    numba.py              #   @njit fast path, byte-identical to tick.py
-  server/
-    runtime.py            #   KernelRuntime (step/pause/publish, stats)
-    service.py            #   FastAPI + WebSocket service
-    scheduler.py          #   tick scheduling for the dashboard
-    persistence.py        #   checkpoint save/load (byte-identical round-trip)
-  cli/main.py             #   headless `run` / `serve` entry point
-web/                      # the browser dashboard (served by the backend)
-  index.html  app.js  bridge.js  catalog.js
-docs/design_canon.md      # the design rulebook (source of truth)
-docs/landlord-alchemy/    # sibling "Landlord Alchemy" design artefact
-tools/dump_catalog.js   # one-time catalog extractor (web/catalog.js → JSON)
-tests/                    # Python tests (RNG + determinism + invariants)
-run.sh                    # launcher
-```
+The [canon](docs/design_canon.md) defines reference costs, exact rounding, supplier selection, settlement order, production gates, allocation, and exceptions. A reference cost is a calibration value; it is neither the live purchase quote nor the inventory book cost.
 
-The dashboard (`web/app.js`) speaks WebSocket to the backend through `web/bridge.js`,
-which re-implements the browser `Worker` interface so the UI code runs unchanged
-against the Python kernel.
+## Run
 
-## Configuration
-
-All parameters live in `economy/core/config.py` (see `default_cfg()`), organized by
-tier, demand, and market behavior. Override them per-run:
+Use Python 3.12 and Node.js for the browser-side checks. Install the local Python dependencies once:
 
 ```sh
-./run.sh run --cfg '{"consumerCount": 500, "t2FirmCount": 1000, "seed": 137}'
-ECONOMY_CFG='{"consumerCount": 500, "t2FirmCount": 1000}' ./run.sh serve
+python3.12 -m pip install --target .pydeps 'numpy<2.5' numba fastapi uvicorn
+./run.sh serve
 ```
 
-Notable knobs: `productionMarginBand`, `loyaltyMultiple` (bootstrap) +
-`loyaltyEmaAlpha`, `elasticity`, `pricingAggressiveness`, `switchingStableBand`,
-`priceObservationTicks`. The exact settled values and their rationale live in
-`docs/design_canon.md`.
+The launcher prefers the macOS framework Python 3.12, falling back to `python3`; set `ECONOMY_PY` to choose another interpreter. It sets the local dependency path, warms the compiler, and opens [the dashboard](http://127.0.0.1:8000/index.html). One server owns one shared world; reconnecting a browser does not reset it.
 
-## Tests
+```sh
+# Full-population headless month and checkpoint pair (.npz + .json).
+./run.sh run --seed 137 --ticks 30 --out /tmp/midbridge
+
+# Small execution fixture, not a proportionally scaled economy.
+./run.sh run --ticks 30 --cfg '{"distributorCount":500,"t2FirmCount":1000}'
+
+# Per-tick statistics and company history in a chosen output directory.
+./run.sh run --ticks 360 --stats /tmp/midbridge-run/ticks.jsonl
+
+# Configure a dashboard world at startup.
+ECONOMY_CFG='{"distributorCount":500,"t2FirmCount":1000}' ./run.sh serve
+```
+
+Reduced T2 populations take a prefix of the product allocation; distributor routing still covers the full invented set. Use reduced worlds for execution tests, not conclusions about market balance. Unknown configuration keys are ignored: use `distributorCount`, not historical buyer-count aliases.
+
+The server pauses at 7,200 ticks by default (one generation); `ECONOMY_MAX_TICK=0` removes that limit. Checkpoints can be saved/loaded through `/checkpoint/save` and `/checkpoint/load`; incompatible catalog revisions are rejected. The dashboard supports company inspection, manual prices, and eligible equipment purchases.
+
+## Repository map
+
+| Location | Responsibility |
+| --- | --- |
+| [economy/core](economy/core) | Catalog adapter, configuration, state, recipes, randomness, supplier selection, accounting |
+| [economy/kernel](economy/kernel) | Tick sequence, markets, production, Python reference and Numba execution paths |
+| [economy/server](economy/server) | Shared runtime, scheduling, snapshots, recording, checkpoints, HTTP/WebSocket service |
+| [web](web) | Dashboard, company controls, financial presentation, generated catalog |
+| [catalogs/midbridge-4263](catalogs/midbridge-4263) | Recipe universe, fixed invented selection, names, runtime metadata, calibration data |
+| [tests](tests) | Economic invariants, execution parity, storage, procurement, accounting, persistence, and UI calculations |
+| [tools](tools) | Catalog validation/generation, run review, recovery, and performance measurement |
+
+Configuration defaults are in [config.py](economy/core/config.py), with topology and derived economics in [model.py](economy/core/model.py). Catalog template fields do not override those runtime calculations. Rebuild the browser catalog with `python3 tools/build_midbridge_web.py` after changing its inputs.
+
+## Verify
 
 ```sh
 ./run.sh test
-# tests/py/test_rng.py      SplitMix32 against known reference outputs
-# tests/py/test_kernel.py   determinism (byte-identical re-runs) + invariants
-#                           (no negatives, conservation holds, atomic orders)
+
+# Broader Python discovery, including recursive demand and catalog tests.
+PYTHONPATH=.pydeps:. python3.12 -W ignore -m unittest discover -s tests/py -p 'test_*.py'
+
+# Validate the complete recipe universe without rewriting it.
+python3.12 tools/build_recursive_catalog.py
 ```
+
+`./run.sh test` runs a selected Python suite and both JavaScript checks; it is not full Python discovery. Performance tooling is available through `./run.sh bench --help`.
+
+Read the [design canon](docs/design_canon.md) for implemented economic rules, [CONTRIBUTING.md](CONTRIBUTING.md) for contributor workflow, and [versioning](docs/versioning.md) for version policy. The [LandLord Alchemy archive](docs/landlord-alchemy/README.md) preserves earlier source material; it does not define current mechanics.

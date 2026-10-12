@@ -1,11 +1,10 @@
 """FastAPI + WebSocket service: the Python economy kernel backend for the
 browser UI.
 
-Serves the static front-end (HTML + JS) and exposes the JS worker's exact
-message protocol over ``/ws``, so ``web/app.js`` runs unchanged via the
-``web/bridge.js`` shim.  The tick is CPU-bound and runs
-inline in the WebSocket handler (single-user local PoC), mirroring the
-worker's single-threaded model.
+Serves the static front-end (HTML + JS) and exposes the dashboard's exact
+message protocol over ``/ws``, so ``web/app.js`` runs unchanged via
+``web/transport.js``. The tick is CPU-bound and runs in a single server-owned
+scheduler task on the event loop (one world, one tick cadence).
 """
 from __future__ import annotations
 
@@ -27,7 +26,7 @@ from .runtime import KernelRuntime, _STATS_DIR
 ROOT = Path(__file__).resolve().parents[2]  # repository root
 WEB_DIR = ROOT / 'web'                       # front-end static files
 
-app = FastAPI(title='Star Business — economy kernel', version='0.1.6')
+app = FastAPI(title='Star Business — economy kernel', version='0.1.8')
 
 _runtime: KernelRuntime | None = None
 
@@ -35,21 +34,20 @@ _runtime: KernelRuntime | None = None
 def runtime() -> KernelRuntime:
     global _runtime
     if _runtime is None:
-        # Bootstrap with a tiny population so first connect is instant; the UI's
-        # `init` message then resets to whatever population its config selects.
-        cfg = json.loads(os.environ.get('ECONOMY_CFG', '{"distributorCount":100,"t2FirmCount":200}'))
+        # The server owns the initial configuration; browser attachment is read-only.
+        cfg = json.loads(os.environ.get('ECONOMY_CFG', '{}'))
         _runtime = KernelRuntime(cfg)
     return _runtime
 
 
 @app.get('/health')
-def health():
+async def health():
     rt = runtime()
     return {'status': 'ok', 'tick': rt.tick, 'engine': 'python'}
 
 
 @app.get('/snapshot')
-def snapshot():
+async def snapshot():
     return runtime().publish()
 
 
@@ -58,14 +56,14 @@ class CheckpointRequest(BaseModel):
 
 
 @app.post('/checkpoint/save')
-def checkpoint_save(req: CheckpointRequest):
+async def checkpoint_save(req: CheckpointRequest):
     rt = runtime()
-    save_checkpoint(req.path, rt.cfg, rt.tick, rt.world, rt.state)
+    save_checkpoint(req.path, rt.cfg, rt.tick, rt.world, rt.state, rt.checkpoint_metadata())
     return {'ok': True, 'path': req.path, 'tick': rt.tick}
 
 
 @app.post('/checkpoint/load')
-def checkpoint_load(req: CheckpointRequest):
+async def checkpoint_load(req: CheckpointRequest):
     global _runtime
     cfg, tick, world, scalars = load_checkpoint(req.path)
     rt = KernelRuntime.__new__(KernelRuntime)
@@ -74,6 +72,7 @@ def checkpoint_load(req: CheckpointRequest):
     rt.running = False
     rt.mode = 'fixed'
     rt.targetTPS = 30
+    metadata = scalars.pop('runtimeMetadata', {})
     rt.state = scalars
     rt.selectedTierControl = 'T1'
     rt.selectedId = 0
@@ -87,7 +86,7 @@ def checkpoint_load(req: CheckpointRequest):
     rt.tier2HistoryCompany = -1
     rt.watchedCompanies = {'T0': set(), 'T1': set()}
     rt.watchedCompanyHistory = {}
-    rt.workerStats = {'steps': 0, 'lastTickMs': 0.0, 'totalTickMs': 0.0}
+    rt.tickStats = {'steps': 0, 'lastTickMs': 0.0, 'totalTickMs': 0.0}
     rt.adminAccounting = {'equipmentSinks': 0, 'sequence': 0, 'lastEquipmentReceipt': None}
     rt.playerLicenses = set(M.PROGRESSION_DEFAULTS['startingLicenses'])
     rt.playerHouse = None
@@ -99,8 +98,16 @@ def checkpoint_load(req: CheckpointRequest):
     rt.targetTick = int(os.environ.get('ECONOMY_MAX_TICK', str(M.TIME['ticksPerGeneration'])) or 0)
     rt._init_admin()
     rt._init_analytics_scratch()
+    rt.restore_metadata(metadata)
     rt.publish()
-    _runtime = rt
+    if _runtime is None:
+        _runtime = rt
+    else:
+        # Keep object identity: connected WebSockets hold this runtime reference.
+        # Routes execute on the event loop, so no tick can interleave this swap.
+        _runtime.pause()
+        _runtime.__dict__.clear()
+        _runtime.__dict__.update(rt.__dict__)
     return {'ok': True, 'path': req.path, 'tick': tick}
 
 
@@ -108,8 +115,7 @@ def _dispatch(rt: KernelRuntime, msg: dict) -> list[dict]:
     """Return the list of messages to send back for a command."""
     mtype = msg.get('type')
     if mtype == 'init':
-        rt.reset(msg.get('cfg') or rt.cfg)
-        return [{'type': 'snapshot', 'data': rt.lastSnapshot}]
+        return [{'type': 'snapshot', 'data': rt.publish()}]
     if mtype == 'reset':
         rt.reset(msg.get('cfg') or rt.cfg)
         return [{'type': 'snapshot', 'data': rt.lastSnapshot}]
@@ -156,24 +162,78 @@ def _dispatch(rt: KernelRuntime, msg: dict) -> list[dict]:
                          'sort': msg.get('sort') if msg.get('sort') in (
                              'id', 'name', 'sector', 'cash', 'equity', 'inventory', 'raw',
                              'finished', 'capacity', 'utilization', 'margin', 'revenue',
-                             'grossProfit', 'reliability') else 'id',
+                             'grossProfit', 'netProfit', 'reliability') else 'id',
                          'descending': bool(msg.get('descending'))}
         return [{'type': 'snapshot', 'data': rt.publish()}]
     return [{'type': 'error', 'message': f'Unknown message type: {mtype}'}]
+
+
+class _ConnectionManager:
+    """All attached dashboard sockets; the scheduler broadcasts to all of them."""
+
+    def __init__(self):
+        self._ws: set[WebSocket] = set()
+
+    async def connect(self, ws: WebSocket):
+        self._ws.add(ws)
+
+    def disconnect(self, ws: WebSocket):
+        self._ws.discard(ws)
+
+    async def broadcast(self, message: dict):
+        payload = None
+        for ws in list(self._ws):
+            try:
+                if payload is None:
+                    # Match Starlette's send_json wire representation, once
+                    # for the entire broadcast rather than once per dashboard.
+                    payload = json.dumps(message, separators=(',', ':'), ensure_ascii=False)
+                await ws.send_text(payload)
+            except Exception:  # noqa: BLE001 — drop sockets that died mid-send
+                self._ws.discard(ws)
+
+
+_manager = _ConnectionManager()
+_scheduler_task: asyncio.Task | None = None
+
+
+async def _scheduler():
+    """The single server-owned run loop: one world, one tick cadence.
+
+    ``rt.step()`` stays on the event loop so a checkpoint swap (which replaces
+    the runtime's ``__dict__`` in place) can never interleave with a tick.
+    """
+    while True:
+        rt = runtime()
+        if not rt.running:
+            await asyncio.sleep(0.05)
+            continue
+        started = time.monotonic()
+        rt.step()
+        rt.publish()
+        await _manager.broadcast({'type': 'snapshot', 'data': rt.lastSnapshot})
+        delay = 0.01 if rt.mode == 'max' else max(0.02, 0.5 - (time.monotonic() - started))
+        await asyncio.sleep(delay)
+
+
+def _ensure_scheduler():
+    global _scheduler_task
+    if _scheduler_task is None or _scheduler_task.done():
+        _scheduler_task = asyncio.create_task(_scheduler())
 
 
 @app.websocket('/ws')
 async def ws_endpoint(ws: WebSocket):
     await ws.accept()
     rt = runtime()
+    await _manager.connect(ws)
     try:
         while True:
             msg = await ws.receive_json()
-            mtype = msg.get('type')
-            if mtype == 'run':
+            if msg.get('type') == 'run':
                 rt.run(msg.get('mode') or 'fixed')
+                _ensure_scheduler()
                 await ws.send_json({'type': 'snapshot', 'data': rt.publish()})
-                await _run_loop(ws, rt)
                 continue
             try:
                 for resp in _dispatch(rt, msg):
@@ -182,43 +242,8 @@ async def ws_endpoint(ws: WebSocket):
                 await ws.send_json({'type': 'error', 'message': str(exc)})
     except WebSocketDisconnect:
         pass
-
-
-async def _run_loop(ws: WebSocket, rt: KernelRuntime):
-    """Tick + publish + push snapshots, polling for control messages."""
-    while rt.running:
-        if rt.mode == 'max':
-            # Run flat-out: one tick + one snapshot per iteration, so the UI data
-            # updates at the tick rate rather than a throttled batch cadence.
-            rt.step()
-            rt.publish()
-            await ws.send_json({'type': 'snapshot', 'data': rt.lastSnapshot})
-            delay = 0.01
-        else:
-            started = time.monotonic()
-            rt.step()
-            rt.publish()
-            await ws.send_json({'type': 'snapshot', 'data': rt.lastSnapshot})
-            # Nominal 2 ticks/s: wait the remainder of a 500 ms period.
-            delay = max(0.02, 0.5 - (time.monotonic() - started))
-        try:
-            pending = await asyncio.wait_for(ws.receive_json(), timeout=delay)
-        except asyncio.TimeoutError:
-            continue
-        if pending.get('type') == 'run':
-            # Switch mode on the fly (Run ⇄ Run Max) without leaving the loop.
-            rt.run(pending.get('mode') or 'fixed')
-            continue
-        if pending.get('type') in ('pause', 'reset', 'init'):
-            for resp in _dispatch(rt, pending):
-                await ws.send_json(resp)
-            return
-        try:
-            for resp in _dispatch(rt, pending):
-                await ws.send_json(resp)
-        except Exception as exc:  # noqa: BLE001
-            await ws.send_json({'type': 'error', 'message': str(exc)})
-    await ws.send_json({'type': 'snapshot', 'data': rt.publish()})
+    finally:
+        _manager.disconnect(ws)
 
 
 # Static front-end (mounted last so API/WS routes win).

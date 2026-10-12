@@ -1,458 +1,356 @@
-# Design canon — Star Business kernel
+# Design canon — implemented economy
 
-> **Status:** settled by review. This is the **single source of truth**: it states
-> *what must be true* of the economy kernel and the game's entry into it, and records
-> the machine contract (§12) so the whole economy is specified in one document.
-> Where it conflicts with any implementation, the canon wins.
->
-> **Naming policy.** The game is **Star Business**; all catalog display names
-> (materials, companies, sectors, goods and equipment) follow the **Star Business**
-> naming catalog, which supersedes all earlier naming directions. House style is
-> **American English**: aluminum, fiber, mold, center, defense, maneuver,
-> pressurized, standardized. Use title case for catalog labels and lower case for
-> generic material, equipment, and product descriptions in sentences. The
-> agent-category display labels are **Resource Companies** (T0), **Refineries**
-> (T1), **Manufacturers** (T2) and **Distributors** (T3). Generated firms use a
-> sector-specific generic name plus a `0x`-prefixed hex serial number (e.g.
-> **Power Equipment 0x2a**); no house-name pool, location suffix, district, or
-> berth is appended. `T0`–`T3` remain the internal tier keys throughout this
-> document and the machine contract.
+This canon is reconstructed from the executable model, catalog, state initialization, trading kernels, and accounting. It specifies current behavior, including asymmetries and limits. Default values describe a fresh world; formulas apply to normalized configuration unless stated otherwise. Source links identify the implementation behind each group of rules.
 
----
+## 1. Vocabulary, units, and scope
 
-## 1. The anchor
+**Tier** identifies an actor's role. **Complexity** `c` is the number of raw ancestry units in one product, and therefore its occupied storage space. **Line** means one installed recipe machine. **Firm** owns shared cash, inputs, storage, and one or more lines. **Market** trades one exact resource or recipe, never interchangeable products of the same complexity.
 
-> A **simulated, emergent, fair market** in a **physical-goods supply chain**, run by
-> **autonomous agents** and entered by **players on equal footing** — where prices,
-> relationships, and firm fates *emerge* rather than being prescribed, and "sound"
-> means the emergent outcome is **fair and viable** by a measurable standard.
+| Tier | Operation | Default population |
+| --- | --- | ---: |
+| T−1 | Gaia: named raw-resource origin, no simulated supplier ledger | 1 identity |
+| T0 | Extraction of raw Organics / Inorganics / Metals / Radioactives | 20 firms, 40 machines |
+| T1 | Direct raw refining into C1 or C2 | 1,008 firms, 72 per recipe |
+| T2 | Manufacturing C3 and C4 from lower-complexity products | 57,960 firms |
+| T3 | Final purchase and consumption of T2 output | 1,000,000 distributors |
 
-Every section below is a consequence of, or a requirement for, that sentence.
+Money is floating-point dollars. Quotes are rounded to cents, half away from zero, and guarded to `[0.01, 10⁹]`; costs, fees, rent, and balances retain fractional cents. Prices may fall below cost. T1/T2 production and purchases use whole units; T0 inventory/extraction may be fractional. Raw items occupy one space; products occupy `c` spaces. Machines occupy configured fixed footprints. There is no depreciation, interest, ordinary credit, automatic insolvency exit, or spoilage in the tick. Rent arrears are an explicit liability.
 
----
+One month = 30 ticks; year = 360; generation = 7,200 (20 years); age = 172,800 (24 generations). Initialization is tick 0; ordinary execution begins at tick 1. Calendar month and year are one-based within their cycles; generation and age are zero-based.
 
-## 2. Core axioms (non-negotiable)
+Source: [model.py](../economy/core/model.py), [state.py](../economy/core/state.py), [runtime-defaults.json](../catalogs/midbridge-4263/runtime-defaults.json).
 
-1. **Conservation & accounting.** Money and goods are conserved; only *defined* external
-   flows change the system total (distributor spend in; extraction, conversion, capital, and
-   dividend-destruction out). Every firm is a double-entry entity: cash + license +
-   inventory-at-acquisition-basis + machinery = equity. **Cash and equity are the only
-   first-class financial quantities; net profit is derived** (revenue − COGS) and is
-   reporting, not a fairness target and not a score.
+## 2. Recipes and population allocation
 
-2. **Decentralized emergence.** Prices, supplier choices, market shares, and firm
-   survival emerge from many self-interested local agents with private information and
-   bounded sampling. **In no market do buyers and sellers converge on a shared ideal
-   price.** No central price solver, no market-average target, no demand oracle, no
-   "assign demand to fit capacity." Unmet demand and stranded firms are legitimate
-   outcomes.
+The structural symbols `W,E,F,A` map respectively to Organics, Inorganics, Metals, and Radioactives. They identify recipe ancestry independently of display names.
 
-3. **Agency.** Two actor kinds: **autonomous bots** deciding independently from local
-   information only (own orders, stock, cost, profit — no shared optimum), and the
-   **player**, an investor who acquires an existing firm and operates it under the
-   *identical* rules with no privilege, no preferred customers, no guaranteed margin.
+| Complexity | Immediate recipe | Full universe | Invented/active | Firms per active recipe | Capacity per line/tick |
+| --- | --- | ---: | ---: | ---: | ---: |
+| C1 | One raw → one refined basic | 4 | 4 | 72 | 6,000 |
+| C2 | Two raw → one refined compound | 10 | 10 | 72 | 6,000 |
+| C3 | One C1 + one C2 → one good | 40 | 36 | 1,058 | 32 |
+| C4 | One C1 + one C3 → one good | 160 | 14 | 288 | 24 |
+| C4 | Two C2 → one good | 55 | 55 | 288 | 24 |
 
-4. **Determinism.** Given (seed, configuration, command sequence) the world reproduces.
-   Deterministic within an implementation — *not* required to be bit-identical across
-   languages.
+Input order does not matter; repeated inputs are allowed and combined into their integer quantity. Nested recipes retain their identity: equal raw ancestry does not imply equal products. Counts follow `C2=4×5/2`, `C3=4×10`, `C4=4×40+10×11/2`. All recipes yield exactly one output. For ingredient quantities `aₚₘ` and ingredient space `sₘ`, `Σₘ aₚₘsₘ=cₚ`: production conserves goods space.
 
-5. **Fairness.** See §8. The binding form: **equal opportunity for players who join at
-   any time.**
+The active subset is the explicit list in [starting-selection.json](../catalogs/midbridge-4263/starting-selection.json), closed over its dependencies. It includes 105 T2 products; the other 150 have no active lines, demand, or purchasable machinery. C5 configuration slots remain for compatibility but have no active recipes. T2's input market contains 50 products: 14 T1 materials plus 36 invented C3 goods. Its first four input indices are **refined C1**, despite the internal `t2Raw` array name.
 
-6. **Prices settle on their own equilibrium — never on a bound.** The market dynamics
-   (adaptive pricing, bounded sampling, loyalty charge) must find an *interior*
-   price equilibrium: prices must not top out at a ceiling or bottom out at a floor.
-   A price pinned at a bound is a misspecification symptom — the cost curve, demand
-   curve, or markup is wrong — not a sound steady state. A floor and a ceiling may be
-   defined as **numerical guardrails** (`MIN_UNIT_PRICE`/`MAX_UNIT_PRICE`, see §12.2),
-   but they are degenerate-value protection only; a healthy simulation never settles
-   there.
+There are 14 material sectors paired with 14 manufacturing sectors. Each T2 recipe's sector is anchored to one direct T1 ingredient; sector sizes need not be equal. T0's extraction coverage comprises eight one-element, six two-element, four three-element, and two four-element firms.
 
----
+T2 firm shares reverse the active product counts: C3:C4 firms = `69:36`, yielding 38,088 C3 firms and 19,872 C4 firms. Within each complexity, firms are apportioned equally over recipes. Integer apportionment floors each weighted share and distributes remainders by descending fractional remainder, then ascending key. A reduced `t2FirmCount` takes a prefix of this catalog-ordered allocation; it does not rescale every product cohort.
 
-## 3. Fixed topology & identity
+For product `p`, let default gross output capacity be `gₚ = firmCountₚ × defaultCapacityₚ`. Final-demand weight is
 
-- **Four tiers, fixed demarcation:** T0 extraction → T1 refining → T2 manufacturing →
-  T3 external distributors. No tier bypass. C-1/C-2 belong exclusively to Tier 1;
-  C-3/C-4/C-5 exclusively to Tier 2.
-- **Four raw elements:** Water, Earth, Fire, Air.
-- **Ten Tier 1 products** (four basic C-1 + six compound C-2) made by **1,000 firms**
-  (100 per product cohort).
-- **Twenty Tier 0 firms**, including their **element-coverage spectrum** (2 all-element,
-  4 three-element, 6 two-element, 8 single-element extractors).
-- **200 invented Tier 2 products** across ten sectors — 2 C-3 + 6 C-4 + 12 C-5 per sector
-  (the Hamilton apportionment of the 44/116/260 complete pool) — made by **60,000
-  single-machine firms** in the reverse 6:3:1 ratio: **C-3 = 36,000** (20 × 1,800),
-  **C-4 = 18,000** (60 × 300), **C-5 = 6,000** (120 × 50).
-- **1,000,000 Tier 3 distributors** (resident distributors).
-- **The six two-element extractors are special-purpose**: Mudrock Machinery Co.
-  (machinery), Steam Ridge Financial Inc. (financial services), Dustline Spatial Solutions
-  Corp. (warehouses, land, and industrial space — the Storage Concession Fee), Flare
-  Basin Advertising Incorporated (advertising), Cloudline Games & Entertainment
-  Corporation (games and entertainment), and Hotrock Utility Company (utilities). The
-  single-element extractors are pure extractors. These service layers are **deferred for
-  the PoC** — documented, not active (mechanics TBD), except the machinery maker, which
-  is active in the Machinery Market.
-- Tier 0 companies are **significantly larger** than Tier 1 or Tier 2 companies.
+```text
+wₚ = gₚ − Σ downstream T2 products j (aⱼₚ × gⱼ)
+```
 
----
+All active weights are positive. Gross T2 capacity totals 1,695,744 items/tick; intermediate C3 use reserves 96,768; final-output weights total 1,598,976. These are capacity weights, not promised sales. Recursively expanding final demand reconstructs gross capacity: `xₚ=wₚ+Σⱼaⱼₚxⱼ`, evaluated from C4 down to C3. T1 requirements are `rₘ=Σₚaₚₘxₚ`; they are not equal across materials.
 
-## 4. Firm-scale model
+Distributor assignment uses midpoint-stratified draws `(k+½)Σw/N`, mapped into cumulative product weights, with buyers ordered by seeded hash. Each product gets within one buyer of its ideal share. Assignment is fixed at initialization and uses **default full-fleet capacities**, even when live capacities or population are changed. It does not follow shortages.
 
-- **Tier 0 has the most capital of all tiers.** It is the largest by design, despite
-  having no "product complexity."
-- **Tier 1 machinery is uniform:** every T1 product line's machinery is **$15K**
-  (equity structure in §6). Within Tier 1, complexity differs only in the *recipe* —
-  throughput is flat at **2,000** and markup is flat (**0.25**) — never in capital,
-  throughput, or markup.
-- **Tier 2 machinery rises with complexity:** C-3 = **$75K**, C-4 = **$375K**, C-5 =
-  **$420K** (Tier 1 flat at $15K). The size gradient lives in Tier 2; higher complexity ⇒
-  larger machinery.
-- **Throughput (per machine, per tick):** Tier 0 extraction is **200,000** per firm per tick
-  (extraction, not a machine line). Tier 1 is flat — C-1 = C-2 = **2,000**. Tier 2 falls with
-  complexity — C-3 = **30**, C-4 = **20**, C-5 = **10**. One machine = one product line =
-  this capacity; there is no separate "line" concept.
-- **Tier 0 extraction cost & lot:** raw costs **`$1 × difficulty`** (`baseCost`; difficulty
-  mean-reverts to `difficultyTarget = 1`), sold in whole lots of **1,000** minimum.
-  Extraction is **profit-gated like T1/T2 manufacture**: no extraction while
-  `cost > price` (hard gate), tapering to zero as the extraction margin
-  `(price − cost)/price` falls below 5 % (`productionMarginBand`).
-- **Tier 0 extraction quantity:** per element, `made = min(deficit, capacity, headroom,
-  ⌊cash ÷ cost⌋)`, where `deficit = target − inventory` (the element's even share of the
-  fill-to-brim 500,000 pool) and `headroom = storage − total inventory` (free space). When
-  the firm's capacity or cash cannot cover every element's deficit, the budget is
-  **apportioned across elements proportionally to their deficits**, so no single element
-  starves the others.
-- **Per-line machinery:** each installed product line owns its own **machinery capital**
-  and its own **throughput capacity**, both keyed to the product's complexity, and both
-  **summed per company**. A firm's size is the sum of its lines. **At start every company
-  owns exactly one machine (one line);** additional lines are acquired through expansion.
-- **No uniform factory/capacity spec across companies.** There is no shared factory, no
-  pooled capacity, and no "every company gets the same $300K / 6 units" constant — each
-  company's capital and capacity are its own, derived from its lines.
-- **Storage (working standard 20,000):** one firm-level pool shared by raw, finished,
-  and machinery. Machinery footprint is fixed — C-1/C-2 = 1,000, C-3 = 3,000,
-  C-4 = 4,000, C-5 = 5,000 — leaving goods space `G = 20,000 − machinery` for raw and
-  finished. **Tier 0 storage is a separate, fully-subsidized raw pool of 500,000 per firm**
-  (no machinery footprint; extraction equipment is an equity asset, not a storage cost).
-- **Storage Royalty (deferred for PoC):** Tier 0 is fully subsidized (no storage or
-  machinery costs). Tier 1 and Tier 2 would pay a minuscule per-tick fee per storage
-  space, collected by the two Earth houses.
-- **Desired inventory = fill `G`:** the whole allocation is paid for, so empty space is
-  pure waste. Companies fill the goods space to the brim (bounded by cash and capacity),
-  rather than merely covering demand.
-- **Manufacture quantity (T1/T2):** `desired = min(capacity, G − finished)`, rounded down to
-  whole batches (`⌊desired ÷ output_qty⌋`), then capped by (a) the raw/materials on hand
-  (`⌊stock ÷ recipe ratio⌋` per input) and (b) cash for conversion
-  (`⌊cash ÷ (conversion × output_qty)⌋`). The economic gates (margin ramp, break-even) are
-  in §12.2.
-- **Balanced pipeline:** recipes preserve item count (N inputs → N outputs), so the raw
-  to finished split within `G` is always **1 : 1** — `finished = raw = G/2`.
-- **Cost ladder (count-preserving):** material cost is flat per unit — $1.25 (T1), $1.875
-  (T2). Each tier's material cost already includes the upstream tier's 0.25 markup, so the
-  realized markup is a true 25 % at every tier. Conversion cost is
-  `$0.25 × max(1, complexity−1)`: C-1/C-2 $0.25, C-3 $0.50, C-4 $0.75, C-5 $1.00.
-  Unit cost: $1.50 / $1.50 / $2.375 / $2.625 / $2.875.
+Source: [catalog adapter](../economy/core/midbridge.py), [model allocation](../economy/core/model.py), [initialization](../economy/core/state.py), [catalog validator](../tools/build_recursive_catalog.py).
 
----
+## 3. Starting capital and reference costs
 
-## 5. Product gradient (demand side)
-
-Higher complexity ⇒ **lower demand volume**; the unit markup starts flat and is
-discovered by the derivative-following pricer.
-
-- **Valuation (choke price):** `V = unit cost × (1 + t2ReservationPremium × (complexity − 1))`
-  (cost from §4) — the price at which demand halves. Each distributor's choke is
-  `V × [1.8, 3]` (a per-distributor draw), so the choke is a band, not a point.
-  `t2ReservationPremium = 0.25` gives more complex goods a higher reservation value
-  (C-3 ×1.5, C-4 ×1.75, C-5 ×2.0), so they clear at higher prices.
-- **Latent quantity:** `qmax = 20` (fixed per distributor, `DISTRIBUTOR_QMAX`). The
-  per-distributor request therefore stays small (whole units), never exceeding a firm's
-  fill-G stock.
-- **One product per distributor, supply-scaled:** each distributor is assigned exactly one
-  product (`distributorProduct`) for its lifetime, drawn weighted by supply — `firms ×
-  capacity` (the **108 : 12 : 1** ratio across C-3 / C-4 / C-5), so higher-supply
-  products attract more distributors (~**36,000 / 4,000 / 333** per product). No renewals,
-  no sector routing. The per-distributor quantity stays small.
-- **Activation:** each tick only a fraction `distributorActivation = 0.2` of the 1,000,000
-  distributors activate (a fresh random draw per buyer per tick), so ~200,000 buy per tick —
-  matching the supply scale and keeping service fair (no buyer is permanently starved).
-- **Demand curve:** `q(P) = qmax / (1 + (P/V)^η)`, elasticity `η = 2`.
-- **First-guess markup is flat** (`t1Markup = 0.25` for T0/T1/T2): the complexity
-  gradient lives in demand volume/routing *and* the reservation valuation
-  (`t2ReservationPremium`), not the seed price.
-- **Equilibrium markup** is set by the fixed demand level (`qmax = 20`) — a larger
-  quantity is a tighter market ⇒ a higher discovered markup.
-
-The flat first-guess markup is canon. Each distributor samples offers — currently **5**
-(`distributorSearchOffers`); the sampling count is calibration, not frozen. Purchase is
-**marginal-value** (§12.2): the distributor walks its sampled sellers in total-cost order and
-buys `want = q_at − bought` whole units at each, so the quantity is pinned to the marginal
-seller's price.
-
----
-
-## 6. Initial condition: one converged scenario
-
-The "full-on simulation" and the "game start" are the **same thing** — there is no
-separate mature stage reached later. The simulation's initial state *is* the game's
-starting point: fully populated (all tiers, all complexity levels, all invented markets),
-with **every company starting on a single machine** (one product line) — Tier 1 and
-Tier 2 alike. Multi-line companies arise only later, through expansion (§7).
-
-This convergence removes the portfolio-width fairness problem from the starting state:
-no company begins richer by owning several product lines.
-
-**Starting equity (working values).** Every Tier 1 and Tier 2 company holds a **$1m
-license** as an equity asset. Total equity = license + machinery + working cash, with
-cash as the residual:
-
-| Entity | License | Machinery | Working cash | Total equity |
+| Quantity | T0 | T1 C1 / C2 | T2 C3 | T2 C4 |
 | --- | ---: | ---: | ---: | ---: |
-| Tier 0 (×20) | $22m | $12.25m × systems (≤4) | $3m–$39.75m (+$1m reserve) | $75m |
-| Tier 1 (all 10 types) | $1m | $15k | $485k | $1.5m |
-| Tier 2 — C-3 | $1m | $75k | $425k | $1.5m |
-| Tier 2 — C-4 | $1m | $375k | $125k | $1.5m |
-| Tier 2 — C-5 | $1m | $420k | $80k | $1.5m |
+| Starting equity per firm | $75,000,000 | $1,500,000 | $1,500,000 | $1,500,000 |
+| License book asset | $22,000,000 | $1,000,000 | $1,000,000 | $1,000,000 |
+| Machinery per line | $12,250,000 | $15,000 | $75,000 | $375,000 |
+| Other reserved asset | $1,000,000 | — | — | — |
+| Starting cash | `$52m − $12.25m × machines` | $485,000 | $425,000 | $125,000 |
+| Firm storage | 40,000,000 | 50,000 / 50,000 | 20,000 | 20,000 |
+| Machinery footprint/line | No deduction from T0 storage | 1,000 / 1,000 | 3,000 | 4,000 |
+| Capacity/line/tick | 500,000 | 6,000 / 6,000 | 32 | 24 |
 
-The machinery ladder is $15k (T1 flat) / $75k / $375k / $420k. Every Tier 1 and Tier 2
-company starts at $1.5m; only Tier 0 ($75m) is larger.
+Firms start with zero inventory and no preferred suppliers. T1/T2 start with one line; active-line reliability starts at `0.5`. License, machinery, and the T0 reserve are assets, not operating expenses. The T0 reserve is excluded from spendable cash.
 
-**Fairness is carried by the rate, not the stake.** Equity (stake) and capital
-(machinery) are different things, and the tiers differ in *size* by design. What must be
-equal is the **rate of return — ROI, the percentage incrementality the player feels** —
-not the absolute equity.
+Define conversion per output item `v(c)=conversionFactor×max(1,c−1)`, with factor `0.25`. Thus C1/C2 cost `0.25`, C3 `0.50`, C4 `0.75`. Define reference production cost `Uₚ` and initial quote `Pₚ⁰`:
 
----
+```text
+T0: Uₑ⁰ = baseCost × difficultyTarget;                 Pₑ⁰ = cent(Uₑ⁰ × (1+t0Markup))
+T1: Uₚ  = Σₑ aₚₑ × t1MaterialCost + v(cₚ);           Pₚ⁰ = cent(Uₚ × (1+t1Markup))
+T2: Uₚ  = Σₘ aₚₘ × Uₘ × (1+t1Markup) + v(cₚ);       Pₚ⁰ = cent(Uₚ × (1+t1Markup))
+```
 
-## 7. Entry model & expansion
+Both markups default to `0.25`; `baseCost=1`, `t1MaterialCost=1.25`. The latter is an independent configuration value, not automatically tied to live extraction cost or quotes. Recursive reference costs use unrounded ingredient references plus markup; each displayed starting quote is rounded only after its own calculation.
 
-- All firms exist at tick 0.
-- A player **starts as a single firm** — Tier 1 or Tier 2 — operating that company's own
-  balance sheet (license + machinery + working cash, §6). There is no holding company at
-  start.
-- **Subscriptions (real money, annual):** Tier 1 is free during alpha, ~$5/year later;
-  Tier 2 is $15/year.
-- **Two routes to Tier 2:** (a) buy the Tier 2 subscription, or (b) buy the cheaper Tier 1
-  subscription and work up in-game — either **apply for the Tier 2 license** ($1m, which
-  becomes an equity asset) or **found a holding company** (~$200k) and purchase a Tier 2
-  company through it.
-- **Expansion (later):** a player may form a **holding company** to acquire and own
-  additional firms. This is how multi-machine companies come to exist.
-- Bot-run Tier 2 companies pay annual **dividends that are destroyed** (a pure money
-  sink), so their equity can grow only ~one year at a time. This bounds each company's
-  listing value and keeps the real-money value of an in-game dollar stable (mechanics
-  TBD).
+| Route | Reference cost | Starting quote |
+| --- | ---: | ---: |
+| Raw at difficulty 1 | $1 | $1.25 |
+| C1 | $1.50 | $1.88 |
+| C2 | $2.75 | $3.44 |
+| C3 = C1 + C2 | $5.8125 | $7.27 |
+| C4 = C1 + C3 | $9.890625 | $12.36 |
+| C4 = C2 + C2 | $7.625 | $9.53 |
 
----
+These seed costs calibrate quotes, demand, and switching. Actual production uses purchased inventory's weighted book basis. Before buying, a separate replacement estimate uses planned output `d`, held inputs `Rₘ`, their basis `bₘ`, and planning quotes `Qₘ`:
 
-## 8. Fairness metric
+```text
+heldₘ = min(d×aₚₘ,Rₘ)
+replacement = v(c) + Σₘ (heldₘ×bₘ + (d×aₚₘ−heldₘ)×Qₘ)/d   when d>0
+replacement = v(c) + Σₘ aₚₘQₘ                              when d=0
+```
 
-- The fairness target is **sustained equal profitability measured as equity ROI**
-  (percentage return on equity), **not** equal net profit and **not** equal absolute
-  equity. Companies start at different sizes; the player must feel the **same
-  incrementality** (percentage growth rate) whichever company they acquire and at
-  whatever stage of the game.
-- The ROI distribution must be **tight** (no structural winners or losers) **and stable
-  over time** (no systematic drift like the observed T0-accelerates/T1-T2-decelerates
-  pattern). The ~2× opening-equity-per-Age multiple is the *derived aggregate check*,
-  not the primary metric.
-- Net profit is derived reporting; cash and equity are the only first-class financials.
-  There is no score.
+T1's `d` is its capacity-capped target deficit; T2 also floors it. T1 planning uses the selected raw quote, or last-buy quote if no supplier exists; a nonfinite quote falls back to current extraction cost for positive plans, or held basis for zero plans. T2 uses the selected input quote, falling back to held basis with no offer. This estimate is descriptive; it does not drive the production gate.
 
----
+Source: [config.py](../economy/core/config.py), [cost helpers](../economy/core/model.py), [reset_world](../economy/core/state.py).
 
-## 9. Canon vs. calibration
+## 4. Storage allocation and production
 
-Everything in §2–§8 is **canon** (design law). The **supply-side numbers** in §4 and §6
-(equity, machinery, capacity, storage, conversion) are pinned **working values**; the
-**demand-side scale** (offer-sampling counts, valuation curves) and **all prices** are
-**calibration** (not frozen) until calibration adopts them.
+For a T1/T2 firm with storage `S`, installed lines `L`, and line footprints `fₗ`:
 
----
+```text
+G = S − Σₗ fₗ                              goods space
+H = G / (2 × max(1,L))                     space allocated per output line
+Fₗ* = floor(H / cₗ)                        finished-item target
+Rₘ* = Σ installed lines l (H × aₗₘ / cₗ)  target input items of type m
+occupied = Σ inputs m (Rₘ × sₘ) + Σ outputs l (Fₗ × cₗ)
+```
 
-## 10. Deferred / reserved directions
+Recipe weighting ensures `ΣₘRₘ*sₘ=G/2`. Repeated inputs accumulate into one slot; shared inputs accumulate across lines. Actual purchases are capped by total free space and their own slot shortage. Firms cannot borrow another input's unused slot. Conversion releases exactly the space occupied by its output, so no extra production-space cap is necessary.
 
-Tracked, explicitly **not** canon yet:
+For single default lines, finished targets are C1 `24,500`, C2 `12,250`, C3 `2,833`, C4 `2,000`. A C3 `C1+C2` machine targets `8,500/3` units of each ingredient (weighted space 1:2). A C4 `2×C2` machine targets 4,000 C2 inputs; `C1+C3` targets 2,000 of each. Input targets can be fractional; purchases are floored. T1 storage capacity follows the firm's original C1/C2 cohort even after it installs other machines.
 
-- **Buy-storage mechanic** — expanding a company's warehouse capacity *beyond* the 20k
-  standard by purchase (a possible future capital lever; the base 20k is rented, not owned).
-- **Spatial presentation** — a possible isometric 2D hex-grid map. This is a
-  presentation/UX layer, decoupled from the economic model.
-- **T1 vs. T2 steady-state size divergence** — game-start sizes are fixed (§6); their
-  later divergence is emergent, not prescribed.
-- **New product invention** — the dynamic introduction of new T2 products over time
-  (innovation). The PoC uses a fixed 200-product catalog; how new products enter the
-  market — and what happens to the supply-scaled distributor assignment, firm lines, and
-  supply when one appears — is deferred, mechanics TBD.
+For each T1/T2 line, with cash `C`, ingredient basis `bₘ`, inventory `Rₘ`, capacity `K`, and quote `P`:
 
----
+```text
+B = min(floor(min(K, max(0,F*−F))), minₘ floor(Rₘ/aₚₘ), floor(max(0,C)/v(c)))
+u = Σₘ aₚₘbₘ + v(c)                       actual cost per new output
+h = forecast firm rent / installed lines − switchingNetEMA / installed lines
+m = (P − u − h/B) / max(P,10⁻⁹)             if B > 0
+z = clamp(m / productionMarginBand, 0, 1)
+B' = floor(B×z + ½)
+```
 
-## 11. Acceptance for a reimplementation
+`productionMarginBand=0.05`. Return zero if `B≤0`, if `u>P+10⁻⁹`, if `B'≤0`, or if `(P−u)B'−h<−10⁻⁹`. Otherwise make `B'` outputs, consume `B'aₚₘ`, pay `B'v(c)`, and add their cost to finished inventory. The reduced-output recheck prevents fixed overhead from making a tapered plan loss-making. Switching income cannot override the `u≤P` test. At a 5% or larger estimated net margin, all feasible batches are made; below it, output tapers with rounding.
 
-A new kernel satisfies this canon when it implements §2–§8, holds the machine invariants
-(no negative inventory/cash/demand/reliability; conservation per §2; atomic orders per
-§12.1), and reaches the fairness target in §8 under its own determinism, at the
-performance and replay gates of §12.
+`switchingNetEMA` starts at zero and updates after settlement using `alpha=0.15`. Rent eligibility is forecast after procurement for T1 and at entry to each complexity phase for T2; actual billing can differ after later transactions. Overhead affects planning, never inventory basis. Input replenishment proceeds independently of production profitability. Sales/demand EMAs do not set storage targets.
 
----
+T1 production runs firm-major, then product-major. T2 firms rotate by `(order+137×tick) mod firmCount`; plans rotate line traversal by tick, but production executes in installed-slot order. All lines share actual remaining inputs and cash. T2 completes C3 before C4, rebuilding its supplier book between phases. A phase's supplier inventory only decreases; newly produced goods become inputs at the next complexity phase. Supplier proceeds and inventory deltas settle at phase end, so those proceeds are not available for the seller's earlier operations in that phase.
 
-## 12. Machine contract
+Source: [storage helpers](../economy/core/state.py), [production_batches](../economy/core/model.py), [tick production](../economy/kernel/tick.py), [InputMarket](../economy/kernel/input_market.py), [compiled kernels](../economy/kernel/numba.py).
 
-The machine-level specifics — determinism/RNG/tick/runtime and the derivative-following
-pricing algorithm. Topology, scale, demand and the deferred/calibration lists are canon
-in §3–§10 above and are not repeated here.
+## 5. T0 extraction and T1 raw buying
 
-### 12.1 Determinism, RNG, tick, runtime
+### Extraction
 
-- **RNG**: 32-bit SplitMix32. `mix(u)`, `random(seed, tick, stream) = mix(seed ⊕ (tick+1)·0x9e3779b1 ⊕ (stream+1)·0x85ebca6b) / 2^32`,
-  `normal(·)` (Box-Muller), `hashSeed(seed, k) = mix(seed ⊕ (k+1)·0x9e3779b1)` (u32).
-- **Determinism**: same `(seed, config, command sequence)` ⇒ identical state. All iteration
-  rotations (`tick*37`, `tick*137`, `(tick+index)%N`, seed draws) are part of state.
-- **9-phase tick** (per tick): reset scratch → environment (difficulty mean-reversion) →
-  T0 extraction (order-up-to + proportional apportionment) → T1 input purchase
-  (whole-lot) → T1 manufacture → pricing (derivative-following) → T2 buy/make/price →
-  distributor clearing (atomic orders) → observe/reliability (monthly).
-- **Calendar**: 30 ticks/month, 12 months/year, 20 years/generation, 24 generations/age.
-- **Environment**: extraction difficulty mean-reverts to `difficultyTarget = 1` (`theta = 0.15`,
-  `sigma = 0.005`, bounded `[0.7, 1.4]`). Demand/sales EMA `alpha = 0.15`.
-- **Reliability** (EMA, `reliabilityAlpha = 0.15`): score =
-  `0.5·price-stability + 0.5·availability`. The price-stability component is
-  **asymmetric — only upward price moves penalize it**; a price drop never reduces
-  reliability. The availability component is `RelAvailable ÷ RelChecks` and **defaults to
-  1.0** when there are no checks (`RelChecks == 0`), so a firm never asked for stock looks
-  perfectly available.
-- **Commands** (FastAPI/WebSocket): `init`, `reset`, `run`, `pause`, `step`,
-  `applyConfig`, `select`, `companyDetail`, `watchCompanies`, `player`,
-  `buyEquipment`, `tier2Query`, `buyLicense`, `foundHouse`. Reads are projections;
-  per-distributor state is never sent to clients.
+Each element has shared environmental difficulty, updated before extraction:
 
-### 12.2 Pricing (per tick, derivative-following)
+```text
+dₑ' = clamp(dₑ + theta×(difficultyTarget−dₑ) + sigma×Zₑ, difficultyMin, difficultyMax)
+kₑ = max(10⁻⁹, baseCost×dₑ')
+```
 
-All three producer tiers price their output each tick with one **derivative-following
-adaptive pricer**, plus a player/admin override. Prices are **unbounded economically**:
-they may go below unit cost (sell at a loss) and there is no ceiling or unit-cost floor —
-per axiom 6, a healthy price settles at an interior equilibrium. Two **numerical
-guardrails** only prevent degenerate values, and the simulation must never settle at them:
-`MIN_UNIT_PRICE = 1e-5` (floor) and `MAX_UNIT_PRICE = 1e9` (ceiling). Every price is
-quoted in **whole cents** (rounded half away from zero via `round_to_cent`).
+Defaults are target `1`, `theta=0.15`, `sigma=0.005`, bounds `[0.7,1.4]`. A firm's `n` element lines each target `t0Storage/n`; each owns its own throughput `K=t0Capacity`. Idle capacity cannot be reassigned to another element.
 
-**Initial price (tick 0)** — the flat first-guess markup from §5:
-`P₀ = unitCost × (1 + t1Markup)`, with `t1Markup = 0.25` for every tier.
+For line deficit `Dₑ=min(max(0,S/n−stockₑ),K)`, extraction is suppressed when `kₑ>Pₑ+10⁻⁹`. Otherwise multiply `Dₑ` by `clamp((Pₑ−kₑ−h/max(Dₑ,1))/max(Pₑ,10⁻⁹)/marginBand,0,1)`. T0 overhead is solely `−switchingNetEMA/n`; it pays no storage rent. Unlike T1/T2, T0 does not repeat the net-margin test after allocation.
 
-**Observation cadence.** A price is re-evaluated only when
-`(tick + index) % priceObservationTicks == 0` and it has been observed at least once
-(`priceObservationTicks = 30`). On all other ticks the price is simply held, clamped to
-the guardrails.
+Positive deficits rotate priority by `(seed+tick+firm) mod positiveLineCount`. Allocation shares the remaining `nK` capacity, storage headroom, and cash. When cash may bind or the initial budget is smaller than the number of positive lines, each gets up to one unit in priority order first. Otherwise, up to four passes reserve up to one unit for lines whose proportional quota would be below one.
 
-**Decision (at a cadence tick), from the average realized profit/tick accumulated since
-the last observation.** A firm with no sales *and* no stock holds (degenerate — nothing
-to offer). Otherwise, in order:
-1. **No sales** → if stock remains, lower (attract demand); if no stock, hold.
-2. **Scarce** (unmet demand: `demand > sales`) → raise, *regardless of the profit baseline*,
-   so a lively downstream market is transmitted upstream (the incumbent supplier's 500k
-   inventory buffer no longer hides demand pressure).
-3. **Market anchor** (leaked going rate): the firm compares its price to its market's
-   sales-weighted average price. Above `going_rate × (1 + marketAnchorBand)` → lower
-   (expensive → contest); below `going_rate × (1 − marketAnchorBand)` → raise (cheap →
-   capture value). `marketAnchorBand = 0.02`. This lets a small, expensive seller drift
-   down to the going rate without a symmetric race to the bottom. The going rate is
-   `Σ(sales_i × price_i) / Σ(sales_i)` over the sellers of that good (element / material /
-   product), falling back to the simple average of their finite prices when a market has
-   no sales in the window.
-4. **Profit baseline available** (a prior observation's realized profit exists) → pure
-   derivative-following with a **2 % dead band**: reverse when profit fell ≥ 2 %, continue
-   when it rose ≥ 2 %, and **hold inside the band** — flat profit is the profit-maximum,
-   so the walk stops there instead of overshooting the flat peak and drifting past it.
+Up to six further passes compute `feasibleₑ=min(remainingDeficitₑ,floor(max(0,cash)/kₑ))` and `budget=max(0,min(remainingCapacity,freeSpace,Σfeasible))`. If the budget covers all feasible deficits, use them; if below one, split it proportionally; otherwise floor proportional quotas of `floor(budget)` and allocate remaining units by largest remainder, breaking ties by rotated priority. Each actual make is recapped by its deficit, shared capacity, space, and cash. Fractional extraction can survive tapering/allocation; cash is charged `made×kₑ` and inventory basis is averaged.
 
-**Production & purchase gates (the quantity side of discovery).** A producer manufactures
-only while it can cover the *realized* cost of its current stock —
-`if input_cost_per_item + conversion > price`, output is 0 ("don't produce below cost").
-Tier 0 extraction obeys the same hard gate against its *extraction* cost —
-`if baseCost × difficulty > raw price`, extraction is 0.
+### Raw procurement
 
-A buyer (T1 raw, T2 material) throttles its input purchase, and Tier 0 throttles its
-extraction, with one shared **margin-ramp** instead of a hard buy/no-buy gate. The quantity
-is scaled by
+T1 firms alternate material cohorts and firms within cohorts: first cohort `tick mod 14`, first firm `(37×tick) mod 72`, then 72 rounds through all 14 cohorts. Within a firm, inputs are processed in element-index order. Each positive slot shortage requests `L×floor(shortage/L)`, where `L=minWholesaleLot=1,000`.
 
-`factor = clamp( margin / productionMarginBand , 0, 1 )`,
+T0 supplier ranking minimizes `quote×max(request,L)+switchingFee`, first among suppliers holding at least one lot; only if none qualify does it consider empty suppliers. It does **not** require full-order stock for this ranking. An incumbent tied on a positive request is retained. Other equal-cost ties use seeded random weights `1/supplierElementCount`.
 
-where `margin = (price − cost)/price`. For T1/T2, `cost = conversion + Σ (recipe ratio ÷
-output) × current supplier price`; for T0, `cost = baseCost × difficulty`.
-`productionMarginBand = 0.05`. So production/extraction stays **full while margin ≥ 5 %**,
-tapers linearly to **0 at break-even** (cost = price), and is 0 for any loss — a late
-cutoff, not an early throttle. The ceiling still transmits the downstream breakeven
-upstream: an overpricing supplier loses orders and is pulled back to a profitable level.
+The order is recapped to whole lots fitting both total free storage and the input slot, then funded and filled using §6. There is one supplier transaction per input per tick, without a second-supplier retry. Demand credited to the seller is the funded request before its stock cap; availability asks whether it held the original lot-rounded request. Successful purchase updates the preferred supplier even on a partial fill. Sub-lot stock and slot shortages wait.
 
-**Step size** adapts: ×1.2 on continuation, no halving on reversal (×1.0), clamped to `[0.01, 1]`.
-The price moves multiplicatively: `P ← clamp(P × exp(± pricingAggressiveness × response × scale))`, where
-`clamp` is the guardrail interval `[MIN_UNIT_PRICE, MAX_UNIT_PRICE]`, then rounded to
-whole cents (`round_to_cent`). If the rounded quote is unchanged and the direction is
-*down*, the direction flips *up* (`if nxt == price and next_direction < 0: next_direction = 1`),
-so a walk cannot wedge frozen at a cent boundary. After each
-observation the profit/sales/demand/opportunity accumulators and the age counter reset.
+Source: [operate_tier0 / plan_and_buy_inputs](../economy/kernel/tick.py), [compiled raw buying](../economy/kernel/numba.py).
 
-**Distributor purchase is split across suppliers in whole units** (no fractional fill, no
-all-or-nothing from one seller). Demand is **marginal-value**: the distributor walks its
-sampled sellers in total-cost order (incumbent first; the loyalty charge below applies),
-and at each seller computes `q_at = demand(price)` then buys `want = max(0, q_at − bought)`
-whole units (capped by that seller's `⌊stock⌋`), stopping once `bought ≥ q_at`. The total
-quantity is therefore pinned to the *marginal* seller's price — a rogue cheap seller
-cannot inflate demand. The unsatisfied remainder is recorded as `endStockUnmet`.
+## 6. T2 input buying and producer-order settlement
 
-**Loyalty charge (real, paid to the incumbent).** A buyer's sampled offers are ranked by the total
-cost of filling its order `q` from each seller alone. Staying with the incumbent
-(`preferred`) costs `P_inc × q`; sourcing from a
-challenger costs `P_chal × q + loyaltyCharge`, where
+T2 buys C1/C2 from T1 and invented C3 from T2. For each required ingredient `m`, calculate the whole-unit request `r` as the nonnegative floor of the minimum of slot shortage and free goods space divided by `sₘ`.
 
-`loyaltyCharge = M × unit_cost × (1 + reliability_inc)`.
+Offers are sorted by quote. T1 equal-quote ties rotate by `(marketRank+tick) mod marketSize`; T2 ties use `(lineIndex+37×tick) mod totalT2Lines`. Select the cheapest seller able to fill `max(1,r)`; failing that, the cheapest with at least one unit; failing that, the first offer. Retain a stocked incumbent if its total for that common quantity is no greater than the challenger's total including switching. A zero-request planning lookup is price-only.
 
-`unit_cost` is the product's canonical cost-ladder unit cost (§4) — a *fixed*
-reference, independent of the current market price, so a price drop does not shrink the
-barrier — and `reliability_inc` is the incumbent's reliability (0–1), so the
-`(1 + reliability)` factor makes sourcing away from a reliable supplier cost up to 2× more. `M` is a **per-complexity** multiple, sized so the charge equals ~5 % of a typical
-order: **41.665** for the T1 raw buyer (C-1/C-2, equal), **{3: 0.605, 4: 0.325, 5: 0.13}**
-for T2 intermediate buyers by the buying firm's complexity, and **0.485** for T3 distributors.
-The charge is **fixed per disloyal purchase** (independent of order size, so
-a 1-unit order cannot dodge it) and is **paid to the incumbent**: deducted from the buyer's cash and credited to the incumbent — a
-transfer, not a sink.
+Price then reduces the order:
 
-**Adaptive regime.** The per-complexity values above are *bootstrap seeds*, not constants.
-Each tick, after the tiers operate, the kernel folds the observed **average order value**
-(AOV) per buyer class — T1 raw (`raw revenue ÷ purchase events`), T2 material by buying
-complexity (`material spend ÷ purchases`), T3 distributor (`distributor payments ÷ fulfilled
-orders`) — into an EMA (`α = loyaltyEmaAlpha`, default 0.01). Once per **year**
-(every `ticksPerYear` ticks) it re-derives
+```text
+Vₘ = t1MaterialCost                 for refined C1 (default 1.25)
+   = refinery reference cost Uₘ    for C2 (default 2.75)
+   = recursive reference cost Uₘ   for C3 (default 5.8125)
+buyRequest = min(r, Rₘ* / (1 + (chosenQuote/Vₘ)²))
+```
 
-`M = 0.05 × AOV / (unit_cost × 1.5)`,
+The C1 reference deliberately differs from its `$1.50` production reference. This input curve always uses exponent `2`, independent of distributor `elasticity`. Its latent quantity is the **entire input slot**, not the shortage. There is one transaction per required ingredient per complexity phase; inputs are processed in index order. Purchases can consume cash subsequently needed for conversion.
 
-so the charge keeps tracking ~5 % of a typical order as prices and margins drift, with no
-per-generation bookkeeping. `unit_cost` here is the same canonical reference ($1 raw,
-$1.50 material, mean T2 unit cost).
+Both producer buying tiers settle with the same function. For selected seller `s`, incumbent `i`, requested quantity `q`, lot size `L`, cash `C`, and stock `I`:
 
-The buyer sources from a challenger only when `P_chal × q + loyaltyCharge < P_inc × q`, i.e. a challenger
-must undercut the incumbent by more than `loyaltyCharge / q` per unit. The winner fills the
-whole order in whole units; a split across suppliers is a fallback only when the winner
-cannot fill `q` (and the charge is then incurred once, on the first non-incumbent unit).
-**Stock-out exception:** the charge applies only to a *discretionary* purchase — if the
-incumbent cannot fulfill the order (stock below `q`), the buyer sources from a challenger for free, no
-charge.
+```text
+fee = M×U×(1+clamp(reliabilityᵢ,0,1)) if s≠i, i exists, and Iᵢ≥q; otherwise 0
+funded = L × floor(min(q, max(0,C−fee)/Pₛ) / L)
+filled = L × floor(min(funded,Iₛ) / L)
+```
 
-**The relationship is sticky.** `endPreferredSupplier` (next tick's incumbent) changes **only
-when a single seller filled the entire `q`**. If the demand was split across sellers, the
-relationship stays with the old incumbent — even if a challenger sold the first unit and the
-loyalty charge was paid. To take the customer, a challenger must therefore be a full
-substitute: cheap enough to win the ranking *and* stocked enough to fill 100%.
+If the fee is positive and `filled×(Pᵢ−Pₛ)≤fee`, revert to the incumbent and recompute funded/filled without a fee. Charge a fee only for a positive fill. For T1, `L=1,000`; for T2, `L=1`. T2 ranks on the pre-curve request, applies the curve at that chosen quote, then performs this settlement check; switching back does not recalculate the curve. The incumbent's capacity test therefore can differ between ranking and settlement.
 
-**Player/admin override.** A player-controlled firm quotes the set price, clamped to the
-same guardrails, and its adaptive state is reset, so the price takes effect on the next
-tick. Uniform across T0, T1 and T2.
+A purchase moves `filled×quote` from buyer to seller, goods in the opposite direction, and a fee from buyer to the **former** supplier. Buyer input basis includes the goods payment only. A T2 supplier book holds original saleable basis; settlement removes sold value at that basis and recomputes residual finished basis after any production: `remainingBasis=((remainingUnits+soldUnits)×postProductionBasis−soldUnits×originalBasis)/remainingUnits`, or zero if depleted. This prevents fresh stock from retroactively changing COGS on earlier stock. Offer selection does not exclude another eligible line owned by the buyer's own firm.
 
-**Parameters.** `pricingAggressiveness` (0.35), `wholesalePriceResponse` (0.05, base step
-fraction), `priceObservationTicks` (30, cadence), `researchPriceMinimumOpportunities`
-(0, minimum traffic before repricing; 0 = repriced at cadence). `loyaltyMultiple`
-(per-complexity *bootstrap*: C-1/C-2 **41.665**, C-3 **0.605**, C-4 **0.325**, C-5 **0.13**,
-T3 **0.485**, × `unit_cost` × `(1 + reliability)` — the loyalty charge) and
-`loyaltyEmaAlpha` (**0.01**, the AOV-EMA smoothing driving the adaptive regime above).
-`switchingStableBand` (0.025) drives the
-price-stability *metric*, not the price itself.
+Source: [trading.py](../economy/core/trading.py), [transfer_tier2_input](../economy/kernel/tick.py), [input_market.py](../economy/kernel/input_market.py).
+
+## 7. Distributor demand and selling
+
+Each distributor has a fixed invented product, `Qmax=20`, a seeded choke multiplier `z∈[1.8,3.0)`, and elasticity `eta=2`. Independently each tick it activates with probability `0.105`. Its price scale is a **halving price**, despite the field name “choke”: demand is positive above it.
+
+```text
+H = Uₚ × z × (1 + t2ReservationPremium×(cₚ−1)),  premium=0.25
+D(P) = Qmax / (1 + (P/H)^eta)
+q(P) = min(ceil(Qmax), floor(D(P)) + 1[u < fractionalPart(D(P))])
+```
+
+One seeded uniform `u` is reused for that buyer's potential quantity and every candidate quote in the tick. Potential is the same stochastic rounding of `Qmax` (exactly 20 by default). Distributors have no finite cash balance, stock, production, or resale: their purchases are external spending and the goods leave the modeled economy.
+
+The buyer includes its incumbent, if any, plus five uniform offer draws **with replacement**. Duplicate candidates are removed, so five draws need not mean five distinct suppliers. Offers include empty sellers. Incumbency is stored per buyer/product and survives product reassignment via sparse history.
+
+Let `qᵢ=q(Pᵢ)`. If the incumbent can supply `qᵢ>0`, challengers are sorted on `Pₛ+fee/qᵢ`; the incumbent on `Pᵢ`. Otherwise sorting uses quotes alone. Stable equal-price order follows candidate insertion order (incumbent first, then sampled sellers).
+
+Traverse candidates once, maintaining cumulative `bought`:
+
+1. Set `want=max(0,q(Pₛ)−bought)`; stop if zero. Set `totalDesired=q(Pₛ)`.
+2. Tentative delivery is `min(want,floor(stockₛ))`. Before the first positive purchase, skip a challenger if the incumbent can fulfill and `delivery×(Pᵢ−Pₛ)≤fee`. A skipped quote is not a failed availability attempt.
+3. Record `want` as seller demand and one availability attempt. Deliver at the seller's posted quote, recognize its book-basis COGS, and mark availability successful only if delivery covers `want`.
+4. Stop when cumulative purchases reach demand at the current seller's quote. Otherwise continue; demand is recalculated at each candidate price, so a cheap empty seller does not set the entire order's quantity.
+
+The first seller delivering goods is `primary`. A new incumbent is recorded only when exactly one seller supplies the complete final desired order; split or incomplete purchases retain the old incumbent. If `primary` differs from an incumbent that could fulfill its own quote-dependent quantity, pay that incumbent one fixed switching fee, even if preference was not replaced.
+
+For each buyer, `active=totalDesired`, `fulfilled=bought`, `priceLost=potential−totalDesired`, `stockUnmet=max(0,totalDesired−bought)`. An active order has positive desired quantity; a purchase order has positive delivery; a filled order reaches its final desired quantity. Potential orders count activated buyers with positive potential. These are separate from seller attempts, which can include several candidates.
+
+Source: [clear_distributors](../economy/kernel/tick.py), [compiled clearing](../economy/kernel/numba.py), [initialize_distributors](../economy/core/state.py).
+
+## 8. Switching and reliability
+
+The fixed fee is `M×U×(1+r)`, using incumbent reliability `r` clamped to `[0,1]`. The reference `U` is `baseCost` for T1 raw buyers, the unweighted mean of all 14 refinery reference costs for T2 input buyers, and the purchased product's recursive reference cost for distributors. T2 uses the complexity of its **first installed line** to choose its fee regime, including on mixed-complexity firms.
+
+Initially `M₁=50/(baseCost×1.5)`, `M₂,C3=M₂,C4=1.5/(meanRefineryCost×1.5)`, and `M₃=1.5/(weightedMeanT2Cost×1.5)`. The T2 mean is `$2.392857…`; the T3 routing-weighted mean is `$6.490228…`. At reliability `0.5`, initial T1 and T2 fees are `$50` and `$1.50`; distributor fees vary with the purchased product's reference cost. The unused C5 multiple starts at zero. Configured `loyaltyMultiple` overrides these initial values.
+
+Each tick with positive order count, average order value updates as `AOV←0.01×observedAOV+0.99×AOV`; with no orders it holds. Initialization is `AOV=M×classReference×1.5/0.05`. Observed values are:
+
+| Regime | Spend numerator | Count denominator |
+| --- | --- | --- |
+| T1 raw | Total T0 goods revenue | Number of T1 firms buying any raw that tick, **not** individual input transactions |
+| T2, separately C3/C4 | Input goods spend for that buyer class | Positive ingredient purchase transactions |
+| T3 | Distributor payments excluding switching fees | Buyers with any positive delivery, including partial orders |
+
+Every 360 ticks, **after trading**, set `M=0.05×AOV/(classReference×1.5)`. Class references are `baseCost`, mean refinery cost, and final-demand-weighted mean T2 cost respectively. Between yearly boundaries, multiples hold. Thus the regime aims for a fee of 5% of a typical order at reliability 0.5; per-product T3 fees scale relative to the class mean.
+
+For each seller price update, stability sample is
+
+```text
+stability = 1 − clamp(max(0,Pnew−Pold) / max(10⁻⁹,Pold×switchingStableBand), 0, 1)
+```
+
+`switchingStableBand=0.025`. Only increases reduce stability. Every 30 ticks:
+
+```text
+score = ½×clamp(meanStability,0,1) + ½×clamp(successfulAvailabilityChecks/checks,0,1)
+r ← clamp(r + reliabilityAlpha×(score−r),0,1), reliabilityAlpha=0.15
+```
+
+Missing price samples or availability checks contribute `1`. Monthly accumulators then clear. T0 availability uses original T1 lot requests; T1 and intermediate T2 sales use the storage/space request before T2's price curve; distributor checks use each candidate's remaining `want`. T2 combines intermediate and distributor attempts. Reliability is line-specific, even when firms have several lines.
+
+Source: [loyalty helpers](../economy/core/model.py), [regime initialization](../economy/core/state.py), [reliability and yearly updates](../economy/kernel/tick.py).
+
+## 9. Price learning
+
+At the end of each tick, each active line accumulates gross profit `revenue−COGS`, sales, `max(recordedDemand,sales)`, and one observation tick. Sales and demand EMAs update with `alpha=0.15`; price learning uses window totals, not these EMAs. Rent and switching transfers are excluded from learned gross profit.
+
+A line can reprice when its observation age is at least `priceObservationTicks=30` and `(tick+lineIndex) mod priceObservationTicks=0`. Current-tick trades have not yet entered its learning window. Manual finite quotes on player-controlled lines override learning at that line's pricing phase. Setting a manual quote clears its observation window, baseline, and step history; the T2 command also changes its live quote immediately, while T0/T1 apply it at their pricing phase. The online flag does not gate automated buying or production.
+
+The market anchor is `ΣPᵢ×windowSalesᵢ/ΣwindowSalesᵢ`, falling back to the mean finite quote with no sales, or zero with no quotes. Prices are current quotes weighted by accumulated sales, not historical transaction-price averages. Given average window profit `π`, previous observed average `πprev`, stored direction `d∈{−1,+1}`, and step scale `s`:
+
+1. If accumulated demand exceeds accumulated sales by more than `10⁻⁹`, choose `d'=+1`.
+2. Otherwise, if the quote is above/below the market anchor's `±marketAnchorBand` (default 2%), choose down/up respectively.
+3. Otherwise, with finite `πprev`, compute `δ=(π−πprev)/max(|πprev|,10⁻⁹)`. If `δ<−0.02`, reverse direction; if `δ>0.02`, retain it; otherwise hold the quote and step. Without a baseline, retain the initial direction.
+4. On movement, `s'=clamp(s×(1 if direction changed else 1.2),0.01,1)` and `P'=cent(clamp(P×exp(d'×pricingAggressiveness×wholesalePriceResponse×s'),0.01,10⁹))`. Defaults are `0.35` and `0.05`, so a full upward step is about 1.765% before cent rounding. If a downward step rounds back to the same price, store upward direction for the next attempt.
+
+Steps initialize at 1; initial direction alternates by `(firm+seed)` parity. With the current update rule a default step stays at 1; changing direction does not shrink it. After an eligible learning decision, including a hold, save `π` as the baseline and reset the window accumulators.
+
+Optional research gates default off. If `researchPriceMinimumOpportunities>0`, a due quote waits until its allocated opportunity count reaches that minimum or stale evidence is sufficient. For T2 with positive `researchPriceMinimumPotentialOrders`, stale evidence means that potential-opportunity threshold; otherwise it means age ≥ `researchPriceMaxObservationTicks` (default 3,600). Opportunity totals are shared within a market by line weight: T0 `1/firmElementCount`, T1 `1`, T2 `1/firmLineCount`, normalized across sellers. Potential opportunity allocation is accumulated only when the minimum-opportunities feature is enabled.
+
+T0/T1 quotes update after T1 production: T1 raw purchases used the old T0 quote, while T2 input purchases see the new T1 quote. T2 retail and production use pre-update quotes; each T2 line reprices after its production attempt. Later C4 input books see updated C3 quotes.
+
+Source: [adaptive_price](../economy/core/model.py), [learned_quote / price_markets / observe_markets](../economy/kernel/tick.py).
+
+## 10. Accounting, rent, and equipment
+
+For existing quantity `Q` at unit basis `b` and newly purchased/produced quantity `q` worth `V`, weighted basis becomes `(Qb+V)/(Q+q)`. Production value is consumed-input book value plus conversion cash; extraction value is paid extraction cost. Selling `q` units at `P` posts revenue `qP` and COGS `qb`. Unsold inventory is not expensed. Switching and rent never enter inventory basis.
+
+```text
+firm net earnings = Σ lines (revenue−COGS) + switchingIncome − switchingExpense − rentCharge
+T1/T2 equity = cash + license + machineryBook + inputBookValue + finishedBookValue − rentArrears
+T0 equity = cash + license + machineryBook + reserve + rawInventoryBookValue
+```
+
+Company-period switching/rent items are allocated equally across installed lines for reporting. Net margin is net earnings/revenue when revenue is positive; otherwise unavailable. Shared-company balances are split across installed line complexities in complexity reports, avoiding duplicate firm cash/equity. Purchases exchange cash for inventory; making goods capitalizes conversion; neither is an immediate operating loss. Profits are posted from transactions, not inferred from equity changes.
+
+Storage rent defaults to zero. For eligible T1/T2 firms, per-tick charge is `fullStorageCapacity×storageRentPerUnitYear/360`, regardless of occupied space. Eligibility is pre-bill book equity ≥ `$2,000,000`, including existing arrears. On positive ticks, add the charge to arrears, pay `min(max(cash,0),arrears)` if eligible, subtract payment from cash and debt, and send that cash outside the economy. Below the threshold, both new charging and debt collection pause; debt is not forgiven. Eligible firms can repay old arrears even with a zero current rent rate. Earnings deduct the new charge, not repayment of prior debt. T0 is exempt.
+
+Goods and producer switching payments transfer cash internally. Distributor goods/fee payments inject cash. Extraction, conversion, and paid rent are operating cash sinks; machinery purchases are equipment sinks. For ordinary ticks without administrative equipment transactions:
+
+```text
+Δ(total producer cash) = distributorPayments − extractionCosts − conversionCosts − rentPaid
+```
+
+Equipment purchase moves its configured price from firm cash into machinery book value, preserving equity. T1 player firms may add any uninstalled refinery recipe if cash and physical space suffice. T2 player firms may add an invented recipe only within their sector/capability, without duplication, with enough cash/space, and at most four lines per firm. Bots never add lines automatically. New machines repartition storage targets without moving or deleting existing goods. A new T1 quote uses the lowest finite wholesale quote for each ingredient (falling back to `baseCost`) plus conversion and markup; a new T2 quote uses its recursive reference cost and markup. T0 has no runtime equipment-buying path.
+
+Progression is separate from company finance: T1 player access starts held; T2 access costs `$1m` in the ownership-spend record; founding a house records `$200,000`; T0 access is not sold. These commands record progression spending without debiting a simulated player wallet or company cash. They are not acquisitions of company equity.
+
+Source: [accounting.py](../economy/core/accounting.py), [rent settlement](../economy/kernel/tick.py), [equipment installation](../economy/core/state.py), [runtime controls](../economy/server/runtime.py), [profit presentation](../web/profitability.js).
+
+## 11. Tick contract, randomness, and configuration
+
+The authoritative order in `tick()` is:
+
+1. Clear per-tick trading/earnings scratch; update difficulty.
+2. Extract T0 raw stock.
+3. Buy T1 raw inputs; produce T1 output.
+4. Update T0 and T1 prices and stability samples.
+5. Clear T3 distributors against opening T2 stock.
+6. Buy/produce/reprice C3; settle its supplier book. Then do C4 and settle.
+7. Accumulate observations; update monthly T0/T1 and T2 reliability.
+8. Update AOV EMAs and yearly switching multiples.
+9. Accrue/collect rent; finalize net earnings and switching forecasts for future production.
+
+There is no random global shuffle. Rotated processing orders and stateless seeded draws make the order explicit. Randomness uses unsigned 32-bit arithmetic (`mask=2³²−1`):
+
+```text
+mix(x): x=((x xor (x>>16))×0x85EBCA6B)&mask
+        x=((x xor (x>>13))×0xC2B2AE35)&mask
+        return (x xor (x>>16))&mask
+random(seed,t,stream) = mix(seed xor (((t+1)×0x9E3779B1)&mask)
+                               xor (((stream+1)×0x85EBCA6B)&mask)) / 2³²
+hash(seed,k) = mix(seed xor (((k+1)×0x9E3779B1)&mask))
+normal(seed,t,s) = sqrt(−2 ln(max(10⁻¹²,random(seed,t,s)))) × cos(2π random(seed,t,s+1))
+```
+
+Seed and initial mixer input are masked too. Difficulty uses streams `4×elementIndex`; raw tie-breaking uses `buyer+12,000,000+1,300,000×element`; distributor activation uses `buyer+2,000,000`, rounding `buyer+7,000,000`, and offer sample `buyer+8,000,000+1,100,000×sample`. Initial routing hashes `buyer+7,000,000`; choke hashes `buyer+9,000,000`, divided by `2³²`. The Python and compiled paths share these rules; Numba stock indexes accelerate offer lookup without changing ranking. Seed 137 is the default.
+
+`normalize_config` ignores unknown fields, replaces nonfinite recognized numeric values with defaults, and applies bounds. Rates `theta`, activation, aggressiveness, alpha, and reliability alpha lie in `[0,1]`; loyalty EMA alpha in `[0.0001,1]`; distributor elasticity in `[0.05,10]`; margin band in `[0.001,1]`; market-anchor band and price response in `[0.001,1]`. Search draws are floored/clamped to `1…20`; price observation ticks to `1…360`; research thresholds to `0…1000`; maximum research age is floored to at least one tick. Seed is floored and masked to 32 bits.
+
+T0 equity/license/machinery/reserve/capacity/storage/base cost/minimum lot have lower bound `1`. T1 equity/license/machinery/capacities/material reference and T2 equity/license/conversion factor have lower bound `10⁻⁶`; T2 machinery/capacities and all storage capacities have lower bound `1`. Footprints, rent, markups, reservation premium, loyalty multiples, and sigma are nonnegative. Difficulty minimum is at least `0.01`, maximum at least minimum, and target is clamped between them. Choke minimum is at least `0.01`, maximum at least minimum; stability band is at least `10⁻⁹`. These bounds do not guarantee that configured starting equity covers all starting assets.
+
+Distributor and T2 populations are integers bounded to `1…1,000,000` and `1…57,960`; a zero value selects the full-population default. Legacy `t1Capacity` without a C2 override applies to both; legacy `storage` without T1 overrides applies to both T1 cohorts. Integer-keyed configuration maps also accept string keys from JSON. Live population changes require Reset. Storage/footprint changes reject occupied-space overflow; live changes refresh references and distributor choke/elasticity, but do not redistribute firms/buyers, rewrite inventory basis, reset learned quotes, or immediately replace adaptive loyalty multiples.
+
+Checkpoints store arrays in `.npz` and config, tick, scalar regimes, supplier history, and runtime metadata in a `.json` sidecar. The current format is version 8 and catalog revision `midbridge-invented-105-reverse-v7`; incompatible catalog revisions/numbering are rejected. Global hexadecimal company identities reserve full-population ranges in order Gaia, T0, T1, T2, T3, even in reduced worlds.
+
+Source: [tick.py](../economy/kernel/tick.py), [rng.py](../economy/core/rng.py), [config.py](../economy/core/config.py), [runtime.py](../economy/server/runtime.py), [persistence.py](../economy/server/persistence.py).
+
+## 12. Verification and boundaries
+
+The following tests exercise the implemented contract:
+
+| Rule | Tests |
+| --- | --- |
+| Catalog, counts, costs, recursive demand | [midbridge](../tests/py/test_midbridge.py), [recursive demand](../tests/py/test_recursive_demand.py), [naming catalog](../tests/py/test_naming_catalog.py) |
+| Extraction/refinery throughput | [extraction capacity](../tests/py/test_extraction_capacity.py), [refinery capacity](../tests/py/test_refinery_capacity.py) |
+| Storage, recipe-weighted slots, live resizing | [storage slots](../tests/py/test_storage_slots.py), [C2 storage](../tests/py/test_c2_storage.py) |
+| Price-sensitive inputs, available stock, distributor preferences | [buying](../tests/py/test_buying_price_sensitive.py), [production stock access](../tests/py/test_production_stock_access.py), [preferences](../tests/py/test_distributor_preferences.py) |
+| Earnings, rent, complexity balances | [net earnings](../tests/py/test_net_earnings.py), [rent](../tests/py/test_storage_rent.py), [balances](../tests/py/test_complexity_balances.py), [browser profitability](../tests/js/test_profitability.js) |
+| Randomness, execution, persistence/recording | [RNG](../tests/py/test_rng.py), [kernel](../tests/py/test_kernel.py), [review fixes](../tests/py/test_review_fixes.py), [recording](../tests/py/test_recording.py) |
+
+Catalog weights calibrate a possible common-utilization flow; they do not guarantee equilibrium, equal material demand, profitability, or full-capacity operation. Cash, prices, purchase curves, rounded lots, sampled search, storage, and production gates determine realized outcomes. No runtime invention, C5 manufacturing, autonomous expansion, or distributor budget model should be inferred from dormant fields or older design material.

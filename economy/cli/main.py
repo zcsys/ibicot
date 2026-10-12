@@ -18,6 +18,7 @@ from ..core.state import reset_world
 from ..kernel.tick import tick
 from ..server.persistence import save_checkpoint
 from ..server.runtime import stats_row
+from ..server.recording import CompanyHistory
 
 
 def _summary(world, cfg, t):
@@ -34,22 +35,28 @@ def run_headless(seed, ticks, cfg_overrides, out, stats_path=None):
     cfg, world = reset_world(cfg)
     state = {}
     stats_f = None
+    company_history = None
     if stats_path:
         Path(stats_path).parent.mkdir(parents=True, exist_ok=True)
         stats_f = open(stats_path, 'w')
+        company_history = CompanyHistory(Path(stats_path).parent,cfg)
     # Warm the Numba JIT with one throwaway tick before timing, so the reported
     # rate is steady-state rather than dominated by first-tick compilation.
     tick(world, cfg, 1, state=state)
     if stats_f is not None:
+        company_history.record(world,cfg,1)
         stats_f.write(json.dumps(stats_row(world, cfg, 1, 1 // MONTH)) + '\n')
     t0 = time.time()
     for t in range(2, ticks + 1):
         tick(world, cfg, t, state=state)
         if stats_f is not None:
+            company_history.record(world,cfg,t)
             stats_f.write(json.dumps(stats_row(world, cfg, t, t // MONTH)) + '\n')
         if ticks <= 20 or t % 30 == 0 or t == ticks:
             _summary(world, cfg, t)
     if stats_f is not None:
+        company_history.flush(world,cfg)
+        save_checkpoint(str(company_history.path/'final-checkpoint'),cfg,ticks,world,state)
         stats_f.close()
         print(f'stats written to {stats_path}')
     elapsed = time.time() - t0

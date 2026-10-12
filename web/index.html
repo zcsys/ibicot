@@ -6,7 +6,7 @@
     <link rel="icon" href="/favicon.ico" sizes="32x32" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-    <title>Star Business — Economy · v0.1</title>
+    <title>Midbridge Colony — Economy</title>
     <style>
       :root {
         --bg: #0e1116;
@@ -310,6 +310,25 @@
       .mini-table td {
         padding: 5px 6px;
       }
+      #tierComparison .producer-tier {
+        background: rgba(255, 255, 255, 0.035);
+      }
+      #tierComparison .producer-complexity th {
+        padding-left: 22px;
+        font-weight: 400;
+      }
+      #tierComparison .producer-toggle {
+        padding: 0;
+        border: 0;
+        background: transparent;
+        color: inherit;
+        font: inherit;
+        cursor: pointer;
+      }
+      #tierComparison .producer-toggle:focus-visible {
+        outline: 2px solid currentColor;
+        outline-offset: 3px;
+      }
       .delta-up {
         color: var(--good);
       }
@@ -499,7 +518,7 @@
           <div class="loading-ring2"></div>
           <div class="loading-core-dot"></div>
         </div>
-        <div class="loading-title">STAR BUSINESS</div>
+        <div class="loading-title">MIDBRIDGE COLONY</div>
         <div class="loading-sub">Build the Colony. Supply the Fleet.</div>
         <div id="loadingStatus" class="loading-status">Establishing uplink…</div>
       </div>
@@ -507,11 +526,12 @@
     <header>
       <div class="row">
         <div class="grow">
-          <h1>Star Business — Economy · v0.1</h1>
+          <h1>Midbridge Colony — Economy</h1>
           <div class="sub">
             Build the Colony. Supply the Fleet. · 1,000,000 distributors
           </div>
         </div>
+        <span id="companyNumberingNote" class="sub">Tier −1 · Gaia 0x0</span>
         <span id="kernel" class="pill">Engine: loading</span>
       </div>
     </header>
@@ -551,8 +571,8 @@
             <div class="field"><label>License (equity asset)</label><input id="t0License" type="number" min="0" step="any" value="22000000" /></div>
             <div class="field"><label>Machinery per system (equity asset)</label><input id="t0Machinery" type="number" min="0" step="any" value="12250000" /></div>
             <div class="field"><label>Reserve</label><input id="t0Reserve" type="number" min="0" step="any" value="1000000" /></div>
-            <div class="field"><label>Capacity / tick</label><input id="t0Capacity" type="number" value="200000" /></div>
-            <div class="field"><label>Storage</label><input id="t0Storage" type="number" value="500000" /></div>
+            <div class="field"><label>Capacity / machine / tick</label><input id="t0Capacity" type="number" value="500000" /></div>
+            <div class="field"><label>Storage</label><input id="t0Storage" type="number" value="40000000" /></div>
             <div class="field"><label>Extraction base cost</label><input id="baseCost" type="number" min="0" step="any" value="1" /></div>
             <div class="field"><label>First-guess t0Markup</label><input id="t0Markup" type="number" step=".01" value=".25" /></div>
             <div class="field"><label>Minimum wholesale lot</label><input id="minWholesaleLot" type="number" value="1000" /></div>
@@ -563,34 +583,35 @@
             <div class="field"><label>Equity / firm</label><input id="t1Equity" type="number" min="0" step="any" value="1500000" /></div>
             <div class="field"><label>License (equity asset)</label><input id="t1License" type="number" min="0" step="any" value="1000000" /></div>
             <div class="field"><label>Machinery</label><input id="t1Machinery" type="number" min="0" step="any" value="15000" /></div>
-            <div class="field"><label>Capacity / machine / tick</label><input id="t1Capacity" type="number" min="0" step="any" value="2000" /></div>
+            <div class="field"><label>C-1 capacity / machine / tick</label><input id="t1Capacity" type="number" min="0" step="any" value="6000" /></div>
+            <div class="field"><label>C-2 capacity / machine / tick</label><input id="t1CapacityC2" type="number" min="0" step="any" value="6000" /></div>
             <div class="field"><label>Material cost / unit</label><input id="t1MaterialCost" type="number" min="0" step="any" value="1.25" /></div>
             <div class="field"><label>First-guess t0Markup</label><input id="t1Markup" type="number" step=".01" value=".25" /></div>
           </div>
           <div class="param-group">
-            <h3>Manufacturers (C-3 … C-5)</h3>
+            <h3>Manufacturers (C-3 … C-4)</h3>
             <div class="group-note">Starting cash = equity − license − machinery, per complexity. Conversion = factor × max(1, c−1).</div>
             <div class="field"><label>Equity / firm</label><input id="t2Equity" type="number" min="0" step="any" value="1500000" /></div>
             <div class="field"><label>License (equity asset)</label><input id="t2License" type="number" min="0" step="any" value="1000000" /></div>
             <div class="field"><label>Machinery · C-3</label><input id="t2Machinery3" type="number" min="0" step="any" value="75000" /></div>
             <div class="field"><label>Machinery · C-4</label><input id="t2Machinery4" type="number" min="0" step="any" value="375000" /></div>
-            <div class="field"><label>Machinery · C-5</label><input id="t2Machinery5" type="number" min="0" step="any" value="420000" /></div>
-            <div class="field"><label>Capacity · C-3</label><input id="t2Capacity3" type="number" min="0" step="any" value="30" /></div>
-            <div class="field"><label>Capacity · C-4</label><input id="t2Capacity4" type="number" min="0" step="any" value="20" /></div>
-            <div class="field"><label>Capacity · C-5</label><input id="t2Capacity5" type="number" min="0" step="any" value="10" /></div>
-            <div class="field"><label>Material cost / unit</label><input id="t2MaterialCost" type="number" min="0" step="any" value="1.875" /></div>
+            <div class="field"><label>Capacity · C-3</label><input id="t2Capacity3" type="number" min="0" step="any" value="32" /></div>
+            <div class="field"><label>Capacity · C-4</label><input id="t2Capacity4" type="number" min="0" step="any" value="24" /></div>
             <div class="field"><label>Conversion factor</label><input id="conversionFactor" type="number" min="0" step="any" value=".25" /></div>
-            <div class="field"><label>Firm storage pool</label><input id="storage" type="number" min="1" step="any" value="20000" /></div>
+            <div class="field"><label>T2 storage pool (space)</label><input id="storage" type="number" min="1" step="any" value="20000" /></div>
+            <div class="field"><label>C-1 refinery storage (space)</label><input id="t1C1Storage" type="number" min="1" step="any" value="50000" /></div>
+            <div class="field"><label>C-2 refinery storage (space)</label><input id="t1C2Storage" type="number" min="1" step="any" value="50000" /></div>
+            <div class="field"><label>Storage rent ($/1,000 spaces/tick)</label><input id="storageRentPerUnitYear" type="number" min="0" step=".01" value="2.8" /></div>
           </div>
           <div class="param-group">
             <h3>Distributors · Demand</h3>
             <div class="group-note">1,000,000 distributors; V = unit cost, η = elasticity.</div>
-            <div class="field"><label>Activation / tick</label><input id="distributorActivation" type="number" min="0" max="1" step=".01" value=".2" /></div>
+            <div class="field"><label>Activation / tick</label><input id="distributorActivation" type="number" min="0" max="1" step=".001" value=".105" /></div>
             <div class="field"><label>Comparison offers</label><input id="distributorSearchOffers" type="number" min="1" max="20" value="5" /></div>
             <div class="field"><label>Value multiplier min</label><input id="chokeMin" type="number" step=".01" value="1.8" /></div>
             <div class="field"><label>Value multiplier max</label><input id="chokeMax" type="number" step=".01" value="3" /></div>
             <div class="field"><label>Elasticity η</label><input id="elasticity" type="number" step=".05" value="2" /></div>
-            <div class="field"><label>Production margin band</label><input id="productionMarginBand" type="number" min=".001" max="1" step=".005" value=".05" /></div>
+            <div class="field"><label title="Estimated margin after production cost, allocated per-tick rent, and forecast switching income/expense. The equity exemption waives rent only.">Production net margin band</label><input id="productionMarginBand" type="number" min=".001" max="1" step=".005" value=".05" /></div>
             <div class="field"><label>T2 reservation premium</label><input id="t2ReservationPremium" type="number" min="0" step=".05" value=".25" /></div>
           </div>
           <div class="param-group">
@@ -610,7 +631,7 @@
           <strong>Selected company control · Admin</strong>
           <p class="group-note">Admin tools control resource companies, refineries and manufacturers for economy testing. The setting follows a human investor competing with opportunist investors and robotic executives as a human–robot manufacturing colony prepares for an approaching war and sustains civilian life.</p>
           <div class="field"><label>Producer</label><select id="playerTier"><option value="T0">Resource company</option><option value="T1">Refinery</option><option value="T2">Manufacturer</option></select></div>
-          <div class="field" id="t2ControlId" hidden><label>Manufacturer #</label><input id="t2PlayerCompany" type="number" min="1" max="60000" value="1" /></div>
+          <div class="field" id="t2ControlId" hidden><label>Manufacturer company number</label><input id="t2PlayerCompany" type="text" spellcheck="false" autocomplete="off" placeholder="0x…" /></div>
           <div class="field">
             <label id="playerCompanyLabel">Refinery</label
             ><select id="playerCompany"></select>
@@ -718,11 +739,15 @@
                 <thead>
                   <tr>
                     <th>Producer</th>
-                    <th>Products</th>
+                    <th>Complexity</th>
                     <th>Firms</th>
+                    <th>Capacity · units / tick</th>
+                    <th>Utilization</th>
+                    <th>Customer fulfillment</th>
                     <th>Cash</th>
                     <th>Cash / firm</th>
                     <th>Book equity</th>
+                    <th>Book equity / company</th>
                     <th>Inventory · units</th>
                     <th>Bought / tick</th>
                     <th>Made / tick</th>
@@ -730,7 +755,7 @@
                     <th>Revenue / tick</th>
                     <th>Revenue / firm / tick</th>
                     <th>COGS / tick</th>
-                    <th>Gross profit / tick</th>
+                    <th>Gross profit / tick</th><th>Net profit / tick</th><th>Net profit / company / tick</th><th>Net margin</th>
                     <th>Gross margin</th>
                     <th>Reliability</th>
                   </tr>
@@ -738,7 +763,8 @@
                 <tbody id="tierComparison"></tbody>
               </table>
             </div>
-            <p class="analytics-note">Current tick · per-firm figures divide by all firms in the tier. COGS is the cost basis of units sold — for resource companies that is the cost of extracting raw elements from the environment — and gross profit is revenue minus COGS in every tier. Unsold extraction adds inventory rather than reducing gross profit. — means unavailable or no activity for a ratio.</p>
+            <p class="analytics-note"><strong>Net profit = gross profit + switching income − switching expense − storage expense.</strong> Rent is charged every tick. Net margin = net profit ÷ revenue; undefined when revenue is zero. T0 is exempt. T1/T2 below $2M book equity before billing are exempt; at exactly $2M they are eligible. Existing arrears are held until eligible. Switching transfers are included as income for the incumbent and expense for the buyer. Historical snapshots without those postings show net earnings as unavailable. Product/complexity views allocate each paying company’s charge across its own installed lines; company views use each company’s full rent. Amounts shown are per tick.</p>
+            <p class="analytics-note">Current tick · indented complexity rows break down the tier totals; do not add them to their parent rows. Per-firm figures use the firms represented by each row. A company with several complexities can appear in several complexity rows. Cash, book equity, inventory and purchases use actual company records. For companies spanning complexities, shared company totals are allocated equally across installed lines. Capacity is installed output per tick; utilization is production divided by capacity. Customer fulfillment is fulfilled units divided by desired units: company buyers for T0/T1, Distributors for T2 (including C-3/C-4). Sorting keeps complexities beneath their tier. COGS is the cost basis of units sold; unsold production adds inventory rather than reducing gross profit. — means unavailable or no activity for a ratio.</p>
             <div class="table-toolbar">
               <label for="overviewTier">Chart scope</label>
               <select id="overviewTier">
@@ -798,15 +824,21 @@
             </p>
           </section>
           <section class="panel">
-            <h3>Product category comparison · C-0 through C-5</h3>
-            <p class="analytics-note">Complexity counts raw-element ancestry: C-0 is the four simple elements, C-1 uses one element, C-2 combines two, and C-3–C-5 combine materials with three to five ancestral elements. More complex final goods receive fewer unit orders and higher starting markups. Manufacturers share capacity across their products. Actual recipes appear in the goods table.</p>
+            <h3>Product category comparison · C-0 through C-4</h3>
+            <p class="analytics-note">Complexity counts raw-element ancestry: C-0 is the four simple elements, C-1 uses one element, C-2 combines two, and C-3–C-4 combine materials with three or four ancestral elements. Distributor demand weights per invented product are 4 for C3, 1 for C4 from C1+C3, and 8 for C4 from C2+C2. Activation is 10.5% per tick. Each installed production line has its own capacity. Actual recipes appear in the goods table.</p>
             <div class="table-toolbar">
               <label for="categoryMetric">Compare categories by</label>
               <select id="categoryMetric">
-                <option value="profitPerLine">Gross profit / line · $ / tick</option>
+                <option value="grossProfitPerCompany">Gross profit / company · $ / tick</option>
+                <option value="netProfitPerCompany" selected>Net profit / company · $ / tick</option>
+                <option value="revenuePerCompany">Revenue / company · $ / tick</option>
+                <option value="rentPerCompany">Rent / company · $ / tick</option>
+                <option value="soldPerCompany">Sales / company · units / tick</option>
+                <option value="madePerCompany">Production / company · units / tick</option>
+                <option value="profitPerLine">Gross profit / line · $ / tick</option><option value="netProfitPerLine">Net profit / line · $ / tick</option>
                 <option value="soldPerLine">Sales / line · units / tick</option>
                 <option value="revenue">Revenue · $ / tick</option>
-                <option value="grossProfit">Gross profit · $ / tick</option>
+                <option value="grossProfit">Gross profit · $ / tick</option><option value="netProfit">Net profit</option><option value="netMargin">Net margin</option>
                 <option value="margin">Gross margin</option>
                 <option value="utilization">Capacity utilization</option>
                 <option value="machineryPrice">Machinery / line · $</option>
@@ -816,17 +848,16 @@
               </select>
               <button id="categorySplitMerge" type="button" title="Toggle split/merged category view">Merge</button>
             </div>
-            <span class="chart-caption" id="categoryComparisonCaption">Gross profit / line · $ / tick</span>
+            <span class="chart-caption" id="categoryComparisonCaption">Net profit / company · $ / tick</span>
+            <p class="analytics-note">Per-company values divide category totals by distinct companies with an installed line in that category, including idle companies. A company producing multiple complexities counts once in each relevant category; only that category’s activity and allocated expenses enter its average.</p>
             <div id="categoryChartsSplit">
-              <span class="chart-caption">Extractors · C-0</span>
-              <div class="chart"><canvas id="categoryComparisonChartT0" role="img" aria-label="Extractor category comparison"></canvas></div>
-              <span class="chart-caption">Refineries · C-1 and C-2</span>
-              <div class="chart"><canvas id="categoryComparisonChartT1" role="img" aria-label="Refinery category comparison"></canvas></div>
-              <span class="chart-caption">Manufacturers · C-3, C-4 and C-5</span>
+              <span class="chart-caption">Extractors and Refineries · C-0, C-1 and C-2</span>
+              <div class="chart"><canvas id="categoryComparisonChartT01" role="img" aria-label="Extractor and refinery category comparison"></canvas></div>
+              <span class="chart-caption">Manufacturers · C-3 and C-4</span>
               <div class="chart"><canvas id="categoryComparisonChartT2" role="img" aria-label="Manufacturer category comparison"></canvas></div>
             </div>
             <div id="categoryChartsMerged" hidden>
-              <span class="chart-caption">Extractors, Refineries and Manufacturers · C-0 through C-5</span>
+              <span class="chart-caption">Extractors, Refineries and Manufacturers · C-0 through C-4</span>
               <div class="chart"><canvas id="categoryComparisonChartAll" role="img" aria-label="Combined category comparison"></canvas></div>
             </div>
             <div class="table-wrap industry-table" tabindex="0" aria-label="Product category comparison table, scroll for more metrics">
@@ -850,8 +881,8 @@
                     <th>Sold / line / tick</th>
                     <th>Revenue / tick</th>
                     <th>COGS / tick</th>
-                    <th>Gross profit / tick</th>
-                    <th>Profit / line / tick</th>
+                    <th>Gross profit / tick</th><th>Net profit / tick</th><th>Net margin</th>
+                    <th>Profit / line / tick</th><th>Net profit / line / tick</th>
                     <th>Gross margin</th>
                     <th>Customer desired / tick</th>
                     <th>Customer fill</th>
@@ -861,7 +892,7 @@
                 <tbody id="productCategories"></tbody>
               </table>
             </div>
-            <p class="analytics-note">Current tick · prices and unit costs are weighted by installed lines; margin = total gross profit / total revenue. Per-line figures account for different category sizes. Customer demand, fulfillment and unmet units describe company buyers for C-1/C-2 and distributors for C-3–C-5. Sales include intermediate transactions; category revenues must not be added as final distributor spending. Click column headers to sort.</p>
+            <p class="analytics-note">Current tick · prices and unit costs are weighted by installed lines; margin = total gross profit / total revenue. Per-line figures account for different category sizes. Customer demand, fulfillment and unmet units describe company buyers for C-1/C-2 and Distributors for C-3–C-4. C3 also sells to manufacturers; the displayed final-demand figures cover Distributors only. Sales include intermediate transactions; category revenues must not be added as final distributor spending. Click column headers to sort.</p>
           </section>
         </section>
         <section id="environment" class="dashboard-tier stack" aria-labelledby="environmentHeading">
@@ -904,7 +935,7 @@
               </div>
               <div class="stat">
                 <span>Book equity · $</span>
-                <b id="t0Equity">—</b>
+                <b id="t0BookEquity">—</b>
               </div>
               <div class="stat">
                 <span>Extracted inventory · units</span>
@@ -930,6 +961,8 @@
                 <span>Gross profit · $ / tick</span>
                 <b id="t0GrossProfit">—</b>
               </div>
+              <div class="stat"><span>Net profit · $ / tick</span><b id="t0NP">—</b></div>
+              <div class="stat"><span>Net margin</span><b id="t0NM">—</b></div>
               <div class="stat">
                 <span>Utilization</span>
                 <b id="t0Utilization">—</b>
@@ -972,7 +1005,7 @@
                     <th>Volume / tick</th>
                     <th>Revenue / tick</th>
                     <th>COGS / tick</th>
-                    <th>Gross profit / tick</th>
+                    <th>Gross profit / tick</th><th>Net profit / tick</th><th>Net margin</th>
                     <th>HHI</th>
                     <th>Reliability</th>
                   </tr>
@@ -1036,7 +1069,7 @@
                     <th>Sold / tick</th>
                     <th>Revenue / tick</th>
                     <th>COGS / tick</th>
-                    <th>Gross profit / tick</th>
+                    <th>Gross profit / tick</th><th>Net profit / tick</th><th>Net margin</th>
                     <th>Mean posted price</th>
                     <th>Reliability</th>
                   </tr>
@@ -1070,7 +1103,7 @@
               </div>
               <div class="stat">
                 <span>Book equity · $</span>
-                <b id="t1Equity">—</b>
+                <b id="t1BookEquity">—</b>
               </div>
               <div class="stat">
                 <span>Input inventory · units</span>
@@ -1109,6 +1142,11 @@
                 <span>Gross profit · $ / tick</span>
                 <b id="t1GP">—</b>
               </div>
+              <div class="stat"><span>Net profit · $ / tick</span><b id="t1NP">—</b></div>
+              <div class="stat"><span>Net margin</span><b id="t1NM">—</b></div>
+              <div class="stat"><span>Rent / eligible company / tick</span><b id="t1AnnualRent">—</b></div>
+              <div class="stat"><span>Storage rent paid · cumulative</span><b id="t1RentPaid">—</b></div>
+              <div class="stat"><span>Unpaid storage rent · liability</span><b id="t1RentArrears">—</b></div>
               <div class="stat">
                 <span>Realized gross margin</span>
                 <b id="t1Margin">—</b>
@@ -1223,7 +1261,7 @@
                     <th>Made / tick</th>
                     <th>Sold / tick</th>
                     <th>Revenue / tick</th>
-                    <th>Gross profit / tick</th>
+                    <th>Gross profit / tick</th><th>Net profit / tick</th><th>Net margin</th>
                     <th>Reliability</th>
                     <th>Market share</th>
                   </tr>
@@ -1289,7 +1327,7 @@
                     <th>Made / tick</th>
                     <th>Sold / tick</th>
                     <th>Revenue / tick</th>
-                    <th>GP / tick</th>
+                    <th>GP / tick</th><th>Net profit / tick</th><th>Net margin</th>
                     <th>Reliability</th>
                   </tr>
                 </thead>
@@ -1351,9 +1389,14 @@
                 <span>Gross profit · $ / tick</span>
                 <b id="t2GP">—</b>
               </div>
+              <div class="stat"><span>Net profit · $ / tick</span><b id="t2NP">—</b></div>
+              <div class="stat"><span>Net margin</span><b id="t2NM">—</b></div>
+              <div class="stat"><span>Rent / eligible company / tick</span><b id="t2AnnualRent">—</b></div>
+              <div class="stat"><span>Storage rent paid · cumulative</span><b id="t2RentPaid">—</b></div>
+              <div class="stat"><span>Unpaid storage rent · liability</span><b id="t2RentArrears">—</b></div>
               <div class="stat">
                 <span>Book equity · $</span>
-                <b id="t2Equity">—</b>
+                <b id="t2BookEquity">—</b>
               </div>
               <div class="stat">
                 <span>Installed capacity / tick</span>
@@ -1376,7 +1419,7 @@
                 <b id="t2Margin">—</b>
               </div>
               <div class="stat">
-                <span>C-3–C-5 distributor unit fulfillment</span>
+                <span>C-3–C-4 distributor unit fulfillment</span>
                 <b id="t2Fill">—</b>
               </div>
             </div>
@@ -1388,14 +1431,14 @@
               <label for="t2SectorMetric">Sector comparison</label>
               <select id="t2SectorMetric">
                 <option value="revenue">Revenue · $ / tick</option>
-                <option value="grossProfit">Gross profit · $ / tick</option>
+                <option value="grossProfit">Gross profit · $ / tick</option><option value="netProfit">Net profit</option><option value="netMargin">Net margin</option>
                 <option value="sold">Sales · units / tick</option>
                 <option value="utilization">Production utilization</option>
                 <option value="fillRate">Customer fulfillment</option>
               </select>
             </div>
             <p class="analytics-note">
-              Manufacturing sectors organize the uses of physical goods independently of refining materials. The complete pool has 420 distinct unordered refined-material recipes. Each sector starts with 20 active markets: 2 C-3, 6 C-4 and 12 C-5. The remaining 220 recipes await invention. Each good has one unique name, market code and refined-input recipe. Different materials can share elemental ancestry. Sectors group products by their market. Charts retain the latest 0xF0 reported ticks; utilization is production divided by installed capacity. Sector selection applies to the three industry trend charts; the summary and comparison cover all manufacturers.
+              The catalog has 14 material-linked manufacturing sectors and 255 products: 40 C3 and 215 C4. Every sector’s recipes directly use its preferred refined material. C4 recipes can buy C3 products from other manufacturers. Initially, 105 products are invented (36 C3 and 69 C4); 150 remain uninvented. Company allocation favors simpler products: 33,120 C3 and 17,280 C4 manufacturers. Distributor routing follows capacity after intermediate use, with 10.5% activation per tick. Charts retain the latest 0xF0 reported ticks; utilization is production divided by installed capacity. Sector selection applies to the three industry trend charts; the summary and comparison cover all manufacturers.
             </p>
             <div class="analytics-grid">
               <div>
@@ -1443,7 +1486,7 @@
                     <th>Sold / tick</th>
                     <th>Revenue / tick</th>
                     <th>COGS / tick</th>
-                    <th>Gross profit / tick</th>
+                    <th>Gross profit / tick</th><th>Net profit / tick</th><th>Net margin</th>
                     <th>Margin</th>
                     <th>Desired / tick</th>
                     <th>Fulfilled / tick</th>
@@ -1480,7 +1523,7 @@
                       <th>Made / tick</th>
                       <th>Sold / tick</th>
                       <th>Revenue / tick</th>
-                      <th>Gross profit / tick</th>
+                      <th>Gross profit / tick</th><th>Net profit / tick</th><th>Net margin</th>
                       <th>Margin</th>
                     </tr>
                   </thead>
@@ -1499,12 +1542,11 @@
                   <option value="">All manufacturing complexity bands</option>
                   <option value="3">Complexity 3 · C-3</option>
                   <option value="4">Complexity 4 · C-4</option>
-                  <option value="5">Complexity 5 · C-5</option>
                 </select>
                 <label for="t2ComplexityMetric">Band comparison</label>
                 <select id="t2ComplexityMetric">
                   <option value="revenue">Revenue · $ / tick</option>
-                  <option value="grossProfit">Gross profit · $ / tick</option>
+                  <option value="grossProfit">Gross profit · $ / tick</option><option value="netProfit">Net profit</option><option value="netMargin">Net margin</option>
                   <option value="sold">Sales · units / tick</option>
                   <option value="active">Desired demand · units / tick</option>
                   <option value="utilization">Production utilization</option>
@@ -1512,7 +1554,7 @@
                 </select>
               </div>
               <p class="analytics-note">
-                Complexity counts raw-element ancestry: C-3 combines three ancestral elements, C-4 combines four and C-5 combines five. Each step up is served by fewer, larger firms, so market activity and demand are read per band rather than per product. Charts retain the latest 0xF0 reported ticks; utilization is production divided by installed capacity and fulfillment is fulfilled demand divided by desired demand. Band selection applies to the three trend charts; the comparison covers all three bands.
+                Complexity counts raw-element ancestry: C-3 combines three ancestral elements and C-4 combines four. Demand weights depend on the recipe route as well as complexity. Charts retain the latest 0xF0 reported ticks; utilization is production divided by installed capacity and fulfillment is fulfilled demand divided by desired demand. Band selection applies to the three trend charts; the comparison covers both bands.
               </p>
               <div class="analytics-grid">
                 <div>
@@ -1557,7 +1599,7 @@
                       <th>Made / tick</th>
                       <th>Sold / tick</th>
                       <th>Revenue / tick</th>
-                      <th>Gross profit / tick</th>
+                      <th>Gross profit / tick</th><th>Net profit / tick</th><th>Net margin</th>
                       <th>Margin</th>
                       <th>Desired / tick</th>
                       <th>Customer fill</th>
@@ -1572,7 +1614,7 @@
           </section>
           <section class="panel">
             <strong>Goods catalog · manufactured goods</strong>
-            <p id="recipePoolSummary" class="analytics-note">200 goods · 220 reserved recipes · 20 C-3 · 60 C-4 · 120 C-5</p>
+            <p id="recipePoolSummary" class="analytics-note">255 goods · 0 reserved recipes · 40 C-3 · 215 C-4</p>
             <p class="analytics-note">Each recipe has exactly one active good; reserved recipes await invention. Ingredient order does not create another market; separate basic inputs differ from an already processed compound input.</p>
             <div id="t2NeedOverview" class="table-toolbar" aria-label="Manufacturing sectors"></div>
             <div class="table-toolbar">
@@ -1614,7 +1656,7 @@
                     <th>Made / tick</th>
                     <th>Sold / tick</th>
                     <th>Revenue / tick</th>
-                    <th>Gross profit / tick</th>
+                    <th>Gross profit / tick</th><th>Net profit / tick</th><th>Net margin</th>
                     <th>Margin</th>
                     <th>Desired / tick</th>
                     <th>Customer fill</th>
@@ -1648,7 +1690,7 @@
                 <option value="cash">Cash</option>
                 <option value="equity">Book equity</option>
                 <option value="revenue">Revenue</option>
-                <option value="grossProfit">Gross profit</option>
+                <option value="grossProfit">Gross profit</option><option value="netProfit">Net profit</option>
                 <option value="margin">Margin</option>
                 <option value="utilization">Utilization</option>
                 <option value="capacity">Capacity</option>
@@ -1684,7 +1726,7 @@
                     <th>Made / tick</th>
                     <th>Sold / tick</th>
                     <th>Revenue / tick</th>
-                    <th>Gross profit / tick</th>
+                    <th>Gross profit / tick</th><th>Net profit / tick</th><th>Net margin</th>
                     <th>Margin</th>
                     <th>Reliability</th>
                     <th>
@@ -1752,7 +1794,7 @@
               —
             </p>
             <p class="analytics-note">
-              Star Business is a human–robot manufacturing colony building itself into the supply base for a coming galactic war. Its output covers housing, medical equipment, gardens, archives, rescue vehicles, and everyday trade. One million distributors buy, switch suppliers, and keep the colony running; prices, reliability, loyalty, supply, and demand emerge from their decisions. They purchase only C-3–C-5 manufactured goods; refined materials supply manufacturers exclusively. Every market delivers a physical good. The distributor count stays fixed, and final purchasing budgets are unlimited in this model.
+              Midbridge Colony is a human–robot manufacturing colony building itself into the supply base for a coming galactic war. Its output covers housing, medical equipment, gardens, archives, rescue vehicles, and everyday trade. One million distributors buy, switch suppliers, and keep the colony running; prices, reliability, loyalty, supply, and demand emerge from their decisions. They purchase only C-3–C-4 manufactured goods; refined materials supply manufacturers exclusively. Every market delivers a physical good. The distributor count stays fixed, and final purchasing budgets are unlimited in this model.
             </p>
             <div class="stat-grid industry-kpis">
               <div class="stat">
@@ -1837,11 +1879,20 @@
             </div>
           </section>
         </section>
+        <section class="panel">
+          <details id="namingCatalog">
+            <summary>Midbridge Colony · Product, company & machinery catalog</summary>
+            <p id="catalogWorld" class="analytics-note"></p>
+            <div id="catalogReference"></div>
+          </details>
+        </section>
       </section>
     </main>
 
-    <script src="./catalog.js"></script>
-    <script src="./bridge.js"></script>
-    <script src="./app.js"></script>
+    <script src="./model-helpers.js"></script>
+    <script src="./midbridge-catalog.js"></script>
+    <script src="./transport.js"></script>
+    <script src="./profitability.js"></script>
+    <script src="./app.js?v=producer-complexity-5"></script>
   </body>
 </html>

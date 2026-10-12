@@ -1,4 +1,4 @@
-"""WorldState: NumPy typed arrays + the JS worker's initialization sequence.
+"""WorldState: NumPy typed arrays + the world's initialization sequence.
 
 The array names, dtypes and shapes mirror ``the canon machine contract (docs/design_canon.md §12)``
 ``sourceViews()`` / ``reset()`` exactly, so the Python port is a mechanical
@@ -6,74 +6,35 @@ transcription.  See ``docs/design_canon.md`` §6.
 """
 from __future__ import annotations
 
+from functools import lru_cache
+
 import numpy as np
 
 from . import model as M
 from .config import normalize_config
 from .rng import hash_seed_vec
 
-# --------------------------------------------------------------------------
-# Tier 0 profiles (worker `T0P`): the 20 extraction companies, in fixed order.
-# Names follow the Star Business naming catalog §4.  Coverage is 2 four-market,
-# 4 three-market, 6 two-market and 8 single-market companies.
-#
-# Special duties (two-market companies):
-#   Mudrock Machinery Co.                     -> machinery manufacturing
-#   Steam Ridge Financial Inc.                -> financial services
-#   Dustline Spatial Solutions Corp.          -> warehouses, land, industrial space
-#   Flare Basin Advertising Incorporated      -> advertising
-#   Cloudline Games & Entertainment Corp.     -> games & entertainment
-#   Hotrock Utility Company                   -> utilities
-#
-# Civic duties (three-market corporations):
-#   Baseline Resource Corporation  -> Colony Policy
-#   Union Charter Resources Inc.   -> Business Registry
-#   Signal Point Resources Corp.   -> Market Intelligence
-#   Commonline Resources Company   -> Community Hub
-#
-# Single-market companies (pure extractors, two per element):
-#   Water: Bluegate Water Co. / Coldwell Ice Resources Inc.
-#   Earth: Bedrock Mining Corp. / Iron County Minerals Company
-#   Fire:  Furnace Creek Energy Inc. / Sunbelt Energy Corporation
-#   Air:   Skyline Gas Co. / Highband Atmospherics Inc.
-# --------------------------------------------------------------------------
-_T0P_RAW = [
-    ['Raw Materials Corp.', ['Water', 'Earth', 'Fire', 'Air']],
-    ['Elements Inc.', ['Water', 'Earth', 'Fire', 'Air']],
-    ['Baseline Resource Corporation', ['Water', 'Earth', 'Fire']],
-    ['Union Charter Resources Inc.', ['Water', 'Earth', 'Air']],
-    ['Signal Point Resources Corp.', ['Water', 'Fire', 'Air']],
-    ['Commonline Resources Company', ['Earth', 'Fire', 'Air']],
-    ['Mudrock Machinery Co.', ['Water', 'Earth']],
-    ['Steam Ridge Financial Inc.', ['Water', 'Fire']],
-    ['Cloudline Games & Entertainment Corporation', ['Water', 'Air']],
-    ['Hotrock Utility Company', ['Earth', 'Fire']],
-    ['Dustline Spatial Solutions Corp.', ['Earth', 'Air']],
-    ['Flare Basin Advertising Incorporated', ['Fire', 'Air']],
-    ['Bluegate Water Co.', ['Water']],
-    ['Coldwell Ice Resources Inc.', ['Water']],
-    ['Bedrock Mining Corp.', ['Earth']],
-    ['Iron County Minerals Company', ['Earth']],
-    ['Furnace Creek Energy Inc.', ['Fire']],
-    ['Sunbelt Energy Corporation', ['Fire']],
-    ['Skyline Gas Co.', ['Air']],
-    ['Highband Atmospherics Inc.', ['Air']],
-]
+# Renamed existing roster; coverage, ordering and company roles are unchanged.
+# Existing auxiliary roles remain attached to the same T0 IDs: 2 policy,
+# 3 registry, 4 intelligence, 5 community, 6 machinery, 7 finance,
+# 8 entertainment, 9 utilities, 10 storage/land, 11 advertising.
+# The naming commission's extraction-only claim is deliberately not adopted.
+_T0P_RAW = [(p['name'],p['elements_extracted']) for p in M.NAMING_CATALOG['t0_companies']]
 _EI = {element: i for i, element in enumerate(M.ELEMENTS)}
-T0P = [{'id': i, 'name': name, 'elements': elements,
+T0P = [{'id': i, 'companyNumber': M.company_number('T0',i), 'name': M._DATA['MIDBRIDGE']['tier0Companies'][i]['name'], 'elements': elements,
         'element_indices': sorted(_EI[element] for element in elements)}
        for i, (name, elements) in enumerate(_T0P_RAW)]
 
-# Tier 1 cohort -> native product code (worker `T1P`).
+# Tier 1 cohort -> native product code (the product table).
 T1P = [{'name': p['companyName'], 'product': p['code']} for p in M.PRODUCTS]
 
 
 def quantize_whole(x: float, floor: float = 0.0) -> float:
-    return M.round_to_cent(x)
+    return M.round_to_cent(M.clamp(x, M.MIN_UNIT_PRICE, M.MAX_UNIT_PRICE))
 
 
 def quantize_round(x: float, floor: float = 0.0) -> float:
-    return M.round_to_cent(x)
+    return M.round_to_cent(M.clamp(x, M.MIN_UNIT_PRICE, M.MAX_UNIT_PRICE))
 
 
 # --------------------------------------------------------------------------
@@ -110,20 +71,24 @@ def _array_spec(cfg):
     # many entries are initialized and processed.
     N2F = M.N2_FIRMS
     NUF = M.N_DISTRIBUTORS
-    ML = min(M.MAX_T2_LINES, cfg['t2FirmCount'])  # single-machine: one line per firm
-    n_t2 = len(M.T2_PRODUCTS)  # 200
+    ML = min(M.MAX_T2_LINES, cfg['t2FirmCount'] * M.T2_MAX_PRODUCTS_PER_FIRM)
+    n_t2 = len(M.T2_PRODUCTS)  # 105 invented
 
     spec = [
         ('t0Opportunities', 'u32', NE),
         ('t1Opportunities', 'u32', NP),
         ('t2Opportunities', 'u32', n_t2),
         ('t2PotentialOrders', 'u32', n_t2),
+        ('t2IntermediateSold', 'f64', n_t2),
+        ('t2InputConsumed', 'f64', M.NI),
+        ('t2IntermediateRevenue', 'f64', n_t2),
     ]
     spec += _learn('t0', N0 * NE)
     spec += _learn('t1', N1 * NP)
-    # t2 learner/demand arrays are MAX_T2_LINES (sourceViews passes MAX_T2_LINES
-    # to priceLearningViews), NOT the cfg-scaled ML used by the line arrays.
-    spec += _learn('t2', M.MAX_T2_LINES)
+    spec += _learn('t2', ML)
+    for tier, n in (('t0', N0), ('t1', N1), ('t2', N2F)):
+        spec += [(tier + name, 'f64', n) for name in
+                 ('SwitchingIncome', 'SwitchingExpense', 'SwitchingNetEMA')]
     spec += [
         ('difficulty', 'f64', NE),
         ('t0Inv', 'f64', N0 * NE),
@@ -146,6 +111,9 @@ def _array_spec(cfg):
         ('raw', 'f64', N1 * NE),
         ('rawBasis', 'f64', N1 * NE),
         ('t1Cash', 'f64', N1),
+        ('t1RentArrears', 'f64', N1),
+        ('t1RentPaid', 'f64', N1),
+        ('t1RentCharge', 'f64', N1),
         ('t1EqBook', 'f64', N1),
         ('t1Controller', 'u8', N1),
         ('t1Operates', 'u8', N1 * NP),
@@ -185,17 +153,20 @@ def _array_spec(cfg):
         ('t1RelPriceSum', 'f64', N1 * NP),
         ('t1RelPriceSamples', 'u32', N1 * NP),
         ('t2Cash', 'f64', N2F),
+        ('t2RentArrears', 'f64', N2F),
+        ('t2RentPaid', 'f64', N2F),
+        ('t2RentCharge', 'f64', N2F),
         ('t2Bought', 'f64', N2F),
         ('t2EqBook', 'f64', N2F),
         ('t2LastSaleTick', 'u32', N2F),
         ('t2Raw', 'f64', N2F * NE),
         ('t2RawBasis', 'f64', N2F * NE),
-        ('t2T1Raw', 'f64', N2F * NP),
-        ('t2T1Basis', 'f64', N2F * NP),
+        ('t2T1Raw', 'f64', N2F * M.NI),
+        ('t2T1Basis', 'f64', N2F * M.NI),
         ('t2Controller', 'u8', N2F),
         ('t2Capability', 'u8', N2F),
         ('t2Sector', 'u8', N2F),
-        ('t2LineFirm', 'u16', ML),
+        ('t2LineFirm', 'u32', ML),
         ('t2LineProduct', 'u16', ML),
         ('t2Fin', 'f64', ML),
         ('t2FinBasis', 'f64', ML),
@@ -214,7 +185,7 @@ def _array_spec(cfg):
         ('t2Online', 'u8', N2F),
         ('t2FirmLines', 'i32', N2F * M.T2_MAX_PRODUCTS_PER_FIRM),
         ('t2FirmLineCount', 'u8', N2F),
-        ('t2Preferred', 'i32', N2F * NP),
+        ('t2Preferred', 'i32', N2F * M.NI),
         ('t2Made', 'f64', ML),
         ('t2Rel', 'f64', ML),
         ('t2RelAttempts', 'u32', ML),
@@ -225,6 +196,7 @@ def _array_spec(cfg):
         ('t2MonthlyCapacity', 'f64', ML),
         ('distributorProduct', 'i16', NUF),
         ('distributorPreferredSupplier', 'i32', NUF),
+        ('distributorPreferredMarket', 'i16', NUF),
         ('distributorLastMarket', 'i16', NUF),
         ('distributorLastSupplier', 'i32', NUF),
         ('distributorLastQ', 'u16', NUF),
@@ -250,24 +222,49 @@ class WorldState:
         for name, dt, n in _array_spec(cfg):
             setattr(self, name, np.zeros(n, dtype=_DTYPES[dt]))
             self._names.append(name)
+        self.distributorPreferredMarket.fill(-1)
+        self.distributorSupplierHistory = {}
         self.t2LineCount = 0
         self.costSinks = 0.0
         self.equipmentSinks = 0.0
+        self.netEarningsAvailable = True
         self._init_loyalty_regime(cfg)
+
+    def sync_distributor_preferences(self):
+        """Bind the hot supplier cache to its product; retain other products sparsely.
+
+        Only reassigned buyers enter Python. The fixed-product million-buyer case
+        uses one vectorized comparison and leaves the compiled purchase loop intact.
+        Keys are (buyer, market); values are production-line IDs, not firm IDs.
+        """
+        markets = self.distributorProduct
+        cached = self.distributorPreferredMarket
+        unbound = cached < 0
+        cached[unbound] = markets[unbound]
+        for buyer in np.flatnonzero(cached != markets):
+            old_key = (int(buyer), int(cached[buyer]))
+            supplier = int(self.distributorPreferredSupplier[buyer])
+            if supplier >= 0:
+                self.distributorSupplierHistory[old_key] = supplier
+            else:
+                self.distributorSupplierHistory.pop(old_key, None)
+            new_key = (int(buyer), int(markets[buyer]))
+            self.distributorPreferredSupplier[buyer] = self.distributorSupplierHistory.pop(new_key, -1)
+            cached[buyer] = markets[buyer]
 
     def _init_loyalty_regime(self, cfg):
         # Adaptive loyalty-multiple regime (§12.6): an EMA of the average order
         # value per buyer class drives the switching-charge multiple M, so the
-        # charge tracks ~10% of a typical order as prices/margins drift.
+        # charge tracks ~5% of a typical order as prices/margins drift.
         self.lmUnitCost1 = float(cfg['baseCost'])                                 # raw
-        self.lmUnitCost2 = float(cfg['t1MaterialCost'] + cfg['conversionFactor'])  # material
+        self.lmUnitCost2 = M.material_switching_reference(cfg)  # material
         self.lmUnitCost3 = self._mean_t2_unit_cost(cfg)                            # good (mean)
         self.lm1 = float(cfg['loyaltyMultiple'][1])
         self.lm2 = np.array([cfg['loyaltyMultiple'][2][c] for c in (3, 4, 5)], dtype=np.float64)
         self.lm3 = float(cfg['loyaltyMultiple'][3])
-        self.aov1 = self.lm1 * self.lmUnitCost1 * 1.5 / 0.10
-        self.aov2 = self.lm2 * self.lmUnitCost2 * 1.5 / 0.10
-        self.aov3 = self.lm3 * self.lmUnitCost3 * 1.5 / 0.10
+        self.aov1 = self.lm1 * self.lmUnitCost1 * 1.5 / M.LOYALTY_ORDER_SHARE
+        self.aov2 = self.lm2 * self.lmUnitCost2 * 1.5 / M.LOYALTY_ORDER_SHARE
+        self.aov3 = self.lm3 * self.lmUnitCost3 * 1.5 / M.LOYALTY_ORDER_SHARE
         # per-tick accumulators for the T2 material AOV (split by complexity)
         self.t2MatSpend = np.zeros(3, dtype=np.float64)
         self.t2MatOrders = np.zeros(3, dtype=np.float64)
@@ -278,8 +275,7 @@ class WorldState:
 
     @staticmethod
     def _mean_t2_unit_cost(cfg):
-        return sum(cfg['t2MaterialCost'] + cfg['conversionFactor'] * max(1, p['complexity'] - 1)
-                   for p in M.T2_PRODUCTS) / len(M.T2_PRODUCTS)
+        return M.distributor_switching_reference(cfg)
 
     @property
     def array_names(self):
@@ -296,7 +292,7 @@ def zero(world: WorldState) -> None:
 
 
 # --------------------------------------------------------------------------
-# Tier 2 line installation (worker `addTier2Line`).
+# Tier 2 line installation (line installation).
 # --------------------------------------------------------------------------
 def _has_tier2_product(world, firm, product_id):
     for slot in range(int(world.t2FirmLineCount[firm])):
@@ -305,12 +301,64 @@ def _has_tier2_product(world, firm, product_id):
     return False
 
 
+@lru_cache(maxsize=64)
+def _tier1_storage_cached(base, c2):
+    # Fixed cohort identity; vectorized once per configuration, reused in hot paths.
+    capacities = np.repeat(np.where(np.array([p['complexity'] for p in M.PRODUCTS]) == 2,
+                                    c2, base), M.T1_FIRMS_PER_MATERIAL).astype(np.float64)
+    capacities.flags.writeable = False
+    return capacities
+
+
+def tier1_storage_capacities(cfg):
+    return _tier1_storage_cached(float(cfg.get('t1C1Storage', cfg['storage'])), float(cfg.get('t1C2Storage', cfg['storage'])))
+
+
+def tier1_goods_space(world, cfg, firm):
+    footprint = sum(cfg['footprint'][M.complexity(p)] for i, p in enumerate(M.PRODUCTS)
+                    if world.t1Operates[firm * M.NP + i])
+    return M.refinery_storage(cfg, firm) - footprint
+
+
+def tier2_goods_space(world, cfg, firm):
+    lines = world.t2FirmLines[firm * M.T2_MAX_PRODUCTS_PER_FIRM:
+                              firm * M.T2_MAX_PRODUCTS_PER_FIRM + int(world.t2FirmLineCount[firm])]
+    footprint = sum(cfg['footprint'][M.T2_PRODUCTS[int(world.t2LineProduct[line])]['complexity']]
+                    for line in lines)
+    return cfg['storage'] - footprint
+
+
+def tier2_occupied_space(world, cfg, firm):
+    lines = world.t2FirmLines[firm * M.T2_MAX_PRODUCTS_PER_FIRM:
+                              firm * M.T2_MAX_PRODUCTS_PER_FIRM + int(world.t2FirmLineCount[firm])]
+    return (cfg['storage'] - tier2_goods_space(world, cfg, firm)
+            + world.t2Raw[firm * M.NE:(firm + 1) * M.NE].sum()
+            + world.t2T1Raw[firm * M.NI:(firm + 1) * M.NI] @ np.array([p['complexity'] for p in M.T2_INPUT_PRODUCTS])
+            + world.t2Fin[lines] @ np.array([M.T2_PRODUCTS[int(world.t2LineProduct[l])]['complexity'] for l in lines]))
+
+
+def validate_storage(world, cfg):
+    """Reject a configuration that would put installed assets outside storage."""
+    footprint1 = np.array([cfg['footprint'][M.complexity(p)] for p in M.PRODUCTS])
+    occupied1 = (world.t1Operates.reshape(M.N1, M.NP) @ footprint1
+                 + world.raw.reshape(M.N1, M.NE).sum(axis=1)
+                 + world.t1Fin.reshape(M.N1, M.NP) @ np.array([p['complexity'] for p in M.PRODUCTS]))
+    n, lc = cfg['t2FirmCount'], int(world.t2LineCount)
+    footprint2 = np.array([cfg['footprint'][p['complexity']] for p in M.T2_PRODUCTS])
+    occupied2 = (world.t2Raw.reshape(M.N2_FIRMS, M.NE)[:n].sum(axis=1)
+                 + world.t2T1Raw.reshape(M.N2_FIRMS, M.NI)[:n] @ np.array([p['complexity'] for p in M.T2_INPUT_PRODUCTS])
+                 + np.bincount(world.t2LineFirm[:lc], minlength=n,
+                               weights=world.t2Fin[:lc] * np.array([p['complexity'] for p in M.T2_PRODUCTS])[world.t2LineProduct[:lc]] + footprint2[world.t2LineProduct[:lc]]))
+    if (occupied1 > tier1_storage_capacities(cfg) + 1e-9).any() or (occupied2 > cfg['storage'] + 1e-9).any():
+        raise ValueError('Storage must accommodate installed machinery and existing goods.')
+
+
 def add_tier2_line(world, cfg, firm, product, paid=True):
     firm = int(firm)
-    if not (0 <= firm < cfg['t2FirmCount']) or product is None:
+    if not (0 <= firm < cfg['t2FirmCount']) or product is None or not product.get('invented',False):
         raise ValueError('Invalid Tier 2 company or product.')
     if product['complexity'] not in M.TIER_BOUNDARIES['T2']:
-        raise ValueError('Tier 2 firms can only manufacture C-3 through C-5 products.')
+        raise ValueError('Tier 2 firms can only manufacture C-3 through C-4 products.')
     if world.t2FirmLineCount[firm] >= M.T2_MAX_PRODUCTS_PER_FIRM or world.t2LineCount >= len(world.t2Fin):
         raise ValueError('Company or economy product-line limit reached.')
     if _has_tier2_product(world, firm, product['id']):
@@ -319,6 +367,8 @@ def add_tier2_line(world, cfg, firm, product, paid=True):
         raise ValueError('Machinery requires an eligible sector and capability.')
     if paid and world.t2Cash[firm] < cfg['t2Machinery'][product['complexity']]:
         raise ValueError('Insufficient cash.')
+    if tier2_occupied_space(world, cfg, firm) + cfg['footprint'][product['complexity']] > cfg['storage'] + 1e-9:
+        raise ValueError('Insufficient storage space for machinery.')
     line = world.t2LineCount
     world.t2LineCount += 1
     world.t2FirmLines[firm * M.T2_MAX_PRODUCTS_PER_FIRM + int(world.t2FirmLineCount[firm])] = line
@@ -347,7 +397,7 @@ def initialize_tier2(world, cfg):
     prod_id = np.array([p['id'] for p in M.T2_PRODUCTS], dtype=np.int64)
     prod_comp = np.array([p['complexity'] for p in M.T2_PRODUCTS], dtype=np.int64)
     prod_sector = np.array([p['sectorIndex'] for p in M.T2_PRODUCTS], dtype=np.int64)
-    world.t2ReferenceCost[prod_id] = cfg['t2MaterialCost'] + cfg['conversionFactor'] * np.maximum(1, prod_comp - 1)
+    world.t2ReferenceCost[prod_id] = np.array([M.initial_tier2_cost(p, cfg) for p in M.T2_PRODUCTS])
     world.t2FirmLines.fill(-1)
     world.t2Preferred.fill(-1)
     world.t2PlayerPrice.fill(float('nan'))
@@ -359,21 +409,20 @@ def initialize_tier2(world, cfg):
         world.t2SectorCount[product['sectorIndex']] = count + 1
         index = product['sectorIndex'] * n_t2 + count
         world.t2SectorProducts[index] = product['id']
-        # Demand routing weight ∝ supply (firms × capacity, the 108:12:1 ratio):
-        # more distributors are routed to higher-supply products, so total demand
-        # scales with supply while the per-distributor quantity stays small.
-        supply = M.T2_FIRMS_PER_PRODUCT[product['complexity']] * cfg['t2Capacity'][product['complexity']]
+        # Retained sector-option capacity weights. Distributor allocation uses
+        # its own demand weights below and does not consume this option table.
+        supply = M.T2_PRODUCT_FIRM_COUNTS[product['id']] * cfg['t2Capacity'][product['complexity']]
         world.t2SectorProductWeight[index] = (world.t2SectorProductWeight[index - 1] if count else 0) + supply
 
-    # Canon topology (§3): 60,000 single-machine firms — 1,800 C-3 / 300 C-4 /
-    # 50 C-5 per product (reverse 6:3:1 ratio).  Each firm owns exactly one line.
-    # A reduced cfg['t2FirmCount'] takes a stratified prefix (C-3 first, then
-    # C-4, then C-5) so small regression fixtures stay representative.
+    # Route-balanced allocation; one line per firm. Counts differ by at most
+    # one within each recipe route because companies are indivisible.
+    # A reduced cfg['t2FirmCount'] takes a product prefix; small regression
+    # fixtures must explicitly assign products to cover every complexity.
     target_firms = cfg['t2FirmCount']
-    per_product = M.T2_FIRMS_PER_PRODUCT
+    per_product = M.T2_PRODUCT_FIRM_COUNTS
     assigned = []
     for product in M.T2_PRODUCTS:
-        cnt = min(per_product[product['complexity']], target_firms - len(assigned))
+        cnt = min(per_product[product['id']], target_firms - len(assigned))
         if cnt <= 0:
             break
         assigned.extend([product['id']] * cnt)
@@ -383,7 +432,7 @@ def initialize_tier2(world, cfg):
     comp = prod_comp[pid]
     sector = prod_sector[pid]
     mach = np.array([cfg['t2Machinery'][int(c)] for c in comp], dtype=np.float64)
-    unit_cost = cfg['t2MaterialCost'] + cfg['conversionFactor'] * np.maximum(1, comp - 1)
+    unit_cost = world.t2ReferenceCost[pid]
     price = np.floor(np.maximum(M.MIN_UNIT_PRICE, unit_cost * (1.0 + cfg['t1Markup'])) * 100.0 + 0.5) / 100.0
 
     world.t2Capability[:n] = 5
@@ -408,23 +457,27 @@ def initialize_tier2(world, cfg):
 
 def initialize_distributors(world, cfg):
     world.distributorPreferredSupplier.fill(-1)
+    world.distributorPreferredMarket.fill(-1)
+    world.distributorSupplierHistory.clear()
     world.distributorLastMarket.fill(-1)
     world.distributorLastSupplier.fill(-1)
     seed = cfg['seed']
     n_t2 = len(M.T2_PRODUCTS)
-    # Per-product supply weight = firms × capacity (canon §5: the 108:12:1 ratio across
-    # C-3 / C-4 / C-5), so the number of distributors interested in a product scales with
-    # its supply rather than being spread evenly.
-    supply = np.array([M.T2_FIRMS_PER_PRODUCT[p['complexity']] * cfg['t2Capacity'][p['complexity']]
-                       for p in M.T2_PRODUCTS], dtype=np.float64)
+    # Final demand follows default capacity after reserving intermediate use.
+    # Routing is fixed at initialization; live shortages do not reassign buyers.
+    supply = np.array([p['distributorWeight'] for p in M.T2_PRODUCTS], dtype=np.float64)
     cum = np.cumsum(supply)
     total = cum[-1]
     world.distributorQMax.fill(M.DISTRIBUTOR_QMAX)
     n = cfg['distributorCount']
     cids = np.arange(n)
     b = hash_seed_vec(seed, 9000000 + cids)
-    draw = hash_seed_vec(seed, 7000000 + cids).astype(np.float64) / 4294967296.0 * total
-    offset = np.searchsorted(cum, draw, side='left')
+    # Stratification keeps each product's assigned count within one of its
+    # exact share. Seeded hash order spreads buckets across distributor IDs.
+    order = np.argsort(hash_seed_vec(seed, 7000000 + cids), kind='stable')
+    draw = (np.arange(n, dtype=np.float64) + 0.5) * total / max(1, n)
+    offset = np.empty(n, dtype=np.int64)
+    offset[order] = np.searchsorted(cum, draw, side='right')
     np.minimum(offset, n_t2 - 1, out=offset)
     world.distributorProduct[:n] = (M.NP + offset).astype(np.int16)
     world.distributorChoke[:n] = (cfg['chokeMin'] + b.astype(np.float64) / 4294967296.0
@@ -433,13 +486,14 @@ def initialize_distributors(world, cfg):
 
 
 def reset_world(cfg):
-    """Normalize config, allocate and initialize the world (JS worker ``reset``)."""
+    """Normalize config, allocate and initialize the world (reset)."""
     cfg = normalize_config(cfg)
     world = WorldState(cfg)
     seed = cfg['seed']
     NE, NP, N0, N1 = M.NE, M.NP, M.N0, M.N1
 
-    zero(world)
+    # WorldState already allocates zeroed arrays. Re-filling every array here
+    # needlessly writes the entire state a second time (including spare lines).
     for tier, width in (('t0', NE), ('t1', NP), ('t2', None)):
         learn_dir = getattr(world, f'{tier}LearnDirection')
         getattr(world, f'{tier}LearnPrevious').fill(float('nan'))
@@ -492,11 +546,11 @@ def reset_world(cfg):
     world.playerPrice.fill(float('nan'))
 
     for cid in range(N1):
-        code = T1P[cid // 100]['product']
+        code = T1P[cid // M.T1_FIRMS_PER_MATERIAL]['product']
         pi = next(i for i, p in enumerate(M.PRODUCTS) if p['code'] == code)
         p = M.PRODUCTS[pi]
         eq = cfg['t1Machinery']                        # canon $15k flat
-        uc = M.unit_cost(p['complexity'], cfg)         # canon $1.25 reference unit cost
+        uc = M.refinery_unit_cost(p, cfg)         # canon $1.25 reference unit cost
         price = quantize_round(uc * (1 + M.t2_markup(p['complexity'], cfg)), uc)  # first-guess markup 0.25
         world.t1EqBook[cid] = eq
         world.t1Operates[cid * NP + pi] = 1
@@ -508,4 +562,5 @@ def reset_world(cfg):
     initialize_tier2(world, cfg)
     initialize_distributors(world, cfg)
 
+    validate_storage(world, cfg)
     return cfg, world

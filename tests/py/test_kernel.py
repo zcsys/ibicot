@@ -71,41 +71,15 @@ def test_invariants_conservation():
 
 
 def test_generated_names():
-    # Freeze the generic company bases (Star Business naming catalog §9) and the
-    # decimal sector-serial numbering scheme, plus the equipment classes (§7).
-    assert M.T1_GENERIC_BASES == {
-        'W': 'Industrial Fluids', 'E': 'Alloy Refining', 'F': 'Energy Materials',
-        'A': 'Process Gases', 'W+E': 'Ceramic Materials', 'W+F': 'Thermal Materials',
-        'W+A': 'Technical Fibers', 'E+F': 'Semiconductor Materials', 'E+A': 'Composite Materials',
-        'F+A': 'Active Chemicals',
-    }
-    assert M.T2_GENERIC_BASES == [
-        'Power Equipment', 'Propulsion Systems', 'Shipbuilding Works', 'Habitat Systems',
-        'Service Robotics', 'Computing Systems', 'Scientific Instruments', 'Industrial Tooling',
-        'Freight Equipment', 'Defense Systems',
-    ]
-
-    # Tier 1 examples: first firm of each material cohort is 0x1.
-    assert M.t1_firm_name(0) == 'Industrial Fluids 0x1'
-    assert M.t1_firm_name(800) == 'Composite Materials 0x1'
-    assert M.t1_firm_name(99) == 'Industrial Fluids 0x64'
-
-    # Tier 2 examples: 0x-prefixed hex serial within each 6,000-firm sector.
-    assert M.t2_firm_name(0, 0) == 'Power Equipment 0x1'
-    assert M.t2_firm_name(0, 5999) == 'Power Equipment 0x1770'
-    assert M.t2_firm_name(1, 6000) == 'Propulsion Systems 0x1'
-
-    # Equipment classes and configurations.
-    assert M.T1_EQUIPMENT_CLASS == {1: 'Refining Bench', 2: 'Refining Cell'}
-    assert M.T1_EQUIPMENT_CONFIG == {1: 'Single-Element Refining', 2: 'Paired-Element Refining'}
-    assert M.T1_EQUIPMENT_INSTALLATION['W+E'] == 'Ceramic Stock Refining Cell'
-    assert M.T1_EQUIPMENT_INSTALLATION['F'] == 'Energy Carrier Refining Bench'
-    assert M.T2_EQUIPMENT_CONFIG == {3: 'Component Production', 4: 'Assembly Production', 5: 'Systems Production'}
-
-    # Cohort sizes are consistent with the tier populations.
-    assert M.T1_FIRMS_PER_MATERIAL == 100
-    assert M.T2_FIRMS_PER_SECTOR == 6000
-    print('generated names: ok (generic bases + hex serials hold)')
+    assert len(M.T1_GENERIC_BASES) == 14
+    assert len(M.T2_GENERIC_BASES) == 14
+    assert M.t1_firm_name(0) == 'Biochemical Plant 0x15'
+    assert M.t1_firm_name(71) == 'Biochemical Plant 0x5c'
+    for sector, offset in enumerate(M.T2_SECTOR_FIRM_OFFSETS):
+        assert M.t2_firm_name(sector, offset).endswith(' '+M.company_number('T2',offset))
+    assert sum(M.T2_SECTOR_FIRM_COUNTS) == 57960
+    assert M.T1_FIRMS_PER_MATERIAL == 72
+    print('generated names: ok (catalog identities and sector offsets)')
 
 
 if __name__ == '__main__':

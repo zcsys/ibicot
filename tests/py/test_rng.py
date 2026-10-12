@@ -8,7 +8,7 @@ import math
 
 from economy.core import rng
 
-# Known outputs captured from the canon (docs/design_canon.md) / the worker.
+# Known outputs captured from the canon (docs/design_canon.md).
 MIX_KNOWN = [(0, 0), (1, 1364076727), (0xFFFFFFFF, 2180083513)]
 RANDOM_KNOWN = [
     (12345, 0, 0, 0.22878044145181775),
