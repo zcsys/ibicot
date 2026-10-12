@@ -25,7 +25,7 @@ def save_checkpoint(path, cfg, tick, world, scalars=None, runtime_metadata=None)
     np.savez(path + '.npz', **arr)
     meta = {
         'format': 'economy-checkpoint',
-        'version': 9,
+        'version': 10,
         'catalogRevision': CATALOG_REVISION,
         'companyNumbering': M.COMPANY_NUMBERING,
         'tick': int(tick),
@@ -67,12 +67,17 @@ def load_checkpoint(path):
         # Convert historical units once at the persistence boundary. Checkpoints
         # predating rent retain zero rent rather than adopting the new default.
         saved_cfg['storageRentPerThousandPerTick'] = saved_cfg.get('storageRentPerUnitYear', 0.0) * 1000 / 360
+    if meta.get('version', 1) < 10:
+        saved_cfg.setdefault('t1IntelligencePerTick', 0.0)
+        saved_cfg.setdefault('t2IntelligencePerTick', 0.0)
     cfg = normalize_config(saved_cfg)
     tick = meta['tick']
     scalars = meta['scalars']
     world = WorldState(cfg)
     with np.load(path + '.npz') as data:
         for name in world.array_names:
+            if name not in data and meta.get('version', 1) < 10 and ('Intelligence' in name or name.endswith('Operating')):
+                continue
             if name == 'distributorPreferredMarket' and name not in data:
                 continue
             if name not in data and meta.get('version', 1) < 4 and 'Switching' in name:

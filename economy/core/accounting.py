@@ -1,7 +1,7 @@
 """Posted company P&L and vectorized allocation of company-period items.
 
 Sales/COGS remain line ledgers. Switching transfers are posted at their cash
-transaction sites; rent is posted by settlement. No earnings value is inferred
+transaction sites; rent and intelligence are posted by settlement. No earnings value is inferred
 from equity. Company-period items are shared equally by installed lines.
 """
 import numpy as np
@@ -40,7 +40,7 @@ def company_earnings(world, cfg, tier):
         gross = (getattr(world, tier + 'Revenue') - getattr(world, tier + 'COGS')).reshape(n, -1).sum(axis=1)
     net = gross + getattr(world, tier + 'SwitchingIncome')[:n] - getattr(world, tier + 'SwitchingExpense')[:n]
     if tier != 't0':
-        net -= getattr(world, tier + 'RentCharge')[:n]
+        net -= getattr(world, tier + 'RentCharge')[:n] + getattr(world, tier + 'IntelligenceCharge')[:n]
     return net
 
 

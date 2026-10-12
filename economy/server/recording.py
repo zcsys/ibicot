@@ -25,6 +25,8 @@ def company_financials(world, cfg, tier):
     return dict(revenue=aggregate('Revenue'), cogs=aggregate('COGS'),
                 sold=aggregate('Sold'), netEarnings=company_earnings(world, cfg, tier),
                 rent=np.zeros(n) if tier == 't0' else getattr(world, tier+'RentCharge')[:n].copy(),
+                operating=getattr(world, tier+'Operating')[:n].copy(),
+                intelligence=getattr(world, tier+'IntelligenceCharge')[:n].copy(),
                 switchingIncome=getattr(world, tier+'SwitchingIncome')[:n].copy(),
                 switchingExpense=getattr(world, tier+'SwitchingExpense')[:n].copy())
 
@@ -38,7 +40,7 @@ def profitability_rows(world, cfg):
         ids = world.t2LineProduct[:length] if tier == 't2' else np.tile(np.arange(len(products)), n)
         fields = {key: getattr(world, tier+suffix)[:length] for key, suffix in
                   [('revenue','Revenue'), ('cogs','COGS'), ('sold','Sold')]}
-        for key, suffix in [('rent','RentCharge'), ('switchingIncome','SwitchingIncome'), ('switchingExpense','SwitchingExpense')]:
+        for key, suffix in [('intelligence','IntelligenceCharge'), ('rent','RentCharge'), ('switchingIncome','SwitchingIncome'), ('switchingExpense','SwitchingExpense')]:
             amounts = np.zeros(n) if tier == 't0' and key == 'rent' else getattr(world,tier+suffix)[:n]
             fields[key] = allocate_to_lines(world,cfg,tier,amounts)
         totals = {key: np.bincount(ids, weights=value, minlength=len(products)) for key,value in fields.items()}
@@ -48,7 +50,7 @@ def profitability_rows(world, cfg):
                        complexity=0 if tier=='t0' else p['complexity'],
                        sector=str(p) if tier=='t0' else p['sector'])
             row['grossProfit'] = row['revenue']-row['cogs']
-            row['netEarnings'] = (row['grossProfit']+row['switchingIncome']-row['switchingExpense']-row['rent']) if world.netEarningsAvailable else None
+            row['netEarnings'] = (row['grossProfit']+row['switchingIncome']-row['switchingExpense']-row['rent']-row['intelligence']) if world.netEarningsAvailable else None
             row['grossMargin'] = row['grossProfit']/row['revenue'] if row['revenue'] else None
             row['netMargin'] = row['netEarnings']/row['revenue'] if row['revenue'] and row['netEarnings'] is not None else None
             rows.append(row)
@@ -91,6 +93,10 @@ class CompanyHistory:
             data[tier+'_equity'] = (world.t0Cash+cfg['t0License']+cfg['t0Reserve']
                 +np.isfinite(world.t0Price.reshape(n,M.NE)).sum(axis=1)*cfg['t0Machinery']
                 +(world.t0Inv*world.t0InvBasis).reshape(n,M.NE).sum(axis=1)) if tier=='t0' else storage_rent_equity(world,cfg,tier)
+        for tier in ('t1', 't2'):
+            n = firm_count(cfg, tier)
+            for suffix in ('RentPaid', 'RentArrears', 'IntelligencePaid'):
+                data[tier + '_' + suffix] = getattr(world, tier + suffix)[:n]
         data['t1Operates'] = world.t1Operates
         lc=int(world.t2LineCount)
         data['t2LineFirm'] = world.t2LineFirm[:lc]

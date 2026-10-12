@@ -724,7 +724,7 @@ if _HAVE_NUMBA:
         distributor_last_market, distributor_last_supplier, distributor_last_q, distributor_last_fulfilled,
         distributor_qmax, distributor_choke, distributor_eta,
         market_potential, market_active, market_fulfilled, market_price_lost, market_stock_unmet,
-        offers_flat, offers_off, t2_firm_line_count, t2_line_firm,
+        offers_flat, offers_off, t2_operating, t2_line_firm,
         t2_fin, t2_price, t2_rel, t2_demand, t2_rel_attempts, t2_rel_available,
         t2_cash, t2_last_sale_tick, t2_sold, t2_revenue, t2_cogs, t2_fin_basis,
         t2_opportunities, t2_potential_orders, complexity, valuation,
@@ -758,6 +758,8 @@ if _HAVE_NUMBA:
             premium = 1 + tier2_reservation_premium * (cx - 1)
             choke = reference * distributor_choke[buyer] * premium
             preferred = distributor_preferred_supplier[buyer]
+            if preferred >= 0 and not t2_operating[t2_line_firm[preferred]]:
+                preferred = -1
             start = offers_off[pid]
             end = offers_off[pid + 1]
             n_cand = 0
@@ -1131,7 +1133,7 @@ def operate_tier1(world, cfg):
     world.costSinks = _operate_tier1_nb(
         t1_capacity_array(cfg), tier1_storage_capacities(cfg), footprint, conversion, output, world.costSinks,
         float(cfg['productionMarginBand']), production_line_overhead(world, cfg, 't1'),
-        world.t1Operates, world.t1Cash, world.raw, world.rawBasis,
+        (world.t1Operates * np.repeat(world.t1Operating, NP)).astype(world.t1Operates.dtype), world.t1Cash, world.raw, world.rawBasis,
         world.t1Fin, world.t1FinBasis, world.t1Price, world.t1UnitCost)
 
 
@@ -1168,7 +1170,7 @@ def plan_and_buy_inputs(world, cfg, tick, *, execution_kernel=None):
         world.t0Price, world.t0Inv, world.t0InvBasis, world.t0Rel, world.t0Cash, world.t0Req, world.t0FundedReq,
         world.t0Opportunities, world.t0Demand, world.t0RelAttempts, world.t0RelChecks,
         world.t0RelAvailable, world.t0Sold, world.t0Revenue, world.t0COGS, world.t0Fulfilled, world.difficulty,
-        world.t1Cash, world.t1Fin, world.t1FinBasis, world.t1Price, world.t1ReplacementCost, world.t1Operates,
+        world.t1Cash, world.t1Fin, world.t1FinBasis, world.t1Price, world.t1ReplacementCost, (world.t1Operates * np.repeat(world.t1Operating, NP)).astype(world.t1Operates.dtype),
         world.t1InputNeed, world.t1PurchaseReq, world.t1LastBuy, world.t1Bought, world.raw, world.rawBasis,
         world.preferredWholesale, PROF_HAS, PROF_N, T1_INPUT_RATIO, t1_output, t1_footprint, T1_IS_BASIC,
         world.loyaltySwitches, world.loyaltyPenalties, world.t0SwitchingIncome, world.t1SwitchingIncome, world.t1SwitchingExpense, world.t2SwitchingIncome, world.t2SwitchingExpense)
@@ -1188,7 +1190,7 @@ def _operate_tier2_phase(world, cfg, tick, production_complexity, *, execution_k
     t2_conv, _, t2_cap, t2_footprint = t2_scale_arrays(cfg)
     t1_unit_cost = M.material_switching_reference(cfg)
     n_lines = int(world.t2LineCount)
-    t2_going = _market_going_rate(world.t2Price[:n_lines], world.t2LearnSales[:n_lines],
+    t2_going = _market_going_rate(np.where(world.t2Operating[world.t2LineFirm[:n_lines]], world.t2Price[:n_lines], np.nan), world.t2LearnSales[:n_lines],
                                   world.t2LineProduct[:n_lines].astype(np.int64), len(M.T2_PRODUCTS))
     cs = (execution_kernel or _operate_tier2_nb)(
         cfg['seed'], tick, cfg['t2FirmCount'], float(cfg['storage']), production_complexity,
@@ -1201,7 +1203,7 @@ def _operate_tier2_phase(world, cfg, tick, production_complexity, *, execution_k
         book.intermediate_sold, book.intermediate_revenue, book.demand, book.attempts,
         book.checks, book.available, book.opportunities,
         world.t2Cash, world.t2Raw, world.t2RawBasis, world.t2T1Raw, world.t2T1Basis, world.t2Preferred,
-        world.t2FirmLines, world.t2FirmLineCount, world.t2LineProduct, world.t2Controller,
+        world.t2FirmLines, (world.t2FirmLineCount * world.t2Operating).astype(world.t2FirmLineCount.dtype), world.t2LineProduct, world.t2Controller,
         world.t2Fin, world.t2FinBasis, world.t2UnitCost, world.t2ReplacementCost, world.t2Price, world.t2PlayerPrice,
         world.t2Made, world.t2DemandEMA, world.t2Sold, world.t2Revenue, world.t2COGS, world.t2Bought,
         world.t2RelPriceSum, world.t2RelPriceSamples, world.t2MonthlyCapacity,
@@ -1237,7 +1239,7 @@ def clear_distributors(world, cfg, tick):
         world.distributorLastMarket, world.distributorLastSupplier, world.distributorLastQ, world.distributorLastFulfilled,
         world.distributorQMax, world.distributorChoke, world.distributorEta,
         world.marketPotential, world.marketActive, world.marketFulfilled, world.marketPriceLost, world.marketStockUnmet,
-        flat, off, world.t2FirmLineCount, world.t2LineFirm,
+        flat, off, world.t2Operating, world.t2LineFirm,
         world.t2Fin, world.t2Price, world.t2Rel, world.t2Demand, world.t2RelAttempts, world.t2RelAvailable,
         world.t2Cash, world.t2LastSaleTick, world.t2Sold, world.t2Revenue, world.t2COGS, world.t2FinBasis,
         world.t2Opportunities, world.t2PotentialOrders, T2_COMPLEXITY, val,

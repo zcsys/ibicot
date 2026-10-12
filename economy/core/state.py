@@ -88,7 +88,8 @@ def _array_spec(cfg):
     spec += _learn('t2', ML)
     for tier, n in (('t0', N0), ('t1', N1), ('t2', N2F)):
         spec += [(tier + name, 'f64', n) for name in
-                 ('SwitchingIncome', 'SwitchingExpense', 'SwitchingNetEMA')]
+                 ('SwitchingIncome', 'SwitchingExpense', 'SwitchingNetEMA',
+                  'IntelligenceCharge', 'IntelligencePaid', 'Operating')]
     spec += [
         ('difficulty', 'f64', NE),
         ('t0Inv', 'f64', N0 * NE),
@@ -228,6 +229,9 @@ class WorldState:
         self.costSinks = 0.0
         self.equipmentSinks = 0.0
         self.netEarningsAvailable = True
+        self.operatingCostsSettled = False
+        for tier in ('t0', 't1', 't2'):
+            getattr(self, tier + 'Operating').fill(1)
         self._init_loyalty_regime(cfg)
 
     def sync_distributor_preferences(self):

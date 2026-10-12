@@ -69,6 +69,7 @@ _RESET_NAMES = [
 
 
 def reset_tick(world: WorldState) -> None:
+    world.operatingCostsSettled = False
     for name in _RESET_NAMES:
         getattr(world, name).fill(0)
     world.t2Sold.fill(0)
@@ -78,6 +79,7 @@ def reset_tick(world: WorldState) -> None:
     for tier in ('t0', 't1', 't2'):
         getattr(world, tier + 'SwitchingIncome').fill(0)
         getattr(world, tier + 'SwitchingExpense').fill(0)
+        getattr(world, tier + 'IntelligenceCharge').fill(0)
 
 
 # --------------------------------------------------------------------------
@@ -260,6 +262,8 @@ def plan_and_buy_inputs(world, cfg, products, profiles, tick):
         for cohort_order in range(NP):
             cohort = (first_cohort + cohort_order) % NP
             company = cohort * T1_FIRMS_PER_MATERIAL + ((first_firm + rnd) % T1_FIRMS_PER_MATERIAL)
+            if not world.t1Operating[company]:
+                continue
             raw_base = company * NE
             product_base = company * NP
             storage_slot, output_slot, used_inputs = tier1_storage_layout(world, cfg, company)
@@ -373,6 +377,8 @@ def operate_tier1(world, cfg, products):
     # unchanged while the ~9/10 no-op slots are skipped).
     for index in np.flatnonzero(world.t1Operates):
         company = index // NP
+        if not world.t1Operating[company]:
+            continue
         p = index % NP
         raw_base = company * NE
         conv = convs[p]
@@ -533,7 +539,7 @@ def price_markets(world, cfg, profiles, products, tick):
 
     # ---- Tier 1 (refined) ----
     t1 = world.t1Price
-    idx1 = np.flatnonzero(world.t1Operates)
+    idx1 = np.flatnonzero(world.t1Operates & np.repeat(world.t1Operating.astype(bool), NP))
     prev1 = t1[idx1].copy()
     nxt1 = _clamp_round_cent(prev1)
     player1 = (world.t1Controller[idx1 // NP] != 0) & np.isfinite(world.playerPrice[idx1])
@@ -541,7 +547,7 @@ def price_markets(world, cfg, profiles, products, tick):
         nxt1 = np.where(player1, _clamp_round_cent(world.playerPrice[idx1]), nxt1)
     t1_learning = price_learning_view(world, 't1')
     due1 = (~player1) & (t1_learning['ages'][idx1] >= obs) & ((tick + idx1) % obs == 0)
-    rates1 = _market_going_rate(world.t1Price, world.t1LearnSales, np.arange(N1 * NP) % NP, NP)
+    rates1 = _market_going_rate(np.where(np.repeat(world.t1Operating.astype(bool), NP), world.t1Price, np.nan), world.t1LearnSales, np.arange(N1 * NP) % NP, NP)
     for j in np.flatnonzero(due1):
         i = int(idx1[j])
         nxt1[j] = learned_quote(t1_learning, cfg, i, world.t1Fin[i], tick, rates1[i % NP])
@@ -574,6 +580,10 @@ def market_offers(world, tier, tick):
     offers = [[] for _ in range(count)]
     for i in range(total):
         if not math.isfinite(price[i]) or (tier == 1 and not world.t1Operates[i]):
+            continue
+        if tier == 1 and not world.t1Operating[i // NP]:
+            continue
+        if tier == 2 and not world.t2Operating[world.t2LineFirm[i]]:
             continue
         market = int(world.t2LineProduct[i]) if tier == 2 else i % count
         offers[market].append(i)
@@ -620,6 +630,10 @@ def market_offers_table(world, tier, tick):
         market = world.t2LineProduct[:total].astype(np.int64)
         valid = np.isfinite(price)
 
+    if tier == 1:
+        valid &= np.repeat(world.t1Operating.astype(bool), NP)
+    elif tier == 2:
+        valid &= world.t2Operating[world.t2LineFirm[:total]].astype(bool)
     idx = idx[valid]
     market = market[valid]
     p = price[valid]
@@ -761,7 +775,7 @@ def _operate_tier2_phase(world, cfg, products, profiles, t2_products, tick, prod
     line_rent = production_line_overhead(world, cfg, 't2')
     t2_learning = price_learning_view(world, 't2')
     n_lines = int(world.t2LineCount)
-    t2_going = _market_going_rate(world.t2Price[:n_lines], world.t2LearnSales[:n_lines],
+    t2_going = _market_going_rate(np.where(world.t2Operating[world.t2LineFirm[:n_lines]], world.t2Price[:n_lines], np.nan), world.t2LearnSales[:n_lines],
                                   world.t2LineProduct[:n_lines].astype(np.int64), len(M.T2_PRODUCTS))
     from .input_market import InputMarket
     book = InputMarket(world, tick)
@@ -778,6 +792,8 @@ def _operate_tier2_phase(world, cfg, products, profiles, t2_products, tick, prod
 
     for order in range(cfg['t2FirmCount']):
         firm = (order + tick * 137) % cfg['t2FirmCount']
+        if not world.t2Operating[firm]:
+            continue
         active_lines = [int(world.t2FirmLines[firm * M4 + slot])
                         for slot in range(int(world.t2FirmLineCount[firm]))
                         if t2_products[int(world.t2LineProduct[int(world.t2FirmLines[firm * M4 + slot])])]['complexity'] == production_complexity]
@@ -951,6 +967,8 @@ def clear_distributors(world, cfg, products, t2_products, tick):
         reliability = world.t2Rel
         market_offers_list = offers[market - NP]
         preferred = int(world.distributorPreferredSupplier[buyer])
+        if preferred >= 0 and not world.t2Operating[world.t2LineFirm[preferred]]:
+            preferred = -1
         candidates = []
         if preferred >= 0 and math.isfinite(price[preferred]):
             candidates.append(preferred)
@@ -1226,14 +1244,16 @@ def storage_rent_equity(world, cfg, tier):
 def production_line_rent(world, cfg, tier):
     """Forecast per-installed-line tick rent for the net margin gate.
 
-    Snapshot eligibility at production entry: after procurement for T1, before
-    the combined buying/production phase for T2. Use current book equity; later
-    trading can change eligibility before actual end-of-tick billing.
+    Use prepaid charges during a tick. Standalone planning before the payment
+    gate forecasts eligibility from current book equity. Paying a bill must
+    not erase overhead when the resulting equity falls below the threshold.
     Split the full firm bill equally across its installed lines, as in reporting.
     NumPy-only firm projection shared by the reference and compiled planners.
     This does not post expense, collect cash, or include existing debt payments.
     """
     n = N1 if tier == 't1' else cfg['t2FirmCount']
+    if world.operatingCostsSettled:
+        return getattr(world, tier + 'RentCharge')[:n] / np.maximum(line_counts(world, cfg, tier), 1)
     storage = tier1_storage_capacities(cfg) if tier == 't1' else cfg['storage']
     bill = storage / 1000 * cfg['storageRentPerThousandPerTick']
     if cfg['storageRentPerThousandPerTick'] == 0:
@@ -1245,50 +1265,68 @@ def production_line_rent(world, cfg, tier):
 
 
 def production_line_overhead(world, cfg, tier):
-    """Forecast rent + switching expense - switching income, per installed line.
+    """Forecast rent + intelligence + net switching expense, per installed line.
 
     Switching uses the prior completed ticks' net-transfer EMA (cfg alpha),
     initialized at zero, since the current tick's receipts/fills are unknown.
-    Exemption waives rent only; switching costs still enter exempt firms' plans.
+    Small-company exemption waives rent and intelligence; switching still applies.
     """
     counts = line_counts(world, cfg, tier)
     n = len(counts)
     rent = np.zeros(n) if tier == 't0' else production_line_rent(world, cfg, tier)
-    return rent - getattr(world, tier + 'SwitchingNetEMA')[:n] / np.maximum(counts, 1)
+    intelligence = (0.0 if tier == 't0' else
+                    np.where(storage_rent_equity(world, cfg, tier) >= 1_500_000,
+                             cfg[tier + 'IntelligencePerTick'], 0.0))
+    if tier != 't0' and world.operatingCostsSettled:
+        intelligence = getattr(world, tier + 'IntelligenceCharge')[:n]
+    return rent + (intelligence - getattr(world, tier + 'SwitchingNetEMA')[:n]) / np.maximum(counts, 1)
+
+
+def settle_period_costs(world, cfg, tick):
+    """Prepay both services atomically or stop company operations for this tick.
+
+    One opening-equity eligibility snapshot; Colony subsidy below $1.5M.
+    No new debt and no partial payment. Historical rent debt, if loaded, must
+    also be paid by an eligible company before it operates.
+    """
+    result = {}
+    for tier, n in (('t1', N1), ('t2', cfg['t2FirmCount'])):
+        cash = getattr(world, tier + 'Cash')[:n]
+        eligible = storage_rent_equity(world, cfg, tier) >= 1_500_000
+        storage = tier1_storage_capacities(cfg) if tier == 't1' else cfg['storage']
+        rent = np.where(eligible, storage / 1000 * cfg['storageRentPerThousandPerTick'], 0.0)
+        intelligence = np.where(eligible, cfg[tier + 'IntelligencePerTick'], 0.0)
+        legacy_debt = getattr(world, tier + 'RentArrears')[:n]
+        due_debt = np.where(eligible, legacy_debt, 0.0)
+        due = rent + intelligence + due_debt
+        operating = (cash >= due) | ~eligible
+        if tick <= 0:
+            operating = np.ones(n, dtype=bool)
+            rent = np.zeros(n); intelligence = np.zeros(n); due_debt = np.zeros(n)
+        rent = np.where(operating, rent, 0.0)
+        intelligence = np.where(operating, intelligence, 0.0)
+        debt_paid = np.where(operating, due_debt, 0.0)
+        getattr(world, tier + 'Operating')[:n] = operating
+        getattr(world, tier + 'RentCharge')[:n] = rent
+        getattr(world, tier + 'IntelligenceCharge')[:n] = intelligence
+        getattr(world, tier + 'RentPaid')[:n] += rent + debt_paid
+        getattr(world, tier + 'IntelligencePaid')[:n] += intelligence
+        legacy_debt -= debt_paid
+        payment = rent + intelligence + debt_paid
+        cash -= payment
+        world.costSinks += float(payment.sum())
+        result[tier + 'RentExpense'] = float(rent.sum())
+        result[tier + 'RentPayment'] = float((rent + debt_paid).sum())
+        result[tier + 'IntelligenceExpense'] = float(intelligence.sum())
+        result[tier + 'IntelligencePayment'] = float(intelligence.sum())
+        result[tier + 'StoppedCompanies'] = int((~operating).sum())
+    world.operatingCostsSettled = True
+    return result
 
 
 def settle_storage_rent(world, cfg, tick):
-    """Bill the full T1/T2 pool every tick; collect cash, retain unpaid debt.
-
-    Eligibility uses pre-charge book equity >= $1.5M. Arrears collection is
-    suspended below this threshold, not forgiven; eligible firms retry every
-    tick even when the new-rent rate is zero. There are no per-firm Python loops.
-    Rent is an external cash sink, never inventory COGS. Debt reduces equity.
-    Both execution engines use this same settlement after trading.
-    """
-    result = {}
-    billable = tick > 0
-    rate = cfg['storageRentPerThousandPerTick'] if billable else 0.0
-    for tier, n in (('t1', N1), ('t2', cfg['t2FirmCount'])):
-        storage = tier1_storage_capacities(cfg) if tier == 't1' else cfg['storage']
-        bill = storage / 1000 * rate
-        paid_total = 0.0
-        eligible = storage_rent_equity(world, cfg, tier) >= 1_500_000
-        charges = getattr(world, tier + 'RentCharge')[:n]
-        charges[:] = np.where(eligible, bill, 0.0)
-        if billable:
-            cash = getattr(world, tier + 'Cash')[:n]
-            arrears = getattr(world, tier + 'RentArrears')[:n]
-            arrears += charges
-            paid = np.where(eligible, np.minimum(np.maximum(cash, 0.0), arrears), 0.0)
-            cash -= paid
-            arrears -= paid
-            getattr(world, tier + 'RentPaid')[:n] += paid
-            paid_total = float(paid.sum())
-            world.costSinks += paid_total
-        result[tier + 'RentExpense'] = float(charges.sum())
-        result[tier + 'RentPayment'] = paid_total
-    return result
+    """Legacy entry point: both Colony services share one payment gate."""
+    return settle_period_costs(world, cfg, tick)
 
 
 def tick(world: WorldState, cfg, tick, products=None, profiles=None, t2_products=None, state=None):
@@ -1300,6 +1338,7 @@ def tick(world: WorldState, cfg, tick, products=None, profiles=None, t2_products
     reset_tick(world)
     world.costSinks = 0
     world.equipmentSinks = 0
+    state.update(settle_period_costs(world, cfg, tick))
     update_environment(world, cfg, tick)
     operate_tier0(world, cfg, profiles, tick)
 
@@ -1330,7 +1369,6 @@ def tick(world: WorldState, cfg, tick, products=None, profiles=None, t2_products
     update_reliability(world, cfg, tick)
     expand_tier2_bots(world, cfg, t2_products, tick)
     update_loyalty_regime(world, cfg, counts, tick)
-    state.update(settle_storage_rent(world, cfg, tick))
     state.update(finalize_net_earnings(world, cfg))
 
     state['activatedDistributors'] = counts['activated']

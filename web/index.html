@@ -763,7 +763,7 @@
                 <tbody id="tierComparison"></tbody>
               </table>
             </div>
-            <p class="analytics-note"><strong>Net profit = gross profit + switching income − switching expense − storage expense.</strong> Rent is charged every tick. Net margin = net profit ÷ revenue; undefined when revenue is zero. T0 is exempt. T1/T2 below $1.5M book equity before billing are exempt; at exactly $1.5M they are eligible. Existing arrears are held until eligible. Switching transfers are included as income for the incumbent and expense for the buyer. Historical snapshots without those postings show net earnings as unavailable. Product/complexity views allocate each paying company’s charge across its own installed lines; company views use each company’s full rent. Amounts shown are per tick.</p>
+            <p class="analytics-note"><strong>Net profit = gross profit + switching income − switching expense − storage expense − intelligence expense.</strong> Rent and market intelligence are charged every tick. Intelligence costs $2,000 per T1 company and $20 per T2 company. Net margin = net profit ÷ revenue; undefined when revenue is zero. T0 is exempt. The Colony subsidizes both rent and intelligence for T1/T2 below $1.5M opening book equity; at exactly $1.5M they are eligible. Eligible companies must prepay both charges in full; otherwise buying, production, sales and repricing stop for that tick. No new debt is created. Switching transfers are included as income for the incumbent and expense for the buyer. Historical snapshots without those postings show net earnings as unavailable. Product/complexity views allocate each paying company’s charge across its own installed lines; company views use each company’s full rent and intelligence. Amounts shown are per tick.</p>
             <p class="analytics-note">Current tick · indented complexity rows break down the tier totals; do not add them to their parent rows. Per-firm figures use the firms represented by each row. A company with several complexities can appear in several complexity rows. Cash, book equity, inventory and purchases use actual company records. For companies spanning complexities, shared company totals are allocated equally across installed lines. Capacity is installed output per tick; utilization is production divided by capacity. Customer fulfillment is fulfilled units divided by desired units: company buyers for T0/T1, Distributors for T2 (including C-3/C-4). Sorting keeps complexities beneath their tier. COGS is the cost basis of units sold; unsold production adds inventory rather than reducing gross profit. — means unavailable or no activity for a ratio.</p>
             <div class="table-toolbar">
               <label for="overviewTier">Chart scope</label>
@@ -1147,6 +1147,9 @@
               <div class="stat"><span>Rent / eligible company / tick</span><b id="t1RentPerTick">—</b></div>
               <div class="stat"><span>Storage rent paid · cumulative</span><b id="t1RentPaid">—</b></div>
               <div class="stat"><span>Unpaid storage rent · liability</span><b id="t1RentArrears">—</b></div>
+              <div class="stat"><span>Intelligence / eligible company / tick</span><b id="t1IntelligenceRate">—</b></div>
+              <div class="stat"><span>Intelligence paid · cumulative</span><b id="t1IntelligencePaid">—</b></div>
+              <div class="stat"><span>Companies stopped · cannot pay</span><b id="t1StoppedCompanies">—</b></div>
               <div class="stat">
                 <span>Realized gross margin</span>
                 <b id="t1Margin">—</b>
@@ -1394,6 +1397,9 @@
               <div class="stat"><span>Rent / eligible company / tick</span><b id="t2RentPerTick">—</b></div>
               <div class="stat"><span>Storage rent paid · cumulative</span><b id="t2RentPaid">—</b></div>
               <div class="stat"><span>Unpaid storage rent · liability</span><b id="t2RentArrears">—</b></div>
+              <div class="stat"><span>Intelligence / eligible company / tick</span><b id="t2IntelligenceRate">—</b></div>
+              <div class="stat"><span>Intelligence paid · cumulative</span><b id="t2IntelligencePaid">—</b></div>
+              <div class="stat"><span>Companies stopped · cannot pay</span><b id="t2StoppedCompanies">—</b></div>
               <div class="stat">
                 <span>Book equity · $</span>
                 <b id="t2BookEquity">—</b>

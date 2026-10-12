@@ -18,7 +18,7 @@ The Python backend owns the simulation. The browser is a dashboard and control s
 
 The full catalog contains 269 recipes: 14 T1 materials and 255 T2 products. Only 105 T2 products are invented and tradable; 150 remain catalog entries. C5 is inactive. Bots start with one machine each in T1/T2 and do not automatically expand.
 
-A tick updates extraction difficulty, extracts raw, buys T1 inputs, refines, updates T0/T1 quotes, clears distributor purchases, then buys and manufactures C3 followed by C4. It ends with observation, reliability, switching-fee adaptation, rent, and earnings. Distributors buy **opening T2 stock**; C4 factories can buy **fresh C3 production** in the same tick. There are 30 ticks per month and 360 per year.
+A tick first checks the shared small-company exemption and prepays rent plus intelligence, then updates extraction difficulty, extracts raw, buys T1 inputs, refines, updates T0/T1 quotes, clears distributor purchases, then buys and manufactures C3 followed by C4. It ends with observation, reliability, switching-fee adaptation and earnings. Distributors buy **opening T2 stock**; C4 factories can buy **fresh C3 production** in the same tick. There are 30 ticks per month and 360 per year.
 
 ## Core calculations
 
@@ -34,7 +34,10 @@ A tick updates extraction difficulty, extracts raw, buys T1 inputs, refines, upd
 | Switching | A fixed transfer to the former supplier when it can fill the relevant order; actual-fill savings must justify switching. |
 | Prices | Staggered observation windows; shortages, market quotes, then changes in realized gross profit determine movement. |
 | Storage rent | $2.80 per 1,000 spaces per tick; charged on full capacity for eligible T1/T2 firms with book equity ≥ $1.5m. |
-| Earnings | Sales − COGS + switching income − switching expense − accrued rent. |
+| Intelligence | Market price benchmark subscription: $2,000/T1 company/tick; $20/T2 company/tick. The Colony subsidizes companies below $1.5m book equity, as with rent. |
+| Earnings | Sales − COGS + switching income − switching expense − paid current rent − intelligence expense. |
+
+Companies below $1.5m book equity are subsidized for both rent and intelligence. Eligible firms unable to prepay the full combined bill stop buying, selling, producing, and repricing for that tick; no partial payment or new debt is created.
 
 The [canon](docs/design_canon.md) defines reference costs, exact rounding, supplier selection, settlement order, production gates, allocation, and exceptions. A reference cost is a calibration value; it is neither the live purchase quote nor the inventory book cost. The [decision walkthrough](docs/decision_walkthrough.md) adds numerical examples by tier and an inventory of the external information each decision uses.
 

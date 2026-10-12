@@ -45,3 +45,13 @@ for (const tier of ['T1','T2']) {
     assert.equal(legacy.netProfit,equity < 1500000 ? 100 : 100-charge);
   }
 }
+
+const informed = {grossProfit:100,revenue:200,storageRentExpense:0,intelligenceExpense:20,
+  products:[{grossProfit:40},{grossProfit:60}]};
+P.company(informed,cfg,'T2');
+assert.equal(informed.netProfit,80);
+assert.equal(informed.netMargin,.4);
+assert.equal(informed.products[0].netProfit,30);
+assert.equal(informed.products[1].netProfit,50);
+P.company(informed,cfg,'T2');
+assert.equal(informed.netProfit,80);

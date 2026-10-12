@@ -43,11 +43,14 @@ def stats_row(world, cfg, tick, month):
     t1p = world.t1Price
     row = {'tick': tick, 'month': month, 'year': month // 12 + 1,
            'gen': month // 240 + 1}
-    row['statsVersion'] = 2
+    row['statsVersion'] = 3
     row['productProfitability'] = profitability_rows(world,cfg)
     row['netEarningsAvailable'] = world.netEarningsAvailable
     for tier in ('t0', 't1', 't2'):
         n = firm_count(cfg, tier)
+        row[tier + 'StoppedCompanies'] = int((getattr(world, tier + 'Operating')[:n] == 0).sum())
+        row[tier + 'IntelligenceExpense'] = float(getattr(world, tier + 'IntelligenceCharge')[:n].sum())
+        row[tier + 'IntelligencePaid'] = float(getattr(world, tier + 'IntelligencePaid')[:n].sum())
         row[tier + 'SwitchingIncome'] = float(getattr(world, tier + 'SwitchingIncome')[:n].sum())
         row[tier + 'SwitchingExpense'] = float(getattr(world, tier + 'SwitchingExpense')[:n].sum())
         row[tier + 'NetEarnings'] = float(company_earnings(world, cfg, tier).sum()) if world.netEarningsAvailable else None
@@ -869,7 +872,7 @@ class KernelRuntime:
             if not w.netEarningsAvailable:
                 return np.full(len(ids), np.nan)
             return (values['revenue'] - values['cogs'] + w.t2SwitchingIncome[ids]
-                    - w.t2SwitchingExpense[ids] - w.t2RentCharge[ids])
+                    - w.t2SwitchingExpense[ids] - w.t2RentCharge[ids] - w.t2IntelligenceCharge[ids])
         if key in ('utilization', 'reliability'):
             numerator = values['made'] if key == 'utilization' else values['reliability']
             denominator = values['capacity'] if key == 'utilization' else counts
@@ -1063,7 +1066,10 @@ class KernelRuntime:
                 'inputTargetItems': targets.tolist(), 'finishedSpacePerLine': output_space}
 
     def _company_rent(self, tier, id_):
-        transfers = {'switchingIncome': float(getattr(self.world, tier + 'SwitchingIncome')[id_]),
+        transfers = {'operating': bool(getattr(self.world, tier + 'Operating')[id_]),
+                     'intelligenceExpense': float(getattr(self.world, tier + 'IntelligenceCharge')[id_]),
+                     'intelligencePaid': float(getattr(self.world, tier + 'IntelligencePaid')[id_]),
+                     'switchingIncome': float(getattr(self.world, tier + 'SwitchingIncome')[id_]),
                      'switchingExpense': float(getattr(self.world, tier + 'SwitchingExpense')[id_]),
                      'netEarningsAvailable': self.world.netEarningsAvailable}
         if tier == 't0':
@@ -1519,6 +1525,9 @@ class KernelRuntime:
                 'storageRentPerFirmPerTick': float((tier1_storage_capacities(cfg).mean() if tier == 't1' else cfg['storage']) / 1000 * cfg['storageRentPerThousandPerTick']),
                 'storageRentPerFirmPerTickMin': float((tier1_storage_capacities(cfg).min() if tier == 't1' else cfg['storage']) / 1000 * cfg['storageRentPerThousandPerTick']),
                 'storageRentPerFirmPerTickMax': float((tier1_storage_capacities(cfg).max() if tier == 't1' else cfg['storage']) / 1000 * cfg['storageRentPerThousandPerTick']),
+                'stoppedCompanies': int((getattr(world, tier + 'Operating')[:n] == 0).sum()),
+                'intelligencePerCompanyPerTick': cfg[tier + 'IntelligencePerTick'],
+                'intelligencePaid': float(getattr(world, tier + 'IntelligencePaid')[:n].sum()),
                 'storageRentPaid': float(getattr(world, tier + 'RentPaid')[:n].sum()),
                 'storageRentArrears': float(getattr(world, tier + 'RentArrears')[:n].sum()),
                 'storageRentExpense': self.state.get(tier + 'RentExpense', 0.0),
@@ -1535,7 +1544,7 @@ class KernelRuntime:
         for key in ('tier2Complexity', 'productCategories'):
             for row in lastSnapshot[key]:
                 row['storageRentExpense'] = float(rent_groups['complexity'][row['complexity']])
-        for field, suffix in (('switchingIncome', 'SwitchingIncome'), ('switchingExpense', 'SwitchingExpense')):
+        for field, suffix in (('switchingIncome', 'SwitchingIncome'), ('switchingExpense', 'SwitchingExpense'), ('intelligenceExpense', 'IntelligenceCharge')):
             groups = project_company_amounts(world, cfg, getattr(world, 't1' + suffix),
                 getattr(world, 't2' + suffix)[:cfg['t2FirmCount']], getattr(world, 't0' + suffix))
             for tier in ('t0', 't1', 't2'):

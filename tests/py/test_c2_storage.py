@@ -47,7 +47,7 @@ class C2StorageTests(unittest.TestCase):
         np.testing.assert_allclose(forecast[288:],140)
         K.settle_storage_rent(w,cfg,1)
         np.testing.assert_allclose(w.t1RentCharge,forecast)
-        np.testing.assert_allclose(before-K.storage_rent_equity(w,cfg,'t1'),forecast)
+        np.testing.assert_allclose(before-K.storage_rent_equity(w,cfg,'t1'),forecast + w.t1IntelligenceCharge)
 
     def test_reporting_and_live_shrink_validation(self):
         with tempfile.TemporaryDirectory() as d, patch('economy.server.runtime._STATS_DIR',Path(d)), patch('economy.server.service._STATS_DIR',Path(d)):

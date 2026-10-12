@@ -29,6 +29,11 @@ class InputMarket:
             values = np.concatenate((getattr(world,'t1'+suffix), getattr(world,'t2'+suffix)[:self.lc])).astype(np.float64)
             setattr(self,key,values)
             self._initial[key] = values.copy()
+        available = np.concatenate((np.repeat(world.t1Operating.astype(bool), M.NP),
+                                    world.t2Operating[world.t2LineFirm[:self.lc]].astype(bool)))
+        self.fin[~available] = 0
+        self.price[~available] = np.nan
+        self._initial['fin'] = self.fin.copy()
         self.checks = np.concatenate((world.t1RelAvailChecks, np.zeros(self.lc)))
         self.cash = np.concatenate((world.t1Cash,world.t2Cash))
         self._cash_initial = self.cash.copy()

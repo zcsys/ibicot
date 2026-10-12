@@ -1,4 +1,4 @@
-/* Net profit: gross profit + switching income - switching expense - storage expense.
+/* Net profit: gross profit + switching income - switching expense - storage and intelligence expense.
  * The configured rate is dollars per 1,000 storage spaces per tick.
  * The backend allocates each company's actual period postings
  * to its own lines, then reduces it into market groups. Legacy snapshots use
@@ -10,7 +10,7 @@
     if (!row || !Number.isFinite(row.grossProfit)) return;
     rent = row.storageRentExpense ?? rent;
     row.allocatedRentPerTick = rent;
-    row.netProfit = row.netEarningsAvailable === false ? null : row.grossProfit + (row.switchingIncome ?? 0) - (row.switchingExpense ?? 0) - rent;
+    row.netProfit = row.netEarningsAvailable === false ? null : row.grossProfit + (row.switchingIncome ?? 0) - (row.switchingExpense ?? 0) - rent - (row.intelligenceExpense ?? 0);
     row.netMargin = row.netProfit != null && row.revenue > 0 ? row.netProfit / row.revenue : null;
     if (row.lines != null) row.netProfitPerLine = row.netProfit != null && row.lines ? row.netProfit / row.lines : null;
   }
@@ -20,6 +20,7 @@
     apply(row, rent);
     const lines = row.products || row.elementData || [];
     for (const line of lines) {
+      line.intelligenceExpense = (row.intelligenceExpense ?? 0) / lines.length;
       line.switchingIncome = (row.switchingIncome ?? 0) / lines.length;
       line.switchingExpense = (row.switchingExpense ?? 0) / lines.length;
       line.netEarningsAvailable = row.netEarningsAvailable;

@@ -20,7 +20,7 @@ from economy.server.runtime import KernelRuntime, stats_row
 # Explicit high-rent fixture for debt, eligibility, and production-gate boundaries.
 SMALL = {'t2FirmCount': 12, 'distributorCount': 30, 'storage': 20000,
          't1Equity': 1_400_000, 't2Equity': 1_400_000,
-         'storageRentPerThousandPerTick': 56}
+         'storageRentPerThousandPerTick': 56, 't1IntelligencePerTick': 0, 't2IntelligencePerTick': 0}
 
 
 class StorageRentTests(unittest.TestCase):
@@ -58,19 +58,20 @@ class StorageRentTests(unittest.TestCase):
         np.testing.assert_array_equal(w.t1RentCharge, 140)
         self.assertEqual(w.t2RentCharge[0], 56)
 
-    def test_unpaid_rent_is_collected_next_tick(self):
-        cfg, w = reset_world(SMALL)
-        w.t2EqBook[0] = 1500000
-        w.t2Cash[0] = 10
-        settle_storage_rent(w, cfg, 1)
-        self.assertEqual(w.t2Cash[0], 0)
-        self.assertAlmostEqual(w.t2RentArrears[0], 1120-10)
-        cfg['storageRentPerThousandPerTick'] = 0
-        w.t2Cash[0] = 2000
-        settle_storage_rent(w, cfg, 2)
-        self.assertAlmostEqual(w.t2Cash[0], 2010-1120)
-        self.assertEqual(w.t2RentArrears[0], 0)
-        self.assertAlmostEqual(w.t2RentPaid[0], 1120)
+    def test_unaffordable_rent_stops_without_debt(self):
+        cfg,w=reset_world(SMALL)
+        w.t2EqBook[0]=1500000
+        w.t2Cash[0]=10
+        settle_storage_rent(w,cfg,1)
+        self.assertEqual(w.t2Cash[0],10)
+        self.assertEqual(w.t2RentArrears[0],0)
+        self.assertEqual(w.t2RentCharge[0],0)
+        self.assertEqual(w.t2Operating[0],0)
+        w.t2Cash[0]=2000
+        settle_storage_rent(w,cfg,2)
+        self.assertEqual(w.t2Cash[0],880)
+        self.assertEqual(w.t2RentPaid[0],1120)
+        self.assertEqual(w.t2Operating[0],1)
 
     def test_equity_threshold_inventory_and_existing_debt(self):
         cfg, w = reset_world(SMALL)
@@ -156,7 +157,7 @@ class StorageRentTests(unittest.TestCase):
             self.assertEqual(w2.t1RentArrears[0], 17)
             self.assertEqual(w2.t2RentPaid[0], 35)
             meta = json.loads(Path(p + '.json').read_text())
-            self.assertEqual(meta['version'], 9)
+            self.assertEqual(meta['version'], 10)
             self.assertNotIn('storageRentPerUnitYear', meta['cfg'])
             meta['version'] = 2
             del meta['cfg']['storageRentPerThousandPerTick']

@@ -67,6 +67,10 @@ def default_cfg() -> dict:
         'productionMarginBand': 0.05,   # estimated net margin: rent and forecast switching transfers included
         't2ReservationPremium': 0.25,
 
+        # Market price benchmark subscription, per company per tick
+        't1IntelligencePerTick': 2000.0,
+        't2IntelligencePerTick': 20.0,
+
         # Market / pricing / reliability
         'pricingAggressiveness': 0.35,
         'alpha': 0.15,
@@ -164,6 +168,8 @@ def normalize_config(c) -> dict:
     d['storage'] = max(1, d['storage'])
     d['t1C2Storage'] = max(1, d['t1C2Storage'])
     d['t1C1Storage'] = max(1, d['t1C1Storage'])
+    for key in ('t1IntelligencePerTick', 't2IntelligencePerTick'):
+        d[key] = max(0.0, d[key])
     d['storageRentPerThousandPerTick'] = max(0.0, d['storageRentPerThousandPerTick'])
 
     # Demand

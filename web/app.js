@@ -491,7 +491,7 @@
         `revenue: ${fmtMoney(d.revenue, 2)}`,
         `COGS: ${fmtMoney(d.cogs, 2)}`,
         `gross profit: ${fmtMoney(d.grossProfit, 2)}`,
-        `net profit after rent and switching transfers: ${fmtMoney(d.netProfit, 2)}`,
+        `net profit after rent, intelligence and switching transfers: ${fmtMoney(d.netProfit, 2)}`,
         `net margin: ${pct(d.netMargin)}`,
         `capacity/tick: ${fmtInt(d.capacity)}`,
         `target inventory: ${fmtInt(d.targetInventory)}`,
@@ -521,7 +521,7 @@
         `revenue: ${fmtMoney(d.revenue, 2)}`,
         `COGS: ${fmtMoney(d.cogs, 2)}`,
         `gross profit: ${fmtMoney(d.grossProfit, 2)}`,
-        `net profit after rent and switching transfers: ${fmtMoney(d.netProfit, 2)}`,
+        `net profit after rent, intelligence and switching transfers: ${fmtMoney(d.netProfit, 2)}`,
         `net margin: ${pct(d.netMargin)}`,
         `reliability: ${d.reliability.toFixed(3)}`,
       ];
@@ -881,6 +881,9 @@
         : fmtMoney(t.storageRentPerFirmPerTick ?? 0, 2);
       $(tier + 'RentPaid').textContent = fmtMoney(t.storageRentPaid ?? 0, 0);
       $(tier + 'RentArrears').textContent = fmtMoney(t.storageRentArrears ?? 0, 0);
+      $(tier + 'IntelligenceRate').textContent = fmtMoney(t.intelligencePerCompanyPerTick ?? 0, 2);
+      $(tier + 'IntelligencePaid').textContent = fmtMoney(t.intelligencePaid ?? 0, 0);
+      $(tier + 'StoppedCompanies').textContent = fmtInt(t.stoppedCompanies ?? 0);
     }
     const engineActive = s.engine === 'python' || s.engine === 'source' || !!s.wasm;
     $('kernel').textContent = s.engine === 'python'

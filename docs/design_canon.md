@@ -14,7 +14,7 @@ This canon is reconstructed from the executable model, catalog, state initializa
 | T2 | Manufacturing C3 and C4 from lower-complexity products | 57,960 firms |
 | T3 | Final purchase and consumption of T2 output | 1,000,000 distributors |
 
-Money is floating-point dollars. Quotes are rounded to cents, half away from zero, and guarded to `[0.01, 10⁹]`; costs, fees, rent, and balances retain fractional cents. Prices may fall below cost. T1/T2 production and purchases use whole units; T0 inventory/extraction may be fractional. Raw items occupy one space; products occupy `c` spaces. Machines occupy configured fixed footprints. There is no depreciation, interest, ordinary credit, automatic insolvency exit, or spoilage in the tick. Rent arrears are an explicit liability.
+Money is floating-point dollars. Quotes are rounded to cents, half away from zero, and guarded to `[0.01, 10⁹]`; costs, fees, rent, and balances retain fractional cents. Prices may fall below cost. T1/T2 production and purchases use whole units; T0 inventory/extraction may be fractional. Raw items occupy one space; products occupy `c` spaces. Machines occupy configured fixed footprints. There is no depreciation, interest, ordinary credit, automatic insolvency exit, or spoilage in the tick. No new operating-cost liabilities are created; saved historical rent arrears remain a legacy liability only.
 
 One month = 30 ticks; year = 360; generation = 7,200 (20 years); age = 172,800 (24 generations). Initialization is tick 0; ordinary execution begins at tick 1. Calendar month and year are one-based within their cycles; generation and age are zero-based.
 
@@ -119,7 +119,7 @@ For each T1/T2 line, with cash `C`, ingredient basis `bₘ`, inventory `Rₘ`, c
 ```text
 B = min(floor(min(K, max(0,F*−F))), minₘ floor(Rₘ/aₚₘ), floor(max(0,C)/v(c)))
 u = Σₘ aₚₘbₘ + v(c)                       actual cost per new output
-h = forecast firm rent / installed lines − switchingNetEMA / installed lines
+h = (paid firm rent + paid intelligence − switchingNetEMA) / installed lines
 m = (P − u − h/B) / max(P,10⁻⁹)             if B > 0
 z = clamp(m / productionMarginBand, 0, 1)
 B' = floor(B×z + ½)
@@ -127,7 +127,7 @@ B' = floor(B×z + ½)
 
 `productionMarginBand=0.05`. Return zero if `B≤0`, if `u>P+10⁻⁹`, if `B'≤0`, or if `(P−u)B'−h<−10⁻⁹`. Otherwise make `B'` outputs, consume `B'aₚₘ`, pay `B'v(c)`, and add their cost to finished inventory. The reduced-output recheck prevents fixed overhead from making a tapered plan loss-making. Switching income cannot override the `u≤P` test. At a 5% or larger estimated net margin, all feasible batches are made; below it, output tapers with rounding.
 
-`switchingNetEMA` starts at zero and updates after settlement using `alpha=0.15`. Rent eligibility is forecast after procurement for T1 and at entry to each complexity phase for T2; actual billing can differ after later transactions. Overhead affects planning, never inventory basis. Input replenishment proceeds independently of production profitability. Sales/demand EMAs do not set storage targets.
+`switchingNetEMA` starts at zero and updates after settlement using `alpha=0.15`. Rent and intelligence are prepaid before procurement, using opening equity and cash. Production uses the actual paid charges for that tick, so crossing the exemption threshold after payment does not erase overhead. Overhead affects planning, never inventory basis. Input replenishment proceeds independently of production profitability for operating companies. Sales/demand EMAs do not set storage targets.
 
 T1 production runs firm-major, then product-major. T2 firms rotate by `(order+137×tick) mod firmCount`; plans rotate line traversal by tick, but production executes in installed-slot order. All lines share actual remaining inputs and cash. T2 completes C3 before C4, rebuilding its supplier book between phases. A phase's supplier inventory only decreases; newly produced goods become inputs at the next complexity phase. Supplier proceeds and inventory deltas settle at phase end, so those proceeds are not available for the seller's earlier operations in that phase.
 
@@ -257,7 +257,7 @@ Source: [loyalty helpers](../economy/core/model.py), [regime initialization](../
 
 ## 9. Price learning
 
-At the end of each tick, each active line accumulates gross profit `revenue−COGS`, sales, `max(recordedDemand,sales)`, and one observation tick. Sales and demand EMAs update with `alpha=0.15`; price learning uses window totals, not these EMAs. Rent and switching transfers are excluded from learned gross profit.
+At the end of each tick, each active line accumulates gross profit `revenue−COGS`, sales, `max(recordedDemand,sales)`, and one observation tick. Sales and demand EMAs update with `alpha=0.15`; price learning uses window totals, not these EMAs. Rent, intelligence, and switching transfers are excluded from learned gross profit.
 
 A line can reprice when its observation age is at least `priceObservationTicks=30` and `(tick+lineIndex) mod priceObservationTicks=0`. Current-tick trades have not yet entered its learning window. Manual finite quotes on player-controlled lines override learning at that line's pricing phase. Setting a manual quote clears its observation window, baseline, and step history; the T2 command also changes its live quote immediately, while T0/T1 apply it at their pricing phase. The online flag does not gate automated buying or production.
 
@@ -278,22 +278,30 @@ Source: [adaptive_price](../economy/core/model.py), [learned_quote / price_marke
 
 ## 10. Accounting, rent, and equipment
 
-For existing quantity `Q` at unit basis `b` and newly purchased/produced quantity `q` worth `V`, weighted basis becomes `(Qb+V)/(Q+q)`. Production value is consumed-input book value plus conversion cash; extraction value is paid extraction cost. Selling `q` units at `P` posts revenue `qP` and COGS `qb`. Unsold inventory is not expensed. Switching and rent never enter inventory basis.
+For existing quantity `Q` at unit basis `b` and newly purchased/produced quantity `q` worth `V`, weighted basis becomes `(Qb+V)/(Q+q)`. Production value is consumed-input book value plus conversion cash; extraction value is paid extraction cost. Selling `q` units at `P` posts revenue `qP` and COGS `qb`. Unsold inventory is not expensed. Switching, rent, and intelligence never enter inventory basis.
 
 ```text
-firm net earnings = Σ lines (revenue−COGS) + switchingIncome − switchingExpense − rentCharge
-T1/T2 equity = cash + license + machineryBook + inputBookValue + finishedBookValue − rentArrears
+firm net earnings = Σ lines (revenue−COGS) + switchingIncome − switchingExpense − rentCharge − intelligenceCharge
+T1/T2 equity = cash + license + machineryBook + inputBookValue + finishedBookValue − legacyRentArrears
 T0 equity = cash + license + machineryBook + reserve + rawInventoryBookValue
 ```
 
-Company-period switching/rent items are allocated equally across installed lines for reporting. Net margin is net earnings/revenue when revenue is positive; otherwise unavailable. Shared-company balances are split across installed line complexities in complexity reports, avoiding duplicate firm cash/equity. Purchases exchange cash for inventory; making goods capitalizes conversion; neither is an immediate operating loss. Profits are posted from transactions, not inferred from equity changes.
+Company-period switching/rent/intelligence items are allocated equally across installed lines for reporting. Net margin is net earnings/revenue when revenue is positive; otherwise unavailable. Shared-company balances are split across installed line complexities in complexity reports, avoiding duplicate firm cash/equity. Purchases exchange cash for inventory; making goods capitalizes conversion; neither is an immediate operating loss. Profits are posted from transactions, not inferred from equity changes.
 
-Storage rent defaults to **$2.80 per 1,000 storage spaces per tick**. For eligible T1/T2 firms, per-tick charge is `fullStorageCapacity/1000×storageRentPerThousandPerTick` ($140 for a default T1 firm; $56 for a default T2 firm), regardless of occupied space. Eligibility is pre-bill book equity ≥ `$1,500,000`, including existing arrears. On positive ticks, add the charge to arrears, pay `min(max(cash,0),arrears)` if eligible, subtract payment from cash and debt, and send that cash outside the economy. Below the threshold, both new charging and debt collection pause; debt is not forgiven. Eligible firms can repay old arrears even with a zero current rent rate. Earnings deduct the new charge, not repayment of prior debt. T0 is exempt.
+Storage rent defaults to **$2.80 per 1,000 storage spaces per tick**. Per-tick rent is `fullStorageCapacity/1000×storageRentPerThousandPerTick`: $140 for default T1 and $56 for default T2, regardless of occupied space.
 
-Goods and producer switching payments transfer cash internally. Distributor goods/fee payments inject cash. Extraction, conversion, and paid rent are operating cash sinks; machinery purchases are equipment sinks. For ordinary ticks without administrative equipment transactions:
+**Market intelligence** means only the sales-weighted market price benchmark in §9. Supplier quotes, availability, and reliability are company communication, not separately billed intelligence. The subscription is `t1IntelligencePerTick=$2,000` per T1 company or `t2IntelligencePerTick=$20` per T2 company per tick. It is independent of installed line count, trading volume, manual pricing, and whether repricing is due. T0 and T3 are uncharged.
+
+**Shared small-company exemption and payment gate:** before company activity each positive tick, snapshot book equity. Below $1.5 million, the Colony subsidizes both services by waiving their charges; no cash is injected and no simulated provider is paid. Exactly $1.5 million is eligible. An eligible company must pay the combined bill in full from opening cash. If it cannot, collect nothing, post no expense or new debt, and stop its buying, production, sales, and repricing for that tick. Its cash, installed machines, and inventories remain intact. Recheck next tick; there is no permanent closure or automatic asset liquidation.
+
+Default combined bills are $2,140/T1 and $76/T2. Deduct payment before procurement and retail trading; destroy that cash, crediting no company. A company cannot fund the current bill with sales later that tick. Split actual paid overhead equally across installed lines for production decisions and reporting. Both services share the same opening eligibility, and a payment taking equity below the threshold does not refund either charge. Tick 0 has no billing. Existing rent arrears in an imported legacy checkpoint are preserved; an eligible company must also pay them in full to operate. No new run creates arrears, and legacy debt repayment is not a new expense.
+
+Net earnings, equity, dashboard margins, and recorded product/company accounts include intelligence; gross profit and inventory basis do not. Price learning still uses gross profit, not net earnings. Procurement curves and static reference costs remain unchanged, but buying can be constrained by reduced cash or stopped operation. Stopped sellers are excluded from offers and market price anchors; saved preferences cannot bypass the stop. The production gate uses paid rent/intelligence, while a standalone pre-billing forecast uses current eligibility.
+
+Goods and producer switching payments transfer cash internally. Distributor goods/fee payments inject cash. Extraction, conversion, paid rent, and paid intelligence are operating cash sinks; machinery purchases are equipment sinks. For ordinary ticks without administrative equipment transactions:
 
 ```text
-Δ(total producer cash) = distributorPayments − extractionCosts − conversionCosts − rentPaid
+Δ(total producer cash) = distributorPayments − extractionCosts − conversionCosts − rentPaid − intelligencePaid
 ```
 
 Equipment purchase moves its configured price from firm cash into machinery book value, preserving equity. T1 player firms may add any uninstalled refinery recipe if cash and physical space suffice. T2 player firms may add an invented recipe only within their sector/capability, without duplication, with enough cash/space, and at most four lines per firm. Bots never add lines automatically. New machines repartition storage targets without moving or deleting existing goods. A new T1 quote uses the lowest finite wholesale quote for each ingredient (falling back to `baseCost`) plus conversion and markup; a new T2 quote uses its recursive reference cost and markup. T0 has no runtime equipment-buying path.
@@ -306,7 +314,7 @@ Source: [accounting.py](../economy/core/accounting.py), [rent settlement](../eco
 
 The authoritative order in `tick()` is:
 
-1. Clear per-tick trading/earnings scratch; update difficulty.
+1. Clear per-tick trading/earnings scratch; apply the shared exemption and full-payment operation gate; update difficulty.
 2. Extract T0 raw stock.
 3. Buy T1 raw inputs; produce T1 output.
 4. Update T0 and T1 prices and stability samples.
@@ -314,7 +322,7 @@ The authoritative order in `tick()` is:
 6. Buy/produce/reprice C3; settle its supplier book. Then do C4 and settle.
 7. Accumulate observations; update monthly T0/T1 and T2 reliability.
 8. Update AOV EMAs and yearly switching multiples.
-9. Accrue/collect rent; finalize net earnings and switching forecasts for future production.
+9. Finalize net earnings and switching forecasts for future production.
 
 There is no random global shuffle. Rotated processing orders and stateless seeded draws make the order explicit. Randomness uses unsigned 32-bit arithmetic (`mask=2³²−1`):
 
@@ -332,11 +340,11 @@ Seed and initial mixer input are masked too. Difficulty uses streams `4×element
 
 `normalize_config` ignores unknown fields, replaces nonfinite recognized numeric values with defaults, and applies bounds. Rates `theta`, activation, aggressiveness, alpha, and reliability alpha lie in `[0,1]`; loyalty EMA alpha in `[0.0001,1]`; distributor elasticity in `[0.05,10]`; margin band in `[0.001,1]`; market-anchor band and price response in `[0.001,1]`. Search draws are floored/clamped to `1…20`; price observation ticks to `1…360`; research thresholds to `0…1000`; maximum research age is floored to at least one tick. Seed is floored and masked to 32 bits.
 
-T0 equity/license/machinery/reserve/capacity/storage/base cost/minimum lot have lower bound `1`. T1 equity/license/machinery/capacities/material reference and T2 equity/license/conversion factor have lower bound `10⁻⁶`; T2 machinery/capacities and all storage capacities have lower bound `1`. Footprints, rent, markups, reservation premium, loyalty multiples, and sigma are nonnegative. Difficulty minimum is at least `0.01`, maximum at least minimum, and target is clamped between them. Choke minimum is at least `0.01`, maximum at least minimum; stability band is at least `10⁻⁹`. These bounds do not guarantee that configured starting equity covers all starting assets.
+T0 equity/license/machinery/reserve/capacity/storage/base cost/minimum lot have lower bound `1`. T1 equity/license/machinery/capacities/material reference and T2 equity/license/conversion factor have lower bound `10⁻⁶`; T2 machinery/capacities and all storage capacities have lower bound `1`. Footprints, rent, intelligence rates, markups, reservation premium, loyalty multiples, and sigma are nonnegative. Difficulty minimum is at least `0.01`, maximum at least minimum, and target is clamped between them. Choke minimum is at least `0.01`, maximum at least minimum; stability band is at least `10⁻⁹`. These bounds do not guarantee that configured starting equity covers all starting assets.
 
 Distributor and T2 populations are integers bounded to `1…1,000,000` and `1…57,960`; a zero value selects the full-population default. Legacy `t1Capacity` without a C2 override applies to both; legacy `storage` without T1 overrides applies to both T1 cohorts. Integer-keyed configuration maps also accept string keys from JSON. Live population changes require Reset. Storage/footprint changes reject occupied-space overflow; live changes refresh references and distributor choke/elasticity, but do not redistribute firms/buyers, rewrite inventory basis, reset learned quotes, or immediately replace adaptive loyalty multiples.
 
-Checkpoints store arrays in `.npz` and config, tick, scalar regimes, supplier history, and runtime metadata in a `.json` sidecar. The current format is version 9 and catalog revision `midbridge-invented-105-reverse-v7`; incompatible catalog revisions/numbering are rejected. Older checkpoints convert annual per-space rent once on load to the per-1,000-space, per-tick rate; new checkpoints store only the direct tick rate. Global hexadecimal company identities reserve full-population ranges in order Gaia, T0, T1, T2, T3, even in reduced worlds.
+Checkpoints store arrays in `.npz` and config, tick, scalar regimes, supplier history, and runtime metadata in a `.json` sidecar. The current format is version 10 and catalog revision `midbridge-invented-105-reverse-v7`; incompatible catalog revisions/numbering are rejected. Older checkpoints convert annual per-space rent once on load to the per-1,000-space, per-tick rate; new checkpoints store only the direct tick rate. Pre-version-10 checkpoints default missing intelligence rates and ledgers to zero and operation flags to enabled. Upon advancing, the new full-payment gate applies to rent too; historic rent debt is retained. Statistics version 3 records intelligence expense, cumulative payments, and stopped-company counts; product rows and company archives include intelligence expense separately. Global hexadecimal company identities reserve full-population ranges in order Gaia, T0, T1, T2, T3, even in reduced worlds.
 
 Source: [tick.py](../economy/kernel/tick.py), [rng.py](../economy/core/rng.py), [config.py](../economy/core/config.py), [runtime.py](../economy/server/runtime.py), [persistence.py](../economy/server/persistence.py).
 
@@ -350,7 +358,7 @@ The following tests exercise the implemented contract:
 | Extraction/refinery throughput | [extraction capacity](../tests/py/test_extraction_capacity.py), [refinery capacity](../tests/py/test_refinery_capacity.py) |
 | Storage, recipe-weighted slots, live resizing | [storage slots](../tests/py/test_storage_slots.py), [C2 storage](../tests/py/test_c2_storage.py) |
 | Price-sensitive inputs, available stock, distributor preferences | [buying](../tests/py/test_buying_price_sensitive.py), [production stock access](../tests/py/test_production_stock_access.py), [preferences](../tests/py/test_distributor_preferences.py) |
-| Earnings, rent, complexity balances | [net earnings](../tests/py/test_net_earnings.py), [rent](../tests/py/test_storage_rent.py), [balances](../tests/py/test_complexity_balances.py), [browser profitability](../tests/js/test_profitability.js) |
+| Earnings, rent, intelligence, complexity balances | [net earnings](../tests/py/test_net_earnings.py), [rent](../tests/py/test_storage_rent.py), [intelligence](../tests/py/test_intelligence.py), [balances](../tests/py/test_complexity_balances.py), [browser profitability](../tests/js/test_profitability.js) |
 | Randomness, execution, persistence/recording | [RNG](../tests/py/test_rng.py), [kernel](../tests/py/test_kernel.py), [review fixes](../tests/py/test_review_fixes.py), [recording](../tests/py/test_recording.py) |
 
 Catalog weights calibrate a possible common-utilization flow; they do not guarantee equilibrium, equal material demand, profitability, or full-capacity operation. Cash, prices, purchase curves, rounded lots, sampled search, storage, and production gates determine realized outcomes. No runtime invention, C5 manufacturing, autonomous expansion, or distributor budget model should be inferred from dormant fields or older design material.
