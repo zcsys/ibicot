@@ -26,9 +26,11 @@ tag does and does not establish.
   incumbent preference unless one supplier alone fulfils the whole funded demand,
   and one existing-formula fee per product order) governs supplier selection, and
   both the reference and compiled kernels implement it. This satisfies the PoC
-  "buy side" condition's price-sensitivity; the halving-price calibration
-  (reference cost vs. the buyer's own margin), Stage 7 economic validation, and
-  Stage 8 rollout remain open.
+  "buy side" condition's price-sensitivity. The rule was **adopted as the
+  production default** on 2026-10-12 (user decision, no calibration retune),
+  backed by a single-seed 1-generation run (98.6% T2 fulfillment, all 123
+  products profitable, T2 cash 3.2×); the preregistered Stage 7 multi-seed
+  validation is deferred by that adoption decision.
 
 ## Phase 1 — PoC
 

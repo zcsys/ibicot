@@ -1,5 +1,13 @@
 # Buying behavior implementation handoff
 
+## Adopted as the production default (Stage 8 complete)
+
+The user adopted the price-sensitive fill-to-brim rule as the production default on 2026-10-12, with **no calibration retune** (the T1 margin is accepted as-is). Stage 8 rollout is complete: artifact `db131cc`, service version 0.1.8. Stage 7's preregistered multi-seed validation is deferred by the adoption decision; the single-seed 1-generation run (98.6% T2 fulfillment) is the supporting observation.
+
+## 1-generation run: 98.6% T2 fulfillment — the ~40% was a startup transient
+
+A live app run (57,960 T2 firms, C3/C4, default seed/config) auto-paused at tick 7,200. The earlier ~40% T2 fulfillment (flagged from the 361-tick benchmark) was only the first-year ramp-up: the fill rate reaches 93% by year 4 and settles at ~98% through year 20 (**98.6%** at tick 7,200). All 123 products are profitable (0 negative-earners); T2 cash grows 17.97B → 57.29B (3.2×); distributors are 99.99% fulfilled. Tier gross margins: T0 47.5%, T1 54.4%, T2 21.0% (C3 20.6%, C4 21.7%). The one remaining calibration lever: T1 prices drifted 3.05 → 7.53 vs a 2.75 reference (54% T1 margin). Report: `stats/buying-implementation/20261012-price-sensitive-buying/generation-report.md`.
+
 ## Population benchmark and economic observation of the price-sensitive rule
 
 Full-population isolated benchmark (57,960 T2, C3/C4, 361 ticks): step median **137 ms/tick** (p95 160 ms), so the closed-form rule adds negligible overhead. Economic snapshot at tick 361: T0 sold 5.27M (net 800k), T1 sold 3.29M (net 2.02M), T2 sold 1.70M vs demand 4.25M (**unmet 2.55M**), T2 net 5.72M, T2 intermediate sold 97,773, all tiers profitable, no negatives, money/goods reconcile. Evidence: `stats/buying-implementation/20261012-price-sensitive-buying/`.

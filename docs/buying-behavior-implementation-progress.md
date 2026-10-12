@@ -1,5 +1,13 @@
 # Buying behavior implementation progress
 
+## Adopted as the production default (Stage 8 complete)
+
+The user adopted the price-sensitive fill-to-brim rule as the production default on 2026-10-12, with **no calibration retune** (T1 margin accepted as-is). Stage 8 rollout complete: artifact `db131cc`, service version 0.1.8. Stage 7's preregistered multi-seed validation is deferred by the adoption decision.
+
+## 1-generation run: 98.6% T2 fulfillment — the ~40% was a startup transient
+
+A live app run (57,960 T2 firms, C3/C4, default seed/config) auto-paused at tick 7,200. The earlier ~40% T2 fulfillment (flagged from the 361-tick benchmark) was only the first-year ramp-up: fill rate reaches 93% by year 4 and settles at ~98% through year 20 (**98.6%** at tick 7,200). All 123 products profitable (0 negative-earners); T2 cash 17.97B → 57.29B (3.2×); distributors 99.99% fulfilled. Tier gross margins: T0 47.5%, T1 54.4%, T2 21.0%. Remaining calibration lever: T1 prices 3.05 → 7.53 vs a 2.75 reference. Report: `stats/buying-implementation/20261012-price-sensitive-buying/generation-report.md`.
+
 ## Price-sensitive fill-to-brim industrial buying (user-directed)
 
 The user resolved D3–D6 with a simpler rule: latent demand = "fill to brim" (storage slot), quantity = the Tier 3 curve with a heuristically chosen halving price, no continuation planner for the adopted model. Implemented identically in `economy/kernel/tick.py` and `economy/kernel/numba.py` (plus `M.input_reference_cost` in `economy/core/model.py`): `buy_request = min(demand_at_price(slot, halving, quote, 2.0), shortage)`; halving price = the input's reference cost (canon V = unit cost), elasticity 2. D3–D6 are thereby resolved. Three golden tests updated (24 → 6) and a new `tests/py/test_buying_price_sensitive.py` checks the direction; kernel determinism/conservation and reference/compiled byte-equality pass. Full discovery pending at the time of writing.

@@ -77,10 +77,10 @@ This is dependency order, not authorization to start multiple agents. Estimate i
 | 4 | Complete | Compiled mechanics; fresh full discovery passes 663 tests (430s) after the offer-collapse optimization. |
 | 5 | Complete | D3–D6 resolved with the price-sensitive fill-to-brim rule; `input_reference_cost` (V = unit cost) + `demand_at_price` (η = 2) implemented in both kernels. |
 | 6 | Complete | The user-directed closed-form rule (price-sensitive fill-to-brim) supersedes the continuation solver and is already in the compiled production kernel; full-population benchmark measures step median 137 ms/tick (p95 160 ms). The continuation solver (captured 8/8, offer-collapse/funded-cap/dedup/symmetry-break) is retained as historical evidence, not the adopted model. |
-| 7 | Not started | Requires passing Stage 5/6 plus authorized isolated live runs; cannot be run under the current no-live-runs restriction. |
-| 8 | Not started | Requires Stage 7 gates and the user's explicit rollout decision. |
+| 7 | Deferred | The user adopted the rule on the single-seed 1-generation live run (98.6% T2 fulfillment, all 123 products profitable); the preregistered multi-seed/stress/fairness validation (seeds 313/421/907/1543/2099) was not required before adoption. |
+| 8 | Complete | Adopted as the production default (user decision 2026-10-12, no calibration retune). Artifact `db131cc`, service version 0.1.8, rollback via git history. |
 
-The mechanics milestone (Stages 0–4) is complete and independently verifiable. The industrial model (Stage 5) and its compiled full-world implementation (Stage 6) are complete under the user's price-sensitive fill-to-brim directive (step median 137 ms/tick). Stages 7–8 (authorized live economic validation and rollout) remain open; the ~40% T2 fulfillment at the reference halving price is a calibration choice flagged for the user.
+The mechanics milestone (Stages 0–4) is complete and independently verifiable. The industrial milestone (Stages 5–6) is complete, and the price-sensitive fill-to-brim rule is **adopted as the production default** (Stage 8, user decision 2026-10-12, no calibration). Stage 7's preregistered multi-seed validation is deferred by that adoption decision; the single-seed 1-generation run (98.6% T2 fulfillment, all products profitable, T2 cash 3.2×) is the supporting economic observation recorded at `stats/buying-implementation/20261012-price-sensitive-buying/generation-report.md`.
 
 ## Stage 0 Preserve the baseline
 
