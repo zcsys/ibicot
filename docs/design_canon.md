@@ -8,7 +8,9 @@
 > **Status:** settled by review. This is the **single source of truth**: it states
 > *what must be true* of the economy kernel and the game's entry into it, and records
 > the machine contract (§12) so the whole economy is specified in one document.
-> Where it conflicts with any implementation, the canon wins.
+> Read this status subject to the dated superseding integration update above.
+> Historical population, recipe and C5 passages below do not reinstate those settings;
+> the current active model has 57,960 manufacturers, 105 invented T2 products and C3/C4 phases.
 
 ---
 

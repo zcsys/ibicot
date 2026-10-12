@@ -12,8 +12,8 @@ from ..core import model as M
 
 
 class InputMarket:
-    def __init__(self, world, tick):
-        from .tick import market_offers
+    def __init__(self, world, tick, *, vectorized=False):
+        from .tick import market_offers, market_offers_table
         self.world = world
         self.tick = tick
         self.n1 = M.N1 * M.NP
@@ -37,8 +37,14 @@ class InputMarket:
         self.opportunities = np.zeros(M.NI)
         self.intermediate_sold = np.zeros(M.NI)
         self.intermediate_revenue = np.zeros(M.NI)
-        t1 = market_offers(world,1,tick)
-        t2 = market_offers(world,2,tick)
+        if vectorized:
+            flat1, off1 = market_offers_table(world,1,tick)
+            flat2, off2 = market_offers_table(world,2,tick)
+            t1 = [flat1[off1[i]:off1[i+1]].tolist() for i in range(M.NP)]
+            t2 = [flat2[off2[i]:off2[i+1]].tolist() for i in range(len(M.T2_PRODUCTS))]
+        else:
+            t1 = market_offers(world,1,tick)
+            t2 = market_offers(world,2,tick)
         self.offers = t1 + [[self.n1 + i for i in t2[p['id']]] for p in M.T2_INPUT_PRODUCTS[M.NP:]]
         self.off = np.zeros(M.NI+1,dtype=np.int64)
         self.off[1:] = np.cumsum([len(x) for x in self.offers])

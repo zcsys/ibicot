@@ -51,11 +51,20 @@ def save_checkpoint(path, cfg, tick, world, scalars=None, runtime_metadata=None)
     return path
 
 
-def load_checkpoint(path):
-    """Return ``(cfg, tick, world, scalars)``, rebuilding a WorldState with exact arrays."""
+def load_checkpoint(path, *, purchase_policy='baseline'):
+    """Load exact state only into the explicitly matching purchasing policy.
+
+    Older checkpoints without a policy marker belong to the production baseline.
+    An experimental runner must opt into its own marker; the normal runtime must
+    never silently resume an experimental trajectory as baseline behavior.
+    """
     with open(path + '.json') as f:
         meta = json.load(f)
     assert meta['format'] == 'economy-checkpoint', 'unsupported checkpoint format'
+    saved_policy = (meta.get('runtime') or {}).get('purchasePolicy', 'baseline')
+    if saved_policy != purchase_policy:
+        raise ValueError(f'Checkpoint purchasing policy {saved_policy!r} does not match '
+                         f'requested policy {purchase_policy!r}; use its matching engine.')
     if meta.get('catalogRevision') != CATALOG_REVISION:
         raise ValueError('Checkpoint uses an older recipe/storage model. Start a fresh Midbridge world; the old checkpoint is preserved.')
     if meta.get('companyNumbering',M.COMPANY_NUMBERING) != M.COMPANY_NUMBERING:

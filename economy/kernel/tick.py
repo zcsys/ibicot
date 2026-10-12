@@ -251,7 +251,7 @@ def tier0_supplier(world, cfg, profiles, element, preferred, buyer, tick, reques
     return tied[-1]
 
 
-def plan_and_buy_inputs(world, cfg, products, profiles, tick):
+def plan_and_buy_inputs(world, cfg, products, profiles, tick, *, purchase_company=None):
     world.t0Req.fill(0)
     world.t0FundedReq.fill(0)
     first_cohort = tick % NP
@@ -289,6 +289,9 @@ def plan_and_buy_inputs(world, cfg, products, profiles, tick):
                     else:
                         replacement += (ratio / output_qty) * (quote if math.isfinite(quote) else world.rawBasis[raw_base + element])
                 world.t1ReplacementCost[product_base + p] = replacement
+            if purchase_company is not None:
+                purchase_company(world, cfg, tick, company, profiles)
+                continue
             # Restock each distinct input independently of production profitability.
             for element in used_inputs:
                 world.t1InputNeed[raw_base + element] = max(0.0, storage_slot[element] - world.raw[raw_base + element])
@@ -751,7 +754,8 @@ def operate_tier2(world, cfg, products, profiles, t2_products, tick):
         _operate_tier2_phase(world, cfg, products, profiles, t2_products, tick, complexity)
 
 
-def _operate_tier2_phase(world, cfg, products, profiles, t2_products, tick, production_complexity):
+def _operate_tier2_phase(world, cfg, products, profiles, t2_products, tick, production_complexity,
+                        *, purchase_company=None, phase_observer=None):
     line_rent = production_line_overhead(world, cfg, 't2')
     t2_learning = price_learning_view(world, 't2')
     n_lines = int(world.t2LineCount)
@@ -825,16 +829,21 @@ def _operate_tier2_phase(world, cfg, products, profiles, t2_products, tick, prod
             world.t2ReplacementCost[line] = replacement
             plans[slot] = desired  # Production is gated after actual input availability.
 
-        for material in range(NI):
-            basic = material < 4
-            index = firm * (NE if basic else NI) + material
-            raw = world.t2Raw if basic else world.t2T1Raw
-            need = max(0.0, needs[material] - raw[index])
-            if not need:
-                continue
-            supplier = suppliers[material]
-            if supplier >= 0:
-                transfer_tier2_input(world, cfg, firm, material, supplier, need, t1_offers[material], book=book)
+        if purchase_company is not None:
+            # Isolated reference-policy experiments share the real production
+            # and phase-end accounting path. Ordinary callers retain baseline.
+            purchase_company(world, cfg, tick, firm, production_complexity, book)
+        else:
+            for material in range(NI):
+                basic = material < 4
+                index = firm * (NE if basic else NI) + material
+                raw = world.t2Raw if basic else world.t2T1Raw
+                need = max(0.0, needs[material] - raw[index])
+                if not need:
+                    continue
+                supplier = suppliers[material]
+                if supplier >= 0:
+                    transfer_tier2_input(world, cfg, firm, material, supplier, need, t1_offers[material], book=book)
 
         for slot in range(line_count):
             line = int(world.t2FirmLines[firm * M4 + slot])
@@ -880,6 +889,8 @@ def _operate_tier2_phase(world, cfg, products, profiles, t2_products, tick, prod
                                              / max(1e-9, previous * cfg['switchingStableBand']))
             world.t2RelPriceSamples[line] += 1
             world.t2MonthlyCapacity[line] += cfg['t2Capacity'][product['complexity']]
+    if phase_observer is not None:
+        phase_observer(book)
     book.settle()
 
 
@@ -1220,8 +1231,9 @@ def storage_rent_equity(world, cfg, tier):
 def production_line_rent(world, cfg, tier):
     """Forecast per-installed-line tick rent for the net margin gate.
 
-    Snapshot eligibility once before each tier's procurement, using current book
-    equity. Trading can change eligibility before actual end-of-tick billing.
+    Snapshot eligibility at production entry: after procurement for T1, before
+    the combined buying/production phase for T2. Use current book equity; later
+    trading can change eligibility before actual end-of-tick billing.
     Split the full firm bill equally across its installed lines, as in reporting.
     NumPy-only firm projection shared by the reference and compiled planners.
     This does not post expense, collect cash, or include existing debt payments.

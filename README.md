@@ -20,6 +20,12 @@ and [experimental contract](docs/buying-behavior-model.md) record the purchasing
 study. The completed study rejects candidate R1; production purchasing remains
 unchanged. The [completion audit](docs/buying-behavior-requirements-audit.md)
 maps the brief to the preserved evidence and failed adoption gates.
+The proposed [buying-behavior implementation master plan](docs/buying-behavior-implementation-plan.md)
+separates purchasing-mechanics corrections from a new industrial model and defines
+contract decisions, validation gates, and rollout requirements.
+The [implementation handoff](docs/buying-behavior-handoff.md) is the continuation entry point for another contributor, with current evidence, open requirements and reproduction commands.
+The [implementation progress record](docs/buying-behavior-implementation-progress.md) tracks isolated reference/compiled purchasing, measurements, preserved runs, and open adoption gates.
+The [recorded buying-decision inspector](docs/buying-behavior-v2-inspector.md) displays verified experimental samples and whole-window industrial totals without changing a live economy.
 
 **Naming.** Display names follow the approved [complete naming catalog](docs/midbridge_complete_naming_catalog.md)
 and [JSON source](docs/midbridge_complete_naming_catalog.json). Every T1/T2 company
@@ -33,7 +39,7 @@ See [naming integration](docs/naming-integration.md) for compatibility and verif
 ```sh
 ./run.sh serve             # start the Python backend AND open the browser dashboard
 ./run.sh run --ticks 360   # headless run (append --stats path to write a JSONL log)
-./run.sh test              # run the Python test suite
+./run.sh test              # run the curated Python test subset
 ```
 
 `serve` starts a FastAPI + WebSocket service on `http://127.0.0.1:8000`, serves the
@@ -48,25 +54,28 @@ launcher prints.
 
 ## The economy
 
-A four-tier physical supply chain, calibrated to be *supply-consistent* (every tier
-can actually feed the next):
+The current fresh-world defaults use the invented-recipe catalog below. Runtime
+population overrides must be read from the particular run's configuration.
 
-| Tier | Who | Count |
+| Tier | Who | Default count |
 | --- | --- | --- |
-| **T0 — Resource Companies** | extract the four raw elements (Organics, Inorganics, Metals, Radioactives) | 20 companies |
-| **T1 — Refineries** | 10 refined materials (4 C-1 basic + 6 C-2 compound) | 1,000 firms |
-| **T2 — Manufacturers** | 200 manufactured goods, complexity C-3 / C-4 / C-5 | 60,000 firms |
-| **T3 — Consumers** | resident consumers | 1,000,000 |
+| **T0 — Resource Companies** | extract the four raw elements | 20 companies |
+| **T1 — Refineries** | 14 refined materials (4 C1 basic + 10 C2 compound) | 1,008 firms |
+| **T2 — Manufacturers** | 105 invented products, complexity C3 / C4 | 57,960 firms |
+| **T3 — Distributors** | buy final goods | 1,000,000 firms |
 
 Time is a **30-tick month**, a **360-tick year**, and a **7,200-tick generation**
-(20 years). The T2 firm count follows a reverse 6:3:1 ratio — 36,000 C-3, 18,000 C-4,
-6,000 C-5 — so more complex goods have fewer, higher-capacity producers.
+(20 years). The active T2 catalog contains 36 C3 and 69 C4 products. Reversed
+product-count shares give 38,088 C3 companies (1,058 per product) and 19,872 C4
+companies (288 per product). **C5 is inactive.** The full recipe universe and
+invented selection are distinct; see [current integration rules](docs/midbridge-integration.md).
 
 ## Key mechanisms
 
 - **Deterministic** — SplitMix32 RNG; identical `(seed, config)` ⇒ byte-identical state.
-- **9-phase tick** — reset → environment (difficulty) → T0 extraction → T1 purchase →
-  T1 manufacture → pricing → T2 buy/make/price → consumer clearing → observe/reliability.
+- **Execution order** — reset/environment → T0 extraction → T1 purchase/production →
+  T0/T1 pricing → Distributor purchases from opening T2 inventory → T2 C3 then C4
+  buying/production/pricing → observation/reliability → expansion/loyalty → rent/earnings.
 - **Derivative-following pricing** — firms walk their price against realised profit and
   hold at the flat optimum; a 2 % dead band prevents overshoot.
 - **Margin-ramp production** — a producer throttles manufacturing by estimated net margin, including eligible storage expense and forecast switching income/expense
@@ -90,7 +99,7 @@ economy/                  # the Python kernel
     state.py              #   WorldState (NumPy arrays) + world construction
     rng.py                #   SplitMix32 (scalar + vectorised, bit-exact)
   kernel/
-    tick.py               #   the 9-phase tick (pure-Python reference)
+    tick.py               #   tick orchestration and reference execution
     numba.py              #   @njit fast path, byte-identical to tick.py
   server/
     runtime.py            #   KernelRuntime (step/pause/publish, stats)
@@ -167,7 +176,7 @@ for formulas, checkpoint compatibility, and the vectorized implementation.
 ./run.sh bench --ticks 361 --fingerprint-every 1 --output /tmp/after.json --verify /tmp/before.json
 ```
 
-The benchmark uses the full 60,000 manufacturers and 1,000,000 distributors by
+The benchmark uses the current defaults of 57,960 manufacturers and 1,000,000 distributors by
 default. It measures steps, snapshot construction, JSON encoding, and company
 queries separately. Compilation and state fingerprinting are excluded from the
 steady-state timings. Comparison checks every world array, scalar ledger,
@@ -190,7 +199,9 @@ remains optional, with Python/NumPy fallbacks.
 The 2026-10-10 measurements and validation coverage are recorded in
 [`docs/performance-validation-2026-10-10.json`](docs/performance-validation-2026-10-10.json).
 
-On the local arm64/Python 3.12 host, the 361-tick full-population comparison gave:
+The historical 2026-10-10 run used the then-current **60,000-manufacturer**
+configuration. These measurements do not describe the current 57,960-company
+catalog. On that local arm64/Python 3.12 host, its 361-tick comparison gave:
 
 | Operation | Before | After | Speedup |
 | --- | ---: | ---: | ---: |
