@@ -37,9 +37,8 @@ def _normal_impl(seed: int, tick: int, stream: int) -> float:
 
 
 def _hash_seed_impl(seed: int, k: int) -> int:
-    # NB: the JS worker's hashSeed returns the raw u32 (NOT divided by 2**32).
-    # The contract/design-doc text that shows a `/ 4294967296` is superseded by
-    # the executable oracle (the canon machine contract (docs/design_canon.md §12) `hashSeed`).
+    # hashSeed returns the raw u32 (NOT divided by 2**32), per the machine
+    # contract in docs/design_canon.md §12.
     return _mix_impl((seed & MASK) ^ (((k + 1) & MASK) * 0x9E3779B1 & MASK))
 
 

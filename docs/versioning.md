@@ -6,31 +6,16 @@ versioning and scope note, not a design document: the
 [design canon](design_canon.md) remains authoritative for mechanics, and this
 document defers to it wherever they overlap.
 
-Status is described as of the `v0.1.7` tag; see "Current position" for what that
-tag does and does not establish.
-
 ## Current position
 
-- Latest tag is **`v0.1.7`** (`ed5dd80`, 2026-10-11); the working branch
-  (`new-recipes`) is ahead of it.
-- `v0.1.7` delivers the deterministic supply-chain kernel (NumPy + Numba), a
-  validated full-year run, a local FastAPI + WebSocket service, a browser
-  dashboard, and a first player-entry loop (`buyLicense`, `foundHouse`,
-  `player`, `buyEquipment`, `setOwnershipEnforcement`).
-- Since `v0.1.7`, the buy side has been implemented. Intermediate purchasing no
-  longer refills bounded input slots *regardless of margin*: latent demand is
-  "fill to brim" (the storage slot) and the actual request follows the Tier 3
-  price-response curve with the input's reference cost as the halving price
-  (canon `V = unit cost`, elasticity 2), capped by the slot shortage — so the
-  bought quantity is price-sensitive. The accepted purchasing contract (D1/D2:
-  incumbent preference unless one supplier alone fulfils the whole funded demand,
-  and one existing-formula fee per product order) governs supplier selection, and
-  both the reference and compiled kernels implement it. This satisfies the PoC
-  "buy side" condition's price-sensitivity. The rule was **adopted as the
-  production default** on 2026-10-12 (user decision, no calibration retune),
-  backed by a single-seed 1-generation run (98.6% T2 fulfillment, all 123
-  products profitable, T2 cash 3.2×); the preregistered Stage 7 multi-seed
-  validation is deferred by that adoption decision.
+The kernel is a deterministic supply-chain simulation (NumPy + Numba) with a
+FastAPI + WebSocket service and a browser dashboard. The market logic is complete
+on both sides: production follows a margin ramp, and industrial purchasing is
+price-sensitive — latent demand is "fill to brim" (the storage slot), and the
+actual request follows the Tier 3 price-response curve with the input's reference
+cost as the halving price (elasticity 2), capped by the slot shortage. Supplier
+selection applies an incumbent preference (one supplier must alone fulfil the
+whole funded demand to qualify) and one existing-formula fee per product order.
 
 ## Phase 1 — PoC
 
@@ -44,8 +29,7 @@ tag does and does not establish.
    ([§2.6, §12.2](design_canon.md#L65)).
 2. **Buy side.** Final demand and — crucially — intermediate (industrial)
    purchasing are price- and margin-sensitive and consistent with the supply
-   side, rather than fill-to-brim regardless of margin. This price-sensitivity is
-   now implemented; the halving-price calibration is the remaining open choice.
+   side, rather than fill-to-brim regardless of margin.
 
 **Honesty caveat.** "An equilibrium exists" is not the same as "the economy is
 validated as fair and healthy." A stable aggregate does not by itself prove

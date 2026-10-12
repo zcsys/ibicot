@@ -1,4 +1,4 @@
-"""Scheduler cadence and batch helpers (JS worker §9.3 semantics)."""
+"""Scheduler cadence and batch helpers (canon §9.3 semantics)."""
 from __future__ import annotations
 
 # Scheduler modes mirror the canon machine contract (docs/design_canon.md §12):

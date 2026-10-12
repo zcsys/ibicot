@@ -1,4 +1,4 @@
-"""Full kernel runtime: owns the WorldState, applies the JS worker's command
+"""Full kernel runtime: owns the WorldState, applies the dashboard's command
 surface, and publishes the exact ``lastSnapshot`` projection the browser UI
 expects.  This is the Python analog of ``the canon machine contract (docs/design_canon.md §12)``
 closure + ``publish()``/``companyDetail()``/``tier2Page()``/``buildAnalytics()``.
@@ -169,7 +169,7 @@ class KernelRuntime:
         self.tier2HistoryCompany = -1
         self.watchedCompanies = {'T0': set(), 'T1': set()}
         self.watchedCompanyHistory = {}
-        self.workerStats = {'steps': 0, 'lastTickMs': 0.0, 'totalTickMs': 0.0}
+        self.tickStats = {'steps': 0, 'lastTickMs': 0.0, 'totalTickMs': 0.0}
         self.adminAccounting = {'equipmentSinks': 0, 'sequence': 0, 'lastEquipmentReceipt': None}
         self.playerLicenses = set(M.PROGRESSION_DEFAULTS['startingLicenses'])
         self.playerHouse = None
@@ -262,7 +262,7 @@ class KernelRuntime:
         self._init_analytics_scratch()
         self.cfg, self.world = reset_world(cfg if cfg is not None else self.cfg)
         self._init_admin()
-        self.workerStats = {'steps': 0, 'lastTickMs': 0.0, 'totalTickMs': 0.0}
+        self.tickStats = {'steps': 0, 'lastTickMs': 0.0, 'totalTickMs': 0.0}
         self.adminAccounting = {'equipmentSinks': 0, 'sequence': 0, 'lastEquipmentReceipt': None}
         self.state = {'activeOrders': 0, 'fulfilledOrders': 0, 'activatedDistributors': 0, 'distributorPayments': 0}
         self.lastReportAt = time.monotonic()
@@ -283,9 +283,9 @@ class KernelRuntime:
             np.fmax(output, 0.0, out=output)
         self.tick = t
         self.month = t // MONTH
-        self.workerStats['steps'] += 1
-        self.workerStats['lastTickMs'] = (time.monotonic() - started) * 1000
-        self.workerStats['totalTickMs'] += self.workerStats['lastTickMs']
+        self.tickStats['steps'] += 1
+        self.tickStats['lastTickMs'] = (time.monotonic() - started) * 1000
+        self.tickStats['totalTickMs'] += self.tickStats['lastTickMs']
         self._record_stats()
         if len(self.statsLog) >= 30:
             self.flush_stats()
@@ -534,7 +534,7 @@ class KernelRuntime:
         return self._company_detail(tier, int(id_))
 
     # ------------------------------------------------------------------
-    # Projections (ports of worker publish() + helpers)
+    # Projections (ports of the dashboard publish() + helpers)
     # ------------------------------------------------------------------
     def _book_t0_equity(self):
         machinery = sum(len(T0P[i]['element_indices']) * self.cfg['t0Machinery'] for i in range(N0))
@@ -1457,8 +1457,8 @@ class KernelRuntime:
             'productCategories': productCategories, 'tier2Cohorts': t2Cohorts,
             'tier2Industries': t2Industries, 'tier2Complexity': t2Complexity,
             'tier2CompanyHistory': self.tier2CompanyHistory, 'tier2Companies': self._tier2_page(),
-            'performance': {'lastTickMs': self.workerStats['lastTickMs'],
-                            'averageTickMs': self.workerStats['totalTickMs'] / max(1, self.workerStats['steps']),
+            'performance': {'lastTickMs': self.tickStats['lastTickMs'],
+                            'averageTickMs': self.tickStats['totalTickMs'] / max(1, self.tickStats['steps']),
                             'stateBytes': int(sum(a.nbytes for a in (getattr(world, n) for n in world.array_names))),
                             'activeLines': int(world.t2LineCount),
                             'activatedDistributors': self.state.get('activatedDistributors', 0),

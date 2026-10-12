@@ -251,7 +251,7 @@ def tier0_supplier(world, cfg, profiles, element, preferred, buyer, tick, reques
     return tied[-1]
 
 
-def plan_and_buy_inputs(world, cfg, products, profiles, tick, *, purchase_company=None):
+def plan_and_buy_inputs(world, cfg, products, profiles, tick):
     world.t0Req.fill(0)
     world.t0FundedReq.fill(0)
     first_cohort = tick % NP
@@ -289,9 +289,6 @@ def plan_and_buy_inputs(world, cfg, products, profiles, tick, *, purchase_compan
                     else:
                         replacement += (ratio / output_qty) * (quote if math.isfinite(quote) else world.rawBasis[raw_base + element])
                 world.t1ReplacementCost[product_base + p] = replacement
-            if purchase_company is not None:
-                purchase_company(world, cfg, tick, company, profiles)
-                continue
             # Restock each distinct input independently of production profitability.
             for element in used_inputs:
                 world.t1InputNeed[raw_base + element] = max(0.0, storage_slot[element] - world.raw[raw_base + element])
@@ -760,8 +757,7 @@ def operate_tier2(world, cfg, products, profiles, t2_products, tick):
         _operate_tier2_phase(world, cfg, products, profiles, t2_products, tick, complexity)
 
 
-def _operate_tier2_phase(world, cfg, products, profiles, t2_products, tick, production_complexity,
-                        *, purchase_company=None, phase_observer=None):
+def _operate_tier2_phase(world, cfg, products, profiles, t2_products, tick, production_complexity):
     line_rent = production_line_overhead(world, cfg, 't2')
     t2_learning = price_learning_view(world, 't2')
     n_lines = int(world.t2LineCount)
@@ -835,21 +831,16 @@ def _operate_tier2_phase(world, cfg, products, profiles, t2_products, tick, prod
             world.t2ReplacementCost[line] = replacement
             plans[slot] = desired  # Production is gated after actual input availability.
 
-        if purchase_company is not None:
-            # Isolated reference-policy experiments share the real production
-            # and phase-end accounting path. Ordinary callers retain baseline.
-            purchase_company(world, cfg, tick, firm, production_complexity, book)
-        else:
-            for material in range(NI):
-                basic = material < 4
-                index = firm * (NE if basic else NI) + material
-                raw = world.t2Raw if basic else world.t2T1Raw
-                need = max(0.0, needs[material] - raw[index])
-                if not need:
-                    continue
-                supplier = suppliers[material]
-                if supplier >= 0:
-                    transfer_tier2_input(world, cfg, firm, material, supplier, need, t1_offers[material], book=book)
+        for material in range(NI):
+            basic = material < 4
+            index = firm * (NE if basic else NI) + material
+            raw = world.t2Raw if basic else world.t2T1Raw
+            need = max(0.0, needs[material] - raw[index])
+            if not need:
+                continue
+            supplier = suppliers[material]
+            if supplier >= 0:
+                transfer_tier2_input(world, cfg, firm, material, supplier, need, t1_offers[material], book=book)
 
         for slot in range(line_count):
             line = int(world.t2FirmLines[firm * M4 + slot])
@@ -895,8 +886,6 @@ def _operate_tier2_phase(world, cfg, products, profiles, t2_products, tick, prod
                                              / max(1e-9, previous * cfg['switchingStableBand']))
             world.t2RelPriceSamples[line] += 1
             world.t2MonthlyCapacity[line] += cfg['t2Capacity'][product['complexity']]
-    if phase_observer is not None:
-        phase_observer(book)
     book.settle()
 
 

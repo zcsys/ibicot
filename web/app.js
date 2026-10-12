@@ -8,7 +8,7 @@
       .forEach((control) => (control.disabled = true));
     return;
   }
-  const worker = new Worker('./worker.js');
+  const backend = new Backend();
   const $ = (id) => document.getElementById(id);
 
   // --- Loading screen ---
@@ -84,7 +84,7 @@
     return valid?id:null;
   };
   let t2Page = 0, t2Descending = false, controlDirty = false;
-  const queryTier2 = () => worker.postMessage({ type: 'tier2Query', page: t2Page, search: $('t2Search').value,
+  const queryTier2 = () => backend.postMessage({ type: 'tier2Query', page: t2Page, search: $('t2Search').value,
     sector: $('t2SectorFilter').value, controller: $('t2ControllerFilter').value, sort: $('t2Sort').value, descending: t2Descending });
   const PARAMS = [
     'seed',
@@ -124,7 +124,7 @@
   function sendSelect() {
     if (controlId()===null) return;
     controlDirty = false;
-    worker.postMessage({ type: 'select', tier: $('playerTier').value, id: controlId() });
+    backend.postMessage({ type: 'select', tier: $('playerTier').value, id: controlId() });
   }
   $('playerCompany').addEventListener('change', sendSelect);
   $('t2PlayerCompany').addEventListener('change', sendSelect);
@@ -315,7 +315,7 @@
     }
     updateSortIndicators();
   }
-  worker.onmessage = (e) => {
+  backend.onmessage = (e) => {
     const m = e.data;
     if (m.type === 'snapshot') {
       EconomyProfitability.snapshot(m.data);
@@ -346,7 +346,7 @@
     if (m.type === 'houseResult')
       $('ownershipStatus').textContent = m.ok ? `House "${m.name}" founded.` : (m.msg || 'House founding failed.');
     if (m.type === 'error') {
-      const message = m.message || 'Worker error';
+      const message = m.message || 'Backend error';
       $('kernel').textContent = 'Engine: error';
       $('kernel').className = 'pill err';
       $('perf').textContent = message;
@@ -354,10 +354,10 @@
     }
   };
 
-  worker.onerror = (e) => {
+  backend.onerror = (e) => {
     $('kernel').textContent = 'Engine: error';
     $('kernel').className = 'pill err';
-    $('perf').textContent = e.message || 'Worker error';
+    $('perf').textContent = e.message || 'Backend error';
   };
   function companyFilteredRows(tier) {
     if (!latestSnapshot) return [];
@@ -539,7 +539,7 @@
   function requestCompanyDetail(tier, id) {
     selectedTier = tier;
     selectedCompanyId = id;
-    worker.postMessage({
+    backend.postMessage({
       type: 'watchCompanies',
       watches: { T0: Array.from(expandedCompanies.T0), T1: Array.from(expandedCompanies.T1) },
     });
@@ -1126,25 +1126,25 @@
     t1Page = Math.min(Math.max(0, Math.ceil(n / companyPageSize) - 1), t1Page + 1);
     renderCompanyTables();
   };
-  $('run').onclick = () => worker.postMessage({ type: 'run', mode: 'fixed' });
-  $('runMax').onclick = () => worker.postMessage({ type: 'run', mode: 'max' });
+  $('run').onclick = () => backend.postMessage({ type: 'run', mode: 'fixed' });
+  $('runMax').onclick = () => backend.postMessage({ type: 'run', mode: 'max' });
   $('pause').onclick = () => {
-    worker.postMessage({ type: 'pause' });
+    backend.postMessage({ type: 'pause' });
     $('perf').textContent = 'Paused';
   };
-  $('step').onclick = () => worker.postMessage({ type: 'step' });
+  $('step').onclick = () => backend.postMessage({ type: 'step' });
   $('reset').onclick = () => {
     showLoading('Re-initializing the colony economy…');
-    worker.postMessage({ type: 'reset', cfg: readCfg() });
+    backend.postMessage({ type: 'reset', cfg: readCfg() });
   };
   $('applyParams').onclick = () => {
     showLoading('Recalibrating parameters…');
-    worker.postMessage({ type: 'applyConfig', cfg: readCfg() });
+    backend.postMessage({ type: 'applyConfig', cfg: readCfg() });
   };
   $('applyPlayer').onclick = () => {
     if(controlId()===null) { $('t2PlayerCompany').reportValidity(); return; }
     controlDirty = false;
-    worker.postMessage({
+    backend.postMessage({
       type: 'player',
       id: controlId(),
       tier: $('playerTier').value,
@@ -1156,18 +1156,18 @@
   };
   $('buyEquipment').onclick = () => {
     if(controlId()===null) { $('t2PlayerCompany').reportValidity(); return; }
-    worker.postMessage({
+    backend.postMessage({
       type: 'buyEquipment',
       id: controlId(),
       tier: $('playerTier').value,
       code: $('equipmentProduct').value,
     });
   };
-  $('buyT2License').onclick = () => worker.postMessage({ type: 'buyLicense', tier: 'T2' });
-  $('foundHouse').onclick = () => worker.postMessage({ type: 'foundHouse', name: $('houseName').value });
+  $('buyT2License').onclick = () => backend.postMessage({ type: 'buyLicense', tier: 'T2' });
+  $('foundHouse').onclick = () => backend.postMessage({ type: 'foundHouse', name: $('houseName').value });
   initializeTableSorting();
   if (location.protocol === 'file:')
-    $('perf').textContent = 'Use a local web server for the multi-file worker build.';
+    $('perf').textContent = 'Use a local web server for the multi-file web build.';
   loadingCycle();
-  worker.postMessage({ type: 'init', cfg: readCfg() });
+  backend.postMessage({ type: 'init', cfg: readCfg() });
 })();

@@ -63,7 +63,7 @@ WORLD_STORY = _DATA['WORLD_STORY']
 # canon; the supply-side numbers (§4, §6) are pinned working values; the
 # demand-side (§5) structure is canon while its exact scale/markup are
 # calibration (see §9).  The JS-equivalence gate is retired once this pass is
-# applied — the canon deliberately diverges from the old JS kernel.
+# applied — the canon defines its own behavior.
 # ===========================================================================
 NE = len(ELEMENTS)          # 4
 NP = len(PRODUCTS)          # 14

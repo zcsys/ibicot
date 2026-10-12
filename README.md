@@ -5,28 +5,10 @@ by autonomous firms and entered by players on equal footing. This repository is
 the authoritative server-side **economy kernel** in **Python (NumPy + Numba)**,
 with a live browser dashboard.
 
-**Start here:** Read the [Workplace Standards](AGENTS.md) before working in this
-repository. They cover model authority, implementation, accounting, performance,
-experiments, verification, and collaboration.
-
-**Current model:** Read [Midbridge integration](docs/midbridge-integration.md)
-alongside the [design canon](docs/design_canon.md). Some tables and examples below
-describe earlier versions; verify current values in the configuration, catalog,
-and the run being examined. Research documents, including the
-[buying behavior brief](docs/buying-behavior-research-brief.md), describe work to
-evaluate and do not automatically replace approved behavior.
-The isolated [buying-behavior research report](docs/buying-behavior-research-report.md)
-and [experimental contract](docs/buying-behavior-model.md) record the purchasing
-study. The completed study rejects candidate R1; production purchasing remains
-unchanged. The [completion audit](docs/buying-behavior-requirements-audit.md)
-maps the brief to the preserved evidence and failed adoption gates.
-The proposed [buying-behavior implementation master plan](docs/buying-behavior-implementation-plan.md)
-separates purchasing-mechanics corrections from a new industrial model and defines
-contract decisions, validation gates, and rollout requirements.
-The [implementation handoff](docs/buying-behavior-handoff.md) is the continuation entry point for another contributor, with current evidence, open requirements and reproduction commands.
-The [implementation progress record](docs/buying-behavior-implementation-progress.md) tracks isolated reference/compiled purchasing, measurements, preserved runs, and open adoption gates.
-The [recorded buying-decision inspector](docs/buying-behavior-v2-inspector.md) displays verified experimental samples and whole-window industrial totals without changing a live economy.
-The [versioning & milestones note](docs/versioning.md) pins the PoC, prototype, and MVP gates and the MVP product checklist.
+The [design canon](docs/design_canon.md) is the source of truth for mechanics;
+read it alongside [Midbridge integration](docs/midbridge-integration.md) for the
+current model. The [versioning & milestones note](docs/versioning.md) pins the
+PoC, prototype, and MVP gates and the MVP product checklist.
 
 **Naming.** Display names follow the approved [complete naming catalog](docs/midbridge_complete_naming_catalog.md)
 and [JSON source](docs/midbridge_complete_naming_catalog.json). Every T1/T2 company
@@ -111,17 +93,15 @@ economy/                  # the Python kernel
     persistence.py        #   checkpoint save/load (byte-identical round-trip)
   cli/main.py             #   headless `run` / `serve` entry point
 web/                      # the browser dashboard (served by the backend)
-  index.html  app.js  bridge.js  catalog.js
+  index.html  app.js  transport.js  catalog.js
 docs/design_canon.md      # the design rulebook (source of truth)
 docs/landlord-alchemy/    # sibling "Landlord Alchemy" design artefact
-tools/dump_catalog.js   # one-time catalog extractor (web/catalog.js → JSON)
+tools/dump_catalog.js     # one-time catalog extractor (web/catalog.js → JSON)
 tests/                    # Python tests (RNG + determinism + invariants)
 run.sh                    # launcher
 ```
 
-The dashboard (`web/app.js`) speaks WebSocket to the backend through `web/bridge.js`,
-which re-implements the browser `Worker` interface so the UI code runs unchanged
-against the Python kernel.
+The dashboard (`web/app.js`) speaks WebSocket to the backend through `web/transport.js`.
 
 ## Configuration
 
@@ -188,33 +168,13 @@ telemetry is excluded. Use `--cfg` for another population or parameter set.
 
 The optimized kernel preserves sequential trade order, seeded draws, supplier
 tie-breaks, and floating-point reduction order. It uses indexed stock searches,
-direct uniform offer sampling, bounded storage planning, compiled refinery and
-research loops, and shared snapshot projections. Manufacturer pages project only
-the requested sort column. Broadcasts encode each message once, and the browser
-reuses locale number formatters.
+direct uniform offer sampling, bounded storage planning, compiled refinery loops,
+and shared snapshot projections. Manufacturer pages project only the requested
+sort column. Broadcasts encode each message once, and the browser reuses locale
+number formatters.
 
 Compiled functions are cached under `economy/__pycache__/numba/` (or the configured
 `NUMBA_CACHE_DIR`). The cache is keyed by all economy Python source and the
 catalog, so dependency edits invalidate compiled callers as well. The first run
 after a source change still compiles; later processes reuse the cache. Numba
 remains optional, with Python/NumPy fallbacks.
-
-The 2026-10-10 measurements and validation coverage are recorded in
-[`docs/performance-validation-2026-10-10.json`](docs/performance-validation-2026-10-10.json).
-
-The historical 2026-10-10 run used the then-current **60,000-manufacturer**
-configuration. These measurements do not describe the current 57,960-company
-catalog. On that local arm64/Python 3.12 host, its 361-tick comparison gave:
-
-| Operation | Before | After | Speedup |
-| --- | ---: | ---: | ---: |
-| Tick, mean | 176.46 ms | 88.86 ms | 1.99× |
-| Snapshot, mean | 41.63 ms | 14.19 ms | 2.93× |
-| Sort 60,000 firms by cash, median | 839.05 ms | 8.60 ms | 97.56× |
-| Sort 60,000 firms by equity, median | 858.09 ms | 12.84 ms | 66.85× |
-
-All 155 world arrays, ledgers, stats and snapshots matched the pre-pass working
-tree at tick zero and every one of the 361 ticks. Separate checks covered live
-configuration, player controls, multiple machines, checkpoint resume, research
-pricing and the no-Numba fallback. These are local measurements; results vary
-with hardware, configuration and machine load.

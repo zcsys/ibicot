@@ -1,11 +1,10 @@
 """FastAPI + WebSocket service: the Python economy kernel backend for the
 browser UI.
 
-Serves the static front-end (HTML + JS) and exposes the JS worker's exact
-message protocol over ``/ws``, so ``web/app.js`` runs unchanged via the
-``web/bridge.js`` shim.  The tick is CPU-bound and runs in a single
-server-owned scheduler task on the event loop (one world, one tick cadence),
-mirroring the worker's single-threaded model.
+Serves the static front-end (HTML + JS) and exposes the dashboard's exact
+message protocol over ``/ws``, so ``web/app.js`` runs unchanged via
+``web/transport.js``. The tick is CPU-bound and runs in a single server-owned
+scheduler task on the event loop (one world, one tick cadence).
 """
 from __future__ import annotations
 
@@ -87,7 +86,7 @@ async def checkpoint_load(req: CheckpointRequest):
     rt.tier2HistoryCompany = -1
     rt.watchedCompanies = {'T0': set(), 'T1': set()}
     rt.watchedCompanyHistory = {}
-    rt.workerStats = {'steps': 0, 'lastTickMs': 0.0, 'totalTickMs': 0.0}
+    rt.tickStats = {'steps': 0, 'lastTickMs': 0.0, 'totalTickMs': 0.0}
     rt.adminAccounting = {'equipmentSinks': 0, 'sequence': 0, 'lastEquipmentReceipt': None}
     rt.playerLicenses = set(M.PROGRESSION_DEFAULTS['startingLicenses'])
     rt.playerHouse = None

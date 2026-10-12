@@ -1,4 +1,4 @@
-"""WorldState: NumPy typed arrays + the JS worker's initialization sequence.
+"""WorldState: NumPy typed arrays + the world's initialization sequence.
 
 The array names, dtypes and shapes mirror ``the canon machine contract (docs/design_canon.md §12)``
 ``sourceViews()`` / ``reset()`` exactly, so the Python port is a mechanical
@@ -25,7 +25,7 @@ T0P = [{'id': i, 'companyNumber': M.company_number('T0',i), 'name': M._DATA['MID
         'element_indices': sorted(_EI[element] for element in elements)}
        for i, (name, elements) in enumerate(_T0P_RAW)]
 
-# Tier 1 cohort -> native product code (worker `T1P`).
+# Tier 1 cohort -> native product code (the product table).
 T1P = [{'name': p['companyName'], 'product': p['code']} for p in M.PRODUCTS]
 
 
@@ -292,7 +292,7 @@ def zero(world: WorldState) -> None:
 
 
 # --------------------------------------------------------------------------
-# Tier 2 line installation (worker `addTier2Line`).
+# Tier 2 line installation (line installation).
 # --------------------------------------------------------------------------
 def _has_tier2_product(world, firm, product_id):
     for slot in range(int(world.t2FirmLineCount[firm])):
@@ -486,7 +486,7 @@ def initialize_distributors(world, cfg):
 
 
 def reset_world(cfg):
-    """Normalize config, allocate and initialize the world (JS worker ``reset``)."""
+    """Normalize config, allocate and initialize the world (reset)."""
     cfg = normalize_config(cfg)
     world = WorldState(cfg)
     seed = cfg['seed']

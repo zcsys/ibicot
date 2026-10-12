@@ -1,7 +1,7 @@
 > **Naming only:** The [complete naming catalog](midbridge_complete_naming_catalog.md) and [JSON source](midbridge_complete_naming_catalog.json) supply the implemented display names. Every T1/T2 company uses its sector stem plus its existing global hex number; no flagships. See [naming integration](naming-integration.md). Economic rules and company duties remain unchanged.
 
 
-> **2026-10-11 update:** The active fresh-world recipe, population, storage and cost-reference rules are specified in [Midbridge integration](midbridge-integration.md). Those rules supersede the 200-product, 60,000-company, count-preserving and equal-input-space assumptions below. Distributor activation is now 10.5%. Earlier economic calibration remains historical.
+> **Current rules:** The active fresh-world recipe, population, storage and cost-reference rules are specified in [Midbridge integration](midbridge-integration.md); distributor activation is 10.5%.
 
 # Design canon — Midbridge Colony kernel
 
@@ -296,12 +296,9 @@ and proposal files; they do not reset or reconfigure the live server. The audit
 uses the accelerated kernel with additional transaction-site ledger postings;
 company risk statistics use NumPy reductions and masks, not Python company loops.
 
-**The previous tariff table is withdrawn.** It combined arbitrary empty/material
-rates with machinery tariffs fitted to a 360-tick mature continuation. That does
-not establish equal long-term earnings. The obsolete table is preserved only in
-`stats/smart-rent-proposal/withdrawn-360-tick-rates.json`;
-`proposed-rates.json` now explicitly marks the withdrawal. The user-selected
-$2,000,000 equity threshold supersedes its earlier $1,560,000 assumption.
+The storage-rent exemption uses a **$2,000,000 equity threshold**: T1/T2
+companies below that book equity immediately before billing pay nothing that
+tick, and exactly $2,000,000 is eligible.
 
 The proper starting evidence is independently posted company earnings over the
 entire rent-free run. The target is $1,500,000 / (24 × 7,200) = $8.680556 per tick.
@@ -361,9 +358,8 @@ companies at only $60,000 accumulated earnings while rare outliers determine the
 mean. This is not a simulation of future market behavior, nor evidence of similar
 company growth. Results in `long-horizon-projection.json` are a diagnostic seed,
 not an approved tariff. No claim of global dispersion optimality is made for its
-local constrained optimizer. Those historical diagnostics used the superseded
-$1.56M threshold; they have not been rerun for the $2M exemption or the selected
-$2.80 empty-space rate and do not validate those new settings.
+local constrained optimizer. These diagnostics do not cover the $2.00M
+exemption or the $2.80 empty-space rate.
 
 After approval, implement native per-tick tariffs, complete posted net earnings
 and net margins, vectorized settlement, and isolated generation-scale validation
