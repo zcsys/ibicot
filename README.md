@@ -26,6 +26,7 @@ contract decisions, validation gates, and rollout requirements.
 The [implementation handoff](docs/buying-behavior-handoff.md) is the continuation entry point for another contributor, with current evidence, open requirements and reproduction commands.
 The [implementation progress record](docs/buying-behavior-implementation-progress.md) tracks isolated reference/compiled purchasing, measurements, preserved runs, and open adoption gates.
 The [recorded buying-decision inspector](docs/buying-behavior-v2-inspector.md) displays verified experimental samples and whole-window industrial totals without changing a live economy.
+The [versioning & milestones note](docs/versioning.md) pins the PoC, prototype, and MVP gates and the MVP product checklist.
 
 **Naming.** Display names follow the approved [complete naming catalog](docs/midbridge_complete_naming_catalog.md)
 and [JSON source](docs/midbridge_complete_naming_catalog.json). Every T1/T2 company
@@ -80,9 +81,11 @@ invented selection are distinct; see [current integration rules](docs/midbridge-
   hold at the flat optimum; a 2 % dead band prevents overshoot.
 - **Margin-ramp production** — a producer throttles manufacturing by estimated net margin, including eligible storage expense and forecast switching income/expense
   (`productionMarginBand = 0.05`): full output at ≥ 5 % margin, tapering to 0 at
-  break-even; reduced batches must cover allocated overhead. Purchasing instead
-  refills bounded input slots regardless of margin: half the goods space is for
-  finished output and half is divided equally among distinct inputs.
+  break-even; reduced batches must cover allocated overhead. Purchasing is
+  price-sensitive: latent demand is "fill to brim" (the input slot, half the goods
+  space divided among distinct inputs), and the actual request follows the Tier 3
+  curve with the input's reference cost as the halving price (elasticity 2), so a
+  firm buys less as the quoted price rises past reference.
 - **Adaptive loyalty charge** — switching suppliers costs
   `M × unit_cost × (1 + reliability)`; `M` is re-derived once per year from an EMA of the
   observed average order value (`loyaltyEmaAlpha = 0.01`) so the charge tracks ~5 % of

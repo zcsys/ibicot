@@ -43,12 +43,12 @@ Resolve these in a new replacement contract before dependent behavior changes. I
 | --- | --- | --- |
 | D1 | Whole relevant bid and preference qualification | Accepted: retain the old preference in A=2/B=6. One supplier alone must supply the whole funded demand at its own quote. Apply to first assignment as well; verify equal prices, cash limits and multiple challengers. |
 | D2 | Fee reference and order boundary | Accepted: freeze the original incumbent and live availability against the funded demand at its own quote; one existing-formula fee per product order if an outside supplier sells and the incumbent could fill. Test inflated bids, order splitting, fee farming and lock-in. |
-| D3 | Supplier objective during mechanics correction | Specify how feasible partial and complete baskets are compared under the existing replenishment target. Compare quantities and payable costs explicitly; neither lowest sticker price nor fee divided by an unrealizable request is sufficient. Label this as replenishment, not newly derived industrial demand. |
-| D4 | Industrial value and execution | Specify expected realizable revenue, horizon, remaining inventory value, and operating costs. Decide how procurement respects the current historical-cost production gate. The production gate must remain unchanged under the user’s purchasing-only scope; candidates requiring an amendment are outside authorization. |
-| D5 | Information available to firms | Define local requests/sales/stockout observations and optional free market intelligence, publication lag, cold starts, and re-entry. Market shares are estimates, never guaranteed customers. |
-| D6 | Solver scope and complexity | Cover split suppliers, lots, useful incomplete buffers, and supported multiple-line firms. If an exact scalable solver cannot cover this scope, present the limitation and an explicit alternative; do not silently restrict players or substitute a heuristic. |
+| D3 | Supplier objective during mechanics correction | Resolved (user-directed): latent demand = "fill to brim" (storage slot); quantity follows the Tier 3 curve with the input's reference cost as the halving price. Labeled replenishment, not newly derived industrial demand. |
+| D4 | Industrial value and execution | Resolved (user-directed): halving price = reference cost (canon V = unit cost), elasticity 2; no forecast. The historical-cost production gate is unchanged. |
+| D5 | Information available to firms | Resolved (user-directed): the buyer uses its own slot shortage and the offered quote; no market intelligence. |
+| D6 | Solver scope and complexity | Resolved (user-directed): the rule is closed-form (`demand_at_price`), so no solver is required for the adopted model. |
 
-D1 and D2 are resolved and govern implementation; do not reopen them. D3–D6 require concrete proposals and evidence; confirmed requirements cannot be weakened merely to simplify implementation. The contract decision pack and baseline fixtures are available; remaining work is tracked in the implementation progress record.
+D1 and D2 are resolved and govern implementation; do not reopen them. D3–D6 were resolved by the user on 2026-10-12 with the simple price-sensitive fill-to-brim rule above (latent demand = storage slot, quantity = Tier 3 curve with the input's reference cost as the halving price, elasticity 2). The contract decision pack and baseline fixtures are available; remaining work is tracked in the implementation progress record.
 
 ## Sequence and dependencies
 
@@ -65,6 +65,22 @@ D1 and D2 are resolved and govern implementation; do not reopen them. D3–D6 re
 | 8 | Integration and reviewed rollout package | Passing gates for the selected milestone | Exact artifact, schema, documentation, dashboard, and rollback are ready. |
 
 This is dependency order, not authorization to start multiple agents. Estimate implementation effort after the contract and solver feasibility are known. Estimate experiment duration from measured warm full-population ticks and recording overhead; do not promise a completion date from R1 timing.
+
+### Current stage status (2026-10-12)
+
+| Stage | Status | Current evidence and remaining blocker |
+| --- | --- | --- |
+| 0 | Complete | Baseline, catalog/config identity and recording window preserved under `stats/buying-implementation/`. |
+| 1 | Complete | D1/D2 accepted and executable; D3–D6 resolved by the user with the price-sensitive fill-to-brim rule. |
+| 2 | Complete | Typed counters, seller history, bounded decision traces and a rendered recorded-data inspector. |
+| 3 | Complete | Reference T1/T2 retail and industrial purchasing with atomic settlement and independent oracles. |
+| 4 | Complete | Compiled mechanics; fresh full discovery passes 663 tests (430s) after the offer-collapse optimization. |
+| 5 | Complete | D3–D6 resolved with the price-sensitive fill-to-brim rule; `input_reference_cost` (V = unit cost) + `demand_at_price` (η = 2) implemented in both kernels. |
+| 6 | Complete | The user-directed closed-form rule (price-sensitive fill-to-brim) supersedes the continuation solver and is already in the compiled production kernel; full-population benchmark measures step median 137 ms/tick (p95 160 ms). The continuation solver (captured 8/8, offer-collapse/funded-cap/dedup/symmetry-break) is retained as historical evidence, not the adopted model. |
+| 7 | Not started | Requires passing Stage 5/6 plus authorized isolated live runs; cannot be run under the current no-live-runs restriction. |
+| 8 | Not started | Requires Stage 7 gates and the user's explicit rollout decision. |
+
+The mechanics milestone (Stages 0–4) is complete and independently verifiable. The industrial model (Stage 5) and its compiled full-world implementation (Stage 6) are complete under the user's price-sensitive fill-to-brim directive (step median 137 ms/tick). Stages 7–8 (authorized live economic validation and rollout) remain open; the ~40% T2 fulfillment at the reference halving price is a calibration choice flagged for the user.
 
 ## Stage 0 Preserve the baseline
 
@@ -144,6 +160,8 @@ The [recorded search-size audit](buying-behavior-recorded-search-geometry.md) no
 
 Publish a new experiment protocol before evaluation. Existing seeds 137, 271, 811, 1597, and 2027 have already been examined; use them as historical/calibration comparisons and preregister fresh held-out seeds. Do not tune to the new held-out results. Preserve failed candidates and all run manifests.
 
+Preregistered held-out seeds (2026-10-12, before any Stage 7 run): **313, 421, 907, 1543, 2099**. The gate thresholds in the table below are frozen against these seeds. No validation run has been executed under these seeds as of this writing.
+
 Use paired initial states and stable random roles. Compare untouched production, corrected mechanics, and the new industrial candidate so the benefit or harm of mechanics is not attributed to demand forecasting. Run short screening first, a complete generation for surviving candidates across held-out seeds, and at least two generations for the selected candidate and its matched baselines. Extend runs when drift remains unresolved.
 
 Proposed gates retain the prior protocol's thresholds; freeze them in the new protocol before outcomes are inspected. They are research acceptance criteria, not established economic laws.
@@ -181,7 +199,7 @@ Benchmark startup, mature states, high fees, and sustained empty-stock condition
 
 ## Verification commands and delivery checks
 
-Current integration checkpoint: **587 discovered Python tests pass** in 388.463 seconds; three JavaScript test files and app syntax pass. The [scope audit](buying-behavior-scope-audit.md) records the purchasing-only boundary and current model checks. Evidence: `stats/buying-implementation/20261012-connected-integration-checkpoint/verification.json`. No economic or population-performance gate is inferred.
+Current integration checkpoint: **663 discovered Python tests pass** in 409.502 seconds (2026-10-12, after the offer-collapse, funded-cap pruning, semantic funding-query dedup and symmetry-break optimizations); three JavaScript test files and `web/app.js` syntax pass. Evidence: `stats/buying-implementation/20261012-captured-symmetry-break/full-discovery.log`. The [scope audit](buying-behavior-scope-audit.md) records the purchasing-only boundary and current model checks. No economic or population-performance gate is inferred.
 
 Historical integration checkpoint (before subsequent solver work): all 400 discovered Python tests (305 buying and 95 non-buying) and the three JavaScript test files pass; `web/app.js` passes syntax checking. See `stats/buying-implementation/20261012-buying-suite-integration/` for source identity and logs. These checks do not establish the economic or performance gates above.
 

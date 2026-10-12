@@ -1,41 +1,29 @@
 """Typed per-funding-frame scratch for deduplicated query answers."""
 import math
 import numpy as np
-from .jit import njit
 from .continuation_program import _array
-
-
-@njit
-def _request(selected,keys,lengths,requests,ordinal,count):
-    for row in range(count):
-        if lengths[row]!=len(selected):continue
-        same=True
-        for j in range(len(selected)):
-            if keys[row,j]!=selected[j]:same=False;break
-        if same:requests[ordinal]=row;return row,count
-    lengths[count]=len(selected)
-    for j in range(len(selected)):keys[count,j]=selected[j]
-    requests[ordinal]=count
-    return count,count+1
 
 
 class QueryAnswers:
     @staticmethod
     def bytes_required(offers,inputs):
-        return (offers+1)*(8*offers+8+8+1+8*inputs+16)
+        return (offers+1)*(8+1+8*inputs+16)
 
     def __init__(self,offers,inputs):
         if any(not isinstance(x,int) or isinstance(x,bool) for x in (offers,inputs)) or offers<0 or inputs<1:raise ValueError('invalid query scratch dimensions')
         n=offers+1;self.offers=offers;self.inputs=inputs;self.count=0
-        self.keys=np.empty((n,offers),np.int64);self.lengths=np.zeros(n,np.int64);self.requests=np.full(n,-1,np.int64)
+        self.requests=np.full(n,-1,np.int64);self.semantic={}
         self.ready=np.zeros(n,np.bool_);self.quantities=np.zeros((n,inputs),np.int64);self.values=np.zeros((n,2))
 
-    def request(self,ordinal,selected):
+    def request(self,ordinal,key):
         if not isinstance(ordinal,int) or isinstance(ordinal,bool) or not 0<=ordinal<=self.offers or self.requests[ordinal]>=0:raise ValueError('invalid or repeated query ordinal')
-        if any(not isinstance(x,(int,np.integer)) or isinstance(x,(bool,np.bool_)) for x in selected):raise ValueError('invalid selected-offer identity')
-        selected=tuple(int(x) for x in selected)
-        if len(selected)>self.offers or tuple(sorted(set(selected)))!=selected or any(x<0 or x>=self.offers for x in selected):raise ValueError('invalid selected-offer key')
-        row,count=_request(_array(selected,'<i8'),self.keys,self.lengths,self.requests,ordinal,self.count);self.count=int(count)
+        if not isinstance(key,tuple):raise ValueError('invalid query identity')
+        row=self.semantic.get(key)
+        if row is None:
+            row=self.count
+            if row>=len(self.requests):raise ValueError('query answer capacity exceeded')
+            self.semantic[key]=row;self.count=row+1
+        self.requests[ordinal]=row
         return int(row),bool(self.ready[row])
 
     def store(self,row,quantities,goods,value):
@@ -52,4 +40,4 @@ class QueryAnswers:
         return dict(quantities=tuple(int(q) for q in self.quantities[row]),goods=float(self.values[row,0]),conditionalValue=float(self.values[row,1]))
 
     @property
-    def buffer_bytes(self):return sum(a.nbytes for a in (self.keys,self.lengths,self.requests,self.ready,self.quantities,self.values))
+    def buffer_bytes(self):return sum(a.nbytes for a in (self.requests,self.ready,self.quantities,self.values))

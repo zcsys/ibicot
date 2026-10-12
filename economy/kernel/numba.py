@@ -104,6 +104,22 @@ def _procurement_arrays_cached(key):
 
 
 @lru_cache(maxsize=64)
+def _input_reference_cached(key):
+    conversion_factor, t1_material, _storage, _t2_machinery, _t2_capacity, _footprint, markup = key
+    local_cfg = {'t1MaterialCost': t1_material, 'conversionFactor': conversion_factor, 't1Markup': markup}
+    ref = np.empty(NI, dtype=np.float64)
+    for m in range(NI):
+        p = M.T2_INPUT_PRODUCTS[m]
+        if m < NE:
+            ref[m] = t1_material
+        elif m < NP:
+            ref[m] = M.refinery_unit_cost(p, local_cfg)
+        else:
+            ref[m] = M.initial_tier2_cost(p, local_cfg)
+    return ref
+
+
+@lru_cache(maxsize=64)
 def _t1_scale_arrays_cached(key):
     _conversion_factor, _t1_material, _storage, _t2_machinery, _t2_capacity, footprint, markup = key
     footprint = dict(footprint)
@@ -119,6 +135,10 @@ def t2_scale_arrays(cfg):
 
 def procurement_arrays(cfg):
     return _procurement_arrays_cached(_scale_key(cfg))
+
+
+def input_reference_arrays(cfg):
+    return _input_reference_cached(_scale_key(cfg))
 
 
 # Flat Tier 0 profiles and Tier 1 product structure (for the Numba T1 kernel).
@@ -425,7 +445,7 @@ if _HAVE_NUMBA:
         t2_learn_ticks, t2_learn_profit, t2_learn_sales, t2_learn_previous,
         t2_learn_direction, t2_learn_demand, t2_learn_step,
         t2_learn_opportunity, t2_learn_potential_opportunity,
-        t1_offers_flat, t1_offers_off, valuation, t2_capacity, t2_output, t2_footprint,
+        t1_offers_flat, t1_offers_off, valuation, input_reference, t2_capacity, t2_output, t2_footprint,
         t2_mat_spend, t2_mat_orders, loyalty_switches, loyalty_penalties, switch0_income, switch1_income, switch1_expense, switch2_income, switch2_expense, input_consumed, purchase_company=None, purchase_observations=None, purchase_exposure=None, purchase_trace=None):
         needs = np.zeros(NI, dtype=np.float64)
         plans = np.zeros(M4, dtype=np.float64)
@@ -602,8 +622,16 @@ if _HAVE_NUMBA:
                             requested, t1_unit_cost, loyalty_multiple_t2[firm_cx])
                         if supplier < 0:
                             continue
+                        # Price-sensitive fill-to-brim request: latent demand is the
+                        # storage slot and the request follows the Tier 3 curve with
+                        # the input's reference cost as the halving price, capped by
+                        # the actual slot shortage so a nearly-full firm never overbuys.
+                        buy_request = _demand_at_price(needs[material], input_reference[material],
+                                                       t1_price[supplier], 2.0)
+                        if buy_request > requested:
+                            buy_request = requested
                         supplier, funded, quantity, loyalty_charge = _affordable_order_nb(
-                            supplier, pref, requested, t2_cash[firm], t1_fin, t1_price, t1_rel,
+                            supplier, pref, buy_request, t2_cash[firm], t1_fin, t1_price, t1_rel,
                             t1_unit_cost, loyalty_multiple_t2[firm_cx], 1)
                         supplier_firm = supplier_owner[supplier]
                         quote = t1_price[supplier]
@@ -1185,6 +1213,7 @@ def _operate_tier2_phase(world, cfg, tick, production_complexity, *, purchase_co
     book = InputMarket(world, tick, vectorized=purchase_company is not None)
     flat, off = book.flat, book.off
     val = procurement_arrays(cfg)
+    inp_ref = input_reference_arrays(cfg)
     t2_conv, _, t2_cap, t2_footprint = t2_scale_arrays(cfg)
     t1_unit_cost = M.material_switching_reference(cfg)
     n_lines = int(world.t2LineCount)
@@ -1208,7 +1237,7 @@ def _operate_tier2_phase(world, cfg, tick, production_complexity, *, purchase_co
         world.t2LearnTicks, world.t2LearnProfit, world.t2LearnSales, world.t2LearnPrevious,
         world.t2LearnDirection, world.t2LearnDemand, world.t2LearnStep,
         world.t2LearnOpportunity, world.t2LearnPotentialOpportunity,
-        flat, off, val, t2_cap, T2_OUTPUT, t2_footprint,
+        flat, off, val, inp_ref, t2_cap, T2_OUTPUT, t2_footprint,
         world.t2MatSpend, world.t2MatOrders, world.loyaltySwitches, world.loyaltyPenalties, world.t0SwitchingIncome, book.switch_income, world.t1SwitchingExpense, world.t2SwitchingIncome, world.t2SwitchingExpense, world.t2InputConsumed, purchase_company, purchase_observations, purchase_exposure, purchase_trace)
     if phase_observer is not None:
         phase_observer(book)

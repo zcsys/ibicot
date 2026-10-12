@@ -694,8 +694,14 @@ def transfer_tier2_input(world, cfg, firm, material, supplier, request, offers=N
                             M.material_switching_reference(cfg), world.lm2[firm_cx - 3])
     if supplier < 0:
         return 0
+    # Price-sensitive fill-to-brim request: the latent demand is the storage slot
+    # (fill to the brim) and the request follows the Tier 3 curve with the input's
+    # reference cost as the halving price (canon V = unit cost; elasticity = 2),
+    # capped by the actual slot shortage so a nearly-full firm never overbuys.
+    buy_request = min(M.demand_at_price(storage_slot[material], M.input_reference_cost(material, cfg),
+                                        prices[supplier], 2.0), requested)
     supplier, funded, quantity, loyalty_charge = affordable_order(
-        supplier, preferred, requested, world.t2Cash[firm], stock, prices, book.rel,
+        supplier, preferred, buy_request, world.t2Cash[firm], stock, prices, book.rel,
         M.material_switching_reference(cfg), world.lm2[firm_cx - 3])
     supplier_firm = book.owner[supplier]
     quote = prices[supplier]

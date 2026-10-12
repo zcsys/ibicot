@@ -176,13 +176,13 @@ class ArenaResident:
     def funding_purchase(self,scenario,index,allocation,*,offer=None,observe=True):
         from .continuation_query import prepare
         iv,fv,selected=prepare(self,scenario,index,offer)
-        if len(allocation)!=len(selected) or any(not isinstance(q,int) or isinstance(q,bool) or q<0 for q in allocation):raise ValueError('invalid query allocation')
+        if len(allocation)!=int(iv[0]) or any(not isinstance(q,int) or isinstance(q,bool) or q<0 for q in allocation):raise ValueError('invalid query allocation')
         p=self.program;event=int(p.scenario_offsets[scenario])+index;row=self.arena._check(self.handle)
         records=_query_step(self.arena.pool,row,self.company_data,p.event_kinds,p.event_labels,p.integer_offsets,p.float_offsets,p.floats,
             event,_array(allocation,'<i8'),observe,self.supply=='persistent-arrivals',int(p.scenario_offsets[scenario+1]),iv,fv)
         self.observations+=tuple(records)
         if observe:self.observation_positions+=(index,)
-        return tuple(int(i) for i in selected)
+        return ()
 
     def set_funded_demands(self,scenario,index,demands):
         from .continuation_resident import Resident

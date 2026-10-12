@@ -9,7 +9,7 @@ from .continuation_program import _array
 
 
 @njit
-def advance(material,price,lot,cap,cash,remaining,chosen,next_q,goods,control,budget,native,inventory,slots,saved,stop_prefix=False):
+def advance(material,price,lot,cap,cash,remaining,chosen,next_q,goods,control,budget,native,inventory,slots,saved,initial_remaining,max_funded,stop_prefix=False):
     # control: depth, finished, visited prefixes, yielded leaves, peak depth.
     n=len(material);work=0
     if control[1]:return 0,work
@@ -42,6 +42,11 @@ def advance(material,price,lot,cap,cash,remaining,chosen,next_q,goods,control,bu
             # Positive price makes every later quantity at this prefix fail.
             next_q[depth]=cap[depth]+1
             continue
+        if initial_remaining[m]-remaining[m]+q>max_funded[m]:
+            # The ledger caps this material's total by its funded demand; larger
+            # quantities at this prefix cannot restore feasibility.
+            next_q[depth]=cap[depth]+1
+            continue
         if native:
             updated=inventory[m]+q
             if updated>slots[m]:
@@ -64,7 +69,7 @@ class ActionLimit(ValueError):
 
 class AllocationFrame:
     """One exact action traversal; suspend/resume without a Python generator."""
-    def __init__(self,resident,scenario,index,*,query=False,offer=None):
+    def __init__(self,resident,scenario,index,*,query=False,offer=None,canonical=False):
         p=resident.program
         if not isinstance(scenario,int) or isinstance(scenario,bool) or not 0<=scenario<len(p.probabilities):raise ValueError('invalid scenario')
         if not isinstance(index,int) or isinstance(index,bool) or index<0:raise ValueError('invalid action index')
@@ -94,6 +99,29 @@ class AllocationFrame:
             caps=[min(int(iv[6+4*i]),int(self.remaining[self.material[i]])) for i in range(n)]
         # next quantity and exhausted sentinel must also fit the typed frame.
         if any(c>2**63-1-int(l) for c,l in zip(caps,self.lot)):raise ValueError('action range exceeds signed int64 frame')
+        # Per-material funded-demand cap: a conservative upper bound on the total
+        # the ledger will accept for this material. The ledger enforces
+        # q_i <= funded_i - running_total[material], so total <= funded_last <=
+        # max funded over that material's offers. Bounding the frame the same way
+        # avoids enumerating funded-infeasible compositions (e.g. a zero funded
+        # demand admits only the empty allocation).
+        self.initial_remaining=self.remaining.copy()
+        funded=[(1<<63)-1]*len(slots)
+        if int(iv[1])==n:
+            funded=[0]*len(slots)
+            for i in range(n):
+                m=int(self.material[i]);f=int(iv[4+4*n+i])
+                if f>funded[m]:funded[m]=f
+        self.max_funded=_array(funded,'<i8')
+        if canonical:
+            # Symmetry break for split-invariant purchases: only the first offer
+            # of each (material, price, lot) group may take quantity. The caller
+            # enables this only when the per-offer split is value-irrelevant.
+            seen={}
+            for i in range(n):
+                key=(int(self.material[i]),float(self.price[i]),int(self.lot[i]))
+                if key in seen:caps[i]=0
+                else:seen[key]=i
         self.cap=_array(caps,'<i8');self.chosen=np.zeros(n,np.int64);self.next_q=np.zeros(n,np.int64)
         self.goods=np.zeros(n+1);self.control=np.zeros(5,np.int64)
 
@@ -110,7 +138,7 @@ class AllocationFrame:
         if not isinstance(max_prefixes,int) or isinstance(max_prefixes,bool) or not 0<=max_prefixes<2**63:raise ValueError('invalid prefix allowance')
         remaining_budget=max_prefixes;call_prefixes=0;call_bound_work=0
         while True:
-            status,work=advance(self.material,self.price,self.lot,self.cap,self.cash,self.remaining,self.chosen,self.next_q,self.goods,self.control,remaining_budget,self.native,self.inventory,self.slots,self.saved,prune is not None)
+            status,work=advance(self.material,self.price,self.lot,self.cap,self.cash,self.remaining,self.chosen,self.next_q,self.goods,self.control,remaining_budget,self.native,self.inventory,self.slots,self.saved,self.initial_remaining,self.max_funded,prune is not None)
             remaining_budget-=int(work);call_prefixes+=int(work)
             if status==2:raise ActionLimit(dict(**self.diagnostics(),callPrefixes=call_prefixes,callBoundWork=call_bound_work))
             if status!=3:return tuple(int(q) for q in self.chosen) if status==1 else None

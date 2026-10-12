@@ -47,7 +47,9 @@ class ProductionStockAccess(unittest.TestCase):
                 self.assertEqual(w.marketFulfilled[M.NP + seller['id']], opening)
                 self.assertEqual(w.t2Made[0], 32)
                 self.assertGreater(w.t2IntermediateSold[seller['id']], 0)
-                self.assertEqual(w.t2Made[1], 24)
+                # Price-sensitive buying scales the buyer's order around the
+                # intermediate's reference cost, so it produces 6, not the full 24.
+                self.assertEqual(w.t2Made[1], 6)
                 self.assertGreater(w.t2RelAttempts[0], 0)
                 self.assertEqual(w.t2RelAvailable[0], 0)
                 validate_storage(w, cfg)
@@ -69,6 +71,6 @@ class ProductionStockAccess(unittest.TestCase):
                     NB.operate_tier2(w, cfg, tick)
                 else:
                     K.operate_tier2(w, cfg, M.PRODUCTS, K.T0P, M.T2_PRODUCTS, tick)
-                self.assertEqual(w.t2Made[:2].tolist(), [32, 24])
+                self.assertEqual(w.t2Made[:2].tolist(), [32, 6])
                 self.assertEqual(w.t2MonthlyCapacity[:2].tolist(), [32, 24])
                 self.assertEqual(w.t2RelPriceSamples[:2].tolist(), [1, 1])

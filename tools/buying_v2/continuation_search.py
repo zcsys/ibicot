@@ -13,7 +13,7 @@ from .continuation_history import NumericHistory,HistoryLimit
 from .continuation_information import group_decisions
 from .continuation_actions import AllocationFrame,ActionLimit
 from .continuation_observation import purchase_payment,decode
-from .continuation_query import prepare
+from .continuation_query import prepare,query_key
 from .continuation_arena import BranchArena,ArenaResident,BranchLimit
 from .continuation_policy import PolicyArena,PolicyLimit
 from .continuation_funding_records import FundingRecords,FundingRecordLimit
@@ -111,9 +111,22 @@ def solve(company,initial,scenarios,*,max_frames=256,max_allocations=100000,max_
         if len(stack)>=max_frames:fail('continuation frame limit')
         stack.append(frame);stats['peakFrames']=max(stats['peakFrames'],len(stack))
 
+    def canonical_split_ok(scenario,index,incumbents):
+        if any(int(x)>=0 for x in incumbents):return False
+        if any(isinstance(e,Purchase) for e in paths[scenario].events[index+1:]):return False
+        event=paths[scenario].events[index]
+        if not isinstance(event,Purchase) or len(event.funded_demands)!=len(event.offers):return False
+        first={};cap={}
+        for i,o in enumerate(event.offers):
+            m=o.material
+            if m not in first:first[m]=o.stock;cap[m]=event.funded_demands[i]
+            else:cap[m]=max(cap[m],event.funded_demands[i])
+        return all(first[m]>=cap[m] for m in first)
+
     def choose(group,index,query=False,offer=None):
         scenario,r,_=group[0]
-        frame=AllocationFrame(r,scenario,index,query=query,offer=offer)
+        canonical=canonical_split_ok(scenario,index,r.data[6]) if not query else False
+        frame=AllocationFrame(r,scenario,index,query=query,offer=offer,canonical=canonical)
         if closing:
             allocation_budget=max_allocations-stats['allocations'];work_budget=max_prefixes-stats['prefixes']-stats['closingWork']-stats.get('boundEvaluations',0)-stats.get('prefixBoundWork',0)
             try:chosen=select_closing(company,initial,paths,group,index,query,offer,allocation_budget,work_budget,memo=closing_memo,proposal_memo=proposal_memo,joint_memo=joint_memo,cash_relaxed=closing_cash_relaxed,joint_fallback=closing_joint_fallback)
@@ -221,7 +234,7 @@ def solve(company,initial,scenarios,*,max_frames=256,max_allocations=100000,max_
             if f['cursor']<=f['scratch'].offers:
                 ordinal=f['cursor'];offer=None if ordinal==0 else ordinal-1;f['cursor']+=1
                 scenario,r,_=f['branches'][0];iv,fv,selected=prepare(r,scenario,f['index'],offer)
-                slot,ready=f['scratch'].request(ordinal,selected)
+                slot,ready=f['scratch'].request(ordinal,query_key(iv,fv,selected,r.supply))
                 if ready:continue
                 if memo is not None:
                     key=memo.key(f['branches'],f['index'],iv,fv);answer=memo.get(key)

@@ -20,9 +20,10 @@ class QueryAnswerTests(unittest.TestCase):
         q=QueryAnswers(0,1);row,_=q.request(0,());q.store(row,(0,),0.,0.)
         self.assertEqual(q.answer(0)['quantities'],(0,));self.assertEqual(q.buffer_bytes,q.bytes_required(0,1))
         q=QueryAnswers(2,1)
-        for key in ((2,),(1,0),(0,0),(0.5,),(True,)):
+        for key in (None,1,1.5,'x'):
             with self.assertRaises(ValueError):q.request(0,key)
         row,_=q.request(0,(0,))
+        with self.assertRaises(ValueError):q.request(0,(1,))
         for values in (((-1,),0.,0.),((1,),-1.,0.),((1,),0.,float('nan'))):
             with self.assertRaises(ValueError):q.store(row,*values)
 

@@ -426,6 +426,22 @@ def initial_tier2_cost(product, cfg) -> float:
             + conversion_cost(product['complexity'], cfg))
 
 
+def input_reference_cost(material, cfg) -> float:
+    """Canon demand-side reference (V = unit cost) for one input material.
+
+    Serves as the halving price of the price-sensitive fill-to-brim buying rule:
+    latent demand is the storage slot and the request follows the Tier 3 curve
+    q = q_max / (1 + (price / V) ** 2). Basic elements use the raw-material cost,
+    refinery products their unit cost, and T2 intermediates their initial cost.
+    """
+    p = T2_INPUT_PRODUCTS[material]
+    if material < NE:
+        return cfg['t1MaterialCost']
+    if material < NP:
+        return refinery_unit_cost(p, cfg)
+    return initial_tier2_cost(p, cfg)
+
+
 def distributor_switching_reference(cfg):
     """Order-routing-weighted reference, matching the Distributor buyer class."""
     weight = sum(p['distributorWeight'] for p in T2_PRODUCTS)

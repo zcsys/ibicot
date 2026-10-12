@@ -42,6 +42,43 @@ def payload(iv,fv,held,slots,offer,native=False):
     return integers,floats,selected
 
 
+def _collapse_joint(integers,floats,selected):
+    """Collapse equal-(material, price, lot) offers in a continuation-v2 query.
+
+    For offers sharing material, price and lot, the hypothetical continuation
+    state (held, basis and goods cost) and its value depend only on the
+    per-material aggregate quantity, while incumbents are held and current fees
+    are removed inside the query. Collapsing each group to one offer removes the
+    redundant per-offer composition enumeration without changing the aggregate
+    answer. The original `selected` tuple is returned unchanged so that
+    QueryAnswers.request keeps its offer-set dedup key distinct across queries;
+    callers validate allocation length against the collapsed iv[0].
+    """
+    n=int(integers[0])
+    order=[];members=[]
+    for j in range(n):
+        key=(int(integers[4+4*j]),float(floats[4+j]),int(integers[7+4*j]))
+        for gi,k in enumerate(order):
+            if key==k:members[gi].append(j);break
+        else:order.append(key);members.append([j])
+    if len(order)==n:return integers,floats,selected
+    count=len(order)
+    ni=np.empty(4+5*count+integers[2],np.int64);nf=np.empty(4+2*count+int(integers[3]==2))
+    ni[0]=count;ni[1]=count;ni[2]=integers[2];ni[3]=integers[3]
+    nf[0]=floats[0];nf[1]=floats[1];nf[2]=floats[2];nf[3]=floats[3]
+    if integers[3]==2:nf[-1]=floats[-1]
+    for gi,key in enumerate(order):
+        rep=members[gi][0]
+        ni[4+4*gi]=integers[4+4*rep]
+        ni[5+4*gi]=integers[5+4*rep]
+        ni[6+4*gi]=integers[6+4*rep]
+        ni[7+4*gi]=integers[7+4*rep]
+        ni[4+4*count+gi]=integers[6+4*rep]
+        nf[4+gi]=floats[4+rep];nf[4+count+gi]=floats[4+n+rep]
+    for j in range(integers[2]):ni[4+5*count+j]=integers[4+5*n+j]
+    return ni,nf,selected
+
+
 def prepare(resident,scenario,index,offer=None):
     p=resident.program
     if not isinstance(scenario,int) or isinstance(scenario,bool) or not 0<=scenario<len(p.probabilities):raise ValueError('invalid query scenario')
@@ -51,4 +88,20 @@ def prepare(resident,scenario,index,offer=None):
     iv=resident.integers[p.integer_offsets[event]:p.integer_offsets[event+1]]
     fv=p.floats[p.float_offsets[event]:p.float_offsets[event+1]]
     if offer is not None and (not isinstance(offer,int) or isinstance(offer,bool) or not 0<=offer<iv[0]):raise ValueError('invalid queried offer')
-    return payload(iv,fv,resident.data[1],resident.company_data[0],-1 if offer is None else offer,resident.native)
+    result=payload(iv,fv,resident.data[1],resident.company_data[0],-1 if offer is None else offer,resident.native)
+    if resident.supply!='persistent-arrivals':
+        result=_collapse_joint(*result)
+    return result
+
+
+def query_key(integers,floats,selected,supply):
+    """Supplier/order-independent dedup identity for a funding query.
+
+    Independent-snapshot supply makes the hypothetical value depend only on each
+    collapsed offer's material, price and lot; persistent arrivals keep the
+    unique offer subset because a hypothetical purchase consumes a specific
+    supplier's future stock.
+    """
+    if supply!='persistent-arrivals':
+        return tuple(sorted((int(integers[4+4*j]),float(floats[4+j]),int(integers[7+4*j])) for j in range(int(integers[0]))))
+    return tuple(int(x) for x in selected)

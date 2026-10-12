@@ -1,6 +1,6 @@
 # Purchasing contract decisions
 
-Date: 2026-10-12. Status: D1 and D2 accepted by the user on 2026-10-12; D3 remains a proposed mechanics experiment. This implements the decision-pack step of the [master plan](buying-behavior-implementation-plan.md); it specifies accepted fee and preference rules; live activation still requires completed validation.
+Date: 2026-10-12. Status: D1 and D2 accepted by the user on 2026-10-12; D3–D6 resolved by the user on 2026-10-12 with the price-sensitive fill-to-brim rule (latent demand = storage slot, quantity = Tier 3 curve with the input's reference cost as the halving price, elasticity 2). This implements the decision-pack step of the [master plan](buying-behavior-implementation-plan.md); it specifies accepted fee and preference rules; live activation still requires completed validation.
 
 ## D1 Which delivery qualifies a new incumbent
 

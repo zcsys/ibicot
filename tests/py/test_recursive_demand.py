@@ -108,10 +108,11 @@ class RecursiveDemandTests(unittest.TestCase):
         K.operate_tier2(reference,cfg,M.PRODUCTS,K.T0P,M.T2_PRODUCTS,1)
         self.assertGreater(reference.t2IntermediateSold[seller['id']],0)
         self.assertEqual(reference.t2Made[0],32)
-        # Buyer quote covers acquired C3 stock and produces at capacity.
+        # Buyer quote covers acquired C3 stock; price-sensitive buying scales the
+        # order around the intermediate's reference cost, so it produces 6, not 24.
         w.t2Price[1]=200;reference=copy.deepcopy(w)
         K.operate_tier2(reference,cfg,M.PRODUCTS,K.T0P,M.T2_PRODUCTS,1)
-        self.assertEqual(reference.t2Made[1],24)
+        self.assertEqual(reference.t2Made[1],6)
         np.testing.assert_allclose(K.storage_rent_equity(reference,cfg,'t2')-before,
                                    company_earnings(reference,cfg,'t2'),atol=1e-8,rtol=0)
         validate_storage(reference,cfg)

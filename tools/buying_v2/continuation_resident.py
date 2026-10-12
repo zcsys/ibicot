@@ -169,14 +169,14 @@ class Resident:
         from .continuation_query import prepare
         iv,fv,selected=prepare(self,scenario,index,offer)
         if not isinstance(observe,bool):raise ValueError('invalid observation mode')
-        if len(allocation)!=len(selected) or any(not isinstance(q,int) or isinstance(q,bool) or q<0 for q in allocation):raise ValueError('invalid query allocation')
+        if len(allocation)!=int(iv[0]) or any(not isinstance(q,int) or isinstance(q,bool) or q<0 for q in allocation):raise ValueError('invalid query allocation')
         p=self.program;event=int(p.scenario_offsets[scenario])+index
         data,records,integers=_replay(self.data,self.company_data,p.event_kinds,p.event_labels,p.integer_offsets,p.float_offsets,
             self.integers,p.floats,event,event+1,_array((0,len(allocation)),'<i8'),_array(allocation,'<i8'),observe,
             self.supply=='persistent-arrivals',int(p.scenario_offsets[scenario+1]),event,iv,fv)
         self.data=data;self.integers=integers;self.observations+=tuple(records)
         if observe:self.observation_positions+=(index,)
-        return tuple(int(i) for i in selected)
+        return ()
 
     def set_funded_demands(self,scenario,index,demands):
         """Set a resolved actual bid vector in the preallocated event payload."""

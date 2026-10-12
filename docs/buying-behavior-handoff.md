@@ -1,5 +1,95 @@
 # Buying behavior implementation handoff
 
+## Population benchmark and economic observation of the price-sensitive rule
+
+Full-population isolated benchmark (57,960 T2, C3/C4, 361 ticks): step median **137 ms/tick** (p95 160 ms), so the closed-form rule adds negligible overhead. Economic snapshot at tick 361: T0 sold 5.27M (net 800k), T1 sold 3.29M (net 2.02M), T2 sold 1.70M vs demand 4.25M (**unmet 2.55M**), T2 net 5.72M, T2 intermediate sold 97,773, all tiers profitable, no negatives, money/goods reconcile. Evidence: `stats/buying-implementation/20261012-price-sensitive-buying/`.
+
+Calibration note: at price ≈ reference the demand curve buys half of fill-to-brim, so the T2 firms hold ~half their input slots and fulfill ~40% of distributor demand. That is the direct consequence of "halving price = reference cost"; a higher halving price would soften this. Flagged for the user rather than silently retuned.
+
+## Price-sensitive fill-to-brim industrial buying (user-directed)
+
+The user resolved the open D3–D6 model decisions with a simpler rule: latent demand = "fill to brim" (the storage slot), quantity = the Tier 3 price-response curve with a heuristically chosen halving price, and no elaborate continuation planner for the adopted model. Implementation, mirrored in the reference and compiled kernels:
+
+- `economy/core/model.py`: `input_reference_cost(material, cfg)` — the halving price (canon "V = unit cost"): `t1MaterialCost` for basic elements, `refinery_unit_cost` for refinery products, `initial_tier2_cost` for T2 intermediates.
+- `economy/kernel/tick.py` (`transfer_tier2_input`) and `economy/kernel/numba.py` (`_operate_tier2_nb` + cached `input_reference_arrays`): `buy_request = min(demand_at_price(slot, halving, quote, 2.0), shortage)`. Elasticity fixed at 2 (canon η = 2); the result is capped by the actual slot shortage so a nearly-full firm never overbuys.
+
+D3–D6 resolution: D3 target = fill-to-brim; D4 value = reference cost (no forecast); D5 information = quote + own slot/reference; D6 solver = none required (closed form). Verification: kernel determinism/conservation pass; reference/compiled byte-equality holds; three golden tests updated (24 → 6) and a new `tests/py/test_buying_price_sensitive.py` checks the price-response direction. Full discovery pending at the time of writing.
+
+## Recent optimizations are case-specific; synthetic closing-bound screen unchanged
+
+Re-ran the 16-case connected screen (prefix-bound spec: `closing=True`, 4,000/16,000 budgets, `prunePrefix`/`pruneContinuation`, shared-first 256): **12/16 exact**, with cases 7/13/14/15 still hitting the closing box-node limit. This confirms the recent wins (funded-cap pruning, semantic dedup, symmetry break) target the captured diagnostic's specific structure — uniform prices, no incumbent, funded-demand-bound — and do not move the closing-bound bottleneck of the heterogeneous-price synthetic screen (whose historical result under the later proof-memo knobs is 13/16). The captured diagnostic is 8/8, but closing-bound scaling for heterogeneous multi-period cases remains a separate research-level task.
+
+## Symmetry break completes the captured diagnostic (8/8)
+
+The actual purchase now applies a gated symmetry break: when a decision has no incumbent for any material, no later purchase phase, and each material's first offer holds at least its maximum funded demand, the action frame caps every non-first offer of a `(material, price, lot)` group to zero (`AllocationFrame` `canonical=True`). Under that condition the per-offer split is value-irrelevant (no current fee, the incumbent update has no future consequence, and terminal value is incumbent-independent), so enumerating only the front-loaded split is exact.
+
+All eight captured diagnostics now complete exactly (0 limits); case 0/full-clearance returns value 46.4. Verification: full `test_buying_v2*.py` discovery passes 536 tests, including the 24 seeded comparisons and the differential funding check. Evidence: `stats/buying-implementation/20261012-captured-symmetry-break/` (318 source hashes, 8/8 fingerprints, tests.log).
+
+This is a solver-screen milestone, not project completion: the captured diagnostic is a small fixture, and the master plan's forecast/model decisions, full integration, population performance, economic validation and rollout remain open.
+
+## Semantic funding-query dedup completes case 2 (7/8)
+
+Funding queries are now deduplicated by a supplier- and order-independent identity — the sorted `(material, price, lot)` of each collapsed offer — computed by `continuation_query.query_key` and used by `QueryAnswers.request` (now keyed by a hashable tuple instead of offer indices). Independent-snapshot supply makes the hypothetical value depend only on those fields, so the dedup is exact; persistent arrivals keep the unique offer-subset key. For the captured uniform-price states all 11 funding queries collapse to one.
+
+Completion rises 6/8 → **7/8**: case 2/full-clearance (no stock at all) completes exactly (value 0). Case 0/full-clearance now passes funding (`fundingQueries=1`) and fails in the actual purchase, which enumerates the symmetric per-offer compositions described in the prior entry. Verification: full `test_buying_v2*.py` discovery passes 536 tests; the two `prepare`/`QueryAnswers.request` contract tests were updated to the new hashable-key contract. Evidence: `stats/buying-implementation/20261012-captured-semantic-dedup-final/`.
+
+## Full-clearance limits diagnosed: symmetric composition, not bound slack
+
+The two remaining limits (cases 0/2 full-clearance) fail inside a per-offer funding query (`fundingQueries=4/6`). Both captured states have **no incumbent for any material** (all incumbents −1), and the diagnostic calendar has no later purchase phase, so the fee is zero and the first-assignment incumbent update has no value consequence. The actual purchase value is therefore symmetric across per-offer splits, and the cost-aware prefix bound (which relaxes the current-order fee) cannot distinguish equivalent compositions — it would enumerate on the order of millions of equivalent material-0 × material-4 splits. Collapsing those offers would be safe only under this no-incumbent/no-future-purchase condition, not in general (a positive fee or a later purchase breaks the symmetry). The solver stands at 6/8; the remaining two cases need either a fee-aware bound or an explicit symmetry break gated on the no-incumbent condition.
+
+Full discovery passes **663 tests in 416.084s** after the funded-cap pruning (log preserved in the funded-cap evidence directory).
+
+## Funded-cap pruning completes the zero-sales cases (6/8)
+
+The action frame now bounds each material's total purchase by its maximum funded demand (`AllocationFrame.max_funded`, enforced in `continuation_actions.advance`). The ledger already rejects allocations whose per-material total exceeds the funded cap, so pruning those prefixes earlier is behavior-preserving; the bound is tight for uniform funded demands and conservative otherwise, and a zero funded demand admits only the empty allocation.
+
+Completion rises from 4/8 to **6/8**: cases 1/zero-sales and 3/zero-sales now complete exactly (values −16 and −18, the forced-production conversion cost of buying nothing). The two remaining limits are the full-clearance cases 0/2, whose positive funded demand keeps the per-offer composition structure (which cannot be collapsed safely because fees and preferences depend on the split).
+
+Verification: `test_buying_v2_continuation_actions`, `test_buying_v2_range_pruning` (24 seeded complete-result comparisons) and `test_buying_v2_continuation_differential` pass; full `test_buying_v2*.py` discovery passes **536 tests in 450.944s**. Evidence and source snapshot: `stats/buying-implementation/20261012-captured-funded-cap/` (318 source hashes, 8 fingerprints, tests.log).
+
+## Scope re-verified against the explicit base; audit script's HEAD reference is stale
+
+Re-ran the scope checks against the documented base commit `572e586fae665e10edd9ea5ea459d5f165f1dfd4`. All four retained phase bodies match after removing the purchase/observer hooks (`plan_and_buy_inputs`, `_operate_tier2_phase`, `_plan_and_buy_inputs_nb`, `_operate_tier2_nb`); no protected tracked path (`economy/core`, `catalogs`, runtime/scheduler/recording/aggregates/service, `web/catalog.js`, `web/midbridge-catalog.js`) changed; loaded defaults remain 57,960 T2 companies / 36 C3 + 69 C4 / C3–C4 phases only. The offer-collapse is the only source change beyond these.
+
+The preserved `audit_scope.py` scripts use `git show HEAD:` for the pre-modification phase bodies. HEAD has since advanced to the `gpt work` commit (`1b1b87b`), which already contains the purchase/observer hooks, so re-running those scripts as-is now spuriously fails the `_operate_tier2_phase` comparison. This is a reproducibility artifact, not a scope violation; a future re-run must reference `572e586` explicitly, as done here.
+
+## Range-proof tightening is structurally blocked; production scope re-verified
+
+Instrumented the full-clearance per-offer query (case 0, after the offer collapse) to confirm the remaining slack precisely: the range proof's free-input ceiling is 216.64 and tail-prunes only 105 of 5,365 prefixes, while the cost-aware prefix bound (actual prices) prunes 5,061 of 5,260 and is already the effective pruner. The range proof cannot be tightened by a small change. Its tail-prune is valid only because `gross_return − paid` (free inputs) is monotone non-increasing in the scanned coordinate; an actual-price ceiling either double-counts the prefix's `paid` deduction (computed from the decision-point state), double-counts the last coordinate (parent-conditioned with full `paid`, since the coordinate is also priced in `line_envelope`), or becomes constant in the coordinate (parent-only `paid`), which would prune the optimal completion. This monotonicity-versus-input-cost tension is why parent-conditioning and resource caching (both free-input) failed to improve completion. Empirically confirmed: switching the ceiling to `free_inputs=False` makes `test_buying_v2_range_pruning` fail 2 of the 24 seeded complete-result comparisons (the range proof prunes an optimal completion), so the free-input ceiling is the correct monotone structure despite its slack. A genuinely tighter tail certificate needs a different structure, not a tweak to `line_envelope` or `continuation_range.py`.
+
+Production scope re-verified after the offer collapse: all `economy/` files and the four modified production files (`economy/kernel/tick.py`, `numba.py`, `input_market.py`, `economy/server/persistence.py`) remain byte-identical to the retained conversion-range snapshot; only the three `tools/buying_v2/` funding-query files changed for the collapse.
+
+## Offer-collapse optimization retained after fixing the dedup key
+
+The offer-collapse optimization is now correct and retained in the working tree. The earlier dedup-key defect — returning `np.arange(count)` as `selected`, which collided across queries in `QueryAnswers.request` — is fixed by returning the original offer subset and validating the allocation length against the collapsed `iv[0]` in both `funding_purchase` paths. It applies to all continuation-v2 funding queries under independent-snapshot supply (persistent arrivals keep the original enumeration). Verification: full `test_buying_v2*.py` discovery passes **536 tests in 455.573s**, including the 24 seeded oracle comparisons and the seeded differential funding/policy/account check. Evidence and source snapshot: `stats/buying-implementation/20261012-captured-offer-collapse/` (318 source hashes, specification, 8 fingerprints).
+
+Completion remains 4/8, but the zero-sales bottleneck moves past funding: cases 1/3 now finish all 13 funding queries (`fundingQueries=13`) and fail later in the actual purchase traversal (12 offers, depth 11), while full-clearance cases 0/2 still exhaust work inside a collapsed per-offer query (`fundingQueries=4/6`; their `held=0` keeps per-material caps at ~2,833/2,000, so the 2-offer query space is ~8M and remains bound-slack-bound). Solved-case prefix work falls ~2.6–2.8× (0/zero-sales 156→60, 1/full-clearance 216→76, 2/zero-sales 150→54, 3/full-clearance 216→76). This is a behavior-preserving search-work reduction, not a completion pass.
+
+Remaining completion levers are unchanged: the actual purchase and the large-cap per-offer queries still carry the forced-production and free-input bound slack. Collapsing the actual purchase frame is unsafe because fees and preferences depend on the per-offer split under a positive funded demand. The next step remains tightening `continuation_bound.line_envelope` to lower-bound the forced gate-limited production conversion cost.
+
+## Collapse experiment rejected: dedup key blocks it, and bound slack stays the lever
+
+Attempted to collapse same-(material, price, lot) offers inside the continuation-v2 funding queries to remove the redundant per-offer composition enumeration. The joint-query-only collapse is correct (24 seeded comparisons plus native/tie tests pass) but leaves completion at 4/8 and only trims work in solved cases. Extending it to the per-offer queries broke the seeded differential comparison: the collapsed payload returned `np.arange(count)` as `selected`, and `QueryAnswers.request` keys its dedup on that offer-set tuple, so distinct joint/per-offer queries with the same collapsed shape shared one answer and produced wrong funding vectors. The source was restored byte-for-byte from the retained conversion-range snapshot (318 hashes re-verified).
+
+The attempt still sharpens the diagnosis. Collapsing the joint query from 10→2 offers leaves the full-clearance limit cases essentially unchanged (case 0: 5,369→5,372 prefixes), confirming they are bound-slack-bound, not action-space-bound. The zero-sales cases are partly composition-bound (0/zero-sales falls to ~20 prefixes under the buggy extended collapse) but still cannot certify optimality because of the forced-production slack. The completion lever remains `continuation_bound.line_envelope`: it must lower-bound the forced gate-limited production conversion cost. A dedup-safe collapse would additionally need to key `QueryAnswers` on the original offer subset rather than the collapsed representative indices.
+
+## Precise limit-case diagnosis: bound slack, not range-proof leverage
+
+Instrumented the retained conversion-range search on all four limit cases and measured the range-proof values directly. The joint all-quotes funding query is confirmed as the failure point (`fundingQueries=1`, `activeFrames=3`). Two distinct slack mechanisms explain why the search cannot certify optimality:
+
+- **zero-sales cases (1/3):** best-so-far `prior ≈ −16`, range ceiling `≈ 0`. The −16 is the conversion cost of gate-limited production from already-held inputs (`held=2801`/`1976` already exceeds `max_batches`); the envelope reports ≈0 because `line_envelope` caps realized production at `min(demand, capacity)` = 0 under zero demand. The bound is valid but loose by exactly that forced-production conversion cost.
+- **full-clearance cases (0/2):** `prior = 0`, range ceiling `≈ 216.64`/`278.64` (free-input gross return). Because the range ceiling prices suffix inputs at zero, it only prunes when the prefix goods payment exceeds ~216–278, so it prunes just 87/147 of ~5,359 range checks (case 0/2) and is nearly inert; the cost-aware prefix bound performs ~98% of the pruning.
+
+Completion was 4/8 both before and after the range proof (the range proof only reduced work in already-completed cases), so the range proof is not the completion lever. The remaining slack is in the cost-aware prefix bound's `line_envelope`: it optimizes production as demand-limited (and assumes omniscient production), while the actual `purchase` event produces gate-limited regardless of future demand. Next work: tighten `line_envelope` to lower-bound the forced gate-limited production conversion cost (closes zero-sales) and to price suffix inputs at their actual costs (closes full-clearance). The earlier "collapse same-price same-material offers inside the joint query" idea remains a separate, orthogonal lever with the tie-break caveats already noted. No source, test, parameter, or live run was changed by this diagnosis.
+
+## Archived replay completed; four-case bottleneck analyzed
+
+The previously missing archived execution replay of the rejected resource-keyed range-cache candidate is now complete. Running the candidate archived source from `/tmp` reproduces all eight captured result/failure fingerprints exactly (4 exact, 4 limit), and all 318 archived source hashes match. Evidence: `stats/buying-implementation/20261012-captured-resource-cache/archived-replay-verification.json`, `replay/`, `replay.log`. No working-tree code changed and no new test or simulation was run. The rejection decision is unchanged; this replay only authenticates the recorded candidate results, matching the standard used for retained milestones.
+
+The four unresolved captured cases were analyzed directly. All four exhaust the 16,000 combined prefix/bound-work budget inside the **first** funding query (the joint all-quotes query, ordinal 0): `fundingQueries=1` and the failure reason is `action prefix work limit`. Bound work dominates (about 9,700–10,600 of 16,000), roughly two units per visited prefix (range proof plus prefix bound for a single-scenario group). The joint query's result is recorded metadata only: `encode_answers`/`resolve_answers` derive the actual funded `demands` from the per-offer queries, while `jointQuantities`/`jointGoods` (and never the joint conditional value) are stored in the funding record and do not influence the purchase, fees, preferences, or terminal value. The per-offer queries never run in these cases because the joint query fails first. The loose frame `remaining` aggregate (sum of per-offer caps) is not the bottleneck: the compiled `advance` native `inventory` check already enforces the tight per-material slot bound.
+
+A candidate next step is to collapse same-price same-material offers inside the joint query only. All four captured cases have uniform within-material prices, so the hypothetical continuation depends only on per-material aggregate quantity and cost (incumbents are held and current fees are removed inside the query). That would reduce the joint query from 10–12 offers to 2 in these cases. It is not yet implemented: it must preserve lexicographic tie-breaking and the seeded oracle funding comparisons, and must not change per-offer-query or actual-selection semantics. The retained global conversion-aware range proof remains the current starting point.
+
 ## Latest state — resource-cache candidate rejected and restored
 
 The resource-keyed range cache is no longer in the working tree. It completed the same 4/8 captured cases as the retained implementation and increased combined prefix/proof work for every completed case (244→308, 338→432, 231→290, 338→432). This evidence does not justify adopting its extra complexity. It is not proof that resource caching can never help another workload.
@@ -155,8 +245,8 @@ Tracked modifications include README, `docs/design_canon.md`, `economy/kernel/in
 
 - **D1 accepted:** retain the incumbent unless one supplier alone supplies the whole funded demand at its own quote. A supplies 2 and B supplies 6: retain the old incumbent. Apply the same qualification to first assignment. Do not substitute completion of the remaining request.
 - **D2 accepted:** freeze the original incumbent and its live availability at this buyer's product-order opening against positive funded demand at its own quote. If it could fill that demand and any outside supplier makes a positive sale, pay the original incumbent one existing-formula fee. The boundary is buyer, product, purchasing phase within a tick, shared across eligible lines. Earlier buyers' transactions are already committed. Do not reopen the order to multiply or evade fees.
-- **D3 remains experimental:** bounded replenishment is a comparator, not the adopted industrial demand model.
-- **D4–D6 remain unresolved:** model/forecast/funding choices and solver feasibility require further evidence and explicit adoption where appropriate. An experiment or assistant proposal is not user approval.
+- **D3 resolved:** latent demand = "fill to brim" (the storage slot); the bounded-replenishment comparator is retained as historical evidence, not the adopted model.
+- **D4–D6 resolved:** halving price = the input's reference cost (canon `V = unit cost`), elasticity 2, a closed-form rule in both kernels — no forecast or solver required for the adopted model. Stage 7 validation and Stage 8 rollout remain open.
 
 The original research rejected R1. Its equations are not production defaults. See the master plan for full stage and acceptance requirements.
 

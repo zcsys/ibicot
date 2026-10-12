@@ -6,7 +6,7 @@ Updated 2026-10-12 following the user's explicit purchasing-only restriction. Th
 
 Do not change populations, catalog/recipes, complexity activation, capacities, sell-side pricing rules, production and historical-cost gates, storage, rent, demand settings, phase order or other non-purchasing mechanics for this task. Purchasing can change realized quantities, revenue and later prices through existing rules; those endogenous effects do not authorize changing the rules. Synthetic test inputs and explicitly labeled diagnostic solver budgets are not production parameter changes.
 
-D1/D2 remain accepted purchasing decisions. D3–D6 remain unresolved where documented. An incompatible candidate must be reported as such, not repaired by changing an outside rule. The master plan and handoff now state this boundary explicitly.
+D1/D2 remain accepted purchasing decisions. D3–D6 were resolved on 2026-10-12 by the user with the price-sensitive fill-to-brim rule (see the plan's decision register). An incompatible candidate must be reported as such, not repaired by changing an outside rule. The master plan and handoff now state this boundary explicitly.
 
 ## Verified current model
 
@@ -67,3 +67,7 @@ Evidence: `stats/buying-implementation/20261012-scope-docs-final-audit/`. Re-exe
 A documentation defect was found: accumulated handoff milestones used “Latest” and “Next” for superseded intermediate states, including the old rejection of native compiled state. The handoff now starts with a current support/remaining-work statement and labels older milestones as historical. Native Resident prescribed execution is implemented; native connected/event-tree search and fractional raw projection remain guarded. No search guard was relaxed by this audit.
 
 The inspected changes do not restore the old model or alter outside economic parameters. Optional purchasing hooks and the explicit checkpoint-policy compatibility guard remain the production-code changes described above. This finding is not a blanket correctness or economic-suitability certification of the experimental planner. No implementation code, configuration, live run or dependency was changed during this refresh.
+
+## 2026-10-12 price-sensitive buying change (user-directed, authorized)
+
+The user directed a buying-behavior change replacing the unresolved D3–D6 model: latent demand = "fill to brim" (storage slot), quantity = the Tier 3 curve with the input's reference cost as the halving price (elasticity 2). This modified `transfer_tier2_input` (`economy/kernel/tick.py`), the `_operate_tier2_nb` buying loop (`economy/kernel/numba.py`), and added `M.input_reference_cost` (`economy/core/model.py`) plus a cached `input_reference_arrays`. The change is confined to the buying quantity — the uncommitted diff is 55 insertions / 4 deletions across those three files — and no production, pricing, demand, capacity, storage, rent, phase-order or accounting logic changed. Reference/compiled parity and the full 664-test discovery pass. This is an authorized buying-behavior change, not a scope violation.
