@@ -601,7 +601,7 @@
             <div class="field"><label>T2 storage pool (space)</label><input id="storage" type="number" min="1" step="any" value="20000" /></div>
             <div class="field"><label>C-1 refinery storage (space)</label><input id="t1C1Storage" type="number" min="1" step="any" value="50000" /></div>
             <div class="field"><label>C-2 refinery storage (space)</label><input id="t1C2Storage" type="number" min="1" step="any" value="50000" /></div>
-            <div class="field"><label>Storage rent ($/1,000 spaces/tick)</label><input id="storageRentPerUnitYear" type="number" min="0" step=".01" value="2.8" /></div>
+            <div class="field"><label>Storage rent ($/1,000 spaces/tick)</label><input id="storageRentPerThousandPerTick" type="number" min="0" step=".01" value="2.8" /></div>
           </div>
           <div class="param-group">
             <h3>Distributors · Demand</h3>
@@ -763,7 +763,7 @@
                 <tbody id="tierComparison"></tbody>
               </table>
             </div>
-            <p class="analytics-note"><strong>Net profit = gross profit + switching income − switching expense − storage expense.</strong> Rent is charged every tick. Net margin = net profit ÷ revenue; undefined when revenue is zero. T0 is exempt. T1/T2 below $2M book equity before billing are exempt; at exactly $2M they are eligible. Existing arrears are held until eligible. Switching transfers are included as income for the incumbent and expense for the buyer. Historical snapshots without those postings show net earnings as unavailable. Product/complexity views allocate each paying company’s charge across its own installed lines; company views use each company’s full rent. Amounts shown are per tick.</p>
+            <p class="analytics-note"><strong>Net profit = gross profit + switching income − switching expense − storage expense.</strong> Rent is charged every tick. Net margin = net profit ÷ revenue; undefined when revenue is zero. T0 is exempt. T1/T2 below $1.5M book equity before billing are exempt; at exactly $1.5M they are eligible. Existing arrears are held until eligible. Switching transfers are included as income for the incumbent and expense for the buyer. Historical snapshots without those postings show net earnings as unavailable. Product/complexity views allocate each paying company’s charge across its own installed lines; company views use each company’s full rent. Amounts shown are per tick.</p>
             <p class="analytics-note">Current tick · indented complexity rows break down the tier totals; do not add them to their parent rows. Per-firm figures use the firms represented by each row. A company with several complexities can appear in several complexity rows. Cash, book equity, inventory and purchases use actual company records. For companies spanning complexities, shared company totals are allocated equally across installed lines. Capacity is installed output per tick; utilization is production divided by capacity. Customer fulfillment is fulfilled units divided by desired units: company buyers for T0/T1, Distributors for T2 (including C-3/C-4). Sorting keeps complexities beneath their tier. COGS is the cost basis of units sold; unsold production adds inventory rather than reducing gross profit. — means unavailable or no activity for a ratio.</p>
             <div class="table-toolbar">
               <label for="overviewTier">Chart scope</label>
@@ -1144,7 +1144,7 @@
               </div>
               <div class="stat"><span>Net profit · $ / tick</span><b id="t1NP">—</b></div>
               <div class="stat"><span>Net margin</span><b id="t1NM">—</b></div>
-              <div class="stat"><span>Rent / eligible company / tick</span><b id="t1AnnualRent">—</b></div>
+              <div class="stat"><span>Rent / eligible company / tick</span><b id="t1RentPerTick">—</b></div>
               <div class="stat"><span>Storage rent paid · cumulative</span><b id="t1RentPaid">—</b></div>
               <div class="stat"><span>Unpaid storage rent · liability</span><b id="t1RentArrears">—</b></div>
               <div class="stat">
@@ -1391,7 +1391,7 @@
               </div>
               <div class="stat"><span>Net profit · $ / tick</span><b id="t2NP">—</b></div>
               <div class="stat"><span>Net margin</span><b id="t2NM">—</b></div>
-              <div class="stat"><span>Rent / eligible company / tick</span><b id="t2AnnualRent">—</b></div>
+              <div class="stat"><span>Rent / eligible company / tick</span><b id="t2RentPerTick">—</b></div>
               <div class="stat"><span>Storage rent paid · cumulative</span><b id="t2RentPaid">—</b></div>
               <div class="stat"><span>Unpaid storage rent · liability</span><b id="t2RentArrears">—</b></div>
               <div class="stat">

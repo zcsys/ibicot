@@ -33,9 +33,10 @@ A tick updates extraction difficulty, extracts raw, buys T1 inputs, refines, upd
 | Distributor demand | `20 / (1 + (price / buyer halving-price)^elasticity)`, stochastically rounded; five sampled offers plus the incumbent by default. |
 | Switching | A fixed transfer to the former supplier when it can fill the relevant order; actual-fill savings must justify switching. |
 | Prices | Staggered observation windows; shortages, market quotes, then changes in realized gross profit determine movement. |
+| Storage rent | $2.80 per 1,000 spaces per tick; charged on full capacity for eligible T1/T2 firms with book equity ≥ $1.5m. |
 | Earnings | Sales − COGS + switching income − switching expense − accrued rent. |
 
-The [canon](docs/design_canon.md) defines reference costs, exact rounding, supplier selection, settlement order, production gates, allocation, and exceptions. A reference cost is a calibration value; it is neither the live purchase quote nor the inventory book cost.
+The [canon](docs/design_canon.md) defines reference costs, exact rounding, supplier selection, settlement order, production gates, allocation, and exceptions. A reference cost is a calibration value; it is neither the live purchase quote nor the inventory book cost. The [decision walkthrough](docs/decision_walkthrough.md) adds numerical examples by tier and an inventory of the external information each decision uses.
 
 ## Run
 

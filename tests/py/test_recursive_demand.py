@@ -90,7 +90,7 @@ class RecursiveDemandTests(unittest.TestCase):
             self.assertGreater(demand[p['id']],final[p['id']],p['catalogId'])
 
     def test_intermediate_trade_production_and_equity_both_engines(self):
-        cfg,w=reset_world({'t2FirmCount':2,'distributorCount':1,'storageRentPerUnitYear':0})
+        cfg,w=reset_world({'t2FirmCount':2,'distributorCount':1,'storageRentPerThousandPerTick':0})
         buyer=next(p for p in M.T2_PRODUCTS if p['demandGroup']=='c4_basic_c3')
         m=next(m for m,q in buyer['ingredients'] if m>=M.NP)
         seller=M.T2_INPUT_PRODUCTS[m]

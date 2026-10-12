@@ -68,7 +68,7 @@ class MidbridgeTests(unittest.TestCase):
         with self.assertRaises(ValueError):validate_storage(w,cfg)
 
     def test_production_conserves_space_and_value_both_engines(self):
-        cfg,w=reset_world({'t2FirmCount':1,'distributorCount':1,'storageRentPerUnitYear':0})
+        cfg,w=reset_world({'t2FirmCount':1,'distributorCount':1,'storageRentPerThousandPerTick':0})
         p=next(p for p in M.T2_PRODUCTS if p['inputs']=={'W':1,'W+E':1})
         w.t2LineProduct[0]=p['id'];w.t2Sector[0]=p['sectorIndex']
         w.t2Raw[0]=100;w.t2RawBasis[0]=2

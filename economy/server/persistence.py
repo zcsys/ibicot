@@ -25,7 +25,7 @@ def save_checkpoint(path, cfg, tick, world, scalars=None, runtime_metadata=None)
     np.savez(path + '.npz', **arr)
     meta = {
         'format': 'economy-checkpoint',
-        'version': 8,
+        'version': 9,
         'catalogRevision': CATALOG_REVISION,
         'companyNumbering': M.COMPANY_NUMBERING,
         'tick': int(tick),
@@ -62,10 +62,12 @@ def load_checkpoint(path):
         raise ValueError('Checkpoint company numbering does not match this catalog.')
     # JSON turns the int keys of nested config mappings (t2Machinery, t2Capacity,
     # footprint, loyaltyMultiple) into strings — re-normalize to restore them.
-    cfg = normalize_config(meta['cfg'])
-    # A pre-rent checkpoint keeps its original economics until explicitly changed.
-    if meta.get('version', 1) < 3 and 'storageRentPerUnitYear' not in meta['cfg']:
-        cfg['storageRentPerUnitYear'] = 0.0
+    saved_cfg = dict(meta['cfg'])
+    if meta.get('version', 1) < 9 and 'storageRentPerThousandPerTick' not in saved_cfg:
+        # Convert historical units once at the persistence boundary. Checkpoints
+        # predating rent retain zero rent rather than adopting the new default.
+        saved_cfg['storageRentPerThousandPerTick'] = saved_cfg.get('storageRentPerUnitYear', 0.0) * 1000 / 360
+    cfg = normalize_config(saved_cfg)
     tick = meta['tick']
     scalars = meta['scalars']
     world = WorldState(cfg)

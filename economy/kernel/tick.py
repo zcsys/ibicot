@@ -1235,12 +1235,12 @@ def production_line_rent(world, cfg, tier):
     """
     n = N1 if tier == 't1' else cfg['t2FirmCount']
     storage = tier1_storage_capacities(cfg) if tier == 't1' else cfg['storage']
-    bill = storage * cfg['storageRentPerUnitYear'] / M.TIME['ticksPerYear']
-    if cfg['storageRentPerUnitYear'] == 0:
+    bill = storage / 1000 * cfg['storageRentPerThousandPerTick']
+    if cfg['storageRentPerThousandPerTick'] == 0:
         return np.zeros(n, dtype=np.float64)
     counts = (world.t1Operates.reshape(N1, NP).sum(axis=1) if tier == 't1'
               else world.t2FirmLineCount[:n])
-    eligible = storage_rent_equity(world, cfg, tier) >= 2_000_000
+    eligible = storage_rent_equity(world, cfg, tier) >= 1_500_000
     return np.where(eligible & (counts > 0), bill / np.maximum(counts, 1), 0.0)
 
 
@@ -1260,7 +1260,7 @@ def production_line_overhead(world, cfg, tier):
 def settle_storage_rent(world, cfg, tick):
     """Bill the full T1/T2 pool every tick; collect cash, retain unpaid debt.
 
-    Eligibility uses pre-charge book equity >= $2M. Arrears collection is
+    Eligibility uses pre-charge book equity >= $1.5M. Arrears collection is
     suspended below this threshold, not forgiven; eligible firms retry every
     tick even when the new-rent rate is zero. There are no per-firm Python loops.
     Rent is an external cash sink, never inventory COGS. Debt reduces equity.
@@ -1268,12 +1268,12 @@ def settle_storage_rent(world, cfg, tick):
     """
     result = {}
     billable = tick > 0
-    rate = cfg['storageRentPerUnitYear'] / M.TIME['ticksPerYear'] if billable else 0.0
+    rate = cfg['storageRentPerThousandPerTick'] if billable else 0.0
     for tier, n in (('t1', N1), ('t2', cfg['t2FirmCount'])):
         storage = tier1_storage_capacities(cfg) if tier == 't1' else cfg['storage']
-        bill = storage * rate
+        bill = storage / 1000 * rate
         paid_total = 0.0
-        eligible = storage_rent_equity(world, cfg, tier) >= 2_000_000
+        eligible = storage_rent_equity(world, cfg, tier) >= 1_500_000
         charges = getattr(world, tier + 'RentCharge')[:n]
         charges[:] = np.where(eligible, bill, 0.0)
         if billable:

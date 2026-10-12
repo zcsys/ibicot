@@ -1069,7 +1069,7 @@ class KernelRuntime:
         if tier == 't0':
             return {**transfers, 'storageRentExpense': 0.0}
         return {**transfers, 'storageRentExpense': float(getattr(self.world, tier + 'RentCharge')[id_]),
-                'annualStorageRent': float((M.refinery_storage(self.cfg, id_) if tier == 't1' else self.cfg['storage']) * self.cfg['storageRentPerUnitYear']),
+                'storageRentPerTick': float((M.refinery_storage(self.cfg, id_) if tier == 't1' else self.cfg['storage']) / 1000 * self.cfg['storageRentPerThousandPerTick']),
                 'storageRentPaid': float(getattr(self.world, tier + 'RentPaid')[id_]),
                 'storageRentArrears': float(getattr(self.world, tier + 'RentArrears')[id_])}
 
@@ -1516,9 +1516,9 @@ class KernelRuntime:
         }
         for tier, n in (('t1', N1), ('t2', cfg['t2FirmCount'])):
             lastSnapshot['tiers'][tier].update({
-                'annualStorageRentPerFirm': float((tier1_storage_capacities(cfg).mean() if tier == 't1' else cfg['storage']) * cfg['storageRentPerUnitYear']),
-                'annualStorageRentPerFirmMin': float((tier1_storage_capacities(cfg).min() if tier == 't1' else cfg['storage']) * cfg['storageRentPerUnitYear']),
-                'annualStorageRentPerFirmMax': float((tier1_storage_capacities(cfg).max() if tier == 't1' else cfg['storage']) * cfg['storageRentPerUnitYear']),
+                'storageRentPerFirmPerTick': float((tier1_storage_capacities(cfg).mean() if tier == 't1' else cfg['storage']) / 1000 * cfg['storageRentPerThousandPerTick']),
+                'storageRentPerFirmPerTickMin': float((tier1_storage_capacities(cfg).min() if tier == 't1' else cfg['storage']) / 1000 * cfg['storageRentPerThousandPerTick']),
+                'storageRentPerFirmPerTickMax': float((tier1_storage_capacities(cfg).max() if tier == 't1' else cfg['storage']) / 1000 * cfg['storageRentPerThousandPerTick']),
                 'storageRentPaid': float(getattr(world, tier + 'RentPaid')[:n].sum()),
                 'storageRentArrears': float(getattr(world, tier + 'RentArrears')[:n].sum()),
                 'storageRentExpense': self.state.get(tier + 'RentExpense', 0.0),

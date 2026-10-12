@@ -55,7 +55,7 @@ def default_cfg() -> dict:
         'storage': 20_000.0,             # T2 manufacturers
         't1C1Storage': 50_000.0,         # C1 refinery cohorts
         't1C2Storage': 50_000.0,         # C2 refinery cohorts only
-        'storageRentPerUnitYear': 0.0,    # rent disabled for the current experiment
+        'storageRentPerThousandPerTick': 2.80,  # dollars per 1,000 storage spaces per tick
         'footprint': {1: 1_000.0, 2: 1_000.0, 3: 3_000.0, 4: 4_000.0, 5: 5_000.0},
 
         # Demand / distributors (T3)
@@ -164,7 +164,7 @@ def normalize_config(c) -> dict:
     d['storage'] = max(1, d['storage'])
     d['t1C2Storage'] = max(1, d['t1C2Storage'])
     d['t1C1Storage'] = max(1, d['t1C1Storage'])
-    d['storageRentPerUnitYear'] = max(0.0, d['storageRentPerUnitYear'])
+    d['storageRentPerThousandPerTick'] = max(0.0, d['storageRentPerThousandPerTick'])
 
     # Demand
     d['distributorSearchOffers'] = max(1, min(20, math.floor(d['distributorSearchOffers'])))

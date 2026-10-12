@@ -25,7 +25,7 @@ class C2StorageTests(unittest.TestCase):
         np.testing.assert_array_equal(slots,[12250,12250,0,0])
 
     def test_refill_production_reaches_full_rate_in_both_engines(self):
-        cfg,w=reset_world({'distributorCount':1,'t2FirmCount':1,'storageRentPerUnitYear':0})
+        cfg,w=reset_world({'distributorCount':1,'t2FirmCount':1,'storageRentPerThousandPerTick':0})
         w.raw.fill(0);w.t1Fin.fill(0);w.t1Cash.fill(1e8)
         w.t0Inv.fill(1e8);w.t0Price.fill(1.25);w.t1Price.fill(100)
         expected=copy.deepcopy(w)
@@ -39,7 +39,7 @@ class C2StorageTests(unittest.TestCase):
                 np.testing.assert_array_equal(getattr(w,name),getattr(expected,name),err_msg=name)
 
     def test_rent_forecast_settlement_and_equity_reconcile(self):
-        cfg,w=reset_world({'distributorCount':1,'t2FirmCount':1,'storageRentPerUnitYear':1.008})
+        cfg,w=reset_world({'distributorCount':1,'t2FirmCount':1,'storageRentPerThousandPerTick':2.8})
         w.t1Cash.fill(3e6)
         before=K.storage_rent_equity(w,cfg,'t1').copy()
         forecast=K.production_line_rent(w,cfg,'t1')
@@ -51,13 +51,13 @@ class C2StorageTests(unittest.TestCase):
 
     def test_reporting_and_live_shrink_validation(self):
         with tempfile.TemporaryDirectory() as d, patch('economy.server.runtime._STATS_DIR',Path(d)), patch('economy.server.service._STATS_DIR',Path(d)):
-            rt=KernelRuntime({'distributorCount':1,'t2FirmCount':1,'storageRentPerUnitYear':1.008})
+            rt=KernelRuntime({'distributorCount':1,'t2FirmCount':1,'storageRentPerThousandPerTick':2.8})
             self.assertEqual(rt._storage_view('t1',0)['storageCapacitySpace'],50000)
             view=rt._storage_view('t1',288)
             self.assertEqual(view['storageCapacitySpace'],50000)
             self.assertEqual(view['machinerySpace'],1000)
             self.assertEqual(rt._storage_view('t2',0)['storageCapacitySpace'],20000)
-            self.assertAlmostEqual(rt._company_rent('t1',288)['annualStorageRent']/360,140)
+            self.assertAlmostEqual(rt._company_rent('t1',288)['storageRentPerTick'],140)
             rt.world.raw[288*M.NE]=30000
             validate_storage(rt.world,rt.cfg)
             with self.assertRaises(ValueError):rt.apply_config({'t1C2Storage':20000})

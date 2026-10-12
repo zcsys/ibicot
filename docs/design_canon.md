@@ -1,6 +1,6 @@
 # Design canon — implemented economy
 
-This canon is reconstructed from the executable model, catalog, state initialization, trading kernels, and accounting. It specifies current behavior, including asymmetries and limits. Default values describe a fresh world; formulas apply to normalized configuration unless stated otherwise. Source links identify the implementation behind each group of rules.
+This canon is reconstructed from the executable model, catalog, state initialization, trading kernels, and accounting. It specifies current behavior, including asymmetries and limits. Default values describe a fresh world; formulas apply to normalized configuration unless stated otherwise. Source links identify the implementation behind each group of rules. For worked examples and information-access boundaries, see the [decision walkthrough](decision_walkthrough.md).
 
 ## 1. Vocabulary, units, and scope
 
@@ -288,7 +288,7 @@ T0 equity = cash + license + machineryBook + reserve + rawInventoryBookValue
 
 Company-period switching/rent items are allocated equally across installed lines for reporting. Net margin is net earnings/revenue when revenue is positive; otherwise unavailable. Shared-company balances are split across installed line complexities in complexity reports, avoiding duplicate firm cash/equity. Purchases exchange cash for inventory; making goods capitalizes conversion; neither is an immediate operating loss. Profits are posted from transactions, not inferred from equity changes.
 
-Storage rent defaults to zero. For eligible T1/T2 firms, per-tick charge is `fullStorageCapacity×storageRentPerUnitYear/360`, regardless of occupied space. Eligibility is pre-bill book equity ≥ `$2,000,000`, including existing arrears. On positive ticks, add the charge to arrears, pay `min(max(cash,0),arrears)` if eligible, subtract payment from cash and debt, and send that cash outside the economy. Below the threshold, both new charging and debt collection pause; debt is not forgiven. Eligible firms can repay old arrears even with a zero current rent rate. Earnings deduct the new charge, not repayment of prior debt. T0 is exempt.
+Storage rent defaults to **$2.80 per 1,000 storage spaces per tick**. For eligible T1/T2 firms, per-tick charge is `fullStorageCapacity/1000×storageRentPerThousandPerTick` ($140 for a default T1 firm; $56 for a default T2 firm), regardless of occupied space. Eligibility is pre-bill book equity ≥ `$1,500,000`, including existing arrears. On positive ticks, add the charge to arrears, pay `min(max(cash,0),arrears)` if eligible, subtract payment from cash and debt, and send that cash outside the economy. Below the threshold, both new charging and debt collection pause; debt is not forgiven. Eligible firms can repay old arrears even with a zero current rent rate. Earnings deduct the new charge, not repayment of prior debt. T0 is exempt.
 
 Goods and producer switching payments transfer cash internally. Distributor goods/fee payments inject cash. Extraction, conversion, and paid rent are operating cash sinks; machinery purchases are equipment sinks. For ordinary ticks without administrative equipment transactions:
 
@@ -336,7 +336,7 @@ T0 equity/license/machinery/reserve/capacity/storage/base cost/minimum lot have 
 
 Distributor and T2 populations are integers bounded to `1…1,000,000` and `1…57,960`; a zero value selects the full-population default. Legacy `t1Capacity` without a C2 override applies to both; legacy `storage` without T1 overrides applies to both T1 cohorts. Integer-keyed configuration maps also accept string keys from JSON. Live population changes require Reset. Storage/footprint changes reject occupied-space overflow; live changes refresh references and distributor choke/elasticity, but do not redistribute firms/buyers, rewrite inventory basis, reset learned quotes, or immediately replace adaptive loyalty multiples.
 
-Checkpoints store arrays in `.npz` and config, tick, scalar regimes, supplier history, and runtime metadata in a `.json` sidecar. The current format is version 8 and catalog revision `midbridge-invented-105-reverse-v7`; incompatible catalog revisions/numbering are rejected. Global hexadecimal company identities reserve full-population ranges in order Gaia, T0, T1, T2, T3, even in reduced worlds.
+Checkpoints store arrays in `.npz` and config, tick, scalar regimes, supplier history, and runtime metadata in a `.json` sidecar. The current format is version 9 and catalog revision `midbridge-invented-105-reverse-v7`; incompatible catalog revisions/numbering are rejected. Older checkpoints convert annual per-space rent once on load to the per-1,000-space, per-tick rate; new checkpoints store only the direct tick rate. Global hexadecimal company identities reserve full-population ranges in order Gaia, T0, T1, T2, T3, even in reduced worlds.
 
 Source: [tick.py](../economy/kernel/tick.py), [rng.py](../economy/core/rng.py), [config.py](../economy/core/config.py), [runtime.py](../economy/server/runtime.py), [persistence.py](../economy/server/persistence.py).
 

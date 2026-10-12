@@ -39,7 +39,8 @@ class NetEarningsTests(unittest.TestCase):
                 self.assertEqual(NB._adaptive_price(**args),(r['price'],r['direction'],r['stepScale']))
 
     def test_postings_preserve_gross_learning_forecast_applies_even_when_exempt(self):
-        cfg,w=reset_world({'t2FirmCount':12,'distributorCount':30})
+        cfg,w=reset_world({'t2FirmCount':12,'distributorCount':30,
+                           't1Equity':1_400_000,'t2Equity':1_400_000})
         w.t1Operates[1]=1
         w.t0SwitchingIncome[0]=30
         w.t1SwitchingIncome[0]=20
@@ -65,7 +66,7 @@ class NetEarningsTests(unittest.TestCase):
     def test_transaction_ledgers_and_equity_reconcile_in_both_engines(self):
         for fast in [False,True]:
             if fast and not NB._HAVE_NUMBA:continue
-            cfg,w=reset_world({'t2FirmCount':400,'distributorCount':800,'storageRentPerUnitYear':.072})
+            cfg,w=reset_world({'t2FirmCount':400,'distributorCount':800,'storageRentPerThousandPerTick':.2})
             w.t0Inv[:]=np.isfinite(w.t0Price)*50000.
             w.t0InvBasis[:]=1
             w.t0Price[np.isfinite(w.t0Price)]=1.25

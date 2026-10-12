@@ -1,5 +1,5 @@
 /* Net profit: gross profit + switching income - switching expense - storage expense.
- * The legacy config stores an annual per-unit rate; cash settles every tick.
+ * The configured rate is dollars per 1,000 storage spaces per tick.
  * The backend allocates each company's actual period postings
  * to its own lines, then reduces it into market groups. Legacy snapshots use
  * the rate-based fallback below; current snapshots always supply actual expense.
@@ -16,7 +16,7 @@
   }
   function company(row, cfg, tier) {
     if (!row) return;
-    const rent = row.storageRentExpense ?? (tier === 'T0' || (row.equity != null && row.equity < 2000000) ? 0 : (row.annualStorageRent ?? ((cfg.storage || 0) * (cfg.storageRentPerUnitYear || 0))) / 360);
+    const rent = row.storageRentExpense ?? (tier === 'T0' || (row.equity != null && row.equity < 1500000) ? 0 : (row.storageRentPerTick ?? ((cfg.storage || 0) / 1000 * (cfg.storageRentPerThousandPerTick || 0))));
     apply(row, rent);
     const lines = row.products || row.elementData || [];
     for (const line of lines) {
@@ -29,7 +29,7 @@
   }
   function snapshot(s) {
     const cfg = s.cfg;
-    const rent = (cfg.storage || 0) * (cfg.storageRentPerUnitYear || 0) / 360;
+    const rent = (cfg.storage || 0) / 1000 * (cfg.storageRentPerThousandPerTick || 0);
     const t1Lines = s.productCategories.filter(c => c.complexity === 1 || c.complexity === 2).reduce((n,c) => n+c.lines, 0);
     const t2Lines = s.tiers.t2.activeLines;
     const lineRent = { t1: t1Lines ? rent*s.tiers.t1.firms/t1Lines : 0,

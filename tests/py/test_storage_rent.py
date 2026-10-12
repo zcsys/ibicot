@@ -17,8 +17,10 @@ from economy.kernel import tick as reference
 from economy.server.persistence import save_checkpoint, load_checkpoint
 from economy.server.runtime import KernelRuntime, stats_row
 
-# Keep paid-rent scenarios explicit while the current experiment disables rent.
-SMALL = {'t2FirmCount': 12, 'distributorCount': 30, 'storage': 20000, 'storageRentPerUnitYear': 20.16}
+# Explicit high-rent fixture for debt, eligibility, and production-gate boundaries.
+SMALL = {'t2FirmCount': 12, 'distributorCount': 30, 'storage': 20000,
+         't1Equity': 1_400_000, 't2Equity': 1_400_000,
+         'storageRentPerThousandPerTick': 56}
 
 
 class StorageRentTests(unittest.TestCase):
@@ -31,8 +33,8 @@ class StorageRentTests(unittest.TestCase):
         self.addCleanup(self.stats_patch.stop)
 
     def test_per_tick_full_pool_and_t0_exemption(self):
-        cfg, w = reset_world({k:v for k,v in SMALL.items() if k not in ('storageRentPerUnitYear', 'storage')})
-        cfg['storageRentPerUnitYear'] = 1.008
+        cfg, w = reset_world({k:v for k,v in SMALL.items() if k not in ('storageRentPerThousandPerTick', 'storage')})
+        self.assertEqual(cfg['storageRentPerThousandPerTick'], 2.8)
         w.t1Cash += 1000000
         w.t2Cash[:12] += 1000000
         start0, start1, start2 = w.t0Cash.copy(), w.t1Cash.copy(), w.t2Cash.copy()
@@ -41,21 +43,29 @@ class StorageRentTests(unittest.TestCase):
             result = settle_storage_rent(w, cfg, t)
             self.assertAlmostEqual(result['t2RentExpense'], 56 * 12)
         np.testing.assert_array_equal(w.t0Cash, start0)
-        annual1 = np.full(M.N1,50400)
-        np.testing.assert_allclose(w.t1Cash, start1 - annual1)
+        period1 = np.full(M.N1,50400)
+        np.testing.assert_allclose(w.t1Cash, start1 - period1)
         np.testing.assert_allclose(w.t2Cash[:12], start2[:12] - 20160)
         np.testing.assert_array_equal(w.t2Cash[12:], start2[12:])
-        self.assertAlmostEqual(w.costSinks, annual1.sum() + 20160 * cfg['t2FirmCount'], places=6)
+        self.assertAlmostEqual(w.costSinks, period1.sum() + 20160 * cfg['t2FirmCount'], places=6)
         self.assertAlmostEqual(w.t2RentPaid[0], 20160)
+
+    def test_default_starting_equity_is_exactly_rent_eligible(self):
+        cfg, w = reset_world({'t2FirmCount': 1, 'distributorCount': 1})
+        for tier in ('t1', 't2'):
+            np.testing.assert_array_equal(storage_rent_equity(w, cfg, tier), 1_500_000)
+        settle_storage_rent(w, cfg, 1)
+        np.testing.assert_array_equal(w.t1RentCharge, 140)
+        self.assertEqual(w.t2RentCharge[0], 56)
 
     def test_unpaid_rent_is_collected_next_tick(self):
         cfg, w = reset_world(SMALL)
-        w.t2EqBook[0] = 2000000
+        w.t2EqBook[0] = 1500000
         w.t2Cash[0] = 10
         settle_storage_rent(w, cfg, 1)
         self.assertEqual(w.t2Cash[0], 0)
         self.assertAlmostEqual(w.t2RentArrears[0], 1120-10)
-        cfg['storageRentPerUnitYear'] = 0
+        cfg['storageRentPerThousandPerTick'] = 0
         w.t2Cash[0] = 2000
         settle_storage_rent(w, cfg, 2)
         self.assertAlmostEqual(w.t2Cash[0], 2010-1120)
@@ -64,10 +74,10 @@ class StorageRentTests(unittest.TestCase):
 
     def test_equity_threshold_inventory_and_existing_debt(self):
         cfg, w = reset_world(SMALL)
-        # Put both tiers below, exactly at, and above the $2M boundary.
+        # Put both tiers below, exactly at, and above the $1.5M boundary.
         for tier in ('t1', 't2'):
             eq = storage_rent_equity(w, cfg, tier)
-            getattr(w, tier + 'Cash')[:3] += np.array([1999999., 2000000., 2000001.]) - eq[:3]
+            getattr(w, tier + 'Cash')[:3] += np.array([1499999., 1500000., 1500001.]) - eq[:3]
         w.t2RentArrears[0] = 100
         settle_storage_rent(w, cfg, 1)
         for tier in ('t1', 't2'):
@@ -141,17 +151,19 @@ class StorageRentTests(unittest.TestCase):
             p = str(Path(d) / 'rent')
             save_checkpoint(p, cfg, 360, w)
             cfg2, t, w2, _ = load_checkpoint(p)
-            self.assertEqual(cfg2['storageRentPerUnitYear'], 20.16)
+            self.assertEqual(cfg2['storageRentPerThousandPerTick'], 56)
             self.assertEqual(t, 360)
             self.assertEqual(w2.t1RentArrears[0], 17)
             self.assertEqual(w2.t2RentPaid[0], 35)
             meta = json.loads(Path(p + '.json').read_text())
+            self.assertEqual(meta['version'], 9)
+            self.assertNotIn('storageRentPerUnitYear', meta['cfg'])
             meta['version'] = 2
-            del meta['cfg']['storageRentPerUnitYear']
+            del meta['cfg']['storageRentPerThousandPerTick']
             Path(p + '.json').write_text(json.dumps(meta))
             np.savez(p + '.npz', **{k: getattr(w, k) for k in w.array_names if 'Rent' not in k})
             cfg3, _, w3, _ = load_checkpoint(p)
-            self.assertEqual(cfg3['storageRentPerUnitYear'], 0)
+            self.assertEqual(cfg3['storageRentPerThousandPerTick'], 0)
             self.assertEqual(w3.t1RentArrears.sum() + w3.t2RentPaid.sum(), 0)
 
     def test_year_end_tick_cash_conservation_in_both_engines(self):
@@ -171,20 +183,59 @@ class StorageRentTests(unittest.TestCase):
             self.assertTrue((w.t2Cash >= 0).all())
 
     def test_normalization_and_zero_rate(self):
-        self.assertEqual(normalize_config({'storageRentPerUnitYear': -5})['storageRentPerUnitYear'], 0)
-        self.assertEqual(normalize_config({'storageRentPerUnitYear': float('nan')})['storageRentPerUnitYear'], 0)
-        cfg, w = reset_world(dict(SMALL, storageRentPerUnitYear=0))
+        self.assertEqual(normalize_config({'storageRentPerThousandPerTick': -5})['storageRentPerThousandPerTick'], 0)
+        self.assertEqual(normalize_config({'storageRentPerThousandPerTick': float('nan')})['storageRentPerThousandPerTick'], 2.8)
+        cfg, w = reset_world(dict(SMALL, storageRentPerThousandPerTick=0))
         before = w.t1Cash.copy()
         settle_storage_rent(w, cfg, 360)
         np.testing.assert_array_equal(before, w.t1Cash)
         self.assertEqual(w.costSinks, 0)
+
+    def test_old_checkpoint_converts_rate_once_and_preserves_next_bill(self):
+        cfg, w = reset_world(SMALL)
+        w.t2Cash[:12] += 1000000
+        with tempfile.TemporaryDirectory() as d:
+            p = str(Path(d) / 'legacy-rent')
+            save_checkpoint(p, cfg, 1, w)
+            original = json.loads(Path(p + '.json').read_text())
+            for old_rate, expected_bill in [(0, 0), (1.008, 56), (20.16, 1120)]:
+                with self.subTest(old_rate=old_rate):
+                    meta = dict(original, version=8, cfg=dict(original['cfg']))
+                    del meta['cfg']['storageRentPerThousandPerTick']
+                    meta['cfg']['storageRentPerUnitYear'] = old_rate
+                    Path(p + '.json').write_text(json.dumps(meta))
+                    loaded_cfg, _, loaded, _ = load_checkpoint(p)
+                    self.assertNotIn('storageRentPerUnitYear', loaded_cfg)
+                    save_checkpoint(p, loaded_cfg, 1, loaded)
+                    reloaded_cfg, _, reloaded, _ = load_checkpoint(p)
+                    self.assertEqual(reloaded_cfg, loaded_cfg)
+                    settle_storage_rent(reloaded, reloaded_cfg, 2)
+                    np.testing.assert_allclose(reloaded.t2RentCharge[:12], expected_bill)
+
+    def test_live_tick_rate_updates_forecast_billing_and_snapshot(self):
+        rt = KernelRuntime({'t2FirmCount': 1, 'distributorCount': 1,
+                            't1C1Storage': 30000, 't1C2Storage': 50000})
+        rt.world.t1Cash += 1000000
+        rt.world.t2Cash[0] += 1000000
+        snapshot = rt.apply_config({'storageRentPerThousandPerTick': 4})
+        self.assertEqual(snapshot['cfg']['storageRentPerThousandPerTick'], 4)
+        self.assertEqual(snapshot['tiers']['t1']['storageRentPerFirmPerTickMin'], 120)
+        self.assertEqual(snapshot['tiers']['t1']['storageRentPerFirmPerTickMax'], 200)
+        self.assertEqual(snapshot['tiers']['t2']['storageRentPerFirmPerTick'], 80)
+        self.assertEqual(rt._company_rent('t1', 288)['storageRentPerTick'], 200)
+        forecast = reference.production_line_rent(rt.world, rt.cfg, 't1')
+        np.testing.assert_array_equal(forecast[:288], 120)
+        np.testing.assert_array_equal(forecast[288:], 200)
+        settle_storage_rent(rt.world, rt.cfg, 1)
+        np.testing.assert_array_equal(rt.world.t1RentCharge, forecast)
+        self.assertEqual(rt.world.t2RentCharge[0], 80)
 
     def test_net_margin_rent_projection_exemption_and_multiline(self):
         cfg, w = reset_world(SMALL)
         for tier in ('t1', 't2'):
             np.testing.assert_array_equal(reference.production_line_rent(w, cfg, tier), 0)
             eq = storage_rent_equity(w, cfg, tier)
-            getattr(w, tier + 'Cash')[:3] += np.array([1999999., 2000000., 2000001.]) - eq[:3]
+            getattr(w, tier + 'Cash')[:3] += np.array([1499999., 1500000., 1500001.]) - eq[:3]
         w.t1Operates[1] = 1
         w.t1Cash[0] += 1  # Exactly eligible, two lines.
         w.t1RentCharge[1] = 9999  # Forecast must not use stale recorded expense.
@@ -194,7 +245,7 @@ class StorageRentTests(unittest.TestCase):
         extra = next(p for p in M.T2_PRODUCTS if p['sectorIndex'] == w.t2Sector[1] and p['id'] != installed)
         add_tier2_line(w, cfg, 1, extra, paid=False)
         self.assertEqual(reference.production_line_rent(w, cfg, 't2')[1], 560)
-        cfg['storageRentPerUnitYear'] = 0
+        cfg['storageRentPerThousandPerTick'] = 0
         np.testing.assert_array_equal(reference.production_line_rent(w, cfg, 't2'), 0)
 
     def test_refinery_restocking_ignores_margin_in_both_engines(self):
@@ -204,7 +255,7 @@ class StorageRentTests(unittest.TestCase):
             if fast and not accelerated._HAVE_NUMBA:
                 continue
             for eligible, bill, expected in [(True,900,1000), (True,1120,0), (False,1120,2000), (True,0,2000)]:
-                cfg, w = reset_world(dict(SMALL, storageRentPerUnitYear=bill * 360 / 20000))
+                cfg, w = reset_world(dict(SMALL, storageRentPerThousandPerTick=bill * 1000 / 20000))
                 w.t0Price[:] = 1.25
                 w.t0Inv[:] = 0  # Observe plans without actual purchasing.
                 w.t1Price[:] = 2
@@ -247,7 +298,7 @@ class StorageRentTests(unittest.TestCase):
             if fast and not accelerated._HAVE_NUMBA:
                 continue
             for eligible in (False, True):
-                cfg, w = reset_world(dict(SMALL, storageRentPerUnitYear=1.008))
+                cfg, w = reset_world(dict(SMALL, storageRentPerThousandPerTick=2.8))
                 # Reproduce a refinery replacing eight daily sales from existing raw stock.
                 firm = 9 * M.T1_FIRMS_PER_MATERIAL + 6
                 product = M.PRODUCTS[9]
@@ -298,7 +349,7 @@ class StorageRentTests(unittest.TestCase):
         worlds = []
         for _ in range(2):
             cfg, w = reset_world(dict(SMALL, t2FirmCount=200, distributorCount=400,
-                                      storageRentPerUnitYear=.072))  # $4/firm/tick.
+                                      storageRentPerThousandPerTick=.2))  # $4/firm/tick.
             for i, p in enumerate(M.T2_PRODUCTS):
                 w.t2LineProduct[i] = i
                 w.t2Sector[i] = p['sectorIndex']

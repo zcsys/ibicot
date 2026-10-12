@@ -13,7 +13,7 @@ class ProductionStockAccess(unittest.TestCase):
     def setup_market(self, opening_stock=0):
         cfg, w = reset_world({'t2FirmCount': 2, 'distributorCount': 1,
                              'distributorActivation': 1, 'distributorSearchOffers': 20,
-                             'storageRentPerUnitYear': 0})
+                             'storageRentPerThousandPerTick': 0})
         buyer = next(p for p in M.T2_PRODUCTS if p['demandGroup'] == 'c4_basic_c3')
         market = next(m for m, q in buyer['ingredients'] if m >= M.NP)
         seller = M.T2_INPUT_PRODUCTS[market]

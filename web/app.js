@@ -97,20 +97,20 @@
     't0Equity', 't0License', 't0Machinery', 't0Reserve', 't0Capacity', 't0Storage',
     'baseCost', 't0Markup', 'minWholesaleLot',
     't1Equity', 't1License', 't1Machinery', 't1Capacity', 't1CapacityC2', 't1MaterialCost', 't1Markup',
-    't2Equity', 't2License', 'conversionFactor', 'storage', 't1C1Storage', 't1C2Storage', 'storageRentPerUnitYear',
+    't2Equity', 't2License', 'conversionFactor', 'storage', 't1C1Storage', 't1C2Storage', 'storageRentPerThousandPerTick',
     'distributorActivation', 'distributorSearchOffers',
     'chokeMin', 'chokeMax', 'elasticity', 'productionMarginBand', 't2ReservationPremium',
     'pricingAggressiveness', 'alpha', 'wholesalePriceResponse', 'marketAnchorBand', 'priceObservationTicks',
     'reliabilityAlpha', 'switchingStableBand', 'loyaltyEmaAlpha',
   ];
-  for (const [id, value] of Object.entries(M.ECONOMY_DEFAULTS)) if ($(id)) $(id).value = id === 'storageRentPerUnitYear' ? value * 1000 / 360 : value;
+  for (const [id, value] of Object.entries(M.ECONOMY_DEFAULTS)) if ($(id)) $(id).value = value;
   const productCodes = M.PRODUCTS.map(p => p.code);
   let serverCfg = null;
   $('t2PlayerCompany').value=M.companyNumber('T2',0);
   $('companyNumberingNote').textContent='Tier −1 · Gaia '+M.companyNumber('T-1',0)+' · Company numbers are global across all tiers.';
   function readCfg() {
     const c = { ...(serverCfg || M.ECONOMY_DEFAULTS) };
-    for (const id of PARAMS) c[id] = +$(id).value * (id === 'storageRentPerUnitYear' ? 360 / 1000 : 1);
+    for (const id of PARAMS) c[id] = +$(id).value;
     c.t2Machinery = { 3: +$('t2Machinery3').value, 4: +$('t2Machinery4').value };
     c.t2Capacity = { 3: +$('t2Capacity3').value, 4: +$('t2Capacity4').value };
     c.footprint = { ...(serverCfg || M.ECONOMY_DEFAULTS).footprint };
@@ -326,7 +326,7 @@
       EconomyProfitability.snapshot(m.data);
       if (m.data.cfg && JSON.stringify(serverCfg) !== JSON.stringify(m.data.cfg)) {
         serverCfg = m.data.cfg;
-        for (const id of PARAMS) if ($(id)) $(id).value = id === 'storageRentPerUnitYear' ? serverCfg[id] * 1000 / 360 : serverCfg[id];
+        for (const id of PARAMS) if ($(id)) $(id).value = serverCfg[id];
         for (const key of ['t2Machinery', 't2Capacity'])
           for (const c of [3, 4]) $(key + c).value = serverCfg[key][c];
       }
@@ -876,9 +876,9 @@
     }
     for (const tier of ['t1', 't2']) {
       const t = s.tiers[tier];
-      $(tier + 'AnnualRent').textContent = t.annualStorageRentPerFirmMin !== t.annualStorageRentPerFirmMax
-        ? fmtMoney(t.annualStorageRentPerFirmMin / 360, 2) + '–' + fmtMoney(t.annualStorageRentPerFirmMax / 360, 2)
-        : fmtMoney((t.annualStorageRentPerFirm ?? 0) / 360, 2);
+      $(tier + 'RentPerTick').textContent = t.storageRentPerFirmPerTickMin !== t.storageRentPerFirmPerTickMax
+        ? fmtMoney(t.storageRentPerFirmPerTickMin, 2) + '–' + fmtMoney(t.storageRentPerFirmPerTickMax, 2)
+        : fmtMoney(t.storageRentPerFirmPerTick ?? 0, 2);
       $(tier + 'RentPaid').textContent = fmtMoney(t.storageRentPaid ?? 0, 0);
       $(tier + 'RentArrears').textContent = fmtMoney(t.storageRentArrears ?? 0, 0);
     }
