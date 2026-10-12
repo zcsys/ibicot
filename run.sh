@@ -84,6 +84,7 @@ case "${1:-}" in
     "$PY" -W ignore tests/py/test_storage_rent.py
     "$PY" -W ignore -m unittest discover -s tests/py -p test_net_earnings.py
     "$PY" -W ignore -m unittest discover -s tests/py -p test_storage_slots.py
+    "$PY" -W ignore -m unittest discover -s tests/py -p test_buying_price_sensitive.py
     node tests/js/test_formatting.js
     node tests/js/test_profitability.js
     ;;

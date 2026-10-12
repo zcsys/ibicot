@@ -1,24 +1,10 @@
-"""Static catalog and economic primitives.
-
-The catalog data is extracted one-for-one from ``web/catalog.js`` into
-``catalog.json`` (see ``tools/dump_catalog.js``), so the counts, order,
-codes, recipes and invented-market selection are bit-identical to the JS
-oracle without hand transcription.  This module adds the small pure-math
-primitives (``adaptivePrice``, ``finishedStockTarget``, ``procurementProfile``,
-…) transcribed from the same file.
-"""
+"""Current catalog and economic primitives, loaded from the active catalog directory."""
 from __future__ import annotations
 
-import json
 import math
-import os
-
-_HERE = os.path.dirname(os.path.abspath(__file__))
-with open(os.path.join(_HERE, 'catalog.json'), 'r', encoding='utf-8') as _f:
-    _DATA = json.load(_f)
 
 from .midbridge import load_catalog, CATALOG_REVISION
-_DATA = load_catalog(_DATA)
+_DATA = load_catalog()
 
 TIME = _DATA['TIME']
 ELEMENTS: list[str] = _DATA['ELEMENTS']
@@ -44,7 +30,6 @@ T2_SECTOR_WEIGHTS: list = _DATA['T2_SECTOR_WEIGHTS']
 T2_ADJACENCY: list = _DATA['T2_ADJACENCY']
 T2_NEED_TYPES: list = _DATA['T2_NEED_TYPES']
 T2_MAX_PRODUCTS_PER_FIRM = _DATA['T2_MAX_PRODUCTS_PER_FIRM']
-ECONOMY_DEFAULTS = _DATA['ECONOMY_DEFAULTS']
 PROGRESSION_DEFAULTS = _DATA['PROGRESSION_DEFAULTS']
 INVENTED_PER_COMPLEXITY = {int(k): v for k, v in _DATA['INVENTED_PER_COMPLEXITY'].items()}
 T2_PRODUCTS: list[dict] = _DATA['T2_PRODUCTS']
@@ -59,11 +44,8 @@ WORLD_STORY = _DATA['WORLD_STORY']
 
 # ===========================================================================
 # Canon parameter pass (design_canon.md §3–§6 / handoff "settled parameters").
-# These override the JS oracle's *stale* values.  The topology (§3) is settled
-# canon; the supply-side numbers (§4, §6) are pinned working values; the
-# demand-side (§5) structure is canon while its exact scale/markup are
-# calibration (see §9).  The JS-equivalence gate is retired once this pass is
-# applied — the canon defines its own behavior.
+# The topology is defined by the current catalog. Supply-side working values
+# and demand calibration below preserve the approved production behavior.
 # ===========================================================================
 NE = len(ELEMENTS)          # 4
 NP = len(PRODUCTS)          # 14
@@ -196,10 +178,11 @@ T1_EQUIPMENT_INSTALLATION: dict = {
 T2_EQUIPMENT_CONFIG: dict = {int(k): v for k, v in _DATA['EQUIPMENT_CONFIG'].items()}
 
 # ---------------------------------------------------------------------------
-# Numbered companies (Midbridge naming catalog).  Each sector has one
-# recognizable generic business name; a global `0x` company number identifies
-# the individual firm.  No house-name pool, location suffix, district, or berth is
-# added.  The twenty authored identities stay separate and are never prepended.
+# Numbered companies (Midbridge naming catalog).  Each T1 sector uses one
+# generic stem and each T2 sector uses one facility stem; a global `0x`
+# company number identifies the individual firm.  Neither tier has flagship
+# names.  No house-name pool, location suffix, district, or berth is added.
+# The twenty authored T0 identities stay separate and are never prepended.
 # ---------------------------------------------------------------------------
 T1_GENERIC_BASES = {p['code']:n['generic_stem'] for p,n in zip(PRODUCTS,NAMING_CATALOG['t1_companies'])}
 T2_GENERIC_BASES = [p['facility_stem'] for p in NAMING_CATALOG['t2_companies']]

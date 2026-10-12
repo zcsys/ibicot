@@ -8,11 +8,12 @@ from pathlib import Path
 
 CATALOG_REVISION = 'midbridge-invented-105-reverse-v7'
 ROOT = Path(__file__).resolve().parents[2]
-DIRECTORY = ROOT / 'catalogs/midbridge-4259-recursive/catalog.json'
+DIRECTORY = ROOT / 'catalogs/midbridge-4263/catalog.json'
 
 
-def load_catalog(legacy):
-    data = dict(legacy)
+def load_catalog():
+    defaults = json.loads((DIRECTORY.parent / 'runtime-defaults.json').read_text())
+    data = dict(defaults['constants'])
     catalog = json.loads(DIRECTORY.read_text())
     names = json.loads((DIRECTORY.parent / 'naming.json').read_text())
     material_names = {p['material_id']:p for p in names['materials']}
@@ -47,7 +48,7 @@ def load_catalog(legacy):
     raw = {p['symbol']: p['name'] for p in names['main_elements']}
     data['ELEMENTS'] = [raw[slot] for slot in 'WEFA']
     elements = dict(zip('WEFA', data['ELEMENTS']))
-    data['PRODUCTS'] = [{**legacy['PRODUCTS'][0], 'code': codes[p['id']],
+    data['PRODUCTS'] = [{**defaults['refineryTemplate'], 'code': codes[p['id']],
         **equipment(p), 'catalogId': p['id'], 'name': recipe_names[p['id']]['product_name'],
         'symbol': material_names[p['id']]['symbol'], 'sector':material_names[p['id']]['refinery_sector_name'],
         'companyName': t1_companies[p['sectorId']]['generic_stem'], 'complexity': p['complexity'],
@@ -59,7 +60,7 @@ def load_catalog(legacy):
     products = []
     for p in outputs:
         sector = int(p['sectorId'].split('-')[1]) - 1
-        template = next(x for x in legacy['T2_PRODUCTS'] if x['complexity'] == p['complexity'])
+        template = defaults['manufacturerTemplates'][str(p['complexity'])]
         group = 'c3' if p['complexity'] == 3 else ('c4_basic_c3' if p['inputComplexities'] == [1, 3] else 'c4_compound_pair')
         products.append({**template, 'id': len(products), 'code': p['id'], 'catalogId': p['id'], 'name': recipe_names[p['id']]['product_name'],
             **equipment(p),
@@ -75,7 +76,7 @@ def load_catalog(legacy):
     all_products=products
     products=[p for p in all_products if p['invented']]
     by_id = {p['catalogId']: p for p in data['PRODUCTS'] + all_products}
-    data['TIER_BOUNDARIES'] = {**legacy['TIER_BOUNDARIES'], 'T2':[3,4]}
+    data['TIER_BOUNDARIES'] = {**data['TIER_BOUNDARIES'], 'T2':[3,4]}
     data.update(T2_INPUT_PRODUCTS=[by_id[p['id']] for p in inputs],
         T2_PRODUCTS=products, T2_Catalog=all_products, T2_UNINVENTED_PRODUCTS=[p for p in all_products if not p['invented']],
         T2_Catalog_COUNT=len(all_products), T2_COMPLEXITY_COUNTS=[sum(p['complexity'] == c for p in products) for c in range(1, 6)],
@@ -90,6 +91,6 @@ def load_catalog(legacy):
         EQUIPMENT_MAKERS=[names['t0_companies'][6]['name']],
         EQUIPMENT_CONFIG={str(c):name for c,name in classes.items()},
         NAMING_CATALOG=names,
-        WORLD_STORY={**legacy['WORLD_STORY'], 'name':names['world']['game_title']},
+        WORLD_STORY={**data['WORLD_STORY'], 'name':names['world']['game_title']},
         MIDBRIDGE={'tier0Companies':[{'name':p['name'],'elements':p['elements_extracted']} for p in names['t0_companies']]})
     return data

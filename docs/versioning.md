@@ -12,10 +12,12 @@ The kernel is a deterministic supply-chain simulation (NumPy + Numba) with a
 FastAPI + WebSocket service and a browser dashboard. The market logic is complete
 on both sides: production follows a margin ramp, and industrial purchasing is
 price-sensitive — latent demand is "fill to brim" (the storage slot), and the
-actual request follows the Tier 3 price-response curve with the input's reference
-cost as the halving price (elasticity 2), capped by the slot shortage. Supplier
-selection applies an incumbent preference (one supplier must alone fulfil the
-whole funded demand to qualify) and one existing-formula fee per product order.
+actual T2 request follows the Tier 3 price-response curve with the input's reference
+cost as the halving price (elasticity 2), capped by the slot shortage. T1 retains
+slot-refill procurement. Distributors retain their incumbent after split or
+partial orders; T1/T2 remember the seller after a positive fill. See the
+[implemented purchasing contract](design_canon.md#implemented-purchasing-contract)
+for the exact ranking, fee and preference boundaries.
 
 ## Phase 1 — PoC
 
@@ -28,8 +30,9 @@ whole funded demand to qualify) and one existing-formula fee per product order.
    settle at an *interior* equilibrium — not pinned to price bounds
    ([§2.6, §12.2](design_canon.md#L65)).
 2. **Buy side.** Final demand and — crucially — intermediate (industrial)
-   purchasing are price- and margin-sensitive and consistent with the supply
-   side, rather than fill-to-brim regardless of margin.
+   purchasing are price-sensitive and consistent with the supply side. The
+   approved T2 procurement rule has no buyer production-margin gate; production
+   evaluates its margin separately.
 
 **Honesty caveat.** "An equilibrium exists" is not the same as "the economy is
 validated as fair and healthy." A stable aggregate does not by itself prove

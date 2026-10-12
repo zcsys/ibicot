@@ -63,7 +63,7 @@ class ReviewFixes(unittest.TestCase):
 
     def test_browser_pricer_does_not_override_direction_for_zero_sales(self):
         script = r"""
-require('./web/catalog.js');
+require('./web/model-helpers.js');
 const assert = require('assert');
 for (const stock of [0, 100]) {
   const result = globalThis.Phase0Model.adaptivePrice({oldPrice: 100, unitCost: 1,

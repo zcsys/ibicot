@@ -107,16 +107,10 @@ def _procurement_arrays_cached(key):
 def _input_reference_cached(key):
     conversion_factor, t1_material, _storage, _t2_machinery, _t2_capacity, _footprint, markup = key
     local_cfg = {'t1MaterialCost': t1_material, 'conversionFactor': conversion_factor, 't1Markup': markup}
-    ref = np.empty(NI, dtype=np.float64)
-    for m in range(NI):
-        p = M.T2_INPUT_PRODUCTS[m]
-        if m < NE:
-            ref[m] = t1_material
-        elif m < NP:
-            ref[m] = M.refinery_unit_cost(p, local_cfg)
-        else:
-            ref[m] = M.initial_tier2_cost(p, local_cfg)
-    return ref
+    # Build once per configuration using the same cost ladder as the reference
+    # purchaser; no Python calls are added inside the compiled company loop.
+    return np.array([M.input_reference_cost(m, local_cfg) for m in range(NI)],
+                    dtype=np.float64)
 
 
 @lru_cache(maxsize=64)

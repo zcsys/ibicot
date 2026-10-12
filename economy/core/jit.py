@@ -20,10 +20,10 @@ _LOCK = RLock()
 def _source_version():
     root = Path(__file__).resolve().parents[1]
     digest = hashlib.sha256()
-    paths = sorted(root.rglob('*.py')) + [root / 'core' / 'catalog.json',
-        root.parent / 'catalogs/midbridge-4259-recursive/catalog.json',
-        root.parent / 'catalogs/midbridge-4259-recursive/starting-selection.json',
-        root.parent / 'catalogs/midbridge-4259-recursive/naming.json']
+    paths = sorted(root.rglob('*.py')) + [root.parent / 'catalogs/midbridge-4263/runtime-defaults.json',
+        root.parent / 'catalogs/midbridge-4263/catalog.json',
+        root.parent / 'catalogs/midbridge-4263/starting-selection.json',
+        root.parent / 'catalogs/midbridge-4263/naming.json']
     for path in paths:
         digest.update(str(path.relative_to(root.parent)).encode())
         digest.update(path.read_bytes())

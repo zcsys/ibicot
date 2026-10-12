@@ -54,7 +54,7 @@ class CompanyNumberTests(unittest.TestCase):
     def test_browser_numbering_matches_python(self):
         root=Path(__file__).resolve().parents[2]
         script="""
-require('./web/catalog.js');require('./web/midbridge-catalog.js');
+require('./web/model-helpers.js');require('./web/midbridge-catalog.js');
 const m=globalThis.Phase0Model;
 const rows=[];
 for(const [tier,b] of Object.entries(m.COMPANY_NUMBERING)){

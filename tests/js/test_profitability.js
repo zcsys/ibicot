@@ -33,7 +33,7 @@ assert.equal(transfers.products.reduce((n,p)=>n+p.netProfit,0),40);
 P.company(transfers,cfg,'T2');assert.equal(transfers.netProfit,40);
 const legacyMissing={grossProfit:100,revenue:200,netEarningsAvailable:false};
 P.company(legacyMissing,cfg,'T2');assert.equal(legacyMissing.netProfit,null);assert.equal(legacyMissing.netMargin,null);
-require('../../web/catalog.js');
+require('../../web/model-helpers.js');
 for (const [previousProfit,profit,sign] of [[-100,-90,1],[-100,-110,-1],[-100,-101,0],[0,0,0],[0,10,1],[0,-10,-1]]) {
   const r=globalThis.Phase0Model.adaptivePrice({oldPrice:100,previousProfit,profit});
   assert.equal(Math.sign(r.price-100),sign);

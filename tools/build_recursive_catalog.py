@@ -11,7 +11,7 @@ from pathlib import Path
 import json
 
 ROOT = Path(__file__).resolve().parents[1]
-DEST = ROOT / 'catalogs/midbridge-4259-recursive'
+DEST = ROOT / 'catalogs/midbridge-4263'
 SYMBOLS = ('W', 'E', 'F', 'A')
 
 
@@ -81,10 +81,10 @@ def build(balanced=False):
         p['sectorId'] = min(options, key=lambda sector: (loads[sector], sector))
         p['preferredMaterialId'] = next(s['materialId'] for s in sectors if s['id']==p['sectorId'])
         loads[p['sectorId']] += 1
-    catalog = {'schemaVersion': 6, 'catalogId': 'midbridge-4259-recursive-v6-' + ('balanced' if balanced else 'universe'),
+    catalog = {'schemaVersion': 6, 'catalogId': 'midbridge-4263-v6-' + ('balanced' if balanced else 'universe'),
             'selection': 'equal-direct-appearances' if balanced else 'full-universe',
             'status': ('appearance-count experiment; not active' if balanced else 'active fresh-world catalog; supply calibration provisional'),
-            'world': {'title': 'Midbridge Colony', 'year': 4259},
+            'world': {'title': 'Midbridge Colony', 'year': 4263},
             'rules': {'maximumComplexity': 4, 'outputItemsPerBatch': 1, 'manufacturingInputItemsPerBatch': 2,
                       'repeatedInputsAllowedByTier': {'T1': True, 'T2': True}, 'inputOrderMatters': False,
                       'complexity': 'sum of raw ancestry units',

@@ -21,7 +21,7 @@ Distinguish these sources rather than treating them as interchangeable:
 | Executed code, configuration, catalog, checkpoint, and logs | What a particular implementation or run actually does. |
 | Research briefs, assistant proposals, imported documents, and experiments | Evidence or candidate ideas, unless explicitly adopted. |
 
-Start with [README](README.md), [current integration rules](docs/midbridge-integration.md), and the relevant portions of [design canon](docs/design_canon.md). Read [naming integration](docs/naming-integration.md) for naming work. The [buying behavior research brief](docs/buying-behavior-research-brief.md) governs that research task; its candidate equations are not approved production defaults.
+Start with [README](README.md), [current integration rules](docs/design_canon.md#current-integration-rules), and the relevant portions of [design canon](docs/design_canon.md). Read [naming integration](docs/design_canon.md#naming-integration) for naming work. Research proposals do not replace the approved production rules.
 
 Some older documentation contains superseded values and assumptions. Identify conflicts, trace their provenance, and update affected documentation within the task's scope. Code is evidence of current behavior, not proof that the behavior is intended. An assistant's earlier suggestion is not a user decision. Imported naming or creative material does not authorize new mechanics, entities, or lore.
 

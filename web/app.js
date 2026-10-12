@@ -61,7 +61,7 @@
     const table=(title,heads,rows)=>'<h3>'+esc(title)+'</h3><div class="table-wrap"><table class="mini-table"><thead><tr>'+heads.map(h=>'<th>'+esc(h)+'</th>').join('')+'</tr></thead><tbody>'+rows.map(r=>'<tr>'+r.map(v=>'<td>'+esc(v)+'</td>').join('')+'</tr>').join('')+'</tbody></table></div>';
     $('catalogReference').innerHTML=
       table('Main elements',['Element','Symbol'],n.main_elements.map(p=>[p.name,p.symbol]))+
-      table('Extractors',['Company','Resources'],n.t0_companies.map((p,i)=>[p.name+' '+M.companyNumber('T0',i),p.elements_extracted.join(', ')]))+
+      table('Extractors',['Company','Resources'],n.t0_companies.map((p,i)=>[p.name,p.elements_extracted.join(', ')]))+
       table('Refinery sectors & companies',['Sector','Material','Symbol','Company stem'],n.materials.map((p,i)=>[p.refinery_sector_name,p.name,p.symbol,n.t1_companies[i].generic_stem]))+
       table('Application sectors & companies',['Sector','Company stem'],n.t2_sectors.map((p,i)=>[p.name,n.t2_companies[i].facility_stem]))+
       table('Extraction equipment',['Equipment','Element ID'],n.extraction_equipment.map(p=>[p.name,p.element_id]))+
@@ -74,7 +74,12 @@
   const installations = new Map([...M.PRODUCTS,...M.T2_PRODUCTS].map(p=>[p.code,p.installationName]));
   const displayInstallation = code => installations.get(code) || code;
   const displayElement = code => M.ELEMENTS[['W','E','F','A'].indexOf(code)] || code;
-  const companyLabel = c => c.companyNumber && !c.name.endsWith(' '+c.companyNumber) ? c.name+' '+c.companyNumber : c.name;
+  const companyLabel = c => {
+    if (!c.companyNumber) return c.name;
+    // T0 companies display their authored name alone; other tiers keep their hex number.
+    if (M.companyLocalId('T0', c.companyNumber) !== null) return c.name;
+    return c.name.endsWith(' ' + c.companyNumber) ? c.name : c.name + ' ' + c.companyNumber;
+  };
   const controlId = () => {
     if ($('playerTier').value !== 'T2') return +$('playerCompany').value;
     const input=$('t2PlayerCompany');
@@ -186,7 +191,7 @@
       'fillRate',
       'stockUnmet',
     ],
-    tierComparison: ['name','complexity','firms','capacity','utilization','fillRate','cash','cashPerFirm','equity','inventory','bought','made','sold','revenue','revenuePerFirm','cogs','grossProfit','netProfit','netProfitPerCompany','netMargin','margin','reliability'],
+    tierComparison: ['name','complexity','firms','capacity','utilization','fillRate','cash','cashPerFirm','equity','equityPerCompany','inventory','bought','made','sold','revenue','revenuePerFirm','cogs','grossProfit','netProfit','netProfitPerCompany','netMargin','margin','reliability'],
     productCategories: ['name','tier','role','products','lines','machineryPrice','unitCapacity','avgPrice','avgUnitCost','capacity','utilization','readyStock','made','sold','soldPerLine','revenue','cogs','grossProfit','netProfit','netMargin','profitPerLine','netProfitPerLine','margin','active','fillRate','stockUnmet'],
     tier2Products: ['name','code','complexity','needType','sector','primaryMaterial','recipe','firms','machineryPrice','avgPrice','avgUnitCost','productionCapacity','utilization','readyStock','made','sold','revenue','grossProfit','netProfit','netMargin','margin','active','fillRate','stockUnmet','hhi','reliability'],
     tier2Industries: ['name','description','products','lines','capacity','utilization','readyStock','made','sold','revenue','cogs','grossProfit','netProfit','netMargin','margin','active','fulfilled','fillRate','stockUnmet','volumeShare','reliability'],
@@ -776,7 +781,7 @@
     drawLine('distributorSpendingChart', hist, [hist.map(point => point.tiers.distributors.revenue)], ['Spending'], 0, true);
   }
   function renderComparisons(s) {
-    const moneyKeys = new Set(['cash','cashPerFirm','equity','revenue','revenuePerFirm','cogs','grossProfit','netProfit','netProfitPerCompany','machineryPrice','avgPrice','avgUnitCost','profitPerLine','netProfitPerLine']);
+    const moneyKeys = new Set(['cash','cashPerFirm','equity','equityPerCompany','revenue','revenuePerFirm','cogs','grossProfit','netProfit','netProfitPerCompany','machineryPrice','avgPrice','avgUnitCost','profitPerLine','netProfitPerLine']);
     const ratioKeys = new Set(['netMargin','margin','utilization','fillRate','reliability']);
     const cells = (row, keys) => keys.map(key => {
       const value = row[key];
@@ -795,7 +800,7 @@
         utilization: t.capacity > 0 ? t.made / t.capacity : null,
         fillRate: desired > 0 ? sum(bands.map(row => row.fulfilled)) / desired : null,
         bought: index === 0 ? null : t.bought,
-        cashPerFirm: meaningfulRatio(t.cash, t.firms), revenuePerFirm: meaningfulRatio(t.revenue, t.firms),
+        cashPerFirm: meaningfulRatio(t.cash, t.firms), equityPerCompany: meaningfulRatio(t.equity, t.firms), revenuePerFirm: meaningfulRatio(t.revenue, t.firms),
         netProfitPerCompany: t.netProfit == null || !t.firms ? null : t.netProfit / t.firms,
         margin: meaningfulRatio(t.grossProfit, t.revenue),
         reliability: index === 2 ? meaningfulRatio(sum(s.tier2Products.map(p => p.reliability * p.firms)), sum(s.tier2Products.map(p => p.firms))) : t.reliability };
@@ -808,6 +813,7 @@
         : tier.tierKey === 't2' && (row.complexity === 3 || row.complexity === 4))
         .map(row => ({ ...row, name: row.name + (row.complexity < 3 ? ' · Refineries' : ' · Manufacturers'),
           complexity: row.name, cashPerFirm: meaningfulRatio(row.cash, row.firms),
+          equityPerCompany: meaningfulRatio(row.equity, row.firms),
           utilization: row.capacity > 0 ? row.made / row.capacity : null,
           fillRate: row.active > 0 ? row.fulfilled / row.active : null,
           revenuePerFirm: meaningfulRatio(row.revenue, row.firms),
