@@ -19,8 +19,8 @@ class ComplexityBalanceTests(unittest.TestCase):
                                 ('bought',getattr(w,tier+'Bought')[:n]),
                                 ('equity',storage_rent_equity(w,cfg,tier))]:
                 self.assertAlmostEqual(sum(rows[c][field] for c in cs),array.sum(),places=5)
-        self.assertEqual(rows[1]['bought'],w.t1Bought[:288].sum())
-        self.assertEqual(rows[2]['bought'],w.t1Bought[288:].sum())
+        self.assertEqual(rows[1]['bought'],w.t1Bought[:M.T1_FIRM_OFFSETS[4]].sum())
+        self.assertEqual(rows[2]['bought'],w.t1Bought[M.T1_FIRM_OFFSETS[4]:].sum())
         self.assertEqual(sum(rows[c]['inventory'] for c in (1,2)),w.raw.sum()+(w.t1Fin*w.t1Operates).sum())
         self.assertEqual(sum(rows[c]['inventory'] for c in (3,4)),w.t2Raw.sum()+w.t2T1Raw.sum()+w.t2Fin.sum())
 

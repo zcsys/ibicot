@@ -31,7 +31,9 @@ except Exception:  # pragma: no cover
     _HAVE_NUMBA = False
 
 NE, NP, N0, N1 = M.NE, M.NP, M.N0, M.N1
-T1_FIRMS_PER_MATERIAL = M.T1_FIRMS_PER_MATERIAL
+T1_COUNTS = np.array(M.T1_PRODUCT_FIRM_COUNTS, dtype=np.int64)
+T1_OFFSETS = np.array(M.T1_FIRM_OFFSETS, dtype=np.int64)
+T1_MAX_COHORT = M.T1_MAX_COHORT
 NI = M.NI
 M4 = M.T2_MAX_PRODUCTS_PER_FIRM
 MIN_UNIT_PRICE = M.MIN_UNIT_PRICE
@@ -94,23 +96,35 @@ def _t2_scale_arrays_cached(key):
     return conv, equip, cap, footprint_arr
 
 
+def _reference_key(cfg):
+    # Include every scalar used by the reference ladder and overhead allowance.
+    keys = ('conversionFactor', 't1MaterialCost', 't1Markup', 'storage',
+            't1C1Storage', 't1C2Storage', 't1Capacity', 't1CapacityC2',
+            'storageRentPerThousandPerTick', 't1IntelligencePerTick', 't2IntelligencePerTick')
+    return tuple((k, float(cfg[k])) for k in keys), tuple(sorted(cfg['t2Capacity'].items()))
+
+
+def _reference_cfg(key):
+    values, capacities = key
+    return dict(values, t2Capacity=dict(capacities))
+
+
 @lru_cache(maxsize=64)
 def _procurement_arrays_cached(key):
-    conversion_factor, _t1_material, _storage, _t2_machinery, _t2_capacity, _footprint, markup = key
-    val = np.empty(N_T2, dtype=np.float64)
-    for i, c in enumerate(T2_COMPLEXITY):
-        val[i] = M.reference_tier2_cost(M.T2_PRODUCTS[i], {'t1MaterialCost': _t1_material, 'conversionFactor': conversion_factor, 't1Markup': markup})
-    return val
+    cfg = _reference_cfg(key)
+    return np.array([M.reference_tier2_cost(p, cfg) for p in M.T2_PRODUCTS], dtype=np.float64)
+
+
+@lru_cache(maxsize=64)
+def _switching_reference_cached(key):
+    cfg = _reference_cfg(key)
+    return np.array([M.initial_tier2_cost(p, cfg) for p in M.T2_PRODUCTS], dtype=np.float64)
 
 
 @lru_cache(maxsize=64)
 def _input_reference_cached(key):
-    conversion_factor, t1_material, _storage, _t2_machinery, _t2_capacity, _footprint, markup = key
-    local_cfg = {'t1MaterialCost': t1_material, 'conversionFactor': conversion_factor, 't1Markup': markup}
-    # Build once per configuration using the same cost ladder as the reference
-    # purchaser; no Python calls are added inside the compiled company loop.
-    return np.array([M.input_reference_cost(m, local_cfg) for m in range(NI)],
-                    dtype=np.float64)
+    cfg = _reference_cfg(key)
+    return np.array([M.input_reference_cost(m, cfg) for m in range(NI)], dtype=np.float64)
 
 
 @lru_cache(maxsize=64)
@@ -128,11 +142,11 @@ def t2_scale_arrays(cfg):
 
 
 def procurement_arrays(cfg):
-    return _procurement_arrays_cached(_scale_key(cfg))
+    return _procurement_arrays_cached(_reference_key(cfg))
 
 
 def input_reference_arrays(cfg):
-    return _input_reference_cached(_scale_key(cfg))
+    return _input_reference_cached(_reference_key(cfg))
 
 
 # Flat Tier 0 profiles and Tier 1 product structure (for the Numba T1 kernel).
@@ -439,7 +453,7 @@ if _HAVE_NUMBA:
         t2_learn_ticks, t2_learn_profit, t2_learn_sales, t2_learn_previous,
         t2_learn_direction, t2_learn_demand, t2_learn_step,
         t2_learn_opportunity, t2_learn_potential_opportunity,
-        t1_offers_flat, t1_offers_off, valuation, input_reference, t2_capacity, t2_output, t2_footprint,
+        t1_offers_flat, t1_offers_off, valuation, input_reference, input_elasticity, t2_capacity, t2_output, t2_footprint,
         t2_mat_spend, t2_mat_orders, loyalty_switches, loyalty_penalties, switch0_income, switch1_income, switch1_expense, switch2_income, switch2_expense, input_consumed):
         needs = np.zeros(NI, dtype=np.float64)
         plans = np.zeros(M4, dtype=np.float64)
@@ -586,10 +600,9 @@ if _HAVE_NUMBA:
                     room = min((goods_space - inv_units) / INPUT_SPACE[material], needs[material] - raw_x[idx])
                     if room < 0.0:
                         room = 0.0
-                    requested = math.floor(need)
+                    requested = need
                     if room < requested:
                         requested = room
-                    requested = math.floor(requested)
                     if requested < 0.0:
                         requested = 0.0
                     if requested <= 0:
@@ -601,17 +614,10 @@ if _HAVE_NUMBA:
                         requested, t1_unit_cost, loyalty_multiple_t2[firm_cx])
                     if supplier < 0:
                         continue
-                    # Price-sensitive fill-to-brim request: latent demand is the
-                    # storage slot and the request follows the Tier 3 curve with
-                    # the input's reference cost as the halving price, capped by
-                    # the actual slot shortage so a nearly-full firm never overbuys.
-                    buy_request = _demand_at_price(needs[material], input_reference[material],
-                                                   t1_price[supplier], 2.0)
-                    if buy_request > requested:
-                        buy_request = requested
                     supplier, funded, quantity, loyalty_charge = _affordable_order_nb(
-                        supplier, pref, buy_request, t2_cash[firm], t1_fin, t1_price, t1_rel,
-                        t1_unit_cost, loyalty_multiple_t2[firm_cx], 1)
+                        supplier, pref, requested, t2_cash[firm], t1_fin, t1_price, t1_rel,
+                        t1_unit_cost, loyalty_multiple_t2[firm_cx], 1,
+                        input_reference[material], input_elasticity)
                     supplier_firm = supplier_owner[supplier]
                     quote = t1_price[supplier]
                     t1_demand[supplier] += funded
@@ -727,7 +733,7 @@ if _HAVE_NUMBA:
         offers_flat, offers_off, t2_operating, t2_line_firm,
         t2_fin, t2_price, t2_rel, t2_demand, t2_rel_attempts, t2_rel_available,
         t2_cash, t2_last_sale_tick, t2_sold, t2_revenue, t2_cogs, t2_fin_basis,
-        t2_opportunities, t2_potential_orders, complexity, valuation,
+        t2_opportunities, t2_potential_orders, complexity, valuation, switching_reference,
         loyalty_switches, loyalty_penalties, switch0_income, switch1_income, switch1_expense, switch2_income, switch2_expense):
         cand = np.empty(1 + distributor_search_offers, dtype=np.int64)
         orders = 0
@@ -755,6 +761,7 @@ if _HAVE_NUMBA:
             t2_potential_orders[pid] += 1
             market_potential[market] += potential
             reference = valuation[pid]
+            fee_reference = switching_reference[pid]
             premium = 1 + tier2_reservation_premium * (cx - 1)
             choke = reference * distributor_choke[buyer] * premium
             preferred = distributor_preferred_supplier[buyer]
@@ -781,7 +788,7 @@ if _HAVE_NUMBA:
                 order_q = _demand_units(latent, choke, t2_price[preferred], distributor_eta[buyer], qmax, rounding)
             friction = 0.0
             if preferred >= 0 and order_q > 0 and t2_fin[preferred] >= order_q:
-                friction = _loyalty_charge(reference, t2_rel[preferred], loyalty_multiple_t3) / order_q
+                friction = _loyalty_charge(fee_reference, t2_rel[preferred], loyalty_multiple_t3) / order_q
             _sort_candidates(cand, n_cand, t2_price, preferred, friction)
             if preferred >= 0 and math.isfinite(t2_price[preferred]) \
                     and t2_fin[preferred] >= order_q:
@@ -805,7 +812,7 @@ if _HAVE_NUMBA:
                 available = int(math.floor(t2_fin[candidate]))
                 take = want if want < available else available
                 if take > 0 and bought == 0 and candidate != preferred and preferred_can_fulfill:
-                    charge = _loyalty_charge(reference, t2_rel[preferred], loyalty_multiple_t3)
+                    charge = _loyalty_charge(fee_reference, t2_rel[preferred], loyalty_multiple_t3)
                     if take * (t2_price[preferred] - t2_price[candidate]) <= charge:
                         continue
                 t2_demand[candidate] += want
@@ -844,7 +851,7 @@ if _HAVE_NUMBA:
             distributor_preferred_supplier[buyer] = new_incumbent
             distributor_last_fulfilled[buyer] = bought
             if primary != preferred and preferred_can_fulfill:
-                charge = _loyalty_charge(reference, t2_rel[preferred], loyalty_multiple_t3)
+                charge = _loyalty_charge(fee_reference, t2_rel[preferred], loyalty_multiple_t3)
                 t2_cash[t2_line_firm[preferred]] += charge
                 switch2_income[t2_line_firm[preferred]] += charge
                 payments += charge
@@ -979,7 +986,7 @@ if _HAVE_NUMBA:
 
     @_njit
     def _plan_and_buy_inputs_nb(
-        seed, tick, min_lot, base_cost, t1_capacity, t1_conversion,
+        seed, tick, min_lot, base_cost, raw_reference, raw_elasticity, t1_capacity, t1_conversion,
         storage, loyalty_multiple_t1,
         t0_price, t0_inv, t0_inv_basis, t0_rel, t0_cash, t0_req, t0_funded_req,
         t0_opportunities, t0_demand, t0_rel_attempts, t0_rel_checks,
@@ -991,11 +998,13 @@ if _HAVE_NUMBA:
         t0_req[:] = 0.0
         t0_funded_req[:] = 0.0
         first_cohort = tick % NP
-        first_firm = (tick * 37) % T1_FIRMS_PER_MATERIAL
-        for rnd in range(T1_FIRMS_PER_MATERIAL):
+        first_firm = tick * 37
+        for rnd in range(T1_MAX_COHORT):
             for cohort_order in range(NP):
                 cohort = (first_cohort + cohort_order) % NP
-                company = cohort * T1_FIRMS_PER_MATERIAL + ((first_firm + rnd) % T1_FIRMS_PER_MATERIAL)
+                if rnd >= T1_COUNTS[cohort]:
+                    continue
+                company = T1_OFFSETS[cohort] + ((first_firm + rnd) % T1_COUNTS[cohort])
                 raw_base = company * NE
                 product_base = company * NP
                 goods_space = storage[company]
@@ -1057,7 +1066,7 @@ if _HAVE_NUMBA:
                     need = t1_input_need[raw_base + element]
                     if need <= 0.0:
                         continue
-                    request = math.floor(need / min_lot) * min_lot
+                    request = need
                     if request <= 0:
                         continue
                     t1_purchase_req[raw_base + element] = request
@@ -1073,11 +1082,11 @@ if _HAVE_NUMBA:
                         held += raw[raw_base + material]
                     for output in range(NP):
                         held += t1_fin[product_base + output] * T1_SPACE[output]
-                    storage_room = math.floor(max(0.0, min(goods_space - held, storage_slot[element] - raw[raw_base + element])) / min_lot) * min_lot
+                    storage_room = max(0.0, min(goods_space - held, storage_slot[element] - raw[raw_base + element]))
                     chosen, funded, bought, loyalty_charge = _affordable_order_nb(
                         chosen, pref, min(request, storage_room), t1_cash[company],
                         t0_inv[element::NE], t0_price[element::NE], t0_rel[element::NE],
-                        base_cost, loyalty_multiple_t1, min_lot)
+                        base_cost, loyalty_multiple_t1, min_lot, raw_reference, raw_elasticity)
                     supplier_index = chosen * NE + element
                     quote = t0_price[supplier_index]
                     available = math.floor(t0_inv[supplier_index])
@@ -1165,7 +1174,7 @@ def plan_and_buy_inputs(world, cfg, tick, *, execution_kernel=None):
     t1_conv = np.array([M.conversion_cost(p['complexity'], cfg) for p in M.PRODUCTS], dtype=np.float64)
     (execution_kernel or _plan_and_buy_inputs_nb)(
         cfg['seed'], tick, cfg['minWholesaleLot'],
-        cfg['baseCost'], t1_capacity_array(cfg), t1_conv,
+        cfg['baseCost'], cfg['baseCost'] * cfg['difficultyTarget'], cfg['t1InputElasticity'], t1_capacity_array(cfg), t1_conv,
         tier1_storage_capacities(cfg), float(world.lm1),
         world.t0Price, world.t0Inv, world.t0InvBasis, world.t0Rel, world.t0Cash, world.t0Req, world.t0FundedReq,
         world.t0Opportunities, world.t0Demand, world.t0RelAttempts, world.t0RelChecks,
@@ -1210,7 +1219,7 @@ def _operate_tier2_phase(world, cfg, tick, production_complexity, *, execution_k
         world.t2LearnTicks, world.t2LearnProfit, world.t2LearnSales, world.t2LearnPrevious,
         world.t2LearnDirection, world.t2LearnDemand, world.t2LearnStep,
         world.t2LearnOpportunity, world.t2LearnPotentialOpportunity,
-        flat, off, val, inp_ref, t2_cap, T2_OUTPUT, t2_footprint,
+        flat, off, val, inp_ref, float(cfg['t2InputElasticity']), t2_cap, T2_OUTPUT, t2_footprint,
         world.t2MatSpend, world.t2MatOrders, world.loyaltySwitches, world.loyaltyPenalties, world.t0SwitchingIncome, book.switch_income, world.t1SwitchingExpense, world.t2SwitchingIncome, world.t2SwitchingExpense, world.t2InputConsumed)
     book.settle()
     world.costSinks += cs
@@ -1242,5 +1251,5 @@ def clear_distributors(world, cfg, tick):
         flat, off, world.t2Operating, world.t2LineFirm,
         world.t2Fin, world.t2Price, world.t2Rel, world.t2Demand, world.t2RelAttempts, world.t2RelAvailable,
         world.t2Cash, world.t2LastSaleTick, world.t2Sold, world.t2Revenue, world.t2COGS, world.t2FinBasis,
-        world.t2Opportunities, world.t2PotentialOrders, T2_COMPLEXITY, val,
+        world.t2Opportunities, world.t2PotentialOrders, T2_COMPLEXITY, val, _switching_reference_cached(_reference_key(cfg)),
         world.loyaltySwitches, world.loyaltyPenalties, world.t0SwitchingIncome, world.t1SwitchingIncome, world.t1SwitchingExpense, world.t2SwitchingIncome, world.t2SwitchingExpense)

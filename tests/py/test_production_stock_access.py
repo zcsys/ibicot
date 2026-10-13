@@ -13,13 +13,15 @@ class ProductionStockAccess(unittest.TestCase):
     def setup_market(self, opening_stock=0):
         cfg, w = reset_world({'t2FirmCount': 2, 'distributorCount': 1,
                              'distributorActivation': 1, 'distributorSearchOffers': 20,
-                             'storageRentPerThousandPerTick': 0})
+                             't2InputElasticity': 2, 'storageRentPerThousandPerTick': 0})
         buyer = next(p for p in M.T2_PRODUCTS if p['demandGroup'] == 'c4_basic_c3')
         market = next(m for m, q in buyer['ingredients'] if m >= M.NP)
         seller = M.T2_INPUT_PRODUCTS[market]
         for firm, product in enumerate((seller, buyer)):
             w.t2LineProduct[firm] = product['id']
-            w.t2Price[firm] = 100 if firm == 0 else 200
+            # Rent is zero in this fixture; C3 reference adds $20/32.
+            # Fresh 32 units at $10 reduce to floor(32/(1+(10/6.4375)^2)) = 9.
+            w.t2Price[firm] = 10 if firm == 0 else 200
             for material, quantity in product['ingredients']:
                 if material >= M.NP:
                     continue
@@ -49,7 +51,7 @@ class ProductionStockAccess(unittest.TestCase):
                 self.assertGreater(w.t2IntermediateSold[seller['id']], 0)
                 # Price-sensitive buying scales the buyer's order around the
                 # intermediate's reference cost, so it produces 6, not the full 24.
-                self.assertEqual(w.t2Made[1], 6)
+                self.assertEqual(w.t2Made[1], 9)
                 self.assertGreater(w.t2RelAttempts[0], 0)
                 self.assertEqual(w.t2RelAvailable[0], 0)
                 validate_storage(w, cfg)
@@ -71,6 +73,6 @@ class ProductionStockAccess(unittest.TestCase):
                     NB.operate_tier2(w, cfg, tick)
                 else:
                     K.operate_tier2(w, cfg, M.PRODUCTS, K.T0P, M.T2_PRODUCTS, tick)
-                self.assertEqual(w.t2Made[:2].tolist(), [32, 6])
+                self.assertEqual(w.t2Made[:2].tolist(), [32, 9])
                 self.assertEqual(w.t2MonthlyCapacity[:2].tolist(), [32, 24])
                 self.assertEqual(w.t2RelPriceSamples[:2].tolist(), [1, 1])

@@ -109,7 +109,7 @@ class StorageRentTests(unittest.TestCase):
         expected = {k: np.zeros_like(v) for k,v in actual.items()}
         for firm in range(M.N1):
             charge = w.t1RentCharge[firm]
-            expected['cohorts1'][firm // M.T1_FIRMS_PER_MATERIAL] += charge
+            expected['cohorts1'][M.T1_FIRM_PRODUCT[firm]] += charge
             products = np.flatnonzero(w.t1Operates.reshape(M.N1, M.NP)[firm])
             for product in products:
                 expected['complexity'][M.PRODUCTS[product]['complexity']] += charge / len(products)
@@ -157,7 +157,7 @@ class StorageRentTests(unittest.TestCase):
             self.assertEqual(w2.t1RentArrears[0], 17)
             self.assertEqual(w2.t2RentPaid[0], 35)
             meta = json.loads(Path(p + '.json').read_text())
-            self.assertEqual(meta['version'], 10)
+            self.assertEqual(meta['version'], 13)
             self.assertNotIn('storageRentPerUnitYear', meta['cfg'])
             meta['version'] = 2
             del meta['cfg']['storageRentPerThousandPerTick']
@@ -223,10 +223,10 @@ class StorageRentTests(unittest.TestCase):
         self.assertEqual(snapshot['tiers']['t1']['storageRentPerFirmPerTickMin'], 120)
         self.assertEqual(snapshot['tiers']['t1']['storageRentPerFirmPerTickMax'], 200)
         self.assertEqual(snapshot['tiers']['t2']['storageRentPerFirmPerTick'], 80)
-        self.assertEqual(rt._company_rent('t1', 288)['storageRentPerTick'], 200)
+        self.assertEqual(rt._company_rent('t1', M.T1_FIRM_OFFSETS[4])['storageRentPerTick'], 200)
         forecast = reference.production_line_rent(rt.world, rt.cfg, 't1')
-        np.testing.assert_array_equal(forecast[:288], 120)
-        np.testing.assert_array_equal(forecast[288:], 200)
+        np.testing.assert_array_equal(forecast[:M.T1_FIRM_OFFSETS[4]], 120)
+        np.testing.assert_array_equal(forecast[M.T1_FIRM_OFFSETS[4]:], 200)
         settle_storage_rent(rt.world, rt.cfg, 1)
         np.testing.assert_array_equal(rt.world.t1RentCharge, forecast)
         self.assertEqual(rt.world.t2RentCharge[0], 80)
@@ -268,7 +268,7 @@ class StorageRentTests(unittest.TestCase):
                 else:
                     reference.plan_and_buy_inputs(w, cfg, M.PRODUCTS, reference.T0P, 1)
                 self.assertEqual(w.t1InputNeed[:M.NE].sum(), 9500, (fast, eligible, bill))
-                self.assertEqual(w.t1PurchaseReq[:M.NE].sum(), 9000)
+                self.assertEqual(w.t1PurchaseReq[:M.NE].sum(), 9500)
                 self.assertEqual(w.t1Cash[0], cash)  # Forecast posts no charge.
 
     def test_net_margin_throttles_manufacturer_in_both_engines(self):
@@ -301,7 +301,7 @@ class StorageRentTests(unittest.TestCase):
             for eligible in (False, True):
                 cfg, w = reset_world(dict(SMALL, storageRentPerThousandPerTick=2.8))
                 # Reproduce a refinery replacing eight daily sales from existing raw stock.
-                firm = 9 * M.T1_FIRMS_PER_MATERIAL + 6
+                firm = M.T1_FIRM_OFFSETS[9] + 6
                 product = M.PRODUCTS[9]
                 index = firm * M.NP + 9
                 w.t1Fin[index] = reference.tier1_stock_target(w, cfg, product, index) - 8

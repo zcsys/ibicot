@@ -25,7 +25,7 @@ def save_checkpoint(path, cfg, tick, world, scalars=None, runtime_metadata=None)
     np.savez(path + '.npz', **arr)
     meta = {
         'format': 'economy-checkpoint',
-        'version': 10,
+        'version': 13,
         'catalogRevision': CATALOG_REVISION,
         'companyNumbering': M.COMPANY_NUMBERING,
         'tick': int(tick),
@@ -57,7 +57,7 @@ def load_checkpoint(path):
         meta = json.load(f)
     assert meta['format'] == 'economy-checkpoint', 'unsupported checkpoint format'
     if meta.get('catalogRevision') != CATALOG_REVISION:
-        raise ValueError('Checkpoint uses an older recipe/storage model. Start a fresh Midbridge world; the old checkpoint is preserved.')
+        raise ValueError('Checkpoint uses an incompatible catalog or company allocation. Start a fresh Midbridge world; use the original frozen source to resume this checkpoint.')
     if meta.get('companyNumbering',M.COMPANY_NUMBERING) != M.COMPANY_NUMBERING:
         raise ValueError('Checkpoint company numbering does not match this catalog.')
     # JSON turns the int keys of nested config mappings (t2Machinery, t2Capacity,
@@ -70,6 +70,8 @@ def load_checkpoint(path):
     if meta.get('version', 1) < 10:
         saved_cfg.setdefault('t1IntelligencePerTick', 0.0)
         saved_cfg.setdefault('t2IntelligencePerTick', 0.0)
+    if meta.get('version', 1) < 11:
+        saved_cfg.setdefault('t2InputElasticity', 2.0)
     cfg = normalize_config(saved_cfg)
     tick = meta['tick']
     scalars = meta['scalars']
@@ -103,6 +105,10 @@ def load_checkpoint(path):
                 target[:count] = saved[:count]
             else:
                 raise ValueError(f'Checkpoint array shape mismatch: {name}')
+    if meta.get('version', 1) < 13:
+        # Migrate derived demand references only; preserve quotes and all ledgers.
+        for product in M.T2_PRODUCTS:
+            world.t2ReferenceCost[product['id']] = M.reference_tier2_cost(product, cfg)
     world.distributorSupplierHistory = {(int(b), int(m)): int(s)
                                         for b, m, s in meta.get('distributorSupplierHistory', [])}
     world.t2LineCount = int(scalars['t2LineCount'])

@@ -6,7 +6,7 @@ and numeric market indices remain separate from display names and symbols.
 import json
 from pathlib import Path
 
-CATALOG_REVISION = 'midbridge-invented-105-reverse-v7'
+CATALOG_REVISION = 'midbridge-invented-105-demand-t1-v9'
 ROOT = Path(__file__).resolve().parents[2]
 DIRECTORY = ROOT / 'catalogs/midbridge-4263/catalog.json'
 

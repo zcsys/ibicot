@@ -1,10 +1,4 @@
-"""T2 input buying is price-sensitive around the input's reference cost.
-
-The industrial buying rule is: latent demand = fill storage to the brim, and the
-actual request follows the Tier 3 curve with the input's reference cost as the
-halving price (canon V = unit cost; elasticity = 2). Cover reference costs,
-quantity boundaries, and reference/compiled state and accounting parity.
-"""
+"""Final procurement reduction: economic feasibility, eta, then legal rounding."""
 import unittest
 import copy
 import numpy as np
@@ -16,6 +10,43 @@ from economy.kernel.input_market import InputMarket
 
 
 class PriceSensitiveBuyingTests(unittest.TestCase):
+    def test_lot_rounding_follows_reduction(self):
+        from economy.core.trading import affordable_order
+        # 2,500 feasible / (1 + 1.25²) = 975.61: no legal lot.
+        # 2,600 feasible / 2.5625 = 1,014.63: one legal lot.
+        # Rounding 2,600 to 2,000 before eta would incorrectly yield zero.
+        for feasible, expected in ((2500, 0), (2600, 1000)):
+            result = affordable_order(0, -1, feasible, 1e9,
+                np.array([1e6]), np.array([1.25]), np.array([1.]),
+                1., 0., 1000, 1., 2.)
+            self.assertEqual(result, (0, expected, expected, 0.))
+
+    def test_fee_rechecked_after_reduction(self):
+        from economy.core.trading import affordable_order
+        # Before eta: challenger saves $100 and owes $20. After eta the
+        # $1-reference curve permits only 1 unit, so remain with incumbent.
+        result = affordable_order(1, 0, 100., 10000.,
+            np.array([1000., 1000.]), np.array([10., 9.]), np.array([1., 1.]),
+            1., 10., 1, 1., 2.)
+        self.assertEqual(result, (0, 0, 0, 0.))
+
+    @unittest.skipUnless(NB._HAVE_NUMBA, 'Numba not installed')
+    def test_t1_final_reduction_and_compiled_parity(self):
+        cfg, w = reset_world({'t2FirmCount': 1, 'distributorCount': 1})
+        w.t1Operates[:] = 0
+        w.t1Operates[0] = 1
+        slots, _, _ = K.tier1_storage_layout(w, cfg, 0)
+        w.raw[0] = slots[0] - 2600
+        w.t0Inv[:] = np.isfinite(w.t0Price) * 100000
+        w.t0Price[np.isfinite(w.t0Price)] = 1.25
+        w.t1Cash[:] = 1000000
+        reference = copy.deepcopy(w)
+        K.plan_and_buy_inputs(reference, cfg, M.PRODUCTS, K.T0P, 1)
+        NB.plan_and_buy_inputs(w, cfg, 1)
+        self.assertEqual(w.t1Bought[0], 1000)
+        for name in w.array_names:
+            np.testing.assert_array_equal(getattr(w, name), getattr(reference, name), err_msg=name)
+
     def test_cached_references_follow_runtime_cost_settings(self):
         cfg, _ = reset_world({'t2FirmCount': 1, 'distributorCount': 1})
         original = NB.input_reference_arrays(cfg).copy()
@@ -26,6 +57,17 @@ class PriceSensitiveBuyingTests(unittest.TestCase):
             np.testing.assert_array_equal(NB.input_reference_arrays(changed), expected)
             self.assertFalse(np.array_equal(expected, original), key)
         np.testing.assert_array_equal(NB.input_reference_arrays(cfg), original)
+
+    def test_input_eta_is_independent_of_distributor_eta(self):
+        for eta, fraction in ((.5, 1/3), (2., 1/17)):
+            cfg,w=reset_world({'t2FirmCount':1,'distributorCount':1,'t2InputElasticity':eta})
+            self.assertEqual(cfg['elasticity'],2.)
+            slots,_,inputs=K.tier2_storage_layout(w,cfg,0)
+            material=min(inputs);book=InputMarket(w,1);supplier=book.offers[material][0]
+            book.price[supplier]=4*M.input_reference_cost(material,cfg)
+            book.fin[supplier]=100000;w.t2Cash[0]=1000000
+            bought=K.transfer_tier2_input(w,cfg,0,material,supplier,slots[material],[supplier],book)
+            self.assertEqual(bought,int(slots[material]*fraction))
 
     def test_reference_price_and_binding_limits(self):
         for limit in ('curve', 'cash', 'stock', 'slot', 'fractional-slot', 'over-slot'):
@@ -46,13 +88,13 @@ class PriceSensitiveBuyingTests(unittest.TestCase):
                 expected = int(slots[material] / 2)
                 if limit == 'cash':
                     w.t2Cash[0] = quote * 2.5
-                    expected = 2
+                    expected = 1
                 elif limit == 'stock':
                     book.fin[supplier] = 3.5
-                    expected = 3
+                    expected = 1
                 elif limit == 'slot':
                     raw[material] = slots[material] - 2.25
-                    expected = 2
+                    expected = 1
                 elif limit == 'fractional-slot':
                     raw[material] = slots[material] - .75
                     expected = 0

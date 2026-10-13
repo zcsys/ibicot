@@ -77,7 +77,7 @@ class RecursiveDemandTests(unittest.TestCase):
         self.assertTrue(np.all(final>0))
         self.assertTrue(np.all(np.abs(counts-cfg['distributorCount']*final/final.sum())<1))
 
-        reference=np.array([M.initial_tier2_cost(p,cfg) for p in M.T2_PRODUCTS])
+        reference=np.array([M.reference_tier2_cost(p,cfg) for p in M.T2_PRODUCTS])
         price=np.array([M.round_to_cent(reference[p['id']]*(1+M.tier2_starting_markup(p,cfg)))
                         for p in M.T2_PRODUCTS])
         premium=np.array([1+cfg['t2ReservationPremium']*(p['complexity']-1) for p in M.T2_PRODUCTS])
@@ -90,13 +90,13 @@ class RecursiveDemandTests(unittest.TestCase):
             self.assertGreater(demand[p['id']],final[p['id']],p['catalogId'])
 
     def test_intermediate_trade_production_and_equity_both_engines(self):
-        cfg,w=reset_world({'t2FirmCount':2,'distributorCount':1,'storageRentPerThousandPerTick':0})
+        cfg,w=reset_world({'t2FirmCount':2,'distributorCount':1,'storageRentPerThousandPerTick':0,'t2InputElasticity':2})
         buyer=next(p for p in M.T2_PRODUCTS if p['demandGroup']=='c4_basic_c3')
         m=next(m for m,q in buyer['ingredients'] if m>=M.NP)
         seller=M.T2_INPUT_PRODUCTS[m]
         for firm,p in enumerate([seller,buyer]):
             w.t2LineProduct[firm]=p['id'];w.t2Sector[firm]=p['sectorIndex']
-            w.t2Price[firm]=100
+            w.t2Price[firm]=10 if firm == 0 else 100
             for material,q in p['ingredients']:
                 if material >= M.NP:continue
                 raw,basis=(w.t2Raw,w.t2RawBasis) if material<M.NE else (w.t2T1Raw,w.t2T1Basis)
@@ -108,11 +108,11 @@ class RecursiveDemandTests(unittest.TestCase):
         K.operate_tier2(reference,cfg,M.PRODUCTS,K.T0P,M.T2_PRODUCTS,1)
         self.assertGreater(reference.t2IntermediateSold[seller['id']],0)
         self.assertEqual(reference.t2Made[0],32)
-        # Buyer quote covers acquired C3 stock; price-sensitive buying scales the
-        # order around the intermediate's reference cost, so it produces 6, not 24.
+        # At a $10 intermediate quote, the 132 available units permit more
+        # than the buyer's 24-unit capacity even after eta.
         w.t2Price[1]=200;reference=copy.deepcopy(w)
         K.operate_tier2(reference,cfg,M.PRODUCTS,K.T0P,M.T2_PRODUCTS,1)
-        self.assertEqual(reference.t2Made[1],6)
+        self.assertEqual(reference.t2Made[1],24)
         np.testing.assert_allclose(K.storage_rent_equity(reference,cfg,'t2')-before,
                                    company_earnings(reference,cfg,'t2'),atol=1e-8,rtol=0)
         validate_storage(reference,cfg)

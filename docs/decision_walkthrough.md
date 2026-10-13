@@ -1,6 +1,6 @@
 # Demand, pricing, and production — worked decisions
 
-This guide follows the decisions a firm makes during a tick. The [design canon](design_canon.md) remains the mathematical specification; this document explains its consequences through worked examples. Examples are constructed states, not measurements from a simulation run. Unless stated otherwise, they use default settings, one installed line, sufficient cash and supplier stock, no switching charge, and zero switching-income forecast. Numerical production examples in §§3–6 isolate the previously implemented rent-only gate by setting intelligence rates to zero; §9 adds the current subscription and demonstrates the changed result. Opening book equity determines the shared exemption before company activity.
+This guide follows the decisions a firm makes during a tick. The [design canon](design_canon.md) remains the mathematical specification; this document explains its consequences through worked examples. Examples are constructed states, not measurements from a simulation run. Unless stated otherwise, they use default settings, one installed line, sufficient cash and supplier stock, no switching charge, and zero switching-income forecast. T0/T1/T2 input eta and distributor eta all default to 2 and are independently configurable. Numerical production examples in §§3–6 isolate the previously implemented rent-only gate by setting intelligence rates to zero; §9 adds the current subscription and demonstrates the changed result. Opening book equity determines the shared exemption before company activity.
 
 ## 1. Three decisions, three different signals
 
@@ -10,7 +10,7 @@ This guide follows the decisions a firm makes during a tick. The [design canon](
 | Produce | Finished-stock deficit, capacity, ingredients, conversion cash, and margin after forecast overhead | Whether a buyer will purchase the output this tick |
 | Change price | Observed demand versus sales, market price, then change in gross profit | Whether the firm covers rent, intelligence, and switching expenses |
 
-A reference cost calibrates initial prices, purchase curves, and fees. An inventory basis records what goods actually cost. A replacement estimate values a proposed mix of held and newly bought inputs. These are separate quantities; production uses inventory basis, while the price learner uses realized revenue minus cost of goods sold.
+Pricing and purchase references include nominal-capacity overhead; switching-fee references keep their existing bases. An inventory basis records what goods actually cost. A replacement estimate values a proposed mix of held and newly bought inputs. These are separate quantities; production uses inventory basis, while the price learner uses realized revenue minus cost of goods sold.
 
 Demand travels upstream through **purchases to replenish inventory**, not through a centralized production plan. Distributors buy T2 goods; T2 replenishes C1/C2 and sometimes C3; T1 replenishes raw resources. Storage buffers, cash limits, and purchase rules interrupt any one-for-one relationship between final demand and current upstream orders.
 
@@ -33,13 +33,13 @@ Consequently, fresh C3 can reach C4 this tick, but fresh T2 production cannot re
 
 T0 does not purchase inputs from Gaia. Difficulty determines extraction cost for each element. A firm's storage is divided equally among its installed element lines, each with its own throughput limit. It extracts toward these stock targets; it does not set output equal to yesterday's sales.
 
-**Example: one line, ample cash.** Storage is 40 million spaces, throughput is 500,000 units/tick, current stock is zero, extraction cost is $1, and the quote is $1.25. The initial deficit is capped at 500,000. Its 20% margin exceeds the 5% production band, so it extracts all 500,000, spends $500,000, and holds inventory at $1 per unit. T0 pays no storage rent.
+**Example: one line, ample cash.** Storage is 40 million spaces, throughput is 500,000 units/tick, current stock is zero, extraction cost is $1, and the quote is $1.25. The initial deficit is capped at 500,000. Its 20% margin exceeds the 5% production band, so its feasible plan is 500,000. The final cost response divides that by `1+(1/1)²=2`: it extracts 250,000, spends $250,000, and holds inventory at $1 per unit. T0 pays no storage rent.
 
-If cost rises to $1.24 with the same quote, the margin is 0.8%; the margin factor is `0.8% / 5% = 0.16`. Desired extraction falls to 80,000 before shared resource allocation. If cost exceeds $1.25, extraction stops. Existing stock can still sell at the posted price.
+If cost rises to $1.24 with the same quote, the margin is 0.8%; the margin factor is `0.8% / 5% = 0.16`. Desired extraction falls to 80,000 before shared resource allocation. With no further constraint, the final cost response reduces that to `80,000/(1+1.24²) ≈ 31,525.85` units. If cost exceeds $1.25, extraction stops. Existing stock can still sell at the posted price.
 
 For several lines, cash and storage are shared, but unused per-element throughput cannot simply move to another element. The allocator rotates priority, protects small allocations, and distributes remaining capacity proportionally with remainder handling. A cash shortage can therefore reduce several outputs together. Fractional extraction is allowed. The exact allocator is in canon §5 and [operate_tier0](../economy/kernel/tick.py).
 
-T0's recorded demand comes from T1 orders. A funded request can exceed delivery when stock is scarce; that unmet demand can later push its quote upward.
+T0's recorded demand comes from T1's final reduced orders. These are already stock-constrained, so stock scarcity no longer produces a gap between funded raw demand and raw deliveries in this path.
 
 ## 4. T1: buy raw in lots, then decide whether to refine
 
@@ -47,7 +47,7 @@ T1 makes C1 from one raw unit or C2 from two raw units. Both default to 6,000 ou
 
 **Storage example.** A single C1 line has 50,000 spaces minus a 1,000-space machine. Of the remaining 49,000, half targets raw and half finished goods: 24,500 units each. For C2, the same output allocation holds only 12,250 finished items. A two-distinct-raw recipe targets 12,250 units of each raw; a repeated-raw recipe targets 24,500 of that raw.
 
-**Procurement example.** The empty C1 firm requests 24,000 raw units: the 24,500 shortage rounds down to 1,000-unit lots. At $1.25 it pays $30,000, provided its selected seller can deliver. A remaining 500-unit shortage cannot trigger another lot. There is one seller transaction per ingredient this tick, with no second-supplier retry after a short fill.
+**Procurement example.** The empty C1 firm has a 24,500-unit shortage. With sufficient cash and stock at $1.25, its feasible purchase remains 24,500. Using the $1 raw reference, eta reduces this to `24,500/(1+1.25²) ≈ 9,560.98`. Final lot rounding yields 9,000 units, costing $11,250. A feasible 2,600-unit purchase at this same quote becomes about 1,014.63 and rounds to one lot; rounding before eta would incorrectly give zero. There is one seller transaction per ingredient this tick, with no second-supplier retry after a short fill.
 
 Raw supplier ranking compares order cost plus any fee owed to an incumbent. It first considers sellers with at least one lot, even when the order is much larger; this differs from T2's preference for a seller able to fill the entire requested quantity. Settlement then caps the order by cash and stock, and rechecks switching savings on the actual fill. Canon §§5–6 specify the details.
 
@@ -61,7 +61,7 @@ It makes all 6,000, consumes 6,000 raw, and spends $1,500 conversion cash. New f
 
 **A tapered plan can still be rejected.** With only 400 feasible outputs at the same prices and overhead, estimated margin is about 1.60%. Tapering rounds the plan to 128 outputs. Their contribution is only `128 × $0.38 = $48.64`, below the $140 overhead, so the final check rejects production entirely. Procurement may already have happened.
 
-A C2 line follows the same decision sequence, but consumes two raw units per output. At $1.25 raw basis its unit cost is $2.75, its initial quote is $3.44, and 6,000 outputs require 12,000 raw units in the recipe's specified proportions.
+A C2 line follows the same decision sequence, but consumes two raw units per output. At $1.25 raw basis its unit cost is $2.75, take an illustrative quote of $3.44, and 6,000 outputs require 12,000 raw units in the recipe's specified proportions.
 
 ## 5. T2: price-sensitive replenishment and rent-sensitive production
 
@@ -69,16 +69,16 @@ A C2 line follows the same decision sequence, but consumes two raw units per out
 
 A single C3 machine leaves `20,000 − 3,000 = 17,000` goods spaces. Each input slot targets `8,500/3 ≈ 2,833.33` items; the C2 input occupies twice the space of C1. The finished target is 2,833 C3 items, while throughput is only 32 per tick.
 
-Starting empty, with chosen quotes of $1.88 for C1 and $3.44 for C2:
+Starting empty, with illustrative chosen quotes of $1.88 for C1 and $3.44 for C2:
 
-| Input | Purchase reference | Slot-based curve before whole-unit settlement | Purchased units |
+| Input | Purchase reference | Feasible-purchase curve before whole-unit rounding | Purchased units |
 | --- | ---: | --- | ---: |
-| C1 | $1.25 | `(8,500/3) / (1 + (1.88/1.25)²)` ≈ 868.58 | 868 |
-| C2 | $2.75 | `(8,500/3) / (1 + (3.44/2.75)²)` ≈ 1,104.71 | 1,104 |
+| C1 | $1.6066667 | `(8,500/3) / (1 + (1.88/1.6066667)²)` ≈ 1,195.91 | 1,195 |
+| C2 | $3.1066667 | `(8,500/3) / (1 + (3.44/3.1066667)²)` ≈ 1,272.78 | 1,272 |
 
-These quantities assume neither cash nor stock binds. C1's purchase reference is $1.25, although its reference production cost is $1.50. The curve uses the **whole target slot**, capped by actual shortage and free space. It is not a permanently reduced storage target: an almost-full firm can buy its entire small shortage. Ingredients are processed sequentially, and early purchases can exhaust conversion cash.
+These quantities assume neither cash nor stock binds. C1's purchase reference is $1.6066667: its distinct $1.25 base plus $0.3566667 overhead. Its pricing reference is $1.8566667. Here the feasible purchase equals the empty slot. For a 32-unit shortage with ample cash and stock, the same quotes permit only 13 C1 and 14 C2 units after eta and rounding. If cash or stock limits that feasible purchase further, eta applies to that smaller quantity. Ingredients are processed sequentially, and early purchases can exhaust conversion cash.
 
-At these purchased bases, actual C3 production costs `$1.88 + $3.44 + $0.50 = $5.82`. Its initial quote is $7.27. With 32 feasible outputs and $56 forecast rent:
+At these purchased bases, actual C3 production costs `$1.88 + $3.44 + $0.50 = $5.82`. Take an illustrative quote of $7.27. With 32 feasible outputs and $56 forecast rent:
 
 ```text
 contribution before rent = 32 × (7.27 − 5.82) = $46.40
@@ -91,7 +91,7 @@ The firm produces nothing. If it is below the $1.5 million rent threshold, the s
 
 Both routes have 20,000 total spaces, a 4,000-space machine, a 2,000-item output target, throughput 24, and $0.75 conversion per item.
 
-| Route | Input targets | Actual unit cost at the illustrated initial supplier quotes | Initial output quote |
+| Route | Input targets | Actual unit cost at the illustrated initial supplier quotes | Illustrative output quote |
 | --- | --- | ---: | ---: |
 | Two C2 | 4,000 of a repeated C2, or 2,000 each of distinct C2 inputs | `2 × 3.44 + 0.75 = $7.63` | $9.53 |
 | C1 + C3 | 2,000 of each | `1.88 + 7.27 + 0.75 = $9.90` | $12.36 |
@@ -102,22 +102,22 @@ These are conditional examples using the stated live quotes and bases. C4 actual
 
 ### Why the cheapest seller may not win
 
-T2 first seeks the cheapest offer able to fill the pre-curve request, then a partial supplier, then any offer. It compares a stocked incumbent's total against the challenger including a fixed switching fee. After applying the purchase curve, it rechecks affordability and actual-fill savings.
+T2 first seeks the cheapest offer able to fill the pre-curve request, then a partial supplier, then any offer. It compares a stocked incumbent's total against the challenger including a fixed switching fee. It caps the feasible purchase by cash and stock, applies eta, rounds, then rechecks actual-fill switching savings; a return to the incumbent recomputes the order once at that quote.
 
-For example, an incumbent at $3.50 and challenger at $3.44 save $6 on 100 units, enough to justify a $1.50 switching fee. If cash restricts actual delivery to 20 units, savings are only $1.20; settlement returns to the incumbent and recalculates affordable quantity without the fee. The fee goes to the former supplier, not outside the economy. Canon §§6 and 8 cover the reference costs, reliability multiplier, and annual fee adaptation.
+For example, an incumbent at $3.50 and challenger at $3.44 save $6 on 100 units, enough to justify a $1.50 switching fee. If cash limits the pre-eta feasible purchase to 20 units, eta and rounding can only reduce it further. Savings are then at most $1.20; settlement returns to the incumbent and recalculates feasibility and the reduced order without the fee. The fee goes to the former supplier, not outside the economy. Canon §§6 and 8 cover the reference costs, reliability multiplier, and annual fee adaptation.
 
 ## 6. T3: final demand, sampled sellers, and incomplete orders
 
 Each distributor is assigned one product at initialization. Routing uses full-fleet capacity weights after reserving C3 needed for C4. It does not migrate toward current shortages. Each buyer independently activates with probability 0.105 per tick; one million buyers therefore yield 105,000 activations in expectation, not a fixed count.
 
-**C3 buyer example.** Take reference cost $5.8125 and an illustrative choke multiplier 2.4. With the C3 reservation premium, its halving price is:
+**C3 buyer example.** Take reference cost $8.1875 and an illustrative choke multiplier 2.4. With the C3 reservation premium, its halving price is:
 
 ```text
-H = 5.8125 × 2.4 × (1 + 0.25 × 2) = $20.925
+H = 8.1875 × 2.4 × (1 + 0.25 × 2) = $29.475
 D(P) = 20 / (1 + (P/H)²)
 ```
 
-At a $7.27 quote, continuous demand is about 17.85. It becomes 18 if the buyer's seeded rounding draw is below the fractional part, otherwise 17. At `P = H`, demand is 10; at `P = 2H`, it is 4. The field called “choke” is not a price above which demand becomes zero.
+At a $10.23 quote, continuous demand is about 17.85. It becomes 18 if the buyer's seeded rounding draw is below the fractional part, otherwise 17. At `P = H`, demand is 10; at `P = 2H`, it is 4. The field called “choke” is not a price above which demand becomes zero.
 
 The buyer considers its incumbent plus five sampled offers, with replacement; repeated draws reduce the number of distinct sellers. It does not inspect the entire market. Switching fees can change candidate order, and an insufficient saving on actual delivery can reject a challenger.
 
@@ -197,3 +197,13 @@ The production gate includes actual paid intelligence expense. Combined overhead
 **Effect on the rent-only worked examples above:** a C1 firm at $1.88 quote and $1.50 unit cost has only $140 contribution left after $2,140 overhead on 6,000 feasible units. Its estimated net margin is about 1.24%, producing a preliminary 1,489-unit plan. That plan cannot cover overhead, so production stops. At the same 6,000 capacity, C2's $3.44 quote and $2.75 cost leave $2,000 after overhead and permit full production. An eligible C3 firm's $8 quote previously covered $56 rent; adding $20 intelligence makes its full 32-unit contribution $69.76 insufficient for $76 overhead, so it stops. At $8.70, its net margin is about 5.80%, permitting all 32 units. Exempt firms owe neither charge.
 
 Price learning continues to use gross profit and therefore does not directly optimize after-intelligence earnings. Intelligence can still change price learning indirectly through production, inventory, sales, cash, and observed shortages. Charging it does not make the existing pricing algorithm a net-profit optimizer. Procurement retains its existing curves and supplier comparisons, with later cash availability affected by actual payments.
+
+## 10. Nominal overhead in decision references
+
+A stable allowance divides the full nominal company bill by nominal single-line capacity. C1/C2 add $2,140/6,000 = $0.3566667 per item; C3 adds $76/32 = $2.375; C4 adds $76/24 = $3.1666667. Equivalently, multiply an existing reference B by `1 + allowance/B`. Each route keeps its existing base and adds only its own producer overhead; upstream allowances are not compounded into the recursive base ladder.
+
+This raises default starting quotes to C1 $2.32, C2 $3.88, C3 $10.23, and C4 $13.49 or $16.32 depending on recipe. Earlier production examples deliberately use the stated illustrative quotes and rent-only gates, not these new default starting prices. Exemption changes the actual bill, not this market reference. The production gate still uses inventory book costs plus actual paid overhead. No reference adjustment posts an expense or increases inventory basis. Learned prices can subsequently move below these references.
+
+## 11. Demand-balanced refinery counts
+
+The 982 refiners now comprise 392 C1 and 590 C2 firms, allocated within each complexity by nominal T2 ingredient requirements. Full-capacity downstream demand averages 3,356.08 units/C1 company/tick and 3,354.47 units/C2 company/tick. Counts use largest-remainder allocation with catalog-ID ties; they do not adjust to observed demand during a run. Capacity and overhead per company are unchanged. The canon specifies all fourteen counts and the compatibility boundary for old checkpoints.

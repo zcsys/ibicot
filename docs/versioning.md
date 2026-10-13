@@ -11,13 +11,13 @@ document defers to it wherever they overlap.
 The kernel is a deterministic supply-chain simulation (NumPy + Numba) with a
 FastAPI + WebSocket service and a browser dashboard. The market logic is complete
 on both sides: production follows a margin ramp, and industrial purchasing is
-price-sensitive — latent demand is "fill to brim" (the storage slot), and the
-actual T2 request follows the Tier 3 price-response curve with the input's reference
-cost as the halving price (elasticity 2), capped by the slot shortage. T1 retains
-slot-refill procurement. Distributors retain their incumbent after split or
-partial orders; T1/T2 remember the seller after a positive fill. See the
-[implemented purchasing contract](design_canon.md#implemented-purchasing-contract)
-for the exact ranking, fee and preference boundaries.
+price-sensitive: T0 extraction and T1/T2 purchases first compute economic
+feasibility, then apply the eta response, then legal purchase rounding.
+The feasible quantity is the curve's base; default eta is 2. Distributors retain
+their existing demand mechanism. Distributors retain their incumbent after split
+or partial orders; T1/T2 remember the seller after a positive fill. See the
+[producer purchasing contract](design_canon.md#6-t2-input-buying-and-producer-order-settlement)
+for ranking, fee and preference boundaries.
 
 ## Phase 1 — PoC
 

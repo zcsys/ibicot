@@ -28,7 +28,7 @@ class RefineryCapacityTests(unittest.TestCase):
         expected=copy.deepcopy(w)
         K.operate_tier1(expected,cfg,M.PRODUCTS)
         made=expected.t1Fin.reshape(M.N1,M.NP).sum(axis=0)
-        np.testing.assert_array_equal(made,[432000]*14)
+        np.testing.assert_array_equal(made,np.array(M.T1_PRODUCT_FIRM_COUNTS)*6000)
         if NB._HAVE_NUMBA:
             NB.operate_tier1(w,cfg)
             for name in w.array_names:

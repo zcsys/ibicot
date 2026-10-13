@@ -309,7 +309,7 @@ def _has_tier2_product(world, firm, product_id):
 def _tier1_storage_cached(base, c2):
     # Fixed cohort identity; vectorized once per configuration, reused in hot paths.
     capacities = np.repeat(np.where(np.array([p['complexity'] for p in M.PRODUCTS]) == 2,
-                                    c2, base), M.T1_FIRMS_PER_MATERIAL).astype(np.float64)
+                                    c2, base), M.T1_PRODUCT_FIRM_COUNTS).astype(np.float64)
     capacities.flags.writeable = False
     return capacities
 
@@ -381,7 +381,7 @@ def add_tier2_line(world, cfg, firm, product, paid=True):
     world.t2LineProduct[line] = product['id']
     world.t2UnitCost[line] = M.initial_tier2_cost(product, cfg)
     world.t2LearnStep[line] = 1
-    world.t2Price[line] = M.round_to_cent(max(M.MIN_UNIT_PRICE, world.t2UnitCost[line] * (1 + M.tier2_starting_markup(product, cfg))))
+    world.t2Price[line] = M.round_to_cent(max(M.MIN_UNIT_PRICE, M.reference_tier2_cost(product, cfg) * (1 + M.tier2_starting_markup(product, cfg))))
     world.t2LearnPrevious[line] = float('nan')
     world.t2LearnDirection[line] = 1 if ((firm + cfg['seed']) % 2) else -1
     world.t2PlayerPrice[line] = float('nan')
@@ -401,7 +401,7 @@ def initialize_tier2(world, cfg):
     prod_id = np.array([p['id'] for p in M.T2_PRODUCTS], dtype=np.int64)
     prod_comp = np.array([p['complexity'] for p in M.T2_PRODUCTS], dtype=np.int64)
     prod_sector = np.array([p['sectorIndex'] for p in M.T2_PRODUCTS], dtype=np.int64)
-    world.t2ReferenceCost[prod_id] = np.array([M.initial_tier2_cost(p, cfg) for p in M.T2_PRODUCTS])
+    world.t2ReferenceCost[prod_id] = np.array([M.reference_tier2_cost(p, cfg) for p in M.T2_PRODUCTS])
     world.t2FirmLines.fill(-1)
     world.t2Preferred.fill(-1)
     world.t2PlayerPrice.fill(float('nan'))
@@ -445,7 +445,7 @@ def initialize_tier2(world, cfg):
     world.t2FirmLineCount[:n] = 1
     world.t2LineFirm[:n] = firms
     world.t2LineProduct[:n] = pid
-    world.t2UnitCost[:n] = unit_cost
+    world.t2UnitCost[:n] = np.array([M.initial_tier2_cost(p, cfg) for p in M.T2_PRODUCTS])[pid]
     world.t2LearnStep[:n] = 1
     world.t2Price[:n] = price
     world.t2LearnPrevious[:n] = float('nan')
@@ -550,12 +550,12 @@ def reset_world(cfg):
     world.playerPrice.fill(float('nan'))
 
     for cid in range(N1):
-        code = T1P[cid // M.T1_FIRMS_PER_MATERIAL]['product']
+        code = T1P[M.T1_FIRM_PRODUCT[cid]]['product']
         pi = next(i for i, p in enumerate(M.PRODUCTS) if p['code'] == code)
         p = M.PRODUCTS[pi]
         eq = cfg['t1Machinery']                        # canon $15k flat
         uc = M.refinery_unit_cost(p, cfg)         # canon $1.25 reference unit cost
-        price = quantize_round(uc * (1 + M.t2_markup(p['complexity'], cfg)), uc)  # first-guess markup 0.25
+        price = quantize_round(M.reference_refinery_cost(p, cfg) * (1 + M.t2_markup(p['complexity'], cfg)), uc)  # first-guess markup 0.25
         world.t1EqBook[cid] = eq
         world.t1Operates[cid * NP + pi] = 1
         world.t1Rel[cid * NP + pi] = 0.5

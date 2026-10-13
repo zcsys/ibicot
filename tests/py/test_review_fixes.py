@@ -110,8 +110,8 @@ for (const stock of [0, 100]) {
             w.t0Inv[[0, 4]] = 10000
             w.t0Price[[0, 4]] = [2., 1.8]
             w.preferredWholesale[0] = 0
-            w.raw[0] = reference.tier1_storage_layout(w, cfg, 0)[0][0] - 2000
-            w.lm1 = 500  # $750 charge exceeds $400 savings on the 2,000-unit order.
+            w.raw[0] = reference.tier1_storage_layout(w, cfg, 0)[0][0] - 10000
+            w.lm1 = 500  # After eta: $750 fee exceeds $400 savings on 2,000 units.
             if fast:
                 accelerated.plan_and_buy_inputs(w, cfg, 1)
             else:
@@ -128,7 +128,7 @@ for (const stock of [0, 100]) {
             slot, _, inputs = reference.tier2_storage_layout(w, cfg, 0)
             for material in inputs:
                 (w.t2Raw if material < 4 else w.t2T1Raw)[material] = slot[material]
-            w.t2Raw[0] -= 1  # Test the same one-unit order under slot-based restocking.
+            w.t2Raw[0] -= 4  # Four feasible units reduce to one at the incumbent quote.
             w.t2Preferred[0] = 0
             w.t2Price[0] = 10
             if fast:

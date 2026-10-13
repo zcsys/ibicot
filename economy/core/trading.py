@@ -38,15 +38,28 @@ def select_offer(offers, stock, prices, preferred, reliability, request,
 
 
 def affordable_order(supplier, preferred, request, cash, stock, prices,
-                     reliability, unit_cost, multiple, lot=1):
+                     reliability, unit_cost, multiple, lot=1, price_reference=0.0, elasticity=2.0):
     """Return seller, funded units, delivered units, and the payable fixed fee.
 
     Recheck the cost comparison on the actual fill: a cash/stock cap must not
     make a nominally cheaper challenger more expensive than the incumbent.
+    With a positive price reference, reduce continuous feasibility by eta
+    before lot rounding, and repeat only for a replacement incumbent quote.
     """
     charge = 0.0
     if supplier != preferred and preferred >= 0 and stock[preferred] >= request:
         charge = multiple * unit_cost * (1 + min(1.0, max(0.0, reliability[preferred])))
+    if price_reference > 0.0:
+        # Economic feasibility first; price reduction once; legal rounding last.
+        feasible = max(0.0, min(request, stock[supplier], max(0.0, cash - charge) / prices[supplier]))
+        quantity = math.floor(feasible / (1.0 + (prices[supplier] / price_reference) ** elasticity) / lot) * lot
+        if charge > 0 and quantity * (prices[preferred] - prices[supplier]) <= charge:
+            supplier = preferred
+            charge = 0.0
+            feasible = max(0.0, min(request, stock[supplier], max(0.0, cash) / prices[supplier]))
+            quantity = math.floor(feasible / (1.0 + (prices[supplier] / price_reference) ** elasticity) / lot) * lot
+        # A stock-limited feasible plan cannot claim unplaced demand as orders.
+        return supplier, quantity, quantity, charge if quantity > 0 else 0.0
     funded = math.floor(min(request, max(0.0, cash - charge) / prices[supplier]) / lot) * lot
     quantity = math.floor(min(funded, stock[supplier]) / lot) * lot
     if charge > 0 and quantity * (prices[preferred] - prices[supplier]) <= charge:

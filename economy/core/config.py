@@ -32,6 +32,7 @@ def default_cfg() -> dict:
         't0Capacity': 500_000,           # throughput per installed element machine per tick
         't0Storage': 40_000_000,           # storage capacity (fill to the brim, like T1/T2)
         'baseCost': 1.0,                # $1 per raw element
+        't0InputElasticity': 2.0,       # final extraction-cost response
         't0Markup': 0.25,                 # T0 first-guess markup
         'minWholesaleLot': 1000,
 
@@ -42,6 +43,7 @@ def default_cfg() -> dict:
         't1Capacity': M.T1_DEFAULT_CAPACITY,          # C-1 throughput per machine/tick
         't1CapacityC2': M.T1_C2_DEFAULT_CAPACITY,     # C-2 throughput per machine/tick
         't1MaterialCost': 1.25,         # $1.25 per raw element (baseCost × (1 + t0Markup): T1 pays T0's marked-up price)
+        't1InputElasticity': 2.0,       # final raw-purchase price response
         't1Markup': 0.25,               # T1 first-guess markup (flat)
 
         # Tier 2 (manufacturing) — per-complexity machinery/capacity
@@ -63,6 +65,7 @@ def default_cfg() -> dict:
         'distributorActivation': 0.105,       # fraction of distributors that activate each tick
         'chokeMin': 1.8,
         'chokeMax': 3.0,
+        't2InputElasticity': 2.0,       # T2 ingredient procurement, separate from retail
         'elasticity': 2.0,              # eta = 2 (T3 distributor demand)
         'productionMarginBand': 0.05,   # estimated net margin: rent and forecast switching transfers included
         't2ReservationPremium': 0.25,
@@ -177,6 +180,8 @@ def normalize_config(c) -> dict:
     d['distributorActivation'] = M.clamp(d['distributorActivation'], 0, 1)
     d['chokeMin'] = max(0.01, d['chokeMin'])
     d['chokeMax'] = max(d['chokeMin'], d['chokeMax'])
+    for key in ('t0InputElasticity', 't1InputElasticity', 't2InputElasticity'):
+        d[key] = max(0.05, min(10, d[key]))
     d['elasticity'] = max(0.05, min(10, d['elasticity']))
     d['productionMarginBand'] = M.clamp(d['productionMarginBand'], 0.001, 1.0)
     d['t2ReservationPremium'] = max(0, d['t2ReservationPremium'])

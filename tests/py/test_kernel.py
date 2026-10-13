@@ -78,7 +78,7 @@ def test_generated_names():
     for sector, offset in enumerate(M.T2_SECTOR_FIRM_OFFSETS):
         assert M.t2_firm_name(sector, offset).endswith(' '+M.company_number('T2',offset))
     assert sum(M.T2_SECTOR_FIRM_COUNTS) == 57960
-    assert M.T1_FIRMS_PER_MATERIAL == 72
+    assert sum(M.T1_PRODUCT_FIRM_COUNTS) == 982
     print('generated names: ok (catalog identities and sector offsets)')
 
 

@@ -52,7 +52,7 @@ class NamingCatalogTests(unittest.TestCase):
                           'demandFactor', 'reservationPremium', 'distributorValue',
                           'needType', 'kind']:
                 self.assertEqual(p[field], original[field], (p['catalogId'], field))
-        self.assertEqual(M.COMPANY_NUMBERING['T2']['start'], 1029)
+        self.assertEqual(M.COMPANY_NUMBERING['T2']['start'], 1003)
         self.assertEqual(M.N2_FIRMS, 57960)
 
     def test_browser_names_and_symbols_match_python(self):
@@ -68,7 +68,7 @@ class NamingCatalogTests(unittest.TestCase):
         self.assertEqual(M.ELEMENTS, ['Organics', 'Inorganics', 'Metals', 'Radioactives'])
         stems = {c['sector_id']: c['generic_stem'] for c in SOURCE['t1_companies']}
         for cid in range(M.N1):
-            sector = 'S1-%02d' % (cid // M.T1_FIRMS_PER_MATERIAL + 1)
+            sector = 'S1-%02d' % (M.T1_FIRM_PRODUCT[cid] + 1)
             self.assertEqual(M.t1_firm_name(cid), stems[sector] + ' ' + M.company_number('T1', cid))
         for sector, (offset, count) in enumerate(zip(M.T2_SECTOR_FIRM_OFFSETS, M.T2_SECTOR_FIRM_COUNTS)):
             stem = SOURCE['t2_companies'][sector]['facility_stem']

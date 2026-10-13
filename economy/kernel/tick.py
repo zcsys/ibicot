@@ -17,7 +17,8 @@ from ..core.state import (T0P, WorldState, _has_tier2_product, add_tier2_line, t
 
 NE = M.NE
 NP = M.NP
-T1_FIRMS_PER_MATERIAL = M.T1_FIRMS_PER_MATERIAL
+T1_COUNTS = M.T1_PRODUCT_FIRM_COUNTS
+T1_OFFSETS = M.T1_FIRM_OFFSETS
 NI = M.NI
 N0 = M.N0
 N1 = M.N1
@@ -141,19 +142,17 @@ def operate_tier0(world, cfg, profiles, tick):
         priority = positive[start:] + positive[:start]
         rank = {n: pos for pos, n in enumerate(priority)}
 
+        planned_quantities = [0.0] * n_el
+        planning_cash = world.t0Cash[supplier]
+
         def make(n, planned):
-            nonlocal capacity, total_inventory
-            index = supplier * NE + elements[n]
+            nonlocal capacity, total_inventory, planning_cash
             cost = costs[n]
             headroom = max(0.0, cfg['t0Storage'] - total_inventory)
-            affordable = math.floor(max(0.0, world.t0Cash[supplier]) / cost)
+            affordable = math.floor(max(0.0, planning_cash) / cost)
             made = max(0.0, min(planned, deficits[n], capacity, headroom, affordable))
-            old = world.t0Inv[index]
-            if made > 0:
-                world.t0InvBasis[index] = (old * world.t0InvBasis[index] + made * cost) / (old + made)
-            world.t0Inv[index] += made
-            world.t0Cash[supplier] -= made * cost
-            world.costSinks += made * cost
+            planned_quantities[n] += made
+            planning_cash -= made * cost
             capacity -= made
             total_inventory += made
             deficits[n] -= made
@@ -161,7 +160,7 @@ def operate_tier0(world, cfg, profiles, tick):
 
         total_deficit = sum(deficits)
         initial_budget = max(0.0, min(capacity, cfg['t0Storage'] - total_inventory, total_deficit))
-        cash_can_bind = initial_budget * max(costs[n] for n in positive) > world.t0Cash[supplier]
+        cash_can_bind = initial_budget * max(costs[n] for n in positive) > planning_cash
         if initial_budget < len(positive) or cash_can_bind:
             for n in priority:
                 make(n, min(1, deficits[n]))
@@ -181,7 +180,7 @@ def operate_tier0(world, cfg, profiles, tick):
         for _pass in range(NE + 2):
             if capacity <= 1e-9:
                 break
-            feasible = [min(deficits[n], math.floor(max(0.0, world.t0Cash[supplier]) / costs[n]))
+            feasible = [min(deficits[n], math.floor(max(0.0, planning_cash) / costs[n]))
                         for n in range(n_el)]
             total = sum(feasible)
             budget = max(0.0, min(capacity, cfg['t0Storage'] - total_inventory, total))
@@ -206,6 +205,18 @@ def operate_tier0(world, cfg, profiles, tick):
                 produced += make(n, plans[n])
             if produced <= 1e-9:
                 break
+
+        # Do not redistribute the cash/space withheld by the final response.
+        reference = cfg['baseCost'] * cfg['difficultyTarget']
+        for n, element in enumerate(elements):
+            made = M.demand_at_price(planned_quantities[n], reference, costs[n], cfg['t0InputElasticity'])
+            index = supplier * NE + element
+            old = world.t0Inv[index]
+            if made > 0:
+                world.t0InvBasis[index] = (old * world.t0InvBasis[index] + made * costs[n]) / (old + made)
+                world.t0Inv[index] += made
+                world.t0Cash[supplier] -= made * costs[n]
+                world.costSinks += made * costs[n]
 
 
 # --------------------------------------------------------------------------
@@ -257,11 +268,13 @@ def plan_and_buy_inputs(world, cfg, products, profiles, tick):
     world.t0Req.fill(0)
     world.t0FundedReq.fill(0)
     first_cohort = tick % NP
-    first_firm = (tick * 37) % T1_FIRMS_PER_MATERIAL
-    for rnd in range(T1_FIRMS_PER_MATERIAL):
+    first_firm = tick * 37
+    for rnd in range(M.T1_MAX_COHORT):
         for cohort_order in range(NP):
             cohort = (first_cohort + cohort_order) % NP
-            company = cohort * T1_FIRMS_PER_MATERIAL + ((first_firm + rnd) % T1_FIRMS_PER_MATERIAL)
+            if rnd >= T1_COUNTS[cohort]:
+                continue
+            company = T1_OFFSETS[cohort] + ((first_firm + rnd) % T1_COUNTS[cohort])
             if not world.t1Operating[company]:
                 continue
             raw_base = company * NE
@@ -300,7 +313,7 @@ def plan_and_buy_inputs(world, cfg, products, profiles, tick):
                 need = world.t1InputNeed[raw_base + element]
                 if need <= 0:
                     continue
-                request = math.floor(need / cfg['minWholesaleLot']) * cfg['minWholesaleLot']
+                request = need
                 if request <= 0:
                     continue
                 world.t1PurchaseReq[raw_base + element] = request
@@ -315,12 +328,12 @@ def plan_and_buy_inputs(world, cfg, products, profiles, tick):
                     held += world.raw[raw_base + material]
                 for output in range(NP):
                     held += world.t1Fin[product_base + output] * M.PRODUCTS[output]['complexity']
-                storage_room = math.floor(max(0.0, min(tier1_goods_space(world, cfg, company) - held, storage_slot[element] - world.raw[raw_base + element]))
-                                          / cfg['minWholesaleLot']) * cfg['minWholesaleLot']
+                storage_room = max(0.0, min(tier1_goods_space(world, cfg, company) - held, storage_slot[element] - world.raw[raw_base + element]))
                 chosen, funded, bought, loyalty_charge = affordable_order(
                     chosen, preferred, min(request, storage_room), world.t1Cash[company],
                     world.t0Inv[element::NE], world.t0Price[element::NE], world.t0Rel[element::NE],
-                    cfg['baseCost'], world.lm1, cfg['minWholesaleLot'])
+                    cfg['baseCost'], world.lm1, cfg['minWholesaleLot'],
+                    cfg['baseCost'] * cfg['difficultyTarget'], cfg['t1InputElasticity'])
                 supplier_index = chosen * NE + element
                 quote = world.t0Price[supplier_index]
                 available = math.floor(world.t0Inv[supplier_index])
@@ -691,9 +704,9 @@ def transfer_tier2_input(world, cfg, firm, material, supplier, request, offers=N
     cash = book.cash
     storage_slot, output_slot, used_inputs = tier2_storage_layout(world, cfg, firm)
     held_input = (world.t2Raw if is_basic else world.t2T1Raw)[firm * (NE if is_basic else NI) + material]
-    requested = max(0.0, min(math.floor(request),
-                             math.floor(storage_slot[material] - held_input) if material in used_inputs else 0,
-                             math.floor((tier2_goods_space(world, cfg, firm) - tier2_inventory_units(world, firm)) / M.T2_INPUT_PRODUCTS[material]['complexity'])))
+    requested = max(0.0, min(request,
+                             storage_slot[material] - held_input if material in used_inputs else 0,
+                             (tier2_goods_space(world, cfg, firm) - tier2_inventory_units(world, firm)) / M.T2_INPUT_PRODUCTS[material]['complexity']))
     preferred = int(world.t2Preferred[firm * NI + material])
     firm_pid = int(world.t2LineProduct[int(world.t2FirmLines[firm * M4])])
     firm_cx = M.T2_PRODUCTS[firm_pid]['complexity']
@@ -705,15 +718,10 @@ def transfer_tier2_input(world, cfg, firm, material, supplier, request, offers=N
                             M.material_switching_reference(cfg), world.lm2[firm_cx - 3])
     if supplier < 0:
         return 0
-    # Price-sensitive fill-to-brim request: the latent demand is the storage slot
-    # (fill to the brim) and the request follows the Tier 3 curve with the input's
-    # reference cost as the halving price (canon V = unit cost; elasticity = 2),
-    # capped by the actual slot shortage so a nearly-full firm never overbuys.
-    buy_request = min(M.demand_at_price(storage_slot[material], M.input_reference_cost(material, cfg),
-                                        prices[supplier], 2.0), requested)
     supplier, funded, quantity, loyalty_charge = affordable_order(
-        supplier, preferred, buy_request, world.t2Cash[firm], stock, prices, book.rel,
-        M.material_switching_reference(cfg), world.lm2[firm_cx - 3])
+        supplier, preferred, requested, world.t2Cash[firm], stock, prices, book.rel,
+        M.material_switching_reference(cfg), world.lm2[firm_cx - 3], 1,
+        M.input_reference_cost(material, cfg), cfg['t2InputElasticity'])
     supplier_firm = book.owner[supplier]
     quote = prices[supplier]
     book.demand[supplier] += funded
@@ -960,6 +968,7 @@ def clear_distributors(world, cfg, products, t2_products, tick):
         world.t2PotentialOrders[market - NP] += 1
         world.marketPotential[market] += potential_quantity
         reference = profile['valuation']
+        fee_reference = profile['switchingReference']
         premium = 1 + cfg['t2ReservationPremium'] * (complexity - 1)
         choke = reference * world.distributorChoke[buyer] * premium
         stock = world.t2Fin
@@ -995,7 +1004,7 @@ def clear_distributors(world, cfg, products, t2_products, tick):
 
         # Compare a common order quantity using the same fixed charge as settlement.
         order_q = demand(price[preferred]) if preferred >= 0 else 0
-        friction = (M.loyalty_charge(reference, reliability[preferred], world.lm3) / max(1, order_q)
+        friction = (M.loyalty_charge(fee_reference, reliability[preferred], world.lm3) / max(1, order_q)
                     if preferred >= 0 and order_q > 0 and stock[preferred] >= order_q else 0.0)
         candidates.sort(key=lambda a: price[a] + (0 if a == preferred else friction))
         preferred_can_fulfill = (preferred >= 0 and math.isfinite(price[preferred])
@@ -1017,7 +1026,7 @@ def clear_distributors(world, cfg, products, t2_products, tick):
             # Rejected quotes are not failed availability checks.
             take = min(want, int(stock[candidate]))
             if take > 0 and bought == 0 and candidate != preferred and preferred_can_fulfill:
-                charge = M.loyalty_charge(reference, reliability[preferred], world.lm3)
+                charge = M.loyalty_charge(fee_reference, reliability[preferred], world.lm3)
                 if take * (price[preferred] - price[candidate]) <= charge:
                     continue
             world.t2Demand[candidate] += want
@@ -1056,7 +1065,7 @@ def clear_distributors(world, cfg, products, t2_products, tick):
         world.distributorPreferredSupplier[buyer] = new_incumbent
         world.distributorLastFulfilled[buyer] = bought
         if primary != preferred and preferred_can_fulfill:
-            charge = M.loyalty_charge(reference, reliability[preferred],
+            charge = M.loyalty_charge(fee_reference, reliability[preferred],
                                      world.lm3)
             world.t2Cash[world.t2LineFirm[preferred]] += charge
             world.t2SwitchingIncome[world.t2LineFirm[preferred]] += charge

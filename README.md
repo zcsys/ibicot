@@ -12,7 +12,7 @@ The Python backend owns the simulation. The browser is a dashboard and control s
 | --- | --- | ---: | --- |
 | T−1 | Gaia | 1 identity | Origin of four raw resources; no trading agent |
 | T0 | Extraction | 20 companies, 40 element machines | Extract Organics, Inorganics, Metals, and Radioactives; sell raw to T1 |
-| T1 | Refining | 1,008 companies | 72 per material; make four C1 and ten C2 materials directly from raw |
+| T1 | Refining | 982 companies | 392 C1 / 590 C2; per-material counts follow nominal downstream demand |
 | T2 | Manufacturing | 57,960 companies | Make 36 invented C3 and 69 invented C4 products; buy T1 materials and, for some C4 recipes, C3 goods |
 | T3 | Distribution | 1,000,000 buyers | Buy and consume invented T2 goods; external spending funds the economy |
 
@@ -25,9 +25,10 @@ A tick first checks the shared small-company exemption and prepays rent plus int
 | Mechanism | Implemented rule |
 | --- | --- |
 | Storage | T1/T2 goods space = storage − installed machinery footprint. Half is allocated to recipe-weighted inputs, half equally to output lines. |
-| T1 buying | Fill raw-input slots in lots of 1,000, capped by cash, stock, and space. |
-| T2 buying | Input request = min(slot shortage, space, `slot / (1 + (price / reference cost)²)`), then whole-unit cash/stock limits. |
+| T0/T1/T2 procurement | Calculate a feasible extraction/purchase quantity `Q`, then reduce to `Q / (1 + (price / reference)^eta)`; default eta 2. T1 rounds down to 1,000-unit lots and T2 to whole units afterward. |
+| Procurement references | T0 extraction cost and T1 raw quotes compare against `baseCost × difficultyTarget`; T2 uses ingredient reference costs. |
 | Production | Whole batches bounded by capacity, finished-stock target, ingredients, conversion cash, and estimated net margin. T0 has its own proportional extraction allocator. |
+| Reference overhead | Pricing and T2/distributor demand references add `(nominal rent + intelligence) / nominal output capacity`; actual expenses and inventory cost remain separate. |
 | Conversion | `$0.25 × max(1, complexity − 1)` per output item. |
 | Sales | Posted seller quote × delivered units; seller recognizes inventory book cost as COGS. |
 | Distributor demand | `20 / (1 + (price / buyer halving-price)^elasticity)`, stochastically rounded; five sampled offers plus the incumbent by default. |

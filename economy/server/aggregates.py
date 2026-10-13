@@ -52,7 +52,8 @@ except Exception:  # pragma: no cover - Numba/LLVM is optional
         return fn
 
 NE, NP, N1 = M.NE, M.NP, M.N1
-T1_FIRMS_PER_MATERIAL = M.T1_FIRMS_PER_MATERIAL
+T1_COUNTS = np.array(M.T1_PRODUCT_FIRM_COUNTS, dtype=np.int64)
+T1_OFFSETS = np.array(M.T1_FIRM_OFFSETS, dtype=np.int64)
 NI = M.NI
 PRODUCT_COUNT, SECTOR_COUNT = len(M.T2_PRODUCTS), len(M.T2_SECTORS)
 _VIEW_FIELDS = ('t1Operates', 'raw', 'rawBasis', 't1Fin', 't1FinBasis', 't1Sold',
@@ -117,7 +118,7 @@ def _project(w, made_by_line, controller, license_cost):
         totals[8] += int(rel_n > 0)
         totals[9] += int(controller[cid] != 0)
     for cohort in range(NP):
-        for cid in range(cohort * T1_FIRMS_PER_MATERIAL, (cohort + 1) * T1_FIRMS_PER_MATERIAL):
+        for cid in range(T1_OFFSETS[cohort], T1_OFFSETS[cohort] + T1_COUNTS[cohort]):
             b = cid * NP + cohort
             if math.isfinite(w.t1Price[b]):
                 cohorts[0, cohort] += w.t1Price[b]
@@ -283,7 +284,7 @@ def project_company_amounts(world, cfg, rent1, rent2, amount0=None):
         elements = np.zeros(NE)
     return {
         'products': market2,
-        'cohorts1': rent1.reshape(NP, N1 // NP).sum(axis=1),
+        'cohorts1': np.bincount(M.T1_FIRM_PRODUCT, weights=rent1, minlength=NP),
         'cohorts2': np.bincount(world.t2Sector[:n], weights=rent2, minlength=SECTOR_COUNT),
         'industries': np.bincount(_RENT_T2_SECTOR, weights=market2, minlength=SECTOR_COUNT),
         'complexity': complexity,

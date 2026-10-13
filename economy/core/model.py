@@ -50,7 +50,6 @@ WORLD_STORY = _DATA['WORLD_STORY']
 NE = len(ELEMENTS)          # 4
 NP = len(PRODUCTS)          # 14
 N0 = 20
-T1_FIRMS_PER_MATERIAL = 72
 T1_DEFAULT_CAPACITY = 6_000.0
 T1_C2_DEFAULT_CAPACITY = 6_000.0
 
@@ -58,7 +57,7 @@ def refinery_capacity(product, cfg):
     """Per-machine throughput; legacy scalar configurations cover both classes."""
     return cfg['t1Capacity'] if product['complexity'] == 1 else cfg.get('t1CapacityC2', cfg['t1Capacity'])
 
-N1 = NP * T1_FIRMS_PER_MATERIAL
+N1 = 982  # Tightest per-product demand/firm spread among totals 950–1,050.
 # Reverse product-count shares across complexities to favor simpler production.
 # Exact reversed-count allocation requires multiples of 28,980:
 # 36*x : 69*y = 23:12 => x:y = 529:144. Two blocks are nearest 50k.
@@ -90,6 +89,19 @@ for _c in _complexities:
                                  {p['catalogId']:1 for p in T2_PRODUCTS if p['complexity'] == _c}))
 T2_PRODUCT_FIRM_COUNTS = {p['id']:_allocation[p['catalogId']] for p in T2_PRODUCTS}
 T2_PRODUCTION_WEIGHTS = {p['catalogId']:_allocation[p['catalogId']]*T2_ALLOCATION_CAPACITIES[p['complexity']] for p in T2_PRODUCTS}
+# Allocate refiners by nominal T2 ingredient requirements at nominal capacity.
+# Count direct ingredient use once: C3 capacity already includes C4 input supply.
+T1_NOMINAL_DEMAND = {i:0 for i in range(NP)}
+for _p in T2_PRODUCTS:
+    for _m, _q in _p['ingredients']:
+        if _m < NP:
+            T1_NOMINAL_DEMAND[_m] += T2_PRODUCT_FIRM_COUNTS[_p['id']] * T2_ALLOCATION_CAPACITIES[_p['complexity']] * _q
+_t1_allocation = _apportion(N1, {p['catalogId']:T1_NOMINAL_DEMAND[i] for i,p in enumerate(PRODUCTS)})
+T1_PRODUCT_FIRM_COUNTS = [_t1_allocation[p['catalogId']] for p in PRODUCTS]
+T1_FIRM_OFFSETS = [sum(T1_PRODUCT_FIRM_COUNTS[:i]) for i in range(NP)]
+T1_FIRM_PRODUCT = [p for p,n in enumerate(T1_PRODUCT_FIRM_COUNTS) for _ in range(n)]
+T1_MAX_COHORT = max(T1_PRODUCT_FIRM_COUNTS)
+
 # Route final demand to saleable output after reserving intermediates. At a
 # common utilization, recursive final demand then exactly matches every line's
 # nominal production. Gross capacity remains uniform within each complexity.
@@ -147,7 +159,7 @@ def t2_markup(complexity: int, cfg) -> float:
 
 def refinery_storage(cfg, firm):
     """Storage belongs to the firm's native material cohort, not added machines."""
-    return cfg.get('t1C2Storage', cfg['storage']) if PRODUCTS[int(firm)//T1_FIRMS_PER_MATERIAL]['complexity'] == 2 else cfg.get('t1C1Storage', cfg['storage'])
+    return cfg.get('t1C2Storage', cfg['storage']) if PRODUCTS[T1_FIRM_PRODUCT[int(firm)]]['complexity'] == 2 else cfg.get('t1C1Storage', cfg['storage'])
 
 
 def goods_space(complexity: int, cfg) -> float:
@@ -231,7 +243,7 @@ def company_display_name(tier, generic_base, local_id):
 
 
 def t1_firm_name(cid):
-    code = PRODUCTS[int(cid) // T1_FIRMS_PER_MATERIAL]['code']
+    code = PRODUCTS[T1_FIRM_PRODUCT[int(cid)]]['code']
     base = T1_GENERIC_BASES[code]
     return company_display_name('T1',base,int(cid))
 
@@ -396,11 +408,12 @@ def tier2_starting_markup(product, cfg) -> float:
 
 
 def procurement_profile(product, cfg, reference_cost) -> dict:
-    # canon demand side (§5): V = unit cost; η = 2. Per-distributor quantity is
+    # Demand-side valuation includes nominal overhead; eta = 2. Quantity is
     # fixed at DISTRIBUTOR_QMAX; weighted invented-product routing lives in
     # initialize_distributors, using default capacity less intermediate use.
     return {'markup': cfg['t1Markup'],
-            'valuation': reference_cost}
+            'valuation': reference_cost,
+            'switchingReference': initial_tier2_cost(product, cfg)}
 
 
 def initial_tier2_cost(product, cfg) -> float:
@@ -409,20 +422,44 @@ def initial_tier2_cost(product, cfg) -> float:
             + conversion_cost(product['complexity'], cfg))
 
 
-def input_reference_cost(material, cfg) -> float:
-    """Canon demand-side reference (V = unit cost) for one input material.
+def reference_overhead_per_unit(product, cfg) -> float:
+    """Stable own-company overhead allowance at nominal one-line capacity.
 
-    Serves as the halving price of the price-sensitive fill-to-brim buying rule:
-    latent demand is the storage slot and the request follows the Tier 3 curve
-    q = q_max / (1 + (price / V) ** 2). Basic elements use the raw-material cost,
+    This calibration ignores current equity, utilization and installed-line
+    ownership. Actual exemption, expenses and inventory accounting are separate.
+    Upstream overhead is not recursively added to the existing base-cost ladder.
+    """
+    c = product['complexity']
+    if c <= 2:
+        storage = cfg['t1C1Storage'] if c == 1 else cfg['t1C2Storage']
+        capacity = cfg['t1Capacity'] if c == 1 else cfg['t1CapacityC2']
+        intelligence = cfg['t1IntelligencePerTick']
+    else:
+        storage = cfg['storage']
+        capacity = cfg['t2Capacity'][c]
+        intelligence = cfg['t2IntelligencePerTick']
+    return (storage / 1000 * cfg['storageRentPerThousandPerTick'] + intelligence) / capacity
+
+
+def reference_refinery_cost(product, cfg) -> float:
+    return refinery_unit_cost(product, cfg) + reference_overhead_per_unit(product, cfg)
+
+
+def input_reference_cost(material, cfg) -> float:
+    """Demand-side reference including nominal overhead for one input material.
+
+    Serves as the halving price of the final procurement reduction:
+    latent demand is the feasible purchase and the request follows the Tier 3 curve
+    q = q_max / (1 + (price / V) ** t2InputElasticity). Basic elements use the raw-material cost,
     refinery products their unit cost, and T2 intermediates their initial cost.
+    Each adds its own nominal-capacity rent/intelligence allowance.
     """
     p = T2_INPUT_PRODUCTS[material]
     if material < NE:
-        return cfg['t1MaterialCost']
+        return cfg['t1MaterialCost'] + reference_overhead_per_unit(p, cfg)
     if material < NP:
-        return refinery_unit_cost(p, cfg)
-    return initial_tier2_cost(p, cfg)
+        return reference_refinery_cost(p, cfg)
+    return reference_tier2_cost(p, cfg)
 
 
 def distributor_switching_reference(cfg):
@@ -443,7 +480,7 @@ def reference_tier2_cost(product, cfg=None) -> float:
     if cfg is None:
         from .config import default_cfg
         cfg = default_cfg()
-    return initial_tier2_cost(product, cfg)
+    return initial_tier2_cost(product, cfg) + reference_overhead_per_unit(product, cfg)
 
 
 def portfolio_options(products, max_width=T2_MAX_PRODUCTS_PER_FIRM):

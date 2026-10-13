@@ -517,7 +517,7 @@ class KernelRuntime:
         self.world.t1Operates[index] = 1
         self.world.t1UnitCost[index] = uc
         self.world.t1Rel[index] = 0.5
-        self.world.t1Price[index] = quantize_round(uc * (1 + _markup_code(code, self.cfg)), uc)
+        self.world.t1Price[index] = quantize_round((uc + M.reference_overhead_per_unit(product, self.cfg)) * (1 + _markup_code(code, self.cfg)), uc)
         self.world.t1PrevPrice[index] = self.world.t1Price[index]
         return self.publish()
 
@@ -596,8 +596,8 @@ class KernelRuntime:
         world = self.world
         cohorts = []
         for cidx in range(NP):
-            start = cidx * M.T1_FIRMS_PER_MATERIAL
-            end = start + M.T1_FIRMS_PER_MATERIAL
+            start = M.T1_FIRM_OFFSETS[cidx]
+            end = start + M.T1_PRODUCT_FIRM_COUNTS[cidx]
             pIdx = _PI[T1P[cidx]['product']]
             product = T1P[cidx]['product']
             price, uc = values['price'][cidx], values['unitCost'][cidx]
@@ -990,7 +990,7 @@ class KernelRuntime:
                     'maxInventory': self.cfg['t0Storage'], 'status': 'ACTIVE', 'elementData': elements}
         if id_ >= N1:
             return None
-        piBase = T1P[id_ // M.T1_FIRMS_PER_MATERIAL]
+        piBase = T1P[M.T1_FIRM_PRODUCT[id_]]
         raw = []
         for element in M.ELEMENTS:
             i = _EI[element]
@@ -1157,12 +1157,12 @@ class KernelRuntime:
         analytics = self._build_analytics(analytics, refinery)
 
         sid = max(0, min(N1 - 1, self.selectedId))
-        scode = T1P[sid // M.T1_FIRMS_PER_MATERIAL]['product']
+        scode = T1P[M.T1_FIRM_PRODUCT[sid]]['product']
         spi = _PI[scode]
 
         companies = []
         for cid in range(N1):
-            pi = _PI[T1P[cid // M.T1_FIRMS_PER_MATERIAL]['product']]
+            pi = _PI[T1P[M.T1_FIRM_PRODUCT[cid]]['product']]
             b = cid * NP
             columns = refinery[0]
             raw, fin = columns['raw'][cid], columns['finished'][cid]
@@ -1170,7 +1170,7 @@ class KernelRuntime:
             totalCOGS, totalMade = columns['cogs'][cid], columns['made'][cid]
             companies.append({
                 'id': cid, 'companyNumber':M.company_number('T1',cid), 'name': M.t1_firm_name(cid),
-                'sector': M.t1_sector(T1P[cid // M.T1_FIRMS_PER_MATERIAL]['product']),
+                'sector': M.t1_sector(T1P[M.T1_FIRM_PRODUCT[cid]]['product']),
                 'controller': 'PLAYER' if self.controller[cid] else 'BOT',
                 'equipment': list(self.equipment[cid]), 'price': float(world.t1Price[b + pi]),
                 'raw': float(raw), 'finished': float(fin), 'inventory': float(raw + fin),

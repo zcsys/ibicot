@@ -116,10 +116,10 @@
     c.footprint = { ...(serverCfg || M.ECONOMY_DEFAULTS).footprint };
     return c;
   }
-  for (let i = 0; i < M.PRODUCTS.length * M.T1_FIRMS_PER_MATERIAL; i++) {
+  for (let i = 0; i < M.T1_FIRM_PRODUCT.length; i++) {
     const o = document.createElement('option');
     o.value = i;
-    o.textContent = `${M.companyNumber('T1',i)} · ${displayProduct(productCodes[Math.floor(i / M.T1_FIRMS_PER_MATERIAL)])}`;
+    o.textContent = `${M.companyNumber('T1',i)} · ${displayProduct(productCodes[M.T1_FIRM_PRODUCT[i]])}`;
     $('playerCompany').appendChild(o);
   }
   $('equipmentProduct').innerHTML = productCodes
@@ -163,10 +163,10 @@
         sel.appendChild(o);
       });
     } else {
-      for (let i = 0; i < M.PRODUCTS.length * M.T1_FIRMS_PER_MATERIAL; i++) {
+      for (let i = 0; i < M.T1_FIRM_PRODUCT.length; i++) {
         const o = document.createElement('option');
         o.value = i;
-        o.textContent = `${M.companyNumber('T1',i)} · ${displayProduct(productCodes[Math.floor(i / M.T1_FIRMS_PER_MATERIAL)])}`;
+        o.textContent = `${M.companyNumber('T1',i)} · ${displayProduct(productCodes[M.T1_FIRM_PRODUCT[i]])}`;
         sel.appendChild(o);
       }
     }
