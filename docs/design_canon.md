@@ -154,7 +154,7 @@ occupied = Σ inputs m (Rₘ × sₘ) + Σ outputs l (Fₗ × cₗ)
 
 Recipe weighting ensures `ΣₘRₘ*sₘ=G/2`. Repeated inputs accumulate into one slot; shared inputs accumulate across lines. Actual purchases are capped by total free space and their own slot shortage. Firms cannot borrow another input's unused slot. Conversion releases exactly the space occupied by its output, so no extra production-space cap is necessary.
 
-For single default lines, finished targets are C1 `24,500`, C2 `12,250`, C3 `2,833`, C4 `2,000`. A C3 `C1+C2` machine targets `8,500/3` units of each ingredient (weighted space 1:2). A C4 `2×C2` machine targets 4,000 C2 inputs; `C1+C3` targets 2,000 of each. Input targets can be fractional; purchases are floored. T1 storage capacity follows the firm's original C1/C2 cohort even after it installs other machines.
+For single default lines, finished targets are C1 `24,500`, C2 `12,250`, C3 `2,833`, C4 `2,000`. A C3 `C1+C2` machine targets `8,500/3` units of each ingredient (weighted space 1:2). A C4 `2×C2` machine targets 4,000 C2 inputs; `C1+C3` targets 2,000 of each. Input targets can be fractional; T2 purchases round to the nearest whole unit, capped by feasible whole units. T1 purchases round down to 1,000-unit lots. T1 storage capacity follows the firm's original C1/C2 cohort even after it installs other machines.
 
 For each T1/T2 line, with cash `C`, ingredient basis `bₘ`, inventory `Rₘ`, capacity `K`, and quote `P`:
 
@@ -227,7 +227,8 @@ Both producer buying tiers use the same final settlement. For selected seller `s
 fee = M×U×(1+clamp(reliabilityᵢ,0,1)) if s≠i, i exists, and Iᵢ≥q; otherwise 0
 feasible = max(0, min(q, Iₛ, max(0,C−fee)/Pₛ))
 reduced = feasible / (1 + (Pₛ/V)^eta)
-filled = L × floor(reduced/L)
+filled = L × floor(reduced/L)                  for T1
+filled = min(round(reduced), floor(feasible))   for T2
 ```
 
 For T1, `L=1,000`; for T2, `L=1`. Do not lot-round the feasible quantity before applying eta. If the fee is positive and `filled×(Pᵢ−Pₛ)≤fee`, revert to the incumbent, discard the provisional order, and recompute feasibility and one price reduction at the incumbent's quote without a fee. This is a replacement calculation, not a second reduction of already reduced units. Charge a fee only for a positive fill. Do not refill the quantity withheld by eta. Later ingredients use remaining actual cash, as before.
@@ -407,3 +408,13 @@ The following tests exercise the implemented contract:
 | Randomness, execution, persistence/recording | [RNG](../tests/py/test_rng.py), [kernel](../tests/py/test_kernel.py), [review fixes](../tests/py/test_review_fixes.py), [recording](../tests/py/test_recording.py) |
 
 Catalog weights calibrate a possible common-utilization flow; they do not guarantee equilibrium, equal material demand, profitability, or full-capacity operation. Cash, prices, purchase curves, rounded lots, sampled search, storage, and production gates determine realized outcomes. No runtime invention, C5 manufacturing, autonomous expansion, or distributor budget model should be inferred from dormant fields or older design material.
+
+The producer comparison shows **Spaces** beside Inventory · units: total storage minus installed machinery footprint, including space occupied by goods. This is a storage-space count, not production units/tick or empty storage. T0 has no modeled machinery footprint. Tier totals sum company spaces; complexity rows share multi-line company spaces equally across installed lines, and per-company rows divide by represented firms.
+
+**Inventory · $** in the producer comparison sums quantity × recorded cost basis for raw inputs, intermediate inputs and finished goods. It excludes machinery and uses no sale-price markup. Tier and complexity allocation follows the inventory-unit rows; per-company figures divide by represented firms.
+
+The dashboard’s **Run · 1 tick / 2 s** mode advances immediately, then schedules one tick every 2 seconds, counting tick processing and publication time within that interval. Max-speed and single-step controls retain their existing behavior.
+
+**Return on Cash · %** beside Net Profit in the producer comparison is current-tick net profit divided by current cash, displayed as a percentage. It uses aggregate profit / aggregate cash for both totals and per-company views, not an average of individual company ratios. Zero or missing cash and unavailable profit display “—”. This is a per-tick measure, not an annualized return.
+
+T2 input settlement uses `min(round(reduced), floor(feasible))` for whole-unit orders, including an incumbent recheck. Python `round` chooses the nearest integer, with exact halves going to the even integer. T1 retains floor-to-1,000-unit-lot settlement. For four available tanks at $15.84 against an $8.1875 reference, reduced demand is 0.843 and the purchase is one tank. A feasible quantity below one still cannot fund or fit a whole item.

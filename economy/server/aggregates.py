@@ -21,20 +21,30 @@ def project_complexity_balances(world, cfg):
     matching the existing overhead allocation and avoiding double counting.
     """
     from ..kernel.tick import storage_rent_equity
+    from ..core.state import tier1_storage_capacities
     result = {}
     for tier in ('t1', 't2'):
         n = M.N1 if tier == 't1' else cfg['t2FirmCount']
         if tier == 't1':
             comp = np.tile([p['complexity'] for p in M.PRODUCTS], n)
+            footprints = np.array([cfg['footprint'][p['complexity']] for p in M.PRODUCTS])
+            spaces = tier1_storage_capacities(cfg) - world.t1Operates.reshape(n,M.NP) @ footprints
             inventory = world.raw.reshape(n,M.NE).sum(axis=1)
             inventory += (world.t1Fin*world.t1Operates).reshape(n,M.NP).sum(axis=1)
+            inventory_value = (world.raw*world.rawBasis).reshape(n,M.NE).sum(axis=1)
+            inventory_value += (world.t1Fin*world.t1FinBasis*world.t1Operates).reshape(n,M.NP).sum(axis=1)
         else:
             lc = int(world.t2LineCount)
             comp = np.asarray([p['complexity'] for p in M.T2_PRODUCTS])[world.t2LineProduct[:lc]]
+            spaces = cfg['storage'] - np.bincount(world.t2LineFirm[:lc],
+                weights=np.array([cfg['footprint'].get(c, 0) for c in range(6)])[comp], minlength=n)
             inventory = world.t2Raw[:n*M.NE].reshape(n,M.NE).sum(axis=1)
             inventory += world.t2T1Raw[:n*M.NI].reshape(n,M.NI).sum(axis=1)
             inventory += np.bincount(world.t2LineFirm[:lc],weights=world.t2Fin[:lc],minlength=n)
-        values = dict(cash=getattr(world,tier+'Cash')[:n],
+            inventory_value = (world.t2Raw[:n*M.NE]*world.t2RawBasis[:n*M.NE]).reshape(n,M.NE).sum(axis=1)
+            inventory_value += (world.t2T1Raw[:n*M.NI]*world.t2T1Basis[:n*M.NI]).reshape(n,M.NI).sum(axis=1)
+            inventory_value += np.bincount(world.t2LineFirm[:lc], weights=world.t2Fin[:lc]*world.t2FinBasis[:lc], minlength=n)
+        values = dict(inventoryValue=inventory_value, spaces=spaces, cash=getattr(world,tier+'Cash')[:n],
                       equity=storage_rent_equity(world,cfg,tier), inventory=inventory,
                       bought=getattr(world,tier+'Bought')[:n])
         for key,value in values.items():

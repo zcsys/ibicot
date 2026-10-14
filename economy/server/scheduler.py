@@ -2,10 +2,10 @@
 from __future__ import annotations
 
 # Scheduler modes mirror the canon machine contract (docs/design_canon.md §12):
-#   fixed — one tick then 500 ms wall delay (~2 ticks/s)
+#   fixed — one tick every 2 seconds (including processing time)
 #   max   — loop ticks within a 45 ms wall budget, then yield
 #   step  — exactly one tick (only when not running)
-FIXED_DELAY_S = 0.5
+FIXED_DELAY_S = 2.0
 MAX_BUDGET_S = 0.045
 
 

@@ -52,12 +52,14 @@ def affordable_order(supplier, preferred, request, cash, stock, prices,
     if price_reference > 0.0:
         # Economic feasibility first; price reduction once; legal rounding last.
         feasible = max(0.0, min(request, stock[supplier], max(0.0, cash - charge) / prices[supplier]))
-        quantity = math.floor(feasible / (1.0 + (prices[supplier] / price_reference) ** elasticity) / lot) * lot
+        reduced = feasible / (1.0 + (prices[supplier] / price_reference) ** elasticity)
+        quantity = min(round(reduced), math.floor(feasible)) if lot == 1 else math.floor(reduced / lot) * lot
         if charge > 0 and quantity * (prices[preferred] - prices[supplier]) <= charge:
             supplier = preferred
             charge = 0.0
             feasible = max(0.0, min(request, stock[supplier], max(0.0, cash) / prices[supplier]))
-            quantity = math.floor(feasible / (1.0 + (prices[supplier] / price_reference) ** elasticity) / lot) * lot
+            reduced = feasible / (1.0 + (prices[supplier] / price_reference) ** elasticity)
+            quantity = min(round(reduced), math.floor(feasible)) if lot == 1 else math.floor(reduced / lot) * lot
         # A stock-limited feasible plan cannot claim unplaced demand as orders.
         return supplier, quantity, quantity, charge if quantity > 0 else 0.0
     funded = math.floor(min(request, max(0.0, cash - charge) / prices[supplier]) / lot) * lot

@@ -73,10 +73,10 @@ Starting empty, with illustrative chosen quotes of $1.88 for C1 and $3.44 for C2
 
 | Input | Purchase reference | Feasible-purchase curve before whole-unit rounding | Purchased units |
 | --- | ---: | --- | ---: |
-| C1 | $1.6066667 | `(8,500/3) / (1 + (1.88/1.6066667)²)` ≈ 1,195.91 | 1,195 |
-| C2 | $3.1066667 | `(8,500/3) / (1 + (3.44/3.1066667)²)` ≈ 1,272.78 | 1,272 |
+| C1 | $1.6066667 | `(8,500/3) / (1 + (1.88/1.6066667)²)` ≈ 1,195.91 | 1,196 |
+| C2 | $3.1066667 | `(8,500/3) / (1 + (3.44/3.1066667)²)` ≈ 1,272.78 | 1,273 |
 
-These quantities assume neither cash nor stock binds. C1's purchase reference is $1.6066667: its distinct $1.25 base plus $0.3566667 overhead. Its pricing reference is $1.8566667. Here the feasible purchase equals the empty slot. For a 32-unit shortage with ample cash and stock, the same quotes permit only 13 C1 and 14 C2 units after eta and rounding. If cash or stock limits that feasible purchase further, eta applies to that smaller quantity. Ingredients are processed sequentially, and early purchases can exhaust conversion cash.
+T2 rounds reduced quantities to the nearest whole unit (exact halves to even), capped by whole units affordable, available and storable. These quantities assume neither cash nor stock binds. C1's purchase reference is $1.6066667: its distinct $1.25 base plus $0.3566667 overhead. Its pricing reference is $1.8566667. Here the feasible purchase equals the empty slot. For a 32-unit shortage with ample cash and stock, the same quotes permit only 14 C1 and 14 C2 units after eta and rounding. If cash or stock limits that feasible purchase further, eta applies to that smaller quantity. Ingredients are processed sequentially, and early purchases can exhaust conversion cash.
 
 At these purchased bases, actual C3 production costs `$1.88 + $3.44 + $0.50 = $5.82`. Take an illustrative quote of $7.27. With 32 feasible outputs and $56 forecast rent:
 

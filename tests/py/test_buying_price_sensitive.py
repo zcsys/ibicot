@@ -21,6 +21,19 @@ class PriceSensitiveBuyingTests(unittest.TestCase):
                 1., 0., 1000, 1., 2.)
             self.assertEqual(result, (0, expected, expected, 0.))
 
+    def test_single_units_round_nearest_with_hard_limits(self):
+        from economy.core.trading import affordable_order
+        for feasible, price, reference, expected in (
+            (4., 15.84, 8.1875, 1), (2., 1., 1., 1),
+            (1., 2., 1., 0), (.9, .1, 1., 0),
+            (3., 1., 1., 2), (5., 1., 1., 2)):
+            for binding in ('cash', 'stock', 'space'):
+                result = affordable_order(0, -1, feasible if binding == 'space' else 100.,
+                    feasible * price if binding == 'cash' else 1e6,
+                    np.array([feasible if binding == 'stock' else 100.]),
+                    np.array([price]), np.array([1.]), 1., 0., 1, reference, 2.)
+                self.assertEqual(result[2], expected, (feasible, binding))
+
     def test_fee_rechecked_after_reduction(self):
         from economy.core.trading import affordable_order
         # Before eta: challenger saves $100 and owes $20. After eta the
@@ -28,7 +41,7 @@ class PriceSensitiveBuyingTests(unittest.TestCase):
         result = affordable_order(1, 0, 100., 10000.,
             np.array([1000., 1000.]), np.array([10., 9.]), np.array([1., 1.]),
             1., 10., 1, 1., 2.)
-        self.assertEqual(result, (0, 0, 0, 0.))
+        self.assertEqual(result, (0, 1, 1, 0.))
 
     @unittest.skipUnless(NB._HAVE_NUMBA, 'Numba not installed')
     def test_t1_final_reduction_and_compiled_parity(self):
@@ -67,7 +80,7 @@ class PriceSensitiveBuyingTests(unittest.TestCase):
             book.price[supplier]=4*M.input_reference_cost(material,cfg)
             book.fin[supplier]=100000;w.t2Cash[0]=1000000
             bought=K.transfer_tier2_input(w,cfg,0,material,supplier,slots[material],[supplier],book)
-            self.assertEqual(bought,int(slots[material]*fraction))
+            self.assertEqual(bought,round(slots[material]*fraction))
 
     def test_reference_price_and_binding_limits(self):
         for limit in ('curve', 'cash', 'stock', 'slot', 'fractional-slot', 'over-slot'):
@@ -85,13 +98,13 @@ class PriceSensitiveBuyingTests(unittest.TestCase):
                 book.fin[supplier] = 100000
                 w.t2Cash[0] = 1000000
                 w.t2Preferred[:] = -1
-                expected = int(slots[material] / 2)
+                expected = round(slots[material] / 2)
                 if limit == 'cash':
                     w.t2Cash[0] = quote * 2.5
                     expected = 1
                 elif limit == 'stock':
                     book.fin[supplier] = 3.5
-                    expected = 1
+                    expected = 2
                 elif limit == 'slot':
                     raw[material] = slots[material] - 2.25
                     expected = 1

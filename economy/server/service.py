@@ -22,6 +22,7 @@ from pydantic import BaseModel
 from ..core import model as M
 from .persistence import load_checkpoint, save_checkpoint
 from .runtime import KernelRuntime, _STATS_DIR
+from .scheduler import FIXED_DELAY_S
 
 ROOT = Path(__file__).resolve().parents[2]  # repository root
 WEB_DIR = ROOT / 'web'                       # front-end static files
@@ -212,7 +213,7 @@ async def _scheduler():
         rt.step()
         rt.publish()
         await _manager.broadcast({'type': 'snapshot', 'data': rt.lastSnapshot})
-        delay = 0.01 if rt.mode == 'max' else max(0.02, 0.5 - (time.monotonic() - started))
+        delay = 0.01 if rt.mode == 'max' else max(0.02, FIXED_DELAY_S - (time.monotonic() - started))
         await asyncio.sleep(delay)
 
 

@@ -25,7 +25,7 @@ A tick first checks the shared small-company exemption and prepays rent plus int
 | Mechanism | Implemented rule |
 | --- | --- |
 | Storage | T1/T2 goods space = storage − installed machinery footprint. Half is allocated to recipe-weighted inputs, half equally to output lines. |
-| T0/T1/T2 procurement | Calculate a feasible extraction/purchase quantity `Q`, then reduce to `Q / (1 + (price / reference)^eta)`; default eta 2. T1 rounds down to 1,000-unit lots and T2 to whole units afterward. |
+| T0/T1/T2 procurement | Calculate a feasible extraction/purchase quantity `Q`, then reduce to `Q / (1 + (price / reference)^eta)`; default eta 2. T1 rounds down to 1,000-unit lots and T2 rounds to the nearest whole unit afterward, capped by feasible whole units. |
 | Procurement references | T0 extraction cost and T1 raw quotes compare against `baseCost × difficultyTarget`; T2 uses ingredient reference costs. |
 | Production | Whole batches bounded by capacity, finished-stock target, ingredients, conversion cash, and estimated net margin. T0 has its own proportional extraction allocator. |
 | Reference overhead | Pricing and T2/distributor demand references add `(nominal rent + intelligence) / nominal output capacity`; actual expenses and inventory cost remain separate. |

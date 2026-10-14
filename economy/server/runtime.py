@@ -1324,7 +1324,8 @@ class KernelRuntime:
         t0_cogs = _array_sum(world.t0COGS)
         t0_machines = sum(len(p['elements']) for p in T0P)
         t0_capacity = float(cfg['t0Capacity'] * t0_machines)
-        c0 = {'name': 'C-0', 'products': NE, 'lines': t0_machines, 'firms': N0, 'capacity': t0_capacity,
+        c0 = {'name': 'C-0', 'products': NE, 'lines': t0_machines, 'firms': N0, 'capacity': t0_capacity, 'spaces': float(N0 * cfg['t0Storage']),
+                       'inventoryValue': float(np.sum(world.t0Inv * world.t0InvBasis)),
               'readyStock': analytics['t0Inventory'], 'made': t0_made, 'sold': t0_sold,
               'revenue': t0_revenue, 'cogs': t0_cogs,
               'active': float(world.t0Demand.sum()), 'fulfilled': t0_sold,
@@ -1473,7 +1474,8 @@ class KernelRuntime:
             'analyticsHistory': self.analyticsHistory,
             'tiers': {
                 't0': {'firms': N0, 'bought': 0, 'made': float(analytics['t0Produced'].sum()),
-                       'capacity': t0_capacity,
+                       'capacity': t0_capacity, 'spaces': float(N0 * cfg['t0Storage']),
+                       'inventoryValue': float(np.sum(world.t0Inv * world.t0InvBasis)),
                        'utilization': float(analytics['t0Produced'].sum() / t0_capacity) if t0_capacity > 0 else 0.0,
                        'cogs': _array_sum(world.t0COGS), 'grossProfit': analytics['t0Revenue'] - _array_sum(world.t0COGS),
                        'inventory': analytics['t0Inventory'], 'cash': analytics['t0Cash'],
@@ -1484,6 +1486,8 @@ class KernelRuntime:
                        'raw': analytics['t1Raw'], 'finished': analytics['t1Finished'],
                        'cash': analytics['t1Cash'], 'equity': analytics['t1Equity'],
                        'bought': _array_sum(world.t1Bought), 'made': analytics['t1Made'],
+                       'inventoryValue': sum(complexity_balances[c]['inventoryValue'] for c in (1, 2)),
+                       'spaces': sum(complexity_balances[c]['spaces'] for c in (1, 2)),
                        'capacity': float(sum(p['productionCapacity'] for p in productStats)),
                        'utilization': float(analytics['t1Made'] / sum(p['productionCapacity'] for p in productStats)) if sum(p['productionCapacity'] for p in productStats) > 0 else 0.0,
                        'sold': analytics['t1Sold'], 'revenue': analytics['t1Revenue'],
@@ -1501,6 +1505,8 @@ class KernelRuntime:
                        'bought': _array_sum(world.t2Bought, cfg['t2FirmCount']), 'made': analytics['t2Made'],
                        'sold': analytics['t2Sold'], 'revenue': analytics['t2Revenue'],
                        'cogs': analytics['t2COGS'], 'grossProfit': analytics['t2Revenue'] - analytics['t2COGS'],
+                       'inventoryValue': sum(complexity_balances[c]['inventoryValue'] for c in (3, 4)),
+                       'spaces': sum(complexity_balances[c]['spaces'] for c in (3, 4)),
                        'capacity': t2Totals['capacity'], 'utilization': t2Totals['utilization'],
                        'margin': t2Totals['margin'], 'desired': t2Totals['active'],
                        'fulfilled': t2Totals['fulfilled'], 'fillRate': t2Totals['fillRate']},

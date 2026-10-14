@@ -191,8 +191,8 @@
       'fillRate',
       'stockUnmet',
     ],
-    tierComparison: ['name','complexity','firms','capacity','utilization','fillRate','cash','equity','inventory','bought','made','sold','revenue','cogs','grossProfit','netProfit','netMargin','margin','reliability'],
-    tierComparisonTotals: ['name','complexity','firms','capacity','utilization','fillRate','cash','equity','inventory','bought','made','sold','revenue','cogs','grossProfit','netProfit','netMargin','margin','reliability'],
+    tierComparison: ['name','complexity','firms','capacity','utilization','fillRate','cash','equity','inventory','spaces','inventoryValue','bought','made','sold','revenue','cogs','grossProfit','netProfit','returnOnCash','netMargin','margin','reliability'],
+    tierComparisonTotals: ['name','complexity','firms','capacity','utilization','fillRate','cash','equity','inventory','spaces','inventoryValue','bought','made','sold','revenue','cogs','grossProfit','netProfit','returnOnCash','netMargin','margin','reliability'],
     productCategories: ['name','tier','role','products','lines','machineryPrice','unitCapacity','avgPrice','avgUnitCost','capacity','utilization','readyStock','made','sold','soldPerLine','revenue','cogs','grossProfit','netProfit','netMargin','profitPerLine','netProfitPerLine','margin','active','fillRate','stockUnmet'],
     tier2Products: ['name','code','complexity','needType','sector','primaryMaterial','recipe','firms','machineryPrice','avgPrice','avgUnitCost','productionCapacity','utilization','readyStock','made','sold','revenue','grossProfit','netProfit','netMargin','margin','active','fillRate','stockUnmet','hhi','reliability'],
     tier2Industries: ['name','description','products','lines','capacity','utilization','readyStock','made','sold','revenue','cogs','grossProfit','netProfit','netMargin','margin','active','fulfilled','fillRate','stockUnmet','volumeShare','reliability'],
@@ -785,12 +785,12 @@
     drawLine('distributorSpendingChart', hist, [hist.map(point => point.tiers.distributors.revenue)], ['Spending'], 0, true);
   }
   function renderComparisons(s) {
-    const moneyKeys = new Set(['cash','cashPerFirm','equity','equityPerCompany','revenue','revenuePerFirm','cogs','grossProfit','netProfit','netProfitPerCompany','machineryPrice','avgPrice','avgUnitCost','profitPerLine','netProfitPerLine']);
-    const ratioKeys = new Set(['netMargin','margin','utilization','fillRate','reliability']);
+    const moneyKeys = new Set(['inventoryValue','cash','cashPerFirm','equity','equityPerCompany','revenue','revenuePerFirm','cogs','grossProfit','netProfit','netProfitPerCompany','machineryPrice','avgPrice','avgUnitCost','profitPerLine','netProfitPerLine']);
+    const ratioKeys = new Set(['returnOnCash','netMargin','margin','utilization','fillRate','reliability']);
     const cells = (row, keys, perCompany = false) => keys.map(key => {
       const value = row[key];
       const text = value == null ? '—' : typeof value === 'string' ? value :
-        ratioKeys.has(key) ? pct(value) : moneyKeys.has(key) ? (['avgPrice','avgUnitCost'].includes(key) ? fmtUnitPrice(value) : fmtMoney(value,perCompany ? 2 : ['profitPerLine','netProfitPerLine','netProfitPerCompany'].includes(key)?2:0)) :
+        key === 'returnOnCash' ? fmtFixed(value * 100, 3) + '%' : ratioKeys.has(key) ? pct(value) : moneyKeys.has(key) ? (['avgPrice','avgUnitCost'].includes(key) ? fmtUnitPrice(value) : fmtMoney(value,perCompany ? 2 : ['profitPerLine','netProfitPerLine','netProfitPerCompany'].includes(key)?2:0)) :
         key === 'soldPerLine' || (perCompany && key !== 'firms') ? fmtFixed(value, 2) : fmtInt(value);
       return '<td>' + text + '</td>';
     }).join('');
@@ -811,12 +811,13 @@
     });
     // Keep each complexity beneath its tier when sorting; tier rows are totals,
     // not additional producers. Balance allocations come from the kernel.
-    const perCompanyKeys = ['capacity','cash','equity','inventory','bought','made','sold','revenue','cogs','grossProfit','netProfit'];
+    const perCompanyKeys = ['capacity','spaces','cash','equity','inventory','inventoryValue','bought','made','sold','revenue','cogs','grossProfit','netProfit'];
     for (const table of ['tierComparison', 'tierComparisonTotals']) {
       const perCompany = table === 'tierComparison';
       const values = row => {
-        if (!perCompany) return row;
-        const result = { ...row };
+        const result = { ...row, returnOnCash: row.netProfit != null && row.cash > 0
+          ? row.netProfit / row.cash : null };
+        if (!perCompany) return result;
         for (const key of perCompanyKeys)
           result[key] = row[key] == null || !(row.firms > 0) ? null : row[key] / row.firms;
         return result;
@@ -964,8 +965,8 @@
     $('t2Utilization').textContent = pct(t2.utilization); $('t2Margin').textContent = pct(meaningfulRatio(t2.grossProfit,t2.revenue)); $('t2Fill').textContent = pct(meaningfulRatio(t2.fulfilled,t2.desired));
     $('t2StockCoverage').textContent = t2.stockCoverage === null ? 'No sales yet' : `${t2.stockCoverage.toFixed(1)} ticks`;
     $('t2TradingFirms').textContent = `${fmtInt(t2.tradingFirms360)} / ${fmtInt(t2.firms)}`;
-    const ratioKeys = new Set(['netMargin','margin','utilization','fillRate','volumeShare','reliability']);
-    const moneyKeys = new Set(['cash','equity','equipmentBookValue','machineryPrice','avgPrice','avgUnitCost','revenue','cogs','grossProfit','netProfit']);
+    const ratioKeys = new Set(['returnOnCash','netMargin','margin','utilization','fillRate','volumeShare','reliability']);
+    const moneyKeys = new Set(['inventoryValue','cash','equity','equipmentBookValue','machineryPrice','avgPrice','avgUnitCost','revenue','cogs','grossProfit','netProfit']);
     const format = (key, value) => typeof value === 'string' ? value : ratioKeys.has(key) ? pct(value) :
       moneyKeys.has(key) ? (['avgPrice','avgUnitCost'].includes(key)?fmtUnitPrice(value):fmtMoney(value,0)) : key === 'hhi' ? fmtFixed(value,3) : fmtInt(value);
     const cells = (c, keys) => keys.map((key)=> {
