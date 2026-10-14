@@ -310,14 +310,33 @@
       .mini-table td {
         padding: 5px 6px;
       }
-      #tierComparison .producer-tier {
+      .producer-scroll { max-height: none; }
+      .producer-comparison .producer-section th {
+        position: static;
+        padding: 18px 6px 10px;
+        text-align: left;
+      }
+      .producer-comparison .producer-section span { position: sticky; left: 6px; }
+      .producer-comparison thead th { position: static; }
+      .producer-comparison .producer-column-headings th { background: var(--panel); }
+      .producer-comparison {
+        table-layout: fixed;
+        width: 3070px;
+      }
+      .producer-comparison col { width: 160px; }
+      .producer-comparison col:first-child { width: 260px; }
+      .producer-comparison col:nth-child(2) { width: 110px; }
+      .producer-comparison col:nth-child(3) { width: 90px; }
+      .producer-comparison col:nth-child(4) { width: 190px; }
+      .producer-comparison col:nth-child(6) { width: 180px; }
+      .producer-comparison .producer-tier {
         background: rgba(255, 255, 255, 0.035);
       }
-      #tierComparison .producer-complexity th {
+      .producer-comparison .producer-complexity th {
         padding-left: 22px;
         font-weight: 400;
       }
-      #tierComparison .producer-toggle {
+      .producer-comparison .producer-toggle {
         padding: 0;
         border: 0;
         background: transparent;
@@ -325,7 +344,7 @@
         font: inherit;
         cursor: pointer;
       }
-      #tierComparison .producer-toggle:focus-visible {
+      .producer-comparison .producer-toggle:focus-visible {
         outline: 2px solid currentColor;
         outline-offset: 3px;
       }
@@ -734,37 +753,64 @@
             <p class="analytics-note">
               Cash, equity and inventory include all resource companies, refineries and manufacturers. Distributor spending counts final purchases once. Resource companies extract raw elements from the environment and sell to companies; refineries buy and sell to companies; manufacturers buy from companies and sell to distributors. Bought counts actual units received; extraction appears under Made; its Bought column is not applicable.
             </p>
-            <div class="table-wrap industry-table" tabindex="0" aria-label="Producer comparison table, scroll for more metrics">
-              <table class="mini-table">
+            <p class="analytics-note">Per-company amounts are averages; Firms shows the row’s company count. Percentages retain the same aggregate ratios as the totals section.</p>
+            <div class="table-wrap industry-table producer-scroll" tabindex="0" aria-label="Producer comparison, per-company averages and totals; scroll horizontally for more metrics">
+              <table class="mini-table producer-comparison">
+                <colgroup><col><col><col><col><col><col><col><col><col><col><col><col><col><col><col><col><col><col><col></colgroup>
                 <thead>
-                  <tr>
-                    <th>Producer</th>
-                    <th>Complexity</th>
-                    <th>Firms</th>
-                    <th>Capacity · units / tick</th>
-                    <th>Utilization</th>
-                    <th>Customer fulfillment</th>
-                    <th>Cash</th>
-                    <th>Cash / firm</th>
-                    <th>Book equity</th>
-                    <th>Book equity / company</th>
-                    <th>Inventory · units</th>
-                    <th>Bought / tick</th>
-                    <th>Made / tick</th>
-                    <th>Sold / tick</th>
-                    <th>Revenue / tick</th>
-                    <th>Revenue / firm / tick</th>
-                    <th>COGS / tick</th>
-                    <th>Gross profit / tick</th><th>Net profit / tick</th><th>Net profit / company / tick</th><th>Net margin</th>
-                    <th>Gross margin</th>
-                    <th>Reliability</th>
-                  </tr>
+                  <tr class="producer-section"><th colspan="19"><span>Per company</span></th></tr>
+                  <tr data-sort-table="tierComparison">
+                  <th>Producer</th>
+                  <th>Complexity</th>
+                  <th>Firms</th>
+                  <th>Capacity · units / tick</th>
+                  <th>Utilization</th>
+                  <th>Customer fulfillment</th>
+                  <th>Cash</th>
+                  <th>Book equity</th>
+                  <th>Inventory · units</th>
+                  <th>Bought / tick</th>
+                  <th>Made / tick</th>
+                  <th>Sold / tick</th>
+                  <th>Revenue / tick</th>
+                  <th>COGS / tick</th>
+                  <th>Gross profit / tick</th>
+                  <th>Net profit / tick</th>
+                  <th>Net margin</th>
+                  <th>Gross margin</th>
+                  <th>Reliability</th>
+                </tr>
                 </thead>
                 <tbody id="tierComparison"></tbody>
+                <tbody>
+                  <tr class="producer-section"><th colspan="19"><span>Totals</span></th></tr>
+                  <tr class="producer-column-headings" data-sort-table="tierComparisonTotals">
+                  <th>Producer</th>
+                  <th>Complexity</th>
+                  <th>Firms</th>
+                  <th>Capacity · units / tick</th>
+                  <th>Utilization</th>
+                  <th>Customer fulfillment</th>
+                  <th>Cash</th>
+                  <th>Book equity</th>
+                  <th>Inventory · units</th>
+                  <th>Bought / tick</th>
+                  <th>Made / tick</th>
+                  <th>Sold / tick</th>
+                  <th>Revenue / tick</th>
+                  <th>COGS / tick</th>
+                  <th>Gross profit / tick</th>
+                  <th>Net profit / tick</th>
+                  <th>Net margin</th>
+                  <th>Gross margin</th>
+                  <th>Reliability</th>
+                </tr>
+                </tbody>
+                <tbody id="tierComparisonTotals"></tbody>
               </table>
             </div>
             <p class="analytics-note"><strong>Net profit = gross profit + switching income − switching expense − storage expense − intelligence expense.</strong> Rent and market intelligence are charged every tick. Intelligence costs $2,000 per T1 company and $20 per T2 company. Net margin = net profit ÷ revenue; undefined when revenue is zero. T0 is exempt. The Colony subsidizes both rent and intelligence for T1/T2 below $1.5M opening book equity; at exactly $1.5M they are eligible. Eligible companies must prepay both charges in full; otherwise buying, production, sales and repricing stop for that tick. No new debt is created. Switching transfers are included as income for the incumbent and expense for the buyer. Historical snapshots without those postings show net earnings as unavailable. Product/complexity views allocate each paying company’s charge across its own installed lines; company views use each company’s full rent and intelligence. Amounts shown are per tick.</p>
-            <p class="analytics-note">Current tick · indented complexity rows break down the tier totals; do not add them to their parent rows. Per-firm figures use the firms represented by each row. A company with several complexities can appear in several complexity rows. Cash, book equity, inventory and purchases use actual company records. For companies spanning complexities, shared company totals are allocated equally across installed lines. Capacity is installed output per tick; utilization is production divided by capacity. Customer fulfillment is fulfilled units divided by desired units: company buyers for T0/T1, Distributors for T2 (including C-3/C-4). Sorting keeps complexities beneath their tier. COGS is the cost basis of units sold; unsold production adds inventory rather than reducing gross profit. — means unavailable or no activity for a ratio.</p>
+            <p class="analytics-note">Current tick · indented complexity rows break down the tier totals; do not add them to their parent rows. The per-company and totals tables show matching metrics. Per-company amounts divide each row’s totals by its represented firms; percentages are not divided by the firm count. A company with several complexities can appear in several complexity rows. Cash, book equity, inventory and purchases use actual company records. For companies spanning complexities, shared company totals are allocated equally across installed lines. Capacity is installed output per tick; utilization is production divided by capacity. Customer fulfillment is fulfilled units divided by desired units: company buyers for T0/T1, Distributors for T2 (including C-3/C-4). Sorting keeps complexities beneath their tier. COGS is the cost basis of units sold; unsold production adds inventory rather than reducing gross profit. — means unavailable or no activity for a ratio.</p>
             <div class="table-toolbar">
               <label for="overviewTier">Chart scope</label>
               <select id="overviewTier">
@@ -1899,6 +1945,6 @@
     <script src="./midbridge-catalog.js"></script>
     <script src="./transport.js"></script>
     <script src="./profitability.js"></script>
-    <script src="./app.js?v=producer-complexity-5"></script>
+    <script src="./app.js?v=producer-single-table-8"></script>
   </body>
 </html>

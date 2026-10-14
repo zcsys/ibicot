@@ -191,7 +191,8 @@
       'fillRate',
       'stockUnmet',
     ],
-    tierComparison: ['name','complexity','firms','capacity','utilization','fillRate','cash','cashPerFirm','equity','equityPerCompany','inventory','bought','made','sold','revenue','revenuePerFirm','cogs','grossProfit','netProfit','netProfitPerCompany','netMargin','margin','reliability'],
+    tierComparison: ['name','complexity','firms','capacity','utilization','fillRate','cash','equity','inventory','bought','made','sold','revenue','cogs','grossProfit','netProfit','netMargin','margin','reliability'],
+    tierComparisonTotals: ['name','complexity','firms','capacity','utilization','fillRate','cash','equity','inventory','bought','made','sold','revenue','cogs','grossProfit','netProfit','netMargin','margin','reliability'],
     productCategories: ['name','tier','role','products','lines','machineryPrice','unitCapacity','avgPrice','avgUnitCost','capacity','utilization','readyStock','made','sold','soldPerLine','revenue','cogs','grossProfit','netProfit','netMargin','profitPerLine','netProfitPerLine','margin','active','fillRate','stockUnmet'],
     tier2Products: ['name','code','complexity','needType','sector','primaryMaterial','recipe','firms','machineryPrice','avgPrice','avgUnitCost','productionCapacity','utilization','readyStock','made','sold','revenue','grossProfit','netProfit','netMargin','margin','active','fillRate','stockUnmet','hhi','reliability'],
     tier2Industries: ['name','description','products','lines','capacity','utilization','readyStock','made','sold','revenue','cogs','grossProfit','netProfit','netMargin','margin','active','fulfilled','fillRate','stockUnmet','volumeShare','reliability'],
@@ -255,6 +256,7 @@
   );
   // Keep the default hierarchy in complexity order, including its child rows.
   tableSort.tierComparison = { key: 'complexity', direction: 1 };
+  tableSort.tierComparisonTotals = { key: 'complexity', direction: 1 };
   const collapsedProducerTiers = new Set();
 
   function compareTableValues(left, right) {
@@ -279,7 +281,8 @@
 
   function updateSortIndicators() {
     for (const [table, columns] of Object.entries(tableSortColumns)) {
-      const headerCells = $(table).closest('table').querySelectorAll('thead th');
+      const headerCells = $(table).closest('table').querySelectorAll(
+        table.startsWith('tierComparison') ? '[data-sort-table="' + table + '"] th' : 'thead th');
       headerCells.forEach((header, index) => {
         const active = columns[index] === tableSort[table].key;
         header.dataset.sortDirection = active
@@ -294,7 +297,8 @@
 
   function initializeTableSorting() {
     for (const [table, columns] of Object.entries(tableSortColumns)) {
-      const headerCells = $(table).closest('table').querySelectorAll('thead th');
+      const headerCells = $(table).closest('table').querySelectorAll(
+        table.startsWith('tierComparison') ? '[data-sort-table="' + table + '"] th' : 'thead th');
       headerCells.forEach((header, index) => {
         const key = columns[index];
         if (!key) return;
@@ -783,11 +787,11 @@
   function renderComparisons(s) {
     const moneyKeys = new Set(['cash','cashPerFirm','equity','equityPerCompany','revenue','revenuePerFirm','cogs','grossProfit','netProfit','netProfitPerCompany','machineryPrice','avgPrice','avgUnitCost','profitPerLine','netProfitPerLine']);
     const ratioKeys = new Set(['netMargin','margin','utilization','fillRate','reliability']);
-    const cells = (row, keys) => keys.map(key => {
+    const cells = (row, keys, perCompany = false) => keys.map(key => {
       const value = row[key];
       const text = value == null ? '—' : typeof value === 'string' ? value :
-        ratioKeys.has(key) ? pct(value) : moneyKeys.has(key) ? (['avgPrice','avgUnitCost'].includes(key) ? fmtUnitPrice(value) : fmtMoney(value,['profitPerLine','netProfitPerLine','netProfitPerCompany'].includes(key)?2:0)) :
-        key === 'soldPerLine' ? fmtFixed(value, 2) : fmtInt(value);
+        ratioKeys.has(key) ? pct(value) : moneyKeys.has(key) ? (['avgPrice','avgUnitCost'].includes(key) ? fmtUnitPrice(value) : fmtMoney(value,perCompany ? 2 : ['profitPerLine','netProfitPerLine','netProfitPerCompany'].includes(key)?2:0)) :
+        key === 'soldPerLine' || (perCompany && key !== 'firms') ? fmtFixed(value, 2) : fmtInt(value);
       return '<td>' + text + '</td>';
     }).join('');
     const tiers = ['t0','t1','t2'].map((key, index) => {
@@ -807,29 +811,40 @@
     });
     // Keep each complexity beneath its tier when sorting; tier rows are totals,
     // not additional producers. Balance allocations come from the kernel.
-    $('tierComparison').innerHTML = sortedTableRows('tierComparison', tiers).map(tier => {
-      const children = s.productCategories.filter(row => tier.tierKey === 't1'
-        ? row.complexity === 1 || row.complexity === 2
-        : tier.tierKey === 't2' && (row.complexity === 3 || row.complexity === 4))
-        .map(row => ({ ...row, name: row.name + (row.complexity < 3 ? ' · Refineries' : ' · Manufacturers'),
-          complexity: row.name, cashPerFirm: meaningfulRatio(row.cash, row.firms),
-          equityPerCompany: meaningfulRatio(row.equity, row.firms),
-          utilization: row.capacity > 0 ? row.made / row.capacity : null,
-          fillRate: row.active > 0 ? row.fulfilled / row.active : null,
-          revenuePerFirm: meaningfulRatio(row.revenue, row.firms),
-          netProfitPerCompany: row.netProfit == null || !row.firms ? null : row.netProfit / row.firms,
-          margin: meaningfulRatio(row.grossProfit, row.revenue) }));
-      const collapsed = collapsedProducerTiers.has(tier.tierKey);
-      const renderRow = (row, child) => {
-        const label = !child && children.length ? '<button type="button" class="producer-toggle" data-producer-tier="' +
-          tier.tierKey + '" aria-expanded="' + !collapsed + '" aria-label="' +
-          (collapsed ? 'Expand ' : 'Collapse ') + row.name + '"><span aria-hidden="true">' +
-          (collapsed ? '▸' : '▾') + '</span> ' + row.name + '</button>' : row.name;
-        return '<tr class="' + (child ? 'producer-complexity' : 'producer-tier') +
-          '"><th scope="row">' + label + '</th>' + cells(row, tableSortColumns.tierComparison.slice(1)) + '</tr>';
+    const perCompanyKeys = ['capacity','cash','equity','inventory','bought','made','sold','revenue','cogs','grossProfit','netProfit'];
+    for (const table of ['tierComparison', 'tierComparisonTotals']) {
+      const perCompany = table === 'tierComparison';
+      const values = row => {
+        if (!perCompany) return row;
+        const result = { ...row };
+        for (const key of perCompanyKeys)
+          result[key] = row[key] == null || !(row.firms > 0) ? null : row[key] / row.firms;
+        return result;
       };
-      return renderRow(tier, false) + (collapsed ? '' : sortedTableRows('tierComparison', children).map(row => renderRow(row, true)).join(''));
-    }).join('');
+      $(table).innerHTML = sortedTableRows(table, tiers.map(values)).map(tier => {
+        const children = s.productCategories.filter(row => tier.tierKey === 't1'
+          ? row.complexity === 1 || row.complexity === 2
+          : tier.tierKey === 't2' && (row.complexity === 3 || row.complexity === 4))
+          .map(row => ({ ...row, name: row.name + (row.complexity < 3 ? ' · Refineries' : ' · Manufacturers'),
+            complexity: row.name, cashPerFirm: meaningfulRatio(row.cash, row.firms),
+            equityPerCompany: meaningfulRatio(row.equity, row.firms),
+            utilization: row.capacity > 0 ? row.made / row.capacity : null,
+            fillRate: row.active > 0 ? row.fulfilled / row.active : null,
+            revenuePerFirm: meaningfulRatio(row.revenue, row.firms),
+            netProfitPerCompany: row.netProfit == null || !row.firms ? null : row.netProfit / row.firms,
+            margin: meaningfulRatio(row.grossProfit, row.revenue) })).map(values);
+        const collapsed = collapsedProducerTiers.has(tier.tierKey);
+        const renderRow = (row, child) => {
+          const label = !child && children.length ? '<button type="button" class="producer-toggle" data-producer-tier="' +
+            tier.tierKey + '" aria-expanded="' + !collapsed + '" aria-label="' +
+            (collapsed ? 'Expand ' : 'Collapse ') + row.name + '"><span aria-hidden="true">' +
+            (collapsed ? '▸' : '▾') + '</span> ' + row.name + '</button>' : row.name;
+          return '<tr class="' + (child ? 'producer-complexity' : 'producer-tier') +
+            '"><th scope="row">' + label + '</th>' + cells(row, tableSortColumns[table].slice(1), perCompany) + '</tr>';
+        };
+        return renderRow(tier, false) + (collapsed ? '' : sortedTableRows(table, children).map(row => renderRow(row, true)).join(''));
+      }).join('');
+    }
     const categories = s.productCategories.map(row => ({ ...row,
       grossProfitPerCompany: meaningfulRatio(row.grossProfit, row.firms),
       netProfitPerCompany: row.netProfit == null ? NaN : meaningfulRatio(row.netProfit, row.firms),
@@ -1024,14 +1039,14 @@
   }
   $('t1PriceProduct').innerHTML += M.PRODUCTS.map((p,i)=>`<option value="${i}">${p.name}</option>`).join('');
   for (const id of ['overviewTier','t1PriceProduct']) $(id).addEventListener('change',()=>{if(latestSnapshot)renderDashboard(latestSnapshot);});
-  $('tierComparison').addEventListener('click', event => {
+  for (const table of ['tierComparison', 'tierComparisonTotals']) $(table).addEventListener('click', event => {
     const button = event.target.closest('[data-producer-tier]');
     if (!button) return;
     const tier = button.dataset.producerTier;
     if (collapsedProducerTiers.has(tier)) collapsedProducerTiers.delete(tier);
     else collapsedProducerTiers.add(tier);
     if (latestSnapshot) renderComparisons(latestSnapshot);
-    $('tierComparison').querySelector('[data-producer-tier="' + tier + '"]')?.focus({preventScroll:true});
+    $(table).querySelector('[data-producer-tier="' + tier + '"]')?.focus({preventScroll:true});
   });
   $('categoryMetric').addEventListener('change',()=>{if(latestSnapshot)renderComparisons(latestSnapshot);});
   $('categorySplitMerge').addEventListener('click',()=>{

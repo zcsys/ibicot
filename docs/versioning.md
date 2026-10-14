@@ -110,6 +110,28 @@ prototype only in being a product in this sense.
 | **Support & moderation workflow** | Ban/appeal, ticket systems, and a policy for what admins may and may not touch in a real-money economy — beyond a bare backdoor button. |
 | **Onboarding & localization/accessibility** | Tutorial/onboarding, localization, and accessibility, so acquisition metrics are meaningful and users can actually play. |
 
+## After MVP — ideas to investigate
+
+### Parallel order formulation with shared settlement
+
+Explore having companies formulate orders independently from the same opening
+market state, then interact through a shared settlement process. This could
+expose parallel work within one interconnected economy while keeping outcomes
+dependent on other agents' orders, available inventory, and cash.
+
+This is a post-MVP research idea, not an approved mechanic or a requirement for
+PoC, prototype, or MVP. It does not change the current sequential execution
+contract. Simultaneous settlement would require explicit rules for allocating
+scarce stock, resolving competing orders, and deciding when sale proceeds and
+newly produced goods become available. Those choices can change economic
+outcomes; they must be evaluated as model changes rather than assumed to be
+behavior-preserving optimizations.
+
+Before adoption, compare economic behavior and measured performance against the
+current model, and verify conservation, accounting reconciliation, and
+deterministic replay. GPU acceleration is a possibility to investigate, not an
+assumed benefit or a commitment.
+
 ## Phase character
 
 The three phases are *different kinds* of work, not merely different sizes:
