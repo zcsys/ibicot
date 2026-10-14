@@ -31,6 +31,7 @@ A tick first checks the shared small-company exemption and prepays rent plus int
 | Reference overhead | Pricing and T2/distributor demand references add `(nominal rent + intelligence) / nominal output capacity`; actual expenses and inventory cost remain separate. |
 | Conversion | `$0.25 × max(1, complexity − 1)` per output item. |
 | Sales | Posted seller quote × delivered units; seller recognizes inventory book cost as COGS. |
+| Distributor routing | Net default output-capacity weights, multiplied by 1 for C3 and 0.80 for C4, rounded by user choice from the tested 0.79 calibration. Of 1,000,000 T3 companies, 746,245 serve C3 and 253,755 serve C4 (previously 701,729 / 298,271); fixed at initialization. |
 | Distributor demand | `20 / (1 + (price / buyer halving-price)^elasticity)`, stochastically rounded; five sampled offers plus the incumbent by default. |
 | Switching | A fixed transfer to the former supplier when it can fill the relevant order; actual-fill savings must justify switching. |
 | Prices | Staggered observation windows; shortages, market quotes, then changes in realized gross profit determine movement. |

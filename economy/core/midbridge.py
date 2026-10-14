@@ -6,7 +6,7 @@ and numeric market indices remain separate from display names and symbols.
 import json
 from pathlib import Path
 
-CATALOG_REVISION = 'midbridge-invented-105-demand-t1-v9'
+CATALOG_REVISION = 'midbridge-invented-105-t3-calibration-v13'
 ROOT = Path(__file__).resolve().parents[2]
 DIRECTORY = ROOT / 'catalogs/midbridge-4263/catalog.json'
 
@@ -32,7 +32,10 @@ def load_catalog():
     assert catalog['selection'] == 'full-universe'
     selection=json.loads((DIRECTORY.parent/'starting-selection.json').read_text())
     assert selection['allocationPolicy'] == 'reverse-complexity-product-counts'
-    assert selection['distributorPolicy'] == 'default-output-capacity-less-intermediate-use'
+    assert selection['distributorPolicy'] == 'default-output-capacity-less-intermediate-use-with-complexity-calibration'
+    data['T3_COMPLEXITY_DEMAND_MULTIPLIERS'] = {int(c):float(v) for c,v in selection['distributorComplexityMultipliers'].items()}
+    assert set(data['T3_COMPLEXITY_DEMAND_MULTIPLIERS']) == {3,4}
+    assert all(0 < v < float('inf') for v in data['T3_COMPLEXITY_DEMAND_MULTIPLIERS'].values())
     invented=set(selection['inventedRecipeIds'])
     rows = catalog['products']
     assert len(invented)==105 and invented <= {p['id'] for p in rows if p['tier']==2}

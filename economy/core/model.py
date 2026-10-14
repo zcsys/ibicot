@@ -112,8 +112,11 @@ for _p in T2_PRODUCTS:
             T2_FINAL_DEMAND_WEIGHTS[_ingredient] -= _quantity*T2_PRODUCTION_WEIGHTS[_p['catalogId']]
 if min(T2_FINAL_DEMAND_WEIGHTS.values()) <= 0:
     raise ValueError('Manufacturer allocation leaves insufficient capacity for final demand.')
+# Static trial calibration of final consumers only; upstream counts stay fixed.
+T3_COMPLEXITY_DEMAND_MULTIPLIERS = _DATA['T3_COMPLEXITY_DEMAND_MULTIPLIERS']
 for _p in T2_PRODUCTS:
-    _p['distributorWeight'] = T2_FINAL_DEMAND_WEIGHTS[_p['catalogId']]
+    _p['distributorWeight'] = (T2_FINAL_DEMAND_WEIGHTS[_p['catalogId']]
+                               * T3_COMPLEXITY_DEMAND_MULTIPLIERS[_p['complexity']])
 T2_ROUTE_FIRM_COUNTS = {g:sum(T2_PRODUCT_FIRM_COUNTS[p['id']] for p in T2_PRODUCTS if p['demandGroup']==g) for g in ('c3','c4_basic_c3','c4_compound_pair')}
 N_DISTRIBUTORS = WORLD_STORY['population']          # 1,000,000
 MAX_T2_LINES = N2_FIRMS * T2_MAX_PRODUCTS_PER_FIRM
@@ -151,7 +154,7 @@ def material_switching_reference(cfg):
 
 def t2_markup(complexity: int, cfg) -> float:
     # First-guess markup is uniform across tiers/complexities (flat 0.25): the
-    # net final-output capacity sets Distributor routing independently of seed
+    # calibrated net final-output capacity sets routing independently of seed
     # prices. Prices then rise to their own equilibrium via the
     # derivative-following pricer.
     return cfg['t1Markup']

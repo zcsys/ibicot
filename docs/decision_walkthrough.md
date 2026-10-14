@@ -108,7 +108,9 @@ For example, an incumbent at $3.50 and challenger at $3.44 save $6 on 100 units,
 
 ## 6. T3: final demand, sampled sellers, and incomplete orders
 
-Each distributor is assigned one product at initialization. Routing uses full-fleet capacity weights after reserving C3 needed for C4. It does not migrate toward current shortages. Each buyer independently activates with probability 0.105 per tick; one million buyers therefore yield 105,000 activations in expectation, not a fixed count.
+T3 distributors are companies: the default allocation changes from 701,729 C3 / 298,271 C4 at multiplier 1.00 to 746,245 C3 / 253,755 C4 at 0.80. The one-million T3 total and T2 producer counts remain unchanged. Normalizing the adjusted weights makes the C4 company-count reduction 14.92%, not 20%. See the [routing formula and count table](design_canon.md).
+
+Each distributor is assigned one product at initialization. Routing uses full-fleet capacity weights after reserving C3 needed for C4, multiplied by 1 for C3 and 0.80 for C4. This static calibration shifts final demand toward C3. In the preceding 0.79 seed-137 run, final-five-year C4 net earnings per company were 3.29% above C3. That result does not transfer automatically to 0.80: its year-17 C4 advantage was 43.70%. Other seeds and later generations remain unvalidated. It does not migrate toward current shortages. Each buyer independently activates with probability 0.105 per tick; one million buyers therefore yield 105,000 activations in expectation, not a fixed count.
 
 **C3 buyer example.** Take reference cost $8.1875 and an illustrative choke multiplier 2.4. With the C3 reservation premium, its halving price is:
 

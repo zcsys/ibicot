@@ -467,7 +467,7 @@ def initialize_distributors(world, cfg):
     world.distributorLastSupplier.fill(-1)
     seed = cfg['seed']
     n_t2 = len(M.T2_PRODUCTS)
-    # Final demand follows default capacity after reserving intermediate use.
+    # Final routing uses net default capacity times the static complexity calibration.
     # Routing is fixed at initialization; live shortages do not reassign buyers.
     supply = np.array([p['distributorWeight'] for p in M.T2_PRODUCTS], dtype=np.float64)
     cum = np.cumsum(supply)

@@ -40,7 +40,7 @@ There are 14 material sectors paired with 14 manufacturing sectors. Each T2 reci
 
 T2 firm shares reverse the active product counts: C3:C4 firms = `69:36`, yielding 38,088 C3 firms and 19,872 C4 firms. Within each complexity, firms are apportioned equally over recipes. Integer apportionment floors each weighted share and distributes remainders by descending fractional remainder, then ascending key. A reduced `t2FirmCount` takes a prefix of this catalog-ordered allocation; it does not rescale every product cohort.
 
-For product `p`, let default gross output capacity be `gₚ = firmCountₚ × defaultCapacityₚ`. Final-demand weight is
+For product `p`, let default gross output capacity be `gₚ = firmCountₚ × defaultCapacityₚ`. Uncalibrated final-demand weight is
 
 ```text
 wₚ = gₚ − Σ downstream T2 products j (aⱼₚ × gⱼ)
@@ -48,7 +48,31 @@ wₚ = gₚ − Σ downstream T2 products j (aⱼₚ × gⱼ)
 
 All active weights are positive. Gross T2 capacity totals 1,695,744 items/tick; intermediate C3 use reserves 96,768; final-output weights total 1,598,976. These are capacity weights, not promised sales. Recursively expanding final demand reconstructs gross capacity: `xₚ=wₚ+Σⱼaⱼₚxⱼ`, evaluated from C4 down to C3. T1 requirements are `rₘ=Σₚaₚₘxₚ`; they are not equal across materials.
 
-Distributor assignment uses midpoint-stratified draws `(k+½)Σw/N`, mapped into cumulative product weights, with buyers ordered by seeded hash. Each product gets within one buyer of its ideal share. Assignment is fixed at initialization and uses **default full-fleet capacities**, even when live capacities or population are changed. It does not follow shortages.
+Current final routing weight is `vₚ = wₚ × k_complexity`, with C3 `k=1` and C4 `k=0.80`. This static calibration targets closer late-run mean net earnings per company; equal unit demand and guaranteed profits are not model rules. C3/C4 buyer shares change from 70.17%/29.83% to 74.62%/25.38%; total T3 count and all T0/T1/T2 company counts stay fixed, while T3 counts assigned to each complexity change. Intermediate reservations in `w` remain capacity-based; only final-consumer routing is multiplied. Recursive calibrated demand therefore no longer reconstructs nominal capacity.
+
+T3 distributors are companies. The multiplier reallocates those companies between product markets at fresh-world initialization; it does not change T2 producer counts. Normalize each product weight as `shareₚ = vₚ / Σⱼvⱼ`, then assign the fixed `distributorCount` population by stratified midpoint sampling of the cumulative product weights. Each product receives within one company of its ideal share; group totals below reflect the actual integer assignment for the default one-million-company population.
+
+| T3 companies assigned to | Original multiplier 1.00 | Current multiplier 0.80 | Change |
+| --- | ---: | ---: | ---: |
+| C3 products | 701,729 | 746,245 | +44,516 |
+| C4 products | 298,271 | 253,755 | −44,516 |
+| Total T3 | 1,000,000 | 1,000,000 | 0 |
+
+Uncalibrated group weights are `W3=1,122,048` and `W4=476,928`. Thus C4's ideal share is `0.80×W4/(W3+0.80×W4)=25.375421…%`. Multiplying its weight by 0.80 reduces its assigned company count by approximately 14.92%, rather than 20%, because both groups are normalized back to the same total. T2 remains 38,088 C3 and 19,872 C4 companies. Assigned T3 companies are potential customers, not guaranteed sales; activation, price sensitivity, stock and switching still govern transactions. These assignments stay fixed during a run. The original and 0.80 initial checkpoints verify the counts above.
+
+The first trial used C4 multiplier 0.61. It completed 7,200 ticks with final-year C3/C4 earnings $211.84/$143.44 per company/tick, versus $162.37/$323.72 in the multiplier-1 baseline. Its full-generation absolute earnings gap grew and final-year C4 losses rose from 23 to 2,279 firms, so it did not achieve the target. Linear interpolation of the final-year C4-minus-C3 earnings gap against the multiplier gives 0.726118; the second fixed trial used 0.73. Completed evidence is in `stats/t3-calibration061-1generation-20261013-173640/experiment-report.md` and `next-calibration.json`.
+
+The second trial (0.73) completed with final-five-year C3/C4 net earnings $226.77/$185.38 per company/tick, a ratio of 0.8175, consistently below equality across those five years. Interpolating that period’s earnings gap against the multiplier-1 baseline gives 0.785289; the third trial used 0.79. The user-confirmed comparison target is a C4/C3 mean earnings ratio of 0.90–1.10 over the final five years, with annual trends and other tiers reported. Evidence: `stats/t3-calibration073-1generation-20261013-181422/experiment-report.md` and `next-calibration.json`.
+
+The completed 0.79 trial supplied the calibration evidence. The user subsequently rounded the current multiplier to 0.80; its earnings balance is not established by the 0.79 result. Final-five-year C3/C4 net earnings were $254.29/$262.64 per company/tick: ratio 1.0329, versus 1.9786 in the baseline. Annual ratios in years 16–20 stayed between 1.0195 and 1.0439. Final-year earnings were $250.20/$255.49 (ratio 1.0211); whole-generation earnings were $229.04/$203.74, so startup earnings were not equalized. All 7,200 ticks, 20 annual archives, checkpoints, source hashes and income/payment reconciliations passed; no prepayment stops or new arrears occurred. Tradeoffs include lower final-five-year C2 earnings ($4,479.91 → $2,237.26/company/tick) and consumer fulfillment (99.966% → 99.683%). This met the user-confirmed late-run target at 0.79 for one seed and one generation, not universal or indefinite equality. Evidence: [completed comparison](../stats/t3-calibration079-1generation-20261013-190034/experiment-report.md).
+
+The subsequent 0.80 run already diverged from that result: in ticks 5,761–6,120, C3/C4 net earnings were $161.47/$232.02 per company/tick, a 43.70% C4 advantage. This is an interim annual observation, not a completed-generation comparison. Source: `stats/t3-calibration080-1generation-20261014-140140/generation_run.jsonl`. The static allocation does not enforce equal earnings.
+
+Original calibration evidence is seed-137 balanced-T1 ticks 3961–4320: net earnings averaged $179.72/C3 company/tick and $331.37/C4 company/tick. Holding prices, unit gross contributions, charges and fill rates fixed, and scaling C3 intermediate sales with C4, gives a C4 multiplier estimate 0.61024, rounded to 0.61. C3 is near capacity, so additional demand may change prices or remain unfilled. This is an experimental starting point, not an equilibrium prediction. Reproduction: `stats/balanced-t1-1generation-20261013-165926/calibrate_t3.py`, with period totals in `t3-calibration-data.json`.
+
+Specifically, let `b` be the old C3 buyer share; `A` and `I` be C3 retail and intermediate gross profit per company/tick; `G` be C4 gross profit per company/tick; and `ΔH` be C3 minus C4 net overhead (rent + intelligence + switching expense − switching income). Approximate C3 intermediate gross profit using its share of C3 sold units. For relative C4 weight `m`, normalized demand scales are `x3=1/[b+(1−b)m]` and `x4=m/[b+(1−b)m]`. Solving `A×x3+I×x4−H3=G×x4−H4` gives `m=(A−ΔH×b)/(G−I+ΔH×(1−b))`. No live feedback or earnings transfer is introduced.
+
+Distributor assignment uses midpoint-stratified draws `(k+½)Σv/N`, mapped into cumulative product weights, with buyers ordered by seeded hash. Each product gets within one buyer of its ideal share. Assignment is fixed at initialization and uses **default full-fleet capacities and the fixed complexity multipliers**, even when live capacities or population are changed. It does not follow shortages.
 
 Source: [catalog adapter](../economy/core/midbridge.py), [model allocation](../economy/core/model.py), [initialization](../economy/core/state.py), [catalog validator](../tools/build_recursive_catalog.py).
 
@@ -247,7 +271,7 @@ Source: [clear_distributors](../economy/kernel/tick.py), [compiled clearing](../
 
 The fixed fee is `M×U×(1+r)`, using incumbent reliability `r` clamped to `[0,1]`. The reference `U` is `baseCost` for T1 raw buyers, the unweighted mean of all 14 unadjusted refinery bases for T2 input buyers, and the purchased product's unadjusted recursive base for distributors. T2 uses the complexity of its **first installed line** to choose its fee regime, including on mixed-complexity firms.
 
-Initially `M₁=50/(baseCost×1.5)`, `M₂,C3=M₂,C4=1.5/(meanRefineryCost×1.5)`, and `M₃=1.5/(weightedMeanT2Cost×1.5)`. The T2 mean is `$2.392857…`; the T3 routing-weighted mean is `$6.490228…`. At reliability `0.5`, initial T1 and T2 fees are `$50` and `$1.50`; distributor fees vary with the purchased product's reference cost. The unused C5 multiple starts at zero. Configured `loyaltyMultiple` overrides these initial values.
+Initially `M₁=50/(baseCost×1.5)`, `M₂,C3=M₂,C4=1.5/(meanRefineryCost×1.5)`, and `M₃=1.5/(weightedMeanT2Cost×1.5)`. The T2 mean is `$2.392857…`; the T3 routing-weighted mean is `$6.389078…`. At reliability `0.5`, initial T1 and T2 fees are `$50` and `$1.50`; distributor fees vary with the purchased product's reference cost. The unused C5 multiple starts at zero. Configured `loyaltyMultiple` overrides these initial values.
 
 Each tick with positive order count, average order value updates as `AOV←0.01×observedAOV+0.99×AOV`; with no orders it holds. Initialization is `AOV=M×classReference×1.5/0.05`. Observed values are:
 

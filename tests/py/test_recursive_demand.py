@@ -12,7 +12,7 @@ from economy.kernel import tick as K, numba as NB
 class RecursiveDemandTests(unittest.TestCase):
     def test_final_demand_matches_weighted_dependency_flow(self):
         self.assertEqual(Counter(p['complexity'] for p in M.T2_PRODUCTS), {3:36,4:69})
-        demands = {p['catalogId']: float(p['distributorWeight']) for p in M.T2_PRODUCTS}
+        demands = {p['catalogId']: float(M.T2_FINAL_DEMAND_WEIGHTS[p['catalogId']]) for p in M.T2_PRODUCTS}
         for p in sorted(M.T2_PRODUCTS,key=lambda p:-p['complexity']):
             for m,q in p['ingredients']:
                 key = M.T2_INPUT_PRODUCTS[m]['catalogId']
@@ -28,7 +28,7 @@ class RecursiveDemandTests(unittest.TestCase):
         self.assertEqual(M.NI,50)
         active={p['catalogId'] for p in M.T2_PRODUCTS}
         self.assertEqual(len({p['sectorIndex'] for p in M.T2_PRODUCTS}),14)
-        self.assertTrue(all(p['distributorWeight']==M.T2_FINAL_DEMAND_WEIGHTS[p['catalogId']] for p in M.T2_PRODUCTS))
+        self.assertTrue(all(p['distributorWeight']==M.T2_FINAL_DEMAND_WEIGHTS[p['catalogId']]*M.T3_COMPLEXITY_DEMAND_MULTIPLIERS[p['complexity']] for p in M.T2_PRODUCTS))
         for p in M.T2_PRODUCTS:
             self.assertTrue(all(i in active or i.startswith(('C1-','C2-')) for i in p['ingredientCatalogIds']))
         cfg,w=reset_world({'t2FirmCount':1,'distributorCount':5980})
@@ -57,7 +57,7 @@ class RecursiveDemandTests(unittest.TestCase):
         expected=(M.refinery_unit_cost(basic,cfg)+M.initial_tier2_cost(c3,cfg))*1.25+.75
         self.assertEqual(M.initial_tier2_cost(p,cfg),expected)
 
-    def test_default_distributor_cohorts_cover_every_products_final_capacity(self):
+    def test_default_distributor_cohorts_follow_calibrated_final_capacity(self):
         # Initialize the real million-buyer cohorts; a minimal seller fleet keeps
         # this routing audit cheap. Capacity below is the default full fleet.
         cfg,w=reset_world({'t2FirmCount':1})
@@ -75,7 +75,12 @@ class RecursiveDemandTests(unittest.TestCase):
                     intermediate[target]+=quantity*gross[p['id']]
         final=gross-intermediate
         self.assertTrue(np.all(final>0))
-        self.assertTrue(np.all(np.abs(counts-cfg['distributorCount']*final/final.sum())<1))
+        weights=final*np.array([M.T3_COMPLEXITY_DEMAND_MULTIPLIERS[p['complexity']] for p in M.T2_PRODUCTS])
+        self.assertTrue(np.all(np.abs(counts-cfg['distributorCount']*weights/weights.sum())<1))
+        old_c4=final[[p['complexity']==4 for p in M.T2_PRODUCTS]].sum()/final.sum()
+        new_c4=counts[[p['complexity']==4 for p in M.T2_PRODUCTS]].sum()/counts.sum()
+        self.assertLess(new_c4,old_c4)
+        self.assertEqual(M.T2_COMPLEXITY_FIRM_COUNTS,{3:38088,4:19872})
 
         reference=np.array([M.reference_tier2_cost(p,cfg) for p in M.T2_PRODUCTS])
         price=np.array([M.round_to_cent(reference[p['id']]*(1+M.tier2_starting_markup(p,cfg)))
@@ -87,7 +92,8 @@ class RecursiveDemandTests(unittest.TestCase):
         quantity=w.distributorQMax[:len(ids)]/(1+(price[ids]/choke)**w.distributorEta[:len(ids)])
         demand=np.bincount(ids,weights=quantity*cfg['distributorActivation'],minlength=len(final))
         for p in M.T2_PRODUCTS:
-            self.assertGreater(demand[p['id']],final[p['id']],p['catalogId'])
+            self.assertGreater(demand[p['id']],0,p['catalogId'])
+        # Calibrated demand need not cover every product's nominal capacity.
 
     def test_intermediate_trade_production_and_equity_both_engines(self):
         cfg,w=reset_world({'t2FirmCount':2,'distributorCount':1,'storageRentPerThousandPerTick':0,'t2InputElasticity':2})

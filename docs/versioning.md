@@ -8,6 +8,8 @@ document defers to it wherever they overlap.
 
 ## Current position
 
+Catalog revision `midbridge-invented-105-t3-calibration-v13` retains T0/T1/T2 company counts and total T3 population, reallocating T3 companies between complexities and applies a static 0.80 C4 final-demand routing multiplier (C3 remains 1). The user rounded the tested 0.79 setting to 0.80; its year-17 C4/C3 earnings ratio was 1.437, so the earlier balance does not establish balance at 0.80. The preceding 0.79 calibration completed a seed-137 generation with final-five-year C4/C3 per-company net earnings ratio 1.0329 (annual ratios 1.0195–1.0439); other seeds and later generations remain untested. Earlier trial 0.73 improved the final-five-year C4/C3 earnings ratio to 0.8175, still below the user-confirmed 0.90–1.10 band; the completed 0.61 trial reversed the C4 advantage and did not achieve earnings equality. The balanced-T1 experiment retains its frozen v9 routing; old-revision checkpoints are rejected by the current loader.
+
 The kernel is a deterministic supply-chain simulation (NumPy + Numba) with a
 FastAPI + WebSocket service and a browser dashboard. The market logic is complete
 on both sides: production follows a margin ramp, and industrial purchasing is
