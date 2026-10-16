@@ -555,6 +555,16 @@
       </div>
     </header>
     <main>
+      <dialog id="saveLoadDialog" style="background:var(--panel,#172033);color:var(--text,#fff);border:1px solid var(--muted);border-radius:12px;padding:24px;max-width:440px;width:90%">
+        <h2 id="saveLoadTitle">Save simulation</h2>
+        <p id="saveLoadHelp"></p>
+        <label id="saveNameLabel" for="saveName">Save name</label>
+        <input id="saveName" maxlength="100" style="width:100%;margin:8px 0" />
+        <label id="savedSimulationLabel" for="savedSimulation">Saved simulation</label>
+        <select id="savedSimulation" style="width:100%;margin:8px 0"></select>
+        <p id="saveLoadStatus" role="status" aria-live="polite"></p>
+        <div class="toolbar"><button id="saveLoadConfirm" class="primary">Save</button><button id="saveLoadCancel">Cancel</button></div>
+      </dialog>
       <aside class="stack">
         <section class="panel">
           <div class="title-row">
@@ -566,7 +576,7 @@
           <div class="toolbar">
             <button id="run" class="good">Run · 1 tick / 2 s</button
             ><button id="runMax" class="primary">Run Max</button><button id="pause">Pause</button
-            ><button id="step">Step</button><button id="reset">Reset</button>
+            ><button id="step">Step</button><button id="reset">Reset</button><button id="saveSimulation">Save</button><button id="loadSimulation">Load</button>
           </div>
           <div id="perf" class="status" style="margin-top: 7px">Readable source simulation.</div>
         </section>
@@ -769,7 +779,7 @@
                   <th>Cash</th>
                   <th>Book equity</th>
                   <th>Inventory · units</th>
-                  <th title="Total storage capacity minus installed machinery footprint; includes space occupied by goods">Spaces</th>
+                  <th title="Empty storage space divided by full storage capacity, after goods and machinery">Empty / total</th>
                   <th title="Raw, intermediate and finished inventory at acquisition or production cost">Inventory · $</th>
                   <th>Bought / tick</th>
                   <th>Made / tick</th>
@@ -778,7 +788,7 @@
                   <th>COGS / tick</th>
                   <th>Gross profit / tick</th>
                   <th>Net profit / tick</th>
-                  <th title="Net profit for this tick divided by current cash; aggregate ratio, not the average of company returns">Return on Cash · %</th>
+                  <th title="Net profit for this tick divided by current cash × 10,000; basis points (100 bps = 1%); aggregate ratio, not the average of company returns">Return on Cash · bps</th>
                   <th>Net margin</th>
                   <th>Gross margin</th>
                   <th>Reliability</th>
@@ -797,7 +807,7 @@
                   <th>Cash</th>
                   <th>Book equity</th>
                   <th>Inventory · units</th>
-                  <th title="Total storage capacity minus installed machinery footprint; includes space occupied by goods">Spaces</th>
+                  <th title="Empty storage space divided by full storage capacity, after goods and machinery">Empty / total</th>
                   <th title="Raw, intermediate and finished inventory at acquisition or production cost">Inventory · $</th>
                   <th>Bought / tick</th>
                   <th>Made / tick</th>
@@ -806,7 +816,7 @@
                   <th>COGS / tick</th>
                   <th>Gross profit / tick</th>
                   <th>Net profit / tick</th>
-                  <th title="Net profit for this tick divided by current cash; aggregate ratio, not the average of company returns">Return on Cash · %</th>
+                  <th title="Net profit for this tick divided by current cash × 10,000; basis points (100 bps = 1%); aggregate ratio, not the average of company returns">Return on Cash · bps</th>
                   <th>Net margin</th>
                   <th>Gross margin</th>
                   <th>Reliability</th>
@@ -816,7 +826,7 @@
               </table>
             </div>
             <p class="analytics-note"><strong>Net profit = gross profit + switching income − switching expense − storage expense − intelligence expense.</strong> Rent and market intelligence are charged every tick. Intelligence costs $2,000 per T1 company and $20 per T2 company. Net margin = net profit ÷ revenue; undefined when revenue is zero. T0 is exempt. The Colony subsidizes both rent and intelligence for T1/T2 below $1.5M opening book equity; at exactly $1.5M they are eligible. Eligible companies must prepay both charges in full; otherwise buying, production, sales and repricing stop for that tick. No new debt is created. Switching transfers are included as income for the incumbent and expense for the buyer. Historical snapshots without those postings show net earnings as unavailable. Product/complexity views allocate each paying company’s charge across its own installed lines; company views use each company’s full rent and intelligence. Amounts shown are per tick.</p>
-            <p class="analytics-note">Current tick · indented complexity rows break down the tier totals; do not add them to their parent rows. The per-company and totals tables show matching metrics. Per-company amounts divide each row’s totals by its represented firms; percentages are not divided by the firm count. A company with several complexities can appear in several complexity rows. Cash, book equity, inventory and purchases use actual company records. For companies spanning complexities, shared company totals are allocated equally across installed lines. Inventory dollars value raw, intermediate and finished goods at their recorded acquisition or production cost, not current selling prices. Spaces is total storage capacity minus installed machinery footprint, including space already occupied by goods; it is not remaining empty storage. T0 has no modeled machinery footprint, so its full storage is shown. Shared spaces are allocated equally across installed lines for complexity rows. Capacity is installed output per tick; utilization is production divided by capacity. Customer fulfillment is fulfilled units divided by desired units: company buyers for T0/T1, Distributors for T2 (including C-3/C-4). Sorting keeps complexities beneath their tier. COGS is the cost basis of units sold; unsold production adds inventory rather than reducing gross profit. — means unavailable or no activity for a ratio.</p>
+            <p class="analytics-note">Current tick · indented complexity rows break down the tier totals; do not add them to their parent rows. The per-company and totals tables show matching metrics. Per-company amounts divide each row’s totals by its represented firms; percentages are not divided by the firm count. A company with several complexities can appear in several complexity rows. Cash, book equity, inventory and purchases use actual company records. For companies spanning complexities, shared company totals are allocated equally across installed lines. Inventory dollars value raw, intermediate and finished goods at their recorded acquisition or production cost, not current selling prices. Empty / total is empty storage space divided by full storage capacity, shown as a percentage. Empty space excludes goods (weighted by their storage footprint) and installed machinery. T0 has no modeled machinery footprint. Shared empty space and capacity are allocated equally across installed lines for complexity rows; both tables show the same ratio. Capacity is installed output per tick; utilization is production divided by capacity. Customer fulfillment is fulfilled units divided by desired units: company buyers for T0/T1, Distributors for T2 (including C-3/C-4). Sorting keeps complexities beneath their tier. COGS is the cost basis of units sold; unsold production adds inventory rather than reducing gross profit. — means unavailable or no activity for a ratio.</p>
             <div class="table-toolbar">
               <label for="overviewTier">Chart scope</label>
               <select id="overviewTier">
@@ -872,12 +882,17 @@
               </div>
             </div>
             <p class="analytics-note">
-              Book equity includes cash and granted or purchased machinery at book value. All raw, intermediate and finished inventory uses its acquisition or production cost basis. All trends retain up to 240 reported ticks; hover for exact values. Missing ratios are shown as —.
+              Book equity includes cash and granted or purchased machinery at book value. All raw, intermediate and finished inventory uses its acquisition or production cost basis. The tier charts above retain up to 240 reported ticks; hover for exact values. Missing ratios are shown as —.
             </p>
           </section>
           <section class="panel">
             <h3>Product category comparison · C-0 through C-4</h3>
             <p class="analytics-note">Complexity counts raw-element ancestry: C-0 is the four simple elements, C-1 uses one element, C-2 combines two, and C-3–C-4 combine materials with three or four ancestral elements. Distributor demand weights per invented product are 4 for C3, 1 for C4 from C1+C3, and 8 for C4 from C2+C2. Activation is 10.5% per tick. Each installed production line has its own capacity. Actual recipes appear in the goods table.</p>
+            <span class="chart-caption">Net earnings per company over time · $ / tick</span>
+            <div class="chart"><canvas id="complexityNetHistory" role="img" aria-label="C1–C4 net earnings per company over time"></canvas></div>
+            <span class="chart-caption">Average sale prices over time · $ / unit</span>
+            <div class="chart"><canvas id="complexityPriceHistory" role="img" aria-label="C1–C4 average sale prices over time"></canvas></div>
+            <p class="analytics-note" id="complexityTrendNote">Annual averages across every simulated tick; the current year updates live. Net earnings include rent and intelligence and are divided by company-ticks, including idle companies. Prices are total sales revenue divided by units sold. History is retained through refresh and save/load.</p>
             <div class="table-toolbar">
               <label for="categoryMetric">Compare categories by</label>
               <select id="categoryMetric">
@@ -1233,7 +1248,7 @@
               <strong>
                 Material markets
               </strong >
-              <span class="muted tiny">All 10 refined materials supply manufacturers · customer demand is funded company orders; latent zero-price demand is not measured</span>
+              <span class="muted tiny">All 14 refined materials supply manufacturers · latent demand is whole-unit input need before cash, supplier stock and price limits; customer demand is actual funded orders</span>
             </div>
             <div class="table-wrap" style="margin-top: 7px">
               <table class="mini-table">
@@ -1245,10 +1260,9 @@
                     <th>Capacity / tick</th>
                     <th>Ready stock</th>
                     <th>Total sold / tick</th>
-                    <th>To final buyers / tick</th>
                     <th>To companies / tick</th>
                     <th>HHI</th>
-                    <th>Latent @ zero price</th>
+                    <th title="Operating manufacturers’ whole-unit input shortfalls at each buying decision, limited by input slots and free goods space; before cash, supplier stock, fees and price sensitivity. Not a simultaneous all-prices-zero simulation.">Latent @ zero price</th>
                     <th>Customer desired / tick</th>
                     <th>Fulfilled / tick</th>
                     <th>Customer fill</th>
@@ -1948,9 +1962,9 @@
     </main>
 
     <script src="./model-helpers.js"></script>
-    <script src="./midbridge-catalog.js"></script>
+    <script src="./midbridge-catalog.js?v=9e7ca0c66714"></script>
     <script src="./transport.js"></script>
     <script src="./profitability.js"></script>
-    <script src="./app.js?v=producer-single-table-8"></script>
+    <script src="./app.js?v=complexity-trends-10"></script>
   </body>
 </html>

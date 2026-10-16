@@ -12,9 +12,11 @@ import asyncio
 import json
 import os
 import time
+import uuid
+import shutil
 from pathlib import Path
 
-from fastapi import FastAPI, WebSocket, WebSocketDisconnect
+from fastapi import FastAPI, HTTPException, WebSocket, WebSocketDisconnect
 from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
@@ -23,6 +25,8 @@ from ..core import model as M
 from .persistence import load_checkpoint, save_checkpoint
 from .runtime import KernelRuntime, _STATS_DIR
 from .scheduler import FIXED_DELAY_S
+from .onboarding import create_router
+from .players import sync_ownership
 
 ROOT = Path(__file__).resolve().parents[2]  # repository root
 WEB_DIR = ROOT / 'web'                       # front-end static files
@@ -37,7 +41,9 @@ def runtime() -> KernelRuntime:
     if _runtime is None:
         # The server owns the initial configuration; browser attachment is read-only.
         cfg = json.loads(os.environ.get('ECONOMY_CFG', '{}'))
-        _runtime = KernelRuntime(cfg)
+        candidate = KernelRuntime(cfg)
+        sync_ownership(candidate)
+        _runtime = candidate
     return _runtime
 
 
@@ -109,7 +115,69 @@ async def checkpoint_load(req: CheckpointRequest):
         _runtime.pause()
         _runtime.__dict__.clear()
         _runtime.__dict__.update(rt.__dict__)
+    sync_ownership(_runtime)
+    _runtime.publish()
     return {'ok': True, 'path': req.path, 'tick': tick}
+
+
+# Dashboard saves are named, immutable slots; the existing path-based API remains available.
+DASHBOARD_SAVE_DIR = Path(os.environ.get('ECONOMY_SAVE_DIR', str(ROOT / 'saves')))
+
+class DashboardSaveRequest(BaseModel):
+    name: str
+
+@app.get('/dashboard-saves')
+async def dashboard_saves():
+    entries = []
+    for folder in DASHBOARD_SAVE_DIR.glob('*'):
+        if not folder.is_dir() or not (folder / 'state.npz').is_file():
+            continue
+        try:
+            uuid.UUID(folder.name)
+            meta = json.loads((folder / 'state.json').read_text())
+            entries.append(dict(id=folder.name, name=meta.get('saveName', 'Saved simulation'),
+                                tick=meta['tick'], savedAt=(folder / 'state.json').stat().st_mtime))
+        except (ValueError, KeyError, OSError):
+            continue
+    return sorted(entries, key=lambda x: x['savedAt'], reverse=True)
+
+@app.post('/dashboard-saves')
+async def dashboard_save(req: DashboardSaveRequest):
+    name = req.name.strip()
+    if not name or len(name) > 100:
+        raise HTTPException(400, 'Enter a save name of 1–100 characters.')
+    DASHBOARD_SAVE_DIR.mkdir(parents=True, exist_ok=True)
+    save_id = str(uuid.uuid4())
+    temporary = DASHBOARD_SAVE_DIR / ('.' + save_id)
+    temporary.mkdir()
+    try:
+        rt = runtime()
+        stem = temporary / 'state'
+        save_checkpoint(str(stem), rt.cfg, rt.tick, rt.world, rt.state, rt.checkpoint_metadata())
+        meta = json.loads(stem.with_suffix('.json').read_text())
+        meta['saveName'] = name
+        stem.with_suffix('.json').write_text(json.dumps(meta))
+        temporary.rename(DASHBOARD_SAVE_DIR / save_id)
+    except Exception:
+        shutil.rmtree(temporary, ignore_errors=True)
+        raise
+    return dict(id=save_id, name=name, tick=rt.tick)
+
+@app.post('/dashboard-saves/{save_id}/load')
+async def dashboard_load(save_id: str):
+    try:
+        save_id = str(uuid.UUID(save_id))
+    except ValueError:
+        raise HTTPException(404, 'Save not found.')
+    stem = DASHBOARD_SAVE_DIR / save_id / 'state'
+    if not stem.with_suffix('.json').is_file() or not stem.with_suffix('.npz').is_file():
+        raise HTTPException(404, 'Save not found.')
+    try:
+        result = await checkpoint_load(CheckpointRequest(path=str(stem)))
+    except (ValueError, AssertionError, KeyError, OSError) as exc:
+        raise HTTPException(400, str(exc)) from exc
+    await _manager.broadcast({'type': 'snapshot', 'data': runtime().lastSnapshot})
+    return dict(tick=result['tick'], paused=True)
 
 
 def _dispatch(rt: KernelRuntime, msg: dict) -> list[dict]:
@@ -119,7 +187,8 @@ def _dispatch(rt: KernelRuntime, msg: dict) -> list[dict]:
         return [{'type': 'snapshot', 'data': rt.publish()}]
     if mtype == 'reset':
         rt.reset(msg.get('cfg') or rt.cfg)
-        return [{'type': 'snapshot', 'data': rt.lastSnapshot}]
+        sync_ownership(rt)
+        return [{'type': 'snapshot', 'data': rt.publish()}]
     if mtype == 'pause':
         rt.pause()
         return [{'type': 'snapshot', 'data': rt.publish()}]
@@ -246,6 +315,8 @@ async def ws_endpoint(ws: WebSocket):
     finally:
         _manager.disconnect(ws)
 
+
+app.include_router(create_router(runtime))
 
 # Static front-end (mounted last so API/WS routes win).
 app.mount('/', StaticFiles(directory=str(WEB_DIR), html=True), name='static')

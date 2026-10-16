@@ -153,6 +153,7 @@ def normalize_config(c) -> dict:
     # Tier 0
     for key in ('t0Equity', 't0License', 't0Machinery', 't0Reserve', 't0Capacity', 't0Storage', 'baseCost', 'minWholesaleLot'):
         d[key] = max(1, d[key])
+    d['minWholesaleLot'] = max(1, math.floor(d['minWholesaleLot']))
     d['t0Markup'] = max(0, d['t0Markup'])
 
     # Tier 1

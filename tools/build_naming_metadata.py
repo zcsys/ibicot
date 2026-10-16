@@ -76,6 +76,7 @@ def build_names():
         {
             "company_id": f"T0-{i + 1:02}",
             "name": c["name"],
+            "designated_role": c["designated_role"],
             "elements_extracted": [e.strip() for e in c["extracts"].split("+")],
         }
         for i, c in enumerate(new["t0_companies"])
@@ -219,7 +220,7 @@ def build_names():
 
 
 def names_only(names):
-    """Return the exact runtime allowlist; never import prose or new roles."""
+    """Return the exact runtime allowlist; include explicitly approved designated roles, not imported prose."""
     return names
 
 

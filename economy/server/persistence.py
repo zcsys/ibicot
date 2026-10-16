@@ -25,7 +25,7 @@ def save_checkpoint(path, cfg, tick, world, scalars=None, runtime_metadata=None)
     np.savez(path + '.npz', **arr)
     meta = {
         'format': 'economy-checkpoint',
-        'version': 13,
+        'version': 14,
         'catalogRevision': CATALOG_REVISION,
         'companyNumbering': M.COMPANY_NUMBERING,
         'tick': int(tick),
@@ -78,6 +78,8 @@ def load_checkpoint(path):
     world = WorldState(cfg)
     with np.load(path + '.npz') as data:
         for name in world.array_names:
+            if name not in data and meta.get('version', 1) < 14 and any(name.endswith(k) for k in ('LearnRevenue', 'LearnPreviousRevenue', 'LearnPreviousSales')):
+                continue
             if name not in data and meta.get('version', 1) < 10 and ('Intelligence' in name or name.endswith('Operating')):
                 continue
             if name == 'distributorPreferredMarket' and name not in data:
@@ -113,14 +115,15 @@ def load_checkpoint(path):
                                         for b, m, s in meta.get('distributorSupplierHistory', [])}
     world.t2LineCount = int(scalars['t2LineCount'])
     world.netEarningsAvailable = bool(scalars.get('netEarningsAvailable', False)) if meta.get('version', 1) >= 4 else False
-    if meta.get('version', 1) < 5:
-        # Earlier checkpoints may contain net or partially rent-adjusted learning
-        # windows. Start a clean gross-profit baseline without altering accounting.
+    if meta.get('version', 1) < 14:
+        # Old learning windows lack revenue/volume baselines for cost normalization.
+        # Reset learning evidence only; preserve prices, directions and accounting.
         for tier in ('t0', 't1', 't2'):
-            for suffix in ('LearnProfit', 'LearnSales', 'LearnTicks', 'LearnDemand',
+            for suffix in ('LearnProfit', 'LearnRevenue', 'LearnPreviousSales', 'LearnSales', 'LearnTicks', 'LearnDemand',
                            'LearnOpportunity', 'LearnPotentialOpportunity'):
                 getattr(world, tier + suffix).fill(0)
             getattr(world, tier + 'LearnPrevious').fill(np.nan)
+            getattr(world, tier + 'LearnPreviousRevenue').fill(np.nan)
     world.costSinks = float(scalars['costSinks'])
     world.equipmentSinks = float(scalars['equipmentSinks'])
     # adaptive loyalty regime (backward-compatible with pre-EMA checkpoints)

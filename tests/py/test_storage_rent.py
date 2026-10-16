@@ -157,7 +157,7 @@ class StorageRentTests(unittest.TestCase):
             self.assertEqual(w2.t1RentArrears[0], 17)
             self.assertEqual(w2.t2RentPaid[0], 35)
             meta = json.loads(Path(p + '.json').read_text())
-            self.assertEqual(meta['version'], 13)
+            self.assertEqual(meta['version'], 14)
             self.assertNotIn('storageRentPerUnitYear', meta['cfg'])
             meta['version'] = 2
             del meta['cfg']['storageRentPerThousandPerTick']

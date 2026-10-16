@@ -128,7 +128,7 @@ for (const stock of [0, 100]) {
             slot, _, inputs = reference.tier2_storage_layout(w, cfg, 0)
             for material in inputs:
                 (w.t2Raw if material < 4 else w.t2T1Raw)[material] = slot[material]
-            w.t2Raw[0] -= 4  # Four feasible units reduce to one at the incumbent quote.
+            w.t2Raw[0] -= 4  # Four feasible units undergo eta reduction and stochastic rounding.
             w.t2Preferred[0] = 0
             w.t2Price[0] = 10
             if fast:
@@ -136,7 +136,7 @@ for (const stock of [0, 100]) {
             else:
                 reference.operate_tier2(w, cfg, M.PRODUCTS, T0P, M.T2_PRODUCTS, 1)
             self.assertEqual(w.t2Preferred[0], 0)
-            self.assertEqual(w.t1Sold[0], 1)
+            self.assertEqual(w.t1Sold[0], 2)  # Seed 137 rounds this feasible order up.
             self.assertEqual(w.loyaltyPenalties[1], 0)
 
     def test_distributor_ranking_uses_adaptive_charge_and_stockout_waiver(self):

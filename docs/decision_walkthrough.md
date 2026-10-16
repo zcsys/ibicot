@@ -47,7 +47,7 @@ T1 makes C1 from one raw unit or C2 from two raw units. Both default to 6,000 ou
 
 **Storage example.** A single C1 line has 50,000 spaces minus a 1,000-space machine. Of the remaining 49,000, half targets raw and half finished goods: 24,500 units each. For C2, the same output allocation holds only 12,250 finished items. A two-distinct-raw recipe targets 12,250 units of each raw; a repeated-raw recipe targets 24,500 of that raw.
 
-**Procurement example.** The empty C1 firm has a 24,500-unit shortage. With sufficient cash and stock at $1.25, its feasible purchase remains 24,500. Using the $1 raw reference, eta reduces this to `24,500/(1+1.25²) ≈ 9,560.98`. Final lot rounding yields 9,000 units, costing $11,250. A feasible 2,600-unit purchase at this same quote becomes about 1,014.63 and rounds to one lot; rounding before eta would incorrectly give zero. There is one seller transaction per ingredient this tick, with no second-supplier retry after a short fill.
+**Procurement example.** The empty C1 firm has a 24,500-unit shortage. With sufficient cash and stock at $1.25, its feasible purchase remains 24,500. Using the $1 raw reference, eta reduces this to `24,500/(1+1.25²) ≈ 9,560.98`. Stochastic lot rounding yields 10,000 units with about 56.10% probability, otherwise 9,000 units, subject to feasible lots. A feasible 2,600-unit purchase at this same quote becomes about 1,014.63 and rounds to two lots with about 1.46% probability, otherwise one lot; rounding before eta would incorrectly give zero. There is one seller transaction per ingredient this tick, with no second-supplier retry after a short fill.
 
 Raw supplier ranking compares order cost plus any fee owed to an incumbent. It first considers sellers with at least one lot, even when the order is much larger; this differs from T2's preference for a seller able to fill the entire requested quantity. Settlement then caps the order by cash and stock, and rechecks switching savings on the actual fill. Canon §§5–6 specify the details.
 
@@ -73,10 +73,10 @@ Starting empty, with illustrative chosen quotes of $1.88 for C1 and $3.44 for C2
 
 | Input | Purchase reference | Feasible-purchase curve before whole-unit rounding | Purchased units |
 | --- | ---: | --- | ---: |
-| C1 | $1.6066667 | `(8,500/3) / (1 + (1.88/1.6066667)²)` ≈ 1,195.91 | 1,196 |
-| C2 | $3.1066667 | `(8,500/3) / (1 + (3.44/3.1066667)²)` ≈ 1,272.78 | 1,273 |
+| C1 | $1.6066667 | `(8,500/3) / (1 + (1.88/1.6066667)²)` ≈ 1,195.91 | 1,196 with 91% probability; otherwise 1,195 |
+| C2 | $3.1066667 | `(8,500/3) / (1 + (3.44/3.1066667)²)` ≈ 1,272.78 | 1,273 with 78% probability; otherwise 1,272 |
 
-T2 rounds reduced quantities to the nearest whole unit (exact halves to even), capped by whole units affordable, available and storable. These quantities assume neither cash nor stock binds. C1's purchase reference is $1.6066667: its distinct $1.25 base plus $0.3566667 overhead. Its pricing reference is $1.8566667. Here the feasible purchase equals the empty slot. For a 32-unit shortage with ample cash and stock, the same quotes permit only 14 C1 and 14 C2 units after eta and rounding. If cash or stock limits that feasible purchase further, eta applies to that smaller quantity. Ingredients are processed sequentially, and early purchases can exhaust conversion cash.
+T2 rounds reduced quantities stochastically to whole units, capped by whole units affordable, available and storable. These quantities assume neither cash nor stock binds. C1's purchase reference is $1.6066667: its distinct $1.25 base plus $0.3566667 overhead. Its pricing reference is $1.8566667. Here the feasible purchase equals the empty slot. For a 32-unit shortage with ample cash and stock, the same quotes yield about 13.51 C1 and 14.38 C2 before stochastic whole-unit rounding. If cash or stock limits that feasible purchase further, eta applies to that smaller quantity. Ingredients are processed sequentially, and early purchases can exhaust conversion cash.
 
 At these purchased bases, actual C3 production costs `$1.88 + $3.44 + $0.50 = $5.82`. Take an illustrative quote of $7.27. With 32 feasible outputs and $56 forecast rent:
 
@@ -139,6 +139,8 @@ T0, T1, and T2 use the same price decision hierarchy. A line normally needs at l
 | Within the band, average gross profit worsened by more than 2% | Reverse the previous movement direction |
 | Within the band, gross profit improved by more than 2% | Continue that direction |
 | Within the band, change is within ±2% | Hold |
+
+Before comparing gross profits, revalue both windows at the current window’s average cost per sold unit: `c = window COGS / window units sold`. Compare `current revenue/ticks − c × current units/ticks` with `previous revenue/ticks − c × previous units/ticks`. With no current sales, use current inventory basis for `c`; the current score is zero. This prevents cheaper inputs alone from rewarding a price cut. For example, old price $10, cost $8 and sales 100/tick gave $200 gross; new price $9, cost $5 and the same sales gives $400. At the common $5 cost, however, the old outcome scores $500 and the new one $400: the cut worsened the outcome, so the profit branch reverses its downward direction. Selling 150/tick at $9 instead scores $600 and supports continuing down. This normalization does not remove demand or supply changes, and the shortage/market-anchor branches still take priority.
 
 Without a previous profit baseline, the remaining branch follows its initialized direction. The market anchor weights current quotes by observation-window sales; with no sales, it falls back to mean finite quotes. It is not an average of historical transaction prices.
 
@@ -208,4 +210,4 @@ This raises default starting quotes to C1 $2.32, C2 $3.88, C3 $10.23, and C4 $13
 
 ## 11. Demand-balanced refinery counts
 
-The 982 refiners now comprise 392 C1 and 590 C2 firms, allocated within each complexity by nominal T2 ingredient requirements. Full-capacity downstream demand averages 3,356.08 units/C1 company/tick and 3,354.47 units/C2 company/tick. Counts use largest-remainder allocation with catalog-ID ties; they do not adjust to observed demand during a run. Capacity and overhead per company are unchanged. The canon specifies all fourteen counts and the compatibility boundary for old checkpoints.
+The 1,000 refiners comprise 500 C1 and 500 C2 firms, equally divided into 125 companies per C1 product and 50 per C2 product. This is the user-selected equal-complexity population trial, not an earnings-equality claim. Nominal demand does not weight company counts. Counts remain fixed during a run; older checkpoints are incompatible.

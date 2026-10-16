@@ -57,7 +57,7 @@ def refinery_capacity(product, cfg):
     """Per-machine throughput; legacy scalar configurations cover both classes."""
     return cfg['t1Capacity'] if product['complexity'] == 1 else cfg.get('t1CapacityC2', cfg['t1Capacity'])
 
-N1 = 982  # Tightest per-product demand/firm spread among totals 950–1,050.
+N1 = 1000  # 4 × 125 C1 companies + 10 × 50 C2 companies.
 # Reverse product-count shares across complexities to favor simpler production.
 # Exact reversed-count allocation requires multiples of 28,980:
 # 36*x : 69*y = 23:12 => x:y = 529:144. Two blocks are nearest 50k.
@@ -96,7 +96,14 @@ for _p in T2_PRODUCTS:
     for _m, _q in _p['ingredients']:
         if _m < NP:
             T1_NOMINAL_DEMAND[_m] += T2_PRODUCT_FIRM_COUNTS[_p['id']] * T2_ALLOCATION_CAPACITIES[_p['complexity']] * _q
-_t1_allocation = _apportion(N1, {p['catalogId']:T1_NOMINAL_DEMAND[i] for i,p in enumerate(PRODUCTS)})
+# User-selected equal complexity populations, with exact product divisibility.
+# Equal company counts per product within each complexity; no remainder weights.
+T1_COMPLEXITY_FIRM_COUNTS = {1: 500, 2: 500}
+_t1_allocation = {}
+for _c, _count in T1_COMPLEXITY_FIRM_COUNTS.items():
+    _products = [p for p in PRODUCTS if p['complexity'] == _c]
+    assert _count % len(_products) == 0
+    _t1_allocation.update({p['catalogId']: _count // len(_products) for p in _products})
 T1_PRODUCT_FIRM_COUNTS = [_t1_allocation[p['catalogId']] for p in PRODUCTS]
 T1_FIRM_OFFSETS = [sum(T1_PRODUCT_FIRM_COUNTS[:i]) for i in range(NP)]
 T1_FIRM_PRODUCT = [p for p,n in enumerate(T1_PRODUCT_FIRM_COUNTS) for _ in range(n)]

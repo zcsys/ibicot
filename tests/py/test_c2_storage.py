@@ -17,7 +17,7 @@ class C2StorageTests(unittest.TestCase):
         np.testing.assert_array_equal(sizes[:M.T1_FIRM_OFFSETS[4]],50000)
         np.testing.assert_array_equal(sizes[M.T1_FIRM_OFFSETS[4]:],50000)
         self.assertEqual(cfg['storage'],20000)
-        self.assertEqual(sizes.sum(),49100000)
+        self.assertEqual(sizes.sum(),M.N1 * 50000)
         old,_=reset_world({'distributorCount':1,'t2FirmCount':1,'storage':30000})
         np.testing.assert_array_equal(tier1_storage_capacities(old),30000)
         slots,out,_=K.tier1_storage_layout(w,cfg,M.T1_FIRM_OFFSETS[5])
@@ -31,13 +31,14 @@ class C2StorageTests(unittest.TestCase):
         expected=copy.deepcopy(w)
         K.plan_and_buy_inputs(expected,cfg,M.PRODUCTS,T0P,1)
         K.operate_tier1(expected,cfg,M.PRODUCTS)
-        # At $1.25 with V=$1: a 24,500 raw slot yields 9,000 units,
-        # a 12,250 slot yields 4,000. C1 reaches capacity; repeated-raw
-        # C2 makes 4,500 and two-distinct-raw C2 makes 4,000 per firm.
-        per_firm = [6000 if p['complexity'] == 1 else
-                    (4500 if len(p['inputs']) == 1 else 4000) for p in M.PRODUCTS]
-        np.testing.assert_array_equal(expected.t1Fin.reshape(M.N1,M.NP).sum(axis=0),
-                                      np.array(per_firm) * M.T1_PRODUCT_FIRM_COUNTS)
+        # At $1.25 with V=$1, the 24,500-unit slot buys 9 or 10 lots;
+        # each 12,250-unit slot buys 4 or 5. Production is capped at 6,000.
+        output = expected.t1Fin.reshape(M.N1,M.NP)
+        for pid, product in enumerate(M.PRODUCTS):
+            firms = np.flatnonzero(np.asarray(M.T1_FIRM_PRODUCT) == pid)
+            allowed = {6000} if product['complexity'] == 1 else (
+                {4500, 5000} if len(product['inputs']) == 1 else {4000, 5000})
+            self.assertEqual(set(output[firms, pid]), allowed)
         validate_storage(expected,cfg)
         if NB._HAVE_NUMBA:
             NB.plan_and_buy_inputs(w,cfg,1);NB.operate_tier1(w,cfg)

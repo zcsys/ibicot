@@ -12,7 +12,7 @@ The Python backend owns the simulation. The browser is a dashboard and control s
 | --- | --- | ---: | --- |
 | T−1 | Gaia | 1 identity | Origin of four raw resources; no trading agent |
 | T0 | Extraction | 20 companies, 40 element machines | Extract Organics, Inorganics, Metals, and Radioactives; sell raw to T1 |
-| T1 | Refining | 982 companies | 392 C1 / 590 C2; per-material counts follow nominal downstream demand |
+| T1 | Refining | 1,000 companies | 500 C1 / 500 C2; 125 per C1 product and 50 per C2 product |
 | T2 | Manufacturing | 57,960 companies | Make 36 invented C3 and 69 invented C4 products; buy T1 materials and, for some C4 recipes, C3 goods |
 | T3 | Distribution | 1,000,000 buyers | Buy and consume invented T2 goods; external spending funds the economy |
 
@@ -25,7 +25,7 @@ A tick first checks the shared small-company exemption and prepays rent plus int
 | Mechanism | Implemented rule |
 | --- | --- |
 | Storage | T1/T2 goods space = storage − installed machinery footprint. Half is allocated to recipe-weighted inputs, half equally to output lines. |
-| T0/T1/T2 procurement | Calculate a feasible extraction/purchase quantity `Q`, then reduce to `Q / (1 + (price / reference)^eta)`; default eta 2. T1 rounds down to 1,000-unit lots and T2 rounds to the nearest whole unit afterward, capped by feasible whole units. |
+| T0/T1/T2 procurement | Calculate a feasible extraction/purchase quantity `Q`, then reduce to `Q / (1 + (price / reference)^eta)`; default eta 2. T0/T2 round stochastically to whole units; T1 rounds stochastically to 1,000-unit lots. Hard feasible limits cap settlement. |
 | Procurement references | T0 extraction cost and T1 raw quotes compare against `baseCost × difficultyTarget`; T2 uses ingredient reference costs. |
 | Production | Whole batches bounded by capacity, finished-stock target, ingredients, conversion cash, and estimated net margin. T0 has its own proportional extraction allocator. |
 | Reference overhead | Pricing and T2/distributor demand references add `(nominal rent + intelligence) / nominal output capacity`; actual expenses and inventory cost remain separate. |
@@ -42,6 +42,10 @@ A tick first checks the shared small-company exemption and prepays rent plus int
 Companies below $1.5m book equity are subsidized for both rent and intelligence. Eligible firms unable to prepay the full combined bill stop buying, selling, producing, and repricing for that tick; no partial payment or new debt is created.
 
 The [canon](docs/design_canon.md) defines reference costs, exact rounding, supplier selection, settlement order, production gates, allocation, and exceptions. A reference cost is a calibration value; it is neither the live purchase quote nor the inventory book cost. The [decision walkthrough](docs/decision_walkthrough.md) adds numerical examples by tier and an inventory of the external information each decision uses.
+
+## Player app
+
+The separate player page is available at `/play.html`: create a local person, manage a scripted workplace, earn salary and bonuses, then acquire an existing company. Personal wallets, employment and ownership persist in SQLite. See [player onboarding](docs/player_onboarding.md) for the data model, scenario rules, storage and recovery limits. The dashboard remains at `/index.html`.
 
 ## Run
 
@@ -101,3 +105,15 @@ python3.12 tools/build_recursive_catalog.py
 `./run.sh test` runs a selected Python suite and both JavaScript checks; it is not full Python discovery. Performance tooling is available through `./run.sh bench --help`.
 
 Read the [design canon](docs/design_canon.md) for implemented economic rules, [CONTRIBUTING.md](CONTRIBUTING.md) for contributor workflow, and [versioning](docs/versioning.md) for version policy. The [LandLord Alchemy archive](docs/landlord-alchemy/README.md) preserves earlier source material; it does not define current mechanics.
+
+### Dashboard saves
+
+Use **Save** in Execution to create a named local checkpoint. **Load** lists saved simulations and restores the selected one paused, replacing the current state. Saves include the world, cash, inventory, configuration, and decision state; they are stored in `saves/` (override with `ECONOMY_SAVE_DIR`). Each save creates a separate slot. Incompatible catalog/population versions are rejected.
+
+### Complexity trend charts
+
+The dashboard category section charts C1–C4 net earnings per company and sales-weighted prices across the full run. Each point aggregates one simulation year (360 ticks); the unfinished year updates live. Earnings divide actual net earnings, including rent, intelligence and switching charges, by company-ticks with installed lines in that complexity, including idle companies. Prices divide total sales revenue by total units sold; no-sales periods are gaps. Every tick contributes, even in Run Max or with no browser connected. History survives refresh and new saves; reset clears it. Older saves without trend history start collecting on the next tick. Hover shows the covered ticks; the horizontal axis uses generations.
+
+### Cost-normalized price learning
+
+All producer tiers compare successive revenue and sales rates at the same latest observed unit cost. The current window’s total COGS divided by units sold supplies that cost; a no-sales window uses current inventory cost basis. A falling input cost alone cannot make an unsuccessful price cut look successful. The objective remains gross profit, with the existing shortage and competitor-price priorities. Checkpoint version 14 stores the prior revenue/sales rates; older compatible saves restart learning observations without changing quotes or financial records. See design canon §9 for the equations.

@@ -25,6 +25,7 @@ from ..core.state import (T0P, T1P, WorldState, tier1_goods_space, tier1_storage
 from ..kernel.tick import tick as run_tick
 from .aggregates import project_refineries, project_manufacturing, project_storage_rent, project_company_amounts, project_complexity_balances
 from .recording import profitability_rows, CompanyHistory
+from .complexity_history import accumulate, company_counts, project as project_trends
 
 _STATS_DIR = Path(__file__).resolve().parents[2] / 'stats'
 _T2_COMP = np.array([p['complexity'] for p in M.T2_PRODUCTS], dtype=np.int64)
@@ -168,6 +169,7 @@ class KernelRuntime:
         self.lastReportAt = time.monotonic()
         self.lastReportTick = 0
         self.analyticsHistory = []
+        self.complexityTrends = []
         self.tier2CompanyHistory = []
         self.tier2HistoryCompany = -1
         self.watchedCompanies = {'T0': set(), 'T1': set()}
@@ -208,6 +210,7 @@ class KernelRuntime:
 
     def checkpoint_metadata(self):
         return {
+            'complexityTrends': self.complexityTrends,
             'playerLicenses': sorted(self.playerLicenses), 'playerHouse': self.playerHouse,
             'ownershipAccounting': self.ownershipAccounting, 'ownershipEnforced': self.ownershipEnforced,
             'adminAccounting': self.adminAccounting,
@@ -219,6 +222,7 @@ class KernelRuntime:
         }
 
     def restore_metadata(self, metadata):
+        self.complexityTrends = metadata.get('complexityTrends', [])
         for key in ('online', 'onlineT0', 'lastTickT0Produced', 'lastTickT1Made'):
             if key in metadata:
                 getattr(self, key)[:] = metadata[key]
@@ -259,6 +263,7 @@ class KernelRuntime:
         self.ownershipAccounting = {'licensesSpent': 0, 'houseSpent': 0}
         self.ownershipEnforced = True
         self.analyticsHistory = []
+        self.complexityTrends = []
         self.watchedCompanyHistory = {}
         self.tier2CompanyHistory = []
         self.tier2HistoryCompany = -1
@@ -314,7 +319,10 @@ class KernelRuntime:
         if getattr(self, '_companyStats', None) is None:
             self._companyStats = CompanyHistory(self.statsPath.parent,self.cfg)
         self._companyStats.record(self.world,self.cfg,self.tick)
-        self.statsLog.append(stats_row(self.world, self.cfg, self.tick, self.month))
+        row = stats_row(self.world, self.cfg, self.tick, self.month)
+        accumulate(self.complexityTrends, self.tick, row['productProfitability'],
+                   company_counts(self.world), M.TIME['ticksPerYear'])
+        self.statsLog.append(row)
 
     def flush_stats(self):
         if not self.statsLog:
@@ -443,6 +451,9 @@ class KernelRuntime:
                 self.world.t0LearnProfit[index] = self.world.t0LearnSales[index] = self.world.t0LearnDemand[index] = self.world.t0LearnTicks[index] = 0
                 self.world.t0LearnStep[index] = 1
                 self.world.t0LearnPrevious[index] = float('nan')
+                self.world.t0LearnRevenue[index] = 0
+                self.world.t0LearnPreviousRevenue[index] = float('nan')
+                self.world.t0LearnPreviousSales[index] = 0
             return self.publish()
         if tier == 'T2':
             id_ = int(id_)
@@ -465,6 +476,9 @@ class KernelRuntime:
                         self.world.t2LearnProfit[line] = self.world.t2LearnSales[line] = self.world.t2LearnDemand[line] = self.world.t2LearnTicks[line] = 0
                         self.world.t2LearnStep[line] = 1
                         self.world.t2LearnPrevious[line] = float('nan')
+                        self.world.t2LearnRevenue[line] = 0
+                        self.world.t2LearnPreviousRevenue[line] = float('nan')
+                        self.world.t2LearnPreviousSales[line] = 0
             self.selectedTierControl = 'T2'
             self.selectedT2Id = id_
             return self.publish()
@@ -485,6 +499,9 @@ class KernelRuntime:
             self.world.t1LearnProfit[index] = self.world.t1LearnSales[index] = self.world.t1LearnDemand[index] = self.world.t1LearnTicks[index] = 0
             self.world.t1LearnStep[index] = 1
             self.world.t1LearnPrevious[index] = float('nan')
+            self.world.t1LearnRevenue[index] = 0
+            self.world.t1LearnPreviousRevenue[index] = float('nan')
+            self.world.t1LearnPreviousSales[index] = 0
         return self.publish()
 
     def buy_equipment(self, tier, id_, code):
@@ -1220,7 +1237,7 @@ class KernelRuntime:
                 'intermediateRevenue': float(world.t1IntermediateRevenue[p]),
                 'revenue': float(analytics['rRev'][p]), 'supplyCapacity': self._product_supply_capacity(p),
                 'readyStock': self._product_ready_stock(p), 'customerType': 'Companies',
-                'potential': None, 'active': demand, 'fulfilled': float(world.t1IntermediateSold[p]),
+                'potential': float(world.potential[p]), 'active': demand, 'fulfilled': float(world.t1IntermediateSold[p]),
                 'priceLost': None, 'stockUnmet': float(max(0.0, demand - world.t1IntermediateSold[p])),
                 'hhi': hhi, 'reliability': reliability,
                 'fillRate': float(world.t1IntermediateSold[p] / demand) if demand > 0 else None})
@@ -1325,6 +1342,8 @@ class KernelRuntime:
         t0_machines = sum(len(p['elements']) for p in T0P)
         t0_capacity = float(cfg['t0Capacity'] * t0_machines)
         c0 = {'name': 'C-0', 'products': NE, 'lines': t0_machines, 'firms': N0, 'capacity': t0_capacity, 'spaces': float(N0 * cfg['t0Storage']),
+                       'storageCapacitySpace': float(N0 * cfg['t0Storage']),
+                       'emptyStorageSpace': float(np.maximum(0, cfg['t0Storage'] - world.t0Inv.reshape(N0, NE).sum(axis=1)).sum()),
                        'inventoryValue': float(np.sum(world.t0Inv * world.t0InvBasis)),
               'readyStock': analytics['t0Inventory'], 'made': t0_made, 'sold': t0_sold,
               'revenue': t0_revenue, 'cogs': t0_cogs,
@@ -1472,9 +1491,12 @@ class KernelRuntime:
                             'orders': self.state.get('activeOrders', 0)},
             'cohorts': analytics['cohort'], 't0Companies': self._company_summaries_t0(),
             'analyticsHistory': self.analyticsHistory,
+            'complexityTrends': project_trends(self.complexityTrends),
             'tiers': {
                 't0': {'firms': N0, 'bought': 0, 'made': float(analytics['t0Produced'].sum()),
                        'capacity': t0_capacity, 'spaces': float(N0 * cfg['t0Storage']),
+                       'storageCapacitySpace': float(N0 * cfg['t0Storage']),
+                       'emptyStorageSpace': float(np.maximum(0, cfg['t0Storage'] - world.t0Inv.reshape(N0, NE).sum(axis=1)).sum()),
                        'inventoryValue': float(np.sum(world.t0Inv * world.t0InvBasis)),
                        'utilization': float(analytics['t0Produced'].sum() / t0_capacity) if t0_capacity > 0 else 0.0,
                        'cogs': _array_sum(world.t0COGS), 'grossProfit': analytics['t0Revenue'] - _array_sum(world.t0COGS),
@@ -1488,6 +1510,8 @@ class KernelRuntime:
                        'bought': _array_sum(world.t1Bought), 'made': analytics['t1Made'],
                        'inventoryValue': sum(complexity_balances[c]['inventoryValue'] for c in (1, 2)),
                        'spaces': sum(complexity_balances[c]['spaces'] for c in (1, 2)),
+                       'storageCapacitySpace': sum(complexity_balances[c]['storageCapacitySpace'] for c in (1, 2)),
+                       'emptyStorageSpace': sum(complexity_balances[c]['emptyStorageSpace'] for c in (1, 2)),
                        'capacity': float(sum(p['productionCapacity'] for p in productStats)),
                        'utilization': float(analytics['t1Made'] / sum(p['productionCapacity'] for p in productStats)) if sum(p['productionCapacity'] for p in productStats) > 0 else 0.0,
                        'sold': analytics['t1Sold'], 'revenue': analytics['t1Revenue'],
@@ -1507,6 +1531,8 @@ class KernelRuntime:
                        'cogs': analytics['t2COGS'], 'grossProfit': analytics['t2Revenue'] - analytics['t2COGS'],
                        'inventoryValue': sum(complexity_balances[c]['inventoryValue'] for c in (3, 4)),
                        'spaces': sum(complexity_balances[c]['spaces'] for c in (3, 4)),
+                       'storageCapacitySpace': sum(complexity_balances[c]['storageCapacitySpace'] for c in (3, 4)),
+                       'emptyStorageSpace': sum(complexity_balances[c]['emptyStorageSpace'] for c in (3, 4)),
                        'capacity': t2Totals['capacity'], 'utilization': t2Totals['utilization'],
                        'margin': t2Totals['margin'], 'desired': t2Totals['active'],
                        'fulfilled': t2Totals['fulfilled'], 'fillRate': t2Totals['fillRate']},

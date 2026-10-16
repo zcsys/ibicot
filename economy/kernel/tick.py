@@ -209,7 +209,10 @@ def operate_tier0(world, cfg, profiles, tick):
         # Do not redistribute the cash/space withheld by the final response.
         reference = cfg['baseCost'] * cfg['difficultyTarget']
         for n, element in enumerate(elements):
-            made = M.demand_at_price(planned_quantities[n], reference, costs[n], cfg['t0InputElasticity'])
+            reduced = M.demand_at_price(planned_quantities[n], reference, costs[n], cfg['t0InputElasticity'])
+            whole = math.floor(reduced)
+            draw = random_(seed, tick, 100000000 + supplier * NE + element)
+            made = min(whole + (draw < reduced - whole), math.floor(planned_quantities[n]))
             index = supplier * NE + element
             old = world.t0Inv[index]
             if made > 0:
@@ -333,7 +336,8 @@ def plan_and_buy_inputs(world, cfg, products, profiles, tick):
                     chosen, preferred, min(request, storage_room), world.t1Cash[company],
                     world.t0Inv[element::NE], world.t0Price[element::NE], world.t0Rel[element::NE],
                     cfg['baseCost'], world.lm1, cfg['minWholesaleLot'],
-                    cfg['baseCost'] * cfg['difficultyTarget'], cfg['t1InputElasticity'])
+                    cfg['baseCost'] * cfg['difficultyTarget'], cfg['t1InputElasticity'],
+                    random_(cfg['seed'], tick, 110000000 + company * NE + element))
                 supplier_index = chosen * NE + element
                 quote = world.t0Price[supplier_index]
                 available = math.floor(world.t0Inv[supplier_index])
@@ -434,6 +438,10 @@ def price_learning_view(world, tier):
         'price': getattr(world, f'{tier}Price'),
         'ages': getattr(world, f'{tier}LearnTicks'),
         'profits': getattr(world, f'{tier}LearnProfit'),
+        'revenues': getattr(world, f'{tier}LearnRevenue'),
+        'previousRevenue': getattr(world, f'{tier}LearnPreviousRevenue'),
+        'previousSales': getattr(world, f'{tier}LearnPreviousSales'),
+        'costBasis': getattr(world, 't0InvBasis' if tier == 't0' else f'{tier}FinBasis'),
         'sales': getattr(world, f'{tier}LearnSales'),
         'previous': getattr(world, f'{tier}LearnPrevious'),
         'direction': getattr(world, f'{tier}LearnDirection'),
@@ -463,10 +471,15 @@ def learned_quote(view, cfg, index, stock, tick, market_price=None):
                       or view['opportunity'][index] >= cfg['researchPriceMinimumOpportunities']
                       or stale_evidence)
     if enough_traffic:
-        average = profits[index] / ages[index]
+        revenue_rate = view['revenues'][index] / ages[index]
+        sales_rate = sales[index] / ages[index]
+        cost = ((view['revenues'][index] - profits[index]) / sales[index]
+                if sales[index] > 0 else view['costBasis'][index])
+        average = revenue_rate - cost * sales_rate
+        baseline = view['previousRevenue'][index] - cost * view['previousSales'][index]
         result = M.adaptive_price(
             old_price=price[index], profit=average,
-            previous_profit=previous[index], direction=direction[index],
+            previous_profit=baseline, direction=direction[index],
             sales=sales[index], stock=stock, demand=demand[index],
             available=sales[index], step_scale=steps[index],
             market_price=market_price, band=cfg['marketAnchorBand'],
@@ -474,6 +487,9 @@ def learned_quote(view, cfg, index, stock, tick, market_price=None):
         price[index] = result['price']
         direction[index] = result['direction']
         previous[index] = average
+        view['previousRevenue'][index] = revenue_rate
+        view['previousSales'][index] = sales_rate
+        view['revenues'][index] = 0.0
         steps[index] = result['stepScale']
         profits[index] = 0
         sales[index] = 0
@@ -721,7 +737,8 @@ def transfer_tier2_input(world, cfg, firm, material, supplier, request, offers=N
     supplier, funded, quantity, loyalty_charge = affordable_order(
         supplier, preferred, requested, world.t2Cash[firm], stock, prices, book.rel,
         M.material_switching_reference(cfg), world.lm2[firm_cx - 3], 1,
-        M.input_reference_cost(material, cfg), cfg['t2InputElasticity'])
+        M.input_reference_cost(material, cfg), cfg['t2InputElasticity'],
+        random_(cfg['seed'], book.tick, 120000000 + firm * NI + material))
     supplier_firm = book.owner[supplier]
     quote = prices[supplier]
     book.demand[supplier] += funded
@@ -862,6 +879,11 @@ def _operate_tier2_phase(world, cfg, products, profiles, t2_products, tick, prod
             need = max(0.0, needs[material] - raw[index])
             if not need:
                 continue
+            # Observe zero-price input need even when no supplier has stock.
+            # This is telemetry only: actual orders retain cash/stock/eta limits.
+            if material < NP:
+                room = (tier2_goods_space(world, cfg, firm) - tier2_inventory_units(world, firm)) / M.T2_INPUT_PRODUCTS[material]['complexity']
+                world.potential[material] += math.floor(max(0.0, min(need, room)))
             supplier = suppliers[material]
             if supplier >= 0:
                 transfer_tier2_input(world, cfg, firm, material, supplier, need, t1_offers[material], book=book)
@@ -1151,6 +1173,7 @@ def observe_markets(world, cfg, profiles):
             forecast[i] += cfg['alpha'] * (max(demand[i], sales[i]) - forecast[i])
             actual_sales[i] += cfg['alpha'] * (sales[i] - actual_sales[i])
             profits[i] += revenue[i] - cogs[i]
+            getattr(world, f'{tier}LearnRevenue')[i] += revenue[i]
             quantities[i] += sales[i]
             ages[i] += 1
             if opp_weights:

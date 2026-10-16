@@ -32,7 +32,7 @@ class NamingCatalogTests(unittest.TestCase):
     def test_no_new_fiction_roles_or_economic_fields(self):
         defaults = json.loads((ROOT / 'catalogs/midbridge-4263/runtime-defaults.json').read_text())
         self.assertEqual(M.WORLD_STORY, defaults['constants']['WORLD_STORY'])
-        self.assertEqual(M.EQUIPMENT_MAKERS, [T0P[6]['name']])
+        self.assertEqual(M.EQUIPMENT_MAKERS, [T0P[6]['name'], T0P[16]['name']])
         forbidden = {'scope', 'interpretation', 'physical_use', 'physical_description',
                      'downstream_role', 'role', 'initiative_name', 'setting', 'rules',
                      'equipment_makers'}
@@ -52,7 +52,7 @@ class NamingCatalogTests(unittest.TestCase):
                           'demandFactor', 'reservationPremium', 'distributorValue',
                           'needType', 'kind']:
                 self.assertEqual(p[field], original[field], (p['catalogId'], field))
-        self.assertEqual(M.COMPANY_NUMBERING['T2']['start'], 1003)
+        self.assertEqual(M.COMPANY_NUMBERING['T2']['start'], 1021)
         self.assertEqual(M.N2_FIRMS, 57960)
 
     def test_browser_names_and_symbols_match_python(self):

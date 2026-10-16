@@ -42,9 +42,9 @@
       "material_id": "C1-002",
       "symbol": "E",
       "formula": "E",
-      "public_name": "Inorganic Concentrate",
+      "public_name": "Mineral Concentrate",
       "refinery_sector_id": "S1-02",
-      "refinery_sector_name": "Inorganic Processing"
+      "refinery_sector_name": "Mineral Processing"
     },
     {
       "material_id": "C1-003",
@@ -58,9 +58,9 @@
       "material_id": "C1-004",
       "symbol": "A",
       "formula": "A",
-      "public_name": "Isotope Feed",
+      "public_name": "Enriched Isotopes",
       "refinery_sector_id": "S1-04",
-      "refinery_sector_name": "Isotope Separation"
+      "refinery_sector_name": "Isotope Enrichment"
     },
     {
       "material_id": "C2-001",
@@ -148,121 +148,141 @@
       "company_number": "0x1",
       "name": "Raw Materials Corp.",
       "extracts": "Organics + Inorganics + Metals + Radioactives",
-      "fixed": true
+      "fixed": true,
+      "designated_role": "Raw materials"
     },
     {
       "company_number": "0x2",
       "name": "Elements Inc.",
       "extracts": "Organics + Inorganics + Metals + Radioactives",
-      "fixed": true
+      "fixed": true,
+      "designated_role": "Raw materials"
     },
     {
       "company_number": "0x3",
       "name": "General Resources Corporation",
       "extracts": "Organics + Inorganics + Metals",
-      "fixed": false
+      "fixed": false,
+      "designated_role": "Policy making"
     },
     {
       "company_number": "0x4",
       "name": "Integrated Extraction Corp., Inc.",
       "extracts": "Organics + Inorganics + Radioactives",
-      "fixed": false
+      "fixed": false,
+      "designated_role": "Colony administration"
     },
     {
       "company_number": "0x5",
       "name": "Planetary Industries, Inc.",
       "extracts": "Organics + Metals + Radioactives",
-      "fixed": false
+      "fixed": false,
+      "designated_role": "Market intelligence"
     },
     {
       "company_number": "0x6",
       "name": "Federated Supply Incorporated",
       "extracts": "Inorganics + Metals + Radioactives",
-      "fixed": false
+      "fixed": false,
+      "designated_role": "Company marketplace"
     },
     {
       "company_number": "0x7",
       "name": "Standard Fiber & Mineral, Inc.",
       "extracts": "Organics + Inorganics",
-      "fixed": false
+      "fixed": false,
+      "designated_role": "Automotive & machinery"
     },
     {
       "company_number": "0x8",
       "name": "Advanced Materials, Inc.",
       "extracts": "Organics + Metals",
-      "fixed": false
+      "fixed": false,
+      "designated_role": "Finance"
     },
     {
       "company_number": "0x9",
       "name": "The People's Extraction Co., Inc.",
       "extracts": "Organics + Radioactives",
-      "fixed": false
+      "fixed": false,
+      "designated_role": "Games & entertainment"
     },
     {
       "company_number": "0xa",
       "name": "Premier Harvest, Inc.",
       "extracts": "Inorganics + Metals",
-      "fixed": false
+      "fixed": false,
+      "designated_role": "Research & inventions"
     },
     {
       "company_number": "0xb",
       "name": "Universal Material Extraction Corp.",
       "extracts": "Inorganics + Radioactives",
-      "fixed": false
+      "fixed": false,
+      "designated_role": "Storage & logistics"
     },
     {
       "company_number": "0xc",
       "name": "The Oligarch",
       "extracts": "Metals + Radioactives",
-      "fixed": false
+      "fixed": false,
+      "designated_role": "Finance"
     },
     {
       "company_number": "0xd",
       "name": "Organic Material Extraction Assoc., Inc.",
       "extracts": "Organics",
-      "fixed": false
+      "fixed": false,
+      "designated_role": "Community"
     },
     {
       "company_number": "0xe",
       "name": "Old Toby & Daughters, Inc.",
       "extracts": "Organics",
-      "fixed": false
+      "fixed": false,
+      "designated_role": "Community"
     },
     {
       "company_number": "0xf",
       "name": "Planetary Salt Corporation",
       "extracts": "Inorganics",
-      "fixed": false
+      "fixed": false,
+      "designated_role": "Advertisement"
     },
     {
       "company_number": "0x10",
       "name": "Associated Silica, Incorporated",
       "extracts": "Inorganics",
-      "fixed": false
+      "fixed": false,
+      "designated_role": "Advertisement"
     },
     {
       "company_number": "0x11",
       "name": "The Metal Mining Co., Inc.",
       "extracts": "Metals",
-      "fixed": false
+      "fixed": false,
+      "designated_role": "Automotive & machinery"
     },
     {
       "company_number": "0x12",
       "name": "The Union Metal, Inc.",
       "extracts": "Metals",
-      "fixed": false
+      "fixed": false,
+      "designated_role": "Storage & logistics"
     },
     {
       "company_number": "0x13",
       "name": "Amalgamated Isotopes Corp.",
       "extracts": "Radioactives",
-      "fixed": false
+      "fixed": false,
+      "designated_role": "Bots & assistants"
     },
     {
       "company_number": "0x14",
       "name": "United Radioactives Company",
       "extracts": "Radioactives",
-      "fixed": false
+      "fixed": false,
+      "designated_role": "Bots & assistants"
     }
   ],
   "t1_companies": [
@@ -274,17 +294,17 @@
     {
       "sector_id": "S1-02",
       "material_id": "C1-002",
-      "generic_stem": "Concentrate Works"
+      "generic_stem": "Mineral Works"
     },
     {
       "sector_id": "S1-03",
       "material_id": "C1-003",
-      "generic_stem": "Metal Smelter"
+      "generic_stem": "Smelting Works"
     },
     {
       "sector_id": "S1-04",
       "material_id": "C1-004",
-      "generic_stem": "Isotope Plant"
+      "generic_stem": "Enrichment Plant"
     },
     {
       "sector_id": "S1-05",
@@ -294,7 +314,7 @@
     {
       "sector_id": "S1-06",
       "material_id": "C2-002",
-      "generic_stem": "Fine Chemical Plant"
+      "generic_stem": "Chemical Works"
     },
     {
       "sector_id": "S1-07",
@@ -304,17 +324,17 @@
     {
       "sector_id": "S1-08",
       "material_id": "C2-004",
-      "generic_stem": "Radiochemical Lab"
+      "generic_stem": "Radiochemical Plant"
     },
     {
       "sector_id": "S1-09",
       "material_id": "C2-005",
-      "generic_stem": "Ceramic Kiln"
+      "generic_stem": "Ceramics Works"
     },
     {
       "sector_id": "S1-10",
       "material_id": "C2-006",
-      "generic_stem": "Wafer Fab"
+      "generic_stem": "Semiconductor Fab"
     },
     {
       "sector_id": "S1-11",
@@ -344,11 +364,11 @@
     },
     {
       "sector_id": "S2-02",
-      "name": "Construction Materials"
+      "name": "Fortification Materials"
     },
     {
       "sector_id": "S2-03",
-      "name": "Weapons"
+      "name": "Weapons and Ammunition"
     },
     {
       "sector_id": "S2-04",
@@ -368,7 +388,7 @@
     },
     {
       "sector_id": "S2-08",
-      "name": "Diagnostic Equipment"
+      "name": "Medical Equipment"
     },
     {
       "sector_id": "S2-09",
@@ -380,7 +400,7 @@
     },
     {
       "sector_id": "S2-11",
-      "name": "Shelter Systems"
+      "name": "Bunkers and Shelters"
     },
     {
       "sector_id": "S2-12",
@@ -392,65 +412,65 @@
     },
     {
       "sector_id": "S2-14",
-      "name": "Aerospace Systems"
+      "name": "Aerospace"
     }
   ],
   "t2_companies": [
     {
       "sector_id": "S2-01",
-      "facility_stem": "Medical supply manufacturing facility"
+      "facility_stem": "Medical Supply Works"
     },
     {
       "sector_id": "S2-02",
-      "facility_stem": "Construction material production facility"
+      "facility_stem": "Fortification Works"
     },
     {
       "sector_id": "S2-03",
-      "facility_stem": "Weapons assembly facility"
+      "facility_stem": "Arsenal"
     },
     {
       "sector_id": "S2-04",
-      "facility_stem": "Sensor assembly facility"
+      "facility_stem": "Sensor Works"
     },
     {
       "sector_id": "S2-05",
-      "facility_stem": "Protective gear manufacturing facility"
+      "facility_stem": "Protective Gear Works"
     },
     {
       "sector_id": "S2-06",
-      "facility_stem": "Explosives manufacturing facility"
+      "facility_stem": "Explosives Plant"
     },
     {
       "sector_id": "S2-07",
-      "facility_stem": "Fuel and lubricant production facility"
+      "facility_stem": "Fuel and Lubricant Works"
     },
     {
       "sector_id": "S2-08",
-      "facility_stem": "Diagnostic equipment assembly facility"
+      "facility_stem": "Biomedical Works"
     },
     {
       "sector_id": "S2-09",
-      "facility_stem": "Armor plate fabrication facility"
+      "facility_stem": "Armor Works"
     },
     {
       "sector_id": "S2-10",
-      "facility_stem": "Electronics assembly facility"
+      "facility_stem": "Electronics Works"
     },
     {
       "sector_id": "S2-11",
-      "facility_stem": "Shelter fabrication facility"
+      "facility_stem": "Shelter Works"
     },
     {
       "sector_id": "S2-12",
-      "facility_stem": "Vehicle assembly facility"
+      "facility_stem": "Vehicle Works"
     },
     {
       "sector_id": "S2-13",
-      "facility_stem": "Power equipment manufacturing facility"
+      "facility_stem": "Generator Works"
     },
     {
       "sector_id": "S2-14",
-      "facility_stem": "Aerospace assembly facility"
+      "facility_stem": "Aerospace Works"
     }
   ],
   "equipment_classes": [
@@ -508,7 +528,7 @@
     },
     {
       "sector_id": "S1-04",
-      "family": "Centrifuge Line"
+      "family": "Centrifuge Cascade"
     },
     {
       "sector_id": "S1-05",
@@ -609,7 +629,7 @@
     {
       "sector_id": "S2-05",
       "complexity": "C-4",
-      "family": "Gear Assembly Line",
+      "family": "Protective Gear Line",
       "has_current_recipes": true
     },
     {
@@ -639,13 +659,13 @@
     {
       "sector_id": "S2-08",
       "complexity": "C-3",
-      "family": "Detector Bench",
+      "family": "Instrument Bench",
       "has_current_recipes": true
     },
     {
       "sector_id": "S2-08",
       "complexity": "C-4",
-      "family": "Imaging Assembly Line",
+      "family": "Diagnostic Assembly Line",
       "has_current_recipes": true
     },
     {
@@ -705,7 +725,7 @@
     {
       "sector_id": "S2-13",
       "complexity": "C-4",
-      "family": "Generator Assembly Line",
+      "family": "Power Assembly Line",
       "has_current_recipes": true
     },
     {
@@ -740,9 +760,9 @@
       "sector_id": "S1-02",
       "preferred_material_id": "C1-002",
       "unchanged_formula": "1 raw(E) \u2192 1 E",
-      "product_name": "Inorganic Concentrate",
+      "product_name": "Mineral Concentrate",
       "machine_family": "Crushing and Washing Line",
-      "installation_name": "Concentrate Crushing and Washing Line"
+      "installation_name": "Mineral Crushing and Washing Line"
     },
     {
       "recipe_id": "C1-003",
@@ -762,9 +782,9 @@
       "sector_id": "S1-04",
       "preferred_material_id": "C1-004",
       "unchanged_formula": "1 raw(A) \u2192 1 A",
-      "product_name": "Isotope Feed",
-      "machine_family": "Centrifuge Line",
-      "installation_name": "Isotope Centrifuge Line"
+      "product_name": "Enriched Isotopes",
+      "machine_family": "Centrifuge Cascade",
+      "installation_name": "Isotope Centrifuge Cascade"
     },
     {
       "recipe_id": "C2-001",
@@ -917,7 +937,7 @@
       "preferred_material_id": "C2-004",
       "unchanged_formula": "1 W + 1 (W+A) \u2192 1 (W+(W+A))",
       "product_name": "X-ray Tube",
-      "machine_family": "Detector Bench",
+      "machine_family": "Instrument Bench",
       "installation_name": "X-ray Tube Bench"
     },
     {
@@ -1027,7 +1047,7 @@
       "preferred_material_id": "C2-004",
       "unchanged_formula": "1 E + 1 (W+A) \u2192 1 (E+(W+A))",
       "product_name": "Ultrasound Probe",
-      "machine_family": "Detector Bench",
+      "machine_family": "Instrument Bench",
       "installation_name": "Ultrasound Probe Bench"
     },
     {
@@ -1137,7 +1157,7 @@
       "preferred_material_id": "C2-004",
       "unchanged_formula": "1 F + 1 (W+A) \u2192 1 (F+(W+A))",
       "product_name": "Blood Analyzer Cartridge",
-      "machine_family": "Detector Bench",
+      "machine_family": "Instrument Bench",
       "installation_name": "Blood Analyzer Cartridge Bench"
     },
     {
@@ -1246,9 +1266,9 @@
       "sector_id": "S2-08",
       "preferred_material_id": "C2-004",
       "unchanged_formula": "1 A + 1 (W+A) \u2192 1 (A+(W+A))",
-      "product_name": "Detector Panel",
-      "machine_family": "Detector Bench",
-      "installation_name": "Detector Panel Bench"
+      "product_name": "X-ray Detector Panel",
+      "machine_family": "Instrument Bench",
+      "installation_name": "X-ray Detector Panel Bench"
     },
     {
       "recipe_id": "C3-035",
@@ -1598,9 +1618,9 @@
       "sector_id": "S2-01",
       "preferred_material_id": "C1-001",
       "unchanged_formula": "1 W + 1 (F+(E+F)) \u2192 1 (W+(F+(E+F)))",
-      "product_name": "Surgical Table",
+      "product_name": "Field Surgical Table",
       "machine_family": "Sterile Production Line",
-      "installation_name": "Surgical Table Line"
+      "installation_name": "Field Surgical Table Line"
     },
     {
       "recipe_id": "C4-027",
@@ -1697,9 +1717,9 @@
       "sector_id": "S2-01",
       "preferred_material_id": "C1-001",
       "unchanged_formula": "1 W + 1 (A+(E+E)) \u2192 1 (W+(A+(E+E)))",
-      "product_name": "Recovery Bed",
+      "product_name": "Field Hospital Bed",
       "machine_family": "Sterile Production Line",
-      "installation_name": "Recovery Bed Line"
+      "installation_name": "Field Hospital Bed Line"
     },
     {
       "recipe_id": "C4-036",
@@ -1829,9 +1849,9 @@
       "sector_id": "S2-02",
       "preferred_material_id": "C1-002",
       "unchanged_formula": "1 E + 1 (W+(E+A)) \u2192 1 (E+(W+(E+A)))",
-      "product_name": "Safety Glass",
+      "product_name": "Blast-Resistant Glass",
       "machine_family": "Casting and Finishing Line",
-      "installation_name": "Safety Glass Line"
+      "installation_name": "Blast-Resistant Glass Line"
     },
     {
       "recipe_id": "C4-048",
@@ -1840,9 +1860,9 @@
       "sector_id": "S2-02",
       "preferred_material_id": "C1-002",
       "unchanged_formula": "1 E + 1 (W+(F+F)) \u2192 1 (E+(W+(F+F)))",
-      "product_name": "Insulated Panel",
+      "product_name": "Steel Revetment Panel",
       "machine_family": "Casting and Finishing Line",
-      "installation_name": "Insulated Panel Line"
+      "installation_name": "Steel Revetment Panel Line"
     },
     {
       "recipe_id": "C4-049",
@@ -1851,9 +1871,9 @@
       "sector_id": "S2-02",
       "preferred_material_id": "C1-002",
       "unchanged_formula": "1 E + 1 (W+(F+A)) \u2192 1 (E+(W+(F+A)))",
-      "product_name": "Fired Brick",
+      "product_name": "Gabion Basket",
       "machine_family": "Casting and Finishing Line",
-      "installation_name": "Fired Brick Line"
+      "installation_name": "Gabion Basket Line"
     },
     {
       "recipe_id": "C4-050",
@@ -1950,9 +1970,9 @@
       "sector_id": "S2-02",
       "preferred_material_id": "C1-002",
       "unchanged_formula": "1 E + 1 (E+(F+F)) \u2192 1 (E+(E+(F+F)))",
-      "product_name": "Paving Stone",
+      "product_name": "Tank Trap",
       "machine_family": "Casting and Finishing Line",
-      "installation_name": "Paving Stone Line"
+      "installation_name": "Tank Trap Line"
     },
     {
       "recipe_id": "C4-059",
@@ -1961,9 +1981,9 @@
       "sector_id": "S2-02",
       "preferred_material_id": "C1-002",
       "unchanged_formula": "1 E + 1 (E+(F+A)) \u2192 1 (E+(E+(F+A)))",
-      "product_name": "Drainage Pipe",
+      "product_name": "Trench Liner",
       "machine_family": "Casting and Finishing Line",
-      "installation_name": "Drainage Pipe Line"
+      "installation_name": "Trench Liner Line"
     },
     {
       "recipe_id": "C4-060",
@@ -2005,9 +2025,9 @@
       "sector_id": "S2-02",
       "preferred_material_id": "C1-002",
       "unchanged_formula": "1 E + 1 (F+(W+F)) \u2192 1 (E+(F+(W+F)))",
-      "product_name": "Landing Pad Tile",
+      "product_name": "Airstrip Matting",
       "machine_family": "Casting and Finishing Line",
-      "installation_name": "Landing Pad Tile Line"
+      "installation_name": "Airstrip Matting Line"
     },
     {
       "recipe_id": "C4-064",
@@ -2016,9 +2036,9 @@
       "sector_id": "S2-02",
       "preferred_material_id": "C1-002",
       "unchanged_formula": "1 E + 1 (F+(W+A)) \u2192 1 (E+(F+(W+A)))",
-      "product_name": "Roof Tile",
+      "product_name": "Bunker Roof Slab",
       "machine_family": "Casting and Finishing Line",
-      "installation_name": "Roof Tile Line"
+      "installation_name": "Bunker Roof Slab Line"
     },
     {
       "recipe_id": "C4-065",
@@ -2027,9 +2047,9 @@
       "sector_id": "S2-02",
       "preferred_material_id": "C1-002",
       "unchanged_formula": "1 E + 1 (F+(E+E)) \u2192 1 (E+(F+(E+E)))",
-      "product_name": "Window Frame",
+      "product_name": "Firing Port Frame",
       "machine_family": "Casting and Finishing Line",
-      "installation_name": "Window Frame Line"
+      "installation_name": "Firing Port Frame Line"
     },
     {
       "recipe_id": "C4-066",
@@ -2049,9 +2069,9 @@
       "sector_id": "S2-02",
       "preferred_material_id": "C1-002",
       "unchanged_formula": "1 E + 1 (F+(E+A)) \u2192 1 (E+(F+(E+A)))",
-      "product_name": "Retaining Wall Block",
+      "product_name": "Revetment Block",
       "machine_family": "Casting and Finishing Line",
-      "installation_name": "Retaining Wall Block Line"
+      "installation_name": "Revetment Block Line"
     },
     {
       "recipe_id": "C4-068",
@@ -2071,9 +2091,9 @@
       "sector_id": "S2-02",
       "preferred_material_id": "C1-002",
       "unchanged_formula": "1 E + 1 (F+(F+A)) \u2192 1 (E+(F+(F+A)))",
-      "product_name": "Pipe Segment",
+      "product_name": "Pipeline Segment",
       "machine_family": "Casting and Finishing Line",
-      "installation_name": "Pipe Segment Line"
+      "installation_name": "Pipeline Segment Line"
     },
     {
       "recipe_id": "C4-070",
@@ -2082,9 +2102,9 @@
       "sector_id": "S2-02",
       "preferred_material_id": "C1-002",
       "unchanged_formula": "1 E + 1 (F+(A+A)) \u2192 1 (E+(F+(A+A)))",
-      "product_name": "Glass Tube",
+      "product_name": "Ballistic Glass Block",
       "machine_family": "Casting and Finishing Line",
-      "installation_name": "Glass Tube Line"
+      "installation_name": "Ballistic Glass Block Line"
     },
     {
       "recipe_id": "C4-071",
@@ -2093,9 +2113,9 @@
       "sector_id": "S2-02",
       "preferred_material_id": "C1-002",
       "unchanged_formula": "1 E + 1 (A+(W+W)) \u2192 1 (E+(A+(W+W)))",
-      "product_name": "Insulation Batt",
+      "product_name": "Camouflage Netting",
       "machine_family": "Casting and Finishing Line",
-      "installation_name": "Insulation Batt Line"
+      "installation_name": "Camouflage Netting Line"
     },
     {
       "recipe_id": "C4-072",
@@ -2104,9 +2124,9 @@
       "sector_id": "S2-02",
       "preferred_material_id": "C1-002",
       "unchanged_formula": "1 E + 1 (A+(W+E)) \u2192 1 (E+(A+(W+E)))",
-      "product_name": "Mortar Mix",
+      "product_name": "Masonry Mortar",
       "machine_family": "Casting and Finishing Line",
-      "installation_name": "Mortar Mix Line"
+      "installation_name": "Masonry Mortar Line"
     },
     {
       "recipe_id": "C4-073",
@@ -2115,9 +2135,9 @@
       "sector_id": "S2-02",
       "preferred_material_id": "C1-002",
       "unchanged_formula": "1 E + 1 (A+(W+F)) \u2192 1 (E+(A+(W+F)))",
-      "product_name": "Plasterboard",
+      "product_name": "Fire-Resistant Board",
       "machine_family": "Casting and Finishing Line",
-      "installation_name": "Plasterboard Line"
+      "installation_name": "Fire-Resistant Board Line"
     },
     {
       "recipe_id": "C4-074",
@@ -2148,9 +2168,9 @@
       "sector_id": "S2-02",
       "preferred_material_id": "C1-002",
       "unchanged_formula": "1 E + 1 (A+(E+F)) \u2192 1 (E+(A+(E+F)))",
-      "product_name": "Gate Post",
+      "product_name": "Checkpoint Gate",
       "machine_family": "Casting and Finishing Line",
-      "installation_name": "Gate Post Line"
+      "installation_name": "Checkpoint Gate Line"
     },
     {
       "recipe_id": "C4-077",
@@ -2192,9 +2212,9 @@
       "sector_id": "S2-02",
       "preferred_material_id": "C1-002",
       "unchanged_formula": "1 E + 1 (A+(A+A)) \u2192 1 (E+(A+(A+A)))",
-      "product_name": "Corrugated Roof Sheet",
+      "product_name": "Razor Wire Coil",
       "machine_family": "Casting and Finishing Line",
-      "installation_name": "Corrugated Roof Sheet Line"
+      "installation_name": "Razor Wire Coil Line"
     },
     {
       "recipe_id": "C4-081",
@@ -2621,9 +2641,9 @@
       "sector_id": "S2-03",
       "preferred_material_id": "C1-003",
       "unchanged_formula": "1 F + 1 (A+(F+A)) \u2192 1 (F+(A+(F+A)))",
-      "product_name": "Rail Kit",
+      "product_name": "Accessory Rail",
       "machine_family": "Armament Assembly Line",
-      "installation_name": "Rail Kit Line"
+      "installation_name": "Accessory Rail Line"
     },
     {
       "recipe_id": "C4-120",
@@ -2852,9 +2872,9 @@
       "sector_id": "S2-04",
       "preferred_material_id": "C1-004",
       "unchanged_formula": "1 A + 1 (E+(A+A)) \u2192 1 (A+(E+(A+A)))",
-      "product_name": "Smoke Detector",
+      "product_name": "Perimeter Alarm",
       "machine_family": "Calibration Line",
-      "installation_name": "Smoke Detector Line"
+      "installation_name": "Perimeter Alarm Line"
     },
     {
       "recipe_id": "C4-141",
@@ -2962,9 +2982,9 @@
       "sector_id": "S2-04",
       "preferred_material_id": "C1-004",
       "unchanged_formula": "1 A + 1 (F+(A+A)) \u2192 1 (A+(F+(A+A)))",
-      "product_name": "Weather Station",
+      "product_name": "Field Weather Station",
       "machine_family": "Calibration Line",
-      "installation_name": "Weather Station Line"
+      "installation_name": "Field Weather Station Line"
     },
     {
       "recipe_id": "C4-151",
@@ -3084,7 +3104,7 @@
       "preferred_material_id": "C2-001",
       "unchanged_formula": "2 (W+W) \u2192 1 ((W+W)+(W+W))",
       "product_name": "Body Armor Vest",
-      "machine_family": "Gear Assembly Line",
+      "machine_family": "Protective Gear Line",
       "installation_name": "Body Armor Vest Line"
     },
     {
@@ -3095,7 +3115,7 @@
       "preferred_material_id": "C2-001",
       "unchanged_formula": "1 (W+W) + 1 (W+E) \u2192 1 ((W+W)+(W+E))",
       "product_name": "Chemical Protection Suit",
-      "machine_family": "Gear Assembly Line",
+      "machine_family": "Protective Gear Line",
       "installation_name": "Chemical Protection Suit Line"
     },
     {
@@ -3117,7 +3137,7 @@
       "preferred_material_id": "C2-004",
       "unchanged_formula": "1 (W+W) + 1 (W+A) \u2192 1 ((W+W)+(W+A))",
       "product_name": "Portable X-ray Unit",
-      "machine_family": "Imaging Assembly Line",
+      "machine_family": "Diagnostic Assembly Line",
       "installation_name": "Portable X-ray Unit Line"
     },
     {
@@ -3172,7 +3192,7 @@
       "preferred_material_id": "C2-009",
       "unchanged_formula": "1 (W+W) + 1 (F+A) \u2192 1 ((W+W)+(F+A))",
       "product_name": "Diesel Generator",
-      "machine_family": "Generator Assembly Line",
+      "machine_family": "Power Assembly Line",
       "installation_name": "Diesel Generator Line"
     },
     {
@@ -3271,7 +3291,7 @@
       "preferred_material_id": "C2-009",
       "unchanged_formula": "1 (W+E) + 1 (F+A) \u2192 1 ((W+E)+(F+A))",
       "product_name": "Reactor Core Module",
-      "machine_family": "Generator Assembly Line",
+      "machine_family": "Power Assembly Line",
       "installation_name": "Reactor Core Module Line"
     },
     {
@@ -3359,7 +3379,7 @@
       "preferred_material_id": "C2-009",
       "unchanged_formula": "1 (W+F) + 1 (F+A) \u2192 1 ((W+F)+(F+A))",
       "product_name": "Portable Generator",
-      "machine_family": "Generator Assembly Line",
+      "machine_family": "Power Assembly Line",
       "installation_name": "Portable Generator Line"
     },
     {
@@ -3381,7 +3401,7 @@
       "preferred_material_id": "C2-004",
       "unchanged_formula": "2 (W+A) \u2192 1 ((W+A)+(W+A))",
       "product_name": "Field Ultrasound Scanner",
-      "machine_family": "Imaging Assembly Line",
+      "machine_family": "Diagnostic Assembly Line",
       "installation_name": "Field Ultrasound Scanner Line"
     },
     {
@@ -3392,7 +3412,7 @@
       "preferred_material_id": "C2-004",
       "unchanged_formula": "1 (W+A) + 1 (E+E) \u2192 1 ((W+A)+(E+E))",
       "product_name": "Blood Analyzer",
-      "machine_family": "Imaging Assembly Line",
+      "machine_family": "Diagnostic Assembly Line",
       "installation_name": "Blood Analyzer Line"
     },
     {
@@ -3403,7 +3423,7 @@
       "preferred_material_id": "C2-004",
       "unchanged_formula": "1 (W+A) + 1 (E+F) \u2192 1 ((W+A)+(E+F))",
       "product_name": "Imaging Scanner",
-      "machine_family": "Imaging Assembly Line",
+      "machine_family": "Diagnostic Assembly Line",
       "installation_name": "Imaging Scanner Line"
     },
     {
@@ -3414,7 +3434,7 @@
       "preferred_material_id": "C2-004",
       "unchanged_formula": "1 (W+A) + 1 (E+A) \u2192 1 ((W+A)+(E+A))",
       "product_name": "Patient Monitor",
-      "machine_family": "Imaging Assembly Line",
+      "machine_family": "Diagnostic Assembly Line",
       "installation_name": "Patient Monitor Line"
     },
     {
@@ -3436,7 +3456,7 @@
       "preferred_material_id": "C2-009",
       "unchanged_formula": "1 (W+A) + 1 (F+A) \u2192 1 ((W+A)+(F+A))",
       "product_name": "Substation Transformer",
-      "machine_family": "Generator Assembly Line",
+      "machine_family": "Power Assembly Line",
       "installation_name": "Substation Transformer Line"
     },
     {
@@ -3502,7 +3522,7 @@
       "preferred_material_id": "C2-009",
       "unchanged_formula": "1 (E+E) + 1 (F+A) \u2192 1 ((E+E)+(F+A))",
       "product_name": "Battery Bank",
-      "machine_family": "Generator Assembly Line",
+      "machine_family": "Power Assembly Line",
       "installation_name": "Battery Bank Line"
     },
     {
@@ -3656,7 +3676,7 @@
       "preferred_material_id": "C2-009",
       "unchanged_formula": "2 (F+A) \u2192 1 ((F+A)+(F+A))",
       "product_name": "Turbine Generator Set",
-      "machine_family": "Generator Assembly Line",
+      "machine_family": "Power Assembly Line",
       "installation_name": "Turbine Generator Set Line"
     },
     {
@@ -3667,7 +3687,7 @@
       "preferred_material_id": "C2-009",
       "unchanged_formula": "1 (F+A) + 1 (A+A) \u2192 1 ((F+A)+(A+A))",
       "product_name": "Power Distribution Panel",
-      "machine_family": "Generator Assembly Line",
+      "machine_family": "Power Assembly Line",
       "installation_name": "Power Distribution Panel Line"
     },
     {

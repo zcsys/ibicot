@@ -182,7 +182,6 @@
       'supplyCapacity',
       'readyStock',
       'volume',
-      'distributorVolume',
       'intermediateVolume',
       'hhi',
       'potential',
@@ -191,8 +190,8 @@
       'fillRate',
       'stockUnmet',
     ],
-    tierComparison: ['name','complexity','firms','capacity','utilization','fillRate','cash','equity','inventory','spaces','inventoryValue','bought','made','sold','revenue','cogs','grossProfit','netProfit','returnOnCash','netMargin','margin','reliability'],
-    tierComparisonTotals: ['name','complexity','firms','capacity','utilization','fillRate','cash','equity','inventory','spaces','inventoryValue','bought','made','sold','revenue','cogs','grossProfit','netProfit','returnOnCash','netMargin','margin','reliability'],
+    tierComparison: ['name','complexity','firms','capacity','utilization','fillRate','cash','equity','inventory','emptyStorageRatio','inventoryValue','bought','made','sold','revenue','cogs','grossProfit','netProfit','returnOnCash','netMargin','margin','reliability'],
+    tierComparisonTotals: ['name','complexity','firms','capacity','utilization','fillRate','cash','equity','inventory','emptyStorageRatio','inventoryValue','bought','made','sold','revenue','cogs','grossProfit','netProfit','returnOnCash','netMargin','margin','reliability'],
     productCategories: ['name','tier','role','products','lines','machineryPrice','unitCapacity','avgPrice','avgUnitCost','capacity','utilization','readyStock','made','sold','soldPerLine','revenue','cogs','grossProfit','netProfit','netMargin','profitPerLine','netProfitPerLine','margin','active','fillRate','stockUnmet'],
     tier2Products: ['name','code','complexity','needType','sector','primaryMaterial','recipe','firms','machineryPrice','avgPrice','avgUnitCost','productionCapacity','utilization','readyStock','made','sold','revenue','grossProfit','netProfit','netMargin','margin','active','fillRate','stockUnmet','hhi','reliability'],
     tier2Industries: ['name','description','products','lines','capacity','utilization','readyStock','made','sold','revenue','cogs','grossProfit','netProfit','netMargin','margin','active','fulfilled','fillRate','stockUnmet','volumeShare','reliability'],
@@ -596,7 +595,7 @@
       magnitude >= 1e6 ? [1e6, 'M'] : magnitude >= 1e3 ? [1e3, 'k'] : [1, ''];
     return (money ? '$' : '') + axisFormat.format(value / scale[0]) + scale[1];
   }
-  function drawLine(id, history, seriesList, labels, digits = 2, moneyAxis = false, percentAxis = false, zeroBaseline = true) {
+  function drawLine(id, history, seriesList, labels, digits = 2, moneyAxis = false, percentAxis = false, zeroBaseline = true, generationAxis = false) {
     const cv = $(id);
     if (!cv) return;
     const r = cv.getBoundingClientRect(), dpr = devicePixelRatio || 1;
@@ -606,7 +605,7 @@
     g.setTransform(dpr, 0, 0, dpr, 0, 0); g.clearRect(0, 0, w, h);
     g.font = '11px system-ui';
     const exact = value => percentAxis ? pct(value) : moneyAxis ? fmtMoney(value, digits) : fmtFixed(value, digits);
-    const colorFor = index => chartColors[labels[index].match(/^Tier ([012])$/)?.[1] ?? index % chartColors.length];
+    const colorFor = index => generationAxis ? ['#77b7ff', '#e99b44', '#6fd08c', '#b18cff'][index] : chartColors[labels[index].match(/^Tier ([012])$/)?.[1] ?? index % chartColors.length];
     const axis = value => percentAxis ? pct(value, 0) : Math.abs(value) >= 1000 ? compactAxis(value, moneyAxis) : moneyAxis ? fmtMoney(value, digits) : fmtFixed(value, digits);
     let legendX = left, legendY = 14;
     labels.forEach((label, i) => {
@@ -631,6 +630,7 @@
     if (percentAxis) { lo = Math.min(0, lo); hi = Math.max(1, hi); }
     if (hi === lo) hi = lo + 1;
     const first = history[0].tick, last = history.at(-1).tick;
+    const timeLabel = tick => generationAxis ? 'Generation ' + fmtFixed(tick / M.TIME.ticksPerGeneration, 2) : 'Tick ' + fmtTick(tick);
     const xAt = tick => left + (right - left) * (tick - first) / Math.max(1, last - first);
     const yAt = value => bottom - (bottom - top) * (value - lo) / (hi - lo);
     g.lineWidth = 1;
@@ -655,8 +655,8 @@
         g.fillStyle = colorFor(si); g.beginPath(); g.arc(xAt(history[i].tick), yAt(series[i]), 3, 0, Math.PI * 2); g.fill();
       }
     });
-    g.fillStyle = '#9ca6b2'; g.textAlign = 'left'; g.fillText('Tick ' + fmtTick(first), left, h - 9);
-    if (last !== first) { g.textAlign = 'right'; g.fillText('Tick ' + fmtTick(last), right, h - 9); }
+    g.fillStyle = '#9ca6b2'; g.textAlign = 'left'; g.fillText(timeLabel(first), left, h - 9);
+    if (last !== first) { g.textAlign = 'right'; g.fillText(timeLabel(last), right, h - 9); }
     g.textAlign = 'left';
     cv.setAttribute('aria-label', cv.closest('.chart').previousElementSibling.textContent +
       '; latest tick ' + fmtTick(last) + ': ' + labels.map((label, i) => label + ' ' + exact(seriesList[i].at(-1))).join(', '));
@@ -666,7 +666,7 @@
       const target = first + Math.max(0, Math.min(1, (event.offsetX - left) / (right - left))) * (last - first);
       let index = 0;
       history.forEach((point, i) => { if (Math.abs(point.tick - target) < Math.abs(history[index].tick - target)) index = i; });
-      tooltip.textContent = 'Tick ' + fmtTick(history[index].tick) + '\n' + labels.map((label, i) => label + ': ' + exact(seriesList[i][index])).join(' · ');
+      tooltip.textContent = (generationAxis ? timeLabel(history[index].tick) + ' · ticks ' + fmtTick(history[index].startTick) + '–' + fmtTick(history[index].tick) : timeLabel(history[index].tick)) + '\n' + labels.map((label, i) => label + ': ' + exact(seriesList[i][index])).join(' · ');
       tooltip.hidden = false;
     };
     cv.onmouseleave = () => { tooltip.hidden = true; };
@@ -763,6 +763,9 @@
     $('scaleCaption').textContent = fmtInt(t0.firms) + ' resource companies · ' + fmtInt(t1.firms) + ' refineries · ' +
       fmtInt(t2.firms) + ' manufacturers · ' + fmtInt(distributors.population) + ' distributors';
     $('demandCaption').textContent = fmtInt(distributors.fulfilled) + ' / ' + fmtInt(distributors.active) + ' desired units fulfilled this tick';
+    const trends = s.complexityTrends || [], bands = ['1', '2', '3', '4'];
+    for (const [id, key] of [['complexityNetHistory', 'netPerCompany'], ['complexityPriceHistory', 'price']])
+      drawLine(id, trends, bands.map(c => trends.map(p => p.bands[c][key])), bands.map(c => 'C' + c), 2, true, false, true, true);
     const hist = s.analyticsHistory || [], scope = $('overviewTier').value;
     const tiers = scope ? [scope] : ['t0', 't1', 't2'];
     for (const [id, key, moneyAxis] of [['cashChart', 'cash', true], ['equityChart', 'equity', true], ['inventoryChart', 'inventory', false],
@@ -786,11 +789,11 @@
   }
   function renderComparisons(s) {
     const moneyKeys = new Set(['inventoryValue','cash','cashPerFirm','equity','equityPerCompany','revenue','revenuePerFirm','cogs','grossProfit','netProfit','netProfitPerCompany','machineryPrice','avgPrice','avgUnitCost','profitPerLine','netProfitPerLine']);
-    const ratioKeys = new Set(['returnOnCash','netMargin','margin','utilization','fillRate','reliability']);
+    const ratioKeys = new Set(['returnOnCash','netMargin','margin','utilization','fillRate','reliability','emptyStorageRatio']);
     const cells = (row, keys, perCompany = false) => keys.map(key => {
       const value = row[key];
       const text = value == null ? '—' : typeof value === 'string' ? value :
-        key === 'returnOnCash' ? fmtFixed(value * 100, 3) + '%' : ratioKeys.has(key) ? pct(value) : moneyKeys.has(key) ? (['avgPrice','avgUnitCost'].includes(key) ? fmtUnitPrice(value) : fmtMoney(value,perCompany ? 2 : ['profitPerLine','netProfitPerLine','netProfitPerCompany'].includes(key)?2:0)) :
+        key === 'returnOnCash' ? fmtFixed(value * 10000, 1) + ' bps' : ratioKeys.has(key) ? pct(value) : moneyKeys.has(key) ? (['avgPrice','avgUnitCost'].includes(key) ? fmtUnitPrice(value) : fmtMoney(value,perCompany ? 2 : ['profitPerLine','netProfitPerLine','netProfitPerCompany'].includes(key)?2:0)) :
         key === 'soldPerLine' || (perCompany && key !== 'firms') ? fmtFixed(value, 2) : fmtInt(value);
       return '<td>' + text + '</td>';
     }).join('');
@@ -811,11 +814,12 @@
     });
     // Keep each complexity beneath its tier when sorting; tier rows are totals,
     // not additional producers. Balance allocations come from the kernel.
-    const perCompanyKeys = ['capacity','spaces','cash','equity','inventory','inventoryValue','bought','made','sold','revenue','cogs','grossProfit','netProfit'];
+    const perCompanyKeys = ['capacity','cash','equity','inventory','inventoryValue','bought','made','sold','revenue','cogs','grossProfit','netProfit'];
     for (const table of ['tierComparison', 'tierComparisonTotals']) {
       const perCompany = table === 'tierComparison';
       const values = row => {
-        const result = { ...row, returnOnCash: row.netProfit != null && row.cash > 0
+        const result = { ...row, emptyStorageRatio: row.emptyStorageSpace != null && row.storageCapacitySpace > 0
+          ? row.emptyStorageSpace / row.storageCapacitySpace : null, returnOnCash: row.netProfit != null && row.cash > 0
           ? row.netProfit / row.cash : null };
         if (!perCompany) return result;
         for (const key of perCompanyKeys)
@@ -925,7 +929,7 @@
     $('retail').innerHTML = sortedTableRows('retail', s.products)
       .map(
         (x) =>
-          `<tr><th>${displayProduct(x.code)}</th><td>${x.complexity === 1 ? 'C-1 business inputs' : 'C-2 business inputs'}</td><td>${fmtUnitPrice(x.retailPrice)}</td><td>${fmtInt(x.supplyCapacity)}</td><td>${fmtInt(x.readyStock)}</td><td>${fmtInt(x.volume)}</td><td>${fmtInt(x.distributorVolume)}</td><td>${fmtInt(x.intermediateVolume)}</td><td>${x.volume > 0 ? x.hhi.toFixed(3) : "—"}</td><td>${x.potential == null ? "—" : fmtInt(x.potential)}</td><td>${fmtInt(x.active)}</td><td>${fmtInt(x.fulfilled)}</td><td>${pct(meaningfulRatio(x.fulfilled,x.active))}</td><td>${fmtInt(x.stockUnmet)}</td></tr>`,
+          `<tr><th>${displayProduct(x.code)}</th><td>${x.complexity === 1 ? 'C-1 business inputs' : 'C-2 business inputs'}</td><td>${fmtUnitPrice(x.retailPrice)}</td><td>${fmtInt(x.supplyCapacity)}</td><td>${fmtInt(x.readyStock)}</td><td>${fmtInt(x.volume)}</td><td>${fmtInt(x.intermediateVolume)}</td><td>${x.volume > 0 ? x.hhi.toFixed(3) : "—"}</td><td>${x.potential == null ? "—" : fmtInt(x.potential)}</td><td>${fmtInt(x.active)}</td><td>${fmtInt(x.fulfilled)}</td><td>${pct(meaningfulRatio(x.fulfilled,x.active))}</td><td>${fmtInt(x.stockUnmet)}</td></tr>`,
       )
       .join('');
     $('cohorts').innerHTML = sortedTableRows('cohorts', s.cohorts)
@@ -1150,6 +1154,61 @@
     const n = companyFilteredRows('T1').length;
     t1Page = Math.min(Math.max(0, Math.ceil(n / companyPageSize) - 1), t1Page + 1);
     renderCompanyTables();
+  };
+  let saveLoadMode = 'save';
+  let saveLoadBusy = false;
+  async function saveRequest(url, options) {
+    const response = await fetch(url, options);
+    const data = await response.json();
+    if (!response.ok) throw new Error(typeof data.detail === 'string' ? data.detail : 'Could not complete this request.');
+    return data;
+  }
+  async function openSaveLoad(mode) {
+    saveLoadMode = mode;
+    const saving = mode === 'save';
+    $('saveLoadTitle').textContent = saving ? 'Save simulation' : 'Load simulation';
+    $('saveLoadHelp').textContent = saving ? 'Save the current simulation on this computer. It can keep running.' : 'Loading replaces the current simulation and leaves it paused. Save first if you want to keep its current state.';
+    $('saveName').hidden = $('saveNameLabel').hidden = !saving;
+    $('savedSimulation').hidden = $('savedSimulationLabel').hidden = saving;
+    $('saveLoadConfirm').textContent = saving ? 'Save' : 'Load';
+    $('saveLoadStatus').textContent = '';
+    $('saveLoadConfirm').disabled = !saving;
+    $('saveName').value = 'Colony ' + new Date().toLocaleString();
+    $('saveLoadDialog').showModal();
+    if (saving) { $('saveName').focus(); $('saveName').select(); return; }
+    $('savedSimulation').replaceChildren();
+    $('saveLoadStatus').textContent = 'Finding saves…';
+    try {
+      const saves = await saveRequest('/dashboard-saves');
+      for (const save of saves) {
+        const option = document.createElement('option');
+        option.value = save.id;
+        option.textContent = `${save.name} — tick ${save.tick.toLocaleString()}`;
+        $('savedSimulation').append(option);
+      }
+      $('saveLoadStatus').textContent = saves.length ? '' : 'No saved simulations yet.';
+      $('saveLoadConfirm').disabled = !saves.length;
+    } catch (error) { $('saveLoadStatus').textContent = error.message; }
+  }
+  $('saveSimulation').onclick = () => openSaveLoad('save');
+  $('loadSimulation').onclick = () => openSaveLoad('load');
+  $('saveLoadCancel').onclick = () => $('saveLoadDialog').close();
+  $('saveLoadDialog').addEventListener('cancel', event => { if (saveLoadBusy) event.preventDefault(); });
+  $('saveLoadConfirm').onclick = async () => {
+    const saving = saveLoadMode === 'save';
+    const name = $('saveName').value.trim();
+    if (saving && !name) { $('saveLoadStatus').textContent = 'Enter a save name.'; return; }
+    saveLoadBusy = true;
+    $('saveLoadConfirm').disabled = $('saveLoadCancel').disabled = true;
+    $('saveLoadStatus').textContent = saving ? 'Saving…' : 'Loading…';
+    try {
+      const result = await saveRequest(saving ? '/dashboard-saves' : `/dashboard-saves/${encodeURIComponent($('savedSimulation').value)}/load`,
+        {method:'POST', headers:{'Content-Type':'application/json'}, ...(saving ? {body:JSON.stringify({name})} : {})});
+      $('saveLoadDialog').close();
+      $('perf').textContent = saving ? `Saved “${name}” at tick ${result.tick.toLocaleString()}.` : `Loaded tick ${result.tick.toLocaleString()} · Paused`;
+      if (!saving) backend.postMessage({type:'init'});
+    } catch (error) { $('saveLoadStatus').textContent = error.message; }
+    finally { saveLoadBusy = false; $('saveLoadConfirm').disabled = $('saveLoadCancel').disabled = false; }
   };
   $('run').onclick = () => backend.postMessage({ type: 'run', mode: 'fixed' });
   $('runMax').onclick = () => backend.postMessage({ type: 'run', mode: 'max' });

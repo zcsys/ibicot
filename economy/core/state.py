@@ -14,14 +14,11 @@ from . import model as M
 from .config import normalize_config
 from .rng import hash_seed_vec
 
-# Renamed existing roster; coverage, ordering and company roles are unchanged.
-# Existing auxiliary roles remain attached to the same T0 IDs: 2 policy,
-# 3 registry, 4 intelligence, 5 community, 6 machinery, 7 finance,
-# 8 entertainment, 9 utilities, 10 storage/land, 11 advertising.
-# The naming commission's extraction-only claim is deliberately not adopted.
+# Designated roles are inactive metadata; extraction coverage and ordering remain unchanged.
 _T0P_RAW = [(p['name'],p['elements_extracted']) for p in M.NAMING_CATALOG['t0_companies']]
 _EI = {element: i for i, element in enumerate(M.ELEMENTS)}
 T0P = [{'id': i, 'companyNumber': M.company_number('T0',i), 'name': M._DATA['MIDBRIDGE']['tier0Companies'][i]['name'], 'elements': elements,
+        'designated_role': M.NAMING_CATALOG['t0_companies'][i]['designated_role'],
         'element_indices': sorted(_EI[element] for element in elements)}
        for i, (name, elements) in enumerate(_T0P_RAW)]
 
@@ -52,6 +49,9 @@ def _learn(prefix, n):
         (f'{prefix}LearnOpportunity', 'f64', n),
         (f'{prefix}LearnPotentialOpportunity', 'f64', n),
         (f'{prefix}LearnProfit', 'f64', n),
+        (f'{prefix}LearnRevenue', 'f64', n),
+        (f'{prefix}LearnPreviousRevenue', 'f64', n),
+        (f'{prefix}LearnPreviousSales', 'f64', n),
         (f'{prefix}LearnSales', 'f64', n),
         (f'{prefix}LearnTicks', 'u32', n),
         (f'{prefix}LearnPrevious', 'f64', n),
@@ -139,7 +139,7 @@ def _array_spec(cfg):
         ('preferredWholesale', 'i32', N1 * NE),
         ('playerPrice', 'f64', N1 * NP),
         ('active', 'f64', NP),
-        ('potential', 'f64', NP),
+        ('potential', 'f64', NP),  # T1 whole-unit input needs before cash/stock/price limits
         ('fulfilled', 'f64', NP),
         ('priceLost', 'f64', NP),
         ('stockUnmet', 'f64', NP),
@@ -383,6 +383,7 @@ def add_tier2_line(world, cfg, firm, product, paid=True):
     world.t2LearnStep[line] = 1
     world.t2Price[line] = M.round_to_cent(max(M.MIN_UNIT_PRICE, M.reference_tier2_cost(product, cfg) * (1 + M.tier2_starting_markup(product, cfg))))
     world.t2LearnPrevious[line] = float('nan')
+    world.t2LearnPreviousRevenue[line] = float('nan')
     world.t2LearnDirection[line] = 1 if ((firm + cfg['seed']) % 2) else -1
     world.t2PlayerPrice[line] = float('nan')
     world.t2Rel[line] = 0.5
@@ -449,6 +450,7 @@ def initialize_tier2(world, cfg):
     world.t2LearnStep[:n] = 1
     world.t2Price[:n] = price
     world.t2LearnPrevious[:n] = float('nan')
+    world.t2LearnPreviousRevenue[:n] = float('nan')
     world.t2LearnDirection[:n] = np.where(((firms + cfg['seed']) % 2) == 1, np.int8(1), np.int8(-1))
     world.t2PlayerPrice[:n] = float('nan')
     world.t2Rel[:n] = 0.5
@@ -501,6 +503,7 @@ def reset_world(cfg):
     for tier, width in (('t0', NE), ('t1', NP), ('t2', None)):
         learn_dir = getattr(world, f'{tier}LearnDirection')
         getattr(world, f'{tier}LearnPrevious').fill(float('nan'))
+        getattr(world, f'{tier}LearnPreviousRevenue').fill(float('nan'))
         getattr(world, f'{tier}LearnStep').fill(1)
         n = len(learn_dir)
         if tier == 't0':

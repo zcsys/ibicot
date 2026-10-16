@@ -8,7 +8,9 @@ document defers to it wherever they overlap.
 
 ## Current position
 
-Catalog revision `midbridge-invented-105-t3-calibration-v13` retains T0/T1/T2 company counts and total T3 population, reallocating T3 companies between complexities and applies a static 0.80 C4 final-demand routing multiplier (C3 remains 1). The user rounded the tested 0.79 setting to 0.80; its year-17 C4/C3 earnings ratio was 1.437, so the earlier balance does not establish balance at 0.80. The preceding 0.79 calibration completed a seed-137 generation with final-five-year C4/C3 per-company net earnings ratio 1.0329 (annual ratios 1.0195–1.0439); other seeds and later generations remain untested. Earlier trial 0.73 improved the final-five-year C4/C3 earnings ratio to 0.8175, still below the user-confirmed 0.90–1.10 band; the completed 0.61 trial reversed the C4 advantage and did not achieve earnings equality. The balanced-T1 experiment retains its frozen v9 routing; old-revision checkpoints are rejected by the current loader.
+Current revision `midbridge-invented-105-t1-equal-complexity-500-v17` sets 1,000 T1 firms: 500 C1 / 500 C2, with equal product cohorts of 125 and 50. T2 counts and T3 routing are unchanged. Global company-number blocks follow the new population; older checkpoints are incompatible.
+
+Historical revision `midbridge-invented-105-t3-calibration-v13` retains T0/T1/T2 company counts and total T3 population, reallocating T3 companies between complexities and applies a static 0.80 C4 final-demand routing multiplier (C3 remains 1). The user rounded the tested 0.79 setting to 0.80; its year-17 C4/C3 earnings ratio was 1.437, so the earlier balance does not establish balance at 0.80. The preceding 0.79 calibration completed a seed-137 generation with final-five-year C4/C3 per-company net earnings ratio 1.0329 (annual ratios 1.0195–1.0439); other seeds and later generations remain untested. Earlier trial 0.73 improved the final-five-year C4/C3 earnings ratio to 0.8175, still below the user-confirmed 0.90–1.10 band; the completed 0.61 trial reversed the C4 advantage and did not achieve earnings equality. The balanced-T1 experiment retains its frozen v9 routing; old-revision checkpoints are rejected by the current loader.
 
 The kernel is a deterministic supply-chain simulation (NumPy + Numba) with a
 FastAPI + WebSocket service and a browser dashboard. The market logic is complete
@@ -56,11 +58,55 @@ network deployment is deferred to MVP.
 running locally (single machine), with no product concerns and no network
 deployment.
 
-- **Scope.** Add the game features on top of the proven market logic.
+- **Scope.** Add the game features on top of the proven market logic. At minimum,
+  develop and integrate the features of all 20 T0 companies across the whole
+  economy, using the approved role roster below.
 - **Bound.** Aspirationally comparable to the PoC effort; this is the phase most
   like the PoC in kind (feature work, no external dependencies).
 - **Not included.** Everything in the MVP product checklist below — network
   deployment, payments, security, operations, and so on — is out of scope here.
+
+### Required T0 company features
+
+**Prototype release gate.** Every company must have its assigned role's features
+developed, playable, and integrated with the shared economy. Names, role metadata,
+inactive placeholders, or isolated demonstrations do not satisfy this gate.
+The counts below cover all 20 companies; both companies in each paired role
+must participate in the implemented system.
+
+| Required role | Companies |
+| --- | ---: |
+| Policy making | 1 |
+| Colony administration | 1 |
+| Company marketplace | 1 |
+| Market intelligence | 1 |
+| Research & inventions | 1 |
+| Games & entertainment | 1 |
+| Raw materials | 2 |
+| Automotive & machinery | 2 |
+| Storage & logistics | 2 |
+| Advertisement | 2 |
+| Bots & assistants | 2 |
+| Finance | 2 |
+| Community | 2 |
+| **Total** | **20** |
+
+Company assignments follow the [approved T0 roster](design_canon.md#designated-t0-roles-inactive).
+Raw materials belongs to Raw Materials Corp. and Elements Inc.; The Oligarch is
+one of the two Finance companies.
+
+Integration must cover each feature's relevant company and player decisions,
+interactions with other economic actors, and effects on resources, goods,
+services, money, and accounting. The local game must expose those interactions
+and demonstrate that they work together in the shared simulation. Detailed
+mechanics remain to be specified in the design canon; this milestone requirement
+does not invent fees, transfers, or rules for them.
+
+**Current status.** The designated roles are recorded but inactive. Existing
+extraction and other implemented mechanics alone do not complete this gate.
+These features may remain deferred during PoC, but cannot be deferred beyond
+Prototype. This is a minimum feature requirement; the effort aspiration above
+does not reduce its scope.
 
 ## Phase 3 — MVP
 

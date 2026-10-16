@@ -28,7 +28,10 @@ def project_complexity_balances(world, cfg):
         if tier == 't1':
             comp = np.tile([p['complexity'] for p in M.PRODUCTS], n)
             footprints = np.array([cfg['footprint'][p['complexity']] for p in M.PRODUCTS])
-            spaces = tier1_storage_capacities(cfg) - world.t1Operates.reshape(n,M.NP) @ footprints
+            storage_capacity = tier1_storage_capacities(cfg)
+            occupied_goods = (world.raw.reshape(n, M.NE).sum(axis=1)
+                + world.t1Fin.reshape(n, M.NP) @ np.array([p['complexity'] for p in M.PRODUCTS]))
+            spaces = storage_capacity - world.t1Operates.reshape(n,M.NP) @ footprints
             inventory = world.raw.reshape(n,M.NE).sum(axis=1)
             inventory += (world.t1Fin*world.t1Operates).reshape(n,M.NP).sum(axis=1)
             inventory_value = (world.raw*world.rawBasis).reshape(n,M.NE).sum(axis=1)
@@ -36,7 +39,11 @@ def project_complexity_balances(world, cfg):
         else:
             lc = int(world.t2LineCount)
             comp = np.asarray([p['complexity'] for p in M.T2_PRODUCTS])[world.t2LineProduct[:lc]]
-            spaces = cfg['storage'] - np.bincount(world.t2LineFirm[:lc],
+            storage_capacity = np.full(n, cfg['storage'], dtype=float)
+            occupied_goods = (world.t2Raw[:n*M.NE].reshape(n, M.NE).sum(axis=1)
+                + world.t2T1Raw[:n*M.NI].reshape(n, M.NI) @ np.array([p['complexity'] for p in M.T2_INPUT_PRODUCTS])
+                + np.bincount(world.t2LineFirm[:lc], weights=world.t2Fin[:lc]*comp, minlength=n))
+            spaces = storage_capacity - np.bincount(world.t2LineFirm[:lc],
                 weights=np.array([cfg['footprint'].get(c, 0) for c in range(6)])[comp], minlength=n)
             inventory = world.t2Raw[:n*M.NE].reshape(n,M.NE).sum(axis=1)
             inventory += world.t2T1Raw[:n*M.NI].reshape(n,M.NI).sum(axis=1)
@@ -44,7 +51,8 @@ def project_complexity_balances(world, cfg):
             inventory_value = (world.t2Raw[:n*M.NE]*world.t2RawBasis[:n*M.NE]).reshape(n,M.NE).sum(axis=1)
             inventory_value += (world.t2T1Raw[:n*M.NI]*world.t2T1Basis[:n*M.NI]).reshape(n,M.NI).sum(axis=1)
             inventory_value += np.bincount(world.t2LineFirm[:lc], weights=world.t2Fin[:lc]*world.t2FinBasis[:lc], minlength=n)
-        values = dict(inventoryValue=inventory_value, spaces=spaces, cash=getattr(world,tier+'Cash')[:n],
+        values = dict(storageCapacitySpace=storage_capacity, emptyStorageSpace=np.maximum(0, spaces-occupied_goods),
+                      inventoryValue=inventory_value, spaces=spaces, cash=getattr(world,tier+'Cash')[:n],
                       equity=storage_rent_equity(world,cfg,tier), inventory=inventory,
                       bought=getattr(world,tier+'Bought')[:n])
         for key,value in values.items():

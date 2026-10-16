@@ -52,5 +52,19 @@ class ExtractionCapacity(unittest.TestCase):
         before = w.t0Cash[0]
         operate_tier0(w, cfg, T0P, 1)
         # 4,000 feasible units across four machines, divided by 1 + 2².
-        self.assertAlmostEqual(w.t0Inv[:4].sum(), 800)
-        self.assertAlmostEqual(before - w.t0Cash[0], 1600)
+        self.assertLessEqual(abs(w.t0Inv[:4].sum() - 800), 4)
+        self.assertAlmostEqual(before - w.t0Cash[0], 2 * w.t0Inv[:4].sum())
+
+    def test_whole_extraction_with_fractional_costs_and_limits(self):
+        cfg, w = self.world()
+        w.difficulty[:] = [1.13, 1.27, 1.41, 1.59]
+        w.t0Cash[:] = 17.3
+        cfg['t0Storage'] = 13.7
+        cfg['t0Capacity'] = 8.9
+        before = w.t0Cash.copy()
+        operate_tier0(w, cfg, T0P, 7)
+        np.testing.assert_array_equal(w.t0Inv, np.floor(w.t0Inv))
+        self.assertTrue(np.all(w.t0Cash >= 0))
+        self.assertTrue(np.all(w.t0Inv.reshape(-1, 4).sum(axis=1) <= cfg['t0Storage']))
+        np.testing.assert_allclose(before-w.t0Cash,
+            (w.t0Inv.reshape(-1,4)*w.difficulty).sum(axis=1), atol=1e-12)

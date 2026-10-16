@@ -6,7 +6,7 @@ and numeric market indices remain separate from display names and symbols.
 import json
 from pathlib import Path
 
-CATALOG_REVISION = 'midbridge-invented-105-t3-calibration-v13'
+CATALOG_REVISION = 'midbridge-invented-105-t1-equal-complexity-500-v17'
 ROOT = Path(__file__).resolve().parents[2]
 DIRECTORY = ROOT / 'catalogs/midbridge-4263/catalog.json'
 
@@ -89,11 +89,11 @@ def load_catalog():
         T2_SECTOR_MANUFACTURERS=[{'sector':s,'company':p['facility_stem']} for s,p in zip(sectors,names['t2_companies'])],
         T2_MANUFACTURER_BY_SECTOR={s:p['facility_stem'] for s,p in zip(sectors,names['t2_companies'])},
         T1_COMPANY_NAMES=[p['companyName'] for p in data['PRODUCTS']],
-        # Existing machinery supplier is T0 company 6; rename it, do not add the
-        # commission's four independent maker companies. Its role stays intact.
-        EQUIPMENT_MAKERS=[names['t0_companies'][6]['name']],
+        # Designated makers only; no machinery-sale revenue is activated.
+        EQUIPMENT_MAKERS=[p['name'] for p in names['t0_companies']
+                          if p['designated_role'] == 'Automotive & machinery'],
         EQUIPMENT_CONFIG={str(c):name for c,name in classes.items()},
         NAMING_CATALOG=names,
         WORLD_STORY={**data['WORLD_STORY'], 'name':names['world']['game_title']},
-        MIDBRIDGE={'tier0Companies':[{'name':p['name'],'elements':p['elements_extracted']} for p in names['t0_companies']]})
+        MIDBRIDGE={'tier0Companies':[{'name':p['name'],'elements':p['elements_extracted'],'designated_role':p['designated_role']} for p in names['t0_companies']]})
     return data

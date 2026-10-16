@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Midbridge — Your beginning</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/play.css">
+<script src="/play.js" defer></script>
+</head>
+<body>
+<header><a class="brand" href="/play.html"><span class="brand-mark">M</span> MIDBRIDGE <span class="colony">/ COLONY 4263</span></a><span class="connection" id="connection">Connecting…</span></header>
+<main>
+<nav aria-label="Your journey"><span class="active" id="navWork">01 <b>Employment</b></span><i></i><span id="navOwn">02 <b>Ownership</b></span></nav>
+<div id="notice" role="status" aria-live="polite">Opening your personnel file…</div>
+<section id="welcome" hidden class="welcome"><div><p class="eyebrow">PERSONNEL / NEW ARRIVAL</p><h1>Every business starts<br>with a person.</h1><p>Your first position is waiting at Meridian Works.<br>Start on the pricing desk. Take it from there.</p></div><form id="nameForm"><label for="personName">What should we call you?</label><input id="personName" autocomplete="given-name" maxlength="60" required placeholder="Your name"><button>Take your desk <span>→</span></button></form></section>
+<div id="workspace" hidden>
+<section class="intro"><div><p class="eyebrow" id="chapter">PHASE 0 / YOUR FIRST POSITION</p><h1 id="headline">A desk. A price. A beginning.</h1><p id="introCopy">You’re on the pricing desk at Meridian Works. Set your asking price, then see how the next work period goes.</p></div><div class="person"><span class="avatar" id="initial">M</span><div><strong id="personLabel"></strong><small id="role">Pricing associate</small></div></div></section>
+<div class="layout">
+<div class="primary">
+<section class="card workplace"><div class="card-heading"><div><p class="eyebrow" id="companyKind">YOUR EMPLOYER</p><h2 id="companyName">Meridian Works</h2></div><span class="pill" id="period">Period 1</span></div><p class="product" id="product">Materials division</p>
+<div class="metrics"><div><span>Company cash</span><strong id="companyCash">—</strong></div><div><span>Ready to sell</span><strong id="stock">—</strong></div><div><span id="salesLabel">Last period sold</span><strong id="sold">—</strong></div></div>
+<form id="priceForm" class="price-form"><div><label for="price">Selling price <span>/ unit</span></label><div class="money-input"><span>$</span><input id="price" type="number" min="0.01" max="1000000000" step="0.01" required inputmode="decimal"></div></div><button id="workButton">Complete work period <span>→</span></button></form><p class="hint" id="priceHint">Your quote applies to the next work period. Operations are handled for you.</p>
+<div id="outcome" class="outcome" hidden></div>
+</section>
+<section class="card" id="finances" hidden><div class="card-heading"><div><p class="eyebrow">OPERATING STATEMENT</p><h2>Behind the numbers</h2></div><span class="pill">Latest period</span></div><div class="statement"><div><span>Sales revenue</span><b id="revenue"></b></div><div><span>Cost of goods sold</span><b id="cogs"></b></div><div><span>Your salary</span><b id="salary"></b></div><div class="total"><span>Operating profit, before bonuses</span><b id="profit"></b></div></div><p class="hint">Unsold stock stays on the books. Cash also pays for replenishment; profit and cash are different.</p></section>
+<section class="card" id="compensation" hidden><div class="card-heading"><div><p class="eyebrow">YOUR REMIT / COMPENSATION</p><h2>Performance bonus</h2></div><span class="pill">Authorized</span></div><p>You now have discretion over your own bonus. Payment comes from company cash.</p><form id="bonusForm" class="price-form"><div><label for="bonus">Bonus amount</label><div class="money-input"><span>$</span><input id="bonus" type="number" min="0.01" step="0.01" required placeholder="0.00" inputmode="decimal"></div></div><button class="secondary">Pay bonus <span>↗</span></button></form><p class="hint" id="bonusHint"></p></section>
+<section class="card" id="historyCard" hidden><p class="eyebrow">WORK RECORD</p><h2>Recent periods</h2><div class="table-scroll"><table><thead><tr><th>Period</th><th>Price</th><th>Sold</th><th>Profit*</th></tr></thead><tbody id="history"></tbody></table></div><small>*Before discretionary bonuses.</small></section>
+</div>
+<aside>
+<section class="card wallet"><p class="eyebrow">PERSONAL ACCOUNT</p><div class="wallet-amount" id="wallet">$0.00</div><p>Your money. Separate from company cash.</p><div class="wallet-footer"><span id="walletCaption">Salary per work period</span><strong id="walletSalary">$500.00</strong></div></section>
+<section class="card market"><div class="card-heading"><p class="eyebrow">MARKET BRIEF</p><span class="dot"></span></div><h2 id="marketProduct">Materials</h2><div class="market-price" id="reference">—</div><p id="marketLabel">Average asking price / unit</p><svg id="spark" viewBox="0 0 280 65" role="img" aria-label="Recent market reference prices"></svg><small id="marketSource">Waiting for colony data</small><p class="hint" id="marketTrend">A reference for your pricing decisions.</p></section>
+<section class="card acquisition" id="acquisition"><p class="eyebrow">YOUR NEXT CHAPTER</p><h2>A business of your own.</h2><p>Buy an operating company and take over its pricing decisions.</p><div class="listing"><span class="listing-icon">↗</span><div><strong id="targetName">Looking for an available company…</strong><small id="targetProduct"></small></div></div><div class="purchase-price"><span>Purchase price</span><strong id="targetPrice">—</strong></div><progress id="progress" max="200000" value="0" aria-label="Savings toward company purchase"></progress><p class="hint" id="remaining"></p><button id="buy" class="secondary" disabled>Buy company <span>→</span></button><p class="hint">Paid from your personal account. Company cash stays in the business.</p></section>
+<section class="card" id="receipt" hidden><p class="eyebrow">ACQUISITION COMPLETE</p><h2>You’re the owner.</h2><p id="receiptCopy"></p><p class="hint">Your selling price now applies in the colony economy. Work periods and employment bonuses have ended.</p></section>
+<details class="card" id="ledgerCard"><summary>Personal transactions</summary><div id="ledger"></div></details>
+</aside>
+</div>
+</div>
+<footer><span>MIDBRIDGE COLONY</span><span id="saveStatus">Your progress is saved to this server.</span><button class="text-button" id="refresh">Refresh connection ↻</button></footer>
+</main>
+</body>
+</html>

@@ -1,7 +1,7 @@
 import unittest
 import numpy as np
 from economy.core import model as M
-from economy.core.state import reset_world, tier1_goods_space, tier2_goods_space
+from economy.core.state import reset_world, tier1_goods_space, tier2_goods_space, tier2_occupied_space, tier1_storage_capacities
 from economy.server.aggregates import project_complexity_balances
 from economy.kernel.tick import storage_rent_equity
 
@@ -28,6 +28,16 @@ class ComplexityBalanceTests(unittest.TestCase):
             self.assertAlmostEqual(sum(rows[c]['inventoryValue'] for c in cs),expected,places=5)
         self.assertAlmostEqual(sum(rows[c]['spaces'] for c in (1,2)),sum(tier1_goods_space(w,cfg,i) for i in range(M.N1)))
         self.assertAlmostEqual(sum(rows[c]['spaces'] for c in (3,4)),sum(tier2_goods_space(w,cfg,i) for i in range(100)))
+        capacity1 = tier1_storage_capacities(cfg)
+        occupied1 = [w.raw[i*M.NE:(i+1)*M.NE].sum() + sum(
+            w.t1Fin[i*M.NP+p] * product['complexity'] for p, product in enumerate(M.PRODUCTS))
+            for i in range(M.N1)]
+        self.assertAlmostEqual(sum(rows[c]['storageCapacitySpace'] for c in (1,2)), capacity1.sum())
+        self.assertAlmostEqual(sum(rows[c]['emptyStorageSpace'] for c in (1,2)), sum(
+            max(0, tier1_goods_space(w,cfg,i)-occupied1[i]) for i in range(M.N1)))
+        self.assertAlmostEqual(sum(rows[c]['storageCapacitySpace'] for c in (3,4)), 100*cfg['storage'])
+        self.assertAlmostEqual(sum(rows[c]['emptyStorageSpace'] for c in (3,4)), sum(
+            max(0, cfg['storage']-tier2_occupied_space(w,cfg,i)) for i in range(100)))
         self.assertEqual(rows[1]['bought'],w.t1Bought[:M.T1_FIRM_OFFSETS[4]].sum())
         self.assertEqual(rows[2]['bought'],w.t1Bought[M.T1_FIRM_OFFSETS[4]:].sum())
         self.assertEqual(sum(rows[c]['inventory'] for c in (1,2)),w.raw.sum()+(w.t1Fin*w.t1Operates).sum())

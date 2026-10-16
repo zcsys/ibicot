@@ -304,7 +304,7 @@ if _HAVE_NUMBA:
         return nxt, next_direction, scale
 
     @_njit
-    def _learned_quote(view_tier, price, ages, profits, sales, previous, direction, demand,
+    def _learned_quote(view_tier, price, ages, profits, sales, previous, revenues, previous_revenue, previous_sales, cost_basis, direction, demand,
                        steps, opportunity, potential_opportunity, index, stock,
                        tick, price_observation_ticks, research_price_min_potential,
                        research_price_max_obs, research_price_min_opp, market_price, band,
@@ -317,14 +317,21 @@ if _HAVE_NUMBA:
             stale = ages[index] >= research_price_max_obs
         enough = research_price_min_opp == 0 or opportunity[index] >= research_price_min_opp or stale
         if enough:
-            average = profits[index] / ages[index]
-            nxt, d, s = _adaptive_price(price[index], average, previous[index],
+            revenue_rate = revenues[index] / ages[index]
+            sales_rate = sales[index] / ages[index]
+            cost = (revenues[index] - profits[index]) / sales[index] if sales[index] > 0 else cost_basis[index]
+            average = revenue_rate - cost * sales_rate
+            baseline = previous_revenue[index] - cost * previous_sales[index]
+            nxt, d, s = _adaptive_price(price[index], average, baseline,
                                         direction[index], sales[index], stock, demand[index],
                                         sales[index], steps[index], market_price, band,
                                         pricing_aggressiveness, response)
             price[index] = nxt
             direction[index] = d
             previous[index] = average
+            previous_revenue[index] = revenue_rate
+            previous_sales[index] = sales_rate
+            revenues[index] = 0.0
             steps[index] = s
             profits[index] = 0.0
             sales[index] = 0.0
@@ -444,13 +451,14 @@ if _HAVE_NUMBA:
         research_price_min_potential, research_price_max_obs, research_price_min_opp, pricing_aggressiveness, response, market_price, band, margin_band, line_rent,
         supplier_owner, t1_fin, t1_price, t1_rel, t1_cash, t1_sold, t1_rev, t1_cogs, t1_fin_basis,
         t1_intermediate_sold, t1_intermediate_revenue, t1_demand, t1_rel_attempts,
-        t1_rel_avail_checks, t1_rel_available, t1_opportunities,
+        t1_rel_avail_checks, t1_rel_available, t1_opportunities, t1_potential,
         t2_cash, t2_raw, t2_raw_basis, t2_t1raw, t2_t1basis, t2_preferred,
         t2_firm_lines, t2_firm_line_count, t2_line_product, t2_controller,
         t2_fin, t2_fin_basis, t2_unit_cost, t2_replacement_cost, t2_price, t2_player_price,
         t2_made, t2_demand_ema, t2_sold, t2_revenue, t2_cogs, t2_bought,
         t2_rel_price_sum, t2_rel_price_samples, t2_monthly_capacity,
         t2_learn_ticks, t2_learn_profit, t2_learn_sales, t2_learn_previous,
+        t2_learn_revenue, t2_learn_previous_revenue, t2_learn_previous_sales,
         t2_learn_direction, t2_learn_demand, t2_learn_step,
         t2_learn_opportunity, t2_learn_potential_opportunity,
         t1_offers_flat, t1_offers_off, valuation, input_reference, input_elasticity, t2_capacity, t2_output, t2_footprint,
@@ -582,6 +590,18 @@ if _HAVE_NUMBA:
                     need = 0.0
                 if not need:
                     continue
+                if material < NP:
+                    latent_inventory = 0.0
+                    for mm in range(NI):
+                        if mm < NE:
+                            latent_inventory += t2_raw[firm * NE + mm]
+                        else:
+                            latent_inventory += t2_t1raw[firm * NI + mm] * INPUT_SPACE[mm]
+                    for ss in range(t2_firm_line_count[firm]):
+                        li = t2_firm_lines[firm * M4 + ss]
+                        latent_inventory += t2_fin[li] * T2_COMPLEXITY[t2_line_product[li]]
+                    latent_room = (goods_space - latent_inventory) / INPUT_SPACE[material]
+                    t1_potential[material] += math.floor(max(0.0, min(need, latent_room)))
                 supplier = suppliers[material]
                 if supplier >= 0:
                     is_basic = material < 4
@@ -617,7 +637,8 @@ if _HAVE_NUMBA:
                     supplier, funded, quantity, loyalty_charge = _affordable_order_nb(
                         supplier, pref, requested, t2_cash[firm], t1_fin, t1_price, t1_rel,
                         t1_unit_cost, loyalty_multiple_t2[firm_cx], 1,
-                        input_reference[material], input_elasticity)
+                        input_reference[material], input_elasticity,
+                        _rand(seed, tick, 120000000 + firm * NI + material))
                     supplier_firm = supplier_owner[supplier]
                     quote = t1_price[supplier]
                     t1_demand[supplier] += funded
@@ -707,7 +728,8 @@ if _HAVE_NUMBA:
                     nxt = _round_cent(nxt)
                 else:
                     nxt = _learned_quote(2, t2_price, t2_learn_ticks, t2_learn_profit,
-                                         t2_learn_sales, t2_learn_previous, t2_learn_direction,
+                                         t2_learn_sales, t2_learn_previous, t2_learn_revenue,
+                                         t2_learn_previous_revenue, t2_learn_previous_sales, t2_fin_basis, t2_learn_direction,
                                          t2_learn_demand, t2_learn_step,
                                          t2_learn_opportunity, t2_learn_potential_opportunity,
                                          line, t2_fin[line], tick, price_observation_ticks,
@@ -895,11 +917,11 @@ if _HAVE_NUMBA:
     @_njit
     def _observe_markets_nb(alpha, t2_line_count,
                             t0_price, t0_demand, t0_sales, t0_demand_ema, t0_sales_ema, t0_revenue, t0_cogs,
-                            t0_learn_profit, t0_learn_sales, t0_learn_ticks, t0_learn_demand,
+                            t0_learn_profit, t0_learn_revenue, t0_learn_sales, t0_learn_ticks, t0_learn_demand,
                             t1_operates, t1_demand, t1_sales, t1_demand_ema, t1_sales_ema, t1_rev, t1_cogs,
-                            t1_learn_profit, t1_learn_sales, t1_learn_ticks, t1_learn_demand,
+                            t1_learn_profit, t1_learn_revenue, t1_learn_sales, t1_learn_ticks, t1_learn_demand,
                             t2_demand, t2_sales, t2_demand_ema, t2_sales_ema, t2_revenue, t2_cogs,
-                            t2_learn_profit, t2_learn_sales, t2_learn_ticks, t2_learn_demand,
+                            t2_learn_profit, t2_learn_revenue, t2_learn_sales, t2_learn_ticks, t2_learn_demand,
                             t2_month_sold):
         for i in range(80):
             if not math.isfinite(t0_price[i]):
@@ -908,6 +930,7 @@ if _HAVE_NUMBA:
             t0_demand_ema[i] += alpha * (mx - t0_demand_ema[i])
             t0_sales_ema[i] += alpha * (t0_sales[i] - t0_sales_ema[i])
             t0_learn_profit[i] += t0_revenue[i] - t0_cogs[i]
+            t0_learn_revenue[i] += t0_revenue[i]
             t0_learn_sales[i] += t0_sales[i]
             t0_learn_ticks[i] += 1
             t0_learn_demand[i] += mx
@@ -918,6 +941,7 @@ if _HAVE_NUMBA:
             t1_demand_ema[i] += alpha * (mx - t1_demand_ema[i])
             t1_sales_ema[i] += alpha * (t1_sales[i] - t1_sales_ema[i])
             t1_learn_profit[i] += t1_rev[i] - t1_cogs[i]
+            t1_learn_revenue[i] += t1_rev[i]
             t1_learn_sales[i] += t1_sales[i]
             t1_learn_ticks[i] += 1
             t1_learn_demand[i] += mx
@@ -926,6 +950,7 @@ if _HAVE_NUMBA:
             t2_demand_ema[i] += alpha * (mx - t2_demand_ema[i])
             t2_sales_ema[i] += alpha * (t2_sales[i] - t2_sales_ema[i])
             t2_learn_profit[i] += t2_revenue[i] - t2_cogs[i]
+            t2_learn_revenue[i] += t2_revenue[i]
             t2_learn_sales[i] += t2_sales[i]
             t2_learn_ticks[i] += 1
             t2_learn_demand[i] += mx
@@ -1086,7 +1111,8 @@ if _HAVE_NUMBA:
                     chosen, funded, bought, loyalty_charge = _affordable_order_nb(
                         chosen, pref, min(request, storage_room), t1_cash[company],
                         t0_inv[element::NE], t0_price[element::NE], t0_rel[element::NE],
-                        base_cost, loyalty_multiple_t1, min_lot, raw_reference, raw_elasticity)
+                        base_cost, loyalty_multiple_t1, min_lot, raw_reference, raw_elasticity,
+                        _rand(seed, tick, 110000000 + company * NE + element))
                     supplier_index = chosen * NE + element
                     quote = t0_price[supplier_index]
                     available = math.floor(t0_inv[supplier_index])
@@ -1161,11 +1187,11 @@ def observe_markets(world, cfg, profiles):
     _observe_markets_nb(
         float(cfg['alpha']), int(world.t2LineCount),
         world.t0Price, world.t0Demand, world.t0Sold, world.t0DemandEMA, world.t0SalesEMA, world.t0Revenue, world.t0COGS,
-        world.t0LearnProfit, world.t0LearnSales, world.t0LearnTicks, world.t0LearnDemand,
+        world.t0LearnProfit, world.t0LearnRevenue, world.t0LearnSales, world.t0LearnTicks, world.t0LearnDemand,
         world.t1Operates, world.t1Demand, world.t1Sold, world.t1DemandEMA, world.t1SalesEMA, world.t1Revenue, world.t1COGS,
-        world.t1LearnProfit, world.t1LearnSales, world.t1LearnTicks, world.t1LearnDemand,
+        world.t1LearnProfit, world.t1LearnRevenue, world.t1LearnSales, world.t1LearnTicks, world.t1LearnDemand,
         world.t2Demand, world.t2Sold, world.t2DemandEMA, world.t2SalesEMA, world.t2Revenue, world.t2COGS,
-        world.t2LearnProfit, world.t2LearnSales, world.t2LearnTicks, world.t2LearnDemand,
+        world.t2LearnProfit, world.t2LearnRevenue, world.t2LearnSales, world.t2LearnTicks, world.t2LearnDemand,
         world.t2MonthSold)
 
 
@@ -1210,13 +1236,14 @@ def _operate_tier2_phase(world, cfg, tick, production_complexity, *, execution_k
         t2_going, float(cfg['marketAnchorBand']), float(cfg['productionMarginBand']), production_line_overhead(world, cfg, 't2'),
         book.owner, book.fin, book.price, book.rel, book.cash, book.sold, book.revenue, book.cogs, book.basis,
         book.intermediate_sold, book.intermediate_revenue, book.demand, book.attempts,
-        book.checks, book.available, book.opportunities,
+        book.checks, book.available, book.opportunities, world.potential,
         world.t2Cash, world.t2Raw, world.t2RawBasis, world.t2T1Raw, world.t2T1Basis, world.t2Preferred,
         world.t2FirmLines, (world.t2FirmLineCount * world.t2Operating).astype(world.t2FirmLineCount.dtype), world.t2LineProduct, world.t2Controller,
         world.t2Fin, world.t2FinBasis, world.t2UnitCost, world.t2ReplacementCost, world.t2Price, world.t2PlayerPrice,
         world.t2Made, world.t2DemandEMA, world.t2Sold, world.t2Revenue, world.t2COGS, world.t2Bought,
         world.t2RelPriceSum, world.t2RelPriceSamples, world.t2MonthlyCapacity,
         world.t2LearnTicks, world.t2LearnProfit, world.t2LearnSales, world.t2LearnPrevious,
+        world.t2LearnRevenue, world.t2LearnPreviousRevenue, world.t2LearnPreviousSales,
         world.t2LearnDirection, world.t2LearnDemand, world.t2LearnStep,
         world.t2LearnOpportunity, world.t2LearnPotentialOpportunity,
         flat, off, val, inp_ref, float(cfg['t2InputElasticity']), t2_cap, T2_OUTPUT, t2_footprint,

@@ -18,21 +18,36 @@ class PriceSensitiveBuyingTests(unittest.TestCase):
         for feasible, expected in ((2500, 0), (2600, 1000)):
             result = affordable_order(0, -1, feasible, 1e9,
                 np.array([1e6]), np.array([1.25]), np.array([1.]),
-                1., 0., 1000, 1., 2.)
+                1., 0., 1000, 1., 2., .99)
             self.assertEqual(result, (0, expected, expected, 0.))
 
-    def test_single_units_round_nearest_with_hard_limits(self):
+    def test_stochastic_rounding_with_hard_limits(self):
         from economy.core.trading import affordable_order
         for feasible, price, reference, expected in (
             (4., 15.84, 8.1875, 1), (2., 1., 1., 1),
             (1., 2., 1., 0), (.9, .1, 1., 0),
-            (3., 1., 1., 2), (5., 1., 1., 2)):
+            (3., 1., 1., 1), (5., 1., 1., 2)):
             for binding in ('cash', 'stock', 'space'):
                 result = affordable_order(0, -1, feasible if binding == 'space' else 100.,
                     feasible * price if binding == 'cash' else 1e6,
                     np.array([feasible if binding == 'stock' else 100.]),
                     np.array([price]), np.array([1.]), 1., 0., 1, reference, 2.)
                 self.assertEqual(result[2], expected, (feasible, binding))
+
+    def test_rounding_frequency_and_incumbent_draw_reuse(self):
+        from economy.core.trading import affordable_order
+        for lot in (1, 1000):
+            quantities = [affordable_order(0, -1, 3*lot, 1e9,
+                np.array([3.*lot]), np.array([1.]), np.array([1.]),
+                1., 0., lot, 1., 2., (i+.5)/1000)[2] for i in range(1000)]
+            self.assertEqual(set(quantities), {lot, 2*lot})
+            self.assertEqual(sum(quantities)/len(quantities), 1.5*lot)
+        # Both alternate seller computations reuse the same supplied draw.
+        for draw, expected in ((.2, 1), (.999, 0)):
+            result = affordable_order(1, 0, 100., 10000.,
+                np.array([1000., 1000.]), np.array([10., 9.]), np.array([1., 1.]),
+                1., 10., 1, 1., 2., draw)
+            self.assertEqual(result, (0, expected, expected, 0.))
 
     def test_fee_rechecked_after_reduction(self):
         from economy.core.trading import affordable_order
@@ -80,7 +95,7 @@ class PriceSensitiveBuyingTests(unittest.TestCase):
             book.price[supplier]=4*M.input_reference_cost(material,cfg)
             book.fin[supplier]=100000;w.t2Cash[0]=1000000
             bought=K.transfer_tier2_input(w,cfg,0,material,supplier,slots[material],[supplier],book)
-            self.assertEqual(bought,round(slots[material]*fraction))
+            self.assertIn(bought, (int(slots[material]*fraction), int(slots[material]*fraction)+1))
 
     def test_reference_price_and_binding_limits(self):
         for limit in ('curve', 'cash', 'stock', 'slot', 'fractional-slot', 'over-slot'):
@@ -98,13 +113,13 @@ class PriceSensitiveBuyingTests(unittest.TestCase):
                 book.fin[supplier] = 100000
                 w.t2Cash[0] = 1000000
                 w.t2Preferred[:] = -1
-                expected = round(slots[material] / 2)
+                expected = int(slots[material] / 2)
                 if limit == 'cash':
                     w.t2Cash[0] = quote * 2.5
                     expected = 1
                 elif limit == 'stock':
                     book.fin[supplier] = 3.5
-                    expected = 2
+                    expected = 1
                 elif limit == 'slot':
                     raw[material] = slots[material] - 2.25
                     expected = 1
@@ -118,7 +133,8 @@ class PriceSensitiveBuyingTests(unittest.TestCase):
                 held = raw[material]
                 quantity = K.transfer_tier2_input(w, cfg, 0, material, supplier,
                                                 slots[material], [supplier], book)
-                self.assertEqual(quantity, expected)
+                self.assertIn(quantity, (expected, expected+1) if limit in ('curve', 'cash', 'stock', 'slot') else (expected,))
+                expected = quantity
                 self.assertEqual(raw[material], held + expected)
                 self.assertEqual(w.t2Cash[0], cash - expected * quote)
                 self.assertEqual(book.revenue[supplier], expected * quote)
@@ -150,6 +166,32 @@ class PriceSensitiveBuyingTests(unittest.TestCase):
             # returns a phase subtotal. Arrays agree byte-for-byte, while this
             # scalar reduction retains the kernel's existing 1e-9 tolerance.
             self.assertAlmostEqual(w.costSinks, reference.costSinks, delta=1e-9)
+
+    def test_latent_need_survives_no_stock_and_no_cash(self):
+        cfg, w = reset_world({'t2FirmCount': 1, 'distributorCount': 1})
+        slots, _, inputs = K.tier2_storage_layout(w, cfg, 0)
+        w.t1Fin[:] = 0
+        w.t2Raw[:] = 0
+        w.t2T1Raw[:] = 0
+        w.t2Fin[:] = 0
+        w.t2Cash[:] = 0
+        expected = np.zeros(M.NP)
+        for material in inputs:
+            if material < M.NP:
+                expected[material] = int(slots[material])
+        reference = copy.deepcopy(w)
+        K.operate_tier2(reference, cfg, M.PRODUCTS, K.T0P, M.T2_PRODUCTS, 1)
+        np.testing.assert_array_equal(reference.potential, expected)
+        self.assertGreater(expected.sum(), 0)
+        self.assertEqual(reference.t2Bought.sum(), 0)
+        if NB._HAVE_NUMBA:
+            NB.operate_tier2(w, cfg, 1)
+            np.testing.assert_array_equal(w.potential, expected)
+        K.reset_tick(reference)
+        self.assertEqual(reference.potential.sum(), 0)
+        reference.t2Operating[:] = 0
+        K.operate_tier2(reference, cfg, M.PRODUCTS, K.T0P, M.T2_PRODUCTS, 2)
+        self.assertEqual(reference.potential.sum(), 0)
 
     def _buy_sum(self, price):
         cfg, w = reset_world({'t2FirmCount': 200, 'distributorCount': 30})
