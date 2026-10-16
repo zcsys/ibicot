@@ -1,0 +1,58 @@
+{
+  "started_utc": "20261016T095427.771900Z",
+  "purpose": "development export only; no store, signing or runtime acceptance",
+  "candidate_fingerprint": "ce46598c4b513477c643f0dff4f5160400ac800b4ee76579c48ca2a5e08e1ffd",
+  "candidate_directory": "/Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261016T095427.771900Z-ce46598c4b51",
+  "source_snapshot_unchanged": true,
+  "results": {
+    "ios": {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+        "build",
+        "ios",
+        "--simulator",
+        "--debug",
+        "--no-codesign",
+        "--no-pub"
+      ],
+      "exit_code": 0,
+      "build_succeeded": true,
+      "runtime_launch_proven": false,
+      "artifact": "release/native-proof/20261016T095427.771900Z/artifacts/tideglass-ios-debug.zip",
+      "artifact_sha256": "d56c59cdd243907b34406be60ee6c02c40af39ac6ae225ae5e2cd5c0d3072215",
+      "artifact_bytes": 53726820
+    },
+    "android": {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+        "build",
+        "apk",
+        "--debug",
+        "--no-pub"
+      ],
+      "exit_code": 0,
+      "build_succeeded": true,
+      "runtime_launch_proven": false,
+      "artifact": "release/native-proof/20261016T095427.771900Z/artifacts/tideglass-debug.apk",
+      "artifact_sha256": "e0b1982fd680424f9fe8c716ea3aa91911659e681934c8ae6cea95cf33f3c7cc",
+      "artifact_bytes": 174760482
+    },
+    "macos": {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+        "build",
+        "macos",
+        "--debug",
+        "--no-pub"
+      ],
+      "exit_code": 0,
+      "build_succeeded": true,
+      "runtime_launch_proven": false,
+      "artifact": "release/native-proof/20261016T095427.771900Z/artifacts/tideglass-macos-debug.zip",
+      "artifact_sha256": "fec94b5e0ee89839b592071af26322f4697ff5477c1f26727f4cea05428958d1",
+      "artifact_bytes": 37274583
+    }
+  },
+  "pub_get_exit_code": 0,
+  "current_working_tree_matches_candidate": false
+}

@@ -1,0 +1,212 @@
+{
+  "assumptions": "No boosts, quests, paid effects or manual taps. Idealized instant single-purchase marginal-ROI policy. One free Tier 1 counted in ownership. Lifetime excludes the gift. No automatic prestiges.",
+  "first_run": {
+    "seconds_to_1e9": 1005.0338489577949,
+    "counts": [
+      23,
+      30,
+      23,
+      23,
+      28
+    ],
+    "output": 9154423.0,
+    "tiers": [
+      {
+        "tier": 1,
+        "name": "Spark Skiff",
+        "first_owned_seconds": 0.0
+      },
+      {
+        "tier": 2,
+        "name": "Prism Nursery",
+        "first_owned_seconds": 186.71264538327605
+      },
+      {
+        "tier": 3,
+        "name": "Tide Dynamo",
+        "first_owned_seconds": 348.9019052709682
+      },
+      {
+        "tier": 4,
+        "name": "Aurora Loom",
+        "first_owned_seconds": 510.139430976875
+      },
+      {
+        "tier": 5,
+        "name": "Dawn Observatory",
+        "first_owned_seconds": 671.3298582944836
+      }
+    ]
+  },
+  "sensitivity": [
+    {
+      "purchase_growth": 1.07,
+      "first_prestige_seconds": 833.9164971457984,
+      "output_at_target": 13136838.0
+    },
+    {
+      "purchase_growth": 1.1,
+      "first_prestige_seconds": 929.9179251094837,
+      "output_at_target": 10442102.0
+    },
+    {
+      "purchase_growth": 1.12,
+      "first_prestige_seconds": 1005.0338489577949,
+      "output_at_target": 9154423.0
+    },
+    {
+      "purchase_growth": 1.15,
+      "first_prestige_seconds": 1131.2130832119976,
+      "output_at_target": 4297716.0
+    }
+  ],
+  "reset_experiment": {
+    "horizon_seconds": 28800,
+    "allowed_future_resets": 1,
+    "grid_minutes": 1,
+    "no_reset_terminal_lifetime": 3119924740817.289,
+    "reset_now": {
+      "reset_after_minutes": 0,
+      "terminal_lifetime": 10462776418516.6,
+      "terminal_chart_potential": 4099,
+      "banked_charts": 10
+    },
+    "best": {
+      "reset_after_minutes": 155,
+      "terminal_lifetime": 113217489667167.06,
+      "terminal_chart_potential": 19277,
+      "banked_charts": 679
+    },
+    "best_vs_no_reset_ratio": 36.288532279630836
+  },
+  "synergy": [
+    {
+      "tier": 1,
+      "cost": 2505667.971796074,
+      "total_marginal_output": 168491.69979128242,
+      "direct_marginal_output": 66.59644255042076,
+      "payback_seconds": 14.871165611718249
+    },
+    {
+      "tier": 2,
+      "cost": 50113359.43592148,
+      "total_marginal_output": 391771.941159606,
+      "direct_marginal_output": 1331.9288512468338,
+      "payback_seconds": 127.91462116350375
+    },
+    {
+      "tier": 4,
+      "cost": 69360525.55920018,
+      "total_marginal_output": 225972.17572891712,
+      "direct_marginal_output": 133192.88512536883,
+      "payback_seconds": 306.94276999132455
+    },
+    {
+      "tier": 5,
+      "cost": 1387210511.1840036,
+      "total_marginal_output": 4828707.816589981,
+      "direct_marginal_output": 2663857.702507764,
+      "payback_seconds": 287.2840030655753
+    }
+  ],
+  "repeated_prestiges": [
+    {
+      "reset": 1,
+      "elapsed_seconds": 1005.0338489577949,
+      "cycle_seconds": 1005.0338489577949,
+      "banked_charts": 10
+    },
+    {
+      "reset": 2,
+      "elapsed_seconds": 1551.3735829155155,
+      "cycle_seconds": 546.3397339577206,
+      "banked_charts": 20
+    },
+    {
+      "reset": 3,
+      "elapsed_seconds": 2119.6741429290187,
+      "cycle_seconds": 568.3005600135032,
+      "banked_charts": 40
+    },
+    {
+      "reset": 4,
+      "elapsed_seconds": 2574.220396342074,
+      "cycle_seconds": 454.5462534130552,
+      "banked_charts": 80
+    },
+    {
+      "reset": 5,
+      "elapsed_seconds": 3042.8469707193794,
+      "cycle_seconds": 468.6265743773056,
+      "banked_charts": 160
+    },
+    {
+      "reset": 6,
+      "elapsed_seconds": 3611.207485673695,
+      "cycle_seconds": 568.3605149543155,
+      "banked_charts": 320
+    },
+    {
+      "reset": 7,
+      "elapsed_seconds": 4308.632577864586,
+      "cycle_seconds": 697.4250921908911,
+      "banked_charts": 640
+    },
+    {
+      "reset": 8,
+      "elapsed_seconds": 5195.542736204112,
+      "cycle_seconds": 886.9101583395259,
+      "banked_charts": 1280
+    },
+    {
+      "reset": 9,
+      "elapsed_seconds": 6543.022286906799,
+      "cycle_seconds": 1347.4795507026874,
+      "banked_charts": 2560
+    },
+    {
+      "reset": 10,
+      "elapsed_seconds": 8244.650020677414,
+      "cycle_seconds": 1701.6277337706151,
+      "banked_charts": 5120
+    },
+    {
+      "reset": 11,
+      "elapsed_seconds": 10719.683837039913,
+      "cycle_seconds": 2475.0338163624983,
+      "banked_charts": 10240
+    },
+    {
+      "reset": 12,
+      "elapsed_seconds": 14866.066734091157,
+      "cycle_seconds": 4146.382897051244,
+      "banked_charts": 20480
+    }
+  ],
+  "offline": [
+    {
+      "absent_hours": 2,
+      "credited_hours": 2.0
+    },
+    {
+      "absent_hours": 8,
+      "credited_hours": 8.0
+    },
+    {
+      "absent_hours": 24,
+      "credited_hours": 24.0
+    },
+    {
+      "absent_hours": 48,
+      "credited_hours": 30.0
+    },
+    {
+      "absent_hours": 72,
+      "credited_hours": 36.0
+    },
+    {
+      "absent_hours": 168,
+      "credited_hours": 36.0
+    }
+  ]
+}

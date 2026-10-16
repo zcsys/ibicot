@@ -1,0 +1,1584 @@
+{
+  "schema_version": 1,
+  "reviewer": "/root/qa_release_engineer",
+  "review_date": "2026-10-16",
+  "review_pass": 2,
+  "disposition": "program_accepted_after_repairs",
+  "product_completion": "not_certified",
+  "scope_audit": [
+    {
+      "id": "S01",
+      "requirement": "iOS and Android public launch; phone and usable tablet; internal desktop only",
+      "work_items": [
+        "M0-01",
+        "M0-02",
+        "M7-03"
+      ],
+      "future_acceptance": "Native launch/install/update evidence on declared targets; no substituted web-only release.",
+      "coverage": "assigned",
+      "production_status": "not_verified"
+    },
+    {
+      "id": "S02",
+      "requirement": "Guest offline core, optional cloud, English externalized text and pseudolocalization",
+      "work_items": [
+        "M1-05",
+        "M3-06",
+        "M5-02"
+      ],
+      "future_acceptance": "Airplane-mode guest flow and localized-layout tests; fresh network services are separate dependencies.",
+      "coverage": "assigned",
+      "production_status": "not_verified"
+    },
+    {
+      "id": "S03",
+      "requirement": "Five producer prices/outputs, tier ratio 20, growth 1.12, previous-tier unlock at 10",
+      "work_items": [
+        "M1-01",
+        "M1-02",
+        "M2-01",
+        "BOOT-CORE"
+      ],
+      "future_acceptance": "Reference conformance plus independent production precision and discrete-purchase boundary tests.",
+      "coverage": "assigned",
+      "production_status": "not_verified"
+    },
+    {
+      "id": "S04",
+      "requirement": "Single, milestone and maximum purchase controls and whole-tier 2x milestones at 25/50/75/100",
+      "work_items": [
+        "M1-02",
+        "M1-05",
+        "M3-09"
+      ],
+      "future_acceptance": "Bulk/max spending cannot overspend; tier output and displayed transformation agree.",
+      "coverage": "assigned",
+      "production_status": "not_verified"
+    },
+    {
+      "id": "S05",
+      "requirement": "Lifetime-based 0.65-exponent Rechart, entitlement subtraction, retained-state preview and permanent power",
+      "work_items": [
+        "M1-01",
+        "M1-02",
+        "M2-02",
+        "BOOT-CORE"
+      ],
+      "future_acceptance": "Exact award boundary and repeated-reset tests; preview matches retained/reset state.",
+      "coverage": "assigned",
+      "production_status": "not_verified"
+    },
+    {
+      "id": "S06",
+      "requirement": "Autobuy at 10 Charts, synergies at 25, conditional resets at 100; free plan and five optional 50-Note slots",
+      "work_items": [
+        "M2-01",
+        "M3-03"
+      ],
+      "future_acceptance": "Unlock and plan-persistence fixtures; no paid automation lock.",
+      "coverage": "assigned",
+      "production_status": "not_verified"
+    },
+    {
+      "id": "S07",
+      "requirement": "Cross-tier synergy matrix and honest marginal-output/purchase/reset forecasts",
+      "work_items": [
+        "M2-01",
+        "M2-03",
+        "M5-05"
+      ],
+      "future_acceptance": "Observed network value matches preview; forecasts state policy assumptions; late-tier purchase choices assessed.",
+      "coverage": "assigned",
+      "production_status": "not_verified"
+    },
+    {
+      "id": "S08",
+      "requirement": "24 hours full production plus 48 hours at quarter rate; event-driven saved-policy replay",
+      "work_items": [
+        "M3-01",
+        "M3-10",
+        "M5-01"
+      ],
+      "future_acceptance": "Equivalent event histories match integer decisions; 72-hour cap and 24-hour return budget tested.",
+      "coverage": "assigned",
+      "production_status": "not_verified"
+    },
+    {
+      "id": "S09",
+      "requirement": "Focus every 2 hours, capacity 12, queued +20% ten-minute charges and equal accessible calibration",
+      "work_items": [
+        "M3-01",
+        "M3-04",
+        "M5-02"
+      ],
+      "future_acceptance": "No hidden reward loss, duration queue bugs or reflex-only route; both completions grant identical value.",
+      "coverage": "assigned",
+      "production_status": "not_verified"
+    },
+    {
+      "id": "S10",
+      "requirement": "Automatic 8-hour Surveys, queue capacity 3, 10 Notes per completion",
+      "work_items": [
+        "M3-01",
+        "M3-10"
+      ],
+      "future_acceptance": "One daily collection retains designed supply; fractional timers persist and completion is idempotent.",
+      "coverage": "assigned",
+      "production_status": "not_verified"
+    },
+    {
+      "id": "S11",
+      "requirement": "Three daily contracts, 10 Notes and 250 XP each, frozen goals, rerolls and seven-day/21-slot backlog",
+      "work_items": [
+        "M3-02",
+        "M3-10"
+      ],
+      "future_acceptance": "Seed/rollover/claim/overflow cases; no required prestige, ad or purchase objective.",
+      "coverage": "assigned",
+      "production_status": "not_verified"
+    },
+    {
+      "id": "S12",
+      "requirement": "Atomic saves, rolling backups, export/import, migrations and interruption recovery",
+      "work_items": [
+        "M1-03",
+        "M1-08",
+        "M5-07",
+        "BOOT-SAVE"
+      ],
+      "future_acceptance": "Contract validation is followed by runtime fault injection; schemas alone cannot pass persistence acceptance.",
+      "coverage": "assigned",
+      "production_status": "not_verified"
+    },
+    {
+      "id": "S13",
+      "requirement": "Cloud revision conflicts preserve branches; no adding divergent wallets/lifetime/offline intervals",
+      "work_items": [
+        "M2-04",
+        "M3-06"
+      ],
+      "future_acceptance": "Two-device fork and recovery drill; merge only independently verified ownership and deduplicated receipts.",
+      "coverage": "assigned",
+      "production_status": "not_verified"
+    },
+    {
+      "id": "S14",
+      "requirement": "Explicit event ordering, numeric remainder policy and pinned economic versions",
+      "work_items": [
+        "M1-01",
+        "M1-04",
+        "M3-01",
+        "M3-10"
+      ],
+      "future_acceptance": "Version transition settles old interval once; no numerical tolerance creates an unaffordable purchase or extra Chart.",
+      "coverage": "assigned",
+      "production_status": "not_verified"
+    },
+    {
+      "id": "S15",
+      "requirement": "Six chapters, ending and continued play; target 15\u201330 calendar days without hard time lock",
+      "work_items": [
+        "M1-06",
+        "M3-08",
+        "M4-06",
+        "M6-02",
+        "BOOT-CONTENT"
+      ],
+      "future_acceptance": "All goals reachable; observed later-chapter progression; ending independent of paid/optional completion.",
+      "coverage": "assigned",
+      "production_status": "not_verified"
+    },
+    {
+      "id": "S16",
+      "requirement": "Twelve challenge dossiers across three rule families, 100 Notes each",
+      "work_items": [
+        "M3-08",
+        "M4-01",
+        "M4-06"
+      ],
+      "future_acceptance": "All three families playable; exit/restart isolated; Note acquisition/entry cost validated.",
+      "coverage": "assigned",
+      "production_status": "not_verified"
+    },
+    {
+      "id": "S17",
+      "requirement": "Twelve authored calibration patterns with equivalent accessible completion",
+      "work_items": [
+        "M3-04",
+        "M4-06",
+        "M5-02"
+      ],
+      "future_acceptance": "Twelve actual patterns and their equal-value alternate paths are integrated.",
+      "coverage": "assigned",
+      "production_status": "not_verified"
+    },
+    {
+      "id": "S18",
+      "requirement": "Eighteen main archive entries and six optional 50-Note decorations; no forced full collection",
+      "work_items": [
+        "M4-06",
+        "M4-07",
+        "M5-05"
+      ],
+      "future_acceptance": "Content manifest, reachable unlocks and main-ending test with optional sinks unbought.",
+      "coverage": "assigned",
+      "production_status": "not_verified"
+    },
+    {
+      "id": "S19",
+      "requirement": "One harbor with initial plus six restored presentations; 25 producer presentations",
+      "work_items": [
+        "M0-05",
+        "M1-07",
+        "M2-05",
+        "M3-09",
+        "M4-07",
+        "BOOT-CONTENT"
+      ],
+      "future_acceptance": "Actual integrated assets, all states and reduced-motion variants; registry counts do not imply completed art.",
+      "coverage": "assigned",
+      "production_status": "not_verified"
+    },
+    {
+      "id": "S20",
+      "requirement": "Season 1 Night of Returning Stars, 28-day lifecycle, isolated fleet, specified coefficients and no event prestige",
+      "work_items": [
+        "M4-02",
+        "M4-06",
+        "M6-07"
+      ],
+      "future_acceptance": "New/veteran equality; main power cannot enter; no economic export; actual live/end/archive behavior observed.",
+      "coverage": "assigned",
+      "production_status": "not_verified"
+    },
+    {
+      "id": "S21",
+      "requirement": "30 levels at 500 XP, 30 free slots with 10 cosmetics/20 fragments, 10 premium cosmetics, selected archived pass",
+      "work_items": [
+        "M4-02",
+        "M4-03",
+        "M4-06",
+        "M6-08"
+      ],
+      "future_acceptance": "15,000-XP finish; single XP grant, one selected pass and paid-pass continuation after archive.",
+      "coverage": "assigned",
+      "production_status": "not_verified"
+    },
+    {
+      "id": "S22",
+      "requirement": "36 unique cosmetics distributed 12 core, 10 free pass, 10 premium, 4 direct shop; supporter reuses shop items",
+      "work_items": [
+        "M4-06",
+        "M4-07",
+        "M4-08",
+        "BOOT-CONTENT"
+      ],
+      "future_acceptance": "Unique IDs and actual assets match each reward; no power effect or unbudgeted supporter art set.",
+      "coverage": "assigned",
+      "production_status": "not_verified"
+    },
+    {
+      "id": "S23",
+      "requirement": "Ambient soundtrack, interaction/milestone/Rechart cues, independent controls and supporter soundtrack delivery",
+      "work_items": [
+        "M1-07",
+        "M4-07",
+        "M5-06"
+      ],
+      "future_acceptance": "Licensed actual audio files, playback/volume/mute tests and working purchased soundtrack delivery.",
+      "coverage": "assigned",
+      "production_status": "not_verified"
+    },
+    {
+      "id": "S24",
+      "requirement": "Cosmetic previews, localized price, verified purchases, restore, pending/retry/refund/revocation handling",
+      "work_items": [
+        "M4-03",
+        "M4-04",
+        "M5-08"
+      ],
+      "future_acceptance": "Native sandbox evidence on both stores; no fake adapter accepted; verified entitlement delivered once.",
+      "coverage": "assigned",
+      "production_status": "not_verified"
+    },
+    {
+      "id": "S25",
+      "requirement": "Equal ad/briefing six-token daily allowance; 300-second credits, speed/offline choice and additive buffs",
+      "work_items": [
+        "M3-07",
+        "M4-05",
+        "M4-08",
+        "M5-05"
+      ],
+      "future_acceptance": "No-fill/refusal free path; +25% for 1200 seconds or bounded five-minute slice; +20% and +25% add to 1.45; full trajectories compared.",
+      "coverage": "assigned",
+      "production_status": "not_verified"
+    },
+    {
+      "id": "S26",
+      "requirement": "Settings, target input, readable numbers, contextual help and opt-in quiet-hour notifications",
+      "work_items": [
+        "M3-05",
+        "M5-02"
+      ],
+      "future_acceptance": "Large text/reduced motion/non-color cues and critical controls work on named targets.",
+      "coverage": "assigned",
+      "production_status": "not_verified"
+    },
+    {
+      "id": "S27",
+      "requirement": "Help, recovery guide, release notes, credits, privacy/support URLs and runbooks",
+      "work_items": [
+        "M5-03",
+        "M5-04",
+        "M7-05",
+        "M7-07"
+      ],
+      "future_acceptance": "All pages and review/support links work and match actual data and products.",
+      "coverage": "assigned",
+      "production_status": "not_verified"
+    },
+    {
+      "id": "S28",
+      "requirement": "No known save-loss, duplicate grant, negative wallet or undelivered verified purchase",
+      "work_items": [
+        "M1-08",
+        "M3-10",
+        "M5-07",
+        "M5-08",
+        "M7-06"
+      ],
+      "future_acceptance": "Fault/replay evidence; zero critical or major normal-progression/access/purchase defects at release.",
+      "coverage": "assigned",
+      "production_status": "not_verified"
+    },
+    {
+      "id": "S29",
+      "requirement": "Numeric parity: matching integer decisions; continuous error budget initially 1e-8 outside near-zero cases",
+      "work_items": [
+        "M1-01",
+        "M3-10",
+        "M5-05"
+      ],
+      "future_acceptance": "Production number policy specifies absolute floor and tolerance without changing award thresholds.",
+      "coverage": "assigned",
+      "production_status": "not_verified"
+    },
+    {
+      "id": "S30",
+      "requirement": "99.5% crash-free sessions over 10,000 observed sessions, per platform/device and critical-flow review",
+      "work_items": [
+        "M5-04",
+        "M6-05",
+        "M6-07",
+        "M7-06"
+      ],
+      "future_acceptance": "Real instrumented session denominator and device breakdown; no critical-flow crash left open.",
+      "coverage": "assigned",
+      "production_status": "not_verified"
+    },
+    {
+      "id": "S31",
+      "requirement": "60/30fps targets, p95 startup \u22645s, 24h replay \u22643s, measured 30-minute battery/thermal usability",
+      "work_items": [
+        "M5-01",
+        "M5-07"
+      ],
+      "future_acceptance": "Named physical devices and test conditions; p95 evidence; progress-visible chunking preserves owed work.",
+      "coverage": "assigned",
+      "production_status": "not_verified"
+    },
+    {
+      "id": "S32",
+      "requirement": "15 new moderated testers and 80% comprehension target; first prestige 15\u201330 minutes among reachers plus non-reachers",
+      "work_items": [
+        "M2-06",
+        "M2-07",
+        "M6-04"
+      ],
+      "future_acceptance": "Actual study records; no bot population or artificial filtering is called user evidence.",
+      "coverage": "assigned",
+      "production_status": "not_verified"
+    },
+    {
+      "id": "S33",
+      "requirement": "30/90-day simulations of visit/reset/buy/bonus strategies and Note scarcity",
+      "work_items": [
+        "M5-05",
+        "M6-03"
+      ],
+      "future_acceptance": "No-bonus/free/ad full trajectories, 1/3/6 visits and 1,750-Note optional budget with unlock timing.",
+      "coverage": "assigned",
+      "production_status": "not_verified"
+    },
+    {
+      "id": "S34",
+      "requirement": "Real D30 and 28-day season, targets 500 starts/10,000 sessions; uncertainty and baseline tracking",
+      "work_items": [
+        "M6-01",
+        "M6-02",
+        "M6-07",
+        "M5-05"
+      ],
+      "future_acceptance": "Full observation windows, retained churned installs in denominator, config/acquisition/exclusion records. Before enrollment preregister primary outcome and duration; state descriptive precision, and separately compute MDE/power for any causal experiment. Planning sample targets are not power guarantees.",
+      "coverage": "assigned",
+      "production_status": "not_verified"
+    },
+    {
+      "id": "S35",
+      "requirement": "D1/D7/D30 35/15/7% review hypotheses, strategy variety, welfare and commercial cost assessment",
+      "work_items": [
+        "M6-02",
+        "M7-01"
+      ],
+      "future_acceptance": "Evidence-backed launch/extend/revise decision; no automatic retention waiver of correctness or fairness.",
+      "coverage": "assigned",
+      "production_status": "not_verified"
+    },
+    {
+      "id": "S36",
+      "requirement": "Current platform review, accurate listing, sandbox tests and final store acceptance",
+      "work_items": [
+        "M0-03",
+        "M7-03",
+        "M7-07"
+      ],
+      "future_acceptance": "Recheck official requirements near submission; accepted native builds and working products/reviewer access.",
+      "coverage": "assigned",
+      "production_status": "not_verified"
+    },
+    {
+      "id": "S37",
+      "requirement": "Monitoring, support diagnostics, backups, feature disables, rollout stops and compatible forward repair",
+      "work_items": [
+        "M5-04",
+        "M6-05",
+        "M6-08",
+        "M7-04",
+        "M7-08"
+      ],
+      "future_acceptance": "Staging and live-operation drills; never roll a newer save into an unsupported older executable.",
+      "coverage": "assigned",
+      "production_status": "not_verified"
+    },
+    {
+      "id": "S38",
+      "requirement": "14 actual days of launch coverage, incident follow-through, final v1 record and Season 2 brief",
+      "work_items": [
+        "M7-08",
+        "OPS-14"
+      ],
+      "future_acceptance": "Dated operating report, fixes/owners and ongoing costs; future content is a brief, not unbudgeted production.",
+      "coverage": "assigned",
+      "production_status": "not_verified"
+    },
+    {
+      "id": "S39",
+      "requirement": "Privacy, consent/refusal, account deletion/export and service outages reflect actual SDK behavior",
+      "work_items": [
+        "M3-06",
+        "M5-03"
+      ],
+      "future_acceptance": "Native network/SDK audit and lifecycle/outage tests; no policy page alone counts as implementation.",
+      "coverage": "assigned",
+      "production_status": "not_verified"
+    },
+    {
+      "id": "S40",
+      "requirement": "Reproducible native builds, explicit stack/toolchain feasibility and configuration compatibility",
+      "work_items": [
+        "M0-02",
+        "M0-03",
+        "M0-08",
+        "M1-04"
+      ],
+      "future_acceptance": "Actual build/probe logs, pinned versions, safe defaults and rejection of incompatible updates.",
+      "coverage": "assigned",
+      "production_status": "not_verified"
+    },
+    {
+      "id": "S41",
+      "requirement": "Budget and device/test plan adapted to AI delivery; protect scope and independent review",
+      "work_items": [
+        "M0-01",
+        "M0-04",
+        "M0-06",
+        "M0-07"
+      ],
+      "future_acceptance": "Execution costs and access needs named; no inherited human-week promise or unsupported tool capability claim.",
+      "coverage": "assigned",
+      "production_status": "not_verified"
+    },
+    {
+      "id": "S42",
+      "requirement": "Complete release evidence pack and approved candidate with only accepted minor issues",
+      "work_items": [
+        "M7-01",
+        "M7-02",
+        "M7-06"
+      ],
+      "future_acceptance": "Evidence from exact candidate/config/content versions; release status cannot be inferred from plan coverage.",
+      "coverage": "assigned",
+      "production_status": "not_verified"
+    },
+    {
+      "id": "S43",
+      "requirement": "Polish observed content/UI issues and create accurate store/launch assets",
+      "work_items": [
+        "M6-04",
+        "M6-06",
+        "M5-06",
+        "M7-05"
+      ],
+      "future_acceptance": "Changed screens rechecked on targets; final screenshots/footage represent shipped product.",
+      "coverage": "assigned",
+      "production_status": "not_verified"
+    },
+    {
+      "id": "S44",
+      "requirement": "Mid/late progression adds meaningful decisions and at least two viable strategy/challenge approaches",
+      "work_items": [
+        "M1-06",
+        "M3-08",
+        "M5-05",
+        "M6-02"
+      ],
+      "future_acceptance": "Combined simulation and observed play; no excessive daily-check-in or paid requirement for ending.",
+      "coverage": "assigned",
+      "production_status": "not_verified"
+    }
+  ],
+  "original_package_audit": [
+    {
+      "id": "M0-01",
+      "owner": "director",
+      "reviewer": "qa_release",
+      "batch": "B01",
+      "source_acceptance_preserved": true,
+      "source_dependencies_preserved": true,
+      "scope_ids": [
+        "S01",
+        "S41"
+      ],
+      "production_status": "not_started"
+    },
+    {
+      "id": "M0-02",
+      "owner": "gameplay",
+      "reviewer": "platform",
+      "batch": "B02",
+      "source_acceptance_preserved": true,
+      "source_dependencies_preserved": true,
+      "scope_ids": [
+        "S01",
+        "S40"
+      ],
+      "production_status": "not_started"
+    },
+    {
+      "id": "M0-03",
+      "owner": "platform",
+      "reviewer": "gameplay",
+      "batch": "B02",
+      "source_acceptance_preserved": true,
+      "source_dependencies_preserved": true,
+      "scope_ids": [
+        "S36",
+        "S40"
+      ],
+      "production_status": "not_started"
+    },
+    {
+      "id": "M0-04",
+      "owner": "client",
+      "reviewer": "qa_release",
+      "batch": "B01",
+      "source_acceptance_preserved": true,
+      "source_dependencies_preserved": true,
+      "scope_ids": [
+        "S41"
+      ],
+      "production_status": "not_started"
+    },
+    {
+      "id": "M0-05",
+      "owner": "art_content",
+      "reviewer": "client",
+      "batch": "B01",
+      "source_acceptance_preserved": true,
+      "source_dependencies_preserved": true,
+      "scope_ids": [
+        "S19"
+      ],
+      "production_status": "not_started"
+    },
+    {
+      "id": "M0-06",
+      "owner": "qa_release",
+      "reviewer": "director",
+      "batch": "B01",
+      "source_acceptance_preserved": true,
+      "source_dependencies_preserved": true,
+      "scope_ids": [
+        "S41"
+      ],
+      "production_status": "not_started"
+    },
+    {
+      "id": "M0-07",
+      "owner": "director",
+      "reviewer": "qa_release",
+      "batch": "B01",
+      "source_acceptance_preserved": true,
+      "source_dependencies_preserved": true,
+      "scope_ids": [
+        "S41"
+      ],
+      "production_status": "not_started"
+    },
+    {
+      "id": "M0-08",
+      "owner": "gameplay",
+      "reviewer": "platform",
+      "batch": "B02",
+      "source_acceptance_preserved": true,
+      "source_dependencies_preserved": true,
+      "scope_ids": [
+        "S40"
+      ],
+      "production_status": "not_started"
+    },
+    {
+      "id": "M1-01",
+      "owner": "gameplay",
+      "reviewer": "platform",
+      "batch": "B03",
+      "source_acceptance_preserved": true,
+      "source_dependencies_preserved": true,
+      "scope_ids": [
+        "S03",
+        "S05",
+        "S14",
+        "S29"
+      ],
+      "production_status": "not_started"
+    },
+    {
+      "id": "M1-02",
+      "owner": "gameplay",
+      "reviewer": "platform",
+      "batch": "B03",
+      "source_acceptance_preserved": true,
+      "source_dependencies_preserved": true,
+      "scope_ids": [
+        "S03",
+        "S04",
+        "S05"
+      ],
+      "production_status": "not_started"
+    },
+    {
+      "id": "M1-03",
+      "owner": "platform",
+      "reviewer": "gameplay",
+      "batch": "B04",
+      "source_acceptance_preserved": true,
+      "source_dependencies_preserved": true,
+      "scope_ids": [
+        "S12"
+      ],
+      "production_status": "not_started"
+    },
+    {
+      "id": "M1-04",
+      "owner": "platform",
+      "reviewer": "gameplay",
+      "batch": "B03",
+      "source_acceptance_preserved": true,
+      "source_dependencies_preserved": true,
+      "scope_ids": [
+        "S14",
+        "S40"
+      ],
+      "production_status": "not_started"
+    },
+    {
+      "id": "M1-05",
+      "owner": "client",
+      "reviewer": "qa_release",
+      "batch": "B05",
+      "source_acceptance_preserved": true,
+      "source_dependencies_preserved": true,
+      "scope_ids": [
+        "S02",
+        "S04"
+      ],
+      "production_status": "not_started"
+    },
+    {
+      "id": "M1-06",
+      "owner": "director",
+      "reviewer": "qa_release",
+      "batch": "B05",
+      "source_acceptance_preserved": true,
+      "source_dependencies_preserved": true,
+      "scope_ids": [
+        "S15",
+        "S44"
+      ],
+      "production_status": "not_started"
+    },
+    {
+      "id": "M1-07",
+      "owner": "art_content",
+      "reviewer": "client",
+      "batch": "B05",
+      "source_acceptance_preserved": true,
+      "source_dependencies_preserved": true,
+      "scope_ids": [
+        "S19",
+        "S23"
+      ],
+      "production_status": "not_started"
+    },
+    {
+      "id": "M1-08",
+      "owner": "qa_release",
+      "reviewer": "director",
+      "batch": "B04",
+      "source_acceptance_preserved": true,
+      "source_dependencies_preserved": true,
+      "scope_ids": [
+        "S12",
+        "S28"
+      ],
+      "production_status": "not_started"
+    },
+    {
+      "id": "M2-01",
+      "owner": "gameplay",
+      "reviewer": "platform",
+      "batch": "B06",
+      "source_acceptance_preserved": true,
+      "source_dependencies_preserved": true,
+      "scope_ids": [
+        "S03",
+        "S06",
+        "S07"
+      ],
+      "production_status": "not_started"
+    },
+    {
+      "id": "M2-02",
+      "owner": "client",
+      "reviewer": "qa_release",
+      "batch": "B06",
+      "source_acceptance_preserved": true,
+      "source_dependencies_preserved": true,
+      "scope_ids": [
+        "S05"
+      ],
+      "production_status": "not_started"
+    },
+    {
+      "id": "M2-03",
+      "owner": "client",
+      "reviewer": "qa_release",
+      "batch": "B06",
+      "source_acceptance_preserved": true,
+      "source_dependencies_preserved": true,
+      "scope_ids": [
+        "S07"
+      ],
+      "production_status": "not_started"
+    },
+    {
+      "id": "M2-04",
+      "owner": "platform",
+      "reviewer": "gameplay",
+      "batch": "B06",
+      "source_acceptance_preserved": true,
+      "source_dependencies_preserved": true,
+      "scope_ids": [
+        "S13"
+      ],
+      "production_status": "not_started"
+    },
+    {
+      "id": "M2-05",
+      "owner": "art_content",
+      "reviewer": "client",
+      "batch": "B06",
+      "source_acceptance_preserved": true,
+      "source_dependencies_preserved": true,
+      "scope_ids": [
+        "S19"
+      ],
+      "production_status": "not_started"
+    },
+    {
+      "id": "M2-06",
+      "owner": "director",
+      "reviewer": "qa_release",
+      "batch": "B07",
+      "source_acceptance_preserved": true,
+      "source_dependencies_preserved": true,
+      "scope_ids": [
+        "S32"
+      ],
+      "production_status": "not_started"
+    },
+    {
+      "id": "M2-07",
+      "owner": "qa_release",
+      "reviewer": "director",
+      "batch": "B07",
+      "source_acceptance_preserved": true,
+      "source_dependencies_preserved": true,
+      "scope_ids": [
+        "S32"
+      ],
+      "production_status": "not_started"
+    },
+    {
+      "id": "M3-01",
+      "owner": "gameplay",
+      "reviewer": "platform",
+      "batch": "B08",
+      "source_acceptance_preserved": true,
+      "source_dependencies_preserved": true,
+      "scope_ids": [
+        "S08",
+        "S09",
+        "S10",
+        "S14"
+      ],
+      "production_status": "not_started"
+    },
+    {
+      "id": "M3-02",
+      "owner": "gameplay",
+      "reviewer": "platform",
+      "batch": "B08",
+      "source_acceptance_preserved": true,
+      "source_dependencies_preserved": true,
+      "scope_ids": [
+        "S11"
+      ],
+      "production_status": "not_started"
+    },
+    {
+      "id": "M3-03",
+      "owner": "gameplay",
+      "reviewer": "platform",
+      "batch": "B08",
+      "source_acceptance_preserved": true,
+      "source_dependencies_preserved": true,
+      "scope_ids": [
+        "S06"
+      ],
+      "production_status": "not_started"
+    },
+    {
+      "id": "M3-04",
+      "owner": "client",
+      "reviewer": "qa_release",
+      "batch": "B08",
+      "source_acceptance_preserved": true,
+      "source_dependencies_preserved": true,
+      "scope_ids": [
+        "S09",
+        "S17"
+      ],
+      "production_status": "not_started"
+    },
+    {
+      "id": "M3-05",
+      "owner": "client",
+      "reviewer": "qa_release",
+      "batch": "B08",
+      "source_acceptance_preserved": true,
+      "source_dependencies_preserved": true,
+      "scope_ids": [
+        "S26"
+      ],
+      "production_status": "not_started"
+    },
+    {
+      "id": "M3-06",
+      "owner": "platform",
+      "reviewer": "gameplay",
+      "batch": "B09",
+      "source_acceptance_preserved": true,
+      "source_dependencies_preserved": true,
+      "scope_ids": [
+        "S02",
+        "S13",
+        "S39"
+      ],
+      "production_status": "not_started"
+    },
+    {
+      "id": "M3-07",
+      "owner": "platform",
+      "reviewer": "gameplay",
+      "batch": "B09",
+      "source_acceptance_preserved": true,
+      "source_dependencies_preserved": true,
+      "scope_ids": [
+        "S25"
+      ],
+      "production_status": "not_started"
+    },
+    {
+      "id": "M3-08",
+      "owner": "director",
+      "reviewer": "qa_release",
+      "batch": "B10",
+      "source_acceptance_preserved": true,
+      "source_dependencies_preserved": true,
+      "scope_ids": [
+        "S15",
+        "S16",
+        "S44"
+      ],
+      "production_status": "not_started"
+    },
+    {
+      "id": "M3-09",
+      "owner": "art_content",
+      "reviewer": "client",
+      "batch": "B10",
+      "source_acceptance_preserved": true,
+      "source_dependencies_preserved": true,
+      "scope_ids": [
+        "S04",
+        "S19"
+      ],
+      "production_status": "not_started"
+    },
+    {
+      "id": "M3-10",
+      "owner": "qa_release",
+      "reviewer": "director",
+      "batch": "B10",
+      "source_acceptance_preserved": true,
+      "source_dependencies_preserved": true,
+      "scope_ids": [
+        "S08",
+        "S10",
+        "S11",
+        "S14",
+        "S28",
+        "S29"
+      ],
+      "production_status": "not_started"
+    },
+    {
+      "id": "M4-01",
+      "owner": "gameplay",
+      "reviewer": "platform",
+      "batch": "B11",
+      "source_acceptance_preserved": true,
+      "source_dependencies_preserved": true,
+      "scope_ids": [
+        "S16"
+      ],
+      "production_status": "not_started"
+    },
+    {
+      "id": "M4-02",
+      "owner": "gameplay",
+      "reviewer": "platform",
+      "batch": "B11",
+      "source_acceptance_preserved": true,
+      "source_dependencies_preserved": true,
+      "scope_ids": [
+        "S20",
+        "S21"
+      ],
+      "production_status": "not_started"
+    },
+    {
+      "id": "M4-03",
+      "owner": "client",
+      "reviewer": "qa_release",
+      "batch": "B13",
+      "source_acceptance_preserved": true,
+      "source_dependencies_preserved": true,
+      "scope_ids": [
+        "S21",
+        "S24"
+      ],
+      "production_status": "not_started"
+    },
+    {
+      "id": "M4-04",
+      "owner": "platform",
+      "reviewer": "gameplay",
+      "batch": "B13",
+      "source_acceptance_preserved": true,
+      "source_dependencies_preserved": true,
+      "scope_ids": [
+        "S24"
+      ],
+      "production_status": "not_started"
+    },
+    {
+      "id": "M4-05",
+      "owner": "platform",
+      "reviewer": "gameplay",
+      "batch": "B13",
+      "source_acceptance_preserved": true,
+      "source_dependencies_preserved": true,
+      "scope_ids": [
+        "S25"
+      ],
+      "production_status": "not_started"
+    },
+    {
+      "id": "M4-06",
+      "owner": "director",
+      "reviewer": "qa_release",
+      "batch": "B12",
+      "source_acceptance_preserved": true,
+      "source_dependencies_preserved": true,
+      "scope_ids": [
+        "S15",
+        "S16",
+        "S17",
+        "S18",
+        "S20",
+        "S21",
+        "S22"
+      ],
+      "production_status": "not_started"
+    },
+    {
+      "id": "M4-07",
+      "owner": "art_content",
+      "reviewer": "client",
+      "batch": "B12",
+      "source_acceptance_preserved": true,
+      "source_dependencies_preserved": true,
+      "scope_ids": [
+        "S18",
+        "S19",
+        "S22",
+        "S23"
+      ],
+      "production_status": "not_started"
+    },
+    {
+      "id": "M4-08",
+      "owner": "qa_release",
+      "reviewer": "director",
+      "batch": "B14",
+      "source_acceptance_preserved": true,
+      "source_dependencies_preserved": true,
+      "scope_ids": [
+        "S22",
+        "S25"
+      ],
+      "production_status": "not_started"
+    },
+    {
+      "id": "M5-01",
+      "owner": "gameplay",
+      "reviewer": "platform",
+      "batch": "B15",
+      "source_acceptance_preserved": true,
+      "source_dependencies_preserved": true,
+      "scope_ids": [
+        "S08",
+        "S31"
+      ],
+      "production_status": "not_started"
+    },
+    {
+      "id": "M5-02",
+      "owner": "client",
+      "reviewer": "qa_release",
+      "batch": "B15",
+      "source_acceptance_preserved": true,
+      "source_dependencies_preserved": true,
+      "scope_ids": [
+        "S02",
+        "S09",
+        "S17",
+        "S26"
+      ],
+      "production_status": "not_started"
+    },
+    {
+      "id": "M5-03",
+      "owner": "platform",
+      "reviewer": "gameplay",
+      "batch": "B16",
+      "source_acceptance_preserved": true,
+      "source_dependencies_preserved": true,
+      "scope_ids": [
+        "S27",
+        "S39"
+      ],
+      "production_status": "not_started"
+    },
+    {
+      "id": "M5-04",
+      "owner": "platform",
+      "reviewer": "gameplay",
+      "batch": "B16",
+      "source_acceptance_preserved": true,
+      "source_dependencies_preserved": true,
+      "scope_ids": [
+        "S27",
+        "S30",
+        "S37"
+      ],
+      "production_status": "not_started"
+    },
+    {
+      "id": "M5-05",
+      "owner": "director",
+      "reviewer": "qa_release",
+      "batch": "B17",
+      "source_acceptance_preserved": true,
+      "source_dependencies_preserved": true,
+      "scope_ids": [
+        "S07",
+        "S18",
+        "S25",
+        "S29",
+        "S33",
+        "S44",
+        "S34"
+      ],
+      "production_status": "not_started"
+    },
+    {
+      "id": "M5-06",
+      "owner": "art_content",
+      "reviewer": "client",
+      "batch": "B15",
+      "source_acceptance_preserved": true,
+      "source_dependencies_preserved": true,
+      "scope_ids": [
+        "S23",
+        "S43"
+      ],
+      "production_status": "not_started"
+    },
+    {
+      "id": "M5-07",
+      "owner": "qa_release",
+      "reviewer": "director",
+      "batch": "B17",
+      "source_acceptance_preserved": true,
+      "source_dependencies_preserved": true,
+      "scope_ids": [
+        "S12",
+        "S28",
+        "S31"
+      ],
+      "production_status": "not_started"
+    },
+    {
+      "id": "M5-08",
+      "owner": "qa_release",
+      "reviewer": "director",
+      "batch": "B17",
+      "source_acceptance_preserved": true,
+      "source_dependencies_preserved": true,
+      "scope_ids": [
+        "S24",
+        "S28"
+      ],
+      "production_status": "not_started"
+    },
+    {
+      "id": "M6-01",
+      "owner": "director",
+      "reviewer": "qa_release",
+      "batch": "B18",
+      "source_acceptance_preserved": true,
+      "source_dependencies_preserved": true,
+      "scope_ids": [
+        "S34"
+      ],
+      "production_status": "not_started"
+    },
+    {
+      "id": "M6-02",
+      "owner": "director",
+      "reviewer": "qa_release",
+      "batch": "B20",
+      "source_acceptance_preserved": true,
+      "source_dependencies_preserved": true,
+      "scope_ids": [
+        "S15",
+        "S34",
+        "S35",
+        "S44"
+      ],
+      "production_status": "not_started"
+    },
+    {
+      "id": "M6-03",
+      "owner": "gameplay",
+      "reviewer": "platform",
+      "batch": "B19",
+      "source_acceptance_preserved": true,
+      "source_dependencies_preserved": true,
+      "scope_ids": [
+        "S33"
+      ],
+      "production_status": "not_started"
+    },
+    {
+      "id": "M6-04",
+      "owner": "client",
+      "reviewer": "qa_release",
+      "batch": "B19",
+      "source_acceptance_preserved": true,
+      "source_dependencies_preserved": true,
+      "scope_ids": [
+        "S32",
+        "S43"
+      ],
+      "production_status": "not_started"
+    },
+    {
+      "id": "M6-05",
+      "owner": "platform",
+      "reviewer": "gameplay",
+      "batch": "B19",
+      "source_acceptance_preserved": true,
+      "source_dependencies_preserved": true,
+      "scope_ids": [
+        "S30",
+        "S37"
+      ],
+      "production_status": "not_started"
+    },
+    {
+      "id": "M6-06",
+      "owner": "art_content",
+      "reviewer": "client",
+      "batch": "B19",
+      "source_acceptance_preserved": true,
+      "source_dependencies_preserved": true,
+      "scope_ids": [
+        "S43"
+      ],
+      "production_status": "not_started"
+    },
+    {
+      "id": "M6-07",
+      "owner": "qa_release",
+      "reviewer": "director",
+      "batch": "B19",
+      "source_acceptance_preserved": true,
+      "source_dependencies_preserved": true,
+      "scope_ids": [
+        "S20",
+        "S30",
+        "S34"
+      ],
+      "production_status": "not_started"
+    },
+    {
+      "id": "M6-08",
+      "owner": "qa_release",
+      "reviewer": "director",
+      "batch": "B19",
+      "source_acceptance_preserved": true,
+      "source_dependencies_preserved": true,
+      "scope_ids": [
+        "S21",
+        "S37"
+      ],
+      "production_status": "not_started"
+    },
+    {
+      "id": "M7-01",
+      "owner": "director",
+      "reviewer": "qa_release",
+      "batch": "B21",
+      "source_acceptance_preserved": true,
+      "source_dependencies_preserved": true,
+      "scope_ids": [
+        "S35",
+        "S42"
+      ],
+      "production_status": "not_started"
+    },
+    {
+      "id": "M7-02",
+      "owner": "gameplay",
+      "reviewer": "platform",
+      "batch": "B21",
+      "source_acceptance_preserved": true,
+      "source_dependencies_preserved": true,
+      "scope_ids": [
+        "S42"
+      ],
+      "production_status": "not_started"
+    },
+    {
+      "id": "M7-03",
+      "owner": "client",
+      "reviewer": "qa_release",
+      "batch": "B21",
+      "source_acceptance_preserved": true,
+      "source_dependencies_preserved": true,
+      "scope_ids": [
+        "S01",
+        "S36"
+      ],
+      "production_status": "not_started"
+    },
+    {
+      "id": "M7-04",
+      "owner": "platform",
+      "reviewer": "gameplay",
+      "batch": "B21",
+      "source_acceptance_preserved": true,
+      "source_dependencies_preserved": true,
+      "scope_ids": [
+        "S37"
+      ],
+      "production_status": "not_started"
+    },
+    {
+      "id": "M7-05",
+      "owner": "art_content",
+      "reviewer": "client",
+      "batch": "B21",
+      "source_acceptance_preserved": true,
+      "source_dependencies_preserved": true,
+      "scope_ids": [
+        "S27",
+        "S43"
+      ],
+      "production_status": "not_started"
+    },
+    {
+      "id": "M7-06",
+      "owner": "qa_release",
+      "reviewer": "director",
+      "batch": "B22",
+      "source_acceptance_preserved": true,
+      "source_dependencies_preserved": true,
+      "scope_ids": [
+        "S28",
+        "S30",
+        "S42"
+      ],
+      "production_status": "not_started"
+    },
+    {
+      "id": "M7-07",
+      "owner": "qa_release",
+      "reviewer": "director",
+      "batch": "B22",
+      "source_acceptance_preserved": true,
+      "source_dependencies_preserved": true,
+      "scope_ids": [
+        "S27",
+        "S36"
+      ],
+      "production_status": "not_started"
+    },
+    {
+      "id": "M7-08",
+      "owner": "platform",
+      "reviewer": "gameplay",
+      "batch": "B22",
+      "source_acceptance_preserved": true,
+      "source_dependencies_preserved": true,
+      "scope_ids": [
+        "S37",
+        "S38"
+      ],
+      "production_status": "not_started"
+    }
+  ],
+  "additional_package_audit": [
+    {
+      "id": "BOOT-CORE",
+      "scope_ids": [
+        "S03",
+        "S05"
+      ],
+      "scope_legitimacy": "Necessary implementation enablement",
+      "production_scope_expansion": false
+    },
+    {
+      "id": "BOOT-CONTENT",
+      "scope_ids": [
+        "S15",
+        "S19",
+        "S22"
+      ],
+      "scope_legitimacy": "Necessary implementation enablement",
+      "production_scope_expansion": false
+    },
+    {
+      "id": "BOOT-SAVE",
+      "scope_ids": [
+        "S12"
+      ],
+      "scope_legitimacy": "Necessary implementation enablement",
+      "production_scope_expansion": false
+    },
+    {
+      "id": "OPS-14",
+      "scope_ids": [
+        "S38"
+      ],
+      "scope_legitimacy": "Existing 14-day operating obligation",
+      "production_scope_expansion": false
+    }
+  ],
+  "checks": [
+    {
+      "name": "economy fixtures",
+      "command": "python3 implementation/tools/export_economy_fixtures.py --check",
+      "passed": true,
+      "cases": 113,
+      "identity_checks": 89
+    },
+    {
+      "name": "content plan and rejection cases",
+      "command": "python3 implementation/tools/validate_content_manifest.py --self-test",
+      "passed": true,
+      "cases": 33,
+      "unfinished_assets": 164
+    },
+    {
+      "name": "save envelope",
+      "command": "python3 implementation/tools/validate_save_contract.py --config economy.json",
+      "passed": true,
+      "cases": 43
+    },
+    {
+      "name": "content release",
+      "command": "python3 implementation/tools/validate_content_manifest.py --release",
+      "passed": false,
+      "expected_failure": true,
+      "unfinished_obligations": 380
+    },
+    {
+      "name": "independent scope/dependency/hash audit",
+      "passed": true,
+      "items": 69,
+      "requirements": 44,
+      "batches": 24,
+      "roles": 6
+    },
+    {
+      "name": "program validator and six rejection tests",
+      "command": "python3 implementation/tools/validate_program.py --self-test",
+      "passed": true,
+      "cases": 6
+    },
+    {
+      "name": "B14 content gate",
+      "command": "python3 implementation/tools/validate_content_manifest.py --content-gate",
+      "passed": false,
+      "expected_failure": true,
+      "unfinished_obligations": 362
+    },
+    {
+      "name": "independent staged-content separation",
+      "passed": true,
+      "in_memory_only": true,
+      "stage_profile_errors": 0,
+      "strict_release_errors_for_missing_support": 18
+    },
+    {
+      "name": "art inventory and internal packaging audit",
+      "passed": true,
+      "matched_assets": 164,
+      "internal_documents_excluded": 2
+    },
+    {
+      "name": "second directional source comparison",
+      "passed": true,
+      "original_packages": 65,
+      "requirements": 44,
+      "work_items": 69
+    }
+  ],
+  "findings": [
+    {
+      "id": "QA-01",
+      "severity": "P1",
+      "status": "closed_after_independent_recheck",
+      "title": "B14 full release validation requires downstream support deliverables",
+      "affected": [
+        "B14",
+        "B16",
+        "B21",
+        "B23",
+        "implementation/tools/validate_content_manifest.py"
+      ],
+      "required_fix": "Introduce an executable B14 content profile with explicit deferred support items; require full prelaunch support and initial Season 2 brief before release; B23 updates brief.",
+      "verified_repair": "B14 has executable content-gate profile; B21 includes all support and initial brief; B22 strict release; art initial brief is B21/M7-01; B23 updates it. In-memory profile separation independently tested."
+    },
+    {
+      "id": "QA-02",
+      "severity": "P2",
+      "status": "closed_after_independent_recheck",
+      "title": "Study preregistration and power/precision obligation lacks explicit assignment",
+      "affected": [
+        "S34",
+        "S35",
+        "M5-05",
+        "B17",
+        "B18"
+      ],
+      "required_fix": "Require preregistration before enrollment, including primary metric/window, descriptive precision and any comparative MDE/power/stopping rule.",
+      "verified_repair": "M5-05/S34 and B17 now require preregistration, descriptive precision and MDE/power for causal experiments before B18 enrollment."
+    },
+    {
+      "id": "QA-03",
+      "severity": "P2",
+      "status": "closed_after_independent_recheck",
+      "title": "Internal operating documents were exported as player localization",
+      "affected": [
+        "implementation/art/production_contract.json"
+      ],
+      "required_fix": "Keep runbooks and Season 2 planning brief in internal release artifacts, excluded from client packaging.",
+      "verified_repair": "Both records now use release/ export paths, internal_release_package, exclude_from_client_packaging=true and internal_document_review."
+    }
+  ],
+  "limitations": [
+    "No native build, physical-device, store, human-cohort or operating-coverage acceptance was performed.",
+    "All 65 production packages remain not_started; all scope delivery remains unverified.",
+    "Bootstrap validators are development evidence only."
+  ],
+  "open_findings": 0,
+  "independent_cross_review_findings": [
+    {
+      "id": "CR-GE-01",
+      "status": "closed",
+      "source": "implementation/reports/gameplay_cross_review.md",
+      "summary": "Required authored-field omission guards repaired and independently reproduced."
+    },
+    {
+      "id": "CR-GE-02",
+      "status": "closed",
+      "source": "implementation/reports/gameplay_cross_review.md",
+      "summary": "UI and fulfillment completion-state/evidence omission guards repaired and independently reproduced."
+    }
+  ],
+  "reviewed_artifact_sha256": {
+    "AI_IMPLEMENTATION_PROGRAM.md": "96b966012e5f5a294e4f7abfd0a5eab8fe48dcb92108baabf49af03b25283a23",
+    "implementation/program.json": "26cc5f151c9fdb27a034c61dedfb1be74094499b596a7a279d94548b9d9877d6",
+    "implementation/scope_requirements.json": "db6d5b49c50a2ccacfab930de6311a7b947bb68167827ff528591c856636a23e",
+    "implementation/tools/validate_content_manifest.py": "b632fe6dd0825bda1c14c91da165643f6cb16e17cdd51efe06430379e9d37704",
+    "implementation/art/production_contract.json": "09343920ef604239600384755db7bf78a58908a2e96e33d63666cc19d16a48af"
+  },
+  "bootstrap_recommendation": "Accept only BOOT-CORE, BOOT-CONTENT and BOOT-SAVE as development artifacts with cross-review evidence. No production package or scope delivery is accepted."
+}

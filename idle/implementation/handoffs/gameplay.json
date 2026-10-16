@@ -1,0 +1,433 @@
+{
+  "schema_version": 1,
+  "role_id": "GE",
+  "role_name": "AI Gameplay and Economy Engineer",
+  "accountable_for": "Implement and maintain the headless economy and event timeline, with replayable evidence that purchases, prestige, daily systems and isolation rules match the accepted design.",
+  "charter": [
+    "Write production code after the native runtime and precision qualification gate; this is an implementation owner, not an advisory persona.",
+    "Own deterministic core transitions and conformance fixtures. Rendering, save storage, commercial verification and presentation remain behind agreed interfaces.",
+    "Repair review findings and supply runnable test evidence before requesting ticket acceptance.",
+    "Never use a reference-model result or an AI-generated simulation as evidence of native performance, player retention, live commerce or a completed human observation gate."
+  ],
+  "status": "active_contribution_delivered",
+  "current_contribution": {
+    "status": "reference_fixtures_implemented_and_checked",
+    "files": [
+      "implementation/tools/export_economy_fixtures.py",
+      "implementation/fixtures/economy_reference.json",
+      "implementation/handoffs/gameplay.json"
+    ],
+    "commands": [
+      "python3 implementation/tools/export_economy_fixtures.py",
+      "python3 implementation/tools/export_economy_fixtures.py --check"
+    ],
+    "evidence": {
+      "fixture_case_count": 113,
+      "independent_identity_and_invariant_check_count": 89,
+      "checks_passed": true,
+      "fixture_reproducibility_check_passed": true
+    },
+    "backlog_completion_claim": "None. This is a concrete foundation for M0-02, M1-01 and M1-02; those packages still require native implementation and acceptance evidence.",
+    "reference_limit": "Bounded binary64 prices and output plus exact whole-R integer-entitlement cases. Does not settle production precision or implement the full offline timeline."
+  },
+  "owned_future_paths": [
+    {
+      "path": "game/core/**",
+      "status": "agreed_logical_ownership_until_B02_stack_lock",
+      "purpose": "Portable headless domain transitions; B02 maps this logical ownership into the selected native project."
+    },
+    {
+      "path": "game/simulation/**",
+      "status": "agreed_logical_ownership_until_B02_stack_lock",
+      "purpose": "One shared online/offline event timeline and simulation; no second runtime under implementation/."
+    },
+    {
+      "path": "tests/core/**",
+      "status": "agreed_logical_ownership_until_B02_stack_lock",
+      "purpose": "Native economy conformance plus combined offline, automation, bonus, contract and day-boundary replay."
+    },
+    {
+      "path": "implementation/fixtures/economy_reference.json",
+      "status": "owned",
+      "purpose": "Regenerable bounded oracle inputs and outputs."
+    },
+    {
+      "path": "implementation/tools/export_economy_fixtures.py",
+      "status": "owned",
+      "purpose": "Reference export and independent identity checks."
+    }
+  ],
+  "mapped_original_backlog_ids": [
+    "M0-02",
+    "M0-08",
+    "M1-01",
+    "M1-02",
+    "M2-01",
+    "M3-01",
+    "M3-02",
+    "M3-03",
+    "M4-01",
+    "M4-02",
+    "M5-01",
+    "M6-03",
+    "M7-02"
+  ],
+  "next_implementation_tasks": [
+    {
+      "id": "GE-001",
+      "maps_to": [
+        "M0-02"
+      ],
+      "title": "Qualify a native host and number representation",
+      "inputs": [
+        "TIDEGLASS_DESIGN.md",
+        "economy.json",
+        "implementation/fixtures/economy_reference.json",
+        "Client and platform native-export requirements"
+      ],
+      "outputs": [
+        "Runnable qualification core on both native targets",
+        "Engine and arithmetic decision record",
+        "Measured range and boundary results"
+      ],
+      "acceptance": [
+        "Purchase and reset fixtures run in each target build",
+        "Overflow, comparison, fractional accumulation and prestige boundaries are recorded",
+        "Client/platform owners agree on a shared core interface"
+      ],
+      "dependencies": [
+        "Reference fixtures available",
+        "Native target toolchain inventory"
+      ],
+      "status": "not_started"
+    },
+    {
+      "id": "GE-002",
+      "maps_to": [
+        "M0-08"
+      ],
+      "title": "Make native core and artifact builds reproducible",
+      "inputs": [
+        "Accepted native host",
+        "Versioned configuration and dependency lock data"
+      ],
+      "outputs": [
+        "Repeatable build entry point",
+        "Core test artifact and version manifest",
+        "Native build integration with client owner"
+      ],
+      "acceptance": [
+        "A clean checkout reproduces core conformance tests",
+        "Both target artifacts retain code/config identifiers",
+        "No commercial secret is embedded"
+      ],
+      "dependencies": [
+        "GE-001",
+        "Platform build/signing contract"
+      ],
+      "status": "not_started"
+    },
+    {
+      "id": "GE-003",
+      "maps_to": [
+        "M1-01",
+        "M1-02"
+      ],
+      "title": "Implement money, ownership, purchases and Rechart transitions",
+      "inputs": [
+        "Accepted precision and settlement decision",
+        "113 reference cases",
+        "State and command interface agreed with persistence owner"
+      ],
+      "outputs": [
+        "Production number type",
+        "Validated configuration loader",
+        "Pure command reducer",
+        "Single/bulk/max purchase and reset tests"
+      ],
+      "acceptance": [
+        "Exact discrete counts and entitlement match fixtures",
+        "Unaffordable commands do not mutate state",
+        "Prices and fractional production use documented rounding",
+        "Repeated reset cannot mint Charts",
+        "Gifted Skiff does not add lifetime income"
+      ],
+      "dependencies": [
+        "GE-001"
+      ],
+      "status": "not_started"
+    },
+    {
+      "id": "GE-004",
+      "maps_to": [
+        "M2-01"
+      ],
+      "title": "Implement synergies, automation unlock and basic offline replay",
+      "inputs": [
+        "GE-003 core",
+        "Synergy matrix",
+        "Accepted policy contract",
+        "Save version interface"
+      ],
+      "outputs": [
+        "Network output and marginal-return API",
+        "Free autobuy unlock at 10 Charts",
+        "Synergy activation at 25 Charts",
+        "Saved-policy replay fixtures"
+      ],
+      "acceptance": [
+        "Low-tier contribution includes higher-tier output",
+        "Autobuy is unavailable before unlock in the player runtime",
+        "Online and offline use the same state transition logic",
+        "The idealized reference policy is labeled separately from player entitlement"
+      ],
+      "dependencies": [
+        "GE-003",
+        "Persistence snapshot contract"
+      ],
+      "status": "not_started"
+    },
+    {
+      "id": "GE-005",
+      "maps_to": [
+        "M3-01"
+      ],
+      "title": "Implement the single event timeline",
+      "inputs": [
+        "GE-004 replay",
+        "Resolved boundary ordering",
+        "Timer state and receipt interfaces"
+      ],
+      "outputs": [
+        "Focus/Survey clocks",
+        "Real-time bonus queues",
+        "24/72-hour earnings envelope",
+        "Account-day rollover",
+        "Chronology test vectors"
+      ],
+      "acceptance": [
+        "2/8/24/48/72-hour and seven-day absence cases settle correctly",
+        "Bonus expiry uses real time",
+        "Fractional phase survives save/Rechart",
+        "Full queues neither duplicate nor silently accumulate extra rewards",
+        "Equal-time boundaries are deterministic"
+      ],
+      "dependencies": [
+        "GE-004",
+        "Precision and timer decisions",
+        "Durable claim interface"
+      ],
+      "status": "not_started"
+    },
+    {
+      "id": "GE-006",
+      "maps_to": [
+        "M3-02",
+        "M3-03"
+      ],
+      "title": "Implement seeded contracts and persisted player policies",
+      "inputs": [
+        "GE-005 timeline",
+        "Content goal schema",
+        "Claim ledger",
+        "Note sink manifest"
+      ],
+      "outputs": [
+        "Three daily contracts and 21-slot backlog",
+        "Frozen target/reroll logic",
+        "One base automation plan plus five Note-priced slots",
+        "Opt-in reset rules at 100 Charts"
+      ],
+      "acceptance": [
+        "Reload cannot reroll or duplicate a claim",
+        "Rechart retains contract progress and timers",
+        "One shared XP budget prevents event alternatives double-paying",
+        "Manual and saved-policy paths have matching boundary results",
+        "Extra plans cost 50 Notes each"
+      ],
+      "dependencies": [
+        "GE-005",
+        "Authored contract families",
+        "Durable Note/claim transactions"
+      ],
+      "status": "not_started"
+    },
+    {
+      "id": "GE-007",
+      "maps_to": [
+        "M4-01",
+        "M4-02"
+      ],
+      "title": "Implement challenges and seasonal isolated simulations",
+      "inputs": [
+        "GE-006 core",
+        "Twelve challenge specifications",
+        "First-season manifest",
+        "Pass ledger contract"
+      ],
+      "outputs": [
+        "Reusable scenario runner",
+        "Isolated challenge/event states",
+        "Season start/end/archive state machine",
+        "Background main-world continuation"
+      ],
+      "acceptance": [
+        "Event has swapped synergy coefficients and no prestige power",
+        "Main-world resources or paid power cannot enter",
+        "Only permitted cosmetic/narrative rewards leave",
+        "Main world continues under its saved policy",
+        "Archive and selected-pass transitions cannot duplicate XP"
+      ],
+      "dependencies": [
+        "GE-006",
+        "Content manifest",
+        "Entitlement/XP interfaces"
+      ],
+      "status": "not_started"
+    },
+    {
+      "id": "GE-008",
+      "maps_to": [
+        "M5-01",
+        "M6-03"
+      ],
+      "title": "Optimize replay and fix observed simulation defects",
+      "inputs": [
+        "Complete core/content",
+        "Minimum devices",
+        "30/90-day scenario suite",
+        "Real-play defect evidence"
+      ],
+      "outputs": [
+        "Profile traces",
+        "Chunked heavy replay",
+        "Regression cases for each defect",
+        "Versioned balance/replay compatibility results"
+      ],
+      "acceptance": [
+        "24-hour baseline replay meets measured budget or has a documented unresolved gate",
+        "Chunking is state-equivalent and does not discard earned time",
+        "Real device evidence is distinct from desktop tests",
+        "Balance cohorts are versioned"
+      ],
+      "dependencies": [
+        "GE-007",
+        "Client performance instrumentation",
+        "QA scenario coverage"
+      ],
+      "status": "not_started"
+    },
+    {
+      "id": "GE-009",
+      "maps_to": [
+        "M7-02"
+      ],
+      "title": "Stabilize and tag the release core",
+      "inputs": [
+        "Accepted release scope",
+        "QA gate report",
+        "Migration compatibility matrix"
+      ],
+      "outputs": [
+        "Versioned release core",
+        "Pinned configuration",
+        "Candidate replay evidence",
+        "Forward-repair plan for known schema changes"
+      ],
+      "acceptance": [
+        "No core blocker, save-mint or duplication issue remains",
+        "Release candidate reproduces accepted fixtures",
+        "Older save compatibility and supported upgrade paths are proven"
+      ],
+      "dependencies": [
+        "GE-008",
+        "Release readiness decision"
+      ],
+      "status": "not_started"
+    }
+  ],
+  "decisions_required_before_native_implementation": [
+    {
+      "id": "GE-D01",
+      "subject": "Number range and settlement representation",
+      "why": "Reference floats cannot safely store arbitrary-range wallets or grant integer entitlement at all boundaries.",
+      "deliverable": "Choose smallest accounted unit, production number range, remainder carry, comparison and exact integer Chart verification. Prototype representative late-game magnitudes and overflow handling.",
+      "accountable": "GE with platform/state and QA review",
+      "blocks": [
+        "GE-003"
+      ]
+    },
+    {
+      "id": "GE-D02",
+      "subject": "Price rounding and bulk/max-buy equivalence",
+      "why": "The blueprint gives mathematical real prices; rounding every purchase versus a bulk sum can change affordability.",
+      "deliverable": "Specify one settlement rule for single/bulk/max purchases, prove no rounding arbitrage, and define near-zero absolute precision without allowing a tolerance to buy unaffordable units.",
+      "accountable": "GE with economy/design and QA review",
+      "blocks": [
+        "GE-003"
+      ]
+    },
+    {
+      "id": "GE-D03",
+      "subject": "Stable ordering at identical timestamps",
+      "why": "The roadmap defines earnings before boundary events and commands afterward, but simultaneous automatic purchases/resets, rollover, bonus expiry and receipt effects require a complete ordering.",
+      "deliverable": "Specify total ordering and stable event/command identifiers; add reset-plus-expiry, survey-plus-rollover, purchase-plus-milestone and crash/retry fixtures.",
+      "accountable": "GE with platform/claims and QA review",
+      "blocks": [
+        "GE-005"
+      ]
+    },
+    {
+      "id": "GE-D04",
+      "subject": "Fractional timer phase at capacity",
+      "why": "Focus retains fractional progress, Surveys stop when the completed queue is full, and neither may bank hidden overflow beyond capacity.",
+      "deliverable": "Define saved phase, when charging resumes after collection, and whether exact-boundary collection precedes the next cycle; demonstrate daily-collection parity without overgeneration.",
+      "accountable": "GE with economy/design and QA review",
+      "blocks": [
+        "GE-005"
+      ]
+    },
+    {
+      "id": "GE-D05",
+      "subject": "Automation policy contract and deterministic tie breaking",
+      "why": "The reference instant greedy policy is a bounded experiment; player plans need explicit affordability, waiting, disabled-tier, priority and reset semantics.",
+      "deliverable": "Define allowed plans, tie-break order, behavior at unlocks, batch mode and reset horizon/threshold meaning. Preserve the same decisions online/offline and explain forecast assumptions.",
+      "accountable": "GE with client and economy/design review",
+      "blocks": [
+        "GE-004",
+        "GE-006"
+      ]
+    },
+    {
+      "id": "GE-D06",
+      "subject": "Replay and economic version transitions",
+      "why": "A return interval must use the saved version before adopting a downloaded rebalance.",
+      "deliverable": "Pin configuration/policy versions, carry settlement timestamps and pending transitions, and coordinate atomic commit/retry with persistence so repeated resume does not double-pay.",
+      "accountable": "GE with platform/state owner",
+      "blocks": [
+        "GE-005",
+        "GE-009"
+      ]
+    }
+  ],
+  "scope_audit": {
+    "covers_primary_gameplay_owner_packages": 13,
+    "original_gameplay_owner_package_count": 13,
+    "uncovered_primary_gameplay_packages": [],
+    "cross_team_dependencies": [
+      "Client: native host, command dispatch, forecast presentation and accessible activity controls.",
+      "Platform: atomic persistence, configuration versions, account-day identity, claims, Note and XP ledgers.",
+      "Content/art: six chapter goals, twelve challenges/calibrations, first-season manifest and reward IDs.",
+      "QA/release: independent conformance checks, fault injection, device profiling and real calendar observation."
+    ],
+    "still_not_implemented": [
+      "Native production core",
+      "Full event timeline",
+      "Player automation policies",
+      "Contracts",
+      "Challenge/event runtime",
+      "Persistence integration",
+      "Native devices and release builds"
+    ]
+  }
+}

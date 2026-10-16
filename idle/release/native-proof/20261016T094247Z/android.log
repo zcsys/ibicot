@@ -1,0 +1,25 @@
+Running Gradle task 'assembleDebug'...                          
+Note: Some input files use or override a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+/Users/csys/Desktop/ibicot/idle/game/mobile/android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java:29: error: package dev.flutter.plugins.integration_test does not exist
+      flutterEngine.getPlugins().add(new dev.flutter.plugins.integration_test.IntegrationTestPlugin());
+                                                                             ^
+1 error
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':app:compileDebugJavaWithJavac'.
+> Compilation failed; see the compiler output below.
+  /Users/csys/Desktop/ibicot/idle/game/mobile/android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java:29: error: package dev.flutter.plugins.integration_test does not exist
+        flutterEngine.getPlugins().add(new dev.flutter.plugins.integration_test.IntegrationTestPlugin());
+                                                                               ^
+  1 error
+
+* Try:
+> Check your code and dependencies to fix the compilation error(s)
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+
+BUILD FAILED in 3m 4s
+Running Gradle task 'assembleDebug'...                            185.9s
+Gradle task assembleDebug failed with exit code 1

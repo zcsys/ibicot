@@ -1,0 +1,36 @@
+{
+  "reviewer": "/root/qa_integration",
+  "verified_source_fingerprint": "bc5e726d38c2beff2f223039d6c80542b86d5f0f05f678afa9a693664144cc51",
+  "findings": [
+    {
+      "id": "QA-008",
+      "severity": "P2",
+      "title": "Impossible main/pass receipt imported before cross-partition validation",
+      "status": "closed_on_pinned_snapshot",
+      "test": "game/mobile/test/qa_integration_session_test.dart",
+      "initial_evidence": "release/qa/integration-initial-20261016T104939468348Z/independent-session.log"
+    },
+    {
+      "id": "QA-009",
+      "severity": "P2",
+      "title": "Delayed old music source stops current route track",
+      "status": "closed_on_pinned_snapshot",
+      "test": "game/mobile/test/qa_integration_audio_test.dart",
+      "initial_evidence": "release/qa/integration-initial-20261016T104939468348Z/independent-audio.log"
+    },
+    {
+      "id": "QA-009b",
+      "severity": "P2",
+      "title": "Delayed old cue stops reused foreground voice",
+      "status": "closed_on_pinned_snapshot",
+      "test": "game/mobile/test/qa_integration_audio_test.dart",
+      "initial_evidence": "release/qa/integration-repair-20261016T105414563144Z/independent-regression.log"
+    }
+  ],
+  "open_analysis_infos": 7,
+  "newer_code_not_covered": [
+    "controller/bootstrap replay integration",
+    "services",
+    "game/platform"
+  ]
+}

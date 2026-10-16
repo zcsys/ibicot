@@ -1,0 +1,37 @@
+{
+  "scope": "host representation comparison, not physical mobile performance",
+  "sdk": "3.13.5 (stable) (Tue Sep 29 01:00:52 2026 -0700) on \"macos_arm64\"",
+  "observed_utc": "2026-10-16T10:26:23.551569Z",
+  "observations": {
+    "double_adjacent_2pow53_collapses": true,
+    "native_int_max_plus_one": "-9223372036854775808",
+    "bigint_2pow63": "9223372036854775808",
+    "bigint_3001_digit_neighbors_distinct": true,
+    "double_1e3000_is_infinite": true,
+    "log10_neighbor_collapses_at_1e30": true,
+    "tier5_count500_price_micros": "19509788998994900163392893716285912353",
+    "double_price_minus_one_collapses": true,
+    "production_one_micro_below_rejected": true,
+    "production_exact_price_accepted": true
+  },
+  "measurements": [
+    {
+      "ownership_count": 100,
+      "repetitions": 100,
+      "elapsed_microseconds": 2258,
+      "checksum_digits": 22
+    },
+    {
+      "ownership_count": 500,
+      "repetitions": 100,
+      "elapsed_microseconds": 1483,
+      "checksum_digits": 42
+    },
+    {
+      "ownership_count": 1000,
+      "repetitions": 100,
+      "elapsed_microseconds": 1738,
+      "checksum_digits": 67
+    }
+  ]
+}

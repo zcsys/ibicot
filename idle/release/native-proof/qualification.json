@@ -1,0 +1,136 @@
+{
+  "observed_on": "2026-10-16",
+  "work_ids": [
+    "M0-02",
+    "M0-03",
+    "M0-08"
+  ],
+  "scope_ids": [
+    "S01",
+    "S36",
+    "S40"
+  ],
+  "candidate": "Flutter 3.47.7 / Dart 3.13.5",
+  "stack_accepted": false,
+  "ios_sdk_link": {
+    "status": "passed",
+    "target": "iOS simulator",
+    "app_kind": "isolated generated scaffold",
+    "purchase_plugin": "3.3.1",
+    "ad_plugin": "9.1.0",
+    "runtime_gameplay_proven": false,
+    "log": "release/native-proof/ios-native-probe.log",
+    "runtime_scaffold_launch_proven": true,
+    "repaired_log": "release/native-proof/ios-native-probe-repaired.log",
+    "launch_evidence": "release/native-proof/ios-probe-launch-repaired.png",
+    "initial_launch_failure": "Missing Google Mobile Ads app ID caused GADInvalidInitializationException; repaired with official sample app ID."
+  },
+  "android_sdk_link": {
+    "status": "passed",
+    "target": "Android debug APK",
+    "app_kind": "isolated generated scaffold",
+    "purchase_plugin": "3.3.1",
+    "ad_plugin": "9.1.0",
+    "log": "release/native-proof/android-native-probe-repaired.log",
+    "runtime_scaffold_launch_proven": true,
+    "runtime_gameplay_proven": false,
+    "launch_evidence": "release/native-proof/android-probe-launch-repaired.png",
+    "initial_launch_failure": "MobileAdsInitProvider failed without appID; repaired with official sample ID."
+  },
+  "simulator": {
+    "device_id": "F05BE4B0-52C1-4CA1-B721-BD64AE559E3F",
+    "runtime": "iOS26.3.1",
+    "device": "iPhone17Pro",
+    "status": "booted"
+  },
+  "android_emulator": {
+    "serial": "emulator-5556",
+    "api": 35,
+    "image": "google_apis/arm64-v8a",
+    "profile": "Pixel6",
+    "process_handle": 43501,
+    "status": "booted"
+  },
+  "store_sandbox": {
+    "status": "not_proven",
+    "needs": [
+      "Authorized developer accounts",
+      "Configured test products",
+      "Native pending/restore/revocation/acknowledgement scenarios"
+    ]
+  },
+  "rewarded_ad_delivery": {
+    "status": "not_proven",
+    "needs": [
+      "Consent-aware initialization",
+      "Test rewarded ad callbacks",
+      "Equal free allowance integration"
+    ]
+  },
+  "cloud_conflict": {
+    "status": "not_proven",
+    "needs": [
+      "Authorized staging provider",
+      "Revision and branch-recovery integration"
+    ]
+  },
+  "signed_distribution": {
+    "status": "not_proven",
+    "needs": [
+      "Approved app identity",
+      "Signing access and release authority"
+    ]
+  },
+  "physical_device_coverage": {
+    "status": "not_proven"
+  },
+  "notes": [
+    "Source, wrapper and compile work is implemented; production package acceptance remains open.",
+    "No live payment, store enrollment, public distribution or cloud account action performed."
+  ],
+  "probe_source_sha256": {
+    "pubspec.yaml": "cd926f83c3e77eefee913d6629a4a9a7d7e2e539f0ed5ca1c75761b217877718",
+    "pubspec.lock": "392a7d00fe424a96201ef45e40d7b15c959e7a8e359f6eaf6d3b34cc8df3494e",
+    "lib/main.dart": "525df2a854f3c54c831302c89f3089afd991cd03900c207e261d821bdc9ec656",
+    "ios/Runner/Info.plist": "477e22f286a3caaab30b0c178d56295ecac0bef2c7a9480fb54da71dfc160f62",
+    "android/app/src/main/AndroidManifest.xml": "418006504d077dd9ef2f2f209a5384f74a900ed3fa72af0cb33bfc1d1e9ff6f1",
+    "ios/Runner.xcworkspace/xcshareddata/swiftpm/Package.resolved": "2b72b035596ea83db3e5b8d83109804035e4e78a962a2ed0b805040c4ba5b6b4"
+  },
+  "gameplay_candidate": {
+    "fingerprint": "ce46598c4b513477c643f0dff4f5160400ac800b4ee76579c48ca2a5e08e1ffd",
+    "build_report": "release/native-proof/20261016T095427.771900Z/build-report.json",
+    "native_builds": {
+      "ios": "passed",
+      "android": "passed",
+      "macos": "passed"
+    },
+    "host_test_gate": "failed: frozen negative test expects supported schema2 to be rejected; later working-tree fix is not inherited",
+    "seeded_native_ui": {
+      "ios_phone": "release/native-proof/integration-ios-phone-20261016T095946.013088Z/verification.json",
+      "android_phone": "release/native-proof/integration-android-phone-20261016T100111.069907Z/verification.json",
+      "ios_tablet": "release/native-proof/integration-ios-tablet-20261016T100227.506479Z/verification.json"
+    },
+    "scope": "Purchase costs 33.6 R and leaves 26.4 R from seeded 60 R; cancel/confirm Rechart, 10 Charts, wallet/fleet reset, lifetime retention and native disk reload. Seeded and real-clock cases are tracked separately.",
+    "natural_first_purchase": {
+      "ios": "release/native-proof/integration-ios-phone-20261016T100825.809052Z/verification.json",
+      "android": "release/native-proof/integration-android-phone-20261016T101059.120074Z/verification.json"
+    },
+    "release_accepted": false,
+    "invalid_run": "release/native-proof/integration-ios-phone-20261016T100415.147682Z/verification.json",
+    "natural_process_reload": {
+      "ios": "release/native-proof/integration-ios-phone-20261016T101005.788792Z/verification.json",
+      "android": "release/native-proof/integration-android-phone-20261016T101211.206142Z/verification.json"
+    },
+    "invalid_or_failed_qa_attempts": {
+      "release/native-proof/integration-ios-phone-20261016T100415.147682Z/verification.json": "Incorrect test import led driver to reuse previous binary; invalidated despite exit zero.",
+      "release/native-proof/integration-ios-phone-20261016T100648.818501Z/verification.json": "Driver default cleanup uninstalled app and removed sandbox; corrected by explicit process stop preserving installation."
+    }
+  },
+  "external_dependency_checklist": "release/native-proof/external-dependencies.md",
+  "future_release_exports": {
+    "status": "wrapper implemented, not yet executed against a stable candidate",
+    "command": "python3 tool/build_native.py --mode release ios android",
+    "ios": "Device bundle with --no-codesign",
+    "android": "Release AAB; signing remains unconfigured with no debug-key fallback"
+  }
+}

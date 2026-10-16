@@ -1,0 +1,458 @@
+{
+  "role_id": "platform_engineer",
+  "role_title": "AI Platform, Persistence and Commerce Engineer",
+  "replaces_original_role": "BE",
+  "charter": "Implement and test durable progress, optional cloud recovery, independent commercial ownership, fair reward delivery and operable native service integrations. This is a development owner with executable deliverables, not a planning-only adviser.",
+  "owned_paths": [
+    "implementation/contracts/save-envelope.schema.json",
+    "implementation/fixtures/save_contract_cases.json",
+    "implementation/tools/validate_save_contract.py",
+    "implementation/handoffs/platform.json"
+  ],
+  "backlog_coverage": [
+    {
+      "backlog_id": "M0-03",
+      "title": "Prove native service integrations",
+      "production_acceptance_status": "not_complete",
+      "contribution_status": "planned"
+    },
+    {
+      "backlog_id": "M1-03",
+      "title": "Build crash-safe local saves",
+      "production_acceptance_status": "not_complete",
+      "contribution_status": "contract_foundation_only"
+    },
+    {
+      "backlog_id": "M1-04",
+      "title": "Version configuration and content schemas",
+      "production_acceptance_status": "not_complete",
+      "contribution_status": "contract_foundation_only"
+    },
+    {
+      "backlog_id": "M2-04",
+      "title": "Implement optional cloud recovery",
+      "production_acceptance_status": "not_complete",
+      "contribution_status": "contract_foundation_only"
+    },
+    {
+      "backlog_id": "M3-06",
+      "title": "Complete account lifecycle and branch recovery",
+      "production_acceptance_status": "not_complete",
+      "contribution_status": "planned"
+    },
+    {
+      "backlog_id": "M3-07",
+      "title": "Build the entitlement and claim ledger",
+      "production_acceptance_status": "not_complete",
+      "contribution_status": "contract_foundation_only"
+    },
+    {
+      "backlog_id": "M4-04",
+      "title": "Integrate production purchase handling",
+      "production_acceptance_status": "not_complete",
+      "contribution_status": "planned"
+    },
+    {
+      "backlog_id": "M4-05",
+      "title": "Integrate optional ads and equal free rewards",
+      "production_acceptance_status": "not_complete",
+      "contribution_status": "planned"
+    },
+    {
+      "backlog_id": "M5-03",
+      "title": "Complete privacy and service recovery flows",
+      "production_acceptance_status": "not_complete",
+      "contribution_status": "planned"
+    },
+    {
+      "backlog_id": "M5-04",
+      "title": "Ship measurement and operating tools",
+      "production_acceptance_status": "not_complete",
+      "contribution_status": "planned"
+    },
+    {
+      "backlog_id": "M6-05",
+      "title": "Operate staged access and support",
+      "production_acceptance_status": "not_complete",
+      "contribution_status": "planned"
+    },
+    {
+      "backlog_id": "M7-04",
+      "title": "Prepare safe staged release",
+      "production_acceptance_status": "not_complete",
+      "contribution_status": "planned"
+    },
+    {
+      "backlog_id": "M7-08",
+      "title": "Hand over launch operations",
+      "production_acceptance_status": "not_complete",
+      "contribution_status": "planned"
+    }
+  ],
+  "implemented_now": {
+    "artifact_type": "engine-neutral envelope contract and executable validator",
+    "commands": [
+      "python3 implementation/tools/validate_save_contract.py",
+      "python3 implementation/tools/validate_save_contract.py --config economy.json"
+    ],
+    "result": {
+      "cases": 43,
+      "passed": 43,
+      "failed": 0
+    },
+    "validates": [
+      "Strict versioned envelope fields, types, UTC timestamp shape and UUIDs",
+      "Root/child revision lineage and fork recovery references",
+      "Pinned economic config identity and optional source-file digest",
+      "Pending identity uniqueness, branch/revision/config preconditions, already-applied exclusion",
+      "Offline settlement interval origin and single-pending settlement",
+      "Commerce is explicitly an untrusted cache outside opaque gameplay payload"
+    ],
+    "does_not_validate": [
+      "Gameplay state correctness, including numbers, timers, policy and content state",
+      "Actual atomic durability, migrations, backup existence or cloud revision enforcement",
+      "Receipt authenticity, grant delivery, refunds or independently verified ownership",
+      "True elapsed time on an offline device",
+      "Native runtime integrations or full v1 readiness"
+    ]
+  },
+  "capabilities_observed": {
+    "observed_on": "2026-10-16",
+    "method": "Read-only local version/path probes; no SDK installation, account access, signing changes, deployment or live purchase.",
+    "python": {
+      "path": "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3",
+      "version": "3.13.0",
+      "usable": true
+    },
+    "node": {
+      "path": "/usr/local/bin/node",
+      "version": "24.12.0",
+      "usable": true
+    },
+    "npm": {
+      "version": "11.8.0",
+      "usable": true
+    },
+    "xcode": {
+      "path": "/Applications/Xcode.app/Contents/Developer",
+      "version": "27.1",
+      "build": "27A9275",
+      "installed": true,
+      "native_game_or_storekit_build_proven": false
+    },
+    "swift": {
+      "version": "6.4",
+      "installed": true
+    },
+    "android": {
+      "adb_version": "1.0.41 / 36.0.2-14143358",
+      "sdk_directory_present": true,
+      "java_runtime_usable": false,
+      "sdkmanager_usable": false,
+      "sdkmanager_error": "JAVA_HOME points to missing /Applications/Android Studio.app/Contents/jbr/Contents/Home",
+      "gradle_on_path": false,
+      "android_studio_present": false,
+      "android_game_build_proven": false
+    }
+  },
+  "execution_program": [
+    {
+      "step_id": "PLAT-01",
+      "backlog_ids": [
+        "M0-03"
+      ],
+      "task": "Qualify iOS and Android service adapters",
+      "inputs": [
+        "Selected engine/export candidate from integration lead",
+        "Non-secret sandbox product IDs and authorized developer account access",
+        "Working Android Java/Gradle toolchain"
+      ],
+      "outputs": [
+        "Throwaway native probe builds",
+        "SDK dependency inventory and version lock",
+        "Recorded sandbox purchase, restore, ad no-fill and cloud conflict results"
+      ],
+      "acceptance": [
+        "Both platforms install and run representative builds",
+        "Pending purchases grant nothing; verified completion grants once; restore is demonstrated",
+        "A failed ad leaves the equal briefing reward route usable",
+        "Concurrent cloud revisions are detected without overwriting another branch"
+      ],
+      "current_boundary": "Native export and service evidence is still absent. Xcode is installed; Android build capability is not established."
+    },
+    {
+      "step_id": "PLAT-02",
+      "backlog_ids": [
+        "M1-03"
+      ],
+      "task": "Implement durable local persistence around the approved envelope",
+      "inputs": [
+        "Accepted production state/numeric contract",
+        "Current save-envelope schema and fixtures",
+        "Client filesystem adapter interface"
+      ],
+      "outputs": [
+        "Atomic write and replace implementation",
+        "Rolling backups, corruption detection, export/import",
+        "Versioned migrations and interrupted transaction recovery"
+      ],
+      "acceptance": [
+        "Inject interruption before, during and after commit; recover to a complete valid old or new snapshot",
+        "Replay an interrupted grant without duplicating rewards",
+        "Malformed or future-version imports fail without overwriting the current save",
+        "Migrations preserve balances, timers, identity and recoverable source copies"
+      ],
+      "current_boundary": "Contract and 43 fixtures implemented; filesystem durability and migration acceptance are not implemented."
+    },
+    {
+      "step_id": "PLAT-03",
+      "backlog_ids": [
+        "M1-04"
+      ],
+      "task": "Implement pinned configuration resolution",
+      "inputs": [
+        "Versioned economy/content bundles",
+        "Economic arithmetic fixtures",
+        "Envelope version and digest fields"
+      ],
+      "outputs": [
+        "Immutable version registry",
+        "Config digest verification and fallback loader",
+        "Version transition committed after prior offline interval settlement"
+      ],
+      "acceptance": [
+        "A downloaded config cannot change the unsettled interval",
+        "Unknown versions and incorrect digests are rejected before state mutation",
+        "The previous validated bundle remains available offline",
+        "Schema compatibility is checked before adoption"
+      ],
+      "current_boundary": "Envelope pins version plus digest; no runtime config registry or transition exists."
+    },
+    {
+      "step_id": "PLAT-04",
+      "backlog_ids": [
+        "M2-04",
+        "M3-06"
+      ],
+      "task": "Implement optional accounts and branch-preserving cloud recovery",
+      "inputs": [
+        "Durable local saves",
+        "Chosen account/cloud adapter with revision preconditions",
+        "UX branch comparison and recovery flow"
+      ],
+      "outputs": [
+        "Guest continuation and optional linking",
+        "Revision-based upload and conflict handling",
+        "Recoverable branch selection, export, deletion and account recovery"
+      ],
+      "acceptance": [
+        "Play without an account",
+        "Create concurrent offline branches and retain both before selection",
+        "Never sum wallets, lifetime earnings or overlapping offline intervals",
+        "Recover the unselected branch and re-fetch independent commercial ownership",
+        "Deletion and unlinking have explicit local/cloud scope"
+      ],
+      "current_boundary": "Shape of recovery references is validated, but referenced backup files and cloud behavior are not implemented."
+    },
+    {
+      "step_id": "PLAT-05",
+      "backlog_ids": [
+        "M3-07"
+      ],
+      "task": "Implement idempotent claims and independent entitlement storage",
+      "inputs": [
+        "Core operation proposal contract",
+        "Daily reward/pass budget rules",
+        "Verified platform receipt adapter"
+      ],
+      "outputs": [
+        "Durable claim IDs and source-component identity ledger",
+        "Transactional grant/retry states",
+        "Independent commercial entitlement cache and reconciliation adapter"
+      ],
+      "acceptance": [
+        "Repeated operation, source receipt or callback grants once",
+        "Prepared operation is not counted as granted",
+        "Cross-device claim conflicts cannot multiply shared rewards",
+        "Local save import cannot invent paid ownership",
+        "Revocation is reconciled independently of progression branch"
+      ],
+      "current_boundary": "Pending identity invariants are checked locally; service ledger, receipt verification and atomic grants remain unimplemented."
+    },
+    {
+      "step_id": "PLAT-06",
+      "backlog_ids": [
+        "M4-04"
+      ],
+      "task": "Implement native cosmetic commerce and restoration",
+      "inputs": [
+        "Sandbox-proven adapters",
+        "Immutable product-to-cosmetic manifest",
+        "Entitlement ledger",
+        "Store UI status contracts"
+      ],
+      "outputs": [
+        "Purchase verification, grant, acknowledgement and reconciliation",
+        "Restore, interruption, refund/revocation handling",
+        "Localized product price adapter and support correlation IDs"
+      ],
+      "acceptance": [
+        "Pending/unverified payments do not deliver ownership",
+        "Duplicate delivery and interrupted grant replay safely",
+        "Restoration works on a clean install and selected alternate progress branch",
+        "Unknown products fail visibly without economic effect",
+        "No raw receipts or credentials are written to ordinary gameplay saves"
+      ],
+      "current_boundary": "Requires real platform sandbox access; no live transaction is authorized by this handoff."
+    },
+    {
+      "step_id": "PLAT-07",
+      "backlog_ids": [
+        "M4-05"
+      ],
+      "task": "Implement equal-value rewarded ads and crew briefings",
+      "inputs": [
+        "Six-token account-day allowance contract",
+        "Bonus/settlement transition API",
+        "Native ad availability and callbacks"
+      ],
+      "outputs": [
+        "Ad and accessible briefing adapters to one allowance ledger",
+        "No-fill/refusal/retry behavior",
+        "Consent-aware SDK initialization and feature disable switch"
+      ],
+      "acceptance": [
+        "Both routes deliver identical bounded entitlement",
+        "No-fill/refusal leaves briefing available",
+        "Duplicate callbacks, relaunch and day-boundary retries cannot create extra tokens",
+        "Bonus amounts and real-time expiries match core tests"
+      ],
+      "current_boundary": "Ad availability and grants are not implemented; simulated callbacks must never be labeled production verification."
+    },
+    {
+      "step_id": "PLAT-08",
+      "backlog_ids": [
+        "M5-03",
+        "M5-04"
+      ],
+      "task": "Implement privacy, observability and service recovery",
+      "inputs": [
+        "Actual integrated SDK inventory",
+        "Approved event dictionary and data retention requirements",
+        "Account/commerce/claim services"
+      ],
+      "outputs": [
+        "Consent refusal paths, export and deletion",
+        "Economy/session instrumentation with privacy filtering",
+        "Operational alerts, backups, feature disables and recovery runbooks"
+      ],
+      "acceptance": [
+        "Inspect actual build traffic and match declarations",
+        "Core game still works through service failure",
+        "Diagnose a failed purchase using a correlation ID without exposing credentials",
+        "Restore staging backups and exercise service outage",
+        "No attribution of human retention to simulated users"
+      ],
+      "current_boundary": "Account jurisdiction and SDK facts must be checked when selected; no compliance outcome is asserted."
+    },
+    {
+      "step_id": "PLAT-09",
+      "backlog_ids": [
+        "M6-05"
+      ],
+      "task": "Operate opt-in staged testing and recovery",
+      "inputs": [
+        "Beta release accepted by QA",
+        "Authorized testers and distribution accounts",
+        "Frozen cohort config/measurement definitions"
+      ],
+      "outputs": [
+        "Staged access and support process",
+        "Purchase reconciliation evidence",
+        "Capacity, incident and disable-switch reports"
+      ],
+      "acceptance": [
+        "Real testers receive support and correct ownership",
+        "Service load and recovery are measured",
+        "Material balance changes identify separate cohorts",
+        "Operating failures are corrected before expanding access"
+      ],
+      "current_boundary": "Real people and elapsed calendar time are external dependencies that agents cannot fabricate."
+    },
+    {
+      "step_id": "PLAT-10",
+      "backlog_ids": [
+        "M7-04",
+        "M7-08"
+      ],
+      "task": "Prepare controlled release and 14-day support",
+      "inputs": [
+        "QA release evidence pack",
+        "Authorized release/signing access",
+        "Verified backup, incident and entitlement systems"
+      ],
+      "outputs": [
+        "Compatible config rollback or forward repair plan",
+        "Launch and stop criteria with named human authority",
+        "14-day support coverage and escalation",
+        "Season 2 service/operations handoff"
+      ],
+      "acceptance": [
+        "Rehearse migrated-save forward recovery",
+        "Pause a faulty optional feature without damaging core saves",
+        "Restore entitlement service and replay safely",
+        "Public launch occurs only after explicit release authority and platform acceptance"
+      ],
+      "current_boundary": "No deployment, signing change, account action or public release performed during this task."
+    }
+  ],
+  "critical_native_proof_gates": [
+    {
+      "gate": "NATIVE-01",
+      "requirement": "Install and execute a representative export on both target platforms",
+      "status": "not_proven",
+      "dependency": "Selected engine; working Android build chain; iOS/Android reference devices or explicitly stated emulator coverage."
+    },
+    {
+      "gate": "NATIVE-02",
+      "requirement": "Sandbox purchase, pending, restore, retry, refund/revocation and platform acknowledgement on each target",
+      "status": "not_proven",
+      "dependency": "Authorized developer accounts, configured test products, sandbox credentials and provider-specific verification adapter."
+    },
+    {
+      "gate": "NATIVE-03",
+      "requirement": "Rewarded ad availability/no-fill and equal free-briefing flow",
+      "status": "not_proven",
+      "dependency": "Selected native SDK and test-only identifiers; audience and consent configuration."
+    },
+    {
+      "gate": "NATIVE-04",
+      "requirement": "Concurrent cloud revision conflict, both branches recoverable, independent commercial ownership",
+      "status": "not_proven",
+      "dependency": "Chosen account/cloud service and authorized staging environment."
+    },
+    {
+      "gate": "NATIVE-05",
+      "requirement": "Signed distribution install/update, save migration and commerce recovery",
+      "status": "not_proven",
+      "dependency": "Release authority, signing access, platform review, supported hardware and accepted QA evidence."
+    }
+  ],
+  "external_dependencies": [
+    "Human product/release authority for account terms, actual spend, publication and unresolved product choices",
+    "Developer accounts and legitimate sandbox access; agents do not invent receipts or credentials",
+    "Reference iOS/Android devices and functioning build toolchains",
+    "Selected staging providers and non-secret SDK/product configuration",
+    "Opt-in human testers, real 28-day season/D30 observation and sustained launch support availability"
+  ],
+  "handoff_to_core": "Approve versioned gameplay payload and atomic transition result interfaces. Preserve economic config until settlement finishes; return effect IDs and revised pending proposals for durable commit.",
+  "handoff_to_client": "Render pending/recovery states truthfully. Keep ordinary play possible offline and commerce cache distinguishable from pending verification.",
+  "handoff_to_qa": "Use the 43 cases as envelope contract evidence only. Add actual interruption, migration, concurrent-device, receipt and native integration tests when the relevant implementations exist.",
+  "review_rules": [
+    "Do not mark old backlog packages complete because a schema passes.",
+    "Do not treat a recovery pointer as proof the backup exists.",
+    "Do not grant commerce from a local active display flag.",
+    "Do not sum divergent progression branches or overlapping elapsed intervals.",
+    "Do not equate installed build tools with proven native integration."
+  ]
+}

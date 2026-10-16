@@ -1,0 +1,38 @@
+{
+  "started_utc": "20261016T110710.675608Z",
+  "purpose": "local export only; no store, signing or runtime acceptance",
+  "mode": "debug",
+  "candidate_fingerprint": "06544c6891cc905adcbe8aebda50ef9e5fac1c527e704fd4c11f9c1e54faf794",
+  "candidate_directory": "/Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261016T110616.092151Z-06544c6891cc",
+  "workspace_directory": "/Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261016T110616.092151Z-06544c6891cc/workspace",
+  "runner_sha256": "aa65a07baed07bb280c82341e1fb8eababca8892a47c89a0e68690ea40eeacbc",
+  "source_snapshot_unchanged": true,
+  "results": {},
+  "pub_get_exit_code": 0,
+  "host_checks": {
+    "core-pub-get": {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/dart",
+        "pub",
+        "get",
+        "--enforce-lockfile"
+      ],
+      "exit_code": 0
+    },
+    "core-analyze": {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/dart",
+        "analyze"
+      ],
+      "exit_code": 0
+    },
+    "core-test": {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/dart",
+        "test"
+      ],
+      "exit_code": 1
+    }
+  },
+  "host_test_gate": "failed"
+}

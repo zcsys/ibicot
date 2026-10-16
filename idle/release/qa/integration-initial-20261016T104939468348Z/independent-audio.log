@@ -1,0 +1,27 @@
+Resolving dependencies...
+Downloading packages...
+  material_color_utilities 0.13.0 (0.13.1 available)
+  test_api 0.7.12 (0.7.15 available)
+Got dependencies!
+2 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
+00:00 +0: loading /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-initial-20261016T104939468348Z/game/mobile/test/qa_integration_audio_test.dart
+00:00 +0: QA: delayed old music start cannot stop a newer route track
+00:00 +0 -1: QA: delayed old music start cannot stop a newer route track [E]
+  Expected: 'resume'
+    Actual: 'stop'
+     Which: is different.
+            Expected: resume
+              Actual: stop
+                      ^
+             Differ at offset 0
+  Returning to the harbor must retain the newly selected music after older preparation completes.
+  
+  package:matcher                                     expect
+  package:flutter_test/src/widget_tester.dart 473:18  expect
+  test/qa_integration_audio_test.dart 88:5            main.<fn>
+  
+00:00 +0 -1: Some tests failed.
+
+Failing tests:
+  /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-initial-20261016T104939468348Z/game/mobile/test/qa_integration_audio_test.dart: QA: delayed old music start cannot stop a newer route track

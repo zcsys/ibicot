@@ -1,0 +1,21 @@
+{
+  "id": "M0-02",
+  "reviewer": "/root/qa_integration",
+  "recommendation": "accept_original_narrow_package",
+  "director_acceptance_required": true,
+  "prerequisite_M0_01": "accepted in program at reviewed snapshot",
+  "representation_probe_reproduced": true,
+  "probe_source_snapshot": "c05804447dcd4e5346012ee1c204184523cca3319b69bc97a739ca227e3952c3",
+  "native_candidate": "ce46598c4b513477c643f0dff4f5160400ac800b4ee76579c48ca2a5e08e1ffd",
+  "native_targets": [
+    "iOS simulator",
+    "Android emulator"
+  ],
+  "not_proven": [
+    "clean full native candidate (old candidate retained stale schema negative failure)",
+    "physical performance or battery",
+    "commerce/ad/cloud service feasibility",
+    "signed distribution/store acceptance",
+    "new schema4 integrated native behavior"
+  ]
+}

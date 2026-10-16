@@ -1,0 +1,36 @@
+Resolving dependencies...
+Downloading packages...
+  material_color_utilities 0.13.0 (0.13.1 available)
+  test_api 0.7.12 (0.7.15 available)
+Got dependencies!
+2 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
+00:00 +0: loading /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-initial-20261016T104939468348Z/game/mobile/test/qa_integration_session_test.dart
+00:00 +0: (setUpAll)
+00:00 +0: QA: import rejects an impossible pass receipt before replacing a valid branch
+00:00 +0 -1: QA: import rejects an impossible pass receipt before replacing a valid branch [E]
+  Expected: throws <Instance of 'SaveException'>
+    Actual: <Instance of 'Future<SaveSnapshot>'>
+     Which: emitted <Instance of 'SaveSnapshot'>
+  
+  package:matcher                                    expectLater
+  package:flutter_test/src/widget_tester.dart 507:8  expectLater
+  test/qa_integration_session_test.dart 81:13        main.<fn>
+  ===== asynchronous gap ===========================
+  dart:async                                         _CustomZone.registerUnaryCallback
+  test/qa_integration_session_test.dart 50:7         main.<fn>
+  
+00:00 +0 -1: QA: 2-hour return settles both fleets once with exact envelope
+00:00 +1 -1: QA: 8-hour return settles both fleets once with exact envelope
+00:00 +2 -1: QA: 24-hour return settles both fleets once with exact envelope
+00:00 +3 -1: QA: 48-hour return settles both fleets once with exact envelope
+00:00 +4 -1: QA: 72-hour return settles both fleets once with exact envelope
+00:00 +5 -1: QA: 1 daily visits preserve unboosted daily supply
+00:00 +6 -1: QA: 3 daily visits preserve unboosted daily supply
+00:00 +7 -1: QA: 6 daily visits preserve unboosted daily supply
+00:00 +8 -1: QA: failure in a secondary timeline preserves every prior partition
+00:00 +9 -1: (tearDownAll)
+00:00 +9 -1: Some tests failed.
+
+Failing tests:
+  /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-initial-20261016T104939468348Z/game/mobile/test/qa_integration_session_test.dart: QA: import rejects an impossible pass receipt before replacing a valid branch

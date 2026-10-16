@@ -1,0 +1,85 @@
+{
+  "roles": [
+    {
+      "id": "director",
+      "agent": "/root",
+      "responsibility": "Own product/economy decisions, task dispatch, integration, scope and release evidence. Write progression/content data and operating plans; integrate every accepted contribution.",
+      "paths": [
+        "implementation/program.json",
+        "implementation/scope_requirements.json",
+        "implementation/team/",
+        "docs/",
+        "game/content/progression/"
+      ],
+      "reviewer": "qa_release"
+    },
+    {
+      "id": "gameplay",
+      "agent": "/root/gameplay_engineer",
+      "responsibility": "Implement numeric core, purchases, milestones, prestige, synergies, online/offline timeline, automation, challenge/event runtime and simulation.",
+      "paths": [
+        "game/core/",
+        "game/simulation/",
+        "tests/core/",
+        "implementation/fixtures/economy_reference.json",
+        "implementation/tools/export_economy_fixtures.py"
+      ],
+      "reviewer": "platform"
+    },
+    {
+      "id": "client",
+      "agent": "/root/client_native",
+      "responsibility": "Implement native client, onboarding, forecasts, daily interfaces, settings, accessibility, cosmetic/pass UX and distribution packaging. Initial content registry is an integration contribution.",
+      "paths": [
+        "game/client/",
+        "game/platform/client/",
+        "tests/client/",
+        "implementation/content/launch_manifest.json",
+        "implementation/tools/validate_content_manifest.py"
+      ],
+      "reviewer": "qa_release"
+    },
+    {
+      "id": "platform",
+      "agent": "/root/platform_native",
+      "responsibility": "Implement durable persistence, cloud recovery, identity, verified entitlement services, ad/free ledger, telemetry, operations and native SDK adapters.",
+      "paths": [
+        "game/persistence/",
+        "game/platform/services/",
+        "services/",
+        "tests/services/",
+        "implementation/contracts/",
+        "implementation/fixtures/save_contract_cases.json",
+        "implementation/tools/validate_save_contract.py"
+      ],
+      "reviewer": "gameplay"
+    },
+    {
+      "id": "art_content",
+      "agent": "/root/art_content_engineer",
+      "responsibility": "Produce and integrate harbor/producer art, animations, UI assets, cosmetics, narrative and audio assets; maintain asset provenance and completeness.",
+      "paths": [
+        "game/assets/",
+        "game/content/narrative/",
+        "game/content/challenges/",
+        "game/content/calibration/",
+        "game/content/season/",
+        "implementation/art/"
+      ],
+      "reviewer": "client"
+    },
+    {
+      "id": "qa_release",
+      "agent": "/root/qa_release_engineer",
+      "responsibility": "Own independent regressions, device/fault/accessibility checks, scope audits, cohort measurement, review evidence and release readiness. Never approve an unrun device or store check.",
+      "paths": [
+        "tests/acceptance/",
+        "implementation/reports/",
+        "release/",
+        "implementation/tools/validate_program.py"
+      ],
+      "reviewer": "director"
+    }
+  ],
+  "max_concurrent_agents_including_director": 4
+}

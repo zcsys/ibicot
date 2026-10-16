@@ -1,0 +1,110 @@
+{
+  "candidate": "ce46598c4b51",
+  "observed_utc": "2026-10-16T10:04:18.961833+00:00",
+  "packages": {
+    "core": {
+      "log": "release/qa/frozen-core.log",
+      "results": [
+        {
+          "args": [
+            "pub",
+            "get"
+          ],
+          "exit_code": 0
+        },
+        {
+          "args": [
+            "analyze"
+          ],
+          "exit_code": 0
+        },
+        {
+          "args": [
+            "test",
+            "--reporter",
+            "expanded"
+          ],
+          "exit_code": 1
+        }
+      ]
+    },
+    "persistence": {
+      "log": "release/qa/frozen-persistence.log",
+      "results": [
+        {
+          "args": [
+            "pub",
+            "get"
+          ],
+          "exit_code": 0
+        },
+        {
+          "args": [
+            "analyze"
+          ],
+          "exit_code": 0
+        },
+        {
+          "args": [
+            "test",
+            "--reporter",
+            "expanded"
+          ],
+          "exit_code": 0
+        }
+      ]
+    },
+    "progression": {
+      "log": "release/qa/frozen-progression.log",
+      "results": [
+        {
+          "args": [
+            "pub",
+            "get"
+          ],
+          "exit_code": 0
+        },
+        {
+          "args": [
+            "analyze"
+          ],
+          "exit_code": 0
+        },
+        {
+          "args": [
+            "test",
+            "--reporter",
+            "expanded"
+          ],
+          "exit_code": 1
+        }
+      ]
+    },
+    "mobile": {
+      "log": "release/qa/frozen-mobile.log",
+      "results": [
+        {
+          "args": [
+            "pub",
+            "get"
+          ],
+          "exit_code": 0
+        },
+        {
+          "args": [
+            "analyze"
+          ],
+          "exit_code": 1
+        },
+        {
+          "args": [
+            "test",
+            "--reporter",
+            "expanded"
+          ],
+          "exit_code": 0
+        }
+      ]
+    }
+  }
+}

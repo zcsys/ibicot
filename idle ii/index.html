@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Idle II</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body { height: 100%; }
+
+    body {
+      background: #0f1115;
+      color: #e6e8ee;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      display: grid;
+      place-items: center;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: manipulation;
+    }
+
+    .game {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2.5rem;
+    }
+
+    .score-label {
+      font-size: 0.9rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #8b93a7;
+    }
+
+    .score {
+      font-size: clamp(4rem, 12vw, 8rem);
+      font-weight: 800;
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
+      color: #e6e8ee;
+    }
+
+    .rate {
+      margin-top: 0.5rem;
+      font-size: 1rem;
+      color: #8b93a7;
+      font-variant-numeric: tabular-nums;
+      text-align: center;
+    }
+
+    .button {
+      width: clamp(200px, 44vw, 300px);
+      height: clamp(200px, 44vw, 300px);
+      border-radius: 50%;
+      border: none;
+      cursor: pointer;
+      background: linear-gradient(145deg,
+        #f2f4f7 0%,
+        #c7ccd4 28%,
+        #939aa5 52%,
+        #6a7079 74%,
+        #484d55 100%);
+      box-shadow:
+        inset 0 3px 6px rgba(255, 255, 255, 0.85),
+        inset 0 -6px 14px rgba(0, 0, 0, 0.45),
+        0 14px 44px rgba(0, 0, 0, 0.6);
+      transition: transform 0.08s ease;
+    }
+
+    .button:active { transform: scale(0.95); }
+
+    .shop {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      background: #181b22;
+      border: 1px solid #2a2f3a;
+      border-radius: 12px;
+      padding: 0.75rem 1.25rem;
+      min-width: 300px;
+      max-height: 60vh;
+      overflow-y: auto;
+    }
+
+    .shop[hidden] { display: none; }
+
+    .shop-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid #22272f;
+    }
+
+    .shop-item:last-child { border-bottom: none; }
+
+    .shop-item-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 1rem;
+    }
+
+    .shop-item-name {
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    .shop-item-stats {
+      color: #8b93a7;
+      font-size: 0.85rem;
+      white-space: nowrap;
+    }
+
+    .buy-button {
+      border: 1px solid #2f9d6c;
+      background: linear-gradient(180deg, #34c483 0%, #23a06b 50%, #188356 100%);
+      color: #ffffff;
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      padding: 0.75rem 1.5rem;
+      border-radius: 12px;
+      width: 100%;
+      cursor: pointer;
+      text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+      box-shadow:
+        0 4px 0 #0d4a30,
+        0 12px 24px rgba(0, 0, 0, 0.5),
+        0 0 20px rgba(52, 196, 131, 0.35),
+        inset 0 1px 0 rgba(255, 255, 255, 0.35);
+      transition: transform 0.06s ease, box-shadow 0.15s ease, background 0.15s ease;
+    }
+
+    .buy-button:not(:disabled):hover {
+      background: linear-gradient(180deg, #3fd88f 0%, #2bb07a 50%, #1c9162 100%);
+      box-shadow:
+        0 4px 0 #0d4a30,
+        0 14px 28px rgba(0, 0, 0, 0.5),
+        0 0 28px rgba(63, 216, 143, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    }
+
+    .buy-button:not(:disabled):active {
+      box-shadow:
+        0 1px 0 #0d4a30,
+        0 2px 6px rgba(0, 0, 0, 0.4),
+        0 0 10px rgba(52, 196, 131, 0.25),
+        inset 0 2px 4px rgba(0, 0, 0, 0.25);
+    }
+
+    .buy-button:disabled {
+      cursor: not-allowed;
+      border-color: #5a616d;
+      background: linear-gradient(180deg, #5a616d 0%, #454c58 50%, #3a414d 100%);
+      color: #b9bfcc;
+      box-shadow:
+        0 4px 0 #0b0e13,
+        0 12px 24px rgba(0, 0, 0, 0.45),
+        inset 0 1px 0 rgba(255, 255, 255, 0.14);
+    }
+  </style>
+</head>
+<body>
+  <main class="game">
+    <div>
+      <div class="score-label">Score</div>
+      <div class="score" id="score">0</div>
+      <div class="rate" id="rate">0/s</div>
+    </div>
+
+    <button class="button" id="button" aria-label="Click to gain points"></button>
+
+    <div class="shop" id="shop" hidden>
+      <div id="shopList"></div>
+    </div>
+  </main>
+
+  <script>
+    const SAVE_KEY = "idle-ii-save";
+    const HZ = 1.3;
+
+    // ---- type definitions (derived, not persisted) ----
+    const TYPES = [];
+
+    function typeName(i) {
+      return i === 1 ? "Auto-clicker" : "Auto-clicker " + i;
+    }
+
+    function baseCost(i) {
+      let c = 15;
+      for (let k = 2; k <= i; k++) c *= (k % 2 === 0 ? 5 : 10);
+      return c;
+    }
+
+    function baseProd(i) {
+      let p = 0.1;
+      for (let k = 2; k <= i; k++) p *= (k % 2 === 0 ? 5 : 10);
+      return p;
+    }
+
+    function ensureTypes(n) {
+      while (TYPES.length < n) {
+        const i = TYPES.length + 1;
+        TYPES.push({ name: typeName(i), baseCost: baseCost(i), baseProd: baseProd(i) });
+      }
+      while (state.types.length < n) {
+        const i = state.types.length + 1;
+        state.types.push({ count: 0, cost: baseCost(i), unlocked: false });
+      }
+    }
+
+    // ---- persistence ----
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(SAVE_KEY);
+        if (!raw) return null;
+        const s = JSON.parse(raw);
+        if (Array.isArray(s.types)) {
+          return {
+            score: Number(s.score) || 0,
+            types: s.types.map((t) => ({
+              count: Number(t.count) || 0,
+              cost: Number(t.cost) || 15,
+              unlocked: Boolean(t.unlocked),
+            })),
+          };
+        }
+        // migrate legacy save
+        return {
+          score: Number(s.score) || 0,
+          types: [
+            {
+              count: Number(s.autoclickers) || 0,
+              cost: Number(s.cost) || 15,
+              unlocked: Boolean(s.unlocked),
+            },
+          ],
+        };
+      } catch (e) {
+        return null;
+      }
+    }
+
+    const state = loadState() || { score: 0, types: [] };
+
+    function saveState() {
+      localStorage.setItem(SAVE_KEY, JSON.stringify(state));
+    }
+
+    // ---- DOM ----
+    const scoreEl = document.getElementById("score");
+    const buttonEl = document.getElementById("button");
+    const shopEl = document.getElementById("shop");
+    const shopListEl = document.getElementById("shopList");
+    const rateEl = document.getElementById("rate");
+
+    // ---- helpers ----
+    function fmtRate(n) {
+      if (Number.isInteger(n)) return n.toString();
+      return n.toFixed(1).replace(/\.0$/, "");
+    }
+
+    function totalRate() {
+      let r = 0;
+      for (let i = 0; i < state.types.length; i++) {
+        r += state.types[i].count * TYPES[i].baseProd;
+      }
+      return r;
+    }
+
+    // Unlock every type whose base cost <= score; extend the list as needed.
+    function syncTypes() {
+      ensureTypes(1);
+      let i = 1;
+      while (state.score >= baseCost(i)) {
+        ensureTypes(i);
+        state.types[i - 1].unlocked = true;
+        i++;
+      }
+    }
+
+    function buyType(idx) {
+      const t = state.types[idx];
+      if (Math.floor(state.score) < t.cost) return;
+      state.score -= t.cost;
+      t.count += 1;
+      t.cost = Math.floor(t.cost * 1.15);
+      render();
+      saveState();
+    }
+
+    // ---- render ----
+    function render() {
+      scoreEl.textContent = Math.floor(state.score);
+      rateEl.textContent = fmtRate(totalRate()) + "/s";
+
+      const rows = state.types
+        .map((t, idx) => {
+          if (!t.unlocked) return "";
+          const def = TYPES[idx];
+          const disabled = Math.floor(state.score) < t.cost ? "disabled" : "";
+          return `
+            <div class="shop-item">
+              <div class="shop-item-top">
+                <span class="shop-item-name">${def.name}</span>
+                <span class="shop-item-stats">${t.count} owned</span>
+              </div>
+              <button class="buy-button" data-type="${idx}" ${disabled}>Buy &mdash; ${t.cost}</button>
+            </div>`;
+        })
+        .join("");
+
+      shopListEl.innerHTML = rows;
+      shopEl.hidden = rows === "";
+    }
+
+    // ---- events ----
+    buttonEl.addEventListener("click", () => {
+      state.score += 1;
+      syncTypes();
+      render();
+      saveState();
+    });
+
+    shopListEl.addEventListener("click", (e) => {
+      const btn = e.target.closest(".buy-button");
+      if (!btn || btn.disabled) return;
+      buyType(Number(btn.dataset.type));
+    });
+
+    // ---- loop ----
+    setInterval(() => {
+      const rate = totalRate();
+      if (rate > 0) {
+        state.score += rate / HZ;
+        syncTypes();
+        render();
+        saveState();
+      }
+    }, 1000 / HZ);
+
+    // ---- boot ----
+    ensureTypes(1);
+    syncTypes();
+    render();
+  </script>
+</body>
+</html>
