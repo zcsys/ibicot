@@ -45,7 +45,7 @@ The [canon](docs/design_canon.md) defines reference costs, exact rounding, suppl
 
 ## Player app
 
-The separate player page is available at `/play.html`: create a local person, manage a scripted workplace, earn salary and bonuses, then acquire an existing company. Personal wallets, employment and ownership persist in SQLite. See [player onboarding](docs/player_onboarding.md) for the data model, scenario rules, storage and recovery limits. The dashboard remains at `/index.html`.
+The separate player page is available at `/play.html`: company cash, one price slider, responsive sales-per-tick EMA, inventory and production values. The scripted workplace advances at 1.3 Hz while visible. Player identity is created silently; the broader bonus and acquisition backend remains available for future UI work. Personal wallets, employment and ownership persist in SQLite. See [player onboarding](docs/player_onboarding.md) for the data model, scenario rules, storage and recovery limits. The dashboard remains at `/index.html`.
 
 ## Run
 

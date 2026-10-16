@@ -88,7 +88,7 @@ class OnboardingTests(unittest.TestCase):
         treasury = float(self.rt.world.t1Cash[cid])
         wallet = self.state['wallet']
         self.assertEqual(self.action('buy').status_code, 200)
-        self.assertEqual(self.state['wallet'], wallet - 200000)
+        self.assertEqual(self.state['wallet'], round(wallet - 200000, 2))
         self.assertEqual(self.rt.world.t1Cash[cid], treasury)
         self.assertEqual(self.rt.world.t1Controller[cid], 1)
         self.assertEqual(self.action('buy').status_code, 400)
@@ -129,6 +129,74 @@ class OnboardingTests(unittest.TestCase):
         self.assertNotEqual(refreshed['offer']['id'], cid)
         self.assertGreater(refreshed['revision'], second['revision'])
 
+    def test_t1_recipe_space_cost_and_loss_gate(self):
+        reference = {'price': 3, 'rawPrice': 1, 'conversion': .25,
+                     'storage': 50000, 'machinery': 1000, 'capacity': 6000}
+        p = new_profile(reference)
+        work(p, 3)
+        self.assertEqual(p['raw'], p['last']['bought'] - p['last']['made'])
+        self.assertEqual(p['stock'], 12000 + p['last']['made'] - p['last']['sold'])
+        self.assertLessEqual(p['raw'] + p['stock'] + 1000, 50000)
+        self.assertLessEqual(p['last']['made'], 6000)
+        self.assertEqual(p['unitCost'], 1.25)
+        p['reference']['rawPrice'] = 2
+        work(p, 3)
+        self.assertGreater(p['unitCost'], 1.25)
+        self.assertLess(p['unitCost'], 2.25)  # Existing raw stock retains its basis.
+        work(p, .5)
+        self.assertEqual(p['last']['made'], 0)
+        self.assertGreaterEqual(p['cash'], 0)
+
+    def test_demo_reset_preserves_person_and_reconciles_wallet(self):
+        pid = self.state['person']['id']
+        for _ in range(4):
+            self.action('work', self.state['price'])
+        self.action('bonus', 100)
+        revision = self.state['revision']
+        world_cash = self.rt.world.t1Cash.copy()
+        self.assertEqual(self.action('reset').status_code, 200)
+        self.assertEqual(self.state['person']['id'], pid)
+        self.assertEqual(self.state['cash'], 240000)
+        self.assertEqual(self.state['wallet'], 0)
+        self.assertEqual(self.state['stock'], 12000)
+        self.assertEqual(self.state['period'], 0)
+        self.assertEqual(self.state['history'], [])
+        self.assertEqual(self.state['revision'], revision + 1)
+        np.testing.assert_array_equal(self.rt.world.t1Cash, world_cash)
+        with players.transaction() as db:
+            self.assertEqual(db.execute('SELECT SUM(amount_cents) FROM ledger WHERE player_id=?', (pid,)).fetchone()[0], 0)
+        self.assertEqual(self.client.get('/play-api/state').json()['period'], 0)
+
+    def test_production_target(self):
+        self.assertEqual(self.action('work', 3, production=1234).status_code, 200)
+        self.assertEqual(self.state['last']['made'], 1234)
+        self.assertEqual(self.client.get('/play-api/state').json()['productionTarget'], 1234)
+        self.assertEqual(self.action('work', 3, production=0).status_code, 200)
+        self.assertEqual(self.state['last']['made'], 0)
+        self.assertEqual(self.action('work', 3, production=999999).status_code, 400)
+        self.assertEqual(self.action('work', 3, production=1.5).status_code, 422)
+        self.action('reset')
+        self.assertNotIn('productionTarget', self.state)
+
+    def test_demo_fluctuates_without_a_world(self):
+        def forbidden_world():
+            raise AssertionError('Demo must not access a shared world')
+        app = FastAPI()
+        app.include_router(create_router(forbidden_world))
+        client = TestClient(app)
+        state = client.get('/play-api/state').json()
+        quotes, costs = [], []
+        for _ in range(12):
+            response = client.post('/play-api/action', json={'kind':'work', 'amount':3, 'production':3000, 'revision':state['revision']})
+            self.assertEqual(response.status_code, 200)
+            state = response.json()
+            quotes.append(state['reference']['rawPrice'])
+            costs.append(state['unitCost'])
+        self.assertGreater(len(set(quotes)), 5)
+        self.assertGreater(len(set(costs)), 2)
+        before = state['reference']
+        self.assertEqual(client.get('/play-api/state').json()['reference'], before)
+
     def test_demand_and_accounting(self):
         reference = {'price':10,'tick':0,'product':'Test'}
         low, high = new_profile(reference), new_profile(reference)
@@ -138,7 +206,7 @@ class OnboardingTests(unittest.TestCase):
         p = new_profile(reference)
         opening = p['cash'] + p['stock'] * p['unitCost']
         work(p, 10)
-        closing = p['cash'] + p['stock'] * p['unitCost']
+        closing = p['cash'] + p['stock'] * p['stockBasis'] + p['raw'] * p['rawBasis']
         self.assertAlmostEqual(closing - opening, p['last']['profit'])
         p['period'] = 4
         bonus(p, p['cash'])
