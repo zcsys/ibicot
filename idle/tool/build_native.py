@@ -19,7 +19,7 @@ IGNORED_NAMES = {'local.properties', 'Generated.xcconfig', 'flutter_export_envir
 
 
 def input_files(root: Path):
-    for folder in ['game', 'tool', 'source/schemas', 'implementation/contracts', 'implementation/fixtures', 'implementation/tools', 'docs/decisions', 'docs/quality']:
+    for folder in ['game', 'tool', 'services', 'tests/services', 'source/schemas', 'implementation/contracts', 'implementation/fixtures', 'implementation/content', 'implementation/tools', 'docs/decisions', 'docs/quality']:
         base = root / folder
         if base.exists():
             for file in sorted(base.rglob('*')):
@@ -38,6 +38,21 @@ def source_hashes(root: Path) -> dict[str, str]:
 
 def fingerprint(files: dict[str, str]) -> str:
     return hashlib.sha256(json.dumps(files, sort_keys=True, separators=(',', ':')).encode()).hexdigest()
+
+
+def native_build_command(wrapper: str, target: str, mode: str) -> list[str]:
+    release = mode == 'release'
+    commands = {
+        'ios': ['build', 'ios', '--release', '--no-codesign'] if release else ['build', 'ios', '--simulator', '--debug', '--no-codesign'],
+        'android': ['build', 'appbundle', '--release'] if release else ['build', 'apk', '--debug'],
+        'macos': ['build', 'macos', '--' + mode],
+    }
+    # Flutter 3.47.7 couples release plugin registration to its pub step.
+    # --no-pub leaves the debug integration_test Java registrant in place even
+    # though Gradle excludes that dev dependency from release. Resolve the lock
+    # first, let the SDK generate its mode-specific registrant, then verify every
+    # captured dependency lock is unchanged. Never hand-edit generated plugins.
+    return [wrapper, *commands[target], *([] if release and target == 'android' else ['--no-pub'])]
 
 
 def snapshot(stamp: str, evidence: Path) -> tuple[Path, dict]:
@@ -130,11 +145,6 @@ def main() -> int:
     if args.snapshot_only:
         return 0
     release = args.mode == 'release'
-    commands = {
-        'ios': ['build', 'ios', '--release', '--no-codesign'] if release else ['build', 'ios', '--simulator', '--debug', '--no-codesign'],
-        'android': ['build', 'appbundle', '--release'] if release else ['build', 'apk', '--debug'],
-        'macos': ['build', 'macos', '--' + args.mode],
-    }
     with (evidence / 'flutter-version.log').open('w') as log:
         subprocess.run([wrapper, '--version'], cwd=app, stdout=log, stderr=subprocess.STDOUT, check=True)
     with (evidence / 'pub-get.log').open('w') as log:
@@ -145,6 +155,7 @@ def main() -> int:
         return resolved.returncode
     if args.host_checks:
         report['host_checks'] = {}
+        failed_checks = []
         for package in ['core', 'persistence', 'progression', 'events', 'platform', 'mobile']:
             directory = workspace / 'game' / package
             if not (directory / 'pubspec.yaml').exists():
@@ -159,12 +170,32 @@ def main() -> int:
                 report_file.write_text(json.dumps(report, indent=2) + '\n')
                 print(f'{key}: exit {checked.returncode}', flush=True)
                 if checked.returncode:
-                    report['host_test_gate'] = 'failed'
-                    report_file.write_text(json.dumps(report, indent=2) + '\n')
-                    return checked.returncode
-        report['host_test_gate'] = 'passed'
+                    failed_checks.append(key)
+                    if action == 'pub-get':
+                        break
+        if (workspace / 'tests/services').exists():
+            command = [sys.executable, '-m', 'unittest', 'discover', '-s', 'tests/services', '-v']
+            with (evidence / 'services-test.log').open('w') as log:
+                checked = subprocess.run(command, cwd=workspace, stdout=log, stderr=subprocess.STDOUT)
+            report['host_checks']['services-test'] = {'command': command, 'exit_code': checked.returncode}
+            if checked.returncode:
+                failed_checks.append('services-test')
+            print(f'services-test: exit {checked.returncode}', flush=True)
+        if (workspace / 'tool/test_native_candidates.py').exists():
+            command = [sys.executable, '-m', 'unittest', 'discover', '-s', 'tool', '-p', 'test_native_*.py', '-v']
+            with (evidence / 'candidate-integrity-test.log').open('w') as log:
+                checked = subprocess.run(command, cwd=workspace, stdout=log, stderr=subprocess.STDOUT)
+            report['host_checks']['candidate-integrity-test'] = {'command': command, 'exit_code': checked.returncode}
+            if checked.returncode:
+                failed_checks.append('candidate-integrity-test')
+            print(f'candidate-integrity-test: exit {checked.returncode}', flush=True)
+        report['host_test_gate'] = 'failed' if failed_checks else 'passed'
+        report['failed_host_checks'] = failed_checks
+        report_file.write_text(json.dumps(report, indent=2) + '\n')
+        if failed_checks:
+            return 1
     for target in args.targets:
-        command = [wrapper, *commands[target], '--no-pub']
+        command = native_build_command(wrapper, target, args.mode)
         print(f'Building {target}; log: {evidence / (target + ".log")}', flush=True)
         with (evidence / f'{target}.log').open('w') as log:
             result = subprocess.run(command, cwd=app, stdout=log, stderr=subprocess.STDOUT)
@@ -190,10 +221,16 @@ def main() -> int:
             report['results'][target]['artifact_sha256'] = hashlib.sha256(output.read_bytes()).hexdigest()
             report['results'][target]['artifact_bytes'] = output.stat().st_size
         report['source_snapshot_unchanged'] = source_hashes(candidate / 'source') == manifest['source_sha256']
+        differences = [path for path, digest in manifest['source_sha256'].items()
+                       if not (workspace / path).exists()
+                       or hashlib.sha256((workspace / path).read_bytes()).hexdigest() != digest]
+        report['workspace_input_differences'] = differences
+        report['dependency_locks_unchanged'] = not any(path.endswith('pubspec.lock') for path in differences)
         report['current_working_tree_matches_candidate'] = source_hashes(ROOT) == manifest['source_sha256']
         report_file.write_text(json.dumps(report, indent=2) + '\n')
         print(f'{target}: exit {result.returncode}', flush=True)
-    return int(not report['source_snapshot_unchanged'] or any(x['exit_code'] != 0 for x in report['results'].values()))
+    return int(not report['source_snapshot_unchanged'] or not report.get('dependency_locks_unchanged', True)
+               or any(x['exit_code'] != 0 for x in report['results'].values()))
 
 
 if __name__ == '__main__':

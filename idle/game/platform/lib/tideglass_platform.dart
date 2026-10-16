@@ -109,7 +109,16 @@ class TideglassServiceClient {
   final bool allowLocalDevelopment;
   final Duration timeout;
   final HttpClient _http;
-  ServiceSession? session;
+  ServiceSession? _session;
+  int _sessionGeneration = 0, _accountIntent = 0;
+  Future<void> _consentTail = Future.value();
+  ServiceSession? get session => _session;
+  int get sessionGeneration => _sessionGeneration;
+  set session(ServiceSession? value) {
+    _session = value;
+    _sessionGeneration++;
+    _accountIntent++;
+  }
 
   Future<Map<String, dynamic>> _request(
     String method,
@@ -117,19 +126,25 @@ class TideglassServiceClient {
     Map<String, dynamic>? body,
     bool authenticated = true,
   ]) async {
-    if (authenticated && session == null)
+    final requestedSession = session;
+    final generation = _sessionGeneration;
+    if (authenticated && requestedSession == null)
       throw const ServiceException('authentication_required');
     HttpClientRequest? request;
     try {
       request = await _http
           .openUrl(method, endpoint.resolve(path))
           .timeout(timeout);
+      if (authenticated && generation != _sessionGeneration) {
+        request.abort();
+        throw const ServiceException('account_changed');
+      }
       request.followRedirects =
           false; // Never forward a bearer token to a redirect.
       if (authenticated)
         request.headers.set(
           HttpHeaders.authorizationHeader,
-          'Bearer ${session!.token}',
+          'Bearer ${requestedSession!.token}',
         );
       if (body != null) {
         request.headers.contentType = ContentType.json;
@@ -149,6 +164,9 @@ class TideglassServiceClient {
       }
       final decoded = (jsonDecode(utf8.decode(bytes)) as Map)
           .cast<String, dynamic>();
+      if (authenticated && generation != _sessionGeneration) {
+        throw const ServiceException('account_changed');
+      }
       if (response.statusCode >= 300) {
         throw ServiceException(
           decoded['error'] as String? ?? 'service_error',
@@ -172,21 +190,28 @@ class TideglassServiceClient {
   }
 
   Future<AccountCreated> createAccount({required bool cloudConsent}) async {
+    final intent = ++_accountIntent;
     final result = await _request('POST', '/v1/accounts', {
       'consent_cloud': cloudConsent,
     }, false);
-    session = ServiceSession.fromJson(result);
-    return AccountCreated(session!, result['recovery_code'] as String);
+    final created = ServiceSession.fromJson(result);
+    // Always return a committed creation's recovery code, even when a newer
+    // account choice means it must not replace the current session.
+    if (intent == _accountIntent) session = created;
+    return AccountCreated(created, result['recovery_code'] as String);
   }
 
   Future<ServiceSession> recoverAccount({
     required String accountId,
     required String recoveryCode,
   }) async {
+    final intent = ++_accountIntent;
     final result = await _request('POST', '/v1/sessions', {
       'account_id': accountId,
       'recovery_code': recoveryCode,
     }, false);
+    if (intent != _accountIntent)
+      throw const ServiceException('account_changed');
     session = ServiceSession.fromJson(result);
     return session!;
   }
@@ -196,17 +221,21 @@ class TideglassServiceClient {
     String currentCode, {
     required String newRecoveryCode,
   }) async {
+    final intent = ++_accountIntent;
     final result = await _request('POST', '/v1/account/recovery-code', {
       'recovery_code': currentCode,
       'new_recovery_code': newRecoveryCode,
     });
+    if (intent != _accountIntent)
+      throw const ServiceException('account_changed');
     session = ServiceSession.fromJson(result);
     return AccountCreated(session!, result['recovery_code'] as String);
   }
 
   Future<void> signOut({bool allDevices = false}) async {
+    final intent = ++_accountIntent;
     await _request('POST', '/v1/sessions/revoke', {'all_devices': allDevices});
-    session = null;
+    if (intent == _accountIntent) session = null;
   }
 
   /// Forget this device credential during an outage; does not assert server revocation.
@@ -215,11 +244,12 @@ class TideglassServiceClient {
     required String recoveryCode,
     required bool confirmDelete,
   }) async {
+    final intent = ++_accountIntent;
     await _request('DELETE', '/v1/account', {
       'recovery_code': recoveryCode,
       'confirm_delete': confirmDelete,
     });
-    session = null;
+    if (intent == _accountIntent) session = null;
   }
 
   Future<Map<String, dynamic>> exportAccount() =>
@@ -285,11 +315,20 @@ class TideglassServiceClient {
     'receipt_id': receiptId,
     'save_id': saveId,
   });
-  Future<int> setTelemetryConsent(bool enabled) async =>
-      (await _request('PUT', '/v1/telemetry/consent', {
+  Future<int> setTelemetryConsent(bool enabled) {
+    final generation = _sessionGeneration;
+    final operation = _consentTail.then((_) async {
+      if (generation != _sessionGeneration)
+        throw const ServiceException('account_changed');
+      return (await _request('PUT', '/v1/telemetry/consent', {
             'enabled': enabled,
           }))['revision']
           as int;
+    });
+    _consentTail = operation.then<void>((_) {}, onError: (Object _) {});
+    return operation;
+  }
+
   Future<Map<String, dynamic>> sendTelemetry({
     required int consentRevision,
     required List<Map<String, dynamic>> events,
@@ -369,28 +408,83 @@ class ConsentTelemetryBuffer {
   final int capacity;
   final DateTime Function() _clock;
   final List<Map<String, dynamic>> _events = [];
-  bool enabled = false;
-  bool pendingRemoteOptOut = false;
+  bool _enabled = false;
+  String? _boundAccount;
+  int? _boundGeneration;
+  int _consentIntent = 0;
+  Future<void> _remoteConsentTail = Future.value();
+  final Set<String> _pendingOptOutAccounts = {};
+  bool get enabled {
+    _checkBinding();
+    return _enabled;
+  }
+
+  bool get pendingRemoteOptOut =>
+      client.session != null &&
+      _pendingOptOutAccounts.contains(client.session!.accountId);
+  void _checkBinding() {
+    if (_boundAccount != client.session?.accountId ||
+        _boundGeneration != client.sessionGeneration) {
+      droppedEventCount += _events.length;
+      _events.clear();
+      _enabled = false;
+      _consentRevision = null;
+      _boundAccount = client.session?.accountId;
+      _boundGeneration = client.sessionGeneration;
+      _consentIntent++;
+    }
+  }
+
   int? _consentRevision;
   int droppedEventCount = 0;
   bool _flushing = false;
-  int get pendingEventCount => _events.length;
+  int get pendingEventCount {
+    _checkBinding();
+    return _events.length;
+  }
 
   Future<void> optIn() async {
-    final revision = await client.setTelemetryConsent(true);
-    _consentRevision = revision;
-    pendingRemoteOptOut = false;
-    enabled = true;
+    _checkBinding();
+    final account = client.session?.accountId;
+    final generation = client.sessionGeneration;
+    final intent = ++_consentIntent;
+    final operation = _remoteConsentTail.then((_) async {
+      if (intent != _consentIntent ||
+          generation != client.sessionGeneration ||
+          account == null)
+        return;
+      final revision = await client.setTelemetryConsent(true);
+      if (intent != _consentIntent || generation != client.sessionGeneration)
+        return;
+      _consentRevision = revision;
+      _pendingOptOutAccounts.remove(account);
+      _enabled = true;
+    });
+    _remoteConsentTail = operation.catchError((Object _) {});
+    await operation;
   }
 
   /// Local collection stops immediately, even when remote deletion is offline.
   Future<void> optOut() async {
-    enabled = false;
+    _checkBinding();
+    final account = client.session?.accountId;
+    final generation = client.sessionGeneration;
+    final intent = ++_consentIntent;
+    _enabled = false;
     _events.clear();
     _consentRevision = null;
-    pendingRemoteOptOut = true;
-    await client.setTelemetryConsent(false);
-    pendingRemoteOptOut = false;
+    if (account == null) return;
+    _pendingOptOutAccounts.add(account);
+    final operation = _remoteConsentTail.then((_) async {
+      if (intent != _consentIntent || generation != client.sessionGeneration)
+        return;
+      await client.setTelemetryConsent(false);
+      if (intent == _consentIntent && generation == client.sessionGeneration) {
+        _pendingOptOutAccounts.remove(account);
+      }
+    });
+    _remoteConsentTail = operation.catchError((Object _) {});
+    await operation;
   }
 
   String newSessionId() => _uuidV4();
@@ -445,16 +539,21 @@ class ConsentTelemetryBuffer {
   }
 
   Future<void> flush() async {
+    _checkBinding();
     if (_flushing) return;
+    final generation = client.sessionGeneration;
+    final intent = _consentIntent;
+    bool current() =>
+        generation == client.sessionGeneration && intent == _consentIntent;
     _flushing = true;
     try {
       if (pendingRemoteOptOut) {
-        await client.setTelemetryConsent(false);
-        pendingRemoteOptOut = false;
+        await optOut();
+        return;
       }
       if (!enabled || _consentRevision == null) return;
       _prune();
-      while (enabled && _events.isNotEmpty) {
+      while (current() && enabled && _events.isNotEmpty) {
         final batch = _events.take(100).toList(growable: false);
         try {
           await client.sendTelemetry(
@@ -462,13 +561,16 @@ class ConsentTelemetryBuffer {
             events: batch,
           );
         } on ServiceException catch (error) {
-          if (error.status == 403 || error.code == 'consent_revision_changed') {
-            enabled = false;
+          if (current() &&
+              (error.status == 403 ||
+                  error.code == 'consent_revision_changed')) {
+            _enabled = false;
             _consentRevision = null;
             _events.clear();
           }
           rethrow;
         }
+        if (!current()) return;
         final acknowledged = batch.map((event) => event['id']).toSet();
         _events.removeWhere((event) => acknowledged.contains(event['id']));
       }

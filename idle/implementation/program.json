@@ -411,7 +411,7 @@
       "external_dependencies": [
         "Chosen test backend/identity provider."
       ],
-      "status": "not_started"
+      "status": "in_progress"
     },
     {
       "id": "B10",
@@ -467,7 +467,7 @@
         "New and veteran players start equally in the event; live/archive transitions preserve legitimate progress and cannot mint economic rewards."
       ],
       "external_dependencies": [],
-      "status": "not_started"
+      "status": "in_progress"
     },
     {
       "id": "B12",
@@ -499,7 +499,7 @@
       "external_dependencies": [
         "A licensed audio source or suitable audio-production capability if the available tools cannot deliver finished audio."
       ],
-      "status": "not_started"
+      "status": "in_progress"
     },
     {
       "id": "B13",
@@ -532,7 +532,7 @@
       "external_dependencies": [
         "Store sandbox products, test accounts and approved SDK configuration."
       ],
-      "status": "not_started"
+      "status": "in_progress"
     },
     {
       "id": "B14",
@@ -557,7 +557,7 @@
         "All content and rewards are reachable with no placeholder; free pass completion requires no purchase; asset and reward counts match scope."
       ],
       "external_dependencies": [],
-      "status": "not_started"
+      "status": "in_progress"
     },
     {
       "id": "B15",
@@ -587,7 +587,7 @@
       "external_dependencies": [
         "Physical minimum/midrange iOS and Android devices; simulators cannot establish thermal/battery results."
       ],
-      "status": "not_started"
+      "status": "in_progress"
     },
     {
       "id": "B16",
@@ -617,7 +617,7 @@
       "external_dependencies": [
         "Configured staging services and product-owner decisions on required platform declarations."
       ],
-      "status": "not_started"
+      "status": "in_progress"
     },
     {
       "id": "B17",
@@ -647,7 +647,7 @@
         "No known save-loss or entitlement blocker; full trajectory bonus parity is assessed; 1,750-Note optional collection is not a hidden main-ending requirement."
       ],
       "external_dependencies": [],
-      "status": "not_started"
+      "status": "in_progress"
     },
     {
       "id": "B18",
@@ -1006,10 +1006,11 @@
       ],
       "status": "in_progress",
       "evidence": [
-        "tool/build_native.py"
+        "tool/build_native.py",
+        "release/native-proof/20261016T111720.826224Z/build-report.json"
       ],
       "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
-      "evidence_note": "Component implementation/authoring evidence only; complete source acceptance and upstream gates remain required."
+      "evidence_note": "Local implementation and source checks are underway. Evidence has distinct source snapshots and author/independent review boundaries. Original acceptance, upstream dependencies, physical-device, real-provider and observation requirements remain unchanged and open where unmet."
     },
     {
       "id": "M1-01",
@@ -1287,10 +1288,16 @@
       ],
       "status": "in_progress",
       "evidence": [
-        "services/"
+        "services/",
+        "services/evidence/director-independent-review.json",
+        "services/README.md",
+        "game/mobile/lib/service_settings.dart",
+        "game/mobile/test/service_settings_test.dart",
+        "release/service-settings-author-review.md",
+        "services/evidence/DIRECTOR_REVIEW.md"
       ],
       "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
-      "evidence_note": "Local implementation and independent review in progress. Original upstream dependencies and full production acceptance remain required; external services, devices and real observation are not substituted by local evidence."
+      "evidence_note": "Local implementation and source checks are underway. Evidence has distinct source snapshots and author/independent review boundaries. Original acceptance, upstream dependencies, physical-device, real-provider and observation requirements remain unchanged and open where unmet."
     },
     {
       "id": "M2-05",
@@ -1456,9 +1463,17 @@
       "scope_ids": [
         "S26"
       ],
-      "status": "not_started",
-      "evidence": [],
-      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified."
+      "status": "in_progress",
+      "evidence": [
+        "game/mobile/lib/audio_settings.dart",
+        "game/mobile/lib/app.dart",
+        "game/mobile/lib/notification_service.dart",
+        "game/mobile/lib/reminder_lifecycle.dart",
+        "game/mobile/test/reminder_lifecycle_test.dart",
+        "release/notifications-author-review.md"
+      ],
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+      "evidence_note": "Local implementation and separately pinned author/independent evidence. Original acceptance and dependencies remain intact; physical/native/provider/human/elapsed observation gates remain open where unmet."
     },
     {
       "id": "M3-06",
@@ -1478,10 +1493,16 @@
       ],
       "status": "in_progress",
       "evidence": [
-        "services/"
+        "services/",
+        "services/docs/API.md",
+        "services/evidence/director-independent-review.json",
+        "game/mobile/lib/native_services.dart",
+        "game/mobile/lib/service_settings.dart",
+        "release/service-settings-author-review.md",
+        "release/qa/integration-services-repaired-20261016T114721906724Z/INTEGRATION_REVIEW.md"
       ],
       "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
-      "evidence_note": "Local implementation and independent review in progress. Original upstream dependencies and full production acceptance remain required; external services, devices and real observation are not substituted by local evidence."
+      "evidence_note": "Local implementation and separately pinned author/independent evidence. Original acceptance and dependencies remain intact; physical/native/provider/human/elapsed observation gates remain open where unmet."
     },
     {
       "id": "M3-07",
@@ -1501,10 +1522,13 @@
       ],
       "status": "in_progress",
       "evidence": [
-        "services/"
+        "services/",
+        "services/tideglass_service/api.py",
+        "services/evidence/director-independent-review.json",
+        "release/qa/integration-services-repaired-20261016T114721906724Z/INTEGRATION_REVIEW.md"
       ],
       "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
-      "evidence_note": "Local implementation and independent review in progress. Original upstream dependencies and full production acceptance remain required; external services, devices and real observation are not substituted by local evidence."
+      "evidence_note": "Local implementation and separately pinned author/independent evidence. Original acceptance and dependencies remain intact; physical/native/provider/human/elapsed observation gates remain open where unmet."
     },
     {
       "id": "M3-08",
@@ -1546,9 +1570,13 @@
         "S04",
         "S19"
       ],
-      "status": "not_started",
-      "evidence": [],
-      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified."
+      "status": "in_progress",
+      "evidence": [
+        "release/art/producer-independent-review.md",
+        "game/mobile/lib/producer_art.dart"
+      ],
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+      "evidence_note": "Local implementation and source checks are underway. Evidence has distinct source snapshots and author/independent review boundaries. Original acceptance, upstream dependencies, physical-device, real-provider and observation requirements remain unchanged and open where unmet."
     },
     {
       "id": "M3-10",
@@ -1573,9 +1601,14 @@
         "S28",
         "S29"
       ],
-      "status": "not_started",
-      "evidence": [],
-      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified."
+      "status": "in_progress",
+      "evidence": [
+        "game/mobile/test/offline_replay_test.dart",
+        "release/qa/integration-final-20261016T105843545492Z/INTEGRATION_REVIEW.md",
+        "release/qa/integration-services-repaired-20261016T114721906724Z/INTEGRATION_REVIEW.md"
+      ],
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+      "evidence_note": "Local implementation and separately pinned author/independent evidence. Original acceptance and dependencies remain intact; physical/native/provider/human/elapsed observation gates remain open where unmet."
     },
     {
       "id": "M4-01",
@@ -1592,9 +1625,14 @@
       "scope_ids": [
         "S16"
       ],
-      "status": "not_started",
-      "evidence": [],
-      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified."
+      "status": "in_progress",
+      "evidence": [
+        "game/progression/lib/tideglass_progression.dart",
+        "game/mobile/lib/story_screen.dart",
+        "release/client-story-review.md"
+      ],
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+      "evidence_note": "Local implementation and source checks are underway. Evidence has distinct source snapshots and author/independent review boundaries. Original acceptance, upstream dependencies, physical-device, real-provider and observation requirements remain unchanged and open where unmet."
     },
     {
       "id": "M4-02",
@@ -1641,10 +1679,13 @@
       "status": "in_progress",
       "evidence": [
         "game/mobile/lib/season_screen.dart",
-        "release/client-season-review.md"
+        "release/client-season-review.md",
+        "game/mobile/lib/cosmetics_screen.dart",
+        "game/mobile/test/cosmetic_session_test.dart",
+        "release/qa/integration-services-repaired-20261016T114721906724Z/INTEGRATION_REVIEW.md"
       ],
       "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
-      "evidence_note": "Local implementation and independent review in progress. Original upstream dependencies and full production acceptance remain required; external services, devices and real observation are not substituted by local evidence."
+      "evidence_note": "Local implementation and separately pinned author/independent evidence. Original acceptance and dependencies remain intact; physical/native/provider/human/elapsed observation gates remain open where unmet."
     },
     {
       "id": "M4-04",
@@ -1663,10 +1704,13 @@
       ],
       "status": "in_progress",
       "evidence": [
-        "services/"
+        "services/",
+        "game/mobile/lib/native_services.dart",
+        "services/tideglass_service/providers/stores.py",
+        "release/qa/integration-services-repaired-20261016T114721906724Z/INTEGRATION_REVIEW.md"
       ],
       "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
-      "evidence_note": "Local implementation and independent review in progress. Original upstream dependencies and full production acceptance remain required; external services, devices and real observation are not substituted by local evidence."
+      "evidence_note": "Local implementation and separately pinned author/independent evidence. Original acceptance and dependencies remain intact; physical/native/provider/human/elapsed observation gates remain open where unmet."
     },
     {
       "id": "M4-05",
@@ -1686,10 +1730,14 @@
       "status": "in_progress",
       "evidence": [
         "game/mobile/lib/support_screen.dart",
-        "services/"
+        "services/",
+        "game/mobile/lib/support_service_bridge.dart",
+        "game/mobile/lib/service_support_screen.dart",
+        "services/tideglass_service/providers/admob.py",
+        "release/qa/integration-services-repaired-20261016T114721906724Z/INTEGRATION_REVIEW.md"
       ],
       "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
-      "evidence_note": "Local implementation and independent review in progress. Original upstream dependencies and full production acceptance remain required; external services, devices and real observation are not substituted by local evidence."
+      "evidence_note": "Local implementation and separately pinned author/independent evidence. Original acceptance and dependencies remain intact; physical/native/provider/human/elapsed observation gates remain open where unmet."
     },
     {
       "id": "M4-06",
@@ -1713,9 +1761,15 @@
         "S21",
         "S22"
       ],
-      "status": "not_started",
-      "evidence": [],
-      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified."
+      "status": "in_progress",
+      "evidence": [
+        "implementation/content/launch_manifest.json",
+        "game/mobile/lib/bundled_content.dart",
+        "release/client-story-review.md",
+        "release/client-season-review.md"
+      ],
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+      "evidence_note": "Local implementation and source checks are underway. Evidence has distinct source snapshots and author/independent review boundaries. Original acceptance, upstream dependencies, physical-device, real-provider and observation requirements remain unchanged and open where unmet."
     },
     {
       "id": "M4-07",
@@ -1739,10 +1793,12 @@
       "evidence": [
         "release/audio/IMPLEMENTATION_HANDOFF.md",
         "release/art/producer-independent-review.md",
-        "game/mobile/lib/harbor_art.dart"
+        "game/mobile/lib/harbor_art.dart",
+        "release/cosmetics-author-review.md",
+        "release/art/cosmetics-contact-sheet.png"
       ],
       "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
-      "evidence_note": "Local implementation and independent review in progress. Original upstream dependencies and full production acceptance remain required; external services, devices and real observation are not substituted by local evidence."
+      "evidence_note": "Local implementation, author checks and separately pinned independent review; full original acceptance/upstream gates remain open. No external qualification or elapsed observation substituted."
     },
     {
       "id": "M4-08",
@@ -1763,9 +1819,12 @@
         "S22",
         "S25"
       ],
-      "status": "not_started",
-      "evidence": [],
-      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified."
+      "status": "in_progress",
+      "evidence": [
+        "release/qa/integration-services-repaired-20261016T114721906724Z/INTEGRATION_REVIEW.md"
+      ],
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+      "evidence_note": "Local implementation and separately pinned author/independent evidence. Original acceptance and dependencies remain intact; physical/native/provider/human/elapsed observation gates remain open where unmet."
     },
     {
       "id": "M5-01",
@@ -1783,9 +1842,14 @@
         "S08",
         "S31"
       ],
-      "status": "not_started",
-      "evidence": [],
-      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified."
+      "status": "in_progress",
+      "evidence": [
+        "game/mobile/lib/offline_replay.dart",
+        "game/mobile/test/offline_replay_test.dart",
+        "docs/decisions/offline-replay-and-cosmetic-selection.md"
+      ],
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+      "evidence_note": "Local implementation, author checks and separately pinned independent review; full original acceptance/upstream gates remain open. No external qualification or elapsed observation substituted."
     },
     {
       "id": "M5-02",
@@ -1806,9 +1870,13 @@
         "S17",
         "S26"
       ],
-      "status": "not_started",
-      "evidence": [],
-      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified."
+      "status": "in_progress",
+      "evidence": [
+        "game/mobile/test/service_settings_test.dart",
+        "release/service-settings-author-review.md"
+      ],
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+      "evidence_note": "Local implementation and source checks are underway. Evidence has distinct source snapshots and author/independent review boundaries. Original acceptance, upstream dependencies, physical-device, real-provider and observation requirements remain unchanged and open where unmet."
     },
     {
       "id": "M5-03",
@@ -1829,10 +1897,14 @@
       ],
       "status": "in_progress",
       "evidence": [
-        "services/"
+        "services/",
+        "services/docs/PRIVACY.md",
+        "game/persistence/test/save_repository_test.dart",
+        "services/evidence/DIRECTOR_REVIEW.md",
+        "release/qa/integration-services-repaired-20261016T114721906724Z/INTEGRATION_REVIEW.md"
       ],
       "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
-      "evidence_note": "Local implementation and independent review in progress. Original upstream dependencies and full production acceptance remain required; external services, devices and real observation are not substituted by local evidence."
+      "evidence_note": "Local implementation and separately pinned author/independent evidence. Original acceptance and dependencies remain intact; physical/native/provider/human/elapsed observation gates remain open where unmet."
     },
     {
       "id": "M5-04",
@@ -1853,10 +1925,12 @@
       ],
       "status": "in_progress",
       "evidence": [
-        "services/"
+        "services/",
+        "services/tideglass_service/ops.py",
+        "services/docs/OPERATIONS.md"
       ],
       "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
-      "evidence_note": "Local implementation and independent review in progress. Original upstream dependencies and full production acceptance remain required; external services, devices and real observation are not substituted by local evidence."
+      "evidence_note": "Local implementation, author checks and separately pinned independent review; full original acceptance/upstream gates remain open. No external qualification or elapsed observation substituted."
     },
     {
       "id": "M5-05",
@@ -1879,9 +1953,14 @@
         "S44",
         "S34"
       ],
-      "status": "not_started",
-      "evidence": [],
-      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified."
+      "status": "in_progress",
+      "evidence": [
+        "game/simulation/lib/policy_run.dart",
+        "game/simulation/bin/run_policies.dart",
+        "game/simulation/test/policy_run_test.dart"
+      ],
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+      "evidence_note": "Local implementation and separately pinned author/independent evidence. Original acceptance and dependencies remain intact. Native/provider/human/elapsed observation gates remain open where unmet; new long-horizon runner is under test and not yet an audit result."
     },
     {
       "id": "M5-06",
@@ -1923,10 +2002,12 @@
       "status": "in_progress",
       "evidence": [
         "release/qa/FOUNDATION_REVIEW.md",
-        "release/qa/DAILY_REVIEW.md"
+        "release/qa/DAILY_REVIEW.md",
+        "release/qa/integration-final-20261016T105843545492Z/INTEGRATION_REVIEW.md",
+        "release/qa/integration-services-repaired-20261016T114721906724Z/INTEGRATION_REVIEW.md"
       ],
       "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
-      "evidence_note": "Local implementation and independent review in progress. Original upstream dependencies and full production acceptance remain required; external services, devices and real observation are not substituted by local evidence."
+      "evidence_note": "Local implementation and separately pinned author/independent evidence. Original acceptance and dependencies remain intact; physical/native/provider/human/elapsed observation gates remain open where unmet."
     },
     {
       "id": "M5-08",
@@ -1945,9 +2026,12 @@
         "S24",
         "S28"
       ],
-      "status": "not_started",
-      "evidence": [],
-      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified."
+      "status": "in_progress",
+      "evidence": [
+        "release/qa/integration-services-repaired-20261016T114721906724Z/INTEGRATION_REVIEW.md"
+      ],
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+      "evidence_note": "Local implementation and separately pinned author/independent evidence. Original acceptance and dependencies remain intact; physical/native/provider/human/elapsed observation gates remain open where unmet."
     },
     {
       "id": "M6-01",

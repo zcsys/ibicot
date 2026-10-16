@@ -250,8 +250,9 @@ class SaveRepository {
     'economic_config': {'version': economicVersion, 'sha256': economicDigest},
     'gameplay_state': {'schema_version': 1, 'payload': _copy(payload)},
     'merge_policy': 'select_one_progression_branch',
-    'preserved_branches':
-        preserved ?? previous?.envelope['preserved_branches'] ?? [],
+    'preserved_branches': _portableRecoveryReferences(
+      preserved ?? previous?.envelope['preserved_branches'] ?? [],
+    ),
     'pending_operations': <Object>[],
     'applied_operation_ids': <String>[],
     'commerce_cache': {
@@ -427,6 +428,25 @@ class SaveRepository {
 
 Map<String, dynamic> _copy(Map value) =>
     (jsonDecode(jsonEncode(value)) as Map).cast<String, dynamic>();
+
+/// Recovery hints are local metadata, never authority to read an arbitrary
+/// path. Earlier builds wrote an absolute path containing a device username.
+/// Migrate it on the next commit without changing the old immutable snapshot.
+List<Map<String, dynamic>> _portableRecoveryReferences(List entries) => [
+  for (final entry in entries)
+    if (entry is Map &&
+        _isUuid(entry['save_id']) &&
+        _isUuid(entry['branch_id']) &&
+        entry['revision'] is int &&
+        (entry['revision'] as int) >= 0)
+      {
+        'save_id': entry['save_id'],
+        'branch_id': entry['branch_id'],
+        'revision': entry['revision'],
+        'recovery_reference':
+            'recovery/${entry['branch_id']}-${entry['revision']}.json',
+      },
+];
 Object? _canonical(Object? value) {
   if (value is Map) {
     final keys = value.keys.cast<String>().toList()..sort();

@@ -1,0 +1,55 @@
+{
+  "candidate_fingerprint": "3445498f397a8cfc2c1383e5c128358222f25cd1691a54acdd852e03bbf4b982",
+  "device": "F05BE4B0-52C1-4CA1-B721-BD64AE559E3F",
+  "label": "ios-phone",
+  "started_utc": "20261016T112519.267147Z",
+  "command": [
+    "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+    "drive",
+    "--driver=test_driver/evidence_911183b5d9ee.dart",
+    "--target=integration_test/evidence_54e3561ebd83_test.dart",
+    "-d",
+    "F05BE4B0-52C1-4CA1-B721-BD64AE559E3F",
+    "--dart-define=TIDEGLASS_DEVICE_LABEL=ios-phone",
+    "--dart-define=TIDEGLASS_SCENARIO=session-start",
+    "--dart-define=TIDEGLASS_RUN_ID=integrated-344-c",
+    "--dart-define=TIDEGLASS_VERIFICATION_ID=integration-ios-phone-20261016T112519.267147Z",
+    "--dart-define=TIDEGLASS_CANDIDATE_FINGERPRINT=3445498f397a8cfc2c1383e5c128358222f25cd1691a54acdd852e03bbf4b982",
+    "--dart-define=TIDEGLASS_HARNESS_SHA256=54e3561ebd8365b3403b4eb181043e8bf2851e2dfc897a1db13c86df7999e1fd",
+    "--keep-app-running",
+    "--timeout=180",
+    "--no-pub"
+  ],
+  "scenario": "session-start",
+  "run_id": "integrated-344-c",
+  "harness_sha256": {
+    "harness.dart": "54e3561ebd8365b3403b4eb181043e8bf2851e2dfc897a1db13c86df7999e1fd",
+    "driver.dart": "911183b5d9ee8ec80769836f477a293dadb66e20cc0c5d5e44314415889749a8"
+  },
+  "production_inputs_match_snapshot": true,
+  "provenance": "Seeded native boundary/presentation test; no natural pacing or physical-device claim",
+  "exit_code": 1,
+  "native_process_stop": {
+    "command": [
+      "xcrun",
+      "simctl",
+      "terminate",
+      "F05BE4B0-52C1-4CA1-B721-BD64AE559E3F",
+      "dev.tideglass.game"
+    ],
+    "exit_code": 0,
+    "output": ""
+  },
+  "verification_errors": [
+    "No successful test completion in native log"
+  ],
+  "passed": false,
+  "evidence_sha256": {
+    "result.json": "e7a4446e351280324ea1fa7570ba3c4e14f42e1887affc72a07b35c44f87b6bc",
+    "run.log": "1e57bdfd040ae808cb36100903f44a791299192c76d7a487faf87158dfd24b3b",
+    "driver.dart": "911183b5d9ee8ec80769836f477a293dadb66e20cc0c5d5e44314415889749a8",
+    "harness.dart": "54e3561ebd8365b3403b4eb181043e8bf2851e2dfc897a1db13c86df7999e1fd",
+    "ios-phone-session-start-collection.png": "40dd351ff8e735512ba1c717e56e0a5d3403fe9dc707f88c86bb6f6d868015ee",
+    "ios-phone-session-start-harbor.png": "11a3e9df45be007561641161c7601b0e5cd3ebcdcdcc458d1143219bd002c26f"
+  }
+}

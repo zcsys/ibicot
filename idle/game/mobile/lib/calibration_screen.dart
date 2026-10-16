@@ -1,3 +1,5 @@
+import 'presentation.dart';
+import 'strings.dart';
 import 'package:flutter/material.dart';
 import 'calibration_pattern.dart';
 import 'palette.dart';
@@ -44,14 +46,16 @@ class _CalibrationScreenState extends State<CalibrationScreen> {
     setState(() {
       claimed = accepted;
       notice = accepted
-          ? 'Pattern collected. Ten minutes of Focus added.'
-          : 'No Focus charge is available yet. Your route is saved on this screen.';
+          ? UiEnglish.calibrationPatternCollectedTenMinutesOfFocusAdded
+          : UiEnglish.calibrationNoFocusChargeIsAvailableYetYour;
     });
   }
 
   @override
   Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(title: const Text('Constellation calibration')),
+    appBar: AppBar(
+      title: const LocalizedText(UiEnglish.calibrationConstellationCalibration),
+    ),
     body: SafeArea(
       child: SingleChildScrollView(
         padding: const EdgeInsets.fromLTRB(24, 8, 24, 32),
@@ -61,8 +65,8 @@ class _CalibrationScreenState extends State<CalibrationScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const Text(
-                  'A quieter way to brighten the sky.',
+                const LocalizedText(
+                  UiEnglish.calibrationAQuieterWayToBrightenTheSky,
                   style: TextStyle(color: TideColors.muted),
                 ),
                 const SizedBox(height: 20),
@@ -72,8 +76,8 @@ class _CalibrationScreenState extends State<CalibrationScreen> {
                   children: [
                     for (var i = 0; i < widget.patterns.length; i++)
                       ChoiceChip(
-                        label: Text('${i + 1}'),
-                        tooltip: widget.patterns[i].title,
+                        label: LocalizedText('${i + 1}'),
+                        tooltip: Presentation.text(widget.patterns[i].title),
                         selected: i == selected,
                         onSelected: (_) => choose(i),
                         avatar:
@@ -86,22 +90,28 @@ class _CalibrationScreenState extends State<CalibrationScreen> {
                   ],
                 ),
                 const SizedBox(height: 22),
-                Text(
+                LocalizedText(
                   pattern.title,
                   style: Theme.of(context).textTheme.headlineMedium,
                 ),
                 const SizedBox(height: 8),
-                Text(
+                LocalizedText(
                   pattern.intro,
                   style: const TextStyle(color: TideColors.muted),
                 ),
                 const SizedBox(height: 14),
-                Text(pattern.instructions),
+                LocalizedText(pattern.instructions),
                 const SizedBox(height: 20),
                 Semantics(
                   image: true,
-                  label:
-                      '${pattern.title}. ${route.visited.length} of ${pattern.stars.length} stars connected. Current star: ${pattern.star(route.visited.last).label}.',
+                  label: Presentation.text(
+                    UiEnglish.calibrationPatternTitleRouteVisitedLengthOfPattern(
+                      Presentation.authored((pattern.title).toString()),
+                      route.visited.length,
+                      pattern.stars.length,
+                      pattern.star(route.visited.last).label,
+                    ),
+                  ),
                   child: AspectRatio(
                     aspectRatio: 1,
                     child: CustomPaint(
@@ -110,12 +120,12 @@ class _CalibrationScreenState extends State<CalibrationScreen> {
                   ),
                 ),
                 const SizedBox(height: 16),
-                Text(
+                LocalizedText(
                   route.solved
-                      ? 'The constellation is aligned.'
+                      ? UiEnglish.calibrationTheConstellationIsAligned
                       : route.nextStars.isEmpty
-                      ? 'This route has no next star. Undo a step or begin again.'
-                      : 'Choose the next connected star:',
+                      ? UiEnglish.calibrationThisRouteHasNoNextStarUndo
+                      : UiEnglish.calibrationChooseTheNextConnectedStar,
                   style: const TextStyle(color: TideColors.amber),
                 ),
                 const SizedBox(height: 12),
@@ -129,7 +139,7 @@ class _CalibrationScreenState extends State<CalibrationScreen> {
                         onPressed: claimed
                             ? null
                             : () => setState(() => route.visit(star.key)),
-                        child: Text(star.label),
+                        child: LocalizedText(star.label),
                       ),
                   ],
                 ),
@@ -142,12 +152,12 @@ class _CalibrationScreenState extends State<CalibrationScreen> {
                           ? () => setState(route.undo)
                           : null,
                       icon: const Icon(Icons.undo),
-                      label: const Text('Undo'),
+                      label: const LocalizedText(UiEnglish.calibrationUndo),
                     ),
                     TextButton.icon(
                       onPressed: claimed ? null : () => setState(route.restart),
                       icon: const Icon(Icons.refresh),
-                      label: const Text('Restart'),
+                      label: const LocalizedText(UiEnglish.calibrationRestart),
                     ),
                   ],
                 ),
@@ -158,17 +168,17 @@ class _CalibrationScreenState extends State<CalibrationScreen> {
                       route.solved && !claimed && widget.focusCharges() > 0
                       ? claim
                       : null,
-                  child: Text(
+                  child: LocalizedText(
                     claimed
-                        ? 'Constellation collected'
-                        : 'Collect pattern · 1 Focus',
+                        ? UiEnglish.calibrationConstellationCollected
+                        : UiEnglish.calibrationCollectPatternFocus,
                   ),
                 ),
                 if (notice != null) ...[
                   const SizedBox(height: 12),
                   Semantics(
                     liveRegion: true,
-                    child: Text(
+                    child: LocalizedText(
                       notice!,
                       style: const TextStyle(color: TideColors.teal),
                     ),
@@ -177,12 +187,12 @@ class _CalibrationScreenState extends State<CalibrationScreen> {
                 const SizedBox(height: 24),
                 const Divider(),
                 const SizedBox(height: 24),
-                Text(
-                  'Let the crew help',
+                LocalizedText(
+                  UiEnglish.calibrationLetTheCrewHelp,
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
                 const SizedBox(height: 8),
-                Text(
+                LocalizedText(
                   pattern.accessibleDescription,
                   style: const TextStyle(color: TideColors.muted),
                 ),
@@ -192,11 +202,13 @@ class _CalibrationScreenState extends State<CalibrationScreen> {
                   onPressed: !claimed && widget.focusCharges() > 0
                       ? claim
                       : null,
-                  child: Text(pattern.accessibleLabel),
+                  child: LocalizedText(pattern.accessibleLabel),
                 ),
                 const SizedBox(height: 8),
-                Text(
-                  '${widget.focusCharges()} Focus charges available. No timer. No penalty for trying.',
+                LocalizedText(
+                  UiEnglish.calibrationWidgetFocusChargesFocusChargesAvailableNoTimer(
+                    widget.focusCharges(),
+                  ),
                   style: const TextStyle(color: TideColors.muted, fontSize: 12),
                 ),
               ],
@@ -263,7 +275,9 @@ class _SkyPainter extends CustomPainter {
       if (star.key == pattern.start || star.key == pattern.end) {
         final role = TextPainter(
           text: TextSpan(
-            text: star.key == pattern.start ? 'START' : 'FINISH',
+            text: star.key == pattern.start
+                ? UiEnglish.calibrationSTART
+                : UiEnglish.calibrationFINISH,
             style: const TextStyle(
               color: TideColors.amber,
               fontSize: 9,

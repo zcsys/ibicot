@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:tideglass/audio_bus.dart';
 
@@ -10,6 +11,7 @@ void main() {
       TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger;
   const channel = MethodChannel('xyz.luan/audioplayers');
   final calls = <MethodCall>[];
+  final globalCalls = <MethodCall>[];
   var failInitialization = false;
   setUp(() {
     messenger.setMockMethodCallHandler(
@@ -17,10 +19,14 @@ void main() {
       (_) async => '/tmp',
     );
     calls.clear();
+    globalCalls.clear();
     failInitialization = false;
     messenger.setMockMethodCallHandler(
       const MethodChannel('xyz.luan/audioplayers.global'),
-      (_) async => null,
+      (call) async {
+        globalCalls.add(call);
+        return null;
+      },
     );
     messenger.setMockMethodCallHandler(
       const MethodChannel('xyz.luan/audioplayers.global/events'),
@@ -70,6 +76,22 @@ void main() {
       );
     }
   });
+
+  test(
+    'iOS ambient session initializes without incompatible mix options',
+    () async {
+      debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
+      addTearDown(() => debugDefaultTargetPlatformOverride = null);
+      final driver = NativeTideAudioDriver();
+      await driver.initialize();
+      final context = globalCalls.lastWhere(
+        (call) => call.method == 'setAudioContext',
+      );
+      expect(context.arguments, {'category': 'ambient', 'options': <String>[]});
+      expect(calls.where((call) => call.method == 'create').length, 9);
+      await driver.dispose();
+    },
+  );
 
   test(
     'partial native setup failure disposes every allocated player',

@@ -1,3 +1,4 @@
+import 'presentation.dart';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:tideglass_core/tideglass_core.dart';
@@ -15,6 +16,13 @@ import 'audio_settings.dart';
 import 'producer_art.dart';
 import 'cosmetic_art.dart';
 import 'cosmetics_screen.dart';
+import 'native_services.dart';
+import 'service_settings.dart';
+import 'service_support_screen.dart';
+import 'service_cosmetics.dart';
+import 'notification_service.dart';
+import 'notification_settings.dart';
+import 'reminder_lifecycle.dart';
 
 class ClientPreferences {
   const ClientPreferences({
@@ -59,6 +67,8 @@ class TideglassApp extends StatefulWidget {
     this.onExport,
     this.onImport,
     this.recoveryNotice,
+    this.services,
+    this.notifications,
   });
   final GameController controller;
   final ClientPreferences initialPreferences;
@@ -66,6 +76,8 @@ class TideglassApp extends StatefulWidget {
   final Future<String> Function()? onExport;
   final Future<void> Function(String)? onImport;
   final String? recoveryNotice;
+  final NativeServicesManager? services;
+  final NotificationService? notifications;
   @override
   State<TideglassApp> createState() => _TideglassAppState();
 }
@@ -77,6 +89,7 @@ class _TideglassAppState extends State<TideglassApp>
   int tab = 0;
   final fleetKey = GlobalKey();
   bool returnVisible = false, recoveryDismissed = false;
+  ReminderLifecycle? reminders;
   GameController get game => widget.controller;
   @override
   void initState() {
@@ -88,16 +101,41 @@ class _TideglassAppState extends State<TideglassApp>
     )..repeat();
     WidgetsBinding.instance.addObserver(this);
     game.addListener(_changed);
+    widget.services?.addListener(_changed);
+    if (widget.notifications != null) {
+      reminders = ReminderLifecycle(game, widget.notifications!);
+      unawaited(reminders!.returned());
+    }
   }
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
-      unawaited(game.resumeWithProgress());
-    } else if (state == AppLifecycleState.inactive ||
-        state == AppLifecycleState.paused ||
+      unawaited(_resume());
+    } else if (state == AppLifecycleState.paused ||
         state == AppLifecycleState.detached) {
+      if (reminders != null) {
+        unawaited(reminders!.backgrounded());
+      } else {
+        game.suspend();
+      }
+    } else if (state == AppLifecycleState.inactive) {
+      // Permission dialogs and other brief interruptions are not an absence
+      // reminder opportunity, but production still suspends safely.
       game.suspend();
+    }
+  }
+
+  Future<void> _resume() async {
+    if (reminders != null) unawaited(reminders!.returned());
+    await game.resumeWithProgress();
+    final services = widget.services;
+    if (!mounted || services == null || !services.signedIn) return;
+    try {
+      await services.refreshOwnership();
+    } catch (_) {
+      // The adapter keeps a visible verification status; network access is
+      // optional and must never prevent local time-away settlement.
     }
   }
 
@@ -108,6 +146,8 @@ class _TideglassAppState extends State<TideglassApp>
   @override
   void dispose() {
     game.removeListener(_changed);
+    widget.services?.removeListener(_changed);
+    reminders?.close();
     animation.dispose();
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
@@ -172,13 +212,14 @@ class _TideglassAppState extends State<TideglassApp>
                               value: game.replayProgress?.fraction,
                             ),
                           const SizedBox(height: 20),
-                          Text(
-                            game.replayError ?? 'Gathering your time away…',
+                          LocalizedText(
+                            game.replayError ??
+                                UiEnglish.appGatheringYourTimeAway,
                             textAlign: TextAlign.center,
                           ),
                           if (game.replayProgress != null &&
                               game.replayError == null)
-                            Text(
+                            LocalizedText(
                               '${(game.replayProgress!.fraction * 100).floor()}%',
                             ),
                           if (game.replayError != null)
@@ -186,7 +227,9 @@ class _TideglassAppState extends State<TideglassApp>
                               padding: const EdgeInsets.only(top: 16),
                               child: FilledButton(
                                 onPressed: game.resumeWithProgress,
-                                child: const Text('Try again'),
+                                child: const LocalizedText(
+                                  UiEnglish.appTryAgain,
+                                ),
                               ),
                             ),
                         ],
@@ -238,13 +281,13 @@ class _TideglassAppState extends State<TideglassApp>
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
+                      LocalizedText(
                         Copy.title,
                         style: Theme.of(
                           context,
                         ).textTheme.titleLarge?.copyWith(letterSpacing: 2),
                       ),
-                      const Text(
+                      const LocalizedText(
                         Copy.subtitle,
                         style: TextStyle(color: TideColors.muted, fontSize: 11),
                       ),
@@ -255,7 +298,7 @@ class _TideglassAppState extends State<TideglassApp>
             ),
             actions: [
               IconButton(
-                tooltip: Copy.settings,
+                tooltip: Presentation.text(Copy.settings),
                 onPressed: () => _settings(context),
                 icon: const Icon(Icons.tune_rounded),
               ),
@@ -288,21 +331,21 @@ class _TideglassAppState extends State<TideglassApp>
           bottomNavigationBar: NavigationBar(
             selectedIndex: tab,
             onDestinationSelected: (v) => setState(() => tab = v),
-            destinations: const [
+            destinations: [
               NavigationDestination(
                 icon: Icon(Icons.water_outlined),
                 selectedIcon: Icon(Icons.water),
-                label: Copy.harbor,
+                label: Presentation.text(Copy.harbor),
               ),
               NavigationDestination(
                 icon: Icon(Icons.explore_outlined),
                 selectedIcon: Icon(Icons.explore),
-                label: Copy.atlas,
+                label: Presentation.text(Copy.atlas),
               ),
               NavigationDestination(
                 icon: Icon(Icons.menu_book_outlined),
                 selectedIcon: Icon(Icons.menu_book),
-                label: Copy.journal,
+                label: Presentation.text(Copy.journal),
               ),
             ],
           ),
@@ -347,7 +390,7 @@ class _TideglassAppState extends State<TideglassApp>
             spacing: 12,
             runSpacing: 4,
             children: [
-              Text(
+              LocalizedText(
                 game.state.charts == BigInt.zero
                     ? UiCopy.theFirstLight
                     : UiCopy.aWiderSky,
@@ -355,7 +398,7 @@ class _TideglassAppState extends State<TideglassApp>
                   context,
                 ).textTheme.labelSmall?.copyWith(color: TideColors.amber),
               ),
-              Text(
+              LocalizedText(
                 UiCopy.lightkeeperCount(
                   game.state.counts.fold<int>(0, (a, b) => a + b),
                 ),
@@ -369,21 +412,21 @@ class _TideglassAppState extends State<TideglassApp>
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
+                  LocalizedText(
                     Copy.introduction,
                     style: Theme.of(
                       context,
                     ).textTheme.titleMedium?.copyWith(color: TideColors.amber),
                   ),
                   const SizedBox(height: 8),
-                  const Text(
+                  const LocalizedText(
                     Copy.introductionBody,
                     style: TextStyle(color: TideColors.muted),
                   ),
                   const SizedBox(height: 12),
                   TextButton(
                     onPressed: begin,
-                    child: const Text(Copy.introductionDismiss),
+                    child: const LocalizedText(Copy.introductionDismiss),
                   ),
                 ],
               ),
@@ -392,8 +435,10 @@ class _TideglassAppState extends State<TideglassApp>
             _panel(
               child: SwitchListTile.adaptive(
                 contentPadding: EdgeInsets.zero,
-                title: const Text(UiCopy.letTheFleetBuild),
-                subtitle: const Text(UiCopy.bestPaybackIncludingWhileYouAre),
+                title: const LocalizedText(UiCopy.letTheFleetBuild),
+                subtitle: const LocalizedText(
+                  UiCopy.bestPaybackIncludingWhileYouAre,
+                ),
                 value: game.state.autoBuyEnabled,
                 onChanged: game.setAutoBuy,
               ),
@@ -404,9 +449,12 @@ class _TideglassAppState extends State<TideglassApp>
         key: fleetKey,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text(Copy.fleet, style: Theme.of(context).textTheme.titleLarge),
+          LocalizedText(
+            Copy.fleet,
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
           const SizedBox(height: 4),
-          const Text(
+          const LocalizedText(
             Copy.fleetHint,
             style: TextStyle(color: TideColors.muted, fontSize: 13),
           ),
@@ -416,15 +464,15 @@ class _TideglassAppState extends State<TideglassApp>
             segments: const [
               ButtonSegment(
                 value: PurchaseMode.single,
-                label: Text(UiCopy.buy),
+                label: LocalizedText(UiCopy.buy),
               ),
               ButtonSegment(
                 value: PurchaseMode.milestone,
-                label: Text('Milestone'),
+                label: LocalizedText(UiEnglish.appMilestone),
               ),
               ButtonSegment(
                 value: PurchaseMode.maximum,
-                label: Text(UiCopy.buyMax),
+                label: LocalizedText(UiCopy.buyMax),
               ),
             ],
             selected: {game.purchaseMode},
@@ -437,7 +485,7 @@ class _TideglassAppState extends State<TideglassApp>
               child: _producer(context, i),
             ),
           const SizedBox(height: 8),
-          const Text(
+          const LocalizedText(
             UiCopy.forecastsAssumeAFixedFleetAnd,
             style: TextStyle(color: TideColors.muted, fontSize: 12),
           ),
@@ -473,14 +521,14 @@ class _TideglassAppState extends State<TideglassApp>
         final first = Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            LocalizedText(
               Copy.radiance,
               style: Theme.of(
                 context,
               ).textTheme.labelSmall?.copyWith(color: TideColors.muted),
             ),
             const SizedBox(height: 6),
-            Text(
+            LocalizedText(
               number(game.state.walletMicros),
               key: const ValueKey('wallet'),
               style: Theme.of(
@@ -492,14 +540,14 @@ class _TideglassAppState extends State<TideglassApp>
         final second = Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            LocalizedText(
               Copy.rate,
               style: Theme.of(
                 context,
               ).textTheme.labelSmall?.copyWith(color: TideColors.muted),
             ),
             const SizedBox(height: 6),
-            Text(
+            LocalizedText(
               '+${rate(game.engine.activeOutputPerSecond(game.state))}',
               style: Theme.of(
                 context,
@@ -558,16 +606,21 @@ class _TideglassAppState extends State<TideglassApp>
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                    LocalizedText(
                       TideglassEngine.producerNames[tier],
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         color: unlocked ? TideColors.text : TideColors.muted,
                       ),
                     ),
                     const SizedBox(height: 3),
-                    Text(
+                    LocalizedText(
                       unlocked
-                          ? '${s.counts[tier]} at work · ${rate(game.engine.producerOutputPerSecond(s, tier))} R/s'
+                          ? UiEnglish.appSCountsTierAtWorkRateGame(
+                              s.counts[tier],
+                              rate(
+                                game.engine.producerOutputPerSecond(s, tier),
+                              ),
+                            )
                           : UiCopy.undiscoveredLightkeeper,
                       style: const TextStyle(
                         color: TideColors.muted,
@@ -598,12 +651,14 @@ class _TideglassAppState extends State<TideglassApp>
                 ),
               ),
               const SizedBox(height: 7),
-              Text(
-                '$nextMilestone lightkeepers → double this tier',
+              LocalizedText(
+                UiEnglish.appNextMilestoneLightkeepersDoubleThisTier(
+                  nextMilestone,
+                ),
                 style: const TextStyle(color: TideColors.muted, fontSize: 11),
               ),
             ] else
-              const Text(
+              const LocalizedText(
                 UiCopy.allFourMilestonesIlluminated,
                 style: TextStyle(color: TideColors.amber, fontSize: 11),
               ),
@@ -617,19 +672,31 @@ class _TideglassAppState extends State<TideglassApp>
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      '${number(game.priceFor(tier))} R',
+                    LocalizedText(
+                      UiEnglish.appNumberGamePriceForTierR(
+                        number(game.priceFor(tier)),
+                      ),
                       style: const TextStyle(
                         color: TideColors.amber,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
-                    Text(
+                    LocalizedText(
                       canBuy
-                          ? '+${rate(game.engine.marginalOutputPerSecond(s, tier, quantity: quantity))} network R/s'
+                          ? UiEnglish.appRateGameEngineMarginalOutputPerSecondSTierQuantity(
+                              rate(
+                                game.engine.marginalOutputPerSecond(
+                                  s,
+                                  tier,
+                                  quantity: quantity,
+                                ),
+                              ),
+                            )
                           : forecast == null
                           ? UiCopy.aDistantHorizon
-                          : 'Ready in ${durationLabel(forecast)}',
+                          : UiEnglish.appReadyInDurationLabelForecast(
+                              durationLabel(forecast),
+                            ),
                       style: const TextStyle(
                         color: TideColors.muted,
                         fontSize: 11,
@@ -648,8 +715,10 @@ class _TideglassAppState extends State<TideglassApp>
                       disabledBackgroundColor: TideColors.raised,
                       disabledForegroundColor: TideColors.muted,
                     ),
-                    child: Text(
-                      canBuy ? 'Build $quantity' : UiCopy.gathering,
+                    child: LocalizedText(
+                      canBuy
+                          ? UiEnglish.appBuildQuantity(quantity)
+                          : UiCopy.gathering,
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -658,8 +727,12 @@ class _TideglassAppState extends State<TideglassApp>
             ),
           ] else ...[
             const SizedBox(height: 12),
-            Text(
-              'Needs 10 ${TideglassEngine.producerNames[tier - 1]}',
+            LocalizedText(
+              UiEnglish.appNeedsTideglassEngineProducerNamesTier(
+                Presentation.authored(
+                  (TideglassEngine.producerNames[tier - 1]).toString(),
+                ),
+              ),
               style: const TextStyle(color: TideColors.muted, fontSize: 12),
             ),
           ],
@@ -675,7 +748,7 @@ class _TideglassAppState extends State<TideglassApp>
         ..showSnackBar(
           SnackBar(
             duration: const Duration(seconds: 2),
-            content: Text(game.lastAction!),
+            content: LocalizedText(game.lastAction!),
           ),
         );
     }
@@ -689,15 +762,21 @@ class _TideglassAppState extends State<TideglassApp>
         const SizedBox(height: 12),
         const Icon(Icons.explore_outlined, size: 48, color: TideColors.amber),
         const SizedBox(height: 18),
-        Text(Copy.rechart, style: Theme.of(context).textTheme.headlineMedium),
+        LocalizedText(
+          Copy.rechart,
+          style: Theme.of(context).textTheme.headlineMedium,
+        ),
         const SizedBox(height: 8),
-        const Text(Copy.rechartBody, style: TextStyle(color: TideColors.muted)),
+        const LocalizedText(
+          Copy.rechartBody,
+          style: TextStyle(color: TideColors.muted),
+        ),
         const SizedBox(height: 28),
         _panel(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const Text(
+              const LocalizedText(
                 UiCopy.yourPermanentAtlas,
                 style: TextStyle(
                   color: TideColors.muted,
@@ -706,14 +785,14 @@ class _TideglassAppState extends State<TideglassApp>
                 ),
               ),
               const SizedBox(height: 12),
-              Text(
-                '${game.state.charts} Charts',
+              LocalizedText(
+                UiEnglish.appGameStateChartsCharts(game.state.charts),
                 style: Theme.of(
                   context,
                 ).textTheme.headlineLarge?.copyWith(color: TideColors.amber),
               ),
               const SizedBox(height: 12),
-              const Text(Copy.rechartHint),
+              const LocalizedText(Copy.rechartHint),
               const SizedBox(height: 20),
               const Divider(),
               const SizedBox(height: 20),
@@ -724,7 +803,9 @@ class _TideglassAppState extends State<TideglassApp>
               const SizedBox(height: 12),
               _dataRow(
                 UiCopy.lifetimeRadiance,
-                '${number(game.state.lifetimeMicros)} R',
+                UiEnglish.appNumberGameStateLifetimeMicrosR(
+                  number(game.state.lifetimeMicros),
+                ),
               ),
               const SizedBox(height: 12),
               _dataRow(
@@ -737,14 +818,14 @@ class _TideglassAppState extends State<TideglassApp>
                 onPressed: eligible
                     ? () => _confirmRechart(context, claim)
                     : null,
-                child: Text(
+                child: LocalizedText(
                   eligible
-                      ? 'Preview Rechart · +$claim Charts'
+                      ? UiEnglish.appPreviewRechartClaimCharts(claim)
                       : UiCopy.gatherTheFirstBillion,
                 ),
               ),
               const SizedBox(height: 12),
-              Text(
+              LocalizedText(
                 eligible ? Copy.noPerfectReset : Copy.firstRechartHint,
                 style: const TextStyle(color: TideColors.muted, fontSize: 12),
               ),
@@ -752,7 +833,7 @@ class _TideglassAppState extends State<TideglassApp>
           ),
         ),
         const SizedBox(height: 22),
-        Text(
+        LocalizedText(
           UiCopy.anAtlasThatGrowsWithYou,
           style: Theme.of(context).textTheme.titleLarge,
         ),
@@ -797,14 +878,17 @@ class _TideglassAppState extends State<TideglassApp>
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
+              LocalizedText(
                 threshold,
                 style: const TextStyle(color: TideColors.amber, fontSize: 11),
               ),
               const SizedBox(height: 3),
-              Text(title, style: const TextStyle(fontWeight: FontWeight.w600)),
+              LocalizedText(
+                title,
+                style: const TextStyle(fontWeight: FontWeight.w600),
+              ),
               const SizedBox(height: 4),
-              Text(
+              LocalizedText(
                 description,
                 style: const TextStyle(color: TideColors.muted, fontSize: 13),
               ),
@@ -820,26 +904,33 @@ class _TideglassAppState extends State<TideglassApp>
   ) => showDialog<void>(
     context: context,
     builder: (dialog) => AlertDialog(
-      title: const Text(UiCopy.chartABrighterOcean),
+      title: const LocalizedText(UiCopy.chartABrighterOcean),
       content: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'Claim $claim new Charts',
+            LocalizedText(
+              UiEnglish.appClaimClaimNewCharts(claim),
               style: const TextStyle(color: TideColors.amber, fontSize: 23),
             ),
             const SizedBox(height: 12),
-            Text(
-              'Permanent power: ${game.engine.prestigeMultiplier(game.state.charts).toDecimalString(decimals: 2)}× → ${game.engine.prestigeMultiplier(game.state.charts + claim).toDecimalString(decimals: 2)}×',
+            LocalizedText(
+              UiEnglish.appPermanentPowerGameEnginePrestigeMultiplierGameState(
+                game.engine
+                    .prestigeMultiplier(game.state.charts)
+                    .toDecimalString(decimals: 2),
+                game.engine
+                    .prestigeMultiplier(game.state.charts + claim)
+                    .toDecimalString(decimals: 2),
+              ),
             ),
             const SizedBox(height: 18),
-            const Text(Copy.rechartLost),
+            const LocalizedText(Copy.rechartLost),
             const SizedBox(height: 12),
-            const Text(Copy.rechartKept),
+            const LocalizedText(Copy.rechartKept),
             const SizedBox(height: 12),
-            const Text(
+            const LocalizedText(
               UiCopy.yourCurrentFleetStopsEarningAs,
               style: TextStyle(color: TideColors.muted),
             ),
@@ -849,7 +940,7 @@ class _TideglassAppState extends State<TideglassApp>
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(dialog),
-          child: const Text(UiCopy.keepBuilding),
+          child: const LocalizedText(UiCopy.keepBuilding),
         ),
         FilledButton(
           key: const ValueKey('confirm-rechart'),
@@ -858,19 +949,19 @@ class _TideglassAppState extends State<TideglassApp>
             Navigator.pop(dialog);
             setState(() => tab = 0);
           },
-          child: const Text(UiCopy.rechart),
+          child: const LocalizedText(UiCopy.rechart),
         ),
       ],
     ),
   );
   Widget _journal(BuildContext context) => _page(
     children: [
-      Text(
+      LocalizedText(
         UiCopy.theKeeperSLogbook,
         style: Theme.of(context).textTheme.headlineMedium,
       ),
       const SizedBox(height: 10),
-      const Text(
+      const LocalizedText(
         UiCopy.smallDiscoveriesKeptForTheNext,
         style: TextStyle(color: TideColors.muted),
       ),
@@ -884,8 +975,10 @@ class _TideglassAppState extends State<TideglassApp>
               MaterialPageRoute<void>(builder: (_) => StoryScreen(game: game)),
             ),
             icon: const Icon(Icons.auto_awesome_outlined),
-            label: Text(
-              'Restoration · ${game.story.campaign.restoredHarbor} / 6',
+            label: LocalizedText(
+              UiEnglish.appRestorationGameStoryCampaignRestoredHarbor(
+                game.story.campaign.restoredHarbor,
+              ),
             ),
           ),
         ),
@@ -893,10 +986,14 @@ class _TideglassAppState extends State<TideglassApp>
         padding: const EdgeInsets.only(bottom: 18),
         child: OutlinedButton.icon(
           onPressed: () => Navigator.of(context).push(
-            MaterialPageRoute<void>(builder: (_) => SupportScreen(game: game)),
+            MaterialPageRoute<void>(
+              builder: (_) => widget.services == null
+                  ? SupportScreen(game: game)
+                  : ServiceSupportScreen(game: game, manager: widget.services!),
+            ),
           ),
           icon: const Icon(Icons.handshake_outlined),
-          label: const Text('Crew support'),
+          label: const LocalizedText(UiEnglish.appCrewSupport),
         ),
       ),
       if (game.story.season != null)
@@ -906,7 +1003,7 @@ class _TideglassAppState extends State<TideglassApp>
             key: const ValueKey('open-season'),
             onPressed: () => _openSeason(context),
             icon: const Icon(Icons.nights_stay_outlined),
-            label: Text(game.catalogue!.seasonDefinition.title),
+            label: LocalizedText(game.catalogue!.seasonDefinition.title),
           ),
         ),
       Padding(
@@ -915,9 +1012,29 @@ class _TideglassAppState extends State<TideglassApp>
           key: const ValueKey('open-cosmetics'),
           onPressed: () => _openCosmetics(context),
           icon: const Icon(Icons.palette_outlined),
-          label: const Text('Harbor appearances'),
+          label: const LocalizedText(UiEnglish.appHarborAppearances),
         ),
       ),
+      if (widget.services != null &&
+          widget.onExport != null &&
+          widget.onImport != null)
+        Padding(
+          padding: const EdgeInsets.only(bottom: 18),
+          child: OutlinedButton.icon(
+            key: const ValueKey('open-services'),
+            onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute<void>(
+                builder: (_) => ServiceSettings(
+                  manager: widget.services!,
+                  onExportHarbor: widget.onExport!,
+                  onImportHarbor: widget.onImport!,
+                ),
+              ),
+            ),
+            icon: const Icon(Icons.cloud_outlined),
+            label: const LocalizedText(UiEnglish.appAccountCloudSaves),
+          ),
+        ),
       _daily(context),
       _panel(child: ContractPanel(game: game)),
       if (game.state.charts >= BigInt.from(10))
@@ -930,14 +1047,14 @@ class _TideglassAppState extends State<TideglassApp>
               ),
             ),
             icon: const Icon(Icons.route_outlined),
-            label: const Text('Edit the crew’s automation plan'),
+            label: const LocalizedText(UiEnglish.appEditTheCrewSAutomationPlan),
           ),
         ),
       _panel(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
+            const LocalizedText(
               UiCopy.aLightLeftOn,
               style: TextStyle(
                 color: TideColors.amber,
@@ -946,9 +1063,9 @@ class _TideglassAppState extends State<TideglassApp>
               ),
             ),
             const SizedBox(height: 16),
-            const Text(UiCopy.theOceanDidNotForgetIts),
+            const LocalizedText(UiCopy.theOceanDidNotForgetIts),
             const SizedBox(height: 12),
-            const Text(
+            const LocalizedText(
               UiCopy.oneSkiffOneLanternEnoughTo,
               style: TextStyle(color: TideColors.muted),
             ),
@@ -958,19 +1075,19 @@ class _TideglassAppState extends State<TideglassApp>
                 game.readArchive('archive.intro');
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
-                    content: Text(
-                      'An archive interaction recorded for your crew contracts.',
+                    content: LocalizedText(
+                      UiEnglish.appAnArchiveInteractionRecordedForYourCrew,
                     ),
                   ),
                 );
               },
-              child: const Text('Reflect on this entry'),
+              child: const LocalizedText(UiEnglish.appReflectOnThisEntry),
             ),
           ],
         ),
       ),
       const SizedBox(height: 24),
-      Text(Copy.help, style: Theme.of(context).textTheme.titleLarge),
+      LocalizedText(Copy.help, style: Theme.of(context).textTheme.titleLarge),
       const SizedBox(height: 16),
       _help(UiCopy.whileYouAreAway, Copy.offlineHelp, Icons.bedtime_outlined),
       _help(
@@ -980,7 +1097,7 @@ class _TideglassAppState extends State<TideglassApp>
       ),
       _help(UiCopy.aPermanentAtlas, Copy.rechartKept, Icons.explore_outlined),
       const SizedBox(height: 18),
-      Text(
+      LocalizedText(
         game.hasPersistence
             ? UiCopy.yourHarborIsSavedOnThis
             : UiCopy.sessionPreviewLocalSavingIsNot,
@@ -991,7 +1108,7 @@ class _TideglassAppState extends State<TideglassApp>
         OutlinedButton.icon(
           onPressed: () => _export(context),
           icon: const Icon(Icons.file_upload_outlined),
-          label: const Text(UiCopy.exportMyHarbor),
+          label: const LocalizedText(UiCopy.exportMyHarbor),
         ),
       ],
       if (widget.onImport != null) ...[
@@ -999,7 +1116,7 @@ class _TideglassAppState extends State<TideglassApp>
         OutlinedButton.icon(
           onPressed: () => _import(context),
           icon: const Icon(Icons.file_download_outlined),
-          label: const Text(UiCopy.importASavedHarbor),
+          label: const LocalizedText(UiCopy.importASavedHarbor),
         ),
       ],
       const SizedBox(height: 12),
@@ -1009,7 +1126,7 @@ class _TideglassAppState extends State<TideglassApp>
           applicationName: Copy.title,
           applicationVersion: '0.1.0',
         ),
-        child: const Text(UiCopy.openSourceLicenses),
+        child: const LocalizedText(UiCopy.openSourceLicenses),
       ),
     ],
   );
@@ -1017,21 +1134,25 @@ class _TideglassAppState extends State<TideglassApp>
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Text(
+        LocalizedText(
           UiCopy.theHarborSRhythm,
           style: Theme.of(context).textTheme.titleLarge,
         ),
         const SizedBox(height: 14),
         _dataRow(UiCopy.focusStored, '${game.state.focusCharges} / 12'),
         const SizedBox(height: 8),
-        const Text(
+        const LocalizedText(
           UiCopy.oneChargeEveryTwoHoursEach,
           style: TextStyle(color: TideColors.muted, fontSize: 12),
         ),
         if (game.state.focusRemainingMicros > BigInt.zero) ...[
           const SizedBox(height: 8),
-          Text(
-            'Focused for ${durationLabel(Duration(microseconds: game.state.focusRemainingMicros.toInt()))}',
+          LocalizedText(
+            UiEnglish.appFocusedForDurationLabelDurationMicrosecondsGameState(
+              durationLabel(
+                Duration(microseconds: game.state.focusRemainingMicros.toInt()),
+              ),
+            ),
             style: const TextStyle(color: TideColors.teal),
           ),
         ],
@@ -1039,12 +1160,12 @@ class _TideglassAppState extends State<TideglassApp>
         OutlinedButton(
           key: const ValueKey('activate-focus'),
           onPressed: () => openCalibration(context, game),
-          child: const Text(UiCopy.focusTheConstellation),
+          child: const LocalizedText(UiCopy.focusTheConstellation),
         ),
         const SizedBox(height: 22),
         _dataRow(UiCopy.surveysComplete, '${game.state.completedSurveys} / 3'),
         const SizedBox(height: 8),
-        const Text(
+        const LocalizedText(
           UiCopy.oneSurveyEveryEightHoursUp,
           style: TextStyle(color: TideColors.muted, fontSize: 12),
         ),
@@ -1054,7 +1175,11 @@ class _TideglassAppState extends State<TideglassApp>
           onPressed: game.state.completedSurveys > 0
               ? game.collectSurveys
               : null,
-          child: Text('Collect ${game.state.completedSurveys * 10} Notes'),
+          child: LocalizedText(
+            UiEnglish.appCollectGameStateCompletedSurveysNotes(
+              game.state.completedSurveys * 10,
+            ),
+          ),
         ),
         const SizedBox(height: 12),
         _dataRow(UiCopy.surveyNotes, game.state.surveyNotes.toString()),
@@ -1064,9 +1189,11 @@ class _TideglassAppState extends State<TideglassApp>
   Future<void> _openSeason(BuildContext context) async {
     final audio = game.audio;
     if (audio != null) unawaited(audio.startMusic(TideMusic.current));
-    await Navigator.of(
-      context,
-    ).push(MaterialPageRoute<void>(builder: (_) => SeasonScreen(game: game)));
+    await Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (_) => SeasonScreen(game: game, services: widget.services),
+      ),
+    );
     if (mounted && audio != null) {
       unawaited(
         audio.startMusic(
@@ -1079,22 +1206,24 @@ class _TideglassAppState extends State<TideglassApp>
   Future<void> _openCosmetics(BuildContext context) =>
       Navigator.of(context).push(
         MaterialPageRoute<void>(
-          builder: (_) => ListenableBuilder(
-            listenable: game,
-            builder: (context, _) => CosmeticsScreen(
-              ownedIds: game.ownedCosmetics,
-              equippedId: game.visibleAppearance,
-              equippedDecorationId: game.story.equippedDecoration,
-              onEquip: game.equipCosmetic,
-              onUnequipDecoration: game.unequipDecoration,
-              onBuyDecoration: game.buyDecoration,
-              notes: game.state.surveyNotes > BigInt.from(1000000000)
-                  ? 1000000000
-                  : game.state.surveyNotes.toInt(),
-              previewCounts: game.state.counts,
-              restoration: game.story.campaign.restoredHarbor,
-            ),
-          ),
+          builder: (_) => widget.services != null
+              ? CommerceScreen(game: game, manager: widget.services!)
+              : ListenableBuilder(
+                  listenable: game,
+                  builder: (context, _) => CosmeticsScreen(
+                    ownedIds: game.ownedCosmetics,
+                    equippedId: game.visibleAppearance,
+                    equippedDecorationId: game.story.equippedDecoration,
+                    onEquip: game.equipCosmetic,
+                    onUnequipDecoration: game.unequipDecoration,
+                    onBuyDecoration: game.buyDecoration,
+                    notes: game.state.surveyNotes > BigInt.from(1000000000)
+                        ? 1000000000
+                        : game.state.surveyNotes.toInt(),
+                    previewCounts: game.state.counts,
+                    restoration: game.story.campaign.restoredHarbor,
+                  ),
+                ),
         ),
       );
 
@@ -1109,9 +1238,12 @@ class _TideglassAppState extends State<TideglassApp>
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(title, style: const TextStyle(fontWeight: FontWeight.w600)),
+              LocalizedText(
+                title,
+                style: const TextStyle(fontWeight: FontWeight.w600),
+              ),
               const SizedBox(height: 6),
-              Text(
+              LocalizedText(
                 body,
                 style: const TextStyle(color: TideColors.muted, fontSize: 13),
               ),
@@ -1125,16 +1257,16 @@ class _TideglassAppState extends State<TideglassApp>
     BuildContext context,
     ReturnReport report,
   ) => AlertDialog(
-    title: const Text(Copy.returnTitle),
+    title: const LocalizedText(Copy.returnTitle),
     content: SingleChildScrollView(
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(Copy.returnBody),
+          const LocalizedText(Copy.returnBody),
           const SizedBox(height: 20),
-          Text(
-            '+${number(report.earnedMicros)} R',
+          LocalizedText(
+            UiEnglish.appNumberReportEarnedMicrosR(number(report.earnedMicros)),
             style: const TextStyle(color: TideColors.amber, fontSize: 30),
           ),
           const SizedBox(height: 20),
@@ -1150,14 +1282,14 @@ class _TideglassAppState extends State<TideglassApp>
             _dataRow(UiCopy.beyondStorage, durationLabel(report.uncredited)),
           ],
           const SizedBox(height: 16),
-          Text(
+          LocalizedText(
             report.automated
                 ? UiCopy.yourSavedAutomaticBuyingPolicyWas
                 : UiCopy.yourFleetCompositionRemainedUnchanged,
             style: const TextStyle(color: TideColors.muted, fontSize: 12),
           ),
           const SizedBox(height: 12),
-          const Text(
+          const LocalizedText(
             UiCopy.alreadyAddedToYourHarbor,
             style: TextStyle(color: TideColors.teal, fontSize: 12),
           ),
@@ -1167,7 +1299,7 @@ class _TideglassAppState extends State<TideglassApp>
     actions: [
       FilledButton(
         onPressed: () => Navigator.pop(context),
-        child: const Text(Copy.returnAcknowledge),
+        child: const LocalizedText(Copy.returnAcknowledge),
       ),
     ],
   );
@@ -1184,15 +1316,15 @@ class _TideglassAppState extends State<TideglassApp>
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Text(
+                LocalizedText(
                   Copy.settings,
                   style: Theme.of(context).textTheme.headlineMedium,
                 ),
                 const SizedBox(height: 16),
                 SwitchListTile.adaptive(
                   contentPadding: EdgeInsets.zero,
-                  title: const Text(Copy.reducedMotion),
-                  subtitle: const Text(Copy.reducedMotionHint),
+                  title: const LocalizedText(Copy.reducedMotion),
+                  subtitle: const LocalizedText(Copy.reducedMotionHint),
                   value: prefs.reduceMotion,
                   onChanged: (v) {
                     updatePrefs(prefs.copyWith(reduceMotion: v));
@@ -1201,8 +1333,8 @@ class _TideglassAppState extends State<TideglassApp>
                 ),
                 SwitchListTile.adaptive(
                   contentPadding: EdgeInsets.zero,
-                  title: const Text(Copy.largerText),
-                  subtitle: const Text(Copy.largerTextHint),
+                  title: const LocalizedText(Copy.largerText),
+                  subtitle: const LocalizedText(Copy.largerTextHint),
                   value: prefs.largeText,
                   onChanged: (v) {
                     updatePrefs(prefs.copyWith(largeText: v));
@@ -1211,8 +1343,8 @@ class _TideglassAppState extends State<TideglassApp>
                 ),
                 SwitchListTile.adaptive(
                   contentPadding: EdgeInsets.zero,
-                  title: const Text(Copy.scientific),
-                  subtitle: const Text(Copy.scientificHint),
+                  title: const LocalizedText(Copy.scientific),
+                  subtitle: const LocalizedText(Copy.scientificHint),
                   value: prefs.scientific,
                   onChanged: (v) {
                     updatePrefs(prefs.copyWith(scientific: v));
@@ -1220,7 +1352,7 @@ class _TideglassAppState extends State<TideglassApp>
                   },
                 ),
                 const SizedBox(height: 16),
-                const Text(
+                const LocalizedText(
                   UiCopy.yourDeviceSReducedMotionAnd,
                   style: TextStyle(color: TideColors.muted, fontSize: 12),
                 ),
@@ -1229,9 +1361,13 @@ class _TideglassAppState extends State<TideglassApp>
                   AudioSettings(audio: game.audio!),
                   const SizedBox(height: 24),
                 ],
+                if (widget.notifications != null) ...[
+                  NotificationSettings(service: widget.notifications!),
+                  const SizedBox(height: 24),
+                ],
                 FilledButton(
                   onPressed: () => Navigator.pop(context),
-                  child: const Text(UiCopy.returnToTheHarbor),
+                  child: const LocalizedText(UiCopy.returnToTheHarbor),
                 ),
               ],
             ),
@@ -1245,7 +1381,7 @@ class _TideglassAppState extends State<TideglassApp>
     final backup = await showDialog<String>(
       context: context,
       builder: (dialog) => AlertDialog(
-        title: const Text(UiCopy.chooseASavedHarbor),
+        title: const LocalizedText(UiCopy.chooseASavedHarbor),
         content: SizedBox(
           width: 500,
           child: SingleChildScrollView(
@@ -1253,15 +1389,17 @@ class _TideglassAppState extends State<TideglassApp>
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(UiCopy.importReplacesThisDeviceSCurrent),
+                const LocalizedText(UiCopy.importReplacesThisDeviceSCurrent),
                 const SizedBox(height: 18),
                 TextField(
                   key: const ValueKey('import-save-text'),
                   controller: text,
                   minLines: 5,
                   maxLines: 10,
-                  decoration: const InputDecoration(
-                    labelText: UiCopy.pasteYourExportedHarbor,
+                  decoration: InputDecoration(
+                    labelText: Presentation.text(
+                      UiCopy.pasteYourExportedHarbor,
+                    ),
                     border: OutlineInputBorder(),
                   ),
                 ),
@@ -1272,11 +1410,11 @@ class _TideglassAppState extends State<TideglassApp>
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(dialog),
-            child: const Text(UiCopy.keepThisHarbor),
+            child: const LocalizedText(UiCopy.keepThisHarbor),
           ),
           FilledButton(
             onPressed: () => Navigator.pop(dialog, text.text.trim()),
-            child: const Text(UiCopy.replaceLocalHarbor),
+            child: const LocalizedText(UiCopy.replaceLocalHarbor),
           ),
         ],
       ),
@@ -1288,7 +1426,9 @@ class _TideglassAppState extends State<TideglassApp>
     } catch (_) {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text(UiCopy.thisHarborCouldNotBeImported)),
+          const SnackBar(
+            content: LocalizedText(UiCopy.thisHarborCouldNotBeImported),
+          ),
         );
       }
     }
@@ -1301,7 +1441,7 @@ class _TideglassAppState extends State<TideglassApp>
       await showDialog<void>(
         context: context,
         builder: (dialog) => AlertDialog(
-          title: const Text(UiCopy.yourHarborBackup),
+          title: const LocalizedText(UiCopy.yourHarborBackup),
           content: SizedBox(
             width: 500,
             child: SingleChildScrollView(child: SelectableText(value)),
@@ -1309,7 +1449,7 @@ class _TideglassAppState extends State<TideglassApp>
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(dialog),
-              child: const Text(UiCopy.done),
+              child: const LocalizedText(UiCopy.done),
             ),
           ],
         ),
@@ -1317,7 +1457,9 @@ class _TideglassAppState extends State<TideglassApp>
     } catch (_) {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text(UiCopy.theBackupCouldNotBeExported)),
+          const SnackBar(
+            content: LocalizedText(UiCopy.theBackupCouldNotBeExported),
+          ),
         );
       }
     }
@@ -1331,8 +1473,11 @@ class _TideglassAppState extends State<TideglassApp>
         children: [
           const Icon(Icons.warning_amber_rounded, color: TideColors.warning),
           const SizedBox(width: 12),
-          const Expanded(child: Text(Copy.saveFailed)),
-          TextButton(onPressed: game.save, child: const Text('Retry')),
+          const Expanded(child: LocalizedText(Copy.saveFailed)),
+          TextButton(
+            onPressed: game.save,
+            child: const LocalizedText(UiEnglish.appRetry),
+          ),
         ],
       ),
     ),
@@ -1343,10 +1488,10 @@ class _TideglassAppState extends State<TideglassApp>
       padding: const EdgeInsets.only(left: 16),
       child: Row(
         children: [
-          Expanded(child: Text(text)),
+          Expanded(child: LocalizedText(text)),
           IconButton(
             onPressed: dismiss,
-            tooltip: UiCopy.dismissRecoveryNotice,
+            tooltip: Presentation.text(UiCopy.dismissRecoveryNotice),
             icon: const Icon(Icons.close),
           ),
         ],
@@ -1381,8 +1526,8 @@ class _TideglassAppState extends State<TideglassApp>
     spacing: 20,
     runSpacing: 4,
     children: [
-      Text(label, style: const TextStyle(color: TideColors.muted)),
-      Text(value, style: const TextStyle(fontWeight: FontWeight.w600)),
+      LocalizedText(label, style: const TextStyle(color: TideColors.muted)),
+      LocalizedText(value, style: const TextStyle(fontWeight: FontWeight.w600)),
     ],
   );
 }

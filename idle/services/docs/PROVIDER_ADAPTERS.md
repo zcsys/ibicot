@@ -1,0 +1,23 @@
+# Provider adapter extension
+
+This extension follows the frozen base report in `services/evidence/author-verification.json`. It does not change or qualify that base's external-integration gates. The default runner still instantiates only fail-closed unconfigured verifiers. No credentials, real purchases, ads, hosted callbacks or account spending were used.
+
+Optional dependencies are pinned in `services/requirements-providers.txt` with the complete resolved environment in `services/requirements-providers.lock`. They are installed only in `.tooling/services-venv`; the core local HTTP service has no third-party dependency.
+
+```sh
+.tooling/services-venv/bin/python -m unittest discover -s tests/services/providers -v
+```
+
+`providers/stores.py` implements actual network verification:
+
+- Apple uses the official `app-store-server-library` to request fresh signed transaction data and verify certificate chain, signature, application/environment and account UUID binding. Products must be the configured non-consumable, quantity one. Refund revocation and provider signature date feed the ledger. Root certificates, signing key, issuer/key ID, app identity and environment must be explicitly supplied. A stale client-supplied JWS is never accepted as a fresh refund check.
+- Google uses `google-auth`'s authenticated HTTPS session against `purchases.productsv2`, binds package/product/account, rejects test purchases unless explicitly configured, rejects rental/consumed/multi-quantity shape, and maps pending/purchased/cancelled/full-refund states. Transaction identities in the ledger are SHA-256 hashes of purchase tokens. The adapter requires protected token remember/lookup functions for future acknowledgement; no permissive or plaintext token vault is provided. A production encrypted token vault, key rotation and account deletion hooks remain required before enabling this adapter.
+- Google acknowledgement rechecks ownership and respects already-acknowledged responses before sending the real API request. Apple completion is performed by native StoreKit after durable verified grant; the provider deliberately refuses to assert a nonexistent server-side Apple acknowledgement. The base service's generic acknowledgement dashboard therefore still needs a platform-specific completion observation before production operation.
+
+`providers/admob.py` implements ECDSA verification of the **original encoded query prefix**, Google's public-key lookup with bounded refresh, timestamp window, configured callback ad-unit identity, account/day/slot binding and exact one-token reward. `AdMobCallbackApplication` wraps a configured WSGI application at `/providers/admob/callback` and stores a claim through the same transactional slot ledger. Even a duplicate slot requires a valid signature before the callback returns success. A native SDK reward callback never grants the token; the native adapter queries the verified ledger. Callback ad-unit IDs must match the numeric/string IDs actually sent by AdMob, while the native SDK uses its complete configured `ca-app-pub-.../...` unit ID. No sample ad unit can enable the native adapter.
+
+The extension's tests cover provider-response mapping, wrong-account/product/environment rejection, fresh Apple lookup, actual Apple SDK forged-JWS rejection, Google acknowledgement retry, real locally generated ECDSA signature validation/tamper rejection, and a signed callback committing a slot once to SQLite. Responses and signing identities used by these tests are synthetic fixtures. They are **not** successful Apple/Google transaction or AdMob production evidence.
+
+Still required: provider credentials and application/products; Apple root certificate acquisition/rotation; encrypted Google token vault and deletion integration; authenticated notification/reconciliation workers; hosted HTTPS callback, rate/timeout controls; store sandbox native tests; consent/network audit; acknowledgement/restore/refund interruption drills. Keep commerce/ad configuration false until these are concrete.
+
+Primary references: [Apple's official Python library](https://github.com/apple/app-store-server-library-python), [Google product purchase resource](https://developers.google.com/android-publisher/api-ref/rest/v3/purchases.productsv2), [Google acknowledgement API](https://developers.google.com/android-publisher/api-ref/rest/v3/purchases.products/acknowledge), and [AdMob server-side verification](https://developers.google.com/admob/android/ssv).

@@ -12,16 +12,16 @@ cd game/platform
 ../../tool/dart analyze
 ```
 
-The runner binds only `127.0.0.1`. It uses a threaded WSGI development server. The application is a standard WSGI callable; public deployment requires an authenticated operating arrangement, a production application server, TLS, bounded request timeouts/body limits and staging qualification. The development server is not a public hosting solution. No real store/ad verifier is shipped: both fail closed with `verification_unavailable`. Synthetic verifier classes live only in tests.
+The runner binds only `127.0.0.1`. It uses a threaded WSGI development server. The application is a standard WSGI callable; public deployment requires an authenticated operating arrangement, a production application server, TLS, bounded request timeouts/body limits and staging qualification. The development server is not a public hosting solution. The default runner deliberately leaves store/ad verification unconfigured and fails closed with `verification_unavailable`. Optional real-provider source adapters are now supplied separately in `providers/`; see [provider setup and remaining qualification](docs/PROVIDER_ADAPTERS.md). They require explicit application credentials, trusted keys and operating configuration. Synthetic verifier classes live only in tests; no actual provider purchase/ad has been exercised.
 
 ## Implemented boundaries
 
 | System | Working behavior | Limit still requiring integration or external evidence |
 |---|---|---|
-| Optional account | Explicit cloud opt-in; random 256-bit recovery code; hashed credentials; expiring/revocable device sessions; rotation; export/deletion | Native secure storage, comprehensible recovery UI, hosted TLS and security review |
+| Optional account | Explicit cloud opt-in; random 256-bit recovery code; hashed credentials; expiring/revocable device sessions; rotation; export/deletion | Native secure storage/UI are implemented; physical-device qualification, hosted TLS and security review remain |
 | Cloud recovery | Full checked envelope snapshots, immutable identities, compare-and-swap selection, preserved divergent tips and detached history | Native two-device drill and staging; payload economic validity remains the native core's responsibility |
 | Independent ownership | Server-side provider boundary; product allowlist; pending/purchased/revoked states; durable grant before acknowledgement; deduplicated restore | Actual Apple/Google authentication, app/product setup, signed notifications, reconciliation worker, purchase/restore/refund evidence |
-| Support claims | One ledger per account/day/slot, six slots; briefing/ad share slots; no-fill leaves briefing available; persisted delivery acknowledgement | Actual provider server-side ad verification and native delivery; never label a client callback verified |
+| Support claims | One ledger per account/day/slot, six slots; briefing/ad share slots; no-fill leaves briefing available; persisted delivery acknowledgement | Provider verification/native bridge source is implemented; actual configured callbacks and native delivery qualification remain |
 | Pass XP | Kept entirely in the selected gameplay branch; no service XP grant endpoint | Main/event shared receipts remain the core/events responsibility; never merge two branches' XP |
 | Telemetry | Separate consent; strict fields; event deduplication; bounded retention and native-client buffer; refusal clears local buffer | Native instrumentation and SDK/network audit; full install cohorts, crashes and D30 are not measured by these tests |
 | Operations | Consistent SQLite backup, schema forward guard, optional feature switches, privacy export, dashboard with unknown session outcomes | Hosted backup erasure/restore procedures, alert delivery, real staged rollout and operating coverage |

@@ -1,3 +1,5 @@
+import 'presentation.dart';
+import 'strings.dart';
 import 'package:flutter/material.dart';
 import 'package:tideglass_core/tideglass_core.dart';
 import 'package:tideglass_events/tideglass_events.dart';
@@ -7,12 +9,20 @@ import 'number_format.dart';
 import 'palette.dart';
 import 'cosmetic_art.dart';
 import 'producer_art.dart';
+import 'native_services.dart';
+import 'service_cosmetics.dart';
 
 /// Seasonal presentation has no local award or entitlement state.
 class SeasonScreen extends StatefulWidget {
-  const SeasonScreen({super.key, required this.game, this.initialTab = 0});
+  const SeasonScreen({
+    super.key,
+    required this.game,
+    this.initialTab = 0,
+    this.services,
+  });
   final GameController game;
   final int initialTab;
+  final NativeServicesManager? services;
   @override
   State<SeasonScreen> createState() => _SeasonScreenState();
 }
@@ -31,9 +41,14 @@ class _SeasonScreenState extends State<SeasonScreen> {
 
   @override
   Widget build(BuildContext context) => ListenableBuilder(
-    listenable: game,
+    listenable: Listenable.merge([
+      game,
+      if (widget.services != null) widget.services!,
+    ]),
     builder: (context, _) => Scaffold(
-      appBar: AppBar(title: const Text('Returning stars')),
+      appBar: AppBar(
+        title: const LocalizedText(UiEnglish.seasonReturningStars),
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           controller: scroll,
@@ -45,7 +60,9 @@ class _SeasonScreenState extends State<SeasonScreen> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   if (game.story.season == null || game.story.pass == null)
-                    const Text('This seasonal catalogue is not available.')
+                    const LocalizedText(
+                      UiEnglish.seasonThisSeasonalCatalogueIsNotAvailable,
+                    )
                   else ...[
                     Wrap(
                       spacing: 8,
@@ -54,7 +71,13 @@ class _SeasonScreenState extends State<SeasonScreen> {
                         for (var i = 0; i < 3; i++)
                           ChoiceChip(
                             key: ValueKey('season-tab-$i'),
-                            label: Text(['Fleet', 'Pass', 'Contracts'][i]),
+                            label: LocalizedText(
+                              [
+                                UiEnglish.seasonFleet,
+                                UiEnglish.seasonPass,
+                                UiEnglish.seasonContracts,
+                              ][i],
+                            ),
                             selected: tab == i,
                             onSelected: (_) {
                               setState(() => tab = i);
@@ -64,7 +87,7 @@ class _SeasonScreenState extends State<SeasonScreen> {
                       ],
                     ),
                     const SizedBox(height: 24),
-                    Text(
+                    LocalizedText(
                       definition.title,
                       style: Theme.of(context).textTheme.headlineMedium,
                     ),
@@ -85,28 +108,37 @@ class _SeasonScreenState extends State<SeasonScreen> {
   );
 
   List<Widget> _fleet() => [
-    Text(_phaseLabel(), style: const TextStyle(color: TideColors.amber)),
+    LocalizedText(
+      _phaseLabel(),
+      style: const TextStyle(color: TideColors.amber),
+    ),
     const SizedBox(height: 8),
-    Text(
-      '${_utcDate(season.startsAtMicros)} — ${_utcDate(season.endsAtMicros)} UTC\n28 days${game.catalogue!.seasonRolloutMode == 'local_development' ? ' · local preview schedule' : ''}',
+    LocalizedText(
+      UiEnglish.seasonUtcDateSeasonStartsAtMicrosUtcDateSeasonEndsAtMicrosUTC(
+        _utcDate(season.startsAtMicros),
+        _utcDate(season.endsAtMicros),
+        game.catalogue!.seasonRolloutMode == 'local_development'
+            ? UiEnglish.seasonLocalPreviewSchedule
+            : '',
+      ),
       style: _muted,
     ),
     const SizedBox(height: 12),
-    Text(definition.copy[season.phase.name]!, style: _muted),
+    LocalizedText(definition.copy[season.phase.name]!, style: _muted),
     if (season.phase == SeasonPhase.archived) ...[
       const SizedBox(height: 12),
-      Text(definition.copy['ended']!, style: _muted),
+      LocalizedText(definition.copy['ended']!, style: _muted),
       const SizedBox(height: 12),
-      Text(definition.copy['archive_resume']!, style: _muted),
+      LocalizedText(definition.copy['archive_resume']!, style: _muted),
       const SizedBox(height: 12),
       FilledButton(
         key: const ValueKey('season-archive-toggle'),
         onPressed: () =>
             _perform(() => game.setSeasonArchiveActive(!season.archiveActive)),
-        child: Text(
+        child: LocalizedText(
           season.archiveActive
-              ? 'Pause archived fleet'
-              : 'Resume archived fleet · free',
+              ? UiEnglish.seasonPauseArchivedFleet
+              : UiEnglish.seasonResumeArchivedFleetFree,
         ),
       ),
     ],
@@ -121,8 +153,8 @@ class _SeasonScreenState extends State<SeasonScreen> {
       Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const Text(
-            'SEASONAL RADIANCE',
+          const LocalizedText(
+            UiEnglish.seasonSEASONALRADIANCE,
             style: TextStyle(
               color: TideColors.amber,
               fontSize: 11,
@@ -130,18 +162,23 @@ class _SeasonScreenState extends State<SeasonScreen> {
             ),
           ),
           const SizedBox(height: 8),
-          Text(
-            '${compactMicros(season.fleet.walletMicros)} R',
+          LocalizedText(
+            UiEnglish.seasonCompactMicrosSeasonFleetWalletMicrosR(
+              compactMicros(season.fleet.walletMicros),
+            ),
             key: const ValueKey('season-wallet'),
             style: Theme.of(context).textTheme.headlineLarge,
           ),
-          Text(
-            '${season.canPlay ? '+' : 'Paused · potential '}${compactFixed(game.seasonEngine!.outputPerSecond(season))} R/s',
+          LocalizedText(
+            UiEnglish.seasonSeasonCanPlayPausedPotentialCompactFixedGameSeasonEngine(
+              season.canPlay ? '+' : UiEnglish.seasonPausedPotential,
+              compactFixed(game.seasonEngine!.outputPerSecond(season)),
+            ),
             style: const TextStyle(color: TideColors.teal),
           ),
           const SizedBox(height: 14),
-          const Text(
-            'This fleet keeps its own Radiance and production. Your main harbor continues independently. No Charts, Focus, Support or purchases increase its power.',
+          const LocalizedText(
+            UiEnglish.seasonThisFleetKeepsItsOwnRadianceAnd,
             style: _muted,
           ),
         ],
@@ -154,8 +191,10 @@ class _SeasonScreenState extends State<SeasonScreen> {
           SwitchListTile.adaptive(
             key: const ValueKey('season-automatic'),
             contentPadding: EdgeInsets.zero,
-            title: const Text('Let the crew build'),
-            subtitle: const Text('Free automation for this separate fleet.'),
+            title: const LocalizedText(UiEnglish.seasonLetTheCrewBuild),
+            subtitle: const LocalizedText(
+              UiEnglish.seasonFreeAutomationForThisSeparateFleet,
+            ),
             value: season.automatic,
             onChanged: (value) =>
                 _perform(() => game.setSeasonPlan(automatic: value)),
@@ -166,18 +205,18 @@ class _SeasonScreenState extends State<SeasonScreen> {
               key: ValueKey('season-policy-${season.policy.name}'),
               initialValue: season.policy,
               isExpanded: true,
-              decoration: const InputDecoration(
-                labelText: 'Purchase approach',
+              decoration: InputDecoration(
+                labelText: Presentation.text(UiEnglish.seasonPurchaseApproach),
                 border: OutlineInputBorder(),
               ),
               items: const [
                 DropdownMenuItem(
                   value: SeasonPolicy.bestPayback,
-                  child: Text('Best payback'),
+                  child: LocalizedText(UiEnglish.seasonBestPayback),
                 ),
                 DropdownMenuItem(
                   value: SeasonPolicy.tierPriority,
-                  child: Text('Tier priority'),
+                  child: LocalizedText(UiEnglish.seasonTierPriority),
                 ),
               ],
               onChanged: (value) {
@@ -187,8 +226,8 @@ class _SeasonScreenState extends State<SeasonScreen> {
               },
             ),
             const SizedBox(height: 10),
-            const Text(
-              'Best payback waits for the most efficient purchase. Tier priority waits for the first unlocked tier in your order.',
+            const LocalizedText(
+              UiEnglish.seasonBestPaybackWaitsForTheMostEfficient,
               style: _muted,
             ),
             if (season.policy == SeasonPolicy.tierPriority)
@@ -196,20 +235,32 @@ class _SeasonScreenState extends State<SeasonScreen> {
                 Row(
                   children: [
                     Expanded(
-                      child: Text(
+                      child: LocalizedText(
                         '${i + 1}. ${TideglassEngine.producerNames[season.priority[i]]}',
                       ),
                     ),
                     IconButton(
                       key: ValueKey('season-priority-up-$i'),
-                      tooltip:
-                          'Move ${TideglassEngine.producerNames[season.priority[i]]} earlier',
+                      tooltip: Presentation.text(
+                        UiEnglish.seasonMoveTideglassEngineProducerNamesSeasonPriorityIEarlier(
+                          Presentation.authored(
+                            (TideglassEngine.producerNames[season.priority[i]])
+                                .toString(),
+                          ),
+                        ),
+                      ),
                       onPressed: i == 0 ? null : () => _move(i, -1),
                       icon: const Icon(Icons.arrow_upward),
                     ),
                     IconButton(
-                      tooltip:
-                          'Move ${TideglassEngine.producerNames[season.priority[i]]} later',
+                      tooltip: Presentation.text(
+                        UiEnglish.seasonMoveTideglassEngineProducerNamesSeasonPriorityILater(
+                          Presentation.authored(
+                            (TideglassEngine.producerNames[season.priority[i]])
+                                .toString(),
+                          ),
+                        ),
+                      ),
                       onPressed: i == 4 ? null : () => _move(i, 1),
                       icon: const Icon(Icons.arrow_downward),
                     ),
@@ -223,10 +274,10 @@ class _SeasonScreenState extends State<SeasonScreen> {
     _card(
       ExpansionTile(
         tilePadding: EdgeInsets.zero,
-        title: const Text('The returning-star network'),
+        title: const LocalizedText(UiEnglish.seasonTheReturningStarNetwork),
         children: [
-          const Text(
-            'Connections work from the first Skiff. Each column adds both source effects: coefficient × log₂(1 + source count / 25).',
+          const LocalizedText(
+            UiEnglish.seasonConnectionsWorkFromTheFirstSkiffEach,
             style: _muted,
           ),
           const SizedBox(height: 14),
@@ -234,12 +285,20 @@ class _SeasonScreenState extends State<SeasonScreen> {
             border: TableBorder.all(color: TideColors.line),
             children: [
               const TableRow(
-                children: [_Cell('Source'), _Cell('Loom'), _Cell('Dawn')],
+                children: [
+                  _Cell(UiEnglish.seasonSource),
+                  _Cell(UiEnglish.seasonLoom),
+                  _Cell(UiEnglish.seasonDawn),
+                ],
               ),
               for (var row = 0; row < 2; row++)
                 TableRow(
                   children: [
-                    _Cell(row == 0 ? 'Skiffs' : 'Nurseries'),
+                    _Cell(
+                      row == 0
+                          ? UiEnglish.seasonSkiffs
+                          : UiEnglish.seasonNurseries,
+                    ),
                     _Cell('${definition.matrix[row][0]}%'),
                     _Cell('${definition.matrix[row][1]}%'),
                   ],
@@ -247,14 +306,24 @@ class _SeasonScreenState extends State<SeasonScreen> {
             ],
           ),
           const SizedBox(height: 12),
-          Text(
-            'Current Loom link: ${game.seasonEngine!.synergyMultiplier(season, 3).toDecimalString(decimals: 3)}×\nCurrent Dawn link: ${game.seasonEngine!.synergyMultiplier(season, 4).toDecimalString(decimals: 3)}×',
+          LocalizedText(
+            UiEnglish.seasonCurrentLoomLinkGameSeasonEngineSynergyMultiplierSeason(
+              game.seasonEngine!
+                  .synergyMultiplier(season, 3)
+                  .toDecimalString(decimals: 3),
+              game.seasonEngine!
+                  .synergyMultiplier(season, 4)
+                  .toDecimalString(decimals: 3),
+            ),
             style: _muted,
           ),
         ],
       ),
     ),
-    Text('Personal bearings', style: Theme.of(context).textTheme.titleLarge),
+    LocalizedText(
+      UiEnglish.seasonPersonalBearings,
+      style: Theme.of(context).textTheme.titleLarge,
+    ),
     const SizedBox(height: 14),
     for (final milestone in definition.milestones) _milestone(milestone),
   ];
@@ -280,8 +349,13 @@ class _SeasonScreenState extends State<SeasonScreen> {
               ),
               const SizedBox(width: 12),
               Expanded(
-                child: Text(
-                  '${TideglassEngine.producerNames[tier]}\n${season.fleet.counts[tier]} at work',
+                child: LocalizedText(
+                  UiEnglish.seasonTideglassEngineProducerNamesTierNSeasonFleetCounts(
+                    Presentation.authored(
+                      (TideglassEngine.producerNames[tier]).toString(),
+                    ),
+                    season.fleet.counts[tier],
+                  ),
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
               ),
@@ -289,8 +363,12 @@ class _SeasonScreenState extends State<SeasonScreen> {
           ),
           const SizedBox(height: 12),
           if (!unlocked)
-            Text(
-              'Needs 10 ${TideglassEngine.producerNames[tier - 1]}',
+            LocalizedText(
+              UiEnglish.seasonNeedsTideglassEngineProducerNamesTier(
+                Presentation.authored(
+                  (TideglassEngine.producerNames[tier - 1]).toString(),
+                ),
+              ),
               style: _muted,
             )
           else
@@ -303,7 +381,11 @@ class _SeasonScreenState extends State<SeasonScreen> {
                   onPressed: max > 0
                       ? () => _perform(() => game.buyInSeason(tier))
                       : null,
-                  child: Text('Build 1 · ${compactMicros(price)} R'),
+                  child: LocalizedText(
+                    UiEnglish.seasonBuildCompactMicrosPriceR(
+                      compactMicros(price),
+                    ),
+                  ),
                 ),
                 OutlinedButton(
                   key: ValueKey('season-max-$tier'),
@@ -312,7 +394,7 @@ class _SeasonScreenState extends State<SeasonScreen> {
                           () => game.buyInSeason(tier, maximum: true),
                         )
                       : null,
-                  child: Text('Build max · $max'),
+                  child: LocalizedText(UiEnglish.seasonBuildMaxMax(max)),
                 ),
               ],
             ),
@@ -328,12 +410,18 @@ class _SeasonScreenState extends State<SeasonScreen> {
       Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text(value.title, style: Theme.of(context).textTheme.titleMedium),
+          LocalizedText(
+            value.title,
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
           const SizedBox(height: 8),
-          Text(value.body, style: _muted),
+          LocalizedText(value.body, style: _muted),
           const SizedBox(height: 10),
-          Text(
-            '${compactMicros(season.fleet.lifetimeMicros)} / ${compactMicros(value.lifetimeMicros)} lifetime seasonal R',
+          LocalizedText(
+            UiEnglish.seasonCompactMicrosSeasonFleetLifetimeMicrosCompactMicrosValueLifetime(
+              compactMicros(season.fleet.lifetimeMicros),
+              compactMicros(value.lifetimeMicros),
+            ),
             style: _muted,
           ),
           const SizedBox(height: 12),
@@ -342,9 +430,16 @@ class _SeasonScreenState extends State<SeasonScreen> {
             onPressed: ready && !claimed
                 ? () => _perform(() => game.claimSeasonMilestone(value.id))
                 : null,
-            child: Text(claimed ? 'Badge kept' : 'Keep personal badge'),
+            child: LocalizedText(
+              claimed
+                  ? UiEnglish.seasonBadgeKept
+                  : UiEnglish.seasonKeepPersonalBadge,
+            ),
           ),
-          const Text('A personal keepsake. No economic reward.', style: _muted),
+          const LocalizedText(
+            UiEnglish.seasonAPersonalKeepsakeNoEconomicReward,
+            style: _muted,
+          ),
         ],
       ),
     );
@@ -355,19 +450,19 @@ class _SeasonScreenState extends State<SeasonScreen> {
     final xp = game.state.daily.passXpById[definition.passId] ?? BigInt.zero;
     final selected = game.state.daily.selectedPassId == definition.passId;
     return [
-      Text(definition.copy['pass']!, style: _muted),
+      LocalizedText(definition.copy['pass']!, style: _muted),
       const SizedBox(height: 16),
       _card(
         Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text(
-              'Level $level / 30',
+            LocalizedText(
+              UiEnglish.seasonLevelLevel(level),
               key: const ValueKey('pass-level'),
               style: Theme.of(context).textTheme.headlineMedium,
             ),
             const SizedBox(height: 8),
-            Text('$xp XP · 500 XP per level'),
+            LocalizedText(UiEnglish.seasonXpXPXPPerLevel(xp)),
             const SizedBox(height: 12),
             LinearProgressIndicator(
               value: level == 30 ? 1 : (xp % BigInt.from(500)).toInt() / 500,
@@ -380,8 +475,8 @@ class _SeasonScreenState extends State<SeasonScreen> {
                   Icon(Icons.check_circle_outline, color: TideColors.teal),
                   SizedBox(width: 12),
                   Expanded(
-                    child: Text(
-                      'Selected for future contract XP',
+                    child: LocalizedText(
+                      UiEnglish.seasonSelectedForFutureContractXP,
                       style: TextStyle(color: TideColors.teal),
                     ),
                   ),
@@ -393,18 +488,18 @@ class _SeasonScreenState extends State<SeasonScreen> {
                 onPressed: season.phase != SeasonPhase.upcoming
                     ? () => _perform(game.selectSeasonPass)
                     : null,
-                child: const Text('Select this pass'),
+                child: const LocalizedText(UiEnglish.seasonSelectThisPass),
               ),
             const SizedBox(height: 10),
-            const Text(
-              'Main and seasonal objectives share the same daily slots: 250 XP and 10 Notes once per completed slot. This pass stays available after the season ends.',
+            const LocalizedText(
+              UiEnglish.seasonMainAndSeasonalObjectivesShareTheSame,
               style: _muted,
             ),
           ],
         ),
       ),
-      const Text(
-        'FREE TRACK · 30 LEVELS',
+      const LocalizedText(
+        UiEnglish.seasonFREETRACKLEVELS,
         style: TextStyle(
           color: TideColors.amber,
           letterSpacing: 1.2,
@@ -412,11 +507,24 @@ class _SeasonScreenState extends State<SeasonScreen> {
         ),
       ),
       const SizedBox(height: 12),
-      const Text(
-        'Ten free appearances and twenty readable accounts. Ten premium appearances are previewed at every third level.',
+      const LocalizedText(
+        UiEnglish.seasonTenFreeAppearancesAndTwentyReadableAccounts,
         style: _muted,
       ),
       const SizedBox(height: 18),
+      if (widget.services != null) ...[
+        OutlinedButton(
+          key: const ValueKey('season-commerce'),
+          onPressed: () => Navigator.of(context).push(
+            MaterialPageRoute<void>(
+              builder: (_) =>
+                  CommerceScreen(game: game, manager: widget.services!),
+            ),
+          ),
+          child: const LocalizedText(UiEnglish.seasonCollectionAndStoreStatus),
+        ),
+        const SizedBox(height: 18),
+      ],
       for (var value = 1; value <= 30; value++) _rewardLevel(value, level),
     ];
   }
@@ -442,13 +550,18 @@ class _SeasonScreenState extends State<SeasonScreen> {
               : Icons.menu_book_outlined,
           color: claimed ? TideColors.teal : TideColors.amber,
         ),
-        title: Text('Level $value · ${free.title}'),
-        subtitle: Text(
+        title: LocalizedText(
+          UiEnglish.seasonLevelValueFreeTitle(
+            value,
+            Presentation.authored((free.title).toString()),
+          ),
+        ),
+        subtitle: LocalizedText(
           claimed
-              ? 'Kept in your collection'
+              ? UiEnglish.seasonKeptInYourCollection
               : value <= unlockedLevel
-              ? 'Ready to collect'
-              : '${value * 500} XP',
+              ? UiEnglish.seasonReadyToCollect
+              : UiEnglish.seasonValueXP(value * 500),
           style: _muted,
         ),
         children: [
@@ -457,10 +570,13 @@ class _SeasonScreenState extends State<SeasonScreen> {
             children: [
               if (free.kind == 'cosmetic') _appearancePreview(free),
               if (free.kind != 'archive_fragment' || claimed)
-                Text(free.body, key: ValueKey('reward-copy-${free.id}'))
+                LocalizedText(
+                  free.body,
+                  key: ValueKey('reward-copy-${free.id}'),
+                )
               else
-                Text(
-                  'Collect this account at level $value to read the next part of the watchkeeper’s record.',
+                LocalizedText(
+                  UiEnglish.seasonCollectThisAccountAtLevelValueTo(value),
                   style: _muted,
                 ),
               const SizedBox(height: 12),
@@ -469,35 +585,64 @@ class _SeasonScreenState extends State<SeasonScreen> {
                 onPressed: !claimed && value <= unlockedLevel
                     ? () => _perform(() => game.claimFreePassReward(free.id))
                     : null,
-                child: Text(
+                child: LocalizedText(
                   claimed
-                      ? 'Collected · free'
-                      : 'Keep free ${free.kind == 'cosmetic' ? 'appearance' : 'account'}',
+                      ? UiEnglish.seasonCollectedFree
+                      : UiEnglish.seasonKeepFreeFreeKindCosmeticAppearanceAccount(
+                          free.kind == 'cosmetic' ? 'appearance' : 'account',
+                        ),
                 ),
               ),
               if (premium != null) ...[
                 const Divider(height: 32),
-                const Text(
-                  'PREMIUM APPEARANCE · PREVIEW',
-                  style: TextStyle(
+                LocalizedText(
+                  widget.services != null &&
+                          verifiedPaidCosmetics(
+                            widget.services!,
+                            game,
+                          ).contains(premium.contentId)
+                      ? UiEnglish.seasonPREMIUMAPPEARANCEAVAILABLE
+                      : UiEnglish.seasonPREMIUMAPPEARANCEPREVIEW,
+                  style: const TextStyle(
                     color: TideColors.amber,
                     fontSize: 11,
                     letterSpacing: 1,
                   ),
                 ),
                 const SizedBox(height: 10),
-                Text(
+                LocalizedText(
                   premium.title,
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
                 _appearancePreview(premium),
-                Text(premium.body, style: _muted),
+                LocalizedText(premium.body, style: _muted),
                 const SizedBox(height: 10),
-                const Text(
-                  'Purchasing and premium delivery are unavailable in this build. This preview grants no ownership or game power.',
-                  key: ValueKey('premium-unavailable'),
-                  style: _muted,
-                ),
+                if (widget.services == null || !widget.services!.configured)
+                  const LocalizedText(
+                    UiEnglish
+                        .seasonPurchasingAndPremiumDeliveryAreUnavailableIn,
+                    key: ValueKey('premium-unavailable'),
+                    style: _muted,
+                  )
+                else
+                  LocalizedText(
+                    verifiedPaidCosmetics(
+                          widget.services!,
+                          game,
+                        ).contains(premium.contentId)
+                        ? UiEnglish
+                              .seasonAvailableInYourHarborCollectionThisLevel
+                        : widget.services!.ownedEntitlementIds.contains(
+                            definition.passId,
+                          )
+                        ? UiEnglish.seasonPremiumOwnershipIsVerifiedEarnLevelValue(
+                            value,
+                          )
+                        : UiEnglish
+                              .seasonPremiumOwnershipIsNotCurrentlyVerifiedReview,
+                    key: ValueKey('premium-status-${premium.contentId}'),
+                    style: _muted,
+                  ),
               ],
             ],
           ),
@@ -517,10 +662,10 @@ class _SeasonScreenState extends State<SeasonScreen> {
   );
 
   List<Widget> _contracts() => [
-    Text(definition.copy['alternative']!, style: _muted),
+    LocalizedText(definition.copy['alternative']!, style: _muted),
     const SizedBox(height: 12),
-    const Text(
-      'New seasonal production counts only after assignment. The original harbor objective stays available; claiming either route completes this same slot once.',
+    const LocalizedText(
+      UiEnglish.seasonNewSeasonalProductionCountsOnlyAfterAssignment,
       style: _muted,
     ),
     const SizedBox(height: 20),
@@ -535,37 +680,45 @@ class _SeasonScreenState extends State<SeasonScreen> {
     final mainProgress = game.engine.contractProgress(game.state, contract);
     final age = game.state.daily.dayHighWater - contract.accountDay;
     final dayLabel = age == 0
-        ? 'Today'
+        ? UiEnglish.seasonToday
         : age == 1
-        ? 'Yesterday'
-        : '$age days ago';
+        ? UiEnglish.seasonYesterday
+        : UiEnglish.seasonAgeDaysAgo(age);
     final labels = {
-      'restore': 'Restore Radiance',
-      'build': 'Build your harbor',
+      'restore': UiEnglish.seasonRestoreRadiance,
+      'build': UiEnglish.seasonBuildYourHarbor,
       'discover': switch (contract.discoveryKind) {
-        'calibration' => 'Study a constellation',
-        'challenge' => 'Chart a passage',
-        _ => 'Read an archive account',
+        'calibration' => UiEnglish.seasonStudyAConstellation,
+        'challenge' => UiEnglish.seasonChartAPassage,
+        _ => UiEnglish.seasonReadAnArchiveAccount,
       },
     };
     return _card(
       Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text(
+          LocalizedText(
             '$dayLabel · ${labels[contract.kind]}',
             style: Theme.of(context).textTheme.titleMedium,
           ),
           const SizedBox(height: 10),
-          Text(
+          LocalizedText(
             contract.claimed
-                ? 'This shared slot is complete.'
-                : '10 Notes + 250 XP to the selected pass',
+                ? UiEnglish.seasonThisSharedSlotIsComplete
+                : UiEnglish.seasonNotesXPToTheSelectedPass,
             style: const TextStyle(color: TideColors.amber),
           ),
           const SizedBox(height: 10),
-          Text(
-            'Harbor route: ${contract.kind == 'restore' ? compactMicros(mainProgress) : mainProgress} / ${contract.kind == 'restore' ? compactMicros(contract.target) : contract.target}${contract.kind == 'restore' ? ' R' : ''}',
+          LocalizedText(
+            UiEnglish.seasonHarborRouteContractKindRestoreCompactMicrosMainProgress(
+              contract.kind == 'restore'
+                  ? compactMicros(mainProgress)
+                  : mainProgress,
+              contract.kind == 'restore'
+                  ? compactMicros(contract.target)
+                  : contract.target,
+              contract.kind == 'restore' ? UiEnglish.seasonR : '',
+            ),
             style: _muted,
           ),
           if (!contract.claimed) ...[
@@ -576,11 +729,14 @@ class _SeasonScreenState extends State<SeasonScreen> {
                 onPressed: season.canPlay
                     ? () => _perform(() => game.bindSeasonContract(contract.id))
                     : null,
-                child: const Text('Add seasonal route'),
+                child: const LocalizedText(UiEnglish.seasonAddSeasonalRoute),
               )
             else ...[
-              Text(
-                'Seasonal route: ${compactMicros(progress)} / ${compactMicros(binding.targetMicros)} new R',
+              LocalizedText(
+                UiEnglish.seasonSeasonalRouteCompactMicrosProgressCompactMicrosBindingTargetMicr(
+                  compactMicros(progress),
+                  compactMicros(binding.targetMicros),
+                ),
                 style: _muted,
               ),
               const SizedBox(height: 10),
@@ -590,7 +746,7 @@ class _SeasonScreenState extends State<SeasonScreen> {
                     ? () =>
                           _perform(() => game.claimSeasonContract(contract.id))
                     : null,
-                child: const Text('Claim this shared slot'),
+                child: const LocalizedText(UiEnglish.seasonClaimThisSharedSlot),
               ),
             ],
           ],
@@ -600,13 +756,18 @@ class _SeasonScreenState extends State<SeasonScreen> {
   }
 
   String _phaseLabel() => switch (season.phase) {
-    SeasonPhase.upcoming => 'Begins in ${_timeUntil(season.startsAtMicros)}',
+    SeasonPhase.upcoming =>
+      UiEnglish.seasonBeginsInTimeUntilSeasonStartsAtMicros(
+        _timeUntil(season.startsAtMicros),
+      ),
     SeasonPhase.live =>
-      'Live window · ${_timeUntil(season.endsAtMicros)} remaining',
+      UiEnglish.seasonLiveWindowTimeUntilSeasonEndsAtMicrosRemaining(
+        _timeUntil(season.endsAtMicros),
+      ),
     SeasonPhase.archived =>
       season.archiveActive
-          ? 'Archived fleet · continuing'
-          : 'Archived fleet · paused',
+          ? UiEnglish.seasonArchivedFleetContinuing
+          : UiEnglish.seasonArchivedFleetPaused,
   };
   String _timeUntil(BigInt target) => durationLabel(
     Duration(microseconds: (target - season.settledThroughMicros).toInt()),
@@ -616,7 +777,7 @@ class _SeasonScreenState extends State<SeasonScreen> {
       value.toInt(),
       isUtc: true,
     );
-    return '${date.day} ${['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][date.month - 1]} ${date.year}';
+    return '${date.day} ${[UiEnglish.seasonJan, UiEnglish.seasonFeb, UiEnglish.seasonMar, UiEnglish.seasonApr, UiEnglish.seasonMay, UiEnglish.seasonJun, UiEnglish.seasonJul, UiEnglish.seasonAug, UiEnglish.seasonSep, UiEnglish.seasonOct, UiEnglish.seasonNov, UiEnglish.seasonDec][date.month - 1]} ${date.year}';
   }
 
   void _move(int index, int delta) {
@@ -631,10 +792,10 @@ class _SeasonScreenState extends State<SeasonScreen> {
       ..hideCurrentSnackBar()
       ..showSnackBar(
         SnackBar(
-          content: Text(
+          content: LocalizedText(
             accepted
-                ? game.lastAction ?? 'Your progress is saved.'
-                : 'This action is not available yet.',
+                ? game.lastAction ?? UiEnglish.seasonYourProgressIsSaved
+                : UiEnglish.seasonThisActionIsNotAvailableYet,
           ),
         ),
       );
@@ -663,6 +824,6 @@ class _Cell extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Padding(
     padding: const EdgeInsets.all(8),
-    child: Text(text, style: const TextStyle(fontSize: 12)),
+    child: LocalizedText(text, style: const TextStyle(fontSize: 12)),
   );
 }

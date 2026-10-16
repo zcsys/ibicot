@@ -171,11 +171,17 @@ class NativeTideAudioDriver implements TideAudioDriver {
   Future<void> _initialize() async {
     if (_disposed) return;
     await AudioPlayer.global.setAudioContext(
-      AudioContextConfig(
-        respectSilence: true,
-        stayAwake: false,
-        focus: AudioContextConfigFocus.mixWithOthers,
-      ).build(),
+      AudioContext(
+        android: AudioContextConfig(
+          respectSilence: true,
+          stayAwake: false,
+          focus: AudioContextConfigFocus.mixWithOthers,
+        ).buildAndroid(),
+        // Ambient already mixes other audio and respects the Silent switch.
+        // Adding mixWithOthers to the generic silence-respecting config is
+        // rejected by the iOS adapter before a native player can be created.
+        iOS: AudioContextIOS(category: AVAudioSessionCategory.ambient),
+      ),
     );
     if (_disposed) return;
     _music = AudioPlayer(playerId: 'tideglass.music');

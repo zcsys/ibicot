@@ -1,3 +1,5 @@
+import 'presentation.dart';
+import 'strings.dart';
 import 'dart:async';
 import 'dart:io';
 
@@ -7,6 +9,7 @@ import 'package:tideglass_core/tideglass_core.dart';
 import 'package:tideglass_persistence/tideglass_persistence.dart';
 import 'package:tideglass_events/tideglass_events.dart';
 import 'package:tideglass_progression/tideglass_progression.dart';
+import 'package:tideglass_platform/tideglass_platform.dart';
 
 import 'app.dart';
 import 'game_controller.dart';
@@ -15,6 +18,9 @@ import 'story_state.dart';
 import 'audio_bus.dart';
 import 'bundled_content.dart';
 import 'offline_replay.dart';
+import 'native_services.dart';
+import 'service_cosmetics.dart';
+import 'notification_service.dart';
 
 const bundledEconomyDigest = bundledEconomicDigest;
 
@@ -144,11 +150,17 @@ class TideglassBootstrap extends StatefulWidget {
     super.key,
     this.directory,
     this.enableAudio = true,
+    this.services,
+    this.notifications,
   });
 
   /// Injected only for host integration tests. Production uses app support.
   final Directory? directory;
   final bool enableAudio;
+
+  /// Optional injected adapter; its owner remains responsible for disposal.
+  final NativeServicesManager? services;
+  final NotificationService? notifications;
   @override
   State<TideglassBootstrap> createState() => _TideglassBootstrapState();
 }
@@ -157,6 +169,9 @@ class _TideglassBootstrapState extends State<TideglassBootstrap> {
   SaveRepository? repository;
   GameController? controller;
   TideAudioBus? audio;
+  NotificationService? notifications;
+  late final NativeServicesManager services;
+  late final Future<void> servicesReady;
   ClientPreferences preferences = const ClientPreferences();
   String? failure, recoveryNotice;
   bool loading = true;
@@ -166,7 +181,47 @@ class _TideglassBootstrapState extends State<TideglassBootstrap> {
   @override
   void initState() {
     super.initState();
+    services = widget.services ?? _createServices();
+    // Guest play must not wait for optional network or credential storage.
+    servicesReady = services.initialize();
     unawaited(_open());
+  }
+
+  NativeServicesManager _createServices() {
+    const endpoint = String.fromEnvironment(
+      UiEnglish.bootstrapTIDEGLASSSERVICEURL,
+    );
+    TideglassServiceClient? client;
+    if (endpoint.isNotEmpty) {
+      try {
+        client = TideglassServiceClient(
+          endpoint: Uri.parse(endpoint),
+          allowLocalDevelopment: const bool.fromEnvironment(
+            UiEnglish.bootstrapTIDEGLASSLOCALSERVICE,
+          ),
+        );
+      } on FormatException {
+        // A deployment configuration error never locks out local progress.
+      } on ArgumentError {
+        // Insecure or unsupported service origins stay unavailable.
+      }
+    }
+    const adUnit = String.fromEnvironment(
+      UiEnglish.bootstrapTIDEGLASSREWARDEDADUNIT,
+    );
+    return NativeServicesManager(
+      client: client,
+      localAccountSeed: () => controller?.state.daily.accountSeed,
+      configuration: const NativeServiceConfiguration(
+        commerceEnabled: bool.fromEnvironment(
+          UiEnglish.bootstrapTIDEGLASSCOMMERCE,
+        ),
+        adsEnabled: bool.fromEnvironment(
+          UiEnglish.bootstrapTIDEGLASSREWARDEDADS,
+        ),
+        rewardedAdUnitId: adUnit == '' ? null : adUnit,
+      ),
+    );
   }
 
   Future<void> _open() async {
@@ -181,9 +236,16 @@ class _TideglassBootstrapState extends State<TideglassBootstrap> {
       final directory =
           widget.directory ??
           Directory(
-            '${(await getApplicationSupportDirectory()).path}/tideglass',
+            UiEnglish.bootstrapAwaitGetApplicationSupportDirectoryPathTideglass(
+              (await getApplicationSupportDirectory()).path,
+            ),
           );
       final catalogue = await StoryCatalogue.load();
+      if (notifications == null) {
+        notifications =
+            widget.notifications ?? NotificationService.native(directory);
+        unawaited(notifications!.initialize());
+      }
       final store = SaveRepository(
         directory,
         economicVersion: economyVersion,
@@ -234,14 +296,20 @@ class _TideglassBootstrapState extends State<TideglassBootstrap> {
         audio = TideAudioBus(
           driver: NativeTideAudioDriver(),
           store: FileAudioPreferenceStore(
-            File('${directory.path}/audio-preferences.json'),
+            File(
+              UiEnglish.bootstrapDirectoryPathAudioPreferencesJson(
+                directory.path,
+              ),
+            ),
           ),
         );
         // Sound failures never prevent loading a saved harbor.
         unawaited(audio!.initialize());
       }
-      final game = GameController(
+      late final GameController game;
+      game = GameController(
         audio: audio,
+        verifiedPaidCosmetics: () => verifiedPaidCosmetics(services, game),
         catalogue: catalogue,
         initialStory: story,
         initialState: main,
@@ -281,25 +349,38 @@ class _TideglassBootstrapState extends State<TideglassBootstrap> {
         controller = game;
         generation++;
         recoveryNotice = loaded.recoveredFromBackup
-            ? 'The latest copy could not be read. Your previous saved harbor was recovered; its time away has been settled.'
+            ? UiEnglish.bootstrapTheLatestCopyCouldNotBeRead
             : null;
         loading = false;
       });
+      unawaited(_refreshOptionalOwnership(game));
     } catch (error) {
       if (!mounted) return;
       setState(() {
         loading = false;
         failure = switch (error) {
           IncompatibleSaveException() =>
-            'This harbor needs a compatible game version. Its saved files have been preserved.',
+            UiEnglish.bootstrapThisHarborNeedsACompatibleGameVersion,
           SaveConflictException() =>
-            'Two different saved harbors need to be reconciled. Both copies have been preserved.',
+            UiEnglish.bootstrapTwoDifferentSavedHarborsNeedToBe,
           CorruptSaveException() =>
-            'Neither saved copy could be opened. Your files have been preserved. You can recover from a previously exported copy.',
-          _ =>
-            'Your harbor could not be opened (${error.runtimeType}). Its saved files have been preserved.',
+            UiEnglish.bootstrapNeitherSavedCopyCouldBeOpenedYour,
+          _ => UiEnglish.bootstrapYourHarborCouldNotBeOpenedError(
+            error.runtimeType,
+          ),
         };
       });
+    }
+  }
+
+  Future<void> _refreshOptionalOwnership(GameController game) async {
+    await servicesReady;
+    if (!mounted || !identical(controller, game) || !services.signedIn) return;
+    try {
+      await services.refreshOwnership();
+    } catch (_) {
+      // The service adapter clears expired/unverified appearances. The local
+      // harbor and its earned collection stay usable while the network fails.
     }
   }
 
@@ -323,24 +404,34 @@ class _TideglassBootstrapState extends State<TideglassBootstrap> {
     game.suspend();
     await game.save();
     if (game.saveError != null) {
-      game.resume();
+      await game.resumeWithProgress();
       throw const SaveException('Save current progress before replacing it.');
     }
     try {
       await repository!.importSave(source);
     } catch (_) {
-      game.resume();
+      await game.resumeWithProgress();
       rethrow;
     }
     game.dispose();
     controller = null;
     await _open();
+    if (failure != null) {
+      throw const SaveException(
+        'The selected copy was retained but could not be opened. Recovery is required.',
+      );
+    }
   }
 
   @override
   void dispose() {
     controller?.dispose();
     audio?.dispose();
+    if (widget.notifications == null) notifications?.dispose();
+    if (widget.services == null) {
+      services.dispose();
+      services.client?.close();
+    }
     super.dispose();
   }
 
@@ -358,10 +449,12 @@ class _TideglassBootstrapState extends State<TideglassBootstrap> {
         onExport: _export,
         onImport: _import,
         recoveryNotice: recoveryNotice,
+        services: services,
+        notifications: notifications,
       );
     }
     return MaterialApp(
-      title: 'Tideglass',
+      title: UiEnglish.bootstrapTideglass,
       debugShowCheckedModeBanner: false,
       theme: tideglassTheme(),
       home: Scaffold(
@@ -379,16 +472,19 @@ class _TideglassBootstrapState extends State<TideglassBootstrap> {
                             value: replayProgress?.fraction,
                           ),
                           const SizedBox(height: 24),
-                          Text(
+                          LocalizedText(
                             replayProgress == null
-                                ? 'Opening your harbor…'
-                                : 'Gathering your time away… ${(replayProgress!.fraction * 100).floor()}%',
+                                ? UiEnglish.bootstrapOpeningYourHarbor
+                                : UiEnglish.bootstrapGatheringYourTimeAwayReplayProgressFractionFloor(
+                                    (replayProgress!.fraction * 100).floor(),
+                                  ),
                           ),
                           if (replayProgress != null)
                             const Padding(
                               padding: EdgeInsets.only(top: 12),
-                              child: Text(
-                                'Your previous save stays safe until all progress is ready.',
+                              child: LocalizedText(
+                                UiEnglish
+                                    .bootstrapYourPreviousSaveStaysSafeUntilAll,
                                 textAlign: TextAlign.center,
                               ),
                             ),
@@ -441,8 +537,9 @@ class _RecoveryPanelState extends State<_RecoveryPanel> {
     } catch (issue) {
       if (mounted) {
         setState(
-          () => error =
-              'This recovery copy could not be used (${issue.runtimeType}). Your current files have been kept.',
+          () => error = UiEnglish.bootstrapThisRecoveryCopyCouldNotBeUsed(
+            issue.runtimeType,
+          ),
         );
       }
     } finally {
@@ -457,16 +554,16 @@ class _RecoveryPanelState extends State<_RecoveryPanel> {
       children: [
         const Icon(Icons.anchor, color: TideColors.amber, size: 48),
         const SizedBox(height: 24),
-        Text(
-          'Keep your harbor safe',
+        LocalizedText(
+          UiEnglish.bootstrapKeepYourHarborSafe,
           style: Theme.of(context).textTheme.headlineMedium,
         ),
         const SizedBox(height: 16),
-        Text(widget.message),
+        LocalizedText(widget.message),
         const SizedBox(height: 24),
         OutlinedButton(
           onPressed: busy ? null : widget.retry,
-          child: const Text('Try opening again'),
+          child: const LocalizedText(UiEnglish.bootstrapTryOpeningAgain),
         ),
         const SizedBox(height: 24),
         TextField(
@@ -474,24 +571,35 @@ class _RecoveryPanelState extends State<_RecoveryPanel> {
           minLines: 3,
           maxLines: 6,
           maxLength: SaveRepository.maxImportBytes,
-          decoration: const InputDecoration(
-            labelText: 'Previously exported harbor',
-            hintText: 'Paste your complete recovery copy here',
+          decoration: InputDecoration(
+            labelText: Presentation.text(
+              UiEnglish.bootstrapPreviouslyExportedHarbor,
+            ),
+            hintText: Presentation.text(
+              UiEnglish.bootstrapPasteYourCompleteRecoveryCopyHere,
+            ),
             border: OutlineInputBorder(),
           ),
         ),
         const SizedBox(height: 8),
-        const Text(
-          'Recovery selects the exported progress. Existing readable progress is archived; damaged files are retained for recovery. Purchases require separate verified restoration.',
+        const LocalizedText(
+          UiEnglish.bootstrapRecoverySelectsTheExportedProgressExistingReadable,
         ),
         const SizedBox(height: 16),
         if (error != null) ...[
-          Text(error!, style: const TextStyle(color: TideColors.warning)),
+          LocalizedText(
+            error!,
+            style: const TextStyle(color: TideColors.warning),
+          ),
           const SizedBox(height: 16),
         ],
         FilledButton(
           onPressed: busy ? null : restore,
-          child: Text(busy ? 'Recovering…' : 'Use this recovery copy'),
+          child: LocalizedText(
+            busy
+                ? UiEnglish.bootstrapRecovering
+                : UiEnglish.bootstrapUseThisRecoveryCopy,
+          ),
         ),
       ],
     ),

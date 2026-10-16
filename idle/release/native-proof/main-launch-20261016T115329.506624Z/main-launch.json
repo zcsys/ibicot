@@ -1,0 +1,118 @@
+{
+  "candidate_fingerprint": "d85bdf74433d96d2f6ea6a58a8481290942d526a7cdb8ec14b55e57537e9dced",
+  "debug_build_report": "release/native-proof/20261016T112947.203869Z/build-report.json",
+  "purpose": "Restore ordinary main-app entrypoint from archived debug artifacts after native test harness runs; retain all test saves",
+  "commands": [
+    {
+      "command": [
+        "ditto",
+        "-x",
+        "-k",
+        "release/native-proof/20261016T112947.203869Z/artifacts/tideglass-ios-debug.zip",
+        "release/native-proof/main-launch-20261016T115329.506624Z/ios-main"
+      ],
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "command": [
+        "xcrun",
+        "simctl",
+        "install",
+        "F05BE4B0-52C1-4CA1-B721-BD64AE559E3F",
+        "release/native-proof/main-launch-20261016T115329.506624Z/ios-main/Runner.app"
+      ],
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "command": [
+        "xcrun",
+        "simctl",
+        "terminate",
+        "F05BE4B0-52C1-4CA1-B721-BD64AE559E3F",
+        "dev.tideglass.game"
+      ],
+      "exit_code": 3,
+      "output": "An error was encountered processing the command (domain=NSPOSIXErrorDomain, code=3):\nSimulator device failed to terminate dev.tideglass.game.\nfound nothing to terminate\nUnderlying error (domain=NSPOSIXErrorDomain, code=3):\n\tThe request to terminate \"dev.tideglass.game\" failed. found nothing to terminate\n\tfound nothing to terminate\n"
+    },
+    {
+      "command": [
+        "xcrun",
+        "simctl",
+        "launch",
+        "F05BE4B0-52C1-4CA1-B721-BD64AE559E3F",
+        "dev.tideglass.game"
+      ],
+      "exit_code": 0,
+      "output": "dev.tideglass.game: 35260\n"
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "install",
+        "-r",
+        "release/native-proof/20261016T112947.203869Z/artifacts/tideglass-debug.apk"
+      ],
+      "exit_code": 0,
+      "output": "Performing Streamed Install\nSuccess\n"
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "am",
+        "force-stop",
+        "dev.tideglass.game"
+      ],
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "am",
+        "start",
+        "-W",
+        "-n",
+        "dev.tideglass.game/.MainActivity"
+      ],
+      "exit_code": 0,
+      "output": "Starting: Intent { cmp=dev.tideglass.game/.MainActivity }\nStatus: ok\nLaunchState: COLD\nActivity: dev.tideglass.game/.MainActivity\nTotalTime: 11550\nWaitTime: 11600\nComplete\n"
+    },
+    {
+      "command": [
+        "xcrun",
+        "simctl",
+        "io",
+        "F05BE4B0-52C1-4CA1-B721-BD64AE559E3F",
+        "screenshot",
+        "release/native-proof/main-launch-20261016T115329.506624Z/ios-main.png"
+      ],
+      "exit_code": 0,
+      "output": "Detected file type from extension: PNG\nNote: No display specified. Defaulting to display: C62C7273-B570-428F-94E1-27283D43FBB9 (screenID: 1, name: LCD)\nWrote screenshot to: /Users/csys/Desktop/ibicot/idle/release/native-proof/main-launch-20261016T115329.506624Z/ios-main.png\n"
+    }
+  ],
+  "artifact_sha256": {
+    "ios": "4b013293bdcf44659e3709d6dcb7e8c8dc3e13f4ba4d610d6874c109767f6ac5",
+    "android": "51e0d30d0e632a13c7a5126d75b8081814d7730a3f35ae06b06bc4a06f823701"
+  },
+  "screenshots": {
+    "ios-main.png": "ba58ec6651414e44c9df22d48114052dc3b12972d418b557340d72ce322fa881",
+    "android-main.png": "eafa76191d76d01b224a974a5e87056e87f71492448da3f7753bd69372505903"
+  },
+  "launch_commands_passed": true,
+  "visual_review": {
+    "reviewer": "platform_release agent",
+    "result": "Ordinary onboarding and harbor rendered on iPhone/Android; no test fixture or gallery is displayed. Text and primary navigation visible.",
+    "physical_or_human_acceptance": false
+  },
+  "limits": "Debug simulator/emulator main-app launch; not physical performance, signed install/update, store delivery or newest working-tree services/notifications qualification."
+}

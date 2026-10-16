@@ -114,4 +114,30 @@ void main() {
     expect(restored.equippedAppearance, isNull);
     expect(restored.toJson()['schema_version'], 4);
   });
+
+  test('paid authority is a revocable projection and never enters a save', () {
+    var independentlyVerified = <String>{
+      'cosmetic.shop.01',
+      'cosmetic.core.chapter.06',
+      'unknown-item',
+    };
+    final game = GameController(
+      catalogue: catalogue,
+      startTicker: false,
+      clock: () => epoch,
+      verifiedPaidCosmetics: () => independentlyVerified,
+    );
+    addTearDown(game.dispose);
+    final economicBefore = game.state.toJson();
+    expect(game.ownedCosmetics, {'cosmetic.shop.01'});
+    expect(game.equipCosmetic('cosmetic.shop.01'), isTrue);
+    expect(game.visibleAppearance, 'cosmetic.shop.01');
+    final selectedStory = game.story.toJson();
+    independentlyVerified = {};
+    expect(game.visibleAppearance, isNull);
+    expect(game.ownedCosmetics, isEmpty);
+    expect(game.equipCosmetic('cosmetic.shop.01'), isFalse);
+    expect(game.story.toJson(), selectedStory);
+    expect(game.state.toJson(), economicBefore);
+  });
 }

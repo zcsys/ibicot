@@ -1,0 +1,41 @@
+{
+  "reviewer": "platform_release agent",
+  "candidate": "d85bdf74433d96d2f6ea6a58a8481290942d526a7cdb8ec14b55e57537e9dced",
+  "review_kind": "Model visual inspection of actual native rendered screenshots; not human usability acceptance",
+  "reviewed": [
+    {
+      "path": "release/native-proof/integration-ios-phone-20261016T113700.481892Z/ios-phone-session-start-collection.png",
+      "sha256": "06119de03f285f5c13b483b98b3db30f47d6705d4005bd0e86e184b41cee1128"
+    },
+    {
+      "path": "release/native-proof/integration-ios-phone-20261016T113700.481892Z/ios-phone-session-start-producer-stages.png",
+      "sha256": "8716a29bff7d03d548a9a75bcbb33591b2cd05d5ea1c1357dd48f79a5067c786"
+    },
+    {
+      "path": "release/native-proof/integration-android-phone-20261016T114617.323080Z/android-phone-session-start-harbor.png",
+      "sha256": "acdf2c422e5cf6a551984f458b60304d9e7e5a35c1012eda1d60fb02cd55bd1d"
+    },
+    {
+      "path": "release/native-proof/integration-android-phone-20261016T114617.323080Z/android-phone-session-start-producer-stages.png",
+      "sha256": "993caa6613015b936f0dc9717423d41c3de4e54b855e9cc2a2a8d1f6faded297"
+    },
+    {
+      "path": "release/native-proof/integration-ios-tablet-20261016T115014.482900Z/ios-tablet-seeded-rechart-preview.png",
+      "sha256": "539c8b4e8d670a16d679e6d9ef363e1a7d75ccc700fa42c37483b8350bf1968c"
+    },
+    {
+      "path": "release/native-proof/integration-ios-tablet-20261016T115114.931802Z/ios-tablet-session-start-collection.png",
+      "sha256": "9edcb38dc9d961b82d69cda6a66250ccd59c3076375a7f19307e9987b73f53ad"
+    }
+  ],
+  "observations": [
+    "Phone collection cards retain readable names and previews; earned appearance marked Equipped. Purchase/selection correctness is checked by runtime assertions and subsequent process reload.",
+    "Android harbor shows the earned pennants plus separate decoration concurrently; navigation and header are readable.",
+    "All five producer tiers have five visibly distinct stage renderings in native iOS and Android gallery fixtures. Debug banner belongs to the fixture gallery.",
+    "iPad portrait prestige confirmation keeps reward/reset/retained-state text and both decision buttons visible. Collection preview and equipped label scale legibly."
+  ],
+  "limits": [
+    "No physical accessibility, human preference, contrast audit or long-session usability claim.",
+    "Only captured viewport regions visually reviewed."
+  ]
+}

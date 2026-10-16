@@ -1,0 +1,26 @@
+Running Gradle task 'bundleRelease'...                          
+Note: Some input files use or override a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+Font asset "MaterialIcons-Regular.otf" was tree-shaken, reducing it from 1645184 to 6012 bytes (99.6% reduction). Tree-shaking can be disabled by providing the --no-tree-shake-icons flag when building your app.
+/Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261016T112921.896155Z-d85bdf74433d/workspace-release/game/mobile/android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java:34: error: package dev.flutter.plugins.integration_test does not exist
+      flutterEngine.getPlugins().add(new dev.flutter.plugins.integration_test.IntegrationTestPlugin());
+                                                                             ^
+1 error
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':app:compileReleaseJavaWithJavac'.
+> Compilation failed; see the compiler output below.
+  /Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261016T112921.896155Z-d85bdf74433d/workspace-release/game/mobile/android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java:34: error: package dev.flutter.plugins.integration_test does not exist
+        flutterEngine.getPlugins().add(new dev.flutter.plugins.integration_test.IntegrationTestPlugin());
+                                                                               ^
+  1 error
+
+* Try:
+> Check your code and dependencies to fix the compilation error(s)
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+
+BUILD FAILED in 1m 33s
+Running Gradle task 'bundleRelease'...                             94.4s
+Gradle task bundleRelease failed with exit code 1

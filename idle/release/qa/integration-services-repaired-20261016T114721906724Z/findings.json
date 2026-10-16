@@ -1,0 +1,65 @@
+[
+  {
+    "id": "QA-010",
+    "priority": "P2",
+    "title": "Requests and account completion cross a replacement session",
+    "source": [
+      "game/platform/lib/tideglass_platform.dart"
+    ],
+    "reproduction": "Actual loopback HTTP: pause openUrl for an export under A, replace session with B, release; Authorization uses B. Separately pause revoke A response, recover B through HTTP, release revoke; B session becomes null.",
+    "impact": "An operation may run against a different account from its original intent, or remove a newly recovered credential.",
+    "status": "closed_by_independent_host_retest",
+    "tests": 7,
+    "repaired_source_fingerprint": "8d0fee0b1d5d36f5114764c9b72ad9820baf0337ccd7557c45d178ff82d24cb5",
+    "initial_source_fingerprint": "27fff44d9fda25900cb78b54e935bbd623b4a605793fbf4767e24f67eee4465c",
+    "additional_reproduction": "Three delayed secure-storage operations restore/write A over recovered B or delete B credential; two stale A ownership responses/errors erase B already-verified projection.",
+    "repair": "Captured session generation and account intent; serialized secure credential writes/deletes with current-session rewrite; generation/seed guards on ownership success and error."
+  },
+  {
+    "id": "QA-011",
+    "priority": "P2",
+    "title": "Consent ordering and telemetry account isolation are missing",
+    "source": [
+      "game/mobile/lib/native_services.dart",
+      "game/platform/lib/tideglass_platform.dart"
+    ],
+    "reproduction": "Delay opt-in, complete later opt-out, then deliver opt-in; both native manager and platform buffer become enabled. Queue A activity, replace session with B, flush; sendTelemetry executes under B.",
+    "impact": "Local refusal can be overridden and old-account events can be submitted under another account. Gameplay reporting is not yet wired; this is a public platform-client and native preference defect.",
+    "status": "closed_by_independent_host_retest",
+    "tests": 5,
+    "repaired_source_fingerprint": "8d0fee0b1d5d36f5114764c9b72ad9820baf0337ccd7557c45d178ff82d24cb5",
+    "initial_source_fingerprint": "27fff44d9fda25900cb78b54e935bbd623b4a605793fbf4767e24f67eee4465c",
+    "additional_reproduction": "Native and buffer opt-out lose at remote commit when old opt-in is delayed; latest desired remote state must also end disabled.",
+    "repair": "Session-bound queue, intent checks, serialized remote consent operations, immediate local refusal, durable pending withdrawal, and serialized privacy writes."
+  },
+  {
+    "id": "QA-012",
+    "priority": "P2",
+    "title": "Stale purchase verification completes and clears its retry after identity changes",
+    "source": [
+      "game/mobile/lib/native_services.dart"
+    ],
+    "reproduction": "Delay purchased verification under A and harbor seed X, change account or harbor, release response; native store complete is called and UI marks verified although ownership projection correctly rejects the stale result.",
+    "impact": "Current UI falsely reports delivery and retry context is discarded. No wrong-account paid cosmetic grant occurred.",
+    "status": "closed_by_independent_host_retest",
+    "tests": 2,
+    "repaired_source_fingerprint": "8d0fee0b1d5d36f5114764c9b72ad9820baf0337ccd7557c45d178ff82d24cb5",
+    "initial_source_fingerprint": "27fff44d9fda25900cb78b54e935bbd623b4a605793fbf4767e24f67eee4465c",
+    "repair": "Capture session identity, generation and harbor seed; recheck before SDK completion and after asynchronous completion; retain retry when context changes."
+  },
+  {
+    "id": "QA-013",
+    "priority": "P2",
+    "title": "A free briefing syncs to an account chosen during the local save",
+    "source": [
+      "game/mobile/lib/support_service_bridge.dart"
+    ],
+    "reproduction": "Pause onPersist after awarding briefing under A, replace session with B, release save; claimSupport executes for B.",
+    "impact": "The new account may consume the wrong shared daily slot. The local free token remains valid.",
+    "status": "closed_by_independent_host_retest",
+    "tests": 1,
+    "repaired_source_fingerprint": "8d0fee0b1d5d36f5114764c9b72ad9820baf0337ccd7557c45d178ff82d24cb5",
+    "initial_source_fingerprint": "27fff44d9fda25900cb78b54e935bbd623b4a605793fbf4767e24f67eee4465c",
+    "repair": "Capture account, generation and harbor seed before local delivery; sync only after durable save and matching context."
+  }
+]

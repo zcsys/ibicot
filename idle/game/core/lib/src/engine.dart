@@ -35,6 +35,13 @@ class TideglassEngine {
   static final totalOfflineMicros = BigInt.from(259200) * microsPerSecond;
   static final _earningDenominator = Fixed.scale * BigInt.from(400);
   static final _prestigeDenominator = firstPrestigeMicros.pow(13);
+  // These memoize immutable arithmetic only. Bounds apply per isolate; no
+  // gameplay state, ownership, clock, or persistence depends on cache contents.
+  static final _prices = _NumericMemo<(int, int), BigInt>(2048);
+  static final _countLogs = _NumericMemo<int, Fixed>(1024);
+  static final _chartPower = _NumericMemo<BigInt, Fixed>(128);
+  static final _rates =
+      _NumericMemo<(int, int, int, int, int, BigInt), Fixed>(512);
 
   void _tier(int tierIndex) {
     if (tierIndex < 0 || tierIndex >= 5)
@@ -47,6 +54,14 @@ class TideglassEngine {
     _tier(tierIndex);
     if (count < 0) throw RangeError.value(count, 'count');
     if (count == 0) return BigInt.zero;
+    if (count <= 8192) {
+      return _prices.read((tierIndex, count),
+          () => _uncachedCumulativePriceMicros(tierIndex, count));
+    }
+    return _uncachedCumulativePriceMicros(tierIndex, count);
+  }
+
+  BigInt _uncachedCumulativePriceMicros(int tierIndex, int count) {
     final numeratorPower = BigInt.from(28).pow(count);
     final denominatorPower = BigInt.from(25).pow(count);
     final base =
@@ -81,6 +96,14 @@ class TideglassEngine {
 
   Fixed prestigeMultiplier(BigInt charts) {
     if (charts.isNegative) throw ArgumentError('Charts must be nonnegative');
+    if (charts.bitLength <= 4096) {
+      return _chartPower.read(
+          charts, () => _uncachedPrestigeMultiplier(charts));
+    }
+    return _uncachedPrestigeMultiplier(charts);
+  }
+
+  Fixed _uncachedPrestigeMultiplier(BigInt charts) {
     return Fixed.raw(Fixed.scale +
         integerRoot(charts * Fixed.scale.pow(2) ~/ BigInt.from(10), 2));
   }
@@ -88,14 +111,17 @@ class TideglassEngine {
   Fixed synergyMultiplier(GameState state, int tierIndex) {
     _tier(tierIndex);
     if (state.charts < BigInt.from(25) || tierIndex < 3) return Fixed.one;
-    final x1 = log2Ratio(BigInt.from(25 + state.counts[0]), BigInt.from(25));
-    final x2 = log2Ratio(BigInt.from(25 + state.counts[1]), BigInt.from(25));
+    final x1 = _synergyCountLog(state.counts[0]);
+    final x2 = _synergyCountLog(state.counts[1]);
     final a = tierIndex == 3 ? 20 : 10;
     final b = tierIndex == 3 ? 10 : 25;
     return Fixed.raw(Fixed.scale +
         (x1.raw * BigInt.from(a) + x2.raw * BigInt.from(b)) ~/
             BigInt.from(100));
   }
+
+  Fixed _synergyCountLog(int count) => _countLogs.read(
+      count, () => log2Ratio(BigInt.from(25 + count), BigInt.from(25)));
 
   /// Unboosted producer rate. Focus is applied by the timeline, not hidden in
   /// this value; forecasts explicitly state whether bonuses are ignored.
@@ -109,6 +135,15 @@ class TideglassEngine {
   }
 
   Fixed outputPerSecond(GameState state) {
+    if (state.charts.bitLength <= 4096) {
+      final n = state.counts;
+      return _rates.read((n[0], n[1], n[2], n[3], n[4], state.charts),
+          () => _uncachedOutputPerSecond(state));
+    }
+    return _uncachedOutputPerSecond(state);
+  }
+
+  Fixed _uncachedOutputPerSecond(GameState state) {
     var sum = BigInt.zero;
     for (var tier = 0; tier < 5; tier++) {
       sum += producerOutputPerSecond(state, tier).raw;
@@ -656,5 +691,22 @@ class TideglassEngine {
       }));
     }
     return TransitionResult(state, events: events);
+  }
+}
+
+/// FIFO eviction affects performance only; a miss always computes the exact
+/// same canonical integer result. Large price/Chart values bypass retention.
+class _NumericMemo<K, V> {
+  _NumericMemo(this.capacity);
+  final int capacity;
+  final Map<K, V> _values = {};
+
+  V read(K key, V Function() calculate) {
+    final cached = _values[key];
+    if (cached != null) return cached;
+    final value = calculate();
+    if (_values.length >= capacity) _values.remove(_values.keys.first);
+    _values[key] = value;
+    return value;
   }
 }

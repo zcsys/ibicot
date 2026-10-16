@@ -187,7 +187,9 @@ void main() {
       final recovery =
           imported.envelope['preserved_branches'][0]['recovery_reference']
               as String;
-      expect(await File(recovery).exists(), isTrue);
+      expect(recovery, startsWith('recovery/'));
+      expect(recovery, isNot(contains(directory.path)));
+      expect(await File('${directory.path}/$recovery').exists(), isTrue);
       expect((await repo().load()).snapshot!.payload, state(10));
     },
   );
@@ -333,4 +335,52 @@ void main() {
     );
     expect((await repo().load()).snapshot!.payload, state(1));
   });
+  test(
+    'legacy recovery paths become portable on a new snapshot only',
+    () async {
+      final store = repo();
+      await store.load();
+      await store.save(state(7), settledThrough: epoch);
+      final imported = await store.importSave(await store.exportSave());
+      final slot = File(
+        '${directory.path}/progress.${imported.revision % 2}.json',
+      );
+      final container = jsonDecode(await slot.readAsString()) as Map;
+      final oldReference = container['envelope']['preserved_branches'][0];
+      final portable = oldReference['recovery_reference'];
+      oldReference['recovery_reference'] = '${directory.path}/$portable';
+      oldReference['legacy_private_hint'] = 'device-owner';
+      Object? canonical(Object? value) {
+        if (value is Map) {
+          final keys = value.keys.cast<String>().toList()..sort();
+          return {for (final key in keys) key: canonical(value[key])};
+        }
+        if (value is List) return value.map(canonical).toList();
+        return value;
+      }
+
+      container['checksum'] = sha256
+          .convert(utf8.encode(jsonEncode(canonical(container['envelope']))))
+          .toString();
+      final legacyBytes = jsonEncode(container);
+      await slot.writeAsString(legacyBytes);
+      final reopened = repo();
+      final legacy = (await reopened.load()).snapshot!;
+      final migrated = await reopened.save(
+        legacy.payload,
+        settledThrough: epoch,
+      );
+      expect(migrated.saveId, isNot(legacy.saveId));
+      expect(migrated.envelope['parent']['save_id'], legacy.saveId);
+      final exported = await reopened.exportSave();
+      expect(exported, isNot(contains(directory.path)));
+      expect(exported, isNot(contains('device-owner')));
+      expect(
+        migrated.envelope['preserved_branches'][0]['recovery_reference'],
+        portable,
+      );
+      expect(await File('${directory.path}/$portable').exists(), isTrue);
+      expect(await slot.readAsString(), legacyBytes);
+    },
+  );
 }

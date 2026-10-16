@@ -2,7 +2,13 @@ import 'package:test/test.dart';
 import 'package:tideglass_platform/tideglass_platform.dart';
 
 class OfflineClient extends TideglassServiceClient {
-  OfflineClient() : super(endpoint: Uri.parse('https://example.invalid'));
+  OfflineClient() : super(endpoint: Uri.parse('https://example.invalid')) {
+    session = ServiceSession(
+      accountId: 'test-account',
+      token: 'test-token',
+      expiresAt: DateTime.utc(2030),
+    );
+  }
   bool unavailable = false;
   int revision = 0;
   final List<bool> consentChanges = [];

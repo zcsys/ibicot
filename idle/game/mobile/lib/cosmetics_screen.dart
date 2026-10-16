@@ -1,3 +1,5 @@
+import 'presentation.dart';
+import 'strings.dart';
 import 'package:flutter/material.dart';
 import 'cosmetics.dart';
 import 'cosmetic_art.dart';
@@ -19,9 +21,10 @@ class CosmeticsScreen extends StatefulWidget {
     this.onPurchase,
     this.onRestore,
     this.commerceUnavailableReason =
-        'Purchases and restoration are not available in this build.',
+        UiEnglish.cosmeticsPurchasesAndRestorationAreNotAvailableIn,
     this.previewCounts = const [25, 25, 10, 10, 1],
     this.restoration = 6,
+    this.servicePanel,
   }) : ownedIds = Set.unmodifiable(ownedIds),
        offers = List.unmodifiable(offers) {
     for (final id in ownedIds) {
@@ -30,7 +33,7 @@ class CosmeticsScreen extends StatefulWidget {
     if ((equippedId != null && !ownedIds.contains(equippedId)) ||
         (equippedDecorationId != null &&
             !ownedIds.contains(equippedDecorationId))) {
-      throw ArgumentError('Only owned appearances may be equipped.');
+      throw ArgumentError(UiEnglish.cosmeticsOnlyOwnedAppearancesMayBeEquipped);
     }
   }
   final Set<String> ownedIds;
@@ -38,6 +41,7 @@ class CosmeticsScreen extends StatefulWidget {
   final ValueChanged<String?> onEquip;
   final VoidCallback? onUnequipDecoration;
   final ValueChanged<String>? onBuyDecoration;
+  final Widget? servicePanel;
   final int notes;
   final List<CosmeticStoreOffer> offers;
   final Future<void> Function(CosmeticStoreOffer)? onPurchase;
@@ -75,7 +79,9 @@ class _CosmeticsScreenState extends State<CosmeticsScreen> {
       },
     );
     return Scaffold(
-      appBar: AppBar(title: const Text('Harbor collection')),
+      appBar: AppBar(
+        title: const LocalizedText(UiEnglish.cosmeticsHarborCollection),
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           controller: scroll,
@@ -86,13 +92,17 @@ class _CosmeticsScreenState extends State<CosmeticsScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Text(
-                    '${widget.ownedIds.length} of 36 appearances kept',
+                  if (widget.servicePanel != null) widget.servicePanel!,
+                  LocalizedText(
+                    UiEnglish.cosmeticsWidgetOwnedIdsLengthOfAppearancesKept(
+                      widget.ownedIds.length,
+                    ),
                     style: Theme.of(context).textTheme.headlineMedium,
                   ),
                   const SizedBox(height: 12),
-                  const Text(
-                    'One harbor appearance and one earned decoration can share your view. These choices change the scenery; production, storage and Charts stay the same.',
+                  const LocalizedText(
+                    UiEnglish
+                        .cosmeticsOneHarborAppearanceAndOneEarnedDecoration,
                     style: _muted,
                   ),
                   const SizedBox(height: 18),
@@ -100,19 +110,23 @@ class _CosmeticsScreenState extends State<CosmeticsScreen> {
                     OutlinedButton(
                       key: const ValueKey('remove-appearance'),
                       onPressed: () => widget.onEquip(null),
-                      child: const Text('Remove harbor appearance'),
+                      child: const LocalizedText(
+                        UiEnglish.cosmeticsRemoveHarborAppearance,
+                      ),
                     ),
                   if (widget.equippedDecorationId != null &&
                       widget.onUnequipDecoration != null)
                     OutlinedButton(
                       key: const ValueKey('remove-collection-decoration'),
                       onPressed: widget.onUnequipDecoration,
-                      child: const Text('Remove earned decoration'),
+                      child: const LocalizedText(
+                        UiEnglish.cosmeticsRemoveEarnedDecoration,
+                      ),
                     ),
                   if (feedback != null)
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 12),
-                      child: Text(
+                      child: LocalizedText(
                         feedback!,
                         style: const TextStyle(color: TideColors.amber),
                       ),
@@ -124,14 +138,14 @@ class _CosmeticsScreenState extends State<CosmeticsScreen> {
                       for (var i = 0; i < 6; i++)
                         ChoiceChip(
                           key: ValueKey('cosmetic-filter-$i'),
-                          label: Text(
+                          label: LocalizedText(
                             [
-                              'All 36',
-                              'Owned',
-                              'Core',
-                              'Free pass',
-                              'Premium',
-                              'Shop',
+                              UiEnglish.cosmeticsAll,
+                              UiEnglish.cosmeticsOwned,
+                              UiEnglish.cosmeticsCore,
+                              UiEnglish.cosmeticsFreePass,
+                              UiEnglish.cosmeticsPremium,
+                              UiEnglish.cosmeticsShop,
                             ][i],
                           ),
                           selected: filter == i,
@@ -146,8 +160,8 @@ class _CosmeticsScreenState extends State<CosmeticsScreen> {
                   if (filtered.isEmpty)
                     const Padding(
                       padding: EdgeInsets.only(bottom: 24),
-                      child: Text(
-                        'Your keepsakes will appear here as the harbor grows.',
+                      child: LocalizedText(
+                        UiEnglish.cosmeticsYourKeepsakesWillAppearHereAsThe,
                       ),
                     ),
                   for (final item in filtered) _item(item),
@@ -156,12 +170,17 @@ class _CosmeticsScreenState extends State<CosmeticsScreen> {
                     OutlinedButton(
                       key: const ValueKey('restore-cosmetics'),
                       onPressed: busy ? null : () => _restore(),
-                      child: Text(
-                        busy ? 'Contacting the store…' : 'Restore purchases',
+                      child: LocalizedText(
+                        busy
+                            ? UiEnglish.cosmeticsContactingTheStore
+                            : UiEnglish.cosmeticsRestorePurchases,
                       ),
                     )
                   else
-                    Text(widget.commerceUnavailableReason, style: _muted),
+                    LocalizedText(
+                      widget.commerceUnavailableReason,
+                      style: _muted,
+                    ),
                 ],
               ),
             ),
@@ -194,7 +213,11 @@ class _CosmeticsScreenState extends State<CosmeticsScreen> {
           children: [
             Semantics(
               button: true,
-              label: 'Enlarge ${item.title} preview',
+              label: Presentation.text(
+                UiEnglish.cosmeticsEnlargeItemTitlePreview(
+                  Presentation.authored((item.title).toString()),
+                ),
+              ),
               child: InkWell(
                 onTap: () => _preview(item),
                 borderRadius: BorderRadius.circular(22),
@@ -208,15 +231,18 @@ class _CosmeticsScreenState extends State<CosmeticsScreen> {
               ),
             ),
             const SizedBox(height: 16),
-            Text(item.title, style: Theme.of(context).textTheme.titleLarge),
+            LocalizedText(
+              item.title,
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
             const SizedBox(height: 8),
-            Text(item.description, style: _muted),
+            LocalizedText(item.description, style: _muted),
             const SizedBox(height: 12),
-            Text(
+            LocalizedText(
               equipped
-                  ? 'Equipped'
+                  ? UiEnglish.cosmeticsEquipped
                   : owned
-                  ? 'Kept in your collection'
+                  ? UiEnglish.cosmeticsKeptInYourCollection
                   : item.unlockLabel,
               style: TextStyle(
                 color: owned ? TideColors.teal : TideColors.amber,
@@ -227,7 +253,7 @@ class _CosmeticsScreenState extends State<CosmeticsScreen> {
               FilledButton(
                 key: ValueKey('equip-${item.id}'),
                 onPressed: () => widget.onEquip(item.id),
-                child: const Text('Equip'),
+                child: const LocalizedText(UiEnglish.cosmeticsEquip),
               ),
             if (!owned &&
                 item.source == CosmeticSource.decoration &&
@@ -237,11 +263,13 @@ class _CosmeticsScreenState extends State<CosmeticsScreen> {
                 onPressed: widget.notes >= 50
                     ? () => widget.onBuyDecoration!(item.id)
                     : null,
-                child: const Text('Keep decoration · 50 Notes'),
+                child: const LocalizedText(
+                  UiEnglish.cosmeticsKeepDecorationNotes,
+                ),
               ),
             if (!owned && item.paid) ...[
               if (offers.isEmpty || widget.onPurchase == null)
-                Text(widget.commerceUnavailableReason, style: _muted)
+                LocalizedText(widget.commerceUnavailableReason, style: _muted)
               else
                 for (final offer in offers)
                   Padding(
@@ -249,14 +277,19 @@ class _CosmeticsScreenState extends State<CosmeticsScreen> {
                     child: OutlinedButton(
                       key: ValueKey('purchase-${item.id}-${offer.productId}'),
                       onPressed: busy ? null : () => _purchase(offer),
-                      child: Text(
-                        '${offer.productTitle} · ${offer.localizedPrice}',
+                      child: LocalizedText(
+                        UiEnglish.cosmeticStoreOffer(
+                          offer.productTitle,
+                          offer.localizedPrice,
+                        ),
                       ),
                     ),
                   ),
               if (item.source == CosmeticSource.premiumPass)
-                Text(
-                  'Verified pass ownership and level ${item.ordinal * 3} are required to equip this appearance.',
+                LocalizedText(
+                  UiEnglish.cosmeticsVerifiedPassOwnershipAndLevelItemOrdinal(
+                    item.ordinal * 3,
+                  ),
                   style: _muted,
                 ),
             ],
@@ -271,7 +304,7 @@ class _CosmeticsScreenState extends State<CosmeticsScreen> {
     builder: (dialog) => Dialog.fullscreen(
       child: Scaffold(
         appBar: AppBar(
-          title: Text(item.title),
+          title: LocalizedText(item.title),
           leading: CloseButton(onPressed: () => Navigator.pop(dialog)),
         ),
         body: SafeArea(
@@ -293,11 +326,13 @@ class _CosmeticsScreenState extends State<CosmeticsScreen> {
                           : widget.equippedDecorationId,
                     ),
                     const SizedBox(height: 16),
-                    Text(item.description),
+                    LocalizedText(item.description),
                     const SizedBox(height: 20),
                     TextButton(
                       onPressed: () => Navigator.pop(dialog),
-                      child: const Text('Back to collection'),
+                      child: const LocalizedText(
+                        UiEnglish.cosmeticsBackToCollection,
+                      ),
                     ),
                   ],
                 ),
@@ -317,20 +352,21 @@ class _CosmeticsScreenState extends State<CosmeticsScreen> {
       await widget.onPurchase!(offer);
       if (mounted) {
         setState(
-          () => feedback =
-              'Purchase status has been refreshed. Verified ownership appears in your collection.',
+          () =>
+              feedback = UiEnglish.cosmeticsStoreRequestSentDeliveryMayStillBe,
         );
       }
     } catch (_) {
       if (mounted) {
         setState(
-          () => feedback =
-              'The store could not complete this request. Your collection is unchanged.',
+          () =>
+              feedback = UiEnglish.cosmeticsTheStoreCouldNotCompleteThisRequest,
         );
       }
     } finally {
       if (mounted) {
         setState(() => busy = false);
+        if (scroll.hasClients) scroll.jumpTo(0);
       }
     }
   }
@@ -345,19 +381,20 @@ class _CosmeticsScreenState extends State<CosmeticsScreen> {
       if (mounted) {
         setState(
           () => feedback =
-              'Restoration check complete. Verified purchases appear in your collection.',
+              UiEnglish.cosmeticsRestorationRequestedTheStoreMayRespondLater,
         );
       }
     } catch (_) {
       if (mounted) {
         setState(
           () => feedback =
-              'Restoration could not be checked. Please try again when the store is available.',
+              UiEnglish.cosmeticsRestorationCouldNotBeCheckedPleaseTry,
         );
       }
     } finally {
       if (mounted) {
         setState(() => busy = false);
+        if (scroll.hasClients) scroll.jumpTo(0);
       }
     }
   }

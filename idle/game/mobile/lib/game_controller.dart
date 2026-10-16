@@ -1,3 +1,5 @@
+import 'presentation.dart';
+import 'strings.dart';
 import 'dart:async';
 import 'dart:math';
 import 'package:flutter/foundation.dart';
@@ -49,6 +51,7 @@ class GameController extends ChangeNotifier {
     PersistSession? onSessionPersist,
     this.catalogue,
     this.audio,
+    this.verifiedPaidCosmetics,
     StoryProgress? initialStory,
     this.engine = const TideglassEngine(),
     bool startTicker = true,
@@ -133,6 +136,10 @@ class GameController extends ChangeNotifier {
   }
   final TideglassEngine engine;
   final TideAudioBus? audio;
+
+  /// Independent account authority supplies only paid appearance identities.
+  /// This projection is never persisted in a gameplay save or used for output.
+  final Iterable<String> Function()? verifiedPaidCosmetics;
   final StoryCatalogue? catalogue;
   StoryProgress story;
   SeasonEngine? get seasonEngine =>
@@ -166,6 +173,9 @@ class GameController extends ChangeNotifier {
     ...story.campaign.cosmeticIds,
     ...story.decorations,
     if (story.pass != null) ...passEngine!.cosmeticIds(story.pass!),
+    ...?verifiedPaidCosmetics?.call().where(
+      (id) => cosmeticCatalogue.any((item) => item.id == id && item.paid),
+    ),
   };
   String? get visibleAppearance =>
       ownedCosmetics.contains(story.equippedAppearance)
@@ -181,9 +191,7 @@ class GameController extends ChangeNotifier {
       }
     }
     story = story.copyWith(equippedAppearance: id, clearAppearance: id == null);
-    return _storyChanged(
-      'Your harbor appearance is saved. Production is unchanged.',
-    );
+    return _storyChanged(UiEnglish.gameYourHarborAppearanceIsSavedProductionIs);
   }
 
   List<String> get availableDiscoveries => [
@@ -244,7 +252,9 @@ class GameController extends ChangeNotifier {
           : null,
     );
     if (!advanced.accepted) {
-      throw StateError('Time settlement rejected: ${advanced.reason}');
+      throw StateError(
+        UiEnglish.gameTimeSettlementRejectedAdvancedReason(advanced.reason),
+      );
     }
     var nextState = advanced.state;
     var nextStory = story;
@@ -268,7 +278,11 @@ class GameController extends ChangeNotifier {
           contentId: next.dossierId,
         );
         if (!discovery.accepted) {
-          throw StateError('Challenge discovery rejected: ${discovery.reason}');
+          throw StateError(
+            UiEnglish.gameChallengeDiscoveryRejectedDiscoveryReason(
+              discovery.reason,
+            ),
+          );
         }
         nextState = discovery.state;
       }
@@ -280,7 +294,9 @@ class GameController extends ChangeNotifier {
         offline: offline,
       );
       if (!seasonal.accepted) {
-        throw StateError('Season settlement rejected: ${seasonal.reason}');
+        throw StateError(
+          UiEnglish.gameSeasonSettlementRejectedSeasonalReason(seasonal.reason),
+        );
       }
       nextStory = nextStory.copyWith(season: seasonal.state);
     }
@@ -343,6 +359,10 @@ class GameController extends ChangeNotifier {
     return _resumeTask!;
   }
 
+  /// Wait for an existing worker without starting another return or changing
+  /// whether the player intends to remain in the background.
+  Future<void> waitForPendingReplay() => _resumeTask ?? Future.value();
+
   Future<void> _resumeInWorker() async {
     replaying = true;
     replayProgress = null;
@@ -380,8 +400,7 @@ class GameController extends ChangeNotifier {
       await save();
     } catch (_) {
       if (!_disposed) {
-        replayError =
-            'Your time away could not be gathered. Your prior progress is safe; try again.';
+        replayError = UiEnglish.gameYourTimeAwayCouldNotBeGathered;
       }
     } finally {
       replaying = false;
@@ -423,7 +442,9 @@ class GameController extends ChangeNotifier {
         : engine.buy(state, tier, quantityFor(tier));
     return _accept(
       result,
-      'A new ${TideglassEngine.producerNames[tier]} joins your harbor.',
+      UiEnglish.gameANewTideglassEngineProducerNamesTierJoinsYour(
+        Presentation.authored((TideglassEngine.producerNames[tier]).toString()),
+      ),
       cue: result.state.counts[tier] ~/ 25 > state.counts[tier] ~/ 25
           ? TideCue.milestone
           : TideCue.purchase,
@@ -435,7 +456,7 @@ class GameController extends ChangeNotifier {
     _advanceTo(_clock());
     return _accept(
       engine.rechart(state),
-      'A new chart. A brighter beginning.',
+      UiEnglish.gameANewChartABrighterBeginning,
       cue: TideCue.rechart,
     );
   }
@@ -446,8 +467,8 @@ class GameController extends ChangeNotifier {
     return _accept(
       engine.setAutoBuy(state, enabled),
       enabled
-          ? 'Your fleet is building automatically.'
-          : 'Automatic building paused.',
+          ? UiEnglish.gameYourFleetIsBuildingAutomatically
+          : UiEnglish.gameAutomaticBuildingPaused,
     );
   }
 
@@ -456,7 +477,7 @@ class GameController extends ChangeNotifier {
     _advanceTo(_clock());
     return _accept(
       engine.activateFocus(state),
-      'Your constellation is focused for ten more minutes.',
+      UiEnglish.gameYourConstellationIsFocusedForTenMore,
     );
   }
 
@@ -465,7 +486,7 @@ class GameController extends ChangeNotifier {
     _advanceTo(_clock());
     return _accept(
       engine.collectSurveys(state),
-      'Survey Notes added to your archive.',
+      UiEnglish.gameSurveyNotesAddedToYourArchive,
       cue: TideCue.survey,
     );
   }
@@ -479,7 +500,7 @@ class GameController extends ChangeNotifier {
         id,
         operationSequence: state.nextDiscoverySequence,
       ),
-      'A constellation recorded. Ten minutes of Focus queued.',
+      UiEnglish.gameAConstellationRecordedTenMinutesOfFocus,
       cue: TideCue.calibration,
     );
   }
@@ -490,12 +511,12 @@ class GameController extends ChangeNotifier {
     if (story.pass != null) {
       return _acceptPass(
         passEngine!.claimDaily(state, story.pass!, id),
-        'Contract complete: 10 Notes and 250 pass XP.',
+        UiEnglish.gameContractCompleteNotesAndPassXP,
       );
     }
     return _accept(
       engine.claimContract(state, id),
-      'Contract complete: 10 Notes and 250 pass XP.',
+      UiEnglish.gameContractCompleteNotesAndPassXP2,
     );
   }
 
@@ -504,7 +525,7 @@ class GameController extends ChangeNotifier {
     _advanceTo(_clock());
     return _accept(
       engine.rerollContract(state, id),
-      'A new objective, with the original difficulty snapshot.',
+      UiEnglish.gameANewObjectiveWithTheOriginalDifficulty,
     );
   }
 
@@ -523,7 +544,7 @@ class GameController extends ChangeNotifier {
         operationSequence: state.nextDiscoverySequence,
         contentId: id,
       ),
-      'The keeper’s account is recorded in your logbook.',
+      UiEnglish.gameTheKeeperSAccountIsRecordedIn,
     );
   }
 
@@ -532,7 +553,7 @@ class GameController extends ChangeNotifier {
     _advanceTo(_clock());
     return _accept(
       engine.saveAutomationPlan(state, plan),
-      'Your crew’s plan is saved.',
+      UiEnglish.gameYourCrewSPlanIsSaved,
     );
   }
 
@@ -541,7 +562,7 @@ class GameController extends ChangeNotifier {
     _advanceTo(_clock());
     return _accept(
       engine.selectAutomationPlan(state, id),
-      'The crew will follow the selected plan.',
+      UiEnglish.gameTheCrewWillFollowTheSelectedPlan,
     );
   }
 
@@ -550,7 +571,7 @@ class GameController extends ChangeNotifier {
     _advanceTo(_clock());
     return _accept(
       engine.buyPlanSlot(state),
-      'An additional plan slot is ready.',
+      UiEnglish.gameAnAdditionalPlanSlotIsReady,
     );
   }
 
@@ -565,7 +586,31 @@ class GameController extends ChangeNotifier {
         slot: slot,
         sourceId: 'briefing:${state.daily.accountSeed}:$day:$slot',
       ),
-      'One Support token is ready for this account day.',
+      UiEnglish.gameOneSupportTokenIsReadyForThis,
+    );
+  }
+
+  /// Called only by the authenticated Support adapter. A source label alone
+  /// is not proof: the adapter checks the service session and response first.
+  bool acceptVerifiedSupportReceipt({
+    required int day,
+    required int slot,
+    required String sourceId,
+    required String route,
+  }) {
+    if (_disposed || _suspended || replaying || replayError != null) {
+      return false;
+    }
+    _advanceTo(_clock());
+    return _accept(
+      engine.claimSupportToken(
+        state,
+        accountDay: day,
+        slot: slot,
+        sourceId: sourceId,
+        route: route,
+      ),
+      UiEnglish.gameOneVerifiedSupportTokenIsReadyFor,
     );
   }
 
@@ -574,7 +619,7 @@ class GameController extends ChangeNotifier {
     _advanceTo(_clock());
     return _accept(
       engine.useSupportBoost(state, tokenId),
-      'Twenty minutes of Support queued at +25%.',
+      UiEnglish.gameTwentyMinutesOfSupportQueuedAt,
     );
   }
 
@@ -583,7 +628,7 @@ class GameController extends ChangeNotifier {
     _advanceTo(_clock());
     return _accept(
       engine.claimSalvageCache(state, tokenId, cacheId),
-      'A genuine five-minute salvage slice has been matched.',
+      UiEnglish.gameAGenuineFiveMinuteSalvageSliceHas,
     );
   }
 
@@ -598,7 +643,7 @@ class GameController extends ChangeNotifier {
     if (quantity == 0) return false;
     return _acceptSeason(
       seasonEngine!.purchase(season, tier, quantity),
-      'The seasonal fleet grows.',
+      UiEnglish.gameTheSeasonalFleetGrows,
     );
   }
 
@@ -618,7 +663,7 @@ class GameController extends ChangeNotifier {
         policy: policy ?? season.policy,
         priority: priority ?? season.priority,
       ),
-      'Seasonal plan updated.',
+      UiEnglish.gameSeasonalPlanUpdated,
     );
   }
 
@@ -632,8 +677,8 @@ class GameController extends ChangeNotifier {
           ? seasonEngine!.resumeArchive(season, _lastSettled.toUtc())
           : seasonEngine!.pauseArchive(season, _lastSettled.toUtc()),
       active
-          ? 'The archived fleet continues at its own pace.'
-          : 'Archived fleet paused.',
+          ? UiEnglish.gameTheArchivedFleetContinuesAtItsOwn
+          : UiEnglish.gameArchivedFleetPaused,
     );
   }
 
@@ -643,7 +688,7 @@ class GameController extends ChangeNotifier {
     if (story.season == null) return false;
     return _acceptSeason(
       seasonEngine!.claimMilestone(story.season!, id),
-      'A seasonal badge has been recorded.',
+      UiEnglish.gameASeasonalBadgeHasBeenRecorded,
     );
   }
 
@@ -653,7 +698,7 @@ class GameController extends ChangeNotifier {
     if (story.season == null) return false;
     return _acceptPass(
       passEngine!.selectPass(state, story.pass!, story.season!),
-      'Future contract XP goes to this selected pass.',
+      UiEnglish.gameFutureContractXPGoesToThisSelected,
     );
   }
 
@@ -663,7 +708,7 @@ class GameController extends ChangeNotifier {
     if (story.season == null) return false;
     return _acceptPass(
       passEngine!.bindEventAlternative(state, story.pass!, id, story.season!),
-      'This contract can also be completed with new seasonal production.',
+      UiEnglish.gameThisContractCanAlsoBeCompletedWith,
     );
   }
 
@@ -689,7 +734,7 @@ class GameController extends ChangeNotifier {
         id,
         alternativeSeason: story.season!,
       ),
-      'The shared contract grants 10 Notes and 250 XP once.',
+      UiEnglish.gameTheSharedContractGrantsNotesAndXP,
     );
   }
 
@@ -704,7 +749,7 @@ class GameController extends ChangeNotifier {
         catalogue!.seasonDefinition.passId,
         id,
       ),
-      'An earned pass reward is added to your collection.',
+      UiEnglish.gameAnEarnedPassRewardIsAddedTo,
     );
   }
 
@@ -785,9 +830,7 @@ class GameController extends ChangeNotifier {
     }
     state = result.main;
     story = story.copyWith(dossiers: result.dossiers);
-    return _storyChanged(
-      'A separate fleet is ready. Your harbor continues its work.',
-    );
+    return _storyChanged(UiEnglish.gameASeparateFleetIsReadyYourHarbor);
   }
 
   bool leaveDossier() {
@@ -795,9 +838,7 @@ class GameController extends ChangeNotifier {
     _advanceTo(_clock());
     if (story.dossiers.active == null) return false;
     story = story.copyWith(dossiers: story.dossiers.leave());
-    return _storyChanged(
-      'Returned to the harbor. Dossier ownership and completion are kept.',
-    );
+    return _storyChanged(UiEnglish.gameReturnedToTheHarborDossierOwnershipAnd);
   }
 
   bool restartDossier() {
@@ -808,7 +849,7 @@ class GameController extends ChangeNotifier {
     story = story.copyWith(
       dossiers: story.dossiers.restart(catalogue!.dossier(active.dossierId)),
     );
-    return _storyChanged('A fresh challenge fleet. Replays cost no Notes.');
+    return _storyChanged(UiEnglish.gameAFreshChallengeFleetReplaysCostNo);
   }
 
   bool buyInDossier(int tier) {
@@ -820,7 +861,7 @@ class GameController extends ChangeNotifier {
     final next = ChallengeEconomy(definition).purchase(active, tier, 1);
     if (identical(next, active)) return false;
     _settleChallenge(next, definition);
-    return _storyChanged('A vessel joins the challenge fleet.');
+    return _storyChanged(UiEnglish.gameAVesselJoinsTheChallengeFleet);
   }
 
   bool setDossierPlan({
@@ -838,13 +879,13 @@ class GameController extends ChangeNotifier {
       active.copyWith(automatic: automatic, policy: policy, priority: priority),
       definition,
     );
-    return _storyChanged('Challenge plan updated.');
+    return _storyChanged(UiEnglish.gameChallengePlanUpdated);
   }
 
   bool buyDecoration(String id) {
     if (_suspended || replaying || replayError != null) return false;
     _advanceTo(_clock());
-    if (!RegExp(r'^cosmetic\.core\.decoration\.0[1-6]$').hasMatch(id) ||
+    if (!RegExp(UiEnglish.gameCosmeticCoreDecoration).hasMatch(id) ||
         story.decorations.contains(id) ||
         state.surveyNotes < BigInt.from(50)) {
       return false;
@@ -857,22 +898,20 @@ class GameController extends ChangeNotifier {
       decorations: {...story.decorations, id},
       equippedDecoration: id,
     );
-    return _storyChanged(
-      'A new decoration for your harbor. Production is unchanged.',
-    );
+    return _storyChanged(UiEnglish.gameANewDecorationForYourHarborProduction);
   }
 
   bool equipDecoration(String id) {
     if (_suspended || replaying || replayError != null) return false;
     if (!story.decorations.contains(id)) return false;
     story = story.copyWith(equippedDecoration: id);
-    return _storyChanged('Harbor decoration changed.');
+    return _storyChanged(UiEnglish.gameHarborDecorationChanged);
   }
 
   bool unequipDecoration() {
     if (_suspended || replaying || replayError != null) return false;
     story = story.copyWith(clearDecoration: true);
-    return _storyChanged('The original harbor appearance is restored.');
+    return _storyChanged(UiEnglish.gameTheOriginalHarborAppearanceIsRestored);
   }
 
   bool _storyChanged(String message) {
@@ -922,8 +961,9 @@ class GameController extends ChangeNotifier {
         }
         saveError = null;
       } catch (error) {
-        saveError =
-            'Your harbor is still open, but its latest progress could not be written. ${error.runtimeType}';
+        saveError = UiEnglish.gameYourHarborIsStillOpenButIts(
+          error.runtimeType,
+        );
       } finally {
         saving = false;
         if (!_disposed) notifyListeners();

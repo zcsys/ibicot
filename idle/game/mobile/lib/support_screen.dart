@@ -1,3 +1,5 @@
+import 'presentation.dart';
+import 'strings.dart';
 import 'package:flutter/material.dart';
 import 'package:tideglass_core/tideglass_core.dart';
 import 'game_controller.dart';
@@ -7,32 +9,42 @@ import 'palette.dart';
 /// Both a briefing and a verified ad use the same core allowance. This screen
 /// offers the complete free route; it never manufactures ad-completion proof.
 class SupportScreen extends StatelessWidget {
-  const SupportScreen({super.key, required this.game});
+  const SupportScreen({
+    super.key,
+    required this.game,
+    this.onCompletedBriefing,
+    this.onRewardedAd,
+    this.servicePanel,
+    this.serviceBusy = false,
+  });
   final GameController game;
+  final Future<void> Function(int)? onCompletedBriefing, onRewardedAd;
+  final Widget? servicePanel;
+  final bool serviceBusy;
   static const briefings = [
     (
-      'A patient harbor',
-      'Your fleet works while you are away. The first 24 hours keep full production, followed by 48 hours at one quarter. A longer break does not erase your harbor.',
+      UiEnglish.supportAPatientHarbor,
+      UiEnglish.supportYourFleetWorksWhileYouAreAway,
     ),
     (
-      'The old craft matter',
-      'At 25 Charts, Skiffs and Nurseries strengthen your Looms and Observatories. The smallest craft can still be worth building.',
+      UiEnglish.supportTheOldCraftMatter,
+      UiEnglish.supportAtChartsSkiffsAndNurseriesStrengthenYour,
     ),
     (
-      'A chart remembers',
-      'Rechart rebuilds your fleet and keeps lifetime earnings, Charts, Notes and your discoveries. Preview the gain before choosing to start again.',
+      UiEnglish.supportAChartRemembers,
+      UiEnglish.supportRechartRebuildsYourFleetAndKeepsLifetime,
     ),
     (
-      'A plan you can change',
-      'The crew can buy for the best payback or follow your tier priorities. A saved plan does no work until you choose it and enable automatic building.',
+      UiEnglish.supportAPlanYouCanChange,
+      UiEnglish.supportTheCrewCanBuyForTheBest,
     ),
     (
-      'A different passage',
-      'Challenge dossiers use their own fleets. Your main harbor keeps working. Notes open a dossier once; replaying it is free.',
+      UiEnglish.supportADifferentPassage,
+      UiEnglish.supportChallengeDossiersUseTheirOwnFleetsYour,
     ),
     (
-      'Keep the watch gentle',
-      'Support is optional. Its allowance has no streak, paid refill or catch-up penalty. Focus and Support add together: +20% and +25% give +45%.',
+      UiEnglish.supportKeepTheWatchGentle,
+      UiEnglish.supportSupportIsOptionalItsAllowanceHasNo,
     ),
   ];
 
@@ -41,26 +53,32 @@ class SupportScreen extends StatelessWidget {
     final accepted = await showDialog<bool>(
       context: context,
       builder: (dialog) => AlertDialog(
-        title: Text(copy.$1),
+        title: LocalizedText(copy.$1),
         content: SingleChildScrollView(
-          child: Text(
-            '${copy.$2}\n\nCompleting this briefing uses one of today’s six shared Support slots. The token expires at your account-day boundary.',
+          child: LocalizedText(
+            UiEnglish.supportCopyNNCompletingThisBriefingUsesOne(copy.$2),
           ),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(dialog, false),
-            child: const Text('Later'),
+            child: const LocalizedText(UiEnglish.supportLater),
           ),
           FilledButton(
             key: const ValueKey('complete-briefing'),
             onPressed: () => Navigator.pop(dialog, true),
-            child: const Text('Complete briefing'),
+            child: const LocalizedText(UiEnglish.supportCompleteBriefing),
           ),
         ],
       ),
     );
-    if (accepted == true) game.completeCrewBriefing(slot);
+    if (accepted == true) {
+      if (onCompletedBriefing != null) {
+        await onCompletedBriefing!(slot);
+      } else {
+        game.completeCrewBriefing(slot);
+      }
+    }
   }
 
   @override
@@ -88,7 +106,9 @@ class SupportScreen extends StatelessWidget {
           )
           .toList();
       return Scaffold(
-        appBar: AppBar(title: const Text('Crew Support')),
+        appBar: AppBar(
+          title: const LocalizedText(UiEnglish.supportCrewSupport),
+        ),
         body: SafeArea(
           child: Center(
             child: ConstrainedBox(
@@ -96,51 +116,75 @@ class SupportScreen extends StatelessWidget {
               child: ListView(
                 padding: const EdgeInsets.all(24),
                 children: [
-                  Text(
-                    'A little help, freely available',
+                  LocalizedText(
+                    UiEnglish.supportALittleHelpFreelyAvailable,
                     style: Theme.of(context).textTheme.headlineSmall,
                   ),
                   const SizedBox(height: 12),
-                  const Text(
-                    'Six shared slots each account day. A crew briefing grants one token. Spend it on a short boost or a genuine salvage slice. Neither is needed to finish the restoration.',
+                  const LocalizedText(
+                    UiEnglish.supportSixSharedSlotsEachAccountDayA,
                   ),
                   const SizedBox(height: 16),
-                  Text(
-                    '${slots.length} of 6 slots used · ${availableToken == null ? 0 : tokens.length} unspent tokens',
+                  LocalizedText(
+                    UiEnglish.supportSlotsLengthOfSlotsUsedAvailableTokenNull(
+                      slots.length,
+                      availableToken == null ? 0 : tokens.length,
+                    ),
                     key: const ValueKey('support-allowance'),
                   ),
                   const SizedBox(height: 12),
                   FilledButton.icon(
                     key: const ValueKey('open-briefing'),
-                    onPressed: nextSlot == null
+                    onPressed: nextSlot == null || serviceBusy
                         ? null
                         : () => _briefing(context, nextSlot),
                     icon: const Icon(Icons.menu_book_outlined),
-                    label: Text(
+                    label: LocalizedText(
                       nextSlot == null
-                          ? 'All six slots used today'
-                          : 'Read a crew briefing',
+                          ? UiEnglish.supportAllSixSlotsUsedToday
+                          : UiEnglish.supportReadACrewBriefing,
                     ),
                   ),
+                  if (onRewardedAd != null) ...[
+                    const SizedBox(height: 12),
+                    OutlinedButton.icon(
+                      key: const ValueKey('watch-support-ad'),
+                      onPressed: nextSlot == null || serviceBusy
+                          ? null
+                          : () => onRewardedAd!(nextSlot),
+                      icon: const Icon(Icons.ondemand_video_outlined),
+                      label: const LocalizedText(
+                        UiEnglish.supportOptionalAdTheSameToken,
+                      ),
+                    ),
+                  ],
+                  if (servicePanel != null) ...[
+                    const SizedBox(height: 12),
+                    servicePanel!,
+                  ],
                   const SizedBox(height: 12),
-                  const Text(
-                    'Unused tokens expire at your fixed account-day boundary. A boost already queued keeps its remaining real time, including through Rechart.',
+                  const LocalizedText(
+                    UiEnglish.supportUnusedTokensExpireAtYourFixedAccount,
                     style: TextStyle(color: TideColors.muted),
                   ),
                   const SizedBox(height: 28),
-                  Text(
-                    'Steady the light',
+                  LocalizedText(
+                    UiEnglish.supportSteadyTheLight,
                     style: Theme.of(context).textTheme.titleLarge,
                   ),
                   const SizedBox(height: 8),
-                  const Text(
-                    '+25% production for 20 minutes per token. Repeating queues time. With Focus, the combined bonus is +45%.',
+                  const LocalizedText(
+                    UiEnglish
+                        .supportProductionForMinutesPerTokenRepeatingQueues,
                   ),
                   if (support.remainingMicros > BigInt.zero)
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 12),
-                      child: Text(
-                        '${(support.remainingMicros ~/ BigInt.from(1000000)).toString()} seconds of Support remaining',
+                      child: LocalizedText(
+                        UiEnglish.supportSupportRemainingMicrosBigIntFromToStringSecondsOf(
+                          (support.remainingMicros ~/ BigInt.from(1000000))
+                              .toString(),
+                        ),
                       ),
                     ),
                   const SizedBox(height: 12),
@@ -149,21 +193,23 @@ class SupportScreen extends StatelessWidget {
                     onPressed: availableToken == null
                         ? null
                         : () => game.useSupportBoost(availableToken.id),
-                    child: const Text('Use 1 token · +25% for 20 minutes'),
+                    child: const LocalizedText(
+                      UiEnglish.supportUseTokenForMinutes,
+                    ),
                   ),
                   const SizedBox(height: 28),
-                  Text(
-                    'Salvage cache',
+                  LocalizedText(
+                    UiEnglish.supportSalvageCache,
                     style: Theme.of(context).textTheme.titleLarge,
                   ),
                   const SizedBox(height: 8),
-                  const Text(
-                    'Your six latest complete five-minute slices of credited time away are retained. A token matches a slice’s unboosted earnings, capped at five minutes of the unboosted rate when that return was settled. Later building cannot enlarge the reward. Partial slices are not kept.',
+                  const LocalizedText(
+                    UiEnglish.supportYourSixLatestCompleteFiveMinuteSlices,
                   ),
                   const SizedBox(height: 12),
                   if (caches.isEmpty)
-                    const Text(
-                      'No unclaimed slice is available. Return after at least five minutes away to form a cache.',
+                    const LocalizedText(
+                      UiEnglish.supportNoUnclaimedSliceIsAvailableReturnAfter,
                       style: TextStyle(color: TideColors.muted),
                     ),
                   for (var i = 0; i < caches.length; i++)
@@ -175,8 +221,13 @@ class SupportScreen extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
-                              Text(
-                                'Slice ${i + 1} · ${compactMicros(game.engine.salvageBonusMicros(caches[i]))} R',
+                              LocalizedText(
+                                UiEnglish.supportSliceICompactMicrosGameEngineSalvageBonusMicrosCaches(
+                                  i + 1,
+                                  compactMicros(
+                                    game.engine.salvageBonusMicros(caches[i]),
+                                  ),
+                                ),
                               ),
                               const SizedBox(height: 8),
                               OutlinedButton(
@@ -187,8 +238,8 @@ class SupportScreen extends StatelessWidget {
                                         availableToken.id,
                                         caches[i].id,
                                       ),
-                                child: const Text(
-                                  'Use 1 token · match this slice',
+                                child: const LocalizedText(
+                                  UiEnglish.supportUseTokenMatchThisSlice,
                                 ),
                               ),
                             ],
@@ -197,8 +248,9 @@ class SupportScreen extends StatelessWidget {
                       ),
                     ),
                   const SizedBox(height: 16),
-                  const Text(
-                    'Support changes main-harbor production only. Challenges and seasonal fleets keep their own rules.',
+                  const LocalizedText(
+                    UiEnglish
+                        .supportSupportChangesMainHarborProductionOnlyChallenges,
                     style: TextStyle(color: TideColors.muted),
                   ),
                 ],

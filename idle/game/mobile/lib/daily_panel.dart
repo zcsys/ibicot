@@ -1,3 +1,5 @@
+import 'presentation.dart';
+import 'strings.dart';
 import 'package:flutter/material.dart';
 import 'package:tideglass_core/tideglass_core.dart';
 import 'calibration_pattern.dart';
@@ -27,8 +29,8 @@ Future<void> openCalibration(BuildContext context, GameController game) async {
     if (context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text(
-            'The constellation charts could not be opened. Your Focus has been kept.',
+          content: LocalizedText(
+            UiEnglish.dailyTheConstellationChartsCouldNotBeOpened,
           ),
         ),
       );
@@ -45,30 +47,39 @@ class ContractPanel extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Text('Crew contracts', style: Theme.of(context).textTheme.titleLarge),
+        LocalizedText(
+          UiEnglish.dailyCrewContracts,
+          style: Theme.of(context).textTheme.titleLarge,
+        ),
         const SizedBox(height: 8),
-        const Text(
-          'Three each account day, kept for seven days. Targets stay fixed. Each completed contract grants 10 Notes and 250 pass XP.',
+        const LocalizedText(
+          UiEnglish.dailyThreeEachAccountDayKeptForSeven,
           style: TextStyle(color: TideColors.muted),
         ),
         const SizedBox(height: 12),
-        Text(
-          '${game.state.dailyContracts.where((c) => c.claimed).length} claimed · ${game.state.passXp} XP toward the selected pass',
+        LocalizedText(
+          UiEnglish.dailyGameStateDailyContractsWhereCCClaimed(
+            game.state.dailyContracts.where((c) => c.claimed).length,
+            game.state.passXp,
+          ),
           style: const TextStyle(color: TideColors.amber),
         ),
         const SizedBox(height: 12),
         if (pending.isEmpty)
           const Padding(
             padding: EdgeInsets.symmetric(vertical: 16),
-            child: Text(
-              'All retained contracts are complete. The harbor has no streak to protect.',
+            child: LocalizedText(
+              UiEnglish.dailyAllRetainedContractsAreCompleteTheHarbor,
             ),
           ),
         for (final contract in pending)
           _ContractCard(game: game, contract: contract),
         const SizedBox(height: 12),
-        Text(
-          'Account day uses a fixed UTC${game.state.daily.utcOffsetMinutes >= 0 ? '+' : ''}${game.state.daily.utcOffsetMinutes / 60} offset. Traveling will not reset the allowance.',
+        LocalizedText(
+          UiEnglish.dailyAccountDayUsesAFixedUTCGame(
+            game.state.daily.utcOffsetMinutes >= 0 ? '+' : '',
+            game.state.daily.utcOffsetMinutes / 60,
+          ),
           style: const TextStyle(color: TideColors.muted, fontSize: 12),
         ),
       ],
@@ -85,17 +96,26 @@ class _ContractCard extends StatelessWidget {
     final progress = game.engine.contractProgress(game.state, contract);
     final ready = progress >= contract.target;
     final title = switch (contract.kind) {
-      'restore' => 'Gather ${compactMicros(contract.target)} Radiance',
-      'build' => 'Build ${contract.target} lightkeepers',
+      'restore' => UiEnglish.dailyGatherCompactMicrosContractTargetRadiance(
+        compactMicros(contract.target),
+      ),
+      'build' => UiEnglish.dailyBuildContractTargetLightkeepers(
+        contract.target,
+      ),
       _ =>
-        'Explore one ${switch (contract.discoveryKind) {
-          'calibration' => 'constellation',
-          'challenge' => 'challenge',
-          _ => 'archive entry',
-        }}',
+        UiEnglish.dailyExploreOneSwitchContractDiscoveryKindCalibrationConstellation(
+          switch (contract.discoveryKind) {
+            'calibration' => 'constellation',
+            'challenge' => 'challenge',
+            _ => UiEnglish.dailyArchiveEntry,
+          },
+        ),
     };
     final shown = contract.kind == 'restore'
-        ? '${compactMicros(progress)} / ${compactMicros(contract.target)} R'
+        ? UiEnglish.dailyCompactMicrosProgressCompactMicrosContractTargetR(
+            compactMicros(progress),
+            compactMicros(contract.target),
+          )
         : '$progress / ${contract.target}';
     final age = game.state.daily.dayHighWater - contract.accountDay;
     return Card(
@@ -105,10 +125,13 @@ class _ContractCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text(title, style: Theme.of(context).textTheme.titleMedium),
+            LocalizedText(
+              title,
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
             const SizedBox(height: 8),
-            Text(
-              '$shown · ${age == 0 ? 'Today' : '${age}d in the backlog'}',
+            LocalizedText(
+              '$shown · ${age == 0 ? UiEnglish.dailyToday : UiEnglish.dailyAgeDInTheBacklog(age)}',
               style: const TextStyle(color: TideColors.muted),
             ),
             const SizedBox(height: 12),
@@ -121,12 +144,12 @@ class _ContractCard extends StatelessWidget {
                   onPressed: ready
                       ? () => game.claimContract(contract.id)
                       : null,
-                  child: const Text('Claim 10 Notes + 250 XP'),
+                  child: const LocalizedText(UiEnglish.dailyClaimNotesXP),
                 ),
                 if (!contract.rerolled && !ready)
                   TextButton(
                     onPressed: () => game.rerollContract(contract.id),
-                    child: const Text('Reroll once'),
+                    child: const LocalizedText(UiEnglish.dailyRerollOnce),
                   ),
               ],
             ),
@@ -186,10 +209,7 @@ class _AutomationScreenState extends State<AutomationScreen> {
         amount <= BigInt.zero ||
         duration == null ||
         duration < 1) {
-      setState(
-        () => notice =
-            'Choose a name, at least one new Chart, and a run of at least one second.',
-      );
+      setState(() => notice = UiEnglish.dailyChooseANameAtLeastOneNew);
       return;
     }
     final plan = AutomationPlan(
@@ -205,19 +225,16 @@ class _AutomationScreenState extends State<AutomationScreen> {
       game.selectPlan(id);
       setState(
         () => notice =
-            'Plan saved and selected. Automatic rebuilding remains your separate choice in the harbor.',
+            UiEnglish.dailyPlanSavedAndSelectedAutomaticRebuildingRemains,
       );
     } else {
-      setState(
-        () => notice =
-            'This plan could not be saved. Check the Chart unlock and available plan slots.',
-      );
+      setState(() => notice = UiEnglish.dailyThisPlanCouldNotBeSavedCheck);
     }
   }
 
   @override
   Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(title: const Text('The crew’s plan')),
+    appBar: AppBar(title: const LocalizedText(UiEnglish.dailyTheCrewSPlan)),
     body: ListenableBuilder(
       listenable: game,
       builder: (_, _) => SingleChildScrollView(
@@ -228,8 +245,8 @@ class _AutomationScreenState extends State<AutomationScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const Text(
-                  'One free plan. Extra saved plans cost 50 Notes each, up to five. Plans work while you are away.',
+                const LocalizedText(
+                  UiEnglish.dailyOneFreePlanExtraSavedPlansCost,
                 ),
                 const SizedBox(height: 20),
                 DropdownButtonFormField<String>(
@@ -241,11 +258,15 @@ class _AutomationScreenState extends State<AutomationScreen> {
                       game.state.automationPlans.any((p) => p.id == id)
                       ? id
                       : null,
-                  decoration: const InputDecoration(labelText: 'Saved plan'),
+                  decoration: InputDecoration(
+                    labelText: Presentation.text(UiEnglish.dailySavedPlan),
+                  ),
                   items: game.state.automationPlans
                       .map(
-                        (p) =>
-                            DropdownMenuItem(value: p.id, child: Text(p.name)),
+                        (p) => DropdownMenuItem(
+                          value: p.id,
+                          child: LocalizedText(p.name),
+                        ),
                       )
                       .toList(),
                   onChanged: (value) {
@@ -264,7 +285,9 @@ class _AutomationScreenState extends State<AutomationScreen> {
                 TextField(
                   controller: name,
                   maxLength: 120,
-                  decoration: const InputDecoration(labelText: 'Plan name'),
+                  decoration: InputDecoration(
+                    labelText: Presentation.text(UiEnglish.dailyPlanName),
+                  ),
                 ),
                 const SizedBox(height: 12),
                 DropdownButtonFormField<String>(
@@ -273,22 +296,24 @@ class _AutomationScreenState extends State<AutomationScreen> {
                   isDense: false,
                   itemHeight: null,
                   initialValue: policy,
-                  decoration: const InputDecoration(labelText: 'Buying policy'),
+                  decoration: InputDecoration(
+                    labelText: Presentation.text(UiEnglish.dailyBuyingPolicy),
+                  ),
                   items: const [
                     DropdownMenuItem(
                       value: 'greedy',
-                      child: Text('Best marginal payback'),
+                      child: LocalizedText(UiEnglish.dailyBestMarginalPayback),
                     ),
                     DropdownMenuItem(
                       value: 'priority',
-                      child: Text('Tier priority'),
+                      child: LocalizedText(UiEnglish.dailyTierPriority),
                     ),
                   ],
                   onChanged: (value) => setState(() => policy = value!),
                 ),
                 const SizedBox(height: 12),
-                const Text(
-                  'Best payback waits for the most efficient next purchase. Tier priority waits for the first unlocked tier in your list; it can favor a longer-term route.',
+                const LocalizedText(
+                  UiEnglish.dailyBestPaybackWaitsForTheMostEfficient,
                   style: TextStyle(color: TideColors.muted),
                 ),
                 if (policy == 'priority') ...[
@@ -296,13 +321,15 @@ class _AutomationScreenState extends State<AutomationScreen> {
                   for (var i = 0; i < priority.length; i++)
                     ListTile(
                       contentPadding: EdgeInsets.zero,
-                      title: Text(
+                      title: LocalizedText(
                         '${i + 1}. ${TideglassEngine.producerNames[priority[i]]}',
                       ),
                       trailing: Wrap(
                         children: [
                           IconButton(
-                            tooltip: 'Move earlier',
+                            tooltip: Presentation.text(
+                              UiEnglish.dailyMoveEarlier,
+                            ),
                             onPressed: i == 0
                                 ? null
                                 : () => setState(() {
@@ -312,7 +339,9 @@ class _AutomationScreenState extends State<AutomationScreen> {
                             icon: const Icon(Icons.arrow_upward),
                           ),
                           IconButton(
-                            tooltip: 'Move later',
+                            tooltip: Presentation.text(
+                              UiEnglish.dailyMoveLater,
+                            ),
                             onPressed: i == 4
                                 ? null
                                 : () => setState(() {
@@ -328,11 +357,13 @@ class _AutomationScreenState extends State<AutomationScreen> {
                 const SizedBox(height: 20),
                 SwitchListTile(
                   contentPadding: EdgeInsets.zero,
-                  title: const Text('Automatically Rechart'),
-                  subtitle: Text(
+                  title: const LocalizedText(
+                    UiEnglish.dailyAutomaticallyRechart,
+                  ),
+                  subtitle: LocalizedText(
                     game.state.charts < BigInt.from(100)
-                        ? 'Unlocks at 100 Charts.'
-                        : 'Rebuild only when both limits below are met. Existing fleet and wallet are spent at every reset.',
+                        ? UiEnglish.dailyUnlocksAtCharts
+                        : UiEnglish.dailyRebuildOnlyWhenBothLimitsBelowAre,
                   ),
                   value: reset,
                   onChanged: game.state.charts < BigInt.from(100)
@@ -342,26 +373,30 @@ class _AutomationScreenState extends State<AutomationScreen> {
                 TextField(
                   controller: charts,
                   keyboardType: TextInputType.number,
-                  decoration: const InputDecoration(
-                    labelText: 'Minimum new Charts per Rechart',
+                  decoration: InputDecoration(
+                    labelText: Presentation.text(
+                      UiEnglish.dailyMinimumNewChartsPerRechart,
+                    ),
                   ),
                 ),
                 const SizedBox(height: 12),
                 TextField(
                   controller: seconds,
                   keyboardType: TextInputType.number,
-                  decoration: const InputDecoration(
-                    labelText: 'Minimum run length in seconds',
+                  decoration: InputDecoration(
+                    labelText: Presentation.text(
+                      UiEnglish.dailyMinimumRunLengthInSeconds,
+                    ),
                   ),
                 ),
                 const SizedBox(height: 12),
-                const Text(
-                  'These are your chosen conditions, not a prediction of the best possible reset time.',
+                const LocalizedText(
+                  UiEnglish.dailyTheseAreYourChosenConditionsNotA,
                   style: TextStyle(color: TideColors.muted),
                 ),
                 if (notice != null) ...[
                   const SizedBox(height: 16),
-                  Text(
+                  LocalizedText(
                     notice!,
                     style: const TextStyle(color: TideColors.amber),
                   ),
@@ -369,7 +404,7 @@ class _AutomationScreenState extends State<AutomationScreen> {
                 const SizedBox(height: 20),
                 FilledButton(
                   onPressed: save,
-                  child: const Text('Save and select plan'),
+                  child: const LocalizedText(UiEnglish.dailySaveAndSelectPlan),
                 ),
                 const SizedBox(height: 12),
                 OutlinedButton(
@@ -380,12 +415,15 @@ class _AutomationScreenState extends State<AutomationScreen> {
                       : () {
                           if (game.buyPlanSlot()) {
                             setState(
-                              () => notice = 'A new plan slot is available.',
+                              () => notice =
+                                  UiEnglish.dailyANewPlanSlotIsAvailable,
                             );
                           }
                         },
-                  child: Text(
-                    'Buy a plan slot · 50 Notes (${1 + game.state.extraPlanSlots}/6 owned)',
+                  child: LocalizedText(
+                    UiEnglish.dailyBuyAPlanSlotNotesGameState(
+                      1 + game.state.extraPlanSlots,
+                    ),
                   ),
                 ),
                 if (game.state.automationPlans.length <
@@ -395,11 +433,13 @@ class _AutomationScreenState extends State<AutomationScreen> {
                       load(
                         AutomationPlan(
                           id: 'plan.extra.${game.state.automationPlans.length}',
-                          name: 'New plan',
+                          name: UiEnglish.dailyNewPlan,
                         ),
                       );
                     }),
-                    child: const Text('Create a plan in an empty slot'),
+                    child: const LocalizedText(
+                      UiEnglish.dailyCreateAPlanInAnEmptySlot,
+                    ),
                   ),
               ],
             ),

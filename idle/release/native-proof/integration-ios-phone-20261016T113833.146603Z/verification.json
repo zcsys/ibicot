@@ -1,0 +1,56 @@
+{
+  "candidate_fingerprint": "d85bdf74433d96d2f6ea6a58a8481290942d526a7cdb8ec14b55e57537e9dced",
+  "device": "F05BE4B0-52C1-4CA1-B721-BD64AE559E3F",
+  "label": "ios-phone",
+  "started_utc": "20261016T113833.146603Z",
+  "command": [
+    "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+    "drive",
+    "--driver=test_driver/evidence_911183b5d9ee.dart",
+    "--target=integration_test/evidence_f932c29b6924_test.dart",
+    "-d",
+    "F05BE4B0-52C1-4CA1-B721-BD64AE559E3F",
+    "--dart-define=TIDEGLASS_DEVICE_LABEL=ios-phone",
+    "--dart-define=TIDEGLASS_SCENARIO=session-reload",
+    "--dart-define=TIDEGLASS_RUN_ID=integrated-d85-b",
+    "--dart-define=TIDEGLASS_VERIFICATION_ID=integration-ios-phone-20261016T113833.146603Z",
+    "--dart-define=TIDEGLASS_CANDIDATE_FINGERPRINT=d85bdf74433d96d2f6ea6a58a8481290942d526a7cdb8ec14b55e57537e9dced",
+    "--dart-define=TIDEGLASS_HARNESS_SHA256=f932c29b6924ed37165e29b813922a2e734f887c57ecea6bcc9f1c10b53e69c1",
+    "--keep-app-running",
+    "--timeout=180",
+    "--no-pub"
+  ],
+  "scenario": "session-reload",
+  "run_id": "integrated-d85-b",
+  "harness_sha256": {
+    "harness.dart": "f932c29b6924ed37165e29b813922a2e734f887c57ecea6bcc9f1c10b53e69c1",
+    "driver.dart": "911183b5d9ee8ec80769836f477a293dadb66e20cc0c5d5e44314415889749a8"
+  },
+  "production_inputs_match_snapshot": true,
+  "provenance": "Seeded native boundary/presentation test; no natural pacing or physical-device claim",
+  "exit_code": 0,
+  "native_process_stop": {
+    "command": [
+      "xcrun",
+      "simctl",
+      "terminate",
+      "F05BE4B0-52C1-4CA1-B721-BD64AE559E3F",
+      "dev.tideglass.game"
+    ],
+    "exit_code": 0,
+    "output": ""
+  },
+  "verification_errors": [],
+  "passed": true,
+  "evidence_sha256": {
+    "native-save-progress.1.json": "e4bdb287f521c83bb03cd3f641df505e6ccfdc9b74554030cd4178f00092591f",
+    "native-save-progress.0.json": "f00e448e44e98b4e22e7c2a65714df0232303996ecc65c4b02f4d342ab05036d",
+    "ios-phone-session-reload-harbor.png": "43d8ec92875e07f6d15f129867d6e603f085cdc6e2301ecf676a3a3e3d6e58a9",
+    "result.json": "de00ee32f26abaed3edbc9a37367a2426d8ce5a04c504d82415f3fd23820b6fe",
+    "run.log": "805baef41c50ce70c66315e548ff91e3697cf75ae37f76fe51f4da58a5c4a545",
+    "driver.dart": "911183b5d9ee8ec80769836f477a293dadb66e20cc0c5d5e44314415889749a8",
+    "ios-phone-session-reload-producer-stages.png": "33545ffe86bdbcb983de48a066bf456e9c95bf60cdbef8b4bc6a56d66c5147df",
+    "harness.dart": "f932c29b6924ed37165e29b813922a2e734f887c57ecea6bcc9f1c10b53e69c1",
+    "ios-phone-session-reload-collection.png": "06119de03f285f5c13b483b98b3db30f47d6705d4005bd0e86e184b41cee1128"
+  }
+}

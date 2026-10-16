@@ -1,3 +1,5 @@
+import 'presentation.dart';
+import 'strings.dart';
 import 'package:flutter/material.dart';
 import 'package:tideglass_core/tideglass_core.dart';
 import 'package:tideglass_progression/tideglass_progression.dart';
@@ -22,9 +24,9 @@ class _StoryScreenState extends State<StoryScreen> {
   final scroll = ScrollController();
   GameController get game => widget.game;
   static const familyLabels = {
-    'constrained_fleets': 'A smaller fleet',
-    'synergy_priorities': 'Different connections',
-    'automation_planning': 'Plans for the tide',
+    'constrained_fleets': UiEnglish.storyASmallerFleet,
+    'synergy_priorities': UiEnglish.storyDifferentConnections,
+    'automation_planning': UiEnglish.storyPlansForTheTide,
   };
   @override
   void dispose() {
@@ -36,7 +38,7 @@ class _StoryScreenState extends State<StoryScreen> {
   Widget build(BuildContext context) => ListenableBuilder(
     listenable: game,
     builder: (context, _) => Scaffold(
-      appBar: AppBar(title: const Text('The restoration')),
+      appBar: AppBar(title: const LocalizedText(UiEnglish.storyTheRestoration)),
       body: SafeArea(
         child: SingleChildScrollView(
           controller: scroll,
@@ -54,12 +56,12 @@ class _StoryScreenState extends State<StoryScreen> {
                       for (var i = 0; i < 4; i++)
                         ChoiceChip(
                           key: ValueKey('story-tab-$i'),
-                          label: Text(
+                          label: LocalizedText(
                             [
-                              'Chapters',
-                              'Passages',
-                              'Archive',
-                              'Decorations',
+                              UiEnglish.storyChapters,
+                              UiEnglish.storyPassages,
+                              UiEnglish.storyArchive,
+                              UiEnglish.storyDecorations,
                             ][i],
                           ),
                           selected: tab == i,
@@ -72,7 +74,9 @@ class _StoryScreenState extends State<StoryScreen> {
                   ),
                   const SizedBox(height: 24),
                   if (game.catalogue == null)
-                    const Text('The restoration catalogue could not be loaded.')
+                    const LocalizedText(
+                      UiEnglish.storyTheRestorationCatalogueCouldNotBeLoaded,
+                    )
                   else
                     ...switch (tab) {
                       0 => _chapters(context),
@@ -91,13 +95,15 @@ class _StoryScreenState extends State<StoryScreen> {
   List<Widget> _chapters(BuildContext context) {
     final campaign = game.story.campaign;
     return [
-      Text(
-        '${campaign.restoredHarbor} of 6 constellations restored',
+      LocalizedText(
+        UiEnglish.storyCampaignRestoredHarborOfConstellationsRestored(
+          campaign.restoredHarbor,
+        ),
         style: Theme.of(context).textTheme.headlineMedium,
       ),
       const SizedBox(height: 10),
-      const Text(
-        'A permanent record of what you discover. Recharting never darkens a restored constellation.',
+      const LocalizedText(
+        UiEnglish.storyAPermanentRecordOfWhatYouDiscover,
         style: TextStyle(color: TideColors.muted),
       ),
       const SizedBox(height: 24),
@@ -108,19 +114,19 @@ class _StoryScreenState extends State<StoryScreen> {
             children: [
               const Icon(Icons.auto_awesome, color: TideColors.amber, size: 36),
               const SizedBox(height: 12),
-              Text(
-                'The Harbor Remembers',
+              LocalizedText(
+                UiEnglish.storyTheHarborRemembers,
                 key: const ValueKey('campaign-ending'),
                 style: Theme.of(context).textTheme.headlineMedium,
               ),
               const SizedBox(height: 12),
-              Text(
+              LocalizedText(
                 game.catalogue!.campaign.chapters.last['completion'] as String,
               ),
               const SizedBox(height: 18),
               FilledButton(
                 onPressed: () => Navigator.pop(context),
-                child: const Text('Keep charting'),
+                child: const LocalizedText(UiEnglish.storyKeepCharting),
               ),
             ],
           ),
@@ -156,20 +162,20 @@ class _StoryScreenState extends State<StoryScreen> {
               ? TideColors.amber
               : TideColors.muted,
         ),
-        title: Text('${index + 1}. ${chapter['title']}'),
-        subtitle: Text(
+        title: LocalizedText('${index + 1}. ${chapter['title']}'),
+        subtitle: LocalizedText(
           complete
-              ? 'Restored'
+              ? UiEnglish.storyRestored
               : unlocked
-              ? 'Your current chapter'
-              : 'Complete chapter $index first',
+              ? UiEnglish.storyYourCurrentChapter
+              : UiEnglish.storyCompleteChapterIndexFirst(index),
           style: const TextStyle(color: TideColors.muted),
         ),
         children: [
           Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Text(chapter['intro'] as String),
+              LocalizedText(chapter['intro'] as String),
               const SizedBox(height: 18),
               for (final raw in chapter['objectives'] as List)
                 _objective(Map<String, dynamic>.from(raw), recorded: complete),
@@ -177,7 +183,7 @@ class _StoryScreenState extends State<StoryScreen> {
               for (final hint in chapter['hints'] as List)
                 Padding(
                   padding: const EdgeInsets.only(bottom: 8),
-                  child: Text(
+                  child: LocalizedText(
                     '• $hint',
                     style: const TextStyle(
                       color: TideColors.muted,
@@ -187,14 +193,14 @@ class _StoryScreenState extends State<StoryScreen> {
                 ),
               if (complete) ...[
                 const SizedBox(height: 10),
-                Text(
+                LocalizedText(
                   chapter['completion'] as String,
                   style: const TextStyle(color: TideColors.teal),
                 ),
               ],
               const SizedBox(height: 12),
-              const Text(
-                'Keepsake: a restored sky, three archive entries and a permanent chapter badge. No production boost.',
+              const LocalizedText(
+                UiEnglish.storyKeepsakeARestoredSkyThreeArchiveEntries,
                 style: TextStyle(color: TideColors.muted, fontSize: 12),
               ),
             ],
@@ -212,25 +218,32 @@ class _StoryScreenState extends State<StoryScreen> {
     switch (goal['kind']) {
       case 'owned_min':
         final tier = (goal['tier'] as int) - 1;
-        label = '${TideglassEngine.producerNames[tier]} in your current fleet';
+        label =
+            UiEnglish.storyTideglassEngineProducerNamesTierInYourCurrentFleet(
+              Presentation.authored(
+                (TideglassEngine.producerNames[tier]).toString(),
+              ),
+            );
         value = '${facts.main.counts[tier]}';
       case 'challenge_family_min':
-        label = 'Passages: ${familyLabels[goal['family']]}';
+        label = UiEnglish.storyPassagesFamilyLabelsGoalFamily(
+          familyLabels[goal['family']],
+        );
         value =
             '${facts.completedChallenges.where((id) => game.catalogue!.campaign.families[id] == goal['family']).length}';
       default:
         switch (goal['stat']) {
           case 'recharts':
-            label = 'Recharts completed';
+            label = UiEnglish.storyRechartsCompleted;
             value = '${facts.recharts}';
           case 'charts_awarded':
-            label = 'Permanent Charts';
+            label = UiEnglish.storyPermanentCharts;
             value = '${facts.main.charts}';
           case 'surveys_collected':
-            label = 'Surveys collected';
+            label = UiEnglish.storySurveysCollected;
             value = '${facts.surveysCollected}';
           default:
-            label = 'Distinct calibration patterns';
+            label = UiEnglish.storyDistinctCalibrationPatterns;
             value = '${facts.calibrations.length}';
         }
     }
@@ -246,9 +259,9 @@ class _StoryScreenState extends State<StoryScreen> {
           ),
           const SizedBox(width: 10),
           Expanded(
-            child: Text(
+            child: LocalizedText(
               recorded
-                  ? '$label · $target · achieved'
+                  ? UiEnglish.storyLabelTargetAchieved(label, target)
                   : '$label · $value / $target',
             ),
           ),
@@ -258,13 +271,15 @@ class _StoryScreenState extends State<StoryScreen> {
   }
 
   List<Widget> _archive(BuildContext context) => [
-    Text(
-      'The keeper’s archive',
+    LocalizedText(
+      UiEnglish.storyTheKeeperSArchive,
       style: Theme.of(context).textTheme.headlineMedium,
     ),
     const SizedBox(height: 10),
-    Text(
-      '${game.story.campaign.archiveIds.length} of 18 accounts recovered',
+    LocalizedText(
+      UiEnglish.storyGameStoryCampaignArchiveIdsLengthOfAccounts(
+        game.story.campaign.archiveIds.length,
+      ),
       style: const TextStyle(color: TideColors.muted),
     ),
     const SizedBox(height: 24),
@@ -274,7 +289,7 @@ class _StoryScreenState extends State<StoryScreen> {
             ? ExpansionTile(
                 key: PageStorageKey(entry['id']),
                 tilePadding: EdgeInsets.zero,
-                title: Text(entry['title'] as String),
+                title: LocalizedText(entry['title'] as String),
                 leading: const Icon(
                   Icons.menu_book_outlined,
                   color: TideColors.amber,
@@ -283,7 +298,7 @@ class _StoryScreenState extends State<StoryScreen> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      Text(entry['text'] as String),
+                      LocalizedText(entry['text'] as String),
                       const SizedBox(height: 14),
                       OutlinedButton(
                         key: ValueKey('read-${entry['id']}'),
@@ -291,7 +306,9 @@ class _StoryScreenState extends State<StoryScreen> {
                           context,
                           () => game.readArchive(entry['id'] as String),
                         ),
-                        child: const Text('Reflect on this account'),
+                        child: const LocalizedText(
+                          UiEnglish.storyReflectOnThisAccount,
+                        ),
                       ),
                     ],
                   ),
@@ -303,9 +320,11 @@ class _StoryScreenState extends State<StoryScreen> {
                   Icons.lock_outline,
                   color: TideColors.muted,
                 ),
-                title: Text(entry['title'] as String),
-                subtitle: Text(
-                  'Restores with chapter ${int.parse((entry['chapter_id'] as String).split('.').last)}',
+                title: LocalizedText(entry['title'] as String),
+                subtitle: LocalizedText(
+                  UiEnglish.storyRestoresWithChapterIntParseEntryChapter(
+                    int.parse((entry['chapter_id'] as String).split('.').last),
+                  ),
                 ),
               ),
       ),
@@ -313,18 +332,21 @@ class _StoryScreenState extends State<StoryScreen> {
   List<Widget> _dossiers(BuildContext context) {
     final collection = game.story.dossiers;
     return [
-      Text(
-        'Passages beyond the harbor',
+      LocalizedText(
+        UiEnglish.storyPassagesBeyondTheHarbor,
         style: Theme.of(context).textTheme.headlineMedium,
       ),
       const SizedBox(height: 10),
-      Text(
-        '${game.state.surveyNotes} Survey Notes · ${collection.completed.length} / 12 charted',
+      LocalizedText(
+        UiEnglish.storyGameStateSurveyNotesSurveyNotesCollectionCompleted(
+          game.state.surveyNotes,
+          collection.completed.length,
+        ),
         style: const TextStyle(color: TideColors.amber),
       ),
       const SizedBox(height: 12),
-      const Text(
-        'Each dossier opens a separate fleet. Your main harbor keeps earning. Main Radiance, Charts and boosts stay at home; passage progress returns as discoveries, never money.',
+      const LocalizedText(
+        UiEnglish.storyEachDossierOpensASeparateFleetYour,
         style: TextStyle(color: TideColors.muted),
       ),
       const SizedBox(height: 20),
@@ -335,13 +357,16 @@ class _StoryScreenState extends State<StoryScreen> {
         ),
       if (game.story.campaign.restoredHarbor < 3)
         _card(
-          child: const Text(
-            'Finish The Quiet Watch, chapter 3, to open passages. Each dossier then costs 100 Survey Notes once. Replays are free.',
+          child: const LocalizedText(
+            UiEnglish.storyFinishTheQuietWatchChapterToOpen,
           ),
         ),
       for (final family in familyLabels.entries) ...[
         const SizedBox(height: 12),
-        Text(family.value, style: Theme.of(context).textTheme.titleLarge),
+        LocalizedText(
+          family.value,
+          style: Theme.of(context).textTheme.titleLarge,
+        ),
         const SizedBox(height: 12),
         for (final dossier in game.catalogue!.dossiers.where(
           (d) => d.family == family.key,
@@ -370,7 +395,7 @@ class _StoryScreenState extends State<StoryScreen> {
               ),
               const SizedBox(width: 12),
               Expanded(
-                child: Text(
+                child: LocalizedText(
                   definition.title,
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
@@ -378,13 +403,15 @@ class _StoryScreenState extends State<StoryScreen> {
             ],
           ),
           const SizedBox(height: 10),
-          Text(
+          LocalizedText(
             definition.intro,
             style: const TextStyle(color: TideColors.muted),
           ),
           const SizedBox(height: 10),
-          Text(
-            'Goal: ${compactMicros(definition.goalMicros)} lifetime passage Radiance',
+          LocalizedText(
+            UiEnglish.storyGoalCompactMicrosDefinitionGoalMicrosLifetimePassageRadiance(
+              compactMicros(definition.goalMicros),
+            ),
             style: const TextStyle(fontSize: 12),
           ),
           const SizedBox(height: 14),
@@ -393,19 +420,19 @@ class _StoryScreenState extends State<StoryScreen> {
             onPressed: !active && canOpen
                 ? () => _open(context, definition)
                 : null,
-            child: Text(
+            child: LocalizedText(
               active
-                  ? 'Your active passage'
+                  ? UiEnglish.storyYourActivePassage
                   : owned
-                  ? 'Open owned dossier · free'
-                  : 'Open dossier · 100 Notes',
+                  ? UiEnglish.storyOpenOwnedDossierFree
+                  : UiEnglish.storyOpenDossierNotes,
             ),
           ),
           if (completed)
             const Padding(
               padding: EdgeInsets.only(top: 8),
-              child: Text(
-                'Charted · replay whenever you like',
+              child: LocalizedText(
+                UiEnglish.storyChartedReplayWheneverYouLike,
                 style: TextStyle(color: TideColors.teal, fontSize: 12),
               ),
             ),
@@ -422,9 +449,18 @@ class _StoryScreenState extends State<StoryScreen> {
     final owned = game.story.dossiers.owned.contains(definition.id);
     final accepted = await _confirm(
       context,
-      replacing ? 'Replace the active passage?' : 'Open ${definition.title}?',
-      '${owned ? 'This dossier is already yours. Opening it is free.' : 'Spend 100 Survey Notes to keep this dossier permanently. Replays are free.'}${replacing ? ' Your current passage fleet and its unfinished progress will be replaced; its ownership and recorded completion remain.' : ''} Your main harbor is unchanged.',
-      replacing ? 'Replace and open' : 'Open dossier',
+      replacing
+          ? UiEnglish.storyReplaceTheActivePassage
+          : UiEnglish.storyOpenDefinitionTitle(
+              Presentation.authored((definition.title).toString()),
+            ),
+      UiEnglish.storyOwnedThisDossierIsAlreadyYoursOpening(
+        owned
+            ? UiEnglish.storyThisDossierIsAlreadyYoursOpeningIt
+            : UiEnglish.storySpendSurveyNotesToKeepThisDossier,
+        replacing ? UiEnglish.storyYourCurrentPassageFleetAndItsUnfinished : '',
+      ),
+      replacing ? UiEnglish.storyReplaceAndOpen : UiEnglish.storyOpenDossier,
     );
     if (accepted && context.mounted) {
       final opened = _perform(
@@ -463,8 +499,8 @@ class _StoryScreenState extends State<StoryScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const Text(
-            'PASSAGE FLEET',
+          const LocalizedText(
+            UiEnglish.storyPASSAGEFLEET,
             style: TextStyle(
               color: TideColors.amber,
               fontSize: 11,
@@ -472,7 +508,7 @@ class _StoryScreenState extends State<StoryScreen> {
             ),
           ),
           const SizedBox(height: 8),
-          Text(
+          LocalizedText(
             definition.title,
             style: Theme.of(context).textTheme.headlineMedium,
           ),
@@ -481,13 +517,17 @@ class _StoryScreenState extends State<StoryScreen> {
             spacing: 24,
             runSpacing: 8,
             children: [
-              Text(
-                '${compactMicros(run.fleet.walletMicros)} R',
+              LocalizedText(
+                UiEnglish.storyCompactMicrosRunFleetWalletMicrosR(
+                  compactMicros(run.fleet.walletMicros),
+                ),
                 key: const ValueKey('challenge-wallet'),
                 style: Theme.of(context).textTheme.titleLarge,
               ),
-              Text(
-                '+${compactFixed(economy.outputPerSecond(run.fleet))} R/s',
+              LocalizedText(
+                UiEnglish.storyCompactFixedEconomyOutputPerSecondRunFleetRS(
+                  compactFixed(economy.outputPerSecond(run.fleet)),
+                ),
                 style: const TextStyle(color: TideColors.teal),
               ),
             ],
@@ -495,33 +535,40 @@ class _StoryScreenState extends State<StoryScreen> {
           const SizedBox(height: 16),
           LinearProgressIndicator(value: fraction, minHeight: 6),
           const SizedBox(height: 8),
-          Text(
-            '${compactMicros(run.fleet.lifetimeMicros)} / ${compactMicros(definition.goalMicros)} lifetime Radiance',
+          LocalizedText(
+            UiEnglish.storyCompactMicrosRunFleetLifetimeMicrosCompactMicrosDefinitionGoalMic(
+              compactMicros(run.fleet.lifetimeMicros),
+              compactMicros(definition.goalMicros),
+            ),
             style: const TextStyle(color: TideColors.muted, fontSize: 12),
           ),
           if (run.complete) ...[
             const SizedBox(height: 14),
-            Text(
+            LocalizedText(
               definition.completion,
               style: const TextStyle(color: TideColors.teal),
             ),
             const SizedBox(height: 8),
-            const Text(
-              'Passage charted. Its discovery is kept in your restoration.',
+            const LocalizedText(
+              UiEnglish.storyPassageChartedItsDiscoveryIsKeptIn,
               key: ValueKey('challenge-complete'),
             ),
           ],
           const SizedBox(height: 18),
-          const Text(
-            'You can return to the harbor without closing this passage. Both fleets continue working.',
+          const LocalizedText(
+            UiEnglish.storyYouCanReturnToTheHarborWithout,
             style: TextStyle(color: TideColors.muted, fontSize: 12),
           ),
           const SizedBox(height: 18),
           if (definition.automaticOnly)
             const ListTile(
               contentPadding: EdgeInsets.zero,
-              title: Text('The passage crew builds automatically'),
-              subtitle: Text('Choose the plan they follow below.'),
+              title: LocalizedText(
+                UiEnglish.storyThePassageCrewBuildsAutomatically,
+              ),
+              subtitle: LocalizedText(
+                UiEnglish.storyChooseThePlanTheyFollowBelow,
+              ),
               trailing: Icon(
                 Icons.check_circle_outline,
                 color: TideColors.teal,
@@ -530,9 +577,9 @@ class _StoryScreenState extends State<StoryScreen> {
           else
             SwitchListTile.adaptive(
               contentPadding: EdgeInsets.zero,
-              title: const Text('Let the passage crew build'),
-              subtitle: const Text(
-                'Pause the plan to make purchases yourself.',
+              title: const LocalizedText(UiEnglish.storyLetThePassageCrewBuild),
+              subtitle: const LocalizedText(
+                UiEnglish.storyPauseThePlanToMakePurchasesYourself,
               ),
               value: run.automatic,
               onChanged: (value) => game.setDossierPlan(automatic: value),
@@ -543,18 +590,18 @@ class _StoryScreenState extends State<StoryScreen> {
               key: ValueKey('challenge-policy-${run.policy.name}'),
               initialValue: run.policy,
               isExpanded: true,
-              decoration: const InputDecoration(
-                labelText: 'Purchase approach',
+              decoration: InputDecoration(
+                labelText: Presentation.text(UiEnglish.storyPurchaseApproach),
                 border: OutlineInputBorder(),
               ),
               items: const [
                 DropdownMenuItem(
                   value: ChallengePolicy.bestPayback,
-                  child: Text('Best payback'),
+                  child: LocalizedText(UiEnglish.storyBestPayback),
                 ),
                 DropdownMenuItem(
                   value: ChallengePolicy.tierPriority,
-                  child: Text('Tier priority'),
+                  child: LocalizedText(UiEnglish.storyTierPriority),
                 ),
               ],
               onChanged: (value) {
@@ -564,8 +611,8 @@ class _StoryScreenState extends State<StoryScreen> {
               },
             ),
             const SizedBox(height: 10),
-            const Text(
-              'Best payback waits for the most efficient purchase. Tier priority waits for the first unlocked tier in your order.',
+            const LocalizedText(
+              UiEnglish.storyBestPaybackWaitsForTheMostEfficient,
               style: TextStyle(color: TideColors.muted, fontSize: 12),
             ),
             if (run.policy == ChallengePolicy.tierPriority) ...[
@@ -574,22 +621,34 @@ class _StoryScreenState extends State<StoryScreen> {
                 Row(
                   children: [
                     Expanded(
-                      child: Text(
+                      child: LocalizedText(
                         '${i + 1}. ${TideglassEngine.producerNames[run.priority[i]]}',
                       ),
                     ),
                     IconButton(
                       key: ValueKey('priority-up-$i'),
-                      tooltip:
-                          'Move ${TideglassEngine.producerNames[run.priority[i]]} earlier',
+                      tooltip: Presentation.text(
+                        UiEnglish.storyMoveTideglassEngineProducerNamesRunPriorityIEarlier(
+                          Presentation.authored(
+                            (TideglassEngine.producerNames[run.priority[i]])
+                                .toString(),
+                          ),
+                        ),
+                      ),
                       onPressed: i == 0
                           ? null
                           : () => _movePriority(run, i, -1),
                       icon: const Icon(Icons.arrow_upward),
                     ),
                     IconButton(
-                      tooltip:
-                          'Move ${TideglassEngine.producerNames[run.priority[i]]} later',
+                      tooltip: Presentation.text(
+                        UiEnglish.storyMoveTideglassEngineProducerNamesRunPriorityILater(
+                          Presentation.authored(
+                            (TideglassEngine.producerNames[run.priority[i]])
+                                .toString(),
+                          ),
+                        ),
+                      ),
                       onPressed: i == 4 ? null : () => _movePriority(run, i, 1),
                       icon: const Icon(Icons.arrow_downward),
                     ),
@@ -602,12 +661,12 @@ class _StoryScreenState extends State<StoryScreen> {
             _challengeProducer(context, economy, run, tier),
           ExpansionTile(
             tilePadding: EdgeInsets.zero,
-            title: const Text('Passage network rules'),
+            title: const LocalizedText(UiEnglish.storyPassageNetworkRules),
             children: [
-              Text(
+              LocalizedText(
                 definition.synergyImmediate
-                    ? 'These cross-tier links apply from the start. Each coefficient multiplies log₂(1 + source count / 25).'
-                    : 'This passage has no cross-tier multipliers. Its berth limits shape the fleet.',
+                    ? UiEnglish.storyTheseCrossTierLinksApplyFromThe
+                    : UiEnglish.storyThisPassageHasNoCrossTierMultipliers,
                 style: const TextStyle(color: TideColors.muted, fontSize: 12),
               ),
               if (definition.synergyImmediate) ...[
@@ -616,12 +675,20 @@ class _StoryScreenState extends State<StoryScreen> {
                   border: TableBorder.all(color: TideColors.line),
                   children: [
                     const TableRow(
-                      children: [_Cell('Source'), _Cell('Loom'), _Cell('Dawn')],
+                      children: [
+                        _Cell(UiEnglish.storySource),
+                        _Cell(UiEnglish.storyLoom),
+                        _Cell(UiEnglish.storyDawn),
+                      ],
                     ),
                     for (var row = 0; row < 2; row++)
                       TableRow(
                         children: [
-                          _Cell(row == 0 ? 'Skiffs' : 'Nurseries'),
+                          _Cell(
+                            row == 0
+                                ? UiEnglish.storySkiffs
+                                : UiEnglish.storyNurseries,
+                          ),
                           _Cell('${definition.matrix[row][0]}%'),
                           _Cell('${definition.matrix[row][1]}%'),
                         ],
@@ -639,11 +706,11 @@ class _StoryScreenState extends State<StoryScreen> {
             children: [
               OutlinedButton(
                 onPressed: () => _restart(context),
-                child: const Text('Restart fleet · free'),
+                child: const LocalizedText(UiEnglish.storyRestartFleetFree),
               ),
               TextButton(
                 onPressed: () => _leave(context),
-                child: const Text('Close this passage'),
+                child: const LocalizedText(UiEnglish.storyCloseThisPassage),
               ),
             ],
           ),
@@ -677,21 +744,31 @@ class _StoryScreenState extends State<StoryScreen> {
               ),
               const SizedBox(width: 10),
               Expanded(
-                child: Text(
-                  '${TideglassEngine.producerNames[tier]}\n${run.fleet.counts[tier]}${cap == null ? '' : ' / $cap'} at work',
+                child: LocalizedText(
+                  UiEnglish.storyTideglassEngineProducerNamesTierNRunFleetCounts(
+                    Presentation.authored(
+                      (TideglassEngine.producerNames[tier]).toString(),
+                    ),
+                    run.fleet.counts[tier],
+                    cap == null ? '' : ' / $cap',
+                  ),
                 ),
               ),
             ],
           ),
           const SizedBox(height: 6),
           if (cap != null && run.fleet.counts[tier] >= cap)
-            const Text(
-              'Berth limit reached',
+            const LocalizedText(
+              UiEnglish.storyBerthLimitReached,
               style: TextStyle(color: TideColors.muted, fontSize: 12),
             )
           else if (!unlocked)
-            Text(
-              'Needs 10 ${TideglassEngine.producerNames[tier - 1]}',
+            LocalizedText(
+              UiEnglish.storyNeedsTideglassEngineProducerNamesTier(
+                Presentation.authored(
+                  (TideglassEngine.producerNames[tier - 1]).toString(),
+                ),
+              ),
               style: const TextStyle(color: TideColors.muted, fontSize: 12),
             )
           else
@@ -700,8 +777,15 @@ class _StoryScreenState extends State<StoryScreen> {
               onPressed: affordable && !economy.definition.automaticOnly
                   ? () => _perform(context, () => game.buyInDossier(tier))
                   : null,
-              child: Text(
-                '${economy.definition.automaticOnly ? 'Crew purchase' : 'Build 1'} · ${compactMicros(economy.priceMicros(tier, run.fleet.counts[tier]))} R',
+              child: LocalizedText(
+                UiEnglish.storyEconomyDefinitionAutomaticOnlyCrewPurchaseBuildCompactMicros(
+                  economy.definition.automaticOnly
+                      ? UiEnglish.storyCrewPurchase
+                      : UiEnglish.storyBuild,
+                  compactMicros(
+                    economy.priceMicros(tier, run.fleet.counts[tier]),
+                  ),
+                ),
               ),
             ),
         ],
@@ -719,9 +803,9 @@ class _StoryScreenState extends State<StoryScreen> {
   Future<void> _restart(BuildContext context) async {
     if (await _confirm(
           context,
-          'Restart this passage fleet?',
-          'The current passage Radiance and fleet will be rebuilt. Ownership, recorded completion and your main harbor remain. Replaying costs no Notes.',
-          'Restart fleet',
+          UiEnglish.storyRestartThisPassageFleet,
+          UiEnglish.storyTheCurrentPassageRadianceAndFleetWill,
+          UiEnglish.storyRestartFleet,
         ) &&
         context.mounted) {
       _perform(context, game.restartDossier);
@@ -731,9 +815,9 @@ class _StoryScreenState extends State<StoryScreen> {
   Future<void> _leave(BuildContext context) async {
     if (await _confirm(
           context,
-          'Close this passage?',
-          'The current passage fleet and unfinished progress will be discarded. Dossier ownership and recorded completion remain. You can use Back to visit your harbor while keeping this passage active.',
-          'Close passage',
+          UiEnglish.storyCloseThisPassage2,
+          UiEnglish.storyTheCurrentPassageFleetAndUnfinishedProgress,
+          UiEnglish.storyClosePassage,
         ) &&
         context.mounted) {
       _perform(context, game.leaveDossier);
@@ -741,13 +825,13 @@ class _StoryScreenState extends State<StoryScreen> {
   }
 
   List<Widget> _decorations(BuildContext context) => [
-    Text(
-      'Make the harbor yours',
+    LocalizedText(
+      UiEnglish.storyMakeTheHarborYours,
       style: Theme.of(context).textTheme.headlineMedium,
     ),
     const SizedBox(height: 10),
-    const Text(
-      'Six optional decorations, 50 Survey Notes each. Purely visual: they never change production, prestige or storage.',
+    const LocalizedText(
+      UiEnglish.storySixOptionalDecorationsSurveyNotesEachPurely,
       style: TextStyle(color: TideColors.muted),
     ),
     const SizedBox(height: 18),
@@ -757,7 +841,7 @@ class _StoryScreenState extends State<StoryScreen> {
         child: OutlinedButton(
           key: const ValueKey('unequip-decoration'),
           onPressed: () => _perform(context, game.unequipDecoration),
-          child: const Text('Show the undecorated harbor'),
+          child: const LocalizedText(UiEnglish.storyShowTheUndecoratedHarbor),
         ),
       ),
     for (var i = 1; i <= 6; i++) _decoration(context, i),
@@ -767,12 +851,12 @@ class _StoryScreenState extends State<StoryScreen> {
     final owned = game.story.decorations.contains(id),
         equipped = game.story.equippedDecoration == id;
     const names = [
-      'Beacon pennants',
-      'Glass buoys',
-      'Aurora kite',
-      'Tide rings',
-      'Shore garden',
-      'Returning comets',
+      UiEnglish.storyBeaconPennants,
+      UiEnglish.storyGlassBuoys,
+      UiEnglish.storyAuroraKite,
+      UiEnglish.storyTideRings,
+      UiEnglish.storyShoreGarden,
+      UiEnglish.storyReturningComets,
     ];
     return _card(
       child: Column(
@@ -785,7 +869,7 @@ class _StoryScreenState extends State<StoryScreen> {
             decoration: id,
           ),
           const SizedBox(height: 14),
-          Text(
+          LocalizedText(
             names[index - 1],
             style: Theme.of(context).textTheme.titleMedium,
           ),
@@ -799,12 +883,12 @@ class _StoryScreenState extends State<StoryScreen> {
                 : game.state.surveyNotes >= BigInt.from(50)
                 ? () => _perform(context, () => game.buyDecoration(id))
                 : null,
-            child: Text(
+            child: LocalizedText(
               equipped
-                  ? 'Equipped'
+                  ? UiEnglish.storyEquipped
                   : owned
-                  ? 'Equip decoration'
-                  : 'Keep decoration · 50 Notes',
+                  ? UiEnglish.storyEquipDecoration
+                  : UiEnglish.storyKeepDecorationNotes,
             ),
           ),
         ],
@@ -818,11 +902,11 @@ class _StoryScreenState extends State<StoryScreen> {
       ..hideCurrentSnackBar()
       ..showSnackBar(
         SnackBar(
-          content: Text(
+          content: LocalizedText(
             game.lastAction ??
                 (result
-                    ? 'Your harbor has been updated.'
-                    : 'This action is not available yet.'),
+                    ? UiEnglish.storyYourHarborHasBeenUpdated
+                    : UiEnglish.storyThisActionIsNotAvailableYet),
           ),
         ),
       );
@@ -838,16 +922,16 @@ class _StoryScreenState extends State<StoryScreen> {
       await showDialog<bool>(
         context: context,
         builder: (dialog) => AlertDialog(
-          title: Text(title),
-          content: SingleChildScrollView(child: Text(body)),
+          title: LocalizedText(title),
+          content: SingleChildScrollView(child: LocalizedText(body)),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(dialog, false),
-              child: const Text('Keep current progress'),
+              child: const LocalizedText(UiEnglish.storyKeepCurrentProgress),
             ),
             FilledButton(
               onPressed: () => Navigator.pop(dialog, true),
-              child: Text(confirm),
+              child: LocalizedText(confirm),
             ),
           ],
         ),
@@ -872,6 +956,6 @@ class _Cell extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Padding(
     padding: const EdgeInsets.all(10),
-    child: Text(text, style: const TextStyle(fontSize: 12)),
+    child: LocalizedText(text, style: const TextStyle(fontSize: 12)),
   );
 }

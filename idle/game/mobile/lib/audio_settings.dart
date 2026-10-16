@@ -1,3 +1,5 @@
+import 'presentation.dart';
+import 'strings.dart';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'audio_bus.dart';
@@ -18,44 +20,48 @@ class AudioSettings extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           SwitchListTile(
-            title: const Text('Mute all sound'),
+            title: const LocalizedText(UiEnglish.audioMuteAllSound),
             value: preferences.muted,
             onChanged: (value) => update(preferences.copyWith(muted: value)),
           ),
           SwitchListTile(
-            title: const Text('Music'),
-            subtitle: const Text('Quiet harbor themes'),
+            title: const LocalizedText(UiEnglish.audioMusic),
+            subtitle: const LocalizedText(UiEnglish.audioQuietHarborThemes),
             value: !preferences.musicMuted,
             onChanged: (value) =>
                 update(preferences.copyWith(musicMuted: !value)),
           ),
           Semantics(
-            label: 'Music volume',
+            label: Presentation.text(UiEnglish.audioMusicVolume),
             child: Slider(
               value: preferences.musicVolume,
               divisions: 20,
-              label: '${(preferences.musicVolume * 100).round()}%',
+              label: Presentation.text(
+                '${(preferences.musicVolume * 100).round()}%',
+              ),
               semanticFormatterCallback: (value) =>
-                  '${(value * 100).round()} percent',
+                  UiEnglish.audioValueRoundPercent((value * 100).round()),
               onChanged: (value) =>
                   update(audio.preferences.copyWith(musicVolume: value)),
             ),
           ),
           SwitchListTile(
-            title: const Text('Sound effects'),
-            subtitle: const Text('Actions and discoveries'),
+            title: const LocalizedText(UiEnglish.audioSoundEffects),
+            subtitle: const LocalizedText(UiEnglish.audioActionsAndDiscoveries),
             value: !preferences.sfxMuted,
             onChanged: (value) =>
                 update(preferences.copyWith(sfxMuted: !value)),
           ),
           Semantics(
-            label: 'Sound effects volume',
+            label: Presentation.text(UiEnglish.audioSoundEffectsVolume),
             child: Slider(
               value: preferences.sfxVolume,
               divisions: 20,
-              label: '${(preferences.sfxVolume * 100).round()}%',
+              label: Presentation.text(
+                '${(preferences.sfxVolume * 100).round()}%',
+              ),
               semanticFormatterCallback: (value) =>
-                  '${(value * 100).round()} percent',
+                  UiEnglish.audioValueRoundPercent2((value * 100).round()),
               onChanged: (value) =>
                   update(audio.preferences.copyWith(sfxVolume: value)),
             ),
@@ -63,7 +69,7 @@ class AudioSettings extends StatelessWidget {
           if (audio.warning != null)
             Padding(
               padding: const EdgeInsets.all(16),
-              child: Text(audio.warning!),
+              child: LocalizedText(audio.warning!),
             ),
         ],
       );
