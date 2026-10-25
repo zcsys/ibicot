@@ -1,0 +1,32 @@
+Traceback (most recent call last):
+  File "/Users/csys/Desktop/ibicot/idle/release/store/android-capture-repair-20261023T052223.188133Z/test_staged_recording.py", line 165, in <module>
+    if __name__=='__main__':unittest.main(verbosity=2)
+                            ~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/unittest/main.py", line 104, in __init__
+    self.runTests()
+    ~~~~~~~~~~~~~^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/unittest/main.py", line 270, in runTests
+    self.result = testRunner.run(self.test)
+                  ~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/unittest/runner.py", line 240, in run
+    test(result)
+    ~~~~^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/unittest/suite.py", line 84, in __call__
+    return self.run(*args, **kwds)
+           ~~~~~~~~^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/unittest/suite.py", line 122, in run
+    test(result)
+    ~~~~^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/unittest/suite.py", line 84, in __call__
+    return self.run(*args, **kwds)
+           ~~~~~~~~^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/unittest/suite.py", line 122, in run
+    test(result)
+    ~~~~^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/unittest/case.py", line 707, in __call__
+    return self.run(*args, **kwds)
+           ~~~~~~~~^^^^^^^^^^^^^^^
+  File "/Users/csys/Desktop/ibicot/idle/release/store/android-capture-repair-20261023T052223.188133Z/test_staged_recording.py", line 28, in run
+    self.calls.append((cmd,kw))
+    ^^^^^^^^^^
+AttributeError: 'GalleryTests' object has no attribute 'calls'

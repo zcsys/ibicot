@@ -1,0 +1,52 @@
+{
+  "checked_utc": "2026-10-19T14:49:51.460398+00:00",
+  "purpose": "Lead author integration/QA019 repair evidence; independent review and fresh native qualification separate",
+  "source_sha256": {
+    "game/mobile/lib/native_services.dart": "884a440659c58f0faab746435cc0aba89b69601ef4e8393fd4f4416f489ddf14",
+    "game/mobile/lib/bootstrap.dart": "a631d11ce7692a22ea4b2e3feb9be7529d1da64095cba17abf982112d4496d62",
+    "game/mobile/lib/app.dart": "d22efcefef3a75597b8803e9a28e75f5ec826afd637a7b008b8844c05674debb",
+    "game/mobile/lib/ownership_clock.dart": "8ef9752fa88e49f1112c80baaee8c9979f9caa6a48e574e1d42256398eba8e26",
+    "game/mobile/lib/soundtrack_export.dart": "07af0cca1e9d790d445c1ab86712a19396e4f0bb3a63b9b48ccafe8437bbc109",
+    "game/mobile/lib/service_cosmetics.dart": "ec7692710421e18d0b0841caae9163baca1365a63f2017b878f575d2217ac75e",
+    "game/platform/lib/soundtrack_delivery.dart": "7ee1b58f2b11990939b204105ec71079f3ac1529ae08167ab9d05c5637057402",
+    "game/platform/lib/signed_entitlements.dart": "018ded6ffbd3672ab6de6747747a4026f7c880a5c0bcec271b58cb25f2d2c66e",
+    "game/mobile/pubspec.yaml": "3dee7db8606a8d0d36daec69616f3a8110a33c16f1e86cdc11ba1cca4145efea",
+    "game/mobile/pubspec.lock": "75d094d1dcd86b951c60cc082db6ded8c45db95aae02ea2b39ebaff0858a1a03",
+    "game/mobile/test/qa_integration_signed_native_test.dart": "3c3e9ff337573f32e1ec3f78d57db3addeceb56cee4e10ff7540655462ad8d7f",
+    "game/mobile/test/signed_ownership_integration_test.dart": "d0928dca74e6a91bc94d7defa734c0d99a66dc510b02e9a2273740977bf6de79",
+    "game/mobile/test/bootstrap_service_configuration_test.dart": "e8a845769df5ba4a2d6677122af76e3136110139879cfaa473a5fbc8b710639c"
+  },
+  "checks": [
+    {
+      "log": "release/qa019-lead-repair-tests.log",
+      "passed": 46,
+      "note": "Six original QA019 cases plus author integration suites; before formatting-only lint repair"
+    },
+    {
+      "log": "release/qa019-lead-expanded-probes.log",
+      "passed": 8,
+      "note": "All eight independent QA probes at final source; original six rerun plus storage/stale-restore probes; do not add to46 as54 distinct"
+    },
+    {
+      "log": "release/ownership-soundtrack-integration-analyze-repaired.log",
+      "result": "clean",
+      "files": 6
+    },
+    {
+      "evidence": "release/bootstrap-ownership-config-evidence.json",
+      "passed": 4,
+      "note": "Separate compile definitions; predates QA019 manager delta, bootstrap unchanged"
+    },
+    {
+      "log": "release/soundtrack-delivery-client-tests-v3.log",
+      "passed": 10,
+      "note": "Actual loopback HTTP/filesystem at unchanged helper source"
+    }
+  ],
+  "limits": [
+    "No actual store/provider transactions",
+    "No current-source native runtime/build proof yet",
+    "No physical-device or hosted SDK traffic evidence",
+    "No original package acceptance promoted"
+  ]
+}

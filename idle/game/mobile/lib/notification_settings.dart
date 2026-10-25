@@ -60,11 +60,13 @@ class _NotificationSettingsState extends State<NotificationSettings> {
           ),
           const SizedBox(height: 12),
           Text(copy.text('intro')),
+          const SizedBox(height: 12),
+          Text(copy.text('permissionHint')),
+          const SizedBox(height: 8),
           SwitchListTile(
             key: const ValueKey('reminder-enable'),
             contentPadding: EdgeInsets.zero,
             title: Text(copy.text('enabled')),
-            subtitle: Text(copy.text('permissionHint')),
             value: prefs.enabled,
             onChanged: service.busy
                 ? null

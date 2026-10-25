@@ -1,0 +1,11 @@
+# Android socket transport correction
+
+The two original Android default/enrollment native checks passed, but their bounded observations remain partial. The old exec-out invocation passed shell-quoted script text literally: a zero-status wrapper emitted `inaccessible or not found`; the strict socket parser rejected that output. Neither window proves absence of traffic.
+
+This proposed collector changes exactly one line: only the Android socket script uses `adb shell run-as ... sh -c <quoted script> observer PID UID`. Binary process identity reads retain exec-out. The script, exact UID/inode filtering, process start/boot binding, fixed seven storage paths, 15-second observation/20-second ceiling, immutable candidate bridge, strict final completion and unavailable Android storage remain byte-for-byte unchanged. No live source or frozen candidate file was edited.
+
+Validation: 73 methods pass (41 original observer/repair methods, 14 runner binding methods, 18 focused transport methods). Initial missing copied test fixtures caused 33 errors, preserved in author-tests-missing-fixtures logs; exact historical fixture copies fixed provisioning, without test/collector changes. Running the focused suite against the old collector retains 2 expected failures demonstrating the argv and shell-roundtrip defect.
+
+The actual owned emulator diagnostic used a newly created ten-second package-UID shell helper, with its explicit PID/start identity before and after. It did not launch the app, change permissions or inspect unrelated processes. It is transport qualification, not an application observation. Old transport returned zero with wrapper error text. The new exact collector socket call executed the script, read selected helper FD inodes, and returned native exit 72 at the unreadable socket-table guard. Thus this environment may still leave fresh application observations unavailable; no OS-bypass or fallback was added. Raw commands and outputs are preserved in owned-helper-diagnostic.json. The helper exited naturally.
+
+Promotion requested: runtime_observation.py only, after independent review, followed by fresh original-harness Android default/enrollment observations. Original partial evidence and exact frozen 3b00 source remain unchanged.

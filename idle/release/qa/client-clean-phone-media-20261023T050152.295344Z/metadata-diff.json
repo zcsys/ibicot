@@ -1,0 +1,34 @@
+{
+  "changes": [
+    {
+      "id": "S04",
+      "fields": [
+        "delivery_status",
+        "evidence",
+        "verification_note"
+      ],
+      "before": {
+        "delivery_status": "not_verified",
+        "evidence": [],
+        "verification_note": null
+      },
+      "after": {
+        "delivery_status": "verified",
+        "evidence": [
+          "release/qa/client-purchase-modes-20261023T045130.988873Z/REVIEW.md",
+          "release/qa/client-purchase-modes-20261023T045130.988873Z/verification.json",
+          "release/qa/lead-purchase-modes-20261023T044648.543624Z/verification.json",
+          "release/qa/integration-art-matrix-20261021T123739647573Z/ART_MATRIX_REVIEW.md",
+          "release/qa/integration-transition-repaired-20261021T121351672733Z/NUMERIC_EVIDENCE_BRIDGE.json",
+          "release/qa/lead-s04-acceptance-20261023T045632.781258Z/DECISIONS.md"
+        ],
+        "verification_note": "Exact original local functional S04 obligation: 16 genuine-mode host UI cases, four independently reproduced; exact and one-micro-short affordability, whole-tier 25/50/75/100 output and actual renderer agreement. Current eight-core-file arithmetic bridge and 103 producer asset pins independently reconciled. All linked original packages M1-02/M1-05/M3-09 already accepted. No new native, physical-device, wider accessibility, provider or release acceptance."
+      }
+    }
+  ],
+  "program_unchanged": true,
+  "original_packages": 65,
+  "requirements": 44,
+  "validator_exit_code": 0,
+  "adoption_sha256": "b465f7c12d5492852d6a4a6561657e07910da61fc831b7b06ac6eb74a9ddb19d"
+}

@@ -1,0 +1,15 @@
+{"protocolVersion":"0.1.1","runnerVersion":"1.33.0","pid":27894,"type":"start","time":0}
+{"suite":{"id":0,"platform":"vm","path":"test/qa_integration_study_collection_test.dart"},"type":"suite","time":0}
+{"test":{"id":1,"name":"loading test/qa_integration_study_collection_test.dart","suiteID":0,"groupIDs":[],"metadata":{"skip":false,"skipReason":null},"line":null,"column":null,"url":null},"type":"testStart","time":1}
+{"count":1,"time":6,"type":"allSuites"}
+{"testID":1,"result":"success","skipped":false,"hidden":true,"type":"testDone","time":844}
+{"group":{"id":2,"suiteID":0,"parentID":null,"name":"","metadata":{"skip":false,"skipReason":null},"testCount":3,"line":null,"column":null,"url":null},"type":"group","time":846}
+{"test":{"id":3,"name":"real file CAS permits only one simultaneous same-process writer","suiteID":0,"groupIDs":[2],"metadata":{"skip":false,"skipReason":null},"line":36,"column":3,"url":"file:///Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-study-collection-20261021T110635265548Z/game/platform/test/qa_integration_study_collection_test.dart"},"type":"testStart","time":847}
+{"testID":3,"error":"Expected: <1>\n  Actual: <2>\nboth stores read the same generation; exactly one must commit\n","stackTrace":"package:matcher                                      expect\ntest/qa_integration_study_collection_test.dart 50:5  main.<fn>\n","isFailure":true,"type":"error","time":888}
+{"testID":3,"result":"failure","skipped":false,"hidden":false,"type":"testDone","time":889}
+{"test":{"id":4,"name":"reserved unknown-config label cannot be registered as exact config","suiteID":0,"groupIDs":[2],"metadata":{"skip":false,"skipReason":null},"line":54,"column":3,"url":"file:///Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-study-collection-20261021T110635265548Z/game/platform/test/qa_integration_study_collection_test.dart"},"type":"testStart","time":891}
+{"testID":4,"error":"Expected: throws <Instance of 'StudyException'>\n  Actual: <Closure: () => StudyConfig>\n   Which: returned <Instance of 'StudyConfig'>\n","stackTrace":"package:matcher                                      expect\ntest/qa_integration_study_collection_test.dart 55:5  main.<fn>\n","isFailure":true,"type":"error","time":896}
+{"testID":4,"result":"failure","skipped":false,"hidden":false,"type":"testDone","time":897}
+{"test":{"id":5,"name":"actual foreground activity at exact inactivity boundary splits once","suiteID":0,"groupIDs":[2],"metadata":{"skip":false,"skipReason":null},"line":58,"column":3,"url":"file:///Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-study-collection-20261021T110635265548Z/game/platform/test/qa_integration_study_collection_test.dart"},"type":"testStart","time":897}
+{"testID":5,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":921}
+{"success":false,"type":"done","time":929}

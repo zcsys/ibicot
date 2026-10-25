@@ -1,0 +1,33 @@
+{
+  "scope": "Current-source host art-pseudo-sample; not candidate152/native/human qualification",
+  "source_differences": [],
+  "results": [
+    {
+      "name": "analyzer",
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+        "analyze"
+      ],
+      "exit_code": 0,
+      "log_sha256": "269934fe1caec8a114902d77a51776c1582bb058e11d500f1982d863adce6e4d"
+    },
+    {
+      "name": "art",
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+        "test",
+        "test/art_catalogue_variants_test.dart",
+        "--plain-name",
+        "phone-100-normal",
+        "--reporter=expanded",
+        "--timeout=12m",
+        "--dart-define=TIDEGLASS_PSEUDO=true",
+        "--dart-define=TIDEGLASS_ART_REPORT_DIR=/Users/csys/Desktop/ibicot/idle/release/art/catalogue-variants/root-art-pseudo-sample-20261021T122435.459880Z"
+      ],
+      "exit_code": 0,
+      "log_sha256": "4b6fc514611ffe2477647510ea1652a5f73b7ccfbfe739d897bea25fc5c8744a"
+    }
+  ],
+  "art_report_directory": "/Users/csys/Desktop/ibicot/idle/release/art/catalogue-variants/root-art-pseudo-sample-20261021T122435.459880Z",
+  "art_report_sha256": "3c432ea2244c6a19aefa30d9a988650096e73f3a8b26aa092458179b7749ad65"
+}

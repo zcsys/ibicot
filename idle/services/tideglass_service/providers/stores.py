@@ -108,7 +108,12 @@ class GooglePurchaseVerifier:
         response=self.http.get(self._url(token),timeout=10)
         if response.status_code!=200:raise VerificationUnavailable('Google acknowledgement preflight unavailable.')
         data=response.json()
-        if data.get('obfuscatedExternalAccountId')!=observation.account_id or data.get('purchaseStateContext',{}).get('purchaseState')!='PURCHASED':
+        items=data.get('productLineItem',[])
+        if (data.get('obfuscatedExternalAccountId')!=observation.account_id or data.get('purchaseStateContext',{}).get('purchaseState')!='PURCHASED' or
+            len(items)!=1 or items[0].get('productId')!=observation.product_id or
+            items[0].get('productOfferDetails',{}).get('refundableQuantity')==0 or
+            items[0].get('productOfferDetails',{}).get('quantity',1)!=1 or
+            ('testPurchaseContext' in data and not self.allow_test)):
             raise VerificationUnavailable('Purchase is no longer eligible for acknowledgement.')
         if data.get('acknowledgementState')=='ACKNOWLEDGEMENT_STATE_ACKNOWLEDGED':return
         url='https://androidpublisher.googleapis.com/androidpublisher/v3/applications/'+quote(self.package_name,safe='')+'/purchases/products/'+quote(observation.product_id,safe='')+'/tokens/'+quote(token,safe='')+':acknowledge'

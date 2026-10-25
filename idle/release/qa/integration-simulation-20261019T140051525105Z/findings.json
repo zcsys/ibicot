@@ -1,0 +1,37 @@
+[
+  {
+    "id": "QA014",
+    "priority": "P2",
+    "status": "reproduced_unrepaired_in_this_pin",
+    "category": "production_contract_availability",
+    "paths": [
+      "game/mobile/lib/game_controller.dart",
+      "game/mobile/lib/offline_replay.dart",
+      "game/simulation/lib/policy_run.dart"
+    ],
+    "expected": "New challenge-discovery goals require at least one not-yet-completed dossier.",
+    "actual": "All twelve completed dossiers still advertise challenge; replay awards no new discovery and claim rejects.",
+    "repro": "game/mobile/test/qa_integration_simulation_test.dart: exhausted first-completion dossiers must not be offered as available discovery",
+    "scope_ids": [
+      "S11"
+    ],
+    "director_notified": true
+  },
+  {
+    "id": "SIM001",
+    "priority": "P2",
+    "status": "reproduced_unrepaired_in_this_pin",
+    "category": "simulation_final_return_bookkeeping",
+    "paths": [
+      "game/simulation/lib/policy_run.dart"
+    ],
+    "expected": "A report described as settled return should materialize the same retained daily goals as native worker.",
+    "actual": "After120h, day20746/3goals vs native day20752/21goals. Economic, dossier, season and pass partitions agree.",
+    "scope_ids": [
+      "S08",
+      "S11",
+      "S33"
+    ],
+    "director_notified": true
+  }
+]

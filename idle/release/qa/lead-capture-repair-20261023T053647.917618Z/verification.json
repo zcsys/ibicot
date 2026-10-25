@@ -1,0 +1,35 @@
+{
+  "created_utc": "2026-10-23T05:47:01.850967+00:00",
+  "status": "cleared_for_exact_tool_promotion_and_scoped_analysis",
+  "final_stage_pins": {
+    "game/mobile/integration_test/platform_smoke_test.dart": {
+      "expected_live_before_sha256": "071635c01ed508077b467462bac279107a8716861ac97a5b657a5401b2cc3506",
+      "prior_stage_sha256": "68e4873feedf964e5c734b2d45e393bdc79983e58bdbe38b55b8b62300db498c",
+      "staged_path": "release/store/android-capture-repair-season-20261023T054210.236050Z/staged/platform_smoke_test.dart",
+      "staged_sha256": "1925106cb014a4a21575af3aa3bd85fc997873c1c9be74249c966da1cf28318b"
+    },
+    "tool/native_recording.py": {
+      "expected_live_before_sha256": "6e1f4a32167d93461097ef3198256a0da815bee5e0b1fa89511dae7bef5e8a29",
+      "prior_stage_sha256": "343ed23024953c6378bf7a314589a7252a7f97451cd01906168c9018a66c6582",
+      "staged_path": "release/store/android-capture-repair-season-20261023T054210.236050Z/staged/native_recording.py",
+      "staged_sha256": "343ed23024953c6378bf7a314589a7252a7f97451cd01906168c9018a66c6582"
+    },
+    "tool/native_integration_driver.dart": {
+      "expected_live_before_sha256": "911183b5d9ee8ec80769836f477a293dadb66e20cc0c5d5e44314415889749a8",
+      "prior_stage_sha256": "5fa7f526f10afd1b23b4adbfe4577770adb50eda16163fe55039d9e4069e5007",
+      "staged_path": "release/store/android-capture-repair-season-20261023T054210.236050Z/staged/native_integration_driver.dart",
+      "staged_sha256": "5fa7f526f10afd1b23b4adbfe4577770adb50eda16163fe55039d9e4069e5007"
+    }
+  },
+  "reproduced_host_methods": 36,
+  "native_execution": false,
+  "dart_analysis": "pending_exclusive_native_lane",
+  "source_review": true,
+  "production_edits": false,
+  "outputs": {
+    "original-reviewed-pins.json": "ea06f6777cd8b4ff01b1969341a0cd30adc8decbd893273bf9aac563c0954336",
+    "reproduced-host-tests.log": "2ecdc82a33291fcfd2fff46d82dc27dd184952d3eb0f24e5fdba8f5599cc354a",
+    "final-stage-pins.json": "60a0cb51e698bb1c793d042403e351d5257aeb9458168b6c1c9aef6fea925498",
+    "REVIEW.md": "98a859e90847fa696c5a184a5929209cc69f36d44058c89b4ea3f76b1681854f"
+  }
+}

@@ -1,0 +1,153 @@
+{
+  "candidate_fingerprint": "152805bf9e269f49d14486286656ac0174a808384d10e6623533a4f92690dc11",
+  "device": "emulator-5556",
+  "label": "android",
+  "platform": "android",
+  "started_utc": "20261021T114929.560297Z",
+  "command": [
+    "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+    "drive",
+    "--driver=test_driver/evidence_911183b5d9ee.dart",
+    "--target=integration_test/evidence_7622fd5997ff_test.dart",
+    "-d",
+    "emulator-5556",
+    "--dart-define=TIDEGLASS_DEVICE_LABEL=android",
+    "--dart-define=TIDEGLASS_SCENARIO=capture-gallery",
+    "--dart-define=TIDEGLASS_RUN_ID=final152-oct21-capture",
+    "--dart-define=TIDEGLASS_VERIFICATION_ID=integration-android-20261021T114929.560297Z",
+    "--dart-define=TIDEGLASS_CANDIDATE_FINGERPRINT=152805bf9e269f49d14486286656ac0174a808384d10e6623533a4f92690dc11",
+    "--dart-define=TIDEGLASS_HARNESS_SHA256=7622fd5997fff4d1e23f1a2facc66694e6a81741ddfbce4a3062fd7e61e1f647",
+    "--keep-app-running",
+    "--timeout=180",
+    "--no-pub"
+  ],
+  "runner_sha256": "68297f66fc4e32a173b17da2594872334d59ba2b88b7d5878b5ee8905f9b89e5",
+  "candidate_validation_runner_sha256": "9f2a54793304639bda691cd0dddb4f2318951d9078c30b20f48ecc7fb1c68563",
+  "scenario": "capture-gallery",
+  "run_id": "final152-oct21-capture",
+  "harness_sha256": {
+    "harness.dart": "7622fd5997fff4d1e23f1a2facc66694e6a81741ddfbce4a3062fd7e61e1f647",
+    "driver.dart": "911183b5d9ee8ec80769836f477a293dadb66e20cc0c5d5e44314415889749a8",
+    "native_recording.py": "6e1f4a32167d93461097ef3198256a0da815bee5e0b1fa89511dae7bef5e8a29",
+    "native_video_metadata.swift": "2a3bb616cc2108f7d25cb6d2edd910b460bd4efc406fd0a2875cdc4197402450"
+  },
+  "production_inputs_match_snapshot": true,
+  "provenance": "Seeded production screen set and real-time UI actions in unedited silent simulator footage; no natural progression, human playtest or paid ownership claim.",
+  "recording": {
+    "platform": "android",
+    "device": "emulator-5556",
+    "audio_recorded": false,
+    "editing": "None; native simulator screen recorder output",
+    "commands": [
+      {
+        "command": [
+          "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+          "-s",
+          "emulator-5556",
+          "shell",
+          "screenrecord",
+          "--time-limit",
+          "27",
+          "/sdcard/tideglass-integration-android-20261021T114929.560297Z.mp4"
+        ],
+        "kind": "screen-recorder"
+      },
+      {
+        "command": [
+          "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+          "-s",
+          "emulator-5556",
+          "shell",
+          "run-as",
+          "dev.tideglass.game",
+          "touch",
+          "/data/user/0/dev.tideglass.game/files/native-verification/capture-android-final152-oct21-capture/recording-started"
+        ],
+        "exit_code": 0,
+        "output": ""
+      },
+      {
+        "command": [
+          "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+          "-s",
+          "emulator-5556",
+          "pull",
+          "/sdcard/tideglass-integration-android-20261021T114929.560297Z.mp4",
+          "/Users/csys/Desktop/ibicot/idle/release/native-proof/integration-android-20261021T114929.560297Z/gameplay.mp4"
+        ],
+        "exit_code": 0,
+        "output": "/sdcard/tideglass-integration-android-20261021T114929.560297Z.mp4: 1 file pulled, 0 skipped. 53.9 MB/s (359051 bytes in 0.006s)\n"
+      },
+      {
+        "command": [
+          "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+          "-s",
+          "emulator-5556",
+          "shell",
+          "rm",
+          "/sdcard/tideglass-integration-android-20261021T114929.560297Z.mp4"
+        ],
+        "exit_code": 0,
+        "output": ""
+      },
+      {
+        "command": [
+          "xcrun",
+          "swift",
+          "/Users/csys/Desktop/ibicot/idle/tool/native_video_metadata.swift",
+          "/Users/csys/Desktop/ibicot/idle/release/native-proof/integration-android-20261021T114929.560297Z/gameplay.mp4"
+        ],
+        "exit_code": 0,
+        "output": "{\"audio_track_count\":0,\"duration_seconds\":29.335100000000001,\"height\":2400,\"video_track_count\":1,\"width\":1080}\n"
+      }
+    ],
+    "errors": [],
+    "start_acknowledgement": "screenrecord process alive after one second; final MP4 duration independently checked",
+    "fixture_acknowledged": true,
+    "recorder_exit_code": 0,
+    "media": {
+      "audio_track_count": 0,
+      "duration_seconds": 29.3351,
+      "height": 2400,
+      "video_track_count": 1,
+      "width": 1080
+    },
+    "passed": true
+  },
+  "exit_code": 0,
+  "production_input_differences_after_run": [],
+  "source_snapshot_unchanged": true,
+  "harness_source_differences_during_run": [],
+  "native_process_stop": {
+    "command": [
+      "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "shell",
+      "am",
+      "force-stop",
+      "dev.tideglass.game"
+    ],
+    "exit_code": 0,
+    "output": ""
+  },
+  "verification_errors": [],
+  "passed": true,
+  "evidence_sha256": {
+    "result.json": "940347a4249e89ad9ba3c8e917fb6ee5183cff7e6bf7a96826e83d1b0ee7e749",
+    "android-capture-challenge.png": "ce36ab851ca3d927f82357349c65aadac4af75d558dd308f4e8d4de685124dda",
+    "run.log": "66d35ce996343054b7d8ede7445af4eb9b99f4842235837d38e50c2daeab6dd3",
+    "native_recording.py": "6e1f4a32167d93461097ef3198256a0da815bee5e0b1fa89511dae7bef5e8a29",
+    "recording.json": "9a152883aa45075084ff11b1db3cf1e444493ee3c6f63a3a53e6b15079136449",
+    "capture-manifest.json": "aad4e37d3b71071132d754289492ad015e84b065fc210635e407ea1445ffd72e",
+    "android-capture-main.png": "958950e843960c92842a01cfcf93f5f149399b082aab3a4068d964b9773c4988",
+    "driver.dart": "911183b5d9ee8ec80769836f477a293dadb66e20cc0c5d5e44314415889749a8",
+    "verify_native.py": "68297f66fc4e32a173b17da2594872334d59ba2b88b7d5878b5ee8905f9b89e5",
+    "android-capture-chapter.png": "eb5a4ade69eb3a8c0b6a03741ece2b0154bfa116795fff8f141628475b782e3f",
+    "gameplay.mp4": "0a79c40e24c78449ed9af6b09a842c1df67030dba6da4c0ac52a8e14ebf36d20",
+    "android-capture-season.png": "2111c9e09157b855e770fae3f80c7775d0c0f8afaef4fe5a7d401955ec549970",
+    "harness.dart": "7622fd5997fff4d1e23f1a2facc66694e6a81741ddfbce4a3062fd7e61e1f647",
+    "native_video_metadata.swift": "2a3bb616cc2108f7d25cb6d2edd910b460bd4efc406fd0a2875cdc4197402450",
+    "recorder.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

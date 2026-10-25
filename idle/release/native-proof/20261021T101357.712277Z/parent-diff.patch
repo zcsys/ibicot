@@ -1,0 +1,169 @@
+--- parent/tool/build_native.py
++++ derived/tool/build_native.py
+@@ -28,8 +28,9 @@
+                     continue
+                 if file.is_file() and not IGNORED_PARTS.intersection(relative.parts) and file.name not in IGNORED_NAMES:
+                     yield relative
+-    if (root / 'economy.json').exists():
+-        yield Path('economy.json')
++    for relative in ['economy.json', 'release/downloads/tideglass-original-soundtrack.zip']:
++        if (root / relative).is_file():
++            yield Path(relative)
+ 
+ 
+ def source_hashes(root: Path) -> dict[str, str]:
+@@ -53,6 +54,34 @@
+     # first, let the SDK generate its mode-specific registrant, then verify every
+     # captured dependency lock is unchanged. Never hand-edit generated plugins.
+     return [wrapper, *commands[target], *([] if release and target == 'android' else ['--no-pub'])]
++
++
++def prepare_sdk_assets(workspace: Path, sdk: Path) -> dict:
++    """Expose the same pinned SDK used by wrappers to host screenshot fixtures."""
++    sdk = sdk.resolve()
++    fonts = [sdk / 'bin/cache/artifacts/material_fonts' / name for name in
++             ['Roboto-Regular.ttf', 'MaterialIcons-Regular.otf']]
++    if not all(font.is_file() for font in fonts):
++        raise RuntimeError('Pinned SDK screenshot fonts are missing')
++    link = workspace / '.tooling/flutter'
++    link.parent.mkdir(exist_ok=True)
++    if link.exists() or link.is_symlink():
++        if not link.is_symlink() or link.resolve() != sdk:
++            raise RuntimeError('Refusing to replace unexpected candidate SDK path')
++    else:
++        link.symlink_to(sdk, target_is_directory=True)
++    return {'workspace_link': str(link), 'sdk_target': str(sdk),
++            'font_sha256': {font.name: hashlib.sha256(font.read_bytes()).hexdigest() for font in fonts},
++            'scope': 'External pinned toolchain assets; frozen application source is unchanged'}
++
++
++def provider_commands(workspace: Path) -> dict[str, list[str]]:
++    python = str(ROOT / '.tooling/services-venv/bin/python')
++    return {
++        'provider-environment': [python, str(workspace / 'tool/check_provider_environment.py'),
++                                 str(workspace / 'services/requirements-providers.lock')],
++        'provider-test': [python, '-m', 'unittest', 'discover', '-s', 'tests/services/providers', '-v'],
++    }
+ 
+ 
+ def snapshot(stamp: str, evidence: Path) -> tuple[Path, dict]:
+@@ -144,6 +173,8 @@
+     print(f'Frozen candidate: {candidate}\nEvidence: {evidence}', flush=True)
+     if args.snapshot_only:
+         return 0
++    report['sdk_fixture'] = prepare_sdk_assets(workspace, ROOT / '.tooling/flutter')
++    report_file.write_text(json.dumps(report, indent=2) + '\n')
+     release = args.mode == 'release'
+     with (evidence / 'flutter-version.log').open('w') as log:
+         subprocess.run([wrapper, '--version'], cwd=app, stdout=log, stderr=subprocess.STDOUT, check=True)
+@@ -181,6 +212,24 @@
+             if checked.returncode:
+                 failed_checks.append('services-test')
+             print(f'services-test: exit {checked.returncode}', flush=True)
++        if (workspace / 'tests/services/providers').exists():
++            fixture = workspace / 'release/downloads/tideglass-original-soundtrack.zip'
++            if not fixture.is_file():
++                failed_checks.append('provider-fixture')
++                report['host_checks']['provider-fixture'] = {'exit_code': 1, 'error': 'Captured soundtrack ZIP is required'}
++            elif not (ROOT / '.tooling/services-venv/bin/python').is_file():
++                failed_checks.append('provider-environment')
++                report['host_checks']['provider-environment'] = {'exit_code': 1, 'error': 'Pinned services venv is required'}
++            else:
++                report['provider_fixture_sha256'] = hashlib.sha256(fixture.read_bytes()).hexdigest()
++                for key, command in provider_commands(workspace).items():
++                    with (evidence / (key + '.log')).open('w') as log:
++                        checked = subprocess.run(command, cwd=workspace, stdout=log, stderr=subprocess.STDOUT)
++                    report['host_checks'][key] = {'command': command, 'exit_code': checked.returncode}
++                    print(f'{key}: exit {checked.returncode}', flush=True)
++                    if checked.returncode:
++                        failed_checks.append(key)
++                        break
+         if (workspace / 'tool/test_native_candidates.py').exists():
+             command = [sys.executable, '-m', 'unittest', 'discover', '-s', 'tool', '-p', 'test_native_*.py', '-v']
+             with (evidence / 'candidate-integrity-test.log').open('w') as log:
+--- parent/tool/test_native_candidates.py
++++ derived/tool/test_native_candidates.py
+@@ -2,6 +2,7 @@
+ import contextlib
+ import io
+ import json
++import shutil
+ from pathlib import Path
+ import tempfile
+ import unittest
+@@ -77,6 +78,38 @@
+         self.assertIn('--no-pub', build_native.native_build_command('/pinned/flutter', 'android', 'debug'))
+         self.assertIn('--no-codesign', build_native.native_build_command('/pinned/flutter', 'ios', 'release'))
+ 
++    def test_snapshot_includes_actual_soundtrack_provider_fixture(self):
++        fixture = self.root / 'release/downloads/tideglass-original-soundtrack.zip'
++        fixture.parent.mkdir(parents=True)
++        fixture.write_bytes(b'explicit provider fixture')
++        candidate, manifest = self.capture()
++        relative = str(fixture.relative_to(self.root))
++        self.assertIn(relative, manifest['source_sha256'])
++        self.assertEqual((candidate / 'source' / relative).read_bytes(), fixture.read_bytes())
++
++    def test_sdk_fonts_use_recorded_external_link_without_changing_source(self):
++        candidate, manifest = self.capture()
++        sdk = self.root / '.tooling/flutter'
++        fonts = sdk / 'bin/cache/artifacts/material_fonts'
++        fonts.mkdir(parents=True)
++        for name in ['Roboto-Regular.ttf', 'MaterialIcons-Regular.otf']:
++            (fonts / name).write_bytes(b'unit fixture font')
++        record = build_native.prepare_sdk_assets(candidate / 'workspace', sdk)
++        self.assertEqual(Path(record['workspace_link']).resolve(), sdk.resolve())
++        self.assertEqual(build_native.source_hashes(candidate / 'source'), manifest['source_sha256'])
++        build_native.prepare_sdk_assets(candidate / 'workspace', sdk)
++        with self.assertRaisesRegex(RuntimeError, 'Refusing to replace'):
++            other = self.root / 'other-sdk'
++            shutil.copytree(sdk, other)
++            build_native.prepare_sdk_assets(candidate / 'workspace', other)
++
++    def test_provider_gate_explicitly_discovers_nested_suite_in_pinned_venv(self):
++        candidate, _ = self.capture()
++        commands = build_native.provider_commands(candidate / 'workspace')
++        self.assertEqual(commands['provider-test'][0], str(self.root / '.tooling/services-venv/bin/python'))
++        self.assertIn('tests/services/providers', commands['provider-test'])
++        self.assertTrue(commands['provider-environment'][-1].endswith('services/requirements-providers.lock'))
++
+ 
+ if __name__ == '__main__':
+     unittest.main()
+--- parent/tool/check_provider_environment.py
++++ derived/tool/check_provider_environment.py
+@@ -0,0 +1,33 @@
++#!/usr/bin/env python3
++"""Require the captured provider dependency pins without installing anything."""
++import importlib.metadata
++import json
++from pathlib import Path
++import sys
++
++
++def check(lock: Path):
++    pins, mismatches = {}, {}
++    for line in lock.read_text().splitlines():
++        line = line.strip()
++        if not line or line.startswith('#'):
++            continue
++        if line.count('==') != 1:
++            raise ValueError('Provider lock must contain exact package==version pins')
++        name, expected = line.split('==')
++        try:
++            actual = importlib.metadata.version(name)
++        except importlib.metadata.PackageNotFoundError:
++            actual = None
++        pins[name] = {'expected': expected, 'installed': actual}
++        if actual != expected:
++            mismatches[name] = pins[name]
++    if not pins:
++        raise ValueError('Provider dependency lock is empty')
++    return {'python': sys.executable, 'pins': pins, 'mismatches': mismatches}
++
++
++if __name__ == '__main__':
++    result = check(Path(sys.argv[1]))
++    print(json.dumps(result, indent=2))
++    raise SystemExit(int(bool(result['mismatches'])))
+Binary overlay: release/downloads/tideglass-original-soundtrack.zip

@@ -1,0 +1,30 @@
+{
+  "scope": "Current-source host transition; not candidate152/native/human qualification",
+  "source_differences": [],
+  "results": [
+    {
+      "name": "analyzer",
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+        "analyze"
+      ],
+      "exit_code": 0,
+      "log_sha256": "3681fd8626f51b5ca956134df7d258babeb6cdb8a67fff7dc66a2decdda8de04"
+    },
+    {
+      "name": "transition",
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+        "test",
+        "test/bootstrap_economic_transition_test.dart",
+        "test/bootstrap_test.dart",
+        "test/offline_replay_test.dart",
+        "test/qa_integration_replay_test.dart",
+        "--reporter=expanded",
+        "--timeout=5m"
+      ],
+      "exit_code": 0,
+      "log_sha256": "0501f18775b11f71a0dd2af7f6aeddf3a01f7bf3a5d2318cc86866e657fb8bc1"
+    }
+  ]
+}

@@ -1,0 +1,77 @@
+--- stage1/game/mobile/integration_test/platform_smoke_test.dart
++++ stage2/game/mobile/integration_test/platform_smoke_test.dart
+@@ -16,6 +16,7 @@
+ import 'package:tideglass/audio_bus.dart';
+ import 'package:tideglass/story_state.dart';
+ import 'package:tideglass/producer_art.dart';
++import 'package:tideglass/season_screen.dart';
+ import 'package:tideglass/ownership_clock.dart';
+ import 'package:tideglass/native_services.dart';
+ import 'package:tideglass/soundtrack_export.dart';
+@@ -495,6 +496,19 @@
+   }, timeout: const Timeout(Duration(minutes: 3)));
+ }
+ 
++/// Capture readiness requires the actual visible route, not just a fixed pump.
++/// A returning route's secondary animation must finish before a new real tap.
++bool captureRouteIsReady(WidgetTester tester, Finder landmark) {
++  final elements = landmark.evaluate().toList();
++  if (elements.length != 1) return false;
++  final route = ModalRoute.of(elements.single);
++  return route != null &&
++      route.isCurrent &&
++      route.animation?.status == AnimationStatus.completed &&
++      route.secondaryAnimation?.status == AnimationStatus.dismissed &&
++      landmark.hitTestable().evaluate().length == 1;
++}
++
+ /// Store-material draft capture uses valid, explicitly seeded progression. The
+ /// UI is the production app and actual routes; no screenshot composition or
+ /// invented premium ownership is involved. Time during the clip is real time.
+@@ -672,7 +686,45 @@
+     await until(const Duration(seconds: 20));
+     await tester.pageBack();
+     await pumpNativeUi(tester);
+-    await tap(find.byKey(const ValueKey('open-season')));
++    final openSeason = find.byKey(const ValueKey('open-season'));
++    await waitForNativeCondition(
++      tester,
++      () => openSeason.evaluate().length == 1,
++      reason: 'The returned Logbook must expose its actual seasonal route control',
++      timeout: const Duration(seconds: 4),
++    );
++    await tester.ensureVisible(openSeason);
++    await waitForNativeCondition(
++      tester,
++      () => captureRouteIsReady(tester, openSeason),
++      reason: 'The returning Logbook route must settle before the seasonal tap',
++      timeout: const Duration(seconds: 4),
++    );
++    await tap(openSeason);
++    final seasonScreen = find.byType(SeasonScreen);
++    final seasonFleet = find.descendant(
++      of: seasonScreen,
++      matching: find.byKey(const ValueKey('season-tab-0')),
++    );
++    await waitForNativeCondition(
++      tester,
++      () => captureRouteIsReady(tester, seasonFleet),
++      reason: 'The actual Season route and visible Fleet landmark must settle before capture',
++      timeout: const Duration(seconds: 4),
++    );
++    expect(seasonScreen, findsOneWidget);
++    expect(seasonFleet.hitTestable(), findsOneWidget);
++    expect(tester.widget<ChoiceChip>(seasonFleet).selected, isTrue);
++    final seasonRoute = ModalRoute.of(tester.element(seasonFleet))!;
++    binding.reportData!['season_capture_landmark'] = {
++      'widget': 'SeasonScreen',
++      'key': 'season-tab-0',
++      'selected': true,
++      'route_is_current': seasonRoute.isCurrent,
++      'primary_animation_status': seasonRoute.animation!.status.name,
++      'secondary_animation_status': seasonRoute.secondaryAnimation!.status.name,
++      'gameplay_elapsed_ms': watch.elapsedMilliseconds,
++    };
+     await screenshot('season');
+     await until(const Duration(seconds: 25));
+     expect(captureBinding.routedTestPointerEvents, greaterThan(0));

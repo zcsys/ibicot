@@ -1,0 +1,229 @@
+{
+  "recorded_at_utc": "2026-10-21T11:30:03.923748+00:00",
+  "reviewer": "/root",
+  "author": "/root/platform_release",
+  "source_and_evidence_sha256": {
+    "tool/verify_native.py": "68297f66fc4e32a173b17da2594872334d59ba2b88b7d5878b5ee8905f9b89e5",
+    "tool/test_native_verification.py": "873b4e7aa8c3a633fd7a4cf4c154401638ec9eef41d48768e0fc7ff96d37e4d3",
+    "tool/test_native_candidates.py": "fab8fa9a7a88d3e0e72f2d54cb77c458d637c4e78fa6d22cf2235967e4c450b0",
+    "game/qa/integration_native_completion_test.py": "eb1d4d5b2ec0668da6086d5ec8e16256b784208cd3a4c9365dd7858e430767ec",
+    "release/native-proof/20261021T101953.650199Z/native-error-prefix-audit.json": "c6d701dee3f3c8ebc2649b65c6166488d2b63955cb26f1c8e027b92e42a1d06f",
+    "release/native-proof/native-verifier-independent-initial.log": "392d95f61b38d9ee5c591e620a293591c348823f64b0005480ee478634ee7561",
+    "release/native-proof/native-verifier-independent-repaired.log": "0fc87a1c85768097b6b30f0a949659fea1940afa8beed7085b20a1bb0dc9f7af",
+    "release/native-proof/native-verifier-independent-final.log": "ec2de255f77f56a1a576bfde00f757ad776c8bac959721baf108dbf6db8e4dce",
+    "release/native-proof/native-verifier-author-replayed.log": "ddd39f87be1ff5a3b03e3feacc4eff39714d42b31ba759f373102bde993ba943"
+  },
+  "independent_tests_passed": 7,
+  "author_tooling_tests_replayed": 21,
+  "actual_log_replays": [
+    {
+      "verification": "release/native-proof/integration-android-phone-20261016T114617.323080Z/verification.json",
+      "log_sha256": "5d2a99f81766848ceff520cd60ecb33409726d71b437cd4ecbba81c10a4a963f",
+      "accepted_by_completion_audit": true,
+      "errors": []
+    },
+    {
+      "verification": "release/native-proof/integration-android-phone-20261016T114657.623540Z/verification.json",
+      "log_sha256": "e3220d746fc5a54f3d29195067b1bc38ddc4d1d7337299b8e6eeea68030c9fef",
+      "accepted_by_completion_audit": true,
+      "errors": []
+    },
+    {
+      "verification": "release/native-proof/integration-android-phone-20261016T114741.809690Z/verification.json",
+      "log_sha256": "bc43927a98b021f3bae12d53d427450684b72c5d9f05a60180aa567b9d33b482",
+      "accepted_by_completion_audit": true,
+      "errors": []
+    },
+    {
+      "verification": "release/native-proof/integration-android-phone-20261016T114829.379514Z/verification.json",
+      "log_sha256": "a0d028ded06186e0edfef15911e558cce5e47622bb67b3d21c5512255cd1dc60",
+      "accepted_by_completion_audit": true,
+      "errors": []
+    },
+    {
+      "verification": "release/native-proof/integration-android-phone-20261016T114943.334641Z/verification.json",
+      "log_sha256": "2027cddeda999d9174a9247235945010ad0f9ce99508da90dfb046233fcf6531",
+      "accepted_by_completion_audit": true,
+      "errors": []
+    },
+    {
+      "verification": "release/native-proof/integration-ios-phone-20261016T113402.425688Z/verification.json",
+      "log_sha256": "3bbc2311b75c8884527ff33b86511461f8f6516d6febe2350d43571b3cead0f5",
+      "accepted_by_completion_audit": false,
+      "errors": [
+        "Native build/test failure in log: Some tests failed.",
+        "Native build/test failure in log: EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK",
+        "Native test or teardown error marker in log",
+        "No successful native framework completion marker",
+        "No successful driver completion marker"
+      ]
+    },
+    {
+      "verification": "release/native-proof/integration-ios-phone-20261016T113700.481892Z/verification.json",
+      "log_sha256": "29e964195dd602d3a57c1e1191ec50e53746807dafd5169bbb52af4098fe51b1",
+      "accepted_by_completion_audit": true,
+      "errors": []
+    },
+    {
+      "verification": "release/native-proof/integration-ios-phone-20261016T113833.146603Z/verification.json",
+      "log_sha256": "805baef41c50ce70c66315e548ff91e3697cf75ae37f76fe51f4da58a5c4a545",
+      "accepted_by_completion_audit": true,
+      "errors": []
+    },
+    {
+      "verification": "release/native-proof/integration-ios-phone-20261016T113924.570400Z/verification.json",
+      "log_sha256": "4a397e3e32ad5d48995c7a3f9be48749179d85c84bc2db40739c82fb9049940d",
+      "accepted_by_completion_audit": true,
+      "errors": []
+    },
+    {
+      "verification": "release/native-proof/integration-ios-phone-20261016T114015.634898Z/verification.json",
+      "log_sha256": "649fb5b6595395568b29cef5ed385683003c6f7b36b334db36149e1cf345bd79",
+      "accepted_by_completion_audit": false,
+      "errors": [
+        "Native build/test failure in log: Some tests failed.",
+        "Native test or teardown error marker in log",
+        "No successful native framework completion marker",
+        "No successful driver completion marker"
+      ]
+    },
+    {
+      "verification": "release/native-proof/integration-ios-phone-20261016T114217.785856Z/verification.json",
+      "log_sha256": "ffdaaa44954e2991706535f2be82c5a48e62b7a3464d386d9996e65c83b4e888",
+      "accepted_by_completion_audit": false,
+      "errors": [
+        "Native build/test failure in log: Some tests failed.",
+        "Native test or teardown error marker in log",
+        "No successful native framework completion marker",
+        "No successful driver completion marker"
+      ]
+    },
+    {
+      "verification": "release/native-proof/integration-ios-phone-20261016T114357.818511Z/verification.json",
+      "log_sha256": "a247b5cd65400f4d1e19d27451fef83dce8769ca1f13cc11b58be1c8fd97c6ae",
+      "accepted_by_completion_audit": true,
+      "errors": []
+    },
+    {
+      "verification": "release/native-proof/integration-ios-phone-20261016T114535.655272Z/verification.json",
+      "log_sha256": "f430cccfdd9ec38e548b93784207e3d33ddd53464352a93939b815014085db9c",
+      "accepted_by_completion_audit": true,
+      "errors": []
+    },
+    {
+      "verification": "release/native-proof/integration-ios-phone-20261021T105421.273826Z/verification.json",
+      "log_sha256": "a33546c0e8cadac0d87b657c80d025aa2586939c478c70f285b20695e6d89420",
+      "accepted_by_completion_audit": true,
+      "errors": []
+    },
+    {
+      "verification": "release/native-proof/integration-ios-phone-20261021T105636.380850Z/verification.json",
+      "log_sha256": "964fef4186ff3e5798a7517d0e2edb1a5c53dfda8048367e9f646bae86de7656",
+      "accepted_by_completion_audit": true,
+      "errors": []
+    },
+    {
+      "verification": "release/native-proof/integration-ios-phone-20261021T105807.287111Z/verification.json",
+      "log_sha256": "cb9e0b75be1be28b8de71f0520859f91227edd0ef21844dedec152a9516572c1",
+      "accepted_by_completion_audit": true,
+      "errors": []
+    },
+    {
+      "verification": "release/native-proof/integration-ios-phone-20261021T105903.318495Z/verification.json",
+      "log_sha256": "310a4c361b8705da02a4488bcda7b7640870a620a1ed0a26e52927c16a8ad717",
+      "accepted_by_completion_audit": false,
+      "errors": [
+        "Native build/test failure in log: Some tests failed.",
+        "Native build/test failure in log: EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK",
+        "Native test or teardown error marker in log",
+        "No successful native framework completion marker",
+        "No successful driver completion marker"
+      ]
+    },
+    {
+      "verification": "release/native-proof/integration-ios-phone-20261021T110101.188894Z/verification.json",
+      "log_sha256": "a677ee130c9fdfd5c2a08d252b0c4d0d8c8b0fac0fd0e66b1de618568c995c79",
+      "accepted_by_completion_audit": false,
+      "errors": [
+        "Native build/test failure in log: Some tests failed.",
+        "Native test or teardown error marker in log",
+        "No successful native framework completion marker"
+      ]
+    },
+    {
+      "verification": "release/native-proof/integration-ios-phone-20261021T110448.691349Z/verification.json",
+      "log_sha256": "fdebc6f5518a6c3fe3bbfd46563c98f7b17b6af1b21c6c84919f997e632fbb47",
+      "accepted_by_completion_audit": false,
+      "errors": [
+        "Native build/test failure in log: Some tests failed.",
+        "Native test or teardown error marker in log",
+        "No successful native framework completion marker"
+      ]
+    },
+    {
+      "verification": "release/native-proof/integration-ios-phone-20261021T111046.293625Z/verification.json",
+      "log_sha256": "d5bce10c3ba13a6efa721fa4775a13152531aafbd8a8c177a118ae2ddb544820",
+      "accepted_by_completion_audit": true,
+      "errors": []
+    },
+    {
+      "verification": "release/native-proof/integration-ios-phone-20261021T111217.215218Z/verification.json",
+      "log_sha256": "cb727b79afef0b688ef1341a0c5bcb236e6c9a5010f79a4f4ec7f37aca224168",
+      "accepted_by_completion_audit": true,
+      "errors": []
+    },
+    {
+      "verification": "release/native-proof/integration-ios-phone-20261021T111343.546803Z/verification.json",
+      "log_sha256": "5e016793e3acf0e39f208eed243a7d138a86225fb039fd5fbc1e6685507ec683",
+      "accepted_by_completion_audit": true,
+      "errors": []
+    },
+    {
+      "verification": "release/native-proof/integration-ios-phone-20261021T111542.783697Z/verification.json",
+      "log_sha256": "f36e831fae8d418dace4796518ba4adf9b517b2a0b3e94d7dc3b440b38bce827",
+      "accepted_by_completion_audit": true,
+      "errors": []
+    },
+    {
+      "verification": "release/native-proof/integration-ios-phone-20261021T111648.556222Z/verification.json",
+      "log_sha256": "d7fc854003b27ebee358c872ae548d5175c3671fb2fa3479a8f458c113fca873",
+      "accepted_by_completion_audit": true,
+      "errors": []
+    },
+    {
+      "verification": "release/native-proof/integration-ios-phone-20261021T111822.431789Z/verification.json",
+      "log_sha256": "2aa1ef8de55e565edacae1bf56911a44db49f3cee45119b2389903263aec0bc2",
+      "accepted_by_completion_audit": false,
+      "errors": [
+        "Native build/test failure in log: Some tests failed.",
+        "Native build/test failure in log: EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK",
+        "Native test or teardown error marker in log",
+        "No successful native framework completion marker",
+        "No successful driver completion marker"
+      ]
+    },
+    {
+      "verification": "release/native-proof/integration-ios-phone-20261021T112255.702927Z/verification.json",
+      "log_sha256": "758dde75e8cd104650e84258f2277b2f1e14584edbe376350e86703a320d7525",
+      "accepted_by_completion_audit": true,
+      "errors": []
+    },
+    {
+      "verification": "release/native-proof/integration-ios-tablet-20261016T115014.482900Z/verification.json",
+      "log_sha256": "4c502631cebdeea2c754e207437f15799a130f9c86c238282d833c8b1edfe44a",
+      "accepted_by_completion_audit": true,
+      "errors": []
+    },
+    {
+      "verification": "release/native-proof/integration-ios-tablet-20261016T115114.931802Z/verification.json",
+      "log_sha256": "2de023e66eda3cdbb3bbb20be315363640ba956f055a9d41859b0d3e52befc1d",
+      "accepted_by_completion_audit": true,
+      "errors": []
+    }
+  ],
+  "invalidated_old_passes": [
+    "release/native-proof/integration-ios-phone-20261021T110101.188894Z/verification.json",
+    "release/native-proof/integration-ios-phone-20261021T110448.691349Z/verification.json"
+  ],
+  "scope": "Narrow native completion-verifier review; no new device run or current production candidate acceptance."
+}

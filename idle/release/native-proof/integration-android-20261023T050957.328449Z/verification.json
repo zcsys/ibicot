@@ -1,0 +1,61 @@
+{
+  "candidate_fingerprint": "3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59",
+  "device": "emulator-5556",
+  "label": "android",
+  "platform": "android",
+  "started_utc": "20261023T050957.328449Z",
+  "command": [
+    "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+    "drive",
+    "--driver=test_driver/evidence_911183b5d9ee.dart",
+    "--target=integration_test/evidence_071635c01ed5_test.dart",
+    "-d",
+    "emulator-5556",
+    "--dart-define=TIDEGLASS_DEVICE_LABEL=android",
+    "--dart-define=TIDEGLASS_SCENARIO=clock-reload",
+    "--dart-define=TIDEGLASS_RUN_ID=v3b00-android-clock-boot2",
+    "--dart-define=TIDEGLASS_VERIFICATION_ID=integration-android-20261023T050957.328449Z",
+    "--dart-define=TIDEGLASS_CANDIDATE_FINGERPRINT=3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59",
+    "--dart-define=TIDEGLASS_HARNESS_SHA256=071635c01ed508077b467462bac279107a8716861ac97a5b657a5401b2cc3506",
+    "--keep-app-running",
+    "--timeout=180",
+    "--no-pub"
+  ],
+  "runner_sha256": "68297f66fc4e32a173b17da2594872334d59ba2b88b7d5878b5ee8905f9b89e5",
+  "candidate_validation_runner_sha256": "59ee4e7b94a1445e2c8effadfe4c0510c9c189df0278c7ede6e87f1807bf38ee",
+  "scenario": "clock-reload",
+  "run_id": "v3b00-android-clock-boot2",
+  "harness_sha256": {
+    "harness.dart": "071635c01ed508077b467462bac279107a8716861ac97a5b657a5401b2cc3506",
+    "driver.dart": "911183b5d9ee8ec80769836f477a293dadb66e20cc0c5d5e44314415889749a8"
+  },
+  "production_inputs_match_snapshot": true,
+  "provenance": "Actual native clock and OS lifecycle/process scope; no paid ownership or physical-device security qualification. Epoch remains in private device checkpoint.",
+  "exit_code": 0,
+  "production_input_differences_after_run": [],
+  "source_snapshot_unchanged": true,
+  "harness_source_differences_during_run": [],
+  "native_process_stop": {
+    "command": [
+      "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "shell",
+      "am",
+      "force-stop",
+      "dev.tideglass.game"
+    ],
+    "exit_code": 0,
+    "output": ""
+  },
+  "verification_errors": [],
+  "passed": true,
+  "evidence_sha256": {
+    "android-clock-reload.png": "14749ad13ee98e424729d8d235fc915051a63a2b68ef4fd812546f95b23ebe26",
+    "result.json": "2cd9b8f2bcecd24ad2f654fb28d3ee0acaeefbb4c263d9ce32d7a3f6f9271c88",
+    "run.log": "65a69fab1ae96f93acfda01f4bdd9c5df102af47bdf406c9b234a5fede8b7e0a",
+    "driver.dart": "911183b5d9ee8ec80769836f477a293dadb66e20cc0c5d5e44314415889749a8",
+    "verify_native.py": "68297f66fc4e32a173b17da2594872334d59ba2b88b7d5878b5ee8905f9b89e5",
+    "harness.dart": "071635c01ed508077b467462bac279107a8716861ac97a5b657a5401b2cc3506"
+  }
+}

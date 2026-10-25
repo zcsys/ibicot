@@ -1,0 +1,65 @@
+[
+  {
+    "utc": "2026-10-25T16:42:06.776097+00:00",
+    "argv": [
+      "/Users/csys/Library/Android/sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "shell",
+      "-tt",
+      "uiautomator",
+      "dump",
+      "/dev/tty"
+    ],
+    "exit_code": 0,
+    "file": "restore-before-hierarchy.txt",
+    "sha256": "cff5578ca62916c3cc4ac5e78c5799f0eec00252fea3f8507efe160fe5de5ef6",
+    "stderr": ""
+  },
+  {
+    "utc": "2026-10-25T16:42:09.821373+00:00",
+    "argv": [
+      "/Users/csys/Library/Android/sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "exec-out",
+      "screencap",
+      "-p"
+    ],
+    "exit_code": 0,
+    "file": "restore-before.png",
+    "sha256": "1b3c01f297d1b084ffd5b6715f49596c0728a7116d8d023dfd82679522ec704f",
+    "stderr": ""
+  },
+  {
+    "utc": "2026-10-25T16:42:10.095613+00:00",
+    "argv": [
+      "/Users/csys/Library/Android/sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "shell",
+      "dumpsys",
+      "activity",
+      "activities"
+    ],
+    "exit_code": 0,
+    "file": "restore-before-activities.txt",
+    "sha256": "f6bed93ed5d2554f8d45bb0e93c96df3ce342e8e5ca6cca95208128293ffe1de",
+    "stderr": ""
+  },
+  {
+    "utc": "2026-10-25T16:42:10.136329+00:00",
+    "argv": [
+      "/Users/csys/Library/Android/sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "shell",
+      "pidof",
+      "dev.tideglass.game"
+    ],
+    "exit_code": 0,
+    "file": "restore-before-pid.txt",
+    "sha256": "6552932498579d25c41a915a5180c6748b09fbcce96206f2522f471940178a83",
+    "stderr": ""
+  }
+]

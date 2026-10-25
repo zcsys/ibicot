@@ -17,21 +17,21 @@
     {
       "id": "ART-G01",
       "batch": "B01",
-      "status": "not_satisfied",
+      "status": "satisfied_representative_style_direction",
       "evidence_path": "release/art/style-qualification.json",
       "requirement": "Select a representative harbor and producer milestone look with palette, silhouettes, scale, typography, reuse and motion rules; the director and client review a concrete in-client sample."
     },
     {
       "id": "ART-G02",
       "batch": "B02",
-      "status": "not_satisfied",
+      "status": "adapter_selected_partial_qualification",
       "evidence_path": "release/art/import-qualification.json",
       "requirement": "Client qualifies native engine, source/export adapter, alpha/color/atlas import, phone/tablet viewport and minimum-device budgets on both native targets before bulk art production."
     },
     {
       "id": "ART-G03",
       "batch": "B01",
-      "status": "not_satisfied",
+      "status": "authoring_capability_demonstrated_rights_and_fulfillment_qualification_pending",
       "evidence_path": "release/audio/capability-and-rights.json",
       "requirement": "Resolve actual audio-authoring capability or an identified licensed source. No music generation, commission, procurement or distribution rights are assumed. Without a viable source and soundtrack redistribution rights, audio production and supporter soundtrack fulfillment cannot be accepted."
     }
@@ -183,7 +183,7 @@
       "tests/assets/",
       "game/assets/common/"
     ],
-    "engine_binding_status": "not_selected",
+    "engine_binding_status": "flutter_canvas_adapter_selected_physical_qualification_pending",
     "internal_document_rule": "support.operations_runbooks and support.season02_brief are internal release artifacts, not player content. Export them only under release/runbooks/ and release/season-2-brief.md. Retain manifest IDs/provenance/evidence and full release acceptance, but exclude their text and operational details from client packaging; review for factual completeness and operational usability, not player text-scale variants."
   },
   "provenance_record_required_fields": [
@@ -701,7 +701,7 @@
     {
       "order": 4,
       "batch": "B06",
-      "action": "Integrate harbor.unlit, all five base producer stages and producer.01 stages 1–4; produce reduced-motion and viewport variants."
+      "action": "Integrate harbor.unlit, all five base producer stages and producer.01 stages 1\u20134; produce reduced-motion and viewport variants."
     },
     {
       "order": 5,
@@ -922,9 +922,9 @@
         "small_phone_crop",
         "tablet_crop"
       ],
-      "status": "unproduced",
-      "source_exists": false,
-      "export_exists": false,
+      "status": "in_production",
+      "source_exists": true,
+      "export_exists": true,
       "verification_evidence": null,
       "initial_delivery_owner": "art_content",
       "delivery_channel": "client_package"
@@ -949,9 +949,9 @@
         "small_phone_crop",
         "tablet_crop"
       ],
-      "status": "unproduced",
-      "source_exists": false,
-      "export_exists": false,
+      "status": "in_production",
+      "source_exists": true,
+      "export_exists": true,
       "verification_evidence": null,
       "initial_delivery_owner": "art_content",
       "delivery_channel": "client_package"
@@ -976,9 +976,9 @@
         "small_phone_crop",
         "tablet_crop"
       ],
-      "status": "unproduced",
-      "source_exists": false,
-      "export_exists": false,
+      "status": "in_production",
+      "source_exists": true,
+      "export_exists": true,
       "verification_evidence": null,
       "initial_delivery_owner": "art_content",
       "delivery_channel": "client_package"
@@ -1003,9 +1003,9 @@
         "small_phone_crop",
         "tablet_crop"
       ],
-      "status": "unproduced",
-      "source_exists": false,
-      "export_exists": false,
+      "status": "in_production",
+      "source_exists": true,
+      "export_exists": true,
       "verification_evidence": null,
       "initial_delivery_owner": "art_content",
       "delivery_channel": "client_package"
@@ -1030,9 +1030,9 @@
         "small_phone_crop",
         "tablet_crop"
       ],
-      "status": "unproduced",
-      "source_exists": false,
-      "export_exists": false,
+      "status": "in_production",
+      "source_exists": true,
+      "export_exists": true,
       "verification_evidence": null,
       "initial_delivery_owner": "art_content",
       "delivery_channel": "client_package"
@@ -1057,9 +1057,9 @@
         "small_phone_crop",
         "tablet_crop"
       ],
-      "status": "unproduced",
-      "source_exists": false,
-      "export_exists": false,
+      "status": "in_production",
+      "source_exists": true,
+      "export_exists": true,
       "verification_evidence": null,
       "initial_delivery_owner": "art_content",
       "delivery_channel": "client_package"
@@ -1084,9 +1084,9 @@
         "small_phone_crop",
         "tablet_crop"
       ],
-      "status": "unproduced",
-      "source_exists": false,
-      "export_exists": false,
+      "status": "in_production",
+      "source_exists": true,
+      "export_exists": true,
       "verification_evidence": null,
       "initial_delivery_owner": "art_content",
       "delivery_channel": "client_package"
@@ -3318,9 +3318,9 @@
         "text_scale_200",
         "pseudolocalized"
       ],
-      "status": "unproduced",
-      "source_exists": false,
-      "export_exists": false,
+      "status": "in_production",
+      "source_exists": true,
+      "export_exists": true,
       "verification_evidence": null,
       "initial_delivery_owner": "director",
       "delivery_channel": "client_package"
@@ -3345,9 +3345,9 @@
         "text_scale_200",
         "pseudolocalized"
       ],
-      "status": "unproduced",
-      "source_exists": false,
-      "export_exists": false,
+      "status": "in_production",
+      "source_exists": true,
+      "export_exists": true,
       "verification_evidence": null,
       "initial_delivery_owner": "director",
       "delivery_channel": "client_package"
@@ -3372,9 +3372,9 @@
         "text_scale_200",
         "pseudolocalized"
       ],
-      "status": "unproduced",
-      "source_exists": false,
-      "export_exists": false,
+      "status": "in_production",
+      "source_exists": true,
+      "export_exists": true,
       "verification_evidence": null,
       "initial_delivery_owner": "director",
       "delivery_channel": "client_package"
@@ -3399,9 +3399,9 @@
         "text_scale_200",
         "pseudolocalized"
       ],
-      "status": "unproduced",
-      "source_exists": false,
-      "export_exists": false,
+      "status": "in_production",
+      "source_exists": true,
+      "export_exists": true,
       "verification_evidence": null,
       "initial_delivery_owner": "director",
       "delivery_channel": "client_package"
@@ -3426,9 +3426,9 @@
         "text_scale_200",
         "pseudolocalized"
       ],
-      "status": "unproduced",
-      "source_exists": false,
-      "export_exists": false,
+      "status": "in_production",
+      "source_exists": true,
+      "export_exists": true,
       "verification_evidence": null,
       "initial_delivery_owner": "director",
       "delivery_channel": "client_package"
@@ -3453,9 +3453,9 @@
         "text_scale_200",
         "pseudolocalized"
       ],
-      "status": "unproduced",
-      "source_exists": false,
-      "export_exists": false,
+      "status": "in_production",
+      "source_exists": true,
+      "export_exists": true,
       "verification_evidence": null,
       "initial_delivery_owner": "director",
       "delivery_channel": "client_package"
@@ -3480,9 +3480,9 @@
         "text_scale_200",
         "pseudolocalized"
       ],
-      "status": "unproduced",
-      "source_exists": false,
-      "export_exists": false,
+      "status": "in_production",
+      "source_exists": true,
+      "export_exists": true,
       "verification_evidence": null,
       "initial_delivery_owner": "director",
       "delivery_channel": "client_package"
@@ -3507,9 +3507,9 @@
         "text_scale_200",
         "pseudolocalized"
       ],
-      "status": "unproduced",
-      "source_exists": false,
-      "export_exists": false,
+      "status": "in_production",
+      "source_exists": true,
+      "export_exists": true,
       "verification_evidence": null,
       "initial_delivery_owner": "director",
       "delivery_channel": "client_package"
@@ -3534,9 +3534,9 @@
         "text_scale_200",
         "pseudolocalized"
       ],
-      "status": "unproduced",
-      "source_exists": false,
-      "export_exists": false,
+      "status": "in_production",
+      "source_exists": true,
+      "export_exists": true,
       "verification_evidence": null,
       "initial_delivery_owner": "director",
       "delivery_channel": "client_package"
@@ -3561,9 +3561,9 @@
         "text_scale_200",
         "pseudolocalized"
       ],
-      "status": "unproduced",
-      "source_exists": false,
-      "export_exists": false,
+      "status": "in_production",
+      "source_exists": true,
+      "export_exists": true,
       "verification_evidence": null,
       "initial_delivery_owner": "director",
       "delivery_channel": "client_package"
@@ -3588,9 +3588,9 @@
         "text_scale_200",
         "pseudolocalized"
       ],
-      "status": "unproduced",
-      "source_exists": false,
-      "export_exists": false,
+      "status": "in_production",
+      "source_exists": true,
+      "export_exists": true,
       "verification_evidence": null,
       "initial_delivery_owner": "director",
       "delivery_channel": "client_package"
@@ -3615,9 +3615,9 @@
         "text_scale_200",
         "pseudolocalized"
       ],
-      "status": "unproduced",
-      "source_exists": false,
-      "export_exists": false,
+      "status": "in_production",
+      "source_exists": true,
+      "export_exists": true,
       "verification_evidence": null,
       "initial_delivery_owner": "director",
       "delivery_channel": "client_package"
@@ -3642,9 +3642,9 @@
         "text_scale_200",
         "pseudolocalized"
       ],
-      "status": "unproduced",
-      "source_exists": false,
-      "export_exists": false,
+      "status": "in_production",
+      "source_exists": true,
+      "export_exists": true,
       "verification_evidence": null,
       "initial_delivery_owner": "director",
       "delivery_channel": "client_package"
@@ -3669,9 +3669,9 @@
         "text_scale_200",
         "pseudolocalized"
       ],
-      "status": "unproduced",
-      "source_exists": false,
-      "export_exists": false,
+      "status": "in_production",
+      "source_exists": true,
+      "export_exists": true,
       "verification_evidence": null,
       "initial_delivery_owner": "director",
       "delivery_channel": "client_package"
@@ -3696,9 +3696,9 @@
         "text_scale_200",
         "pseudolocalized"
       ],
-      "status": "unproduced",
-      "source_exists": false,
-      "export_exists": false,
+      "status": "in_production",
+      "source_exists": true,
+      "export_exists": true,
       "verification_evidence": null,
       "initial_delivery_owner": "director",
       "delivery_channel": "client_package"
@@ -3723,9 +3723,9 @@
         "text_scale_200",
         "pseudolocalized"
       ],
-      "status": "unproduced",
-      "source_exists": false,
-      "export_exists": false,
+      "status": "in_production",
+      "source_exists": true,
+      "export_exists": true,
       "verification_evidence": null,
       "initial_delivery_owner": "director",
       "delivery_channel": "client_package"
@@ -3750,9 +3750,9 @@
         "text_scale_200",
         "pseudolocalized"
       ],
-      "status": "unproduced",
-      "source_exists": false,
-      "export_exists": false,
+      "status": "in_production",
+      "source_exists": true,
+      "export_exists": true,
       "verification_evidence": null,
       "initial_delivery_owner": "director",
       "delivery_channel": "client_package"
@@ -3777,9 +3777,9 @@
         "text_scale_200",
         "pseudolocalized"
       ],
-      "status": "unproduced",
-      "source_exists": false,
-      "export_exists": false,
+      "status": "in_production",
+      "source_exists": true,
+      "export_exists": true,
       "verification_evidence": null,
       "initial_delivery_owner": "director",
       "delivery_channel": "client_package"
@@ -3804,9 +3804,9 @@
         "text_scale_200",
         "pseudolocalized"
       ],
-      "status": "unproduced",
-      "source_exists": false,
-      "export_exists": false,
+      "status": "in_production",
+      "source_exists": true,
+      "export_exists": true,
       "verification_evidence": null,
       "initial_delivery_owner": "director",
       "delivery_channel": "client_package"
@@ -3831,9 +3831,9 @@
         "text_scale_200",
         "pseudolocalized"
       ],
-      "status": "unproduced",
-      "source_exists": false,
-      "export_exists": false,
+      "status": "in_production",
+      "source_exists": true,
+      "export_exists": true,
       "verification_evidence": null,
       "initial_delivery_owner": "director",
       "delivery_channel": "client_package"
@@ -5032,9 +5032,9 @@
         "text_scale_200",
         "pseudolocalized"
       ],
-      "status": "unproduced",
-      "source_exists": false,
-      "export_exists": false,
+      "status": "in_production",
+      "source_exists": true,
+      "export_exists": true,
       "verification_evidence": null,
       "initial_delivery_owner": "art_content",
       "delivery_channel": "client_package"
@@ -5059,9 +5059,9 @@
         "text_scale_200",
         "pseudolocalized"
       ],
-      "status": "unproduced",
-      "source_exists": false,
-      "export_exists": false,
+      "status": "in_production",
+      "source_exists": true,
+      "export_exists": true,
       "verification_evidence": null,
       "initial_delivery_owner": "art_content",
       "delivery_channel": "client_package"
@@ -5086,9 +5086,9 @@
         "text_scale_200",
         "pseudolocalized"
       ],
-      "status": "unproduced",
-      "source_exists": false,
-      "export_exists": false,
+      "status": "in_production",
+      "source_exists": true,
+      "export_exists": true,
       "verification_evidence": null,
       "initial_delivery_owner": "art_content",
       "delivery_channel": "client_package"
@@ -5113,9 +5113,9 @@
         "text_scale_200",
         "pseudolocalized"
       ],
-      "status": "unproduced",
-      "source_exists": false,
-      "export_exists": false,
+      "status": "in_production",
+      "source_exists": true,
+      "export_exists": true,
       "verification_evidence": null,
       "initial_delivery_owner": "art_content",
       "delivery_channel": "client_package"
@@ -5140,9 +5140,9 @@
         "text_scale_200",
         "pseudolocalized"
       ],
-      "status": "unproduced",
-      "source_exists": false,
-      "export_exists": false,
+      "status": "in_production",
+      "source_exists": true,
+      "export_exists": true,
       "verification_evidence": null,
       "initial_delivery_owner": "platform",
       "delivery_channel": "client_package"
@@ -5167,9 +5167,9 @@
         "text_scale_200",
         "pseudolocalized"
       ],
-      "status": "unproduced",
-      "source_exists": false,
-      "export_exists": false,
+      "status": "in_production",
+      "source_exists": true,
+      "export_exists": true,
       "verification_evidence": null,
       "initial_delivery_owner": "art_content",
       "delivery_channel": "client_package"
@@ -5191,9 +5191,9 @@
       "required_variants": [
         "internal_document_review"
       ],
-      "status": "unproduced",
-      "source_exists": false,
-      "export_exists": false,
+      "status": "in_production",
+      "source_exists": true,
+      "export_exists": true,
       "verification_evidence": null,
       "initial_delivery_owner": "platform",
       "delivery_channel": "internal_release_package",
@@ -5216,9 +5216,9 @@
       "required_variants": [
         "internal_document_review"
       ],
-      "status": "unproduced",
-      "source_exists": false,
-      "export_exists": false,
+      "status": "in_production",
+      "source_exists": true,
+      "export_exists": true,
       "verification_evidence": null,
       "initial_delivery_owner": "director",
       "initial_acceptance": "A complete initial Season 2 brief, registered export and evidence exist before B22 full content release validation; no Season 2 game assets are included in v1.",
@@ -5284,9 +5284,9 @@
         "text_scale_200",
         "pseudolocalized"
       ],
-      "status": "unproduced",
-      "source_exists": false,
-      "export_exists": false,
+      "status": "in_production",
+      "source_exists": true,
+      "export_exists": true,
       "verification_evidence": null,
       "initial_delivery_owner": "director",
       "delivery_channel": "client_package"
@@ -5313,9 +5313,9 @@
         "small_phone",
         "tablet"
       ],
-      "status": "unproduced",
-      "source_exists": false,
-      "export_exists": false,
+      "status": "in_production",
+      "source_exists": true,
+      "export_exists": true,
       "verification_evidence": null,
       "initial_delivery_owner": "art_content",
       "delivery_channel": "client_package"
@@ -5323,7 +5323,7 @@
   ],
   "scope_reconciliation": {
     "comparison_status": "fixed_count_match",
-    "compared_to": "V1_ROADMAP.md §3 and current launch_manifest.json",
+    "compared_to": "V1_ROADMAP.md \u00a73 and current launch_manifest.json",
     "actual_asset_registry_count": 164,
     "actual_kind_counts": {
       "text": 78,

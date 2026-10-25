@@ -1,0 +1,298 @@
+{
+  "source_fingerprint": "8d0fee0b1d5d36f5114764c9b72ad9820baf0337ccd7557c45d178ff82d24cb5",
+  "all_passed": true,
+  "runs": [
+    {
+      "name": "persistence-pub",
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/dart",
+        "pub",
+        "get"
+      ],
+      "cwd": "/Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-services-repaired-20261016T114721906724Z/game/persistence",
+      "start_utc": "2026-10-16T11:47:54.783157+00:00",
+      "exit_code": 0,
+      "log": "persistence-pub.log"
+    },
+    {
+      "name": "persistence-test",
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/dart",
+        "test",
+        "--reporter",
+        "json"
+      ],
+      "cwd": "/Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-services-repaired-20261016T114721906724Z/game/persistence",
+      "start_utc": "2026-10-16T11:47:55.081329+00:00",
+      "exit_code": 0,
+      "log": "persistence-test.log",
+      "counts": {
+        "success": 19,
+        "failure": 0,
+        "error": 0
+      }
+    },
+    {
+      "name": "persistence-analyze",
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/dart",
+        "analyze"
+      ],
+      "cwd": "/Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-services-repaired-20261016T114721906724Z/game/persistence",
+      "start_utc": "2026-10-16T11:48:05.187829+00:00",
+      "exit_code": 0,
+      "log": "persistence-analyze.log"
+    },
+    {
+      "name": "events-pub",
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/dart",
+        "pub",
+        "get"
+      ],
+      "cwd": "/Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-services-repaired-20261016T114721906724Z/game/events",
+      "start_utc": "2026-10-16T11:47:54.780959+00:00",
+      "exit_code": 0,
+      "log": "events-pub.log"
+    },
+    {
+      "name": "events-test",
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/dart",
+        "test",
+        "--reporter",
+        "json"
+      ],
+      "cwd": "/Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-services-repaired-20261016T114721906724Z/game/events",
+      "start_utc": "2026-10-16T11:47:55.081251+00:00",
+      "exit_code": 0,
+      "log": "events-test.log",
+      "counts": {
+        "success": 31,
+        "failure": 0,
+        "error": 0
+      }
+    },
+    {
+      "name": "events-analyze",
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/dart",
+        "analyze"
+      ],
+      "cwd": "/Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-services-repaired-20261016T114721906724Z/game/events",
+      "start_utc": "2026-10-16T11:48:09.442716+00:00",
+      "exit_code": 0,
+      "log": "events-analyze.log"
+    },
+    {
+      "name": "core-pub",
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/dart",
+        "pub",
+        "get"
+      ],
+      "cwd": "/Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-services-repaired-20261016T114721906724Z/game/core",
+      "start_utc": "2026-10-16T11:47:54.776640+00:00",
+      "exit_code": 0,
+      "log": "core-pub.log"
+    },
+    {
+      "name": "core-test",
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/dart",
+        "test",
+        "--reporter",
+        "json"
+      ],
+      "cwd": "/Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-services-repaired-20261016T114721906724Z/game/core",
+      "start_utc": "2026-10-16T11:47:55.082145+00:00",
+      "exit_code": 0,
+      "log": "core-test.log",
+      "counts": {
+        "success": 176,
+        "failure": 0,
+        "error": 0
+      }
+    },
+    {
+      "name": "core-analyze",
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/dart",
+        "analyze"
+      ],
+      "cwd": "/Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-services-repaired-20261016T114721906724Z/game/core",
+      "start_utc": "2026-10-16T11:48:09.867929+00:00",
+      "exit_code": 0,
+      "log": "core-analyze.log"
+    },
+    {
+      "name": "platform-pub",
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/dart",
+        "pub",
+        "get"
+      ],
+      "cwd": "/Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-services-repaired-20261016T114721906724Z/game/platform",
+      "start_utc": "2026-10-16T11:48:10.354781+00:00",
+      "exit_code": 0,
+      "log": "platform-pub.log"
+    },
+    {
+      "name": "platform-test",
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/dart",
+        "test",
+        "--reporter",
+        "json"
+      ],
+      "cwd": "/Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-services-repaired-20261016T114721906724Z/game/platform",
+      "start_utc": "2026-10-16T11:48:10.634825+00:00",
+      "exit_code": 0,
+      "log": "platform-test.log",
+      "counts": {
+        "success": 6,
+        "failure": 0,
+        "error": 0
+      }
+    },
+    {
+      "name": "platform-analyze",
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/dart",
+        "analyze"
+      ],
+      "cwd": "/Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-services-repaired-20261016T114721906724Z/game/platform",
+      "start_utc": "2026-10-16T11:48:20.509064+00:00",
+      "exit_code": 0,
+      "log": "platform-analyze.log"
+    },
+    {
+      "name": "progression-pub",
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/dart",
+        "pub",
+        "get"
+      ],
+      "cwd": "/Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-services-repaired-20261016T114721906724Z/game/progression",
+      "start_utc": "2026-10-16T11:48:06.138797+00:00",
+      "exit_code": 0,
+      "log": "progression-pub.log"
+    },
+    {
+      "name": "progression-test",
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/dart",
+        "test",
+        "--reporter",
+        "json"
+      ],
+      "cwd": "/Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-services-repaired-20261016T114721906724Z/game/progression",
+      "start_utc": "2026-10-16T11:48:06.498095+00:00",
+      "exit_code": 0,
+      "log": "progression-test.log",
+      "counts": {
+        "success": 25,
+        "failure": 0,
+        "error": 0
+      }
+    },
+    {
+      "name": "progression-analyze",
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/dart",
+        "analyze"
+      ],
+      "cwd": "/Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-services-repaired-20261016T114721906724Z/game/progression",
+      "start_utc": "2026-10-16T11:48:21.587309+00:00",
+      "exit_code": 0,
+      "log": "progression-analyze.log"
+    },
+    {
+      "name": "mobile-pub",
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+        "pub",
+        "get"
+      ],
+      "cwd": "/Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-services-repaired-20261016T114721906724Z/game/mobile",
+      "start_utc": "2026-10-16T11:48:10.662239+00:00",
+      "exit_code": 0,
+      "log": "mobile-pub.log"
+    },
+    {
+      "name": "mobile-test",
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+        "test",
+        "--reporter",
+        "json"
+      ],
+      "cwd": "/Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-services-repaired-20261016T114721906724Z/game/mobile",
+      "start_utc": "2026-10-16T11:48:11.838577+00:00",
+      "exit_code": 0,
+      "log": "mobile-test.log",
+      "counts": {
+        "success": 199,
+        "failure": 0,
+        "error": 0
+      }
+    },
+    {
+      "name": "mobile-analyze",
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+        "analyze"
+      ],
+      "cwd": "/Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-services-repaired-20261016T114721906724Z/game/mobile",
+      "start_utc": "2026-10-16T11:48:55.983583+00:00",
+      "exit_code": 0,
+      "log": "mobile-analyze.log"
+    },
+    {
+      "name": "base-services",
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/services-venv/bin/python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests/services",
+        "-v"
+      ],
+      "cwd": "/Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-services-repaired-20261016T114721906724Z",
+      "start_utc": "2026-10-16T11:49:02.444682+00:00",
+      "exit_code": 0,
+      "log": "base-services.log"
+    },
+    {
+      "name": "provider-author",
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/services-venv/bin/python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests/services/providers",
+        "-v"
+      ],
+      "cwd": "/Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-services-repaired-20261016T114721906724Z",
+      "start_utc": "2026-10-16T11:49:28.044767+00:00",
+      "exit_code": 0,
+      "log": "provider-author.log"
+    },
+    {
+      "name": "provider-independent",
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/services-venv/bin/python",
+        "/Users/csys/Desktop/ibicot/idle/release/qa/integration-services-repaired-20261016T114721906724Z/test_independent_providers.py",
+        "/Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-services-repaired-20261016T114721906724Z"
+      ],
+      "cwd": "/Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-services-repaired-20261016T114721906724Z",
+      "start_utc": "2026-10-16T11:49:28.395530+00:00",
+      "exit_code": 0,
+      "log": "provider-independent.log"
+    }
+  ],
+  "frozen_input_changes": [],
+  "service_execution_note": "48 base executions include duplicated 22 author cases imported by director review; 26 unique base tests. Eight provider author tests and four independent provider tests are separate."
+}

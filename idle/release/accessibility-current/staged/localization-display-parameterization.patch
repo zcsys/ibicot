@@ -1,0 +1,48 @@
+--- a/game/mobile/test/localization_test.dart
++++ b/game/mobile/test/localization_test.dart
+@@ -31,6 +31,17 @@
+     show FixtureNotificationGateway, MemoryReminderStore;
+ import 'service_settings_test.dart' show FixtureClient, MemoryCredentials;
+ 
++// Defaults retain the previous phone/200% regression condition. The same
++// interactions can be executed unchanged for every declared display condition.
++const _testViewport = String.fromEnvironment(
++  'TIDEGLASS_TEST_VIEWPORT',
++  defaultValue: 'phone',
++);
++const _testTextPercent = int.fromEnvironment(
++  'TIDEGLASS_TEST_TEXT_PERCENT',
++  defaultValue: 200,
++);
++
+ void main() {
+   TestWidgetsFlutterBinding.ensureInitialized();
+   late StoryCatalogue catalogue;
+@@ -47,9 +58,16 @@
+         startTicker: false,
+       );
+   void viewport(WidgetTester tester) {
+-    tester.view.physicalSize = const Size(320, 720);
++    if (![100, 150, 200].contains(_testTextPercent)) {
++      throw ArgumentError('Unsupported localization test text scale.');
++    }
++    tester.view.physicalSize = switch (_testViewport) {
++      'phone' => const Size(320, 720),
++      'tablet' => const Size(1024, 768),
++      _ => throw ArgumentError('Unsupported localization test viewport.'),
++    };
+     tester.view.devicePixelRatio = 1;
+-    tester.platformDispatcher.textScaleFactorTestValue = 2;
++    tester.platformDispatcher.textScaleFactorTestValue = _testTextPercent / 100;
+     addTearDown(tester.view.resetPhysicalSize);
+     addTearDown(tester.view.resetDevicePixelRatio);
+     addTearDown(tester.platformDispatcher.clearTextScaleFactorTestValue);
+@@ -123,7 +141,7 @@
+   );
+ 
+   testWidgets(
+-    'actual first purchase and primary navigation fit expanded 200% text',
++    'actual first purchase and primary navigation fit selected text scale',
+     (tester) async {
+       final subject = game(
+         state: const TideglassEngine()

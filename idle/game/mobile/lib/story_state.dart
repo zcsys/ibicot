@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'bundled_content.dart';
+import 'content_compatibility.dart';
 import 'cosmetics.dart';
 import 'package:flutter/services.dart';
 import 'package:tideglass_events/tideglass_events.dart';
@@ -172,9 +173,7 @@ class StoryProgress {
                 : 9)) {
       throw const FormatException('Unsupported story progress.');
     }
-    if (version >= 3 &&
-        json['content_digest'] != null &&
-        json['content_digest'] != bundledManifestDigest) {
+    if (version >= 3 && !acceptsStoryContentDigest(json['content_digest'])) {
       throw const FormatException(
         'This story needs its original pinned content.',
       );
@@ -192,7 +191,9 @@ class StoryProgress {
       equippedAppearance: version >= 4
           ? json['equipped_appearance'] as String?
           : null,
-      contentDigest: json['content_digest'] as String?,
+      contentDigest: migratedStoryContentDigest(
+        json['content_digest'] as String?,
+      ),
       season: json['season'] == null
           ? null
           : SeasonState.fromJson(

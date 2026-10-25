@@ -1,8 +1,11 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
 import 'package:audioplayers/audioplayers.dart';
+import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:path_provider/path_provider.dart';
@@ -13,23 +16,67 @@ import 'package:tideglass/game_controller.dart';
 import 'package:tideglass/audio_bus.dart';
 import 'package:tideglass/story_state.dart';
 import 'package:tideglass/producer_art.dart';
+import 'package:tideglass/season_screen.dart';
+import 'package:tideglass/ownership_clock.dart';
+import 'package:tideglass/native_services.dart';
+import 'package:tideglass/soundtrack_export.dart';
 import 'package:tideglass_progression/tideglass_progression.dart';
 import 'package:tideglass_core/tideglass_core.dart';
 import 'package:tideglass_persistence/tideglass_persistence.dart';
 
+/// Capture-only binding: retain hit-tested gestures without the live test
+/// binding's painted pointer crosshair. These are still automated inputs,
+/// not physical-device or human interaction evidence.
+class CaptureGalleryBinding extends IntegrationTestWidgetsFlutterBinding {
+  CaptureGalleryBinding() {
+    shouldPropagateDevicePointerEvents = true;
+  }
+
+  int routedTestPointerEvents = 0;
+
+  @override
+  void handlePointerEventForSource(
+    PointerEvent event, {
+    TestBindingEventSource source = TestBindingEventSource.device,
+  }) {
+    if (source == TestBindingEventSource.test) routedTestPointerEvents += 1;
+    // The propagated device branch forwards this same event through normal
+    // framework hit testing and gesture dispatch, without recording a painted
+    // test pointer. Do not invoke UI callbacks or alter event coordinates.
+    super.handlePointerEventForSource(
+      event,
+      source: TestBindingEventSource.device,
+    );
+  }
+}
+
 /// This is an explicitly seeded native boundary test, not natural pacing or a
 /// human playtest. Identical inputs exercise real UI commands/core/disk on both OSes.
 void main() {
-  final binding = IntegrationTestWidgetsFlutterBinding.ensureInitialized();
+  const scenario = String.fromEnvironment(
+    'TIDEGLASS_SCENARIO',
+    defaultValue: 'seeded',
+  );
+  final binding = scenario == 'capture-gallery'
+      ? CaptureGalleryBinding()
+      : IntegrationTestWidgetsFlutterBinding.ensureInitialized();
   WidgetController.hitTestWarningShouldBeFatal = true;
   const label = String.fromEnvironment(
     'TIDEGLASS_DEVICE_LABEL',
     defaultValue: 'native',
   );
-  const scenario = String.fromEnvironment(
-    'TIDEGLASS_SCENARIO',
-    defaultValue: 'seeded',
-  );
+  if (scenario.startsWith('clock-')) {
+    clockScenario(binding, label, scenario);
+    return;
+  }
+  if (scenario == 'share-cancel') {
+    shareCancellationScenario(binding, label);
+    return;
+  }
+  if (scenario == 'capture-gallery') {
+    captureGalleryScenario(binding, label);
+    return;
+  }
   if (scenario.startsWith('natural-')) {
     naturalScenario(binding, label, scenario);
     return;
@@ -175,6 +222,565 @@ void main() {
     await tester.pumpWidget(const SizedBox.shrink());
     prestige.dispose();
   });
+}
+
+Map<String, dynamic> nativeIdentity(String label, String scenario) => {
+  'verification_id': const String.fromEnvironment('TIDEGLASS_VERIFICATION_ID'),
+  'candidate_fingerprint': const String.fromEnvironment(
+    'TIDEGLASS_CANDIDATE_FINGERPRINT',
+  ),
+  'harness_sha256': const String.fromEnvironment('TIDEGLASS_HARNESS_SHA256'),
+  'platform': Platform.operatingSystem,
+  'os_version': Platform.operatingSystemVersion,
+  'device_label': label,
+  'scenario': scenario,
+  'run_id': const String.fromEnvironment('TIDEGLASS_RUN_ID'),
+  'process_id': pid,
+};
+
+class NativeLifecycleProbe extends WidgetsBindingObserver {
+  final states = <AppLifecycleState>[];
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) => states.add(state);
+}
+
+Future<void> waitForNativeCondition(
+  WidgetTester tester,
+  bool Function() condition, {
+  required String reason,
+  Duration timeout = const Duration(seconds: 90),
+}) async {
+  final watch = Stopwatch()..start();
+  while (!condition() && watch.elapsed < timeout) {
+    await Future<void>.delayed(const Duration(milliseconds: 200));
+    await tester.pump();
+  }
+  expect(condition(), isTrue, reason: reason);
+}
+
+/// Clock epochs stay only in a private fixture checkpoint, never in exported
+/// reports. The report contains scope, equality results and elapsed deltas.
+void clockScenario(
+  IntegrationTestWidgetsFlutterBinding binding,
+  String label,
+  String scenario,
+) {
+  const runId = String.fromEnvironment('TIDEGLASS_RUN_ID');
+  const channel = MethodChannel('dev.tideglass/ownership_clock');
+  testWidgets('actual native ownership clock: $scenario', (tester) async {
+    binding.reportData = {
+      ...nativeIdentity(label, scenario),
+      'provenance':
+          'Real native MethodChannel and OS process/lifecycle controls. No signed ownership, paid transaction, device security or reboot qualification.',
+    };
+    expect(runId, isNotEmpty);
+    final directory = Directory(
+      '${(await getApplicationSupportDirectory()).path}/native-verification/clock-$label-$runId',
+    );
+    final checkpoint = File('${directory.path}/clock-checkpoint.json');
+    if (scenario == 'clock-start') {
+      expect(await directory.exists(), isFalse);
+      await directory.create(recursive: true);
+    } else {
+      expect(await checkpoint.exists(), isTrue);
+    }
+    final lifecycle = NativeLifecycleProbe();
+    binding.addObserver(lifecycle);
+    final bridge = OwnershipClockBridge(autoRefresh: false);
+    addTearDown(() {
+      bridge.dispose();
+      binding.removeObserver(lifecycle);
+    });
+    await tester.pumpWidget(
+      const MaterialApp(
+        home: Scaffold(
+          body: Center(
+            child: Text('Native clock verification — local fixture'),
+          ),
+        ),
+      ),
+    );
+    if (Platform.isAndroid) await binding.convertFlutterSurfaceToImage();
+    // integration_test requires a rendered frame after Android surface
+    // conversion. This static fixture has no animation to supply that frame.
+    await pumpNativeUi(tester);
+    debugPrint('TIDEGLASS_NATIVE_CLOCK_SURFACE_READY');
+    Future<Map<String, dynamic>> sample() async {
+      final raw = await channel.invokeMapMethod<String, dynamic>('sample');
+      expect(raw, isNotNull);
+      expect(raw!['version'], 1);
+      expect(raw['elapsed_us'], isA<int>());
+      expect((raw['elapsed_us'] as int) >= 0, isTrue);
+      expect(raw['epoch_id'], isA<String>());
+      expect(raw['continuity_scope'], Platform.isAndroid ? 'boot' : 'process');
+      return raw;
+    }
+
+    final first = await sample();
+    await Future<void>.delayed(const Duration(milliseconds: 500));
+    final second = await sample();
+    expect(second['epoch_id'] == first['epoch_id'], isTrue);
+    final delta = (second['elapsed_us'] as int) - (first['elapsed_us'] as int);
+    expect(delta, greaterThanOrEqualTo(400000));
+    expect(await bridge.refresh(), isTrue);
+    expect(bridge.current, isNotNull);
+    expect(bridge.current!.bootId == second['epoch_id'], isTrue);
+    expect(bridge.restartContinuity, Platform.isAndroid);
+    final uncertainty = bridge.current!.uncertaintyMicroseconds;
+    expect(uncertainty, greaterThan(0));
+    binding.reportData!.addAll({
+      'continuity_scope': second['continuity_scope'],
+      'same_process_epoch_stable': true,
+      'native_sample_delta_us': delta,
+      'bridge_uncertainty_us': uncertainty,
+      'bridge_restart_continuity': bridge.restartContinuity,
+    });
+
+    if (scenario == 'clock-start') {
+      var invalidations = 0;
+      void observed() {
+        if (bridge.current == null) invalidations++;
+      }
+
+      bridge.addListener(observed);
+      final lifecycleStart = lifecycle.states.length;
+      final priorInvalidations = invalidations;
+      // The external runner must now send the actual app to Home and reopen it.
+      // Never substitute a manually injected Flutter lifecycle notification.
+      debugPrint('TIDEGLASS_NATIVE_CLOCK_BACKGROUND_READY');
+      await waitForNativeCondition(tester, () {
+        final observedStates = lifecycle.states.skip(lifecycleStart);
+        return invalidations > priorInvalidations &&
+            observedStates.contains(AppLifecycleState.paused) &&
+            observedStates.contains(AppLifecycleState.resumed);
+      }, reason: 'Actual OS background and foreground callbacks must arrive');
+      expect(bridge.current, isNull);
+      expect(await bridge.refresh(), isTrue);
+      expect(bridge.current!.bootId == second['epoch_id'], isTrue);
+      expect(
+        bridge.current!.elapsedMicroseconds > (second['elapsed_us'] as int),
+        isTrue,
+      );
+      bridge.removeListener(observed);
+      binding.reportData!.addAll({
+        'native_lifecycle_states': lifecycle.states
+            .skip(lifecycleStart)
+            .map((value) => value.name)
+            .toList(),
+        'evidence_hidden_before_foreground_refresh': true,
+        'same_process_epoch_after_foreground': true,
+      });
+      final last = await sample();
+      await checkpoint.writeAsString(
+        jsonEncode({'process_id': pid, ...last}),
+        flush: true,
+      );
+    } else {
+      final previous = jsonDecode(await checkpoint.readAsString()) as Map;
+      expect(pid, isNot(previous['process_id']));
+      final epochSame = previous['epoch_id'] == second['epoch_id'];
+      expect(epochSame, Platform.isAndroid);
+      expect(
+        (second['elapsed_us'] as int) > (previous['elapsed_us'] as int),
+        isTrue,
+      );
+      binding.reportData!.addAll({
+        'different_native_process': true,
+        'epoch_equal_after_process_restart': epochSame,
+        'restart_elapsed_delta_us':
+            (second['elapsed_us'] as int) - (previous['elapsed_us'] as int),
+        'restart_scope_assertion': Platform.isAndroid
+            ? 'Same installation and OS boot retains opaque epoch across process restart'
+            : 'Apple process restart changes epoch and cannot resume an offline ownership lease',
+      });
+    }
+    debugPrint('TIDEGLASS_NATIVE_CLOCK_ASSERTIONS_DONE');
+    await pumpNativeUi(tester);
+    await binding
+        .takeScreenshot('$label-$scenario')
+        .timeout(const Duration(seconds: 15));
+    expect(tester.takeException(), isNull);
+    bridge.dispose();
+    binding.removeObserver(lifecycle);
+    await tester.pumpWidget(const SizedBox.shrink());
+  }, timeout: const Timeout(Duration(minutes: 3)));
+}
+
+/// Test-only download substitution. The real native export function and share
+/// plugin run normally; service authentication/ownership are deliberately absent.
+class SyntheticArchiveServices extends NativeServicesManager {
+  SyntheticArchiveServices(this.archive);
+  final File archive;
+  int downloads = 0;
+  @override
+  Future<File> downloadSoundtrack(Directory destination) async {
+    downloads++;
+    return archive;
+  }
+}
+
+void shareCancellationScenario(
+  IntegrationTestWidgetsFlutterBinding binding,
+  String label,
+) {
+  const runId = String.fromEnvironment('TIDEGLASS_RUN_ID');
+  testWidgets('native share sheet cancellation with synthetic archive', (
+    tester,
+  ) async {
+    binding.reportData = {
+      ...nativeIdentity(label, 'share-cancel'),
+      'provenance':
+          'Synthetic local ZIP, overridden test-only download, real production export function and native share sheet. No purchase, entitlement, network download or receiving-app delivery claim.',
+    };
+    expect(runId, isNotEmpty);
+    final directory = Directory(
+      '${(await getTemporaryDirectory()).path}/native-verification/share-$label-$runId',
+    );
+    expect(await directory.exists(), isFalse);
+    await directory.create(recursive: true);
+    final archive = File(
+      '${directory.path}/tideglass-native-share-fixture.zip',
+    );
+    // Deterministic valid ZIP containing only a README stating this is a fixture.
+    final bytes = base64Decode(
+      'UEsDBBQAAAAIAAAAIVzVZQqIUwAAAGEAAAAKAAAAUkVBRE1FLnR4dA2M0QmAMAwF/zvFm8AFHEMXCPWhhZiUNord3n4dB8ft5eCp0jtMorwEv+otEOwBNx1L2obFxSgZ6lkU0vI1yxXmqM8U6YQ30KKE8p4E3/m1zCX9UEsBAhQDFAAAAAgAAAAhXNVlCohTAAAAYQAAAAoAAAAAAAAAAAAAAIABAAAAAFJFQURNRS50eHRQSwUGAAAAAAEAAQA4AAAAewAAAAAA',
+    );
+    await archive.writeAsBytes(bytes, flush: true);
+    final manager = SyntheticArchiveServices(archive);
+    addTearDown(manager.dispose);
+    final completed = Completer<SoundtrackExportResult>();
+    final buttonKey = GlobalKey();
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: Center(
+            child: FilledButton(
+              key: buttonKey,
+              onPressed: () {
+                final box =
+                    buttonKey.currentContext!.findRenderObject() as RenderBox;
+                final anchor = box.localToGlobal(Offset.zero) & box.size;
+                debugPrint('TIDEGLASS_NATIVE_SHARE_READY');
+                unawaited(
+                  exportSoundtrack(
+                    manager,
+                    anchor,
+                  ).then(completed.complete, onError: completed.completeError),
+                );
+              },
+              child: const Text('Open native share sheet — synthetic ZIP'),
+            ),
+          ),
+        ),
+      ),
+    );
+    if (Platform.isAndroid) await binding.convertFlutterSurfaceToImage();
+    await tester.tap(find.byKey(buttonKey));
+    final result = await completed.future.timeout(const Duration(seconds: 120));
+    expect(result, SoundtrackExportResult.cancelled);
+    expect(manager.downloads, 1);
+    expect(manager.session, isNull);
+    expect(await archive.readAsBytes(), bytes);
+    binding.reportData!.addAll({
+      'native_export_result': result.name,
+      'synthetic_archive_sha256': sha256.convert(bytes).toString(),
+      'synthetic_archive_bytes': bytes.length,
+      'download_substitution_calls': manager.downloads,
+      'account_session_present': false,
+      'archive_retained_after_cancel': true,
+    });
+    await tester.pump();
+    await binding.takeScreenshot('$label-share-cancel-returned');
+    expect(tester.takeException(), isNull);
+    await tester.pumpWidget(const SizedBox.shrink());
+  }, timeout: const Timeout(Duration(minutes: 3)));
+}
+
+/// Capture readiness requires the actual visible route, not just a fixed pump.
+/// A returning route's secondary animation must finish before a new real tap.
+bool captureRouteIsReady(WidgetTester tester, Finder landmark) {
+  final elements = landmark.evaluate().toList();
+  if (elements.length != 1) return false;
+  final route = ModalRoute.of(elements.single);
+  return route != null &&
+      route.isCurrent &&
+      route.animation?.status == AnimationStatus.completed &&
+      route.secondaryAnimation?.status == AnimationStatus.dismissed &&
+      landmark.hitTestable().evaluate().length == 1;
+}
+
+/// Store-material draft capture uses valid, explicitly seeded progression. The
+/// UI is the production app and actual routes; no screenshot composition or
+/// invented premium ownership is involved. Time during the clip is real time.
+void captureGalleryScenario(
+  IntegrationTestWidgetsFlutterBinding binding,
+  String label,
+) {
+  const runId = String.fromEnvironment('TIDEGLASS_RUN_ID');
+  testWidgets('seeded native screen set and real-time gameplay footage', (
+    tester,
+  ) async {
+    expect(binding, isA<CaptureGalleryBinding>());
+    final captureBinding = binding as CaptureGalleryBinding;
+    expect(captureBinding.shouldPropagateDevicePointerEvents, isTrue);
+    binding.reportData = {
+      ...nativeIdentity(label, 'capture-gallery'),
+      'provenance':
+          'Seeded chapters, fleet, currencies, earned appearance and passage. Production UI and real timer/actions during the clip. No natural retention, paid ownership, human playtest or published store-material claim.',
+      'audio_recorded': false,
+      'pointer_dispatch':
+          'Automated hit-tested UI gestures through device propagation; no painted test pointer, physical input or human-playtest claim.',
+    };
+    expect(runId, isNotEmpty);
+    final directory = Directory(
+      '${(await getApplicationSupportDirectory()).path}/native-verification/capture-$label-$runId',
+    );
+    expect(await directory.exists(), isFalse);
+    await directory.create(recursive: true);
+    final startSignal = File('${directory.path}/recording-started');
+    final stopSignal = File('${directory.path}/recording-stopped.json');
+    final watch = Stopwatch();
+    final androidScreencaps = <Map<String, dynamic>>[];
+    if (Platform.isAndroid) {
+      binding.reportData!['android_screencaps'] = androidScreencaps;
+    }
+    final captureIdentity = {
+      for (final key in [
+        'verification_id', 'candidate_fingerprint', 'harness_sha256',
+        'device_label', 'run_id', 'platform', 'scenario',
+      ]) key: binding.reportData![key],
+      'directory': directory.path,
+    };
+    Future<void> screenshot(String screen) async {
+      if (!Platform.isAndroid) {
+        await binding.takeScreenshot('$label-capture-$screen');
+        return;
+      }
+      // The integration_test Android image-view conversion retains a frozen
+      // display between screenshot acquisitions. Capture the real OS surface
+      // externally; do not convert/revert it or invoke UI callbacks directly.
+      final sequence = androidScreencaps.length + 1;
+      final request = {
+        ...captureIdentity,
+        'sequence': sequence,
+        'file': '$label-capture-$screen.png',
+        'width': tester.view.physicalSize.width.toInt(),
+        'height': tester.view.physicalSize.height.toInt(),
+        'gameplay_elapsed_ms': watch.elapsedMilliseconds,
+      };
+      final ack = File('${directory.path}/screenshot-$sequence-ready.json');
+      final complete = '${ack.path}.complete';
+      expect(FileSystemEntity.typeSync(ack.path, followLinks: false),
+          FileSystemEntityType.notFound);
+      expect(FileSystemEntity.typeSync(complete, followLinks: false),
+          FileSystemEntityType.notFound);
+      await tester.pump();
+      debugPrint('TIDEGLASS_NATIVE_SCREENSHOT_READY ${jsonEncode(request)}');
+      await waitForNativeCondition(
+        tester,
+        () => FileSystemEntity.typeSync(complete, followLinks: false) ==
+            FileSystemEntityType.directory,
+        reason: 'The complete Android raw screenshot receipt must be published',
+        timeout: const Duration(seconds: 10),
+      );
+      // JSON existence alone never means ready: the host may still be writing.
+      expect(FileSystemEntity.typeSync(ack.path, followLinks: false),
+          FileSystemEntityType.file);
+      final receipt = Map<String, dynamic>.from(
+        jsonDecode(await ack.readAsString()) as Map,
+      );
+      for (final entry in request.entries) {
+        expect(receipt[entry.key], entry.value);
+      }
+      expect(receipt['capture_method'], 'adb exec-out screencap -p');
+      expect(receipt['sha256'], matches(RegExp(r'^[a-f0-9]{64}$')));
+      expect(receipt['bytes'], greaterThan(0));
+      androidScreencaps.add(receipt);
+    }
+    final catalogue = await StoryCatalogue.load();
+    final challenge = ChallengeEconomy(catalogue.dossiers.first);
+    final run = challenge.newRun();
+    final subject = GameController(
+      catalogue: catalogue,
+      initialState: GameState(
+        counts: [60, 30, 10, 2, 0],
+        walletMicros: BigInt.from(10000000000000),
+        lifetimeMicros: BigInt.from(10000000000000000),
+        charts: BigInt.from(25),
+        surveyNotes: BigInt.from(200),
+      ),
+      initialStory: StoryProgress(
+        campaign: CampaignProgress(
+          completed: {'chapter.01', 'chapter.02', 'chapter.03'},
+        ),
+        dossiers: DossierCollection(
+          owned: {run.dossierId},
+          active: run.copyWith(
+            fleet: challenge
+                .advance(run.fleet, const Duration(seconds: 90))
+                .state,
+          ),
+        ),
+        decorations: {'cosmetic.core.decoration.01'},
+        equippedDecoration: 'cosmetic.core.decoration.01',
+        equippedAppearance: 'cosmetic.core.chapter.03',
+      ),
+    );
+    var disposed = false;
+    void disposeSubject() {
+      if (!disposed) {
+        disposed = true;
+        subject.dispose();
+      }
+    }
+
+    addTearDown(disposeSubject);
+    await tester.pumpWidget(
+      TideglassApp(
+        controller: subject,
+        initialPreferences: const ClientPreferences(onboardingDismissed: true),
+      ),
+    );
+    await pumpNativeUi(tester);
+    binding.reportData!.addAll({
+      'seeded_core': subject.state.toJson(),
+      'seeded_story': subject.story.toJson(),
+      'device_physical_width': tester.view.physicalSize.width,
+      'device_physical_height': tester.view.physicalSize.height,
+      'device_pixel_ratio': tester.view.devicePixelRatio,
+      'platform_locale': Platform.localeName,
+    });
+    await screenshot('main');
+    debugPrint(
+      'TIDEGLASS_NATIVE_CAPTURE_READY ${jsonEncode(Platform.isAndroid ? captureIdentity : {'directory': directory.path})}',
+    );
+    await waitForNativeCondition(
+      tester,
+      startSignal.existsSync,
+      reason: 'The native recorder must acknowledge it started before gameplay',
+      timeout: const Duration(seconds: 45),
+    );
+    watch.start();
+    Future<void> until(Duration elapsed) async {
+      while (watch.elapsed < elapsed) {
+        await Future<void>.delayed(const Duration(milliseconds: 250));
+        await tester.pump();
+      }
+    }
+
+    Future<void> tap(Finder target) async {
+      await tester.ensureVisible(target);
+      await pumpNativeUi(tester);
+      await tester.tap(target);
+      await pumpNativeUi(tester);
+    }
+
+    await until(Duration(seconds: Platform.isAndroid ? 2 : 4));
+    final beforeCount = subject.state.counts.first;
+    await tap(find.byKey(const ValueKey('buy-0')));
+    expect(subject.state.counts.first, beforeCount + 1);
+    await until(Duration(seconds: Platform.isAndroid ? 5 : 8));
+    await tap(find.text('Logbook'));
+    await tap(find.byKey(const ValueKey('open-story')));
+    await tester.ensureVisible(
+      find.byKey(const PageStorageKey('chapter-chapter.04')),
+    );
+    await pumpNativeUi(tester);
+    await screenshot('chapter');
+    await until(Duration(seconds: Platform.isAndroid ? 11 : 14));
+    await tap(find.byKey(const ValueKey('story-tab-1')));
+    await tester.ensureVisible(find.byKey(const ValueKey('active-challenge')));
+    await pumpNativeUi(tester);
+    await screenshot('challenge');
+    await until(Duration(seconds: Platform.isAndroid ? 16 : 20));
+    await tester.pageBack();
+    await pumpNativeUi(tester);
+    final openSeason = find.byKey(const ValueKey('open-season'));
+    await waitForNativeCondition(
+      tester,
+      () => openSeason.evaluate().length == 1,
+      reason: 'The returned Logbook must expose its actual seasonal route control',
+      timeout: const Duration(seconds: 4),
+    );
+    await tester.ensureVisible(openSeason);
+    await waitForNativeCondition(
+      tester,
+      () => captureRouteIsReady(tester, openSeason),
+      reason: 'The returning Logbook route must settle before the seasonal tap',
+      timeout: const Duration(seconds: 4),
+    );
+    await tap(openSeason);
+    final seasonScreen = find.byType(SeasonScreen);
+    final seasonFleet = find.descendant(
+      of: seasonScreen,
+      matching: find.byKey(const ValueKey('season-tab-0')),
+    );
+    await waitForNativeCondition(
+      tester,
+      () => captureRouteIsReady(tester, seasonFleet),
+      reason: 'The actual Season route and visible Fleet landmark must settle before capture',
+      timeout: const Duration(seconds: 4),
+    );
+    expect(seasonScreen, findsOneWidget);
+    expect(seasonFleet.hitTestable(), findsOneWidget);
+    expect(tester.widget<ChoiceChip>(seasonFleet).selected, isTrue);
+    final seasonRoute = ModalRoute.of(tester.element(seasonFleet))!;
+    binding.reportData!['season_capture_landmark'] = {
+      'widget': 'SeasonScreen',
+      'key': 'season-tab-0',
+      'selected': true,
+      'route_is_current': seasonRoute.isCurrent,
+      'primary_animation_status': seasonRoute.animation!.status.name,
+      'secondary_animation_status': seasonRoute.secondaryAnimation!.status.name,
+      'gameplay_elapsed_ms': watch.elapsedMilliseconds,
+    };
+    await screenshot('season');
+    await until(const Duration(seconds: 25));
+    expect(captureBinding.routedTestPointerEvents, greaterThan(0));
+    final gameplayElapsedMs = watch.elapsedMilliseconds;
+    if (Platform.isAndroid) {
+      final request = {
+        ...captureIdentity, 'gameplay_elapsed_ms': gameplayElapsedMs,
+      };
+      final complete = '${stopSignal.path}.complete';
+      expect(FileSystemEntity.typeSync(stopSignal.path, followLinks: false),
+          FileSystemEntityType.notFound);
+      expect(FileSystemEntity.typeSync(complete, followLinks: false),
+          FileSystemEntityType.notFound);
+      debugPrint('TIDEGLASS_NATIVE_CAPTURE_DONE ${jsonEncode(request)}');
+      // Keep the final production screen present until the owned OS recorder
+      // has stopped. This does not change the gameplay timeline or its speed.
+      await waitForNativeCondition(
+        tester,
+        () => FileSystemEntity.typeSync(complete, followLinks: false) ==
+            FileSystemEntityType.directory,
+        reason: 'The complete recorder-stop receipt must be published before removing its UI',
+        timeout: const Duration(seconds: 15),
+      );
+      expect(FileSystemEntity.typeSync(stopSignal.path, followLinks: false),
+          FileSystemEntityType.file);
+      final receipt = Map<String, dynamic>.from(
+        jsonDecode(await stopSignal.readAsString()) as Map,
+      );
+      for (final entry in request.entries) {
+        expect(receipt[entry.key], entry.value);
+      }
+      expect(receipt['recorder_stopped'], isTrue);
+      binding.reportData!['android_screencaps'] = androidScreencaps;
+      binding.reportData!['android_recording_stop'] = receipt;
+    } else {
+      debugPrint('TIDEGLASS_NATIVE_CAPTURE_DONE');
+    }
+    binding.reportData!.addAll({
+      'real_gameplay_elapsed_ms': gameplayElapsedMs,
+      'actual_purchase_count_delta': subject.state.counts.first - beforeCount,
+      'automated_pointer_events_routed': captureBinding.routedTestPointerEvents,
+      'screen_set': ['main', 'chapter', 'challenge', 'season'],
+    });
+    expect(tester.takeException(), isNull);
+    await tester.pumpWidget(const SizedBox.shrink());
+    disposeSubject();
+  }, timeout: const Timeout(Duration(minutes: 3)));
 }
 
 void naturalScenario(
@@ -506,6 +1112,14 @@ void sessionScenario(
     // Decode every bundled AAC through the real OS plugin; keep this probe silent.
     final decoded = <Map<String, Object>>[];
     final probe = AudioPlayer(playerId: 'tideglass.native.codec.probe');
+    var probeDisposed = false;
+    Future<void> closeProbe() async {
+      if (probeDisposed) return;
+      probeDisposed = true;
+      await probe.dispose();
+    }
+
+    addTearDown(closeProbe);
     await probe.setVolume(0);
     for (final name in [
       ...TideMusic.values.map((v) => v.name),
@@ -524,13 +1138,29 @@ void sessionScenario(
     await probe.setSource(AssetSource('audio/harbor.m4a'));
     await probe.setReleaseMode(ReleaseMode.loop);
     await probe.resume();
-    await Future<void>.delayed(const Duration(milliseconds: 400));
-    final position = await probe.getCurrentPosition();
+    // Native playback can start after resume's platform-channel acknowledgement.
+    // Assert its actual clock advances, without assuming a fixed 400ms startup.
+    final playbackWait = Stopwatch()..start();
+    final positions = <int?>[];
+    Duration? position;
+    do {
+      await Future<void>.delayed(const Duration(milliseconds: 100));
+      position = await probe.getCurrentPosition();
+      positions.add(position?.inMilliseconds);
+    } while ((position == null || position.inMilliseconds == 0) &&
+        playbackWait.elapsed < const Duration(seconds: 5));
+    binding.reportData!['audio_probe'] = {
+      'decoded': decoded,
+      'playback_wait_ms': playbackWait.elapsedMilliseconds,
+      'position_samples_ms': positions,
+      'state': probe.state.name,
+    };
     expect(probe.state, PlayerState.playing);
+    expect(position, isNotNull);
     expect(position!.inMilliseconds, greaterThan(0));
     await probe.pause();
     expect(probe.state, PlayerState.paused);
-    await probe.dispose();
+    await closeProbe();
     checks.add(
       'All eleven AAC assets decoded with positive duration; native music playback clock advanced and paused',
     );

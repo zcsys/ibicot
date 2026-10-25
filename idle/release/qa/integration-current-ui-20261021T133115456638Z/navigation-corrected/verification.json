@@ -1,0 +1,29 @@
+{
+  "results": [
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+        "test",
+        "../qa/integration_localization_navigation_test.dart",
+        "--reporter=expanded",
+        "--dart-define=TIDEGLASS_PSEUDO=false"
+      ],
+      "exit_code": 0,
+      "source_differences": [],
+      "log_sha256": "742b814f94c32606c133e3f3d50ec5367cb3e095ba5e5e88e9e9dc0238ec8079"
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+        "test",
+        "../qa/integration_localization_navigation_test.dart",
+        "--reporter=expanded",
+        "--dart-define=TIDEGLASS_PSEUDO=true"
+      ],
+      "exit_code": 0,
+      "source_differences": [],
+      "log_sha256": "742b814f94c32606c133e3f3d50ec5367cb3e095ba5e5e88e9e9dc0238ec8079"
+    }
+  ],
+  "scope": "Reviewer fixture finder correction only; production unchanged"
+}

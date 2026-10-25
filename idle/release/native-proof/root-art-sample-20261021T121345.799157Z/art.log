@@ -1,0 +1,32 @@
+00:00 +0: loading /Users/csys/Desktop/ibicot/idle/game/mobile/test/art_catalogue_variants_test.dart
+00:00 +0: (setUpAll)
+00:00 +0: harbor7 actual route phone-100-normal
+00:01 +1: producer25 actual purchase cards phone-100-normal
+00:02 +2: producer25 selected locked component variants phone-100-normal
+00:02 +3: cosmetic36 locked owned equipped preview thumbnail phone-100-normal
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following ArgumentError was thrown running a test:
+Invalid argument(s): A localized offer needs a real product and known paid contents.
+
+When the exception was thrown, this was the stack:
+#0      new CosmeticStoreOffer (package:tideglass/cosmetics.dart:302:7)
+#1      main.<anonymous closure> (file:///Users/csys/Desktop/ibicot/idle/game/mobile/test/art_catalogue_variants_test.dart:347:23)
+#2      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:29)
+<asynchronous suspension>
+#3      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+The test description was:
+  cosmetic36 locked owned equipped preview thumbnail phone-100-normal
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:02 +3 -1: cosmetic36 locked owned equipped preview thumbnail phone-100-normal [E]
+  Test failed. See exception logs above.
+  The test description was: cosmetic36 locked owned equipped preview thumbnail phone-100-normal
+  
+00:02 +3 -1: (tearDownAll)
+00:02 +3 -1: Some tests failed.
+
+Failing tests:
+  /Users/csys/Desktop/ibicot/idle/game/mobile/test/art_catalogue_variants_test.dart: cosmetic36 locked owned equipped preview thumbnail phone-100-normal

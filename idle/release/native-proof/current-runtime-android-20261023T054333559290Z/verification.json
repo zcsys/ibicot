@@ -1,0 +1,2135 @@
+{
+  "verification_id": "current-runtime-android-20261023T054333559290Z",
+  "candidate_fingerprint": "3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59",
+  "harness_sha256": "102be09eb8043ce9bb496156d9f37b1834c3084ddf58fef073e7c25cdc3c55d5",
+  "device": "emulator-5556",
+  "label": "android",
+  "platform": "android",
+  "scenario": "runtime-study-restart",
+  "run_id": "v3b00-android-probe-fixed-enroll",
+  "privacy_observation_enabled": false,
+  "command": [
+    "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+    "drive",
+    "--driver=test_driver/current_evidence_911183b5d9ee.dart",
+    "--target=integration_test/current_evidence_102be09eb804_test.dart",
+    "-d",
+    "emulator-5556",
+    "--dart-define=TIDEGLASS_DEVICE_LABEL=android",
+    "--dart-define=TIDEGLASS_SCENARIO=runtime-study-restart",
+    "--dart-define=TIDEGLASS_RUN_ID=v3b00-android-probe-fixed-enroll",
+    "--dart-define=TIDEGLASS_VERIFICATION_ID=current-runtime-android-20261023T054333559290Z",
+    "--dart-define=TIDEGLASS_CANDIDATE_FINGERPRINT=3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59",
+    "--dart-define=TIDEGLASS_HARNESS_SHA256=102be09eb8043ce9bb496156d9f37b1834c3084ddf58fef073e7c25cdc3c55d5",
+    "--keep-app-running",
+    "--timeout=180",
+    "--no-pub"
+  ],
+  "candidate_path": "/Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261023T040445.261666Z-3b00cc8f7122",
+  "status": "passed",
+  "passed": true,
+  "verification_errors": [],
+  "provenance": "INTERNAL SYNTHETIC QUALIFICATION ONLY; simulator native execution; no participant, crash-free metric, physical power-loss, store, or receiving-app claim",
+  "predecessor": {
+    "path": "/Users/csys/Desktop/ibicot/idle/release/native-proof/current-runtime-android-20261023T054227408137Z/verification.json",
+    "sha256": "a0dfbe447f365ca1cd3b38ff9a1659a47adc7480723426f4d4d848d25726a797",
+    "verification_id": "current-runtime-android-20261023T054227408137Z"
+  },
+  "exit_code": 0,
+  "native_process_id": 8256,
+  "native_process_stop": {
+    "command": [
+      "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "shell",
+      "am",
+      "force-stop",
+      "dev.tideglass.game"
+    ],
+    "termination_observed": true,
+    "observations": [
+      {
+        "command": [
+          "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+          "-s",
+          "emulator-5556",
+          "shell",
+          "pidof",
+          "dev.tideglass.game"
+        ],
+        "exit_code": 0,
+        "stdout": "8256\n",
+        "stderr": "",
+        "observed_monotonic_ns": 57355333270291
+      },
+      {
+        "command": [
+          "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+          "-s",
+          "emulator-5556",
+          "exec-out",
+          "run-as",
+          "dev.tideglass.game",
+          "cat",
+          "/proc/8256/cmdline"
+        ],
+        "exit_code": 0,
+        "stdout": "dev.tideglass.game\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000",
+        "stderr": "",
+        "observed_monotonic_ns": 57355412565500
+      },
+      {
+        "command": [
+          "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+          "-s",
+          "emulator-5556",
+          "shell",
+          "am",
+          "force-stop",
+          "dev.tideglass.game"
+        ],
+        "exit_code": 0,
+        "stdout": "",
+        "stderr": "",
+        "observed_monotonic_ns": 57355567348458
+      },
+      {
+        "command": [
+          "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+          "-s",
+          "emulator-5556",
+          "shell",
+          "pidof",
+          "dev.tideglass.game"
+        ],
+        "exit_code": 1,
+        "stdout": "",
+        "stderr": "",
+        "observed_monotonic_ns": 57355641359208
+      }
+    ]
+  },
+  "checkpoint_sha256": "98bff9252c2afa379e0ad66f4a9b9f4794ffd3c0c36c6960792e4d79234f6d81",
+  "generations": {},
+  "study_artifacts": {
+    "study-raw.json": {
+      "present": true,
+      "size": 3937,
+      "sha256": "64a1e7569fb0409be73d12711cd29adac5c1c52b4efa448aceda103eae02c4b1"
+    },
+    "study-eligibility.json": {
+      "present": true,
+      "size": 227,
+      "sha256": "4b2d811d6bcc015b71387a062d7b0519ef3e59f8258927992a2ab2f9cc03a313"
+    },
+    "study-withdrawn.marker": {
+      "present": false,
+      "size": 0,
+      "sha256": null
+    }
+  },
+  "study_structure": {
+    "records": 5,
+    "logical_processes": 2,
+    "decoded_sessions": 2,
+    "gaps": 0,
+    "scope": "Synthetic structural qualification only; no native crash adjudication or cohort acceptance"
+  },
+  "host_observations": [
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "pidof",
+        "dev.tideglass.game"
+      ],
+      "exit_code": 0,
+      "stdout": "8256\n",
+      "stderr": "",
+      "observed_monotonic_ns": 57355333270291
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "exec-out",
+        "run-as",
+        "dev.tideglass.game",
+        "cat",
+        "/proc/8256/cmdline"
+      ],
+      "exit_code": 0,
+      "stdout": "dev.tideglass.game\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000",
+      "stderr": "",
+      "observed_monotonic_ns": 57355412565500
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "am",
+        "force-stop",
+        "dev.tideglass.game"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57355567348458
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "pidof",
+        "dev.tideglass.game"
+      ],
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57355641359208
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-L",
+        "/data/user/0/dev.tideglass.game/files"
+      ],
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57355771492750
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-e",
+        "/data/user/0/dev.tideglass.game/files"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57355920338000
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-d",
+        "/data/user/0/dev.tideglass.game/files"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57356108874166
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-r",
+        "/data/user/0/dev.tideglass.game/files"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57356315980916
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-x",
+        "/data/user/0/dev.tideglass.game/files"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57356398095041
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-L",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification"
+      ],
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57356456501083
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-e",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57356506972666
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-d",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57356556335916
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-r",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57356602743583
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-x",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57356655394375
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-L",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification/android-v3b00-android-probe-fixed-enroll"
+      ],
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57356701488958
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-e",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification/android-v3b00-android-probe-fixed-enroll"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57356753166500
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-d",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification/android-v3b00-android-probe-fixed-enroll"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57356799048333
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-r",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification/android-v3b00-android-probe-fixed-enroll"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57356849901625
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-x",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification/android-v3b00-android-probe-fixed-enroll"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57356900134250
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-L",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification/android-v3b00-android-probe-fixed-enroll/study"
+      ],
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57356960720000
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-e",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification/android-v3b00-android-probe-fixed-enroll/study"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57357021411333
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-d",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification/android-v3b00-android-probe-fixed-enroll/study"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57357090602250
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-r",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification/android-v3b00-android-probe-fixed-enroll/study"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57357164854125
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-x",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification/android-v3b00-android-probe-fixed-enroll/study"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57357216331375
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-L",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification/android-v3b00-android-probe-fixed-enroll/study/checkpoint.json"
+      ],
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57357283044708
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-e",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification/android-v3b00-android-probe-fixed-enroll/study/checkpoint.json"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57357345936916
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-f",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification/android-v3b00-android-probe-fixed-enroll/study/checkpoint.json"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57357404132541
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-r",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification/android-v3b00-android-probe-fixed-enroll/study/checkpoint.json"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57357470060375
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "exec-out",
+        "run-as",
+        "dev.tideglass.game",
+        "head",
+        "-c",
+        "65537",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification/android-v3b00-android-probe-fixed-enroll/study/checkpoint.json"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"candidate_fingerprint\":\"3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59\",\"harness_sha256\":\"102be09eb8043ce9bb496156d9f37b1834c3084ddf58fef073e7c25cdc3c55d5\",\"device_label\":\"android\",\"run_id\":\"v3b00-android-probe-fixed-enroll\",\"preparation_verification_id\":\"current-runtime-android-20261023T054227408137Z\",\"native_process_id\":7793,\"install_id\":\"1cc72a469069b5ec51ab5a78f0a1af7c\",\"first_launch\":1792734184,\"first_record_sha256\":\"c4a31855acb853e6cb013c2ba1941645dafdaeef7e5f7fd55c0f6ad0a38e3fd0\",\"study_process_id\":\"9b2c798a19c2325e9aa5aaf5fe549520\",\"native_process_observation\":{\"application_build\":\"1\",\"application_id\":\"dev.tideglass.game\",\"application_version\":\"0.1.0\",\"native_pid\":7793,\"observed_start_utc_ms\":1792734184725,\"platform\":\"android\",\"source\":\"native_process_observation_v1\",\"status\":\"available\",\"version\":1},\"app_start_count\":1}",
+      "stderr": "",
+      "observed_monotonic_ns": 57357528356541
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-L",
+        "/data/user/0/dev.tideglass.game/files"
+      ],
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57357597651125
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-e",
+        "/data/user/0/dev.tideglass.game/files"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57357673199250
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-d",
+        "/data/user/0/dev.tideglass.game/files"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57357726176750
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-r",
+        "/data/user/0/dev.tideglass.game/files"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57357788196375
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-x",
+        "/data/user/0/dev.tideglass.game/files"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57357849817791
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-L",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification"
+      ],
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57357921837250
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-e",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57357993592916
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-d",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57358050243916
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-r",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57358142578416
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-x",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57358193070416
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-L",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification/android-v3b00-android-probe-fixed-enroll"
+      ],
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57358240750250
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-e",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification/android-v3b00-android-probe-fixed-enroll"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57358289909416
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-d",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification/android-v3b00-android-probe-fixed-enroll"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57358349872125
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-r",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification/android-v3b00-android-probe-fixed-enroll"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57358417807416
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-x",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification/android-v3b00-android-probe-fixed-enroll"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57358478093875
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-L",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification/android-v3b00-android-probe-fixed-enroll/study"
+      ],
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57358532736333
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-e",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification/android-v3b00-android-probe-fixed-enroll/study"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57358580753750
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-d",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification/android-v3b00-android-probe-fixed-enroll/study"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57358625920458
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-r",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification/android-v3b00-android-probe-fixed-enroll/study"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57358669540458
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-x",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification/android-v3b00-android-probe-fixed-enroll/study"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57358714187791
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-L",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification/android-v3b00-android-probe-fixed-enroll/study/support"
+      ],
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57358769866458
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-e",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification/android-v3b00-android-probe-fixed-enroll/study/support"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57358816842333
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-d",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification/android-v3b00-android-probe-fixed-enroll/study/support"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57358861248958
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-r",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification/android-v3b00-android-probe-fixed-enroll/study/support"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57358917421208
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-x",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification/android-v3b00-android-probe-fixed-enroll/study/support"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57358976396458
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-L",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification/android-v3b00-android-probe-fixed-enroll/study/support/tideglass-study.json"
+      ],
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57359025165916
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-e",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification/android-v3b00-android-probe-fixed-enroll/study/support/tideglass-study.json"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57359087739041
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-f",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification/android-v3b00-android-probe-fixed-enroll/study/support/tideglass-study.json"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57359142610250
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-r",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification/android-v3b00-android-probe-fixed-enroll/study/support/tideglass-study.json"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57359198964333
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "exec-out",
+        "run-as",
+        "dev.tideglass.game",
+        "head",
+        "-c",
+        "2097153",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification/android-v3b00-android-probe-fixed-enroll/study/support/tideglass-study.json"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"records\":[{\"at\":1792734184,\"event_id\":\"1ab6b91c9f3be874ff85a0211574a7cb\",\"kind\":\"app_start\",\"payload\":{\"config\":{\"candidate_sha256\":\"3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59\",\"config\":\"synthetic_native_qualification\",\"content_sha256\":\"58c8cac53fa8679447d3f524bdc6979bf0c11127670840bf21c57cfffc2bbc72\",\"economy_sha256\":\"9e5b9bcfcfc7a68d4eaeebc97e8d40cd42d04532fa59f514c7483efee885d2b6\"},\"native_context\":{\"application_build\":\"1\",\"application_id\":\"dev.tideglass.game\",\"application_version\":\"0.1.0\",\"native_pid\":7793,\"observed_start_utc_ms\":1792734184725,\"platform\":\"android\",\"source\":\"native_process_observation_v1\",\"status\":\"available\",\"version\":1},\"reason\":\"enrollment\"},\"previous_sha256\":\"45f0143002f0d7b5660cf9a2e9c9c709dc94ad1caba88922a2c4c92ff8123871\",\"process_id\":\"9b2c798a19c2325e9aa5aaf5fe549520\",\"seq\":0,\"session_id\":\"9f1a70c629c908a63150f97015d1cb05\",\"sha256\":\"c4a31855acb853e6cb013c2ba1941645dafdaeef7e5f7fd55c0f6ad0a38e3fd0\"},{\"at\":1792734187,\"event_id\":\"05ac5f43a2875c4631002462e2d1cea4\",\"kind\":\"harbor_interactive\",\"payload\":{},\"previous_sha256\":\"c4a31855acb853e6cb013c2ba1941645dafdaeef7e5f7fd55c0f6ad0a38e3fd0\",\"process_id\":\"9b2c798a19c2325e9aa5aaf5fe549520\",\"seq\":1,\"session_id\":\"9f1a70c629c908a63150f97015d1cb05\",\"sha256\":\"f1722730e4dcd7ee025c03dc471e23ed5ef640b729a685f4ec45012ea3958d09\"},{\"at\":1792734188,\"event_id\":\"071a340935c629ff88dcff30601d69e1\",\"kind\":\"activity\",\"payload\":{\"activity\":\"interaction\"},\"previous_sha256\":\"f1722730e4dcd7ee025c03dc471e23ed5ef640b729a685f4ec45012ea3958d09\",\"process_id\":\"9b2c798a19c2325e9aa5aaf5fe549520\",\"seq\":2,\"session_id\":\"9f1a70c629c908a63150f97015d1cb05\",\"sha256\":\"d0f8ee68ed56005d4c5d30b180906e72b0b980c31d33f14f0f2916bbbcc11f91\"},{\"at\":1792734249,\"event_id\":\"24e49f17c8c17bad900ea622c761703a\",\"kind\":\"app_start\",\"payload\":{\"config\":{\"candidate_sha256\":\"3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59\",\"config\":\"synthetic_native_qualification\",\"content_sha256\":\"58c8cac53fa8679447d3f524bdc6979bf0c11127670840bf21c57cfffc2bbc72\",\"economy_sha256\":\"9e5b9bcfcfc7a68d4eaeebc97e8d40cd42d04532fa59f514c7483efee885d2b6\"},\"native_context\":{\"application_build\":\"1\",\"application_id\":\"dev.tideglass.game\",\"application_version\":\"0.1.0\",\"native_pid\":8256,\"observed_start_utc_ms\":1792734249687,\"platform\":\"android\",\"source\":\"native_process_observation_v1\",\"status\":\"available\",\"version\":1},\"reason\":\"process_restart\"},\"previous_sha256\":\"d0f8ee68ed56005d4c5d30b180906e72b0b980c31d33f14f0f2916bbbcc11f91\",\"process_id\":\"ebb6c29d2264832763f4f94ff778f503\",\"seq\":3,\"session_id\":\"9ae1622c6c509b4808983487f03418fc\",\"sha256\":\"967f4767f2635fed746ce26c04d776f67fb1067cfaaa36de083efd590546c1ab\"},{\"at\":1792734252,\"event_id\":\"e2a13d4c363f4e01b3e61a9a23a66a0c\",\"kind\":\"harbor_interactive\",\"payload\":{},\"previous_sha256\":\"967f4767f2635fed746ce26c04d776f67fb1067cfaaa36de083efd590546c1ab\",\"process_id\":\"ebb6c29d2264832763f4f94ff778f503\",\"seq\":4,\"session_id\":\"9ae1622c6c509b4808983487f03418fc\",\"sha256\":\"9fb214010fd372abdffd49bb3e7c37e9d3727d4d76ae390b6d0bb3c7df272a97\"}],\"registry\":{\"acquisition\":\"internal_test\",\"baseline\":{\"candidate_sha256\":\"3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59\",\"config\":\"synthetic_native_qualification\",\"content_sha256\":\"58c8cac53fa8679447d3f524bdc6979bf0c11127670840bf21c57cfffc2bbc72\",\"economy_sha256\":\"9e5b9bcfcfc7a68d4eaeebc97e8d40cd42d04532fa59f514c7483efee885d2b6\"},\"consent_version\":\"synthetic-1\",\"device_group\":\"phone_large\",\"eligibility_evidence_sha256\":\"4b2d811d6bcc015b71387a062d7b0519ef3e59f8258927992a2ab2f9cc03a313\",\"enrolled_at\":1792734184,\"first_launch\":1792734184,\"information_sha256\":\"2ae108ab58cfa871521c05a7147f64178ba800229c3e63f95a37681037031a84\",\"install_id\":\"1cc72a469069b5ec51ab5a78f0a1af7c\",\"platform\":\"android\",\"protocol_sha256\":\"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\",\"study_id\":\"synthetic-native-study\",\"synthetic\":true},\"schema_version\":2,\"status\":\"active\"}",
+      "stderr": "",
+      "observed_monotonic_ns": 57359257514875
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-L",
+        "/data/user/0/dev.tideglass.game/files"
+      ],
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57359330970041
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-e",
+        "/data/user/0/dev.tideglass.game/files"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57359404190541
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-d",
+        "/data/user/0/dev.tideglass.game/files"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57359471458208
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-r",
+        "/data/user/0/dev.tideglass.game/files"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57359538324125
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-x",
+        "/data/user/0/dev.tideglass.game/files"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57359603164291
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-L",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification"
+      ],
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57359684098250
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-e",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57359758770375
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-d",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57359827001875
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-r",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57359876796333
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-x",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57359932861000
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-L",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification/android-v3b00-android-probe-fixed-enroll"
+      ],
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57359984849791
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-e",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification/android-v3b00-android-probe-fixed-enroll"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57360040473666
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-d",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification/android-v3b00-android-probe-fixed-enroll"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57360090424750
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-r",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification/android-v3b00-android-probe-fixed-enroll"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57360134665416
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-x",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification/android-v3b00-android-probe-fixed-enroll"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57360182580083
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-L",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification/android-v3b00-android-probe-fixed-enroll/study"
+      ],
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57360232442250
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-e",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification/android-v3b00-android-probe-fixed-enroll/study"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57360284809250
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-d",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification/android-v3b00-android-probe-fixed-enroll/study"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57360336722291
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-r",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification/android-v3b00-android-probe-fixed-enroll/study"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57360382210291
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-x",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification/android-v3b00-android-probe-fixed-enroll/study"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57360429892875
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-L",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification/android-v3b00-android-probe-fixed-enroll/study/support"
+      ],
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57360489761958
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-e",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification/android-v3b00-android-probe-fixed-enroll/study/support"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57360537687041
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-d",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification/android-v3b00-android-probe-fixed-enroll/study/support"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57360591077958
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-r",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification/android-v3b00-android-probe-fixed-enroll/study/support"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57360641354458
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-x",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification/android-v3b00-android-probe-fixed-enroll/study/support"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57360695018166
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-L",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification/android-v3b00-android-probe-fixed-enroll/study/support/tideglass-study-eligibility.json"
+      ],
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57360740431041
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-e",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification/android-v3b00-android-probe-fixed-enroll/study/support/tideglass-study-eligibility.json"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57360785012916
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-f",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification/android-v3b00-android-probe-fixed-enroll/study/support/tideglass-study-eligibility.json"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57360828550166
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-r",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification/android-v3b00-android-probe-fixed-enroll/study/support/tideglass-study-eligibility.json"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57360880050000
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "exec-out",
+        "run-as",
+        "dev.tideglass.game",
+        "head",
+        "-c",
+        "4097",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification/android-v3b00-android-probe-fixed-enroll/study/support/tideglass-study-eligibility.json"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"candidate_sha256\":\"3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59\",\"check\":\"no_prior_game_directory_entries\",\"checked_at\":\"2026-10-23T05:43:04.696683Z\",\"schema_version\":1,\"study_id\":\"synthetic-native-study\"}",
+      "stderr": "",
+      "observed_monotonic_ns": 57360935702500
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-L",
+        "/data/user/0/dev.tideglass.game/files"
+      ],
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57360984544000
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-e",
+        "/data/user/0/dev.tideglass.game/files"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57361032708458
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-d",
+        "/data/user/0/dev.tideglass.game/files"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57361085600333
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-r",
+        "/data/user/0/dev.tideglass.game/files"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57361135076333
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-x",
+        "/data/user/0/dev.tideglass.game/files"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57361196811208
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-L",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification"
+      ],
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57361268157625
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-e",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57361323445458
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-d",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57361389188541
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-r",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57361457240708
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-x",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57361513728500
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-L",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification/android-v3b00-android-probe-fixed-enroll"
+      ],
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57361573042541
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-e",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification/android-v3b00-android-probe-fixed-enroll"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57361654993250
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-d",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification/android-v3b00-android-probe-fixed-enroll"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57361726646791
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-r",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification/android-v3b00-android-probe-fixed-enroll"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57361787642541
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-x",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification/android-v3b00-android-probe-fixed-enroll"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57361837301125
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-L",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification/android-v3b00-android-probe-fixed-enroll/study"
+      ],
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57361891968375
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-e",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification/android-v3b00-android-probe-fixed-enroll/study"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57361945585416
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-d",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification/android-v3b00-android-probe-fixed-enroll/study"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57362006616416
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-r",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification/android-v3b00-android-probe-fixed-enroll/study"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57362059062500
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-x",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification/android-v3b00-android-probe-fixed-enroll/study"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57362112775708
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-L",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification/android-v3b00-android-probe-fixed-enroll/study/support"
+      ],
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57362166925166
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-e",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification/android-v3b00-android-probe-fixed-enroll/study/support"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57362221457166
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-d",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification/android-v3b00-android-probe-fixed-enroll/study/support"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57362280111166
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-r",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification/android-v3b00-android-probe-fixed-enroll/study/support"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57362336625250
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-x",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification/android-v3b00-android-probe-fixed-enroll/study/support"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57362393560250
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-L",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification/android-v3b00-android-probe-fixed-enroll/study/support/tideglass-study.json.withdrawn"
+      ],
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57362450886000
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "test",
+        "-e",
+        "/data/user/0/dev.tideglass.game/files/native-current-verification/android-v3b00-android-probe-fixed-enroll/study/support/tideglass-study.json.withdrawn"
+      ],
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 57362497410750
+    }
+  ],
+  "production_input_differences_after_run": [],
+  "source_snapshot_unchanged": true,
+  "source_pins": {
+    "runner.py": "d1ea6d05085f05a0a3bb6c768531ef7659272e41993858c0551618f74ce5c847",
+    "harness.dart": "102be09eb8043ce9bb496156d9f37b1834c3084ddf58fef073e7c25cdc3c55d5",
+    "driver.dart": "911183b5d9ee8ec80769836f477a293dadb66e20cc0c5d5e44314415889749a8",
+    "build_native.py": "59ee4e7b94a1445e2c8effadfe4c0510c9c189df0278c7ede6e87f1807bf38ee",
+    "verify_native.py": "68297f66fc4e32a173b17da2594872334d59ba2b88b7d5878b5ee8905f9b89e5",
+    "study_adjudicate.py": "ccf31107cced115bb7a417407a2b7cfa1498845ce10899b14a1f3ca533a406e6",
+    "study_report.py": "7109d2e53a8c07b8f00299b749a4c758530e51f38a2d444f4600ae6ef94e7462",
+    "study_native_diagnostics.py": "325afe73985b414a23ab3858ad4abc656351258bb3c19e49bd6c665761031430"
+  },
+  "source_changes_during_run": [],
+  "evidence_sha256": {
+    "runner.py": "d1ea6d05085f05a0a3bb6c768531ef7659272e41993858c0551618f74ce5c847",
+    "checkpoint.json": "98bff9252c2afa379e0ad66f4a9b9f4794ffd3c0c36c6960792e4d79234f6d81",
+    "result.json": "6ceeea0525a8a68b5a6c6901255d1d840ced21f8568672396f72188564297eb3",
+    "run.log": "05b448ee7b21bde569117e153e6ade7f90c704ef58168ba5adfa18d92bf8d526",
+    "driver.dart": "911183b5d9ee8ec80769836f477a293dadb66e20cc0c5d5e44314415889749a8",
+    "study-eligibility.json": "4b2d811d6bcc015b71387a062d7b0519ef3e59f8258927992a2ab2f9cc03a313",
+    "verify_native.py": "68297f66fc4e32a173b17da2594872334d59ba2b88b7d5878b5ee8905f9b89e5",
+    "study_adjudicate.py": "ccf31107cced115bb7a417407a2b7cfa1498845ce10899b14a1f3ca533a406e6",
+    "study_native_diagnostics.py": "325afe73985b414a23ab3858ad4abc656351258bb3c19e49bd6c665761031430",
+    "harness.dart": "102be09eb8043ce9bb496156d9f37b1834c3084ddf58fef073e7c25cdc3c55d5",
+    "study-raw.json": "64a1e7569fb0409be73d12711cd29adac5c1c52b4efa448aceda103eae02c4b1",
+    "study_report.py": "7109d2e53a8c07b8f00299b749a4c758530e51f38a2d444f4600ae6ef94e7462",
+    "build_native.py": "59ee4e7b94a1445e2c8effadfe4c0510c9c189df0278c7ede6e87f1807bf38ee"
+  }
+}

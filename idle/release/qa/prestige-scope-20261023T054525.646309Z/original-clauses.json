@@ -1,0 +1,369 @@
+{
+  "items": [
+    {
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+      "batch": "B03",
+      "evidence": [
+        "game/core/lib/src/fixed.dart",
+        "docs/decisions/numbers-and-event-order.md",
+        "release/qa/integration-current-scope-20261021T114227186831Z/CURRENT_SCOPE_CHECKPOINT.md",
+        "release/qa/integration-current-scope-20261021T114227186831Z/NUMERIC_EVIDENCE_BRIDGE.json",
+        "release/qa/lead-bounded-acceptance-20261021T1148Z/DECISIONS.md",
+        "release/qa/integration-numeric-20261019T135534237861Z/NUMERIC_REVIEW.md",
+        "release/qa/integration-crossengine-20261019T143516578781Z/CROSS_ENGINE_REVIEW.md",
+        "release/qa/integration-final-20261016T105843545492Z/INTEGRATION_REVIEW.md",
+        "release/qa/integration-transition-repaired-20261021T121351672733Z/TRANSITION_REVIEW.md",
+        "release/qa/integration-transition-repaired-20261021T121351672733Z/NUMERIC_EVIDENCE_BRIDGE.json",
+        "release/native-proof/root-transition-20261021T121321.388435Z/verification.json",
+        "release/qa/lead-transition-acceptance-20261021T1221Z/DECISIONS.md"
+      ],
+      "evidence_note": "Director accepts the exact original criterion after independent QA cross-review and current-source evidence reconciliation. See release/qa/lead-bounded-acceptance-20261021T1148Z/DECISIONS.md. Original dependencies and nominal reviewer preserved. Other linked scope clauses, complete asset qualification, final native candidate and release gates are not accepted by this decision.",
+      "id": "M1-01",
+      "owner": "gameplay",
+      "reviewer": "platform",
+      "scope_ids": [
+        "S03",
+        "S05",
+        "S14",
+        "S29"
+      ],
+      "source": "v1_backlog.json",
+      "source_acceptance": "Define precision, comparison and rounding rules; pass bulk-buy and prestige-boundary fixtures including extreme values.",
+      "source_acceptance_dependencies": [
+        "M0-02"
+      ],
+      "status": "accepted",
+      "title": "Implement production number handling"
+    },
+    {
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+      "batch": "B03",
+      "evidence": [
+        "game/core/lib/src/engine.dart",
+        "release/qa/integration-current-scope-20261021T114227186831Z/CURRENT_SCOPE_CHECKPOINT.md",
+        "release/qa/integration-current-scope-20261021T114227186831Z/NUMERIC_EVIDENCE_BRIDGE.json",
+        "release/qa/lead-bounded-acceptance-20261021T1148Z/DECISIONS.md",
+        "release/qa/integration-numeric-20261019T135534237861Z/NUMERIC_REVIEW.md",
+        "release/qa/integration-crossengine-20261019T143516578781Z/CROSS_ENGINE_REVIEW.md",
+        "release/qa/integration-final-20261016T105843545492Z/INTEGRATION_REVIEW.md",
+        "release/qa/integration-transition-repaired-20261021T121351672733Z/TRANSITION_REVIEW.md",
+        "release/qa/integration-transition-repaired-20261021T121351672733Z/NUMERIC_EVIDENCE_BRIDGE.json",
+        "release/native-proof/root-transition-20261021T121321.388435Z/verification.json",
+        "release/qa/lead-transition-acceptance-20261021T1221Z/DECISIONS.md"
+      ],
+      "evidence_note": "Director accepts the exact original criterion after independent QA cross-review and current-source evidence reconciliation. See release/qa/lead-bounded-acceptance-20261021T1148Z/DECISIONS.md. Original dependencies and nominal reviewer preserved. Other linked scope clauses, complete asset qualification, final native candidate and release gates are not accepted by this decision.",
+      "id": "M1-02",
+      "owner": "gameplay",
+      "reviewer": "platform",
+      "scope_ids": [
+        "S03",
+        "S04",
+        "S05"
+      ],
+      "source": "v1_backlog.json",
+      "source_acceptance": "Five producers, unlocks, milestones, lifetime ledger and Rechart run without rendering; explicit event ordering is tested.",
+      "source_acceptance_dependencies": [
+        "M1-01"
+      ],
+      "status": "accepted",
+      "title": "Implement the economy state machine"
+    },
+    {
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+      "batch": "B06",
+      "evidence": [
+        "game/mobile/lib/app.dart",
+        "game/mobile/lib/help_content.dart",
+        "game/mobile/lib/help_screen.dart",
+        "release/qa/onboarding-clause-20261023T040451.613635Z/M2_02_RECOMMENDATION.md",
+        "release/qa/onboarding-clause-20261023T040451.613635Z/verification.json",
+        "release/qa/lead-onboarding-acceptance-20261023T041409.400628Z/DECISIONS.md"
+      ],
+      "evidence_note": "Accepted at unchanged original skippable guidance criterion after assigned independent QA source/evidence review of costs, production, retained progress, automation and explicit monetization entry. Original M1-05/M2-01 prerequisites accepted. Named executed onboarding/guest cases, current independent shell/reset interactions and12-condition full Help matrix explicitly bridged. No new runtime execution or human comprehension/provider/native release claim; S05 and M2-06/S32 remain separate.",
+      "id": "M2-02",
+      "owner": "client",
+      "reviewer": "qa_release",
+      "scope_ids": [
+        "S05"
+      ],
+      "source": "v1_backlog.json",
+      "source_acceptance": "Teach costs, production, retained progress and automation with skippable guidance; no monetization prompt interrupts onboarding.",
+      "source_acceptance_dependencies": [
+        "M1-05",
+        "M2-01"
+      ],
+      "status": "accepted",
+      "title": "Build onboarding and Rechart communication"
+    },
+    {
+      "adaptation": "Explicit delivery work; does not expand the product scope.",
+      "batch": "B00",
+      "evidence": [
+        "implementation/fixtures/economy_reference.json",
+        "implementation/reports/bootstrap_validation.json",
+        "implementation/reports/art_gameplay_review.md"
+      ],
+      "id": "BOOT-CORE",
+      "owner": "gameplay",
+      "reviewer": "art_content",
+      "scope_ids": [
+        "S03",
+        "S05"
+      ],
+      "source": "Implementation enablement for mapped v1 requirements",
+      "source_acceptance": "Repeatable export and documented scope; not a production numeric implementation.",
+      "source_acceptance_dependencies": [],
+      "status": "accepted",
+      "title": "Export bounded economy reference fixtures"
+    },
+    {
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+      "batch": "B01",
+      "evidence": [
+        "docs/release-contract.md",
+        "release/qa/FOUNDATION_REVIEW.md",
+        "implementation/reports/director-foundation-review.md"
+      ],
+      "evidence_note": "Original foundation package accepted after non-author review on 2026-10-16; full product scope and external gates remain open.",
+      "id": "M0-01",
+      "owner": "director",
+      "reviewer": "qa_release",
+      "scope_ids": [
+        "S01",
+        "S41"
+      ],
+      "source": "v1_backlog.json",
+      "source_acceptance": "Freeze audience, iOS/Android scope, English launch, six-chapter content budget, ethical constraints, device targets and decision owners.",
+      "source_acceptance_dependencies": [],
+      "status": "accepted",
+      "title": "Define the release contract"
+    },
+    {
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+      "batch": "B02",
+      "evidence": [
+        "docs/decisions/engine-and-number-selection.md",
+        "docs/decisions/numbers-and-event-order.md",
+        "release/number-approach-probe.json",
+        "release/native-proof/platform-handoff.md",
+        "release/qa/FOUNDATION_REVIEW.md",
+        "release/qa/integration-initial-20261016T104939468348Z/M0-02_REVIEW.md"
+      ],
+      "evidence_note": "Director accepts original narrow engine/number selection after assigning independent QA cross-review to /root/qa_integration; original nominal platform reviewer retained. Ten representation observations independently reproduced; identical native seeded purchase/reset case proven on both targets. This does not accept stale candidate host failure, current schema4 native build, services, physical qualification or release readiness.",
+      "id": "M0-02",
+      "owner": "gameplay",
+      "reviewer": "platform",
+      "scope_ids": [
+        "S01",
+        "S40"
+      ],
+      "source": "v1_backlog.json",
+      "source_acceptance": "Build the same deterministic purchase/reset case on both native targets; compare large-number candidates and record the engine decision.",
+      "source_acceptance_dependencies": [
+        "M0-01"
+      ],
+      "status": "accepted",
+      "title": "Qualify engine and numeric approach"
+    },
+    {
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+      "batch": "B02",
+      "evidence": [
+        "release/native-proof/qualification.json"
+      ],
+      "evidence_note": "Component implementation/authoring evidence only; complete source acceptance and upstream gates remain required.",
+      "id": "M0-03",
+      "owner": "platform",
+      "reviewer": "gameplay",
+      "scope_ids": [
+        "S36",
+        "S40"
+      ],
+      "source": "v1_backlog.json",
+      "source_acceptance": "Demonstrate sandbox purchase/restore, ad availability and cloud revision handling in a throwaway integration build; list SDK and account dependencies.",
+      "source_acceptance_dependencies": [
+        "M0-01"
+      ],
+      "status": "in_progress",
+      "title": "Prove native service integrations"
+    },
+    {
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+      "batch": "B01",
+      "evidence": [
+        "game/mobile/lib/app.dart",
+        "game/mobile/test/client_test.dart",
+        "game/mobile/test/bootstrap_test.dart",
+        "release/qa/FOUNDATION_REVIEW.md",
+        "implementation/reports/director-foundation-review.md"
+      ],
+      "evidence_note": "Original foundation package accepted after non-author review on 2026-10-16; full product scope and external gates remain open.",
+      "id": "M0-04",
+      "owner": "client",
+      "reviewer": "qa_release",
+      "scope_ids": [
+        "S41"
+      ],
+      "source": "v1_backlog.json",
+      "source_acceptance": "Clickable flows cover first purchase, Rechart preview, offline return and recovery; identify accessibility and small-screen constraints.",
+      "source_acceptance_dependencies": [
+        "M0-01"
+      ],
+      "status": "accepted",
+      "title": "Prototype the player journey"
+    },
+    {
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+      "batch": "B01",
+      "evidence": [
+        "docs/quality/V1_QUALITY_PROTOCOL.md",
+        "docs/quality/PLAYER_STUDY_PROTOCOL.md",
+        "release/device-matrix.json",
+        "release/qa/study-instrument.json",
+        "implementation/reports/director-foundation-review.md"
+      ],
+      "evidence_note": "Original foundation package accepted after non-author review on 2026-10-16; full product scope and external gates remain open.",
+      "id": "M0-06",
+      "owner": "qa_release",
+      "reviewer": "director",
+      "scope_ids": [
+        "S41"
+      ],
+      "source": "v1_backlog.json",
+      "source_acceptance": "Name reference devices, severities, reproducible save fixtures, test recruitment plan and the release evidence checklist.",
+      "source_acceptance_dependencies": [
+        "M0-01"
+      ],
+      "status": "accepted",
+      "title": "Create quality and device plan"
+    },
+    {
+      "adaptation": "Replace human staffing/calendar with AI delivery roles and measured execution cost; preserve product scope.",
+      "batch": "B01",
+      "evidence": [
+        "docs/decisions/execution-costs.md"
+      ],
+      "evidence_note": "Component implementation/authoring evidence only; complete source acceptance and upstream gates remain required.",
+      "id": "M0-07",
+      "owner": "director",
+      "reviewer": "qa_release",
+      "scope_ids": [
+        "S41"
+      ],
+      "source": "v1_backlog.json",
+      "source_acceptance": "Confirm six role assignments, contractors, distribution accounts, tester recruitment and service cost model; reforecast for holidays and absences.",
+      "source_acceptance_dependencies": [
+        "M0-01"
+      ],
+      "status": "in_progress",
+      "title": "Establish delivery and operating costs"
+    },
+    {
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+      "batch": "B02",
+      "evidence": [
+        "tool/build_native.py",
+        "release/native-proof/20261016T111720.826224Z/build-report.json",
+        "release/native-proof/20261019T135402.439115Z-d85-final-verification/final-verification.json",
+        "release/qa/lead-build-study-gate-20261021T114808187442Z/REVIEW.md",
+        "release/qa/integration-package-clauses-20261021T122151762065Z/PACKAGE_RECOMMENDATIONS.md",
+        "release/qa/integration-package-clauses-20261021T122151762065Z/verification.json",
+        "release/qa/lead-package-acceptance-20261021T1226Z/DECISIONS.md"
+      ],
+      "evidence_note": "Director accepts the unchanged original package criterion and its original accepted prerequisite following independent clause-by-clause review. See release/qa/lead-package-acceptance-20261021T1226Z/DECISIONS.md. Broader linked scope, changed-runtime native qualification and release approval remain separate.",
+      "id": "M0-08",
+      "owner": "gameplay",
+      "reviewer": "platform",
+      "scope_ids": [
+        "S40"
+      ],
+      "source": "v1_backlog.json",
+      "source_acceptance": "Automated builds run on both targets, version configurations and preserve build artifacts; no production secrets enter the client.",
+      "source_acceptance_dependencies": [
+        "M0-02"
+      ],
+      "status": "accepted",
+      "title": "Create reproducible builds"
+    },
+    {
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+      "batch": "B03",
+      "evidence": [
+        "game/core/lib/src/state.dart",
+        "game/mobile/lib/bootstrap.dart",
+        "game/mobile/lib/bundled_content.dart",
+        "game/mobile/lib/bundled_hashes.g.dart",
+        "tool/package_content.py",
+        "game/mobile/test/bundled_content_test.dart",
+        "game/mobile/lib/content_compatibility.dart",
+        "release/qa/integration-optional-calibration-20261021T110210355242Z/OPTIONAL_CALIBRATION_REVIEW.md",
+        "release/qa/integration-transition-repaired-20261021T121351672733Z/TRANSITION_REVIEW.md",
+        "release/qa/integration-transition-repaired-20261021T121351672733Z/NUMERIC_EVIDENCE_BRIDGE.json",
+        "release/native-proof/root-transition-20261021T121321.388435Z/verification.json",
+        "release/qa/lead-transition-acceptance-20261021T1221Z/DECISIONS.md",
+        "release/qa/gameplay-config-clause-20261021T141342461007Z/M1-04_RECOMMENDATION.md",
+        "release/qa/gameplay-config-clause-20261021T141342461007Z/verification.json",
+        "release/qa/lead-config-acceptance-20261021T141750.104883Z/DECISIONS.md"
+      ],
+      "evidence_note": "Accepted at the unchanged configuration-validation, economic-save pin, safe-default and incompatible-update rejection criterion. Original M0-08 prerequisite accepted. Named gameplay review independently audits packaging and content compatibility; gameplay-authored transitions rely on separate QA evidence with36 matching core/persistence and7 client input hashes. Full S40, current native qualification and release approval remain separate.",
+      "id": "M1-04",
+      "owner": "platform",
+      "reviewer": "gameplay",
+      "scope_ids": [
+        "S14",
+        "S40"
+      ],
+      "source": "v1_backlog.json",
+      "source_acceptance": "Validate configs, pin economic versions to saves and provide safe defaults; reject incompatible updates before application.",
+      "source_acceptance_dependencies": [
+        "M0-08"
+      ],
+      "status": "accepted",
+      "title": "Version configuration and content schemas"
+    }
+  ],
+  "requirements": [
+    {
+      "delivery_status": "not_verified",
+      "evidence": [],
+      "id": "S05",
+      "requirement": "Lifetime-based 0.65-exponent Rechart, entitlement subtraction, retained-state preview and permanent power",
+      "source": "TIDEGLASS_DESIGN.md Phase 2; V1_ROADMAP.md \u00a73",
+      "verification": "Exact award boundary and repeated-reset tests; preview matches retained/reset state.",
+      "work_items": [
+        "M1-01",
+        "M1-02",
+        "M2-02",
+        "BOOT-CORE"
+      ]
+    },
+    {
+      "delivery_status": "not_verified",
+      "evidence": [],
+      "id": "S40",
+      "requirement": "Reproducible native builds, explicit stack/toolchain feasibility and configuration compatibility",
+      "source": "V1_ROADMAP.md \u00a7\u00a75,6",
+      "verification": "Actual build/probe logs, pinned versions, safe defaults and rejection of incompatible updates.",
+      "work_items": [
+        "M0-02",
+        "M0-03",
+        "M0-08",
+        "M1-04"
+      ]
+    },
+    {
+      "delivery_status": "not_verified",
+      "evidence": [],
+      "id": "S41",
+      "requirement": "Budget and device/test plan adapted to AI delivery; protect scope and independent review",
+      "source": "V1_ROADMAP.md \u00a7\u00a71,4,11; user AI replacement instruction",
+      "verification": "Execution costs and access needs named; no inherited human-week promise or unsupported tool capability claim.",
+      "work_items": [
+        "M0-01",
+        "M0-04",
+        "M0-06",
+        "M0-07"
+      ]
+    }
+  ]
+}

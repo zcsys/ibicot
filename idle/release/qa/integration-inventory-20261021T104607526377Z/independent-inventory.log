@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/Users/csys/Desktop/ibicot/idle/game/qa/integration_inventory_audit.py", line 39, in <module>
+    check(changes==sorted((x['path'] for x in read('release/content-evidence/inventory-manifest-diff.json'))),'reported manifest diff exact')
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/csys/Desktop/ibicot/idle/game/qa/integration_inventory_audit.py", line 13, in check
+    if not ok:raise AssertionError(label)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: reported manifest diff exact

@@ -5,7 +5,11 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
+import 'src/posix_writer_lock.dart';
+
 import 'package:crypto/crypto.dart';
+
+part 'src/economic_transition.dart';
 
 typedef PayloadValidator = void Function(Map<String, dynamic> payload);
 typedef SnapshotValidator =
@@ -43,6 +47,10 @@ class SaveSnapshot {
   int get revision => _envelope['revision'] as int;
   String get saveId => _envelope['save_id'] as String;
   String get branchId => _envelope['branch_id'] as String;
+  String get economicVersion =>
+      (_envelope['economic_config'] as Map)['version'] as String;
+  String get economicDigest =>
+      (_envelope['economic_config'] as Map)['sha256'] as String;
   DateTime get settledThrough =>
       DateTime.parse(_envelope['settled_through_utc'] as String);
 }
@@ -70,7 +78,9 @@ class SaveRepository {
     this.validateSnapshot,
     DateTime Function()? now,
     this.commitProbe,
-  }) : _now = now ?? DateTime.now {
+    List<CompatibleEconomicPredecessor> compatiblePredecessors = const [],
+  }) : _now = now ?? DateTime.now,
+       _compatiblePredecessors = List.unmodifiable(compatiblePredecessors) {
     if (!RegExp(
           r'^tideglass-economy-\d+\.\d+\.\d+$',
         ).hasMatch(economicVersion) ||
@@ -78,6 +88,24 @@ class SaveRepository {
       throw ArgumentError(
         'A version and SHA-256 economic configuration are required.',
       );
+    }
+    final versions = {economicVersion};
+    if (_compatiblePredecessors.isNotEmpty && validateSnapshot == null) {
+      throw ArgumentError(
+        'Economic transitions require a destination cursor validator.',
+      );
+    }
+    for (final predecessor in _compatiblePredecessors) {
+      if (predecessor.configuration.validateSnapshot == null) {
+        throw ArgumentError(
+          'Economic transitions require a predecessor cursor validator.',
+        );
+      }
+      if (!versions.add(predecessor.configuration.version)) {
+        throw ArgumentError(
+          'Economic versions must identify unique compiled rules.',
+        );
+      }
     }
   }
 
@@ -91,8 +119,10 @@ class SaveRepository {
   final SnapshotValidator? validateSnapshot;
   final DateTime Function() _now;
   final CommitProbe? commitProbe;
+  final List<CompatibleEconomicPredecessor> _compatiblePredecessors;
   static const maxImportBytes = 2 * 1024 * 1024;
   static final Map<String, Future<void>> _locks = {};
+  static final Object _transitionZoneKey = Object();
   bool _loaded = false;
   int? _knownRevision;
   String? _knownSaveId;
@@ -101,28 +131,26 @@ class SaveRepository {
   File _slot(int index) => File('${directory.path}/progress.$index.json');
 
   Future<T> _exclusive<T>(Future<T> Function() operation) async {
-    final key = directory.absolute.path;
+    // Canonical aliases share the same queue and reentrancy guard.
+    directory.createSync(recursive: true);
+    final key = directory.resolveSymbolicLinksSync();
+    final ancestors = Zone.current[_transitionZoneKey] as Set<String>?;
+    if (ancestors?.contains(key) ?? false) {
+      throw StateError(
+        'Economic settlement callbacks cannot reenter their repository.',
+      );
+    }
     final previous = _locks[key] ?? Future<void>.value();
     final completed = Completer<void>();
     _locks[key] = completed.future;
     await previous;
-    RandomAccessFile? lock;
+    PosixWriterLock? lock;
     try {
-      await directory.create(recursive: true);
-      lock = await File(
-        '${directory.path}/writer.lock',
-      ).open(mode: FileMode.append);
-      await lock.lock(FileLock.exclusive);
+      lock = await PosixWriterLock.acquire('$key/writer.lock');
       return await operation();
     } finally {
       try {
-        if (lock != null) {
-          try {
-            await lock.unlock();
-          } finally {
-            await lock.close();
-          }
-        }
+        lock?.release();
       } finally {
         completed.complete();
         if (identical(_locks[key], completed.future)) _locks.remove(key);
@@ -203,6 +231,11 @@ class SaveRepository {
       validateSnapshot?.call(_copy(captured), settledThrough.toUtc());
       final previous = (await _read()).snapshot;
       _checkRevision(previous);
+      if (previous != null && needsEconomicTransition(previous)) {
+        throw const IncompatibleSaveException(
+          'Settle and commit the explicit economic transition before saving.',
+        );
+      }
       if (previous != null &&
           settledThrough.isBefore(previous.settledThrough)) {
         throw const SaveConflictException(
@@ -232,6 +265,7 @@ class SaveRepository {
     SaveSnapshot? previous, {
     String? branchId,
     List<Map<String, dynamic>>? preserved,
+    List<String>? appliedOperationIds,
   }) => {
     'format': 'tideglass-save-envelope',
     'schema_version': 1,
@@ -254,7 +288,10 @@ class SaveRepository {
       preserved ?? previous?.envelope['preserved_branches'] ?? [],
     ),
     'pending_operations': <Object>[],
-    'applied_operation_ids': <String>[],
+    'applied_operation_ids':
+        appliedOperationIds ??
+        previous?.envelope['applied_operation_ids'] ??
+        <String>[],
     'commerce_cache': {
       'trust': 'display_cache_only',
       'authority': 'independent_verifier_required',
@@ -289,6 +326,11 @@ class SaveRepository {
     bool recoverCorrupt = false,
   }) => _exclusive(() async {
     final imported = _decode(text);
+    if (needsEconomicTransition(imported)) {
+      throw const IncompatibleSaveException(
+        'Predecessor imports require their pinned runtime before explicit transition.',
+      );
+    }
     SaveSnapshot? current;
     var corrupted = false;
     try {
@@ -329,6 +371,7 @@ class SaveRepository {
       current,
       branchId: _uuid(),
       preserved: preserved,
+      appliedOperationIds: const [],
     );
     final saved = await _commit(envelope);
     if (corrupted && await _slot(1).exists()) {
@@ -364,13 +407,15 @@ class SaveRepository {
       );
     }
     final config = envelope['economic_config'];
-    if (config is! Map ||
-        config['version'] != economicVersion ||
-        config['sha256'] != economicDigest) {
+    if (config is! Map) {
       throw const IncompatibleSaveException(
         'Pinned economic configuration is unavailable; do not settle with different rules.',
       );
     }
+    final configuration = _configurationFor(
+      config['version'],
+      config['sha256'],
+    );
     final revision = envelope['revision'];
     final parent = envelope['parent'];
     if (revision is! int ||
@@ -410,8 +455,8 @@ class SaveRepository {
       throw const IncompatibleSaveException('Unsupported gameplay state.');
     }
     try {
-      validatePayload(_copy(game['payload'] as Map));
-      validateSnapshot?.call(
+      configuration.validatePayload(_copy(game['payload'] as Map));
+      configuration.validateSnapshot?.call(
         _copy(game['payload'] as Map),
         DateTime.parse(envelope['settled_through_utc'] as String),
       );

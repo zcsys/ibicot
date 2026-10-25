@@ -1,0 +1,221 @@
+{
+  "verification_id": "current-runtime-ios-phone-20261023T043612069360Z",
+  "candidate_fingerprint": "3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59",
+  "harness_sha256": "102be09eb8043ce9bb496156d9f37b1834c3084ddf58fef073e7c25cdc3c55d5",
+  "device": "F05BE4B0-52C1-4CA1-B721-BD64AE559E3F",
+  "label": "ios-phone",
+  "platform": "ios",
+  "scenario": "runtime-save-hold-afterRename",
+  "run_id": "v3b00-ios-phone-save-afterRename",
+  "privacy_observation_enabled": false,
+  "command": [
+    "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+    "drive",
+    "--driver=test_driver/current_evidence_911183b5d9ee.dart",
+    "--target=integration_test/current_evidence_102be09eb804_test.dart",
+    "-d",
+    "F05BE4B0-52C1-4CA1-B721-BD64AE559E3F",
+    "--dart-define=TIDEGLASS_DEVICE_LABEL=ios-phone",
+    "--dart-define=TIDEGLASS_SCENARIO=runtime-save-hold-afterRename",
+    "--dart-define=TIDEGLASS_RUN_ID=v3b00-ios-phone-save-afterRename",
+    "--dart-define=TIDEGLASS_VERIFICATION_ID=current-runtime-ios-phone-20261023T043612069360Z",
+    "--dart-define=TIDEGLASS_CANDIDATE_FINGERPRINT=3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59",
+    "--dart-define=TIDEGLASS_HARNESS_SHA256=102be09eb8043ce9bb496156d9f37b1834c3084ddf58fef073e7c25cdc3c55d5",
+    "--keep-app-running",
+    "--timeout=180",
+    "--no-pub"
+  ],
+  "candidate_path": "/Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261023T040445.261666Z-3b00cc8f7122",
+  "status": "expected-interrupted",
+  "passed": false,
+  "verification_errors": [],
+  "provenance": "INTERNAL SYNTHETIC QUALIFICATION ONLY; simulator native execution; no participant, crash-free metric, physical power-loss, store, or receiving-app claim",
+  "checkpoint_sha256": "21d33499be8e0c0db754c065886e658d57de6557211a495bd39a745f8a125c57",
+  "native_process_id": 71300,
+  "kill_marker": {
+    "verification_id": "current-runtime-ios-phone-20261023T043612069360Z",
+    "candidate_fingerprint": "3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59",
+    "harness_sha256": "102be09eb8043ce9bb496156d9f37b1834c3084ddf58fef073e7c25cdc3c55d5",
+    "scenario": "runtime-save-hold-afterRename",
+    "process_id": 71300,
+    "checkpoint": "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Data/Application/7FC9015B-A8F5-4AFB-8448-931043536FB5/Library/Application Support/native-current-verification/ios-phone-v3b00-ios-phone-save-afterRename/save-afterRename/checkpoint.json",
+    "checkpoint_sha256": "21d33499be8e0c0db754c065886e658d57de6557211a495bd39a745f8a125c57"
+  },
+  "fixture_directory": "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Data/Application/7FC9015B-A8F5-4AFB-8448-931043536FB5/Library/Application Support/native-current-verification/ios-phone-v3b00-ios-phone-save-afterRename/save-afterRename",
+  "native_kill": {
+    "device": "F05BE4B0-52C1-4CA1-B721-BD64AE559E3F",
+    "native_process_id": 71300,
+    "identity_validated": true,
+    "before_alive": true,
+    "action": "SIGKILL",
+    "signal_sent": true,
+    "pre_kill_log_bytes": 1344,
+    "pre_kill_log_sha256": "7cb79ca7851fada324a2ab709e95e82479e9f7e3e45a1807b2901cf03d020d70",
+    "pre_kill_observed_monotonic_ns": 53317779979333,
+    "after_alive": false,
+    "termination_observed": true,
+    "observations": [
+      {
+        "command": [
+          "xcrun",
+          "simctl",
+          "get_app_container",
+          "F05BE4B0-52C1-4CA1-B721-BD64AE559E3F",
+          "dev.tideglass.game",
+          "data"
+        ],
+        "exit_code": 0,
+        "stdout": "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Data/Application/7FC9015B-A8F5-4AFB-8448-931043536FB5\n",
+        "stderr": "",
+        "observed_monotonic_ns": 53317636778458
+      },
+      {
+        "command": [
+          "xcrun",
+          "simctl",
+          "get_app_container",
+          "F05BE4B0-52C1-4CA1-B721-BD64AE559E3F",
+          "dev.tideglass.game",
+          "app"
+        ],
+        "exit_code": 0,
+        "stdout": "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/BAD07687-AB49-4832-9B1F-E1C13D842353/Runner.app\n",
+        "stderr": "",
+        "observed_monotonic_ns": 53317772549166
+      },
+      {
+        "command": [
+          "ps",
+          "-p",
+          "71300",
+          "-o",
+          "comm="
+        ],
+        "exit_code": 0,
+        "stdout": "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/BAD07687-AB49-4832-9B1F-E1C13D842353/Runner.app/Runner\n",
+        "stderr": "",
+        "observed_monotonic_ns": 53317779518666
+      },
+      {
+        "action": "os.kill",
+        "pid": 71300,
+        "signal": "SIGKILL",
+        "observed_monotonic_ns": 53317780014041
+      },
+      {
+        "command": [
+          "ps",
+          "-p",
+          "71300",
+          "-o",
+          "comm="
+        ],
+        "exit_code": 0,
+        "stdout": "(Runner)\n",
+        "stderr": "",
+        "observed_monotonic_ns": 53317782456833
+      }
+    ]
+  },
+  "generations": {
+    "generation-0.json": {
+      "size": 853,
+      "sha256": "5422e3d8301cffa177f02f95ab1371e086248c6e576096d22716d8c6518c5a09"
+    },
+    "generation-1.json": {
+      "size": 963,
+      "sha256": "e25239a1ac7433334d9604382dda6e90da38564bc144a99f3d33dac657bba05b"
+    }
+  },
+  "exit_code": 1,
+  "host_observations": [
+    {
+      "command": [
+        "xcrun",
+        "simctl",
+        "get_app_container",
+        "F05BE4B0-52C1-4CA1-B721-BD64AE559E3F",
+        "dev.tideglass.game",
+        "data"
+      ],
+      "exit_code": 0,
+      "stdout": "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Data/Application/7FC9015B-A8F5-4AFB-8448-931043536FB5\n",
+      "stderr": "",
+      "observed_monotonic_ns": 53317636778458
+    },
+    {
+      "command": [
+        "xcrun",
+        "simctl",
+        "get_app_container",
+        "F05BE4B0-52C1-4CA1-B721-BD64AE559E3F",
+        "dev.tideglass.game",
+        "app"
+      ],
+      "exit_code": 0,
+      "stdout": "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/BAD07687-AB49-4832-9B1F-E1C13D842353/Runner.app\n",
+      "stderr": "",
+      "observed_monotonic_ns": 53317772549166
+    },
+    {
+      "command": [
+        "ps",
+        "-p",
+        "71300",
+        "-o",
+        "comm="
+      ],
+      "exit_code": 0,
+      "stdout": "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/BAD07687-AB49-4832-9B1F-E1C13D842353/Runner.app/Runner\n",
+      "stderr": "",
+      "observed_monotonic_ns": 53317779518666
+    },
+    {
+      "action": "os.kill",
+      "pid": 71300,
+      "signal": "SIGKILL",
+      "observed_monotonic_ns": 53317780014041
+    },
+    {
+      "command": [
+        "ps",
+        "-p",
+        "71300",
+        "-o",
+        "comm="
+      ],
+      "exit_code": 0,
+      "stdout": "(Runner)\n",
+      "stderr": "",
+      "observed_monotonic_ns": 53317782456833
+    }
+  ],
+  "production_input_differences_after_run": [],
+  "source_snapshot_unchanged": true,
+  "source_pins": {
+    "runner.py": "d849ab8feb642eb1b988f9a6d82558491b7ebef4c63768fb4fa132f49edf3804",
+    "harness.dart": "102be09eb8043ce9bb496156d9f37b1834c3084ddf58fef073e7c25cdc3c55d5",
+    "driver.dart": "911183b5d9ee8ec80769836f477a293dadb66e20cc0c5d5e44314415889749a8",
+    "build_native.py": "59ee4e7b94a1445e2c8effadfe4c0510c9c189df0278c7ede6e87f1807bf38ee",
+    "verify_native.py": "68297f66fc4e32a173b17da2594872334d59ba2b88b7d5878b5ee8905f9b89e5",
+    "study_adjudicate.py": "ccf31107cced115bb7a417407a2b7cfa1498845ce10899b14a1f3ca533a406e6",
+    "study_report.py": "7109d2e53a8c07b8f00299b749a4c758530e51f38a2d444f4600ae6ef94e7462",
+    "study_native_diagnostics.py": "325afe73985b414a23ab3858ad4abc656351258bb3c19e49bd6c665761031430"
+  },
+  "source_changes_during_run": [],
+  "evidence_sha256": {
+    "runner.py": "d849ab8feb642eb1b988f9a6d82558491b7ebef4c63768fb4fa132f49edf3804",
+    "checkpoint.json": "21d33499be8e0c0db754c065886e658d57de6557211a495bd39a745f8a125c57",
+    "run.log": "a0cad3b70becac1a672097d0b39137ac1957c124117a6a0d1efbf9b3554722d5",
+    "generation-0.json": "5422e3d8301cffa177f02f95ab1371e086248c6e576096d22716d8c6518c5a09",
+    "generation-1.json": "e25239a1ac7433334d9604382dda6e90da38564bc144a99f3d33dac657bba05b",
+    "driver.dart": "911183b5d9ee8ec80769836f477a293dadb66e20cc0c5d5e44314415889749a8",
+    "verify_native.py": "68297f66fc4e32a173b17da2594872334d59ba2b88b7d5878b5ee8905f9b89e5",
+    "study_adjudicate.py": "ccf31107cced115bb7a417407a2b7cfa1498845ce10899b14a1f3ca533a406e6",
+    "pre-kill.log": "7cb79ca7851fada324a2ab709e95e82479e9f7e3e45a1807b2901cf03d020d70",
+    "study_native_diagnostics.py": "325afe73985b414a23ab3858ad4abc656351258bb3c19e49bd6c665761031430",
+    "harness.dart": "102be09eb8043ce9bb496156d9f37b1834c3084ddf58fef073e7c25cdc3c55d5",
+    "study_report.py": "7109d2e53a8c07b8f00299b749a4c758530e51f38a2d444f4600ae6ef94e7462",
+    "build_native.py": "59ee4e7b94a1445e2c8effadfe4c0510c9c189df0278c7ede6e87f1807bf38ee"
+  }
+}

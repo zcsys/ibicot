@@ -1,0 +1,21 @@
+{
+  "status": "Python independently reviewed; integrated actual-process-context harness passes whole-mobile analyzer; native execution pending",
+  "supersedes": "Previous pre-context pins; all original reports and failures remain preserved",
+  "source_sha256": {
+    "tool/verify_current_runtime.py": "34239f373943381ecaaa07c071f7e8f3f518f08a32eb17f7f7f1a22ce90637fe",
+    "tool/test_current_runtime_verification.py": "fde639aaefdc017503a5b0042300d50b9bca6f75dafddb07abcbc7bd42fd9c6f",
+    "tool/build_native.py": "1fca5f766c6bd816f55fc0aefafe1e3dfb8e66b91e83e1dcb275d48f13cada1d",
+    "tool/test_native_candidates.py": "7a69e129772036ee087b8e05116bb25ddb198f0ac3b5dbaf9c6fc9132cd38e35",
+    "release/native-proof/current-runtime-preparation/staged/current_runtime_test.dart": "99d961e87b100ade13dc3ddda2be059a28b3e75fa979bc5b5a9ef0df598cd50f",
+    "game/mobile/integration_test/current_runtime_test.dart": "d34649a223a50f08b955691be036fc286131718ed9cb619444419f1b701bc155",
+    "tool/study_adjudicate.py": "ccf31107cced115bb7a417407a2b7cfa1498845ce10899b14a1f3ca533a406e6",
+    "tool/study_report.py": "7109d2e53a8c07b8f00299b749a4c758530e51f38a2d444f4600ae6ef94e7462",
+    "tool/study_native_diagnostics.py": "325afe73985b414a23ab3858ad4abc656351258bb3c19e49bd6c665761031430"
+  },
+  "independent_review": "release/qa/client-native-context-repaired-20261021T134216350272Z/REPAIRED_REVIEW.md",
+  "root_tests": "release/qa/lead-current-runtime-repair-20261021T125354.340960Z/verification.json",
+  "build_gate_independent_review": "release/qa/client-current-runtime-build-gate-20261021T125848670103Z/BUILD_GATE_REVIEW.md",
+  "installed_harness_analysis": "release/native-proof/root-current-runtime-analyze-20261021T134435.785528Z/verification.json",
+  "preserved_initial_harness_lints": "release/native-proof/root-current-runtime-analyze-20261021T134344.677366Z/verification.json",
+  "installed_harness_delta": "Different-agent review confirmed removal of one redundant context import only; live harness d34649a2. Source remains integration-only; no native execution claimed."
+}

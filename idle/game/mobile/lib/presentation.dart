@@ -8,7 +8,10 @@ abstract final class Presentation {
   static const _accented = 'ÁáÉéÍíÓóÚúÝý';
 
   static String text(String value, {bool pseudo = pseudoEnabled}) {
-    if (!pseudo || value.isEmpty || value.startsWith('⟦')) return value;
+    if (!pseudo || value.isEmpty || value.startsWith('[!')) return value;
+    if (RegExp(r'^[+\-−]?\d[\d.,eE+\-\sKMBT%/×]*$').hasMatch(value)) {
+      return value;
+    }
     if (!RegExp('[A-Za-z]').hasMatch(value)) return value;
     final output = StringBuffer();
     for (final rune in value.runes) {
@@ -19,7 +22,7 @@ abstract final class Presentation {
     // Separate words let expansion wrap naturally, instead of creating an
     // artificial unbreakable token that no real translation would require.
     final words = (value.length * .35 / 5).ceil().clamp(1, 100);
-    return '⟦$output ${List.filled(words, 'éxtra').join(' ')}⟧';
+    return '[!$output ${List.filled(words, 'éxtra').join(' ')}!]';
   }
 
   /// Expand the surrounding English template before inserting protected values
@@ -37,7 +40,7 @@ abstract final class Presentation {
       replacements[token] = '${entry.value}';
     }
     var result = text(protected, pseudo: pseudo);
-    if (pseudo && !result.startsWith('⟦')) result = '⟦$result⟧';
+    if (pseudo && !result.startsWith('[!')) result = '[!$result!]';
     for (final entry in replacements.entries) {
       result = result.replaceAll(entry.key, entry.value);
     }
@@ -103,5 +106,103 @@ class LocalizedText extends StatelessWidget {
     textWidthBasis: textWidthBasis,
     textHeightBehavior: textHeightBehavior,
     selectionColor: selectionColor,
+  );
+}
+
+/// Confirmation copy and actions share one scroll area at large text sizes.
+/// This avoids reserving an unbounded fixed title/actions region around a
+/// tiny scrolling body, while preserving the familiar compact dialog normally.
+class ReadingDialog extends StatelessWidget {
+  const ReadingDialog({
+    super.key,
+    this.title,
+    this.content,
+    this.actions = const [],
+  });
+  final Widget? title, content;
+  final List<Widget> actions;
+  @override
+  Widget build(BuildContext context) {
+    if (!Presentation.pseudoEnabled &&
+        MediaQuery.textScalerOf(context).scale(16) <= 22.4) {
+      return AlertDialog(title: title, content: content, actions: actions);
+    }
+    return Dialog.fullscreen(
+      child: SafeArea(
+        child: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 680),
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(24),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  if (title != null) ...[
+                    Semantics(
+                      header: true,
+                      child: DefaultTextStyle(
+                        style: Theme.of(context).textTheme.headlineSmall!,
+                        child: title!,
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+                  ],
+                  ?content,
+                  for (final action in actions) ...[
+                    const SizedBox(height: 16),
+                    action,
+                  ],
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Secondary-screen titles wrap at large text sizes and in pseudo builds.
+/// Measuring the same displayed string avoids clipping translated headings.
+AppBar readingAppBar(
+  BuildContext context, {
+  required String title,
+  Widget? leading,
+}) {
+  final display = Presentation.text(title);
+  final scale = MediaQuery.textScalerOf(context);
+  final baseStyle =
+      Theme.of(context).appBarTheme.titleTextStyle ??
+      Theme.of(context).textTheme.titleLarge!;
+  final style = baseStyle.copyWith(
+    fontFamily: baseStyle.fontFamily ?? 'Roboto',
+  );
+  final leadingWidth =
+      leading != null || (ModalRoute.of(context)?.canPop ?? false) ? 56 : 0;
+  var height = kToolbarHeight;
+  if (Presentation.pseudoEnabled || scale.scale(16) > 24) {
+    final painter =
+        TextPainter(
+          text: TextSpan(text: display, style: style),
+          textDirection: Directionality.of(context),
+          textScaler: scale,
+        )..layout(
+          maxWidth: (MediaQuery.sizeOf(context).width - 32 - leadingWidth)
+              .clamp(80, 10000)
+              .toDouble(),
+        );
+    height = (painter.height + 24).clamp(kToolbarHeight, double.infinity);
+    painter.dispose();
+  }
+  return AppBar(
+    toolbarHeight: height,
+    leading: leading,
+    title: Text(
+      display,
+      style: style,
+      softWrap: true,
+      overflow: TextOverflow.visible,
+    ),
   );
 }

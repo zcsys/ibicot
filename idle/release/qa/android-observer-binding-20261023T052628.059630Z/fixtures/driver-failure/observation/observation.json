@@ -1,0 +1,89 @@
+{
+  "status": "collected-pending-native-completion",
+  "errors": [],
+  "native_evidence": "/Users/csys/Desktop/ibicot/idle/release/qa/android-observer-binding-20261023T052628.059630Z/fixtures/driver-failure/synthetic-bridge-proof",
+  "candidate": "/Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261023T040445.261666Z-3b00cc8f7122",
+  "source_binding": {
+    "candidate_manifest_sha256": "b4322606cd0207425b801feacc0bf4084ac9c460b23a028576204b766eeaeada",
+    "candidate_fingerprint": "3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59",
+    "native_source_sha256": {
+      "verify_native.py": "68297f66fc4e32a173b17da2594872334d59ba2b88b7d5878b5ee8905f9b89e5",
+      "runner.py": "d1ea6d05085f05a0a3bb6c768531ef7659272e41993858c0551618f74ce5c847",
+      "harness.dart": "102be09eb8043ce9bb496156d9f37b1834c3084ddf58fef073e7c25cdc3c55d5"
+    },
+    "verification_tool_bridge": {
+      "candidate_fingerprint": "3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59",
+      "candidate_runner_sha256": "d849ab8feb642eb1b988f9a6d82558491b7ebef4c63768fb4fa132f49edf3804",
+      "executed_runner_sha256": "d1ea6d05085f05a0a3bb6c768531ef7659272e41993858c0551618f74ce5c847",
+      "scope": "Android test exit-status transport only; raw binary transfer unchanged"
+    },
+    "observation_source_sha256": {
+      "collector.py": "90485bd0ca097af8835d1f7cc280f7f2545085ea578d7a44cf10a6b93cf458cc",
+      "completion-verifier.py": "68297f66fc4e32a173b17da2594872334d59ba2b88b7d5878b5ee8905f9b89e5",
+      "native-runner.py": "d1ea6d05085f05a0a3bb6c768531ef7659272e41993858c0551618f74ce5c847",
+      "candidate-manifest.json": "b4322606cd0207425b801feacc0bf4084ac9c460b23a028576204b766eeaeada",
+      "candidate-native-runner.py": "d849ab8feb642eb1b988f9a6d82558491b7ebef4c63768fb4fa132f49edf3804"
+    }
+  },
+  "context": {
+    "verification_id": "synthetic-bridge-proof",
+    "candidate_fingerprint": "3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59",
+    "harness_sha256": "102be09eb8043ce9bb496156d9f37b1834c3084ddf58fef073e7c25cdc3c55d5",
+    "platform": "android",
+    "scenario": "runtime-study-default",
+    "run_id": "qa-bridge",
+    "device_label": "android"
+  },
+  "device": "emulator-5556",
+  "opened": {
+    "verification_id": "synthetic-bridge-proof",
+    "candidate_fingerprint": "3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59",
+    "harness_sha256": "102be09eb8043ce9bb496156d9f37b1834c3084ddf58fef073e7c25cdc3c55d5",
+    "platform": "android",
+    "scenario": "runtime-study-default",
+    "run_id": "qa-bridge",
+    "device_label": "android",
+    "process_id": 123,
+    "fixture_directory": "/data/user/0/dev.tideglass.game/files/native-current-verification/android-qa-bridge/study",
+    "mode": "default-unprovisioned",
+    "window_id": "synthetic-bridge-proof-privacy",
+    "maximum_ms": 20000,
+    "native_elapsed_us": 2,
+    "native_utc_ms": 100000
+  },
+  "open_prefix_sha256": "297bbc094cb2d0a72cc4da94f2f3ba83a3fda9aac2bd9827f9973603ab593006",
+  "process_identity": {
+    "pid": 123,
+    "uid": 10231,
+    "start_ticks": 99,
+    "boot_id": "12345678-1234-1234-1234-123456789abc",
+    "package": "dev.tideglass.game",
+    "uid_scope": "synthetic package UID plus exact PID"
+  },
+  "opened_observed_ns": 1,
+  "collector_sha256": "90485bd0ca097af8835d1f7cc280f7f2545085ea578d7a44cf10a6b93cf458cc",
+  "samples": [
+    {
+      "process_identity": {
+        "pid": 123,
+        "uid": 10231,
+        "start_ticks": 99,
+        "boot_id": "12345678-1234-1234-1234-123456789abc",
+        "package": "dev.tideglass.game",
+        "uid_scope": "synthetic package UID plus exact PID"
+      },
+      "started_ns": 2,
+      "finished_ns": 3,
+      "started_utc_ms": 100001,
+      "finished_utc_ms": 114999,
+      "sockets": {
+        "status": "observed",
+        "rows": []
+      },
+      "storage": {
+        "status": "unavailable",
+        "reason": "Synthetic fixture preserves actual Android storage limitation"
+      }
+    }
+  ]
+}

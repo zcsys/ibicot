@@ -1,0 +1,29 @@
+--- release/native-proof/current-runtime-preparation/staged/current_runtime_test.dart
++++ game/mobile/integration_test/current_runtime_test.dart
+@@ -230,6 +230,9 @@
+   report['expected_interruption'] = true;
+   // Host must save this marker, exact process identity and actual kill action.
+   // There is deliberately no successful framework/driver completion here.
++  // The host verifier requires one unwrapped native checkpoint line. This
++  // integration-only marker deliberately bypasses debugPrint throttling.
++  // ignore: avoid_print
+   print(
+     'TIDEGLASS_RUNTIME_KILL_READY ${jsonEncode({'verification_id': verification, 'candidate_fingerprint': candidate, 'harness_sha256': harness, 'scenario': scenario, 'process_id': pid, 'checkpoint': file.path, 'checkpoint_sha256': hashFile(file)})}',
+   );
+@@ -786,11 +789,14 @@
+   expect(fourthStarted, isFalse);
+   now = DateTime.now().toUtc().subtract(const Duration(days: 2));
+   await cache.cleanExpired();
+-  for (final file in retained) expect(await file.exists(), isTrue);
++  for (final file in retained) {
++    expect(await file.exists(), isTrue);
++  }
+   now = DateTime.now().toUtc().add(const Duration(hours: 23));
+   await cache.cleanExpired();
+-  for (final file in retained)
++  for (final file in retained) {
+     expect(await file.readAsString(), 'SYNTHETIC CACHE RETENTION FIXTURE');
++  }
+   now = DateTime.now().toUtc().add(const Duration(hours: 25));
+   await cache.cleanExpired();
+   expect(await directory.list().length, 0);

@@ -1,0 +1,164 @@
+[
+  {
+    "scenario": "runtime-study-default",
+    "platform": "android",
+    "status": "passed",
+    "verification": "/Users/csys/Desktop/ibicot/idle/release/native-proof/current-runtime-android-20261023T054123378918Z/verification.json",
+    "pid": 7435,
+    "previous_pid": null,
+    "structure": {
+      "default_files_absent": true,
+      "scope": "Synthetic structural qualification only"
+    }
+  },
+  {
+    "scenario": "runtime-study-enroll",
+    "platform": "android",
+    "status": "passed",
+    "verification": "/Users/csys/Desktop/ibicot/idle/release/native-proof/current-runtime-android-20261023T054227408137Z/verification.json",
+    "pid": 7793,
+    "previous_pid": null,
+    "structure": {
+      "records": 3,
+      "logical_processes": 1,
+      "decoded_sessions": 1,
+      "gaps": 0,
+      "scope": "Synthetic structural qualification only; no native crash adjudication or cohort acceptance"
+    }
+  },
+  {
+    "scenario": "runtime-study-restart",
+    "platform": "android",
+    "status": "passed",
+    "verification": "/Users/csys/Desktop/ibicot/idle/release/native-proof/current-runtime-android-20261023T054333559290Z/verification.json",
+    "pid": 8256,
+    "previous_pid": 7793,
+    "structure": {
+      "records": 5,
+      "logical_processes": 2,
+      "decoded_sessions": 2,
+      "gaps": 0,
+      "scope": "Synthetic structural qualification only; no native crash adjudication or cohort acceptance"
+    }
+  },
+  {
+    "scenario": "runtime-study-crash-hold",
+    "platform": "android",
+    "status": "expected-interrupted",
+    "verification": "/Users/csys/Desktop/ibicot/idle/release/native-proof/current-runtime-android-20261023T054423462720Z/verification.json",
+    "pid": 8615,
+    "previous_pid": null,
+    "structure": {
+      "records": 3,
+      "logical_processes": 1,
+      "decoded_sessions": 1,
+      "gaps": 0,
+      "scope": "Synthetic structural qualification only; no native crash adjudication or cohort acceptance"
+    }
+  },
+  {
+    "scenario": "runtime-study-crash-reopen",
+    "platform": "android",
+    "status": "passed",
+    "verification": "/Users/csys/Desktop/ibicot/idle/release/native-proof/current-runtime-android-20261023T054518719005Z/verification.json",
+    "pid": 8968,
+    "previous_pid": 8615,
+    "structure": {
+      "records": 5,
+      "logical_processes": 2,
+      "decoded_sessions": 2,
+      "gaps": 0,
+      "scope": "Synthetic structural qualification only; no native crash adjudication or cohort acceptance"
+    }
+  },
+  {
+    "scenario": "runtime-study-capacity",
+    "platform": "android",
+    "status": "passed",
+    "verification": "/Users/csys/Desktop/ibicot/idle/release/native-proof/current-runtime-android-20261023T054610800409Z/verification.json",
+    "pid": 9347,
+    "previous_pid": null,
+    "structure": {
+      "records": 7,
+      "logical_processes": 1,
+      "decoded_sessions": 1,
+      "gaps": 1,
+      "scope": "Synthetic structural qualification only; no native crash adjudication or cohort acceptance"
+    }
+  },
+  {
+    "scenario": "runtime-study-default",
+    "platform": "android",
+    "status": "passed",
+    "verification": "/Users/csys/Desktop/ibicot/idle/release/native-proof/current-runtime-android-20261023T075514783904Z/verification.json",
+    "pid": 10501,
+    "previous_pid": null,
+    "structure": {
+      "default_files_absent": true,
+      "scope": "Synthetic structural qualification only"
+    }
+  },
+  {
+    "scenario": "runtime-study-enroll",
+    "platform": "android",
+    "status": "passed",
+    "verification": "/Users/csys/Desktop/ibicot/idle/release/native-proof/current-runtime-android-20261023T075629289001Z/verification.json",
+    "pid": 11343,
+    "previous_pid": null,
+    "structure": {
+      "records": 3,
+      "logical_processes": 1,
+      "decoded_sessions": 1,
+      "gaps": 0,
+      "scope": "Synthetic structural qualification only; no native crash adjudication or cohort acceptance"
+    }
+  },
+  {
+    "scenario": "runtime-study-storage-withdraw",
+    "platform": "ios",
+    "status": "passed",
+    "verification": "/Users/csys/Desktop/ibicot/idle/release/native-proof/current-runtime-ios-phone-20261023T075803847485Z/verification.json",
+    "pid": 12282,
+    "previous_pid": null,
+    "structure": {
+      "withdrawal_tombstone_verified": true,
+      "scope": "Synthetic structural qualification only"
+    }
+  },
+  {
+    "scenario": "runtime-study-withdraw-reopen",
+    "platform": "ios",
+    "status": "passed",
+    "verification": "/Users/csys/Desktop/ibicot/idle/release/native-proof/current-runtime-ios-phone-20261023T075900509750Z/verification.json",
+    "pid": 13081,
+    "previous_pid": 12282,
+    "structure": {
+      "withdrawal_tombstone_verified": true,
+      "scope": "Synthetic structural qualification only"
+    }
+  },
+  {
+    "scenario": "runtime-study-storage-withdraw",
+    "platform": "android",
+    "status": "passed",
+    "verification": "/Users/csys/Desktop/ibicot/idle/release/native-proof/current-runtime-android-20261023T075948335247Z/verification.json",
+    "pid": 12200,
+    "previous_pid": null,
+    "structure": {
+      "withdrawal_tombstone_verified": true,
+      "scope": "Synthetic structural qualification only"
+    }
+  },
+  {
+    "scenario": "runtime-study-withdraw-reopen",
+    "platform": "android",
+    "status": "passed",
+    "verification": "/Users/csys/Desktop/ibicot/idle/release/native-proof/current-runtime-android-20261023T080054109565Z/verification.json",
+    "pid": 12546,
+    "previous_pid": 12200,
+    "structure": {
+      "withdrawal_tombstone_verified": true,
+      "scope": "Synthetic structural qualification only"
+    }
+  }
+]

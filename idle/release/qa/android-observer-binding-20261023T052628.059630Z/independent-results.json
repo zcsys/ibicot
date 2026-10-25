@@ -1,0 +1,70 @@
+{
+  "checks": [
+    {
+      "check": "only source binding + its two call sites change",
+      "passed": true
+    },
+    {
+      "check": "full finalizer and every observation/parser/limit/host guard AST unchanged",
+      "passed": true
+    },
+    {
+      "check": "exact original and actual runner hashes",
+      "passed": true
+    },
+    {
+      "check": "exact one replacement reconstructs native author revision",
+      "passed": true
+    },
+    {
+      "check": "complete bridged finalizer admits only partial Android sample",
+      "passed": true
+    },
+    {
+      "check": "exact bridge retained with both runner archives",
+      "passed": true
+    },
+    {
+      "check": "completion verifier candidate-exact",
+      "passed": true
+    },
+    {
+      "check": "no traffic absence or release acceptance",
+      "passed": true
+    },
+    {
+      "check": "reject old-runner-pin",
+      "passed": true,
+      "reason": "Runner did not pin the exact reviewed native source: runner.py"
+    },
+    {
+      "check": "reject missing-bridge",
+      "passed": true,
+      "reason": "Collector/completion source binding changed"
+    },
+    {
+      "check": "reject original-archive-modified",
+      "passed": true,
+      "reason": "Preserved source archive changed: candidate-native-runner.py"
+    },
+    {
+      "check": "reject late-sample",
+      "passed": true,
+      "reason": "Sample UTC interval outside native window; clock alignment unqualified"
+    },
+    {
+      "check": "reject native-failure",
+      "passed": true,
+      "reason": "Native framework/driver completion failed"
+    },
+    {
+      "check": "reject driver-failure",
+      "passed": true,
+      "reason": "Native framework/driver completion failed"
+    }
+  ],
+  "all_passed": true,
+  "positive": "synthetic exact-3b00 Android bridge, partial storage limitation",
+  "negative_finalizers": 6,
+  "actual_native_or_device_calls": 0
+}

@@ -1,0 +1,43 @@
+{
+  "prepared_utc": "2026-10-21T12:45:01.568418+00:00",
+  "status": "prepared_not_native_qualified",
+  "owned_source_sha256": {
+    "tool/verify_current_runtime.py": "cf48f89f8c71242b078ba0abda9fe454c3a95a843688091f4ae01e819e934da4",
+    "tool/test_current_runtime_verification.py": "bd98aed5dabc8d4c900356efd2efc6756f6deda41aad270449730b64165a5b0a",
+    "release/native-proof/current-runtime-preparation/staged/current_runtime_test.dart": "99d961e87b100ade13dc3ddda2be059a28b3e75fa979bc5b5a9ef0df598cd50f",
+    "release/native-proof/current-runtime-preparation/PROTOCOL.md": "8c47b7164371e0da75314866a9fa329f46dc2b8f62d9935c23e0acfaed413c98",
+    "release/native-proof/current-runtime-preparation/report-data.schema.json": "43dd4538fa171843a14a8d1e986b019a2227b40d172d2af318469c8579ada97d"
+  },
+  "observed_reference_sha256": {
+    "tool/build_native.py": "9f2a54793304639bda691cd0dddb4f2318951d9078c30b20f48ecc7fb1c68563",
+    "tool/verify_native.py": "68297f66fc4e32a173b17da2594872334d59ba2b88b7d5878b5ee8905f9b89e5",
+    "tool/native_integration_driver.dart": "911183b5d9ee8ec80769836f477a293dadb66e20cc0c5d5e44314415889749a8",
+    "tool/study_adjudicate.py": "b158d082812603f6f02576ddc950b834c06254e718e3e0efadb4bb26679b87b6",
+    "tool/study_report.py": "7109d2e53a8c07b8f00299b749a4c758530e51f38a2d444f4600ae6ef94e7462",
+    "game/mobile/lib/bootstrap.dart": "0557d11d67c4be3be66de28c899da89b3c7a72cc45f434ae25ae348b0efbc150",
+    "game/mobile/lib/study_gate.dart": "bc019a763d72476ddd38594c96f90c081ffb9992b0e650aa1defd8a3514d923b",
+    "game/mobile/lib/app.dart": "c26efdd6b59c7a8ce4404c9c8dee538b40ee2b3809be9df76e3eae537b360c20",
+    "game/mobile/lib/client_economic_transition.dart": "dacd2a7d55bb861a62598f9b3c2219fe7ffed669d3500208da6ba4665a7ebc79",
+    "game/platform/lib/study_recorder.dart": "40be5e8ae640edfe67c6704074bbfb5a2f62fca2e8060b0d96cf50d22b72904f",
+    "game/platform/lib/soundtrack_cache.dart": "9ff5b55ef2c4f907c81e5577add12b016061bedc6f275effee98fe60149a55e6",
+    "game/persistence/lib/tideglass_persistence.dart": "ffaf6292b76a8c2fbb43669cc506b09ce58ace3653c990f3902a67a9c94f14dd",
+    "game/persistence/lib/src/posix_writer_lock.dart": "1124518d6431a9c2c0fd1b694f480696255ad0764bb52fe877e632cbcb178d4a"
+  },
+  "python_checks": {
+    "command": "python3 -m unittest discover -s tool -p test_current_runtime_verification.py -v",
+    "exit_code": 0,
+    "tests": 28,
+    "log": "python-author-final.log",
+    "log_sha256": "145040fe56a0c55e9af9c16128c3c6520c7737f337455b8af0f1418758fdbf9f"
+  },
+  "dart_check": "Direct pinned Dart formatter only; no analyzer/compile/Flutter run authorized in this lane.",
+  "native_execution": "Not run. No devices booted or operated.",
+  "preserved_failure": "python-author.log:20 passed,1 error from /var versus /private/var canonical path expectation; repaired with root-alias normalization while retaining subtree symlink rejection.",
+  "constraints": [
+    "Lead owns Flutter/build/device lane.",
+    "Harness stays staged outside game/mobile.",
+    "No production runtime or existing verifier edits.",
+    "No participant/crash-free/physical-device/store/receiving-app acceptance.",
+    "Production opt-in native crash linkage remains a local implementation gap."
+  ]
+}

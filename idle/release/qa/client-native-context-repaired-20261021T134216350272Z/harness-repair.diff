@@ -1,0 +1,42 @@
+--- /Users/csys/Desktop/ibicot/idle/release/qa/client-native-context-20261021T133429576369Z/source/release/native-proof/native-context-harness-staging/game/mobile/integration_test/current_runtime_test.dart	2026-10-21 16:28:22
++++ /Users/csys/Desktop/ibicot/idle/release/native-proof/native-context-harness-staging/game/mobile/integration_test/current_runtime_test.dart	2026-10-21 16:41:19
+@@ -556,18 +556,23 @@
+   Map<String, dynamic>? prior;
+   if (!fresh) prior = previousCheckpoint(directory);
+   final capacity = scenario == 'runtime-study-capacity';
++  var recorderReady = false;
+   await tester.pumpWidget(
+     StudyGate(
+       provision: syntheticProvision(),
+       supportDirectory: support,
+       sampleNativeContext: sampleNative,
+-      openRecorder: capacity
+-          ? (store) => StudyRecorder.open(
+-              store,
+-              maximumRecords: 8,
+-              maximumBytes: 32768,
+-            )
+-          : null,
++      openRecorder: (store) async {
++        final recorder = capacity
++            ? await StudyRecorder.open(
++                store,
++                maximumRecords: 8,
++                maximumBytes: 32768,
++              )
++            : await StudyRecorder.open(store);
++        recorderReady = true;
++        return recorder;
++      },
+       child: TideglassBootstrap(
+         directory: gameDirectory,
+         notifications: isolatedNotifications(gameDirectory),
+@@ -578,7 +583,7 @@
+   if (fresh) {
+     await until(
+       tester,
+-      () => find.byType(CheckboxListTile).evaluate().isNotEmpty,
++      () => recorderReady,
+       'Synthetic consent loads before native game bootstrap.',
+     );
+     expect(await gameDirectory.exists(), isFalse);

@@ -1,0 +1,63 @@
+test_actual_new_process_boundary_excludes_old_crash (__main__.Independent.test_actual_new_process_boundary_excludes_old_crash) ... ok
+test_boolean_provenance_version_rejected (__main__.Independent.test_boolean_provenance_version_rejected) ... FAIL
+test_context_milliseconds_and_missing_gap_reject (__main__.Independent.test_context_milliseconds_and_missing_gap_reject) ... ok
+test_duplicate_json_and_missing_native_identity_rejected (__main__.Independent.test_duplicate_json_and_missing_native_identity_rejected) ... ok
+test_duplicate_release_rows_fail_closed (__main__.Independent.test_duplicate_release_rows_fail_closed) ... /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/zipfile/__init__.py:1638: UserWarning: Duplicate name: 'Runner.app/Frameworks/App.framework/App'
+  return self._open_to_write(zinfo, force_zip64=force_zip64)
+ok
+test_erased_fractional_document_rejected_by_python (__main__.Independent.test_erased_fractional_document_rejected_by_python) ... ok
+test_fractional_provenance_version_rejected (__main__.Independent.test_fractional_provenance_version_rejected) ... FAIL
+test_manifest_boolean_and_wrong_role_rejected (__main__.Independent.test_manifest_boolean_and_wrong_role_rejected) ... ok
+test_positive_supported_synthetic_reference_and_unknown_signal (__main__.Independent.test_positive_supported_synthetic_reference_and_unknown_signal) ... ok
+test_post_crash_activity_excludes_claimed_session (__main__.Independent.test_post_crash_activity_excludes_claimed_session) ... ok
+test_actual_binary_parser_extracts_ids_from_bytes (test_study_native_diagnostics.NativeDiagnosticTests.test_actual_binary_parser_extracts_ids_from_bytes) ... ok
+test_actual_dart_migration_examples_preserve_prior_chain_and_erase_context (test_study_native_diagnostics.NativeDiagnosticTests.test_actual_dart_migration_examples_preserve_prior_chain_and_erase_context) ... ok
+test_actual_packaged_binary_and_build_provenance_are_bound (test_study_native_diagnostics.NativeDiagnosticTests.test_actual_packaged_binary_and_build_provenance_are_bound) ... ok
+test_android_tombstone_requires_uptime_and_real_elf_identity (test_study_native_diagnostics.NativeDiagnosticTests.test_android_tombstone_requires_uptime_and_real_elf_identity) ... ok
+test_apple_supported_fatal_links_exact_process_and_session (test_study_native_diagnostics.NativeDiagnosticTests.test_apple_supported_fatal_links_exact_process_and_session) ... ok
+test_available_and_unavailable_context_bounds (test_study_native_diagnostics.NativeDiagnosticTests.test_available_and_unavailable_context_bounds) ... ok
+test_boolean_review_cannot_replace_required_evidence (test_study_native_diagnostics.NativeDiagnosticTests.test_boolean_review_cannot_replace_required_evidence) ... ok
+test_capacity_gap_cannot_claim_a_unique_later_session (test_study_native_diagnostics.NativeDiagnosticTests.test_capacity_gap_cannot_claim_a_unique_later_session) ... ok
+test_clock_gap_rejects_otherwise_matching_native_report (test_study_native_diagnostics.NativeDiagnosticTests.test_clock_gap_rejects_otherwise_matching_native_report) ... ok
+test_debug_profile_or_missing_aot_provenance_never_links (test_study_native_diagnostics.NativeDiagnosticTests.test_debug_profile_or_missing_aot_provenance_never_links) ... ok
+test_direct_matcher_rejects_raw_chain_changes_and_legacy_without_context (test_study_native_diagnostics.NativeDiagnosticTests.test_direct_matcher_rejects_raw_chain_changes_and_legacy_without_context) ... ok
+test_duplicate_json_keys_and_oversize_are_rejected (test_study_native_diagnostics.NativeDiagnosticTests.test_duplicate_json_keys_and_oversize_are_rejected) ... ok
+test_full_schema2_adjudication_links_once_and_rejects_duplicate_reports (test_study_native_diagnostics.NativeDiagnosticTests.test_full_schema2_adjudication_links_once_and_rejects_duplicate_reports) ... ok
+test_inactivity_session_shares_native_process_and_resolves_exact_interval (test_study_native_diagnostics.NativeDiagnosticTests.test_inactivity_session_shares_native_process_and_resolves_exact_interval) ... ok
+test_independent_provenance_and_exact_raw_hash_are_required (test_study_native_diagnostics.NativeDiagnosticTests.test_independent_provenance_and_exact_raw_hash_are_required) ... ok
+test_missing_launch_time_build_or_diagnostic_remains_unknown (test_study_native_diagnostics.NativeDiagnosticTests.test_missing_launch_time_build_or_diagnostic_remains_unknown) ... ok
+test_native_schema_migration_preserves_legacy_event_and_cannot_downgrade (test_study_native_diagnostics.NativeDiagnosticTests.test_native_schema_migration_preserves_legacy_event_and_cannot_downgrade) ... ok
+test_pid_reuse_and_multiple_process_observations_rejected (test_study_native_diagnostics.NativeDiagnosticTests.test_pid_reuse_and_multiple_process_observations_rejected) ... ok
+test_shared_launcher_identity_across_candidates_never_links (test_study_native_diagnostics.NativeDiagnosticTests.test_shared_launcher_identity_across_candidates_never_links) ... ok
+test_simulated_kill_lifecycle_and_flutter_error_never_become_native_crash (test_study_native_diagnostics.NativeDiagnosticTests.test_simulated_kill_lifecycle_and_flutter_error_never_become_native_crash) ... ok
+test_unavailable_context_requires_atomic_gap_and_remains_unknown (test_study_native_diagnostics.NativeDiagnosticTests.test_unavailable_context_requires_atomic_gap_and_remains_unknown) ... ok
+test_wrong_candidate_app_build_or_binary_bytes_cannot_link (test_study_native_diagnostics.NativeDiagnosticTests.test_wrong_candidate_app_build_or_binary_bytes_cannot_link) ... ok
+
+======================================================================
+FAIL: test_boolean_provenance_version_rejected (__main__.Independent.test_boolean_provenance_version_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/csys/Desktop/ibicot/idle/release/qa/integration-native-linkage-20261021T132142402938Z/independent_linkage_test.py", line 15, in test_boolean_provenance_version_rejected
+    self.assertEqual(self.f.run_match(proof_change={'schema_version':True})['status'],'unknown')
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'linked' != 'unknown'
+- linked
++ unknown
+
+
+======================================================================
+FAIL: test_fractional_provenance_version_rejected (__main__.Independent.test_fractional_provenance_version_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/csys/Desktop/ibicot/idle/release/qa/integration-native-linkage-20261021T132142402938Z/independent_linkage_test.py", line 13, in test_fractional_provenance_version_rejected
+    self.assertEqual(self.f.run_match(proof_change={'schema_version':1.0})['status'],'unknown')
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'linked' != 'unknown'
+- linked
++ unknown
+
+
+----------------------------------------------------------------------
+Ran 32 tests in 0.104s
+
+FAILED (failures=2)

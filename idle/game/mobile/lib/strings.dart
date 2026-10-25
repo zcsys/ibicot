@@ -139,6 +139,47 @@ abstract final class UiCopy {
 
 /// English UI catalogue. Templates preserve inserted values in pseudo builds.
 abstract final class UiEnglish {
+  static const soundtrackDownload = 'Download original soundtrack';
+  static const soundtrackReady =
+      'The supporter bundle includes the four shop appearances and the original soundtrack. It adds no production power.';
+  static const soundtrackUnavailable =
+      'The supporter bundle is unavailable while soundtrack delivery cannot be confirmed. Its four appearances are also sold individually.';
+  static const soundtrackChecking = 'Checking and downloading the soundtrack…';
+  static const soundtrackHandedOff =
+      'The verified soundtrack was handed to your chosen app. That app controls where the file is saved.';
+  static const soundtrackCancelled =
+      'Export cancelled. Your soundtrack remains available to download again.';
+  static const soundtrackUnknown =
+      'The device export sheet was opened. A saved copy could not be confirmed.';
+  static const soundtrackFailed =
+      'The soundtrack could not be downloaded and verified. Reconnect and try again; your purchase is unchanged.';
+  static const soundtrackCacheFull =
+      'Three recent soundtrack exports are being kept for their receiving apps. Try again after 24 hours; your purchase is unchanged.';
+  static const producerNames = [
+    'Spark Skiff',
+    'Prism Nursery',
+    'Tide Dynamo',
+    'Aurora Loom',
+    'Dawn Observatory',
+  ];
+  static const appearanceNoun = 'appearance';
+  static const accountNoun = 'account';
+  static const constellationNoun = 'constellation';
+  static const challengeNoun = 'challenge';
+  static String durationDays(Object days, Object hours) =>
+      Presentation.template('{days}d {hours}h', {'days': days, 'hours': hours});
+  static String durationHours(Object hours, Object minutes) =>
+      Presentation.template('{hours}h {minutes}m', {
+        'hours': hours,
+        'minutes': minutes,
+      });
+  static String durationMinutes(Object minutes, Object seconds) =>
+      Presentation.template('{minutes}m {seconds}s', {
+        'minutes': minutes,
+        'seconds': seconds,
+      });
+  static String durationSeconds(Object seconds) =>
+      Presentation.template('{seconds}s', {'seconds': seconds});
   static String cosmeticStoreOffer(Object? title, Object? price) =>
       Presentation.template('{title} · {price}', {
         'title': title,
@@ -382,8 +423,6 @@ abstract final class UiEnglish {
       "Returning stars premium appearances";
   static const servicePremiumAppearancesAlsoRequireTheirEarnedPass =
       "Premium appearances also require their earned pass levels. The pass has no paid XP, power, storage or production bonus.";
-  static const serviceTheSupporterBundleReusesTheFourShop =
-      "The supporter bundle reuses the four shop appearances. Its purchase is unavailable until authenticated soundtrack delivery is ready. No soundtrack download is offered in this build.";
   static const serviceRetryPurchaseDelivery = "Retry purchase delivery";
   static const serviceDeliveryRetryRequestedReviewThePurchaseStatus =
       "Delivery retry requested. Review the purchase status below before buying again.";
@@ -1059,7 +1098,7 @@ abstract final class UiEnglish {
   static String appPermanentPowerGameEnginePrestigeMultiplierGameState(
     Object? value0,
     Object? value1,
-  ) => Presentation.template("Permanent power: {value0}× → {value1}×", {
+  ) => Presentation.template("Permanent power: {value0}× to {value1}×", {
     'value0': value0,
     'value1': value1,
   });
@@ -1085,7 +1124,7 @@ abstract final class UiEnglish {
   static String appNumberGamePriceForTierR(Object? value0) =>
       Presentation.template("{value0} R", {'value0': value0});
   static String appNextMilestoneLightkeepersDoubleThisTier(Object? value0) =>
-      Presentation.template("{value0} lightkeepers → double this tier", {
+      Presentation.template("{value0} lightkeepers: double this tier", {
         'value0': value0,
       });
   static String appSCountsTierAtWorkRateGame(Object? value0, Object? value1) =>
@@ -1134,18 +1173,6 @@ abstract final class UiEnglish {
       "This harbor needs a compatible game version. Its saved files have been preserved.";
   static const bootstrapTheLatestCopyCouldNotBeRead =
       "The latest copy could not be read. Your previous saved harbor was recovered; its time away has been settled.";
-  static String bootstrapDirectoryPathAudioPreferencesJson(Object? value0) =>
-      Presentation.template("{value0}/audio-preferences.json", {
-        'value0': value0,
-      });
-  static String bootstrapAwaitGetApplicationSupportDirectoryPathTideglass(
-    Object? value0,
-  ) => Presentation.template("{value0}/tideglass", {'value0': value0});
-  static const bootstrapTIDEGLASSREWARDEDADS = "TIDEGLASS_REWARDED_ADS";
-  static const bootstrapTIDEGLASSCOMMERCE = "TIDEGLASS_COMMERCE";
-  static const bootstrapTIDEGLASSREWARDEDADUNIT = "TIDEGLASS_REWARDED_AD_UNIT";
-  static const bootstrapTIDEGLASSLOCALSERVICE = "TIDEGLASS_LOCAL_SERVICE";
-  static const bootstrapTIDEGLASSSERVICEURL = "TIDEGLASS_SERVICE_URL";
   static String gameYourHarborIsStillOpenButIts(
     Object? value0,
   ) => Presentation.template(
@@ -1157,8 +1184,6 @@ abstract final class UiEnglish {
   static const gameHarborDecorationChanged = "Harbor decoration changed.";
   static const gameANewDecorationForYourHarborProduction =
       "A new decoration for your harbor. Production is unchanged.";
-  static const gameCosmeticCoreDecoration =
-      "^cosmetic\\.core\\.decoration\\.0[1-6]\$";
   static const gameChallengePlanUpdated = "Challenge plan updated.";
   static const gameAVesselJoinsTheChallengeFleet =
       "A vessel joins the challenge fleet.";
@@ -1236,4 +1261,63 @@ abstract final class UiEnglish {
       });
   static const gameYourHarborAppearanceIsSavedProductionIs =
       "Your harbor appearance is saved. Production is unchanged.";
+  static const audioSoundIsTemporarilyUnavailableYourHarborContinues2 =
+      "Sound is temporarily unavailable. Your harbor continues normally.";
+  static const audioSoundSettingsChangedForThisSessionBut =
+      "Sound settings changed for this session but could not be saved.";
+  static const audioSoundIsTemporarilyUnavailableYourHarborContinues =
+      "Sound is temporarily unavailable. Your harbor continues normally.";
+  static const audioSoundSettingsCouldNotBeReadSound =
+      "Sound settings could not be read. Sound is muted until you choose your settings again.";
+  static String harborALighthouseWatchesOverTheOceanRestoration(
+    Object? value0,
+    Object? value1,
+  ) => Presentation.template(
+    "A lighthouse watches over the ocean. {value0} of six constellations restored. {value1} kinds of lightkeeper are at work.",
+    {'value0': value0, 'value1': value1},
+  );
+  static String cosmeticCosmeticByIdIdTitleHarborAppearancePreview(
+    Object? value0,
+  ) => Presentation.template("{value0}, harbor appearance preview", {
+    'value0': value0,
+  });
+  static const supportNoNewTokenWasConfirmedYouCan =
+      "No new token was confirmed. You can check delivery again, or use a free briefing for an unused slot.";
+  static const supportOneVerifiedSupportTokenIsReady =
+      "One verified Support token is ready.";
+  static const supportThisSlotIsAlreadyAvailableOrIts =
+      "This slot is already available or its account day changed. No ad was shown.";
+  static const supportOptionalAdsAreUnavailableTheFreeBriefing =
+      "Optional ads are unavailable. The free briefing grants the same token.";
+  static String supportRestoredCurrentDaySupportTokenRestoredS(
+    Object? value0,
+    Object? value1,
+  ) => Presentation.template(
+    "{value0} current-day Support token{value1} restored.",
+    {'value0': value0, 'value1': value1},
+  );
+  static const supportNoNewCurrentDayTokenWasAvailable =
+      "No new current-day token was available. Existing tokens were kept.";
+  static const supportYourFreeTokenIsReadyLocallyIts =
+      "Your free token is ready locally. Its account sync needs a retry.";
+  static const supportYourFreeSupportTokenIsReady =
+      "Your free Support token is ready.";
+  static const supportThisSlotIsNoLongerAvailableCheck =
+      "This slot is no longer available. Check today’s allowance.";
+  static const supportLocalDeliveryIsNotDurable =
+      "Local delivery is not durable.";
+  static const supportTheServiceCouldNotConfirmDeliveryYour =
+      "The service could not confirm delivery. Your local tokens are kept. A free briefing remains available for each unused slot.";
+  static const supportYourTokenIsInMemoryButSaving =
+      "Your token is in memory, but saving has not finished. Keep the app open and retry saving before closing.";
+  static const replayPositiveChunk = 'Replay chunks must be positive.';
+  static String replaySavedFailure(Object? detail) => Presentation.template(
+    'Saved progress could not be replayed: {detail}',
+    {'detail': detail},
+  );
+  static const replayWorkerStopped =
+      'Settlement worker stopped before completion. Saved progress is unchanged.';
+  static const replaySettlementRejected = 'Settlement rejected.';
+  static const replayFutureSettlement =
+      'An unfinished settlement ends after the current clock.';
 }

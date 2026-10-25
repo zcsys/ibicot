@@ -1,0 +1,59 @@
+[
+  {
+    "utc": "2026-10-25T16:36:44.361344+00:00",
+    "argv": [
+      "/Users/csys/Library/Android/sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "shell",
+      "dumpsys",
+      "notification",
+      "--noredact"
+    ],
+    "exit_code": 0,
+    "file": "due-observation3-notifications.txt",
+    "sha256": "b77bd92cdd21d72423b0cddbad74e3e9299d196b91f37bc79c8fe68456fd545e"
+  },
+  {
+    "utc": "2026-10-25T16:36:44.454023+00:00",
+    "argv": [
+      "/Users/csys/Library/Android/sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "shell",
+      "dumpsys",
+      "alarm"
+    ],
+    "exit_code": 0,
+    "file": "due-observation3-alarm.txt",
+    "sha256": "3361f1a3c8088cdb55969f326f935912db95c6cade27bebd5487647db0fcc4b9"
+  },
+  {
+    "utc": "2026-10-25T16:36:44.492760+00:00",
+    "argv": [
+      "/Users/csys/Library/Android/sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "shell",
+      "dumpsys",
+      "deviceidle"
+    ],
+    "exit_code": 0,
+    "file": "due-observation3-idle.txt",
+    "sha256": "94d197b311da06280576b241744abae658e6e08e375319492e88e06fa6b08a08"
+  },
+  {
+    "utc": "2026-10-25T16:36:44.525659+00:00",
+    "argv": [
+      "/Users/csys/Library/Android/sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "shell",
+      "pidof",
+      "dev.tideglass.game"
+    ],
+    "exit_code": 0,
+    "file": "due-observation3-pid.txt",
+    "sha256": "d41473b0bcb3c7db33a0a1dd1253c5e68cd8a7a5402955163d51748bb2f4e7de"
+  }
+]

@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "/Users/csys/Desktop/ibicot/idle/release/qa/current-native-20261023T044903.849353Z/replay.py", line 250, in <module>
+    main()
+    ~~~~^^
+  File "/Users/csys/Desktop/ibicot/idle/release/qa/current-native-20261023T044903.849353Z/replay.py", line 234, in main
+    check(terminal['cells'][:len(checkpoint['cells'])]==checkpoint['cells'],'Second sealed checkpoint preserves all first-batch cells exactly')
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/csys/Desktop/ibicot/idle/release/qa/current-native-20261023T044903.849353Z/replay.py", line 49, in check
+    assert ok, reason
+           ^^
+AssertionError: Second sealed checkpoint preserves all first-batch cells exactly

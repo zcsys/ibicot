@@ -1,0 +1,36 @@
+{
+  "verification_id": "synthetic-bridge-proof",
+  "candidate_fingerprint": "3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59",
+  "harness_sha256": "102be09eb8043ce9bb496156d9f37b1834c3084ddf58fef073e7c25cdc3c55d5",
+  "platform": "android",
+  "scenario": "runtime-study-default",
+  "run_id": "qa-bridge",
+  "device_label": "android",
+  "candidate_path": "/Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261023T040445.261666Z-3b00cc8f7122",
+  "source_pins": {
+    "verify_native.py": "68297f66fc4e32a173b17da2594872334d59ba2b88b7d5878b5ee8905f9b89e5",
+    "runner.py": "d1ea6d05085f05a0a3bb6c768531ef7659272e41993858c0551618f74ce5c847",
+    "harness.dart": "102be09eb8043ce9bb496156d9f37b1834c3084ddf58fef073e7c25cdc3c55d5"
+  },
+  "label": "android",
+  "device": "emulator-5556",
+  "passed": true,
+  "status": "passed",
+  "exit_code": 0,
+  "verification_errors": [],
+  "native_process_id": 123,
+  "source_snapshot_unchanged": true,
+  "source_changes_during_run": [],
+  "production_input_differences_after_run": [],
+  "privacy_observation_enabled": true,
+  "command": [
+    "--dart-define=TIDEGLASS_PRIVACY_OBSERVATION=true"
+  ],
+  "evidence_sha256": {
+    "runner.py": "d1ea6d05085f05a0a3bb6c768531ef7659272e41993858c0551618f74ce5c847",
+    "result.json": "a8a5c0a0da36665705dc379e964a986fbf2f0e92a4dacbf9dd0cff8759bd1ce5",
+    "run.log": "50df761a8095f6e06ffadd43eb7eaf8adf852ea9ad6095b181f722de4b9a07d1",
+    "verify_native.py": "68297f66fc4e32a173b17da2594872334d59ba2b88b7d5878b5ee8905f9b89e5",
+    "harness.dart": "102be09eb8043ce9bb496156d9f37b1834c3084ddf58fef073e7c25cdc3c55d5"
+  }
+}

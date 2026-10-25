@@ -1,0 +1,32 @@
+--- game/qa/workspaces/integration-inventory-20261021T104607526377Z/source/provenance/asset.cosmetic.core.decoration.04.json
++++ source/provenance/asset.cosmetic.core.decoration.04.json
+@@ -10,7 +10,7 @@
+   ],
+   "source_media_sha256": {
+     "source/art/cosmetics/cosmetic.core.decoration.04.scene.json": "87099177b7c16df7ebb67ded37d88c26ddf315c9e804a65c4099b2af37a1dd54",
+-    "game/mobile/lib/cosmetic_art.dart": "3e9a0e4659d82efb52cfc4c2fb875243c5b4954fc4f68078dcc0360e045a8bf4",
++    "game/mobile/lib/cosmetic_art.dart": "3921e51bbbc79a40d6cdc9ece131b65f4910fb235d749f525cf18e373e780811",
+     "game/mobile/lib/cosmetics.dart": "18fc8203b2d61bd0833f59e1c1788381a388e2a84130063a585d3cbdb5f37936",
+     "source/art/cosmetics/earned-decoration-original.dart": "68125955440275cacc1b624a6a5b8c765f16fbb1220c2b5a5f4fbd380ce2d626"
+   },
+@@ -41,5 +41,19 @@
+   "reviewer": null,
+   "review_evidence": null,
+   "author_review_evidence": "release/cosmetics-author-review.md",
+-  "status": "in_production"
++  "status": "in_production",
++  "author_pin_refresh": {
++    "date": "2026-10-21",
++    "historical_record": "source/provenance/history/20261021-registration/asset.cosmetic.core.decoration.04.json",
++    "historical_record_sha256": "dc8d1094972efe7fd796eb16b4d3879faead58ee053f36ea8e5db354d5cc2fea",
++    "old_renderer_sha256": "3e9a0e4659d82efb52cfc4c2fb875243c5b4954fc4f68078dcc0360e045a8bf4",
++    "new_renderer_sha256": "3921e51bbbc79a40d6cdc9ece131b65f4910fb235d749f525cf18e373e780811",
++    "exact_diff_path": "source/art/registration/cosmetic-renderer-refresh.patch",
++    "exact_diff_sha256": "96374be17be2e96d586cdf8f7f962f0ccb6d303daf84b0757e0692306428bb56",
++    "independent_bounded_source_comparison": "release/qa/integration-inventory-20261021T104607526377Z/cosmetic-renderer-comparison.json",
++    "independent_bounded_comparison_sha256": "e8884ff54f7d2f69e5d6333a3f2daed7a91203bee14dc9fb86736be2b726de07",
++    "scope": "Only two localization imports and the Semantics label differ; remaining bytes including drawing geometry are identical. Existing PNG hashes are retained.",
++    "new_png_rendered": false,
++    "independent_complete_asset_acceptance": false
++  }
+ }

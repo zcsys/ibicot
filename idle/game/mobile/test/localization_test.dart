@@ -1,7 +1,13 @@
 import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:tideglass/app.dart';
+import 'package:tideglass/audio_bus.dart';
+import 'package:tideglass/bootstrap.dart';
 import 'package:tideglass/calibration_screen.dart';
 import 'package:tideglass/cosmetics.dart';
 import 'package:tideglass/cosmetics_screen.dart';
@@ -21,10 +27,23 @@ import 'package:tideglass/strings.dart';
 import 'package:tideglass/support_screen.dart';
 import 'package:tideglass_core/tideglass_core.dart';
 import 'package:tideglass_progression/tideglass_progression.dart';
+
+import 'bootstrap_test.dart' show repository, settleIo;
 import 'calibration_test.dart' show allPatterns;
 import 'notification_service_test.dart'
     show FixtureNotificationGateway, MemoryReminderStore;
 import 'service_settings_test.dart' show FixtureClient, MemoryCredentials;
+
+// Defaults retain the previous phone/200% regression condition. The same
+// interactions can be executed unchanged for every declared display condition.
+const _testViewport = String.fromEnvironment(
+  'TIDEGLASS_TEST_VIEWPORT',
+  defaultValue: 'phone',
+);
+const _testTextPercent = int.fromEnvironment(
+  'TIDEGLASS_TEST_TEXT_PERCENT',
+  defaultValue: 200,
+);
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -33,7 +52,6 @@ void main() {
   setUpAll(() async {
     catalogue = await StoryCatalogue.load();
   });
-  setUp(() {});
   GameController game({GameState? state, StoryProgress? story}) =>
       GameController(
         catalogue: catalogue,
@@ -43,9 +61,16 @@ void main() {
         startTicker: false,
       );
   void viewport(WidgetTester tester) {
-    tester.view.physicalSize = const Size(320, 720);
+    if (![100, 150, 200].contains(_testTextPercent)) {
+      throw ArgumentError('Unsupported localization test text scale.');
+    }
+    tester.view.physicalSize = switch (_testViewport) {
+      'phone' => const Size(320, 720),
+      'tablet' => const Size(1024, 768),
+      _ => throw ArgumentError('Unsupported localization test viewport.'),
+    };
     tester.view.devicePixelRatio = 1;
-    tester.platformDispatcher.textScaleFactorTestValue = 2;
+    tester.platformDispatcher.textScaleFactorTestValue = _testTextPercent / 100;
     addTearDown(tester.view.resetPhysicalSize);
     addTearDown(tester.view.resetDevicePixelRatio);
     addTearDown(tester.platformDispatcher.clearTextScaleFactorTestValue);
@@ -64,13 +89,173 @@ void main() {
     expect(tester.takeException(), isNull);
   }
 
+  // Resolve the control, never measure only a text/icon label or the whole
+  // expanded content panel. Unknown containers fail at tap instead of silently
+  // being treated as actionable controls.
+  Finder? interactiveControl(Finder finder) {
+    expect(finder, findsOneWidget);
+    final element = finder.evaluate().single;
+    bool control(Widget widget) =>
+        widget is ButtonStyleButton ||
+        widget is IconButton ||
+        widget is ListTile ||
+        widget is NavigationDestination ||
+        widget is ChoiceChip ||
+        widget is FilterChip ||
+        widget is ActionChip ||
+        widget is InputChip ||
+        widget is Switch ||
+        widget is Checkbox;
+    Finder exact(Element value) =>
+        find.byElementPredicate((candidate) => identical(candidate, value));
+    if (element.widget is Switch || element.widget is Checkbox) {
+      Element? composite;
+      element.visitAncestorElements((ancestor) {
+        if (ancestor.widget is! SwitchListTile &&
+            ancestor.widget is! CheckboxListTile) {
+          return true;
+        }
+        composite = ancestor;
+        return false;
+      });
+      if (composite != null) {
+        // These SDK composites merge semantics and make the entire ListTile
+        // tappable. Their inner toggle deliberately uses shrinkWrap; a
+        // standalone undersized Switch/Checkbox still measures itself below.
+        return find
+            .descendant(of: exact(composite!), matching: find.byType(ListTile))
+            .first;
+      }
+    }
+    if (control(element.widget)) return exact(element);
+    if (element.widget is ExpansionTile ||
+        element.widget is CheckboxListTile ||
+        element.widget is SwitchListTile) {
+      // The first ListTile is the actual header/toggle action; the rest of an
+      // expanded tile may contain unrelated controls and scrollable content.
+      final header = find.descendant(
+        of: finder,
+        matching: find.byType(ListTile),
+      );
+      expect(header, findsWidgets);
+      return header.first;
+    }
+    Element? nearest;
+    element.visitAncestorElements((ancestor) {
+      if (!control(ancestor.widget)) return true;
+      nearest = ancestor;
+      return false;
+    });
+    return nearest == null ? null : exact(nearest!);
+  }
+
+  void expectControlBounds(WidgetTester tester, Finder control) {
+    final rect = tester.getRect(control);
+    expect(rect.width, greaterThanOrEqualTo(48), reason: '$control width');
+    expect(rect.height, greaterThanOrEqualTo(48), reason: '$control height');
+    var visible =
+        Offset.zero & (tester.view.physicalSize / tester.view.devicePixelRatio);
+    var child = tester.element(control).findRenderObject()!;
+    // Intersect all actual ancestor scroll viewports and paint clips. Screen
+    // bounds alone miss controls drawn behind an AppBar or outside a dialog's
+    // small body viewport. No scroll extent is substituted for visible space.
+    RenderObject? parent = child.parent;
+    while (parent != null) {
+      final clip = parent.describeApproximatePaintClip(child);
+      if (clip != null) {
+        visible = visible.intersect(
+          MatrixUtils.transformRect(parent.getTransformTo(null), clip),
+        );
+      }
+      if (parent is RenderAbstractViewport) {
+        visible = visible.intersect(
+          MatrixUtils.transformRect(
+            parent.getTransformTo(null),
+            parent.paintBounds,
+          ),
+        );
+      }
+      child = parent;
+      parent = child.parent;
+    }
+    expect(visible.isEmpty, isFalse, reason: '$control has visible space');
+    final tolerance = visible.inflate(.5);
+    expect(
+      rect.left,
+      greaterThanOrEqualTo(tolerance.left),
+      reason: '$control left in $visible',
+    );
+    expect(
+      rect.top,
+      greaterThanOrEqualTo(tolerance.top),
+      reason: '$control top in $visible',
+    );
+    expect(
+      rect.right,
+      lessThanOrEqualTo(tolerance.right),
+      reason: '$control right in $visible',
+    );
+    expect(
+      rect.bottom,
+      lessThanOrEqualTo(tolerance.bottom),
+      reason: '$control bottom in $visible',
+    );
+  }
+
+  Future<void> reveal(WidgetTester tester, Finder finder) async {
+    if (finder.evaluate().isEmpty) {
+      await tester.scrollUntilVisible(
+        finder,
+        400,
+        scrollable: find.byType(Scrollable).last,
+        maxScrolls: 80,
+      );
+    }
+    final control = interactiveControl(finder);
+    await Scrollable.ensureVisible(
+      tester.element(control ?? finder),
+      alignment: .5,
+    );
+    await tester.pumpAndSettle();
+    expect(tester.takeException(), isNull);
+    if (control != null) expectControlBounds(tester, control);
+  }
+
   Future<void> tap(WidgetTester tester, Finder finder) async {
     if (find.byType(SnackBar).evaluate().isNotEmpty) {
       await tester.pump(const Duration(seconds: 5));
       await tester.pumpAndSettle();
     }
-    await tester.ensureVisible(finder);
-    await tester.tap(finder);
+    await reveal(tester, finder);
+    final control = interactiveControl(finder);
+    expect(control, isNotNull, reason: '$finder must resolve to an action');
+    final action = control!;
+    expectControlBounds(tester, action);
+    // Insets avoid the mathematical outside edge and rounded corners. These
+    // center/edge hit tests complement, rather than replace, full bounds.
+    for (final at in [
+      Alignment.center,
+      const Alignment(-.98, 0),
+      const Alignment(.98, 0),
+      const Alignment(0, -.98),
+      const Alignment(0, .98),
+    ]) {
+      expect(
+        action.hitTestable(at: at),
+        findsOneWidget,
+        reason: '$action at $at',
+      );
+    }
+    final semantics = tester.getSemantics(action).getSemanticsData();
+    // The pinned SDK exposes IconButton's textual accessibility name through
+    // SemanticsData.tooltip. Both fields are real semantics, not Widget copy.
+    expect(
+      '${semantics.label} ${semantics.tooltip}'.trim(),
+      isNotEmpty,
+      reason: '$action accessible name',
+    );
+    expect(semantics.hasAction(SemanticsAction.tap), isTrue);
+    await tester.tap(action.hitTestable());
     await tester.pumpAndSettle();
     expect(tester.takeException(), isNull);
   }
@@ -94,7 +279,7 @@ void main() {
         {'price': price, 'code': secret, 'count': 10},
         pseudo: true,
       );
-      expect(expanded, startsWith('⟦'));
+      expect(expanded, startsWith('[!'));
       expect(expanded, contains(price));
       expect(expanded, contains(secret));
       expect(expanded, contains('10'));
@@ -106,7 +291,7 @@ void main() {
   );
 
   testWidgets(
-    'actual first purchase and primary navigation fit expanded 200% text',
+    'actual first purchase and primary navigation fit selected text scale',
     (tester) async {
       final subject = game(
         state: const TideglassEngine()
@@ -257,12 +442,19 @@ void main() {
       );
       addTearDown(subject.dispose);
       await show(tester, SeasonScreen(game: subject));
-      await tap(tester, key('season-automatic'));
+      await tap(
+        tester,
+        find.descendant(
+          of: key('season-automatic'),
+          matching: find.byType(Switch),
+        ),
+      );
       expect(subject.story.season!.automatic, isTrue);
       await tap(tester, key('season-tab-1'));
       final reward = catalogue.seasonDefinition.rewards.firstWhere(
         (r) => r.track == 'free',
       );
+      await tap(tester, find.byKey(PageStorageKey('level-${reward.level}')));
       await tap(tester, key('claim-${reward.id}'));
       expect(subject.story.pass!.claims, contains(reward.id));
       expect(subject.state.charts, BigInt.zero);
@@ -288,12 +480,14 @@ void main() {
         ),
       );
       await tap(tester, key('create-account'));
+      await reveal(tester, key('create-account-confirm'));
       expect(
         tester.widget<FilledButton>(key('create-account-confirm')).onPressed,
         isNull,
       );
       await tap(tester, key('cloud-consent'));
       await tap(tester, key('create-account-confirm'));
+      await reveal(tester, key('new-recovery-code'));
       expect(
         tester.widget<SelectableText>(key('new-recovery-code')).data,
         client.currentCode,
@@ -388,12 +582,104 @@ void main() {
         findsOneWidget,
       );
       expect(gateway.requests, 0);
-      await tap(tester, key('reminder-enable'));
+      await tap(
+        tester,
+        find.descendant(
+          of: key('reminder-enable'),
+          matching: find.byType(Switch),
+        ),
+      );
       expect(gateway.requests, 1);
       await tap(tester, key('reminder-quiet-start'));
       await tester.enterText(key('reminder-hour-input'), '21');
       await tap(tester, key('reminder-save-time'));
       expect(service.preferences.quietStart, 1260);
+    },
+  );
+
+  testWidgets(
+    'actual bootstrap retains exact save and audio paths in both build modes',
+    (tester) async {
+      final base = Directory.systemTemp.createTempSync(
+        'Tideglass-Locale-Paths-',
+      );
+      addTearDown(() => base.deleteSync(recursive: true));
+      final directory = Directory('${base.path}/tideglass')..createSync();
+      final audioFile = File('${directory.path}/audio-preferences.json')
+        ..writeAsStringSync(
+          jsonEncode(const AudioPreferences(muted: true).toJson()),
+        );
+      final messenger =
+          TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger;
+      final channels = [
+        const MethodChannel('plugins.flutter.io/path_provider'),
+        const MethodChannel('xyz.luan/audioplayers'),
+        const MethodChannel('xyz.luan/audioplayers.global'),
+        const MethodChannel('xyz.luan/audioplayers.global/events'),
+        const MethodChannel('xyz.luan/audioplayers/events/tideglass.music'),
+        for (var i = 0; i < 8; i++)
+          MethodChannel('xyz.luan/audioplayers/events/tideglass.sfx.$i'),
+      ];
+      for (final channel in channels) {
+        messenger.setMockMethodCallHandler(
+          channel,
+          (call) async => channel.name == 'plugins.flutter.io/path_provider'
+              ? base.path
+              : null,
+        );
+      }
+      addTearDown(() {
+        for (final channel in channels) {
+          messenger.setMockMethodCallHandler(channel, null);
+        }
+      });
+      final manager = NativeServicesManager(credentials: MemoryCredentials());
+      final notifications = NotificationService(
+        gateway: FixtureNotificationGateway(),
+        store: MemoryReminderStore(),
+      );
+      addTearDown(manager.dispose);
+      addTearDown(notifications.dispose);
+      viewport(tester);
+      await tester.pumpWidget(
+        TideglassBootstrap(services: manager, notifications: notifications),
+      );
+      await settleIo(
+        tester,
+        until: () => find.byType(TideglassApp).evaluate().isNotEmpty,
+      );
+      final app = tester.widget<TideglassApp>(find.byType(TideglassApp));
+      await settleIo(
+        tester,
+        until: () => app.controller.audio!.preferences.muted,
+      );
+      var audioReady = false;
+      app.controller.audio!.initialize().then((_) => audioReady = true);
+      await settleIo(tester, until: () => audioReady);
+      var preferencesSaved = false;
+      app.controller.audio!
+          .setPreferences(const AudioPreferences(muted: true, musicVolume: .35))
+          .then((_) => preferencesSaved = true);
+      await settleIo(tester, until: () => preferencesSaved);
+      var gameSaved = false;
+      app.controller.save().then((_) => gameSaved = true);
+      await settleIo(tester, until: () => gameSaved);
+      expect(jsonDecode(audioFile.readAsStringSync())['music_volume'], .35);
+      await tester.runAsync(() async {
+        expect((await repository(directory).load()).snapshot, isNotNull);
+      });
+      final cache = Directory('${base.path}/tideglass-soundtrack-exports');
+      await settleIo(tester, until: cache.existsSync);
+      expect(
+        base.listSync().map((entry) => entry.path),
+        unorderedEquals([directory.path, cache.path]),
+      );
+      expect(cache.listSync(), isEmpty);
+      await tester.pumpWidget(const SizedBox());
+      await tester.runAsync(
+        () async => Future<void>.delayed(const Duration(milliseconds: 20)),
+      );
+      expect(tester.takeException(), isNull);
     },
   );
 }

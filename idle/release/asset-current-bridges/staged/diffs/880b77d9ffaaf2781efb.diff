@@ -1,0 +1,49 @@
+--- game/qa/workspaces/integration-inventory-20261021T104607526377Z/source/provenance/asset.chapter.03.copy.json
++++ source/provenance/asset.chapter.03.copy.json
+@@ -6,7 +6,7 @@
+     "source/content/en-US/chapter.03.copy.md"
+   ],
+   "source_media_sha256": [
+-    "5e30911891c80c036d8a2bbca920a6abe4c4cf0221225c255c65900c3fe16e58"
++    "f465c06ad3daac70bcd899ca09c0b492b5085b07abd3843039733d81d3b00671"
+   ],
+   "source_kind": "original_authored_text_or_graph",
+   "license_or_authorship_basis": "Original text and graph data authored in this project; no external media or quoted source text.",
+@@ -25,8 +25,35 @@
+     "game/content/locales/en-US/chapter.03.copy.json"
+   ],
+   "exported_sha256": [
+-    "f6ca33180064956bf0fa74bf8027698e8919ac4e32519e4e3782940346ce4ca3"
++    "9ba739113d617e93e37f53991480041cd457645d83369c9b5727d525dc9ea694"
+   ],
+   "reviewer": null,
+-  "review_evidence": null
++  "review_evidence": null,
++  "author_pin_refresh": {
++    "date": "2026-10-21",
++    "historical_record": "source/provenance/history/20261021-registration/asset.chapter.03.copy.json",
++    "historical_record_sha256": "f0ec667da2f5ac5d97d314f0371ada16509b7fb0bc42d22d94a7e2db29dd898b",
++    "diffs": [
++      {
++        "path": "source/art/registration/chapter03-source.patch",
++        "sha256": "517d4012b4cf76bb6c26615ecd7a71e83f03965784909e8b0ddc400dc0e0030c",
++        "before_path": "game/qa/workspaces/integration-inventory-20261021T104607526377Z/source/content/en-US/chapter.03.copy.md",
++        "before_sha256": "5e30911891c80c036d8a2bbca920a6abe4c4cf0221225c255c65900c3fe16e58",
++        "after_path": "source/content/en-US/chapter.03.copy.md",
++        "after_sha256": "f465c06ad3daac70bcd899ca09c0b492b5085b07abd3843039733d81d3b00671"
++      },
++      {
++        "path": "source/art/registration/chapter03-export.patch",
++        "sha256": "f34c51da4178113d9c27f83d9aeadd82ce1fcbd258801c4a804dab2ce06dc95d",
++        "before_path": "release/balance/supplemental-source-394da363f5598c9b4d6ad84be7c85dee351daf3897f5c758a714db5eb6e3e1fb/game/content/locales/en-US/chapter.03.copy.json",
++        "before_sha256": "f6ca33180064956bf0fa74bf8027698e8919ac4e32519e4e3782940346ce4ca3",
++        "after_path": "game/content/locales/en-US/chapter.03.copy.json",
++        "after_sha256": "9ba739113d617e93e37f53991480041cd457645d83369c9b5727d525dc9ea694"
++      }
++    ],
++    "current_campaign_path": "game/content/progression/campaign.json",
++    "current_campaign_sha256": "37ef158a39b9f6ce944bea6fcfd4e5d2b6bd9c924b86b630b67fe276d812a7da",
++    "scope": "Only second hint changed in this copy/export; title, intro, completion and Survey hint unchanged. New hint matches current campaign and describes calibration as optional. Economic/objective acceptance belongs to separate lead/QA review.",
++    "independent_complete_asset_acceptance": false
++  }
+ }

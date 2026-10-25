@@ -1,0 +1,88 @@
+{
+  "utc": "2026-10-23T09:04:30.201610+00:00",
+  "status": "paused_incomplete_by_director_request",
+  "runner_session": 40736,
+  "runner_terminal_exit": 1,
+  "runner_report": "/Users/csys/Desktop/ibicot/idle/release/native-notifications/integration-ios-phone-20261023T085717105071Z/verification.json",
+  "runner_report_sha256": "9cf1be4386cbac1c71f96a7ebaf85e3cf525548860cfc0370156416f7658838a",
+  "raw_report_passed": false,
+  "raw_report_errors": [
+    "KeyboardInterrupt: "
+  ],
+  "classification": "Interrupted by goal pause. This is not a native assertion failure or a passed scenario. Keep separate from historical failed attempts.",
+  "cleanup": {
+    "command": [
+      "xcrun",
+      "simctl",
+      "terminate",
+      "F05BE4B0-52C1-4CA1-B721-BD64AE559E3F",
+      "dev.tideglass.game"
+    ],
+    "exit_code": 0,
+    "stderr": ""
+  },
+  "owned_runner_flutter_and_app_pids_no_longer_present": [
+    31765,
+    31776,
+    32463
+  ],
+  "owned_emulator_pid": 85092,
+  "permission_state_at_pause": "No post-departure observation available. Last actual opt-in allowed; current Settings switch not inferred. No permission changes performed by verifier.",
+  "possible_pending_notifications": "Not cancelled or queried at pause; app process stop is not notification cleanup. On resume inspect actual state before a fresh unique-ID revoked run.",
+  "native_evidence_sha256": {
+    "release/native-notifications/integration-ios-phone-20261023T085717105071Z/run.log": "9e64367b7503fa5aa476681b7f8b6ac12a6fcb51920543df87caba72f65688db",
+    "release/native-notifications/integration-ios-phone-20261023T085717105071Z/driver.dart": "ec880d16153b1ac577a221a46f81e7c309dd5417fbba8aae4ce68f7acbcfb668",
+    "release/native-notifications/integration-ios-phone-20261023T085717105071Z/verify_native.py": "68297f66fc4e32a173b17da2594872334d59ba2b88b7d5878b5ee8905f9b89e5",
+    "release/native-notifications/integration-ios-phone-20261023T085717105071Z/started.json": "b3328e60f5296efc447982dc6600d6db58d910738b7bd972bc49bfb3a5d46be4",
+    "release/native-notifications/integration-ios-phone-20261023T085717105071Z/candidate-manifest.json": "b4322606cd0207425b801feacc0bf4084ac9c460b23a028576204b766eeaeada",
+    "release/native-notifications/integration-ios-phone-20261023T085717105071Z/verify_native_reminders.py": "2ff5ce93795e3ed4584ce08fc2976e6c268582c26b995aadae9c7e3b337df1ed",
+    "release/native-notifications/integration-ios-phone-20261023T085717105071Z/harness.dart": "330ab6428203ec80e4de19e4eb727ad8dcfc6f63572e9ea1b0ef3ff7dc7a71da",
+    "release/native-notifications/integration-ios-phone-20261023T085717105071Z/verification.json": "9cf1be4386cbac1c71f96a7ebaf85e3cf525548860cfc0370156416f7658838a",
+    "release/native-notifications/integration-ios-phone-20261023T085717105071Z/build_native.py": "59ee4e7b94a1445e2c8effadfe4c0510c9c189df0278c7ede6e87f1807bf38ee"
+  },
+  "live_verification_sources_sha256": {
+    "game/mobile/integration_test/platform_smoke_test.dart": "1c8ed846dff6c007edb867d801d6f592a1cbd8b297e75de21e690603081afb31",
+    "game/mobile/integration_test/current_runtime_test.dart": "997e7510aaef0dcebfa6505fc0dcde7d136a25e8a76abea78ede8602b0a4fef9",
+    "game/mobile/integration_test/native_reminders_test.dart": "330ab6428203ec80e4de19e4eb727ad8dcfc6f63572e9ea1b0ef3ff7dc7a71da",
+    "tool/native_recording.py": "b1cbf7d75e58bba41db1fe43d7b3cfd4bb59b888fadda36d8ed1ed68f58ad2c3",
+    "tool/native_integration_driver.dart": "ec880d16153b1ac577a221a46f81e7c309dd5417fbba8aae4ce68f7acbcfb668",
+    "tool/verify_native_reminders.py": "2ff5ce93795e3ed4584ce08fc2976e6c268582c26b995aadae9c7e3b337df1ed",
+    "tool/verify_current_runtime.py": "d1ea6d05085f05a0a3bb6c768531ef7659272e41993858c0551618f74ce5c847",
+    "release/native-privacy/runtime_observation.py": "f6ae5e4a715b5ffc37999daa2919999e9a463f8ebd3ad238017be193ec47a438"
+  },
+  "completed_native58": {
+    "path": "/Users/csys/Desktop/ibicot/idle/release/native-proof/execution-3b00-20261023T040612.562001Z/sealed-complete58-20261023T085820.484246Z/checkpoint.json",
+    "sha256": "7e79de70dc86411e389740169f8f65defd605843c6b18291accbd98189e44925",
+    "counts": {
+      "passed": 50,
+      "expected-interrupted": 8
+    }
+  },
+  "completed_reminder_matrix": {
+    "ios-phone": [
+      "default",
+      "denied",
+      "quiet-cancel",
+      "delivery"
+    ],
+    "ios-phone_incomplete": [
+      "revoked"
+    ],
+    "android_not_started": [
+      "default",
+      "denied",
+      "quiet-cancel",
+      "delivery",
+      "revoked"
+    ]
+  },
+  "last_delivery_pass": {
+    "path": "/Users/csys/Desktop/ibicot/idle/release/native-notifications/integration-ios-phone-20261023T084643493529Z/verification.json",
+    "sha256": "ef08c578f82d008b949c07810c336e09a254cc484ecaca7cc346c67ff885c993"
+  },
+  "last_android_gallery_pass": {
+    "path": "/Users/csys/Desktop/ibicot/idle/release/native-proof/integration-android-20261023T085458.804768Z/verification.json",
+    "sha256": "74b419b64fbd05e9ab12a55bed24c4f4ee65502dc04a7bb960da2ab9536ee375"
+  },
+  "resumption_note": "Native lane released. No Android reminder launches or network/Settings changes while paused. Frozen3b00 preserved. Scope/goal statuses owned by lead."
+}

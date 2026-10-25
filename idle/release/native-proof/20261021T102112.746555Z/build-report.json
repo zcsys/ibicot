@@ -1,0 +1,72 @@
+{
+  "started_utc": "20261021T102112.746555Z",
+  "purpose": "local export only; no store, signing or runtime acceptance",
+  "mode": "debug",
+  "candidate_fingerprint": "152805bf9e269f49d14486286656ac0174a808384d10e6623533a4f92690dc11",
+  "candidate_directory": "/Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261021T101953.650199Z-152805bf9e26",
+  "workspace_directory": "/Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261021T101953.650199Z-152805bf9e26/workspace",
+  "runner_sha256": "cc849108fd2adadf0298554b6e1c622f6e00e07340abcf568aea0133781df931",
+  "source_snapshot_unchanged": true,
+  "results": {
+    "ios": {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+        "build",
+        "ios",
+        "--simulator",
+        "--debug",
+        "--no-codesign",
+        "--no-pub"
+      ],
+      "exit_code": 0,
+      "build_succeeded": true,
+      "runtime_launch_proven": false,
+      "artifact": "release/native-proof/20261021T102112.746555Z/artifacts/tideglass-ios-debug.zip",
+      "artifact_sha256": "d4713f0a890fd03ef92052c0545c81c04d24b9e13e51cd9329efc828fac71515",
+      "artifact_bytes": 63623223
+    },
+    "android": {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+        "build",
+        "apk",
+        "--debug",
+        "--no-pub"
+      ],
+      "exit_code": 0,
+      "build_succeeded": true,
+      "runtime_launch_proven": false,
+      "artifact": "release/native-proof/20261021T102112.746555Z/artifacts/tideglass-debug.apk",
+      "artifact_sha256": "fc856d3cdd2a2c17e9423b2427dd80290ea40d21d9825324c03fbc73335319c2",
+      "artifact_bytes": 190702518
+    },
+    "macos": {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+        "build",
+        "macos",
+        "--debug",
+        "--no-pub"
+      ],
+      "exit_code": 0,
+      "build_succeeded": true,
+      "runtime_launch_proven": false,
+      "artifact": "release/native-proof/20261021T102112.746555Z/artifacts/tideglass-macos-debug.zip",
+      "artifact_sha256": "261eb71ca274fdcf39774649c16424c334498d15d2892b1944d2f4c2ad792ad5",
+      "artifact_bytes": 46885523
+    }
+  },
+  "sdk_fixture": {
+    "workspace_link": "/Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261021T101953.650199Z-152805bf9e26/workspace/.tooling/flutter",
+    "sdk_target": "/Users/csys/Desktop/ibicot/idle/.tooling/flutter",
+    "font_sha256": {
+      "Roboto-Regular.ttf": "79e851404657dac2106b3d22ad256d47824a9a5765458edb72c9102a45816d95",
+      "MaterialIcons-Regular.otf": "d9865b671a09d683d13a863089d8825e0f61a37696ce5d7d448bc8023aa62453"
+    },
+    "scope": "External pinned toolchain assets; frozen application source is unchanged"
+  },
+  "pub_get_exit_code": 0,
+  "workspace_input_differences": [],
+  "dependency_locks_unchanged": true,
+  "current_working_tree_matches_candidate": false
+}

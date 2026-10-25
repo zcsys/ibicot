@@ -1,0 +1,7 @@
+# S02 staged style-only addendum
+
+The earlier sealed packet remains unchanged. This adjacent execution staging contains the same helper, verifier, tests and original source snapshots. Exactly two string-concatenation expressions in the Dart probe are rewritten as interpolation to resolve the two native analyzer infos. The first expression spans two source lines; the second spans one. `style.patch` is the entire harness delta. Reversing these two replacements reconstructs the sealed a0d07246 harness byte-for-byte. No logic, protocol, source gate, duration, endpoint, receipt or economic assertion changes.
+
+All27 pure Python methods pass again. Live source/program/scope pins remain unchanged. No Flutter, socket/listener or device execution by this author. Native's original analyzer findings remain in `release/qa/native-offline-scoped-analysis-20261025T151440.817084Z`. A fresh scoped analysis is required before native execution; no native offline result exists.
+
+The execution instructions and limitations are those in the original `AUTHOR_HANDOFF.md`, replacing the stage directory with this folder. Its wrapper imports this adjacent unchanged helper and binds the new harness hash in the listener profile. No profile has yet been created. Use a fresh listener/run ID only after different-author approval and actual UI access. Android's current unsupported bare-QEMU CUA surface is a concrete execution blocker; no programmatic radio-toggle substitute is authorized.

@@ -1,0 +1,1 @@
+The first author command used a staging working directory while constructing repository-relative paths. Copy/import setup failed before any tests ran. The nested test source was moved to the intended folder and empty owned directories removed; no source, assertion or production change resulted. The import failure log is preserved.

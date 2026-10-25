@@ -1,0 +1,97 @@
+[
+  {
+    "command": [
+      "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "exec-out",
+      "run-as",
+      "dev.tideglass.game",
+      "ls",
+      "-ld",
+      "/data/user/0/dev.tideglass.game/files"
+    ],
+    "exit_code": 0,
+    "stdout": "drwxrwx--x 5 u0_a209 u0_a209 4096 2026-10-23 08:16 /data/user/0/dev.tideglass.game/files\n",
+    "stderr": "",
+    "utc": "2026-10-23T05:17:02.981830+00:00"
+  },
+  {
+    "command": [
+      "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "exec-out",
+      "run-as",
+      "dev.tideglass.game",
+      "test",
+      "-L",
+      "/data/user/0/dev.tideglass.game/files"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": "",
+    "utc": "2026-10-23T05:17:03.041593+00:00"
+  },
+  {
+    "command": [
+      "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "exec-out",
+      "run-as",
+      "dev.tideglass.game",
+      "false"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": "",
+    "utc": "2026-10-23T05:17:03.101208+00:00"
+  },
+  {
+    "command": [
+      "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "shell",
+      "run-as",
+      "dev.tideglass.game",
+      "false"
+    ],
+    "exit_code": 1,
+    "stdout": "",
+    "stderr": "",
+    "utc": "2026-10-23T05:17:03.160705+00:00"
+  },
+  {
+    "command": [
+      "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "shell",
+      "run-as",
+      "dev.tideglass.game",
+      "test",
+      "-L",
+      "/data/user/0/dev.tideglass.game/files"
+    ],
+    "exit_code": 1,
+    "stdout": "",
+    "stderr": "",
+    "utc": "2026-10-23T05:17:03.210392+00:00"
+  },
+  {
+    "command": [
+      "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "shell",
+      "pidof",
+      "dev.tideglass.game"
+    ],
+    "exit_code": 0,
+    "stdout": "4391\n",
+    "stderr": "",
+    "utc": "2026-10-23T05:17:03.271092+00:00"
+  }
+]

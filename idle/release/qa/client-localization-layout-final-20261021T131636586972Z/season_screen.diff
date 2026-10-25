@@ -1,0 +1,166 @@
+--- before/game/mobile/lib/season_screen.dart
++++ after/game/mobile/lib/season_screen.dart
+@@ -40,70 +40,88 @@
+   }
+ 
+   @override
+-  Widget build(BuildContext context) => ListenableBuilder(
+-    listenable: Listenable.merge([
+-      game,
+-      if (widget.services != null) widget.services!,
+-    ]),
+-    builder: (context, _) => Scaffold(
+-      appBar: readingAppBar(context, title: UiEnglish.seasonReturningStars),
+-      body: SafeArea(
+-        child: SingleChildScrollView(
+-          controller: scroll,
+-          padding: const EdgeInsets.fromLTRB(24, 8, 24, 32),
+-          child: Center(
+-            child: ConstrainedBox(
+-              constraints: const BoxConstraints(maxWidth: 760),
+-              child: Column(
+-                crossAxisAlignment: CrossAxisAlignment.stretch,
+-                children: [
+-                  if (game.story.season == null || game.story.pass == null)
+-                    const LocalizedText(
+-                      UiEnglish.seasonThisSeasonalCatalogueIsNotAvailable,
+-                    )
+-                  else ...[
+-                    Wrap(
+-                      spacing: 8,
+-                      runSpacing: 8,
+-                      children: [
+-                        for (var i = 0; i < 3; i++)
+-                          ChoiceChip(
+-                            key: ValueKey('season-tab-$i'),
+-                            label: LocalizedText(
+-                              [
+-                                UiEnglish.seasonFleet,
+-                                UiEnglish.seasonPass,
+-                                UiEnglish.seasonContracts,
+-                              ][i],
++  Widget build(BuildContext context) {
++    // Keep the complete heading readable without taking the action viewport
++    // away from large-text controls, matching the calibration screen pattern.
++    final scrollHeading = MediaQuery.textScalerOf(context).scale(16) > 24;
++    return ListenableBuilder(
++      listenable: Listenable.merge([
++        game,
++        if (widget.services != null) widget.services!,
++      ]),
++      builder: (context, _) => Scaffold(
++        appBar: scrollHeading
++            ? AppBar()
++            : readingAppBar(context, title: UiEnglish.seasonReturningStars),
++        body: SafeArea(
++          child: SingleChildScrollView(
++            controller: scroll,
++            padding: const EdgeInsets.fromLTRB(24, 8, 24, 32),
++            child: Center(
++              child: ConstrainedBox(
++                constraints: const BoxConstraints(maxWidth: 760),
++                child: Column(
++                  crossAxisAlignment: CrossAxisAlignment.stretch,
++                  children: [
++                    if (scrollHeading) ...[
++                      Semantics(
++                        header: true,
++                        namesRoute: true,
++                        child: LocalizedText(
++                          UiEnglish.seasonReturningStars,
++                          style: Theme.of(context).textTheme.headlineMedium,
++                        ),
++                      ),
++                      const SizedBox(height: 20),
++                    ],
++                    if (game.story.season == null || game.story.pass == null)
++                      const LocalizedText(
++                        UiEnglish.seasonThisSeasonalCatalogueIsNotAvailable,
++                      )
++                    else ...[
++                      Wrap(
++                        spacing: 8,
++                        runSpacing: 8,
++                        children: [
++                          for (var i = 0; i < 3; i++)
++                            ChoiceChip(
++                              key: ValueKey('season-tab-$i'),
++                              label: LocalizedText(
++                                [
++                                  UiEnglish.seasonFleet,
++                                  UiEnglish.seasonPass,
++                                  UiEnglish.seasonContracts,
++                                ][i],
++                              ),
++                              selected: tab == i,
++                              onSelected: (_) {
++                                setState(() => tab = i);
++                                scroll.jumpTo(0);
++                              },
+                             ),
+-                            selected: tab == i,
+-                            onSelected: (_) {
+-                              setState(() => tab = i);
+-                              scroll.jumpTo(0);
+-                            },
+-                          ),
+-                      ],
+-                    ),
+-                    const SizedBox(height: 24),
+-                    LocalizedText(
+-                      definition.title,
+-                      style: Theme.of(context).textTheme.headlineMedium,
+-                    ),
+-                    const SizedBox(height: 12),
+-                    ...switch (tab) {
+-                      0 => _fleet(),
+-                      1 => _pass(),
+-                      _ => _contracts(),
+-                    },
++                        ],
++                      ),
++                      const SizedBox(height: 24),
++                      LocalizedText(
++                        definition.title,
++                        style: Theme.of(context).textTheme.headlineMedium,
++                      ),
++                      const SizedBox(height: 12),
++                      ...switch (tab) {
++                        0 => _fleet(),
++                        1 => _pass(),
++                        _ => _contracts(),
++                      },
++                    ],
+                   ],
+-                ],
++                ),
+               ),
+             ),
+           ),
+         ),
+       ),
+-    ),
+-  );
++    );
++  }
+ 
+   List<Widget> _fleet() => [
+     LocalizedText(
+@@ -186,13 +204,14 @@
+       Column(
+         crossAxisAlignment: CrossAxisAlignment.stretch,
+         children: [
++          const LocalizedText(
++            UiEnglish.seasonFreeAutomationForThisSeparateFleet,
++          ),
++          const SizedBox(height: 8),
+           SwitchListTile.adaptive(
+             key: const ValueKey('season-automatic'),
+             contentPadding: EdgeInsets.zero,
+             title: const LocalizedText(UiEnglish.seasonLetTheCrewBuild),
+-            subtitle: const LocalizedText(
+-              UiEnglish.seasonFreeAutomationForThisSeparateFleet,
+-            ),
+             value: season.automatic,
+             onChanged: (value) =>
+                 _perform(() => game.setSeasonPlan(automatic: value)),

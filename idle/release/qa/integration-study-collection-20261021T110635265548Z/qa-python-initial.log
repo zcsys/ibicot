@@ -1,0 +1,37 @@
+test_background_only_inactivity_start_cannot_create_valid_session (__main__.CollectionReview.test_background_only_inactivity_start_cannot_create_valid_session) ... FAIL
+test_crash_cannot_cross_later_restart_with_equal_second_timestamp (__main__.CollectionReview.test_crash_cannot_cross_later_restart_with_equal_second_timestamp) ... FAIL
+test_crash_exact_next_restart_boundary_is_rejected (__main__.CollectionReview.test_crash_exact_next_restart_boundary_is_rejected) ... ok
+test_exact_clock_gap_preserves_positive_pre_gap_return_but_removes_coverage (__main__.CollectionReview.test_exact_clock_gap_preserves_positive_pre_gap_return_but_removes_coverage) ... ok
+test_terminal_cannot_be_followed_by_same_process_inactivity_restart (__main__.CollectionReview.test_terminal_cannot_be_followed_by_same_process_inactivity_restart) ... FAIL
+
+======================================================================
+FAIL: test_background_only_inactivity_start_cannot_create_valid_session (__main__.CollectionReview.test_background_only_inactivity_start_cannot_create_valid_session)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/csys/Desktop/ibicot/idle/game/qa/integration_study_collection_test.py", line 69, in test_background_only_inactivity_start_cannot_create_valid_session
+    with self.assertRaises(ValueError):
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_crash_cannot_cross_later_restart_with_equal_second_timestamp (__main__.CollectionReview.test_crash_cannot_cross_later_restart_with_equal_second_timestamp)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/csys/Desktop/ibicot/idle/game/qa/integration_study_collection_test.py", line 77, in test_crash_cannot_cross_later_restart_with_equal_second_timestamp
+    with self.assertRaises(ValueError):
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_terminal_cannot_be_followed_by_same_process_inactivity_restart (__main__.CollectionReview.test_terminal_cannot_be_followed_by_same_process_inactivity_restart)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/csys/Desktop/ibicot/idle/game/qa/integration_study_collection_test.py", line 62, in test_terminal_cannot_be_followed_by_same_process_inactivity_restart
+    with self.assertRaises(ValueError):
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.007s
+
+FAILED (failures=3)

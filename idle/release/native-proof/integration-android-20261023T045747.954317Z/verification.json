@@ -1,0 +1,63 @@
+{
+  "candidate_fingerprint": "3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59",
+  "device": "emulator-5556",
+  "label": "android",
+  "platform": "android",
+  "started_utc": "20261023T045747.954317Z",
+  "command": [
+    "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+    "drive",
+    "--driver=test_driver/evidence_911183b5d9ee.dart",
+    "--target=integration_test/evidence_071635c01ed5_test.dart",
+    "-d",
+    "emulator-5556",
+    "--dart-define=TIDEGLASS_DEVICE_LABEL=android",
+    "--dart-define=TIDEGLASS_SCENARIO=natural-reload",
+    "--dart-define=TIDEGLASS_RUN_ID=v3b00-android-natural",
+    "--dart-define=TIDEGLASS_VERIFICATION_ID=integration-android-20261023T045747.954317Z",
+    "--dart-define=TIDEGLASS_CANDIDATE_FINGERPRINT=3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59",
+    "--dart-define=TIDEGLASS_HARNESS_SHA256=071635c01ed508077b467462bac279107a8716861ac97a5b657a5401b2cc3506",
+    "--keep-app-running",
+    "--timeout=180",
+    "--no-pub"
+  ],
+  "runner_sha256": "68297f66fc4e32a173b17da2594872334d59ba2b88b7d5878b5ee8905f9b89e5",
+  "candidate_validation_runner_sha256": "59ee4e7b94a1445e2c8effadfe4c0510c9c189df0278c7ede6e87f1807bf38ee",
+  "scenario": "natural-reload",
+  "run_id": "v3b00-android-natural",
+  "harness_sha256": {
+    "harness.dart": "071635c01ed508077b467462bac279107a8716861ac97a5b657a5401b2cc3506",
+    "driver.dart": "911183b5d9ee8ec80769836f477a293dadb66e20cc0c5d5e44314415889749a8"
+  },
+  "production_inputs_match_snapshot": true,
+  "provenance": "Real elapsed native bootstrap and separate-process reload; isolated test save directory",
+  "exit_code": 0,
+  "production_input_differences_after_run": [],
+  "source_snapshot_unchanged": true,
+  "harness_source_differences_during_run": [],
+  "native_process_stop": {
+    "command": [
+      "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "shell",
+      "am",
+      "force-stop",
+      "dev.tideglass.game"
+    ],
+    "exit_code": 0,
+    "output": ""
+  },
+  "verification_errors": [],
+  "passed": true,
+  "evidence_sha256": {
+    "native-save-progress.1.json": "64a143b7bb4b2a458b322c18b61a0f9e1684d1c6833623af18648f8959535560",
+    "native-save-progress.0.json": "303d65694335b78d59ffd8f8ec165205ac2a8cc68b9e5321158bc5bad5b593ab",
+    "result.json": "531d055fae7593016fc03463e9cf2e5dbe345927806a59489448b7c53cd18d9c",
+    "run.log": "5c740dbc2aa74f50306460eadf021a383f0c8bfb28d92334e9a047dbe186c608",
+    "driver.dart": "911183b5d9ee8ec80769836f477a293dadb66e20cc0c5d5e44314415889749a8",
+    "verify_native.py": "68297f66fc4e32a173b17da2594872334d59ba2b88b7d5878b5ee8905f9b89e5",
+    "harness.dart": "071635c01ed508077b467462bac279107a8716861ac97a5b657a5401b2cc3506",
+    "android-natural-reload.png": "9109d091b0a93b3f9a491ba9e9c26a85b463a8875484073f6c8e1a9f25abd5c0"
+  }
+}

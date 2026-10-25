@@ -89,6 +89,7 @@ void main(List<String> arguments) {
         for (final contracts in [
           ContractPolicy.surveysOnly,
           ContractPolicy.oneReadyPerVisit,
+          ContractPolicy.pursueWithSeason,
         ]) {
           add(
             days,
@@ -114,7 +115,7 @@ void main(List<String> arguments) {
     }
   }
   final target = File(
-    '../../release/balance/${quick ? 'smoke' : 'long-horizon'}-policies.json',
+    '../../release/balance/${quick ? 'smoke' : 'long-horizon'}-v4-policies.json',
   );
   final rows = <Map<String, dynamic>>[];
   if (resume && target.existsSync()) {
@@ -150,12 +151,13 @@ void main(List<String> arguments) {
             'limitations': [
               'Reproducible policies are not a proof of optimal play or measured retention.',
               'Chapter timestamps are upper bounds at evaluation boundaries, not sub-event completion times.',
-              'The none policy uses no Focus and therefore deliberately does not complete the chapter requiring three calibrations.',
-              'The minimal policy completes the three required accessible calibrations; it is not zero-Focus.',
+              'The none policy uses no Focus or Support; all campaign goals remain eligible.',
+              'The legacy-named requiredCalibrationsOnly policy voluntarily completes three accessible calibrations; it is not zero-Focus and they are no longer required.',
               'Ad-route receipts are synthetic deterministic fixtures of successful delivery, not provider verification or observed fill. Their only purpose is economic route parity.',
               'Dossier automation and best-payback choices are selected without human learning time.',
               'Only retained ready daily contracts can be claimed; allReady does not manufacture three completions per day.',
-              'One unread available archive is read per action window. Only one pass is selected; its archive is explicitly resumed at a later visit.',
+              'The ordinary policy reads one unread archive per action window. The pursueWithSeason policy also reflects on an existing archive for unfinished archive goals and explicitly binds/claims real seasonal alternatives for other unfinished goals. It does not fabricate instant completions.',
+              'Only one pass is selected; its archive is explicitly resumed at a later visit.',
               'All 12 dossier sinks are attempted. Five optional plan slots and six decorations are a separate 550-Note budget, not purchased.',
               'No human session count, D30 retention, real ad completion or elapsed seasonal observation is inferred.',
             ],

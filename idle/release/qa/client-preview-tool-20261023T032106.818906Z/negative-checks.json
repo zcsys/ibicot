@@ -1,0 +1,189 @@
+[
+  {
+    "case": "existing-output",
+    "command": [
+      "/Users/csys/Desktop/ibicot/idle/release/qa/client-preview-tool-20261023T032106.818906Z/export_preview",
+      "/Users/csys/Desktop/ibicot/idle/release/native-proof/integration-ios-phone-20261021T112255.702927Z/gameplay.mp4",
+      "/Users/csys/Desktop/ibicot/idle/release/qa/client-preview-tool-20261023T032106.818906Z/existing-output.mp4",
+      "2",
+      "20",
+      "886",
+      "1920"
+    ],
+    "exit_code": 1,
+    "rejected": true,
+    "source_preserved": true,
+    "output_preserved_or_absent": true
+  },
+  {
+    "case": "same-source",
+    "command": [
+      "/Users/csys/Desktop/ibicot/idle/release/qa/client-preview-tool-20261023T032106.818906Z/export_preview",
+      "/Users/csys/Desktop/ibicot/idle/release/native-proof/integration-ios-phone-20261021T112255.702927Z/gameplay.mp4",
+      "/Users/csys/Desktop/ibicot/idle/release/native-proof/integration-ios-phone-20261021T112255.702927Z/gameplay.mp4",
+      "2",
+      "20",
+      "886",
+      "1920"
+    ],
+    "exit_code": 1,
+    "rejected": true,
+    "source_preserved": true,
+    "output_preserved_or_absent": true
+  },
+  {
+    "case": "symlink-source",
+    "command": [
+      "/Users/csys/Desktop/ibicot/idle/release/qa/client-preview-tool-20261023T032106.818906Z/export_preview",
+      "/Users/csys/Desktop/ibicot/idle/release/native-proof/integration-ios-phone-20261021T112255.702927Z/gameplay.mp4",
+      "/Users/csys/Desktop/ibicot/idle/release/qa/client-preview-tool-20261023T032106.818906Z/source-alias.mp4",
+      "2",
+      "20",
+      "886",
+      "1920"
+    ],
+    "exit_code": 1,
+    "rejected": true,
+    "source_preserved": true,
+    "output_preserved_or_absent": true
+  },
+  {
+    "case": "short",
+    "command": [
+      "/Users/csys/Desktop/ibicot/idle/release/qa/client-preview-tool-20261023T032106.818906Z/export_preview",
+      "/Users/csys/Desktop/ibicot/idle/release/native-proof/integration-ios-phone-20261021T112255.702927Z/gameplay.mp4",
+      "/Users/csys/Desktop/ibicot/idle/release/qa/client-preview-tool-20261023T032106.818906Z/short.mp4",
+      "0",
+      "14",
+      "886",
+      "1920"
+    ],
+    "exit_code": 1,
+    "rejected": true,
+    "source_preserved": true,
+    "output_preserved_or_absent": true
+  },
+  {
+    "case": "long",
+    "command": [
+      "/Users/csys/Desktop/ibicot/idle/release/qa/client-preview-tool-20261023T032106.818906Z/export_preview",
+      "/Users/csys/Desktop/ibicot/idle/release/native-proof/integration-ios-phone-20261021T112255.702927Z/gameplay.mp4",
+      "/Users/csys/Desktop/ibicot/idle/release/qa/client-preview-tool-20261023T032106.818906Z/long.mp4",
+      "0",
+      "31",
+      "886",
+      "1920"
+    ],
+    "exit_code": 1,
+    "rejected": true,
+    "source_preserved": true,
+    "output_preserved_or_absent": true
+  },
+  {
+    "case": "outside-source",
+    "command": [
+      "/Users/csys/Desktop/ibicot/idle/release/qa/client-preview-tool-20261023T032106.818906Z/export_preview",
+      "/Users/csys/Desktop/ibicot/idle/release/native-proof/integration-ios-phone-20261021T112255.702927Z/gameplay.mp4",
+      "/Users/csys/Desktop/ibicot/idle/release/qa/client-preview-tool-20261023T032106.818906Z/past-end.mp4",
+      "10",
+      "20",
+      "886",
+      "1920"
+    ],
+    "exit_code": 1,
+    "rejected": true,
+    "source_preserved": true,
+    "output_preserved_or_absent": true
+  },
+  {
+    "case": "negative-start",
+    "command": [
+      "/Users/csys/Desktop/ibicot/idle/release/qa/client-preview-tool-20261023T032106.818906Z/export_preview",
+      "/Users/csys/Desktop/ibicot/idle/release/native-proof/integration-ios-phone-20261021T112255.702927Z/gameplay.mp4",
+      "/Users/csys/Desktop/ibicot/idle/release/qa/client-preview-tool-20261023T032106.818906Z/negative.mp4",
+      "-1",
+      "20",
+      "886",
+      "1920"
+    ],
+    "exit_code": 1,
+    "rejected": true,
+    "source_preserved": true,
+    "output_preserved_or_absent": true
+  },
+  {
+    "case": "nan-start",
+    "command": [
+      "/Users/csys/Desktop/ibicot/idle/release/qa/client-preview-tool-20261023T032106.818906Z/export_preview",
+      "/Users/csys/Desktop/ibicot/idle/release/native-proof/integration-ios-phone-20261021T112255.702927Z/gameplay.mp4",
+      "/Users/csys/Desktop/ibicot/idle/release/qa/client-preview-tool-20261023T032106.818906Z/nan.mp4",
+      "NaN",
+      "20",
+      "886",
+      "1920"
+    ],
+    "exit_code": 1,
+    "rejected": true,
+    "source_preserved": true,
+    "output_preserved_or_absent": true
+  },
+  {
+    "case": "odd-size",
+    "command": [
+      "/Users/csys/Desktop/ibicot/idle/release/qa/client-preview-tool-20261023T032106.818906Z/export_preview",
+      "/Users/csys/Desktop/ibicot/idle/release/native-proof/integration-ios-phone-20261021T112255.702927Z/gameplay.mp4",
+      "/Users/csys/Desktop/ibicot/idle/release/qa/client-preview-tool-20261023T032106.818906Z/odd.mp4",
+      "2",
+      "20",
+      "885",
+      "1920"
+    ],
+    "exit_code": 1,
+    "rejected": true,
+    "source_preserved": true,
+    "output_preserved_or_absent": true
+  },
+  {
+    "case": "too-large",
+    "command": [
+      "/Users/csys/Desktop/ibicot/idle/release/qa/client-preview-tool-20261023T032106.818906Z/export_preview",
+      "/Users/csys/Desktop/ibicot/idle/release/native-proof/integration-ios-phone-20261021T112255.702927Z/gameplay.mp4",
+      "/Users/csys/Desktop/ibicot/idle/release/qa/client-preview-tool-20261023T032106.818906Z/large.mp4",
+      "2",
+      "20",
+      "886",
+      "2048"
+    ],
+    "exit_code": 1,
+    "rejected": true,
+    "source_preserved": true,
+    "output_preserved_or_absent": true
+  },
+  {
+    "case": "audio-must-not-be-discarded",
+    "command": [
+      "/Users/csys/Desktop/ibicot/idle/release/qa/client-preview-tool-20261023T032106.818906Z/export_preview",
+      "/Users/csys/Desktop/ibicot/idle/release/qa/client-preview-tool-20261023T032106.818906Z/with-audio.mp4",
+      "/Users/csys/Desktop/ibicot/idle/release/qa/client-preview-tool-20261023T032106.818906Z/lost-audio.mp4",
+      "2",
+      "20",
+      "886",
+      "1920"
+    ],
+    "exit_code": 1,
+    "rejected": true,
+    "source_preserved": true,
+    "output_preserved_or_absent": true
+  },
+  {
+    "case": "existing-inspection",
+    "command": [
+      "/Users/csys/Desktop/ibicot/idle/release/qa/client-preview-tool-20261023T032106.818906Z/inspect_preview",
+      "/Users/csys/Desktop/ibicot/idle/release/qa/client-preview-tool-20261023T032106.818906Z/historical-review.mp4",
+      "/Users/csys/Desktop/ibicot/idle/release/qa/client-preview-tool-20261023T032106.818906Z/decoded"
+    ],
+    "exit_code": 1,
+    "rejected": true,
+    "evidence_preserved": true
+  }
+]

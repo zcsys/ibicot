@@ -1,0 +1,64 @@
+[
+  {
+    "utc": "2026-10-25T16:06:48.148686+00:00",
+    "argv": [
+      "/Users/csys/Library/Android/sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "shell",
+      "settings",
+      "get",
+      "global",
+      "airplane_mode_on"
+    ],
+    "exit_code": 0,
+    "file": "cleanup-airplane.txt",
+    "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+  },
+  {
+    "utc": "2026-10-25T16:06:48.199197+00:00",
+    "argv": [
+      "/Users/csys/Library/Android/sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "shell",
+      "settings",
+      "get",
+      "global",
+      "wifi_on"
+    ],
+    "exit_code": 0,
+    "file": "cleanup-wifi.txt",
+    "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+  },
+  {
+    "utc": "2026-10-25T16:06:48.266368+00:00",
+    "argv": [
+      "/Users/csys/Library/Android/sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "shell",
+      "settings",
+      "get",
+      "global",
+      "mobile_data"
+    ],
+    "exit_code": 0,
+    "file": "cleanup-data.txt",
+    "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+  },
+  {
+    "utc": "2026-10-25T16:06:48.340989+00:00",
+    "argv": [
+      "/Users/csys/Library/Android/sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "shell",
+      "dumpsys",
+      "connectivity"
+    ],
+    "exit_code": 0,
+    "file": "cleanup-connectivity.txt",
+    "sha256": "4fa20f185dcca000260ae9db15185a0049832e0fa938fb43ae62b8b6004dbdbb"
+  }
+]

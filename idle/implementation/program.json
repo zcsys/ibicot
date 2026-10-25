@@ -936,13 +936,22 @@
       "scope_ids": [
         "S19"
       ],
-      "status": "in_progress",
+      "status": "accepted",
       "evidence": [
         "game/mobile/lib/harbor_art.dart",
-        "implementation/art/production_contract.json"
+        "implementation/art/production_contract.json",
+        "release/art/style-qualification.json",
+        "release/art/import-qualification.json",
+        "release/qa/integration-entry-gates-20261021T113426797640Z/ENTRY_GATE_REVIEW.md",
+        "release/qa/integration-registration-20261021T111626112740Z/REGISTRATION_REVIEW.md",
+        "release/qa/integration-current-scope-20261021T114227186831Z/CURRENT_SCOPE_CHECKPOINT.md",
+        "release/qa/integration-current-scope-20261021T114227186831Z/NUMERIC_EVIDENCE_BRIDGE.json",
+        "release/qa/lead-bounded-acceptance-20261021T1148Z/DECISIONS.md",
+        "release/art/entry-gates/CLIENT_STYLE_REVIEW.md",
+        "source/art/style-guide.md"
       ],
       "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
-      "evidence_note": "Component implementation/authoring evidence only; complete source acceptance and upstream gates remain required."
+      "evidence_note": "Director accepts the exact original criterion after independent QA cross-review and current-source evidence reconciliation. See release/qa/lead-bounded-acceptance-20261021T1148Z/DECISIONS.md. Original dependencies and nominal reviewer preserved. Other linked scope clauses, complete asset qualification, final native candidate and release gates are not accepted by this decision."
     },
     {
       "id": "M0-06",
@@ -1004,13 +1013,18 @@
       "scope_ids": [
         "S40"
       ],
-      "status": "in_progress",
+      "status": "accepted",
       "evidence": [
         "tool/build_native.py",
-        "release/native-proof/20261016T111720.826224Z/build-report.json"
+        "release/native-proof/20261016T111720.826224Z/build-report.json",
+        "release/native-proof/20261019T135402.439115Z-d85-final-verification/final-verification.json",
+        "release/qa/lead-build-study-gate-20261021T114808187442Z/REVIEW.md",
+        "release/qa/integration-package-clauses-20261021T122151762065Z/PACKAGE_RECOMMENDATIONS.md",
+        "release/qa/integration-package-clauses-20261021T122151762065Z/verification.json",
+        "release/qa/lead-package-acceptance-20261021T1226Z/DECISIONS.md"
       ],
       "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
-      "evidence_note": "Local implementation and source checks are underway. Evidence has distinct source snapshots and author/independent review boundaries. Original acceptance, upstream dependencies, physical-device, real-provider and observation requirements remain unchanged and open where unmet."
+      "evidence_note": "Director accepts the unchanged original package criterion and its original accepted prerequisite following independent clause-by-clause review. See release/qa/lead-package-acceptance-20261021T1226Z/DECISIONS.md. Broader linked scope, changed-runtime native qualification and release approval remain separate."
     },
     {
       "id": "M1-01",
@@ -1029,13 +1043,23 @@
         "S14",
         "S29"
       ],
-      "status": "in_progress",
+      "status": "accepted",
       "evidence": [
         "game/core/lib/src/fixed.dart",
-        "docs/decisions/numbers-and-event-order.md"
+        "docs/decisions/numbers-and-event-order.md",
+        "release/qa/integration-current-scope-20261021T114227186831Z/CURRENT_SCOPE_CHECKPOINT.md",
+        "release/qa/integration-current-scope-20261021T114227186831Z/NUMERIC_EVIDENCE_BRIDGE.json",
+        "release/qa/lead-bounded-acceptance-20261021T1148Z/DECISIONS.md",
+        "release/qa/integration-numeric-20261019T135534237861Z/NUMERIC_REVIEW.md",
+        "release/qa/integration-crossengine-20261019T143516578781Z/CROSS_ENGINE_REVIEW.md",
+        "release/qa/integration-final-20261016T105843545492Z/INTEGRATION_REVIEW.md",
+        "release/qa/integration-transition-repaired-20261021T121351672733Z/TRANSITION_REVIEW.md",
+        "release/qa/integration-transition-repaired-20261021T121351672733Z/NUMERIC_EVIDENCE_BRIDGE.json",
+        "release/native-proof/root-transition-20261021T121321.388435Z/verification.json",
+        "release/qa/lead-transition-acceptance-20261021T1221Z/DECISIONS.md"
       ],
       "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
-      "evidence_note": "Component implementation/authoring evidence only; complete source acceptance and upstream gates remain required."
+      "evidence_note": "Director accepts the exact original criterion after independent QA cross-review and current-source evidence reconciliation. See release/qa/lead-bounded-acceptance-20261021T1148Z/DECISIONS.md. Original dependencies and nominal reviewer preserved. Other linked scope clauses, complete asset qualification, final native candidate and release gates are not accepted by this decision."
     },
     {
       "id": "M1-02",
@@ -1053,12 +1077,22 @@
         "S04",
         "S05"
       ],
-      "status": "in_progress",
+      "status": "accepted",
       "evidence": [
-        "game/core/lib/src/engine.dart"
+        "game/core/lib/src/engine.dart",
+        "release/qa/integration-current-scope-20261021T114227186831Z/CURRENT_SCOPE_CHECKPOINT.md",
+        "release/qa/integration-current-scope-20261021T114227186831Z/NUMERIC_EVIDENCE_BRIDGE.json",
+        "release/qa/lead-bounded-acceptance-20261021T1148Z/DECISIONS.md",
+        "release/qa/integration-numeric-20261019T135534237861Z/NUMERIC_REVIEW.md",
+        "release/qa/integration-crossengine-20261019T143516578781Z/CROSS_ENGINE_REVIEW.md",
+        "release/qa/integration-final-20261016T105843545492Z/INTEGRATION_REVIEW.md",
+        "release/qa/integration-transition-repaired-20261021T121351672733Z/TRANSITION_REVIEW.md",
+        "release/qa/integration-transition-repaired-20261021T121351672733Z/NUMERIC_EVIDENCE_BRIDGE.json",
+        "release/native-proof/root-transition-20261021T121321.388435Z/verification.json",
+        "release/qa/lead-transition-acceptance-20261021T1221Z/DECISIONS.md"
       ],
       "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
-      "evidence_note": "Component implementation/authoring evidence only; complete source acceptance and upstream gates remain required."
+      "evidence_note": "Director accepts the exact original criterion after independent QA cross-review and current-source evidence reconciliation. See release/qa/lead-bounded-acceptance-20261021T1148Z/DECISIONS.md. Original dependencies and nominal reviewer preserved. Other linked scope clauses, complete asset qualification, final native candidate and release gates are not accepted by this decision."
     },
     {
       "id": "M1-03",
@@ -1074,13 +1108,22 @@
       "scope_ids": [
         "S12"
       ],
-      "status": "in_progress",
+      "status": "accepted",
       "evidence": [
         "game/persistence/lib/tideglass_persistence.dart",
-        "release/persistence-review.md"
+        "release/persistence-review.md",
+        "release/qa/integration-transition-repaired-20261021T121351672733Z/TRANSITION_REVIEW.md",
+        "release/qa/integration-transition-repaired-20261021T121351672733Z/NUMERIC_EVIDENCE_BRIDGE.json",
+        "release/native-proof/root-transition-20261021T121321.388435Z/verification.json",
+        "release/qa/lead-transition-acceptance-20261021T1221Z/DECISIONS.md",
+        "release/qa/gameplay-m1-03-android-20261023T054815140862Z/REVIEW.md",
+        "release/qa/gameplay-m1-03-android-20261023T054815140862Z/verification.json",
+        "release/qa/lead-persistence-fixtures-adoption-20261023T055444.443133Z/DECISIONS.md",
+        "release/qa/gameplay-m1-03-20261023T051511165683Z/REVIEW.md",
+        "release/native-proof/execution-3b00-20261023T040612.562001Z/sealed-m1-03-20261023T054217.678143Z/checkpoint.json"
       ],
       "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
-      "evidence_note": "Component implementation/authoring evidence only; complete source acceptance and upstream gates remain required."
+      "evidence_note": "Accepted at unchanged original clause after original gameplay-role review and different-author component/native verification. Current iOS and Android actual flock, three process-kill boundaries and separate recovery/transition reopens match exact checksummed state/cursors; current host tests cover backups, import, schema migration and corruption refusal. Sole original M1-02 prerequisite accepted. Preserved old verifier failure is not counted as a pass. No physical power-loss, cloud/provider, universal zero-defect or finished-v1 claim."
     },
     {
       "id": "M1-04",
@@ -1097,17 +1140,26 @@
         "S14",
         "S40"
       ],
-      "status": "in_progress",
+      "status": "accepted",
       "evidence": [
         "game/core/lib/src/state.dart",
         "game/mobile/lib/bootstrap.dart",
         "game/mobile/lib/bundled_content.dart",
         "game/mobile/lib/bundled_hashes.g.dart",
         "tool/package_content.py",
-        "game/mobile/test/bundled_content_test.dart"
+        "game/mobile/test/bundled_content_test.dart",
+        "game/mobile/lib/content_compatibility.dart",
+        "release/qa/integration-optional-calibration-20261021T110210355242Z/OPTIONAL_CALIBRATION_REVIEW.md",
+        "release/qa/integration-transition-repaired-20261021T121351672733Z/TRANSITION_REVIEW.md",
+        "release/qa/integration-transition-repaired-20261021T121351672733Z/NUMERIC_EVIDENCE_BRIDGE.json",
+        "release/native-proof/root-transition-20261021T121321.388435Z/verification.json",
+        "release/qa/lead-transition-acceptance-20261021T1221Z/DECISIONS.md",
+        "release/qa/gameplay-config-clause-20261021T141342461007Z/M1-04_RECOMMENDATION.md",
+        "release/qa/gameplay-config-clause-20261021T141342461007Z/verification.json",
+        "release/qa/lead-config-acceptance-20261021T141750.104883Z/DECISIONS.md"
       ],
       "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
-      "evidence_note": "Local implementation and independent review in progress. Original upstream dependencies and full production acceptance remain required; external services, devices and real observation are not substituted by local evidence."
+      "evidence_note": "Accepted at the unchanged configuration-validation, economic-save pin, safe-default and incompatible-update rejection criterion. Original M0-08 prerequisite accepted. Named gameplay review independently audits packaging and content compatibility; gameplay-authored transitions rely on separate QA evidence with36 matching core/persistence and7 client input hashes. Full S40, current native qualification and release approval remain separate."
     },
     {
       "id": "M1-05",
@@ -1125,13 +1177,16 @@
         "S02",
         "S04"
       ],
-      "status": "in_progress",
+      "status": "accepted",
       "evidence": [
         "game/mobile/lib/app.dart",
-        "game/mobile/lib/bootstrap.dart"
+        "game/mobile/lib/bootstrap.dart",
+        "release/qa/integration-client-clauses-20261021T143635184485Z/CLAUSE_RECOMMENDATIONS.md",
+        "release/qa/integration-client-clauses-20261021T143635184485Z/verification.json",
+        "release/qa/lead-client-shell-acceptance-20261021T145030.603397Z/DECISIONS.md"
       ],
       "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
-      "evidence_note": "Component implementation/authoring evidence only; complete source acceptance and upstream gates remain required."
+      "evidence_note": "Accepted at unchanged original shell criterion after named independent QA review of actual small/large200% English/pseudo wallet/output, independently computed network preview, real milestone purchase, reset cancel/confirm and Settings actions. Original M0-04/M1-02 prerequisites accepted. M2-03 conditional reset estimate remains separate and under implementation; physical/human and broader scope/release gates are not promoted."
     },
     {
       "id": "M1-06",
@@ -1148,13 +1203,18 @@
         "S15",
         "S44"
       ],
-      "status": "in_progress",
+      "status": "accepted",
       "evidence": [
         "game/content/progression/campaign.json",
-        "game/content/progression/challenge-index.json"
+        "game/content/progression/challenge-index.json",
+        "release/content-evidence/inventory-report.md",
+        "release/qa/integration-inventory-20261021T104607526377Z/INVENTORY_REVIEW.md",
+        "release/qa/integration-package-clauses-20261021T122151762065Z/PACKAGE_RECOMMENDATIONS.md",
+        "release/qa/integration-package-clauses-20261021T122151762065Z/verification.json",
+        "release/qa/lead-package-acceptance-20261021T1226Z/DECISIONS.md"
       ],
       "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
-      "evidence_note": "Component implementation/authoring evidence only; complete source acceptance and upstream gates remain required."
+      "evidence_note": "Director accepts the unchanged original package criterion and its original accepted prerequisite following independent clause-by-clause review. See release/qa/lead-package-acceptance-20261021T1226Z/DECISIONS.md. Broader linked scope, changed-runtime native qualification and release approval remain separate."
     },
     {
       "id": "M1-07",
@@ -1171,13 +1231,21 @@
         "S19",
         "S23"
       ],
-      "status": "in_progress",
+      "status": "accepted",
       "evidence": [
         "game/mobile/lib/harbor_art.dart",
-        "game/mobile/lib/palette.dart"
+        "game/mobile/lib/palette.dart",
+        "release/qa/integration-art-matrix-20261021T123739647573Z/ART_MATRIX_REVIEW.md",
+        "release/art/catalogue-variants/per-id-evidence.json",
+        "release/native-proof/root-art-full-20261021T122040.006324Z/verification.json",
+        "release/native-proof/root-art-pseudo-full-20261021T122636.246158Z/verification.json",
+        "release/qa/lead-art-scope-acceptance-20261021T124855.896748Z/DECISIONS.md",
+        "release/qa/client-current-runtime-components-20261021T125452787579Z/M1_07_CLIENT_REVIEW.md",
+        "release/qa/client-current-runtime-components-20261021T125452787579Z/verification.json",
+        "release/qa/lead-reusable-components-acceptance-20261021T125811.427145Z/DECISIONS.md"
       ],
       "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
-      "evidence_note": "Component implementation/authoring evidence only; complete source acceptance and upstream gates remain required."
+      "evidence_note": "Accepted at unchanged reusable slice-component criterion: modular producer parts, harbor layers, shared typography/icons and slice UI states. Original named client review plus different-author QA supported by actual integrated matrices and native/component images. M0-05 prerequisite accepted. This does not accept all164 asset records, complete daily UI, audio, rights, physical-device or wider release gates."
     },
     {
       "id": "M1-08",
@@ -1196,13 +1264,18 @@
         "S12",
         "S28"
       ],
-      "status": "in_progress",
+      "status": "accepted",
       "evidence": [
         "game/core/test/persistence_integration_test.dart",
-        "game/persistence/test/save_repository_test.dart"
+        "game/persistence/test/save_repository_test.dart",
+        "release/qa/gameplay-m1-03-android-20261023T054815140862Z/REVIEW.md",
+        "release/qa/gameplay-m1-03-android-20261023T054815140862Z/verification.json",
+        "release/qa/lead-persistence-fixtures-adoption-20261023T055444.443133Z/DECISIONS.md",
+        "release/qa/director-m1-08-20261023T054139.868139Z/REVIEW.md",
+        "release/qa/director-m1-08-20261023T054139.868139Z/verification.json"
       ],
       "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
-      "evidence_note": "Component implementation/authoring evidence only; complete source acceptance and upstream gates remain required."
+      "evidence_note": "Accepted at unchanged original production-fixture clause after designated director source/log review and independently reviewed current QA bridge. Original cost/output/entitlement oracle fixtures, exact rounding and repeat-reset refusals, corruption and real-core interrupted-transaction replay cases are executable and passing. M1-01/M1-02/M1-03 prerequisites accepted in dependency order. No S28 verified-commerce/release acceptance is inferred."
     },
     {
       "id": "M2-01",
@@ -1220,12 +1293,15 @@
         "S06",
         "S07"
       ],
-      "status": "in_progress",
+      "status": "accepted",
       "evidence": [
-        "game/core/lib/src/engine.dart"
+        "game/core/lib/src/engine.dart",
+        "release/qa/platform-package-clauses-20261021T141913194277Z/PACKAGE_RECOMMENDATIONS.md",
+        "release/qa/platform-package-clauses-20261021T141913194277Z/verification.json",
+        "release/qa/lead-automation-acceptance-20261021T143015.491121Z/DECISIONS.md"
       ],
       "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
-      "evidence_note": "Component implementation/authoring evidence only; complete source acceptance and upstream gates remain required."
+      "evidence_note": "Accepted at unchanged original criterion and original accepted prerequisites, in M2-01 then M3-03 order. Different-author named platform review reproduced earned first-session boundaries, actual online/offline priority/reset/receipt parity, exact free/Note plan capacity and actual repository reopen. No paid gate or economic constants changed. Physical interruption, broader forecast/UI, provider/human and release gates remain separate."
     },
     {
       "id": "M2-02",
@@ -1242,12 +1318,17 @@
       "scope_ids": [
         "S05"
       ],
-      "status": "in_progress",
+      "status": "accepted",
       "evidence": [
-        "game/mobile/lib/app.dart"
+        "game/mobile/lib/app.dart",
+        "game/mobile/lib/help_content.dart",
+        "game/mobile/lib/help_screen.dart",
+        "release/qa/onboarding-clause-20261023T040451.613635Z/M2_02_RECOMMENDATION.md",
+        "release/qa/onboarding-clause-20261023T040451.613635Z/verification.json",
+        "release/qa/lead-onboarding-acceptance-20261023T041409.400628Z/DECISIONS.md"
       ],
       "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
-      "evidence_note": "Component implementation/authoring evidence only; complete source acceptance and upstream gates remain required."
+      "evidence_note": "Accepted at unchanged original skippable guidance criterion after assigned independent QA source/evidence review of costs, production, retained progress, automation and explicit monetization entry. Original M1-05/M2-01 prerequisites accepted. Named executed onboarding/guest cases, current independent shell/reset interactions and12-condition full Help matrix explicitly bridged. No new runtime execution or human comprehension/provider/native release claim; S05 and M2-06/S32 remain separate."
     },
     {
       "id": "M2-03",
@@ -1263,12 +1344,18 @@
       "scope_ids": [
         "S07"
       ],
-      "status": "in_progress",
+      "status": "accepted",
       "evidence": [
-        "game/mobile/lib/app.dart"
+        "game/core/lib/rechart_forecast.dart",
+        "game/mobile/lib/rechart_estimate.dart",
+        "game/mobile/lib/rechart_forecast_task.dart",
+        "game/mobile/lib/app.dart",
+        "release/qa/qa-reset-20261023T025256.370588Z/RESET_REVIEW.md",
+        "release/qa/qa-reset-20261023T025256.370588Z/verification.json",
+        "release/qa/lead-reset-acceptance-20261023T031507.905860Z/DECISIONS.md"
       ],
       "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
-      "evidence_note": "Component implementation/authoring evidence only; complete source acceptance and upstream gates remain required."
+      "evidence_note": "Accepted at unchanged original forecast criterion after named different-author QA numerical/isolate and actual small/large200% English/pseudo dialogue review. Actual marginal network and next-threshold evidence explicitly bridged; original M2-01 prerequisite accepted. Counterfactual assumptions and sampled24h limits are readable; no optimum or economic change. Subsequent daily-icon-only App/Panel delta is recorded, with combined native verification pending. S07 late-tier audit and broader release gates remain separate."
     },
     {
       "id": "M2-04",
@@ -1313,12 +1400,24 @@
       "scope_ids": [
         "S19"
       ],
-      "status": "in_progress",
+      "status": "accepted",
       "evidence": [
-        "game/mobile/lib/harbor_art.dart"
+        "game/mobile/lib/harbor_art.dart",
+        "release/content-evidence/inventory-report.md",
+        "release/qa/integration-inventory-20261021T104607526377Z/INVENTORY_REVIEW.md",
+        "release/art/style-qualification.json",
+        "release/art/import-qualification.json",
+        "release/qa/integration-entry-gates-20261021T113426797640Z/ENTRY_GATE_REVIEW.md",
+        "release/qa/integration-registration-20261021T111626112740Z/REGISTRATION_REVIEW.md",
+        "release/qa/client-m2-05-visual-20261021T132702381394Z/M2_05_CLIENT_REVIEW.md",
+        "release/qa/client-m2-05-visual-20261021T132702381394Z/verification.json",
+        "release/qa/integration-art-matrix-20261021T123739647573Z/ART_MATRIX_REVIEW.md",
+        "release/native-proof/root-art-full-20261021T122040.006324Z/verification.json",
+        "release/native-proof/root-art-pseudo-full-20261021T122636.246158Z/verification.json",
+        "release/qa/lead-representative-harbor-acceptance-20261021T133251.164059Z/DECISIONS.md"
       ],
       "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
-      "evidence_note": "Component implementation/authoring evidence only; complete source acceptance and upstream gates remain required."
+      "evidence_note": "Accepted at exact unchanged representative-harbor criterion: one coherent area, all five base silhouettes and additive milestone stages with actual normal/reduced-motion variants. Original named client review plus different-author QA and source-bound full English/pseudo matrices; M1-07 prerequisite accepted. This does not accept all164 assets, physical performance, rights, audio, final store creative or finished v1."
     },
     {
       "id": "M2-06",
@@ -1378,12 +1477,19 @@
         "S10",
         "S14"
       ],
-      "status": "in_progress",
+      "status": "accepted",
       "evidence": [
-        "game/core/lib/src/engine.dart"
+        "game/core/lib/src/engine.dart",
+        "release/qa/integration-transition-repaired-20261021T121351672733Z/TRANSITION_REVIEW.md",
+        "release/qa/integration-transition-repaired-20261021T121351672733Z/NUMERIC_EVIDENCE_BRIDGE.json",
+        "release/native-proof/root-transition-20261021T121321.388435Z/verification.json",
+        "release/qa/lead-transition-acceptance-20261021T1221Z/DECISIONS.md",
+        "release/qa/platform-daily-clauses-20261023T055503.453188Z/REVIEW.md",
+        "release/qa/platform-daily-clauses-20261023T055503.453188Z/verification.json",
+        "release/qa/lead-daily-challenge-adoption-20261023T080939.226834Z/DECISIONS.md"
       ],
       "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
-      "evidence_note": "Component implementation/authoring evidence only; complete source acceptance and upstream gates remain required."
+      "evidence_note": "Accepted at unchanged original local timeline clause after assigned independent platform-role source/evidence/arithmetic review. Unified Focus/Survey/offline/expiry/account-day event order is supported by current frozen source and executed tests, with exact collision evidence. Original M2-01/M1-03 prerequisites accepted. Separate S08 physical return-performance and full M3-10 gates remain open."
     },
     {
       "id": "M3-02",
@@ -1400,10 +1506,14 @@
       "scope_ids": [
         "S11"
       ],
-      "status": "in_progress",
-      "evidence": [],
+      "status": "accepted",
+      "evidence": [
+        "release/qa/platform-daily-clauses-20261023T055503.453188Z/REVIEW.md",
+        "release/qa/platform-daily-clauses-20261023T055503.453188Z/verification.json",
+        "release/qa/lead-daily-challenge-adoption-20261023T080939.226834Z/DECISIONS.md"
+      ],
       "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
-      "evidence_note": "Component implementation/authoring evidence only; complete source acceptance and upstream gates remain required."
+      "evidence_note": "Accepted after M3-01 in original dependency order and assigned independent platform-role review. Seeded stable IDs, frozen goals, return snapshots, once-only rerolls, seven-day/21-slot backlog and exactly-once claims are supported by current source and executed core/controller/persistence evidence. Original M1-06 prerequisite accepted; no provider or release acceptance."
     },
     {
       "id": "M3-03",
@@ -1420,10 +1530,14 @@
       "scope_ids": [
         "S06"
       ],
-      "status": "in_progress",
-      "evidence": [],
+      "status": "accepted",
+      "evidence": [
+        "release/qa/platform-package-clauses-20261021T141913194277Z/PACKAGE_RECOMMENDATIONS.md",
+        "release/qa/platform-package-clauses-20261021T141913194277Z/verification.json",
+        "release/qa/lead-automation-acceptance-20261021T143015.491121Z/DECISIONS.md"
+      ],
       "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
-      "evidence_note": "Component implementation/authoring evidence only; complete source acceptance and upstream gates remain required."
+      "evidence_note": "Accepted at unchanged original criterion and original accepted prerequisites, in M2-01 then M3-03 order. Different-author named platform review reproduced earned first-session boundaries, actual online/offline priority/reset/receipt parity, exact free/Note plan capacity and actual repository reopen. No paid gate or economic constants changed. Physical interruption, broader forecast/UI, provider/human and release gates remain separate."
     },
     {
       "id": "M3-04",
@@ -1441,12 +1555,20 @@
         "S09",
         "S17"
       ],
-      "status": "in_progress",
+      "status": "accepted",
       "evidence": [
-        "game/content/calibrations/calibration.01.pattern.json"
+        "game/content/calibrations/calibration.01.pattern.json",
+        "release/qa/integration-accessibility-20261021T125317256764Z/CALIBRATION_REVIEW.md",
+        "release/qa/integration-accessibility-20261021T125317256764Z/verification.json",
+        "release/native-proof/root-calibration-full-20261021T125314.174315Z/verification.json",
+        "release/native-proof/root-calibration-pseudo-full-20261021T125549.278518Z/verification.json",
+        "release/qa/lead-calibration-scope-acceptance-20261021T130612.263921Z/DECISIONS.md",
+        "release/qa/daily-challenge-20261023T060000Z/READINESS_REVIEW.md",
+        "release/qa/daily-challenge-20261023T060000Z/verification.json",
+        "release/qa/lead-daily-challenge-adoption-20261023T080939.226834Z/DECISIONS.md"
       ],
       "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
-      "evidence_note": "Component implementation/authoring evidence only; complete source acceptance and upstream gates remain required."
+      "evidence_note": "Accepted after original M3-01/M3-02 prerequisites and assigned independent QA clause review. Actual daily route integrates untimed equal-value calibration, queued Focus, Survey collection and contract management; current matrices and separate-author action/source bridges support the criterion. No human comprehension, physical assistive or release-wide acceptance is inferred."
     },
     {
       "id": "M3-05",
@@ -1463,17 +1585,21 @@
       "scope_ids": [
         "S26"
       ],
-      "status": "in_progress",
+      "status": "accepted",
       "evidence": [
         "game/mobile/lib/audio_settings.dart",
         "game/mobile/lib/app.dart",
         "game/mobile/lib/notification_service.dart",
         "game/mobile/lib/reminder_lifecycle.dart",
         "game/mobile/test/reminder_lifecycle_test.dart",
-        "release/notifications-author-review.md"
+        "release/notifications-author-review.md",
+        "release/qa/integration-reminders-initial-20261016T115431767720Z/REMINDERS_REVIEW.md",
+        "release/qa/settings-notifications-final-20261025T171045.565766Z/READINESS_REVIEW.md",
+        "release/qa/settings-notifications-final-20261025T171045.565766Z/verification.json",
+        "release/qa/lead-settings-adoption-20261025T171709.890699Z/DECISIONS.md"
       ],
       "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
-      "evidence_note": "Local implementation and separately pinned author/independent evidence. Original acceptance and dependencies remain intact; physical/native/provider/human/elapsed observation gates remain open where unmet."
+      "evidence_note": "Accepted at the unchanged original implementation criterion after named independent QA review of actual Settings/input/presentation controls and all five notification cases on each public target runtime. Android revocation uses a qualified expected OS interruption followed by strict new-process recovery with exact saved generations and denied scheduling; the preparation is not a passing integration test. Quiet hours constrain requested scheduling under the existing OS-delay and planning-time-zone disclosures, not an absolute dispatch blackout. M1-05/M3-01 prerequisites are accepted. Physical accessibility/performance/audio, M5-02, provider/store/human/elapsed operating and full-release gates remain separate."
     },
     {
       "id": "M3-06",
@@ -1550,10 +1676,15 @@
       "status": "in_progress",
       "evidence": [
         "game/content/challenges/challenge.01.json",
-        "game/content/progression/campaign.json"
+        "game/content/progression/campaign.json",
+        "release/qa/scope-forward-final-20261023T085127.503162Z/CONTENT_READINESS.md",
+        "release/qa/scope-forward-final-20261023T085127.503162Z/content-readiness-verification.json",
+        "release/qa/daily-challenge-20261023T060000Z/READINESS_REVIEW.md",
+        "release/qa/lead-earned-note-reproduction-20261023T080225.313756Z/verification.json",
+        "release/qa/scope-forward-20261023T033420.755364Z/S33_BRIDGE.md"
       ],
       "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
-      "evidence_note": "Component implementation/authoring evidence only; complete source acceptance and upstream gates remain required."
+      "evidence_note": "Current six-chapter and twelve-dossier runtime specifications include objectives, unlock rules, explicit zero-economic reward budgets and complete copy. Existing exact-engine reachability, actual twelve-condition content actions, earned-Note entry/isolation proof and the source-bound 30/90-day active/passive bridge support the substantive original clause. No additional local authoring defect is identified. M1-06 is accepted; unchanged original M2-06 human-study prerequisite remains unaccepted, so M3-08 stays in_progress. Simulated completion is not observed human play or S44 acceptance."
     },
     {
       "id": "M3-09",
@@ -1570,13 +1701,27 @@
         "S04",
         "S19"
       ],
-      "status": "in_progress",
+      "status": "accepted",
       "evidence": [
         "release/art/producer-independent-review.md",
-        "game/mobile/lib/producer_art.dart"
+        "game/mobile/lib/producer_art.dart",
+        "release/art/style-qualification.json",
+        "release/art/import-qualification.json",
+        "release/qa/integration-entry-gates-20261021T113426797640Z/ENTRY_GATE_REVIEW.md",
+        "release/qa/integration-registration-20261021T111626112740Z/REGISTRATION_REVIEW.md",
+        "release/qa/integration-art-matrix-20261021T123739647573Z/ART_MATRIX_REVIEW.md",
+        "release/art/catalogue-variants/per-id-evidence.json",
+        "release/native-proof/root-art-full-20261021T122040.006324Z/verification.json",
+        "release/native-proof/root-art-pseudo-full-20261021T122636.246158Z/verification.json",
+        "release/qa/lead-art-scope-acceptance-20261021T124855.896748Z/DECISIONS.md",
+        "release/qa/client-assets-current-20261023T025348.813709Z/ASSET_REVIEW.md",
+        "release/daily-icons/author-matrix-20261023T031243.068903Z/AUTHOR_REVIEW.md",
+        "release/qa/lead-daily-icons-20261023T031715.308630Z/REVIEW.md",
+        "release/qa/qa-provenance-version-20261023T031648.974649Z/M3_09_CLIENT_RECOMMENDATION.md",
+        "release/qa/lead-daily-art-acceptance-20261023T032547.803843Z/DECISIONS.md"
       ],
       "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
-      "evidence_note": "Local implementation and source checks are underway. Evidence has distinct source snapshots and author/independent review boundaries. Original acceptance, upstream dependencies, physical-device, real-provider and observation requirements remain unchanged and open where unmet."
+      "evidence_note": "Accepted at unchanged original25-producer-presentation and daily-icon/status criterion with M2-05 prerequisite accepted. Assigned independent client reviewer differs from icon author; exact25-stage evidence,12 affected host conditions, root representative reproduction and text-equivalent status branches inspected. No new asset family or economic rule. All164 per-asset/native/physical/rights and broader release obligations remain separate."
     },
     {
       "id": "M3-10",
@@ -1605,10 +1750,18 @@
       "evidence": [
         "game/mobile/test/offline_replay_test.dart",
         "release/qa/integration-final-20261016T105843545492Z/INTEGRATION_REVIEW.md",
-        "release/qa/integration-services-repaired-20261016T114721906724Z/INTEGRATION_REVIEW.md"
+        "release/qa/integration-services-repaired-20261016T114721906724Z/INTEGRATION_REVIEW.md",
+        "release/qa/integration-transition-repaired-20261021T121351672733Z/TRANSITION_REVIEW.md",
+        "release/qa/integration-transition-repaired-20261021T121351672733Z/NUMERIC_EVIDENCE_BRIDGE.json",
+        "release/native-proof/root-transition-20261021T121321.388435Z/verification.json",
+        "release/qa/lead-transition-acceptance-20261021T1221Z/DECISIONS.md",
+        "game/core/test/qa_midnight_rechart_test.dart",
+        "release/qa/lead-midnight-rechart-20261023T050031.491898Z/strengthening-verification.json",
+        "release/qa/midnight-rechart-20261023T050752.410870Z/REVIEW.md",
+        "release/qa/lead-collision-adoption-20261023T051406.832841Z/DECISIONS.md"
       ],
       "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
-      "evidence_note": "Local implementation and separately pinned author/independent evidence. Original acceptance and dependencies remain intact; physical/native/provider/human/elapsed observation gates remain open where unmet."
+      "evidence_note": "Local implementation and separately pinned author/independent evidence. Original acceptance and dependencies remain intact; physical/native/provider/human/elapsed observation gates remain open where unmet. Independently reproduced four-case coincident account-midnight/automatic-Rechart/timer fixture closes the identified local reset/day collision evidence gap; exact expiry/refill/day/reset order, reward persistence, old-day reason, and whole/split parity pass. This test-only addition does not accept M3-10 or waive its original prerequisites."
     },
     {
       "id": "M4-01",
@@ -1682,7 +1835,10 @@
         "release/client-season-review.md",
         "game/mobile/lib/cosmetics_screen.dart",
         "game/mobile/test/cosmetic_session_test.dart",
-        "release/qa/integration-services-repaired-20261016T114721906724Z/INTEGRATION_REVIEW.md"
+        "release/qa/integration-services-repaired-20261016T114721906724Z/INTEGRATION_REVIEW.md",
+        "game/mobile/lib/service_cosmetics.dart",
+        "release/commerce-signed-ui-integration-tests.log",
+        "release/qa/integration-native-ownership-repaired-20261019T145035575220Z/NATIVE_OWNERSHIP_REPAIRED_REVIEW.md"
       ],
       "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
       "evidence_note": "Local implementation and separately pinned author/independent evidence. Original acceptance and dependencies remain intact; physical/native/provider/human/elapsed observation gates remain open where unmet."
@@ -1707,7 +1863,13 @@
         "services/",
         "game/mobile/lib/native_services.dart",
         "services/tideglass_service/providers/stores.py",
-        "release/qa/integration-services-repaired-20261016T114721906724Z/INTEGRATION_REVIEW.md"
+        "release/qa/integration-services-repaired-20261016T114721906724Z/INTEGRATION_REVIEW.md",
+        "docs/decisions/ownership-and-soundtrack-integration.md",
+        "services/evidence/ownership-clock-vault-verification.json",
+        "release/bootstrap-ownership-config-evidence.json",
+        "release/ownership-clock-mobile-integration-tests.log",
+        "release/native-commerce-integration-author-evidence.json",
+        "release/qa/integration-native-ownership-repaired-20261019T145035575220Z/NATIVE_OWNERSHIP_REPAIRED_REVIEW.md"
       ],
       "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
       "evidence_note": "Local implementation and separately pinned author/independent evidence. Original acceptance and dependencies remain intact; physical/native/provider/human/elapsed observation gates remain open where unmet."
@@ -1734,10 +1896,12 @@
         "game/mobile/lib/support_service_bridge.dart",
         "game/mobile/lib/service_support_screen.dart",
         "services/tideglass_service/providers/admob.py",
-        "release/qa/integration-services-repaired-20261016T114721906724Z/INTEGRATION_REVIEW.md"
+        "release/qa/integration-services-repaired-20261016T114721906724Z/INTEGRATION_REVIEW.md",
+        "release/content-evidence/inventory-report.md",
+        "release/qa/integration-inventory-20261021T104607526377Z/INVENTORY_REVIEW.md"
       ],
       "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
-      "evidence_note": "Local implementation and separately pinned author/independent evidence. Original acceptance and dependencies remain intact; physical/native/provider/human/elapsed observation gates remain open where unmet."
+      "evidence_note": "Local implementation and separately pinned author/independent evidence. Original acceptance and dependencies remain intact; physical/native/provider/human/elapsed observation gates remain open where unmet. 21Oct source inventory reconciles164/669 assets/files;162 authored,2 absent,0 verified.37 original registration gaps and36 cosmetic renderer re-pins remain local work; subsequent campaign/study/cache changes require new binding."
     },
     {
       "id": "M4-06",
@@ -1766,10 +1930,15 @@
         "implementation/content/launch_manifest.json",
         "game/mobile/lib/bundled_content.dart",
         "release/client-story-review.md",
-        "release/client-season-review.md"
+        "release/client-season-review.md",
+        "release/qa/scope-forward-final-20261023T085127.503162Z/CONTENT_READINESS.md",
+        "release/qa/scope-forward-final-20261023T085127.503162Z/content-readiness-verification.json",
+        "release/content-presentation/full-matrix-repaired-20261021T143209447416Z/verification.json",
+        "release/qa/lead-content-matrix-20261021T144134.921859Z/MATRIX_REVIEW.md",
+        "release/qa/integration-accessibility-20261021T125317256764Z/CALIBRATION_REVIEW.md"
       ],
       "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
-      "evidence_note": "Local implementation and source checks are underway. Evidence has distinct source snapshots and author/independent review boundaries. Original acceptance, upstream dependencies, physical-device, real-provider and observation requirements remain unchanged and open where unmet."
+      "evidence_note": "Current packaged data/copy contain all six chapters and ending, twelve challenges, twelve calibration patterns, eighteen main archives and Season 1 including all forty free/premium reward descriptions. Actual full content read-through and interaction matrices, calibration review and current authored-to-packaged/candidate byte checks support the complete-data/copy clause. No missing local content item is identified. Original M3-08/M4-01/M4-02 prerequisites remain unaccepted, so M4-06 stays in_progress; no commerce, human pacing, real 28-day or whole-asset acceptance is inferred."
     },
     {
       "id": "M4-07",
@@ -1795,10 +1964,28 @@
         "release/art/producer-independent-review.md",
         "game/mobile/lib/harbor_art.dart",
         "release/cosmetics-author-review.md",
-        "release/art/cosmetics-contact-sheet.png"
+        "release/art/cosmetics-contact-sheet.png",
+        "release/art/style-qualification.json",
+        "release/art/import-qualification.json",
+        "release/qa/integration-entry-gates-20261021T113426797640Z/ENTRY_GATE_REVIEW.md",
+        "release/qa/integration-registration-20261021T111626112740Z/REGISTRATION_REVIEW.md",
+        "release/qa/integration-art-matrix-20261021T123739647573Z/ART_MATRIX_REVIEW.md",
+        "release/art/catalogue-variants/per-id-evidence.json",
+        "release/native-proof/root-art-full-20261021T122040.006324Z/verification.json",
+        "release/native-proof/root-art-pseudo-full-20261021T122636.246158Z/verification.json",
+        "release/qa/lead-art-scope-acceptance-20261021T124855.896748Z/DECISIONS.md",
+        "release/qa/client-reverse-current-20261023T084431.965005Z/m4-07/CLIENT_JUDGMENT.md",
+        "release/qa/client-reverse-current-20261023T084431.965005Z/m4-07/verification.json",
+        "release/qa/lead-reusable-components-acceptance-20261021T125811.427145Z/DECISIONS.md",
+        "release/qa/lead-daily-art-acceptance-20261023T032547.803843Z/DECISIONS.md",
+        "release/native-proof/integration-ios-phone-20261023T042413.249061Z/verification.json",
+        "release/native-proof/integration-android-20261023T045839.608141Z/verification.json",
+        "release/native-proof/integration-ios-tablet-20261023T052438.108744Z/verification.json",
+        "release/qa/settings-native-20261023T081631.942859Z/SETTINGS_HOST_REVIEW.md",
+        "release/qa/lead-settings-reproduction-20261023T084118.092567Z/REVIEW.md"
       ],
       "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
-      "evidence_note": "Local implementation, author checks and separately pinned independent review; full original acceptance/upstream gates remain open. No external qualification or elapsed observation substituted."
+      "evidence_note": "The exact original local harbor/cosmetic/audio integration clause is substantively supported by the named client judgment: seven integrated harbor presentations, all 36 cosmetic identities and variants, original authored score/synthesis, actual three-target native audio initialization/eleven AAC decodes with advancing clocks, and independently reproduced actual audio controls. M1-07 and M3-09 are accepted; their prior pending-review/icon notes are superseded. M4-07 remains in_progress because its unchanged M4-06 prerequisite is not accepted. This is not all164 asset approval or full S23 acceptance; final sound direction, physical interruption/mix, paid soundtrack fulfillment and distribution/public-release obligations remain separate. No added human-only art approval or external commission is inferred."
     },
     {
       "id": "M4-08",
@@ -1846,10 +2033,14 @@
       "evidence": [
         "game/mobile/lib/offline_replay.dart",
         "game/mobile/test/offline_replay_test.dart",
-        "docs/decisions/offline-replay-and-cosmetic-selection.md"
+        "docs/decisions/offline-replay-and-cosmetic-selection.md",
+        "release/qa/integration-numeric-20261019T135534237861Z/NUMERIC_REVIEW.md",
+        "release/balance/INVALIDATED.md",
+        "release/qa/integration-crossengine-20261019T143516578781Z/CROSS_ENGINE_REVIEW.md",
+        "release/qa/integration-balance-20261019T145921108068Z/BALANCE_REVIEW.md"
       ],
       "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
-      "evidence_note": "Local implementation, author checks and separately pinned independent review; full original acceptance/upstream gates remain open. No external qualification or elapsed observation substituted."
+      "evidence_note": "QA018 cross-engine fleet memo repaired with exact base-type cache guard and independently verified. Corrected v4/supplemental v2 simulations independently pass; previous invalidated matrices remain unusable. Physical frame/startup/resume and original dependency gates remain open."
     },
     {
       "id": "M5-02",
@@ -1873,10 +2064,22 @@
       "status": "in_progress",
       "evidence": [
         "game/mobile/test/service_settings_test.dart",
-        "release/service-settings-author-review.md"
+        "release/service-settings-author-review.md",
+        "release/localization-author-review.md",
+        "release/localization-author-evidence.json",
+        "release/help-author-review.md",
+        "release/help-author-evidence.json",
+        "game/mobile/lib/help_screen.dart",
+        "game/mobile/lib/help_content.dart",
+        "release/qa/integration-help-repaired-20261021T101942186162Z/HELP_REPAIRED_REVIEW.md",
+        "release/qa/integration-accessibility-20261021T125317256764Z/CALIBRATION_REVIEW.md",
+        "release/qa/integration-accessibility-20261021T125317256764Z/verification.json",
+        "release/native-proof/root-calibration-full-20261021T125314.174315Z/verification.json",
+        "release/native-proof/root-calibration-pseudo-full-20261021T125549.278518Z/verification.json",
+        "release/qa/lead-calibration-scope-acceptance-20261021T130612.263921Z/DECISIONS.md"
       ],
       "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
-      "evidence_note": "Local implementation and source checks are underway. Evidence has distinct source snapshots and author/independent review boundaries. Original acceptance, upstream dependencies, physical-device, real-provider and observation requirements remain unchanged and open where unmet."
+      "evidence_note": "Handbook integrated with Logbook/Settings and existing account/privacy/export/import flows.6 English+6 pseudo author tests; current full candidate mobile300 passes. Independent HELP001 found an overbroad clock-change promise and lead corrected only copy; repaired independent/final native checks pending. Existing actual-native, physical-accessibility, SDK/privacy and original prerequisite gates remain open. Current independent calibration review closes CAL001 and supports exact S09/S17 host integration/value obligations with all12patterns/864state rows, independent queue/refill boundaries and actual back-navigation probes. Full daily-session/critical-flow/native/physical requirements and original prerequisites remain separate; package status unchanged."
     },
     {
       "id": "M5-03",
@@ -1901,10 +2104,25 @@
         "services/docs/PRIVACY.md",
         "game/persistence/test/save_repository_test.dart",
         "services/evidence/DIRECTOR_REVIEW.md",
-        "release/qa/integration-services-repaired-20261016T114721906724Z/INTEGRATION_REVIEW.md"
+        "release/qa/integration-services-repaired-20261016T114721906724Z/INTEGRATION_REVIEW.md",
+        "docs/decisions/ownership-and-soundtrack-integration.md",
+        "release/help-author-review.md",
+        "release/help-author-evidence.json",
+        "game/mobile/lib/help_screen.dart",
+        "game/mobile/lib/help_content.dart",
+        "release/qa/integration-help-repaired-20261021T101942186162Z/HELP_REPAIRED_REVIEW.md",
+        "release/public-pages/AUTHOR_REPORT.md",
+        "release/public-pages/INDEPENDENT_REVIEW.md",
+        "release/public-pages/evidence/registration.json",
+        "release/support-links/CONFIGURATION.md",
+        "release/qa/integration-current-ui-20261021T133115456638Z/CURRENT_UI_REVIEW.md",
+        "services/evidence/web-deletion/author-verification.json",
+        "release/native-privacy/README.md",
+        "release/public-pages/evidence/refresh-20261021T134412.822191Z/REPAIR.md",
+        "release/qa/client-web-deletion-20261021T134443512157Z/WEB_DELETION_REVIEW.md"
       ],
       "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
-      "evidence_note": "Local implementation and separately pinned author/independent evidence. Original acceptance and dependencies remain intact; physical/native/provider/human/elapsed observation gates remain open where unmet."
+      "evidence_note": "Actual local privacy/support page drafts and source/export/provenance records independently reviewed. Operator identity, contacts, complete native SDK disclosures, retention terms, native links, external deletion route and publication remain unresolved; no original acceptance or dependency waived."
     },
     {
       "id": "M5-04",
@@ -1927,10 +2145,26 @@
       "evidence": [
         "services/",
         "services/tideglass_service/ops.py",
-        "services/docs/OPERATIONS.md"
+        "services/docs/OPERATIONS.md",
+        "game/mobile/lib/game_telemetry.dart",
+        "game/mobile/test/game_telemetry_lifecycle_test.dart",
+        "release/telemetry-integration-v2-tests.log",
+        "services/tideglass_service/health.py",
+        "services/tideglass_service/recovery.py",
+        "services/evidence/operations-20261021T102456589294Z/AUTHOR_REVIEW.md",
+        "release/qa/integration-operations-final-20261021T104534667043Z/OPERATIONS_REVIEW.md",
+        "release/operations-repair/lead-evidence.json",
+        "game/platform/lib/study_recorder.dart",
+        "game/mobile/lib/study_gate.dart",
+        "game/mobile/test/study_gate_test.dart",
+        "release/study/collection-repaired-20261021T112122953253Z/verification.json",
+        "release/qa/integration-study-collection-final-20261021T113037215270Z/COLLECTION_REPAIRED_REVIEW.md",
+        "release/study/collection-erasure-upgrade-20261021T112908057695Z/verification.json",
+        "release/native-proof/root-study-final-20261021T113721.329611Z/verification.json",
+        "release/qa/integration-study-ui-final-20261021T114011830149Z/STUDY_UI_REVIEW.md"
       ],
       "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
-      "evidence_note": "Local implementation, author checks and separately pinned independent review; full original acceptance/upstream gates remain open. No external qualification or elapsed observation substituted."
+      "evidence_note": "Bounded read-only health and isolated restore drill implemented and independently reviewed:17 QA probes,34 operations cases and4 actual CLI scenarios. Study collector/adjudicator independently reviewed on final48-source773be63e pin with65 distinct Dart/Python cases and exact synthetic roundtrip; STUDY002\u2013004 repaired. Default-disabled study UI has13 English/QA +12 pseudo checks on stable source; final UI review pending. No actual participants, hosted alerts, live restore, provider setup, native SDK traffic qualification or14-day operating coverage."
     },
     {
       "id": "M5-05",
@@ -1957,10 +2191,31 @@
       "evidence": [
         "game/simulation/lib/policy_run.dart",
         "game/simulation/bin/run_policies.dart",
-        "game/simulation/test/policy_run_test.dart"
+        "game/simulation/test/policy_run_test.dart",
+        "release/balance/long-horizon-policies.json",
+        "release/balance/long-horizon-v2-policies.json",
+        "release/balance/long-horizon-v3-policies.json",
+        "release/qa/integration-simulation-20261019T140051525105Z/SIMULATION_REVIEW.md",
+        "release/balance/INVALIDATED.md",
+        "release/qa/integration-crossengine-20261019T143516578781Z/CROSS_ENGINE_REVIEW.md",
+        "release/balance/SUPPLEMENTAL_V2_REVIEW.md",
+        "release/balance/long-horizon-v4-verification.json",
+        "release/balance/supplemental-v2-verification.json",
+        "release/balance/corrected-v4-comparison.json",
+        "release/qa/integration-balance-20261019T145921108068Z/BALANCE_REVIEW.md",
+        "release/study/README.md",
+        "release/study/author-evidence.json",
+        "release/qa/integration-study-20261021T102508755253Z/STUDY_REVIEW.md",
+        "release/balance/optional-calibration-2026-10-21T105107709296Z/qualified-assertions.json",
+        "game/simulation/bin/run_optional_calibration.dart",
+        "release/qa/integration-optional-calibration-20261021T110210355242Z/OPTIONAL_CALIBRATION_REVIEW.md",
+        "release/balance/optional-calibration-current-integration.json",
+        "release/qa/scope-forward-20261023T033420.755364Z/S33_BRIDGE.md",
+        "release/qa/scope-forward-20261023T033420.755364Z/balance-source-bridge.json",
+        "release/qa/lead-scope-gate-20261023T035344.579750Z/DECISIONS.md"
       ],
       "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
-      "evidence_note": "Local implementation and separately pinned author/independent evidence. Original acceptance and dependencies remain intact. Native/provider/human/elapsed observation gates remain open where unmet; new long-horizon runner is under test and not yet an audit result."
+      "evidence_note": "S07 and S33 bounded scope criteria are verified through independent current forecast/marginal proofs, an explicit bridge for 172 unaffected historical trajectories, and current zero-bonus/free/ad cases. Historical 184-case reports remain historical; twelve old zero-Focus content outcomes are not transferred. Original M4-06/M5-04 dependencies and beta configuration/metric freeze remain open. S44 observed play remains external."
     },
     {
       "id": "M5-06",
@@ -1977,9 +2232,32 @@
         "S23",
         "S43"
       ],
-      "status": "not_started",
-      "evidence": [],
-      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified."
+      "status": "in_progress",
+      "evidence": [
+        "release/store/README.md",
+        "release/store/metadata.en-US.json",
+        "game/client/art/app-icon.svg",
+        "game/client/art/app-icon-1024.png",
+        "tool/render_store_creative.py",
+        "release/store/creative/provenance.json",
+        "release/store/creative/google-feature-1024x500.png",
+        "release/store/creative/google-icon-512.png",
+        "release/store/CLIENT_REVIEW.md",
+        "release/store/creative-review-evidence.json",
+        "release/content-evidence/inventory-report.md",
+        "release/qa/integration-inventory-20261021T104607526377Z/INVENTORY_REVIEW.md",
+        "release/qa/client-clean-phone-media-20261023T050152.295344Z/REVIEW.md",
+        "release/qa/client-current-media-20261023T080835.670842Z/tablet/REVIEW.md",
+        "release/qa/client-android-media-20261025T150454.466933Z/REVIEW.md",
+        "release/store/media-3b00-android-20261025T150512.754160Z/selection.json",
+        "release/store/media-3b00-android-20261025T150512.754160Z/verification.json",
+        "docs/audio-direction-v1.md",
+        "release/audio/director-direction-20261025T152221.111400Z/decision.json",
+        "release/qa/client-audio-direction-20261025T152408.226801Z/REVIEW.md",
+        "release/qa/client-audio-direction-20261025T152408.226801Z/verification.json"
+      ],
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+      "evidence_note": "All164 original assets are locally registered; this is not complete per-asset production acceptance. English listing and original feature/icon creative have bounded local review. Exact current candidate3b00 phone, corrected tablet and Android exports now each have three independently inspected local still candidates and a19-second full-frame, real-speed preview; their explicit local-preview Season stills remain internal. Android RGB8 samples are unchanged; iOS native16-to8 conversion has disclosed rounding and preserved color metadata. Clips are silent and actual measured bitrates differ from the11Mbps target; Android raw44frames over28.5978778seconds limits captured motion. These current local exports supersede the prior statement that only historical candidate152 raw media existed. They do not establish store ingestion, a shipped release, all-assets acceptance, physical presentation/audio quality or physical audio validation/distribution obligations. M5-06 remains in_progress with unchanged M4-07 prerequisite and broader S23/S43 criteria. No publication or package acceptance. The lead has adopted the existing authored palette, routes, controls and gain policy as v1 creative direction in a separately source-pinned, independently reviewed decision. This makes no listening-session, perceived-mix or physical-interruption claim; the authored unlock cue remains without automatic controller emission. No production source or asset changed."
     },
     {
       "id": "M5-07",
@@ -2004,7 +2282,11 @@
         "release/qa/FOUNDATION_REVIEW.md",
         "release/qa/DAILY_REVIEW.md",
         "release/qa/integration-final-20261016T105843545492Z/INTEGRATION_REVIEW.md",
-        "release/qa/integration-services-repaired-20261016T114721906724Z/INTEGRATION_REVIEW.md"
+        "release/qa/integration-services-repaired-20261016T114721906724Z/INTEGRATION_REVIEW.md",
+        "release/qa/integration-transition-repaired-20261021T121351672733Z/TRANSITION_REVIEW.md",
+        "release/qa/integration-transition-repaired-20261021T121351672733Z/NUMERIC_EVIDENCE_BRIDGE.json",
+        "release/native-proof/root-transition-20261021T121321.388435Z/verification.json",
+        "release/qa/lead-transition-acceptance-20261021T1221Z/DECISIONS.md"
       ],
       "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
       "evidence_note": "Local implementation and separately pinned author/independent evidence. Original acceptance and dependencies remain intact; physical/native/provider/human/elapsed observation gates remain open where unmet."
@@ -2028,7 +2310,13 @@
       ],
       "status": "in_progress",
       "evidence": [
-        "release/qa/integration-services-repaired-20261016T114721906724Z/INTEGRATION_REVIEW.md"
+        "release/qa/integration-services-repaired-20261016T114721906724Z/INTEGRATION_REVIEW.md",
+        "release/qa/integration-fulfillment-initial-20261019T142206260684Z/FULFILLMENT_REVIEW.md",
+        "services/evidence/ownership-clock-vault-verification.json",
+        "release/qa/integration-fulfillment-repaired-20261019T143906718168Z/FULFILLMENT_REPAIRED_REVIEW.md",
+        "release/native-commerce-integration-author-evidence.json",
+        "release/qa019-lead-expanded-probes.log",
+        "release/qa/integration-native-ownership-repaired-20261019T145035575220Z/NATIVE_OWNERSHIP_REPAIRED_REVIEW.md"
       ],
       "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
       "evidence_note": "Local implementation and separately pinned author/independent evidence. Original acceptance and dependencies remain intact; physical/native/provider/human/elapsed observation gates remain open where unmet."
@@ -2050,8 +2338,22 @@
         "S34"
       ],
       "status": "not_started",
-      "evidence": [],
-      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified."
+      "evidence": [
+        "release/study/README.md",
+        "release/study/protocol-template.json",
+        "release/study/author-evidence.json",
+        "release/qa/integration-study-20261021T102508755253Z/STUDY_REVIEW.md",
+        "game/platform/lib/study_recorder.dart",
+        "game/mobile/lib/study_gate.dart",
+        "game/mobile/test/study_gate_test.dart",
+        "release/study/collection-repaired-20261021T112122953253Z/verification.json",
+        "release/qa/integration-study-collection-final-20261021T113037215270Z/COLLECTION_REPAIRED_REVIEW.md",
+        "release/study/collection-erasure-upgrade-20261021T112908057695Z/verification.json",
+        "release/native-proof/root-study-final-20261021T113721.329611Z/verification.json",
+        "release/qa/integration-study-ui-final-20261021T114011830149Z/STUDY_UI_REVIEW.md"
+      ],
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+      "evidence_note": "Preparation only. Fixed-denominator analyzer and raw collector/adjudicator independently reviewed; current25 study UI invocations pass, separate final UI review pending. Explicit consent before bootstrap, no backfilled fresh-install claim, durable stop/erase workflow. No people recruited/enrolled, actual observed cohort, real elapsed D30, approved operating setup or original prerequisite acceptance."
     },
     {
       "id": "M6-02",
@@ -2071,8 +2373,14 @@
         "S44"
       ],
       "status": "not_started",
-      "evidence": [],
-      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified."
+      "evidence": [
+        "release/study/README.md",
+        "release/study/protocol-template.json",
+        "release/study/author-evidence.json",
+        "release/qa/integration-study-20261021T102508755253Z/STUDY_REVIEW.md"
+      ],
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+      "evidence_note": "Preparatory analyzer independently reviewed:13 author+12 independent cases; STUDY001 repaired via schema2 separating valid session records from return eligibility. Registry denominators, missingness, mature windows and Wilson calculations checked. PrimaryD7/requiredD30 preserve original protocol. No actual enrollment, qualified collector, participant outcome or release acceptance."
     },
     {
       "id": "M6-03",
@@ -2189,8 +2497,12 @@
         "S37"
       ],
       "status": "not_started",
-      "evidence": [],
-      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified."
+      "evidence": [
+        "services/evidence/operations-20261021T102456589294Z/AUTHOR_REVIEW.md",
+        "release/runbooks/LAUNCH_HANDOVER.md"
+      ],
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+      "evidence_note": "Preparatory local health/isolated restore and handover evidence only. No live recovery/rollout, actual season archive/provider replay, original dependencies or release acceptance."
     },
     {
       "id": "M7-01",
@@ -2210,8 +2522,12 @@
         "S42"
       ],
       "status": "not_started",
-      "evidence": [],
-      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified."
+      "evidence": [
+        "release/season-2-brief.md",
+        "release/runbooks/README.md"
+      ],
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+      "evidence_note": " Initial internal preparation only, not actual launch operations or postlaunch feedback."
     },
     {
       "id": "M7-02",
@@ -2268,8 +2584,12 @@
         "S37"
       ],
       "status": "not_started",
-      "evidence": [],
-      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified."
+      "evidence": [
+        "services/evidence/operations-20261021T102456589294Z/AUTHOR_REVIEW.md",
+        "release/runbooks/LAUNCH_HANDOVER.md"
+      ],
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+      "evidence_note": "Preparatory local health/isolated restore and handover evidence only. No live recovery/rollout, actual season archive/provider replay, original dependencies or release acceptance."
     },
     {
       "id": "M7-05",
@@ -2288,8 +2608,23 @@
         "S43"
       ],
       "status": "not_started",
-      "evidence": [],
-      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified."
+      "evidence": [
+        "release/help-author-review.md",
+        "release/store/CLIENT_REVIEW.md",
+        "release/store/metadata.en-US.json",
+        "release/qa/integration-help-repaired-20261021T101942186162Z/HELP_REPAIRED_REVIEW.md",
+        "release/public-pages/AUTHOR_REPORT.md",
+        "release/public-pages/INDEPENDENT_REVIEW.md",
+        "release/public-pages/evidence/registration.json",
+        "release/support-links/CONFIGURATION.md",
+        "release/qa/integration-current-ui-20261021T133115456638Z/CURRENT_UI_REVIEW.md",
+        "services/evidence/web-deletion/author-verification.json",
+        "release/native-privacy/README.md",
+        "release/public-pages/evidence/refresh-20261021T134412.822191Z/REPAIR.md",
+        "release/qa/client-web-deletion-20261021T134443512157Z/WEB_DELETION_REVIEW.md"
+      ],
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+      "evidence_note": "Local privacy/support drafts, configurable native links, authenticated browser deletion, bounded deployment and actual host browser/TLS/load/alert-receiver tests are implemented and independently reviewed. Current compiled SDK inventory/observations, exact current screenshots/footage, approved HTTPS deployment, operator contacts, retention terms, provider disclosures, publication and original upstream dependencies remain open. No whole-package acceptance or shipped-listing claim."
     },
     {
       "id": "M7-06",
@@ -2350,8 +2685,13 @@
         "S38"
       ],
       "status": "not_started",
-      "evidence": [],
-      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified."
+      "evidence": [
+        "release/runbooks/LAUNCH_HANDOVER.md",
+        "release/runbooks/launch-coverage-template.json",
+        "release/season-2-brief.md"
+      ],
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+      "evidence_note": "Initial internal handover and Season2 preparation authored; coverage template explicitly unstaffed with zero actual days. Independent review pending. No public launch, named staffed coverage,14-day elapsed support, incident observations or final v1 acceptance."
     },
     {
       "id": "BOOT-CORE",
@@ -2431,15 +2771,23 @@
         "S38"
       ],
       "status": "not_started",
-      "evidence": [],
-      "adaptation": "Explicit delivery work; does not expand the product scope."
+      "evidence": [
+        "release/runbooks/LAUNCH_HANDOVER.md",
+        "release/runbooks/launch-coverage-template.json",
+        "release/season-2-brief.md"
+      ],
+      "adaptation": "Explicit delivery work; does not expand the product scope.",
+      "evidence_note": "Initial internal handover and Season2 preparation authored; coverage template explicitly unstaffed with zero actual days. Independent review pending. No public launch, named staffed coverage,14-day elapsed support, incident observations or final v1 acceptance."
     }
   ],
   "product_release_ready": false,
   "program_acceptance_evidence": [
     "V1_SCOPE_AUDIT.md",
     "implementation/reports/qa_scope_review.md",
-    "implementation/reports/qa_scope_findings.json"
+    "implementation/reports/qa_scope_findings.json",
+    "release/qa/scope-forward-20261023T033420.755364Z/FORWARD_AUDIT.md",
+    "release/qa/client-reverse-scope-20261023T033233.346454Z/REVERSE_SCOPE_REVIEW.md",
+    "release/qa/lead-scope-gate-20261023T035344.579750Z/DECISIONS.md"
   ],
   "preparation_policy": "User explicitly authorized independent local work while external native-service gates remain open. Portable core, persistence and client preparation proceed provisionally; no downstream package or batch is accepted until its original acceptance prerequisites and evidence hold."
 }

@@ -1,3 +1,4 @@
+import 'strings.dart';
 import 'package:flutter/foundation.dart';
 import 'package:tideglass_platform/tideglass_platform.dart';
 import 'game_controller.dart';
@@ -35,8 +36,8 @@ class SupportServiceBridge extends ChangeNotifier {
       await action();
     } catch (_) {
       message = game.saveError != null
-          ? 'Your token is in memory, but saving has not finished. Keep the app open and retry saving before closing.'
-          : 'The service could not confirm delivery. Your local tokens are kept. A free briefing remains available for each unused slot.';
+          ? UiEnglish.supportYourTokenIsInMemoryButSaving
+          : UiEnglish.supportTheServiceCouldNotConfirmDeliveryYour;
     } finally {
       busy = false;
       if (!_disposed) notifyListeners();
@@ -46,7 +47,7 @@ class SupportServiceBridge extends ChangeNotifier {
   Future<void> _saveLocal() async {
     await game.save();
     if (game.saveError != null) {
-      throw StateError('Local delivery is not durable.');
+      throw StateError(UiEnglish.supportLocalDeliveryIsNotDurable);
     }
   }
 
@@ -56,11 +57,11 @@ class SupportServiceBridge extends ChangeNotifier {
     final seed = game.state.daily.accountSeed;
     final generation = manager.client?.sessionGeneration;
     if (!game.completeCrewBriefing(slot)) {
-      message = 'This slot is no longer available. Check today’s allowance.';
+      message = UiEnglish.supportThisSlotIsNoLongerAvailableCheck;
       return;
     }
     await _saveLocal();
-    message = 'Your free Support token is ready.';
+    message = UiEnglish.supportYourFreeSupportTokenIsReady;
     if (_sameSession(account, seed) &&
         generation == manager.client?.sessionGeneration &&
         manager.recoveryAcknowledged) {
@@ -72,8 +73,7 @@ class SupportServiceBridge extends ChangeNotifier {
           route: 'briefing',
         );
       } catch (_) {
-        message =
-            'Your free token is ready locally. Its account sync needs a retry.';
+        message = UiEnglish.supportYourFreeTokenIsReadyLocallyIts;
       }
     }
   });
@@ -118,14 +118,16 @@ class SupportServiceBridge extends ChangeNotifier {
   Future<void> restoreClaims() => _perform(() async {
     final restored = await _restoreCurrent();
     message = restored == 0
-        ? 'No new current-day token was available. Existing tokens were kept.'
-        : '$restored current-day Support token${restored == 1 ? '' : 's'} restored.';
+        ? UiEnglish.supportNoNewCurrentDayTokenWasAvailable
+        : UiEnglish.supportRestoredCurrentDaySupportTokenRestoredS(
+            restored,
+            restored == 1 ? '' : 's',
+          );
   });
 
   Future<void> watchAd(int slot) => _perform(() async {
     if (!manager.adsAvailable || !manager.recoveryAcknowledged) {
-      message =
-          'Optional ads are unavailable. The free briefing grants the same token.';
+      message = UiEnglish.supportOptionalAdsAreUnavailableTheFreeBriefing;
       return;
     }
     final day = game.state.daily.dayHighWater;
@@ -145,8 +147,7 @@ class SupportServiceBridge extends ChangeNotifier {
     }
     await _restoreCurrent();
     if (!_sameSession(account, seed) || !_available(day, slot)) {
-      message =
-          'This slot is already available or its account day changed. No ad was shown.';
+      message = UiEnglish.supportThisSlotIsAlreadyAvailableOrIts;
       return;
     }
     final receipt = await manager.requestRewardedSupport(
@@ -158,11 +159,9 @@ class SupportServiceBridge extends ChangeNotifier {
     if (!_sameSession(account, seed)) return;
     if (receipt != null && _apply(receipt)) {
       await _saveLocal();
-      message = 'One verified Support token is ready.';
+      message = UiEnglish.supportOneVerifiedSupportTokenIsReady;
     } else {
-      message =
-          'No new token was confirmed. You can check delivery again, or '
-          'use a free briefing for an unused slot.';
+      message = UiEnglish.supportNoNewTokenWasConfirmedYouCan;
     }
   });
 

@@ -1,0 +1,51 @@
+Running Gradle task 'assembleDebug'...                             17.2s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...           3.5s
+D/FlutterRenderer( 8615): Width is zero. 0,0
+D/FlutterJNI( 8615): Sending viewport metrics to the engine.
+I/.tideglass.game( 8615): Compiler allocated 5250KB to compile void android.view.ViewRootImpl.performTraversals()
+VMServiceFlutterDriver: Connecting to Flutter application at http://127.0.0.1:58353/5UyJn9N7zeA=/
+VMServiceFlutterDriver: Isolate found with number: 7631410757067771
+I/Choreographer( 8615): Skipped 131 frames!  The application may be doing too much work on its main thread.
+VMServiceFlutterDriver: Isolate 7631410757067771 is runnable.
+D/ProfileInstaller( 8615): Installing profile for dev.tideglass.game
+VMServiceFlutterDriver: Isolate is paused at start.
+VMServiceFlutterDriver: Attempting to resume isolate
+D/FlutterJNI( 8615): Sending viewport metrics to the engine.
+I/.tideglass.game( 8615): Compiler allocated 5427KB to compile void android.view.ViewRootImpl.performTraversals()
+I/flutter ( 8615): 00:00 +0: current native runtime qualification: runtime-study-crash-hold
+VMServiceFlutterDriver: Connected to Flutter application.
+I/Choreographer( 8615): Skipped 33 frames!  The application may be doing too much work on its main thread.
+I/Choreographer( 8615): Skipped 111 frames!  The application may be doing too much work on its main thread.
+I/HWUI    ( 8615): Davey! duration=1949ms; Flags=1, FrameTimelineVsyncId=205892, IntendedVsync=2258056035574, Vsync=2259906035500, InputEventId=0, HandleInputStart=2259908433744, AnimationStart=2259908442619, PerformTraversalsStart=2259908443410, DrawStart=2259923383410, FrameDeadline=2258072702240, FrameInterval=2259907173285, FrameStartTime=16666666, SyncQueued=2259936760452, SyncStart=2259937966035, IssueDrawCommandsStart=2259940285535, SwapBuffers=2259975215035, FrameCompleted=2260007184035, DequeueBufferDuration=2748875, QueueBufferDuration=842709, GpuCompleted=2260004262619, SwapBuffersCompleted=2260007184035, DisplayPresentTime=0, CommandSubmissionCompleted=2259975215035, 
+I/.tideglass.game( 8615): NativeAlloc concurrent mark compact GC freed 2439KB AllocSpace bytes, 3(60KB) LOS objects, 49% free, 3054KB/6108KB, paused 503us,4.192ms total 103.185ms
+D/EGL_emulation( 8615): app_time_stats: avg=355.25ms min=9.99ms max=673.49ms count=5
+D/EGL_emulation( 8615): app_time_stats: avg=126.64ms min=55.61ms max=304.26ms count=8
+D/EGL_emulation( 8615): app_time_stats: avg=257.09ms min=36.16ms max=1701.71ms count=9
+D/EGL_emulation( 8615): app_time_stats: avg=424.16ms min=343.91ms max=584.26ms count=3
+I/flutter ( 8615): TIDEGLASS_RUNTIME_KILL_READY {"verification_id":"current-runtime-android-20261023T054423462720Z","candidate_fingerprint":"3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59","harness_sha256":"102be09eb8043ce9bb496156d9f37b1834c3084ddf58fef073e7c25cdc3c55d5","scenario":"runtime-study-crash-hold","process_id":8615,"checkpoint":"/data/user/0/dev.tideglass.game/files/native-current-verification/android-v3b00-android-probe-fixed-studycrash/study/checkpoint.json","checkpoint_sha256":"9855f2c672e43802b9982f391a3a3ee983c21d0aadb83b3da5532e8c15d4890c"}
+Unhandled exception:
+DriverError: Failed to fulfill RequestData due to remote error
+Original error: ext.flutter.driver: (112) Service has disappeared
+Original stack trace:
+#0      new _OutstandingRequest (package:vm_service/src/vm_service.dart:280:34)
+#1      VmService._call.<anonymous closure> (package:vm_service/src/vm_service.dart:1962:25)
+#2      VmService._call (package:vm_service/src/vm_service.dart:1974:8)
+#3      VmService.callServiceExtension (package:vm_service/src/vm_service.dart:1913:14)
+#4      VMServiceFlutterDriver.sendCommand (package:flutter_driver/src/driver/vmservice_driver.dart:327:12)
+#5      FlutterDriver.requestData (package:flutter_driver/src/driver/driver.dart:585:13)
+#6      integrationDriver (package:integration_test/integration_test_driver.dart:71:42)
+<asynchronous suspension>
+#7      main (file:///Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261023T040445.261666Z-3b00cc8f7122/workspace/game/mobile/test_driver/current_evidence_911183b5d9ee.dart:12:3)
+<asynchronous suspension>
+
+
+#0      VMServiceFlutterDriver.sendCommand (package:flutter_driver/src/driver/vmservice_driver.dart:340:7)
+<asynchronous suspension>
+#1      FlutterDriver.requestData (package:flutter_driver/src/driver/driver.dart:585:7)
+<asynchronous suspension>
+#2      integrationDriver (package:integration_test/integration_test_driver.dart:71:29)
+<asynchronous suspension>
+#3      main (file:///Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261023T040445.261666Z-3b00cc8f7122/workspace/game/mobile/test_driver/current_evidence_911183b5d9ee.dart:12:3)
+<asynchronous suspension>
+Leaving the application running.

@@ -1,0 +1,30 @@
+{
+  "verification_id": "current-runtime-ios-phone-20261023T075900509750Z",
+  "candidate_fingerprint": "3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59",
+  "harness_sha256": "997e7510aaef0dcebfa6505fc0dcde7d136a25e8a76abea78ede8602b0a4fef9",
+  "scenario": "runtime-study-withdraw-reopen",
+  "run_id": "v3b00-ios-phone-withdraw-barrier",
+  "device_label": "ios-phone",
+  "platform": "ios",
+  "os_version": "Version 26.3.1 (Build 23D8133)",
+  "process_id": 13081,
+  "fixture_kind": "INTERNAL SYNTHETIC QUALIFICATION ONLY",
+  "checks": [
+    "Separate native process respects durable withdrawal tombstone; no collection session or renewed enrollment."
+  ],
+  "completed": true,
+  "limitations": [
+    "No real participant, consent, paid transaction or receiving-app delivery.",
+    "Process termination is not physical power loss or a lifecycle callback.",
+    "Injected predecessor/rate/clock/bounds are qualification fixtures only.",
+    "Consented production process observations do not prove release AOT fatal-report matching or a crash-free rate."
+  ],
+  "shared_cache_preflight": "Absent/empty before bootstrap; optional production maintenance may create an empty shared cache.",
+  "fixture_directory": "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Data/Application/10A94767-918D-4999-8B9C-C3B1083C2B5D/Library/Application Support/native-current-verification/ios-phone-v3b00-ios-phone-withdraw-barrier/study",
+  "preparation_verification_id": "current-runtime-ios-phone-20261023T075803847485Z",
+  "preparation_checkpoint_sha256": "8f5b2299bb0426fe218ff940279fa04e2e3435aaf2391e6e132c24562329cad1",
+  "previous_native_process_id": 12282,
+  "native_study_samples": 0,
+  "withdrawal_durable": true,
+  "screenshots": []
+}

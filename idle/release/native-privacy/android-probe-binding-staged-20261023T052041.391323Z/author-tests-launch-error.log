@@ -1,0 +1,25 @@
+EE
+======================================================================
+ERROR: test_probe_binding (unittest.loader._FailedTest.test_probe_binding)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_probe_binding
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/unittest/loader.py", line 137, in loadTestsFromName
+    module = __import__(module_name)
+ModuleNotFoundError: No module named 'test_probe_binding'
+
+
+======================================================================
+ERROR: test_runtime_observation (unittest.loader._FailedTest.test_runtime_observation)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_runtime_observation
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/unittest/loader.py", line 137, in loadTestsFromName
+    module = __import__(module_name)
+ModuleNotFoundError: No module named 'test_runtime_observation'
+
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.000s
+
+FAILED (errors=2)

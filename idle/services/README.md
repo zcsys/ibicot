@@ -26,7 +26,7 @@ The runner binds only `127.0.0.1`. It uses a threaded WSGI development server. T
 | Telemetry | Separate consent; strict fields; event deduplication; bounded retention and native-client buffer; refusal clears local buffer | Native instrumentation and SDK/network audit; full install cohorts, crashes and D30 are not measured by these tests |
 | Operations | Consistent SQLite backup, schema forward guard, optional feature switches, privacy export, dashboard with unknown session outcomes | Hosted backup erasure/restore procedures, alert delivery, real staged rollout and operating coverage |
 
-No work package is accepted solely by these local checks. See [API](docs/API.md), [privacy inventory](docs/PRIVACY.md), and [operations runbook](docs/OPERATIONS.md).
+No work package is accepted solely by these local checks. See [API](docs/API.md), [privacy inventory](docs/PRIVACY.md), [operations runbook](docs/OPERATIONS.md), and the subsequent [local fulfillment extension](docs/FULFILLMENT.md).
 
 ## Client integration
 

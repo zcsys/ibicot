@@ -1,0 +1,36 @@
+{
+  "status": "author_checks_pass_independent_review_pending",
+  "created_utc": "2026-10-21T10:24:13.972980+00:00",
+  "work_items": [
+    "M5-05",
+    "M6-01",
+    "M6-02"
+  ],
+  "scope_ids": [
+    "S30",
+    "S34",
+    "S35"
+  ],
+  "cases_passed": 13,
+  "participants_observed": 0,
+  "release_ready": false,
+  "files": {
+    "tool/study_report.py": "7109d2e53a8c07b8f00299b749a4c758530e51f38a2d444f4600ae6ef94e7462",
+    "tool/test_study_report.py": "b8195b073c0b96acce01866d0de0775bfa7a2ead7f297eb350664d0973b62640",
+    "release/study/README.md": "72df7cd33dea6408a9d270e3ee5a6912b96d0d970517318d64b82405af8adb01",
+    "release/study/protocol-template.json": "c509fcbd60767894cdb10aebc23e10a97087e4964f62820b5e1409a53942a5e5",
+    "release/study/fixtures/synthetic-protocol.json": "ecac92cac08ab5d89aee69a69fa296b798a0bbc65b43d9c32fe6b672120a66f9",
+    "release/study/fixtures/synthetic-data.json": "72383e238a030ff5307879aa8b9b8e4a375832d7e3e1bee9ac8d4d53cb49e013",
+    "release/study/synthetic-report.json": "8dea3ebe5378daf772dda66b5f375ed7a192d78fbbd640de286eba9be5c52941",
+    "docs/quality/PLAYER_STUDY_PROTOCOL.md": "9f7818022e672926668aa852b3110c2e49e19b625dc3b70158e2e7a9b6cb596e",
+    "release/study/author-tests-repaired.log": "347ae0f85c9425991c1bd61e8d7a713b07662f73ee0ef21e2d442522d38fbf4d"
+  },
+  "limitations": [
+    "Preregistration template intentionally incomplete",
+    "Real registry collection/completeness/consent not established",
+    "All runnable inputs are synthetic",
+    "No causal power or real device/crash certification"
+  ],
+  "alignment": "Primary D7 and required D30 maturity/session adjudication preserve the existing player protocol; no enrollment has occurred.",
+  "repair": "STUDY001: data/report schema2 separates valid session records from interactive return eligibility; startup crashes and version exposures stay in accounting."
+}

@@ -1,0 +1,65 @@
+{
+  "kind": "incremental author verification; independent review pending",
+  "date": "2026-10-19",
+  "original_fulfillment_pin": "2c1a054804d155d2d76e910bb1cec58f52b6c9aceb2ecb0d59f717e4acea76dc",
+  "repairs": [
+    "QA016 key identity/material binding; legacy empty epoch fail-closed recovery",
+    "QA017 asynchronous cache expiry; operation-entry clock anchors and post-write recheck"
+  ],
+  "tests": {
+    "provider_author": {
+      "passed": 32,
+      "new_key_binding_tests": 7
+    },
+    "independent_python_author_replay": {
+      "passed": 9
+    },
+    "cache_author": {
+      "passed": 13
+    },
+    "independent_dart_author_replay": {
+      "passed": 6
+    },
+    "flutter_clock_channel_host": {
+      "passed": 8,
+      "evidence": "functions exec/write_stdin tool transcript; root combined Flutter capture requested"
+    },
+    "focused_analyzer": "clean",
+    "apple_native_typecheck": "iOS simulator and macOS source passed with generated-registration placeholders only",
+    "plist_project_lint": "4 files passed"
+  },
+  "sources": {
+    "services/tideglass_service/vault.py": "88a983dcfb473e6480574ff6fbda25156f16bde4ceb5e0cc5de4460ed71a0f19",
+    "tests/services/providers/test_fulfillment.py": "cdb66d116396a2f748c50ff4984ef8ca779df222305faee408f5939c2543dcb9",
+    "tests/services/providers/test_vault_key_binding.py": "086e6cd8241c09874fe48046ac261fd18455360b95d42ecff56d3b5cd92afdbf",
+    "services/docs/FULFILLMENT.md": "6d440ccb2dacefd0dabc1ce9fe26133223f8e782448c0b7cb053244ccacf9723",
+    "game/platform/lib/signed_entitlements.dart": "018ded6ffbd3672ab6de6747747a4026f7c880a5c0bcec271b58cb25f2d2c66e",
+    "game/platform/test/signed_entitlements_test.dart": "5d86838c7d6af4eebeee7c46c78eff75f16113da02ce88834238cf47ad00ce80",
+    "game/platform/OWNERSHIP_CLOCK.md": "480ebdbf5841519aea76685ee411bb7a19c0dbfb878d6f3cae8be2608243ab65",
+    "game/mobile/lib/ownership_clock.dart": "8ef9752fa88e49f1112c80baaee8c9979f9caa6a48e574e1d42256398eba8e26",
+    "game/mobile/test/ownership_clock_test.dart": "952b0156fcd2b04454267a74f8d28a72c871447a259c5330955e04efcf1f6881",
+    "game/mobile/android/app/src/main/kotlin/dev/tideglass/game/MainActivity.kt": "b53bd92f01e9847f53e785d44f1591b4abb7ae8539cae84e5e73b473892914b9",
+    "game/mobile/ios/Runner/AppDelegate.swift": "93b0d32d184bdd94c5737acc503cceb6257851b2a844caf02c7f5fd232fd8601",
+    "game/mobile/ios/Runner/PrivacyInfo.xcprivacy": "899aa28e2ea918f3a75efdbfd3b4c39a9b2b17eaa07e98f2d0592b03396fd6c3",
+    "game/mobile/ios/Runner.xcodeproj/project.pbxproj": "75f6138addb05a6f21e5038afd7359ebe274885de2c0013a4de2b8ade31b429f",
+    "game/mobile/macos/Runner/MainFlutterWindow.swift": "37ab28f70b6fabe79b60c6bc3be04b903ff18592a45936336dc1eac9dc4e4188",
+    "game/mobile/macos/Runner/PrivacyInfo.xcprivacy": "899aa28e2ea918f3a75efdbfd3b4c39a9b2b17eaa07e98f2d0592b03396fd6c3",
+    "game/mobile/macos/Runner.xcodeproj/project.pbxproj": "cf91225e47dc2d101ca897fd0d8469125ce63b8abefe21dd1efc7668a284cafa"
+  },
+  "logs": {
+    "services/evidence/ownership-clock-analysis.log": "57a9cab415eb4e27f56bc17f23ad712668de348359ab3a2dc92408a952e3f674",
+    "services/evidence/ownership-clock-cache-tests.log": "10a2ed882a9eb764c29a63e7695f3707bde20e3b2fef5e3b44dd855c78ae8f49",
+    "services/evidence/ownership-clock-vault-provider-tests.log": "4d5281eac1efe5cd5f851ef038112be369ab81427b4573858bf1e9a3f7167062",
+    "services/evidence/ownership-clock-vault-independent-tests.log": "410af8ca5dd6246ef2219ee1ad44a81775253e964b5ea67df92c05826fbe1d0c",
+    "services/evidence/ownership-clock-ios-typecheck.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "services/evidence/ownership-clock-macos-typecheck.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "services/evidence/ownership-clock-plist-check.log": "472d46e306e0bcc97b8003372a1c0d0a17cbe81736758a021197f3c45e1aaa1c"
+  },
+  "limits": [
+    "Android native source not yet compiled in a full target build; device key/sleep/reboot tests not run",
+    "Apple native source typecheck is not full target build/runtime evidence",
+    "Apple ownership restart continuity is intentionally process-only",
+    "No physical devices, live store credentials, hosting, production cryptographic keys, or production receipts supplied",
+    "Fixtures are not live provider success or release qualification"
+  ]
+}

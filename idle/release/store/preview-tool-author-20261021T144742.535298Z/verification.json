@@ -1,0 +1,89 @@
+{
+  "author": "/root",
+  "tool_sources": {
+    "release/store/tools/export_preview.swift": "656ad603bc370df9e4de8ccfb14d6364757a1e44eb5f3792e39959fffc3cf79c",
+    "release/store/tools/inspect_preview.swift": "a1c4dce52b6a67e3ef9fbc0a12223450e12e041bfc40efe7b83e404da23b0dbf"
+  },
+  "historical_source_sha256": "f3e221bfc8f0c7665d34594e53faa563a049d56008df9d3f90f463e353ad6d67",
+  "source_unchanged": true,
+  "output_sha256": "0454451d789ada434e68a8451e62a4d1888d368f47fc1a744165aac5685f2ff0",
+  "decoded_metadata": {
+    "audio_track_count": 0,
+    "codec_fourcc": [
+      "avc1"
+    ],
+    "decoded_video_frames": 600,
+    "display_height": 1920,
+    "display_width": 886,
+    "duration_seconds": 20,
+    "estimated_bits_per_second": 2072202,
+    "first_frame_seconds": 0,
+    "frames": [
+      {
+        "actual_seconds": 0,
+        "file": "frame-0.png",
+        "requested_seconds": 0
+      },
+      {
+        "actual_seconds": 5,
+        "file": "frame-1.png",
+        "requested_seconds": 5
+      },
+      {
+        "actual_seconds": 10,
+        "file": "frame-2.png",
+        "requested_seconds": 10
+      },
+      {
+        "actual_seconds": 15,
+        "file": "frame-3.png",
+        "requested_seconds": 15
+      },
+      {
+        "actual_seconds": 19.933333333333334,
+        "file": "frame-4.png",
+        "requested_seconds": 19.966666666666665
+      }
+    ],
+    "last_frame_seconds": 19.966666666666665,
+    "max_frame_gap_seconds": 0.03333333333333499,
+    "min_frame_gap_seconds": 0.03333333333333144,
+    "nominal_frames_per_second": 30,
+    "sample_read_complete": true,
+    "source": "/Users/csys/Desktop/ibicot/idle/release/store/preview-tool-author-20261021T144742.535298Z/historical-tool-test-v2.mp4"
+  },
+  "negative_checks": [
+    {
+      "case": "preserve-output",
+      "rejected": true,
+      "target_preserved": true
+    },
+    {
+      "case": "preserve-source",
+      "rejected": true,
+      "target_preserved": true
+    },
+    {
+      "case": "invalid-short",
+      "rejected": true,
+      "target_preserved": true
+    },
+    {
+      "case": "past-end",
+      "rejected": true,
+      "target_preserved": true
+    }
+  ],
+  "visual_frames_inspected": [
+    0,
+    2,
+    4
+  ],
+  "historical_only": true,
+  "current_native_or_store_submission_acceptance": false,
+  "known_limits": [
+    "Silent recording remains silent; no audio qualification",
+    "Configured encoder target11Mbps, actual measured average2.07Mbps; no App Store acceptance claim",
+    "Historical20-second interval ends during a real transition; use an intentionally chosen stable interval on fresh current capture"
+  ]
+}

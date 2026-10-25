@@ -1,0 +1,50 @@
+{
+  "source_sha256": {
+    "release/native-proof/native-context-harness-staging/game/mobile/integration_test/current_runtime_test.dart": "85f859b2ddd84cdfa1c4130277f03e49e0d060c550969576759d194f3d88b4a4",
+    "release/native-proof/native-context-harness-staging/tool/verify_current_runtime.py": "34239f373943381ecaaa07c071f7e8f3f518f08a32eb17f7f7f1a22ce90637fe",
+    "release/native-proof/native-context-harness-staging/tool/test_current_runtime_verification.py": "fde639aaefdc017503a5b0042300d50b9bca6f75dafddb07abcbc7bd42fd9c6f",
+    "game/qa/review_native_context_runtime.py": "ba98eb7cbf5abe61a3fced0ea92cfba1f713b57327446feee8bab1c0371804a6",
+    "release/native-proof/native-context-harness-staging/repair-20261021T134119.016528Z/after.json": "7aad00c1a4a3e04c811daa41b7825effca6dedc87a4fa2ff66fc165bbc23f652",
+    "release/native-proof/native-context-harness-staging/repair-20261021T134119.016528Z/python-workspace/tool/verify_current_runtime.py": "34239f373943381ecaaa07c071f7e8f3f518f08a32eb17f7f7f1a22ce90637fe",
+    "release/native-proof/native-context-harness-staging/repair-20261021T134119.016528Z/python-workspace/tool/test_current_runtime_verification.py": "fde639aaefdc017503a5b0042300d50b9bca6f75dafddb07abcbc7bd42fd9c6f",
+    "release/native-proof/native-context-harness-staging/repair-20261021T134119.016528Z/python-workspace/tool/build_native.py": "1fca5f766c6bd816f55fc0aefafe1e3dfb8e66b91e83e1dcb275d48f13cada1d",
+    "release/native-proof/native-context-harness-staging/repair-20261021T134119.016528Z/python-workspace/tool/verify_native.py": "68297f66fc4e32a173b17da2594872334d59ba2b88b7d5878b5ee8905f9b89e5",
+    "release/native-proof/native-context-harness-staging/repair-20261021T134119.016528Z/python-workspace/tool/study_adjudicate.py": "ccf31107cced115bb7a417407a2b7cfa1498845ce10899b14a1f3ca533a406e6",
+    "release/native-proof/native-context-harness-staging/repair-20261021T134119.016528Z/python-workspace/tool/study_native_diagnostics.py": "325afe73985b414a23ab3858ad4abc656351258bb3c19e49bd6c665761031430",
+    "release/native-proof/native-context-harness-staging/repair-20261021T134119.016528Z/python-workspace/tool/study_report.py": "7109d2e53a8c07b8f00299b749a4c758530e51f38a2d444f4600ae6ef94e7462"
+  },
+  "commands": [
+    {
+      "name": "author31",
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tool",
+        "-p",
+        "test_current_runtime_verification.py",
+        "-v"
+      ],
+      "cwd": "/Users/csys/Desktop/ibicot/idle/release/native-proof/native-context-harness-staging/repair-20261021T134119.016528Z/python-workspace",
+      "exit_code": 0,
+      "log_sha256": "0909d67f160e74fdf92545c298b19fe15c350c1e0fc42a3fb59ffc5161918a83"
+    },
+    {
+      "name": "review14",
+      "command": [
+        "python3",
+        "/Users/csys/Desktop/ibicot/idle/game/qa/review_native_context_runtime.py"
+      ],
+      "cwd": "/Users/csys/Desktop/ibicot/idle/release/native-proof/native-context-harness-staging/repair-20261021T134119.016528Z/python-workspace",
+      "exit_code": 0,
+      "log_sha256": "50b82b67f40235303942f0e885c4d7e4a98841e5bf1eeeb4ef8077b0b3b8851b"
+    }
+  ],
+  "workspace_stage_matches": {
+    "verify_current_runtime.py": true,
+    "test_current_runtime_verification.py": true
+  },
+  "source_changes": []
+}

@@ -1,0 +1,57 @@
+{
+  "started_utc": "20261023T041555.017412Z",
+  "purpose": "local export only; no store, signing or runtime acceptance",
+  "mode": "release",
+  "candidate_fingerprint": "3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59",
+  "candidate_directory": "/Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261023T040445.261666Z-3b00cc8f7122",
+  "workspace_directory": "/Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261023T040445.261666Z-3b00cc8f7122/workspace-release",
+  "runner_sha256": "59ee4e7b94a1445e2c8effadfe4c0510c9c189df0278c7ede6e87f1807bf38ee",
+  "source_snapshot_unchanged": true,
+  "results": {
+    "ios": {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+        "build",
+        "ios",
+        "--release",
+        "--no-codesign",
+        "--no-pub"
+      ],
+      "exit_code": 0,
+      "build_succeeded": true,
+      "runtime_launch_proven": false,
+      "artifact": "release/native-proof/20261023T041555.017412Z/artifacts/tideglass-ios-release.zip",
+      "artifact_sha256": "d0dba4a1f8f1a2119fab041b774286fc6d7fc28ca843682873b6599e6c3b7c3d",
+      "artifact_bytes": 12780759
+    },
+    "android": {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+        "build",
+        "appbundle",
+        "--release"
+      ],
+      "exit_code": 0,
+      "build_succeeded": true,
+      "runtime_launch_proven": false,
+      "artifact": "release/native-proof/20261023T041555.017412Z/artifacts/tideglass-release.aab",
+      "artifact_sha256": "3f460a1965511e77bfecbd402c83f676bc31a8a72bd20896cd08850484f1c572",
+      "artifact_bytes": 64920096
+    }
+  },
+  "sdk_fixture": {
+    "workspace_link": "/Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261023T040445.261666Z-3b00cc8f7122/workspace-release/.tooling/flutter",
+    "sdk_target": "/Users/csys/Desktop/ibicot/idle/.tooling/flutter",
+    "font_sha256": {
+      "Roboto-Regular.ttf": "79e851404657dac2106b3d22ad256d47824a9a5765458edb72c9102a45816d95",
+      "MaterialIcons-Regular.otf": "d9865b671a09d683d13a863089d8825e0f61a37696ce5d7d448bc8023aa62453"
+    },
+    "scope": "External pinned toolchain assets; frozen application source is unchanged"
+  },
+  "pub_get_exit_code": 0,
+  "workspace_input_differences": [
+    "game/mobile/android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java"
+  ],
+  "dependency_locks_unchanged": true,
+  "current_working_tree_matches_candidate": true
+}

@@ -1,0 +1,45 @@
+[
+  {
+    "command": [
+      "python3",
+      "release/daily-icons/staged/run_condition.py",
+      "--output",
+      "/Users/csys/Desktop/ibicot/idle/release/qa/lead-daily-icons-20261023T031715.308630Z/phone-200-true",
+      "--viewport",
+      "phone",
+      "--text-percent",
+      "200",
+      "--pseudo",
+      "true"
+    ],
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "python3",
+      "release/daily-icons/staged/run_condition.py",
+      "--output",
+      "/Users/csys/Desktop/ibicot/idle/release/qa/lead-daily-icons-20261023T031715.308630Z/tablet-200-false",
+      "--viewport",
+      "tablet",
+      "--text-percent",
+      "200",
+      "--pseudo",
+      "false"
+    ],
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+      "test",
+      "test/qa_rechart_forecast_review_test.dart",
+      "--dart-define=TIDEGLASS_TEST_VIEWPORT=phone",
+      "--dart-define=TIDEGLASS_TEST_TEXT_PERCENT=200",
+      "--dart-define=TIDEGLASS_PSEUDO=true",
+      "--reporter",
+      "expanded"
+    ],
+    "exit_code": 0
+  }
+]

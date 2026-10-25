@@ -1,0 +1,34 @@
+{
+  "scope": "Future candidate gate repair only; not overlaid into immutable152 or claimed as its host test execution. Running release exporter has its own already-copied/hashed runner.",
+  "source_sha256": {
+    "tool/build_native.py": "56714b9cc215a56bcd710c6678f117866be68211e46f6c24b387b8ed8696f556",
+    "tool/test_native_candidates.py": "fab8fa9a7a88d3e0e72f2d54cb77c458d637c4e78fa6d22cf2235967e4c450b0"
+  },
+  "commands": {
+    "services-test": [
+      "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests/services",
+      "-v"
+    ],
+    "operations-test": [
+      "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests/services/operations",
+      "-v"
+    ]
+  },
+  "tooling_tests": {
+    "passed": 16,
+    "log": "future-operations-tooling-tests-repaired.log",
+    "prior_failed_log": "future-operations-tooling-tests.log",
+    "repair": "Regression fixture now includes one base test; current Python returns5 for an empty suite. Explicit nested failing operations fixture is detected independently."
+  },
+  "operations_suite_execution": "Separate lead/QA source-pinned evidence; not rerun or attributed to152 by this tooling change."
+}

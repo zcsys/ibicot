@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "kind": "author_staged_verification_handoff",
+  "source_fingerprint": "d413a82692981fa5e38492b7ad0eab765058b38c120e3acd974bc813cdae7561",
+  "stage_files": {
+    "release/content-presentation/staged/README.md": "ceb0c4b31a98ff3ab67cdba4b34575f42574747c510e102a08d7047072f1d956",
+    "release/content-presentation/staged/coverage-crosswalk.json": "d8a687d8c2f09e6016fb55040ccb3033b7b10591567b2dd162b4e33f68dbc807",
+    "release/content-presentation/staged/expected-rows.json": "7c3e79db5414e628b14816e2467927c11462835097f133f2926c11746be64fea",
+    "release/content-presentation/staged/game/mobile/test/content_presentation_helper_test.dart": "a40e1696d55ea885b56516c05afdd3f66607540d3a4735b31b70ad358eba56d5",
+    "release/content-presentation/staged/game/mobile/test/content_presentation_probe.dart": "b24417cf9af35d25eaaaab51f48a3d59da953703019c07613cfaf5335854dd93",
+    "release/content-presentation/staged/game/mobile/test/content_presentation_test.dart": "13fba8f45ed02b9ceb89d99ea268279ee859929f8f80bc6082b06dc0ef468346",
+    "release/content-presentation/staged/tool/check_content_report.py": "8b3f9c46815bfb9feaf771a2af3217423d947e055f2acf2712038dd15286b678",
+    "release/content-presentation/staged/tool/check_source_relationships.py": "a12aeef5d51aac08763a91747949fc3ab2fe00136582bfd916f2f3912692855e",
+    "release/content-presentation/staged/tool/content_contract.py": "a3af7b741abc7a8e5f8b48e3f33fce37d3ed17514a32bb4add17f3b425480d64",
+    "release/content-presentation/staged/tool/run_content_condition.py": "0c03300170e5491578b45d0d408238346d642b0477f0daf28f5274bba7a559fb",
+    "release/content-presentation/staged/tool/test_content_checker.py": "54429dd235c8aa96134fa211ec7403312cd8733a9e017e7c1a3bc30a8d432867"
+  },
+  "evidence_files": {
+    "release/content-presentation/CONTENT002-descriptor-drift.json": "783a8098d2d6f32d403d8197ff7c9df9ea5f988847573b1a63d89b0c009e1852",
+    "release/content-presentation/author-v3-checker-findings.json": "a0ae46eccba2e0f6f7862b8a1454de3b94d7f3de75a62b23ee13bff9f6c40b0c",
+    "release/content-presentation/source-relationships.json": "867add092c5e29b51ea750237737e0c7d00cfdd103a003833a908d4b5daf76c4",
+    "release/content-presentation/checker-author-tests.log": "f380f6b4a7dec6524e5e71cb796ec363678265cee278133b4878f200d4bd24b4",
+    "release/content-presentation/author-helper-qualification.jsonl": "322ad978c653bd006223a4b0d54fb279ccf56081da6a9291de450251ccf42fdb",
+    "release/qa/lead-content-checker-20261021T135715.183886Z/probe.json": "abb708173211e221fb9f73aabd776f15e6ae09e29b2b998ab8b3e9b2700f6e5c",
+    "release/qa/lead-content-checker-20261021T135715.183886Z/repaired-probe.json": "e4f114d69e645f65baa8b46234e13341fb677dea49d2eadb566e26998a9eb0d6",
+    "release/content-presentation/author-phone-100-en-v3-20261021T1408/run.json": "07f568f55df4beeca62543694a254a94837facd23c8f63e381316e7958c54d4b",
+    "release/content-presentation/author-phone-100-en-v3-20261021T1408/test.jsonl": "ce6e05c5a22d89c00625e7d9e19c5392769a26b74d61a6bcabb6796d1da8c124",
+    "release/content-presentation/author-phone-100-en-v3-20261021T1408/observations.json": "839437b9a083b170bcadced7049ef94d9240b07fc97ed1f58c12c9c1ccf1398e"
+  },
+  "production_widget_condition": {
+    "viewport": "phone",
+    "text_percent": 100,
+    "pseudo": false
+  },
+  "widget_cases": 73,
+  "widget_passed": 73,
+  "expected_rows": 137,
+  "observed_rows": 137,
+  "individually_checker_qualified_rows": 136,
+  "complete_condition_qualified": false,
+  "reason": "CONTENT002 current rendered release-notes sentence differs from registered copy descriptor. Exact checker retained.",
+  "source_unchanged": true,
+  "runtime_inputs": 634,
+  "checker_author_cases": 26,
+  "helper_author_cases": 4,
+  "source_relationship_checks": 239,
+  "remaining_conditions": 11,
+  "canonical_status_changed": false,
+  "external_acceptance": false,
+  "flutter_lane": "released; no live processes"
+}

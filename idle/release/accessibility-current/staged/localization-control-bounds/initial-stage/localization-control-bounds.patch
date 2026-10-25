@@ -1,0 +1,177 @@
+--- a/game/mobile/test/localization_test.dart
++++ b/game/mobile/test/localization_test.dart
+@@ -1,6 +1,9 @@
+ import 'dart:convert';
+ import 'dart:io';
++import 'dart:ui' show SemanticsAction;
++
+ import 'package:flutter/material.dart';
++import 'package:flutter/rendering.dart';
+ import 'package:flutter/services.dart';
+ import 'package:flutter_test/flutter_test.dart';
+ import 'package:tideglass/app.dart';
+@@ -25,6 +28,7 @@
+ import 'package:tideglass/support_screen.dart';
+ import 'package:tideglass_core/tideglass_core.dart';
+ import 'package:tideglass_progression/tideglass_progression.dart';
++
+ import 'bootstrap_test.dart' show repository, settleIo;
+ import 'calibration_test.dart' show allPatterns;
+ import 'notification_service_test.dart'
+@@ -58,6 +62,8 @@
+         startTicker: false,
+       );
+   void viewport(WidgetTester tester) {
++    final semantics = tester.ensureSemantics();
++    addTearDown(semantics.dispose);
+     if (![100, 150, 200].contains(_testTextPercent)) {
+       throw ArgumentError('Unsupported localization test text scale.');
+     }
+@@ -86,6 +92,100 @@
+     expect(tester.takeException(), isNull);
+   }
+ 
++  // Resolve the control, never measure only a text/icon label or the whole
++  // expanded content panel. Unknown containers fail at tap instead of silently
++  // being treated as actionable controls.
++  Finder? interactiveControl(Finder finder) {
++    expect(finder, findsOneWidget);
++    final element = finder.evaluate().single;
++    bool control(Widget widget) =>
++        widget is ButtonStyleButton ||
++        widget is IconButton ||
++        widget is ListTile ||
++        widget is NavigationDestination ||
++        widget is ChoiceChip ||
++        widget is FilterChip ||
++        widget is ActionChip ||
++        widget is InputChip ||
++        widget is Switch ||
++        widget is Checkbox;
++    Finder exact(Element value) =>
++        find.byElementPredicate((candidate) => identical(candidate, value));
++    if (control(element.widget)) return exact(element);
++    if (element.widget is ExpansionTile ||
++        element.widget is CheckboxListTile ||
++        element.widget is SwitchListTile) {
++      // The first ListTile is the actual header/toggle action; the rest of an
++      // expanded tile may contain unrelated controls and scrollable content.
++      final header = find.descendant(
++        of: finder,
++        matching: find.byType(ListTile),
++      );
++      expect(header, findsWidgets);
++      return header.first;
++    }
++    Element? nearest;
++    element.visitAncestorElements((ancestor) {
++      if (!control(ancestor.widget)) return true;
++      nearest = ancestor;
++      return false;
++    });
++    return nearest == null ? null : exact(nearest!);
++  }
++
++  void expectControlBounds(WidgetTester tester, Finder control) {
++    final rect = tester.getRect(control);
++    expect(rect.width, greaterThanOrEqualTo(48), reason: '$control width');
++    expect(rect.height, greaterThanOrEqualTo(48), reason: '$control height');
++    var visible =
++        Offset.zero & (tester.view.physicalSize / tester.view.devicePixelRatio);
++    var child = tester.element(control).findRenderObject()!;
++    // Intersect all actual ancestor scroll viewports and paint clips. Screen
++    // bounds alone miss controls drawn behind an AppBar or outside a dialog's
++    // small body viewport. No scroll extent is substituted for visible space.
++    RenderObject? parent = child.parent;
++    while (parent != null) {
++      final clip = parent.describeApproximatePaintClip(child);
++      if (clip != null) {
++        visible = visible.intersect(
++          MatrixUtils.transformRect(parent.getTransformTo(null), clip),
++        );
++      }
++      if (parent is RenderAbstractViewport) {
++        visible = visible.intersect(
++          MatrixUtils.transformRect(
++            parent.getTransformTo(null),
++            parent.paintBounds,
++          ),
++        );
++      }
++      child = parent;
++      parent = child.parent;
++    }
++    expect(visible.isEmpty, isFalse, reason: '$control has visible space');
++    final tolerance = visible.inflate(.5);
++    expect(
++      rect.left,
++      greaterThanOrEqualTo(tolerance.left),
++      reason: '$control left in $visible',
++    );
++    expect(
++      rect.top,
++      greaterThanOrEqualTo(tolerance.top),
++      reason: '$control top in $visible',
++    );
++    expect(
++      rect.right,
++      lessThanOrEqualTo(tolerance.right),
++      reason: '$control right in $visible',
++    );
++    expect(
++      rect.bottom,
++      lessThanOrEqualTo(tolerance.bottom),
++      reason: '$control bottom in $visible',
++    );
++  }
++
+   Future<void> reveal(WidgetTester tester, Finder finder) async {
+     if (finder.evaluate().isEmpty) {
+       await tester.scrollUntilVisible(
+@@ -95,8 +195,14 @@
+         maxScrolls: 80,
+       );
+     }
+-    await Scrollable.ensureVisible(tester.element(finder), alignment: .5);
++    final control = interactiveControl(finder);
++    await Scrollable.ensureVisible(
++      tester.element(control ?? finder),
++      alignment: .5,
++    );
+     await tester.pumpAndSettle();
++    expect(tester.takeException(), isNull);
++    if (control != null) expectControlBounds(tester, control);
+   }
+ 
+   Future<void> tap(WidgetTester tester, Finder finder) async {
+@@ -105,7 +211,29 @@
+       await tester.pumpAndSettle();
+     }
+     await reveal(tester, finder);
+-    await tester.tap(finder);
++    final control = interactiveControl(finder);
++    expect(control, isNotNull, reason: '$finder must resolve to an action');
++    final action = control!;
++    expectControlBounds(tester, action);
++    // Insets avoid the mathematical outside edge and rounded corners. These
++    // center/edge hit tests complement, rather than replace, full bounds.
++    for (final at in [
++      Alignment.center,
++      const Alignment(-.98, 0),
++      const Alignment(.98, 0),
++      const Alignment(0, -.98),
++      const Alignment(0, .98),
++    ]) {
++      expect(
++        action.hitTestable(at: at),
++        findsOneWidget,
++        reason: '$action at $at',
++      );
++    }
++    final semantics = tester.getSemantics(action).getSemanticsData();
++    expect(semantics.label.trim(), isNotEmpty, reason: '$action name');
++    expect(semantics.hasAction(SemanticsAction.tap), isTrue);
++    await tester.tap(action.hitTestable());
+     await tester.pumpAndSettle();
+     expect(tester.takeException(), isNull);
+   }

@@ -1,12 +1,15 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+
 import 'package:crypto/crypto.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:tideglass_platform/tideglass_platform.dart';
+import 'package:tideglass_platform/signed_entitlements.dart';
+import 'package:tideglass_platform/soundtrack_delivery.dart';
 
 const tideglassStoreProducts = <String>{
   'dev.tideglass.cosmetic.01',
@@ -22,9 +25,13 @@ class NativeServiceConfiguration {
     this.commerceEnabled = false,
     this.adsEnabled = false,
     this.rewardedAdUnitId,
+    this.supporterEnabled = false,
+    this.signedOwnershipRequired = false,
   });
   final bool commerceEnabled, adsEnabled;
   final String? rewardedAdUnitId;
+  final bool supporterEnabled;
+  final bool signedOwnershipRequired;
 }
 
 abstract interface class CredentialStore {
@@ -94,6 +101,24 @@ abstract interface class RewardedGateway {
   Future<NativeRewardedAd> load(String unitId);
 }
 
+enum AdPrivacyRequirement { unknown, notRequired, required }
+
+class AdPrivacySnapshot {
+  const AdPrivacySnapshot({
+    required this.requirement,
+    required this.canRequestAds,
+  });
+  final AdPrivacyRequirement requirement;
+  final bool canRequestAds;
+}
+
+/// Optional capability keeps existing RewardedGateway test/adapters compatible.
+abstract interface class AdPrivacyGateway {
+  Future<AdPrivacySnapshot> readAdPrivacyState();
+  Future<AdPrivacySnapshot> updateAdPrivacyState();
+  Future<AdPrivacySnapshot> showAdPrivacyOptions();
+}
+
 abstract interface class NativeRewardedAd {
   Future<void> configure({
     required String accountId,
@@ -104,7 +129,7 @@ abstract interface class NativeRewardedAd {
   Future<void> dispose();
 }
 
-class SdkRewardedGateway implements RewardedGateway {
+class SdkRewardedGateway implements RewardedGateway, AdPrivacyGateway {
   @override
   Future<bool> requestConsent() async {
     final consent = Completer<void>();
@@ -133,6 +158,56 @@ class SdkRewardedGateway implements RewardedGateway {
     );
     await consent.future.timeout(const Duration(seconds: 30));
     return ConsentInformation.instance.canRequestAds();
+  }
+
+  @override
+  Future<AdPrivacySnapshot> readAdPrivacyState() async {
+    final required = await ConsentInformation.instance
+        .getPrivacyOptionsRequirementStatus();
+    final allowed = await ConsentInformation.instance.canRequestAds();
+    return AdPrivacySnapshot(
+      requirement: switch (required) {
+        PrivacyOptionsRequirementStatus.required =>
+          AdPrivacyRequirement.required,
+        PrivacyOptionsRequirementStatus.notRequired =>
+          AdPrivacyRequirement.notRequired,
+        PrivacyOptionsRequirementStatus.unknown => AdPrivacyRequirement.unknown,
+      },
+      canRequestAds: allowed,
+    );
+  }
+
+  @override
+  Future<AdPrivacySnapshot> updateAdPrivacyState() async {
+    // Explicit Check action only. Updating information does not show a consent
+    // form or initialize/load an ad; a required options form remains a separate
+    // player action after the updated requirement has been presented.
+    final updated = Completer<void>();
+    ConsentInformation.instance.requestConsentInfoUpdate(
+      ConsentRequestParameters(),
+      () {
+        if (!updated.isCompleted) updated.complete();
+      },
+      (_) {
+        if (!updated.isCompleted) {
+          updated.completeError(
+            const ServiceException('ad_privacy_unavailable'),
+          );
+        }
+      },
+    );
+    await updated.future.timeout(const Duration(seconds: 30));
+    return readAdPrivacyState().timeout(const Duration(seconds: 5));
+  }
+
+  @override
+  Future<AdPrivacySnapshot> showAdPrivacyOptions() async {
+    FormError? failure;
+    await ConsentForm.showPrivacyOptionsForm((error) => failure = error);
+    if (failure != null) {
+      throw const ServiceException('ad_privacy_unavailable');
+    }
+    return readAdPrivacyState().timeout(const Duration(seconds: 5));
   }
 
   @override
@@ -202,10 +277,15 @@ class NativeServicesManager extends ChangeNotifier {
     this.adLoadTimeout = const Duration(seconds: 30),
     this.configuration = const NativeServiceConfiguration(),
     this.localAccountSeed,
+    this.ownershipCache,
+    this.prepareOwnershipClock,
+    SoundtrackDelivery? soundtrack,
     String? platformOverride,
   }) : credentials = credentials ?? SecureCredentialStore(),
        _store = store ?? SdkStoreGateway(),
        _rewarded = rewarded ?? SdkRewardedGateway(),
+       _soundtrack =
+           soundtrack ?? (client == null ? null : SoundtrackDelivery(client)),
        _platform =
            platformOverride ??
            (Platform.isIOS
@@ -220,6 +300,16 @@ class NativeServicesManager extends ChangeNotifier {
   final Duration adLoadTimeout;
   final NativeServiceConfiguration configuration;
   final String? Function()? localAccountSeed;
+  final SecureOwnershipLeaseCache? ownershipCache;
+  final Future<bool> Function()? prepareOwnershipClock;
+  final SoundtrackDelivery? _soundtrack;
+  ServiceSession? _soundtrackCapabilitySession;
+  bool _soundtrackReady = false;
+  bool get supporterDeliveryReady =>
+      configuration.supporterEnabled &&
+      _soundtrackReady &&
+      identical(session, _soundtrackCapabilitySession) &&
+      session?.expiresAt.isAfter(DateTime.now().toUtc()) == true;
   final String? _platform;
   bool _disposed = false, _initialized = false, _storeAvailable = false;
   bool busy = false, _recoveryAcknowledged = false;
@@ -232,6 +322,16 @@ class NativeServicesManager extends ChangeNotifier {
   }
 
   bool telemetryEnabled = false, pendingTelemetryDeletion = false;
+  int? _telemetryConsentRevision;
+  ServiceSession? _telemetryConsentSession;
+  int? get telemetryConsentRevision =>
+      telemetryEnabled &&
+          !pendingTelemetryDeletion &&
+          session != null &&
+          session!.expiresAt.isAfter(DateTime.now().toUtc()) &&
+          identical(session, _telemetryConsentSession)
+      ? _telemetryConsentRevision
+      : null;
   int _privacyIntent = 0;
   int _accountIntent = 0;
   Future<void> _credentialTail = Future.value();
@@ -244,14 +344,28 @@ class NativeServicesManager extends ChangeNotifier {
   final Map<String, Duration> _ownershipValidity = {};
   final Stopwatch _ownershipAge = Stopwatch();
   String? _ownershipAccount, _ownershipSeed;
+  int _ownershipIntent = 0;
+  // A newer online observation burns the older lease's authority immediately,
+  // including while clock/storage work is pending or has failed.
+  final Set<String> _ownershipRequiresFreshLease = {};
   Timer? _ownershipExpiryTimer;
   Set<String> get ownedEntitlementIds {
+    if (configuration.signedOwnershipRequired && ownershipCache == null) {
+      return const {};
+    }
     if (session == null ||
+        _ownershipRequiresFreshLease.contains(session!.accountId) ||
         !session!.expiresAt.isAfter(DateTime.now().toUtc()) ||
         session?.accountId != _ownershipAccount ||
         localAccountSeed?.call() != _ownershipSeed ||
         _ownershipSeed == null) {
       return const {};
+    }
+    if (ownershipCache != null) {
+      return ownershipCache!.currentEntitlementIds(
+        accountId: session!.accountId,
+        localAccountSeed: _ownershipSeed!,
+      );
     }
     return Set.unmodifiable(
       _ownedEntitlementIds.where(
@@ -273,6 +387,13 @@ class NativeServicesManager extends ChangeNotifier {
 
   void _armOwnershipExpiry() {
     _ownershipExpiryTimer?.cancel();
+    if (ownershipCache != null) {
+      final remaining = ownershipCache!.remaining;
+      if (remaining > Duration.zero) {
+        _ownershipExpiryTimer = Timer(remaining, () => _notify());
+      }
+      return;
+    }
     final remaining =
         _ownershipValidity.values
             .map((value) => value - _ownershipAge.elapsed)
@@ -297,6 +418,7 @@ class NativeServicesManager extends ChangeNotifier {
       configured &&
       signedIn &&
       configuration.commerceEnabled &&
+      (!configuration.signedOwnershipRequired || ownershipCache != null) &&
       _platform != null &&
       _storeAvailable;
   bool get adsAvailable =>
@@ -306,12 +428,93 @@ class NativeServicesManager extends ChangeNotifier {
       _platform != null &&
       configuration.rewardedAdUnitId != null &&
       !configuration.rewardedAdUnitId!.contains('3940256099942544');
+  int _adPrivacyRevision = 0;
+  bool _adPrivacyBusy = false;
+  AdPrivacySnapshot _adPrivacy = const AdPrivacySnapshot(
+    requirement: AdPrivacyRequirement.unknown,
+    canRequestAds: false,
+  );
+  String? _adPrivacyError;
+  AdPrivacyGateway? get _adPrivacyGateway =>
+      _rewarded is AdPrivacyGateway ? _rewarded as AdPrivacyGateway : null;
+  // Device-level choices remain reachable after sign-out. No query is made
+  // from initialize(), a build(), or an unconfigured guest launch.
+  bool get adPrivacyAvailable =>
+      configured &&
+      configuration.adsEnabled &&
+      _platform != null &&
+      configuration.rewardedAdUnitId != null &&
+      !configuration.rewardedAdUnitId!.contains('3940256099942544') &&
+      _adPrivacyGateway != null;
+  AdPrivacyRequirement get adPrivacyRequirement => _adPrivacy.requirement;
+  bool get adPrivacyBusy => _adPrivacyBusy;
+  String? get adPrivacyError => _adPrivacyError;
+
+  Future<void> refreshAdPrivacyOptions() => _adPrivacyAction(show: false);
+  Future<void> updateAdPrivacyOptions() =>
+      _adPrivacyAction(show: false, update: true);
+  Future<void> showAdPrivacyOptions() => _adPrivacyAction(show: true);
+
+  Future<void> _adPrivacyAction({
+    required bool show,
+    bool update = false,
+  }) async {
+    if (!adPrivacyAvailable) {
+      if (show) throw const ServiceException('ad_privacy_unavailable');
+      return;
+    }
+    if (_adPrivacyBusy) return;
+    // Invalidate uncompleted ad work synchronously, before any SDK future.
+    final revision = ++_adPrivacyRevision;
+    final accountIntent = _accountIntent;
+    final expectedSession = session;
+    final sessionGeneration = client!.sessionGeneration;
+    final seed = localAccountSeed?.call();
+    bool current() =>
+        !_disposed &&
+        revision == _adPrivacyRevision &&
+        accountIntent == _accountIntent &&
+        identical(session, expectedSession) &&
+        client!.sessionGeneration == sessionGeneration &&
+        localAccountSeed?.call() == seed;
+    _adPrivacyBusy = true;
+    _adPrivacyError = null;
+    _notify();
+    try {
+      var state = update
+          ? await _adPrivacyGateway!.updateAdPrivacyState().timeout(
+              const Duration(seconds: 35),
+            )
+          : await _adPrivacyGateway!.readAdPrivacyState().timeout(
+              const Duration(seconds: 5),
+            );
+      if (!current()) return;
+      if (show && state.requirement == AdPrivacyRequirement.required) {
+        // User interaction may take as long as needed. Do not time out a visible
+        // form and resume optional ads while that form is still open.
+        state = await _adPrivacyGateway!.showAdPrivacyOptions();
+      }
+      if (current()) _adPrivacy = state;
+    } catch (_) {
+      if (current()) _adPrivacyError = 'ad_privacy_unavailable';
+    } finally {
+      if (revision == _adPrivacyRevision) {
+        _adPrivacyBusy = false;
+        _notify();
+      }
+    }
+  }
+
   String get _key =>
       'tideglass.${sha256.convert(utf8.encode(client!.endpoint.origin))}';
 
   void _notify() {
     if (!_disposed) notifyListeners();
   }
+
+  /// Native elapsed-clock changes can hide/restore valid cached cosmetics.
+  /// This updates their projection without mutating gameplay or contacting a service.
+  void refreshOwnershipPresentation() => _notify();
 
   Future<void> initialize() async {
     if (_initialized) return;
@@ -389,7 +592,9 @@ class NativeServicesManager extends ChangeNotifier {
     ServiceSession expected,
     int intent,
   ) async {
-    if (_disposed || intent != _accountIntent || !identical(session, expected)) {
+    if (_disposed ||
+        intent != _accountIntent ||
+        !identical(session, expected)) {
       return;
     }
     try {
@@ -397,7 +602,9 @@ class NativeServicesManager extends ChangeNotifier {
     } catch (_) {
       lastError = 'secure_session_not_saved';
     }
-    if (_disposed || intent != _accountIntent || !identical(session, expected)) {
+    if (_disposed ||
+        intent != _accountIntent ||
+        !identical(session, expected)) {
       return;
     }
     status = 'connected';
@@ -484,6 +691,7 @@ class NativeServicesManager extends ChangeNotifier {
     bool localOnly = false,
   }) async {
     _requireClient();
+    final leavingAccount = session?.accountId;
     final intent = ++_accountIntent;
     if (!localOnly) {
       await client!.signOut(allDevices: allDevices);
@@ -499,6 +707,9 @@ class NativeServicesManager extends ChangeNotifier {
     _notify();
     try {
       await _saveSession();
+      if (leavingAccount != null) {
+        await ownershipCache?.clear(accountId: leavingAccount);
+      }
     } catch (_) {
       if (intent == _accountIntent) {
         lastError = 'secure_session_cleanup_required';
@@ -518,12 +729,21 @@ class NativeServicesManager extends ChangeNotifier {
       recoveryCode: recoveryCode,
       confirmDelete: confirmDelete,
     );
+    var leaseCleanupFailed = false;
+    if (deletingAccountId != null) {
+      try {
+        await ownershipCache?.erase(accountId: deletingAccountId);
+      } catch (_) {
+        leaseCleanupFailed = true;
+      }
+    }
     if (intent != _accountIntent || session != null) return;
     _clearOwnership();
     recoveryAcknowledged = false;
     telemetryEnabled = false;
     pendingTelemetryDeletion = false;
     status = 'signed_out';
+    if (leaseCleanupFailed) lastError = 'secure_session_cleanup_required';
     _notify();
     try {
       await _saveSession();
@@ -563,16 +783,21 @@ class NativeServicesManager extends ChangeNotifier {
     if (!enabled) {
       telemetryEnabled = false;
       pendingTelemetryDeletion = true;
+      _telemetryConsentRevision = null;
+      _telemetryConsentSession = null;
+      _notify();
       await _savePrivacy();
       if (!current() || session?.accountId != consentingAccount) return;
       _notify();
     }
     final operation = _privacyRemoteTail.then((_) async {
       if (!current()) return;
-      await client!.setTelemetryConsent(enabled);
+      final revision = await client!.setTelemetryConsent(enabled);
       if (!current()) return;
       telemetryEnabled = enabled;
       pendingTelemetryDeletion = false;
+      _telemetryConsentRevision = enabled ? revision : null;
+      _telemetryConsentSession = enabled ? session : null;
       await _savePrivacy();
       if (current()) _notify();
     });
@@ -587,6 +812,8 @@ class NativeServicesManager extends ChangeNotifier {
   Future<void> _loadPrivacy() async {
     telemetryEnabled = false;
     pendingTelemetryDeletion = false;
+    _telemetryConsentRevision = null;
+    _telemetryConsentSession = null;
     if (!signedIn) return;
     final privacyAccount = session!.accountId;
     final generation = client!.sessionGeneration;
@@ -602,6 +829,11 @@ class NativeServicesManager extends ChangeNotifier {
       final data = jsonDecode(raw) as Map;
       pendingTelemetryDeletion = data['pending_delete'] == true;
       telemetryEnabled = data['enabled'] == true && !pendingTelemetryDeletion;
+      final revision = data['revision'];
+      if (telemetryEnabled && revision is int && revision > 0) {
+        _telemetryConsentRevision = revision;
+        _telemetryConsentSession = session;
+      }
     } catch (_) {
       // A remote account/rotation may already be committed. Never hide its
       // recovery result because an unrelated local privacy read failed.
@@ -617,29 +849,77 @@ class NativeServicesManager extends ChangeNotifier {
     final data = jsonEncode({
       'enabled': telemetryEnabled,
       'pending_delete': pendingTelemetryDeletion,
+      'revision': telemetryConsentRevision,
     });
     final next = _privacyWriteTail.then((_) => credentials.write(key, data));
     _privacyWriteTail = next.catchError((Object _) {});
     return next;
   }
 
+  /// Recheck remote withdrawal without ever writing a new opt-in. An outage
+  /// retains only the player's existing local choice; the service still checks
+  /// the recorded revision before accepting any queued event.
+  Future<void> refreshTelemetryConsent() async {
+    if (!signedIn || !telemetryEnabled || pendingTelemetryDeletion) return;
+    final requestedSession = session;
+    final generation = client!.sessionGeneration;
+    final intent = _privacyIntent;
+    final result = await client!.readTelemetryConsent();
+    if (_disposed ||
+        generation != client!.sessionGeneration ||
+        intent != _privacyIntent ||
+        !identical(session, requestedSession) ||
+        !telemetryEnabled ||
+        pendingTelemetryDeletion) {
+      return;
+    }
+    final enabled = result['enabled'] == true;
+    final revision = result['revision'];
+    if (revision is! int || revision < 0 || (enabled && revision == 0)) {
+      throw const ServiceException('invalid_consent_response');
+    }
+    if (_telemetryConsentRevision != null &&
+        revision < _telemetryConsentRevision!) {
+      return;
+    }
+    telemetryEnabled = enabled;
+    _telemetryConsentRevision = enabled ? revision : null;
+    _telemetryConsentSession = enabled ? session : null;
+    _notify();
+    await _savePrivacy();
+  }
+
   Future<void> refreshOwnership() async {
     _requireClient();
+    if (configuration.signedOwnershipRequired && ownershipCache == null) {
+      _clearOwnership();
+      lastError = 'ownership_verification_unavailable';
+      _notify();
+      throw const ServiceException('ownership_verification_not_configured');
+    }
+    final intent = ++_ownershipIntent;
     final generation = client!.sessionGeneration;
     final seed = localAccountSeed?.call();
     bool current() =>
         !_disposed &&
+        intent == _ownershipIntent &&
         generation == client!.sessionGeneration &&
         seed == localAccountSeed?.call();
     try {
       final response = await client!.entitlements();
       if (!current()) return;
       _acceptOwnership(response);
+      await _refreshSignedOwnership(current);
+      if (!current()) return;
       lastError = null;
     } catch (_) {
       if (current()) {
-        _clearOwnership();
-        lastError = 'ownership_verification_unavailable';
+        if (ownershipCache == null) {
+          _clearOwnership();
+        } else if (!_ownershipRequiresFreshLease.contains(session?.accountId)) {
+          await restoreCachedOwnership();
+        }
+        if (current()) lastError = 'ownership_verification_unavailable';
       }
       rethrow;
     } finally {
@@ -647,8 +927,118 @@ class NativeServicesManager extends ChangeNotifier {
     }
   }
 
+  /// A previously signed lease may cover an outage, but never a new account,
+  /// another progression seed, an expired budget or an observed revocation.
+  Future<void> restoreCachedOwnership() async {
+    final cache = ownershipCache, expected = session;
+    final seed = localAccountSeed?.call();
+    if (cache == null ||
+        expected == null ||
+        seed == null ||
+        _ownershipRequiresFreshLease.contains(expected.accountId)) {
+      return;
+    }
+    final generation = client!.sessionGeneration;
+    bool current() =>
+        !_disposed &&
+        !_ownershipRequiresFreshLease.contains(expected.accountId) &&
+        identical(session, expected) &&
+        generation == client!.sessionGeneration &&
+        seed == localAccountSeed?.call();
+    try {
+      if (prepareOwnershipClock != null && !await prepareOwnershipClock!()) {
+        return;
+      }
+      if (!current()) return;
+      if (_ownershipAccount != expected.accountId ||
+          _ownershipSeed != seed ||
+          cache.remaining <= Duration.zero) {
+        await cache.load(accountId: expected.accountId, localAccountSeed: seed);
+      }
+      if (!current()) return;
+      _ownershipAccount = expected.accountId;
+      _ownershipSeed = seed;
+      _armOwnershipExpiry();
+    } catch (_) {
+      if (current()) _clearOwnership();
+    }
+    _notify();
+  }
+
+  Future<void> _refreshSignedOwnership(bool Function() current) async {
+    final cache = ownershipCache, expected = session;
+    final seed = localAccountSeed?.call();
+    if (cache == null || expected == null || seed == null || !current()) return;
+    // Persist supersession before any clock wait. The synchronous quarantine
+    // already denies older grants, even if this secure write fails.
+    await cache.clear(accountId: expected.accountId);
+    if (!current()) return;
+    if (prepareOwnershipClock != null && !await prepareOwnershipClock!()) {
+      throw const ServiceException('ownership_clock_unavailable');
+    }
+    if (!current()) return;
+    final response = await client!.ownershipLease();
+    if (!current()) return;
+    final envelope = response['lease'];
+    if (envelope is! Map<String, dynamic>) {
+      throw const ServiceException('invalid_ownership_lease');
+    }
+    await cache.accept(
+      envelope,
+      accountId: expected.accountId,
+      localAccountSeed: seed,
+    );
+    if (!current()) return;
+    _ownershipRequiresFreshLease.remove(expected.accountId);
+    _ownershipAccount = expected.accountId;
+    _ownershipSeed = seed;
+    _armOwnershipExpiry();
+  }
+
+  Future<void> checkpointOwnership() async {
+    final account = session?.accountId;
+    if (ownershipCache == null ||
+        account == null ||
+        _ownershipRequiresFreshLease.contains(account)) {
+      return;
+    }
+    try {
+      if (prepareOwnershipClock != null && !await prepareOwnershipClock!()) {
+        return;
+      }
+      await ownershipCache!.checkpoint(accountId: account);
+    } catch (_) {
+      // Storage failure must not extend a lease or interrupt local gameplay.
+    }
+  }
+
+  Future<File> downloadSoundtrack(Directory destination) async {
+    if (_soundtrack == null || !ownedEntitlementIds.contains('soundtrack.01')) {
+      throw const ServiceException('soundtrack_ownership_required');
+    }
+    final expected = session;
+    try {
+      return await _soundtrack.download(destination);
+    } on ServiceException catch (error) {
+      if (error.status == 403 && identical(session, expected)) {
+        try {
+          await refreshOwnership();
+        } catch (_) {
+          // The refused export remains refused even if refresh is unavailable.
+        }
+      }
+      rethrow;
+    }
+  }
+
   void _acceptOwnership(Map<String, dynamic> result) {
     _clearOwnership();
+    if (ownershipCache != null) {
+      final account = session?.accountId;
+      if (account != null) _ownershipRequiresFreshLease.add(account);
+      _notify();
+      return;
+    }
     final seed = localAccountSeed?.call();
     final verifiedAt = result['verified_at'];
     final maximumAge = result['maximum_verification_age_seconds'];
@@ -711,6 +1101,20 @@ class NativeServicesManager extends ChangeNotifier {
       offers = response.productDetails
           .where((product) => tideglassStoreProducts.contains(product.id))
           .toList(growable: false);
+      _soundtrackReady = false;
+      _soundtrackCapabilitySession = null;
+      if (configuration.supporterEnabled && _soundtrack != null) {
+        final expected = session;
+        try {
+          final ready = await _soundtrack.ready();
+          if (identical(session, expected)) {
+            _soundtrackReady = ready;
+            _soundtrackCapabilitySession = expected;
+          }
+        } catch (_) {
+          // Other cosmetic offers remain usable when soundtrack delivery fails.
+        }
+      }
       lastError = response.notFoundIDs.isEmpty
           ? null
           : 'some_products_unavailable';
@@ -727,6 +1131,22 @@ class NativeServicesManager extends ChangeNotifier {
     final matching = offers.where((offer) => offer.id == productId).toList();
     if (matching.length != 1) {
       throw const ServiceException('product_not_available');
+    }
+    if (productId == 'dev.tideglass.supporter' && !supporterDeliveryReady) {
+      throw const ServiceException('soundtrack_delivery_unavailable');
+    }
+    if (productId == 'dev.tideglass.supporter') {
+      final expected = session;
+      try {
+        if (!await _soundtrack!.ready() || !identical(session, expected)) {
+          throw const ServiceException('soundtrack_delivery_unavailable');
+        }
+      } catch (_) {
+        _soundtrackReady = false;
+        _soundtrackCapabilitySession = null;
+        _notify();
+        throw const ServiceException('soundtrack_delivery_unavailable');
+      }
     }
     final binding = await client!.entitlements();
     if (binding['account_id'] != session!.accountId ||
@@ -786,6 +1206,7 @@ class NativeServicesManager extends ChangeNotifier {
         continue;
       }
       final verifyingSession = session;
+      final ownershipIntent = ++_ownershipIntent;
       final verifyingGeneration = client!.sessionGeneration;
       final verifyingSeed = localAccountSeed?.call();
       bool current() =>
@@ -793,6 +1214,8 @@ class NativeServicesManager extends ChangeNotifier {
           identical(session, verifyingSession) &&
           client!.sessionGeneration == verifyingGeneration &&
           localAccountSeed?.call() == verifyingSeed;
+      bool currentOwnership() =>
+          current() && ownershipIntent == _ownershipIntent;
       try {
         purchaseStates[purchase.productID] = 'verifying';
         _notify();
@@ -832,11 +1255,18 @@ class NativeServicesManager extends ChangeNotifier {
               result['delivery_state'] == 'revoked'
               ? 'revoked'
               : 'pending_verification';
-          _acceptOwnership(result);
+          if (currentOwnership()) {
+            _acceptOwnership(result);
+            await _refreshSignedOwnership(currentOwnership);
+          }
           _notify();
           continue;
         }
-        _acceptOwnership(result);
+        if (currentOwnership()) {
+          _acceptOwnership(result);
+          await _refreshSignedOwnership(currentOwnership);
+        }
+        if (!current()) continue;
         if (purchase.pendingCompletePurchase) await _store.complete(purchase);
         if (!current()) {
           purchaseStates[purchase.productID] = 'account_recovery_required';
@@ -865,16 +1295,48 @@ class NativeServicesManager extends ChangeNotifier {
     if (!adsAvailable || slot < 0 || slot > 5) {
       throw const ServiceException('ads_not_configured');
     }
+    if (_adPrivacyBusy) return null;
     final requestingAccount = session!.accountId;
+    final requestingSession = session;
+    final requestingGeneration = client!.sessionGeneration;
+    final requestingAccountIntent = _accountIntent;
+    final privacyRevision = _adPrivacyRevision;
     final requestingSeed = localAccountSeed?.call();
+    var displayCompleted = false;
     bool stillEligible() =>
         !_disposed &&
         signedIn &&
+        identical(session, requestingSession) &&
+        client!.sessionGeneration == requestingGeneration &&
+        _accountIntent == requestingAccountIntent &&
         session!.accountId == requestingAccount &&
         localAccountSeed?.call() == requestingSeed &&
+        (displayCompleted ||
+            (!_adPrivacyBusy && privacyRevision == _adPrivacyRevision)) &&
         (isStillEligible?.call() ?? true);
     if (!stillEligible()) return null;
     if (!await _rewarded.requestConsent() || !stillEligible()) return null;
+    if (_adPrivacyGateway != null) {
+      try {
+        final state = await _adPrivacyGateway!.readAdPrivacyState().timeout(
+          const Duration(seconds: 5),
+        );
+        if (!stillEligible()) return null;
+        _adPrivacy = state;
+        _adPrivacyError = null;
+        _notify();
+        if (!state.canRequestAds ||
+            state.requirement == AdPrivacyRequirement.unknown) {
+          return null;
+        }
+      } catch (_) {
+        if (stillEligible()) {
+          _adPrivacyError = 'ad_privacy_unavailable';
+          _notify();
+        }
+        return null;
+      }
+    }
     var abandoned = false;
     NativeRewardedAd? ad;
     try {
@@ -897,6 +1359,9 @@ class NativeServicesManager extends ChangeNotifier {
       if (!stillEligible()) return null;
       final earned = await ad.show();
       if (!earned || !stillEligible()) return null;
+      // Later privacy changes affect future optional ads, not a completed
+      // display's verified server receipt. Account/seed/slot guards still apply.
+      displayCompleted = true;
     } finally {
       abandoned = true;
       await ad?.dispose();

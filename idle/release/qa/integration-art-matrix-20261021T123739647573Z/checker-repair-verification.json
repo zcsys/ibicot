@@ -1,0 +1,62 @@
+{
+  "checker_sha256": "2bbf0a53b581f220bcbdb5b453ae0ebc50df4abb38f2eea33b4eb9bc4c5b1ed3",
+  "original_probes": 14,
+  "expanded_probes": 26,
+  "unchanged_original_assertions": true,
+  "results": [
+    {
+      "locale": "en-US",
+      "kind": "full",
+      "command": [
+        "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3",
+        "/Users/csys/Desktop/ibicot/idle/source/art/verification/check_matrix.py",
+        "/Users/csys/Desktop/ibicot/idle/release/art/catalogue-variants/root-art-full-20261021T122040.006324Z/matrix-results.json",
+        "--proof",
+        "/Users/csys/Desktop/ibicot/idle/release/native-proof/root-art-full-20261021T122040.006324Z",
+        "--full"
+      ],
+      "exit_code": 0,
+      "log_sha256": "c2baede8cb922a66aea2ccacdd718ec67bf616c25d6b8d4774f43506fa394108"
+    },
+    {
+      "locale": "en-US",
+      "kind": "representative",
+      "command": [
+        "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3",
+        "/Users/csys/Desktop/ibicot/idle/source/art/verification/check_matrix.py",
+        "/Users/csys/Desktop/ibicot/idle/release/qa/integration-art-matrix-20261021T123739647573Z/en-US/report/matrix-results.json",
+        "--proof",
+        "/Users/csys/Desktop/ibicot/idle/release/qa/integration-art-matrix-20261021T123739647573Z/en-US"
+      ],
+      "exit_code": 0,
+      "log_sha256": "11dfa672b830b7652cb8257d9b9f9332713d52af49fda7bf7cdf3ef319459dbb"
+    },
+    {
+      "locale": "qps-ploc",
+      "kind": "full",
+      "command": [
+        "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3",
+        "/Users/csys/Desktop/ibicot/idle/source/art/verification/check_matrix.py",
+        "/Users/csys/Desktop/ibicot/idle/release/art/catalogue-variants/root-art-pseudo-full-20261021T122636.246158Z/matrix-results.json",
+        "--proof",
+        "/Users/csys/Desktop/ibicot/idle/release/native-proof/root-art-pseudo-full-20261021T122636.246158Z",
+        "--full"
+      ],
+      "exit_code": 0,
+      "log_sha256": "9289590f597cc2afbedf39f83f9a41d3e10b5143b71111fe0f1f51d1a7a959e6"
+    },
+    {
+      "locale": "qps-ploc",
+      "kind": "representative",
+      "command": [
+        "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3",
+        "/Users/csys/Desktop/ibicot/idle/source/art/verification/check_matrix.py",
+        "/Users/csys/Desktop/ibicot/idle/release/qa/integration-art-matrix-20261021T123739647573Z/qps-ploc/report/matrix-results.json",
+        "--proof",
+        "/Users/csys/Desktop/ibicot/idle/release/qa/integration-art-matrix-20261021T123739647573Z/qps-ploc"
+      ],
+      "exit_code": 0,
+      "log_sha256": "b36b577f3fdf02aac248206c60fde6a0d5853323685cf806423b02637f491e4f"
+    }
+  ]
+}

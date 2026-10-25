@@ -1,0 +1,23 @@
+00:00 +0: loading ../../release/qa/integration-native-linkage-20261021T132142402938Z/independent_recorder_test.dart
+00:00 +0: unavailable start and zero gap publish in one CAS after durable completion
+00:00 +1: legacy prefix remains byte-identical, new consent context begins one process
+00:00 +2: failed restart retains last committed identity; retry gap belongs to previous process
+00:00 +3: withdrawal immediately stops queued capture and erases all native fields
+00:00 +4: missing unavailable gap rejects on persisted reopen
+00:00 +5: fractional erased schema is rejected like Python
+00:00 +5 -1: fractional erased schema is rejected like Python [E]
+  Expected: throws <Instance of 'StudyException'>
+    Actual: <Instance of 'Future<StudyRecorder>'>
+     Which: emitted <Instance of 'StudyRecorder'>
+  schema=1.0
+  
+  ../../release/qa/integration-native-linkage-20261021T132142402938Z/independent_recorder_test.dart 53:128  main.<fn>
+  
+00:00 +5 -1: native context is strict for version, keys, PID/time type and unavailable reason
+00:00 +6 -1: Some tests failed.
+
+Failing tests:
+  ../../release/qa/integration-native-linkage-20261021T132142402938Z/independent_recorder_test.dart: fractional erased schema is rejected like Python
+
+Consider enabling the flag chain-stack-traces to receive more detailed exceptions.
+For example, 'dart test --chain-stack-traces'.

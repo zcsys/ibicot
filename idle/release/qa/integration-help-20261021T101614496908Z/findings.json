@@ -1,0 +1,16 @@
+{
+  "findings": [
+    {
+      "id": "HELP001",
+      "priority": 2,
+      "type": "copy_accuracy",
+      "file": "game/mobile/lib/help_content.dart",
+      "line": 118,
+      "status": "reported_to_author",
+      "claim": "Travel or a clock change does not create extra days of rewards.",
+      "reproduction": "Forward caller UTC advances guest account-day20747to20748atunchangedelapsed0andpermits6newbriefingslots;149probechecksconfirmfixedoffsetandrollbackguardbehavior.",
+      "expected": "Describe saved fixed offset and backward high-water guard without asserting authenticated forward wall time.",
+      "production_repair_required": "Copy correction only; this review does not request economy or guest clock redesign."
+    }
+  ]
+}

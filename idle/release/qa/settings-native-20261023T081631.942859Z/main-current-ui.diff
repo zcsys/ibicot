@@ -1,0 +1,13 @@
+--- release/qa/integration-current-ui-20261021T133115456638Z/source/game/mobile/lib/main.dart
++++ game/mobile/lib/main.dart
+@@ -1,8 +1,10 @@
+ import 'package:flutter/material.dart';
+ import 'bootstrap.dart';
+ import 'study_gate.dart';
++import 'font_licenses.dart';
+ 
+ void main() {
+   WidgetsFlutterBinding.ensureInitialized();
++  registerFontLicenses();
+   runApp(const StudyGate(child: TideglassBootstrap()));
+ }

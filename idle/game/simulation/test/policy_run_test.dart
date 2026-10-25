@@ -121,4 +121,34 @@ void main() {
     run.challengeAt['challenge.01'] = 2345;
     expect(jsonEncode(captured), before);
   });
+
+  test('pursuing contracts uses real reflection and seasonal alternatives', () {
+    final ordinary = policy(BonusPolicy.requiredCalibrationsOnly);
+    final pursuing = policy(
+      BonusPolicy.requiredCalibrationsOnly,
+      contracts: ContractPolicy.pursueWithSeason,
+    );
+    ordinary.run(days: 6);
+    pursuing.run(days: 6);
+    expect(
+      pursuing.contractsClaimed,
+      greaterThanOrEqualTo(ordinary.contractsClaimed),
+    );
+    expect(pursuing.seasonalContractBindings, greaterThan(0));
+    expect(pursuing.seasonalContractClaims, greaterThan(0));
+    expect(
+      pursuing.archiveReflections,
+      greaterThanOrEqualTo(ordinary.archiveReflections),
+    );
+    expect(pursuing.focusUsed, 3);
+    expect(
+      pursuing.contractNotesEarned,
+      BigInt.from(pursuing.contractsClaimed * 10),
+    );
+    expect(
+      pursuing.notesSpent + pursuing.main.surveyNotes,
+      pursuing.surveyNotesEarned + pursuing.contractNotesEarned,
+    );
+    expect(pursuing.fullNoteBudgetSeconds, isNull);
+  }, timeout: const Timeout(Duration(minutes: 2)));
 }

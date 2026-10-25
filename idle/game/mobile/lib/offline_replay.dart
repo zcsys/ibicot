@@ -1,3 +1,4 @@
+import 'strings.dart';
 import 'dart:async';
 import 'dart:isolate';
 import 'package:tideglass_core/tideglass_core.dart';
@@ -29,11 +30,12 @@ Future<ReplayedSession> replayOfflineSession({
   required StoryCatalogue catalogue,
   required DateTime settledThrough,
   required DateTime now,
+  TideglassEngine engine = const TideglassEngine(),
   void Function(ReplayProgress)? onProgress,
   Duration chunk = const Duration(hours: 4),
 }) async {
   if (chunk <= Duration.zero) {
-    throw ArgumentError('Replay chunks must be positive.');
+    throw ArgumentError(UiEnglish.replayPositiveChunk);
   }
   final receive = ReceivePort();
   final result = Completer<ReplayedSession>();
@@ -45,15 +47,11 @@ Future<ReplayedSession> replayOfflineSession({
     } else if (message is List) {
       if (!result.isCompleted) {
         result.completeError(
-          StateError('Saved progress could not be replayed: ${message.first}'),
+          StateError(UiEnglish.replaySavedFailure(message.first)),
         );
       }
     } else if (message == null && !result.isCompleted) {
-      result.completeError(
-        StateError(
-          'Settlement worker stopped before completion. Saved progress is unchanged.',
-        ),
-      );
+      result.completeError(StateError(UiEnglish.replayWorkerStopped));
     }
   });
   Isolate? worker;
@@ -68,6 +66,7 @@ Future<ReplayedSession> replayOfflineSession({
         settledThrough.toUtc(),
         now.toUtc(),
         chunk,
+        engine,
       ),
       onError: receive.sendPort,
       onExit: receive.sendPort,
@@ -90,6 +89,7 @@ class _ReplayRequest {
     this.from,
     this.through,
     this.chunk,
+    this.engine,
   );
   final SendPort port;
   final GameState main;
@@ -97,10 +97,11 @@ class _ReplayRequest {
   final StoryCatalogue catalogue;
   final DateTime from, through;
   final Duration chunk;
+  final TideglassEngine engine;
 }
 
 void _replayWorker(_ReplayRequest input) {
-  const engine = TideglassEngine();
+  final engine = input.engine;
   var main = input.main, story = input.story, cursor = input.from;
   final end = input.through.isBefore(cursor) ? cursor : input.through;
   final total = end.difference(cursor);
@@ -116,7 +117,7 @@ void _replayWorker(_ReplayRequest input) {
   if (main.support.receiptCursorMigrationRequired) {
     final migrated = engine.initializeReceiptCursor(main, cursor);
     if (!migrated.accepted) {
-      throw StateError(migrated.reason ?? 'Settlement rejected.');
+      throw StateError(migrated.reason ?? UiEnglish.replaySettlementRejected);
     }
     main = migrated.state;
   }
@@ -142,7 +143,9 @@ void _replayWorker(_ReplayRequest input) {
           contentId: run.dossierId,
         );
         if (!discovered.accepted) {
-          throw StateError(discovered.reason ?? 'Settlement rejected.');
+          throw StateError(
+            discovered.reason ?? UiEnglish.replaySettlementRejected,
+          );
         }
         main = discovered.state;
       }
@@ -155,7 +158,7 @@ void _replayWorker(_ReplayRequest input) {
         offlineElapsedBefore: offset,
       );
       if (!advanced.accepted) {
-        throw StateError(advanced.reason ?? 'Settlement rejected.');
+        throw StateError(advanced.reason ?? UiEnglish.replaySettlementRejected);
       }
       story = story.copyWith(season: advanced.state);
     }
@@ -175,7 +178,7 @@ void _replayWorker(_ReplayRequest input) {
       throughUtc: end,
     );
     if (!advanced.accepted) {
-      throw StateError(advanced.reason ?? 'Settlement rejected.');
+      throw StateError(advanced.reason ?? UiEnglish.replaySettlementRejected);
     }
     main = advanced.state;
     advancePartitions(elapsed, offset, end);
@@ -195,9 +198,7 @@ void _replayWorker(_ReplayRequest input) {
       isUtc: true,
     );
     if (requestEnd.isAfter(end)) {
-      throw StateError(
-        'An unfinished settlement ends after the current clock.',
-      );
+      throw StateError(UiEnglish.replayFutureSettlement);
     }
     var offset = Duration(microseconds: main.support.nextOffsetMicros.toInt());
     // A new request starts at zero; finalized caches retain no active offset.
@@ -220,7 +221,7 @@ void _replayWorker(_ReplayRequest input) {
         finalizeOfflineSettlement: nextCursor == requestEnd,
       );
       if (!advanced.accepted) {
-        throw StateError(advanced.reason ?? 'Settlement rejected.');
+        throw StateError(advanced.reason ?? UiEnglish.replaySettlementRejected);
       }
       main = advanced.state;
       advancePartitions(step, offset, nextCursor);
@@ -238,7 +239,7 @@ void _replayWorker(_ReplayRequest input) {
         offlineSettlement: request,
       );
       if (!closed.accepted) {
-        throw StateError(closed.reason ?? 'Settlement rejected.');
+        throw StateError(closed.reason ?? UiEnglish.replaySettlementRejected);
       }
       main = closed.state;
     }
@@ -262,7 +263,11 @@ void _replayWorker(_ReplayRequest input) {
           cursor,
           availableDiscoveryKinds: [
             'archive',
-            if (story.campaign.restoredHarbor >= 3) 'challenge',
+            if (story.campaign.restoredHarbor >= 3 &&
+                input.catalogue.dossiers.any(
+                  (d) => !story.dossiers.completed.contains(d.id),
+                ))
+              'challenge',
             if (main.focusCharges > 0 ||
                 main.completedCalibrationIds.isNotEmpty)
               'calibration',

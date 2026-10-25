@@ -52,7 +52,7 @@ class SupportScreen extends StatelessWidget {
     final copy = briefings[slot];
     final accepted = await showDialog<bool>(
       context: context,
-      builder: (dialog) => AlertDialog(
+      builder: (dialog) => ReadingDialog(
         title: LocalizedText(copy.$1),
         content: SingleChildScrollView(
           child: LocalizedText(
@@ -106,9 +106,7 @@ class SupportScreen extends StatelessWidget {
           )
           .toList();
       return Scaffold(
-        appBar: AppBar(
-          title: const LocalizedText(UiEnglish.supportCrewSupport),
-        ),
+        appBar: readingAppBar(context, title: UiEnglish.supportCrewSupport),
         body: SafeArea(
           child: Center(
             child: ConstrainedBox(

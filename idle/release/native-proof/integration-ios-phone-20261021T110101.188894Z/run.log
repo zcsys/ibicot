@@ -1,0 +1,29 @@
+Running Xcode build...                                          
+Xcode build done.                                           30.3s
+VMServiceFlutterDriver: Connecting to Flutter application at http://127.0.0.1:55291/snPcExSSz8s=/
+VMServiceFlutterDriver: Isolate found with number: 3407437312333303
+VMServiceFlutterDriver: Isolate 3407437312333303 is runnable.
+VMServiceFlutterDriver: Isolate is paused at start.
+VMServiceFlutterDriver: Attempting to resume isolate
+flutter: 00:00 +0: seeded worker, cosmetics and native audio: session-start
+VMServiceFlutterDriver: Connected to Flutter application.
+flutter: 00:11 +0: seeded worker, cosmetics and native audio: session-start [E]
+flutter:   PlatformException(DarwinAudioError, Player has not yet been created or has already been disposed., null, null)
+flutter:   package:flutter/src/services/message_codecs.dart 653:7     StandardMethodCodec.decodeEnvelope
+  package:flutter/src/services/platform_channel.dart 366:18  MethodChannel._invokeMethod
+  ===== asynchronous gap ===========================
+  package:audioplayers/src/audioplayer.dart 259:7            AudioPlayer.stop
+  ===== asynchronous gap ===========================
+  package:audioplayers/src/audioplayer.dart 286:5            AudioPlayer.release
+  ===== asynchronous gap ===========================
+  package:audioplayers/src/audioplayer.dart 500:5            AudioPlayer.dispose
+  ===== asynchronous gap ===========================
+  dart:async/future_impl.dart 96:3                           _AsyncCompleter.complete
+  ===== asynchronous gap ===========================
+  package:test_api/src/backend/invoker.dart 299:9            Invoker.runTearDowns.<fn>
+  ===== asynchronous gap ===========================
+  package:test_api/src/backend/invoker.dart 318:9            Invoker._waitForOutstandingCa<…>
+flutter: 00:11 +0 -1: (tearDownAll)
+flutter: 00:11 +1 -1: Some tests failed.
+All tests passed.
+Leaving the application running.

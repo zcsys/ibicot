@@ -1,0 +1,13 @@
+--- numeric99a5
++++ currenta87e4
+@@ -135,7 +135,9 @@
+   }
+ 
+   Fixed outputPerSecond(GameState state) {
+-    if (state.charts.bitLength <= 4096) {
++    // Scenario subclasses override producer rules and may read other state.
++    // Only this exact baseline type has the complete key declared below.
++    if (runtimeType == TideglassEngine && state.charts.bitLength <= 4096) {
+       final n = state.counts;
+       return _rates.read((n[0], n[1], n[2], n[3], n[4], state.charts),
+           () => _uncachedOutputPerSecond(state));

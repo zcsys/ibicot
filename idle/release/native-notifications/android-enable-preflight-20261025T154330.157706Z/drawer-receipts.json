@@ -1,0 +1,50 @@
+[
+  {
+    "utc": "2026-10-25T15:44:30.090316+00:00",
+    "argv": [
+      "/Users/csys/Library/Android/sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "shell",
+      "-tt",
+      "uiautomator",
+      "dump",
+      "/dev/tty"
+    ],
+    "exit_code": 0,
+    "file": "drawer-hierarchy.txt",
+    "sha256": "8228886184f578be5a3ae9db308dd4ec3c287dacb63affcaa4fc481d98538879",
+    "stderr": ""
+  },
+  {
+    "utc": "2026-10-25T15:44:32.393405+00:00",
+    "argv": [
+      "/Users/csys/Library/Android/sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "exec-out",
+      "screencap",
+      "-p"
+    ],
+    "exit_code": 0,
+    "file": "drawer.png",
+    "sha256": "c58ee7492d3c44c50f1a08a452863dda76e221a2b39a92da172146586ea4f3d3",
+    "stderr": ""
+  },
+  {
+    "utc": "2026-10-25T15:44:32.621709+00:00",
+    "argv": [
+      "/Users/csys/Library/Android/sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "shell",
+      "dumpsys",
+      "activity",
+      "activities"
+    ],
+    "exit_code": 0,
+    "file": "drawer-activities.txt",
+    "sha256": "4566c11e6a913534ee9cf25d190baf0c1de5972dd7acf35478e838053d45ce71",
+    "stderr": ""
+  }
+]

@@ -1,0 +1,59 @@
+[
+  {
+    "utc": "2026-10-25T16:29:41.197345+00:00",
+    "argv": [
+      "/Users/csys/Library/Android/sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "shell",
+      "dumpsys",
+      "notification",
+      "--noredact"
+    ],
+    "exit_code": 0,
+    "file": "post-schedule-notifications.txt",
+    "sha256": "ad67d39a7d0899ecceb85e671f96a5db937ff8b887b28e4838987c58cb5fb941"
+  },
+  {
+    "utc": "2026-10-25T16:29:41.247987+00:00",
+    "argv": [
+      "/Users/csys/Library/Android/sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "shell",
+      "dumpsys",
+      "alarm"
+    ],
+    "exit_code": 0,
+    "file": "post-schedule-alarm.txt",
+    "sha256": "fca77e08a4ca06edd94156899bc2d8011456337d94d466a6680b6a5d15018710"
+  },
+  {
+    "utc": "2026-10-25T16:29:41.281776+00:00",
+    "argv": [
+      "/Users/csys/Library/Android/sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "shell",
+      "dumpsys",
+      "deviceidle"
+    ],
+    "exit_code": 0,
+    "file": "post-schedule-idle.txt",
+    "sha256": "94d197b311da06280576b241744abae658e6e08e375319492e88e06fa6b08a08"
+  },
+  {
+    "utc": "2026-10-25T16:29:41.309626+00:00",
+    "argv": [
+      "/Users/csys/Library/Android/sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "shell",
+      "pidof",
+      "dev.tideglass.game"
+    ],
+    "exit_code": 0,
+    "file": "post-schedule-pid.txt",
+    "sha256": "d41473b0bcb3c7db33a0a1dd1253c5e68cd8a7a5402955163d51748bb2f4e7de"
+  }
+]

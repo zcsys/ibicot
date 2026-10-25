@@ -1,0 +1,212 @@
+{
+  "reviewer": "/root/qa_integration",
+  "completed_utc": "2026-10-19T14:20:33.660900+00:00",
+  "source_fingerprint": "c3b89321d86675c235c50352b22741e1f73076eee58cf33360b44e96febfb979",
+  "context_validation": {
+    "requirements": 44,
+    "original_packages": 65,
+    "source_contract_changes": [],
+    "reciprocal_mapping_errors": [],
+    "source_fingerprints_match": {
+      "TIDEGLASS_DESIGN.md": true,
+      "V1_ROADMAP.md": true,
+      "v1_backlog.json": true,
+      "economy.json": true
+    },
+    "already_accepted_original_packages": 4,
+    "bootstrap_packages_separate": 3
+  },
+  "scope_to_implementation": [
+    {
+      "scope_id": "S08",
+      "requirement": "24 hours full production plus 48 hours at quarter rate; event-driven saved-policy replay",
+      "work_items": [
+        "M3-01",
+        "M3-10",
+        "M5-01"
+      ],
+      "full_requirement_verified": false,
+      "component_evidence": "Consent/session host integration and bounded retry verified; S08/S11/S33 narrow simulation/client repair evidence only.",
+      "remaining": "Full original package acceptance, staging, actual SDK/native network behavior and physical/elapsed evidence remain open."
+    },
+    {
+      "scope_id": "S11",
+      "requirement": "Three daily contracts, 10 Notes and 250 XP each, frozen goals, rerolls and seven-day/21-slot backlog",
+      "work_items": [
+        "M3-02",
+        "M3-10"
+      ],
+      "full_requirement_verified": false,
+      "component_evidence": "Consent/session host integration and bounded retry verified; S08/S11/S33 narrow simulation/client repair evidence only.",
+      "remaining": "Full original package acceptance, staging, actual SDK/native network behavior and physical/elapsed evidence remain open."
+    },
+    {
+      "scope_id": "S27",
+      "requirement": "Help, recovery guide, release notes, credits, privacy/support URLs and runbooks",
+      "work_items": [
+        "M5-03",
+        "M5-04",
+        "M7-05",
+        "M7-07"
+      ],
+      "full_requirement_verified": false,
+      "component_evidence": "Consent/session host integration and bounded retry verified; S08/S11/S33 narrow simulation/client repair evidence only.",
+      "remaining": "Full original package acceptance, staging, actual SDK/native network behavior and physical/elapsed evidence remain open."
+    },
+    {
+      "scope_id": "S30",
+      "requirement": "99.5% crash-free sessions over 10,000 observed sessions, per platform/device and critical-flow review",
+      "work_items": [
+        "M5-04",
+        "M6-05",
+        "M6-07",
+        "M7-06"
+      ],
+      "full_requirement_verified": false,
+      "component_evidence": "Consent/session host integration and bounded retry verified; S08/S11/S33 narrow simulation/client repair evidence only.",
+      "remaining": "Full original package acceptance, staging, actual SDK/native network behavior and physical/elapsed evidence remain open."
+    },
+    {
+      "scope_id": "S33",
+      "requirement": "30/90-day simulations of visit/reset/buy/bonus strategies and Note scarcity",
+      "work_items": [
+        "M5-05",
+        "M6-03"
+      ],
+      "full_requirement_verified": false,
+      "component_evidence": "Consent/session host integration and bounded retry verified; S08/S11/S33 narrow simulation/client repair evidence only.",
+      "remaining": "Full original package acceptance, staging, actual SDK/native network behavior and physical/elapsed evidence remain open."
+    },
+    {
+      "scope_id": "S37",
+      "requirement": "Monitoring, support diagnostics, backups, feature disables, rollout stops and compatible forward repair",
+      "work_items": [
+        "M5-04",
+        "M6-05",
+        "M6-08",
+        "M7-04",
+        "M7-08"
+      ],
+      "full_requirement_verified": false,
+      "component_evidence": "Consent/session host integration and bounded retry verified; S08/S11/S33 narrow simulation/client repair evidence only.",
+      "remaining": "Full original package acceptance, staging, actual SDK/native network behavior and physical/elapsed evidence remain open."
+    },
+    {
+      "scope_id": "S39",
+      "requirement": "Privacy, consent/refusal, account deletion/export and service outages reflect actual SDK behavior",
+      "work_items": [
+        "M3-06",
+        "M5-03"
+      ],
+      "full_requirement_verified": false,
+      "component_evidence": "Consent/session host integration and bounded retry verified; S08/S11/S33 narrow simulation/client repair evidence only.",
+      "remaining": "Full original package acceptance, staging, actual SDK/native network behavior and physical/elapsed evidence remain open."
+    }
+  ],
+  "implementation_to_scope": [
+    {
+      "implementation": "GameTelemetry and app lifecycle",
+      "scope_ids": [
+        "S27",
+        "S30",
+        "S37",
+        "S39"
+      ],
+      "evidence": "Consented foreground observations, bounded memory queue, lifecycle and no fabricated exit/crash events; no measured population."
+    },
+    {
+      "implementation": "NativeServicesManager consent reads and platform buffer",
+      "scope_ids": [
+        "S39"
+      ],
+      "evidence": "QA015 two original failures repaired; explicit withdrawal, account binding and same-ID unknown-outcome retry verified."
+    },
+    {
+      "implementation": "HTTP GET consent route",
+      "scope_ids": [
+        "S39"
+      ],
+      "evidence": "Two actual HTTP tests; read requires authentication, does not renew consent, and old revisions remain rejected."
+    },
+    {
+      "implementation": "Controller/worker/simulator availability and final refresh",
+      "scope_ids": [
+        "S08",
+        "S11",
+        "S33"
+      ],
+      "evidence": "QA014/SIM001 six-probe regression passes; complete v3 matrix remains unreviewed."
+    },
+    {
+      "implementation": "QA tests and immutable evidence",
+      "scope_ids": [
+        "S27",
+        "S37",
+        "S39"
+      ],
+      "evidence": "68 passing Dart cases and two retained HTTP cases tied to exact repaired pin."
+    }
+  ],
+  "original_contracts": [
+    {
+      "id": "M3-02",
+      "status": "in_progress",
+      "source_acceptance": "Seeded contracts, snapshots, offline progress, rerolls and 21-slot backlog preserve claim IDs and do not duplicate rewards.",
+      "source_acceptance_dependencies": [
+        "M3-01",
+        "M1-06"
+      ],
+      "scope_ids": [
+        "S11"
+      ]
+    },
+    {
+      "id": "M5-03",
+      "status": "in_progress",
+      "source_acceptance": "Data inventory matches SDK behavior; consent refusal, export/deletion and service-outage recovery are verified on actual builds.",
+      "source_acceptance_dependencies": [
+        "M3-06",
+        "M4-04",
+        "M4-05"
+      ],
+      "scope_ids": [
+        "S27",
+        "S39"
+      ]
+    },
+    {
+      "id": "M5-04",
+      "status": "in_progress",
+      "source_acceptance": "Validate economy/session events, entitlement dashboards, alerts, backups, support receipts and feature disable switches in staging.",
+      "source_acceptance_dependencies": [
+        "M3-07",
+        "M4-04"
+      ],
+      "scope_ids": [
+        "S27",
+        "S30",
+        "S37"
+      ]
+    },
+    {
+      "id": "M5-05",
+      "status": "in_progress",
+      "source_acceptance": "Simulate 30/90 days across visit and bonus policies, audit Note sinks and content pacing, freeze beta config and metric definitions.",
+      "source_acceptance_dependencies": [
+        "M4-06",
+        "M5-04"
+      ],
+      "scope_ids": [
+        "S07",
+        "S18",
+        "S25",
+        "S29",
+        "S33",
+        "S44",
+        "S34"
+      ]
+    }
+  ],
+  "new_packages_accepted": [],
+  "beta_or_release_accepted": false
+}

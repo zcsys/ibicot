@@ -1,0 +1,92 @@
+[
+  {
+    "scenario": "runtime-lock-exclusion",
+    "verification": "/Users/csys/Desktop/ibicot/idle/release/native-proof/current-runtime-android-20261023T051503798367Z/verification.json",
+    "status": "passed",
+    "process_id": 4240,
+    "previous_process_id": null,
+    "loaded_amount": null,
+    "lifetime_micros": null,
+    "os_version": "sdk_gphone64_arm64-userdebug 15 AE3A.240806.043 12960925 dev-keys"
+  },
+  {
+    "scenario": "runtime-save-hold-beforeWrite",
+    "verification": "/Users/csys/Desktop/ibicot/idle/release/native-proof/current-runtime-android-20261023T053502355102Z/verification.json",
+    "status": "expected-interrupted",
+    "process_id": 5048,
+    "previous_process_id": null,
+    "loaded_amount": null,
+    "lifetime_micros": null,
+    "os_version": null
+  },
+  {
+    "scenario": "runtime-save-recover-beforeWrite",
+    "verification": "/Users/csys/Desktop/ibicot/idle/release/native-proof/current-runtime-android-20261023T053607041584Z/verification.json",
+    "status": "passed",
+    "process_id": 5370,
+    "previous_process_id": 5048,
+    "loaded_amount": 0,
+    "lifetime_micros": null,
+    "os_version": "sdk_gphone64_arm64-userdebug 15 AE3A.240806.043 12960925 dev-keys"
+  },
+  {
+    "scenario": "runtime-save-hold-afterFlush",
+    "verification": "/Users/csys/Desktop/ibicot/idle/release/native-proof/current-runtime-android-20261023T053650354573Z/verification.json",
+    "status": "expected-interrupted",
+    "process_id": 5667,
+    "previous_process_id": null,
+    "loaded_amount": null,
+    "lifetime_micros": null,
+    "os_version": null
+  },
+  {
+    "scenario": "runtime-save-recover-afterFlush",
+    "verification": "/Users/csys/Desktop/ibicot/idle/release/native-proof/current-runtime-android-20261023T053732277809Z/verification.json",
+    "status": "passed",
+    "process_id": 5929,
+    "previous_process_id": 5667,
+    "loaded_amount": 0,
+    "lifetime_micros": null,
+    "os_version": "sdk_gphone64_arm64-userdebug 15 AE3A.240806.043 12960925 dev-keys"
+  },
+  {
+    "scenario": "runtime-save-hold-afterRename",
+    "verification": "/Users/csys/Desktop/ibicot/idle/release/native-proof/current-runtime-android-20261023T053814623553Z/verification.json",
+    "status": "expected-interrupted",
+    "process_id": 6207,
+    "previous_process_id": null,
+    "loaded_amount": null,
+    "lifetime_micros": null,
+    "os_version": null
+  },
+  {
+    "scenario": "runtime-save-recover-afterRename",
+    "verification": "/Users/csys/Desktop/ibicot/idle/release/native-proof/current-runtime-android-20261023T053853972412Z/verification.json",
+    "status": "passed",
+    "process_id": 6483,
+    "previous_process_id": 6207,
+    "loaded_amount": 1,
+    "lifetime_micros": null,
+    "os_version": "sdk_gphone64_arm64-userdebug 15 AE3A.240806.043 12960925 dev-keys"
+  },
+  {
+    "scenario": "runtime-transition-start",
+    "verification": "/Users/csys/Desktop/ibicot/idle/release/native-proof/current-runtime-android-20261023T053935185222Z/verification.json",
+    "status": "passed",
+    "process_id": 6806,
+    "previous_process_id": null,
+    "loaded_amount": null,
+    "lifetime_micros": "90000000",
+    "os_version": "sdk_gphone64_arm64-userdebug 15 AE3A.240806.043 12960925 dev-keys"
+  },
+  {
+    "scenario": "runtime-transition-reopen",
+    "verification": "/Users/csys/Desktop/ibicot/idle/release/native-proof/current-runtime-android-20261023T054028440301Z/verification.json",
+    "status": "passed",
+    "process_id": 7146,
+    "previous_process_id": 6806,
+    "loaded_amount": null,
+    "lifetime_micros": "91000000",
+    "os_version": "sdk_gphone64_arm64-userdebug 15 AE3A.240806.043 12960925 dev-keys"
+  }
+]

@@ -1,0 +1,64 @@
+{
+  "format": "tideglass-independent-local-operations-review-v1",
+  "reviewer": "gameplay_engineer",
+  "author": "platform_release",
+  "synthetic_only": true,
+  "source_files": 36,
+  "owned_new_files": 13,
+  "initial_source_inventory": "d92c120d8601556f6dbe6281b12cefd0ad11fdb1af17a53b8d9d5f2637c92ccf",
+  "initial_author_verification_sha256": "20bbbea596da42a7945befb7733aa195c84e445aea52488edb3ac0ab9a5833f5",
+  "repaired_source_inventory": "2173e6ec85a78cbc72df5dc87e91bb5355dda80ad918d888a6c96bd0f2a60d87",
+  "repaired_author_verification_sha256": "bcdd336f5b033882fe9e35ef74eb473b6eb5a9a0c485867bf8c1c6c30ac36a67",
+  "sources_rehashed_no_drift": true,
+  "initial": {
+    "author_tests": 22,
+    "author_tests_exit": 0,
+    "independent_methods": 12,
+    "independent_methods_pass": 9,
+    "independent_failing_methods": 3,
+    "assertion_subtest_failures": 8,
+    "independent_exit": 1,
+    "real_rehearsal_scenarios": 9,
+    "rehearsal_exit": 0
+  },
+  "repaired": {
+    "author_tests": 25,
+    "author_tests_exit": 0,
+    "independent_methods": 12,
+    "independent_exit": 0,
+    "real_rehearsal_scenarios": 9,
+    "real_concurrent_requests": 256,
+    "rehearsal_exit": 0
+  },
+  "findings": {
+    "OPS-GE001": "closed after unchanged independent severity and operator-fallback probes",
+    "OPS-GE002": "closed after unchanged independent typed-host probe",
+    "OPS-PREP001": "prior independent root FIFO finding retained; final author FIFO regression independently rerun"
+  },
+  "prior_root_evidence": {
+    "release/qa/lead-ops-preliminary-20261021T135354.446354Z/fifo-probe-repaired.json": "6460e2239dccf31bf21fbfe4a39706a6777ce42dffdecf7bfa78e4b2a232b8ab",
+    "release/qa/lead-ops-preliminary-20261021T135354.446354Z/fifo-probe.json": "febc23a11abccc6b40f914f9d0c9fbda893696cefe4fac7cd932e05f6294dd03"
+  },
+  "artifacts": {
+    "author-tests-independent.log": "c5222b7f317d59c71d238b28ebbfb85ff5fd7d09f80c075504af7db0c7f5b8d8",
+    "independent-negative-initial.log": "32f9afe3c09bab846d39f0a0d9734de0d33d5fddbe9ed6afe7f7fcaef86e7ed5",
+    "rehearsal-independent.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "rehearsal/report.json": "2ecec2d845e4fda75aba372ae12a5ea2f62d158c24afa1de57dd9774443ef986",
+    "author-tests-repaired-independent.log": "aaa9fed85bfaaffb21029960d1fa0171bf84b4753dabd776ec69db94e758d3c1",
+    "independent-negative-repaired.log": "3ddb2e3e4632d0645a73b5c82f7095acaddd55aff647ace75a2eb995004f2b53",
+    "rehearsal-repaired-independent.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "rehearsal-repaired/report.json": "84e79f4b220a2f377a09151fd7b994bd29e11bcb5c4d9fd579ea2181c9c62402",
+    "repaired.diff": "b4c16a46845345ad9f63badcdf61e657a7435dba0faf867a9481a08537014397",
+    "independent_ops_probes.py": "e25e46630c967abf59ab5a35f8cbbc7e147b1fd1b8427648c295c4e239df3d37"
+  },
+  "scope": {
+    "full_M5_04_accepted": false,
+    "S37_verified": false,
+    "external_notifications_sent": false,
+    "public_endpoint_created": false,
+    "scheduler_installed": false,
+    "human_acknowledgements": 0,
+    "native_commands_run": 0,
+    "program_statuses_edited": false
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "artifacts": [
+    {
+      "platform": "ios",
+      "sha256": "d4713f0a890fd03ef92052c0545c81c04d24b9e13e51cd9329efc828fac71515",
+      "bytes": 63623223,
+      "matches_report": true
+    },
+    {
+      "platform": "android",
+      "sha256": "fc856d3cdd2a2c17e9423b2427dd80290ea40d21d9825324c03fbc73335319c2",
+      "bytes": 190702518,
+      "matches_report": true
+    },
+    {
+      "platform": "macos",
+      "sha256": "261eb71ca274fdcf39774649c16424c334498d15d2892b1944d2f4c2ad792ad5",
+      "bytes": 46885523,
+      "matches_report": true
+    }
+  ],
+  "ios_simulator_info": {
+    "CFBundleIdentifier": "dev.tideglass.game",
+    "CFBundleShortVersionString": "0.1.0",
+    "CFBundleVersion": "1",
+    "MinimumOSVersion": "16.0",
+    "UIDeviceFamily": [
+      1,
+      2
+    ],
+    "CFBundleSupportedPlatforms": [
+      "iPhoneSimulator"
+    ]
+  },
+  "android_badging": {
+    "command": [
+      "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/build-tools/36.0.0/aapt2",
+      "dump",
+      "badging",
+      "/Users/csys/Desktop/ibicot/idle/release/native-proof/20261021T102112.746555Z/artifacts/tideglass-debug.apk"
+    ],
+    "exit_code": 0,
+    "selected_output": [
+      "package: name='dev.tideglass.game' versionCode='1' versionName='0.1.0' platformBuildVersionName='16' platformBuildVersionCode='36' compileSdkVersion='36' compileSdkVersionCodename='16'",
+      "targetSdkVersion:'36'",
+      "uses-permission: name='android.permission.INTERNET'",
+      "uses-permission: name='android.permission.POST_NOTIFICATIONS'",
+      "uses-permission: name='android.permission.VIBRATE'",
+      "uses-permission: name='android.permission.ACCESS_NETWORK_STATE'",
+      "uses-permission: name='com.google.android.gms.permission.AD_ID'",
+      "uses-permission: name='android.permission.ACCESS_ADSERVICES_AD_ID'",
+      "uses-permission: name='android.permission.ACCESS_ADSERVICES_ATTRIBUTION'",
+      "uses-permission: name='android.permission.ACCESS_ADSERVICES_TOPICS'",
+      "uses-permission: name='com.android.vending.BILLING'",
+      "uses-permission: name='android.permission.WAKE_LOCK'",
+      "uses-permission: name='android.permission.FOREGROUND_SERVICE'",
+      "uses-permission: name='dev.tideglass.game.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION'",
+      "launchable-activity: name='dev.tideglass.game.MainActivity'  label='' icon=''",
+      "native-code: 'arm64-v8a' 'armeabi-v7a' 'x86_64'"
+    ]
+  },
+  "scope": "Debug export metadata only; not signed or store-qualified"
+}

@@ -1,4 +1,5 @@
 import 'package:tideglass_core/tideglass_core.dart';
+import 'strings.dart';
 
 /// Formatting only: never feeds rounded display values into game commands.
 String compactMicros(BigInt value, {bool scientific = false}) {
@@ -23,13 +24,16 @@ String compactFixed(Fixed value, {bool scientific = false}) => compactMicros(
 );
 String durationLabel(Duration duration) {
   if (duration.inDays > 0) {
-    return '${duration.inDays}d ${duration.inHours % 24}h';
+    return UiEnglish.durationDays(duration.inDays, duration.inHours % 24);
   }
   if (duration.inHours > 0) {
-    return '${duration.inHours}h ${duration.inMinutes % 60}m';
+    return UiEnglish.durationHours(duration.inHours, duration.inMinutes % 60);
   }
   if (duration.inMinutes > 0) {
-    return '${duration.inMinutes}m ${duration.inSeconds % 60}s';
+    return UiEnglish.durationMinutes(
+      duration.inMinutes,
+      duration.inSeconds % 60,
+    );
   }
-  return '${duration.inSeconds}s';
+  return UiEnglish.durationSeconds(duration.inSeconds);
 }

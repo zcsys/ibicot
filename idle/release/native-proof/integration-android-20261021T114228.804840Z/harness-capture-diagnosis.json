@@ -1,0 +1,8 @@
+{
+  "status": "Diagnostic before terminal timeout; not production failure attribution",
+  "observation": "Static clock-reload displays expected fixture but no completion. After convertFlutterSurfaceToImage no frame is pumped before takeScreenshot.",
+  "sdk_file": ".tooling/flutter/packages/integration_test/lib/integration_test.dart",
+  "sdk_sha256": "f80d6c866c22108972859ce1fe65667be324c0d46d87b049c2bc7bf3670a9898",
+  "sdk_requirement": "On Android, convertFlutterSurfaceToImage and pump a frame before taking a screenshot (lines185\u2013186).",
+  "planned_repair": "Pump bounded native UI frames after surface conversion and before clock screenshot; add completed-clock-assertions marker. Preserve all original logs."
+}

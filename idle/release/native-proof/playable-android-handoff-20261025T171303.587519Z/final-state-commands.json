@@ -1,0 +1,99 @@
+[
+  {
+    "utc": "2026-10-25T17:14:21.302275+00:00",
+    "argv": [
+      "/Users/csys/Library/Android/sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "shell",
+      "settings",
+      "get",
+      "global",
+      "airplane_mode_on"
+    ],
+    "exit": 0,
+    "stderr": "",
+    "file": "final-airplane.txt",
+    "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+  },
+  {
+    "utc": "2026-10-25T17:14:21.344514+00:00",
+    "argv": [
+      "/Users/csys/Library/Android/sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "shell",
+      "settings",
+      "get",
+      "global",
+      "wifi_on"
+    ],
+    "exit": 0,
+    "stderr": "",
+    "file": "final-wifi.txt",
+    "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+  },
+  {
+    "utc": "2026-10-25T17:14:21.397422+00:00",
+    "argv": [
+      "/Users/csys/Library/Android/sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "shell",
+      "settings",
+      "get",
+      "global",
+      "mobile_data"
+    ],
+    "exit": 0,
+    "stderr": "",
+    "file": "final-data.txt",
+    "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+  },
+  {
+    "utc": "2026-10-25T17:14:21.453786+00:00",
+    "argv": [
+      "/Users/csys/Library/Android/sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "shell",
+      "wm",
+      "size"
+    ],
+    "exit": 0,
+    "stderr": "",
+    "file": "final-wm-size.txt",
+    "sha256": "07377115fb06f1cbbbfdc0f30fb6862024571638f1173d6dc4311c06f720df45"
+  },
+  {
+    "utc": "2026-10-25T17:14:21.500938+00:00",
+    "argv": [
+      "/Users/csys/Library/Android/sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "shell",
+      "dumpsys",
+      "package",
+      "dev.tideglass.game"
+    ],
+    "exit": 0,
+    "stderr": "",
+    "file": "final-permission.txt",
+    "sha256": "918eeeb6b73012c91a7938dfb06b8ab25ca5635c982ea08dffe4d84bd32ae0f9"
+  },
+  {
+    "utc": "2026-10-25T17:14:21.560025+00:00",
+    "argv": [
+      "/Users/csys/Library/Android/sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "shell",
+      "pidof",
+      "dev.tideglass.game"
+    ],
+    "exit": 0,
+    "stderr": "",
+    "file": "final-pid.txt",
+    "sha256": "e5cd25721ff78e910e68f0ad0b37d5a8dc7930da9d53d5f28357f7bf3af4a75d"
+  }
+]

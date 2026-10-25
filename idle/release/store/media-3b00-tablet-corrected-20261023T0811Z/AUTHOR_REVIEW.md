@@ -1,0 +1,11 @@
+# Corrected iPad media — author review
+
+Three selected screenshots and a 19-second preview derive from the fresh strict-passing native gallery `integration-ios-tablet-20261023T080707.958916Z`, frozen production candidate 3b00. The capture-only route settling/Season Fleet landmark correction1925106c and braced driver ec880d16 were reviewed separately. The earlier season-named Logbook capture and its finding are retained unchanged.
+
+The author visually inspected all four exported PNGs and five decoded preview frames. Harbor, chapter objectives, passage fleet and the actual Season Fleet screen are readable. The seasonal still explicitly identifies a local 28-day preview schedule, and is retained for internal review only. The selected preview ends before the seasonal route. The ordinary purchase changes the visible Skiff count60→61 and lightkeepers102→103. No painted test crosshair is visible in inspected frames. The native status bar and a persistent gray corner arc/handle at bottom right are retained, not painted out or described as game UI. Native capture content has not been retouched, inpainted, composited or replaced.
+
+All four native PNGs are2064×2752 opaque RGBA16. The exporter preserves full dimensions and color-space chunks, removes opaque alpha and rounds RGB16 to RGB8 by (sample+128)//257, maximum sample error128/65535. This is declared quantization, not lossless native RGB preservation. Independent whole-image pixel comparison remains a separate review step.
+
+The actual source recording is25.4016667seconds with108 decoded video frames and no audio. The preview selects seconds0.5–19.5 at original speed, full display fit1200×1600 without padding or cropping,570frames at30fps. H.264 avcC confirms High profile level4.0. Source display samples are held as necessary, without invented motion. Requested11Mbps is distinct from measured estimated1,663,046.375bps. Full raw and output decoding metadata are retained. No claim of store bitrate or submission qualification is made.
+
+The seeded fixture is displayed by production UI and is not evidence of natural progression, human pacing, paid ownership, physical device performance or completed seasonal duration. These are local listing candidates pending independent review, signed distribution and actual store resources. No program or scope status is changed by this packet.

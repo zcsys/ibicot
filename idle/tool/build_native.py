@@ -19,7 +19,7 @@ IGNORED_NAMES = {'local.properties', 'Generated.xcconfig', 'flutter_export_envir
 
 
 def input_files(root: Path):
-    for folder in ['game', 'tool', 'services', 'tests/services', 'source/schemas', 'implementation/contracts', 'implementation/fixtures', 'implementation/content', 'implementation/tools', 'docs/decisions', 'docs/quality']:
+    for folder in ['game', 'tool', 'services', 'tests/services', 'source/schemas', 'implementation/contracts', 'implementation/fixtures', 'implementation/content', 'implementation/tools', 'docs/decisions', 'docs/quality', 'release/study/fixtures']:
         base = root / folder
         if base.exists():
             for file in sorted(base.rglob('*')):
@@ -28,8 +28,9 @@ def input_files(root: Path):
                     continue
                 if file.is_file() and not IGNORED_PARTS.intersection(relative.parts) and file.name not in IGNORED_NAMES:
                     yield relative
-    if (root / 'economy.json').exists():
-        yield Path('economy.json')
+    for relative in ['economy.json', 'release/downloads/tideglass-original-soundtrack.zip']:
+        if (root / relative).is_file():
+            yield Path(relative)
 
 
 def source_hashes(root: Path) -> dict[str, str]:
@@ -53,6 +54,119 @@ def native_build_command(wrapper: str, target: str, mode: str) -> list[str]:
     # first, let the SDK generate its mode-specific registrant, then verify every
     # captured dependency lock is unchanged. Never hand-edit generated plugins.
     return [wrapper, *commands[target], *([] if release and target == 'android' else ['--no-pub'])]
+
+
+def prepare_sdk_assets(workspace: Path, sdk: Path) -> dict:
+    """Expose the same pinned SDK used by wrappers to host screenshot fixtures."""
+    sdk = sdk.resolve()
+    fonts = [sdk / 'bin/cache/artifacts/material_fonts' / name for name in
+             ['Roboto-Regular.ttf', 'MaterialIcons-Regular.otf']]
+    if not all(font.is_file() for font in fonts):
+        raise RuntimeError('Pinned SDK screenshot fonts are missing')
+    link = workspace / '.tooling/flutter'
+    link.parent.mkdir(exist_ok=True)
+    if link.exists() or link.is_symlink():
+        if not link.is_symlink() or link.resolve() != sdk:
+            raise RuntimeError('Refusing to replace unexpected candidate SDK path')
+    else:
+        link.symlink_to(sdk, target_is_directory=True)
+    return {'workspace_link': str(link), 'sdk_target': str(sdk),
+            'font_sha256': {font.name: hashlib.sha256(font.read_bytes()).hexdigest() for font in fonts},
+            'scope': 'External pinned toolchain assets; frozen application source is unchanged'}
+
+
+def provider_commands(workspace: Path) -> dict[str, list[str]]:
+    python = str(ROOT / '.tooling/services-venv/bin/python')
+    return {
+        'provider-environment': [python, str(workspace / 'tool/check_provider_environment.py'),
+                                 str(workspace / 'services/requirements-providers.lock')],
+        'provider-test': [python, '-m', 'unittest', 'discover', '-s', 'tests/services/providers', '-v'],
+    }
+
+
+def service_commands(workspace: Path) -> dict[str, list[str]]:
+    # unittest does not recurse into directories without __init__.py. Keep the
+    # operations suite explicit. Its real vault/signer checks require the same
+    # locked environment as providers; base services retain their stdlib gate.
+    return {name: [python, '-m', 'unittest', 'discover', '-s', directory, '-v']
+            for name, directory, python in [
+                ('services-test', 'tests/services', sys.executable),
+                ('operations-test', 'tests/services/operations',
+                 str(ROOT / '.tooling/services-venv/bin/python'))]
+            if (workspace / directory).is_dir()}
+
+
+def run_service_host_checks(workspace: Path, evidence: Path, report: dict) -> list[str]:
+    """Qualify the captured dependency lock before every dependent suite."""
+    checks = report.setdefault('host_checks', {})
+    failed = []
+
+    def blocked(key, command, reason):
+        checks[key] = {'command': command, 'exit_code': 1,
+                       'status': 'blocked', 'error': reason}
+        (evidence / (key + '.log')).write_text(reason + '\n')
+        failed.append(key)
+        print(f'{key}: blocked: {reason}', flush=True)
+
+    def execute(key, command):
+        with (evidence / (key + '.log')).open('w') as log:
+            try:
+                result = subprocess.run(command, cwd=workspace, stdout=log,
+                                        stderr=subprocess.STDOUT)
+                code = result.returncode
+                checks[key] = {'command': command, 'exit_code': code}
+            except OSError as error:
+                code = 1
+                message = type(error).__name__ + ': ' + str(error)
+                log.write(message + '\n')
+                checks[key] = {'command': command, 'exit_code': code,
+                               'error': message}
+        if code:
+            failed.append(key)
+        print(f'{key}: exit {code}', flush=True)
+        return code == 0
+
+    services = service_commands(workspace)
+    if 'services-test' in services:
+        execute('services-test', services['services-test'])
+    providers = provider_commands(workspace)
+    dependent = {}
+    if 'operations-test' in services:
+        dependent['operations-test'] = services['operations-test']
+    if (workspace / 'tests/services/providers').is_dir():
+        dependent['provider-test'] = providers['provider-test']
+    if not dependent:
+        return failed
+
+    # The exact checker and lock come from the candidate workspace, while the
+    # interpreter is the installed pinned venv. No install or system fallback.
+    if not execute('provider-environment', providers['provider-environment']):
+        for key, command in dependent.items():
+            blocked(key, command, 'Required provider-environment gate failed; suite was not executed')
+        return failed
+    for key, command in dependent.items():
+        if key == 'provider-test':
+            fixture = workspace / 'release/downloads/tideglass-original-soundtrack.zip'
+            if not fixture.is_file():
+                reason = 'Captured soundtrack ZIP is required'
+                checks['provider-fixture'] = {'exit_code': 1, 'error': reason}
+                failed.append('provider-fixture')
+                blocked(key, command, reason + '; suite was not executed')
+                continue
+            report['provider_fixture_sha256'] = hashlib.sha256(fixture.read_bytes()).hexdigest()
+        execute(key, command)
+    return failed
+
+
+def tool_commands(workspace: Path) -> dict[str, list[str]]:
+    # Study measurement/adjudication tests depend only on explicitly synthetic
+    # fixtures; never capture sibling participant exports or study documents.
+    return {name: [sys.executable, '-m', 'unittest', 'discover', '-s', 'tool',
+                   '-p', pattern, '-v']
+            for name, pattern in [('candidate-integrity-test', 'test_native_*.py'),
+                                  ('current-runtime-verifier-test', 'test_current_runtime_verification.py'),
+                                  ('study-test', 'test_study*.py')]
+            if any((workspace / 'tool').glob(pattern))}
 
 
 def snapshot(stamp: str, evidence: Path) -> tuple[Path, dict]:
@@ -144,6 +258,8 @@ def main() -> int:
     print(f'Frozen candidate: {candidate}\nEvidence: {evidence}', flush=True)
     if args.snapshot_only:
         return 0
+    report['sdk_fixture'] = prepare_sdk_assets(workspace, ROOT / '.tooling/flutter')
+    report_file.write_text(json.dumps(report, indent=2) + '\n')
     release = args.mode == 'release'
     with (evidence / 'flutter-version.log').open('w') as log:
         subprocess.run([wrapper, '--version'], cwd=app, stdout=log, stderr=subprocess.STDOUT, check=True)
@@ -156,7 +272,7 @@ def main() -> int:
     if args.host_checks:
         report['host_checks'] = {}
         failed_checks = []
-        for package in ['core', 'persistence', 'progression', 'events', 'platform', 'mobile']:
+        for package in ['core', 'persistence', 'progression', 'events', 'platform', 'simulation', 'mobile']:
             directory = workspace / 'game' / package
             if not (directory / 'pubspec.yaml').exists():
                 continue
@@ -173,22 +289,14 @@ def main() -> int:
                     failed_checks.append(key)
                     if action == 'pub-get':
                         break
-        if (workspace / 'tests/services').exists():
-            command = [sys.executable, '-m', 'unittest', 'discover', '-s', 'tests/services', '-v']
-            with (evidence / 'services-test.log').open('w') as log:
+        failed_checks.extend(run_service_host_checks(workspace, evidence, report))
+        for key, command in tool_commands(workspace).items():
+            with (evidence / (key + '.log')).open('w') as log:
                 checked = subprocess.run(command, cwd=workspace, stdout=log, stderr=subprocess.STDOUT)
-            report['host_checks']['services-test'] = {'command': command, 'exit_code': checked.returncode}
+            report['host_checks'][key] = {'command': command, 'exit_code': checked.returncode}
             if checked.returncode:
-                failed_checks.append('services-test')
-            print(f'services-test: exit {checked.returncode}', flush=True)
-        if (workspace / 'tool/test_native_candidates.py').exists():
-            command = [sys.executable, '-m', 'unittest', 'discover', '-s', 'tool', '-p', 'test_native_*.py', '-v']
-            with (evidence / 'candidate-integrity-test.log').open('w') as log:
-                checked = subprocess.run(command, cwd=workspace, stdout=log, stderr=subprocess.STDOUT)
-            report['host_checks']['candidate-integrity-test'] = {'command': command, 'exit_code': checked.returncode}
-            if checked.returncode:
-                failed_checks.append('candidate-integrity-test')
-            print(f'candidate-integrity-test: exit {checked.returncode}', flush=True)
+                failed_checks.append(key)
+            print(f'{key}: exit {checked.returncode}', flush=True)
         report['host_test_gate'] = 'failed' if failed_checks else 'passed'
         report['failed_host_checks'] = failed_checks
         report_file.write_text(json.dumps(report, indent=2) + '\n')

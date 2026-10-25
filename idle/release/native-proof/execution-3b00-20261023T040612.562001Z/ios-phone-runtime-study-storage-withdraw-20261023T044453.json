@@ -1,0 +1,36 @@
+{
+  "command": [
+    "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3",
+    "/Users/csys/Desktop/ibicot/idle/tool/verify_current_runtime.py",
+    "/Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261023T040445.261666Z-3b00cc8f7122",
+    "--device",
+    "F05BE4B0-52C1-4CA1-B721-BD64AE559E3F",
+    "--label",
+    "ios-phone",
+    "--scenario",
+    "runtime-study-storage-withdraw",
+    "--run-id",
+    "v3b00-ios-phone-withdraw"
+  ],
+  "scenario": "runtime-study-storage-withdraw",
+  "label": "ios-phone",
+  "run_id": "v3b00-ios-phone-withdraw",
+  "predecessor": null,
+  "started_utc": "20261023T044453.323995Z",
+  "exit_code": 1,
+  "verification": "/Users/csys/Desktop/ibicot/idle/release/native-proof/current-runtime-ios-phone-20261023T044453553593Z/verification.json",
+  "verification_sha256": "d18dee13def9fbc4e892741ed1f235ed33464dae859a29398dbbcb0da5ab2616",
+  "status": "failed",
+  "errors": [
+    "Native build/test failure in log: Some tests failed.",
+    "Native build/test failure in log: EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK",
+    "Native test or teardown error marker in log",
+    "No successful native framework completion marker",
+    "No successful driver completion marker",
+    "Harness did not complete",
+    "Missing or incorrect scenario evidence: storage_failure_visible",
+    "Missing or incorrect scenario evidence: withdrawal_durable",
+    "Native driver exit code was nonzero"
+  ],
+  "finished_utc": "2026-10-23T04:45:41.073521+00:00"
+}

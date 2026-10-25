@@ -1,0 +1,15 @@
+{
+  "checks": {
+    "upstream_cache_is_static_archive": true,
+    "upstream_cache_has_same_minimum_version": true,
+    "real_runner_defines_UMPConsentInformation": true,
+    "real_runner_defines_UMPConsentForm": true,
+    "real_runner_defines_GADMobileAds": true,
+    "no_dynamic_UMP_dependency": true,
+    "no_dynamic_GMA_dependency": true,
+    "cache_unchanged_Info.plist": true,
+    "cache_unchanged_UserMessagingPlatform": true
+  },
+  "classification": "Static SDK code is present in the actual Runner. Embedded empty framework carries resources and metadata; the observed minos 100.0 is not proof that the app requires iOS100 or that a mock SDK was substituted. Store validation remains unproven.",
+  "code_repair_recommended_from_this_observation": false
+}

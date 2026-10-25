@@ -1,0 +1,34 @@
+Running Gradle task 'assembleDebug'...                             21.5s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...        1,498ms
+D/nativeloader( 5391): Load /data/app/~~6mXStXeW6JNuct-rPq9xWw==/dev.tideglass.game-eV3KwOsSGixdNRuoJ9FY4Q==/base.apk!/lib/arm64-v8a/libdartjni.so using ns clns-7 from class loader (caller=/data/app/~~6mXStXeW6JNuct-rPq9xWw==/dev.tideglass.game-eV3KwOsSGixdNRuoJ9FY4Q==/base.apk!classes9.dex): ok
+W/.tideglass.game( 5391): Accessing hidden method Landroid/view/accessibility/AccessibilityNodeInfo;->getSourceNodeId()J (unsupported,test-api, reflection, allowed)
+W/.tideglass.game( 5391): Accessing hidden method Landroid/view/accessibility/AccessibilityRecord;->getSourceNodeId()J (unsupported, reflection, allowed)
+W/.tideglass.game( 5391): Accessing hidden field Landroid/view/accessibility/AccessibilityNodeInfo;->mChildNodeIds:Landroid/util/LongArray; (unsupported, reflection, allowed)
+W/.tideglass.game( 5391): Accessing hidden method Landroid/util/LongArray;->get(I)J (unsupported, reflection, allowed)
+D/AccessibilityBridge( 5391): Setting not found: accessibility_display_inversion_enabled, using default: 0
+D/FlutterRenderer( 5391): Width is zero. 0,0
+W/HWUI    ( 5391): Unknown dataspace 0
+I/WindowExtensionsImpl( 5391): Initializing Window Extensions, vendor API level=6, activity embedding enabled=true
+D/FlutterRenderer( 5391): Width is zero. 0,0
+D/FlutterJNI( 5391): Sending viewport metrics to the engine.
+W/HWUI    ( 5391): Failed to choose config with EGL_SWAP_BEHAVIOR_PRESERVED, retrying without...
+W/HWUI    ( 5391): Failed to initialize 101010-2 format, error = EGL_SUCCESS
+I/Gralloc4( 5391): mapper 4.x is not supported
+I/.tideglass.game( 5391): Compiler allocated 5250KB to compile void android.view.ViewRootImpl.performTraversals()
+I/Choreographer( 5391): Skipped 97 frames!  The application may be doing too much work on its main thread.
+D/FlutterJNI( 5391): Sending viewport metrics to the engine.
+D/ProfileInstaller( 5391): Installing profile for dev.tideglass.game
+VMServiceFlutterDriver: Connecting to Flutter application at http://127.0.0.1:62248/wLYiMTKb4ac=/
+VMServiceFlutterDriver: Isolate found with number: 2736656900716567
+VMServiceFlutterDriver: Isolate 2736656900716567 is runnable.
+VMServiceFlutterDriver: Isolate is paused at start.
+VMServiceFlutterDriver: Attempting to resume isolate
+I/flutter ( 5391): 00:00 +0: real OS reminder qualification: quiet-cancel
+VMServiceFlutterDriver: Connected to Flutter application.
+D/FlutterJNI( 5391): Sending viewport metrics to the engine.
+I/flutter ( 5391): TIDEGLASS_REMINDER_ACTION {"verification_id":"integration-android-20261025T154733176679Z","candidate_fingerprint":"3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59","harness_sha256":"330ab6428203ec80e4de19e4eb727ad8dcfc6f63572e9ea1b0ef3ff7dc7a71da","scenario":"quiet-cancel","run_id":"v3b00-r20261025-android-quiet-cancel","device_label":"android","platform":"android","process_id":5391,"action":"allow_permission_if_prompted","utc_ms":1792943291161}
+I/flutter ( 5391): 00:01 +1: (tearDownAll)
+I/flutter ( 5391): 00:01 +2: All tests passed!
+All tests passed.
+Leaving the application running.

@@ -1,0 +1,33 @@
+00:00 +0: loading /Users/csys/Desktop/ibicot/idle/game/qa/integration_localization_navigation_test.dart
+00:00 +0: (setUpAll)
+00:00 +0: pushed help route keeps full title and back at 1.5
+00:00 +1: pushed season route keeps full title and back at 1.5
+00:01 +2: pushed help route keeps full title and back at 2.0
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following _TypeError was thrown running a test:
+type 'LocalizedText' is not a subtype of type 'Text' in type cast
+
+When the exception was thrown, this was the stack:
+#0      WidgetController.widget (package:flutter_test/src/controller.dart:828:44)
+#1      main.<anonymous closure> (file:///Users/csys/Desktop/ibicot/idle/game/qa/integration_localization_navigation_test.dart:139:27)
+<asynchronous suspension>
+#2      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#3      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+The test description was:
+  pushed help route keeps full title and back at 2.0
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:01 +2 -1: pushed help route keeps full title and back at 2.0 [E]
+  Test failed. See exception logs above.
+  The test description was: pushed help route keeps full title and back at 2.0
+  
+00:01 +2 -1: pushed season route keeps full title and back at 2.0
+00:01 +3 -1: (tearDownAll)
+00:01 +3 -1: Some tests failed.
+
+Failing tests:
+  /Users/csys/Desktop/ibicot/idle/game/qa/integration_localization_navigation_test.dart: pushed help route keeps full title and back at 2.0

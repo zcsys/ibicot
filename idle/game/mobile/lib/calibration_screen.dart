@@ -52,172 +52,198 @@ class _CalibrationScreenState extends State<CalibrationScreen> {
   }
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(
-      title: const LocalizedText(UiEnglish.calibrationConstellationCalibration),
-    ),
-    body: SafeArea(
-      child: SingleChildScrollView(
-        padding: const EdgeInsets.fromLTRB(24, 8, 24, 32),
-        child: Center(
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 640),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                const LocalizedText(
-                  UiEnglish.calibrationAQuieterWayToBrightenTheSky,
-                  style: TextStyle(color: TideColors.muted),
-                ),
-                const SizedBox(height: 20),
-                Wrap(
-                  spacing: 8,
-                  runSpacing: 8,
-                  children: [
-                    for (var i = 0; i < widget.patterns.length; i++)
-                      ChoiceChip(
-                        label: LocalizedText('${i + 1}'),
-                        tooltip: Presentation.text(widget.patterns[i].title),
-                        selected: i == selected,
-                        onSelected: (_) => choose(i),
-                        avatar:
-                            widget.collectedIds().contains(
-                              widget.patterns[i].id,
-                            )
-                            ? const Icon(Icons.check, size: 16)
-                            : null,
+  Widget build(BuildContext context) {
+    // Let the full heading scroll at large text sizes so a translated title
+    // cannot consume the viewport needed by the puzzle and claim controls.
+    final scrollHeading = MediaQuery.textScalerOf(context).scale(16) > 24;
+    return Scaffold(
+      appBar: scrollHeading
+          ? AppBar()
+          : readingAppBar(
+              context,
+              title: UiEnglish.calibrationConstellationCalibration,
+            ),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.fromLTRB(24, 8, 24, 32),
+          child: Center(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 640),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  if (scrollHeading) ...[
+                    Semantics(
+                      header: true,
+                      namesRoute: true,
+                      child: LocalizedText(
+                        UiEnglish.calibrationConstellationCalibration,
+                        style: Theme.of(context).textTheme.headlineMedium,
                       ),
+                    ),
+                    const SizedBox(height: 20),
                   ],
-                ),
-                const SizedBox(height: 22),
-                LocalizedText(
-                  pattern.title,
-                  style: Theme.of(context).textTheme.headlineMedium,
-                ),
-                const SizedBox(height: 8),
-                LocalizedText(
-                  pattern.intro,
-                  style: const TextStyle(color: TideColors.muted),
-                ),
-                const SizedBox(height: 14),
-                LocalizedText(pattern.instructions),
-                const SizedBox(height: 20),
-                Semantics(
-                  image: true,
-                  label: Presentation.text(
-                    UiEnglish.calibrationPatternTitleRouteVisitedLengthOfPattern(
-                      Presentation.authored((pattern.title).toString()),
-                      route.visited.length,
-                      pattern.stars.length,
-                      pattern.star(route.visited.last).label,
+                  const LocalizedText(
+                    UiEnglish.calibrationAQuieterWayToBrightenTheSky,
+                    style: TextStyle(color: TideColors.muted),
+                  ),
+                  const SizedBox(height: 20),
+                  Wrap(
+                    spacing: 8,
+                    runSpacing: 8,
+                    children: [
+                      for (var i = 0; i < widget.patterns.length; i++)
+                        ChoiceChip(
+                          label: LocalizedText('${i + 1}'),
+                          tooltip: Presentation.text(widget.patterns[i].title),
+                          selected: i == selected,
+                          onSelected: (_) => choose(i),
+                          avatar:
+                              widget.collectedIds().contains(
+                                widget.patterns[i].id,
+                              )
+                              ? const Icon(Icons.check, size: 16)
+                              : null,
+                        ),
+                    ],
+                  ),
+                  const SizedBox(height: 22),
+                  LocalizedText(
+                    pattern.title,
+                    style: Theme.of(context).textTheme.headlineMedium,
+                  ),
+                  const SizedBox(height: 8),
+                  LocalizedText(
+                    pattern.intro,
+                    style: const TextStyle(color: TideColors.muted),
+                  ),
+                  const SizedBox(height: 14),
+                  LocalizedText(pattern.instructions),
+                  const SizedBox(height: 20),
+                  Semantics(
+                    image: true,
+                    label: Presentation.text(
+                      UiEnglish.calibrationPatternTitleRouteVisitedLengthOfPattern(
+                        Presentation.authored((pattern.title).toString()),
+                        route.visited.length,
+                        pattern.stars.length,
+                        pattern.star(route.visited.last).label,
+                      ),
+                    ),
+                    child: AspectRatio(
+                      aspectRatio: 1,
+                      child: CustomPaint(
+                        painter: _SkyPainter(pattern, route.visited),
+                      ),
                     ),
                   ),
-                  child: AspectRatio(
-                    aspectRatio: 1,
-                    child: CustomPaint(
-                      painter: _SkyPainter(pattern, route.visited),
-                    ),
+                  const SizedBox(height: 16),
+                  LocalizedText(
+                    route.solved
+                        ? UiEnglish.calibrationTheConstellationIsAligned
+                        : route.nextStars.isEmpty
+                        ? UiEnglish.calibrationThisRouteHasNoNextStarUndo
+                        : UiEnglish.calibrationChooseTheNextConnectedStar,
+                    style: const TextStyle(color: TideColors.amber),
                   ),
-                ),
-                const SizedBox(height: 16),
-                LocalizedText(
-                  route.solved
-                      ? UiEnglish.calibrationTheConstellationIsAligned
-                      : route.nextStars.isEmpty
-                      ? UiEnglish.calibrationThisRouteHasNoNextStarUndo
-                      : UiEnglish.calibrationChooseTheNextConnectedStar,
-                  style: const TextStyle(color: TideColors.amber),
-                ),
-                const SizedBox(height: 12),
-                Wrap(
-                  spacing: 10,
-                  runSpacing: 10,
-                  children: [
-                    for (final star in route.nextStars)
-                      OutlinedButton(
-                        key: ValueKey('star-${star.key}'),
+                  const SizedBox(height: 12),
+                  Wrap(
+                    spacing: 10,
+                    runSpacing: 10,
+                    children: [
+                      for (final star in route.nextStars)
+                        OutlinedButton(
+                          key: ValueKey('star-${star.key}'),
+                          onPressed: claimed
+                              ? null
+                              : () => setState(() => route.visit(star.key)),
+                          child: LocalizedText(star.label),
+                        ),
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+                  Wrap(
+                    spacing: 12,
+                    children: [
+                      TextButton.icon(
+                        onPressed: route.visited.length > 1 && !claimed
+                            ? () => setState(route.undo)
+                            : null,
+                        icon: const Icon(Icons.undo),
+                        label: const LocalizedText(UiEnglish.calibrationUndo),
+                      ),
+                      TextButton.icon(
                         onPressed: claimed
                             ? null
-                            : () => setState(() => route.visit(star.key)),
-                        child: LocalizedText(star.label),
+                            : () => setState(route.restart),
+                        icon: const Icon(Icons.refresh),
+                        label: const LocalizedText(
+                          UiEnglish.calibrationRestart,
+                        ),
                       ),
-                  ],
-                ),
-                const SizedBox(height: 12),
-                Wrap(
-                  spacing: 12,
-                  children: [
-                    TextButton.icon(
-                      onPressed: route.visited.length > 1 && !claimed
-                          ? () => setState(route.undo)
-                          : null,
-                      icon: const Icon(Icons.undo),
-                      label: const LocalizedText(UiEnglish.calibrationUndo),
-                    ),
-                    TextButton.icon(
-                      onPressed: claimed ? null : () => setState(route.restart),
-                      icon: const Icon(Icons.refresh),
-                      label: const LocalizedText(UiEnglish.calibrationRestart),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 16),
-                FilledButton(
-                  key: const ValueKey('claim-routed-calibration'),
-                  onPressed:
-                      route.solved && !claimed && widget.focusCharges() > 0
-                      ? claim
-                      : null,
-                  child: LocalizedText(
-                    claimed
-                        ? UiEnglish.calibrationConstellationCollected
-                        : UiEnglish.calibrationCollectPatternFocus,
+                    ],
                   ),
-                ),
-                if (notice != null) ...[
-                  const SizedBox(height: 12),
-                  Semantics(
-                    liveRegion: true,
+                  const SizedBox(height: 16),
+                  FilledButton(
+                    key: const ValueKey('claim-routed-calibration'),
+                    onPressed:
+                        route.solved && !claimed && widget.focusCharges() > 0
+                        ? claim
+                        : null,
                     child: LocalizedText(
-                      notice!,
-                      style: const TextStyle(color: TideColors.teal),
+                      claimed
+                          ? UiEnglish.calibrationConstellationCollected
+                          : UiEnglish.calibrationCollectPatternFocus,
+                    ),
+                  ),
+                  if (notice != null) ...[
+                    const SizedBox(height: 12),
+                    Semantics(
+                      liveRegion: true,
+                      child: LocalizedText(
+                        notice!,
+                        style: const TextStyle(color: TideColors.teal),
+                      ),
+                    ),
+                  ],
+                  const SizedBox(height: 24),
+                  const Divider(),
+                  const SizedBox(height: 24),
+                  LocalizedText(
+                    UiEnglish.calibrationLetTheCrewHelp,
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
+                  const SizedBox(height: 8),
+                  LocalizedText(
+                    pattern.accessibleDescription,
+                    style: const TextStyle(color: TideColors.muted),
+                  ),
+                  const SizedBox(height: 14),
+                  OutlinedButton(
+                    key: const ValueKey('claim-accessible-calibration'),
+                    onPressed: !claimed && widget.focusCharges() > 0
+                        ? claim
+                        : null,
+                    child: LocalizedText(pattern.accessibleLabel),
+                  ),
+                  const SizedBox(height: 8),
+                  LocalizedText(
+                    UiEnglish.calibrationWidgetFocusChargesFocusChargesAvailableNoTimer(
+                      widget.focusCharges(),
+                    ),
+                    style: const TextStyle(
+                      color: TideColors.muted,
+                      fontSize: 12,
                     ),
                   ),
                 ],
-                const SizedBox(height: 24),
-                const Divider(),
-                const SizedBox(height: 24),
-                LocalizedText(
-                  UiEnglish.calibrationLetTheCrewHelp,
-                  style: Theme.of(context).textTheme.titleLarge,
-                ),
-                const SizedBox(height: 8),
-                LocalizedText(
-                  pattern.accessibleDescription,
-                  style: const TextStyle(color: TideColors.muted),
-                ),
-                const SizedBox(height: 14),
-                OutlinedButton(
-                  key: const ValueKey('claim-accessible-calibration'),
-                  onPressed: !claimed && widget.focusCharges() > 0
-                      ? claim
-                      : null,
-                  child: LocalizedText(pattern.accessibleLabel),
-                ),
-                const SizedBox(height: 8),
-                LocalizedText(
-                  UiEnglish.calibrationWidgetFocusChargesFocusChargesAvailableNoTimer(
-                    widget.focusCharges(),
-                  ),
-                  style: const TextStyle(color: TideColors.muted, fontSize: 12),
-                ),
-              ],
+              ),
             ),
           ),
         ),
       ),
-    ),
-  );
+    );
+  }
 }
 
 class _SkyPainter extends CustomPainter {

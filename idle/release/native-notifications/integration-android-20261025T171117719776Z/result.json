@@ -1,0 +1,94 @@
+{
+  "verification_id": "integration-android-20261025T171117719776Z",
+  "candidate_fingerprint": "3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59",
+  "harness_sha256": "de04f52b3c2311b3eb8e1c7fb83fcf7da41256a63a9a3b9f0ca4f732e8667eb4",
+  "scenario": "revoked-recover",
+  "run_id": "v3b00-r20261025-revoked-restart2",
+  "device_label": "android",
+  "platform": "android",
+  "process_id": 11142,
+  "fixture_kind": "SYNTHETIC GAMEPLAY SNAPSHOT; REAL OS NOTIFICATION API",
+  "gateway": "NativeNotificationGateway",
+  "preference_store": "FileNotificationPreferences",
+  "clock": "actual_utc_and_monotonic_stopwatch",
+  "completed": true,
+  "actions": [
+    {
+      "verification_id": "integration-android-20261025T171117719776Z",
+      "candidate_fingerprint": "3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59",
+      "harness_sha256": "de04f52b3c2311b3eb8e1c7fb83fcf7da41256a63a9a3b9f0ca4f732e8667eb4",
+      "scenario": "revoked-recover",
+      "run_id": "v3b00-r20261025-revoked-restart2",
+      "device_label": "android",
+      "platform": "android",
+      "process_id": 11142,
+      "action": "deny_permission_again_if_prompted",
+      "utc_ms": 1792948310790
+    }
+  ],
+  "limitations": [
+    "Simulator/emulator only; no physical delivery, battery or lock-screen guarantee.",
+    "Seeded Focus phase is not natural player progression.",
+    "OS permission UI must be operated directly; no grant/revoke bypass.",
+    "API delivered records do not prove that a person saw a banner."
+  ],
+  "fixture_directory": "/data/user/0/dev.tideglass.game/files/native-reminders/android-v3b00-r20261025-revoked-restart2-revoked-prepare",
+  "predecessor_verification_id": "integration-android-20261025T170413580881Z",
+  "predecessor_checkpoint_sha256": "817acff3bbd7e70a4fda1325d3d48b79b684f18066ef6cd10859faf0df0b5e44",
+  "previous_process_id": 10787,
+  "recovery_files_before": {
+    "notification_preferences.json": "bfe13beb4aa32a70bd85b90c85dedea9451c712aaedf1d8fc1c33c2a3616721f",
+    "save/progress.0.json": "402ba17cf498ef88559444f0f80652d20837658a1cb452b7ea19c43e4f63ae9e",
+    "save/progress.1.json": "39a8989bfcd926dd925ba27ae0b6ed8eafb3abcfde9ba35ffe3db6dc9100cc17"
+  },
+  "predecessor_default_opted_out": true,
+  "permission_before_initialize": "denied",
+  "pending_before_initialize": [
+    77101
+  ],
+  "active_before_initialize": [],
+  "initialization_lifecycle_events": [],
+  "permission_after_initialize": "denied",
+  "remembered_opt_in_after_initialize": true,
+  "pending_after_initialize": [],
+  "active_after_initialize": [],
+  "restored_snapshot_id": "19b90c31-3636-4bf0-a1e2-e6411e13e94d",
+  "restored_payload_sha256": "a17e324e4d2f537e5f85e4e54fd17e4ce152ba463c1045e781741bf284bc5f2e",
+  "restored_settled_through_utc_micros": 1792947885349460,
+  "denied_schedule_pending_ids": [],
+  "denied_schedule_active_ids": [],
+  "recovery_files_before_reoptin": {
+    "notification_preferences.json": "bfe13beb4aa32a70bd85b90c85dedea9451c712aaedf1d8fc1c33c2a3616721f",
+    "save/progress.0.json": "402ba17cf498ef88559444f0f80652d20837658a1cb452b7ea19c43e4f63ae9e",
+    "save/progress.1.json": "39a8989bfcd926dd925ba27ae0b6ed8eafb3abcfde9ba35ffe3db6dc9100cc17"
+  },
+  "permission_after_reoptin": "denied",
+  "preferences_after_reoptin": {
+    "version": 1,
+    "enabled": false,
+    "focus": true,
+    "survey": false,
+    "storage": false,
+    "quiet": false,
+    "quiet_start": 1320,
+    "quiet_end": 480
+  },
+  "preferences_sha256": "343bfecb1d424db8a315d10b426142415944bfd151e1c10d889586c4e99cb20f",
+  "recovery_save_files_after": {
+    "save/progress.0.json": "402ba17cf498ef88559444f0f80652d20837658a1cb452b7ea19c43e4f63ae9e",
+    "save/progress.1.json": "39a8989bfcd926dd925ba27ae0b6ed8eafb3abcfde9ba35ffe3db6dc9100cc17"
+  },
+  "return_pending_ids": [],
+  "return_active_ids": [],
+  "lifecycle_events": [
+    {
+      "state": "inactive",
+      "utc_ms": 1792948310884
+    },
+    {
+      "state": "resumed",
+      "utc_ms": 1792948345088
+    }
+  ],
+  "screenshots": []
+}

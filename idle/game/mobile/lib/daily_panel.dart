@@ -1,4 +1,5 @@
 import 'presentation.dart';
+import 'daily_icon_label.dart';
 import 'strings.dart';
 import 'package:flutter/material.dart';
 import 'package:tideglass_core/tideglass_core.dart';
@@ -47,8 +48,9 @@ class ContractPanel extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        LocalizedText(
-          UiEnglish.dailyCrewContracts,
+        DailyIconLabel(
+          icon: Icons.assignment_outlined,
+          label: UiEnglish.dailyCrewContracts,
           style: Theme.of(context).textTheme.titleLarge,
         ),
         const SizedBox(height: 8),
@@ -105,8 +107,8 @@ class _ContractCard extends StatelessWidget {
       _ =>
         UiEnglish.dailyExploreOneSwitchContractDiscoveryKindCalibrationConstellation(
           switch (contract.discoveryKind) {
-            'calibration' => 'constellation',
-            'challenge' => 'challenge',
+            'calibration' => UiEnglish.constellationNoun,
+            'challenge' => UiEnglish.challengeNoun,
             _ => UiEnglish.dailyArchiveEntry,
           },
         ),
@@ -234,7 +236,7 @@ class _AutomationScreenState extends State<AutomationScreen> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(title: const LocalizedText(UiEnglish.dailyTheCrewSPlan)),
+    appBar: readingAppBar(context, title: UiEnglish.dailyTheCrewSPlan),
     body: ListenableBuilder(
       listenable: game,
       builder: (_, _) => SingleChildScrollView(
@@ -322,7 +324,7 @@ class _AutomationScreenState extends State<AutomationScreen> {
                     ListTile(
                       contentPadding: EdgeInsets.zero,
                       title: LocalizedText(
-                        '${i + 1}. ${TideglassEngine.producerNames[priority[i]]}',
+                        '${i + 1}. ${UiEnglish.producerNames[priority[i]]}',
                       ),
                       trailing: Wrap(
                         children: [

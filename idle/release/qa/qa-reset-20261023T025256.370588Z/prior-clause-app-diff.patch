@@ -1,0 +1,147 @@
+--- release/qa/integration-client-clauses-20261021T143635184485Z/final/source/game/mobile/lib/app.dart
++++ game/mobile/lib/app.dart
+@@ -27,6 +27,7 @@
+ import 'help_content.dart';
+ import 'help_screen.dart';
+ import 'study_gate.dart';
++import 'rechart_estimate.dart';
+ 
+ class ClientPreferences {
+   const ClientPreferences({
+@@ -876,7 +877,7 @@
+               FilledButton(
+                 key: const ValueKey('preview-rechart'),
+                 onPressed: eligible
+-                    ? () => _confirmRechart(context, claim)
++                    ? () => _confirmRechart(context)
+                     : null,
+                 child: LocalizedText(
+                   eligible
+@@ -958,62 +959,71 @@
+       ],
+     ),
+   );
+-  Future<void> _confirmRechart(
+-    BuildContext context,
+-    BigInt claim,
+-  ) => showDialog<void>(
+-    context: context,
+-    builder: (dialog) => ReadingDialog(
+-      title: const LocalizedText(UiCopy.chartABrighterOcean),
+-      content: SingleChildScrollView(
+-        child: Column(
+-          mainAxisSize: MainAxisSize.min,
+-          crossAxisAlignment: CrossAxisAlignment.start,
+-          children: [
+-            LocalizedText(
+-              UiEnglish.appClaimClaimNewCharts(claim),
+-              style: const TextStyle(color: TideColors.amber, fontSize: 23),
+-            ),
+-            const SizedBox(height: 12),
+-            LocalizedText(
+-              UiEnglish.appPermanentPowerGameEnginePrestigeMultiplierGameState(
+-                game.engine
+-                    .prestigeMultiplier(game.state.charts)
+-                    .toDecimalString(decimals: 2),
+-                game.engine
+-                    .prestigeMultiplier(game.state.charts + claim)
+-                    .toDecimalString(decimals: 2),
+-              ),
+-            ),
+-            const SizedBox(height: 18),
+-            const LocalizedText(Copy.rechartLost),
+-            const SizedBox(height: 12),
+-            const LocalizedText(Copy.rechartKept),
+-            const SizedBox(height: 12),
+-            const LocalizedText(
+-              UiCopy.yourCurrentFleetStopsEarningAs,
+-              style: TextStyle(color: TideColors.muted),
+-            ),
+-          ],
+-        ),
+-      ),
+-      actions: [
+-        TextButton(
+-          onPressed: () => Navigator.pop(dialog),
+-          child: const LocalizedText(UiCopy.keepBuilding),
+-        ),
+-        FilledButton(
+-          key: const ValueKey('confirm-rechart'),
+-          onPressed: () {
+-            game.rechart();
+-            Navigator.pop(dialog);
+-            setState(() => tab = 0);
+-          },
+-          child: const LocalizedText(UiCopy.rechart),
+-        ),
+-      ],
+-    ),
+-  );
++  Future<void> _confirmRechart(BuildContext context) {
++    final previewState = game.state;
++    final claim = game.engine.prestigeAward(previewState);
++    return showDialog<void>(
++      context: context,
++      builder: (dialog) => ReadingDialog(
++        title: const LocalizedText(UiCopy.chartABrighterOcean),
++        content: SingleChildScrollView(
++          child: Column(
++            mainAxisSize: MainAxisSize.min,
++            crossAxisAlignment: CrossAxisAlignment.start,
++            children: [
++              LocalizedText(
++                UiEnglish.appClaimClaimNewCharts(claim),
++                style: const TextStyle(color: TideColors.amber, fontSize: 23),
++              ),
++              const SizedBox(height: 12),
++              LocalizedText(
++                UiEnglish.appPermanentPowerGameEnginePrestigeMultiplierGameState(
++                  game.engine
++                      .prestigeMultiplier(previewState.charts)
++                      .toDecimalString(decimals: 2),
++                  game.engine
++                      .prestigeMultiplier(previewState.charts + claim)
++                      .toDecimalString(decimals: 2),
++                ),
++              ),
++              const SizedBox(height: 18),
++              const LocalizedText(Copy.rechartLost),
++              const SizedBox(height: 12),
++              const LocalizedText(Copy.rechartKept),
++              const SizedBox(height: 12),
++              const LocalizedText(
++                UiCopy.yourCurrentFleetStopsEarningAs,
++                style: TextStyle(color: TideColors.muted),
++              ),
++              const SizedBox(height: 18),
++              const Divider(),
++              const SizedBox(height: 18),
++              RechartEstimatePanel(
++                key: const ValueKey('rechart-estimate'),
++                snapshot: previewState,
++              ),
++            ],
++          ),
++        ),
++        actions: [
++          TextButton(
++            onPressed: () => Navigator.pop(dialog),
++            child: const LocalizedText(UiCopy.keepBuilding),
++          ),
++          FilledButton(
++            key: const ValueKey('confirm-rechart'),
++            onPressed: () {
++              game.rechart();
++              Navigator.pop(dialog);
++              setState(() => tab = 0);
++            },
++            child: const LocalizedText(UiCopy.rechart),
++          ),
++        ],
++      ),
++    );
++  }
++
+   Widget _journal(BuildContext context) => _page(
+     children: [
+       LocalizedText(

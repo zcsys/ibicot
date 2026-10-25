@@ -1,0 +1,54 @@
+--- release/native-proof/root-art-full-20261021T122040.006324Z/source/game/mobile/android/app/src/main/kotlin/dev/tideglass/game/MainActivity.kt
++++ game/mobile/android/app/src/main/kotlin/dev/tideglass/game/MainActivity.kt
+@@ -1,6 +1,8 @@
+ package dev.tideglass.game
+ 
+ import android.os.SystemClock
++import android.os.Process
++import android.os.Build
+ import android.provider.Settings
+ import android.security.keystore.KeyGenParameterSpec
+ import android.security.keystore.KeyProperties
+@@ -14,10 +16,33 @@
+ import javax.crypto.SecretKey
+ 
+ class MainActivity : FlutterActivity() {
++    private var studyProcess: MethodChannel? = null
+     private var ownershipClock: MethodChannel? = null
+ 
+     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
+         super.configureFlutterEngine(flutterEngine)
++        studyProcess = MethodChannel(flutterEngine.dartExecutor.binaryMessenger,
++            "dev.tideglass/study_process").also { channel ->
++            channel.setMethodCallHandler { call, result ->
++                if (call.method != "observe") {
++                    result.notImplemented()
++                } else {
++                    try {
++                        @Suppress("DEPRECATION")
++                        val info = packageManager.getPackageInfo(packageName, 0)
++                        @Suppress("DEPRECATION")
++                        val build = if (Build.VERSION.SDK_INT >= 28) info.longVersionCode else info.versionCode.toLong()
++                        result.success(mapOf("version" to 1, "status" to "available",
++                            "source" to "native_process_observation_v1", "native_pid" to Process.myPid(),
++                            "platform" to "android", "application_id" to packageName,
++                            "application_version" to (info.versionName ?: ""), "application_build" to build.toString(),
++                            "observed_start_utc_ms" to System.currentTimeMillis()))
++                    } catch (_: Exception) {
++                        result.error("study_context_unavailable", "Process metadata unavailable", null)
++                    }
++                }
++            }
++        }
+         ownershipClock = MethodChannel(flutterEngine.dartExecutor.binaryMessenger,
+             "dev.tideglass/ownership_clock").also { channel ->
+             channel.setMethodCallHandler { call, result ->
+@@ -68,6 +93,8 @@
+     }
+ 
+     override fun cleanUpFlutterEngine(flutterEngine: FlutterEngine) {
++        studyProcess?.setMethodCallHandler(null)
++        studyProcess = null
+         ownershipClock?.setMethodCallHandler(null)
+         ownershipClock = null
+         super.cleanUpFlutterEngine(flutterEngine)

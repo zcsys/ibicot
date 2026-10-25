@@ -1,0 +1,11 @@
+--- a/game/mobile/integration_test/native_reminders_test.dart
++++ b/game/mobile/integration_test/native_reminders_test.dart
+@@ -579,7 +579,7 @@
+ Future<List<int>> activeReminderIds(NativeNotificationGateway gateway) async =>
+     (await gateway.plugin.getActiveNotifications())
+         .where((item) => ReminderPlanner.ids.contains(item.id))
+-        .map((item) => item.id).toList()..sort();
++        .map((item) => item.id!).toList()..sort();
+ 
+ Future<void> recoverRevoked(WidgetTester tester, Directory support) async {
+   const priorId = String.fromEnvironment('TIDEGLASS_PREDECESSOR_ID');

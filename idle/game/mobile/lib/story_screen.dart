@@ -1,7 +1,6 @@
 import 'presentation.dart';
 import 'strings.dart';
 import 'package:flutter/material.dart';
-import 'package:tideglass_core/tideglass_core.dart';
 import 'package:tideglass_progression/tideglass_progression.dart';
 import 'game_controller.dart';
 import 'harbor_art.dart';
@@ -38,17 +37,35 @@ class _StoryScreenState extends State<StoryScreen> {
   Widget build(BuildContext context) => ListenableBuilder(
     listenable: game,
     builder: (context, _) => Scaffold(
-      appBar: AppBar(title: const LocalizedText(UiEnglish.storyTheRestoration)),
+      appBar: MediaQuery.textScalerOf(context).scale(16) > 24
+          ? AppBar()
+          : readingAppBar(context, title: UiEnglish.storyTheRestoration),
       body: SafeArea(
         child: SingleChildScrollView(
           controller: scroll,
-          padding: const EdgeInsets.fromLTRB(24, 8, 24, 32),
+          padding: EdgeInsets.fromLTRB(
+            _narrowLargeText ? 16 : 24,
+            8,
+            _narrowLargeText ? 16 : 24,
+            32,
+          ),
           child: Center(
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 760),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
+                  if (MediaQuery.textScalerOf(context).scale(16) > 24) ...[
+                    Semantics(
+                      header: true,
+                      namesRoute: true,
+                      child: LocalizedText(
+                        UiEnglish.storyTheRestoration,
+                        style: Theme.of(context).textTheme.headlineMedium,
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                  ],
                   Wrap(
                     spacing: 8,
                     runSpacing: 8,
@@ -150,18 +167,22 @@ class _StoryScreenState extends State<StoryScreen> {
         initiallyExpanded: unlocked && !complete,
         tilePadding: EdgeInsets.zero,
         childrenPadding: const EdgeInsets.only(bottom: 8),
-        leading: Icon(
-          complete
-              ? Icons.check_circle_outline
-              : unlocked
-              ? Icons.auto_awesome_outlined
-              : Icons.lock_outline,
-          color: complete
-              ? TideColors.teal
-              : unlocked
-              ? TideColors.amber
-              : TideColors.muted,
-        ),
+        // The status words carry the same meaning when large text needs the
+        // full header width. Keep the disclosure control and all copy intact.
+        leading: MediaQuery.textScalerOf(context).scale(16) > 24
+            ? null
+            : Icon(
+                complete
+                    ? Icons.check_circle_outline
+                    : unlocked
+                    ? Icons.auto_awesome_outlined
+                    : Icons.lock_outline,
+                color: complete
+                    ? TideColors.teal
+                    : unlocked
+                    ? TideColors.amber
+                    : TideColors.muted,
+              ),
         title: LocalizedText('${index + 1}. ${chapter['title']}'),
         subtitle: LocalizedText(
           complete
@@ -220,9 +241,7 @@ class _StoryScreenState extends State<StoryScreen> {
         final tier = (goal['tier'] as int) - 1;
         label =
             UiEnglish.storyTideglassEngineProducerNamesTierInYourCurrentFleet(
-              Presentation.authored(
-                (TideglassEngine.producerNames[tier]).toString(),
-              ),
+              Presentation.authored((UiEnglish.producerNames[tier]).toString()),
             );
         value = '${facts.main.counts[tier]}';
       case 'challenge_family_min':
@@ -622,7 +641,7 @@ class _StoryScreenState extends State<StoryScreen> {
                   children: [
                     Expanded(
                       child: LocalizedText(
-                        '${i + 1}. ${TideglassEngine.producerNames[run.priority[i]]}',
+                        '${i + 1}. ${UiEnglish.producerNames[run.priority[i]]}',
                       ),
                     ),
                     IconButton(
@@ -630,7 +649,7 @@ class _StoryScreenState extends State<StoryScreen> {
                       tooltip: Presentation.text(
                         UiEnglish.storyMoveTideglassEngineProducerNamesRunPriorityIEarlier(
                           Presentation.authored(
-                            (TideglassEngine.producerNames[run.priority[i]])
+                            (UiEnglish.producerNames[run.priority[i]])
                                 .toString(),
                           ),
                         ),
@@ -644,7 +663,7 @@ class _StoryScreenState extends State<StoryScreen> {
                       tooltip: Presentation.text(
                         UiEnglish.storyMoveTideglassEngineProducerNamesRunPriorityILater(
                           Presentation.authored(
-                            (TideglassEngine.producerNames[run.priority[i]])
+                            (UiEnglish.producerNames[run.priority[i]])
                                 .toString(),
                           ),
                         ),
@@ -747,7 +766,7 @@ class _StoryScreenState extends State<StoryScreen> {
                 child: LocalizedText(
                   UiEnglish.storyTideglassEngineProducerNamesTierNRunFleetCounts(
                     Presentation.authored(
-                      (TideglassEngine.producerNames[tier]).toString(),
+                      (UiEnglish.producerNames[tier]).toString(),
                     ),
                     run.fleet.counts[tier],
                     cap == null ? '' : ' / $cap',
@@ -766,7 +785,7 @@ class _StoryScreenState extends State<StoryScreen> {
             LocalizedText(
               UiEnglish.storyNeedsTideglassEngineProducerNamesTier(
                 Presentation.authored(
-                  (TideglassEngine.producerNames[tier - 1]).toString(),
+                  (UiEnglish.producerNames[tier - 1]).toString(),
                 ),
               ),
               style: const TextStyle(color: TideColors.muted, fontSize: 12),
@@ -921,7 +940,7 @@ class _StoryScreenState extends State<StoryScreen> {
   ) async =>
       await showDialog<bool>(
         context: context,
-        builder: (dialog) => AlertDialog(
+        builder: (dialog) => ReadingDialog(
           title: LocalizedText(title),
           content: SingleChildScrollView(child: LocalizedText(body)),
           actions: [
@@ -937,6 +956,10 @@ class _StoryScreenState extends State<StoryScreen> {
         ),
       ) ??
       false;
+  bool get _narrowLargeText =>
+      MediaQuery.sizeOf(context).width < 400 &&
+      MediaQuery.textScalerOf(context).scale(16) > 24;
+
   Widget _card({Key? key, required Widget child}) => Container(
     key: key,
     margin: const EdgeInsets.only(bottom: 18),
@@ -945,7 +968,7 @@ class _StoryScreenState extends State<StoryScreen> {
       borderRadius: BorderRadius.circular(18),
       border: Border.all(color: TideColors.line),
     ),
-    padding: const EdgeInsets.all(18),
+    padding: EdgeInsets.all(_narrowLargeText ? 12 : 18),
     child: Material(color: Colors.transparent, child: child),
   );
 }

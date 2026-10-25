@@ -1,3 +1,4 @@
+import 'strings.dart';
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'palette.dart';
@@ -20,8 +21,10 @@ class HarborArt extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Semantics(
     image: true,
-    label:
-        'A lighthouse watches over the ocean. $restoration of six constellations restored. ${counts.where((n) => n > 0).length} kinds of lightkeeper are at work.',
+    label: UiEnglish.harborALighthouseWatchesOverTheOceanRestoration(
+      restoration,
+      counts.where((n) => n > 0).length,
+    ),
     child: ClipRRect(
       borderRadius: BorderRadius.circular(22),
       child: AspectRatio(

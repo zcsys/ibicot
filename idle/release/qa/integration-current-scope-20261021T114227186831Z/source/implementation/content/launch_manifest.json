@@ -1,0 +1,4285 @@
+{
+  "schema_version": 1,
+  "content_version": "0.1.0-plan",
+  "title": "Tideglass v1 launch manifest",
+  "status": "authored_inventory_reconciled_acceptance_pending",
+  "release_ready": false,
+  "scope_sources": [
+    "V1_ROADMAP.md#3-scope-of-a-complete-v1",
+    "TIDEGLASS_DESIGN.md"
+  ],
+  "scope_policy": "All original IDs, counts and economic rules are preserved. Source-backed authored content is in_production; no item is promoted to verified by file existence or host tests. Public privacy/support pages remain unproduced. Original per-asset native, variant, provenance, rights, editorial and release gates remain binding.",
+  "chapters": [
+    {
+      "id": "chapter.01",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "working_title": "First Light",
+      "order": 1,
+      "design_beat": "First light and first Rechart",
+      "prerequisite_chapter_id": null,
+      "restored_harbor_id": "harbor.restored.01",
+      "objectives_status": "in_production",
+      "objective_spec": {
+        "source_path": "game/content/progression/campaign.json",
+        "chapter_id": "chapter.01"
+      },
+      "paid_requirements": [],
+      "requires_all_note_sinks": false,
+      "asset_refs": [
+        "asset.chapter.01.copy"
+      ]
+    },
+    {
+      "id": "chapter.02",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "working_title": "A Living Network",
+      "order": 2,
+      "design_beat": "Cross-tier network synergies",
+      "prerequisite_chapter_id": "chapter.01",
+      "restored_harbor_id": "harbor.restored.02",
+      "objectives_status": "in_production",
+      "objective_spec": {
+        "source_path": "game/content/progression/campaign.json",
+        "chapter_id": "chapter.02"
+      },
+      "paid_requirements": [],
+      "requires_all_note_sinks": false,
+      "asset_refs": [
+        "asset.chapter.02.copy"
+      ]
+    },
+    {
+      "id": "chapter.03",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "working_title": "The Patient Sea",
+      "order": 3,
+      "design_beat": "Daily planning and archive discovery",
+      "prerequisite_chapter_id": "chapter.02",
+      "restored_harbor_id": "harbor.restored.03",
+      "objectives_status": "in_production",
+      "objective_spec": {
+        "source_path": "game/content/progression/campaign.json",
+        "chapter_id": "chapter.03"
+      },
+      "paid_requirements": [],
+      "requires_all_note_sinks": false,
+      "asset_refs": [
+        "asset.chapter.03.copy"
+      ]
+    },
+    {
+      "id": "chapter.04",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "working_title": "Other Ways to Sail",
+      "order": 4,
+      "design_beat": "Optional challenge experimentation",
+      "prerequisite_chapter_id": "chapter.03",
+      "restored_harbor_id": "harbor.restored.04",
+      "objectives_status": "in_production",
+      "objective_spec": {
+        "source_path": "game/content/progression/campaign.json",
+        "chapter_id": "chapter.04"
+      },
+      "paid_requirements": [],
+      "requires_all_note_sinks": false,
+      "asset_refs": [
+        "asset.chapter.04.copy"
+      ]
+    },
+    {
+      "id": "chapter.05",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "working_title": "A Fleet of Your Own",
+      "order": 5,
+      "design_beat": "Automation mastery",
+      "prerequisite_chapter_id": "chapter.04",
+      "restored_harbor_id": "harbor.restored.05",
+      "objectives_status": "in_production",
+      "objective_spec": {
+        "source_path": "game/content/progression/campaign.json",
+        "chapter_id": "chapter.05"
+      },
+      "paid_requirements": [],
+      "requires_all_note_sinks": false,
+      "asset_refs": [
+        "asset.chapter.05.copy"
+      ]
+    },
+    {
+      "id": "chapter.06",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "working_title": "The Ocean Remembers",
+      "order": 6,
+      "design_beat": "Complete restoration and continuing play",
+      "prerequisite_chapter_id": "chapter.05",
+      "restored_harbor_id": "harbor.restored.06",
+      "objectives_status": "in_production",
+      "objective_spec": {
+        "source_path": "game/content/progression/campaign.json",
+        "chapter_id": "chapter.06"
+      },
+      "paid_requirements": [],
+      "requires_all_note_sinks": false,
+      "asset_refs": [
+        "asset.chapter.06.copy"
+      ]
+    }
+  ],
+  "ending": {
+    "id": "ending.main",
+    "production_status": "in_production",
+    "verification_evidence": null,
+    "chapter_id": "chapter.06",
+    "paid_requirements": [],
+    "requires_all_note_sinks": false,
+    "invites_continued_play": true,
+    "copy_status": "in_production",
+    "asset_refs": [
+      "asset.ending.main"
+    ]
+  },
+  "harbor_presentations": [
+    {
+      "id": "harbor.unlit",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "restoration_index": 0,
+      "asset_refs": [
+        "asset.harbor.unlit"
+      ]
+    },
+    {
+      "id": "harbor.restored.01",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "restoration_index": 1,
+      "asset_refs": [
+        "asset.harbor.restored.01"
+      ]
+    },
+    {
+      "id": "harbor.restored.02",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "restoration_index": 2,
+      "asset_refs": [
+        "asset.harbor.restored.02"
+      ]
+    },
+    {
+      "id": "harbor.restored.03",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "restoration_index": 3,
+      "asset_refs": [
+        "asset.harbor.restored.03"
+      ]
+    },
+    {
+      "id": "harbor.restored.04",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "restoration_index": 4,
+      "asset_refs": [
+        "asset.harbor.restored.04"
+      ]
+    },
+    {
+      "id": "harbor.restored.05",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "restoration_index": 5,
+      "asset_refs": [
+        "asset.harbor.restored.05"
+      ]
+    },
+    {
+      "id": "harbor.restored.06",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "restoration_index": 6,
+      "asset_refs": [
+        "asset.harbor.restored.06"
+      ]
+    }
+  ],
+  "producer_families": [
+    {
+      "id": "producer.01",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "name": "Spark Skiff",
+      "tier": 1,
+      "presentations": [
+        {
+          "id": "producer.01.stage.0",
+          "production_status": "in_production",
+          "verification_evidence": null,
+          "ownership_threshold": 0,
+          "asset_refs": [
+            "asset.producer.01.stage.0"
+          ]
+        },
+        {
+          "id": "producer.01.stage.1",
+          "production_status": "in_production",
+          "verification_evidence": null,
+          "ownership_threshold": 25,
+          "asset_refs": [
+            "asset.producer.01.stage.1"
+          ]
+        },
+        {
+          "id": "producer.01.stage.2",
+          "production_status": "in_production",
+          "verification_evidence": null,
+          "ownership_threshold": 50,
+          "asset_refs": [
+            "asset.producer.01.stage.2"
+          ]
+        },
+        {
+          "id": "producer.01.stage.3",
+          "production_status": "in_production",
+          "verification_evidence": null,
+          "ownership_threshold": 75,
+          "asset_refs": [
+            "asset.producer.01.stage.3"
+          ]
+        },
+        {
+          "id": "producer.01.stage.4",
+          "production_status": "in_production",
+          "verification_evidence": null,
+          "ownership_threshold": 100,
+          "asset_refs": [
+            "asset.producer.01.stage.4"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "producer.02",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "name": "Prism Nursery",
+      "tier": 2,
+      "presentations": [
+        {
+          "id": "producer.02.stage.0",
+          "production_status": "in_production",
+          "verification_evidence": null,
+          "ownership_threshold": 0,
+          "asset_refs": [
+            "asset.producer.02.stage.0"
+          ]
+        },
+        {
+          "id": "producer.02.stage.1",
+          "production_status": "in_production",
+          "verification_evidence": null,
+          "ownership_threshold": 25,
+          "asset_refs": [
+            "asset.producer.02.stage.1"
+          ]
+        },
+        {
+          "id": "producer.02.stage.2",
+          "production_status": "in_production",
+          "verification_evidence": null,
+          "ownership_threshold": 50,
+          "asset_refs": [
+            "asset.producer.02.stage.2"
+          ]
+        },
+        {
+          "id": "producer.02.stage.3",
+          "production_status": "in_production",
+          "verification_evidence": null,
+          "ownership_threshold": 75,
+          "asset_refs": [
+            "asset.producer.02.stage.3"
+          ]
+        },
+        {
+          "id": "producer.02.stage.4",
+          "production_status": "in_production",
+          "verification_evidence": null,
+          "ownership_threshold": 100,
+          "asset_refs": [
+            "asset.producer.02.stage.4"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "producer.03",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "name": "Tide Dynamo",
+      "tier": 3,
+      "presentations": [
+        {
+          "id": "producer.03.stage.0",
+          "production_status": "in_production",
+          "verification_evidence": null,
+          "ownership_threshold": 0,
+          "asset_refs": [
+            "asset.producer.03.stage.0"
+          ]
+        },
+        {
+          "id": "producer.03.stage.1",
+          "production_status": "in_production",
+          "verification_evidence": null,
+          "ownership_threshold": 25,
+          "asset_refs": [
+            "asset.producer.03.stage.1"
+          ]
+        },
+        {
+          "id": "producer.03.stage.2",
+          "production_status": "in_production",
+          "verification_evidence": null,
+          "ownership_threshold": 50,
+          "asset_refs": [
+            "asset.producer.03.stage.2"
+          ]
+        },
+        {
+          "id": "producer.03.stage.3",
+          "production_status": "in_production",
+          "verification_evidence": null,
+          "ownership_threshold": 75,
+          "asset_refs": [
+            "asset.producer.03.stage.3"
+          ]
+        },
+        {
+          "id": "producer.03.stage.4",
+          "production_status": "in_production",
+          "verification_evidence": null,
+          "ownership_threshold": 100,
+          "asset_refs": [
+            "asset.producer.03.stage.4"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "producer.04",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "name": "Aurora Loom",
+      "tier": 4,
+      "presentations": [
+        {
+          "id": "producer.04.stage.0",
+          "production_status": "in_production",
+          "verification_evidence": null,
+          "ownership_threshold": 0,
+          "asset_refs": [
+            "asset.producer.04.stage.0"
+          ]
+        },
+        {
+          "id": "producer.04.stage.1",
+          "production_status": "in_production",
+          "verification_evidence": null,
+          "ownership_threshold": 25,
+          "asset_refs": [
+            "asset.producer.04.stage.1"
+          ]
+        },
+        {
+          "id": "producer.04.stage.2",
+          "production_status": "in_production",
+          "verification_evidence": null,
+          "ownership_threshold": 50,
+          "asset_refs": [
+            "asset.producer.04.stage.2"
+          ]
+        },
+        {
+          "id": "producer.04.stage.3",
+          "production_status": "in_production",
+          "verification_evidence": null,
+          "ownership_threshold": 75,
+          "asset_refs": [
+            "asset.producer.04.stage.3"
+          ]
+        },
+        {
+          "id": "producer.04.stage.4",
+          "production_status": "in_production",
+          "verification_evidence": null,
+          "ownership_threshold": 100,
+          "asset_refs": [
+            "asset.producer.04.stage.4"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "producer.05",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "name": "Dawn Observatory",
+      "tier": 5,
+      "presentations": [
+        {
+          "id": "producer.05.stage.0",
+          "production_status": "in_production",
+          "verification_evidence": null,
+          "ownership_threshold": 0,
+          "asset_refs": [
+            "asset.producer.05.stage.0"
+          ]
+        },
+        {
+          "id": "producer.05.stage.1",
+          "production_status": "in_production",
+          "verification_evidence": null,
+          "ownership_threshold": 25,
+          "asset_refs": [
+            "asset.producer.05.stage.1"
+          ]
+        },
+        {
+          "id": "producer.05.stage.2",
+          "production_status": "in_production",
+          "verification_evidence": null,
+          "ownership_threshold": 50,
+          "asset_refs": [
+            "asset.producer.05.stage.2"
+          ]
+        },
+        {
+          "id": "producer.05.stage.3",
+          "production_status": "in_production",
+          "verification_evidence": null,
+          "ownership_threshold": 75,
+          "asset_refs": [
+            "asset.producer.05.stage.3"
+          ]
+        },
+        {
+          "id": "producer.05.stage.4",
+          "production_status": "in_production",
+          "verification_evidence": null,
+          "ownership_threshold": 100,
+          "asset_refs": [
+            "asset.producer.05.stage.4"
+          ]
+        }
+      ]
+    }
+  ],
+  "challenges": [
+    {
+      "id": "challenge.01",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "rule_family": "constrained_fleets",
+      "dossier_cost": {
+        "currency": "survey_notes",
+        "amount": 100
+      },
+      "rules_status": "in_production",
+      "rule_spec": {
+        "source_path": "game/content/challenges/challenge.01.json"
+      },
+      "completion_rewards": [],
+      "state_partition": "challenge",
+      "main_policy_continues": true,
+      "export_economic_resources": false,
+      "asset_refs": [
+        "asset.challenge.01.copy"
+      ]
+    },
+    {
+      "id": "challenge.02",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "rule_family": "constrained_fleets",
+      "dossier_cost": {
+        "currency": "survey_notes",
+        "amount": 100
+      },
+      "rules_status": "in_production",
+      "rule_spec": {
+        "source_path": "game/content/challenges/challenge.02.json"
+      },
+      "completion_rewards": [],
+      "state_partition": "challenge",
+      "main_policy_continues": true,
+      "export_economic_resources": false,
+      "asset_refs": [
+        "asset.challenge.02.copy"
+      ]
+    },
+    {
+      "id": "challenge.03",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "rule_family": "constrained_fleets",
+      "dossier_cost": {
+        "currency": "survey_notes",
+        "amount": 100
+      },
+      "rules_status": "in_production",
+      "rule_spec": {
+        "source_path": "game/content/challenges/challenge.03.json"
+      },
+      "completion_rewards": [],
+      "state_partition": "challenge",
+      "main_policy_continues": true,
+      "export_economic_resources": false,
+      "asset_refs": [
+        "asset.challenge.03.copy"
+      ]
+    },
+    {
+      "id": "challenge.04",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "rule_family": "constrained_fleets",
+      "dossier_cost": {
+        "currency": "survey_notes",
+        "amount": 100
+      },
+      "rules_status": "in_production",
+      "rule_spec": {
+        "source_path": "game/content/challenges/challenge.04.json"
+      },
+      "completion_rewards": [],
+      "state_partition": "challenge",
+      "main_policy_continues": true,
+      "export_economic_resources": false,
+      "asset_refs": [
+        "asset.challenge.04.copy"
+      ]
+    },
+    {
+      "id": "challenge.05",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "rule_family": "synergy_priorities",
+      "dossier_cost": {
+        "currency": "survey_notes",
+        "amount": 100
+      },
+      "rules_status": "in_production",
+      "rule_spec": {
+        "source_path": "game/content/challenges/challenge.05.json"
+      },
+      "completion_rewards": [],
+      "state_partition": "challenge",
+      "main_policy_continues": true,
+      "export_economic_resources": false,
+      "asset_refs": [
+        "asset.challenge.05.copy"
+      ]
+    },
+    {
+      "id": "challenge.06",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "rule_family": "synergy_priorities",
+      "dossier_cost": {
+        "currency": "survey_notes",
+        "amount": 100
+      },
+      "rules_status": "in_production",
+      "rule_spec": {
+        "source_path": "game/content/challenges/challenge.06.json"
+      },
+      "completion_rewards": [],
+      "state_partition": "challenge",
+      "main_policy_continues": true,
+      "export_economic_resources": false,
+      "asset_refs": [
+        "asset.challenge.06.copy"
+      ]
+    },
+    {
+      "id": "challenge.07",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "rule_family": "synergy_priorities",
+      "dossier_cost": {
+        "currency": "survey_notes",
+        "amount": 100
+      },
+      "rules_status": "in_production",
+      "rule_spec": {
+        "source_path": "game/content/challenges/challenge.07.json"
+      },
+      "completion_rewards": [],
+      "state_partition": "challenge",
+      "main_policy_continues": true,
+      "export_economic_resources": false,
+      "asset_refs": [
+        "asset.challenge.07.copy"
+      ]
+    },
+    {
+      "id": "challenge.08",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "rule_family": "synergy_priorities",
+      "dossier_cost": {
+        "currency": "survey_notes",
+        "amount": 100
+      },
+      "rules_status": "in_production",
+      "rule_spec": {
+        "source_path": "game/content/challenges/challenge.08.json"
+      },
+      "completion_rewards": [],
+      "state_partition": "challenge",
+      "main_policy_continues": true,
+      "export_economic_resources": false,
+      "asset_refs": [
+        "asset.challenge.08.copy"
+      ]
+    },
+    {
+      "id": "challenge.09",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "rule_family": "automation_planning",
+      "dossier_cost": {
+        "currency": "survey_notes",
+        "amount": 100
+      },
+      "rules_status": "in_production",
+      "rule_spec": {
+        "source_path": "game/content/challenges/challenge.09.json"
+      },
+      "completion_rewards": [],
+      "state_partition": "challenge",
+      "main_policy_continues": true,
+      "export_economic_resources": false,
+      "asset_refs": [
+        "asset.challenge.09.copy"
+      ]
+    },
+    {
+      "id": "challenge.10",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "rule_family": "automation_planning",
+      "dossier_cost": {
+        "currency": "survey_notes",
+        "amount": 100
+      },
+      "rules_status": "in_production",
+      "rule_spec": {
+        "source_path": "game/content/challenges/challenge.10.json"
+      },
+      "completion_rewards": [],
+      "state_partition": "challenge",
+      "main_policy_continues": true,
+      "export_economic_resources": false,
+      "asset_refs": [
+        "asset.challenge.10.copy"
+      ]
+    },
+    {
+      "id": "challenge.11",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "rule_family": "automation_planning",
+      "dossier_cost": {
+        "currency": "survey_notes",
+        "amount": 100
+      },
+      "rules_status": "in_production",
+      "rule_spec": {
+        "source_path": "game/content/challenges/challenge.11.json"
+      },
+      "completion_rewards": [],
+      "state_partition": "challenge",
+      "main_policy_continues": true,
+      "export_economic_resources": false,
+      "asset_refs": [
+        "asset.challenge.11.copy"
+      ]
+    },
+    {
+      "id": "challenge.12",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "rule_family": "automation_planning",
+      "dossier_cost": {
+        "currency": "survey_notes",
+        "amount": 100
+      },
+      "rules_status": "in_production",
+      "rule_spec": {
+        "source_path": "game/content/challenges/challenge.12.json"
+      },
+      "completion_rewards": [],
+      "state_partition": "challenge",
+      "main_policy_continues": true,
+      "export_economic_resources": false,
+      "asset_refs": [
+        "asset.challenge.12.copy"
+      ]
+    }
+  ],
+  "calibration_reward_profiles": [
+    {
+      "id": "calibration.standard",
+      "bonus_fraction": 0.2,
+      "duration_seconds": 600,
+      "stacking": "extend_duration",
+      "collectible_award": "completed_pattern"
+    }
+  ],
+  "calibrations": [
+    {
+      "id": "calibration.01",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "pattern_status": "in_production",
+      "pattern_spec": {
+        "source_path": "game/content/calibrations/calibration.01.pattern.json"
+      },
+      "completion_paths": [
+        {
+          "id": "calibration.01.routing",
+          "interaction": "untimed_routing",
+          "reward_profile_id": "calibration.standard",
+          "focus_cost": 1,
+          "collectible_pattern_id": "calibration.01",
+          "time_limit_seconds": null,
+          "reflex_requirement": false
+        },
+        {
+          "id": "calibration.01.accessible",
+          "interaction": "single_button_completion",
+          "reward_profile_id": "calibration.standard",
+          "focus_cost": 1,
+          "collectible_pattern_id": "calibration.01",
+          "time_limit_seconds": null,
+          "reflex_requirement": false
+        }
+      ],
+      "asset_refs": [
+        "asset.calibration.01.pattern",
+        "asset.calibration.01.accessible_copy"
+      ]
+    },
+    {
+      "id": "calibration.02",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "pattern_status": "in_production",
+      "pattern_spec": {
+        "source_path": "game/content/calibrations/calibration.02.pattern.json"
+      },
+      "completion_paths": [
+        {
+          "id": "calibration.02.routing",
+          "interaction": "untimed_routing",
+          "reward_profile_id": "calibration.standard",
+          "focus_cost": 1,
+          "collectible_pattern_id": "calibration.02",
+          "time_limit_seconds": null,
+          "reflex_requirement": false
+        },
+        {
+          "id": "calibration.02.accessible",
+          "interaction": "single_button_completion",
+          "reward_profile_id": "calibration.standard",
+          "focus_cost": 1,
+          "collectible_pattern_id": "calibration.02",
+          "time_limit_seconds": null,
+          "reflex_requirement": false
+        }
+      ],
+      "asset_refs": [
+        "asset.calibration.02.pattern",
+        "asset.calibration.02.accessible_copy"
+      ]
+    },
+    {
+      "id": "calibration.03",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "pattern_status": "in_production",
+      "pattern_spec": {
+        "source_path": "game/content/calibrations/calibration.03.pattern.json"
+      },
+      "completion_paths": [
+        {
+          "id": "calibration.03.routing",
+          "interaction": "untimed_routing",
+          "reward_profile_id": "calibration.standard",
+          "focus_cost": 1,
+          "collectible_pattern_id": "calibration.03",
+          "time_limit_seconds": null,
+          "reflex_requirement": false
+        },
+        {
+          "id": "calibration.03.accessible",
+          "interaction": "single_button_completion",
+          "reward_profile_id": "calibration.standard",
+          "focus_cost": 1,
+          "collectible_pattern_id": "calibration.03",
+          "time_limit_seconds": null,
+          "reflex_requirement": false
+        }
+      ],
+      "asset_refs": [
+        "asset.calibration.03.pattern",
+        "asset.calibration.03.accessible_copy"
+      ]
+    },
+    {
+      "id": "calibration.04",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "pattern_status": "in_production",
+      "pattern_spec": {
+        "source_path": "game/content/calibrations/calibration.04.pattern.json"
+      },
+      "completion_paths": [
+        {
+          "id": "calibration.04.routing",
+          "interaction": "untimed_routing",
+          "reward_profile_id": "calibration.standard",
+          "focus_cost": 1,
+          "collectible_pattern_id": "calibration.04",
+          "time_limit_seconds": null,
+          "reflex_requirement": false
+        },
+        {
+          "id": "calibration.04.accessible",
+          "interaction": "single_button_completion",
+          "reward_profile_id": "calibration.standard",
+          "focus_cost": 1,
+          "collectible_pattern_id": "calibration.04",
+          "time_limit_seconds": null,
+          "reflex_requirement": false
+        }
+      ],
+      "asset_refs": [
+        "asset.calibration.04.pattern",
+        "asset.calibration.04.accessible_copy"
+      ]
+    },
+    {
+      "id": "calibration.05",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "pattern_status": "in_production",
+      "pattern_spec": {
+        "source_path": "game/content/calibrations/calibration.05.pattern.json"
+      },
+      "completion_paths": [
+        {
+          "id": "calibration.05.routing",
+          "interaction": "untimed_routing",
+          "reward_profile_id": "calibration.standard",
+          "focus_cost": 1,
+          "collectible_pattern_id": "calibration.05",
+          "time_limit_seconds": null,
+          "reflex_requirement": false
+        },
+        {
+          "id": "calibration.05.accessible",
+          "interaction": "single_button_completion",
+          "reward_profile_id": "calibration.standard",
+          "focus_cost": 1,
+          "collectible_pattern_id": "calibration.05",
+          "time_limit_seconds": null,
+          "reflex_requirement": false
+        }
+      ],
+      "asset_refs": [
+        "asset.calibration.05.pattern",
+        "asset.calibration.05.accessible_copy"
+      ]
+    },
+    {
+      "id": "calibration.06",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "pattern_status": "in_production",
+      "pattern_spec": {
+        "source_path": "game/content/calibrations/calibration.06.pattern.json"
+      },
+      "completion_paths": [
+        {
+          "id": "calibration.06.routing",
+          "interaction": "untimed_routing",
+          "reward_profile_id": "calibration.standard",
+          "focus_cost": 1,
+          "collectible_pattern_id": "calibration.06",
+          "time_limit_seconds": null,
+          "reflex_requirement": false
+        },
+        {
+          "id": "calibration.06.accessible",
+          "interaction": "single_button_completion",
+          "reward_profile_id": "calibration.standard",
+          "focus_cost": 1,
+          "collectible_pattern_id": "calibration.06",
+          "time_limit_seconds": null,
+          "reflex_requirement": false
+        }
+      ],
+      "asset_refs": [
+        "asset.calibration.06.pattern",
+        "asset.calibration.06.accessible_copy"
+      ]
+    },
+    {
+      "id": "calibration.07",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "pattern_status": "in_production",
+      "pattern_spec": {
+        "source_path": "game/content/calibrations/calibration.07.pattern.json"
+      },
+      "completion_paths": [
+        {
+          "id": "calibration.07.routing",
+          "interaction": "untimed_routing",
+          "reward_profile_id": "calibration.standard",
+          "focus_cost": 1,
+          "collectible_pattern_id": "calibration.07",
+          "time_limit_seconds": null,
+          "reflex_requirement": false
+        },
+        {
+          "id": "calibration.07.accessible",
+          "interaction": "single_button_completion",
+          "reward_profile_id": "calibration.standard",
+          "focus_cost": 1,
+          "collectible_pattern_id": "calibration.07",
+          "time_limit_seconds": null,
+          "reflex_requirement": false
+        }
+      ],
+      "asset_refs": [
+        "asset.calibration.07.pattern",
+        "asset.calibration.07.accessible_copy"
+      ]
+    },
+    {
+      "id": "calibration.08",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "pattern_status": "in_production",
+      "pattern_spec": {
+        "source_path": "game/content/calibrations/calibration.08.pattern.json"
+      },
+      "completion_paths": [
+        {
+          "id": "calibration.08.routing",
+          "interaction": "untimed_routing",
+          "reward_profile_id": "calibration.standard",
+          "focus_cost": 1,
+          "collectible_pattern_id": "calibration.08",
+          "time_limit_seconds": null,
+          "reflex_requirement": false
+        },
+        {
+          "id": "calibration.08.accessible",
+          "interaction": "single_button_completion",
+          "reward_profile_id": "calibration.standard",
+          "focus_cost": 1,
+          "collectible_pattern_id": "calibration.08",
+          "time_limit_seconds": null,
+          "reflex_requirement": false
+        }
+      ],
+      "asset_refs": [
+        "asset.calibration.08.pattern",
+        "asset.calibration.08.accessible_copy"
+      ]
+    },
+    {
+      "id": "calibration.09",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "pattern_status": "in_production",
+      "pattern_spec": {
+        "source_path": "game/content/calibrations/calibration.09.pattern.json"
+      },
+      "completion_paths": [
+        {
+          "id": "calibration.09.routing",
+          "interaction": "untimed_routing",
+          "reward_profile_id": "calibration.standard",
+          "focus_cost": 1,
+          "collectible_pattern_id": "calibration.09",
+          "time_limit_seconds": null,
+          "reflex_requirement": false
+        },
+        {
+          "id": "calibration.09.accessible",
+          "interaction": "single_button_completion",
+          "reward_profile_id": "calibration.standard",
+          "focus_cost": 1,
+          "collectible_pattern_id": "calibration.09",
+          "time_limit_seconds": null,
+          "reflex_requirement": false
+        }
+      ],
+      "asset_refs": [
+        "asset.calibration.09.pattern",
+        "asset.calibration.09.accessible_copy"
+      ]
+    },
+    {
+      "id": "calibration.10",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "pattern_status": "in_production",
+      "pattern_spec": {
+        "source_path": "game/content/calibrations/calibration.10.pattern.json"
+      },
+      "completion_paths": [
+        {
+          "id": "calibration.10.routing",
+          "interaction": "untimed_routing",
+          "reward_profile_id": "calibration.standard",
+          "focus_cost": 1,
+          "collectible_pattern_id": "calibration.10",
+          "time_limit_seconds": null,
+          "reflex_requirement": false
+        },
+        {
+          "id": "calibration.10.accessible",
+          "interaction": "single_button_completion",
+          "reward_profile_id": "calibration.standard",
+          "focus_cost": 1,
+          "collectible_pattern_id": "calibration.10",
+          "time_limit_seconds": null,
+          "reflex_requirement": false
+        }
+      ],
+      "asset_refs": [
+        "asset.calibration.10.pattern",
+        "asset.calibration.10.accessible_copy"
+      ]
+    },
+    {
+      "id": "calibration.11",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "pattern_status": "in_production",
+      "pattern_spec": {
+        "source_path": "game/content/calibrations/calibration.11.pattern.json"
+      },
+      "completion_paths": [
+        {
+          "id": "calibration.11.routing",
+          "interaction": "untimed_routing",
+          "reward_profile_id": "calibration.standard",
+          "focus_cost": 1,
+          "collectible_pattern_id": "calibration.11",
+          "time_limit_seconds": null,
+          "reflex_requirement": false
+        },
+        {
+          "id": "calibration.11.accessible",
+          "interaction": "single_button_completion",
+          "reward_profile_id": "calibration.standard",
+          "focus_cost": 1,
+          "collectible_pattern_id": "calibration.11",
+          "time_limit_seconds": null,
+          "reflex_requirement": false
+        }
+      ],
+      "asset_refs": [
+        "asset.calibration.11.pattern",
+        "asset.calibration.11.accessible_copy"
+      ]
+    },
+    {
+      "id": "calibration.12",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "pattern_status": "in_production",
+      "pattern_spec": {
+        "source_path": "game/content/calibrations/calibration.12.pattern.json"
+      },
+      "completion_paths": [
+        {
+          "id": "calibration.12.routing",
+          "interaction": "untimed_routing",
+          "reward_profile_id": "calibration.standard",
+          "focus_cost": 1,
+          "collectible_pattern_id": "calibration.12",
+          "time_limit_seconds": null,
+          "reflex_requirement": false
+        },
+        {
+          "id": "calibration.12.accessible",
+          "interaction": "single_button_completion",
+          "reward_profile_id": "calibration.standard",
+          "focus_cost": 1,
+          "collectible_pattern_id": "calibration.12",
+          "time_limit_seconds": null,
+          "reflex_requirement": false
+        }
+      ],
+      "asset_refs": [
+        "asset.calibration.12.pattern",
+        "asset.calibration.12.accessible_copy"
+      ]
+    }
+  ],
+  "main_archive": [
+    {
+      "id": "archive.main.01",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "chapter_id": "chapter.01",
+      "copy_status": "in_production",
+      "asset_refs": [
+        "asset.archive.main.01"
+      ]
+    },
+    {
+      "id": "archive.main.02",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "chapter_id": "chapter.01",
+      "copy_status": "in_production",
+      "asset_refs": [
+        "asset.archive.main.02"
+      ]
+    },
+    {
+      "id": "archive.main.03",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "chapter_id": "chapter.01",
+      "copy_status": "in_production",
+      "asset_refs": [
+        "asset.archive.main.03"
+      ]
+    },
+    {
+      "id": "archive.main.04",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "chapter_id": "chapter.02",
+      "copy_status": "in_production",
+      "asset_refs": [
+        "asset.archive.main.04"
+      ]
+    },
+    {
+      "id": "archive.main.05",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "chapter_id": "chapter.02",
+      "copy_status": "in_production",
+      "asset_refs": [
+        "asset.archive.main.05"
+      ]
+    },
+    {
+      "id": "archive.main.06",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "chapter_id": "chapter.02",
+      "copy_status": "in_production",
+      "asset_refs": [
+        "asset.archive.main.06"
+      ]
+    },
+    {
+      "id": "archive.main.07",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "chapter_id": "chapter.03",
+      "copy_status": "in_production",
+      "asset_refs": [
+        "asset.archive.main.07"
+      ]
+    },
+    {
+      "id": "archive.main.08",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "chapter_id": "chapter.03",
+      "copy_status": "in_production",
+      "asset_refs": [
+        "asset.archive.main.08"
+      ]
+    },
+    {
+      "id": "archive.main.09",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "chapter_id": "chapter.03",
+      "copy_status": "in_production",
+      "asset_refs": [
+        "asset.archive.main.09"
+      ]
+    },
+    {
+      "id": "archive.main.10",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "chapter_id": "chapter.04",
+      "copy_status": "in_production",
+      "asset_refs": [
+        "asset.archive.main.10"
+      ]
+    },
+    {
+      "id": "archive.main.11",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "chapter_id": "chapter.04",
+      "copy_status": "in_production",
+      "asset_refs": [
+        "asset.archive.main.11"
+      ]
+    },
+    {
+      "id": "archive.main.12",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "chapter_id": "chapter.04",
+      "copy_status": "in_production",
+      "asset_refs": [
+        "asset.archive.main.12"
+      ]
+    },
+    {
+      "id": "archive.main.13",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "chapter_id": "chapter.05",
+      "copy_status": "in_production",
+      "asset_refs": [
+        "asset.archive.main.13"
+      ]
+    },
+    {
+      "id": "archive.main.14",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "chapter_id": "chapter.05",
+      "copy_status": "in_production",
+      "asset_refs": [
+        "asset.archive.main.14"
+      ]
+    },
+    {
+      "id": "archive.main.15",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "chapter_id": "chapter.05",
+      "copy_status": "in_production",
+      "asset_refs": [
+        "asset.archive.main.15"
+      ]
+    },
+    {
+      "id": "archive.main.16",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "chapter_id": "chapter.06",
+      "copy_status": "in_production",
+      "asset_refs": [
+        "asset.archive.main.16"
+      ]
+    },
+    {
+      "id": "archive.main.17",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "chapter_id": "chapter.06",
+      "copy_status": "in_production",
+      "asset_refs": [
+        "asset.archive.main.17"
+      ]
+    },
+    {
+      "id": "archive.main.18",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "chapter_id": "chapter.06",
+      "copy_status": "in_production",
+      "asset_refs": [
+        "asset.archive.main.18"
+      ]
+    }
+  ],
+  "season_fragments": [
+    {
+      "id": "archive.season01.01",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "season_id": "season.01",
+      "copy_status": "in_production",
+      "asset_refs": [
+        "asset.archive.season01.01"
+      ]
+    },
+    {
+      "id": "archive.season01.02",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "season_id": "season.01",
+      "copy_status": "in_production",
+      "asset_refs": [
+        "asset.archive.season01.02"
+      ]
+    },
+    {
+      "id": "archive.season01.03",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "season_id": "season.01",
+      "copy_status": "in_production",
+      "asset_refs": [
+        "asset.archive.season01.03"
+      ]
+    },
+    {
+      "id": "archive.season01.04",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "season_id": "season.01",
+      "copy_status": "in_production",
+      "asset_refs": [
+        "asset.archive.season01.04"
+      ]
+    },
+    {
+      "id": "archive.season01.05",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "season_id": "season.01",
+      "copy_status": "in_production",
+      "asset_refs": [
+        "asset.archive.season01.05"
+      ]
+    },
+    {
+      "id": "archive.season01.06",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "season_id": "season.01",
+      "copy_status": "in_production",
+      "asset_refs": [
+        "asset.archive.season01.06"
+      ]
+    },
+    {
+      "id": "archive.season01.07",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "season_id": "season.01",
+      "copy_status": "in_production",
+      "asset_refs": [
+        "asset.archive.season01.07"
+      ]
+    },
+    {
+      "id": "archive.season01.08",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "season_id": "season.01",
+      "copy_status": "in_production",
+      "asset_refs": [
+        "asset.archive.season01.08"
+      ]
+    },
+    {
+      "id": "archive.season01.09",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "season_id": "season.01",
+      "copy_status": "in_production",
+      "asset_refs": [
+        "asset.archive.season01.09"
+      ]
+    },
+    {
+      "id": "archive.season01.10",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "season_id": "season.01",
+      "copy_status": "in_production",
+      "asset_refs": [
+        "asset.archive.season01.10"
+      ]
+    },
+    {
+      "id": "archive.season01.11",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "season_id": "season.01",
+      "copy_status": "in_production",
+      "asset_refs": [
+        "asset.archive.season01.11"
+      ]
+    },
+    {
+      "id": "archive.season01.12",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "season_id": "season.01",
+      "copy_status": "in_production",
+      "asset_refs": [
+        "asset.archive.season01.12"
+      ]
+    },
+    {
+      "id": "archive.season01.13",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "season_id": "season.01",
+      "copy_status": "in_production",
+      "asset_refs": [
+        "asset.archive.season01.13"
+      ]
+    },
+    {
+      "id": "archive.season01.14",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "season_id": "season.01",
+      "copy_status": "in_production",
+      "asset_refs": [
+        "asset.archive.season01.14"
+      ]
+    },
+    {
+      "id": "archive.season01.15",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "season_id": "season.01",
+      "copy_status": "in_production",
+      "asset_refs": [
+        "asset.archive.season01.15"
+      ]
+    },
+    {
+      "id": "archive.season01.16",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "season_id": "season.01",
+      "copy_status": "in_production",
+      "asset_refs": [
+        "asset.archive.season01.16"
+      ]
+    },
+    {
+      "id": "archive.season01.17",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "season_id": "season.01",
+      "copy_status": "in_production",
+      "asset_refs": [
+        "asset.archive.season01.17"
+      ]
+    },
+    {
+      "id": "archive.season01.18",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "season_id": "season.01",
+      "copy_status": "in_production",
+      "asset_refs": [
+        "asset.archive.season01.18"
+      ]
+    },
+    {
+      "id": "archive.season01.19",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "season_id": "season.01",
+      "copy_status": "in_production",
+      "asset_refs": [
+        "asset.archive.season01.19"
+      ]
+    },
+    {
+      "id": "archive.season01.20",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "season_id": "season.01",
+      "copy_status": "in_production",
+      "asset_refs": [
+        "asset.archive.season01.20"
+      ]
+    }
+  ],
+  "cosmetics": [
+    {
+      "id": "cosmetic.core.chapter.01",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "origin": "core",
+      "kind": "appearance",
+      "economic_effects": [],
+      "asset_refs": [
+        "asset.cosmetic.core.chapter.01"
+      ],
+      "unlock": {
+        "kind": "chapter_completion",
+        "chapter_id": "chapter.01"
+      },
+      "authored_title": "First Light Cairn"
+    },
+    {
+      "id": "cosmetic.core.chapter.02",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "origin": "core",
+      "kind": "appearance",
+      "economic_effects": [],
+      "asset_refs": [
+        "asset.cosmetic.core.chapter.02"
+      ],
+      "unlock": {
+        "kind": "chapter_completion",
+        "chapter_id": "chapter.02"
+      },
+      "authored_title": "Shared Horizon Bridge"
+    },
+    {
+      "id": "cosmetic.core.chapter.03",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "origin": "core",
+      "kind": "appearance",
+      "economic_effects": [],
+      "asset_refs": [
+        "asset.cosmetic.core.chapter.03"
+      ],
+      "unlock": {
+        "kind": "chapter_completion",
+        "chapter_id": "chapter.03"
+      },
+      "authored_title": "Quiet Watch Chimes"
+    },
+    {
+      "id": "cosmetic.core.chapter.04",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "origin": "core",
+      "kind": "appearance",
+      "economic_effects": [],
+      "asset_refs": [
+        "asset.cosmetic.core.chapter.04"
+      ],
+      "unlock": {
+        "kind": "chapter_completion",
+        "chapter_id": "chapter.04"
+      },
+      "authored_title": "Three Passage Gates"
+    },
+    {
+      "id": "cosmetic.core.chapter.05",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "origin": "core",
+      "kind": "appearance",
+      "economic_effects": [],
+      "asset_refs": [
+        "asset.cosmetic.core.chapter.05"
+      ],
+      "unlock": {
+        "kind": "chapter_completion",
+        "chapter_id": "chapter.05"
+      },
+      "authored_title": "Keeper’s Desk"
+    },
+    {
+      "id": "cosmetic.core.chapter.06",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "origin": "core",
+      "kind": "appearance",
+      "economic_effects": [],
+      "asset_refs": [
+        "asset.cosmetic.core.chapter.06"
+      ],
+      "unlock": {
+        "kind": "chapter_completion",
+        "chapter_id": "chapter.06"
+      },
+      "authored_title": "Sea of Stars Lanterns"
+    },
+    {
+      "id": "cosmetic.core.decoration.01",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "origin": "core",
+      "kind": "archive_decoration",
+      "economic_effects": [],
+      "asset_refs": [
+        "asset.cosmetic.core.decoration.01"
+      ],
+      "unlock": {
+        "kind": "note_purchase",
+        "currency": "survey_notes",
+        "amount": 50
+      },
+      "authored_title": "Beacon pennants"
+    },
+    {
+      "id": "cosmetic.core.decoration.02",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "origin": "core",
+      "kind": "archive_decoration",
+      "economic_effects": [],
+      "asset_refs": [
+        "asset.cosmetic.core.decoration.02"
+      ],
+      "unlock": {
+        "kind": "note_purchase",
+        "currency": "survey_notes",
+        "amount": 50
+      },
+      "authored_title": "Glass buoys"
+    },
+    {
+      "id": "cosmetic.core.decoration.03",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "origin": "core",
+      "kind": "archive_decoration",
+      "economic_effects": [],
+      "asset_refs": [
+        "asset.cosmetic.core.decoration.03"
+      ],
+      "unlock": {
+        "kind": "note_purchase",
+        "currency": "survey_notes",
+        "amount": 50
+      },
+      "authored_title": "Aurora kite"
+    },
+    {
+      "id": "cosmetic.core.decoration.04",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "origin": "core",
+      "kind": "archive_decoration",
+      "economic_effects": [],
+      "asset_refs": [
+        "asset.cosmetic.core.decoration.04"
+      ],
+      "unlock": {
+        "kind": "note_purchase",
+        "currency": "survey_notes",
+        "amount": 50
+      },
+      "authored_title": "Tide rings"
+    },
+    {
+      "id": "cosmetic.core.decoration.05",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "origin": "core",
+      "kind": "archive_decoration",
+      "economic_effects": [],
+      "asset_refs": [
+        "asset.cosmetic.core.decoration.05"
+      ],
+      "unlock": {
+        "kind": "note_purchase",
+        "currency": "survey_notes",
+        "amount": 50
+      },
+      "authored_title": "Shore garden"
+    },
+    {
+      "id": "cosmetic.core.decoration.06",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "origin": "core",
+      "kind": "archive_decoration",
+      "economic_effects": [],
+      "asset_refs": [
+        "asset.cosmetic.core.decoration.06"
+      ],
+      "unlock": {
+        "kind": "note_purchase",
+        "currency": "survey_notes",
+        "amount": 50
+      },
+      "authored_title": "Returning comets"
+    },
+    {
+      "id": "cosmetic.free_pass.01",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "origin": "free_pass",
+      "kind": "appearance",
+      "economic_effects": [],
+      "asset_refs": [
+        "asset.cosmetic.free_pass.01"
+      ],
+      "authored_title": "Harbor Lantern"
+    },
+    {
+      "id": "cosmetic.free_pass.02",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "origin": "free_pass",
+      "kind": "appearance",
+      "economic_effects": [],
+      "asset_refs": [
+        "asset.cosmetic.free_pass.02"
+      ],
+      "authored_title": "Moonwake Hull"
+    },
+    {
+      "id": "cosmetic.free_pass.03",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "origin": "free_pass",
+      "kind": "appearance",
+      "economic_effects": [],
+      "asset_refs": [
+        "asset.cosmetic.free_pass.03"
+      ],
+      "authored_title": "Starfinder Pennant"
+    },
+    {
+      "id": "cosmetic.free_pass.04",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "origin": "free_pass",
+      "kind": "appearance",
+      "economic_effects": [],
+      "asset_refs": [
+        "asset.cosmetic.free_pass.04"
+      ],
+      "authored_title": "Silver Nursery"
+    },
+    {
+      "id": "cosmetic.free_pass.05",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "origin": "free_pass",
+      "kind": "appearance",
+      "economic_effects": [],
+      "asset_refs": [
+        "asset.cosmetic.free_pass.05"
+      ],
+      "authored_title": "Nightcurrent Dynamo"
+    },
+    {
+      "id": "cosmetic.free_pass.06",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "origin": "free_pass",
+      "kind": "appearance",
+      "economic_effects": [],
+      "asset_refs": [
+        "asset.cosmetic.free_pass.06"
+      ],
+      "authored_title": "Duskweave Loom"
+    },
+    {
+      "id": "cosmetic.free_pass.07",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "origin": "free_pass",
+      "kind": "appearance",
+      "economic_effects": [],
+      "asset_refs": [
+        "asset.cosmetic.free_pass.07"
+      ],
+      "authored_title": "Farwatch Dome"
+    },
+    {
+      "id": "cosmetic.free_pass.08",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "origin": "free_pass",
+      "kind": "appearance",
+      "economic_effects": [],
+      "asset_refs": [
+        "asset.cosmetic.free_pass.08"
+      ],
+      "authored_title": "Meteor Mooring"
+    },
+    {
+      "id": "cosmetic.free_pass.09",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "origin": "free_pass",
+      "kind": "appearance",
+      "economic_effects": [],
+      "asset_refs": [
+        "asset.cosmetic.free_pass.09"
+      ],
+      "authored_title": "Returning Star Banner"
+    },
+    {
+      "id": "cosmetic.free_pass.10",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "origin": "free_pass",
+      "kind": "appearance",
+      "economic_effects": [],
+      "asset_refs": [
+        "asset.cosmetic.free_pass.10"
+      ],
+      "authored_title": "Homeward Sky"
+    },
+    {
+      "id": "cosmetic.premium_pass.01",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "origin": "premium_pass",
+      "kind": "appearance",
+      "economic_effects": [],
+      "asset_refs": [
+        "asset.cosmetic.premium_pass.01"
+      ],
+      "authored_title": "Opal Hull"
+    },
+    {
+      "id": "cosmetic.premium_pass.02",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "origin": "premium_pass",
+      "kind": "appearance",
+      "economic_effects": [],
+      "asset_refs": [
+        "asset.cosmetic.premium_pass.02"
+      ],
+      "authored_title": "Constellation Sails"
+    },
+    {
+      "id": "cosmetic.premium_pass.03",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "origin": "premium_pass",
+      "kind": "appearance",
+      "economic_effects": [],
+      "asset_refs": [
+        "asset.cosmetic.premium_pass.03"
+      ],
+      "authored_title": "Blue Hour Nursery"
+    },
+    {
+      "id": "cosmetic.premium_pass.04",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "origin": "premium_pass",
+      "kind": "appearance",
+      "economic_effects": [],
+      "asset_refs": [
+        "asset.cosmetic.premium_pass.04"
+      ],
+      "authored_title": "Comet Dynamo"
+    },
+    {
+      "id": "cosmetic.premium_pass.05",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "origin": "premium_pass",
+      "kind": "appearance",
+      "economic_effects": [],
+      "asset_refs": [
+        "asset.cosmetic.premium_pass.05"
+      ],
+      "authored_title": "Velvet Night Loom"
+    },
+    {
+      "id": "cosmetic.premium_pass.06",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "origin": "premium_pass",
+      "kind": "appearance",
+      "economic_effects": [],
+      "asset_refs": [
+        "asset.cosmetic.premium_pass.06"
+      ],
+      "authored_title": "Aurora Observatory"
+    },
+    {
+      "id": "cosmetic.premium_pass.07",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "origin": "premium_pass",
+      "kind": "appearance",
+      "economic_effects": [],
+      "asset_refs": [
+        "asset.cosmetic.premium_pass.07"
+      ],
+      "authored_title": "Starpath Dock"
+    },
+    {
+      "id": "cosmetic.premium_pass.08",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "origin": "premium_pass",
+      "kind": "appearance",
+      "economic_effects": [],
+      "asset_refs": [
+        "asset.cosmetic.premium_pass.08"
+      ],
+      "authored_title": "Luminous Compass"
+    },
+    {
+      "id": "cosmetic.premium_pass.09",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "origin": "premium_pass",
+      "kind": "appearance",
+      "economic_effects": [],
+      "asset_refs": [
+        "asset.cosmetic.premium_pass.09"
+      ],
+      "authored_title": "Lantern Constellation"
+    },
+    {
+      "id": "cosmetic.premium_pass.10",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "origin": "premium_pass",
+      "kind": "appearance",
+      "economic_effects": [],
+      "asset_refs": [
+        "asset.cosmetic.premium_pass.10"
+      ],
+      "authored_title": "Celestial Harbor"
+    },
+    {
+      "id": "cosmetic.shop.01",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "origin": "shop",
+      "kind": "appearance",
+      "economic_effects": [],
+      "asset_refs": [
+        "asset.cosmetic.shop.01"
+      ],
+      "authored_title": "Tidal Clock"
+    },
+    {
+      "id": "cosmetic.shop.02",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "origin": "shop",
+      "kind": "appearance",
+      "economic_effects": [],
+      "asset_refs": [
+        "asset.cosmetic.shop.02"
+      ],
+      "authored_title": "Paper Voyagers"
+    },
+    {
+      "id": "cosmetic.shop.03",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "origin": "shop",
+      "kind": "appearance",
+      "economic_effects": [],
+      "asset_refs": [
+        "asset.cosmetic.shop.03"
+      ],
+      "authored_title": "Coral Sanctuary"
+    },
+    {
+      "id": "cosmetic.shop.04",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "origin": "shop",
+      "kind": "appearance",
+      "economic_effects": [],
+      "asset_refs": [
+        "asset.cosmetic.shop.04"
+      ],
+      "authored_title": "Voyager Festival"
+    }
+  ],
+  "season": {
+    "id": "season.01",
+    "production_status": "in_production",
+    "verification_evidence": null,
+    "name": "Night of Returning Stars",
+    "live_duration_days": 28,
+    "state_partition": "season.01",
+    "initial_state_policy": "identical_for_all_players",
+    "main_policy_continues": true,
+    "synergies_available_immediately": true,
+    "prestige_enabled": false,
+    "imported_resources": [],
+    "imported_boosts": [],
+    "exported_reward_kinds": [
+      "cosmetic",
+      "archive_fragment",
+      "badge"
+    ],
+    "economic_exports": [],
+    "synergy": {
+      "source_tiers": [
+        1,
+        2
+      ],
+      "target_tiers": [
+        4,
+        5
+      ],
+      "coefficients": [
+        [
+          0.1,
+          0.2
+        ],
+        [
+          0.25,
+          0.1
+        ]
+      ]
+    },
+    "lifecycle": [
+      "upcoming",
+      "live",
+      "archived"
+    ],
+    "archive_playable": true,
+    "asset_refs": [
+      "asset.season.01.copy",
+      "asset.season.01.presentation"
+    ]
+  },
+  "pass": {
+    "id": "pass.01",
+    "season_id": "season.01",
+    "production_status": "in_production",
+    "verification_evidence": null,
+    "levels": 30,
+    "xp_per_level": 500,
+    "daily_contract_count": 3,
+    "xp_per_contract": 250,
+    "xp_ledger": "shared_daily_contract_receipts",
+    "event_alternatives_replace_daily_objective": true,
+    "selected_pass_capacity": 1,
+    "archive_completion": true,
+    "paid_xp_multiplier": 1,
+    "free_rewards": [
+      {
+        "id": "pass.01.free.01",
+        "production_status": "in_production",
+        "verification_evidence": null,
+        "level": 1,
+        "reward": {
+          "kind": "archive_fragment",
+          "content_id": "archive.season01.01"
+        }
+      },
+      {
+        "id": "pass.01.free.02",
+        "production_status": "in_production",
+        "verification_evidence": null,
+        "level": 2,
+        "reward": {
+          "kind": "archive_fragment",
+          "content_id": "archive.season01.02"
+        }
+      },
+      {
+        "id": "pass.01.free.03",
+        "production_status": "in_production",
+        "verification_evidence": null,
+        "level": 3,
+        "reward": {
+          "kind": "cosmetic",
+          "content_id": "cosmetic.free_pass.01"
+        }
+      },
+      {
+        "id": "pass.01.free.04",
+        "production_status": "in_production",
+        "verification_evidence": null,
+        "level": 4,
+        "reward": {
+          "kind": "archive_fragment",
+          "content_id": "archive.season01.03"
+        }
+      },
+      {
+        "id": "pass.01.free.05",
+        "production_status": "in_production",
+        "verification_evidence": null,
+        "level": 5,
+        "reward": {
+          "kind": "archive_fragment",
+          "content_id": "archive.season01.04"
+        }
+      },
+      {
+        "id": "pass.01.free.06",
+        "production_status": "in_production",
+        "verification_evidence": null,
+        "level": 6,
+        "reward": {
+          "kind": "cosmetic",
+          "content_id": "cosmetic.free_pass.02"
+        }
+      },
+      {
+        "id": "pass.01.free.07",
+        "production_status": "in_production",
+        "verification_evidence": null,
+        "level": 7,
+        "reward": {
+          "kind": "archive_fragment",
+          "content_id": "archive.season01.05"
+        }
+      },
+      {
+        "id": "pass.01.free.08",
+        "production_status": "in_production",
+        "verification_evidence": null,
+        "level": 8,
+        "reward": {
+          "kind": "archive_fragment",
+          "content_id": "archive.season01.06"
+        }
+      },
+      {
+        "id": "pass.01.free.09",
+        "production_status": "in_production",
+        "verification_evidence": null,
+        "level": 9,
+        "reward": {
+          "kind": "cosmetic",
+          "content_id": "cosmetic.free_pass.03"
+        }
+      },
+      {
+        "id": "pass.01.free.10",
+        "production_status": "in_production",
+        "verification_evidence": null,
+        "level": 10,
+        "reward": {
+          "kind": "archive_fragment",
+          "content_id": "archive.season01.07"
+        }
+      },
+      {
+        "id": "pass.01.free.11",
+        "production_status": "in_production",
+        "verification_evidence": null,
+        "level": 11,
+        "reward": {
+          "kind": "archive_fragment",
+          "content_id": "archive.season01.08"
+        }
+      },
+      {
+        "id": "pass.01.free.12",
+        "production_status": "in_production",
+        "verification_evidence": null,
+        "level": 12,
+        "reward": {
+          "kind": "cosmetic",
+          "content_id": "cosmetic.free_pass.04"
+        }
+      },
+      {
+        "id": "pass.01.free.13",
+        "production_status": "in_production",
+        "verification_evidence": null,
+        "level": 13,
+        "reward": {
+          "kind": "archive_fragment",
+          "content_id": "archive.season01.09"
+        }
+      },
+      {
+        "id": "pass.01.free.14",
+        "production_status": "in_production",
+        "verification_evidence": null,
+        "level": 14,
+        "reward": {
+          "kind": "archive_fragment",
+          "content_id": "archive.season01.10"
+        }
+      },
+      {
+        "id": "pass.01.free.15",
+        "production_status": "in_production",
+        "verification_evidence": null,
+        "level": 15,
+        "reward": {
+          "kind": "cosmetic",
+          "content_id": "cosmetic.free_pass.05"
+        }
+      },
+      {
+        "id": "pass.01.free.16",
+        "production_status": "in_production",
+        "verification_evidence": null,
+        "level": 16,
+        "reward": {
+          "kind": "archive_fragment",
+          "content_id": "archive.season01.11"
+        }
+      },
+      {
+        "id": "pass.01.free.17",
+        "production_status": "in_production",
+        "verification_evidence": null,
+        "level": 17,
+        "reward": {
+          "kind": "archive_fragment",
+          "content_id": "archive.season01.12"
+        }
+      },
+      {
+        "id": "pass.01.free.18",
+        "production_status": "in_production",
+        "verification_evidence": null,
+        "level": 18,
+        "reward": {
+          "kind": "cosmetic",
+          "content_id": "cosmetic.free_pass.06"
+        }
+      },
+      {
+        "id": "pass.01.free.19",
+        "production_status": "in_production",
+        "verification_evidence": null,
+        "level": 19,
+        "reward": {
+          "kind": "archive_fragment",
+          "content_id": "archive.season01.13"
+        }
+      },
+      {
+        "id": "pass.01.free.20",
+        "production_status": "in_production",
+        "verification_evidence": null,
+        "level": 20,
+        "reward": {
+          "kind": "archive_fragment",
+          "content_id": "archive.season01.14"
+        }
+      },
+      {
+        "id": "pass.01.free.21",
+        "production_status": "in_production",
+        "verification_evidence": null,
+        "level": 21,
+        "reward": {
+          "kind": "cosmetic",
+          "content_id": "cosmetic.free_pass.07"
+        }
+      },
+      {
+        "id": "pass.01.free.22",
+        "production_status": "in_production",
+        "verification_evidence": null,
+        "level": 22,
+        "reward": {
+          "kind": "archive_fragment",
+          "content_id": "archive.season01.15"
+        }
+      },
+      {
+        "id": "pass.01.free.23",
+        "production_status": "in_production",
+        "verification_evidence": null,
+        "level": 23,
+        "reward": {
+          "kind": "archive_fragment",
+          "content_id": "archive.season01.16"
+        }
+      },
+      {
+        "id": "pass.01.free.24",
+        "production_status": "in_production",
+        "verification_evidence": null,
+        "level": 24,
+        "reward": {
+          "kind": "cosmetic",
+          "content_id": "cosmetic.free_pass.08"
+        }
+      },
+      {
+        "id": "pass.01.free.25",
+        "production_status": "in_production",
+        "verification_evidence": null,
+        "level": 25,
+        "reward": {
+          "kind": "archive_fragment",
+          "content_id": "archive.season01.17"
+        }
+      },
+      {
+        "id": "pass.01.free.26",
+        "production_status": "in_production",
+        "verification_evidence": null,
+        "level": 26,
+        "reward": {
+          "kind": "archive_fragment",
+          "content_id": "archive.season01.18"
+        }
+      },
+      {
+        "id": "pass.01.free.27",
+        "production_status": "in_production",
+        "verification_evidence": null,
+        "level": 27,
+        "reward": {
+          "kind": "cosmetic",
+          "content_id": "cosmetic.free_pass.09"
+        }
+      },
+      {
+        "id": "pass.01.free.28",
+        "production_status": "in_production",
+        "verification_evidence": null,
+        "level": 28,
+        "reward": {
+          "kind": "archive_fragment",
+          "content_id": "archive.season01.19"
+        }
+      },
+      {
+        "id": "pass.01.free.29",
+        "production_status": "in_production",
+        "verification_evidence": null,
+        "level": 29,
+        "reward": {
+          "kind": "archive_fragment",
+          "content_id": "archive.season01.20"
+        }
+      },
+      {
+        "id": "pass.01.free.30",
+        "production_status": "in_production",
+        "verification_evidence": null,
+        "level": 30,
+        "reward": {
+          "kind": "cosmetic",
+          "content_id": "cosmetic.free_pass.10"
+        }
+      }
+    ],
+    "premium_rewards": [
+      {
+        "id": "pass.01.premium.03",
+        "production_status": "in_production",
+        "verification_evidence": null,
+        "level": 3,
+        "reward": {
+          "kind": "cosmetic",
+          "content_id": "cosmetic.premium_pass.01"
+        }
+      },
+      {
+        "id": "pass.01.premium.06",
+        "production_status": "in_production",
+        "verification_evidence": null,
+        "level": 6,
+        "reward": {
+          "kind": "cosmetic",
+          "content_id": "cosmetic.premium_pass.02"
+        }
+      },
+      {
+        "id": "pass.01.premium.09",
+        "production_status": "in_production",
+        "verification_evidence": null,
+        "level": 9,
+        "reward": {
+          "kind": "cosmetic",
+          "content_id": "cosmetic.premium_pass.03"
+        }
+      },
+      {
+        "id": "pass.01.premium.12",
+        "production_status": "in_production",
+        "verification_evidence": null,
+        "level": 12,
+        "reward": {
+          "kind": "cosmetic",
+          "content_id": "cosmetic.premium_pass.04"
+        }
+      },
+      {
+        "id": "pass.01.premium.15",
+        "production_status": "in_production",
+        "verification_evidence": null,
+        "level": 15,
+        "reward": {
+          "kind": "cosmetic",
+          "content_id": "cosmetic.premium_pass.05"
+        }
+      },
+      {
+        "id": "pass.01.premium.18",
+        "production_status": "in_production",
+        "verification_evidence": null,
+        "level": 18,
+        "reward": {
+          "kind": "cosmetic",
+          "content_id": "cosmetic.premium_pass.06"
+        }
+      },
+      {
+        "id": "pass.01.premium.21",
+        "production_status": "in_production",
+        "verification_evidence": null,
+        "level": 21,
+        "reward": {
+          "kind": "cosmetic",
+          "content_id": "cosmetic.premium_pass.07"
+        }
+      },
+      {
+        "id": "pass.01.premium.24",
+        "production_status": "in_production",
+        "verification_evidence": null,
+        "level": 24,
+        "reward": {
+          "kind": "cosmetic",
+          "content_id": "cosmetic.premium_pass.08"
+        }
+      },
+      {
+        "id": "pass.01.premium.27",
+        "production_status": "in_production",
+        "verification_evidence": null,
+        "level": 27,
+        "reward": {
+          "kind": "cosmetic",
+          "content_id": "cosmetic.premium_pass.09"
+        }
+      },
+      {
+        "id": "pass.01.premium.30",
+        "production_status": "in_production",
+        "verification_evidence": null,
+        "level": 30,
+        "reward": {
+          "kind": "cosmetic",
+          "content_id": "cosmetic.premium_pass.10"
+        }
+      }
+    ]
+  },
+  "audio": [
+    {
+      "id": "audio.ambient_score",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "purpose": "ambient_score",
+      "asset_refs": [
+        "asset.audio.ambient_score"
+      ]
+    },
+    {
+      "id": "audio.interaction",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "purpose": "interaction_cues",
+      "asset_refs": [
+        "asset.audio.interaction"
+      ]
+    },
+    {
+      "id": "audio.milestone",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "purpose": "milestone_cue",
+      "asset_refs": [
+        "asset.audio.milestone"
+      ]
+    },
+    {
+      "id": "audio.rechart",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "purpose": "rechart_cue",
+      "asset_refs": [
+        "asset.audio.rechart"
+      ]
+    },
+    {
+      "id": "audio.soundtrack",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "purpose": "downloadable_soundtrack",
+      "asset_refs": [
+        "asset.audio.soundtrack"
+      ]
+    }
+  ],
+  "support_content": [
+    {
+      "id": "support.help",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "purpose": "help",
+      "asset_refs": [
+        "asset.support.help"
+      ]
+    },
+    {
+      "id": "support.recovery_guide",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "purpose": "recovery_guide",
+      "asset_refs": [
+        "asset.support.recovery_guide"
+      ]
+    },
+    {
+      "id": "support.release_notes",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "purpose": "release_notes",
+      "asset_refs": [
+        "asset.support.release_notes"
+      ]
+    },
+    {
+      "id": "support.credits",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "purpose": "credits",
+      "asset_refs": [
+        "asset.support.credits"
+      ]
+    },
+    {
+      "id": "support.privacy_page",
+      "production_status": "planned",
+      "verification_evidence": null,
+      "purpose": "privacy_page",
+      "asset_refs": [
+        "asset.support.privacy_page"
+      ]
+    },
+    {
+      "id": "support.support_page",
+      "production_status": "planned",
+      "verification_evidence": null,
+      "purpose": "support_page",
+      "asset_refs": [
+        "asset.support.support_page"
+      ]
+    },
+    {
+      "id": "support.operations_runbooks",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "purpose": "operations_runbooks",
+      "asset_refs": [
+        "asset.support.operations_runbooks"
+      ]
+    },
+    {
+      "id": "support.season02_brief",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "purpose": "season02_brief",
+      "asset_refs": [
+        "asset.support.season02_brief"
+      ]
+    }
+  ],
+  "ui_flows": [
+    {
+      "id": "ui.harbor_and_producers",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "implementation_status": "implemented",
+      "acceptance_evidence": null,
+      "production_evidence": "release/content-evidence/inventory-records.json"
+    },
+    {
+      "id": "ui.purchase_modes_and_network_value",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "implementation_status": "implemented",
+      "acceptance_evidence": null,
+      "production_evidence": "release/content-evidence/inventory-records.json"
+    },
+    {
+      "id": "ui.rechart_preview",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "implementation_status": "implemented",
+      "acceptance_evidence": null,
+      "production_evidence": "release/content-evidence/inventory-records.json"
+    },
+    {
+      "id": "ui.automation_plans",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "implementation_status": "implemented",
+      "acceptance_evidence": null,
+      "production_evidence": "release/content-evidence/inventory-records.json"
+    },
+    {
+      "id": "ui.forecasts",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "implementation_status": "implemented",
+      "acceptance_evidence": null,
+      "production_evidence": "release/content-evidence/inventory-records.json"
+    },
+    {
+      "id": "ui.offline_return",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "implementation_status": "implemented",
+      "acceptance_evidence": null,
+      "production_evidence": "release/content-evidence/inventory-records.json"
+    },
+    {
+      "id": "ui.calibration_accessible_choice",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "implementation_status": "implemented",
+      "acceptance_evidence": null,
+      "production_evidence": "release/content-evidence/inventory-records.json"
+    },
+    {
+      "id": "ui.surveys",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "implementation_status": "implemented",
+      "acceptance_evidence": null,
+      "production_evidence": "release/content-evidence/inventory-records.json"
+    },
+    {
+      "id": "ui.contracts_and_backlog",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "implementation_status": "implemented",
+      "acceptance_evidence": null,
+      "production_evidence": "release/content-evidence/inventory-records.json"
+    },
+    {
+      "id": "ui.archive_and_challenges",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "implementation_status": "implemented",
+      "acceptance_evidence": null,
+      "production_evidence": "release/content-evidence/inventory-records.json"
+    },
+    {
+      "id": "ui.season_start_end_archive",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "implementation_status": "implemented",
+      "acceptance_evidence": null,
+      "production_evidence": "release/content-evidence/inventory-records.json"
+    },
+    {
+      "id": "ui.pass_selection_and_claims",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "implementation_status": "implemented",
+      "acceptance_evidence": null,
+      "production_evidence": "release/content-evidence/inventory-records.json"
+    },
+    {
+      "id": "ui.shop_preview_and_purchase",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "implementation_status": "in_progress",
+      "acceptance_evidence": null,
+      "production_evidence": "release/content-evidence/inventory-records.json"
+    },
+    {
+      "id": "ui.purchase_restore_and_pending",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "implementation_status": "in_progress",
+      "acceptance_evidence": null,
+      "production_evidence": "release/content-evidence/inventory-records.json"
+    },
+    {
+      "id": "ui.save_conflict_and_recovery",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "implementation_status": "implemented",
+      "acceptance_evidence": null,
+      "production_evidence": "release/content-evidence/inventory-records.json"
+    },
+    {
+      "id": "ui.settings_and_notifications",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "implementation_status": "implemented",
+      "acceptance_evidence": null,
+      "production_evidence": "release/content-evidence/inventory-records.json"
+    },
+    {
+      "id": "ui.help_and_support",
+      "production_status": "in_production",
+      "verification_evidence": null,
+      "implementation_status": "in_progress",
+      "acceptance_evidence": null,
+      "production_evidence": "release/content-evidence/inventory-records.json"
+    }
+  ],
+  "supporter_bundle": {
+    "id": "bundle.supporter",
+    "production_status": "in_production",
+    "verification_evidence": null,
+    "cosmetic_ids": [
+      "cosmetic.shop.01",
+      "cosmetic.shop.02",
+      "cosmetic.shop.03",
+      "cosmetic.shop.04"
+    ],
+    "audio_ids": [
+      "audio.soundtrack"
+    ],
+    "economic_effects": [],
+    "new_unique_cosmetics": 0,
+    "fulfillment_status": "in_progress"
+  },
+  "assets": [
+    {
+      "id": "asset.chapter.01.copy",
+      "kind": "text",
+      "delivery_status": "in_production",
+      "source_path": "game/content/locales/en-US/chapter.01.copy.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.chapter.01.copy.json",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.chapter.02.copy",
+      "kind": "text",
+      "delivery_status": "in_production",
+      "source_path": "game/content/locales/en-US/chapter.02.copy.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.chapter.02.copy.json",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.chapter.03.copy",
+      "kind": "text",
+      "delivery_status": "in_production",
+      "source_path": "game/content/locales/en-US/chapter.03.copy.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.chapter.03.copy.json",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.chapter.04.copy",
+      "kind": "text",
+      "delivery_status": "in_production",
+      "source_path": "game/content/locales/en-US/chapter.04.copy.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.chapter.04.copy.json",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.chapter.05.copy",
+      "kind": "text",
+      "delivery_status": "in_production",
+      "source_path": "game/content/locales/en-US/chapter.05.copy.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.chapter.05.copy.json",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.chapter.06.copy",
+      "kind": "text",
+      "delivery_status": "in_production",
+      "source_path": "game/content/locales/en-US/chapter.06.copy.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.chapter.06.copy.json",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.harbor.unlit",
+      "kind": "environment",
+      "delivery_status": "in_production",
+      "source_path": "game/mobile/lib/harbor_art.dart",
+      "verification_evidence": null,
+      "license_evidence": null,
+      "runtime_source": "game/mobile/lib/harbor_art.dart",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.harbor.restored.01",
+      "kind": "environment",
+      "delivery_status": "in_production",
+      "source_path": "game/mobile/lib/harbor_art.dart",
+      "verification_evidence": null,
+      "license_evidence": null,
+      "runtime_source": "game/mobile/lib/harbor_art.dart",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.harbor.restored.02",
+      "kind": "environment",
+      "delivery_status": "in_production",
+      "source_path": "game/mobile/lib/harbor_art.dart",
+      "verification_evidence": null,
+      "license_evidence": null,
+      "runtime_source": "game/mobile/lib/harbor_art.dart",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.harbor.restored.03",
+      "kind": "environment",
+      "delivery_status": "in_production",
+      "source_path": "game/mobile/lib/harbor_art.dart",
+      "verification_evidence": null,
+      "license_evidence": null,
+      "runtime_source": "game/mobile/lib/harbor_art.dart",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.harbor.restored.04",
+      "kind": "environment",
+      "delivery_status": "in_production",
+      "source_path": "game/mobile/lib/harbor_art.dart",
+      "verification_evidence": null,
+      "license_evidence": null,
+      "runtime_source": "game/mobile/lib/harbor_art.dart",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.harbor.restored.05",
+      "kind": "environment",
+      "delivery_status": "in_production",
+      "source_path": "game/mobile/lib/harbor_art.dart",
+      "verification_evidence": null,
+      "license_evidence": null,
+      "runtime_source": "game/mobile/lib/harbor_art.dart",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.harbor.restored.06",
+      "kind": "environment",
+      "delivery_status": "in_production",
+      "source_path": "game/mobile/lib/harbor_art.dart",
+      "verification_evidence": null,
+      "license_evidence": null,
+      "runtime_source": "game/mobile/lib/harbor_art.dart",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.producer.01.stage.0",
+      "kind": "producer_presentation",
+      "delivery_status": "in_production",
+      "source_path": "source/art/producers/producer.01.stage.0.scene.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.producer.01.stage.0.json",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.producer.01.stage.1",
+      "kind": "producer_presentation",
+      "delivery_status": "in_production",
+      "source_path": "source/art/producers/producer.01.stage.1.scene.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.producer.01.stage.1.json",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.producer.01.stage.2",
+      "kind": "producer_presentation",
+      "delivery_status": "in_production",
+      "source_path": "source/art/producers/producer.01.stage.2.scene.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.producer.01.stage.2.json",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.producer.01.stage.3",
+      "kind": "producer_presentation",
+      "delivery_status": "in_production",
+      "source_path": "source/art/producers/producer.01.stage.3.scene.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.producer.01.stage.3.json",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.producer.01.stage.4",
+      "kind": "producer_presentation",
+      "delivery_status": "in_production",
+      "source_path": "source/art/producers/producer.01.stage.4.scene.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.producer.01.stage.4.json",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.producer.02.stage.0",
+      "kind": "producer_presentation",
+      "delivery_status": "in_production",
+      "source_path": "source/art/producers/producer.02.stage.0.scene.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.producer.02.stage.0.json",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.producer.02.stage.1",
+      "kind": "producer_presentation",
+      "delivery_status": "in_production",
+      "source_path": "source/art/producers/producer.02.stage.1.scene.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.producer.02.stage.1.json",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.producer.02.stage.2",
+      "kind": "producer_presentation",
+      "delivery_status": "in_production",
+      "source_path": "source/art/producers/producer.02.stage.2.scene.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.producer.02.stage.2.json",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.producer.02.stage.3",
+      "kind": "producer_presentation",
+      "delivery_status": "in_production",
+      "source_path": "source/art/producers/producer.02.stage.3.scene.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.producer.02.stage.3.json",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.producer.02.stage.4",
+      "kind": "producer_presentation",
+      "delivery_status": "in_production",
+      "source_path": "source/art/producers/producer.02.stage.4.scene.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.producer.02.stage.4.json",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.producer.03.stage.0",
+      "kind": "producer_presentation",
+      "delivery_status": "in_production",
+      "source_path": "source/art/producers/producer.03.stage.0.scene.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.producer.03.stage.0.json",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.producer.03.stage.1",
+      "kind": "producer_presentation",
+      "delivery_status": "in_production",
+      "source_path": "source/art/producers/producer.03.stage.1.scene.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.producer.03.stage.1.json",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.producer.03.stage.2",
+      "kind": "producer_presentation",
+      "delivery_status": "in_production",
+      "source_path": "source/art/producers/producer.03.stage.2.scene.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.producer.03.stage.2.json",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.producer.03.stage.3",
+      "kind": "producer_presentation",
+      "delivery_status": "in_production",
+      "source_path": "source/art/producers/producer.03.stage.3.scene.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.producer.03.stage.3.json",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.producer.03.stage.4",
+      "kind": "producer_presentation",
+      "delivery_status": "in_production",
+      "source_path": "source/art/producers/producer.03.stage.4.scene.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.producer.03.stage.4.json",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.producer.04.stage.0",
+      "kind": "producer_presentation",
+      "delivery_status": "in_production",
+      "source_path": "source/art/producers/producer.04.stage.0.scene.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.producer.04.stage.0.json",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.producer.04.stage.1",
+      "kind": "producer_presentation",
+      "delivery_status": "in_production",
+      "source_path": "source/art/producers/producer.04.stage.1.scene.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.producer.04.stage.1.json",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.producer.04.stage.2",
+      "kind": "producer_presentation",
+      "delivery_status": "in_production",
+      "source_path": "source/art/producers/producer.04.stage.2.scene.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.producer.04.stage.2.json",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.producer.04.stage.3",
+      "kind": "producer_presentation",
+      "delivery_status": "in_production",
+      "source_path": "source/art/producers/producer.04.stage.3.scene.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.producer.04.stage.3.json",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.producer.04.stage.4",
+      "kind": "producer_presentation",
+      "delivery_status": "in_production",
+      "source_path": "source/art/producers/producer.04.stage.4.scene.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.producer.04.stage.4.json",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.producer.05.stage.0",
+      "kind": "producer_presentation",
+      "delivery_status": "in_production",
+      "source_path": "source/art/producers/producer.05.stage.0.scene.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.producer.05.stage.0.json",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.producer.05.stage.1",
+      "kind": "producer_presentation",
+      "delivery_status": "in_production",
+      "source_path": "source/art/producers/producer.05.stage.1.scene.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.producer.05.stage.1.json",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.producer.05.stage.2",
+      "kind": "producer_presentation",
+      "delivery_status": "in_production",
+      "source_path": "source/art/producers/producer.05.stage.2.scene.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.producer.05.stage.2.json",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.producer.05.stage.3",
+      "kind": "producer_presentation",
+      "delivery_status": "in_production",
+      "source_path": "source/art/producers/producer.05.stage.3.scene.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.producer.05.stage.3.json",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.producer.05.stage.4",
+      "kind": "producer_presentation",
+      "delivery_status": "in_production",
+      "source_path": "source/art/producers/producer.05.stage.4.scene.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.producer.05.stage.4.json",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.challenge.01.copy",
+      "kind": "text",
+      "delivery_status": "in_production",
+      "source_path": "game/content/locales/en-US/challenge.01.copy.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.challenge.01.copy.json",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.challenge.02.copy",
+      "kind": "text",
+      "delivery_status": "in_production",
+      "source_path": "game/content/locales/en-US/challenge.02.copy.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.challenge.02.copy.json",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.challenge.03.copy",
+      "kind": "text",
+      "delivery_status": "in_production",
+      "source_path": "game/content/locales/en-US/challenge.03.copy.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.challenge.03.copy.json",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.challenge.04.copy",
+      "kind": "text",
+      "delivery_status": "in_production",
+      "source_path": "game/content/locales/en-US/challenge.04.copy.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.challenge.04.copy.json",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.challenge.05.copy",
+      "kind": "text",
+      "delivery_status": "in_production",
+      "source_path": "game/content/locales/en-US/challenge.05.copy.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.challenge.05.copy.json",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.challenge.06.copy",
+      "kind": "text",
+      "delivery_status": "in_production",
+      "source_path": "game/content/locales/en-US/challenge.06.copy.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.challenge.06.copy.json",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.challenge.07.copy",
+      "kind": "text",
+      "delivery_status": "in_production",
+      "source_path": "game/content/locales/en-US/challenge.07.copy.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.challenge.07.copy.json",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.challenge.08.copy",
+      "kind": "text",
+      "delivery_status": "in_production",
+      "source_path": "game/content/locales/en-US/challenge.08.copy.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.challenge.08.copy.json",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.challenge.09.copy",
+      "kind": "text",
+      "delivery_status": "in_production",
+      "source_path": "game/content/locales/en-US/challenge.09.copy.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.challenge.09.copy.json",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.challenge.10.copy",
+      "kind": "text",
+      "delivery_status": "in_production",
+      "source_path": "game/content/locales/en-US/challenge.10.copy.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.challenge.10.copy.json",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.challenge.11.copy",
+      "kind": "text",
+      "delivery_status": "in_production",
+      "source_path": "game/content/locales/en-US/challenge.11.copy.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.challenge.11.copy.json",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.challenge.12.copy",
+      "kind": "text",
+      "delivery_status": "in_production",
+      "source_path": "game/content/locales/en-US/challenge.12.copy.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.challenge.12.copy.json",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.calibration.01.pattern",
+      "kind": "pattern",
+      "delivery_status": "in_production",
+      "source_path": "game/content/calibrations/calibration.01.pattern.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.calibration.01.pattern.json",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.calibration.01.accessible_copy",
+      "kind": "text",
+      "delivery_status": "in_production",
+      "source_path": "game/content/locales/en-US/calibration.01.accessible_copy.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.calibration.01.accessible_copy.json",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.calibration.02.pattern",
+      "kind": "pattern",
+      "delivery_status": "in_production",
+      "source_path": "game/content/calibrations/calibration.02.pattern.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.calibration.02.pattern.json",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.calibration.02.accessible_copy",
+      "kind": "text",
+      "delivery_status": "in_production",
+      "source_path": "game/content/locales/en-US/calibration.02.accessible_copy.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.calibration.02.accessible_copy.json",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.calibration.03.pattern",
+      "kind": "pattern",
+      "delivery_status": "in_production",
+      "source_path": "game/content/calibrations/calibration.03.pattern.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.calibration.03.pattern.json",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.calibration.03.accessible_copy",
+      "kind": "text",
+      "delivery_status": "in_production",
+      "source_path": "game/content/locales/en-US/calibration.03.accessible_copy.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.calibration.03.accessible_copy.json",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.calibration.04.pattern",
+      "kind": "pattern",
+      "delivery_status": "in_production",
+      "source_path": "game/content/calibrations/calibration.04.pattern.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.calibration.04.pattern.json",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.calibration.04.accessible_copy",
+      "kind": "text",
+      "delivery_status": "in_production",
+      "source_path": "game/content/locales/en-US/calibration.04.accessible_copy.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.calibration.04.accessible_copy.json",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.calibration.05.pattern",
+      "kind": "pattern",
+      "delivery_status": "in_production",
+      "source_path": "game/content/calibrations/calibration.05.pattern.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.calibration.05.pattern.json",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.calibration.05.accessible_copy",
+      "kind": "text",
+      "delivery_status": "in_production",
+      "source_path": "game/content/locales/en-US/calibration.05.accessible_copy.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.calibration.05.accessible_copy.json",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.calibration.06.pattern",
+      "kind": "pattern",
+      "delivery_status": "in_production",
+      "source_path": "game/content/calibrations/calibration.06.pattern.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.calibration.06.pattern.json",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.calibration.06.accessible_copy",
+      "kind": "text",
+      "delivery_status": "in_production",
+      "source_path": "game/content/locales/en-US/calibration.06.accessible_copy.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.calibration.06.accessible_copy.json",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.calibration.07.pattern",
+      "kind": "pattern",
+      "delivery_status": "in_production",
+      "source_path": "game/content/calibrations/calibration.07.pattern.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.calibration.07.pattern.json",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.calibration.07.accessible_copy",
+      "kind": "text",
+      "delivery_status": "in_production",
+      "source_path": "game/content/locales/en-US/calibration.07.accessible_copy.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.calibration.07.accessible_copy.json",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.calibration.08.pattern",
+      "kind": "pattern",
+      "delivery_status": "in_production",
+      "source_path": "game/content/calibrations/calibration.08.pattern.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.calibration.08.pattern.json",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.calibration.08.accessible_copy",
+      "kind": "text",
+      "delivery_status": "in_production",
+      "source_path": "game/content/locales/en-US/calibration.08.accessible_copy.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.calibration.08.accessible_copy.json",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.calibration.09.pattern",
+      "kind": "pattern",
+      "delivery_status": "in_production",
+      "source_path": "game/content/calibrations/calibration.09.pattern.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.calibration.09.pattern.json",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.calibration.09.accessible_copy",
+      "kind": "text",
+      "delivery_status": "in_production",
+      "source_path": "game/content/locales/en-US/calibration.09.accessible_copy.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.calibration.09.accessible_copy.json",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.calibration.10.pattern",
+      "kind": "pattern",
+      "delivery_status": "in_production",
+      "source_path": "game/content/calibrations/calibration.10.pattern.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.calibration.10.pattern.json",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.calibration.10.accessible_copy",
+      "kind": "text",
+      "delivery_status": "in_production",
+      "source_path": "game/content/locales/en-US/calibration.10.accessible_copy.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.calibration.10.accessible_copy.json",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.calibration.11.pattern",
+      "kind": "pattern",
+      "delivery_status": "in_production",
+      "source_path": "game/content/calibrations/calibration.11.pattern.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.calibration.11.pattern.json",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.calibration.11.accessible_copy",
+      "kind": "text",
+      "delivery_status": "in_production",
+      "source_path": "game/content/locales/en-US/calibration.11.accessible_copy.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.calibration.11.accessible_copy.json",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.calibration.12.pattern",
+      "kind": "pattern",
+      "delivery_status": "in_production",
+      "source_path": "game/content/calibrations/calibration.12.pattern.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.calibration.12.pattern.json",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.calibration.12.accessible_copy",
+      "kind": "text",
+      "delivery_status": "in_production",
+      "source_path": "game/content/locales/en-US/calibration.12.accessible_copy.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.calibration.12.accessible_copy.json",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.archive.main.01",
+      "kind": "text",
+      "delivery_status": "in_production",
+      "source_path": "game/content/locales/en-US/archive.main.01.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.archive.main.01.json",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.archive.main.02",
+      "kind": "text",
+      "delivery_status": "in_production",
+      "source_path": "game/content/locales/en-US/archive.main.02.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.archive.main.02.json",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.archive.main.03",
+      "kind": "text",
+      "delivery_status": "in_production",
+      "source_path": "game/content/locales/en-US/archive.main.03.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.archive.main.03.json",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.archive.main.04",
+      "kind": "text",
+      "delivery_status": "in_production",
+      "source_path": "game/content/locales/en-US/archive.main.04.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.archive.main.04.json",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.archive.main.05",
+      "kind": "text",
+      "delivery_status": "in_production",
+      "source_path": "game/content/locales/en-US/archive.main.05.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.archive.main.05.json",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.archive.main.06",
+      "kind": "text",
+      "delivery_status": "in_production",
+      "source_path": "game/content/locales/en-US/archive.main.06.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.archive.main.06.json",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.archive.main.07",
+      "kind": "text",
+      "delivery_status": "in_production",
+      "source_path": "game/content/locales/en-US/archive.main.07.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.archive.main.07.json",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.archive.main.08",
+      "kind": "text",
+      "delivery_status": "in_production",
+      "source_path": "game/content/locales/en-US/archive.main.08.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.archive.main.08.json",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.archive.main.09",
+      "kind": "text",
+      "delivery_status": "in_production",
+      "source_path": "game/content/locales/en-US/archive.main.09.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.archive.main.09.json",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.archive.main.10",
+      "kind": "text",
+      "delivery_status": "in_production",
+      "source_path": "game/content/locales/en-US/archive.main.10.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.archive.main.10.json",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.archive.main.11",
+      "kind": "text",
+      "delivery_status": "in_production",
+      "source_path": "game/content/locales/en-US/archive.main.11.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.archive.main.11.json",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.archive.main.12",
+      "kind": "text",
+      "delivery_status": "in_production",
+      "source_path": "game/content/locales/en-US/archive.main.12.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.archive.main.12.json",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.archive.main.13",
+      "kind": "text",
+      "delivery_status": "in_production",
+      "source_path": "game/content/locales/en-US/archive.main.13.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.archive.main.13.json",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.archive.main.14",
+      "kind": "text",
+      "delivery_status": "in_production",
+      "source_path": "game/content/locales/en-US/archive.main.14.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.archive.main.14.json",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.archive.main.15",
+      "kind": "text",
+      "delivery_status": "in_production",
+      "source_path": "game/content/locales/en-US/archive.main.15.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.archive.main.15.json",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.archive.main.16",
+      "kind": "text",
+      "delivery_status": "in_production",
+      "source_path": "game/content/locales/en-US/archive.main.16.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.archive.main.16.json",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.archive.main.17",
+      "kind": "text",
+      "delivery_status": "in_production",
+      "source_path": "game/content/locales/en-US/archive.main.17.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.archive.main.17.json",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.archive.main.18",
+      "kind": "text",
+      "delivery_status": "in_production",
+      "source_path": "game/content/locales/en-US/archive.main.18.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.archive.main.18.json",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.archive.season01.01",
+      "kind": "text",
+      "delivery_status": "in_production",
+      "source_path": "game/events/content/season.01.json",
+      "verification_evidence": null,
+      "license_evidence": null,
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.archive.season01.02",
+      "kind": "text",
+      "delivery_status": "in_production",
+      "source_path": "game/events/content/season.01.json",
+      "verification_evidence": null,
+      "license_evidence": null,
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.archive.season01.03",
+      "kind": "text",
+      "delivery_status": "in_production",
+      "source_path": "game/events/content/season.01.json",
+      "verification_evidence": null,
+      "license_evidence": null,
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.archive.season01.04",
+      "kind": "text",
+      "delivery_status": "in_production",
+      "source_path": "game/events/content/season.01.json",
+      "verification_evidence": null,
+      "license_evidence": null,
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.archive.season01.05",
+      "kind": "text",
+      "delivery_status": "in_production",
+      "source_path": "game/events/content/season.01.json",
+      "verification_evidence": null,
+      "license_evidence": null,
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.archive.season01.06",
+      "kind": "text",
+      "delivery_status": "in_production",
+      "source_path": "game/events/content/season.01.json",
+      "verification_evidence": null,
+      "license_evidence": null,
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.archive.season01.07",
+      "kind": "text",
+      "delivery_status": "in_production",
+      "source_path": "game/events/content/season.01.json",
+      "verification_evidence": null,
+      "license_evidence": null,
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.archive.season01.08",
+      "kind": "text",
+      "delivery_status": "in_production",
+      "source_path": "game/events/content/season.01.json",
+      "verification_evidence": null,
+      "license_evidence": null,
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.archive.season01.09",
+      "kind": "text",
+      "delivery_status": "in_production",
+      "source_path": "game/events/content/season.01.json",
+      "verification_evidence": null,
+      "license_evidence": null,
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.archive.season01.10",
+      "kind": "text",
+      "delivery_status": "in_production",
+      "source_path": "game/events/content/season.01.json",
+      "verification_evidence": null,
+      "license_evidence": null,
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.archive.season01.11",
+      "kind": "text",
+      "delivery_status": "in_production",
+      "source_path": "game/events/content/season.01.json",
+      "verification_evidence": null,
+      "license_evidence": null,
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.archive.season01.12",
+      "kind": "text",
+      "delivery_status": "in_production",
+      "source_path": "game/events/content/season.01.json",
+      "verification_evidence": null,
+      "license_evidence": null,
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.archive.season01.13",
+      "kind": "text",
+      "delivery_status": "in_production",
+      "source_path": "game/events/content/season.01.json",
+      "verification_evidence": null,
+      "license_evidence": null,
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.archive.season01.14",
+      "kind": "text",
+      "delivery_status": "in_production",
+      "source_path": "game/events/content/season.01.json",
+      "verification_evidence": null,
+      "license_evidence": null,
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.archive.season01.15",
+      "kind": "text",
+      "delivery_status": "in_production",
+      "source_path": "game/events/content/season.01.json",
+      "verification_evidence": null,
+      "license_evidence": null,
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.archive.season01.16",
+      "kind": "text",
+      "delivery_status": "in_production",
+      "source_path": "game/events/content/season.01.json",
+      "verification_evidence": null,
+      "license_evidence": null,
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.archive.season01.17",
+      "kind": "text",
+      "delivery_status": "in_production",
+      "source_path": "game/events/content/season.01.json",
+      "verification_evidence": null,
+      "license_evidence": null,
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.archive.season01.18",
+      "kind": "text",
+      "delivery_status": "in_production",
+      "source_path": "game/events/content/season.01.json",
+      "verification_evidence": null,
+      "license_evidence": null,
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.archive.season01.19",
+      "kind": "text",
+      "delivery_status": "in_production",
+      "source_path": "game/events/content/season.01.json",
+      "verification_evidence": null,
+      "license_evidence": null,
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.archive.season01.20",
+      "kind": "text",
+      "delivery_status": "in_production",
+      "source_path": "game/events/content/season.01.json",
+      "verification_evidence": null,
+      "license_evidence": null,
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.cosmetic.core.chapter.01",
+      "kind": "visual",
+      "delivery_status": "in_production",
+      "source_path": "source/art/cosmetics/cosmetic.core.chapter.01.scene.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.cosmetic.core.chapter.01.json",
+      "runtime_source": "game/mobile/lib/cosmetic_art.dart",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.cosmetic.core.chapter.02",
+      "kind": "visual",
+      "delivery_status": "in_production",
+      "source_path": "source/art/cosmetics/cosmetic.core.chapter.02.scene.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.cosmetic.core.chapter.02.json",
+      "runtime_source": "game/mobile/lib/cosmetic_art.dart",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.cosmetic.core.chapter.03",
+      "kind": "visual",
+      "delivery_status": "in_production",
+      "source_path": "source/art/cosmetics/cosmetic.core.chapter.03.scene.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.cosmetic.core.chapter.03.json",
+      "runtime_source": "game/mobile/lib/cosmetic_art.dart",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.cosmetic.core.chapter.04",
+      "kind": "visual",
+      "delivery_status": "in_production",
+      "source_path": "source/art/cosmetics/cosmetic.core.chapter.04.scene.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.cosmetic.core.chapter.04.json",
+      "runtime_source": "game/mobile/lib/cosmetic_art.dart",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.cosmetic.core.chapter.05",
+      "kind": "visual",
+      "delivery_status": "in_production",
+      "source_path": "source/art/cosmetics/cosmetic.core.chapter.05.scene.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.cosmetic.core.chapter.05.json",
+      "runtime_source": "game/mobile/lib/cosmetic_art.dart",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.cosmetic.core.chapter.06",
+      "kind": "visual",
+      "delivery_status": "in_production",
+      "source_path": "source/art/cosmetics/cosmetic.core.chapter.06.scene.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.cosmetic.core.chapter.06.json",
+      "runtime_source": "game/mobile/lib/cosmetic_art.dart",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.cosmetic.core.decoration.01",
+      "kind": "visual",
+      "delivery_status": "in_production",
+      "source_path": "source/art/cosmetics/cosmetic.core.decoration.01.scene.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.cosmetic.core.decoration.01.json",
+      "runtime_source": "game/mobile/lib/cosmetic_art.dart",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.cosmetic.core.decoration.02",
+      "kind": "visual",
+      "delivery_status": "in_production",
+      "source_path": "source/art/cosmetics/cosmetic.core.decoration.02.scene.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.cosmetic.core.decoration.02.json",
+      "runtime_source": "game/mobile/lib/cosmetic_art.dart",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.cosmetic.core.decoration.03",
+      "kind": "visual",
+      "delivery_status": "in_production",
+      "source_path": "source/art/cosmetics/cosmetic.core.decoration.03.scene.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.cosmetic.core.decoration.03.json",
+      "runtime_source": "game/mobile/lib/cosmetic_art.dart",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.cosmetic.core.decoration.04",
+      "kind": "visual",
+      "delivery_status": "in_production",
+      "source_path": "source/art/cosmetics/cosmetic.core.decoration.04.scene.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.cosmetic.core.decoration.04.json",
+      "runtime_source": "game/mobile/lib/cosmetic_art.dart",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.cosmetic.core.decoration.05",
+      "kind": "visual",
+      "delivery_status": "in_production",
+      "source_path": "source/art/cosmetics/cosmetic.core.decoration.05.scene.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.cosmetic.core.decoration.05.json",
+      "runtime_source": "game/mobile/lib/cosmetic_art.dart",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.cosmetic.core.decoration.06",
+      "kind": "visual",
+      "delivery_status": "in_production",
+      "source_path": "source/art/cosmetics/cosmetic.core.decoration.06.scene.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.cosmetic.core.decoration.06.json",
+      "runtime_source": "game/mobile/lib/cosmetic_art.dart",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.cosmetic.free_pass.01",
+      "kind": "visual",
+      "delivery_status": "in_production",
+      "source_path": "source/art/cosmetics/cosmetic.free_pass.01.scene.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.cosmetic.free_pass.01.json",
+      "runtime_source": "game/mobile/lib/cosmetic_art.dart",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.cosmetic.free_pass.02",
+      "kind": "visual",
+      "delivery_status": "in_production",
+      "source_path": "source/art/cosmetics/cosmetic.free_pass.02.scene.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.cosmetic.free_pass.02.json",
+      "runtime_source": "game/mobile/lib/cosmetic_art.dart",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.cosmetic.free_pass.03",
+      "kind": "visual",
+      "delivery_status": "in_production",
+      "source_path": "source/art/cosmetics/cosmetic.free_pass.03.scene.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.cosmetic.free_pass.03.json",
+      "runtime_source": "game/mobile/lib/cosmetic_art.dart",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.cosmetic.free_pass.04",
+      "kind": "visual",
+      "delivery_status": "in_production",
+      "source_path": "source/art/cosmetics/cosmetic.free_pass.04.scene.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.cosmetic.free_pass.04.json",
+      "runtime_source": "game/mobile/lib/cosmetic_art.dart",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.cosmetic.free_pass.05",
+      "kind": "visual",
+      "delivery_status": "in_production",
+      "source_path": "source/art/cosmetics/cosmetic.free_pass.05.scene.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.cosmetic.free_pass.05.json",
+      "runtime_source": "game/mobile/lib/cosmetic_art.dart",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.cosmetic.free_pass.06",
+      "kind": "visual",
+      "delivery_status": "in_production",
+      "source_path": "source/art/cosmetics/cosmetic.free_pass.06.scene.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.cosmetic.free_pass.06.json",
+      "runtime_source": "game/mobile/lib/cosmetic_art.dart",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.cosmetic.free_pass.07",
+      "kind": "visual",
+      "delivery_status": "in_production",
+      "source_path": "source/art/cosmetics/cosmetic.free_pass.07.scene.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.cosmetic.free_pass.07.json",
+      "runtime_source": "game/mobile/lib/cosmetic_art.dart",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.cosmetic.free_pass.08",
+      "kind": "visual",
+      "delivery_status": "in_production",
+      "source_path": "source/art/cosmetics/cosmetic.free_pass.08.scene.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.cosmetic.free_pass.08.json",
+      "runtime_source": "game/mobile/lib/cosmetic_art.dart",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.cosmetic.free_pass.09",
+      "kind": "visual",
+      "delivery_status": "in_production",
+      "source_path": "source/art/cosmetics/cosmetic.free_pass.09.scene.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.cosmetic.free_pass.09.json",
+      "runtime_source": "game/mobile/lib/cosmetic_art.dart",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.cosmetic.free_pass.10",
+      "kind": "visual",
+      "delivery_status": "in_production",
+      "source_path": "source/art/cosmetics/cosmetic.free_pass.10.scene.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.cosmetic.free_pass.10.json",
+      "runtime_source": "game/mobile/lib/cosmetic_art.dart",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.cosmetic.premium_pass.01",
+      "kind": "visual",
+      "delivery_status": "in_production",
+      "source_path": "source/art/cosmetics/cosmetic.premium_pass.01.scene.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.cosmetic.premium_pass.01.json",
+      "runtime_source": "game/mobile/lib/cosmetic_art.dart",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.cosmetic.premium_pass.02",
+      "kind": "visual",
+      "delivery_status": "in_production",
+      "source_path": "source/art/cosmetics/cosmetic.premium_pass.02.scene.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.cosmetic.premium_pass.02.json",
+      "runtime_source": "game/mobile/lib/cosmetic_art.dart",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.cosmetic.premium_pass.03",
+      "kind": "visual",
+      "delivery_status": "in_production",
+      "source_path": "source/art/cosmetics/cosmetic.premium_pass.03.scene.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.cosmetic.premium_pass.03.json",
+      "runtime_source": "game/mobile/lib/cosmetic_art.dart",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.cosmetic.premium_pass.04",
+      "kind": "visual",
+      "delivery_status": "in_production",
+      "source_path": "source/art/cosmetics/cosmetic.premium_pass.04.scene.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.cosmetic.premium_pass.04.json",
+      "runtime_source": "game/mobile/lib/cosmetic_art.dart",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.cosmetic.premium_pass.05",
+      "kind": "visual",
+      "delivery_status": "in_production",
+      "source_path": "source/art/cosmetics/cosmetic.premium_pass.05.scene.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.cosmetic.premium_pass.05.json",
+      "runtime_source": "game/mobile/lib/cosmetic_art.dart",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.cosmetic.premium_pass.06",
+      "kind": "visual",
+      "delivery_status": "in_production",
+      "source_path": "source/art/cosmetics/cosmetic.premium_pass.06.scene.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.cosmetic.premium_pass.06.json",
+      "runtime_source": "game/mobile/lib/cosmetic_art.dart",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.cosmetic.premium_pass.07",
+      "kind": "visual",
+      "delivery_status": "in_production",
+      "source_path": "source/art/cosmetics/cosmetic.premium_pass.07.scene.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.cosmetic.premium_pass.07.json",
+      "runtime_source": "game/mobile/lib/cosmetic_art.dart",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.cosmetic.premium_pass.08",
+      "kind": "visual",
+      "delivery_status": "in_production",
+      "source_path": "source/art/cosmetics/cosmetic.premium_pass.08.scene.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.cosmetic.premium_pass.08.json",
+      "runtime_source": "game/mobile/lib/cosmetic_art.dart",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.cosmetic.premium_pass.09",
+      "kind": "visual",
+      "delivery_status": "in_production",
+      "source_path": "source/art/cosmetics/cosmetic.premium_pass.09.scene.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.cosmetic.premium_pass.09.json",
+      "runtime_source": "game/mobile/lib/cosmetic_art.dart",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.cosmetic.premium_pass.10",
+      "kind": "visual",
+      "delivery_status": "in_production",
+      "source_path": "source/art/cosmetics/cosmetic.premium_pass.10.scene.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.cosmetic.premium_pass.10.json",
+      "runtime_source": "game/mobile/lib/cosmetic_art.dart",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.cosmetic.shop.01",
+      "kind": "visual",
+      "delivery_status": "in_production",
+      "source_path": "source/art/cosmetics/cosmetic.shop.01.scene.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.cosmetic.shop.01.json",
+      "runtime_source": "game/mobile/lib/cosmetic_art.dart",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.cosmetic.shop.02",
+      "kind": "visual",
+      "delivery_status": "in_production",
+      "source_path": "source/art/cosmetics/cosmetic.shop.02.scene.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.cosmetic.shop.02.json",
+      "runtime_source": "game/mobile/lib/cosmetic_art.dart",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.cosmetic.shop.03",
+      "kind": "visual",
+      "delivery_status": "in_production",
+      "source_path": "source/art/cosmetics/cosmetic.shop.03.scene.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.cosmetic.shop.03.json",
+      "runtime_source": "game/mobile/lib/cosmetic_art.dart",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.cosmetic.shop.04",
+      "kind": "visual",
+      "delivery_status": "in_production",
+      "source_path": "source/art/cosmetics/cosmetic.shop.04.scene.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.cosmetic.shop.04.json",
+      "runtime_source": "game/mobile/lib/cosmetic_art.dart",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.audio.ambient_score",
+      "kind": "audio_package",
+      "delivery_status": "in_production",
+      "source_path": "source/audio/audio.ambient_score/package.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.audio.ambient_score.json",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.audio.interaction",
+      "kind": "audio_package",
+      "delivery_status": "in_production",
+      "source_path": "source/audio/audio.interaction/package.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.audio.interaction.json",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.audio.milestone",
+      "kind": "audio_package",
+      "delivery_status": "in_production",
+      "source_path": "source/audio/audio.milestone/package.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.audio.milestone.json",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.audio.rechart",
+      "kind": "audio_package",
+      "delivery_status": "in_production",
+      "source_path": "source/audio/audio.rechart/package.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.audio.rechart.json",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.audio.soundtrack",
+      "kind": "audio_package",
+      "delivery_status": "in_production",
+      "source_path": "source/audio/audio.soundtrack/package.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.audio.soundtrack.json",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.support.help",
+      "kind": "text",
+      "delivery_status": "in_production",
+      "source_path": "game/mobile/lib/help_content.dart",
+      "verification_evidence": null,
+      "license_evidence": null,
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.support.recovery_guide",
+      "kind": "text",
+      "delivery_status": "in_production",
+      "source_path": "game/mobile/lib/help_content.dart",
+      "verification_evidence": null,
+      "license_evidence": null,
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.support.release_notes",
+      "kind": "text",
+      "delivery_status": "in_production",
+      "source_path": "game/mobile/lib/help_content.dart",
+      "verification_evidence": null,
+      "license_evidence": null,
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.support.credits",
+      "kind": "text",
+      "delivery_status": "in_production",
+      "source_path": "game/mobile/lib/help_content.dart",
+      "verification_evidence": null,
+      "license_evidence": null,
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.support.privacy_page",
+      "kind": "text",
+      "delivery_status": "unproduced",
+      "source_path": null,
+      "verification_evidence": null,
+      "license_evidence": null,
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.support.support_page",
+      "kind": "text",
+      "delivery_status": "unproduced",
+      "source_path": null,
+      "verification_evidence": null,
+      "license_evidence": null,
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.support.operations_runbooks",
+      "kind": "text",
+      "delivery_status": "in_production",
+      "source_path": "release/runbooks/README.md",
+      "verification_evidence": null,
+      "license_evidence": null,
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.support.season02_brief",
+      "kind": "text",
+      "delivery_status": "in_production",
+      "source_path": "release/season-2-brief.md",
+      "verification_evidence": null,
+      "license_evidence": null,
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.ending.main",
+      "kind": "text",
+      "delivery_status": "in_production",
+      "source_path": "game/content/locales/en-US/ending.main.json",
+      "verification_evidence": null,
+      "license_evidence": "source/provenance/asset.ending.main.json",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.season.01.copy",
+      "kind": "text",
+      "delivery_status": "in_production",
+      "source_path": "game/events/content/season.01.json",
+      "verification_evidence": null,
+      "license_evidence": null,
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    },
+    {
+      "id": "asset.season.01.presentation",
+      "kind": "visual",
+      "delivery_status": "in_production",
+      "source_path": "game/mobile/lib/season_screen.dart",
+      "verification_evidence": null,
+      "license_evidence": null,
+      "runtime_source": "game/mobile/lib/season_screen.dart",
+      "production_evidence": "release/content-evidence/inventory-assets.json"
+    }
+  ],
+  "inventory_evidence": "release/content-evidence/inventory-assets.json"
+}

@@ -6,9 +6,11 @@ import 'package:flutter/foundation.dart';
 import 'package:tideglass_core/tideglass_core.dart';
 import 'package:tideglass_events/tideglass_events.dart';
 import 'package:tideglass_progression/tideglass_progression.dart';
+import 'package:tideglass_progression/decoration_purchase.dart' as decoration;
 import 'story_state.dart';
 import 'audio_bus.dart';
 import 'bundled_content.dart';
+import 'content_compatibility.dart';
 import 'offline_replay.dart';
 import 'cosmetics.dart';
 
@@ -61,8 +63,7 @@ class GameController extends ChangeNotifier {
        _persist = onPersist,
        _persistSession = onSessionPersist,
        story = initialStory ?? StoryProgress() {
-    if (story.contentDigest != null &&
-        story.contentDigest != bundledManifestDigest) {
+    if (!acceptsStoryContentDigest(story.contentDigest)) {
       throw const FormatException('Pinned story content differs.');
     }
     if (catalogue != null) {
@@ -196,7 +197,12 @@ class GameController extends ChangeNotifier {
 
   List<String> get availableDiscoveries => [
     'archive',
-    if (story.campaign.restoredHarbor >= 3) 'challenge',
+    if (story.campaign.restoredHarbor >= 3 &&
+        catalogue?.dossiers.any(
+              (d) => !story.dossiers.completed.contains(d.id),
+            ) ==
+            true)
+      'challenge',
     if (state.focusCharges > 0 || state.completedCalibrationIds.isNotEmpty)
       'calibration',
   ];
@@ -443,7 +449,7 @@ class GameController extends ChangeNotifier {
     return _accept(
       result,
       UiEnglish.gameANewTideglassEngineProducerNamesTierJoinsYour(
-        Presentation.authored((TideglassEngine.producerNames[tier]).toString()),
+        Presentation.authored((UiEnglish.producerNames[tier]).toString()),
       ),
       cue: result.state.counts[tier] ~/ 25 > state.counts[tier] ~/ 25
           ? TideCue.milestone
@@ -885,19 +891,10 @@ class GameController extends ChangeNotifier {
   bool buyDecoration(String id) {
     if (_suspended || replaying || replayError != null) return false;
     _advanceTo(_clock());
-    if (!RegExp(UiEnglish.gameCosmeticCoreDecoration).hasMatch(id) ||
-        story.decorations.contains(id) ||
-        state.surveyNotes < BigInt.from(50)) {
-      return false;
-    }
-    state = state.copyWith(
-      surveyNotes: state.surveyNotes - BigInt.from(50),
-      revision: state.revision + 1,
-    );
-    story = story.copyWith(
-      decorations: {...story.decorations, id},
-      equippedDecoration: id,
-    );
+    final purchase = decoration.buyDecoration(state, story.decorations, id);
+    if (!purchase.accepted) return false;
+    state = purchase.main;
+    story = story.copyWith(decorations: purchase.owned, equippedDecoration: id);
     return _storyChanged(UiEnglish.gameANewDecorationForYourHarborProduction);
   }
 

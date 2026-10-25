@@ -1,0 +1,70 @@
+[
+  {
+    "name": "font-phone-english-qualified",
+    "command": [
+      "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+      "test",
+      "test/qa_font_licenses_review_test.dart",
+      "--dart-define=TIDEGLASS_TEST_VIEWPORT=phone",
+      "--dart-define=TIDEGLASS_TEST_TEXT_PERCENT=200",
+      "--dart-define=TIDEGLASS_PSEUDO=false",
+      "--dart-define=QA_FONT_REPORT=/Users/csys/Desktop/ibicot/idle/release/qa/qa-reset-20261023T025256.370588Z/font-phone-english-qualified.json",
+      "--reporter",
+      "expanded"
+    ],
+    "exit_code": 0,
+    "runtime_unchanged": true,
+    "log_sha256": "66c2fff9048a02ba76cc4a9695b26ac0f2a77d7c167b7728fef7a8bf84c01994"
+  },
+  {
+    "name": "font-phone-pseudo-qualified",
+    "command": [
+      "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+      "test",
+      "test/qa_font_licenses_review_test.dart",
+      "--dart-define=TIDEGLASS_TEST_VIEWPORT=phone",
+      "--dart-define=TIDEGLASS_TEST_TEXT_PERCENT=200",
+      "--dart-define=TIDEGLASS_PSEUDO=true",
+      "--dart-define=QA_FONT_REPORT=/Users/csys/Desktop/ibicot/idle/release/qa/qa-reset-20261023T025256.370588Z/font-phone-pseudo-qualified.json",
+      "--reporter",
+      "expanded"
+    ],
+    "exit_code": 0,
+    "runtime_unchanged": true,
+    "log_sha256": "66c2fff9048a02ba76cc4a9695b26ac0f2a77d7c167b7728fef7a8bf84c01994"
+  },
+  {
+    "name": "font-tablet-pseudo-qualified",
+    "command": [
+      "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+      "test",
+      "test/qa_font_licenses_review_test.dart",
+      "--dart-define=TIDEGLASS_TEST_VIEWPORT=tablet",
+      "--dart-define=TIDEGLASS_TEST_TEXT_PERCENT=200",
+      "--dart-define=TIDEGLASS_PSEUDO=true",
+      "--dart-define=QA_FONT_REPORT=/Users/csys/Desktop/ibicot/idle/release/qa/qa-reset-20261023T025256.370588Z/font-tablet-pseudo-qualified.json",
+      "--reporter",
+      "expanded"
+    ],
+    "exit_code": 0,
+    "runtime_unchanged": true,
+    "log_sha256": "0ab18f846ed6df885b366b709992e9d1fda8352114a8b27b062e9d807bd8074c"
+  },
+  {
+    "name": "scoped-analysis",
+    "command": [
+      "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+      "analyze",
+      "lib/rechart_copy.dart",
+      "lib/rechart_estimate.dart",
+      "lib/rechart_forecast_task.dart",
+      "lib/font_licenses.dart",
+      "lib/main.dart",
+      "test/qa_rechart_forecast_review_test.dart",
+      "test/qa_font_licenses_review_test.dart",
+      "test/font_licenses_test.dart"
+    ],
+    "exit_code": 0,
+    "runtime_unchanged": true
+  }
+]

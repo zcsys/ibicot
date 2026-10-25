@@ -1,0 +1,47 @@
+[
+  {
+    "name": "flutter-pub-get",
+    "command": [
+      "pub",
+      "get"
+    ],
+    "exit_code": 0,
+    "seconds": 1.376326322555542
+  },
+  {
+    "name": "clock-host-tests",
+    "command": [
+      "test",
+      "test/ownership_clock_test.dart",
+      "test/qa_integration_ownership_clock_test.dart",
+      "--reporter",
+      "expanded"
+    ],
+    "exit_code": 0,
+    "seconds": 6.994679927825928
+  },
+  {
+    "name": "signed-integration-tests",
+    "command": [
+      "test",
+      "test/signed_ownership_integration_test.dart",
+      "test/qa_integration_signed_native_test.dart",
+      "--reporter",
+      "expanded"
+    ],
+    "exit_code": 1,
+    "seconds": 2.7068400382995605
+  },
+  {
+    "name": "focused-analysis",
+    "command": [
+      "analyze",
+      "lib/ownership_clock.dart",
+      "lib/native_services.dart",
+      "test/qa_integration_signed_native_test.dart",
+      "test/qa_integration_ownership_clock_test.dart"
+    ],
+    "exit_code": 0,
+    "seconds": 3.375950813293457
+  }
+]

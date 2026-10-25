@@ -1,0 +1,43 @@
+[
+  {
+    "scenario": "clock-reload",
+    "verification": "/Users/csys/Desktop/ibicot/idle/release/native-proof/integration-android-20261023T050633.188337Z/verification.json",
+    "errors": [
+      "platform: expected 'android', received None",
+      "device_label: expected 'android', received None",
+      "scenario: expected 'clock-reload', received None",
+      "run_id: expected 'v3b00-android-clock', received None",
+      "verification_id: expected 'integration-android-20261023T050633.188337Z', received None",
+      "candidate_fingerprint: expected '3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59', received None",
+      "harness_sha256: expected '071635c01ed508077b467462bac279107a8716861ac97a5b657a5401b2cc3506', received None",
+      "No successful native framework completion marker",
+      "No successful driver completion marker",
+      "Explicit native process termination failed"
+    ]
+  },
+  {
+    "scenario": "clock-reload",
+    "verification": "/Users/csys/Desktop/ibicot/idle/release/native-proof/integration-android-20261023T050738.127967Z/verification.json",
+    "errors": [
+      "Native build/test failure in log: Some tests failed.",
+      "Native build/test failure in log: EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK",
+      "Native test or teardown error marker in log",
+      "No successful native framework completion marker",
+      "No successful driver completion marker"
+    ]
+  },
+  {
+    "scenario": "capture-gallery",
+    "verification": "/Users/csys/Desktop/ibicot/idle/release/native-proof/integration-android-20261023T051309.900497Z/verification.json",
+    "errors": [
+      "Footage duration is outside the requested 15\u201330 seconds"
+    ]
+  },
+  {
+    "scenario": "runtime-save-hold-beforeWrite",
+    "verification": "/Users/csys/Desktop/ibicot/idle/release/native-proof/current-runtime-android-20261023T051542413435Z/verification.json",
+    "errors": [
+      "ValueError: Native fixture component is a symlink"
+    ]
+  }
+]

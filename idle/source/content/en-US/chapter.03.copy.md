@@ -5,4 +5,4 @@ Survey crews learn the coast while you are away. Let their notes accumulate, the
 The watch stations can carry a night without you. Their patient records reveal the channels that the darkness hid.
 
 - Collect twelve completed Surveys over your visits.
-- Discover three calibration patterns; accessible completion gives the same result.
+- Calibration patterns are an optional discovery; accessible completion gives the same result.

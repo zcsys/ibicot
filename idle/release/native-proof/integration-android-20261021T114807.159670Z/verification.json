@@ -1,0 +1,65 @@
+{
+  "candidate_fingerprint": "152805bf9e269f49d14486286656ac0174a808384d10e6623533a4f92690dc11",
+  "device": "emulator-5556",
+  "label": "android",
+  "platform": "android",
+  "started_utc": "20261021T114807.159670Z",
+  "command": [
+    "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+    "drive",
+    "--driver=test_driver/evidence_911183b5d9ee.dart",
+    "--target=integration_test/evidence_7622fd5997ff_test.dart",
+    "-d",
+    "emulator-5556",
+    "--dart-define=TIDEGLASS_DEVICE_LABEL=android",
+    "--dart-define=TIDEGLASS_SCENARIO=share-cancel",
+    "--dart-define=TIDEGLASS_RUN_ID=final152-oct21-share",
+    "--dart-define=TIDEGLASS_VERIFICATION_ID=integration-android-20261021T114807.159670Z",
+    "--dart-define=TIDEGLASS_CANDIDATE_FINGERPRINT=152805bf9e269f49d14486286656ac0174a808384d10e6623533a4f92690dc11",
+    "--dart-define=TIDEGLASS_HARNESS_SHA256=7622fd5997fff4d1e23f1a2facc66694e6a81741ddfbce4a3062fd7e61e1f647",
+    "--keep-app-running",
+    "--timeout=180",
+    "--no-pub"
+  ],
+  "runner_sha256": "68297f66fc4e32a173b17da2594872334d59ba2b88b7d5878b5ee8905f9b89e5",
+  "candidate_validation_runner_sha256": "9f2a54793304639bda691cd0dddb4f2318951d9078c30b20f48ecc7fb1c68563",
+  "scenario": "share-cancel",
+  "run_id": "final152-oct21-share",
+  "harness_sha256": {
+    "harness.dart": "7622fd5997fff4d1e23f1a2facc66694e6a81741ddfbce4a3062fd7e61e1f647",
+    "driver.dart": "911183b5d9ee8ec80769836f477a293dadb66e20cc0c5d5e44314415889749a8"
+  },
+  "production_inputs_match_snapshot": true,
+  "provenance": "Synthetic local ZIP and test-only download substitution; production export function and actual native sheet cancellation. No commerce or delivery proof.",
+  "exit_code": 0,
+  "production_input_differences_after_run": [],
+  "source_snapshot_unchanged": true,
+  "harness_source_differences_during_run": [],
+  "native_process_stop": {
+    "command": [
+      "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "shell",
+      "am",
+      "force-stop",
+      "dev.tideglass.game"
+    ],
+    "exit_code": 0,
+    "output": ""
+  },
+  "verification_errors": [],
+  "passed": true,
+  "evidence_sha256": {
+    "result.json": "6d8dc1178059f732e789a20f0641ec064d8554de84ca907ee99a909b264c10a2",
+    "external-share-controls.json": "6c0a465ce0db41e4c17b62b8da43717cd69ae4eee7814cccbc84097aeef30d4c",
+    "run.log": "9e1eb5f7a1930fd57a2557090d989d0c96bbfaaec26e0e3b9f3878650584dd7e",
+    "native-share-sheet.png": "6e374d4598c869023806b2aaf3611f9e396895aec9c643a2ebc6b9692fcf9e71",
+    "android-share-cancel-returned.png": "81dbb369bc87cb2377f1663d35d646238a37e1c02d2e5a1cabcc1a05d134a015",
+    "driver.dart": "911183b5d9ee8ec80769836f477a293dadb66e20cc0c5d5e44314415889749a8",
+    "verify_native.py": "68297f66fc4e32a173b17da2594872334d59ba2b88b7d5878b5ee8905f9b89e5",
+    "share-sheet-observation.json": "9fa2f1f676ae5197f7b3e3f1f24a81d680d33ca80988a7ec5ae39a62237a66f0",
+    "harness.dart": "7622fd5997fff4d1e23f1a2facc66694e6a81741ddfbce4a3062fd7e61e1f647",
+    "share-sheet.xml": "619804ab337ce2129bf7c7f66e92d7dbd0db12b5e7d16ee1a5ab85d604e65b41"
+  }
+}

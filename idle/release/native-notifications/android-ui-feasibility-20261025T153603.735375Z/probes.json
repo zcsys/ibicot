@@ -1,0 +1,112 @@
+{
+  "utc": "2026-10-25T15:36:05.440686+00:00",
+  "read_only": true,
+  "no_ui_action_executed": true,
+  "commands": [
+    {
+      "argv": [
+        "/Users/csys/Library/Android/sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "get-state"
+      ],
+      "exit_code": 0,
+      "output": "release/native-notifications/android-ui-feasibility-20261025T153603.735375Z/probe-00.txt",
+      "sha256": "38ff49cf113447c3ba9dd39b98c4f37d7649570e6f7e7ee7cb892f91c3bb2470"
+    },
+    {
+      "argv": [
+        "/Users/csys/Library/Android/sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "emu",
+        "avd",
+        "name"
+      ],
+      "exit_code": 0,
+      "output": "release/native-notifications/android-ui-feasibility-20261025T153603.735375Z/probe-01.txt",
+      "sha256": "34b9cac34650b0d8e6465b8a0245ed3cb6ef58f169f8809f63b9e903767db0bc"
+    },
+    {
+      "argv": [
+        "/Users/csys/Library/Android/sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "getprop",
+        "ro.build.version.sdk"
+      ],
+      "exit_code": 0,
+      "output": "release/native-notifications/android-ui-feasibility-20261025T153603.735375Z/probe-02.txt",
+      "sha256": "e4f66061dea12227831819ecffca430bfa1a3a9869c5fe4d0daadf5cfa52af2c"
+    },
+    {
+      "argv": [
+        "/Users/csys/Library/Android/sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "command",
+        "-v",
+        "uiautomator"
+      ],
+      "exit_code": 0,
+      "output": "release/native-notifications/android-ui-feasibility-20261025T153603.735375Z/probe-03.txt",
+      "sha256": "a3d258c2168f3f3c144d11599496ddfae9b5842b426adec09466e60f33e9bd42"
+    },
+    {
+      "argv": [
+        "/Users/csys/Library/Android/sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "uiautomator",
+        "help"
+      ],
+      "exit_code": 0,
+      "output": "release/native-notifications/android-ui-feasibility-20261025T153603.735375Z/probe-04.txt",
+      "sha256": "f7de34b3445fec0a42d903dd8d02c3019b2a63cdd7ede302697f6501c9dc992d"
+    },
+    {
+      "argv": [
+        "/Users/csys/Library/Android/sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "input",
+        "--help"
+      ],
+      "exit_code": 0,
+      "output": "release/native-notifications/android-ui-feasibility-20261025T153603.735375Z/probe-05.txt",
+      "sha256": "99d28869bc6058444e7cc01be07fd6baf18f9ad4efc063b20e65a8fa6f1f75de"
+    },
+    {
+      "argv": [
+        "/Users/csys/Library/Android/sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "cmd",
+        "input",
+        "help"
+      ],
+      "exit_code": 0,
+      "output": "release/native-notifications/android-ui-feasibility-20261025T153603.735375Z/probe-06.txt",
+      "sha256": "269e12e8258028c833a86d6ecfcdbbfcdb349800589e87d7f318e57e689fa891"
+    },
+    {
+      "argv": [
+        "/Users/csys/Library/Android/sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "dumpsys",
+        "window",
+        "windows"
+      ],
+      "exit_code": 0,
+      "output": "release/native-notifications/android-ui-feasibility-20261025T153603.735375Z/probe-07.txt",
+      "sha256": "8af563933f41107414e8b00ce1e07ce735bf36324a6f156801c5343fce58b2ba"
+    }
+  ]
+}

@@ -40,72 +40,88 @@ class _SeasonScreenState extends State<SeasonScreen> {
   }
 
   @override
-  Widget build(BuildContext context) => ListenableBuilder(
-    listenable: Listenable.merge([
-      game,
-      if (widget.services != null) widget.services!,
-    ]),
-    builder: (context, _) => Scaffold(
-      appBar: AppBar(
-        title: const LocalizedText(UiEnglish.seasonReturningStars),
-      ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          controller: scroll,
-          padding: const EdgeInsets.fromLTRB(24, 8, 24, 32),
-          child: Center(
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 760),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  if (game.story.season == null || game.story.pass == null)
-                    const LocalizedText(
-                      UiEnglish.seasonThisSeasonalCatalogueIsNotAvailable,
-                    )
-                  else ...[
-                    Wrap(
-                      spacing: 8,
-                      runSpacing: 8,
-                      children: [
-                        for (var i = 0; i < 3; i++)
-                          ChoiceChip(
-                            key: ValueKey('season-tab-$i'),
-                            label: LocalizedText(
-                              [
-                                UiEnglish.seasonFleet,
-                                UiEnglish.seasonPass,
-                                UiEnglish.seasonContracts,
-                              ][i],
+  Widget build(BuildContext context) {
+    // Keep the complete heading readable without taking the action viewport
+    // away from large-text controls, matching the calibration screen pattern.
+    final scrollHeading = MediaQuery.textScalerOf(context).scale(16) > 24;
+    return ListenableBuilder(
+      listenable: Listenable.merge([
+        game,
+        if (widget.services != null) widget.services!,
+      ]),
+      builder: (context, _) => Scaffold(
+        appBar: scrollHeading
+            ? AppBar()
+            : readingAppBar(context, title: UiEnglish.seasonReturningStars),
+        body: SafeArea(
+          child: SingleChildScrollView(
+            controller: scroll,
+            padding: const EdgeInsets.fromLTRB(24, 8, 24, 32),
+            child: Center(
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 760),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    if (scrollHeading) ...[
+                      Semantics(
+                        header: true,
+                        namesRoute: true,
+                        child: LocalizedText(
+                          UiEnglish.seasonReturningStars,
+                          style: Theme.of(context).textTheme.headlineMedium,
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                    ],
+                    if (game.story.season == null || game.story.pass == null)
+                      const LocalizedText(
+                        UiEnglish.seasonThisSeasonalCatalogueIsNotAvailable,
+                      )
+                    else ...[
+                      Wrap(
+                        spacing: 8,
+                        runSpacing: 8,
+                        children: [
+                          for (var i = 0; i < 3; i++)
+                            ChoiceChip(
+                              key: ValueKey('season-tab-$i'),
+                              label: LocalizedText(
+                                [
+                                  UiEnglish.seasonFleet,
+                                  UiEnglish.seasonPass,
+                                  UiEnglish.seasonContracts,
+                                ][i],
+                              ),
+                              selected: tab == i,
+                              onSelected: (_) {
+                                setState(() => tab = i);
+                                scroll.jumpTo(0);
+                              },
                             ),
-                            selected: tab == i,
-                            onSelected: (_) {
-                              setState(() => tab = i);
-                              scroll.jumpTo(0);
-                            },
-                          ),
-                      ],
-                    ),
-                    const SizedBox(height: 24),
-                    LocalizedText(
-                      definition.title,
-                      style: Theme.of(context).textTheme.headlineMedium,
-                    ),
-                    const SizedBox(height: 12),
-                    ...switch (tab) {
-                      0 => _fleet(),
-                      1 => _pass(),
-                      _ => _contracts(),
-                    },
+                        ],
+                      ),
+                      const SizedBox(height: 24),
+                      LocalizedText(
+                        definition.title,
+                        style: Theme.of(context).textTheme.headlineMedium,
+                      ),
+                      const SizedBox(height: 12),
+                      ...switch (tab) {
+                        0 => _fleet(),
+                        1 => _pass(),
+                        _ => _contracts(),
+                      },
+                    ],
                   ],
-                ],
+                ),
               ),
             ),
           ),
         ),
       ),
-    ),
-  );
+    );
+  }
 
   List<Widget> _fleet() => [
     LocalizedText(
@@ -188,13 +204,14 @@ class _SeasonScreenState extends State<SeasonScreen> {
       Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          const LocalizedText(
+            UiEnglish.seasonFreeAutomationForThisSeparateFleet,
+          ),
+          const SizedBox(height: 8),
           SwitchListTile.adaptive(
             key: const ValueKey('season-automatic'),
             contentPadding: EdgeInsets.zero,
             title: const LocalizedText(UiEnglish.seasonLetTheCrewBuild),
-            subtitle: const LocalizedText(
-              UiEnglish.seasonFreeAutomationForThisSeparateFleet,
-            ),
             value: season.automatic,
             onChanged: (value) =>
                 _perform(() => game.setSeasonPlan(automatic: value)),
@@ -236,7 +253,7 @@ class _SeasonScreenState extends State<SeasonScreen> {
                   children: [
                     Expanded(
                       child: LocalizedText(
-                        '${i + 1}. ${TideglassEngine.producerNames[season.priority[i]]}',
+                        '${i + 1}. ${UiEnglish.producerNames[season.priority[i]]}',
                       ),
                     ),
                     IconButton(
@@ -244,7 +261,7 @@ class _SeasonScreenState extends State<SeasonScreen> {
                       tooltip: Presentation.text(
                         UiEnglish.seasonMoveTideglassEngineProducerNamesSeasonPriorityIEarlier(
                           Presentation.authored(
-                            (TideglassEngine.producerNames[season.priority[i]])
+                            (UiEnglish.producerNames[season.priority[i]])
                                 .toString(),
                           ),
                         ),
@@ -256,7 +273,7 @@ class _SeasonScreenState extends State<SeasonScreen> {
                       tooltip: Presentation.text(
                         UiEnglish.seasonMoveTideglassEngineProducerNamesSeasonPriorityILater(
                           Presentation.authored(
-                            (TideglassEngine.producerNames[season.priority[i]])
+                            (UiEnglish.producerNames[season.priority[i]])
                                 .toString(),
                           ),
                         ),
@@ -352,7 +369,7 @@ class _SeasonScreenState extends State<SeasonScreen> {
                 child: LocalizedText(
                   UiEnglish.seasonTideglassEngineProducerNamesTierNSeasonFleetCounts(
                     Presentation.authored(
-                      (TideglassEngine.producerNames[tier]).toString(),
+                      (UiEnglish.producerNames[tier]).toString(),
                     ),
                     season.fleet.counts[tier],
                   ),
@@ -366,7 +383,7 @@ class _SeasonScreenState extends State<SeasonScreen> {
             LocalizedText(
               UiEnglish.seasonNeedsTideglassEngineProducerNamesTier(
                 Presentation.authored(
-                  (TideglassEngine.producerNames[tier - 1]).toString(),
+                  (UiEnglish.producerNames[tier - 1]).toString(),
                 ),
               ),
               style: _muted,
@@ -538,112 +555,130 @@ class _SeasonScreenState extends State<SeasonScreen> {
         .firstOrNull;
     final claimed = game.story.pass!.claims.containsKey(free.id);
     return _card(
-      ExpansionTile(
-        key: PageStorageKey('level-$value'),
-        tilePadding: EdgeInsets.zero,
-        initiallyExpanded: value == (unlockedLevel + 1).clamp(1, 30),
-        leading: Icon(
-          claimed
-              ? Icons.check_circle_outline
-              : free.kind == 'cosmetic'
-              ? Icons.palette_outlined
-              : Icons.menu_book_outlined,
-          color: claimed ? TideColors.teal : TideColors.amber,
-        ),
-        title: LocalizedText(
-          UiEnglish.seasonLevelValueFreeTitle(
-            value,
-            Presentation.authored((free.title).toString()),
-          ),
-        ),
-        subtitle: LocalizedText(
-          claimed
-              ? UiEnglish.seasonKeptInYourCollection
-              : value <= unlockedLevel
-              ? UiEnglish.seasonReadyToCollect
-              : UiEnglish.seasonValueXP(value * 500),
-          style: _muted,
-        ),
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+          // Status remains visible, but does not narrow the full reward title's
+          // tappable expansion header at large text sizes.
+          Row(
             children: [
-              if (free.kind == 'cosmetic') _appearancePreview(free),
-              if (free.kind != 'archive_fragment' || claimed)
-                LocalizedText(
-                  free.body,
-                  key: ValueKey('reward-copy-${free.id}'),
-                )
-              else
-                LocalizedText(
-                  UiEnglish.seasonCollectThisAccountAtLevelValueTo(value),
-                  style: _muted,
-                ),
-              const SizedBox(height: 12),
-              OutlinedButton(
-                key: ValueKey('claim-${free.id}'),
-                onPressed: !claimed && value <= unlockedLevel
-                    ? () => _perform(() => game.claimFreePassReward(free.id))
-                    : null,
+              Icon(
+                claimed
+                    ? Icons.check_circle_outline
+                    : free.kind == 'cosmetic'
+                    ? Icons.palette_outlined
+                    : Icons.menu_book_outlined,
+                color: claimed ? TideColors.teal : TideColors.amber,
+              ),
+              const SizedBox(width: 8),
+              Expanded(
                 child: LocalizedText(
                   claimed
-                      ? UiEnglish.seasonCollectedFree
-                      : UiEnglish.seasonKeepFreeFreeKindCosmeticAppearanceAccount(
-                          free.kind == 'cosmetic' ? 'appearance' : 'account',
-                        ),
+                      ? UiEnglish.seasonKeptInYourCollection
+                      : value <= unlockedLevel
+                      ? UiEnglish.seasonReadyToCollect
+                      : UiEnglish.seasonValueXP(value * 500),
+                  style: _muted,
                 ),
               ),
-              if (premium != null) ...[
-                const Divider(height: 32),
-                LocalizedText(
-                  widget.services != null &&
-                          verifiedPaidCosmetics(
-                            widget.services!,
-                            game,
-                          ).contains(premium.contentId)
-                      ? UiEnglish.seasonPREMIUMAPPEARANCEAVAILABLE
-                      : UiEnglish.seasonPREMIUMAPPEARANCEPREVIEW,
-                  style: const TextStyle(
-                    color: TideColors.amber,
-                    fontSize: 11,
-                    letterSpacing: 1,
+            ],
+          ),
+          const SizedBox(height: 8),
+          ExpansionTile(
+            key: PageStorageKey('level-$value'),
+            tilePadding: EdgeInsets.zero,
+            initiallyExpanded: value == (unlockedLevel + 1).clamp(1, 30),
+            title: LocalizedText(
+              UiEnglish.seasonLevelValueFreeTitle(
+                value,
+                Presentation.authored((free.title).toString()),
+              ),
+            ),
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  if (free.kind == 'cosmetic') _appearancePreview(free),
+                  if (free.kind != 'archive_fragment' || claimed)
+                    LocalizedText(
+                      free.body,
+                      key: ValueKey('reward-copy-${free.id}'),
+                    )
+                  else
+                    LocalizedText(
+                      UiEnglish.seasonCollectThisAccountAtLevelValueTo(value),
+                      style: _muted,
+                    ),
+                  const SizedBox(height: 12),
+                  OutlinedButton(
+                    key: ValueKey('claim-${free.id}'),
+                    onPressed: !claimed && value <= unlockedLevel
+                        ? () =>
+                              _perform(() => game.claimFreePassReward(free.id))
+                        : null,
+                    child: LocalizedText(
+                      claimed
+                          ? UiEnglish.seasonCollectedFree
+                          : UiEnglish.seasonKeepFreeFreeKindCosmeticAppearanceAccount(
+                              free.kind == 'cosmetic'
+                                  ? UiEnglish.appearanceNoun
+                                  : UiEnglish.accountNoun,
+                            ),
+                    ),
                   ),
-                ),
-                const SizedBox(height: 10),
-                LocalizedText(
-                  premium.title,
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-                _appearancePreview(premium),
-                LocalizedText(premium.body, style: _muted),
-                const SizedBox(height: 10),
-                if (widget.services == null || !widget.services!.configured)
-                  const LocalizedText(
-                    UiEnglish
-                        .seasonPurchasingAndPremiumDeliveryAreUnavailableIn,
-                    key: ValueKey('premium-unavailable'),
-                    style: _muted,
-                  )
-                else
-                  LocalizedText(
-                    verifiedPaidCosmetics(
-                          widget.services!,
-                          game,
-                        ).contains(premium.contentId)
-                        ? UiEnglish
-                              .seasonAvailableInYourHarborCollectionThisLevel
-                        : widget.services!.ownedEntitlementIds.contains(
-                            definition.passId,
-                          )
-                        ? UiEnglish.seasonPremiumOwnershipIsVerifiedEarnLevelValue(
-                            value,
-                          )
-                        : UiEnglish
-                              .seasonPremiumOwnershipIsNotCurrentlyVerifiedReview,
-                    key: ValueKey('premium-status-${premium.contentId}'),
-                    style: _muted,
-                  ),
-              ],
+                  if (premium != null) ...[
+                    const Divider(height: 32),
+                    LocalizedText(
+                      widget.services != null &&
+                              verifiedPaidCosmetics(
+                                widget.services!,
+                                game,
+                              ).contains(premium.contentId)
+                          ? UiEnglish.seasonPREMIUMAPPEARANCEAVAILABLE
+                          : UiEnglish.seasonPREMIUMAPPEARANCEPREVIEW,
+                      style: const TextStyle(
+                        color: TideColors.amber,
+                        fontSize: 11,
+                        letterSpacing: 1,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    LocalizedText(
+                      premium.title,
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                    _appearancePreview(premium),
+                    LocalizedText(premium.body, style: _muted),
+                    const SizedBox(height: 10),
+                    if (widget.services == null || !widget.services!.configured)
+                      const LocalizedText(
+                        UiEnglish
+                            .seasonPurchasingAndPremiumDeliveryAreUnavailableIn,
+                        key: ValueKey('premium-unavailable'),
+                        style: _muted,
+                      )
+                    else
+                      LocalizedText(
+                        verifiedPaidCosmetics(
+                              widget.services!,
+                              game,
+                            ).contains(premium.contentId)
+                            ? UiEnglish
+                                  .seasonAvailableInYourHarborCollectionThisLevel
+                            : widget.services!.ownedEntitlementIds.contains(
+                                definition.passId,
+                              )
+                            ? UiEnglish.seasonPremiumOwnershipIsVerifiedEarnLevelValue(
+                                value,
+                              )
+                            : UiEnglish
+                                  .seasonPremiumOwnershipIsNotCurrentlyVerifiedReview,
+                        key: ValueKey('premium-status-${premium.contentId}'),
+                        style: _muted,
+                      ),
+                  ],
+                ],
+              ),
             ],
           ),
         ],

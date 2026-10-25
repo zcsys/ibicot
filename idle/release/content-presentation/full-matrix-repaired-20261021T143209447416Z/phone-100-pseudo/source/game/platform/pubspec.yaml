@@ -1,0 +1,15 @@
+name: tideglass_platform
+description: Optional Tideglass account, recovery, entitlement and telemetry client.
+version: 0.1.0
+publish_to: none
+environment:
+  sdk: '>=3.10.0 <4.0.0'
+dependencies:
+  crypto: ^3.0.6
+  cryptography: 2.9.0
+  tideglass_events:
+    path: ../events
+dev_dependencies:
+  tideglass_persistence:
+    path: ../persistence
+  test: ^1.26.0

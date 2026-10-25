@@ -1,0 +1,79 @@
+test_control_full_proof (__main__.CheckerCounterexamples.test_control_full_proof) ... ok
+test_duplicate_asset_pair (__main__.CheckerCounterexamples.test_duplicate_asset_pair) ... ok
+test_failed_actual_command (__main__.CheckerCounterexamples.test_failed_actual_command) ... ok
+test_failed_lifecycle_supplement (__main__.CheckerCounterexamples.test_failed_lifecycle_supplement) ... FAIL
+test_failed_palette_supplement (__main__.CheckerCounterexamples.test_failed_palette_supplement) ... FAIL
+test_false_canonical_promotion (__main__.CheckerCounterexamples.test_false_canonical_promotion) ... ok
+test_false_cosmetic_reachability (__main__.CheckerCounterexamples.test_false_cosmetic_reachability) ... FAIL
+test_false_producer_button_semantics (__main__.CheckerCounterexamples.test_false_producer_button_semantics) ... FAIL
+test_filtered_attached_option (__main__.CheckerCounterexamples.test_filtered_attached_option) ... FAIL
+test_filtered_separate_option (__main__.CheckerCounterexamples.test_filtered_separate_option) ... ok
+test_missing_asset_pair (__main__.CheckerCounterexamples.test_missing_asset_pair) ... ok
+test_missing_supplement (__main__.CheckerCounterexamples.test_missing_supplement) ... ok
+test_reported_source_drift (__main__.CheckerCounterexamples.test_reported_source_drift) ... ok
+test_wrong_pseudo_command (__main__.CheckerCounterexamples.test_wrong_pseudo_command) ... ok
+
+======================================================================
+FAIL: test_failed_lifecycle_supplement (__main__.CheckerCounterexamples.test_failed_lifecycle_supplement)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/csys/Desktop/ibicot/idle/game/qa/integration_art_checker_test.py", line 37, in test_failed_lifecycle_supplement
+    def test_failed_lifecycle_supplement(self):self.reject(lambda d,p:next(r for r in d['supplemental_cases'] if r['case']=='actual_app_animation_lifecycle').__setitem__('background_phase_stops',False))
+                                               ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/csys/Desktop/ibicot/idle/game/qa/integration_art_checker_test.py", line 25, in reject
+    code,data=self.call(change);self.assertNotEqual(code,0,msg=json.dumps(data))
+                                ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 == 0 : {"result": "passed_bounded_evidence_integrity", "full_mode": true, "presentation_locale": "qps-ploc", "pseudo_enabled": true, "observed_rows": 816, "rows_by_group": {"harbor": 84, "producer": 300, "cosmetic": 432}, "frozen_inputs_checked": 524, "failures": [], "report_sha256": "1876119b81744674815358379e8730e196956d0e314a3b97b5416507c6f69e7a", "canonical_acceptance": false}
+
+======================================================================
+FAIL: test_failed_palette_supplement (__main__.CheckerCounterexamples.test_failed_palette_supplement)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/csys/Desktop/ibicot/idle/game/qa/integration_art_checker_test.py", line 38, in test_failed_palette_supplement
+    def test_failed_palette_supplement(self):self.reject(lambda d,p:next(r for r in d['supplemental_cases'] if r['case']=='declared_text_palette')['ratios'].__setitem__('text_on_deep',1.0))
+                                             ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/csys/Desktop/ibicot/idle/game/qa/integration_art_checker_test.py", line 25, in reject
+    code,data=self.call(change);self.assertNotEqual(code,0,msg=json.dumps(data))
+                                ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 == 0 : {"result": "passed_bounded_evidence_integrity", "full_mode": true, "presentation_locale": "qps-ploc", "pseudo_enabled": true, "observed_rows": 816, "rows_by_group": {"harbor": 84, "producer": 300, "cosmetic": 432}, "frozen_inputs_checked": 524, "failures": [], "report_sha256": "ecdb34f846c5a4c5c403c1c058e8f9172b3a2eb31a95da6018616efdb9ffc1d4", "canonical_acceptance": false}
+
+======================================================================
+FAIL: test_false_cosmetic_reachability (__main__.CheckerCounterexamples.test_false_cosmetic_reachability)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/csys/Desktop/ibicot/idle/game/qa/integration_art_checker_test.py", line 36, in test_false_cosmetic_reachability
+    def test_false_cosmetic_reachability(self):self.reject(lambda d,p:next(r for r in d['rows'] if r['group']=='cosmetic').__setitem__('controls_reachable_with_48px_button_semantics',False))
+                                               ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/csys/Desktop/ibicot/idle/game/qa/integration_art_checker_test.py", line 25, in reject
+    code,data=self.call(change);self.assertNotEqual(code,0,msg=json.dumps(data))
+                                ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 == 0 : {"result": "passed_bounded_evidence_integrity", "full_mode": true, "presentation_locale": "qps-ploc", "pseudo_enabled": true, "observed_rows": 816, "rows_by_group": {"harbor": 84, "producer": 300, "cosmetic": 432}, "frozen_inputs_checked": 524, "failures": [], "report_sha256": "76571fb3e3b26a4dda46cf48a1b7363d63883df281197964d0b98291622ae431", "canonical_acceptance": false}
+
+======================================================================
+FAIL: test_false_producer_button_semantics (__main__.CheckerCounterexamples.test_false_producer_button_semantics)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/csys/Desktop/ibicot/idle/game/qa/integration_art_checker_test.py", line 35, in test_false_producer_button_semantics
+    def test_false_producer_button_semantics(self):self.reject(lambda d,p:next(r for r in d['rows'] if r['group']=='producer').__setitem__('button_semantics_and_48px_hitbox',False))
+                                                   ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/csys/Desktop/ibicot/idle/game/qa/integration_art_checker_test.py", line 25, in reject
+    code,data=self.call(change);self.assertNotEqual(code,0,msg=json.dumps(data))
+                                ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 == 0 : {"result": "passed_bounded_evidence_integrity", "full_mode": true, "presentation_locale": "qps-ploc", "pseudo_enabled": true, "observed_rows": 816, "rows_by_group": {"harbor": 84, "producer": 300, "cosmetic": 432}, "frozen_inputs_checked": 524, "failures": [], "report_sha256": "d7d5bf7dcc1e1a1d80005fc2f0a5cad1ade6f89f19f578782633f0e9acd3961a", "canonical_acceptance": false}
+
+======================================================================
+FAIL: test_filtered_attached_option (__main__.CheckerCounterexamples.test_filtered_attached_option)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/csys/Desktop/ibicot/idle/game/qa/integration_art_checker_test.py", line 34, in test_filtered_attached_option
+    def test_filtered_attached_option(self):self.reject(lambda d,p:p['results'][-1]['command'].append('--name=phone-100-normal'))
+                                            ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/csys/Desktop/ibicot/idle/game/qa/integration_art_checker_test.py", line 25, in reject
+    code,data=self.call(change);self.assertNotEqual(code,0,msg=json.dumps(data))
+                                ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 == 0 : {"result": "passed_bounded_evidence_integrity", "full_mode": true, "presentation_locale": "qps-ploc", "pseudo_enabled": true, "observed_rows": 816, "rows_by_group": {"harbor": 84, "producer": 300, "cosmetic": 432}, "frozen_inputs_checked": 524, "failures": [], "report_sha256": "2178fecb2028cb31bc1ac9b23b95b6ff75fa2f1485db4e08f2e3c4a5fa4d4339", "canonical_acceptance": false}
+
+----------------------------------------------------------------------
+Ran 14 tests in 0.582s
+
+FAILED (failures=5)

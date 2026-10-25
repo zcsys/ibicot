@@ -1,0 +1,172 @@
+{
+  "scope": "All game/mobile/lib/*.dart; Dart AST inventory plus manual review of designated presentation files.",
+  "raw_literal_occurrences": 7464,
+  "classification_counts": {
+    "import_or_directive": 220,
+    "data_key": 4199,
+    "numeric_or_symbol_format": 156,
+    "stable_widget_key": 64,
+    "identifier_or_code": 1061,
+    "internal_diagnostic_or_pattern": 68,
+    "machine_format": 21,
+    "business_comparison": 40,
+    "english_candidate": 1606,
+    "business_pattern": 29
+  },
+  "english_candidate_dispositions": {
+    "technical_content_integrity_diagnostic": 1,
+    "digest_or_color_format": 3,
+    "externalized_english_catalogue": 821,
+    "validation_regex": 2,
+    "timezone_copy_key_or_internal_optin_guard": 4,
+    "protected_numeric_suffix": 4,
+    "pseudolocale_engine_or_font_identifier": 5,
+    "vector_asset_data": 766
+  },
+  "catalogue_candidate_counts": {
+    "cosmetics.dart": 79,
+    "notification_copy.dart": 44,
+    "strings.dart": 698
+  },
+  "unmigrated_technical_candidates": [
+    {
+      "file": "game/mobile/lib/bundled_content.dart",
+      "line": 46,
+      "classification": "english_candidate",
+      "source": "'Bundled gameplay file differs: ${entry.key}'",
+      "disposition": "technical_content_integrity_diagnostic"
+    },
+    {
+      "file": "game/mobile/lib/bundled_hashes.g.dart",
+      "line": 2,
+      "classification": "english_candidate",
+      "source": "'708f083217d4810e8e0a23e4d6519b374ab3c986da08eb001c0dd0a762e5c19c'",
+      "disposition": "digest_or_color_format"
+    },
+    {
+      "file": "game/mobile/lib/bundled_hashes.g.dart",
+      "line": 3,
+      "classification": "english_candidate",
+      "source": "'9e5b9bcfcfc7a68d4eaeebc97e8d40cd42d04532fa59f514c7483efee885d2b6'",
+      "disposition": "digest_or_color_format"
+    },
+    {
+      "file": "game/mobile/lib/game_controller.dart",
+      "line": 893,
+      "classification": "english_candidate",
+      "source": "r'^cosmetic\\.core\\.decoration\\.0[1-6]$'",
+      "disposition": "validation_regex"
+    },
+    {
+      "file": "game/mobile/lib/notification_service.dart",
+      "line": 13,
+      "classification": "english_candidate",
+      "source": "'UTC'",
+      "disposition": "timezone_copy_key_or_internal_optin_guard"
+    },
+    {
+      "file": "game/mobile/lib/notification_service.dart",
+      "line": 13,
+      "classification": "english_candidate",
+      "source": "'GMT'",
+      "disposition": "timezone_copy_key_or_internal_optin_guard"
+    },
+    {
+      "file": "game/mobile/lib/notification_service.dart",
+      "line": 124,
+      "classification": "english_candidate",
+      "source": "'${kind.name}Body'",
+      "disposition": "timezone_copy_key_or_internal_optin_guard"
+    },
+    {
+      "file": "game/mobile/lib/notification_service.dart",
+      "line": 480,
+      "classification": "english_candidate",
+      "source": "'Explicit opt-in is required.'",
+      "disposition": "timezone_copy_key_or_internal_optin_guard"
+    },
+    {
+      "file": "game/mobile/lib/number_format.dart",
+      "line": 18,
+      "classification": "english_candidate",
+      "source": "'K'",
+      "disposition": "protected_numeric_suffix"
+    },
+    {
+      "file": "game/mobile/lib/number_format.dart",
+      "line": 18,
+      "classification": "english_candidate",
+      "source": "'M'",
+      "disposition": "protected_numeric_suffix"
+    },
+    {
+      "file": "game/mobile/lib/number_format.dart",
+      "line": 18,
+      "classification": "english_candidate",
+      "source": "'B'",
+      "disposition": "protected_numeric_suffix"
+    },
+    {
+      "file": "game/mobile/lib/number_format.dart",
+      "line": 18,
+      "classification": "english_candidate",
+      "source": "'T'",
+      "disposition": "protected_numeric_suffix"
+    },
+    {
+      "file": "game/mobile/lib/presentation.dart",
+      "line": 7,
+      "classification": "english_candidate",
+      "source": "'AaEeIiOoUuYy'",
+      "disposition": "pseudolocale_engine_or_font_identifier"
+    },
+    {
+      "file": "game/mobile/lib/presentation.dart",
+      "line": 12,
+      "classification": "english_candidate",
+      "source": "r'^[+\\-\u2212]?\\d[\\d.,eE+\\-\\sKMBT%/\u00d7]*$'",
+      "disposition": "pseudolocale_engine_or_font_identifier"
+    },
+    {
+      "file": "game/mobile/lib/presentation.dart",
+      "line": 15,
+      "classification": "english_candidate",
+      "source": "'[A-Za-z]'",
+      "disposition": "pseudolocale_engine_or_font_identifier"
+    },
+    {
+      "file": "game/mobile/lib/presentation.dart",
+      "line": 25,
+      "classification": "english_candidate",
+      "source": "'\u00e9xtra'",
+      "disposition": "pseudolocale_engine_or_font_identifier"
+    },
+    {
+      "file": "game/mobile/lib/presentation.dart",
+      "line": 179,
+      "classification": "english_candidate",
+      "source": "'Roboto'",
+      "disposition": "pseudolocale_engine_or_font_identifier"
+    },
+    {
+      "file": "game/mobile/lib/producer_art.dart",
+      "line": 131,
+      "classification": "english_candidate",
+      "source": "'FF${source.substring(1)}'",
+      "disposition": "digest_or_color_format"
+    },
+    {
+      "file": "game/mobile/lib/story_state.dart",
+      "line": 104,
+      "classification": "english_candidate",
+      "source": "r'^cosmetic\\.core\\.decoration\\.0[1-6]$'",
+      "disposition": "validation_regex"
+    }
+  ],
+  "limits": [
+    "Candidate classification is heuristic; empty UI prose candidate set is not an assertion that every technical diagnostic is translated.",
+    "68 AST occurrences classified internal_diagnostic_or_pattern remain in source, including validation errors and expressions.",
+    "Core/progression/service machine reason codes, exception details, native localized prices, user text, recovery codes, URLs, paths, IDs and formatted numbers are preserved.",
+    "Authored content stays in existing JSON/catalogue assets and is transformed only when displayed. No translation locale or bidi acceptance is claimed."
+  ]
+}

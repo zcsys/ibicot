@@ -1,0 +1,31 @@
+{
+  "scope": "Current-source host lifecycle check only; not frozen152, native or human qualification",
+  "source_differences": [],
+  "results": [
+    {
+      "name": "analyzer",
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+        "analyze"
+      ],
+      "exit_code": 1,
+      "log_sha256": "b69c2d236707d96f8cc82024cca3187f3a9b1f305c7ba3b2674991479c708d82"
+    },
+    {
+      "name": "lifecycle",
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+        "test",
+        "test/art_catalogue_variants_test.dart",
+        "--plain-name",
+        "actual app animation responds",
+        "--reporter=expanded",
+        "--timeout=60s",
+        "--dart-define=TIDEGLASS_ART_REPORT_DIR=/Users/csys/Desktop/ibicot/idle/release/art/catalogue-variants/root-art-lifecycle-20261021T114719.496224Z"
+      ],
+      "exit_code": 0,
+      "log_sha256": "5b27aa0ca1756074e966e5203d7adf7350dced025552661da16c138a2bfb5a43"
+    }
+  ],
+  "art_report_directory": "/Users/csys/Desktop/ibicot/idle/release/art/catalogue-variants/root-art-lifecycle-20261021T114719.496224Z"
+}

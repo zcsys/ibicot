@@ -1,0 +1,71 @@
+{
+  "purpose": "Read-only current clock-domain diagnostic after preserved operator validation failure; not retroactive event correction or predecessor qualification",
+  "samples": [
+    {
+      "host_before_ns": 1792946805899788000,
+      "host_after_ns": 1792946805951523000,
+      "argv": [
+        "/Users/csys/Library/Android/sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "date",
+        "-u",
+        "+%s.%N"
+      ],
+      "exit_code": 0,
+      "raw_file": "sample-0.txt",
+      "sha256": "bc3b43774c776d5594a963273a01011816fc8c7a4e103872d0b9bc678c09e42a",
+      "stderr": "",
+      "device_utc_ns": 1792946805479504220,
+      "host_minus_device_bounds_ms": [
+        420.28378,
+        472.01878
+      ]
+    },
+    {
+      "host_before_ns": 1792946805952018000,
+      "host_after_ns": 1792946805983455000,
+      "argv": [
+        "/Users/csys/Library/Android/sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "date",
+        "-u",
+        "+%s.%N"
+      ],
+      "exit_code": 0,
+      "raw_file": "sample-1.txt",
+      "sha256": "8985f2dc72db322d653221eb7973bf9fb5ed86a6f7afdc3cf35ef7902e8c1a71",
+      "stderr": "",
+      "device_utc_ns": 1792946805512348512,
+      "host_minus_device_bounds_ms": [
+        439.669488,
+        471.106488
+      ]
+    },
+    {
+      "host_before_ns": 1792946805984088000,
+      "host_after_ns": 1792946806016899000,
+      "argv": [
+        "/Users/csys/Library/Android/sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "date",
+        "-u",
+        "+%s.%N"
+      ],
+      "exit_code": 0,
+      "raw_file": "sample-2.txt",
+      "sha256": "72b4a0be516eb48c9a11e09576d17209469122d7a478166ea84dd017e4abdfc4",
+      "stderr": "",
+      "device_utc_ns": 1792946805544859553,
+      "host_minus_device_bounds_ms": [
+        439.228447,
+        472.039447
+      ]
+    }
+  ]
+}

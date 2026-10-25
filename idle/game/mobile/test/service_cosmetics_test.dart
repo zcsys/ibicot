@@ -10,6 +10,15 @@ import 'package:tideglass/service_cosmetics.dart';
 import 'package:tideglass/story_state.dart';
 import 'package:tideglass_core/tideglass_core.dart';
 import 'package:tideglass_platform/tideglass_platform.dart';
+import 'package:tideglass_platform/soundtrack_delivery.dart';
+import 'package:tideglass/soundtrack_export.dart';
+
+class FixtureSoundtrack extends SoundtrackDelivery {
+  FixtureSoundtrack(super.client, this.available);
+  final bool available;
+  @override
+  Future<bool> ready() async => available;
+}
 
 class FixtureCredentials implements CredentialStore {
   final data = <String, String>{};
@@ -154,7 +163,7 @@ void main() {
   Future<
     (GameController, NativeServicesManager, FixtureCommerceClient, FixtureStore)
   >
-  fixture({int xp = 0, bool signedIn = true}) async {
+  fixture({int xp = 0, bool signedIn = true, bool? soundtrackReady}) async {
     final client = FixtureCommerceClient();
     final store = FixtureStore();
     late GameController game;
@@ -162,7 +171,13 @@ void main() {
       client: client,
       credentials: FixtureCredentials(),
       store: store,
-      configuration: const NativeServiceConfiguration(commerceEnabled: true),
+      configuration: NativeServiceConfiguration(
+        commerceEnabled: true,
+        supporterEnabled: soundtrackReady != null,
+      ),
+      soundtrack: soundtrackReady == null
+          ? null
+          : FixtureSoundtrack(client, soundtrackReady),
       platformOverride: 'apple',
       localAccountSeed: () => game.state.daily.accountSeed,
     );
@@ -314,7 +329,7 @@ void main() {
       expect(find.byKey(const ValueKey('refresh-commerce')), findsNothing);
       expect(find.textContaining('TEST'), findsNothing);
       expect(
-        find.byKey(const ValueKey('supporter-fulfillment-unavailable')),
+        find.byKey(const ValueKey('supporter-fulfillment-status')),
         findsOneWidget,
       );
       await tap(tester, 'cosmetic-filter-2');
@@ -428,6 +443,72 @@ void main() {
       await manager.refreshOwnership();
       await tester.pumpAndSettle();
       expect(verifiedPaidCosmetics(manager, game), isEmpty);
+      expect(tester.takeException(), isNull);
+    },
+  );
+  test(
+    'supporter offers require configured, confirmed delivery and preserve four IDs',
+    () async {
+      for (final readiness in [null, false, true]) {
+        final (_, manager, client, _) = await fixture(
+          soundtrackReady: readiness,
+        );
+        await manager.loadOffers();
+        await manager.refreshOwnership();
+        final supporter = cosmeticStoreOffers(
+          manager,
+        ).where((offer) => offer.productId == 'dev.tideglass.supporter');
+        expect(supporter.length, readiness == true ? 1 : 0);
+        if (readiness == true) {
+          expect(supporter.single.cosmeticIds, {
+            for (var i = 1; i <= 4; i++) 'cosmetic.shop.0$i',
+          });
+          client.grant = {'soundtrack.01'};
+          await manager.refreshOwnership();
+          expect(
+            cosmeticStoreOffers(
+              manager,
+            ).any((offer) => offer.productId == 'dev.tideglass.supporter'),
+            isFalse,
+          );
+        } else {
+          await expectLater(
+            manager.buy('dev.tideglass.supporter'),
+            throwsA(isA<ServiceException>()),
+          );
+        }
+      }
+    },
+  );
+  testWidgets(
+    'verified soundtrack opens explicit export action and reports cancellation honestly',
+    (tester) async {
+      final (game, manager, client, _) = await fixture(soundtrackReady: true);
+      client.grant = {'soundtrack.01'};
+      await manager.refreshOwnership();
+      var exports = 0;
+      await show(
+        tester,
+        CommerceScreen(
+          game: game,
+          manager: manager,
+          onExportSoundtrack: (supplied, anchor) async {
+            expect(identical(supplied, manager), isTrue);
+            expect(anchor.width, greaterThan(0));
+            expect(anchor.height, greaterThan(0));
+            exports++;
+            return SoundtrackExportResult.cancelled;
+          },
+        ),
+        large: true,
+      );
+      await tap(tester, 'download-soundtrack');
+      expect(exports, 1);
+      expect(find.textContaining('Export cancelled.'), findsOneWidget);
+      client.grant = {};
+      await manager.refreshOwnership();
+      await tester.pumpAndSettle();
+      expect(find.byKey(const ValueKey('download-soundtrack')), findsNothing);
       expect(tester.takeException(), isNull);
     },
   );

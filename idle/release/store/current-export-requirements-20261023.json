@@ -1,0 +1,89 @@
+{
+  "checked_utc": "2026-10-23T03:51:22.242163+00:00",
+  "author": "/root",
+  "purpose": "Local export specification and capture setup; not ingestion or publication evidence",
+  "references": {
+    "google": "https://support.google.com/googleplay/android-developer/answer/9866151?hl=en",
+    "apple_screenshots": "https://developer.apple.com/help/app-store-connect/reference/app-information/screenshot-specifications/",
+    "apple_previews": "https://developer.apple.com/help/app-store-connect/reference/app-information/app-preview-specifications/"
+  },
+  "icon": {
+    "google": {
+      "pixels": [
+        512,
+        512
+      ],
+      "png_bits_per_pixel": 32,
+      "alpha_channel_required": true,
+      "max_bytes": 1048576
+    },
+    "feature": {
+      "pixels": [
+        1024,
+        500
+      ],
+      "png_bits_per_pixel": 24,
+      "alpha_channel": false
+    }
+  },
+  "planned_captures": {
+    "android": {
+      "actual_emulator_display": [
+        1080,
+        1920
+      ],
+      "why": "Raw prior1080x2400 exceeds longest<=2xshortest requirement;9:16 also meets recommended game framing. Change owned emulator display only for gallery and restore prior override afterward.",
+      "no_crop_or_synthesized_UI": true
+    },
+    "ios_tablet": {
+      "new_project_owned_device": "Installed13-inch iPad simulator; record actual type/runtime/UUID",
+      "accepted_raw_pixels": [
+        [
+          2064,
+          2752
+        ],
+        [
+          2048,
+          2732
+        ]
+      ],
+      "why": "Prior mini1488x2266 is valid source footage but does not supply the required13-inch screenshot group.",
+      "alpha_channel_allowed": false
+    },
+    "ios_phone": {
+      "expected_raw_pixels": [
+        1206,
+        2622
+      ],
+      "qualification": "Current page Required device sizes explicitly names iPhone with Dynamic Island(medium display);1206x2622 is accepted. Actual ingestion remains unperformed.",
+      "alpha_channel_allowed": false
+    }
+  },
+  "preview_export": {
+    "duration_seconds": [
+      15,
+      30
+    ],
+    "max_bytes": 500000000,
+    "codec": "H.264 progressive up to High4.0",
+    "max_fps": 30,
+    "encoder_target_bits_per_second": [
+      10000000,
+      12000000
+    ],
+    "target_is_not_claim_of_actual_average": true,
+    "phone_pixels": [
+      886,
+      1920
+    ],
+    "tablet_pixels": [
+      1200,
+      1600
+    ],
+    "retain_original_silent_video": true,
+    "audio_if_present": "AAC256kbps stereo44.1or48kHz; no audio added or native capture inferred automatically",
+    "google_public_or_unlisted_youtube_url_required_for_listing": true
+  },
+  "public_submission_authorized": false,
+  "native_capture_executed_yet": false
+}

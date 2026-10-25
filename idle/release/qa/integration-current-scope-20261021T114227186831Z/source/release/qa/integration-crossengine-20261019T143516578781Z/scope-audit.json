@@ -1,0 +1,355 @@
+{
+  "reviewer": "/root/qa_integration",
+  "source_fingerprint": "62fe19032935516675b13874696a15c04a8128bbd96e9f4fa897ed494ad57538",
+  "context_validation": {
+    "requirements": 44,
+    "original_packages": 65,
+    "source_contract_changes": [],
+    "reciprocal_mapping_errors": [],
+    "source_fingerprints_match": {
+      "TIDEGLASS_DESIGN.md": true,
+      "V1_ROADMAP.md": true,
+      "v1_backlog.json": true,
+      "economy.json": true
+    },
+    "already_accepted_original_packages": 4,
+    "bootstrap_packages_separate": 3
+  },
+  "scope_to_implementation": [
+    {
+      "scope_id": "S03",
+      "requirement": "Five producer prices/outputs, tier ratio 20, growth 1.12, previous-tier unlock at 10",
+      "work_items": [
+        "M1-01",
+        "M1-02",
+        "M2-01",
+        "BOOT-CORE"
+      ],
+      "component_evidence": "QA018 rule-isolation repair verified in exact pinned host arithmetic and online/offline traces. Old long-horizon conclusions invalidated.",
+      "full_requirement_verified": false,
+      "remaining": "Content acceptance, repaired complete policy matrices, physical performance and observed human/elapsed evidence remain separate gates."
+    },
+    {
+      "scope_id": "S08",
+      "requirement": "24 hours full production plus 48 hours at quarter rate; event-driven saved-policy replay",
+      "work_items": [
+        "M3-01",
+        "M3-10",
+        "M5-01"
+      ],
+      "component_evidence": "QA018 rule-isolation repair verified in exact pinned host arithmetic and online/offline traces. Old long-horizon conclusions invalidated.",
+      "full_requirement_verified": false,
+      "remaining": "Content acceptance, repaired complete policy matrices, physical performance and observed human/elapsed evidence remain separate gates."
+    },
+    {
+      "scope_id": "S14",
+      "requirement": "Explicit event ordering, numeric remainder policy and pinned economic versions",
+      "work_items": [
+        "M1-01",
+        "M1-04",
+        "M3-01",
+        "M3-10"
+      ],
+      "component_evidence": "QA018 rule-isolation repair verified in exact pinned host arithmetic and online/offline traces. Old long-horizon conclusions invalidated.",
+      "full_requirement_verified": false,
+      "remaining": "Content acceptance, repaired complete policy matrices, physical performance and observed human/elapsed evidence remain separate gates."
+    },
+    {
+      "scope_id": "S16",
+      "requirement": "Twelve challenge dossiers across three rule families, 100 Notes each",
+      "work_items": [
+        "M3-08",
+        "M4-01",
+        "M4-06"
+      ],
+      "component_evidence": "QA018 rule-isolation repair verified in exact pinned host arithmetic and online/offline traces. Old long-horizon conclusions invalidated.",
+      "full_requirement_verified": false,
+      "remaining": "Content acceptance, repaired complete policy matrices, physical performance and observed human/elapsed evidence remain separate gates."
+    },
+    {
+      "scope_id": "S20",
+      "requirement": "Season 1 Night of Returning Stars, 28-day lifecycle, isolated fleet, specified coefficients and no event prestige",
+      "work_items": [
+        "M4-02",
+        "M4-06",
+        "M6-07"
+      ],
+      "component_evidence": "QA018 rule-isolation repair verified in exact pinned host arithmetic and online/offline traces. Old long-horizon conclusions invalidated.",
+      "full_requirement_verified": false,
+      "remaining": "Content acceptance, repaired complete policy matrices, physical performance and observed human/elapsed evidence remain separate gates."
+    },
+    {
+      "scope_id": "S31",
+      "requirement": "60/30fps targets, p95 startup \u22645s, 24h replay \u22643s, measured 30-minute battery/thermal usability",
+      "work_items": [
+        "M5-01",
+        "M5-07"
+      ],
+      "component_evidence": "QA018 rule-isolation repair verified in exact pinned host arithmetic and online/offline traces. Old long-horizon conclusions invalidated.",
+      "full_requirement_verified": false,
+      "remaining": "Content acceptance, repaired complete policy matrices, physical performance and observed human/elapsed evidence remain separate gates."
+    },
+    {
+      "scope_id": "S33",
+      "requirement": "30/90-day simulations of visit/reset/buy/bonus strategies and Note scarcity",
+      "work_items": [
+        "M5-05",
+        "M6-03"
+      ],
+      "component_evidence": "QA018 rule-isolation repair verified in exact pinned host arithmetic and online/offline traces. Old long-horizon conclusions invalidated.",
+      "full_requirement_verified": false,
+      "remaining": "Content acceptance, repaired complete policy matrices, physical performance and observed human/elapsed evidence remain separate gates."
+    }
+  ],
+  "implementation_to_scope": [
+    {
+      "implementation": "Exact baseline-type total-rate memo guard",
+      "scope_ids": [
+        "S03",
+        "S08",
+        "S14",
+        "S16",
+        "S20"
+      ],
+      "evidence": "Old source fails actual dossier and independent extra-state probes; repaired source passes3170 assertions including26 exact traces."
+    },
+    {
+      "implementation": "Review correction and invalidated simulation records",
+      "scope_ids": [
+        "S31",
+        "S33"
+      ],
+      "evidence": "Prior main-only exactness retained; broad scenario compatibility conclusion withdrawn; v4/supplementalv2 not reviewed."
+    }
+  ],
+  "original_contracts": [
+    {
+      "id": "BOOT-CORE",
+      "status": "accepted",
+      "source_acceptance": "Repeatable export and documented scope; not a production numeric implementation.",
+      "source_acceptance_dependencies": [],
+      "scope_ids": [
+        "S03",
+        "S05"
+      ]
+    },
+    {
+      "id": "M1-01",
+      "status": "in_progress",
+      "source_acceptance": "Define precision, comparison and rounding rules; pass bulk-buy and prestige-boundary fixtures including extreme values.",
+      "source_acceptance_dependencies": [
+        "M0-02"
+      ],
+      "scope_ids": [
+        "S03",
+        "S05",
+        "S14",
+        "S29"
+      ]
+    },
+    {
+      "id": "M1-02",
+      "status": "in_progress",
+      "source_acceptance": "Five producers, unlocks, milestones, lifetime ledger and Rechart run without rendering; explicit event ordering is tested.",
+      "source_acceptance_dependencies": [
+        "M1-01"
+      ],
+      "scope_ids": [
+        "S03",
+        "S04",
+        "S05"
+      ]
+    },
+    {
+      "id": "M1-04",
+      "status": "in_progress",
+      "source_acceptance": "Validate configs, pin economic versions to saves and provide safe defaults; reject incompatible updates before application.",
+      "source_acceptance_dependencies": [
+        "M0-08"
+      ],
+      "scope_ids": [
+        "S14",
+        "S40"
+      ]
+    },
+    {
+      "id": "M2-01",
+      "status": "in_progress",
+      "source_acceptance": "Cross-tier synergies, free autobuy unlock and baseline offline replay support first session through 25 Charts with deterministic results.",
+      "source_acceptance_dependencies": [
+        "M1-02"
+      ],
+      "scope_ids": [
+        "S03",
+        "S06",
+        "S07"
+      ]
+    },
+    {
+      "id": "M3-01",
+      "status": "in_progress",
+      "source_acceptance": "2-hour Focus, 8-hour Surveys, 24/72-hour offline envelope, bonus expiry and account-day boundaries resolve in a single event timeline.",
+      "source_acceptance_dependencies": [
+        "M2-01",
+        "M1-03"
+      ],
+      "scope_ids": [
+        "S08",
+        "S09",
+        "S10",
+        "S14"
+      ]
+    },
+    {
+      "id": "M3-08",
+      "status": "in_progress",
+      "source_acceptance": "Six chapters and twelve challenges have objectives, unlock rules, reward budgets and completion evidence; passive and active routes are covered.",
+      "source_acceptance_dependencies": [
+        "M1-06",
+        "M2-06"
+      ],
+      "scope_ids": [
+        "S15",
+        "S16",
+        "S44"
+      ]
+    },
+    {
+      "id": "M3-10",
+      "status": "in_progress",
+      "source_acceptance": "Test 1/3/6 visits, 2/8/24/48/72-hour absences, clock changes, bonus queues and reset/day-boundary collisions; report exact and approximate differences.",
+      "source_acceptance_dependencies": [
+        "M3-01",
+        "M3-02",
+        "M3-03",
+        "M3-06",
+        "M3-07"
+      ],
+      "scope_ids": [
+        "S08",
+        "S10",
+        "S11",
+        "S14",
+        "S28",
+        "S29"
+      ]
+    },
+    {
+      "id": "M4-01",
+      "status": "in_progress",
+      "source_acceptance": "Challenge state is isolated, goals are deterministic, main automation continues and exit/restart cannot export economic rewards.",
+      "source_acceptance_dependencies": [
+        "M3-08",
+        "M3-03"
+      ],
+      "scope_ids": [
+        "S16"
+      ]
+    },
+    {
+      "id": "M4-02",
+      "status": "in_progress",
+      "source_acceptance": "Season start/end/archive, event coefficients, pinned versions and offline transitions work; no paid or main-world power enters the event.",
+      "source_acceptance_dependencies": [
+        "M4-01",
+        "M3-01"
+      ],
+      "scope_ids": [
+        "S20",
+        "S21"
+      ]
+    },
+    {
+      "id": "M4-06",
+      "status": "in_progress",
+      "source_acceptance": "Six chapters, ending, twelve challenges, twelve calibration patterns, eighteen archive entries and Season 1 have complete data and copy.",
+      "source_acceptance_dependencies": [
+        "M3-08",
+        "M4-01",
+        "M4-02"
+      ],
+      "scope_ids": [
+        "S15",
+        "S16",
+        "S17",
+        "S18",
+        "S20",
+        "S21",
+        "S22"
+      ]
+    },
+    {
+      "id": "M5-01",
+      "status": "in_progress",
+      "source_acceptance": "Meet measured frame/startup/resume budgets on minimum devices; heavy replay is chunked and never silently drops earned time.",
+      "source_acceptance_dependencies": [
+        "M3-10",
+        "M4-02"
+      ],
+      "scope_ids": [
+        "S08",
+        "S31"
+      ]
+    },
+    {
+      "id": "M5-05",
+      "status": "in_progress",
+      "source_acceptance": "Simulate 30/90 days across visit and bonus policies, audit Note sinks and content pacing, freeze beta config and metric definitions.",
+      "source_acceptance_dependencies": [
+        "M4-06",
+        "M5-04"
+      ],
+      "scope_ids": [
+        "S07",
+        "S18",
+        "S25",
+        "S29",
+        "S33",
+        "S44",
+        "S34"
+      ]
+    },
+    {
+      "id": "M5-07",
+      "status": "in_progress",
+      "source_acceptance": "Complete the device matrix, storage/network interruptions, upgrade migrations and install/return flows with zero open blocking issues.",
+      "source_acceptance_dependencies": [
+        "M5-01",
+        "M5-02",
+        "M5-03"
+      ],
+      "scope_ids": [
+        "S12",
+        "S28",
+        "S31"
+      ]
+    },
+    {
+      "id": "M6-03",
+      "status": "not_started",
+      "source_acceptance": "Fix core bugs using replay fixtures; version any balance changes and keep affected cohorts separate.",
+      "source_acceptance_dependencies": [
+        "M5-01",
+        "M6-01"
+      ],
+      "scope_ids": [
+        "S33"
+      ]
+    },
+    {
+      "id": "M6-07",
+      "status": "not_started",
+      "source_acceptance": "A real 28-day pass and mature D30 cohort are observed; accelerated testing is documented separately.",
+      "source_acceptance_dependencies": [
+        "M6-01"
+      ],
+      "scope_ids": [
+        "S20",
+        "S30",
+        "S34"
+      ]
+    }
+  ],
+  "new_packages_accepted": [],
+  "beta_or_release_accepted": false
+}

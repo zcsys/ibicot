@@ -1,0 +1,13 @@
+--- before-driver.dart
++++ after-driver.dart
+@@ -73,8 +73,9 @@
+       for (final raw in screenshots) {
+         final screenshot = Map<String, dynamic>.from(raw as Map);
+         final name = screenshot['screenshotName'] as String;
+-        if (!RegExp(r'^[a-zA-Z0-9_-]+$').hasMatch(name))
++        if (!RegExp(r'^[a-zA-Z0-9_-]+$').hasMatch(name)) {
+           throw FormatException('Unsafe screenshot name');
++        }
+         final path = '${directory.path}/$name.png';
+         await File(path)
+             .writeAsBytes(List<int>.from(screenshot['bytes'] as List));

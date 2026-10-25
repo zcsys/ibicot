@@ -1,0 +1,26 @@
+{
+  "utc": "2026-10-25T16:02:42.081283+00:00",
+  "result": "failed native run preserved; no proven production timing defect; receipt-before-return within unchanged bound is feasible",
+  "native_run": "release/native-notifications/integration-android-20261025T154824471008Z",
+  "native_verification_sha256": "38a60e7e39295b9afec213dcbf4808cfa5d599d65f1ca2365049d4ec3382bca7",
+  "read_only_review": true,
+  "native_or_flutter_commands": false,
+  "source_before_after_unchanged": true,
+  "native_evidence_rehashed_count": 38,
+  "timing": {
+    "scheduled_observed_utc_ms": 1792943384680,
+    "due_utc_ms": 1792943700000,
+    "returned_utc_ms": 1792943744951,
+    "schedule_to_due_ms": 315320,
+    "schedule_to_return_monotonic_ms": 360267,
+    "due_to_return_ms": 44951,
+    "watch_elapsed_at_return_ms": 402161,
+    "unused_720s_budget_at_return_ms": 317839,
+    "watch_epoch_inferred_from_return_ms": 1792943342790
+  },
+  "files_sha256": {
+    "timing.json": "f6ec1cab0a130d932fd53c674c77bc57a9975750b4228337ae4eca38810ff877",
+    "inputs.json": "f8823cc8c0a99fdc98395e4781909603d68e809c5dc4ce897426e6452e04cf4c",
+    "REVIEW.md": "aa3ac813b259507ca565f87a29187bd7f9d3a71f8af714f9a3aab8235c173b82"
+  }
+}

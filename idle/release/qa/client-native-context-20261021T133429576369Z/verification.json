@@ -1,0 +1,42 @@
+{
+  "source_sha256": {
+    "release/native-proof/native-context-harness-staging/game/mobile/integration_test/current_runtime_test.dart": "eb2ce92d6c1c8018791d57a2dd653d512507eb9c9ff6e8827000a29c469ee9ed",
+    "release/native-proof/native-context-harness-staging/tool/verify_current_runtime.py": "2e6d09079078b9e7c53460024eec99db5545b2dc235cff5c0f58a68c685e0538",
+    "release/native-proof/native-context-harness-staging/tool/test_current_runtime_verification.py": "c0fdaa8d355766fa92c61836c75cd463ed67f6957e3258c4daf0b860dbc1064b",
+    "game/qa/review_native_context_runtime.py": "7a5130d661e1db18d043e457cd0dc877e6bd0ea3c4c443f693f29c6b05d0539a",
+    "release/study/native-linkage-staging/HANDOFF.md": "74739e17b95271a7ef92cf96a6e6940d8634dc68d9eaa9dc6c2298ca797513ae",
+    "release/native-proof/native-context-harness-staging/python-workspace/tool/study_adjudicate.py": "ccf31107cced115bb7a417407a2b7cfa1498845ce10899b14a1f3ca533a406e6",
+    "release/native-proof/native-context-harness-staging/python-workspace/tool/study_native_diagnostics.py": "325afe73985b414a23ab3858ad4abc656351258bb3c19e49bd6c665761031430",
+    "release/native-proof/native-context-harness-staging/python-workspace/tool/study_report.py": "7109d2e53a8c07b8f00299b749a4c758530e51f38a2d444f4600ae6ef94e7462"
+  },
+  "commands": [
+    {
+      "name": "author29",
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tool",
+        "-p",
+        "test_current_runtime_verification.py",
+        "-v"
+      ],
+      "cwd": "/Users/csys/Desktop/ibicot/idle/release/native-proof/native-context-harness-staging/python-workspace",
+      "exit_code": 0,
+      "log_sha256": "56bcda0f53b859f4a47668786a6537873e577ca17c5f0ad47891f59d9a80917d"
+    },
+    {
+      "name": "review14",
+      "command": [
+        "python3",
+        "/Users/csys/Desktop/ibicot/idle/game/qa/review_native_context_runtime.py"
+      ],
+      "cwd": "/Users/csys/Desktop/ibicot/idle/release/native-proof/native-context-harness-staging/python-workspace",
+      "exit_code": 1,
+      "log_sha256": "82d37a22d666dbe9abe45e621ea1136eab5dd6d64a8d7582cd871d76f6f327b5"
+    }
+  ],
+  "source_changes": []
+}

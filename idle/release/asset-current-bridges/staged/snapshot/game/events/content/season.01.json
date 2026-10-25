@@ -1,0 +1,469 @@
+{
+  "schema_version": 1,
+  "id": "season.01",
+  "rules_version": "season.01.rules.1",
+  "title": "Night of Returning Stars",
+  "pass_id": "pass.01",
+  "duration_days": 28,
+  "base_economy_version": "tideglass-economy-1.0.0",
+  "synergy_percent_matrix": [
+    [
+      10,
+      20
+    ],
+    [
+      25,
+      10
+    ]
+  ],
+  "synergies_immediate": true,
+  "main_power_import": false,
+  "paid_effects": false,
+  "rechart_enabled": false,
+  "economic_exports": [],
+  "offline_envelope": "24h_full_48h_quarter",
+  "initial_counts": [
+    1,
+    0,
+    0,
+    0,
+    0
+  ],
+  "levels": 30,
+  "xp_per_level": 500,
+  "copy": {
+    "upcoming": "A new night sky is approaching. Every crew will begin with the same small fleet.",
+    "live": "Build a separate fleet and discover how the returning stars change its connections. Your main harbor keeps working.",
+    "ended": "The public watch has ended. Your fleet and rewards are safe in the archive.",
+    "archived": "Continue your fleet whenever you like. Your selected pass can still earn XP from the same daily contracts.",
+    "pass": "Choose one pass for new contract XP. Free rewards and premium appearances use the same 30-level track.",
+    "premium": "Premium ownership adds ten appearances. It adds no XP, currency, storage or production. Verified purchase restoration is required.",
+    "alternative": "Assign this daily slot to the seasonal fleet. Complete its frozen production target to claim that same slot once.",
+    "archive_resume": "Resume your archived fleet from its saved position. Time spent while the archive is paused grants no fleet production."
+  },
+  "milestones": [
+    {
+      "id": "season.01.beacon.01",
+      "lifetime_r": "1000000000",
+      "badge_id": "badge.season01.first_signal",
+      "title": "First Signal",
+      "body": "Your fleet has recovered its first shared bearing."
+    },
+    {
+      "id": "season.01.beacon.02",
+      "lifetime_r": "10000000000000",
+      "badge_id": "badge.season01.shared_sky",
+      "title": "Shared Sky",
+      "body": "The observatory and working fleet now read the same sky."
+    },
+    {
+      "id": "season.01.beacon.03",
+      "lifetime_r": "1000000000000000",
+      "badge_id": "badge.season01.returning_stars",
+      "title": "Returning Stars",
+      "body": "The seasonal map is ready to join the harbor archive."
+    }
+  ],
+  "rewards": [
+    {
+      "id": "pass.01.free.01",
+      "level": 1,
+      "track": "free",
+      "kind": "archive_fragment",
+      "content_id": "archive.season01.01",
+      "title": "The First Empty Sky",
+      "body": "For three nights the harbor kept its lanterns lit. On the fourth, a single point of light answered from beyond the reef.",
+      "economic_effects": []
+    },
+    {
+      "id": "pass.01.free.02",
+      "level": 2,
+      "track": "free",
+      "kind": "archive_fragment",
+      "content_id": "archive.season01.02",
+      "title": "A Different Fleet",
+      "body": "Mara ordered a small fleet built from ordinary timber. The old Charts stayed in the archive: this sky would need its own bearings.",
+      "economic_effects": []
+    },
+    {
+      "id": "pass.01.free.03",
+      "level": 3,
+      "track": "free",
+      "kind": "cosmetic",
+      "content_id": "cosmetic.free_pass.01",
+      "title": "Harbor Lantern",
+      "body": "Harbor Lantern changes the appearance of your harbor collection. It never changes production, storage, Charts or contract targets.",
+      "economic_effects": []
+    },
+    {
+      "id": "pass.01.free.04",
+      "level": 4,
+      "track": "free",
+      "kind": "archive_fragment",
+      "content_id": "archive.season01.03",
+      "title": "The Watch Ledger",
+      "body": "The watchkeeper left a blank line for every returning star. No one knew how many lines the book would need.",
+      "economic_effects": []
+    },
+    {
+      "id": "pass.01.free.05",
+      "level": 5,
+      "track": "free",
+      "kind": "archive_fragment",
+      "content_id": "archive.season01.04",
+      "title": "Shared Bearings",
+      "body": "Two crews argued over a heading until they compared their observations. Each had measured a different part of the same current.",
+      "economic_effects": []
+    },
+    {
+      "id": "pass.01.free.06",
+      "level": 6,
+      "track": "free",
+      "kind": "cosmetic",
+      "content_id": "cosmetic.free_pass.02",
+      "title": "Moonwake Hull",
+      "body": "Moonwake Hull changes the appearance of your harbor collection. It never changes production, storage, Charts or contract targets.",
+      "economic_effects": []
+    },
+    {
+      "id": "pass.01.free.07",
+      "level": 7,
+      "track": "free",
+      "kind": "archive_fragment",
+      "content_id": "archive.season01.05",
+      "title": "Nursery at Dusk",
+      "body": "The prisms grew dim before they grew bright. Their keeper called it listening, and asked the crew to wait.",
+      "economic_effects": []
+    },
+    {
+      "id": "pass.01.free.08",
+      "level": 8,
+      "track": "free",
+      "kind": "archive_fragment",
+      "content_id": "archive.season01.06",
+      "title": "The Second Signal",
+      "body": "A second star appeared beside the first. Their light crossed on the water, marking a path no single lantern could reveal.",
+      "economic_effects": []
+    },
+    {
+      "id": "pass.01.free.09",
+      "level": 9,
+      "track": "free",
+      "kind": "cosmetic",
+      "content_id": "cosmetic.free_pass.03",
+      "title": "Starfinder Pennant",
+      "body": "Starfinder Pennant changes the appearance of your harbor collection. It never changes production, storage, Charts or contract targets.",
+      "economic_effects": []
+    },
+    {
+      "id": "pass.01.free.10",
+      "level": 10,
+      "track": "free",
+      "kind": "archive_fragment",
+      "content_id": "archive.season01.07",
+      "title": "A Patient Dynamo",
+      "body": "The tide wheel turned while the harbor slept. In the morning its quiet work was waiting, with no demand for thanks.",
+      "economic_effects": []
+    },
+    {
+      "id": "pass.01.free.11",
+      "level": 11,
+      "track": "free",
+      "kind": "archive_fragment",
+      "content_id": "archive.season01.08",
+      "title": "An Unsent Letter",
+      "body": "Mara wrote that the night was less empty now. She left the letter open, hoping to add another observation before dawn.",
+      "economic_effects": []
+    },
+    {
+      "id": "pass.01.free.12",
+      "level": 12,
+      "track": "free",
+      "kind": "cosmetic",
+      "content_id": "cosmetic.free_pass.04",
+      "title": "Silver Nursery",
+      "body": "Silver Nursery changes the appearance of your harbor collection. It never changes production, storage, Charts or contract targets.",
+      "economic_effects": []
+    },
+    {
+      "id": "pass.01.free.13",
+      "level": 13,
+      "track": "free",
+      "kind": "archive_fragment",
+      "content_id": "archive.season01.09",
+      "title": "Loom Instructions",
+      "body": "The first woven chart looked wrong. Rotated toward the sea, its loose threads matched the currents exactly.",
+      "economic_effects": []
+    },
+    {
+      "id": "pass.01.free.14",
+      "level": 14,
+      "track": "free",
+      "kind": "archive_fragment",
+      "content_id": "archive.season01.10",
+      "title": "Visitors on the Pier",
+      "body": "Children named the lights after boats they remembered. The archivist recorded both the names and the disagreements.",
+      "economic_effects": []
+    },
+    {
+      "id": "pass.01.free.15",
+      "level": 15,
+      "track": "free",
+      "kind": "cosmetic",
+      "content_id": "cosmetic.free_pass.05",
+      "title": "Nightcurrent Dynamo",
+      "body": "Nightcurrent Dynamo changes the appearance of your harbor collection. It never changes production, storage, Charts or contract targets.",
+      "economic_effects": []
+    },
+    {
+      "id": "pass.01.free.16",
+      "level": 16,
+      "track": "free",
+      "kind": "archive_fragment",
+      "content_id": "archive.season01.11",
+      "title": "Cloud Cover",
+      "body": "Clouds hid the stars for a day. The crew kept working from their saved bearings; uncertainty did not erase what they had learned.",
+      "economic_effects": []
+    },
+    {
+      "id": "pass.01.free.17",
+      "level": 17,
+      "track": "free",
+      "kind": "archive_fragment",
+      "content_id": "archive.season01.12",
+      "title": "The Long Shift",
+      "body": "A returning watchkeeper found the instruments still turning. Her replacement had left tea, a neat log, and no list of missed duties.",
+      "economic_effects": []
+    },
+    {
+      "id": "pass.01.free.18",
+      "level": 18,
+      "track": "free",
+      "kind": "cosmetic",
+      "content_id": "cosmetic.free_pass.06",
+      "title": "Duskweave Loom",
+      "body": "Duskweave Loom changes the appearance of your harbor collection. It never changes production, storage, Charts or contract targets.",
+      "economic_effects": []
+    },
+    {
+      "id": "pass.01.free.19",
+      "level": 19,
+      "track": "free",
+      "kind": "archive_fragment",
+      "content_id": "archive.season01.13",
+      "title": "Observatory Window",
+      "body": "The new dome did not make the stars brighter. It gave everyone a place to look at them together.",
+      "economic_effects": []
+    },
+    {
+      "id": "pass.01.free.20",
+      "level": 20,
+      "track": "free",
+      "kind": "archive_fragment",
+      "content_id": "archive.season01.14",
+      "title": "Two Useful Routes",
+      "body": "The nursery crew and the skiff crew reached the same light by different routes. Both maps earned a place on the wall.",
+      "economic_effects": []
+    },
+    {
+      "id": "pass.01.free.21",
+      "level": 21,
+      "track": "free",
+      "kind": "cosmetic",
+      "content_id": "cosmetic.free_pass.07",
+      "title": "Farwatch Dome",
+      "body": "Farwatch Dome changes the appearance of your harbor collection. It never changes production, storage, Charts or contract targets.",
+      "economic_effects": []
+    },
+    {
+      "id": "pass.01.free.22",
+      "level": 22,
+      "track": "free",
+      "kind": "archive_fragment",
+      "content_id": "archive.season01.15",
+      "title": "The Quiet Beacon",
+      "body": "One beacon shone steadily enough that people stopped mentioning it. The keeper counted that as success.",
+      "economic_effects": []
+    },
+    {
+      "id": "pass.01.free.23",
+      "level": 23,
+      "track": "free",
+      "kind": "archive_fragment",
+      "content_id": "archive.season01.16",
+      "title": "A Harbor in Reflection",
+      "body": "From the outer reef, the lights on the water looked like another harbor. For a moment the crew could imagine returning to either one.",
+      "economic_effects": []
+    },
+    {
+      "id": "pass.01.free.24",
+      "level": 24,
+      "track": "free",
+      "kind": "cosmetic",
+      "content_id": "cosmetic.free_pass.08",
+      "title": "Meteor Mooring",
+      "body": "Meteor Mooring changes the appearance of your harbor collection. It never changes production, storage, Charts or contract targets.",
+      "economic_effects": []
+    },
+    {
+      "id": "pass.01.free.25",
+      "level": 25,
+      "track": "free",
+      "kind": "archive_fragment",
+      "content_id": "archive.season01.17",
+      "title": "What Came Home",
+      "body": "The stars brought no treasure for the warehouses. They brought bearings, stories, and a reason to paint the boats.",
+      "economic_effects": []
+    },
+    {
+      "id": "pass.01.free.26",
+      "level": 26,
+      "track": "free",
+      "kind": "archive_fragment",
+      "content_id": "archive.season01.18",
+      "title": "Last Live Watch",
+      "body": "On the final scheduled night, the keeper closed the public watch book. Its observations remained available to anyone who wanted to try the route.",
+      "economic_effects": []
+    },
+    {
+      "id": "pass.01.free.27",
+      "level": 27,
+      "track": "free",
+      "kind": "cosmetic",
+      "content_id": "cosmetic.free_pass.09",
+      "title": "Returning Star Banner",
+      "body": "Returning Star Banner changes the appearance of your harbor collection. It never changes production, storage, Charts or contract targets.",
+      "economic_effects": []
+    },
+    {
+      "id": "pass.01.free.28",
+      "level": 28,
+      "track": "free",
+      "kind": "archive_fragment",
+      "content_id": "archive.season01.19",
+      "title": "The Archive Door",
+      "body": "Mara placed the seasonal map beside the first restoration chart. Neither was a deadline now. Both were invitations.",
+      "economic_effects": []
+    },
+    {
+      "id": "pass.01.free.29",
+      "level": 29,
+      "track": "free",
+      "kind": "archive_fragment",
+      "content_id": "archive.season01.20",
+      "title": "A Light Left On",
+      "body": "The harbor kept one lantern burning after the festival. Anyone returning late would still be able to find the pier.",
+      "economic_effects": []
+    },
+    {
+      "id": "pass.01.free.30",
+      "level": 30,
+      "track": "free",
+      "kind": "cosmetic",
+      "content_id": "cosmetic.free_pass.10",
+      "title": "Homeward Sky",
+      "body": "Homeward Sky changes the appearance of your harbor collection. It never changes production, storage, Charts or contract targets.",
+      "economic_effects": []
+    },
+    {
+      "id": "pass.01.premium.03",
+      "level": 3,
+      "track": "premium",
+      "kind": "cosmetic",
+      "content_id": "cosmetic.premium_pass.01",
+      "title": "Opal Hull",
+      "body": "Opal Hull changes the appearance of your harbor collection. It never changes production, storage, Charts or contract targets.",
+      "economic_effects": []
+    },
+    {
+      "id": "pass.01.premium.06",
+      "level": 6,
+      "track": "premium",
+      "kind": "cosmetic",
+      "content_id": "cosmetic.premium_pass.02",
+      "title": "Constellation Sails",
+      "body": "Constellation Sails changes the appearance of your harbor collection. It never changes production, storage, Charts or contract targets.",
+      "economic_effects": []
+    },
+    {
+      "id": "pass.01.premium.09",
+      "level": 9,
+      "track": "premium",
+      "kind": "cosmetic",
+      "content_id": "cosmetic.premium_pass.03",
+      "title": "Blue Hour Nursery",
+      "body": "Blue Hour Nursery changes the appearance of your harbor collection. It never changes production, storage, Charts or contract targets.",
+      "economic_effects": []
+    },
+    {
+      "id": "pass.01.premium.12",
+      "level": 12,
+      "track": "premium",
+      "kind": "cosmetic",
+      "content_id": "cosmetic.premium_pass.04",
+      "title": "Comet Dynamo",
+      "body": "Comet Dynamo changes the appearance of your harbor collection. It never changes production, storage, Charts or contract targets.",
+      "economic_effects": []
+    },
+    {
+      "id": "pass.01.premium.15",
+      "level": 15,
+      "track": "premium",
+      "kind": "cosmetic",
+      "content_id": "cosmetic.premium_pass.05",
+      "title": "Velvet Night Loom",
+      "body": "Velvet Night Loom changes the appearance of your harbor collection. It never changes production, storage, Charts or contract targets.",
+      "economic_effects": []
+    },
+    {
+      "id": "pass.01.premium.18",
+      "level": 18,
+      "track": "premium",
+      "kind": "cosmetic",
+      "content_id": "cosmetic.premium_pass.06",
+      "title": "Aurora Observatory",
+      "body": "Aurora Observatory changes the appearance of your harbor collection. It never changes production, storage, Charts or contract targets.",
+      "economic_effects": []
+    },
+    {
+      "id": "pass.01.premium.21",
+      "level": 21,
+      "track": "premium",
+      "kind": "cosmetic",
+      "content_id": "cosmetic.premium_pass.07",
+      "title": "Starpath Dock",
+      "body": "Starpath Dock changes the appearance of your harbor collection. It never changes production, storage, Charts or contract targets.",
+      "economic_effects": []
+    },
+    {
+      "id": "pass.01.premium.24",
+      "level": 24,
+      "track": "premium",
+      "kind": "cosmetic",
+      "content_id": "cosmetic.premium_pass.08",
+      "title": "Luminous Compass",
+      "body": "Luminous Compass changes the appearance of your harbor collection. It never changes production, storage, Charts or contract targets.",
+      "economic_effects": []
+    },
+    {
+      "id": "pass.01.premium.27",
+      "level": 27,
+      "track": "premium",
+      "kind": "cosmetic",
+      "content_id": "cosmetic.premium_pass.09",
+      "title": "Lantern Constellation",
+      "body": "Lantern Constellation changes the appearance of your harbor collection. It never changes production, storage, Charts or contract targets.",
+      "economic_effects": []
+    },
+    {
+      "id": "pass.01.premium.30",
+      "level": 30,
+      "track": "premium",
+      "kind": "cosmetic",
+      "content_id": "cosmetic.premium_pass.10",
+      "title": "Celestial Harbor",
+      "body": "Celestial Harbor changes the appearance of your harbor collection. It never changes production, storage, Charts or contract targets.",
+      "economic_effects": []
+    }
+  ]
+}

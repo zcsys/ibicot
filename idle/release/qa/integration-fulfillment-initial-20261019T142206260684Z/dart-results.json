@@ -1,0 +1,29 @@
+[
+  {
+    "name": "dart-author-tests",
+    "command": [
+      "test",
+      "test/signed_entitlements_test.dart",
+      "--reporter",
+      "expanded"
+    ],
+    "exit_code": 0
+  },
+  {
+    "name": "dart-independent-initial",
+    "command": [
+      "test",
+      "test/qa_integration_signed_cache_test.dart",
+      "--reporter",
+      "expanded"
+    ],
+    "exit_code": 1
+  },
+  {
+    "name": "dart-author-analysis",
+    "command": [
+      "analyze"
+    ],
+    "exit_code": 0
+  }
+]

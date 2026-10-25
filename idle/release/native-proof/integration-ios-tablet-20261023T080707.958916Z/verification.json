@@ -1,0 +1,125 @@
+{
+  "candidate_fingerprint": "3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59",
+  "device": "C6D76EF5-2DBE-4C7E-BC58-70B2322F4EAB",
+  "label": "ios-tablet",
+  "platform": "ios",
+  "started_utc": "20261023T080707.958916Z",
+  "command": [
+    "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+    "drive",
+    "--driver=test_driver/evidence_ec880d16153b.dart",
+    "--target=integration_test/evidence_1925106cb014_test.dart",
+    "-d",
+    "C6D76EF5-2DBE-4C7E-BC58-70B2322F4EAB",
+    "--dart-define=TIDEGLASS_DEVICE_LABEL=ios-tablet",
+    "--dart-define=TIDEGLASS_SCENARIO=capture-gallery",
+    "--dart-define=TIDEGLASS_RUN_ID=v3b00-ios-tablet-gallery-season-fixed",
+    "--dart-define=TIDEGLASS_VERIFICATION_ID=integration-ios-tablet-20261023T080707.958916Z",
+    "--dart-define=TIDEGLASS_CANDIDATE_FINGERPRINT=3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59",
+    "--dart-define=TIDEGLASS_HARNESS_SHA256=1925106cb014a4a21575af3aa3bd85fc997873c1c9be74249c966da1cf28318b",
+    "--keep-app-running",
+    "--timeout=180",
+    "--no-pub"
+  ],
+  "runner_sha256": "68297f66fc4e32a173b17da2594872334d59ba2b88b7d5878b5ee8905f9b89e5",
+  "candidate_validation_runner_sha256": "59ee4e7b94a1445e2c8effadfe4c0510c9c189df0278c7ede6e87f1807bf38ee",
+  "scenario": "capture-gallery",
+  "run_id": "v3b00-ios-tablet-gallery-season-fixed",
+  "harness_sha256": {
+    "harness.dart": "1925106cb014a4a21575af3aa3bd85fc997873c1c9be74249c966da1cf28318b",
+    "driver.dart": "ec880d16153b1ac577a221a46f81e7c309dd5417fbba8aae4ce68f7acbcfb668",
+    "native_recording.py": "343ed23024953c6378bf7a314589a7252a7f97451cd01906168c9018a66c6582",
+    "native_video_metadata.swift": "2a3bb616cc2108f7d25cb6d2edd910b460bd4efc406fd0a2875cdc4197402450"
+  },
+  "production_inputs_match_snapshot": true,
+  "provenance": "Seeded production screen set and real-time UI actions in unedited silent simulator footage; no natural progression, human playtest or paid ownership claim.",
+  "recording": {
+    "platform": "ios",
+    "device": "C6D76EF5-2DBE-4C7E-BC58-70B2322F4EAB",
+    "audio_recorded": false,
+    "editing": "None; native simulator screen recorder output",
+    "commands": [
+      {
+        "command": [
+          "xcrun",
+          "simctl",
+          "get_app_container",
+          "C6D76EF5-2DBE-4C7E-BC58-70B2322F4EAB",
+          "dev.tideglass.game",
+          "data"
+        ],
+        "exit_code": 0,
+        "output": "/Users/csys/Library/Developer/CoreSimulator/Devices/C6D76EF5-2DBE-4C7E-BC58-70B2322F4EAB/data/Containers/Data/Application/45641E4C-900E-4526-B076-316956C71E88\n"
+      },
+      {
+        "command": [
+          "xcrun",
+          "simctl",
+          "io",
+          "C6D76EF5-2DBE-4C7E-BC58-70B2322F4EAB",
+          "recordVideo",
+          "--codec=h264",
+          "--force",
+          "/Users/csys/Desktop/ibicot/idle/release/native-proof/integration-ios-tablet-20261023T080707.958916Z/gameplay.mp4"
+        ],
+        "kind": "screen-recorder"
+      },
+      {
+        "command": [
+          "xcrun",
+          "swift",
+          "/Users/csys/Desktop/ibicot/idle/tool/native_video_metadata.swift",
+          "/Users/csys/Desktop/ibicot/idle/release/native-proof/integration-ios-tablet-20261023T080707.958916Z/gameplay.mp4"
+        ],
+        "exit_code": 0,
+        "output": "{\"audio_track_count\":0,\"duration_seconds\":25.401666666666667,\"height\":2752,\"video_track_count\":1,\"width\":2064}\n"
+      }
+    ],
+    "errors": [],
+    "start_acknowledgement": "simctl first recorded video frame",
+    "fixture_acknowledged": true,
+    "recorder_exit_code": 0,
+    "media": {
+      "audio_track_count": 0,
+      "duration_seconds": 25.401666666666667,
+      "height": 2752,
+      "video_track_count": 1,
+      "width": 2064
+    },
+    "passed": true
+  },
+  "exit_code": 0,
+  "production_input_differences_after_run": [],
+  "source_snapshot_unchanged": true,
+  "harness_source_differences_during_run": [],
+  "native_process_stop": {
+    "command": [
+      "xcrun",
+      "simctl",
+      "terminate",
+      "C6D76EF5-2DBE-4C7E-BC58-70B2322F4EAB",
+      "dev.tideglass.game"
+    ],
+    "exit_code": 0,
+    "output": ""
+  },
+  "verification_errors": [],
+  "passed": true,
+  "evidence_sha256": {
+    "ios-tablet-capture-chapter.png": "8902124933c42643e4dc4a8354ef7aa3ccc4c77682f1086f4a777145c1e2d614",
+    "result.json": "2722c4e25c31cd92ad7714c42a55a9ed66e243f5f6c98d4941017ccd77296437",
+    "run.log": "c35bb0846a2b2f94a7f933c8f912a0bab7cfe31c3006422694cf289ac131dd0a",
+    "native_recording.py": "343ed23024953c6378bf7a314589a7252a7f97451cd01906168c9018a66c6582",
+    "recording.json": "68e11c6f3168bedc73d107ac29209d24b710a7c9a0372c3e3d18be71f8a6da2a",
+    "capture-manifest.json": "725d6a47fc618509e7cacc2898c3136110d3e81533ddfb5675aeeca9c2289479",
+    "driver.dart": "ec880d16153b1ac577a221a46f81e7c309dd5417fbba8aae4ce68f7acbcfb668",
+    "verify_native.py": "68297f66fc4e32a173b17da2594872334d59ba2b88b7d5878b5ee8905f9b89e5",
+    "ios-tablet-capture-season.png": "6dee01e3678ef5389adea17d1f011d0b033639420ef2b8e54963c5308bdceb74",
+    "gameplay.mp4": "d8c28d38ddb25002def10e50022884162a9e1ecd237a624321dfdf2ba97f1d9a",
+    "ios-tablet-capture-challenge.png": "9d94f4b259ef6cc4c26df8bbf7c2e0317501e76bf2ec00f81d0b51b7a2442914",
+    "harness.dart": "1925106cb014a4a21575af3aa3bd85fc997873c1c9be74249c966da1cf28318b",
+    "native_video_metadata.swift": "2a3bb616cc2108f7d25cb6d2edd910b460bd4efc406fd0a2875cdc4197402450",
+    "recorder.log": "8f5ac3e59695bf27f9e2603f00eeea95c9061afd446c6157bb6a8f3cb2307800",
+    "ios-tablet-capture-main.png": "b261464b5fb63d3a8060e89897eaf916a1d85166ce1e1a3dff55d755422c9544"
+  }
+}

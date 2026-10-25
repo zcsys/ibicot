@@ -1,0 +1,39 @@
+{
+  "author_command": [
+    "python3",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "release/native-privacy",
+    "-p",
+    "test_artifact_inventory.py",
+    "-v"
+  ],
+  "author_exit_code": 0,
+  "historical_command": [
+    "python3",
+    "release/native-privacy/inspect_artifacts.py",
+    "--root",
+    "/Users/csys/Desktop/ibicot/idle",
+    "--candidate",
+    "/Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261021T101953.650199Z-152805bf9e26",
+    "--output",
+    "/Users/csys/Desktop/ibicot/idle/release/qa/client-native-inventory-20261021T143056.713149Z/historical-rerun",
+    "--bundletool",
+    "/Users/csys/Desktop/ibicot/idle/.tooling/bundletool/bundletool-all-1.18.3.jar",
+    "--aapt2",
+    "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/build-tools/36.0.0/aapt2",
+    "--java",
+    "/Users/csys/Desktop/ibicot/idle/.tooling/java/jdk-17.0.20.1+1/Contents/Home/bin/java",
+    "--report",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/20261021T102112.746555Z/build-report.json",
+    "--report",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/20261021T103632.486357Z/build-report.json"
+  ],
+  "historical_exit_code": 0,
+  "started_at": "2026-10-21T14:31:39.198358+00:00",
+  "finished_at": "2026-10-21T14:31:40.248303+00:00",
+  "current_candidate": false,
+  "runtime_or_release_approval": false
+}

@@ -1,0 +1,26 @@
+[
+  {
+    "check": "format",
+    "command": [
+      "/Users/csys/Desktop/ibicot/idle/.tooling/flutter/bin/cache/dart-sdk/bin/dart",
+      "format",
+      "integration_test/platform_smoke_test.dart",
+      "/Users/csys/Desktop/ibicot/idle/release/store/capture-overlay-repair-20261023T044221.198274Z/capture_pointer_probe_test.dart"
+    ],
+    "cwd": "/Users/csys/Desktop/ibicot/idle/game/mobile",
+    "exit_code": 0,
+    "log": "format.log"
+  },
+  {
+    "check": "analysis",
+    "command": [
+      "/Users/csys/Desktop/ibicot/idle/.tooling/flutter/bin/flutter",
+      "analyze",
+      "--no-pub",
+      "integration_test/platform_smoke_test.dart"
+    ],
+    "cwd": "/Users/csys/Desktop/ibicot/idle/game/mobile",
+    "exit_code": 1,
+    "log": "analysis.log"
+  }
+]

@@ -1,0 +1,30 @@
+{
+  "verification_id": "current-runtime-android-20261023T054712325925Z",
+  "candidate_fingerprint": "3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59",
+  "harness_sha256": "102be09eb8043ce9bb496156d9f37b1834c3084ddf58fef073e7c25cdc3c55d5",
+  "scenario": "runtime-cache-grace",
+  "run_id": "v3b00-android-probe-fixed-cache",
+  "device_label": "android",
+  "platform": "android",
+  "os_version": "sdk_gphone64_arm64-userdebug 15 AE3A.240806.043 12960925 dev-keys",
+  "process_id": 9665,
+  "fixture_kind": "INTERNAL SYNTHETIC QUALIFICATION ONLY",
+  "checks": [
+    "Real native files survive backward clock and23h injected grace; fourth export refuses before download;25h cleans expired files.",
+    "Held synthetic receiving-action prevents cleanup/new export; oversized native cache file blocks another download. No actual receiving app is claimed."
+  ],
+  "completed": true,
+  "limitations": [
+    "No real participant, consent, paid transaction or receiving-app delivery.",
+    "Process termination is not physical power loss or a lifecycle callback.",
+    "Injected predecessor/rate/clock/bounds are qualification fixtures only.",
+    "Consented production process observations do not prove release AOT fatal-report matching or a crash-free rate."
+  ],
+  "fixture_directory": "/data/user/0/dev.tideglass.game/cache/native-current-verification/android-v3b00-android-probe-fixed-cache/cache",
+  "cache_limits": {
+    "exports": 3,
+    "bytes": 201326592,
+    "grace_seconds": 86400
+  },
+  "screenshots": []
+}

@@ -1,3 +1,4 @@
+import 'strings.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
@@ -367,14 +368,12 @@ class TideAudioBus extends ChangeNotifier with WidgetsBindingObserver {
     } catch (_) {
       // Respect uncertainty about a saved mute choice: fail quietly.
       preferences = const AudioPreferences(muted: true);
-      warning =
-          'Sound settings could not be read. Sound is muted until you choose your settings again.';
+      warning = UiEnglish.audioSoundSettingsCouldNotBeReadSound;
     }
     try {
       await _driver.initialize();
     } catch (_) {
-      warning =
-          'Sound is temporarily unavailable. Your harbor continues normally.';
+      warning = UiEnglish.audioSoundIsTemporarilyUnavailableYourHarborContinues;
     }
     if (!_closed) notifyListeners();
   }
@@ -404,8 +403,7 @@ class TideAudioBus extends ChangeNotifier with WidgetsBindingObserver {
     try {
       await persisted;
     } catch (_) {
-      warning =
-          'Sound settings changed for this session but could not be saved.';
+      warning = UiEnglish.audioSoundSettingsChangedForThisSessionBut;
       if (!_closed) notifyListeners();
     }
   }
@@ -478,7 +476,7 @@ class TideAudioBus extends ChangeNotifier with WidgetsBindingObserver {
       await operation();
     } catch (_) {
       warning =
-          'Sound is temporarily unavailable. Your harbor continues normally.';
+          UiEnglish.audioSoundIsTemporarilyUnavailableYourHarborContinues2;
       if (!_closed) notifyListeners();
     }
   }

@@ -1,6 +1,7 @@
 import 'presentation.dart';
 import 'strings.dart';
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -10,6 +11,7 @@ import 'package:tideglass_persistence/tideglass_persistence.dart';
 import 'package:tideglass_events/tideglass_events.dart';
 import 'package:tideglass_progression/tideglass_progression.dart';
 import 'package:tideglass_platform/tideglass_platform.dart';
+import 'package:tideglass_platform/signed_entitlements.dart';
 
 import 'app.dart';
 import 'game_controller.dart';
@@ -21,6 +23,10 @@ import 'offline_replay.dart';
 import 'native_services.dart';
 import 'service_cosmetics.dart';
 import 'notification_service.dart';
+import 'ownership_clock.dart';
+import 'soundtrack_export.dart';
+import 'content_compatibility.dart';
+import 'client_economic_transition.dart';
 
 const bundledEconomyDigest = bundledEconomicDigest;
 
@@ -29,6 +35,7 @@ const bundledEconomyDigest = bundledEconomicDigest;
 void validateClientPayload(
   Map<String, dynamic> payload, {
   StoryCatalogue? catalogue,
+  String expectedEconomicVersion = economyVersion,
 }) {
   final version = payload['client_schema_version'];
   if (version != 1 && version != 2) {
@@ -42,21 +49,23 @@ void validateClientPayload(
   }
   final core = Map<String, dynamic>.from(payload['core'] as Map);
   if (!{1, 2, 3, stateSchemaVersion}.contains(core['schema_version']) ||
-      core['economic_version'] != economyVersion ||
+      core['economic_version'] != expectedEconomicVersion ||
       core['event_order_version'] != core['schema_version']) {
     throw const IncompatibleSaveException(
       'Unsupported economic state or event ordering.',
     );
   }
-  final main = GameState.fromJson(core);
+  final main = GameState.fromJson(
+    core,
+    expectedEconomicVersion: expectedEconomicVersion,
+  );
   if (version == 2) {
     if (payload['story'] is! Map) {
       throw const FormatException('Missing story state.');
     }
     final story = Map<String, dynamic>.from(payload['story'] as Map);
     if (!{1, 2, 3, 4}.contains(story['schema_version']) ||
-        (story['content_digest'] != null &&
-            story['content_digest'] != bundledManifestDigest)) {
+        !acceptsStoryContentDigest(story['content_digest'])) {
       throw const IncompatibleSaveException(
         'This story requires its pinned content version.',
       );
@@ -117,8 +126,12 @@ void validateClientSnapshot(
   Map<String, dynamic> payload,
   DateTime settledThrough, {
   StoryCatalogue? catalogue,
+  String expectedEconomicVersion = economyVersion,
 }) {
-  final main = GameState.fromJson(Map<String, dynamic>.from(payload['core']));
+  final main = GameState.fromJson(
+    Map<String, dynamic>.from(payload['core']),
+    expectedEconomicVersion: expectedEconomicVersion,
+  );
   final cursor = BigInt.from(settledThrough.toUtc().microsecondsSinceEpoch);
   if (main.daily.initialized &&
       main.daily.utcAnchorMicros! + main.elapsedMicros != cursor) {
@@ -152,6 +165,8 @@ class TideglassBootstrap extends StatefulWidget {
     this.enableAudio = true,
     this.services,
     this.notifications,
+    this.economicPredecessors = const [],
+    this.now,
   });
 
   /// Injected only for host integration tests. Production uses app support.
@@ -161,6 +176,10 @@ class TideglassBootstrap extends StatefulWidget {
   /// Optional injected adapter; its owner remains responsible for disposal.
   final NativeServicesManager? services;
   final NotificationService? notifications;
+
+  /// Compiled compatibility only. Production v1 keeps this list empty.
+  final List<ClientEconomicPredecessor> economicPredecessors;
+  final DateTime Function()? now;
   @override
   State<TideglassBootstrap> createState() => _TideglassBootstrapState();
 }
@@ -170,6 +189,7 @@ class _TideglassBootstrapState extends State<TideglassBootstrap> {
   GameController? controller;
   TideAudioBus? audio;
   NotificationService? notifications;
+  OwnershipClockBridge? ownershipClock;
   late final NativeServicesManager services;
   late final Future<void> servicesReady;
   ClientPreferences preferences = const ClientPreferences();
@@ -184,20 +204,19 @@ class _TideglassBootstrapState extends State<TideglassBootstrap> {
     services = widget.services ?? _createServices();
     // Guest play must not wait for optional network or credential storage.
     servicesReady = services.initialize();
+    unawaited(cleanSoundtrackExports());
     unawaited(_open());
   }
 
   NativeServicesManager _createServices() {
-    const endpoint = String.fromEnvironment(
-      UiEnglish.bootstrapTIDEGLASSSERVICEURL,
-    );
+    const endpoint = String.fromEnvironment('TIDEGLASS_SERVICE_URL');
     TideglassServiceClient? client;
     if (endpoint.isNotEmpty) {
       try {
         client = TideglassServiceClient(
           endpoint: Uri.parse(endpoint),
           allowLocalDevelopment: const bool.fromEnvironment(
-            UiEnglish.bootstrapTIDEGLASSLOCALSERVICE,
+            'TIDEGLASS_LOCAL_SERVICE',
           ),
         );
       } on FormatException {
@@ -206,22 +225,59 @@ class _TideglassBootstrapState extends State<TideglassBootstrap> {
         // Insecure or unsupported service origins stay unavailable.
       }
     }
-    const adUnit = String.fromEnvironment(
-      UiEnglish.bootstrapTIDEGLASSREWARDEDADUNIT,
+    const adUnit = String.fromEnvironment('TIDEGLASS_REWARDED_AD_UNIT');
+    const publicKeys = String.fromEnvironment(
+      'TIDEGLASS_OWNERSHIP_PUBLIC_KEYS',
     );
+    final credentials = SecureCredentialStore();
+    SecureOwnershipLeaseCache? ownershipCache;
+    if (client != null && publicKeys.isNotEmpty) {
+      try {
+        final configured = jsonDecode(publicKeys) as Map<String, dynamic>;
+        final verifier = SignedOwnershipVerifier(
+          issuer: client.endpoint.origin,
+          pinnedPublicKeys: configured.map(
+            (key, value) => MapEntry(key, base64.decode(value as String)),
+          ),
+          allowLocalDevelopment: const bool.fromEnvironment(
+            'TIDEGLASS_LOCAL_SERVICE',
+          ),
+        );
+        ownershipClock = OwnershipClockBridge();
+        ownershipCache = SecureOwnershipLeaseCache(
+          verifier: verifier,
+          read: credentials.read,
+          write: credentials.write,
+          delete: credentials.delete,
+          deviceTime: () => ownershipClock?.current,
+        );
+        ownershipClock!.addListener(_clockChanged);
+      } catch (_) {
+        // Invalid public pins disable commercial grants. Local play is intact.
+        ownershipClock?.dispose();
+        ownershipClock = null;
+      }
+    }
     return NativeServicesManager(
       client: client,
+      credentials: credentials,
+      ownershipCache: ownershipCache,
+      prepareOwnershipClock: ownershipClock?.refresh,
       localAccountSeed: () => controller?.state.daily.accountSeed,
       configuration: const NativeServiceConfiguration(
-        commerceEnabled: bool.fromEnvironment(
-          UiEnglish.bootstrapTIDEGLASSCOMMERCE,
-        ),
-        adsEnabled: bool.fromEnvironment(
-          UiEnglish.bootstrapTIDEGLASSREWARDEDADS,
-        ),
+        commerceEnabled: bool.fromEnvironment('TIDEGLASS_COMMERCE'),
+        adsEnabled: bool.fromEnvironment('TIDEGLASS_REWARDED_ADS'),
         rewardedAdUnitId: adUnit == '' ? null : adUnit,
+        supporterEnabled: bool.fromEnvironment('TIDEGLASS_SUPPORTER'),
+        signedOwnershipRequired: true,
       ),
     );
+  }
+
+  void _clockChanged() {
+    // A refreshed or invalidated sample updates only commercial presentation.
+    // It does not mutate a saved balance or trigger a network request.
+    if (mounted) services.refreshOwnershipPresentation();
   }
 
   Future<void> _open() async {
@@ -236,9 +292,7 @@ class _TideglassBootstrapState extends State<TideglassBootstrap> {
       final directory =
           widget.directory ??
           Directory(
-            UiEnglish.bootstrapAwaitGetApplicationSupportDirectoryPathTideglass(
-              (await getApplicationSupportDirectory()).path,
-            ),
+            '${(await getApplicationSupportDirectory()).path}/tideglass',
           );
       final catalogue = await StoryCatalogue.load();
       if (notifications == null) {
@@ -254,11 +308,83 @@ class _TideglassBootstrapState extends State<TideglassBootstrap> {
             validateClientPayload(payload, catalogue: catalogue),
         validateSnapshot: (payload, cursor) =>
             validateClientSnapshot(payload, cursor, catalogue: catalogue),
+        compatiblePredecessors: [
+          for (final previous in widget.economicPredecessors)
+            previous.registration(
+              validatePayload: (payload) => validateClientPayload(
+                payload,
+                catalogue: catalogue,
+                expectedEconomicVersion: previous.engine.rulesVersion,
+              ),
+              validateSnapshot: (payload, cursor) => validateClientSnapshot(
+                payload,
+                cursor,
+                catalogue: catalogue,
+                expectedEconomicVersion: previous.engine.rulesVersion,
+              ),
+            ),
+        ],
       );
       repository = store;
       final loaded = await store.load();
-      final snapshot = loaded.snapshot;
-      final payload = snapshot?.payload;
+      var snapshot = loaded.snapshot;
+      final originalSnapshot = snapshot;
+      var payload = snapshot?.payload;
+      final target = (widget.now?.call() ?? DateTime.now()).toUtc();
+      final originalMain = payload == null
+          ? GameState.initial()
+          : GameState.fromJson(
+              Map<String, dynamic>.from(payload['core'] as Map),
+              expectedEconomicVersion: snapshot!.economicVersion,
+            );
+      if (snapshot != null && store.needsEconomicTransition(snapshot)) {
+        final previous = widget.economicPredecessors.singleWhere(
+          (candidate) =>
+              candidate.engine.rulesVersion == snapshot!.economicVersion &&
+              candidate.digest == snapshot.economicDigest,
+        );
+        // A rolled-back wall clock cannot revoke already settled time. Switch
+        // at that durable cursor with no extra production interval to credit.
+        final boundary = target.isBefore(snapshot.settledThrough)
+            ? snapshot.settledThrough
+            : target;
+        snapshot = await store.transitionEconomy(
+          source: snapshot,
+          boundary: boundary,
+          authorizedThrough: boundary,
+          settleOld: (source, boundary) async {
+            final oldPayload = source.payload;
+            final oldState = GameState.fromJson(
+              Map<String, dynamic>.from(oldPayload['core'] as Map),
+              expectedEconomicVersion: previous.engine.rulesVersion,
+            );
+            final oldStory = oldPayload['client_schema_version'] == 2
+                ? StoryProgress.fromJson(
+                    Map<String, dynamic>.from(oldPayload['story'] as Map),
+                    seasonDefinition: catalogue.seasonDefinition,
+                  )
+                : StoryProgress();
+            final settled = await replayOfflineSession(
+              main: oldState,
+              story: oldStory,
+              catalogue: catalogue,
+              settledThrough: source.settledThrough,
+              now: boundary,
+              engine: previous.engine,
+              onProgress: (value) {
+                if (mounted) setState(() => replayProgress = value);
+              },
+            );
+            return {
+              ...oldPayload,
+              'client_schema_version': 2,
+              'core': settled.main.toJson(),
+              'story': settled.story.toJson(),
+            };
+          },
+        );
+        payload = snapshot.payload;
+      }
       preferences = payload == null
           ? const ClientPreferences()
           : ClientPreferences.fromJson(
@@ -274,8 +400,6 @@ class _TideglassBootstrapState extends State<TideglassBootstrap> {
             )
           : StoryProgress();
       var cursor = snapshot?.settledThrough;
-      final originalMain = main;
-      final target = DateTime.now().toUtc();
       if (cursor != null) {
         final replayed = await replayOfflineSession(
           main: main,
@@ -296,11 +420,7 @@ class _TideglassBootstrapState extends State<TideglassBootstrap> {
         audio = TideAudioBus(
           driver: NativeTideAudioDriver(),
           store: FileAudioPreferenceStore(
-            File(
-              UiEnglish.bootstrapDirectoryPathAudioPreferencesJson(
-                directory.path,
-              ),
-            ),
+            File('${directory.path}/audio-preferences.json'),
           ),
         );
         // Sound failures never prevent loading a saved harbor.
@@ -308,6 +428,7 @@ class _TideglassBootstrapState extends State<TideglassBootstrap> {
       }
       late final GameController game;
       game = GameController(
+        clock: widget.now,
         audio: audio,
         verifiedPaidCosmetics: () => verifiedPaidCosmetics(services, game),
         catalogue: catalogue,
@@ -321,11 +442,11 @@ class _TideglassBootstrapState extends State<TideglassBootstrap> {
           'client_preferences': preferences.toJson(),
         }, settledThrough: cursor),
       );
-      if (snapshot != null &&
-          target.difference(snapshot.settledThrough) >=
+      if (originalSnapshot != null &&
+          target.difference(originalSnapshot.settledThrough) >=
               const Duration(minutes: 1)) {
         game.returnReport = ReturnReport(
-          absence: target.difference(snapshot.settledThrough),
+          absence: target.difference(originalSnapshot.settledThrough),
           earnedMicros: main.lifetimeMicros - originalMain.lifetimeMicros,
           automated: originalMain.autoBuyEnabled,
         );
@@ -377,6 +498,8 @@ class _TideglassBootstrapState extends State<TideglassBootstrap> {
     await servicesReady;
     if (!mounted || !identical(controller, game) || !services.signedIn) return;
     try {
+      await services.restoreCachedOwnership();
+      if (!mounted || !identical(controller, game)) return;
       await services.refreshOwnership();
     } catch (_) {
       // The service adapter clears expired/unverified appearances. The local
@@ -432,6 +555,7 @@ class _TideglassBootstrapState extends State<TideglassBootstrap> {
       services.dispose();
       services.client?.close();
     }
+    ownershipClock?.dispose();
     super.dispose();
   }
 

@@ -1,0 +1,49 @@
+{
+  "synthetic": true,
+  "passed": true,
+  "browser": "isolated headless Chrome",
+  "browser_version": "155.0.8059.85",
+  "scenarios": [
+    {
+      "scenario": "confirmation expiry at two minutes sends no request",
+      "passed": true
+    },
+    {
+      "scenario": "duplicate in-flight clicks send one auth and one delete",
+      "passed": true
+    },
+    {
+      "scenario": "navigation before confirmation discards secrets without requests",
+      "passed": true
+    },
+    {
+      "scenario": "malformed auth identity cannot delete and temporary session is revoked",
+      "passed": true
+    },
+    {
+      "scenario": "malformed authentication null never deletes",
+      "passed": true
+    },
+    {
+      "scenario": "malformed authentication oversized never deletes",
+      "passed": true
+    },
+    {
+      "scenario": "malformed authentication invalid JSON never deletes",
+      "passed": true
+    },
+    {
+      "scenario": "malformed deletion flags never display confirmed",
+      "passed": true
+    },
+    {
+      "scenario": "navigation during uncommitted delete revokes temporary session only",
+      "passed": true
+    }
+  ],
+  "limits": [
+    "No public endpoint, physical accessibility, real account or store qualification.",
+    "Expiry uses Playwright virtual browser timer; HTTP operations are actual isolated loopback.",
+    "Malformed responses and held navigation request are explicit browser-route fault injection."
+  ]
+}

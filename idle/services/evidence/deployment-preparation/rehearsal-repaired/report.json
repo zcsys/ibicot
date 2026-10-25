@@ -1,0 +1,119 @@
+{
+  "elapsed_seconds": 4.9062360000025365,
+  "format": "tideglass-local-serving-rehearsal-v1",
+  "host": "darwin",
+  "logs": {
+    "loopback_http-server.log": "2052822af842d01df3a8e3d0728fc77ed52accc53c62056f900d81739488f1cf",
+    "tls-server.log": "bef17100a34cc6d8b57ab8ba4d9ac6dcef39c30df7704011efad0cd84b8d8170"
+  },
+  "python": "3.13.0 (v3.13.0:60403a5409f, Oct  7 2024, 00:37:40) [Clang 15.0.0 (clang-1500.3.9.4)]",
+  "release_gate_verified": false,
+  "scenarios": [
+    {
+      "client_concurrency": 8,
+      "maximum_ms": 14.216542003850918,
+      "maximum_observed_worker_count": 2,
+      "maximum_sampled_workers_rss_kib": 34800,
+      "name": "loopback_http_concurrent_health",
+      "p50_ms": 6.90829200175358,
+      "p95_ms": 10.440458005177788,
+      "requests": 64,
+      "status": "passed",
+      "status_counts": {
+        "200": 64
+      }
+    },
+    {
+      "client_concurrency": 8,
+      "maximum_ms": 13.948749998235144,
+      "name": "loopback_http_concurrent_authenticated_entitlements",
+      "p50_ms": 6.924187000549864,
+      "p95_ms": 9.954749999451451,
+      "requests": 64,
+      "status": "passed",
+      "status_counts": {
+        "200": 64
+      },
+      "synthetic_account_only": true
+    },
+    {
+      "name": "loopback_http_request_bounds_and_redacted_logs",
+      "status": "passed"
+    },
+    {
+      "after_worker_pids": [
+        72649,
+        72656
+      ],
+      "before_worker_pids": [
+        72647,
+        72649
+      ],
+      "classification": "controlled_process_stop_not_crash_or_observed_session",
+      "name": "loopback_http_host_killed_worker_replacement",
+      "parent_pid": 72646,
+      "status": "passed"
+    },
+    {
+      "after_worker_pids": [
+        72704,
+        72705
+      ],
+      "before_worker_pids": [
+        72649,
+        72656
+      ],
+      "name": "incomplete_body_worker_timeout_and_recovery",
+      "request_outcome": "not_committed_fixture_invalid_body; general mutation response loss remains unknown",
+      "status": "passed"
+    },
+    {
+      "client_concurrency": 8,
+      "maximum_ms": 18.663708004169166,
+      "maximum_observed_worker_count": 2,
+      "maximum_sampled_workers_rss_kib": 41840,
+      "name": "tls_concurrent_health",
+      "p50_ms": 15.628437999112066,
+      "p95_ms": 17.675208000582643,
+      "requests": 64,
+      "status": "passed",
+      "status_counts": {
+        "200": 64
+      }
+    },
+    {
+      "client_concurrency": 8,
+      "maximum_ms": 19.673083996167406,
+      "name": "tls_concurrent_authenticated_entitlements",
+      "p50_ms": 15.285708501323825,
+      "p95_ms": 18.75129200197989,
+      "requests": 64,
+      "status": "passed",
+      "status_counts": {
+        "200": 64
+      },
+      "synthetic_account_only": true
+    },
+    {
+      "name": "tls_request_bounds_and_redacted_logs",
+      "status": "passed"
+    },
+    {
+      "after_worker_pids": [
+        72711,
+        72717
+      ],
+      "before_worker_pids": [
+        72710,
+        72711
+      ],
+      "classification": "controlled_process_stop_not_crash_or_observed_session",
+      "name": "tls_host_killed_worker_replacement",
+      "parent_pid": 72709,
+      "status": "passed"
+    }
+  ],
+  "status": "passed",
+  "synthetic_only": true,
+  "synthetic_tls_certificate_sha256": "fd72d83cb7481bc536bcba76664e0f4fdc64cf258d4a86153dcf3f27849fa45b"
+}

@@ -1,0 +1,48 @@
+test_actual_sql_deadline_interrupts_and_never_writes (__main__.IndependentOperations.test_actual_sql_deadline_interrupts_and_never_writes) ... ok
+test_backup_new_private_wal_aware_and_existing_destination_preserved (__main__.IndependentOperations.test_backup_new_private_wal_aware_and_existing_destination_preserved) ... ok
+test_cli_missing_all_commands_cannot_create_database (__main__.IndependentOperations.test_cli_missing_all_commands_cannot_create_database) ... ok
+test_current_events_window_boundary_and_synthetic_exclusion (__main__.IndependentOperations.test_current_events_window_boundary_and_synthetic_exclusion) ... ok
+test_deletion_manifest_adversarial_shapes_reject_without_private_output (__main__.IndependentOperations.test_deletion_manifest_adversarial_shapes_reject_without_private_output) ... ok
+test_future_events_cannot_dilute_present_failure_alert (__main__.IndependentOperations.test_future_events_cannot_dilute_present_failure_alert) ... FAIL
+test_restore_replay_deletes_all_provider_rows_without_changing_source (__main__.IndependentOperations.test_restore_replay_deletes_all_provider_rows_without_changing_source) ... ok
+test_restore_tiny_deadline_removes_temporary_copy_and_preserves_source (__main__.IndependentOperations.test_restore_tiny_deadline_removes_temporary_copy_and_preserves_source) ... ok
+test_schema_changed_primary_key_collation_is_refused (__main__.IndependentOperations.test_schema_changed_primary_key_collation_is_refused) ... FAIL
+test_schema_missing_singleton_check_is_refused (__main__.IndependentOperations.test_schema_missing_singleton_check_is_refused) ... FAIL
+
+======================================================================
+FAIL: test_future_events_cannot_dilute_present_failure_alert (__main__.IndependentOperations.test_future_events_cannot_dilute_present_failure_alert)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/csys/Desktop/ibicot/idle/game/qa/integration_operations_test.py", line 87, in test_future_events_cannot_dilute_present_failure_alert
+    self.assertEqual(result['sample_count'],100,result)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 300 != 100 : {'name': 'critical_flows', 'status': 'ok', 'code': 'retained_consented_event_sample', 'sample_count': 300, 'failure_count': 2, 'failure_fraction': 0.006666666666666667, 'invalid_count': 0, 'excluded_synthetic_count': 0, 'sufficient_samples': True, 'window_seconds': 86400}
+
+======================================================================
+FAIL: test_schema_changed_primary_key_collation_is_refused (__main__.IndependentOperations.test_schema_changed_primary_key_collation_is_refused)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/csys/Desktop/ibicot/idle/game/qa/integration_operations_test.py", line 80, in test_schema_changed_primary_key_collation_is_refused
+    self.assert_rejected(path)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "/Users/csys/Desktop/ibicot/idle/game/qa/integration_operations_test.py", line 66, in assert_rejected
+    with self.assertRaises(CheckError):
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+AssertionError: CheckError not raised
+
+======================================================================
+FAIL: test_schema_missing_singleton_check_is_refused (__main__.IndependentOperations.test_schema_missing_singleton_check_is_refused)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/csys/Desktop/ibicot/idle/game/qa/integration_operations_test.py", line 76, in test_schema_missing_singleton_check_is_refused
+    self.assert_rejected(path)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "/Users/csys/Desktop/ibicot/idle/game/qa/integration_operations_test.py", line 66, in assert_rejected
+    with self.assertRaises(CheckError):
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+AssertionError: CheckError not raised
+
+----------------------------------------------------------------------
+Ran 10 tests in 2.130s
+
+FAILED (failures=3)

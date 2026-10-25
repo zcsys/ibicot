@@ -1,5 +1,9 @@
+import 'dart:async';
+
+import 'ad_privacy_copy.dart';
 import 'presentation.dart';
 import 'strings.dart';
+
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -35,6 +39,26 @@ class _ServiceSettingsState extends State<ServiceSettings> {
   bool _working = false;
   String? _indexAccount;
   String? _createdCode;
+
+  @override
+  void initState() {
+    super.initState();
+    _readAdPrivacyOnEntry();
+  }
+
+  @override
+  void didUpdateWidget(covariant ServiceSettings oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (!identical(oldWidget.manager, widget.manager)) _readAdPrivacyOnEntry();
+  }
+
+  void _readAdPrivacyOnEntry() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted && manager.adPrivacyAvailable) {
+        unawaited(manager.refreshAdPrivacyOptions());
+      }
+    });
+  }
 
   @override
   void dispose() {
@@ -572,7 +596,7 @@ class _ServiceSettingsState extends State<ServiceSettings> {
       final signedIn = manager.signedIn;
       final cloud = _indexAccount == manager.session?.accountId ? _cloud : null;
       return Scaffold(
-        appBar: AppBar(title: const LocalizedText(UiEnglish.serviceServices)),
+        appBar: readingAppBar(context, title: UiEnglish.serviceServices),
         body: SafeArea(
           child: Center(
             child: ConstrainedBox(
@@ -744,6 +768,38 @@ class _ServiceSettingsState extends State<ServiceSettings> {
                       UiEnglish.serviceDeleteCloudAccount2,
                       'delete-account',
                       _delete,
+                    ),
+                  ],
+                  if (manager.adPrivacyAvailable &&
+                      (manager.adPrivacyRequirement !=
+                              AdPrivacyRequirement.notRequired ||
+                          manager.adPrivacyError != null)) ...[
+                    _section(AdPrivacyCopy.title),
+                    const LocalizedText(AdPrivacyCopy.description),
+                    if (manager.adPrivacyError != null)
+                      const LocalizedText(
+                        AdPrivacyCopy.unavailable,
+                        key: ValueKey('ad-privacy-error'),
+                      ),
+                    if (manager.adPrivacyBusy)
+                      const LocalizedText(
+                        AdPrivacyCopy.waiting,
+                        key: ValueKey('ad-privacy-waiting'),
+                      ),
+                    _button(
+                      manager.adPrivacyRequirement ==
+                              AdPrivacyRequirement.required
+                          ? AdPrivacyCopy.options
+                          : AdPrivacyCopy.check,
+                      'ad-privacy-options',
+                      manager.adPrivacyBusy
+                          ? null
+                          : () => _perform(
+                              manager.adPrivacyRequirement ==
+                                      AdPrivacyRequirement.required
+                                  ? manager.showAdPrivacyOptions
+                                  : manager.updateAdPrivacyOptions,
+                            ),
                     ),
                   ],
                   _section(UiEnglish.serviceOptionalUsageReports),

@@ -1,0 +1,215 @@
+{
+  "items": [
+    {
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+      "batch": "B08",
+      "evidence": [
+        "game/core/lib/src/engine.dart",
+        "release/qa/integration-transition-repaired-20261021T121351672733Z/TRANSITION_REVIEW.md",
+        "release/qa/integration-transition-repaired-20261021T121351672733Z/NUMERIC_EVIDENCE_BRIDGE.json",
+        "release/native-proof/root-transition-20261021T121321.388435Z/verification.json",
+        "release/qa/lead-transition-acceptance-20261021T1221Z/DECISIONS.md"
+      ],
+      "evidence_note": "Component implementation/authoring evidence only; complete source acceptance and upstream gates remain required.",
+      "id": "M3-01",
+      "owner": "gameplay",
+      "reviewer": "platform",
+      "scope_ids": [
+        "S08",
+        "S09",
+        "S10",
+        "S14"
+      ],
+      "source": "v1_backlog.json",
+      "source_acceptance": "2-hour Focus, 8-hour Surveys, 24/72-hour offline envelope, bonus expiry and account-day boundaries resolve in a single event timeline.",
+      "source_acceptance_dependencies": [
+        "M2-01",
+        "M1-03"
+      ],
+      "status": "in_progress",
+      "title": "Implement all real-time boundaries"
+    },
+    {
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+      "batch": "B08",
+      "evidence": [],
+      "evidence_note": "Component implementation/authoring evidence only; complete source acceptance and upstream gates remain required.",
+      "id": "M3-02",
+      "owner": "gameplay",
+      "reviewer": "platform",
+      "scope_ids": [
+        "S11"
+      ],
+      "source": "v1_backlog.json",
+      "source_acceptance": "Seeded contracts, snapshots, offline progress, rerolls and 21-slot backlog preserve claim IDs and do not duplicate rewards.",
+      "source_acceptance_dependencies": [
+        "M3-01",
+        "M1-06"
+      ],
+      "status": "in_progress",
+      "title": "Implement contracts and their backlog"
+    },
+    {
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+      "batch": "B08",
+      "evidence": [
+        "game/content/calibrations/calibration.01.pattern.json",
+        "release/qa/integration-accessibility-20261021T125317256764Z/CALIBRATION_REVIEW.md",
+        "release/qa/integration-accessibility-20261021T125317256764Z/verification.json",
+        "release/native-proof/root-calibration-full-20261021T125314.174315Z/verification.json",
+        "release/native-proof/root-calibration-pseudo-full-20261021T125549.278518Z/verification.json",
+        "release/qa/lead-calibration-scope-acceptance-20261021T130612.263921Z/DECISIONS.md"
+      ],
+      "evidence_note": "Component implementation/authoring evidence only; complete source acceptance and upstream gates remain required. Current independent calibration review closes CAL001 and supports exact S09/S17 host integration/value obligations with all12patterns/864state rows, independent queue/refill boundaries and actual back-navigation probes. Full daily-session/critical-flow/native/physical requirements and original prerequisites remain separate; package status unchanged.",
+      "id": "M3-04",
+      "owner": "client",
+      "reviewer": "qa_release",
+      "scope_ids": [
+        "S09",
+        "S17"
+      ],
+      "source": "v1_backlog.json",
+      "source_acceptance": "Untimed calibration, equal-value accessible completion, queued Focus, Surveys and contract management form a complete daily session.",
+      "source_acceptance_dependencies": [
+        "M3-01",
+        "M3-02"
+      ],
+      "status": "in_progress",
+      "title": "Build calibration and daily interfaces"
+    },
+    {
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+      "batch": "B10",
+      "evidence": [
+        "game/content/challenges/challenge.01.json",
+        "game/content/progression/campaign.json"
+      ],
+      "evidence_note": "Component implementation/authoring evidence only; complete source acceptance and upstream gates remain required.",
+      "id": "M3-08",
+      "owner": "director",
+      "reviewer": "qa_release",
+      "scope_ids": [
+        "S15",
+        "S16",
+        "S44"
+      ],
+      "source": "v1_backlog.json",
+      "source_acceptance": "Six chapters and twelve challenges have objectives, unlock rules, reward budgets and completion evidence; passive and active routes are covered.",
+      "source_acceptance_dependencies": [
+        "M1-06",
+        "M2-06"
+      ],
+      "status": "in_progress",
+      "title": "Author chapter and challenge specifications"
+    },
+    {
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+      "batch": "B11",
+      "evidence": [
+        "game/progression/lib/tideglass_progression.dart",
+        "game/mobile/lib/story_screen.dart",
+        "release/client-story-review.md"
+      ],
+      "evidence_note": "Local implementation and source checks are underway. Evidence has distinct source snapshots and author/independent review boundaries. Original acceptance, upstream dependencies, physical-device, real-provider and observation requirements remain unchanged and open where unmet.",
+      "id": "M4-01",
+      "owner": "gameplay",
+      "reviewer": "platform",
+      "scope_ids": [
+        "S16"
+      ],
+      "source": "v1_backlog.json",
+      "source_acceptance": "Challenge state is isolated, goals are deterministic, main automation continues and exit/restart cannot export economic rewards.",
+      "source_acceptance_dependencies": [
+        "M3-08",
+        "M3-03"
+      ],
+      "status": "in_progress",
+      "title": "Build reusable challenge scenarios"
+    },
+    {
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+      "batch": "B12",
+      "evidence": [
+        "implementation/content/launch_manifest.json",
+        "game/mobile/lib/bundled_content.dart",
+        "release/client-story-review.md",
+        "release/client-season-review.md"
+      ],
+      "evidence_note": "Local implementation and source checks are underway. Evidence has distinct source snapshots and author/independent review boundaries. Original acceptance, upstream dependencies, physical-device, real-provider and observation requirements remain unchanged and open where unmet.",
+      "id": "M4-06",
+      "owner": "director",
+      "reviewer": "qa_release",
+      "scope_ids": [
+        "S15",
+        "S16",
+        "S17",
+        "S18",
+        "S20",
+        "S21",
+        "S22"
+      ],
+      "source": "v1_backlog.json",
+      "source_acceptance": "Six chapters, ending, twelve challenges, twelve calibration patterns, eighteen archive entries and Season 1 have complete data and copy.",
+      "source_acceptance_dependencies": [
+        "M3-08",
+        "M4-01",
+        "M4-02"
+      ],
+      "status": "in_progress",
+      "title": "Finish all launch content and reward tables"
+    }
+  ],
+  "scope": [
+    {
+      "delivery_status": "verified",
+      "evidence": [
+        "release/qa/integration-accessibility-20261021T125317256764Z/CALIBRATION_REVIEW.md",
+        "release/qa/integration-accessibility-20261021T125317256764Z/verification.json",
+        "release/native-proof/root-calibration-full-20261021T125314.174315Z/verification.json",
+        "release/native-proof/root-calibration-pseudo-full-20261021T125549.278518Z/verification.json",
+        "release/qa/lead-calibration-scope-acceptance-20261021T130612.263921Z/DECISIONS.md"
+      ],
+      "id": "S09",
+      "requirement": "Focus every 2 hours, capacity 12, queued +20% ten-minute charges and equal accessible calibration",
+      "source": "TIDEGLASS_DESIGN.md Phase 3",
+      "verification": "No hidden reward loss, duration queue bugs or reflex-only route; both completions grant identical value.",
+      "work_items": [
+        "M3-01",
+        "M3-04",
+        "M5-02"
+      ]
+    },
+    {
+      "delivery_status": "not_verified",
+      "evidence": [],
+      "id": "S16",
+      "requirement": "Twelve challenge dossiers across three rule families, 100 Notes each",
+      "source": "V1_ROADMAP.md \u00a7\u00a73,7",
+      "verification": "All three families playable; exit/restart isolated; Note acquisition/entry cost validated.",
+      "work_items": [
+        "M3-08",
+        "M4-01",
+        "M4-06"
+      ]
+    },
+    {
+      "delivery_status": "verified",
+      "evidence": [
+        "release/qa/integration-accessibility-20261021T125317256764Z/CALIBRATION_REVIEW.md",
+        "release/qa/integration-accessibility-20261021T125317256764Z/verification.json",
+        "release/native-proof/root-calibration-full-20261021T125314.174315Z/verification.json",
+        "release/native-proof/root-calibration-pseudo-full-20261021T125549.278518Z/verification.json",
+        "release/qa/lead-calibration-scope-acceptance-20261021T130612.263921Z/DECISIONS.md"
+      ],
+      "id": "S17",
+      "requirement": "Twelve authored calibration patterns with equivalent accessible completion",
+      "source": "V1_ROADMAP.md \u00a73",
+      "verification": "Twelve actual patterns and their equal-value alternate paths are integrated.",
+      "work_items": [
+        "M3-04",
+        "M4-06",
+        "M5-02"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+# Bounded addendum to the original 65-package / 44-scope forward audit
+
+This append-only review updates the findings for M3-05, S26, S02 and S08 in the sealed full forward audit at `release/qa/scope-forward-final-20261023T085127.503162Z`. All original criteria, dependencies and reviewer assignments remain intact. The full 65/44 matrices remain the audit baseline; the table below supersedes only the affected verification dispositions, not unrelated rows or release conditions.
+
+| Original item | Updated implementation / verification disposition | Release disposition |
+|---|---|---|
+| M3-05 | Recommend acceptance. Actual Settings, presentation/input/audio evidence and completed iOS/Android notification behavior support the unchanged criterion. Both original dependencies are accepted. See READINESS_REVIEW.md and the exact fresh recovery evidence. | No finished-v1 or physical-device acceptance. |
+| S26 | Recommend verified. The named-target large-text, reduced-motion, non-color cues, help and critical-control proofs remain valid; actual notification coverage is now complete for the implementation criterion. | M5-02 and its separate physical/accessibility obligations remain open under their own wording. |
+| S02 | Retain not_verified. Actual Android airplane-mode natural earning, purchase, save and distinct-process reopen passed with restored OS settings and independent local endpoint guards. Existing localization/source separation proofs remain valid. Actual isolated iOS guest qualification remains unproven. | No all-target offline or network-traffic absence claim. |
+| S08 | Retain not_verified. Exact integer event replay/cap evidence remains valid. Original roadmap section 8 requires physical p95 24-hour replay at most three seconds; simulator/numeric evidence cannot establish it. | No physical return-performance acceptance. |
+
+The S02 Android pair is independently reviewed at `release/qa/offline-pair-final-20261025T164515.363498Z/REVIEW.md`. The S08 correction is sealed at `release/qa/s08-return-budget-clarification-20261025T154226.278440Z/REVIEW.md`. The earlier full audit sentence describing a supported “bounded criterion” must not be read as supporting all of S08; the physical budget remains specifically unverified. This addendum preserves that explicit correction.
+
+The original four pending Android notification scenarios in the full audit have now been resolved by distinct qualified cases. All earlier failed attempts remain unchanged. Android revocation uses expected OS process interruption plus an independently admitted new-process recovery; it is not passed same-process revocation or a relabeling of the old failure. The quiet-hour scheduling versus actual-dispatch limitation remains disclosed.
+
+No additional concrete local production defect was identified in this bounded completion review. That finding does not accept the remaining original packages, satisfy their unmet dependencies, grant blanket approval to all 164 art records, prove physical/human/provider/store behavior, or declare the product finished. The full audit’s other dispositions, including M3-08/M4-06 dependencies and M4-07/M5-06 local-versus-external distinctions, remain unchanged.
+
+At intake the canonical program is d259ba03… and scope is b215b2cb…: 23 original plus three bootstrap items accepted, 19 of 44 scope entries verified, product_release_ready=false. This packet recommends the narrow changes above and does not apply them. The director’s later exact metadata adoption requires its own before/after review; it must not be represented as already present in this sealed intake.

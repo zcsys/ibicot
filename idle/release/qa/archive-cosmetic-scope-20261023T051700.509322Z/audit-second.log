@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/Users/csys/Desktop/ibicot/idle/release/qa/archive-cosmetic-scope-20261023T051700.509322Z/audit.py", line 146, in <module>
+    check('review did not alter pinned source or canonical metadata',pins==after)
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/csys/Desktop/ibicot/idle/release/qa/archive-cosmetic-scope-20261023T051700.509322Z/audit.py", line 15, in check
+    if not value: raise AssertionError(label)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: review did not alter pinned source or canonical metadata

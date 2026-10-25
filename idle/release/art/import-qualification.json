@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "gate": "ART-G02",
+  "recorded_at_utc": "2026-10-21T11:25:07.244638+00:00",
+  "status": "adapter_selected_partial_qualification",
+  "engine": "Flutter; Dart Canvas paths/gradients and native widgets on iOS/Android",
+  "runtime_asset_mapping": {
+    "producers": "Original declarative geometry compiled into producer_art_data.dart; no runtime SVG rasterization.",
+    "harbor": "Direct HarborArt Canvas painter; scene descriptors/PNG samples are review artifacts.",
+    "cosmetics": "Code-native cosmetic painter/catalogue; original36 IDs.",
+    "text": "Native widgets and bundled gameplay JSON; no text baked into visual assets.",
+    "audio": "AAC files in mobile assets/audio through audioplayers; soundtrack ZIP excluded from initial install."
+  },
+  "source_sha256": {
+    "game/mobile/pubspec.yaml": "3dee7db8606a8d0d36daec69616f3a8110a33c16f1e86cdc11ba1cca4145efea",
+    "game/mobile/lib/harbor_art.dart": "50c7fa6e1fe63da71c5add51442a5fcef6fc46ae6f7f14079c6382c514ef6979",
+    "game/mobile/lib/producer_art.dart": "ecf1c624c01e0df5fd92801fef84bc38b218bb8bc7d23543d25cbe7ac3ff2526",
+    "game/mobile/lib/producer_art_data.dart": "305c06487d6d9d8873b5773c23e793b12f781e7b85087f90482cf75ea98e9c26",
+    "game/mobile/lib/cosmetic_art.dart": "3921e51bbbc79a40d6cdc9ece131b65f4910fb235d749f525cf18e373e780811",
+    "game/mobile/lib/audio_bus.dart": "2cbc1b3a6faa478b47629bb9c14c064861f680138079c9dedc7240ff8d73c3d3",
+    "tools/assets/export_producers.py": "de98c11e1686b30a6bb0cc7865d3f106c9d118946769d58cdba0f169646af7b3",
+    "tool/package_content.py": "4387148e1019b037482bd9bd9496595d7d8ca5e357c8d4c8d4148842ed11a465"
+  },
+  "source_package_observation": {
+    "declared_asset_file_count": 41,
+    "declared_asset_uncompressed_bytes": 2723074,
+    "audio_file_count": 11,
+    "audio_uncompressed_file_bytes": 2646248,
+    "note": "Source-file observation, not installed/compressed package size or resident CPU/GPU memory."
+  },
+  "texture_pipeline": "No custom raster visual files or atlases declared by current pubspec; alpha/color are Canvas operations. Original atlas limits remain applicable if this changes. Canvas/engine/font textures still consume memory.",
+  "actual_sample_evidence": [
+    "release/native-proof/integration-ios-phone-20261021T111046.293625Z/verification.json",
+    "release/native-proof/20261019T135402.439115Z-d85-final-verification/final-verification.json",
+    "source/art/registration/AUTHOR_REPORT.md"
+  ],
+  "qualification_limits": "Candidate152 iPhone samples and earlier explicitly pinned d85 Android/iPad are evidence for those versions only. Current full host/native integration and minimum physical-device budgets remain open.",
+  "remaining_original_requirements": [
+    "both current native targets plus minimum physical device qualification",
+    "full phone/tablet text and accessibility/variant matrix",
+    "measured GPU/resident texture and performance budgets",
+    "complete export/source/provenance per-asset review"
+  ],
+  "release_ready": false
+}

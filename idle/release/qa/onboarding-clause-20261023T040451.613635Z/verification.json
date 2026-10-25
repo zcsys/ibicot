@@ -1,0 +1,1936 @@
+{
+  "reviewer": "qa_release",
+  "scope": "Original M2-02 only",
+  "recommendation": "accept",
+  "criterion": "Teach costs, production, retained progress and automation with skippable guidance; no monetization prompt interrupts onboarding.",
+  "prerequisites": [
+    "M1-05",
+    "M2-01"
+  ],
+  "status_changed": false,
+  "new_flutter_or_device_commands": false,
+  "new_runtime_tests": 0,
+  "static_and_evidence_checks": 258,
+  "all_checks_passed": true,
+  "source_before_sha256": {
+    "v1_backlog.json": "779291dbd55db8e73513d3d335fbe5c51c0189c3050dba24c4f8049ac69c80ad",
+    "implementation/program.json": "9ce2000d35b4a233014a865b89ba15bc1248c8860b4148f4e1f0471dcbb930e5",
+    "implementation/scope_requirements.json": "ee8e846f2d4436bb56b4e9c58c271d41530c6cfc08cd87cc80b0efcd0ae57692",
+    "game/mobile/lib/app.dart": "620908e8e15daeb94000613ac8f153e8ef0a013e7a5f77332f2cc80820b32133",
+    "game/mobile/lib/strings.dart": "a1f75c799a56c1fdb5125f65eacb6f637912be042bbd748303ac3bbea7b6abb8",
+    "game/mobile/lib/presentation.dart": "0b891f8baa973d11f1aabe6d985fafbe8bf0e08904007cb0f218e68044fd9b63",
+    "game/mobile/lib/help_content.dart": "4ae52390f8e12a1e792d23a9c6c29f526281d2ca2613e38d9cd874b8630485b3",
+    "game/mobile/lib/help_screen.dart": "74cab0741cc50e4f4f3efbc3f16a7a7a00ac83b11b35578cdaacba2690b60989",
+    "game/mobile/lib/bootstrap.dart": "0557d11d67c4be3be66de28c899da89b3c7a72cc45f434ae25ae348b0efbc150",
+    "game/mobile/lib/main.dart": "286adf059ea5e8a2f66adabddc10bcc09bd5835b1725e5bdfc455d4d4e7b8fe2",
+    "game/mobile/lib/native_services.dart": "f56a6a8ac2ce6fe583b859d1c65336ea4d858711456bf4243ba9d1fa24eb0e73",
+    "game/mobile/lib/service_support_screen.dart": "16c1618913e6655770ebc06885d9ded0b1b674f2c6cfcad9b5d8639f122fe3d5",
+    "game/mobile/lib/support_screen.dart": "97679670e0fe6ec1d41639b7afb737a8a10ac7d7fca3e845f80dc9f30ad01a77",
+    "game/mobile/lib/support_service_bridge.dart": "05cce5ddbc88dd7724806722123fa633d30ee6fb414153d7abb189a2a6f6cbb6",
+    "game/mobile/lib/service_cosmetics.dart": "e2ec9111ced9f862775ea464d06e5054a6c70b349fbcc9d87bcb7929217ec3e4",
+    "game/mobile/lib/cosmetics_screen.dart": "9e512d3b8cf730638101cb0f45934068050e4ab90f8d15edff891336ccbdb780",
+    "game/mobile/lib/daily_panel.dart": "1cc065131932d2d955a670e354d4df8063a81d258f6956cb8a9ff45da4035e4c",
+    "game/mobile/lib/game_controller.dart": "f050c9b0c6c13dc31dad95e0dc5b51f78ee2f17c383ce59a3ab553c89adb4afa",
+    "game/mobile/lib/game_telemetry.dart": "53a729de9b0bea339e8de2263952d5cef2382769ebdb4d79960e63cf8682f566",
+    "game/mobile/lib/reminder_lifecycle.dart": "4e6b3287773176f147a6c840eb74e29ed85afe42b9e669ae6b199022d31f45be",
+    "game/mobile/lib/rechart_estimate.dart": "5884bab9cef9c98b28b01060457e6505ed8d064ecac310e0bbee77e8173b18f7",
+    "game/mobile/test/client_test.dart": "bd7906fccb2b6580a57dd39833b143d60f3771bcf22f0e59f4faf6ac2c19c8af",
+    "game/mobile/test/native_services_test.dart": "4cc1b90a9958d799e52124cfbc409b9201f4b9d43d71d7a979b39aa00ade2bbf",
+    "game/mobile/test/help_test.dart": "414db660e30a552c97f0f0aacaf14560467f38f993cc7f291b21cb5c4429ad1d",
+    "game/mobile/test/localization_test.dart": "74a51e160d15c2e13cf7716a2b9555b46fa996c1e89a9672f0ccba244c2d4b0f",
+    "game/mobile/test/content_presentation_test.dart": "13fba8f45ed02b9ceb89d99ea268279ee859929f8f80bc6082b06dc0ef468346",
+    "game/mobile/test/qa_client_shell_clauses_test.dart": "d155a975562c5068fbaf7157dc529df8e61b25987086e57ebc9cd57de67fbc02",
+    "game/mobile/test/qa_rechart_forecast_review_test.dart": "52c964030a07633a40d258e00cb2abb1d5d6fe627229c29d4003ce94bc981a34",
+    "game/mobile/test/bootstrap_test.dart": "2ccfd69fd5839d917a030ac0818d831f8b7789c67845eb6225c6512a58461855",
+    "game/mobile/test/bootstrap_service_configuration_test.dart": "e8a845769df5ba4a2d6677122af76e3136110139879cfaa473a5fbc8b710639c"
+  },
+  "checks": [
+    {
+      "name": "M2-02 exact original clause",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "M2-02 assigned QA reviewer",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "original prerequisite identities",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "M1-05 prerequisite accepted",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "M2-01 prerequisite accepted",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "named onboarding log exact historical index",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "historical named success: onboarding action moves the first purchase into view",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "historical named success: unconfigured guest initialization touches neither secure store nor billing",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "historical archived bytes: game/mobile/test/client_test.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "unchanged exact executed test: game/mobile/test/client_test.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "historical archived bytes: game/mobile/test/native_services_test.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "unchanged exact executed test: game/mobile/test/native_services_test.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "historical archived bytes: game/mobile/lib/app.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "historical archived bytes: game/mobile/lib/strings.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "historical onset bridge: preference schema",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "historical onset bridge: dismiss and scroll callbacks",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "historical onset bridge: optional introductory panel",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "unchanged intro copy introduction",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "unchanged intro copy introductionBody",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "unchanged intro copy introductionDismiss",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "independent current Help/critical log public-help-false",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "independent current Help/critical log critical-phone200-false",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "independent current Help/critical log public-help-true",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "independent current Help/critical log critical-phone200-true",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "archived executed UI input game/mobile/lib/help_content.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "current unchanged executed UI input game/mobile/lib/help_content.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "archived executed UI input game/mobile/lib/help_screen.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "archived executed UI input game/mobile/lib/strings.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "current unchanged executed UI input game/mobile/lib/strings.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "archived executed UI input game/mobile/lib/presentation.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "current unchanged executed UI input game/mobile/lib/presentation.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "archived executed UI input game/mobile/test/client_test.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "current unchanged executed UI input game/mobile/test/client_test.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "archived executed UI input game/mobile/test/native_services_test.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "current unchanged executed UI input game/mobile/test/native_services_test.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "archived executed UI input game/mobile/test/help_test.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "current unchanged executed UI input game/mobile/test/help_test.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "archived executed UI input game/mobile/test/localization_test.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "current unchanged executed UI input game/mobile/test/localization_test.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "current Help equals previously executed 200-percent branch",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "current UI archived App pin",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "unchanged October21 executed App section startup and optional guide",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "unchanged October21 executed App section commercial navigation",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "unchanged October21 executed App section handbook route",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "independent real shell condition phone-english",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "independent real shell condition phone-pseudo",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "independent real shell condition tablet-english",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "independent real shell condition tablet-pseudo",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "existing content digest release/content-presentation/full-matrix-repaired-20261021T143209447416Z/phone-100-en/test.jsonl",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "existing content digest release/content-presentation/full-matrix-repaired-20261021T143209447416Z/phone-100-en/observations.json",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "existing content digest release/content-presentation/full-matrix-repaired-20261021T143209447416Z/phone-100-en/verification.json",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "content matrix exact current guidance input release/content-presentation/full-matrix-repaired-20261021T143209447416Z/phone-100-en/game/mobile/lib/help_screen.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "content matrix exact current guidance input release/content-presentation/full-matrix-repaired-20261021T143209447416Z/phone-100-en/game/mobile/lib/help_content.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "content matrix exact current guidance input release/content-presentation/full-matrix-repaired-20261021T143209447416Z/phone-100-en/game/mobile/lib/presentation.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "content matrix exact current guidance input release/content-presentation/full-matrix-repaired-20261021T143209447416Z/phone-100-en/game/mobile/test/content_presentation_test.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "actual help row release/content-presentation/full-matrix-repaired-20261021T143209447416Z/phone-100-en/play",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "actual help row release/content-presentation/full-matrix-repaired-20261021T143209447416Z/phone-100-en/rechart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "actual help row release/content-presentation/full-matrix-repaired-20261021T143209447416Z/phone-100-en/away",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "existing content digest release/content-presentation/full-matrix-repaired-20261021T143209447416Z/phone-100-pseudo/test.jsonl",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "existing content digest release/content-presentation/full-matrix-repaired-20261021T143209447416Z/phone-100-pseudo/observations.json",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "existing content digest release/content-presentation/full-matrix-repaired-20261021T143209447416Z/phone-100-pseudo/verification.json",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "content matrix exact current guidance input release/content-presentation/full-matrix-repaired-20261021T143209447416Z/phone-100-pseudo/game/mobile/lib/help_screen.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "content matrix exact current guidance input release/content-presentation/full-matrix-repaired-20261021T143209447416Z/phone-100-pseudo/game/mobile/lib/help_content.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "content matrix exact current guidance input release/content-presentation/full-matrix-repaired-20261021T143209447416Z/phone-100-pseudo/game/mobile/lib/presentation.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "content matrix exact current guidance input release/content-presentation/full-matrix-repaired-20261021T143209447416Z/phone-100-pseudo/game/mobile/test/content_presentation_test.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "actual help row release/content-presentation/full-matrix-repaired-20261021T143209447416Z/phone-100-pseudo/play",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "actual help row release/content-presentation/full-matrix-repaired-20261021T143209447416Z/phone-100-pseudo/rechart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "actual help row release/content-presentation/full-matrix-repaired-20261021T143209447416Z/phone-100-pseudo/away",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "existing content digest release/content-presentation/full-matrix-repaired-20261021T143209447416Z/phone-150-en/test.jsonl",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "existing content digest release/content-presentation/full-matrix-repaired-20261021T143209447416Z/phone-150-en/observations.json",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "existing content digest release/content-presentation/full-matrix-repaired-20261021T143209447416Z/phone-150-en/verification.json",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "content matrix exact current guidance input release/content-presentation/full-matrix-repaired-20261021T143209447416Z/phone-150-en/game/mobile/lib/help_screen.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "content matrix exact current guidance input release/content-presentation/full-matrix-repaired-20261021T143209447416Z/phone-150-en/game/mobile/lib/help_content.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "content matrix exact current guidance input release/content-presentation/full-matrix-repaired-20261021T143209447416Z/phone-150-en/game/mobile/lib/presentation.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "content matrix exact current guidance input release/content-presentation/full-matrix-repaired-20261021T143209447416Z/phone-150-en/game/mobile/test/content_presentation_test.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "actual help row release/content-presentation/full-matrix-repaired-20261021T143209447416Z/phone-150-en/play",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "actual help row release/content-presentation/full-matrix-repaired-20261021T143209447416Z/phone-150-en/rechart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "actual help row release/content-presentation/full-matrix-repaired-20261021T143209447416Z/phone-150-en/away",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "existing content digest release/content-presentation/full-matrix-repaired-20261021T143209447416Z/phone-150-pseudo/test.jsonl",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "existing content digest release/content-presentation/full-matrix-repaired-20261021T143209447416Z/phone-150-pseudo/observations.json",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "existing content digest release/content-presentation/full-matrix-repaired-20261021T143209447416Z/phone-150-pseudo/verification.json",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "content matrix exact current guidance input release/content-presentation/full-matrix-repaired-20261021T143209447416Z/phone-150-pseudo/game/mobile/lib/help_screen.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "content matrix exact current guidance input release/content-presentation/full-matrix-repaired-20261021T143209447416Z/phone-150-pseudo/game/mobile/lib/help_content.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "content matrix exact current guidance input release/content-presentation/full-matrix-repaired-20261021T143209447416Z/phone-150-pseudo/game/mobile/lib/presentation.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "content matrix exact current guidance input release/content-presentation/full-matrix-repaired-20261021T143209447416Z/phone-150-pseudo/game/mobile/test/content_presentation_test.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "actual help row release/content-presentation/full-matrix-repaired-20261021T143209447416Z/phone-150-pseudo/play",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "actual help row release/content-presentation/full-matrix-repaired-20261021T143209447416Z/phone-150-pseudo/rechart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "actual help row release/content-presentation/full-matrix-repaired-20261021T143209447416Z/phone-150-pseudo/away",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "existing content digest release/content-presentation/full-matrix-repaired-20261021T143209447416Z/phone-200-en/test.jsonl",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "existing content digest release/content-presentation/full-matrix-repaired-20261021T143209447416Z/phone-200-en/observations.json",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "existing content digest release/content-presentation/full-matrix-repaired-20261021T143209447416Z/phone-200-en/verification.json",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "content matrix exact current guidance input release/content-presentation/full-matrix-repaired-20261021T143209447416Z/phone-200-en/game/mobile/lib/help_screen.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "content matrix exact current guidance input release/content-presentation/full-matrix-repaired-20261021T143209447416Z/phone-200-en/game/mobile/lib/help_content.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "content matrix exact current guidance input release/content-presentation/full-matrix-repaired-20261021T143209447416Z/phone-200-en/game/mobile/lib/presentation.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "content matrix exact current guidance input release/content-presentation/full-matrix-repaired-20261021T143209447416Z/phone-200-en/game/mobile/test/content_presentation_test.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "actual help row release/content-presentation/full-matrix-repaired-20261021T143209447416Z/phone-200-en/play",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "actual help row release/content-presentation/full-matrix-repaired-20261021T143209447416Z/phone-200-en/rechart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "actual help row release/content-presentation/full-matrix-repaired-20261021T143209447416Z/phone-200-en/away",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "existing content digest release/content-presentation/full-matrix-repaired-20261021T143209447416Z/phone-200-pseudo/test.jsonl",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "existing content digest release/content-presentation/full-matrix-repaired-20261021T143209447416Z/phone-200-pseudo/observations.json",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "existing content digest release/content-presentation/full-matrix-repaired-20261021T143209447416Z/phone-200-pseudo/verification.json",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "content matrix exact current guidance input release/content-presentation/full-matrix-repaired-20261021T143209447416Z/phone-200-pseudo/game/mobile/lib/help_screen.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "content matrix exact current guidance input release/content-presentation/full-matrix-repaired-20261021T143209447416Z/phone-200-pseudo/game/mobile/lib/help_content.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "content matrix exact current guidance input release/content-presentation/full-matrix-repaired-20261021T143209447416Z/phone-200-pseudo/game/mobile/lib/presentation.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "content matrix exact current guidance input release/content-presentation/full-matrix-repaired-20261021T143209447416Z/phone-200-pseudo/game/mobile/test/content_presentation_test.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "actual help row release/content-presentation/full-matrix-repaired-20261021T143209447416Z/phone-200-pseudo/play",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "actual help row release/content-presentation/full-matrix-repaired-20261021T143209447416Z/phone-200-pseudo/rechart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "actual help row release/content-presentation/full-matrix-repaired-20261021T143209447416Z/phone-200-pseudo/away",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "existing content digest release/content-presentation/full-matrix-repaired-20261021T143209447416Z/tablet-100-en/test.jsonl",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "existing content digest release/content-presentation/full-matrix-repaired-20261021T143209447416Z/tablet-100-en/observations.json",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "existing content digest release/content-presentation/full-matrix-repaired-20261021T143209447416Z/tablet-100-en/verification.json",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "content matrix exact current guidance input release/content-presentation/full-matrix-repaired-20261021T143209447416Z/tablet-100-en/game/mobile/lib/help_screen.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "content matrix exact current guidance input release/content-presentation/full-matrix-repaired-20261021T143209447416Z/tablet-100-en/game/mobile/lib/help_content.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "content matrix exact current guidance input release/content-presentation/full-matrix-repaired-20261021T143209447416Z/tablet-100-en/game/mobile/lib/presentation.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "content matrix exact current guidance input release/content-presentation/full-matrix-repaired-20261021T143209447416Z/tablet-100-en/game/mobile/test/content_presentation_test.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "actual help row release/content-presentation/full-matrix-repaired-20261021T143209447416Z/tablet-100-en/play",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "actual help row release/content-presentation/full-matrix-repaired-20261021T143209447416Z/tablet-100-en/rechart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "actual help row release/content-presentation/full-matrix-repaired-20261021T143209447416Z/tablet-100-en/away",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "existing content digest release/content-presentation/full-matrix-repaired-20261021T143209447416Z/tablet-100-pseudo/test.jsonl",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "existing content digest release/content-presentation/full-matrix-repaired-20261021T143209447416Z/tablet-100-pseudo/observations.json",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "existing content digest release/content-presentation/full-matrix-repaired-20261021T143209447416Z/tablet-100-pseudo/verification.json",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "content matrix exact current guidance input release/content-presentation/full-matrix-repaired-20261021T143209447416Z/tablet-100-pseudo/game/mobile/lib/help_screen.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "content matrix exact current guidance input release/content-presentation/full-matrix-repaired-20261021T143209447416Z/tablet-100-pseudo/game/mobile/lib/help_content.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "content matrix exact current guidance input release/content-presentation/full-matrix-repaired-20261021T143209447416Z/tablet-100-pseudo/game/mobile/lib/presentation.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "content matrix exact current guidance input release/content-presentation/full-matrix-repaired-20261021T143209447416Z/tablet-100-pseudo/game/mobile/test/content_presentation_test.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "actual help row release/content-presentation/full-matrix-repaired-20261021T143209447416Z/tablet-100-pseudo/play",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "actual help row release/content-presentation/full-matrix-repaired-20261021T143209447416Z/tablet-100-pseudo/rechart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "actual help row release/content-presentation/full-matrix-repaired-20261021T143209447416Z/tablet-100-pseudo/away",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "existing content digest release/content-presentation/full-matrix-repaired-20261021T143209447416Z/tablet-150-en/test.jsonl",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "existing content digest release/content-presentation/full-matrix-repaired-20261021T143209447416Z/tablet-150-en/observations.json",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "existing content digest release/content-presentation/full-matrix-repaired-20261021T143209447416Z/tablet-150-en/verification.json",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "content matrix exact current guidance input release/content-presentation/full-matrix-repaired-20261021T143209447416Z/tablet-150-en/game/mobile/lib/help_screen.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "content matrix exact current guidance input release/content-presentation/full-matrix-repaired-20261021T143209447416Z/tablet-150-en/game/mobile/lib/help_content.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "content matrix exact current guidance input release/content-presentation/full-matrix-repaired-20261021T143209447416Z/tablet-150-en/game/mobile/lib/presentation.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "content matrix exact current guidance input release/content-presentation/full-matrix-repaired-20261021T143209447416Z/tablet-150-en/game/mobile/test/content_presentation_test.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "actual help row release/content-presentation/full-matrix-repaired-20261021T143209447416Z/tablet-150-en/play",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "actual help row release/content-presentation/full-matrix-repaired-20261021T143209447416Z/tablet-150-en/rechart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "actual help row release/content-presentation/full-matrix-repaired-20261021T143209447416Z/tablet-150-en/away",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "existing content digest release/content-presentation/full-matrix-repaired-20261021T143209447416Z/tablet-150-pseudo/test.jsonl",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "existing content digest release/content-presentation/full-matrix-repaired-20261021T143209447416Z/tablet-150-pseudo/observations.json",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "existing content digest release/content-presentation/full-matrix-repaired-20261021T143209447416Z/tablet-150-pseudo/verification.json",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "content matrix exact current guidance input release/content-presentation/full-matrix-repaired-20261021T143209447416Z/tablet-150-pseudo/game/mobile/lib/help_screen.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "content matrix exact current guidance input release/content-presentation/full-matrix-repaired-20261021T143209447416Z/tablet-150-pseudo/game/mobile/lib/help_content.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "content matrix exact current guidance input release/content-presentation/full-matrix-repaired-20261021T143209447416Z/tablet-150-pseudo/game/mobile/lib/presentation.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "content matrix exact current guidance input release/content-presentation/full-matrix-repaired-20261021T143209447416Z/tablet-150-pseudo/game/mobile/test/content_presentation_test.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "actual help row release/content-presentation/full-matrix-repaired-20261021T143209447416Z/tablet-150-pseudo/play",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "actual help row release/content-presentation/full-matrix-repaired-20261021T143209447416Z/tablet-150-pseudo/rechart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "actual help row release/content-presentation/full-matrix-repaired-20261021T143209447416Z/tablet-150-pseudo/away",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "existing content digest release/content-presentation/full-matrix-repaired-20261021T143209447416Z/tablet-200-en/test.jsonl",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "existing content digest release/content-presentation/full-matrix-repaired-20261021T143209447416Z/tablet-200-en/observations.json",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "existing content digest release/content-presentation/full-matrix-repaired-20261021T143209447416Z/tablet-200-en/verification.json",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "content matrix exact current guidance input release/content-presentation/full-matrix-repaired-20261021T143209447416Z/tablet-200-en/game/mobile/lib/help_screen.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "content matrix exact current guidance input release/content-presentation/full-matrix-repaired-20261021T143209447416Z/tablet-200-en/game/mobile/lib/help_content.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "content matrix exact current guidance input release/content-presentation/full-matrix-repaired-20261021T143209447416Z/tablet-200-en/game/mobile/lib/presentation.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "content matrix exact current guidance input release/content-presentation/full-matrix-repaired-20261021T143209447416Z/tablet-200-en/game/mobile/test/content_presentation_test.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "actual help row release/content-presentation/full-matrix-repaired-20261021T143209447416Z/tablet-200-en/play",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "actual help row release/content-presentation/full-matrix-repaired-20261021T143209447416Z/tablet-200-en/rechart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "actual help row release/content-presentation/full-matrix-repaired-20261021T143209447416Z/tablet-200-en/away",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "existing content digest release/content-presentation/full-matrix-repaired-20261021T143209447416Z/tablet-200-pseudo/test.jsonl",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "existing content digest release/content-presentation/full-matrix-repaired-20261021T143209447416Z/tablet-200-pseudo/observations.json",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "existing content digest release/content-presentation/full-matrix-repaired-20261021T143209447416Z/tablet-200-pseudo/verification.json",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "content matrix exact current guidance input release/content-presentation/full-matrix-repaired-20261021T143209447416Z/tablet-200-pseudo/game/mobile/lib/help_screen.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "content matrix exact current guidance input release/content-presentation/full-matrix-repaired-20261021T143209447416Z/tablet-200-pseudo/game/mobile/lib/help_content.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "content matrix exact current guidance input release/content-presentation/full-matrix-repaired-20261021T143209447416Z/tablet-200-pseudo/game/mobile/lib/presentation.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "content matrix exact current guidance input release/content-presentation/full-matrix-repaired-20261021T143209447416Z/tablet-200-pseudo/game/mobile/test/content_presentation_test.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "actual help row release/content-presentation/full-matrix-repaired-20261021T143209447416Z/tablet-200-pseudo/play",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "actual help row release/content-presentation/full-matrix-repaired-20261021T143209447416Z/tablet-200-pseudo/rechart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "actual help row release/content-presentation/full-matrix-repaired-20261021T143209447416Z/tablet-200-pseudo/away",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "a052 archived guidance input game/mobile/lib/app.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "a052 current guidance input game/mobile/lib/app.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "a052 archived guidance input game/mobile/lib/strings.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "a052 current guidance input game/mobile/lib/strings.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "a052 archived guidance input game/mobile/lib/presentation.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "a052 current guidance input game/mobile/lib/presentation.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "a052 archived guidance input game/mobile/lib/help_content.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "a052 current guidance input game/mobile/lib/help_content.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "a052 archived guidance input game/mobile/lib/help_screen.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "a052 current guidance input game/mobile/lib/help_screen.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "a052 archived guidance input game/mobile/lib/bootstrap.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "a052 current guidance input game/mobile/lib/bootstrap.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "a052 archived guidance input game/mobile/lib/main.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "a052 current guidance input game/mobile/lib/main.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "a052 archived guidance input game/mobile/lib/native_services.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "a052 current guidance input game/mobile/lib/native_services.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "a052 archived guidance input game/mobile/lib/service_support_screen.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "a052 current guidance input game/mobile/lib/service_support_screen.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "a052 archived guidance input game/mobile/lib/support_screen.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "a052 current guidance input game/mobile/lib/support_screen.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "a052 archived guidance input game/mobile/lib/support_service_bridge.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "a052 current guidance input game/mobile/lib/support_service_bridge.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "a052 archived guidance input game/mobile/lib/service_cosmetics.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "a052 current guidance input game/mobile/lib/service_cosmetics.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "a052 archived guidance input game/mobile/lib/cosmetics_screen.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "a052 current guidance input game/mobile/lib/cosmetics_screen.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "a052 archived guidance input game/mobile/lib/daily_panel.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "a052 current guidance input game/mobile/lib/daily_panel.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "a052 archived guidance input game/mobile/lib/game_controller.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "a052 current guidance input game/mobile/lib/game_controller.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "a052 archived guidance input game/mobile/lib/game_telemetry.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "a052 current guidance input game/mobile/lib/game_telemetry.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "a052 archived guidance input game/mobile/lib/reminder_lifecycle.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "a052 current guidance input game/mobile/lib/reminder_lifecycle.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "a052 archived guidance input game/mobile/lib/rechart_estimate.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "a052 current guidance input game/mobile/lib/rechart_estimate.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "a052 archived guidance input game/mobile/test/client_test.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "a052 current guidance input game/mobile/test/client_test.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "a052 archived guidance input game/mobile/test/native_services_test.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "a052 current guidance input game/mobile/test/native_services_test.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "a052 archived guidance input game/mobile/test/help_test.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "a052 current guidance input game/mobile/test/help_test.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "a052 archived guidance input game/mobile/test/localization_test.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "a052 current guidance input game/mobile/test/localization_test.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "a052 archived guidance input game/mobile/test/content_presentation_test.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "a052 current guidance input game/mobile/test/content_presentation_test.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "a052 archived guidance input game/mobile/test/qa_client_shell_clauses_test.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "a052 current guidance input game/mobile/test/qa_client_shell_clauses_test.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "a052 archived guidance input game/mobile/test/qa_rechart_forecast_review_test.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "a052 current guidance input game/mobile/test/qa_rechart_forecast_review_test.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "a052 archived guidance input game/mobile/test/bootstrap_test.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "a052 current guidance input game/mobile/test/bootstrap_test.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "a052 archived guidance input game/mobile/test/bootstrap_service_configuration_test.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "a052 current guidance input game/mobile/test/bootstrap_service_configuration_test.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "a052 unfiltered suite command",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "a052 failed suite remains explicitly failed",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "a052 sole listed failure is separate stale calibration fixture",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "exact live/a052/3b00 Help comparison /Users/csys/Desktop/ibicot/idle",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "exact live/a052/3b00 Help comparison /Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261023T032609.052120Z-a052a4405347/source",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "exact live/a052/3b00 Help comparison /Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261023T040445.261666Z-3b00cc8f7122/source",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "review leaves live source/status unchanged v1_backlog.json",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "review leaves live source/status unchanged implementation/program.json",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "review leaves live source/status unchanged implementation/scope_requirements.json",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "review leaves live source/status unchanged game/mobile/lib/app.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "review leaves live source/status unchanged game/mobile/lib/strings.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "review leaves live source/status unchanged game/mobile/lib/presentation.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "review leaves live source/status unchanged game/mobile/lib/help_content.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "review leaves live source/status unchanged game/mobile/lib/help_screen.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "review leaves live source/status unchanged game/mobile/lib/bootstrap.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "review leaves live source/status unchanged game/mobile/lib/main.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "review leaves live source/status unchanged game/mobile/lib/native_services.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "review leaves live source/status unchanged game/mobile/lib/service_support_screen.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "review leaves live source/status unchanged game/mobile/lib/support_screen.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "review leaves live source/status unchanged game/mobile/lib/support_service_bridge.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "review leaves live source/status unchanged game/mobile/lib/service_cosmetics.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "review leaves live source/status unchanged game/mobile/lib/cosmetics_screen.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "review leaves live source/status unchanged game/mobile/lib/daily_panel.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "review leaves live source/status unchanged game/mobile/lib/game_controller.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "review leaves live source/status unchanged game/mobile/lib/game_telemetry.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "review leaves live source/status unchanged game/mobile/lib/reminder_lifecycle.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "review leaves live source/status unchanged game/mobile/lib/rechart_estimate.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "review leaves live source/status unchanged game/mobile/test/client_test.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "review leaves live source/status unchanged game/mobile/test/native_services_test.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "review leaves live source/status unchanged game/mobile/test/help_test.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "review leaves live source/status unchanged game/mobile/test/localization_test.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "review leaves live source/status unchanged game/mobile/test/content_presentation_test.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "review leaves live source/status unchanged game/mobile/test/qa_client_shell_clauses_test.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "review leaves live source/status unchanged game/mobile/test/qa_rechart_forecast_review_test.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "review leaves live source/status unchanged game/mobile/test/bootstrap_test.dart",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "review leaves live source/status unchanged game/mobile/test/bootstrap_service_configuration_test.dart",
+      "pass": true,
+      "detail": null
+    }
+  ],
+  "named_historical_execution": [
+    {
+      "testStart": {
+        "test": {
+          "id": 60,
+          "name": "onboarding action moves the first purchase into view",
+          "suiteID": 6,
+          "groupIDs": [
+            25
+          ],
+          "metadata": {
+            "skip": false,
+            "skipReason": null
+          },
+          "line": 174,
+          "column": 5,
+          "url": "package:flutter_test/src/widget_tester.dart",
+          "root_line": 273,
+          "root_column": 3,
+          "root_url": "file:///Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-services-repaired-20261016T114721906724Z/game/mobile/test/client_test.dart"
+        },
+        "type": "testStart",
+        "time": 18094
+      },
+      "testDone": {
+        "testID": 60,
+        "result": "success",
+        "skipped": false,
+        "hidden": false,
+        "type": "testDone",
+        "time": 19406
+      }
+    },
+    {
+      "testStart": {
+        "test": {
+          "id": 276,
+          "name": "unconfigured guest initialization touches neither secure store nor billing",
+          "suiteID": 249,
+          "groupIDs": [
+            253
+          ],
+          "metadata": {
+            "skip": false,
+            "skipReason": null
+          },
+          "line": 460,
+          "column": 3,
+          "url": "file:///Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-services-repaired-20261016T114721906724Z/game/mobile/test/native_services_test.dart"
+        },
+        "type": "testStart",
+        "time": 35966
+      },
+      "testDone": {
+        "testID": 276,
+        "result": "success",
+        "skipped": false,
+        "hidden": false,
+        "type": "testDone",
+        "time": 35970
+      }
+    }
+  ],
+  "source_bridge": [
+    {
+      "section": "preference schema",
+      "old_sha256": "7731509e8126d5f984bf8d4bc68be711edcbf349ac5f3bb4fd86a843118fea1b",
+      "comparison_sha256": "7731509e8126d5f984bf8d4bc68be711edcbf349ac5f3bb4fd86a843118fea1b",
+      "normalization": "none"
+    },
+    {
+      "section": "dismiss and scroll callbacks",
+      "old_sha256": "086c808e40a2bf98f1524e6227cdb09a1aee27a8fdd7ab6c0d054b472536ce1f",
+      "comparison_sha256": "086c808e40a2bf98f1524e6227cdb09a1aee27a8fdd7ab6c0d054b472536ce1f",
+      "normalization": "none"
+    },
+    {
+      "section": "optional introductory panel",
+      "old_sha256": "af99bc0c78418d81b61381a243855da316b0a255338b07b1da240fed0ffcc9d4",
+      "comparison_sha256": "af99bc0c78418d81b61381a243855da316b0a255338b07b1da240fed0ffcc9d4",
+      "normalization": "LocalizedText wrapper -> Text only"
+    }
+  ],
+  "existing_content_help_rows": [
+    {
+      "directory": "release/content-presentation/full-matrix-repaired-20261021T143209447416Z/phone-100-en",
+      "topic": "play",
+      "condition": {
+        "viewport": "phone",
+        "text_percent": 100,
+        "pseudo": false
+      },
+      "texts": 16,
+      "controls": 2,
+      "before_sha256": "1ed5985662787b7ee208225216015e4230ee2cc0933d2643480726813aa27d4b",
+      "after_sha256": "1ed5985662787b7ee208225216015e4230ee2cc0933d2643480726813aa27d4b",
+      "current_geometry_bridge": true
+    },
+    {
+      "directory": "release/content-presentation/full-matrix-repaired-20261021T143209447416Z/phone-100-en",
+      "topic": "rechart",
+      "condition": {
+        "viewport": "phone",
+        "text_percent": 100,
+        "pseudo": false
+      },
+      "texts": 13,
+      "controls": 2,
+      "before_sha256": "79a20c747dde079f55fc96625d9a2e5183e8f4793356b9109a479d9f71cb71ce",
+      "after_sha256": "79a20c747dde079f55fc96625d9a2e5183e8f4793356b9109a479d9f71cb71ce",
+      "current_geometry_bridge": true
+    },
+    {
+      "directory": "release/content-presentation/full-matrix-repaired-20261021T143209447416Z/phone-100-en",
+      "topic": "away",
+      "condition": {
+        "viewport": "phone",
+        "text_percent": 100,
+        "pseudo": false
+      },
+      "texts": 18,
+      "controls": 2,
+      "before_sha256": "7126895424d96568b5e4dd86c9024af42fa916eb835ad7b37f9ecb69e76f4b82",
+      "after_sha256": "7126895424d96568b5e4dd86c9024af42fa916eb835ad7b37f9ecb69e76f4b82",
+      "current_geometry_bridge": true
+    },
+    {
+      "directory": "release/content-presentation/full-matrix-repaired-20261021T143209447416Z/phone-100-pseudo",
+      "topic": "play",
+      "condition": {
+        "viewport": "phone",
+        "text_percent": 100,
+        "pseudo": true
+      },
+      "texts": 16,
+      "controls": 2,
+      "before_sha256": "070c0f6f7b1b2ba0fca2f7eb679072954c1b9478fa4d633e083567b6d8a4a112",
+      "after_sha256": "070c0f6f7b1b2ba0fca2f7eb679072954c1b9478fa4d633e083567b6d8a4a112",
+      "current_geometry_bridge": true
+    },
+    {
+      "directory": "release/content-presentation/full-matrix-repaired-20261021T143209447416Z/phone-100-pseudo",
+      "topic": "rechart",
+      "condition": {
+        "viewport": "phone",
+        "text_percent": 100,
+        "pseudo": true
+      },
+      "texts": 13,
+      "controls": 2,
+      "before_sha256": "acdf378fe84fcb65e35a8a1265468923e3df3c8f91279ab46d41c63f82cc027e",
+      "after_sha256": "acdf378fe84fcb65e35a8a1265468923e3df3c8f91279ab46d41c63f82cc027e",
+      "current_geometry_bridge": true
+    },
+    {
+      "directory": "release/content-presentation/full-matrix-repaired-20261021T143209447416Z/phone-100-pseudo",
+      "topic": "away",
+      "condition": {
+        "viewport": "phone",
+        "text_percent": 100,
+        "pseudo": true
+      },
+      "texts": 18,
+      "controls": 2,
+      "before_sha256": "dd670b6179cddb1c0251e54f5d45542f235a462b5f231cdb6ddefaeb34d19f61",
+      "after_sha256": "dd670b6179cddb1c0251e54f5d45542f235a462b5f231cdb6ddefaeb34d19f61",
+      "current_geometry_bridge": true
+    },
+    {
+      "directory": "release/content-presentation/full-matrix-repaired-20261021T143209447416Z/phone-150-en",
+      "topic": "play",
+      "condition": {
+        "viewport": "phone",
+        "text_percent": 150,
+        "pseudo": false
+      },
+      "texts": 16,
+      "controls": 2,
+      "before_sha256": "fec601a383bcdce9378096782bf4608c708d431e73f89c2712b3d01a234eeb8f",
+      "after_sha256": "fec601a383bcdce9378096782bf4608c708d431e73f89c2712b3d01a234eeb8f",
+      "current_geometry_bridge": true
+    },
+    {
+      "directory": "release/content-presentation/full-matrix-repaired-20261021T143209447416Z/phone-150-en",
+      "topic": "rechart",
+      "condition": {
+        "viewport": "phone",
+        "text_percent": 150,
+        "pseudo": false
+      },
+      "texts": 13,
+      "controls": 2,
+      "before_sha256": "9f11790cabfa896baf6de39b0774bacce3c0ab8dd2d4068e01d61fa7ea432a09",
+      "after_sha256": "9f11790cabfa896baf6de39b0774bacce3c0ab8dd2d4068e01d61fa7ea432a09",
+      "current_geometry_bridge": true
+    },
+    {
+      "directory": "release/content-presentation/full-matrix-repaired-20261021T143209447416Z/phone-150-en",
+      "topic": "away",
+      "condition": {
+        "viewport": "phone",
+        "text_percent": 150,
+        "pseudo": false
+      },
+      "texts": 18,
+      "controls": 2,
+      "before_sha256": "3ea027a150044c769dcfc94463d2d94516a5a18fbc5d9ab3d1c788310344a624",
+      "after_sha256": "3ea027a150044c769dcfc94463d2d94516a5a18fbc5d9ab3d1c788310344a624",
+      "current_geometry_bridge": true
+    },
+    {
+      "directory": "release/content-presentation/full-matrix-repaired-20261021T143209447416Z/phone-150-pseudo",
+      "topic": "play",
+      "condition": {
+        "viewport": "phone",
+        "text_percent": 150,
+        "pseudo": true
+      },
+      "texts": 16,
+      "controls": 2,
+      "before_sha256": "efad3b1f5271631d8ecc99c9dee06e350230e904495261af80734626bd045019",
+      "after_sha256": "efad3b1f5271631d8ecc99c9dee06e350230e904495261af80734626bd045019",
+      "current_geometry_bridge": true
+    },
+    {
+      "directory": "release/content-presentation/full-matrix-repaired-20261021T143209447416Z/phone-150-pseudo",
+      "topic": "rechart",
+      "condition": {
+        "viewport": "phone",
+        "text_percent": 150,
+        "pseudo": true
+      },
+      "texts": 13,
+      "controls": 2,
+      "before_sha256": "7e06f780e061cc314678d0caccbdf943c1f4fdadd24344f78aa1af373c27f078",
+      "after_sha256": "7e06f780e061cc314678d0caccbdf943c1f4fdadd24344f78aa1af373c27f078",
+      "current_geometry_bridge": true
+    },
+    {
+      "directory": "release/content-presentation/full-matrix-repaired-20261021T143209447416Z/phone-150-pseudo",
+      "topic": "away",
+      "condition": {
+        "viewport": "phone",
+        "text_percent": 150,
+        "pseudo": true
+      },
+      "texts": 18,
+      "controls": 2,
+      "before_sha256": "9a46ad52910653310758255f294e9012ff0abd287d09b9de10f548f7530b35bf",
+      "after_sha256": "9a46ad52910653310758255f294e9012ff0abd287d09b9de10f548f7530b35bf",
+      "current_geometry_bridge": true
+    },
+    {
+      "directory": "release/content-presentation/full-matrix-repaired-20261021T143209447416Z/phone-200-en",
+      "topic": "play",
+      "condition": {
+        "viewport": "phone",
+        "text_percent": 200,
+        "pseudo": false
+      },
+      "texts": 16,
+      "controls": 2,
+      "before_sha256": "34e3fb9ff9b691586538cfc820546863848d4dce56dda354f3ed35b557d05ae1",
+      "after_sha256": "34e3fb9ff9b691586538cfc820546863848d4dce56dda354f3ed35b557d05ae1",
+      "current_geometry_bridge": true
+    },
+    {
+      "directory": "release/content-presentation/full-matrix-repaired-20261021T143209447416Z/phone-200-en",
+      "topic": "rechart",
+      "condition": {
+        "viewport": "phone",
+        "text_percent": 200,
+        "pseudo": false
+      },
+      "texts": 13,
+      "controls": 2,
+      "before_sha256": "57e3d13e6d0d5cbb0eb491e8c9bed98d83b5c81c75ad2ea6d41b4b222e2dae0f",
+      "after_sha256": "57e3d13e6d0d5cbb0eb491e8c9bed98d83b5c81c75ad2ea6d41b4b222e2dae0f",
+      "current_geometry_bridge": true
+    },
+    {
+      "directory": "release/content-presentation/full-matrix-repaired-20261021T143209447416Z/phone-200-en",
+      "topic": "away",
+      "condition": {
+        "viewport": "phone",
+        "text_percent": 200,
+        "pseudo": false
+      },
+      "texts": 18,
+      "controls": 2,
+      "before_sha256": "c3f6b20e200a73c3385a9c0e8d8083066ec555275ff6a7a93401c9aaa199c2cb",
+      "after_sha256": "c3f6b20e200a73c3385a9c0e8d8083066ec555275ff6a7a93401c9aaa199c2cb",
+      "current_geometry_bridge": true
+    },
+    {
+      "directory": "release/content-presentation/full-matrix-repaired-20261021T143209447416Z/phone-200-pseudo",
+      "topic": "play",
+      "condition": {
+        "viewport": "phone",
+        "text_percent": 200,
+        "pseudo": true
+      },
+      "texts": 16,
+      "controls": 2,
+      "before_sha256": "046fea84e626f30ee293ee40e04041b067760bd6fab75430e9578a5b681c521e",
+      "after_sha256": "046fea84e626f30ee293ee40e04041b067760bd6fab75430e9578a5b681c521e",
+      "current_geometry_bridge": true
+    },
+    {
+      "directory": "release/content-presentation/full-matrix-repaired-20261021T143209447416Z/phone-200-pseudo",
+      "topic": "rechart",
+      "condition": {
+        "viewport": "phone",
+        "text_percent": 200,
+        "pseudo": true
+      },
+      "texts": 13,
+      "controls": 2,
+      "before_sha256": "343277b06664f45ddd33c47aec4868f5aece43a4f6e4440e95b2c5ffd7f0fdd2",
+      "after_sha256": "343277b06664f45ddd33c47aec4868f5aece43a4f6e4440e95b2c5ffd7f0fdd2",
+      "current_geometry_bridge": true
+    },
+    {
+      "directory": "release/content-presentation/full-matrix-repaired-20261021T143209447416Z/phone-200-pseudo",
+      "topic": "away",
+      "condition": {
+        "viewport": "phone",
+        "text_percent": 200,
+        "pseudo": true
+      },
+      "texts": 18,
+      "controls": 2,
+      "before_sha256": "f5432a6be75a59f9302fd232564da061011dc3198910b2a227d7c06f446385eb",
+      "after_sha256": "f5432a6be75a59f9302fd232564da061011dc3198910b2a227d7c06f446385eb",
+      "current_geometry_bridge": true
+    },
+    {
+      "directory": "release/content-presentation/full-matrix-repaired-20261021T143209447416Z/tablet-100-en",
+      "topic": "play",
+      "condition": {
+        "viewport": "tablet",
+        "text_percent": 100,
+        "pseudo": false
+      },
+      "texts": 16,
+      "controls": 2,
+      "before_sha256": "e0477d5dc3f8fbc2ac3e2d8c56a2ce04d3b2ad672b1b9baacb0e7761842705cf",
+      "after_sha256": "e0477d5dc3f8fbc2ac3e2d8c56a2ce04d3b2ad672b1b9baacb0e7761842705cf",
+      "current_geometry_bridge": true
+    },
+    {
+      "directory": "release/content-presentation/full-matrix-repaired-20261021T143209447416Z/tablet-100-en",
+      "topic": "rechart",
+      "condition": {
+        "viewport": "tablet",
+        "text_percent": 100,
+        "pseudo": false
+      },
+      "texts": 13,
+      "controls": 2,
+      "before_sha256": "363b31849df5f8c4596f32e1ceaae5a611eac3ffde7a38b06702034e40e4c26a",
+      "after_sha256": "363b31849df5f8c4596f32e1ceaae5a611eac3ffde7a38b06702034e40e4c26a",
+      "current_geometry_bridge": true
+    },
+    {
+      "directory": "release/content-presentation/full-matrix-repaired-20261021T143209447416Z/tablet-100-en",
+      "topic": "away",
+      "condition": {
+        "viewport": "tablet",
+        "text_percent": 100,
+        "pseudo": false
+      },
+      "texts": 18,
+      "controls": 2,
+      "before_sha256": "a7c1550edbd642f9d4acfbe4e493365b1853aad447fb77919425a0204be1e914",
+      "after_sha256": "a7c1550edbd642f9d4acfbe4e493365b1853aad447fb77919425a0204be1e914",
+      "current_geometry_bridge": true
+    },
+    {
+      "directory": "release/content-presentation/full-matrix-repaired-20261021T143209447416Z/tablet-100-pseudo",
+      "topic": "play",
+      "condition": {
+        "viewport": "tablet",
+        "text_percent": 100,
+        "pseudo": true
+      },
+      "texts": 16,
+      "controls": 2,
+      "before_sha256": "a543cd22bcd6aa49730f94c4bf52c96eac2ceb5ac964893bea0cf26f5b3b7414",
+      "after_sha256": "a543cd22bcd6aa49730f94c4bf52c96eac2ceb5ac964893bea0cf26f5b3b7414",
+      "current_geometry_bridge": true
+    },
+    {
+      "directory": "release/content-presentation/full-matrix-repaired-20261021T143209447416Z/tablet-100-pseudo",
+      "topic": "rechart",
+      "condition": {
+        "viewport": "tablet",
+        "text_percent": 100,
+        "pseudo": true
+      },
+      "texts": 13,
+      "controls": 2,
+      "before_sha256": "257c38a0788b7d53b6733d7cc66e7ab7e7f45c9e119cc5a23251fae2ed329c96",
+      "after_sha256": "257c38a0788b7d53b6733d7cc66e7ab7e7f45c9e119cc5a23251fae2ed329c96",
+      "current_geometry_bridge": true
+    },
+    {
+      "directory": "release/content-presentation/full-matrix-repaired-20261021T143209447416Z/tablet-100-pseudo",
+      "topic": "away",
+      "condition": {
+        "viewport": "tablet",
+        "text_percent": 100,
+        "pseudo": true
+      },
+      "texts": 18,
+      "controls": 2,
+      "before_sha256": "1e900d260016315b9778ce7833dfffe0e0caf7d62089ddf6e855840dd64d1a92",
+      "after_sha256": "1e900d260016315b9778ce7833dfffe0e0caf7d62089ddf6e855840dd64d1a92",
+      "current_geometry_bridge": true
+    },
+    {
+      "directory": "release/content-presentation/full-matrix-repaired-20261021T143209447416Z/tablet-150-en",
+      "topic": "play",
+      "condition": {
+        "viewport": "tablet",
+        "text_percent": 150,
+        "pseudo": false
+      },
+      "texts": 16,
+      "controls": 2,
+      "before_sha256": "37a5fa5ad9d42ddba8d25d8cc8fa0fd7b75f7c80e61cfa278143eb7a6ea021f0",
+      "after_sha256": "37a5fa5ad9d42ddba8d25d8cc8fa0fd7b75f7c80e61cfa278143eb7a6ea021f0",
+      "current_geometry_bridge": true
+    },
+    {
+      "directory": "release/content-presentation/full-matrix-repaired-20261021T143209447416Z/tablet-150-en",
+      "topic": "rechart",
+      "condition": {
+        "viewport": "tablet",
+        "text_percent": 150,
+        "pseudo": false
+      },
+      "texts": 13,
+      "controls": 2,
+      "before_sha256": "bceb590fc09a6575a2c0a947e8d9490bb907f2c9e67f357cb07ef4cd5ad2f6da",
+      "after_sha256": "bceb590fc09a6575a2c0a947e8d9490bb907f2c9e67f357cb07ef4cd5ad2f6da",
+      "current_geometry_bridge": true
+    },
+    {
+      "directory": "release/content-presentation/full-matrix-repaired-20261021T143209447416Z/tablet-150-en",
+      "topic": "away",
+      "condition": {
+        "viewport": "tablet",
+        "text_percent": 150,
+        "pseudo": false
+      },
+      "texts": 18,
+      "controls": 2,
+      "before_sha256": "5a0b6ff4e30df2057ea1ecea379766ece1c21457f05f8fd715c776c29853452a",
+      "after_sha256": "5a0b6ff4e30df2057ea1ecea379766ece1c21457f05f8fd715c776c29853452a",
+      "current_geometry_bridge": true
+    },
+    {
+      "directory": "release/content-presentation/full-matrix-repaired-20261021T143209447416Z/tablet-150-pseudo",
+      "topic": "play",
+      "condition": {
+        "viewport": "tablet",
+        "text_percent": 150,
+        "pseudo": true
+      },
+      "texts": 16,
+      "controls": 2,
+      "before_sha256": "d03cd18f984a9e5ed75f369d8ab082058a3eb302ebf69d813695f316ac08586a",
+      "after_sha256": "d03cd18f984a9e5ed75f369d8ab082058a3eb302ebf69d813695f316ac08586a",
+      "current_geometry_bridge": true
+    },
+    {
+      "directory": "release/content-presentation/full-matrix-repaired-20261021T143209447416Z/tablet-150-pseudo",
+      "topic": "rechart",
+      "condition": {
+        "viewport": "tablet",
+        "text_percent": 150,
+        "pseudo": true
+      },
+      "texts": 13,
+      "controls": 2,
+      "before_sha256": "83a3792a2cad73bf7dcdb21ba16e570318af14c494a50251ae6223c81be5dea7",
+      "after_sha256": "83a3792a2cad73bf7dcdb21ba16e570318af14c494a50251ae6223c81be5dea7",
+      "current_geometry_bridge": true
+    },
+    {
+      "directory": "release/content-presentation/full-matrix-repaired-20261021T143209447416Z/tablet-150-pseudo",
+      "topic": "away",
+      "condition": {
+        "viewport": "tablet",
+        "text_percent": 150,
+        "pseudo": true
+      },
+      "texts": 18,
+      "controls": 2,
+      "before_sha256": "34f7b9b654a13862b808c75ef5d1836b6af18f46d242baf7170075fb095f9067",
+      "after_sha256": "34f7b9b654a13862b808c75ef5d1836b6af18f46d242baf7170075fb095f9067",
+      "current_geometry_bridge": true
+    },
+    {
+      "directory": "release/content-presentation/full-matrix-repaired-20261021T143209447416Z/tablet-200-en",
+      "topic": "play",
+      "condition": {
+        "viewport": "tablet",
+        "text_percent": 200,
+        "pseudo": false
+      },
+      "texts": 16,
+      "controls": 2,
+      "before_sha256": "f74d189ad1bcb364d9739d01ade977814682c12e3ab55923910b2dc47cc6a8bd",
+      "after_sha256": "f74d189ad1bcb364d9739d01ade977814682c12e3ab55923910b2dc47cc6a8bd",
+      "current_geometry_bridge": true
+    },
+    {
+      "directory": "release/content-presentation/full-matrix-repaired-20261021T143209447416Z/tablet-200-en",
+      "topic": "rechart",
+      "condition": {
+        "viewport": "tablet",
+        "text_percent": 200,
+        "pseudo": false
+      },
+      "texts": 13,
+      "controls": 2,
+      "before_sha256": "9f4f32fd494fcfaf1320a37ba286a92e194d6bd1acb375d04f47c03e4a16e8de",
+      "after_sha256": "9f4f32fd494fcfaf1320a37ba286a92e194d6bd1acb375d04f47c03e4a16e8de",
+      "current_geometry_bridge": true
+    },
+    {
+      "directory": "release/content-presentation/full-matrix-repaired-20261021T143209447416Z/tablet-200-en",
+      "topic": "away",
+      "condition": {
+        "viewport": "tablet",
+        "text_percent": 200,
+        "pseudo": false
+      },
+      "texts": 18,
+      "controls": 2,
+      "before_sha256": "83a4c9a43b66e68a3e141922b4915b99001e9c580e474e470548be69192688b6",
+      "after_sha256": "83a4c9a43b66e68a3e141922b4915b99001e9c580e474e470548be69192688b6",
+      "current_geometry_bridge": true
+    },
+    {
+      "directory": "release/content-presentation/full-matrix-repaired-20261021T143209447416Z/tablet-200-pseudo",
+      "topic": "play",
+      "condition": {
+        "viewport": "tablet",
+        "text_percent": 200,
+        "pseudo": true
+      },
+      "texts": 16,
+      "controls": 2,
+      "before_sha256": "6ab04a17fc0c8e1da74c5e85a65cd56ee039f4c5d665383e31a37ed15d65a8f5",
+      "after_sha256": "6ab04a17fc0c8e1da74c5e85a65cd56ee039f4c5d665383e31a37ed15d65a8f5",
+      "current_geometry_bridge": true
+    },
+    {
+      "directory": "release/content-presentation/full-matrix-repaired-20261021T143209447416Z/tablet-200-pseudo",
+      "topic": "rechart",
+      "condition": {
+        "viewport": "tablet",
+        "text_percent": 200,
+        "pseudo": true
+      },
+      "texts": 13,
+      "controls": 2,
+      "before_sha256": "a5f7648a1e1a61907f01c3aa5f66e21202a847a3e171cf6beef0073ab7ad0be2",
+      "after_sha256": "a5f7648a1e1a61907f01c3aa5f66e21202a847a3e171cf6beef0073ab7ad0be2",
+      "current_geometry_bridge": true
+    },
+    {
+      "directory": "release/content-presentation/full-matrix-repaired-20261021T143209447416Z/tablet-200-pseudo",
+      "topic": "away",
+      "condition": {
+        "viewport": "tablet",
+        "text_percent": 200,
+        "pseudo": true
+      },
+      "texts": 18,
+      "controls": 2,
+      "before_sha256": "21fe76753820e6ff14c0f65c5178aed81663e803946e2069c171456b968ec119",
+      "after_sha256": "21fe76753820e6ff14c0f65c5178aed81663e803946e2069c171456b968ec119",
+      "current_geometry_bridge": true
+    }
+  ],
+  "a052_limit": "The combined host gate failed: 639 successes and one stale optional-calibration expectation; it is not an all-pass or export qualification. Named original onboarding success is independently preserved and bridged above.",
+  "non_claims": [
+    "Whole S05 exact award-boundary/entitlement verification beyond this UI clause",
+    "M2-06 human alpha",
+    "S32 human/physical findings",
+    "native/store release readiness",
+    "other packages or global asset acceptance"
+  ]
+}

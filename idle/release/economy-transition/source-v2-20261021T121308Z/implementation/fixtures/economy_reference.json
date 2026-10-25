@@ -1,0 +1,2312 @@
+{
+  "schema_version": 1,
+  "fixture_set": "tideglass-bounded-reference-v1",
+  "source_sha256": {
+    "economy.py": "420d44f103c5fc07a529f0b138f7732fc4485bad735ea601a359012ffc72d727",
+    "economy.json": "9e5b9bcfcfc7a68d4eaeebc97e8d40cd42d04532fa59f514c7483efee885d2b6"
+  },
+  "purpose": "Inputs and expected bounded reference behavior for implementing and reviewing a native deterministic economy core.",
+  "limitations": [
+    "This fixture exporter and the existing Python model are development references, not the production game runtime.",
+    "Cost and production values are unrounded binary64 values. They do not choose production settlement precision, smallest units or arithmetic representation.",
+    "Default continuous comparisons use relative 1e-9 and absolute 1e-6 in these bounded cases only; affordability, counts and Charts must match exactly and must not use this tolerance to grant purchases.",
+    "Integer-entitlement cases use an independent exact integer oracle for whole-R inputs; production fractional-unit scaling and extreme range still need qualification.",
+    "The first-run trace uses idealized instant, single-purchase marginal-ROI selection even before free autobuy unlock. It is not player telemetry or a runtime automation entitlement test.",
+    "Offline cases verify only the credited-time envelope. Bonus expiry, Focus, Surveys, day rollover, contracts, reset policies and save replay need separate native timeline fixtures.",
+    "Reset fixtures cover only fields present in the Python State. Notes, timers, discoveries, cosmetics and claim receipts must be retained in the fuller production state."
+  ],
+  "comparison": {
+    "continuous_relative_tolerance": 1e-09,
+    "continuous_absolute_tolerance": 1e-06,
+    "discrete": "exact"
+  },
+  "indexing": {
+    "tier_index": "zero-based",
+    "tier": "one-based display identifier"
+  },
+  "configuration": {
+    "title": "Tideglass",
+    "base_cost": 30.0,
+    "base_output": 1.0,
+    "tier_ratio": 20.0,
+    "purchase_growth": 1.12,
+    "unlock_previous_count": 10,
+    "producer_names": [
+      "Spark Skiff",
+      "Prism Nursery",
+      "Tide Dynamo",
+      "Aurora Loom",
+      "Dawn Observatory"
+    ],
+    "milestone_interval": 25,
+    "milestone_multiplier": 2.0,
+    "milestone_cap": 4,
+    "prestige_scale_earnings": 1000000000.0,
+    "prestige_scale_award": 10.0,
+    "prestige_exponent": 0.65,
+    "prestige_power_scale": 10.0,
+    "prestige_power_exponent": 0.5,
+    "synergy_unlock_charts": 25,
+    "synergy_count_scale": 25.0,
+    "synergy_matrix": [
+      [
+        0,
+        0,
+        0,
+        0.2,
+        0.1
+      ],
+      [
+        0,
+        0,
+        0,
+        0.1,
+        0.25
+      ]
+    ],
+    "full_offline_seconds": 86400,
+    "catchup_tail_seconds": 172800,
+    "catchup_tail_rate": 0.25,
+    "focus_charge_seconds": 7200,
+    "focus_charge_capacity": 12,
+    "survey_cycle_seconds": 28800,
+    "survey_queue_capacity": 3,
+    "survey_notes_per_cycle": 10,
+    "daily_bonus_seconds": 1800,
+    "daily_quest_count": 3,
+    "quest_backlog_days": 7,
+    "season_days": 28,
+    "pass_levels": 30,
+    "pass_xp_per_level": 500
+  },
+  "cases": {
+    "cost": [
+      {
+        "id": "cost_t1_n0",
+        "input": {
+          "tier_index": 0,
+          "owned": 0
+        },
+        "expected_cost_radiance": 30.0
+      },
+      {
+        "id": "cost_t1_n1",
+        "input": {
+          "tier_index": 0,
+          "owned": 1
+        },
+        "expected_cost_radiance": 33.6
+      },
+      {
+        "id": "cost_t1_n24",
+        "input": {
+          "tier_index": 0,
+          "owned": 24
+        },
+        "expected_cost_radiance": 455.3588680350729
+      },
+      {
+        "id": "cost_t1_n25",
+        "input": {
+          "tier_index": 0,
+          "owned": 25
+        },
+        "expected_cost_radiance": 510.00193219928167
+      },
+      {
+        "id": "cost_t1_n100",
+        "input": {
+          "tier_index": 0,
+          "owned": 100
+        },
+        "expected_cost_radiance": 2505667.971796074
+      },
+      {
+        "id": "cost_t2_n0",
+        "input": {
+          "tier_index": 1,
+          "owned": 0
+        },
+        "expected_cost_radiance": 600.0
+      },
+      {
+        "id": "cost_t2_n1",
+        "input": {
+          "tier_index": 1,
+          "owned": 1
+        },
+        "expected_cost_radiance": 672.0000000000001
+      },
+      {
+        "id": "cost_t2_n24",
+        "input": {
+          "tier_index": 1,
+          "owned": 24
+        },
+        "expected_cost_radiance": 9107.177360701457
+      },
+      {
+        "id": "cost_t2_n25",
+        "input": {
+          "tier_index": 1,
+          "owned": 25
+        },
+        "expected_cost_radiance": 10200.038643985632
+      },
+      {
+        "id": "cost_t2_n100",
+        "input": {
+          "tier_index": 1,
+          "owned": 100
+        },
+        "expected_cost_radiance": 50113359.43592148
+      },
+      {
+        "id": "cost_t3_n0",
+        "input": {
+          "tier_index": 2,
+          "owned": 0
+        },
+        "expected_cost_radiance": 12000.0
+      },
+      {
+        "id": "cost_t3_n1",
+        "input": {
+          "tier_index": 2,
+          "owned": 1
+        },
+        "expected_cost_radiance": 13440.000000000002
+      },
+      {
+        "id": "cost_t3_n24",
+        "input": {
+          "tier_index": 2,
+          "owned": 24
+        },
+        "expected_cost_radiance": 182143.54721402915
+      },
+      {
+        "id": "cost_t3_n25",
+        "input": {
+          "tier_index": 2,
+          "owned": 25
+        },
+        "expected_cost_radiance": 204000.77287971266
+      },
+      {
+        "id": "cost_t3_n100",
+        "input": {
+          "tier_index": 2,
+          "owned": 100
+        },
+        "expected_cost_radiance": 1002267188.7184296
+      },
+      {
+        "id": "cost_t4_n0",
+        "input": {
+          "tier_index": 3,
+          "owned": 0
+        },
+        "expected_cost_radiance": 240000.0
+      },
+      {
+        "id": "cost_t4_n1",
+        "input": {
+          "tier_index": 3,
+          "owned": 1
+        },
+        "expected_cost_radiance": 268800.0
+      },
+      {
+        "id": "cost_t4_n24",
+        "input": {
+          "tier_index": 3,
+          "owned": 24
+        },
+        "expected_cost_radiance": 3642870.944280583
+      },
+      {
+        "id": "cost_t4_n25",
+        "input": {
+          "tier_index": 3,
+          "owned": 25
+        },
+        "expected_cost_radiance": 4080015.457594253
+      },
+      {
+        "id": "cost_t4_n100",
+        "input": {
+          "tier_index": 3,
+          "owned": 100
+        },
+        "expected_cost_radiance": 20045343774.36859
+      },
+      {
+        "id": "cost_t5_n0",
+        "input": {
+          "tier_index": 4,
+          "owned": 0
+        },
+        "expected_cost_radiance": 4800000.0
+      },
+      {
+        "id": "cost_t5_n1",
+        "input": {
+          "tier_index": 4,
+          "owned": 1
+        },
+        "expected_cost_radiance": 5376000.000000001
+      },
+      {
+        "id": "cost_t5_n24",
+        "input": {
+          "tier_index": 4,
+          "owned": 24
+        },
+        "expected_cost_radiance": 72857418.88561165
+      },
+      {
+        "id": "cost_t5_n25",
+        "input": {
+          "tier_index": 4,
+          "owned": 25
+        },
+        "expected_cost_radiance": 81600309.15188506
+      },
+      {
+        "id": "cost_t5_n100",
+        "input": {
+          "tier_index": 4,
+          "owned": 100
+        },
+        "expected_cost_radiance": 400906875487.3718
+      }
+    ],
+    "bulk_cost": [
+      {
+        "id": "bulk_t1_n0_k0",
+        "input": {
+          "tier_index": 0,
+          "owned": 0,
+          "quantity": 0
+        },
+        "expected_cost_radiance": 0.0
+      },
+      {
+        "id": "bulk_t1_n0_k1",
+        "input": {
+          "tier_index": 0,
+          "owned": 0,
+          "quantity": 1
+        },
+        "expected_cost_radiance": 30.0
+      },
+      {
+        "id": "bulk_t1_n1_k9",
+        "input": {
+          "tier_index": 0,
+          "owned": 1,
+          "quantity": 9
+        },
+        "expected_cost_radiance": 496.4620520860525
+      },
+      {
+        "id": "bulk_t1_n24_k1",
+        "input": {
+          "tier_index": 0,
+          "owned": 24,
+          "quantity": 1
+        },
+        "expected_cost_radiance": 455.3588680350729
+      },
+      {
+        "id": "bulk_t1_n24_k26",
+        "input": {
+          "tier_index": 0,
+          "owned": 24,
+          "quantity": 26
+        },
+        "expected_cost_radiance": 68455.89022387454
+      },
+      {
+        "id": "bulk_t1_n100_k10",
+        "input": {
+          "tier_index": 0,
+          "owned": 100,
+          "quantity": 10
+        },
+        "expected_cost_radiance": 43971303.40926861
+      },
+      {
+        "id": "bulk_t2_n0_k0",
+        "input": {
+          "tier_index": 1,
+          "owned": 0,
+          "quantity": 0
+        },
+        "expected_cost_radiance": 0.0
+      },
+      {
+        "id": "bulk_t2_n0_k1",
+        "input": {
+          "tier_index": 1,
+          "owned": 0,
+          "quantity": 1
+        },
+        "expected_cost_radiance": 599.9999999999999
+      },
+      {
+        "id": "bulk_t2_n1_k9",
+        "input": {
+          "tier_index": 1,
+          "owned": 1,
+          "quantity": 9
+        },
+        "expected_cost_radiance": 9929.24104172105
+      },
+      {
+        "id": "bulk_t2_n24_k1",
+        "input": {
+          "tier_index": 1,
+          "owned": 24,
+          "quantity": 1
+        },
+        "expected_cost_radiance": 9107.177360701457
+      },
+      {
+        "id": "bulk_t2_n24_k26",
+        "input": {
+          "tier_index": 1,
+          "owned": 24,
+          "quantity": 26
+        },
+        "expected_cost_radiance": 1369117.8044774907
+      },
+      {
+        "id": "bulk_t2_n100_k10",
+        "input": {
+          "tier_index": 1,
+          "owned": 100,
+          "quantity": 10
+        },
+        "expected_cost_radiance": 879426068.1853722
+      },
+      {
+        "id": "bulk_t3_n0_k0",
+        "input": {
+          "tier_index": 2,
+          "owned": 0,
+          "quantity": 0
+        },
+        "expected_cost_radiance": 0.0
+      },
+      {
+        "id": "bulk_t3_n0_k1",
+        "input": {
+          "tier_index": 2,
+          "owned": 0,
+          "quantity": 1
+        },
+        "expected_cost_radiance": 12000.0
+      },
+      {
+        "id": "bulk_t3_n1_k9",
+        "input": {
+          "tier_index": 2,
+          "owned": 1,
+          "quantity": 9
+        },
+        "expected_cost_radiance": 198584.82083442103
+      },
+      {
+        "id": "bulk_t3_n24_k1",
+        "input": {
+          "tier_index": 2,
+          "owned": 24,
+          "quantity": 1
+        },
+        "expected_cost_radiance": 182143.54721402915
+      },
+      {
+        "id": "bulk_t3_n24_k26",
+        "input": {
+          "tier_index": 2,
+          "owned": 24,
+          "quantity": 26
+        },
+        "expected_cost_radiance": 27382356.089549813
+      },
+      {
+        "id": "bulk_t3_n100_k10",
+        "input": {
+          "tier_index": 2,
+          "owned": 100,
+          "quantity": 10
+        },
+        "expected_cost_radiance": 17588521363.707443
+      },
+      {
+        "id": "bulk_t4_n0_k0",
+        "input": {
+          "tier_index": 3,
+          "owned": 0,
+          "quantity": 0
+        },
+        "expected_cost_radiance": 0.0
+      },
+      {
+        "id": "bulk_t4_n0_k1",
+        "input": {
+          "tier_index": 3,
+          "owned": 0,
+          "quantity": 1
+        },
+        "expected_cost_radiance": 240000.0
+      },
+      {
+        "id": "bulk_t4_n1_k9",
+        "input": {
+          "tier_index": 3,
+          "owned": 1,
+          "quantity": 9
+        },
+        "expected_cost_radiance": 3971696.41668842
+      },
+      {
+        "id": "bulk_t4_n24_k1",
+        "input": {
+          "tier_index": 3,
+          "owned": 24,
+          "quantity": 1
+        },
+        "expected_cost_radiance": 3642870.944280583
+      },
+      {
+        "id": "bulk_t4_n24_k26",
+        "input": {
+          "tier_index": 3,
+          "owned": 24,
+          "quantity": 26
+        },
+        "expected_cost_radiance": 547647121.7909963
+      },
+      {
+        "id": "bulk_t4_n100_k10",
+        "input": {
+          "tier_index": 3,
+          "owned": 100,
+          "quantity": 10
+        },
+        "expected_cost_radiance": 351770427274.14886
+      },
+      {
+        "id": "bulk_t5_n0_k0",
+        "input": {
+          "tier_index": 4,
+          "owned": 0,
+          "quantity": 0
+        },
+        "expected_cost_radiance": 0.0
+      },
+      {
+        "id": "bulk_t5_n0_k1",
+        "input": {
+          "tier_index": 4,
+          "owned": 0,
+          "quantity": 1
+        },
+        "expected_cost_radiance": 4800000.0
+      },
+      {
+        "id": "bulk_t5_n1_k9",
+        "input": {
+          "tier_index": 4,
+          "owned": 1,
+          "quantity": 9
+        },
+        "expected_cost_radiance": 79433928.33376841
+      },
+      {
+        "id": "bulk_t5_n24_k1",
+        "input": {
+          "tier_index": 4,
+          "owned": 24,
+          "quantity": 1
+        },
+        "expected_cost_radiance": 72857418.88561165
+      },
+      {
+        "id": "bulk_t5_n24_k26",
+        "input": {
+          "tier_index": 4,
+          "owned": 24,
+          "quantity": 26
+        },
+        "expected_cost_radiance": 10952942435.819923
+      },
+      {
+        "id": "bulk_t5_n100_k10",
+        "input": {
+          "tier_index": 4,
+          "owned": 100,
+          "quantity": 10
+        },
+        "expected_cost_radiance": 7035408545482.978
+      }
+    ],
+    "milestone": [
+      {
+        "id": "milestone_n0",
+        "input": {
+          "owned": 0
+        },
+        "expected_multiplier": 1.0
+      },
+      {
+        "id": "milestone_n1",
+        "input": {
+          "owned": 1
+        },
+        "expected_multiplier": 1.0
+      },
+      {
+        "id": "milestone_n24",
+        "input": {
+          "owned": 24
+        },
+        "expected_multiplier": 1.0
+      },
+      {
+        "id": "milestone_n25",
+        "input": {
+          "owned": 25
+        },
+        "expected_multiplier": 2.0
+      },
+      {
+        "id": "milestone_n26",
+        "input": {
+          "owned": 26
+        },
+        "expected_multiplier": 2.0
+      },
+      {
+        "id": "milestone_n49",
+        "input": {
+          "owned": 49
+        },
+        "expected_multiplier": 2.0
+      },
+      {
+        "id": "milestone_n50",
+        "input": {
+          "owned": 50
+        },
+        "expected_multiplier": 4.0
+      },
+      {
+        "id": "milestone_n74",
+        "input": {
+          "owned": 74
+        },
+        "expected_multiplier": 4.0
+      },
+      {
+        "id": "milestone_n75",
+        "input": {
+          "owned": 75
+        },
+        "expected_multiplier": 8.0
+      },
+      {
+        "id": "milestone_n99",
+        "input": {
+          "owned": 99
+        },
+        "expected_multiplier": 8.0
+      },
+      {
+        "id": "milestone_n100",
+        "input": {
+          "owned": 100
+        },
+        "expected_multiplier": 16.0
+      },
+      {
+        "id": "milestone_n101",
+        "input": {
+          "owned": 101
+        },
+        "expected_multiplier": 16.0
+      },
+      {
+        "id": "milestone_n125",
+        "input": {
+          "owned": 125
+        },
+        "expected_multiplier": 16.0
+      }
+    ],
+    "integer_entitlement": [
+      {
+        "id": "entitlement_L0",
+        "input": {
+          "lifetime_radiance_integer_string": "0"
+        },
+        "expected_charts": 0,
+        "reference_float_charts": 0,
+        "first_reset_earnings_gate_passed": false
+      },
+      {
+        "id": "entitlement_L1",
+        "input": {
+          "lifetime_radiance_integer_string": "1"
+        },
+        "expected_charts": 0,
+        "reference_float_charts": 0,
+        "first_reset_earnings_gate_passed": false
+      },
+      {
+        "id": "entitlement_L999999999",
+        "input": {
+          "lifetime_radiance_integer_string": "999999999"
+        },
+        "expected_charts": 9,
+        "reference_float_charts": 9,
+        "first_reset_earnings_gate_passed": false
+      },
+      {
+        "id": "entitlement_L1000000000",
+        "input": {
+          "lifetime_radiance_integer_string": "1000000000"
+        },
+        "expected_charts": 10,
+        "reference_float_charts": 10,
+        "first_reset_earnings_gate_passed": true
+      },
+      {
+        "id": "entitlement_L1000000001",
+        "input": {
+          "lifetime_radiance_integer_string": "1000000001"
+        },
+        "expected_charts": 10,
+        "reference_float_charts": 10,
+        "first_reset_earnings_gate_passed": true
+      },
+      {
+        "id": "entitlement_L1157926662",
+        "input": {
+          "lifetime_radiance_integer_string": "1157926662"
+        },
+        "expected_charts": 10,
+        "reference_float_charts": 10,
+        "first_reset_earnings_gate_passed": true
+      },
+      {
+        "id": "entitlement_L1157926663",
+        "input": {
+          "lifetime_radiance_integer_string": "1157926663"
+        },
+        "expected_charts": 11,
+        "reference_float_charts": 11,
+        "first_reset_earnings_gate_passed": true
+      },
+      {
+        "id": "entitlement_L1157926664",
+        "input": {
+          "lifetime_radiance_integer_string": "1157926664"
+        },
+        "expected_charts": 11,
+        "reference_float_charts": 11,
+        "first_reset_earnings_gate_passed": true
+      },
+      {
+        "id": "entitlement_L4094636919",
+        "input": {
+          "lifetime_radiance_integer_string": "4094636919"
+        },
+        "expected_charts": 24,
+        "reference_float_charts": 24,
+        "first_reset_earnings_gate_passed": true
+      },
+      {
+        "id": "entitlement_L4094636920",
+        "input": {
+          "lifetime_radiance_integer_string": "4094636920"
+        },
+        "expected_charts": 25,
+        "reference_float_charts": 25,
+        "first_reset_earnings_gate_passed": true
+      },
+      {
+        "id": "entitlement_L4094636921",
+        "input": {
+          "lifetime_radiance_integer_string": "4094636921"
+        },
+        "expected_charts": 25,
+        "reference_float_charts": 25,
+        "first_reset_earnings_gate_passed": true
+      },
+      {
+        "id": "entitlement_L10000000000",
+        "input": {
+          "lifetime_radiance_integer_string": "10000000000"
+        },
+        "expected_charts": 44,
+        "reference_float_charts": 44,
+        "first_reset_earnings_gate_passed": true
+      },
+      {
+        "id": "entitlement_L34551072945",
+        "input": {
+          "lifetime_radiance_integer_string": "34551072945"
+        },
+        "expected_charts": 99,
+        "reference_float_charts": 99,
+        "first_reset_earnings_gate_passed": true
+      },
+      {
+        "id": "entitlement_L34551072946",
+        "input": {
+          "lifetime_radiance_integer_string": "34551072946"
+        },
+        "expected_charts": 100,
+        "reference_float_charts": 100,
+        "first_reset_earnings_gate_passed": true
+      },
+      {
+        "id": "entitlement_L34551072947",
+        "input": {
+          "lifetime_radiance_integer_string": "34551072947"
+        },
+        "expected_charts": 100,
+        "reference_float_charts": 100,
+        "first_reset_earnings_gate_passed": true
+      },
+      {
+        "id": "entitlement_L100000000000",
+        "input": {
+          "lifetime_radiance_integer_string": "100000000000"
+        },
+        "expected_charts": 199,
+        "reference_float_charts": 199,
+        "first_reset_earnings_gate_passed": true
+      },
+      {
+        "id": "entitlement_L1000000000000",
+        "input": {
+          "lifetime_radiance_integer_string": "1000000000000"
+        },
+        "expected_charts": 891,
+        "reference_float_charts": 891,
+        "first_reset_earnings_gate_passed": true
+      }
+    ],
+    "reset": [
+      {
+        "id": "reset_below_first_gate",
+        "input": {
+          "counts": [
+            25,
+            10,
+            0,
+            0,
+            0
+          ],
+          "wallet": 300,
+          "lifetime": 999999999,
+          "charts": 0,
+          "time": 900
+        },
+        "expected": {
+          "accepted": false,
+          "awarded_charts": 0,
+          "state": {
+            "counts": [
+              25,
+              10,
+              0,
+              0,
+              0
+            ],
+            "wallet": 300,
+            "lifetime": 999999999,
+            "charts": 0,
+            "time": 900
+          },
+          "repeat_without_earnings_accepted": false,
+          "state_after_repeat": {
+            "counts": [
+              25,
+              10,
+              0,
+              0,
+              0
+            ],
+            "wallet": 300,
+            "lifetime": 999999999,
+            "charts": 0,
+            "time": 900
+          }
+        }
+      },
+      {
+        "id": "reset_first_eligible",
+        "input": {
+          "counts": [
+            60,
+            50,
+            25,
+            10,
+            1
+          ],
+          "wallet": 1234,
+          "lifetime": 1000000000,
+          "charts": 0,
+          "time": 1000
+        },
+        "expected": {
+          "accepted": true,
+          "awarded_charts": 10,
+          "state": {
+            "counts": [
+              1,
+              0,
+              0,
+              0,
+              0
+            ],
+            "wallet": 0.0,
+            "lifetime": 1000000000,
+            "charts": 10,
+            "time": 1000
+          },
+          "repeat_without_earnings_accepted": false,
+          "state_after_repeat": {
+            "counts": [
+              1,
+              0,
+              0,
+              0,
+              0
+            ],
+            "wallet": 0.0,
+            "lifetime": 1000000000,
+            "charts": 10,
+            "time": 1000
+          }
+        }
+      },
+      {
+        "id": "reset_already_awarded",
+        "input": {
+          "counts": [
+            25,
+            10,
+            0,
+            0,
+            0
+          ],
+          "wallet": 300,
+          "lifetime": 1000000000,
+          "charts": 10,
+          "time": 1200
+        },
+        "expected": {
+          "accepted": false,
+          "awarded_charts": 0,
+          "state": {
+            "counts": [
+              25,
+              10,
+              0,
+              0,
+              0
+            ],
+            "wallet": 300,
+            "lifetime": 1000000000,
+            "charts": 10,
+            "time": 1200
+          },
+          "repeat_without_earnings_accepted": false,
+          "state_after_repeat": {
+            "counts": [
+              25,
+              10,
+              0,
+              0,
+              0
+            ],
+            "wallet": 300,
+            "lifetime": 1000000000,
+            "charts": 10,
+            "time": 1200
+          }
+        }
+      },
+      {
+        "id": "reset_incremental_award",
+        "input": {
+          "counts": [
+            100,
+            75,
+            50,
+            25,
+            10
+          ],
+          "wallet": 5000,
+          "lifetime": 10000000000,
+          "charts": 10,
+          "time": 1500
+        },
+        "expected": {
+          "accepted": true,
+          "awarded_charts": 34,
+          "state": {
+            "counts": [
+              1,
+              0,
+              0,
+              0,
+              0
+            ],
+            "wallet": 0.0,
+            "lifetime": 10000000000,
+            "charts": 44,
+            "time": 1500
+          },
+          "repeat_without_earnings_accepted": false,
+          "state_after_repeat": {
+            "counts": [
+              1,
+              0,
+              0,
+              0,
+              0
+            ],
+            "wallet": 0.0,
+            "lifetime": 10000000000,
+            "charts": 44,
+            "time": 1500
+          }
+        }
+      }
+    ],
+    "synergy_output": [
+      {
+        "id": "output_initial",
+        "input": {
+          "counts": [
+            1,
+            0,
+            0,
+            0,
+            0
+          ],
+          "wallet": 0.0,
+          "lifetime": 0.0,
+          "charts": 0,
+          "time": 0.0
+        },
+        "expected": {
+          "output_with_synergy": 1.0,
+          "output_without_synergy": 1.0
+        }
+      },
+      {
+        "id": "synergy_locked_24_charts",
+        "input": {
+          "counts": [
+            100,
+            100,
+            50,
+            50,
+            50
+          ],
+          "wallet": 0.0,
+          "lifetime": 0.0,
+          "charts": 24,
+          "time": 0.0
+        },
+        "expected": {
+          "output_with_synergy": 85942484.53627935,
+          "output_without_synergy": 85942484.53627935
+        }
+      },
+      {
+        "id": "synergy_unlocked_25_charts",
+        "input": {
+          "counts": [
+            100,
+            100,
+            50,
+            50,
+            50
+          ],
+          "wallet": 0.0,
+          "lifetime": 0.0,
+          "charts": 25,
+          "time": 0.0
+        },
+        "expected": {
+          "output_with_synergy": 157020277.2532118,
+          "output_without_synergy": 87019482.06192635
+        }
+      },
+      {
+        "id": "synergy_diagnostic_100_charts",
+        "input": {
+          "counts": [
+            100,
+            100,
+            50,
+            50,
+            50
+          ],
+          "wallet": 0.0,
+          "lifetime": 0.0,
+          "charts": 100,
+          "time": 0.0
+        },
+        "expected": {
+          "output_with_synergy": 253206834.3581392,
+          "output_without_synergy": 140325364.1238527
+        }
+      },
+      {
+        "id": "synergy_no_target_owned",
+        "input": {
+          "counts": [
+            100,
+            100,
+            50,
+            0,
+            0
+          ],
+          "wallet": 0.0,
+          "lifetime": 0.0,
+          "charts": 100,
+          "time": 0.0
+        },
+        "expected": {
+          "output_with_synergy": 472834.74219512794,
+          "output_without_synergy": 472834.74219512794
+        }
+      }
+    ],
+    "marginal_purchase": [
+      {
+        "id": "marginal_t1",
+        "input": {
+          "state": {
+            "counts": [
+              100,
+              100,
+              50,
+              50,
+              50
+            ],
+            "wallet": 0.0,
+            "lifetime": 0.0,
+            "charts": 100,
+            "time": 0.0
+          },
+          "buy_one_tier_index": 0
+        },
+        "expected": {
+          "cost_radiance": 2505667.971796074,
+          "full_delta_radiance_per_second": 168491.69979128242,
+          "direct_delta_radiance_per_second": 66.59644255042076
+        }
+      },
+      {
+        "id": "marginal_t2",
+        "input": {
+          "state": {
+            "counts": [
+              100,
+              100,
+              50,
+              50,
+              50
+            ],
+            "wallet": 0.0,
+            "lifetime": 0.0,
+            "charts": 100,
+            "time": 0.0
+          },
+          "buy_one_tier_index": 1
+        },
+        "expected": {
+          "cost_radiance": 50113359.43592148,
+          "full_delta_radiance_per_second": 391771.941159606,
+          "direct_delta_radiance_per_second": 1331.9288512468338
+        }
+      },
+      {
+        "id": "marginal_t3",
+        "input": {
+          "state": {
+            "counts": [
+              100,
+              100,
+              50,
+              50,
+              50
+            ],
+            "wallet": 0.0,
+            "lifetime": 0.0,
+            "charts": 100,
+            "time": 0.0
+          },
+          "buy_one_tier_index": 2
+        },
+        "expected": {
+          "cost_radiance": 3468026.277960009,
+          "full_delta_radiance_per_second": 6659.644256263971,
+          "direct_delta_radiance_per_second": 6659.644256263971
+        }
+      },
+      {
+        "id": "marginal_t4",
+        "input": {
+          "state": {
+            "counts": [
+              100,
+              100,
+              50,
+              50,
+              50
+            ],
+            "wallet": 0.0,
+            "lifetime": 0.0,
+            "charts": 100,
+            "time": 0.0
+          },
+          "buy_one_tier_index": 3
+        },
+        "expected": {
+          "cost_radiance": 69360525.55920018,
+          "full_delta_radiance_per_second": 225972.17572891712,
+          "direct_delta_radiance_per_second": 133192.88512536883
+        }
+      },
+      {
+        "id": "marginal_t5",
+        "input": {
+          "state": {
+            "counts": [
+              100,
+              100,
+              50,
+              50,
+              50
+            ],
+            "wallet": 0.0,
+            "lifetime": 0.0,
+            "charts": 100,
+            "time": 0.0
+          },
+          "buy_one_tier_index": 4
+        },
+        "expected": {
+          "cost_radiance": 1387210511.1840036,
+          "full_delta_radiance_per_second": 4828707.816589981,
+          "direct_delta_radiance_per_second": 2663857.702507764
+        }
+      }
+    ],
+    "purchase_choice": [
+      {
+        "id": "choice_initial",
+        "input": {
+          "counts": [
+            1,
+            0,
+            0,
+            0,
+            0
+          ],
+          "wallet": 0.0,
+          "lifetime": 0.0,
+          "charts": 0,
+          "time": 0.0
+        },
+        "expected": {
+          "tier_index": 0,
+          "price_radiance": 33.6
+        }
+      },
+      {
+        "id": "choice_below_t2_unlock",
+        "input": {
+          "counts": [
+            9,
+            0,
+            0,
+            0,
+            0
+          ],
+          "wallet": 0.0,
+          "lifetime": 0.0,
+          "charts": 0,
+          "time": 0.0
+        },
+        "expected": {
+          "tier_index": 0,
+          "price_radiance": 83.19236272350568
+        }
+      },
+      {
+        "id": "choice_at_t2_unlock",
+        "input": {
+          "counts": [
+            10,
+            0,
+            0,
+            0,
+            0
+          ],
+          "wallet": 0.0,
+          "lifetime": 0.0,
+          "charts": 0,
+          "time": 0.0
+        },
+        "expected": {
+          "tier_index": 1,
+          "price_radiance": 600.0
+        }
+      },
+      {
+        "id": "choice_before_t1_milestone",
+        "input": {
+          "counts": [
+            24,
+            10,
+            0,
+            0,
+            0
+          ],
+          "wallet": 0.0,
+          "lifetime": 0.0,
+          "charts": 0,
+          "time": 0.0
+        },
+        "expected": {
+          "tier_index": 0,
+          "price_radiance": 455.3588680350729
+        }
+      }
+    ],
+    "offline_envelope": [
+      {
+        "id": "offline_seconds_-1",
+        "input": {
+          "absence_real_seconds": -1
+        },
+        "expected_effective_production_seconds": 0.0
+      },
+      {
+        "id": "offline_seconds_0",
+        "input": {
+          "absence_real_seconds": 0
+        },
+        "expected_effective_production_seconds": 0.0
+      },
+      {
+        "id": "offline_seconds_7200",
+        "input": {
+          "absence_real_seconds": 7200
+        },
+        "expected_effective_production_seconds": 7200.0
+      },
+      {
+        "id": "offline_seconds_28800",
+        "input": {
+          "absence_real_seconds": 28800
+        },
+        "expected_effective_production_seconds": 28800.0
+      },
+      {
+        "id": "offline_seconds_86400",
+        "input": {
+          "absence_real_seconds": 86400
+        },
+        "expected_effective_production_seconds": 86400.0
+      },
+      {
+        "id": "offline_seconds_86401",
+        "input": {
+          "absence_real_seconds": 86401
+        },
+        "expected_effective_production_seconds": 86400.25
+      },
+      {
+        "id": "offline_seconds_172800",
+        "input": {
+          "absence_real_seconds": 172800
+        },
+        "expected_effective_production_seconds": 108000.0
+      },
+      {
+        "id": "offline_seconds_259200",
+        "input": {
+          "absence_real_seconds": 259200
+        },
+        "expected_effective_production_seconds": 129600.0
+      },
+      {
+        "id": "offline_seconds_604800",
+        "input": {
+          "absence_real_seconds": 604800
+        },
+        "expected_effective_production_seconds": 129600.0
+      }
+    ],
+    "first_run": [
+      {
+        "id": "idealized_first_run_to_initial_prestige",
+        "input": {
+          "state": {
+            "counts": [
+              1,
+              0,
+              0,
+              0,
+              0
+            ],
+            "wallet": 0.0,
+            "lifetime": 0.0,
+            "charts": 0,
+            "time": 0.0
+          },
+          "max_duration_seconds": 86400,
+          "stop_lifetime_radiance": 1000000000
+        },
+        "expected": {
+          "state": {
+            "counts": [
+              23,
+              30,
+              23,
+              23,
+              28
+            ],
+            "wallet": 58137503.58255863,
+            "lifetime": 1000000000.0,
+            "charts": 0,
+            "time": 1005.0338489577949
+          },
+          "output_radiance_per_second": 9154423.0,
+          "purchase_event_count": 126,
+          "first_tier_events": [
+            {
+              "tier": 1,
+              "first_owned_seconds": 0.0
+            },
+            {
+              "tier": 2,
+              "first_owned_seconds": 186.71264538327605
+            },
+            {
+              "tier": 3,
+              "first_owned_seconds": 348.9019052709682
+            },
+            {
+              "tier": 4,
+              "first_owned_seconds": 510.139430976875
+            },
+            {
+              "tier": 5,
+              "first_owned_seconds": 671.3298582944836
+            }
+          ],
+          "purchase_events": [
+            {
+              "seconds": 33.6,
+              "tier": 1,
+              "owned": 2,
+              "lifetime": 33.6,
+              "output": 2.0
+            },
+            {
+              "seconds": 52.416000000000004,
+              "tier": 1,
+              "owned": 3,
+              "lifetime": 71.232,
+              "output": 3.0
+            },
+            {
+              "seconds": 66.46528,
+              "tier": 1,
+              "owned": 4,
+              "lifetime": 113.37984,
+              "output": 4.0
+            },
+            {
+              "seconds": 78.26667520000001,
+              "tier": 1,
+              "owned": 5,
+              "lifetime": 160.5854208,
+              "output": 5.0
+            },
+            {
+              "seconds": 88.84072529920002,
+              "tier": 1,
+              "owned": 6,
+              "lifetime": 213.45567129600005,
+              "output": 6.0
+            },
+            {
+              "seconds": 98.70983872512002,
+              "tier": 1,
+              "owned": 7,
+              "lifetime": 272.6703518515201,
+              "output": 7.0
+            },
+            {
+              "seconds": 108.18418761400322,
+              "tier": 1,
+              "owned": 8,
+              "lifetime": 338.99079407370255,
+              "output": 8.0
+            },
+            {
+              "seconds": 117.46904952510876,
+              "tier": 1,
+              "owned": 9,
+              "lifetime": 413.2696893625469,
+              "output": 9.0
+            },
+            {
+              "seconds": 126.71264538327605,
+              "tier": 1,
+              "owned": 10,
+              "lifetime": 496.4620520860526,
+              "output": 10.0
+            },
+            {
+              "seconds": 186.71264538327605,
+              "tier": 2,
+              "owned": 1,
+              "lifetime": 1096.4620520860526,
+              "output": 30.0
+            },
+            {
+              "seconds": 209.11264538327606,
+              "tier": 2,
+              "owned": 2,
+              "lifetime": 1768.4620520860526,
+              "output": 50.0
+            },
+            {
+              "seconds": 224.16544538327605,
+              "tier": 2,
+              "owned": 3,
+              "lifetime": 2521.102052086053,
+              "output": 70.0
+            },
+            {
+              "seconds": 236.20768538327604,
+              "tier": 2,
+              "owned": 4,
+              "lifetime": 3364.0588520860533,
+              "output": 90.0
+            },
+            {
+              "seconds": 246.6978144499427,
+              "tier": 2,
+              "owned": 5,
+              "lifetime": 4308.170468086054,
+              "output": 110.0
+            },
+            {
+              "seconds": 256.31058726739724,
+              "tier": 2,
+              "owned": 6,
+              "lifetime": 5365.575478006054,
+              "output": 130.0
+            },
+            {
+              "seconds": 265.42053812209264,
+              "tier": 2,
+              "owned": 7,
+              "lifetime": 6549.869089116455,
+              "output": 150.0
+            },
+            {
+              "seconds": 274.263263751717,
+              "tier": 2,
+              "owned": 8,
+              "lifetime": 7876.277933560104,
+              "output": 170.0
+            },
+            {
+              "seconds": 283.0019573151104,
+              "tier": 2,
+              "owned": 9,
+              "lifetime": 9361.855839336991,
+              "output": 190.0
+            },
+            {
+              "seconds": 291.75904812811103,
+              "tier": 2,
+              "owned": 10,
+              "lifetime": 11025.703093807106,
+              "output": 210.0
+            },
+            {
+              "seconds": 348.9019052709682,
+              "tier": 3,
+              "owned": 1,
+              "lifetime": 23025.703093807104,
+              "output": 610.0
+            },
+            {
+              "seconds": 370.9346921562141,
+              "tier": 3,
+              "owned": 2,
+              "lifetime": 36465.703093807104,
+              "output": 1010.0
+            },
+            {
+              "seconds": 385.83845453245175,
+              "tier": 3,
+              "owned": 3,
+              "lifetime": 51518.50309380711,
+              "output": 1410.0
+            },
+            {
+              "seconds": 397.7952885750049,
+              "tier": 3,
+              "owned": 4,
+              "lifetime": 68377.63909380711,
+              "output": 1810.0
+            },
+            {
+              "seconds": 408.2274611274911,
+              "tier": 3,
+              "owned": 5,
+              "lifetime": 87259.87141380712,
+              "output": 2210.0
+            },
+            {
+              "seconds": 417.7967372353644,
+              "tier": 3,
+              "owned": 6,
+              "lifetime": 108407.97161220713,
+              "output": 2610.0
+            },
+            {
+              "seconds": 426.87178406379655,
+              "tier": 3,
+              "owned": 7,
+              "lifetime": 132093.84383441514,
+              "output": 3010.0
+            },
+            {
+              "seconds": 435.6851318674088,
+              "tier": 3,
+              "owned": 8,
+              "lifetime": 158622.02072328812,
+              "output": 3410.0
+            },
+            {
+              "seconds": 444.3981987634609,
+              "tier": 3,
+              "owned": 9,
+              "lifetime": 188333.57883882587,
+              "output": 3810.0
+            },
+            {
+              "seconds": 453.1323050861387,
+              "tier": 3,
+              "owned": 10,
+              "lifetime": 221610.52392822813,
+              "output": 4210.0
+            },
+            {
+              "seconds": 510.139430976875,
+              "tier": 4,
+              "owned": 1,
+              "lifetime": 461610.5239282281,
+              "output": 12210.0
+            },
+            {
+              "seconds": 532.1541729916171,
+              "tier": 4,
+              "owned": 2,
+              "lifetime": 730410.5239282281,
+              "output": 20210.0
+            },
+            {
+              "seconds": 547.050560918386,
+              "tier": 4,
+              "owned": 3,
+              "lifetime": 1031466.5239282281,
+              "output": 28210.0
+            },
+            {
+              "seconds": 559.0031564518848,
+              "tier": 4,
+              "owned": 4,
+              "lifetime": 1368649.243928228,
+              "output": 36210.0
+            },
+            {
+              "seconds": 569.4324479846106,
+              "tier": 4,
+              "owned": 5,
+              "lifetime": 1746293.8903282282,
+              "output": 44210.0
+            },
+            {
+              "seconds": 578.9995595875963,
+              "tier": 4,
+              "owned": 6,
+              "lifetime": 2169255.8942962284,
+              "output": 52210.0
+            },
+            {
+              "seconds": 588.0728682342955,
+              "tier": 4,
+              "owned": 7,
+              "lifetime": 2642973.338740389,
+              "output": 60210.0
+            },
+            {
+              "seconds": 596.8847522697955,
+              "tier": 4,
+              "owned": 8,
+              "lifetime": 3173536.876517848,
+              "output": 68210.0
+            },
+            {
+              "seconds": 605.5965417773568,
+              "tier": 4,
+              "owned": 9,
+              "lifetime": 3767768.038828603,
+              "output": 76210.0
+            },
+            {
+              "seconds": 614.3295020422571,
+              "tier": 4,
+              "owned": 10,
+              "lifetime": 4433306.940616649,
+              "output": 84210.0
+            },
+            {
+              "seconds": 671.3298582944836,
+              "tier": 5,
+              "owned": 1,
+              "lifetime": 9233306.940616649,
+              "output": 244210.0
+            },
+            {
+              "seconds": 693.3436988415538,
+              "tier": 5,
+              "owned": 2,
+              "lifetime": 14609306.940616649,
+              "output": 404210.0
+            },
+            {
+              "seconds": 708.2397182374124,
+              "tier": 5,
+              "owned": 3,
+              "lifetime": 20630426.94061665,
+              "output": 564210.0
+            },
+            {
+              "seconds": 720.1921019243374,
+              "tier": 5,
+              "owned": 4,
+              "lifetime": 27374081.34061665,
+              "output": 724210.0
+            },
+            {
+              "seconds": 730.6212494478458,
+              "tier": 5,
+              "owned": 5,
+              "lifetime": 34926974.268616654,
+              "output": 884210.0
+            },
+            {
+              "seconds": 740.1882528512907,
+              "tier": 5,
+              "owned": 6,
+              "lifetime": 43386214.347976655,
+              "output": 1044210.0
+            },
+            {
+              "seconds": 749.2614746063814,
+              "tier": 5,
+              "owned": 7,
+              "lifetime": 52860563.23685986,
+              "output": 1204210.0
+            },
+            {
+              "seconds": 758.0732854662391,
+              "tier": 5,
+              "owned": 8,
+              "lifetime": 63471833.99240905,
+              "output": 1364210.0
+            },
+            {
+              "seconds": 766.7850111142076,
+              "tier": 5,
+              "owned": 9,
+              "lifetime": 75356457.23862414,
+              "output": 1524210.0
+            },
+            {
+              "seconds": 775.5179140841138,
+              "tier": 5,
+              "owned": 10,
+              "lifetime": 88667235.27438505,
+              "output": 1684210.0
+            },
+            {
+              "seconds": 784.3695842440418,
+              "tier": 5,
+              "owned": 11,
+              "lifetime": 103575306.67443727,
+              "output": 1844210.0
+            },
+            {
+              "seconds": 784.7737700851351,
+              "tier": 4,
+              "owned": 11,
+              "lifetime": 104320710.24443989,
+              "output": 1852210.0
+            },
+            {
+              "seconds": 784.7747761853748,
+              "tier": 2,
+              "owned": 11,
+              "lifetime": 104322573.75336489,
+              "output": 1852230.0
+            },
+            {
+              "seconds": 784.7748264898436,
+              "tier": 1,
+              "owned": 11,
+              "lifetime": 104322666.92881115,
+              "output": 1852231.0
+            },
+            {
+              "seconds": 784.7949482665011,
+              "tier": 3,
+              "owned": 11,
+              "lifetime": 104359937.10731128,
+              "output": 1852631.0
+            },
+            {
+              "seconds": 793.8075578838823,
+              "tier": 5,
+              "owned": 12,
+              "lifetime": 121056977.07536976,
+              "output": 2012631.0
+            },
+            {
+              "seconds": 794.2223641739588,
+              "tier": 4,
+              "owned": 12,
+              "lifetime": 121891829.07377268,
+              "output": 2020631.0
+            },
+            {
+              "seconds": 794.2233970839735,
+              "tier": 2,
+              "owned": 12,
+              "lifetime": 121893916.20376869,
+              "output": 2020651.0
+            },
+            {
+              "seconds": 794.223448728963,
+              "tier": 1,
+              "owned": 12,
+              "lifetime": 121894020.56026849,
+              "output": 2020652.0
+            },
+            {
+              "seconds": 794.2441067145638,
+              "tier": 3,
+              "owned": 12,
+              "lifetime": 121935763.16018865,
+              "output": 2021052.0
+            },
+            {
+              "seconds": 803.4970525884085,
+              "tier": 5,
+              "owned": 13,
+              "lifetime": 140636447.92441416,
+              "output": 2181052.0
+            },
+            {
+              "seconds": 803.9257604955153,
+              "tier": 4,
+              "owned": 13,
+              "lifetime": 141571482.16262543,
+              "output": 2189052.0
+            },
+            {
+              "seconds": 803.9471175541464,
+              "tier": 3,
+              "owned": 13,
+              "lifetime": 141618233.874536,
+              "output": 2189452.0
+            },
+            {
+              "seconds": 803.9481852119875,
+              "tier": 2,
+              "owned": 13,
+              "lifetime": 141620571.46013153,
+              "output": 2189472.0
+            },
+            {
+              "seconds": 803.9482385943919,
+              "tier": 1,
+              "owned": 13,
+              "lifetime": 141620688.3394113,
+              "output": 2189473.0
+            },
+            {
+              "seconds": 813.5143610978129,
+              "tier": 5,
+              "owned": 14,
+              "lifetime": 162565455.27534387,
+              "output": 2349473.0
+            },
+            {
+              "seconds": 813.5366477626691,
+              "tier": 3,
+              "owned": 14,
+              "lifetime": 162617817.1926837,
+              "output": 2349873.0
+            },
+            {
+              "seconds": 813.9823051861965,
+              "tier": 4,
+              "owned": 14,
+              "lifetime": 163665055.53948033,
+              "output": 2357873.0
+            },
+            {
+              "seconds": 813.9834155495905,
+              "tier": 2,
+              "owned": 14,
+              "lifetime": 163667673.6353473,
+              "output": 2357893.0
+            },
+            {
+              "seconds": 813.9834710672893,
+              "tier": 1,
+              "owned": 14,
+              "lifetime": 163667804.54014066,
+              "output": 2357894.0
+            },
+            {
+              "seconds": 823.9322384708471,
+              "tier": 5,
+              "owned": 15,
+              "lifetime": 187125943.50838512,
+              "output": 2517894.0
+            },
+            {
+              "seconds": 824.3980670356764,
+              "tier": 4,
+              "owned": 15,
+              "lifetime": 188298850.45679733,
+              "output": 2525894.0
+            },
+            {
+              "seconds": 824.3992279186632,
+              "tier": 2,
+              "owned": 15,
+              "lifetime": 188301782.72416836,
+              "output": 2525914.0
+            },
+            {
+              "seconds": 824.3992859623529,
+              "tier": 1,
+              "owned": 15,
+              "lifetime": 188301929.3375369,
+              "output": 2525915.0
+            },
+            {
+              "seconds": 824.4225034290613,
+              "tier": 3,
+              "owned": 15,
+              "lifetime": 188360574.6849575,
+              "output": 2526315.0
+            },
+            {
+              "seconds": 834.8222816215804,
+              "tier": 5,
+              "owned": 16,
+              "lifetime": 214633690.32939133,
+              "output": 2686315.0
+            },
+            {
+              "seconds": 835.3112993958257,
+              "tier": 4,
+              "owned": 16,
+              "lifetime": 215947346.11161304,
+              "output": 2694315.0
+            },
+            {
+              "seconds": 835.335677684597,
+              "tier": 3,
+              "owned": 16,
+              "lifetime": 216013028.9007241,
+              "output": 2694715.0
+            },
+            {
+              "seconds": 835.3368964181016,
+              "tier": 2,
+              "owned": 16,
+              "lifetime": 216016313.04017967,
+              "output": 2694735.0
+            },
+            {
+              "seconds": 835.3369573543246,
+              "tier": 1,
+              "owned": 16,
+              "lifetime": 216016477.24715245,
+              "output": 2694736.0
+            },
+            {
+              "seconds": 835.3642567720799,
+              "tier": 3,
+              "owned": 17,
+              "lifetime": 216090041.97095686,
+              "output": 2695136.0
+            },
+            {
+              "seconds": 846.2824032113564,
+              "tier": 5,
+              "owned": 17,
+              "lifetime": 245515931.49272275,
+              "output": 2855136.0
+            },
+            {
+              "seconds": 846.79771823526,
+              "tier": 4,
+              "owned": 17,
+              "lifetime": 246987225.96881104,
+              "output": 2863136.0
+            },
+            {
+              "seconds": 846.7990029231653,
+              "tier": 2,
+              "owned": 17,
+              "lifetime": 246990904.20500126,
+              "output": 2863156.0
+            },
+            {
+              "seconds": 846.7990671571118,
+              "tier": 1,
+              "owned": 17,
+              "lifetime": 246991088.11681077,
+              "output": 2863157.0
+            },
+            {
+              "seconds": 847.374603117319,
+              "tier": 4,
+              "owned": 18,
+              "lifetime": 248638937.93002966,
+              "output": 2871157.0
+            },
+            {
+              "seconds": 847.3760379481322,
+              "tier": 2,
+              "owned": 18,
+              "lifetime": 248643057.55456272,
+              "output": 2871177.0
+            },
+            {
+              "seconds": 847.3761096891731,
+              "tier": 1,
+              "owned": 18,
+              "lifetime": 248643263.53578937,
+              "output": 2871178.0
+            },
+            {
+              "seconds": 858.8546722388922,
+              "tier": 5,
+              "owned": 18,
+              "lifetime": 281600259.80016714,
+              "output": 3031178.0
+            },
+            {
+              "seconds": 858.8818539123739,
+              "tier": 3,
+              "owned": 18,
+              "lifetime": 281682652.2908281,
+              "output": 3031578.0
+            },
+            {
+              "seconds": 871.0576368927568,
+              "tier": 5,
+              "owned": 19,
+              "lifetime": 318594488.1069312,
+              "output": 3191578.0
+            },
+            {
+              "seconds": 871.6359062600745,
+              "tier": 4,
+              "owned": 19,
+              "lifetime": 320440079.8977364,
+              "output": 3199578.0
+            },
+            {
+              "seconds": 871.6647474352359,
+              "tier": 3,
+              "owned": 19,
+              "lifetime": 320532359.4872766,
+              "output": 3199978.0
+            },
+            {
+              "seconds": 871.6661893137353,
+              "tier": 2,
+              "owned": 19,
+              "lifetime": 320536973.4667536,
+              "output": 3199998.0
+            },
+            {
+              "seconds": 871.6662614072097,
+              "tier": 1,
+              "owned": 19,
+              "lifetime": 320537204.16572744,
+              "output": 3199999.0
+            },
+            {
+              "seconds": 884.5854079800791,
+              "tier": 5,
+              "owned": 20,
+              "lifetime": 361878460.2797629,
+              "output": 3359999.0
+            },
+            {
+              "seconds": 885.2006054267754,
+              "tier": 4,
+              "owned": 20,
+              "lifetime": 363945523.0854647,
+              "output": 3367999.0
+            },
+            {
+              "seconds": 885.2312922352587,
+              "tier": 3,
+              "owned": 20,
+              "lifetime": 364048876.2257498,
+              "output": 3368399.0
+            },
+            {
+              "seconds": 885.2328263934787,
+              "tier": 2,
+              "owned": 20,
+              "lifetime": 364054043.88276404,
+              "output": 3368419.0
+            },
+            {
+              "seconds": 885.2329031009343,
+              "tier": 1,
+              "owned": 20,
+              "lifetime": 364054302.26561475,
+              "output": 3368420.0
+            },
+            {
+              "seconds": 885.2672680308182,
+              "tier": 3,
+              "owned": 21,
+              "lifetime": 364170057.78273404,
+              "output": 3368820.0
+            },
+            {
+              "seconds": 885.2689860732947,
+              "tier": 2,
+              "owned": 21,
+              "lifetime": 364175845.55859,
+              "output": 3368840.0
+            },
+            {
+              "seconds": 885.2690719749086,
+              "tier": 1,
+              "owned": 21,
+              "lifetime": 364176134.9473828,
+              "output": 3368841.0
+            },
+            {
+              "seconds": 899.0133261108917,
+              "tier": 5,
+              "owned": 21,
+              "lifetime": 410478341.7951026,
+              "output": 3528841.0
+            },
+            {
+              "seconds": 899.6693801361046,
+              "tier": 4,
+              "owned": 21,
+              "lifetime": 412793452.1374886,
+              "output": 3536841.0
+            },
+            {
+              "seconds": 914.3317502198731,
+              "tier": 5,
+              "owned": 22,
+              "lifetime": 464651923.8069348,
+              "output": 3696841.0
+            },
+            {
+              "seconds": 915.033139212116,
+              "tier": 4,
+              "owned": 22,
+              "lifetime": 467244847.3904071,
+              "output": 3704841.0
+            },
+            {
+              "seconds": 915.0681329349704,
+              "tier": 3,
+              "owned": 22,
+              "lifetime": 467374493.5695807,
+              "output": 3705241.0
+            },
+            {
+              "seconds": 915.0698824322254,
+              "tier": 2,
+              "owned": 22,
+              "lifetime": 467380975.8785394,
+              "output": 3705261.0
+            },
+            {
+              "seconds": 915.069969906616,
+              "tier": 1,
+              "owned": 22,
+              "lifetime": 467381299.9939873,
+              "output": 3705262.0
+            },
+            {
+              "seconds": 915.8537402347303,
+              "tier": 4,
+              "owned": 23,
+              "lifetime": 470285374.4074763,
+              "output": 3713262.0
+            },
+            {
+              "seconds": 915.8928443218306,
+              "tier": 3,
+              "owned": 23,
+              "lifetime": 470430578.12815076,
+              "output": 3713662.0
+            },
+            {
+              "seconds": 931.5327943953105,
+              "tier": 5,
+              "owned": 23,
+              "lifetime": 528512066.39793044,
+              "output": 3873662.0
+            },
+            {
+              "seconds": 931.5346686388644,
+              "tier": 2,
+              "owned": 23,
+              "lifetime": 528519326.58396417,
+              "output": 3873682.0
+            },
+            {
+              "seconds": 931.5347623505583,
+              "tier": 1,
+              "owned": 23,
+              "lifetime": 528519689.59326583,
+              "output": 3873683.0
+            },
+            {
+              "seconds": 931.5368614919588,
+              "tier": 2,
+              "owned": 24,
+              "lifetime": 528527821.0016236,
+              "output": 3873703.0
+            },
+            {
+              "seconds": 931.539212518189,
+              "tier": 2,
+              "owned": 25,
+              "lifetime": 528536928.1789843,
+              "output": 3874223.0
+            },
+            {
+              "seconds": 931.5418453141442,
+              "tier": 2,
+              "owned": 26,
+              "lifetime": 528547128.21762824,
+              "output": 3874263.0
+            },
+            {
+              "seconds": 931.5447940151697,
+              "tier": 2,
+              "owned": 27,
+              "lifetime": 528558552.2609095,
+              "output": 3874303.0
+            },
+            {
+              "seconds": 931.5480965262213,
+              "tier": 2,
+              "owned": 28,
+              "lifetime": 528571347.1893845,
+              "output": 3874343.0
+            },
+            {
+              "seconds": 931.5517953004114,
+              "tier": 2,
+              "owned": 29,
+              "lifetime": 528585677.5092765,
+              "output": 3874383.0
+            },
+            {
+              "seconds": 931.5559378847349,
+              "tier": 2,
+              "owned": 30,
+              "lifetime": 528601727.4675556,
+              "output": 3874423.0
+            },
+            {
+              "seconds": 948.345861664909,
+              "tier": 5,
+              "owned": 24,
+              "lifetime": 593652994.3297088,
+              "output": 4034423.0
+            },
+            {
+              "seconds": 966.4048056292904,
+              "tier": 5,
+              "owned": 25,
+              "lifetime": 666510413.2153205,
+              "output": 8194423.0
+            },
+            {
+              "seconds": 976.3628355176529,
+              "tier": 5,
+              "owned": 26,
+              "lifetime": 748110722.3672055,
+              "output": 8514423.0
+            },
+            {
+              "seconds": 987.0966628421952,
+              "tier": 5,
+              "owned": 27,
+              "lifetime": 839503068.6173167,
+              "output": 8834423.0
+            },
+            {
+              "seconds": 998.6830933085794,
+              "tier": 5,
+              "owned": 28,
+              "lifetime": 941862496.4174414,
+              "output": 9154423.0
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

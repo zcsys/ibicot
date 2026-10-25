@@ -1,0 +1,41 @@
+{
+  "utc": "2026-10-25T16:08:14.195732+00:00",
+  "argv": [
+    "/Users/csys/Library/Android/sdk/platform-tools/adb",
+    "-s",
+    "emulator-5556",
+    "shell",
+    "input",
+    "touchscreen",
+    "tap",
+    "916",
+    "1061"
+  ],
+  "exit_code": 0,
+  "stdout": "",
+  "stderr": "",
+  "operator": "Automated actual Android UI event",
+  "purpose": "Turn actual bound Tideglass notification permission OFF through observed Settings switch",
+  "observed_node": {
+    "index": "1",
+    "text": "",
+    "resource-id": "android:id/switch_widget",
+    "class": "android.widget.Switch",
+    "package": "com.android.settings",
+    "content-desc": "",
+    "checkable": "true",
+    "checked": "true",
+    "clickable": "false",
+    "enabled": "true",
+    "focusable": "false",
+    "focused": "false",
+    "scrollable": "false",
+    "long-clickable": "false",
+    "password": "false",
+    "selected": "false",
+    "bounds": "[848,998][985,1124]"
+  },
+  "pre_image_sha256": "3cc3fbf2b381fdab2d2335ab2caa0be8b9d5c5ad4b4c905e012da4c3dab1bba4",
+  "pre_hierarchy_sha256": "f8bca44a66199cac67846ef7e2756c8636b84c1c9222c9540ec5ed3e3e10e682",
+  "lead_method_sha256": "4b841ade92aee43a7292c07bbaa0e0d1306a9468c840e2318eaf0a43fc0e796a"
+}

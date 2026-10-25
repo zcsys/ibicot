@@ -1,0 +1,23 @@
+{
+  "reviewer": "/root",
+  "author_verification_sha256": "1d3c641bdab1d1593e2c94fddb649daf8e8e4978d163e82dc0e750f5f81e19f0",
+  "patch_sha256": "9a61ee63f2029e4e9714d711b8e8aedf3faafe9f9300641f1768df18952041c9",
+  "approved_staged_sources": {
+    "tool/native_recording.py": {
+      "expected_live_before_sha256": "343ed23024953c6378bf7a314589a7252a7f97451cd01906168c9018a66c6582",
+      "staged_path": "release/store/android-ack-repair-20261023T081049.643189Z/staged/native_recording.py",
+      "staged_sha256": "77ddd47079b1373e8dc4b99b239b03f1ac8cd8200d125b777c4d0adaa3fe5d18"
+    },
+    "game/mobile/integration_test/platform_smoke_test.dart": {
+      "expected_live_before_sha256": "1925106cb014a4a21575af3aa3bd85fc997873c1c9be74249c966da1cf28318b",
+      "staged_path": "release/store/android-ack-repair-20261023T081049.643189Z/staged/platform_smoke_test.dart",
+      "staged_sha256": "a427de5995a694ecd36c0c8063ce7d2b83145b1a634e249d5bfc37840031e6bc"
+    }
+  },
+  "reproduced_host_methods": 49,
+  "real_shell_methods": 13,
+  "mock_orchestration_methods": 36,
+  "native_executed": false,
+  "dart_analysis": "pending exclusive native lane",
+  "decision": "Approve exact two-file promotion, scoped analysis and fresh Android native gallery; no native/media pass inferred."
+}

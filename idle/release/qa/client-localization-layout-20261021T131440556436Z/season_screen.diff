@@ -1,0 +1,20 @@
+--- before/game/mobile/lib/season_screen.dart
++++ after/game/mobile/lib/season_screen.dart
+@@ -186,13 +186,14 @@
+       Column(
+         crossAxisAlignment: CrossAxisAlignment.stretch,
+         children: [
++          const LocalizedText(
++            UiEnglish.seasonFreeAutomationForThisSeparateFleet,
++          ),
++          const SizedBox(height: 8),
+           SwitchListTile.adaptive(
+             key: const ValueKey('season-automatic'),
+             contentPadding: EdgeInsets.zero,
+             title: const LocalizedText(UiEnglish.seasonLetTheCrewBuild),
+-            subtitle: const LocalizedText(
+-              UiEnglish.seasonFreeAutomationForThisSeparateFleet,
+-            ),
+             value: season.automatic,
+             onChanged: (value) =>
+                 _perform(() => game.setSeasonPlan(automatic: value)),

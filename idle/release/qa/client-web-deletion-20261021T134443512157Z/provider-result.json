@@ -1,0 +1,15 @@
+{
+  "command": [
+    ".tooling/services-venv/bin/python",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "tests/services/providers",
+    "-p",
+    "test_*.py",
+    "-v"
+  ],
+  "exit_code": 0,
+  "log_sha256": "a2d191cf847294237537c86025e12198dc9136d300dd1096244cac90df75f626"
+}

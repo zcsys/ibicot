@@ -1,0 +1,94 @@
+00:00 +0: loading /Users/csys/Desktop/ibicot/idle/game/mobile/test/localization_test.dart
+00:00 +0: (setUpAll)
+00:00 +0: template expansion preserves exact prices, codes, identifiers and values
+00:00 +1: actual first purchase and primary navigation fit selected text scale
+00:01 +2: Rechart preview cancellation and confirmation preserve exact core meaning
+00:02 +3: offline return acknowledgement and actual settings stay reachable
+00:02 +4: authored calibration prose expands and accessible completion works once
+00:02 +5: campaign chapter prose and dossier opening remain navigable
+00:03 +6: season isolated fleet and free pass reward use expanded real templates
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: a value greater than or equal to <182.5>
+  Actual: <144.0>
+   Which: is not a value greater than or equal to <182.5>
+Found 1 widget with type "ListTile" descending from widget with element matching predicate (ignoring
+all but first): [
+  ListTile(selectedColor: Color(alpha: 1.0000, red: 0.9569, green: 0.7922, blue: 0.5333, colorSpace:
+ColorSpace.sRGB), contentPadding: EdgeInsets.zero, onTap: Closure: () => void, dependencies:
+[Directionality, InheritedCupertinoTheme, _InheritedTheme, _LocalizationsScope-[GlobalKey#858ea],
+_ScrollableScope]),
+] top in Rect.fromLTRB(0.0, 183.0, 320.0, 720.0)
+
+When the exception was thrown, this was the stack:
+#4      main.expectControlBounds (file:///Users/csys/Desktop/ibicot/idle/game/mobile/test/localization_test.dart:188:5)
+#5      main.reveal (file:///Users/csys/Desktop/ibicot/idle/game/mobile/test/localization_test.dart:221:26)
+<asynchronous suspension>
+#6      main.tap (file:///Users/csys/Desktop/ibicot/idle/game/mobile/test/localization_test.dart:229:5)
+<asynchronous suspension>
+#7      main.<anonymous closure> (file:///Users/csys/Desktop/ibicot/idle/game/mobile/test/localization_test.dart:445:7)
+<asynchronous suspension>
+#8      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#9      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/csys/Desktop/ibicot/idle/game/mobile/test/localization_test.dart line 188
+The test description was:
+  season isolated fleet and free pass reward use expanded real templates
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:03 +6 -1: season isolated fleet and free pass reward use expanded real templates [E]
+  Test failed. See exception logs above.
+  The test description was: season isolated fleet and free pass reward use expanded real templates
+  
+00:03 +6 -1: cloud consent and retained recovery code use unmodified secret data
+00:04 +7 -1: real store price stays exact inside expanded cosmetic purchase label
+00:04 +8 -1: Support briefing and automation save remain available at expanded size
+00:05 +9 -1: notification default copy follows build mode without implicit permission
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: a value greater than or equal to <-0.5>
+  Actual: <-88.5>
+   Which: is not a value greater than or equal to <-0.5>
+Found 1 widget with type "ListTile" descending from widget with element matching predicate (ignoring
+all but first): [
+  ListTile(selectedColor: Color(alpha: 1.0000, red: 0.9569, green: 0.7922, blue: 0.5333, colorSpace:
+ColorSpace.sRGB), contentPadding: EdgeInsets.zero, onTap: Closure: () => void, dependencies:
+[Directionality, InheritedCupertinoTheme, _InheritedTheme, _LocalizationsScope-[GlobalKey#8a377],
+_ScrollableScope]),
+] top in Rect.fromLTRB(0.0, 0.0, 320.0, 720.0)
+
+When the exception was thrown, this was the stack:
+#4      main.expectControlBounds (file:///Users/csys/Desktop/ibicot/idle/game/mobile/test/localization_test.dart:188:5)
+#5      main.reveal (file:///Users/csys/Desktop/ibicot/idle/game/mobile/test/localization_test.dart:221:26)
+<asynchronous suspension>
+#6      main.tap (file:///Users/csys/Desktop/ibicot/idle/game/mobile/test/localization_test.dart:229:5)
+<asynchronous suspension>
+#7      main.<anonymous closure> (file:///Users/csys/Desktop/ibicot/idle/game/mobile/test/localization_test.dart:585:7)
+<asynchronous suspension>
+#8      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#9      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/csys/Desktop/ibicot/idle/game/mobile/test/localization_test.dart line 188
+The test description was:
+  notification default copy follows build mode without implicit permission
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:05 +9 -2: notification default copy follows build mode without implicit permission [E]
+  Test failed. See exception logs above.
+  The test description was: notification default copy follows build mode without implicit permission
+  
+00:05 +9 -2: actual bootstrap retains exact save and audio paths in both build modes
+00:06 +10 -2: (tearDownAll)
+00:06 +10 -2: Some tests failed.
+
+Failing tests:
+  /Users/csys/Desktop/ibicot/idle/game/mobile/test/localization_test.dart: notification default copy follows build mode without implicit permission
+  /Users/csys/Desktop/ibicot/idle/game/mobile/test/localization_test.dart: season isolated fleet and free pass reward use expanded real templates

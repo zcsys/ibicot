@@ -1,3 +1,5 @@
+import 'presentation.dart';
+import 'strings.dart';
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'cosmetics.dart';
@@ -57,7 +59,9 @@ class CosmeticPreview extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Semantics(
     image: true,
-    label: '${cosmeticById(id).title}, harbor appearance preview',
+    label: UiEnglish.cosmeticCosmeticByIdIdTitleHarborAppearancePreview(
+      Presentation.authored((cosmeticById(id).title).toString()),
+    ),
     child: ExcludeSemantics(
       child: ClipRRect(
         borderRadius: BorderRadius.circular(22),

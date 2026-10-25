@@ -1,0 +1,2266 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-21",
+  "purpose": "Register 35 existing local assets; does not change manifest, original contract, economic rules or reviewer acceptance.",
+  "registrations": [
+    {
+      "asset_id": "asset.harbor.unlit",
+      "entity_ids": [
+        "harbor.unlit"
+      ],
+      "scope_ids": [
+        "S19"
+      ],
+      "source_descriptor_path": "source/art/harbor/harbor.unlit.scene.json",
+      "export_descriptor_path": "game/assets/harbor/harbor.unlit.presentation.json",
+      "provenance_path": "source/provenance/asset.harbor.unlit.json",
+      "canonical_verification_path": "release/content-evidence/asset.harbor.unlit.json",
+      "canonical_verification_created": false,
+      "actual_sources": [
+        {
+          "path": "game/mobile/lib/harbor_art.dart",
+          "sha256": "50c7fa6e1fe63da71c5add51442a5fcef6fc46ae6f7f14079c6382c514ef6979"
+        },
+        {
+          "path": "game/mobile/lib/palette.dart",
+          "sha256": "1da79c2cd009e271dcaf3dd349f20e380950fbbb67ca54e10ea5180b2ed86d83"
+        },
+        {
+          "path": "game/mobile/lib/strings.dart",
+          "sha256": "a1f75c799a56c1fdb5125f65eacb6f637912be042bbd748303ac3bbea7b6abb8"
+        },
+        {
+          "path": "game/mobile/lib/app.dart",
+          "sha256": "c26efdd6b59c7a8ce4404c9c8dee538b40ee2b3809be9df76e3eae537b360c20"
+        },
+        {
+          "path": "game/mobile/lib/story_screen.dart",
+          "sha256": "b546eb1ce88fb8f46ebde390249849a1b728fe28d6b7420466188ed97c92fc2e"
+        }
+      ],
+      "selector": "HarborArt(restoration: 0)",
+      "runtime_routes": [
+        "TideglassApp harbor / game.story.campaign.restoredHarbor",
+        "StoryScreen decoration previews"
+      ],
+      "registered_exports": [
+        {
+          "path": "game/assets/harbor/harbor.unlit.presentation.json",
+          "sha256": "6bf882c3905ac188c3adf5a70f7747f593736495084dc345100fcc235f7f60b7"
+        },
+        {
+          "path": "game/assets/harbor/exports/harbor.unlit.default.png",
+          "sha256": "09a5d424916714dbcbc1ee9d9a811e7f66a9fc5391cf095a506c9af7a4cf487e"
+        },
+        {
+          "path": "game/assets/harbor/exports/harbor.unlit.reduced-motion.png",
+          "sha256": "a3de0b592fa1a8c1a63534b0c142a499ee86e7352f00ffbb1e199081aa065be3"
+        },
+        {
+          "path": "game/assets/harbor/exports/harbor.unlit.small-phone.png",
+          "sha256": "905ccb674353cd8a1156908b1db8d9f654caea2e55bc941c149568877e698b0a"
+        },
+        {
+          "path": "game/assets/harbor/exports/harbor.unlit.tablet.png",
+          "sha256": "0c188d5f70a0a5d4381bd34b48926730bdfa86503b2e90b7f6b65a88e6f2286d"
+        }
+      ],
+      "delivery_channel": "client_package",
+      "required_variants": [
+        "default",
+        "reduced_motion_static",
+        "small_phone_crop",
+        "tablet_crop"
+      ],
+      "variants_remaining_open": [
+        "default",
+        "reduced_motion_static",
+        "small_phone_crop",
+        "tablet_crop"
+      ],
+      "status": "authored_registered_not_verified"
+    },
+    {
+      "asset_id": "asset.harbor.restored.01",
+      "entity_ids": [
+        "harbor.restored.01"
+      ],
+      "scope_ids": [
+        "S19"
+      ],
+      "source_descriptor_path": "source/art/harbor/harbor.restored.01.scene.json",
+      "export_descriptor_path": "game/assets/harbor/harbor.restored.01.presentation.json",
+      "provenance_path": "source/provenance/asset.harbor.restored.01.json",
+      "canonical_verification_path": "release/content-evidence/asset.harbor.restored.01.json",
+      "canonical_verification_created": false,
+      "actual_sources": [
+        {
+          "path": "game/mobile/lib/harbor_art.dart",
+          "sha256": "50c7fa6e1fe63da71c5add51442a5fcef6fc46ae6f7f14079c6382c514ef6979"
+        },
+        {
+          "path": "game/mobile/lib/palette.dart",
+          "sha256": "1da79c2cd009e271dcaf3dd349f20e380950fbbb67ca54e10ea5180b2ed86d83"
+        },
+        {
+          "path": "game/mobile/lib/strings.dart",
+          "sha256": "a1f75c799a56c1fdb5125f65eacb6f637912be042bbd748303ac3bbea7b6abb8"
+        },
+        {
+          "path": "game/mobile/lib/app.dart",
+          "sha256": "c26efdd6b59c7a8ce4404c9c8dee538b40ee2b3809be9df76e3eae537b360c20"
+        },
+        {
+          "path": "game/mobile/lib/story_screen.dart",
+          "sha256": "b546eb1ce88fb8f46ebde390249849a1b728fe28d6b7420466188ed97c92fc2e"
+        }
+      ],
+      "selector": "HarborArt(restoration: 1)",
+      "runtime_routes": [
+        "TideglassApp harbor / game.story.campaign.restoredHarbor",
+        "StoryScreen decoration previews"
+      ],
+      "registered_exports": [
+        {
+          "path": "game/assets/harbor/harbor.restored.01.presentation.json",
+          "sha256": "086d76799f1cdbc5209324af6b4ab47e2640fd951a21e1d2304f0e1a9cff722b"
+        },
+        {
+          "path": "game/assets/harbor/exports/harbor.restored.01.default.png",
+          "sha256": "76617c8230f247a87466441506d8e0dc05017f8b146afd4534d94d3b2fe1ab14"
+        },
+        {
+          "path": "game/assets/harbor/exports/harbor.restored.01.reduced-motion.png",
+          "sha256": "21d3b4139f391aabc8bd5907b6d90e1165cd7dda37d7e565b79b97d5f7c896c0"
+        },
+        {
+          "path": "game/assets/harbor/exports/harbor.restored.01.small-phone.png",
+          "sha256": "2864f7a64610b8e7d74a872bbe1e84e4f25eb17d786ada18bf63002616bbb03b"
+        },
+        {
+          "path": "game/assets/harbor/exports/harbor.restored.01.tablet.png",
+          "sha256": "d55dfda2c3237e4413e7feea5295256f4a9c45ed4819bb8f25f502f85d0254f2"
+        }
+      ],
+      "delivery_channel": "client_package",
+      "required_variants": [
+        "default",
+        "reduced_motion_static",
+        "small_phone_crop",
+        "tablet_crop"
+      ],
+      "variants_remaining_open": [
+        "default",
+        "reduced_motion_static",
+        "small_phone_crop",
+        "tablet_crop"
+      ],
+      "status": "authored_registered_not_verified"
+    },
+    {
+      "asset_id": "asset.harbor.restored.02",
+      "entity_ids": [
+        "harbor.restored.02"
+      ],
+      "scope_ids": [
+        "S19"
+      ],
+      "source_descriptor_path": "source/art/harbor/harbor.restored.02.scene.json",
+      "export_descriptor_path": "game/assets/harbor/harbor.restored.02.presentation.json",
+      "provenance_path": "source/provenance/asset.harbor.restored.02.json",
+      "canonical_verification_path": "release/content-evidence/asset.harbor.restored.02.json",
+      "canonical_verification_created": false,
+      "actual_sources": [
+        {
+          "path": "game/mobile/lib/harbor_art.dart",
+          "sha256": "50c7fa6e1fe63da71c5add51442a5fcef6fc46ae6f7f14079c6382c514ef6979"
+        },
+        {
+          "path": "game/mobile/lib/palette.dart",
+          "sha256": "1da79c2cd009e271dcaf3dd349f20e380950fbbb67ca54e10ea5180b2ed86d83"
+        },
+        {
+          "path": "game/mobile/lib/strings.dart",
+          "sha256": "a1f75c799a56c1fdb5125f65eacb6f637912be042bbd748303ac3bbea7b6abb8"
+        },
+        {
+          "path": "game/mobile/lib/app.dart",
+          "sha256": "c26efdd6b59c7a8ce4404c9c8dee538b40ee2b3809be9df76e3eae537b360c20"
+        },
+        {
+          "path": "game/mobile/lib/story_screen.dart",
+          "sha256": "b546eb1ce88fb8f46ebde390249849a1b728fe28d6b7420466188ed97c92fc2e"
+        }
+      ],
+      "selector": "HarborArt(restoration: 2)",
+      "runtime_routes": [
+        "TideglassApp harbor / game.story.campaign.restoredHarbor",
+        "StoryScreen decoration previews"
+      ],
+      "registered_exports": [
+        {
+          "path": "game/assets/harbor/harbor.restored.02.presentation.json",
+          "sha256": "ccff13c39ed4cae2da910708622935010710e32146b3f7c293842ceaaf2ebe95"
+        },
+        {
+          "path": "game/assets/harbor/exports/harbor.restored.02.default.png",
+          "sha256": "f20e08dd0dc0493d2b8f0471fa749026364c25b36b8ca093f0e5ffcc4ad7b439"
+        },
+        {
+          "path": "game/assets/harbor/exports/harbor.restored.02.reduced-motion.png",
+          "sha256": "1c38b32471237dec6989f5c723475a553abbb5380b41f2942c6c439d5c4bbd22"
+        },
+        {
+          "path": "game/assets/harbor/exports/harbor.restored.02.small-phone.png",
+          "sha256": "2c9d02e373a1a922e13ea6ac8970801a77285c65d60423525518686abafe5080"
+        },
+        {
+          "path": "game/assets/harbor/exports/harbor.restored.02.tablet.png",
+          "sha256": "a9f045e3c72a60453f5e8fe04e41fd2489e8739cb94ef25526f80c254fe7f104"
+        }
+      ],
+      "delivery_channel": "client_package",
+      "required_variants": [
+        "default",
+        "reduced_motion_static",
+        "small_phone_crop",
+        "tablet_crop"
+      ],
+      "variants_remaining_open": [
+        "default",
+        "reduced_motion_static",
+        "small_phone_crop",
+        "tablet_crop"
+      ],
+      "status": "authored_registered_not_verified"
+    },
+    {
+      "asset_id": "asset.harbor.restored.03",
+      "entity_ids": [
+        "harbor.restored.03"
+      ],
+      "scope_ids": [
+        "S19"
+      ],
+      "source_descriptor_path": "source/art/harbor/harbor.restored.03.scene.json",
+      "export_descriptor_path": "game/assets/harbor/harbor.restored.03.presentation.json",
+      "provenance_path": "source/provenance/asset.harbor.restored.03.json",
+      "canonical_verification_path": "release/content-evidence/asset.harbor.restored.03.json",
+      "canonical_verification_created": false,
+      "actual_sources": [
+        {
+          "path": "game/mobile/lib/harbor_art.dart",
+          "sha256": "50c7fa6e1fe63da71c5add51442a5fcef6fc46ae6f7f14079c6382c514ef6979"
+        },
+        {
+          "path": "game/mobile/lib/palette.dart",
+          "sha256": "1da79c2cd009e271dcaf3dd349f20e380950fbbb67ca54e10ea5180b2ed86d83"
+        },
+        {
+          "path": "game/mobile/lib/strings.dart",
+          "sha256": "a1f75c799a56c1fdb5125f65eacb6f637912be042bbd748303ac3bbea7b6abb8"
+        },
+        {
+          "path": "game/mobile/lib/app.dart",
+          "sha256": "c26efdd6b59c7a8ce4404c9c8dee538b40ee2b3809be9df76e3eae537b360c20"
+        },
+        {
+          "path": "game/mobile/lib/story_screen.dart",
+          "sha256": "b546eb1ce88fb8f46ebde390249849a1b728fe28d6b7420466188ed97c92fc2e"
+        }
+      ],
+      "selector": "HarborArt(restoration: 3)",
+      "runtime_routes": [
+        "TideglassApp harbor / game.story.campaign.restoredHarbor",
+        "StoryScreen decoration previews"
+      ],
+      "registered_exports": [
+        {
+          "path": "game/assets/harbor/harbor.restored.03.presentation.json",
+          "sha256": "d9cab7d84410eec8c8c3e26c654dd2f2cb7f8bf38f159874ab814eb39df040d0"
+        },
+        {
+          "path": "game/assets/harbor/exports/harbor.restored.03.default.png",
+          "sha256": "606d4b5303e1568fc504f00767eb2affe070e8ecce430d88b5c013af33305899"
+        },
+        {
+          "path": "game/assets/harbor/exports/harbor.restored.03.reduced-motion.png",
+          "sha256": "8d51b9f29e1657d0b14425aac5c26d363641fe415a8dc3dd7a8bf4c82eabe180"
+        },
+        {
+          "path": "game/assets/harbor/exports/harbor.restored.03.small-phone.png",
+          "sha256": "5a0f1627bb91c5a420185fdc22391b69a2a2d564b23d3d3e9c35944e153c9ef2"
+        },
+        {
+          "path": "game/assets/harbor/exports/harbor.restored.03.tablet.png",
+          "sha256": "12575ca77d8d07eef080279e4a8b6a399e5679741b95983cda72138cc0276a4a"
+        }
+      ],
+      "delivery_channel": "client_package",
+      "required_variants": [
+        "default",
+        "reduced_motion_static",
+        "small_phone_crop",
+        "tablet_crop"
+      ],
+      "variants_remaining_open": [
+        "default",
+        "reduced_motion_static",
+        "small_phone_crop",
+        "tablet_crop"
+      ],
+      "status": "authored_registered_not_verified"
+    },
+    {
+      "asset_id": "asset.harbor.restored.04",
+      "entity_ids": [
+        "harbor.restored.04"
+      ],
+      "scope_ids": [
+        "S19"
+      ],
+      "source_descriptor_path": "source/art/harbor/harbor.restored.04.scene.json",
+      "export_descriptor_path": "game/assets/harbor/harbor.restored.04.presentation.json",
+      "provenance_path": "source/provenance/asset.harbor.restored.04.json",
+      "canonical_verification_path": "release/content-evidence/asset.harbor.restored.04.json",
+      "canonical_verification_created": false,
+      "actual_sources": [
+        {
+          "path": "game/mobile/lib/harbor_art.dart",
+          "sha256": "50c7fa6e1fe63da71c5add51442a5fcef6fc46ae6f7f14079c6382c514ef6979"
+        },
+        {
+          "path": "game/mobile/lib/palette.dart",
+          "sha256": "1da79c2cd009e271dcaf3dd349f20e380950fbbb67ca54e10ea5180b2ed86d83"
+        },
+        {
+          "path": "game/mobile/lib/strings.dart",
+          "sha256": "a1f75c799a56c1fdb5125f65eacb6f637912be042bbd748303ac3bbea7b6abb8"
+        },
+        {
+          "path": "game/mobile/lib/app.dart",
+          "sha256": "c26efdd6b59c7a8ce4404c9c8dee538b40ee2b3809be9df76e3eae537b360c20"
+        },
+        {
+          "path": "game/mobile/lib/story_screen.dart",
+          "sha256": "b546eb1ce88fb8f46ebde390249849a1b728fe28d6b7420466188ed97c92fc2e"
+        }
+      ],
+      "selector": "HarborArt(restoration: 4)",
+      "runtime_routes": [
+        "TideglassApp harbor / game.story.campaign.restoredHarbor",
+        "StoryScreen decoration previews"
+      ],
+      "registered_exports": [
+        {
+          "path": "game/assets/harbor/harbor.restored.04.presentation.json",
+          "sha256": "cfd6268087b6fe1dee015a8327d09ff987f910a838e1d1027b07dde8e471ddfa"
+        },
+        {
+          "path": "game/assets/harbor/exports/harbor.restored.04.default.png",
+          "sha256": "220c6e8a2beb6ef13bef6f83be3a53b660da99315b8d315d8cd6e012bdfa8b65"
+        },
+        {
+          "path": "game/assets/harbor/exports/harbor.restored.04.reduced-motion.png",
+          "sha256": "418c330eccb61eb5fd8f0def054b59507125352282e532455a63e5f72c1ea030"
+        },
+        {
+          "path": "game/assets/harbor/exports/harbor.restored.04.small-phone.png",
+          "sha256": "76774346eaf6f5a955d8c3991da852144b8a32cc989264fbc99d6808e1178fe1"
+        },
+        {
+          "path": "game/assets/harbor/exports/harbor.restored.04.tablet.png",
+          "sha256": "9dd62cc2563a2a4d16947a3311556eda5e9b7d3ea55b15e9b071f080f71cd92c"
+        }
+      ],
+      "delivery_channel": "client_package",
+      "required_variants": [
+        "default",
+        "reduced_motion_static",
+        "small_phone_crop",
+        "tablet_crop"
+      ],
+      "variants_remaining_open": [
+        "default",
+        "reduced_motion_static",
+        "small_phone_crop",
+        "tablet_crop"
+      ],
+      "status": "authored_registered_not_verified"
+    },
+    {
+      "asset_id": "asset.harbor.restored.05",
+      "entity_ids": [
+        "harbor.restored.05"
+      ],
+      "scope_ids": [
+        "S19"
+      ],
+      "source_descriptor_path": "source/art/harbor/harbor.restored.05.scene.json",
+      "export_descriptor_path": "game/assets/harbor/harbor.restored.05.presentation.json",
+      "provenance_path": "source/provenance/asset.harbor.restored.05.json",
+      "canonical_verification_path": "release/content-evidence/asset.harbor.restored.05.json",
+      "canonical_verification_created": false,
+      "actual_sources": [
+        {
+          "path": "game/mobile/lib/harbor_art.dart",
+          "sha256": "50c7fa6e1fe63da71c5add51442a5fcef6fc46ae6f7f14079c6382c514ef6979"
+        },
+        {
+          "path": "game/mobile/lib/palette.dart",
+          "sha256": "1da79c2cd009e271dcaf3dd349f20e380950fbbb67ca54e10ea5180b2ed86d83"
+        },
+        {
+          "path": "game/mobile/lib/strings.dart",
+          "sha256": "a1f75c799a56c1fdb5125f65eacb6f637912be042bbd748303ac3bbea7b6abb8"
+        },
+        {
+          "path": "game/mobile/lib/app.dart",
+          "sha256": "c26efdd6b59c7a8ce4404c9c8dee538b40ee2b3809be9df76e3eae537b360c20"
+        },
+        {
+          "path": "game/mobile/lib/story_screen.dart",
+          "sha256": "b546eb1ce88fb8f46ebde390249849a1b728fe28d6b7420466188ed97c92fc2e"
+        }
+      ],
+      "selector": "HarborArt(restoration: 5)",
+      "runtime_routes": [
+        "TideglassApp harbor / game.story.campaign.restoredHarbor",
+        "StoryScreen decoration previews"
+      ],
+      "registered_exports": [
+        {
+          "path": "game/assets/harbor/harbor.restored.05.presentation.json",
+          "sha256": "718698aadd8afa7604942d6cbe6259649ee3940f6809b5c4b0e3ff3159fccfcf"
+        },
+        {
+          "path": "game/assets/harbor/exports/harbor.restored.05.default.png",
+          "sha256": "bcbe593862c15a7941d03d307ff99bc148a9e9edeca55efebc3dc63512b7ced0"
+        },
+        {
+          "path": "game/assets/harbor/exports/harbor.restored.05.reduced-motion.png",
+          "sha256": "f9b35f5f7c1ce5c6dbf7dee07aa87f0acd09f1b0f7412296ada9dccc1d048ebd"
+        },
+        {
+          "path": "game/assets/harbor/exports/harbor.restored.05.small-phone.png",
+          "sha256": "842821c30bbc394aec3f82d26274ab14458c002bf2177a3a56719fd57176191b"
+        },
+        {
+          "path": "game/assets/harbor/exports/harbor.restored.05.tablet.png",
+          "sha256": "f4632c4b8ffe5cb676d76ea20309d36edd96672bf605bf2eeea15651b78a6db7"
+        }
+      ],
+      "delivery_channel": "client_package",
+      "required_variants": [
+        "default",
+        "reduced_motion_static",
+        "small_phone_crop",
+        "tablet_crop"
+      ],
+      "variants_remaining_open": [
+        "default",
+        "reduced_motion_static",
+        "small_phone_crop",
+        "tablet_crop"
+      ],
+      "status": "authored_registered_not_verified"
+    },
+    {
+      "asset_id": "asset.harbor.restored.06",
+      "entity_ids": [
+        "harbor.restored.06"
+      ],
+      "scope_ids": [
+        "S19"
+      ],
+      "source_descriptor_path": "source/art/harbor/harbor.restored.06.scene.json",
+      "export_descriptor_path": "game/assets/harbor/harbor.restored.06.presentation.json",
+      "provenance_path": "source/provenance/asset.harbor.restored.06.json",
+      "canonical_verification_path": "release/content-evidence/asset.harbor.restored.06.json",
+      "canonical_verification_created": false,
+      "actual_sources": [
+        {
+          "path": "game/mobile/lib/harbor_art.dart",
+          "sha256": "50c7fa6e1fe63da71c5add51442a5fcef6fc46ae6f7f14079c6382c514ef6979"
+        },
+        {
+          "path": "game/mobile/lib/palette.dart",
+          "sha256": "1da79c2cd009e271dcaf3dd349f20e380950fbbb67ca54e10ea5180b2ed86d83"
+        },
+        {
+          "path": "game/mobile/lib/strings.dart",
+          "sha256": "a1f75c799a56c1fdb5125f65eacb6f637912be042bbd748303ac3bbea7b6abb8"
+        },
+        {
+          "path": "game/mobile/lib/app.dart",
+          "sha256": "c26efdd6b59c7a8ce4404c9c8dee538b40ee2b3809be9df76e3eae537b360c20"
+        },
+        {
+          "path": "game/mobile/lib/story_screen.dart",
+          "sha256": "b546eb1ce88fb8f46ebde390249849a1b728fe28d6b7420466188ed97c92fc2e"
+        }
+      ],
+      "selector": "HarborArt(restoration: 6)",
+      "runtime_routes": [
+        "TideglassApp harbor / game.story.campaign.restoredHarbor",
+        "StoryScreen decoration previews"
+      ],
+      "registered_exports": [
+        {
+          "path": "game/assets/harbor/harbor.restored.06.presentation.json",
+          "sha256": "01d31a77d5f5ea1dc53b81be7a062214614fd233ad875bd6d9a1d193197093ef"
+        },
+        {
+          "path": "game/assets/harbor/exports/harbor.restored.06.default.png",
+          "sha256": "7d34d760e30ec48146a8d19e34550e765af1606d1e1a6edcbef8416f47f4c666"
+        },
+        {
+          "path": "game/assets/harbor/exports/harbor.restored.06.reduced-motion.png",
+          "sha256": "7dc6680ea2f0998fa30bcdedcd684a85e423a2e15e82fd39216f9323d3784df9"
+        },
+        {
+          "path": "game/assets/harbor/exports/harbor.restored.06.small-phone.png",
+          "sha256": "58b3e1744ac0293441f9844c0bbc11a274d237be008b513501dc9c00d19fd10b"
+        },
+        {
+          "path": "game/assets/harbor/exports/harbor.restored.06.tablet.png",
+          "sha256": "da82eb2a1d2ca9331b9db42ec4875d5f4abb7f888e73065a4462288c43e104bc"
+        }
+      ],
+      "delivery_channel": "client_package",
+      "required_variants": [
+        "default",
+        "reduced_motion_static",
+        "small_phone_crop",
+        "tablet_crop"
+      ],
+      "variants_remaining_open": [
+        "default",
+        "reduced_motion_static",
+        "small_phone_crop",
+        "tablet_crop"
+      ],
+      "status": "authored_registered_not_verified"
+    },
+    {
+      "asset_id": "asset.archive.season01.01",
+      "entity_ids": [
+        "archive.season01.01"
+      ],
+      "scope_ids": [
+        "S21"
+      ],
+      "source_descriptor_path": "source/content/en-US/archive.season01.01.md",
+      "export_descriptor_path": "game/content/locales/en-US/archive.season01.01.json",
+      "provenance_path": "source/provenance/asset.archive.season01.01.json",
+      "canonical_verification_path": "release/content-evidence/asset.archive.season01.01.json",
+      "canonical_verification_created": false,
+      "actual_sources": [
+        {
+          "path": "game/events/content/season.01.json",
+          "sha256": "eefe232fedd19ae081af05e87051ce12ba1e8e300cf51de997b3d7c81d2aff96"
+        },
+        {
+          "path": "game/mobile/assets/events/season.01.json",
+          "sha256": "eefe232fedd19ae081af05e87051ce12ba1e8e300cf51de997b3d7c81d2aff96"
+        },
+        {
+          "path": "game/mobile/lib/season_screen.dart",
+          "sha256": "f05af571cdbdbd84d194f08a51bb91cb7544a9a366fa90babba2f29a354040e5"
+        },
+        {
+          "path": "game/mobile/lib/story_state.dart",
+          "sha256": "008c4c5ad721794809d38a00b72de32ecd98402a1acf2724f9eb1c4af6860cc4"
+        },
+        {
+          "path": "game/events/lib/src/pass.dart",
+          "sha256": "22f732cd81150b3cf47f01aa926ba9b51bf3c4e4d8e946f89392d824922a8e5d"
+        }
+      ],
+      "selector": "rewards[content_id=archive.season01.01]",
+      "runtime_routes": [
+        "SeasonScreen Pass tab / level expansion / free reward claim and retained archive text"
+      ],
+      "registered_exports": [
+        {
+          "path": "game/content/locales/en-US/archive.season01.01.json",
+          "sha256": "2eed67e7389b933570c4789632fdab540223707b751329eb29dd118396313f31"
+        }
+      ],
+      "delivery_channel": "client_package",
+      "required_variants": [
+        "text_scale_100",
+        "text_scale_150",
+        "text_scale_200",
+        "pseudolocalized"
+      ],
+      "variants_remaining_open": [
+        "text_scale_100",
+        "text_scale_150",
+        "text_scale_200",
+        "pseudolocalized"
+      ],
+      "status": "authored_registered_not_verified"
+    },
+    {
+      "asset_id": "asset.archive.season01.02",
+      "entity_ids": [
+        "archive.season01.02"
+      ],
+      "scope_ids": [
+        "S21"
+      ],
+      "source_descriptor_path": "source/content/en-US/archive.season01.02.md",
+      "export_descriptor_path": "game/content/locales/en-US/archive.season01.02.json",
+      "provenance_path": "source/provenance/asset.archive.season01.02.json",
+      "canonical_verification_path": "release/content-evidence/asset.archive.season01.02.json",
+      "canonical_verification_created": false,
+      "actual_sources": [
+        {
+          "path": "game/events/content/season.01.json",
+          "sha256": "eefe232fedd19ae081af05e87051ce12ba1e8e300cf51de997b3d7c81d2aff96"
+        },
+        {
+          "path": "game/mobile/assets/events/season.01.json",
+          "sha256": "eefe232fedd19ae081af05e87051ce12ba1e8e300cf51de997b3d7c81d2aff96"
+        },
+        {
+          "path": "game/mobile/lib/season_screen.dart",
+          "sha256": "f05af571cdbdbd84d194f08a51bb91cb7544a9a366fa90babba2f29a354040e5"
+        },
+        {
+          "path": "game/mobile/lib/story_state.dart",
+          "sha256": "008c4c5ad721794809d38a00b72de32ecd98402a1acf2724f9eb1c4af6860cc4"
+        },
+        {
+          "path": "game/events/lib/src/pass.dart",
+          "sha256": "22f732cd81150b3cf47f01aa926ba9b51bf3c4e4d8e946f89392d824922a8e5d"
+        }
+      ],
+      "selector": "rewards[content_id=archive.season01.02]",
+      "runtime_routes": [
+        "SeasonScreen Pass tab / level expansion / free reward claim and retained archive text"
+      ],
+      "registered_exports": [
+        {
+          "path": "game/content/locales/en-US/archive.season01.02.json",
+          "sha256": "14337f244f4c26fa80d3da32a97cc4b3c6decc4ad0f483de9a403b8622b1dd50"
+        }
+      ],
+      "delivery_channel": "client_package",
+      "required_variants": [
+        "text_scale_100",
+        "text_scale_150",
+        "text_scale_200",
+        "pseudolocalized"
+      ],
+      "variants_remaining_open": [
+        "text_scale_100",
+        "text_scale_150",
+        "text_scale_200",
+        "pseudolocalized"
+      ],
+      "status": "authored_registered_not_verified"
+    },
+    {
+      "asset_id": "asset.archive.season01.03",
+      "entity_ids": [
+        "archive.season01.03"
+      ],
+      "scope_ids": [
+        "S21"
+      ],
+      "source_descriptor_path": "source/content/en-US/archive.season01.03.md",
+      "export_descriptor_path": "game/content/locales/en-US/archive.season01.03.json",
+      "provenance_path": "source/provenance/asset.archive.season01.03.json",
+      "canonical_verification_path": "release/content-evidence/asset.archive.season01.03.json",
+      "canonical_verification_created": false,
+      "actual_sources": [
+        {
+          "path": "game/events/content/season.01.json",
+          "sha256": "eefe232fedd19ae081af05e87051ce12ba1e8e300cf51de997b3d7c81d2aff96"
+        },
+        {
+          "path": "game/mobile/assets/events/season.01.json",
+          "sha256": "eefe232fedd19ae081af05e87051ce12ba1e8e300cf51de997b3d7c81d2aff96"
+        },
+        {
+          "path": "game/mobile/lib/season_screen.dart",
+          "sha256": "f05af571cdbdbd84d194f08a51bb91cb7544a9a366fa90babba2f29a354040e5"
+        },
+        {
+          "path": "game/mobile/lib/story_state.dart",
+          "sha256": "008c4c5ad721794809d38a00b72de32ecd98402a1acf2724f9eb1c4af6860cc4"
+        },
+        {
+          "path": "game/events/lib/src/pass.dart",
+          "sha256": "22f732cd81150b3cf47f01aa926ba9b51bf3c4e4d8e946f89392d824922a8e5d"
+        }
+      ],
+      "selector": "rewards[content_id=archive.season01.03]",
+      "runtime_routes": [
+        "SeasonScreen Pass tab / level expansion / free reward claim and retained archive text"
+      ],
+      "registered_exports": [
+        {
+          "path": "game/content/locales/en-US/archive.season01.03.json",
+          "sha256": "272531c941cf6de50cfa1d273cdcbffc06bfeb94cb77c1337c2a0b02ae6abac0"
+        }
+      ],
+      "delivery_channel": "client_package",
+      "required_variants": [
+        "text_scale_100",
+        "text_scale_150",
+        "text_scale_200",
+        "pseudolocalized"
+      ],
+      "variants_remaining_open": [
+        "text_scale_100",
+        "text_scale_150",
+        "text_scale_200",
+        "pseudolocalized"
+      ],
+      "status": "authored_registered_not_verified"
+    },
+    {
+      "asset_id": "asset.archive.season01.04",
+      "entity_ids": [
+        "archive.season01.04"
+      ],
+      "scope_ids": [
+        "S21"
+      ],
+      "source_descriptor_path": "source/content/en-US/archive.season01.04.md",
+      "export_descriptor_path": "game/content/locales/en-US/archive.season01.04.json",
+      "provenance_path": "source/provenance/asset.archive.season01.04.json",
+      "canonical_verification_path": "release/content-evidence/asset.archive.season01.04.json",
+      "canonical_verification_created": false,
+      "actual_sources": [
+        {
+          "path": "game/events/content/season.01.json",
+          "sha256": "eefe232fedd19ae081af05e87051ce12ba1e8e300cf51de997b3d7c81d2aff96"
+        },
+        {
+          "path": "game/mobile/assets/events/season.01.json",
+          "sha256": "eefe232fedd19ae081af05e87051ce12ba1e8e300cf51de997b3d7c81d2aff96"
+        },
+        {
+          "path": "game/mobile/lib/season_screen.dart",
+          "sha256": "f05af571cdbdbd84d194f08a51bb91cb7544a9a366fa90babba2f29a354040e5"
+        },
+        {
+          "path": "game/mobile/lib/story_state.dart",
+          "sha256": "008c4c5ad721794809d38a00b72de32ecd98402a1acf2724f9eb1c4af6860cc4"
+        },
+        {
+          "path": "game/events/lib/src/pass.dart",
+          "sha256": "22f732cd81150b3cf47f01aa926ba9b51bf3c4e4d8e946f89392d824922a8e5d"
+        }
+      ],
+      "selector": "rewards[content_id=archive.season01.04]",
+      "runtime_routes": [
+        "SeasonScreen Pass tab / level expansion / free reward claim and retained archive text"
+      ],
+      "registered_exports": [
+        {
+          "path": "game/content/locales/en-US/archive.season01.04.json",
+          "sha256": "23db634974eb81a8d1ccd7d276833b497469ef598619a3f33542a9ea09de1e65"
+        }
+      ],
+      "delivery_channel": "client_package",
+      "required_variants": [
+        "text_scale_100",
+        "text_scale_150",
+        "text_scale_200",
+        "pseudolocalized"
+      ],
+      "variants_remaining_open": [
+        "text_scale_100",
+        "text_scale_150",
+        "text_scale_200",
+        "pseudolocalized"
+      ],
+      "status": "authored_registered_not_verified"
+    },
+    {
+      "asset_id": "asset.archive.season01.05",
+      "entity_ids": [
+        "archive.season01.05"
+      ],
+      "scope_ids": [
+        "S21"
+      ],
+      "source_descriptor_path": "source/content/en-US/archive.season01.05.md",
+      "export_descriptor_path": "game/content/locales/en-US/archive.season01.05.json",
+      "provenance_path": "source/provenance/asset.archive.season01.05.json",
+      "canonical_verification_path": "release/content-evidence/asset.archive.season01.05.json",
+      "canonical_verification_created": false,
+      "actual_sources": [
+        {
+          "path": "game/events/content/season.01.json",
+          "sha256": "eefe232fedd19ae081af05e87051ce12ba1e8e300cf51de997b3d7c81d2aff96"
+        },
+        {
+          "path": "game/mobile/assets/events/season.01.json",
+          "sha256": "eefe232fedd19ae081af05e87051ce12ba1e8e300cf51de997b3d7c81d2aff96"
+        },
+        {
+          "path": "game/mobile/lib/season_screen.dart",
+          "sha256": "f05af571cdbdbd84d194f08a51bb91cb7544a9a366fa90babba2f29a354040e5"
+        },
+        {
+          "path": "game/mobile/lib/story_state.dart",
+          "sha256": "008c4c5ad721794809d38a00b72de32ecd98402a1acf2724f9eb1c4af6860cc4"
+        },
+        {
+          "path": "game/events/lib/src/pass.dart",
+          "sha256": "22f732cd81150b3cf47f01aa926ba9b51bf3c4e4d8e946f89392d824922a8e5d"
+        }
+      ],
+      "selector": "rewards[content_id=archive.season01.05]",
+      "runtime_routes": [
+        "SeasonScreen Pass tab / level expansion / free reward claim and retained archive text"
+      ],
+      "registered_exports": [
+        {
+          "path": "game/content/locales/en-US/archive.season01.05.json",
+          "sha256": "c85e833050dffac1841aa97fa573c693e78061ed306572e04bd7f695a9208a8b"
+        }
+      ],
+      "delivery_channel": "client_package",
+      "required_variants": [
+        "text_scale_100",
+        "text_scale_150",
+        "text_scale_200",
+        "pseudolocalized"
+      ],
+      "variants_remaining_open": [
+        "text_scale_100",
+        "text_scale_150",
+        "text_scale_200",
+        "pseudolocalized"
+      ],
+      "status": "authored_registered_not_verified"
+    },
+    {
+      "asset_id": "asset.archive.season01.06",
+      "entity_ids": [
+        "archive.season01.06"
+      ],
+      "scope_ids": [
+        "S21"
+      ],
+      "source_descriptor_path": "source/content/en-US/archive.season01.06.md",
+      "export_descriptor_path": "game/content/locales/en-US/archive.season01.06.json",
+      "provenance_path": "source/provenance/asset.archive.season01.06.json",
+      "canonical_verification_path": "release/content-evidence/asset.archive.season01.06.json",
+      "canonical_verification_created": false,
+      "actual_sources": [
+        {
+          "path": "game/events/content/season.01.json",
+          "sha256": "eefe232fedd19ae081af05e87051ce12ba1e8e300cf51de997b3d7c81d2aff96"
+        },
+        {
+          "path": "game/mobile/assets/events/season.01.json",
+          "sha256": "eefe232fedd19ae081af05e87051ce12ba1e8e300cf51de997b3d7c81d2aff96"
+        },
+        {
+          "path": "game/mobile/lib/season_screen.dart",
+          "sha256": "f05af571cdbdbd84d194f08a51bb91cb7544a9a366fa90babba2f29a354040e5"
+        },
+        {
+          "path": "game/mobile/lib/story_state.dart",
+          "sha256": "008c4c5ad721794809d38a00b72de32ecd98402a1acf2724f9eb1c4af6860cc4"
+        },
+        {
+          "path": "game/events/lib/src/pass.dart",
+          "sha256": "22f732cd81150b3cf47f01aa926ba9b51bf3c4e4d8e946f89392d824922a8e5d"
+        }
+      ],
+      "selector": "rewards[content_id=archive.season01.06]",
+      "runtime_routes": [
+        "SeasonScreen Pass tab / level expansion / free reward claim and retained archive text"
+      ],
+      "registered_exports": [
+        {
+          "path": "game/content/locales/en-US/archive.season01.06.json",
+          "sha256": "d5594e6e5ab95bbd55bdbd8e35b4fed0c39f938362d43e4ed4f254214fcf1736"
+        }
+      ],
+      "delivery_channel": "client_package",
+      "required_variants": [
+        "text_scale_100",
+        "text_scale_150",
+        "text_scale_200",
+        "pseudolocalized"
+      ],
+      "variants_remaining_open": [
+        "text_scale_100",
+        "text_scale_150",
+        "text_scale_200",
+        "pseudolocalized"
+      ],
+      "status": "authored_registered_not_verified"
+    },
+    {
+      "asset_id": "asset.archive.season01.07",
+      "entity_ids": [
+        "archive.season01.07"
+      ],
+      "scope_ids": [
+        "S21"
+      ],
+      "source_descriptor_path": "source/content/en-US/archive.season01.07.md",
+      "export_descriptor_path": "game/content/locales/en-US/archive.season01.07.json",
+      "provenance_path": "source/provenance/asset.archive.season01.07.json",
+      "canonical_verification_path": "release/content-evidence/asset.archive.season01.07.json",
+      "canonical_verification_created": false,
+      "actual_sources": [
+        {
+          "path": "game/events/content/season.01.json",
+          "sha256": "eefe232fedd19ae081af05e87051ce12ba1e8e300cf51de997b3d7c81d2aff96"
+        },
+        {
+          "path": "game/mobile/assets/events/season.01.json",
+          "sha256": "eefe232fedd19ae081af05e87051ce12ba1e8e300cf51de997b3d7c81d2aff96"
+        },
+        {
+          "path": "game/mobile/lib/season_screen.dart",
+          "sha256": "f05af571cdbdbd84d194f08a51bb91cb7544a9a366fa90babba2f29a354040e5"
+        },
+        {
+          "path": "game/mobile/lib/story_state.dart",
+          "sha256": "008c4c5ad721794809d38a00b72de32ecd98402a1acf2724f9eb1c4af6860cc4"
+        },
+        {
+          "path": "game/events/lib/src/pass.dart",
+          "sha256": "22f732cd81150b3cf47f01aa926ba9b51bf3c4e4d8e946f89392d824922a8e5d"
+        }
+      ],
+      "selector": "rewards[content_id=archive.season01.07]",
+      "runtime_routes": [
+        "SeasonScreen Pass tab / level expansion / free reward claim and retained archive text"
+      ],
+      "registered_exports": [
+        {
+          "path": "game/content/locales/en-US/archive.season01.07.json",
+          "sha256": "38be7aa2fb0279f2f21df292e8b3893cc55461fff4cd91c1c30c7c1e57523b25"
+        }
+      ],
+      "delivery_channel": "client_package",
+      "required_variants": [
+        "text_scale_100",
+        "text_scale_150",
+        "text_scale_200",
+        "pseudolocalized"
+      ],
+      "variants_remaining_open": [
+        "text_scale_100",
+        "text_scale_150",
+        "text_scale_200",
+        "pseudolocalized"
+      ],
+      "status": "authored_registered_not_verified"
+    },
+    {
+      "asset_id": "asset.archive.season01.08",
+      "entity_ids": [
+        "archive.season01.08"
+      ],
+      "scope_ids": [
+        "S21"
+      ],
+      "source_descriptor_path": "source/content/en-US/archive.season01.08.md",
+      "export_descriptor_path": "game/content/locales/en-US/archive.season01.08.json",
+      "provenance_path": "source/provenance/asset.archive.season01.08.json",
+      "canonical_verification_path": "release/content-evidence/asset.archive.season01.08.json",
+      "canonical_verification_created": false,
+      "actual_sources": [
+        {
+          "path": "game/events/content/season.01.json",
+          "sha256": "eefe232fedd19ae081af05e87051ce12ba1e8e300cf51de997b3d7c81d2aff96"
+        },
+        {
+          "path": "game/mobile/assets/events/season.01.json",
+          "sha256": "eefe232fedd19ae081af05e87051ce12ba1e8e300cf51de997b3d7c81d2aff96"
+        },
+        {
+          "path": "game/mobile/lib/season_screen.dart",
+          "sha256": "f05af571cdbdbd84d194f08a51bb91cb7544a9a366fa90babba2f29a354040e5"
+        },
+        {
+          "path": "game/mobile/lib/story_state.dart",
+          "sha256": "008c4c5ad721794809d38a00b72de32ecd98402a1acf2724f9eb1c4af6860cc4"
+        },
+        {
+          "path": "game/events/lib/src/pass.dart",
+          "sha256": "22f732cd81150b3cf47f01aa926ba9b51bf3c4e4d8e946f89392d824922a8e5d"
+        }
+      ],
+      "selector": "rewards[content_id=archive.season01.08]",
+      "runtime_routes": [
+        "SeasonScreen Pass tab / level expansion / free reward claim and retained archive text"
+      ],
+      "registered_exports": [
+        {
+          "path": "game/content/locales/en-US/archive.season01.08.json",
+          "sha256": "f9ae5dad66841d022a01d46597bddaa1c76a13877aa214292ae776ede55c99e9"
+        }
+      ],
+      "delivery_channel": "client_package",
+      "required_variants": [
+        "text_scale_100",
+        "text_scale_150",
+        "text_scale_200",
+        "pseudolocalized"
+      ],
+      "variants_remaining_open": [
+        "text_scale_100",
+        "text_scale_150",
+        "text_scale_200",
+        "pseudolocalized"
+      ],
+      "status": "authored_registered_not_verified"
+    },
+    {
+      "asset_id": "asset.archive.season01.09",
+      "entity_ids": [
+        "archive.season01.09"
+      ],
+      "scope_ids": [
+        "S21"
+      ],
+      "source_descriptor_path": "source/content/en-US/archive.season01.09.md",
+      "export_descriptor_path": "game/content/locales/en-US/archive.season01.09.json",
+      "provenance_path": "source/provenance/asset.archive.season01.09.json",
+      "canonical_verification_path": "release/content-evidence/asset.archive.season01.09.json",
+      "canonical_verification_created": false,
+      "actual_sources": [
+        {
+          "path": "game/events/content/season.01.json",
+          "sha256": "eefe232fedd19ae081af05e87051ce12ba1e8e300cf51de997b3d7c81d2aff96"
+        },
+        {
+          "path": "game/mobile/assets/events/season.01.json",
+          "sha256": "eefe232fedd19ae081af05e87051ce12ba1e8e300cf51de997b3d7c81d2aff96"
+        },
+        {
+          "path": "game/mobile/lib/season_screen.dart",
+          "sha256": "f05af571cdbdbd84d194f08a51bb91cb7544a9a366fa90babba2f29a354040e5"
+        },
+        {
+          "path": "game/mobile/lib/story_state.dart",
+          "sha256": "008c4c5ad721794809d38a00b72de32ecd98402a1acf2724f9eb1c4af6860cc4"
+        },
+        {
+          "path": "game/events/lib/src/pass.dart",
+          "sha256": "22f732cd81150b3cf47f01aa926ba9b51bf3c4e4d8e946f89392d824922a8e5d"
+        }
+      ],
+      "selector": "rewards[content_id=archive.season01.09]",
+      "runtime_routes": [
+        "SeasonScreen Pass tab / level expansion / free reward claim and retained archive text"
+      ],
+      "registered_exports": [
+        {
+          "path": "game/content/locales/en-US/archive.season01.09.json",
+          "sha256": "de5f75ccdabaa3c49d475f8df5e539f31eaee085453497ca23fa20a2e30c7417"
+        }
+      ],
+      "delivery_channel": "client_package",
+      "required_variants": [
+        "text_scale_100",
+        "text_scale_150",
+        "text_scale_200",
+        "pseudolocalized"
+      ],
+      "variants_remaining_open": [
+        "text_scale_100",
+        "text_scale_150",
+        "text_scale_200",
+        "pseudolocalized"
+      ],
+      "status": "authored_registered_not_verified"
+    },
+    {
+      "asset_id": "asset.archive.season01.10",
+      "entity_ids": [
+        "archive.season01.10"
+      ],
+      "scope_ids": [
+        "S21"
+      ],
+      "source_descriptor_path": "source/content/en-US/archive.season01.10.md",
+      "export_descriptor_path": "game/content/locales/en-US/archive.season01.10.json",
+      "provenance_path": "source/provenance/asset.archive.season01.10.json",
+      "canonical_verification_path": "release/content-evidence/asset.archive.season01.10.json",
+      "canonical_verification_created": false,
+      "actual_sources": [
+        {
+          "path": "game/events/content/season.01.json",
+          "sha256": "eefe232fedd19ae081af05e87051ce12ba1e8e300cf51de997b3d7c81d2aff96"
+        },
+        {
+          "path": "game/mobile/assets/events/season.01.json",
+          "sha256": "eefe232fedd19ae081af05e87051ce12ba1e8e300cf51de997b3d7c81d2aff96"
+        },
+        {
+          "path": "game/mobile/lib/season_screen.dart",
+          "sha256": "f05af571cdbdbd84d194f08a51bb91cb7544a9a366fa90babba2f29a354040e5"
+        },
+        {
+          "path": "game/mobile/lib/story_state.dart",
+          "sha256": "008c4c5ad721794809d38a00b72de32ecd98402a1acf2724f9eb1c4af6860cc4"
+        },
+        {
+          "path": "game/events/lib/src/pass.dart",
+          "sha256": "22f732cd81150b3cf47f01aa926ba9b51bf3c4e4d8e946f89392d824922a8e5d"
+        }
+      ],
+      "selector": "rewards[content_id=archive.season01.10]",
+      "runtime_routes": [
+        "SeasonScreen Pass tab / level expansion / free reward claim and retained archive text"
+      ],
+      "registered_exports": [
+        {
+          "path": "game/content/locales/en-US/archive.season01.10.json",
+          "sha256": "d26c27fda3580f046a5c0e362544f3376cc22213bfc2670d277b0c63506b5f1e"
+        }
+      ],
+      "delivery_channel": "client_package",
+      "required_variants": [
+        "text_scale_100",
+        "text_scale_150",
+        "text_scale_200",
+        "pseudolocalized"
+      ],
+      "variants_remaining_open": [
+        "text_scale_100",
+        "text_scale_150",
+        "text_scale_200",
+        "pseudolocalized"
+      ],
+      "status": "authored_registered_not_verified"
+    },
+    {
+      "asset_id": "asset.archive.season01.11",
+      "entity_ids": [
+        "archive.season01.11"
+      ],
+      "scope_ids": [
+        "S21"
+      ],
+      "source_descriptor_path": "source/content/en-US/archive.season01.11.md",
+      "export_descriptor_path": "game/content/locales/en-US/archive.season01.11.json",
+      "provenance_path": "source/provenance/asset.archive.season01.11.json",
+      "canonical_verification_path": "release/content-evidence/asset.archive.season01.11.json",
+      "canonical_verification_created": false,
+      "actual_sources": [
+        {
+          "path": "game/events/content/season.01.json",
+          "sha256": "eefe232fedd19ae081af05e87051ce12ba1e8e300cf51de997b3d7c81d2aff96"
+        },
+        {
+          "path": "game/mobile/assets/events/season.01.json",
+          "sha256": "eefe232fedd19ae081af05e87051ce12ba1e8e300cf51de997b3d7c81d2aff96"
+        },
+        {
+          "path": "game/mobile/lib/season_screen.dart",
+          "sha256": "f05af571cdbdbd84d194f08a51bb91cb7544a9a366fa90babba2f29a354040e5"
+        },
+        {
+          "path": "game/mobile/lib/story_state.dart",
+          "sha256": "008c4c5ad721794809d38a00b72de32ecd98402a1acf2724f9eb1c4af6860cc4"
+        },
+        {
+          "path": "game/events/lib/src/pass.dart",
+          "sha256": "22f732cd81150b3cf47f01aa926ba9b51bf3c4e4d8e946f89392d824922a8e5d"
+        }
+      ],
+      "selector": "rewards[content_id=archive.season01.11]",
+      "runtime_routes": [
+        "SeasonScreen Pass tab / level expansion / free reward claim and retained archive text"
+      ],
+      "registered_exports": [
+        {
+          "path": "game/content/locales/en-US/archive.season01.11.json",
+          "sha256": "52ed85a91f13010cffceda320dc55756dd7671276493be919f3227cdd0fa604a"
+        }
+      ],
+      "delivery_channel": "client_package",
+      "required_variants": [
+        "text_scale_100",
+        "text_scale_150",
+        "text_scale_200",
+        "pseudolocalized"
+      ],
+      "variants_remaining_open": [
+        "text_scale_100",
+        "text_scale_150",
+        "text_scale_200",
+        "pseudolocalized"
+      ],
+      "status": "authored_registered_not_verified"
+    },
+    {
+      "asset_id": "asset.archive.season01.12",
+      "entity_ids": [
+        "archive.season01.12"
+      ],
+      "scope_ids": [
+        "S21"
+      ],
+      "source_descriptor_path": "source/content/en-US/archive.season01.12.md",
+      "export_descriptor_path": "game/content/locales/en-US/archive.season01.12.json",
+      "provenance_path": "source/provenance/asset.archive.season01.12.json",
+      "canonical_verification_path": "release/content-evidence/asset.archive.season01.12.json",
+      "canonical_verification_created": false,
+      "actual_sources": [
+        {
+          "path": "game/events/content/season.01.json",
+          "sha256": "eefe232fedd19ae081af05e87051ce12ba1e8e300cf51de997b3d7c81d2aff96"
+        },
+        {
+          "path": "game/mobile/assets/events/season.01.json",
+          "sha256": "eefe232fedd19ae081af05e87051ce12ba1e8e300cf51de997b3d7c81d2aff96"
+        },
+        {
+          "path": "game/mobile/lib/season_screen.dart",
+          "sha256": "f05af571cdbdbd84d194f08a51bb91cb7544a9a366fa90babba2f29a354040e5"
+        },
+        {
+          "path": "game/mobile/lib/story_state.dart",
+          "sha256": "008c4c5ad721794809d38a00b72de32ecd98402a1acf2724f9eb1c4af6860cc4"
+        },
+        {
+          "path": "game/events/lib/src/pass.dart",
+          "sha256": "22f732cd81150b3cf47f01aa926ba9b51bf3c4e4d8e946f89392d824922a8e5d"
+        }
+      ],
+      "selector": "rewards[content_id=archive.season01.12]",
+      "runtime_routes": [
+        "SeasonScreen Pass tab / level expansion / free reward claim and retained archive text"
+      ],
+      "registered_exports": [
+        {
+          "path": "game/content/locales/en-US/archive.season01.12.json",
+          "sha256": "0199b8fdb68ddbcedf81834ca4afbf3c977e8f42fa3ecb6fcef579a6efd0d63b"
+        }
+      ],
+      "delivery_channel": "client_package",
+      "required_variants": [
+        "text_scale_100",
+        "text_scale_150",
+        "text_scale_200",
+        "pseudolocalized"
+      ],
+      "variants_remaining_open": [
+        "text_scale_100",
+        "text_scale_150",
+        "text_scale_200",
+        "pseudolocalized"
+      ],
+      "status": "authored_registered_not_verified"
+    },
+    {
+      "asset_id": "asset.archive.season01.13",
+      "entity_ids": [
+        "archive.season01.13"
+      ],
+      "scope_ids": [
+        "S21"
+      ],
+      "source_descriptor_path": "source/content/en-US/archive.season01.13.md",
+      "export_descriptor_path": "game/content/locales/en-US/archive.season01.13.json",
+      "provenance_path": "source/provenance/asset.archive.season01.13.json",
+      "canonical_verification_path": "release/content-evidence/asset.archive.season01.13.json",
+      "canonical_verification_created": false,
+      "actual_sources": [
+        {
+          "path": "game/events/content/season.01.json",
+          "sha256": "eefe232fedd19ae081af05e87051ce12ba1e8e300cf51de997b3d7c81d2aff96"
+        },
+        {
+          "path": "game/mobile/assets/events/season.01.json",
+          "sha256": "eefe232fedd19ae081af05e87051ce12ba1e8e300cf51de997b3d7c81d2aff96"
+        },
+        {
+          "path": "game/mobile/lib/season_screen.dart",
+          "sha256": "f05af571cdbdbd84d194f08a51bb91cb7544a9a366fa90babba2f29a354040e5"
+        },
+        {
+          "path": "game/mobile/lib/story_state.dart",
+          "sha256": "008c4c5ad721794809d38a00b72de32ecd98402a1acf2724f9eb1c4af6860cc4"
+        },
+        {
+          "path": "game/events/lib/src/pass.dart",
+          "sha256": "22f732cd81150b3cf47f01aa926ba9b51bf3c4e4d8e946f89392d824922a8e5d"
+        }
+      ],
+      "selector": "rewards[content_id=archive.season01.13]",
+      "runtime_routes": [
+        "SeasonScreen Pass tab / level expansion / free reward claim and retained archive text"
+      ],
+      "registered_exports": [
+        {
+          "path": "game/content/locales/en-US/archive.season01.13.json",
+          "sha256": "832c1cc38ab8c48e43d838c038ec9ce429a1ec8f5ea153b1526d6415ba9e5e64"
+        }
+      ],
+      "delivery_channel": "client_package",
+      "required_variants": [
+        "text_scale_100",
+        "text_scale_150",
+        "text_scale_200",
+        "pseudolocalized"
+      ],
+      "variants_remaining_open": [
+        "text_scale_100",
+        "text_scale_150",
+        "text_scale_200",
+        "pseudolocalized"
+      ],
+      "status": "authored_registered_not_verified"
+    },
+    {
+      "asset_id": "asset.archive.season01.14",
+      "entity_ids": [
+        "archive.season01.14"
+      ],
+      "scope_ids": [
+        "S21"
+      ],
+      "source_descriptor_path": "source/content/en-US/archive.season01.14.md",
+      "export_descriptor_path": "game/content/locales/en-US/archive.season01.14.json",
+      "provenance_path": "source/provenance/asset.archive.season01.14.json",
+      "canonical_verification_path": "release/content-evidence/asset.archive.season01.14.json",
+      "canonical_verification_created": false,
+      "actual_sources": [
+        {
+          "path": "game/events/content/season.01.json",
+          "sha256": "eefe232fedd19ae081af05e87051ce12ba1e8e300cf51de997b3d7c81d2aff96"
+        },
+        {
+          "path": "game/mobile/assets/events/season.01.json",
+          "sha256": "eefe232fedd19ae081af05e87051ce12ba1e8e300cf51de997b3d7c81d2aff96"
+        },
+        {
+          "path": "game/mobile/lib/season_screen.dart",
+          "sha256": "f05af571cdbdbd84d194f08a51bb91cb7544a9a366fa90babba2f29a354040e5"
+        },
+        {
+          "path": "game/mobile/lib/story_state.dart",
+          "sha256": "008c4c5ad721794809d38a00b72de32ecd98402a1acf2724f9eb1c4af6860cc4"
+        },
+        {
+          "path": "game/events/lib/src/pass.dart",
+          "sha256": "22f732cd81150b3cf47f01aa926ba9b51bf3c4e4d8e946f89392d824922a8e5d"
+        }
+      ],
+      "selector": "rewards[content_id=archive.season01.14]",
+      "runtime_routes": [
+        "SeasonScreen Pass tab / level expansion / free reward claim and retained archive text"
+      ],
+      "registered_exports": [
+        {
+          "path": "game/content/locales/en-US/archive.season01.14.json",
+          "sha256": "a5a5bdfe04a053811888f753a42352d60f96b3b97aeb41386943695e0f5ee555"
+        }
+      ],
+      "delivery_channel": "client_package",
+      "required_variants": [
+        "text_scale_100",
+        "text_scale_150",
+        "text_scale_200",
+        "pseudolocalized"
+      ],
+      "variants_remaining_open": [
+        "text_scale_100",
+        "text_scale_150",
+        "text_scale_200",
+        "pseudolocalized"
+      ],
+      "status": "authored_registered_not_verified"
+    },
+    {
+      "asset_id": "asset.archive.season01.15",
+      "entity_ids": [
+        "archive.season01.15"
+      ],
+      "scope_ids": [
+        "S21"
+      ],
+      "source_descriptor_path": "source/content/en-US/archive.season01.15.md",
+      "export_descriptor_path": "game/content/locales/en-US/archive.season01.15.json",
+      "provenance_path": "source/provenance/asset.archive.season01.15.json",
+      "canonical_verification_path": "release/content-evidence/asset.archive.season01.15.json",
+      "canonical_verification_created": false,
+      "actual_sources": [
+        {
+          "path": "game/events/content/season.01.json",
+          "sha256": "eefe232fedd19ae081af05e87051ce12ba1e8e300cf51de997b3d7c81d2aff96"
+        },
+        {
+          "path": "game/mobile/assets/events/season.01.json",
+          "sha256": "eefe232fedd19ae081af05e87051ce12ba1e8e300cf51de997b3d7c81d2aff96"
+        },
+        {
+          "path": "game/mobile/lib/season_screen.dart",
+          "sha256": "f05af571cdbdbd84d194f08a51bb91cb7544a9a366fa90babba2f29a354040e5"
+        },
+        {
+          "path": "game/mobile/lib/story_state.dart",
+          "sha256": "008c4c5ad721794809d38a00b72de32ecd98402a1acf2724f9eb1c4af6860cc4"
+        },
+        {
+          "path": "game/events/lib/src/pass.dart",
+          "sha256": "22f732cd81150b3cf47f01aa926ba9b51bf3c4e4d8e946f89392d824922a8e5d"
+        }
+      ],
+      "selector": "rewards[content_id=archive.season01.15]",
+      "runtime_routes": [
+        "SeasonScreen Pass tab / level expansion / free reward claim and retained archive text"
+      ],
+      "registered_exports": [
+        {
+          "path": "game/content/locales/en-US/archive.season01.15.json",
+          "sha256": "f422074ad9936782830e76e46ed7599fd5376e0214fea49222caa474a8f57f0e"
+        }
+      ],
+      "delivery_channel": "client_package",
+      "required_variants": [
+        "text_scale_100",
+        "text_scale_150",
+        "text_scale_200",
+        "pseudolocalized"
+      ],
+      "variants_remaining_open": [
+        "text_scale_100",
+        "text_scale_150",
+        "text_scale_200",
+        "pseudolocalized"
+      ],
+      "status": "authored_registered_not_verified"
+    },
+    {
+      "asset_id": "asset.archive.season01.16",
+      "entity_ids": [
+        "archive.season01.16"
+      ],
+      "scope_ids": [
+        "S21"
+      ],
+      "source_descriptor_path": "source/content/en-US/archive.season01.16.md",
+      "export_descriptor_path": "game/content/locales/en-US/archive.season01.16.json",
+      "provenance_path": "source/provenance/asset.archive.season01.16.json",
+      "canonical_verification_path": "release/content-evidence/asset.archive.season01.16.json",
+      "canonical_verification_created": false,
+      "actual_sources": [
+        {
+          "path": "game/events/content/season.01.json",
+          "sha256": "eefe232fedd19ae081af05e87051ce12ba1e8e300cf51de997b3d7c81d2aff96"
+        },
+        {
+          "path": "game/mobile/assets/events/season.01.json",
+          "sha256": "eefe232fedd19ae081af05e87051ce12ba1e8e300cf51de997b3d7c81d2aff96"
+        },
+        {
+          "path": "game/mobile/lib/season_screen.dart",
+          "sha256": "f05af571cdbdbd84d194f08a51bb91cb7544a9a366fa90babba2f29a354040e5"
+        },
+        {
+          "path": "game/mobile/lib/story_state.dart",
+          "sha256": "008c4c5ad721794809d38a00b72de32ecd98402a1acf2724f9eb1c4af6860cc4"
+        },
+        {
+          "path": "game/events/lib/src/pass.dart",
+          "sha256": "22f732cd81150b3cf47f01aa926ba9b51bf3c4e4d8e946f89392d824922a8e5d"
+        }
+      ],
+      "selector": "rewards[content_id=archive.season01.16]",
+      "runtime_routes": [
+        "SeasonScreen Pass tab / level expansion / free reward claim and retained archive text"
+      ],
+      "registered_exports": [
+        {
+          "path": "game/content/locales/en-US/archive.season01.16.json",
+          "sha256": "7502f96712c95389f5781fcab6240cab5567dbf580e43087949a8801d58eec48"
+        }
+      ],
+      "delivery_channel": "client_package",
+      "required_variants": [
+        "text_scale_100",
+        "text_scale_150",
+        "text_scale_200",
+        "pseudolocalized"
+      ],
+      "variants_remaining_open": [
+        "text_scale_100",
+        "text_scale_150",
+        "text_scale_200",
+        "pseudolocalized"
+      ],
+      "status": "authored_registered_not_verified"
+    },
+    {
+      "asset_id": "asset.archive.season01.17",
+      "entity_ids": [
+        "archive.season01.17"
+      ],
+      "scope_ids": [
+        "S21"
+      ],
+      "source_descriptor_path": "source/content/en-US/archive.season01.17.md",
+      "export_descriptor_path": "game/content/locales/en-US/archive.season01.17.json",
+      "provenance_path": "source/provenance/asset.archive.season01.17.json",
+      "canonical_verification_path": "release/content-evidence/asset.archive.season01.17.json",
+      "canonical_verification_created": false,
+      "actual_sources": [
+        {
+          "path": "game/events/content/season.01.json",
+          "sha256": "eefe232fedd19ae081af05e87051ce12ba1e8e300cf51de997b3d7c81d2aff96"
+        },
+        {
+          "path": "game/mobile/assets/events/season.01.json",
+          "sha256": "eefe232fedd19ae081af05e87051ce12ba1e8e300cf51de997b3d7c81d2aff96"
+        },
+        {
+          "path": "game/mobile/lib/season_screen.dart",
+          "sha256": "f05af571cdbdbd84d194f08a51bb91cb7544a9a366fa90babba2f29a354040e5"
+        },
+        {
+          "path": "game/mobile/lib/story_state.dart",
+          "sha256": "008c4c5ad721794809d38a00b72de32ecd98402a1acf2724f9eb1c4af6860cc4"
+        },
+        {
+          "path": "game/events/lib/src/pass.dart",
+          "sha256": "22f732cd81150b3cf47f01aa926ba9b51bf3c4e4d8e946f89392d824922a8e5d"
+        }
+      ],
+      "selector": "rewards[content_id=archive.season01.17]",
+      "runtime_routes": [
+        "SeasonScreen Pass tab / level expansion / free reward claim and retained archive text"
+      ],
+      "registered_exports": [
+        {
+          "path": "game/content/locales/en-US/archive.season01.17.json",
+          "sha256": "947687df200626d1ee49a769ed061767f5a902bb2248d4a3f7bc27c185f05860"
+        }
+      ],
+      "delivery_channel": "client_package",
+      "required_variants": [
+        "text_scale_100",
+        "text_scale_150",
+        "text_scale_200",
+        "pseudolocalized"
+      ],
+      "variants_remaining_open": [
+        "text_scale_100",
+        "text_scale_150",
+        "text_scale_200",
+        "pseudolocalized"
+      ],
+      "status": "authored_registered_not_verified"
+    },
+    {
+      "asset_id": "asset.archive.season01.18",
+      "entity_ids": [
+        "archive.season01.18"
+      ],
+      "scope_ids": [
+        "S21"
+      ],
+      "source_descriptor_path": "source/content/en-US/archive.season01.18.md",
+      "export_descriptor_path": "game/content/locales/en-US/archive.season01.18.json",
+      "provenance_path": "source/provenance/asset.archive.season01.18.json",
+      "canonical_verification_path": "release/content-evidence/asset.archive.season01.18.json",
+      "canonical_verification_created": false,
+      "actual_sources": [
+        {
+          "path": "game/events/content/season.01.json",
+          "sha256": "eefe232fedd19ae081af05e87051ce12ba1e8e300cf51de997b3d7c81d2aff96"
+        },
+        {
+          "path": "game/mobile/assets/events/season.01.json",
+          "sha256": "eefe232fedd19ae081af05e87051ce12ba1e8e300cf51de997b3d7c81d2aff96"
+        },
+        {
+          "path": "game/mobile/lib/season_screen.dart",
+          "sha256": "f05af571cdbdbd84d194f08a51bb91cb7544a9a366fa90babba2f29a354040e5"
+        },
+        {
+          "path": "game/mobile/lib/story_state.dart",
+          "sha256": "008c4c5ad721794809d38a00b72de32ecd98402a1acf2724f9eb1c4af6860cc4"
+        },
+        {
+          "path": "game/events/lib/src/pass.dart",
+          "sha256": "22f732cd81150b3cf47f01aa926ba9b51bf3c4e4d8e946f89392d824922a8e5d"
+        }
+      ],
+      "selector": "rewards[content_id=archive.season01.18]",
+      "runtime_routes": [
+        "SeasonScreen Pass tab / level expansion / free reward claim and retained archive text"
+      ],
+      "registered_exports": [
+        {
+          "path": "game/content/locales/en-US/archive.season01.18.json",
+          "sha256": "aa193645d43c08e92d5e0adafb5eef2b7e1b5d57e22f8f969a94d15319b4c29a"
+        }
+      ],
+      "delivery_channel": "client_package",
+      "required_variants": [
+        "text_scale_100",
+        "text_scale_150",
+        "text_scale_200",
+        "pseudolocalized"
+      ],
+      "variants_remaining_open": [
+        "text_scale_100",
+        "text_scale_150",
+        "text_scale_200",
+        "pseudolocalized"
+      ],
+      "status": "authored_registered_not_verified"
+    },
+    {
+      "asset_id": "asset.archive.season01.19",
+      "entity_ids": [
+        "archive.season01.19"
+      ],
+      "scope_ids": [
+        "S21"
+      ],
+      "source_descriptor_path": "source/content/en-US/archive.season01.19.md",
+      "export_descriptor_path": "game/content/locales/en-US/archive.season01.19.json",
+      "provenance_path": "source/provenance/asset.archive.season01.19.json",
+      "canonical_verification_path": "release/content-evidence/asset.archive.season01.19.json",
+      "canonical_verification_created": false,
+      "actual_sources": [
+        {
+          "path": "game/events/content/season.01.json",
+          "sha256": "eefe232fedd19ae081af05e87051ce12ba1e8e300cf51de997b3d7c81d2aff96"
+        },
+        {
+          "path": "game/mobile/assets/events/season.01.json",
+          "sha256": "eefe232fedd19ae081af05e87051ce12ba1e8e300cf51de997b3d7c81d2aff96"
+        },
+        {
+          "path": "game/mobile/lib/season_screen.dart",
+          "sha256": "f05af571cdbdbd84d194f08a51bb91cb7544a9a366fa90babba2f29a354040e5"
+        },
+        {
+          "path": "game/mobile/lib/story_state.dart",
+          "sha256": "008c4c5ad721794809d38a00b72de32ecd98402a1acf2724f9eb1c4af6860cc4"
+        },
+        {
+          "path": "game/events/lib/src/pass.dart",
+          "sha256": "22f732cd81150b3cf47f01aa926ba9b51bf3c4e4d8e946f89392d824922a8e5d"
+        }
+      ],
+      "selector": "rewards[content_id=archive.season01.19]",
+      "runtime_routes": [
+        "SeasonScreen Pass tab / level expansion / free reward claim and retained archive text"
+      ],
+      "registered_exports": [
+        {
+          "path": "game/content/locales/en-US/archive.season01.19.json",
+          "sha256": "c6407df32cd095e34dfd39bdadb877ca4d64602f4c7aa934dbf79a9ebac59469"
+        }
+      ],
+      "delivery_channel": "client_package",
+      "required_variants": [
+        "text_scale_100",
+        "text_scale_150",
+        "text_scale_200",
+        "pseudolocalized"
+      ],
+      "variants_remaining_open": [
+        "text_scale_100",
+        "text_scale_150",
+        "text_scale_200",
+        "pseudolocalized"
+      ],
+      "status": "authored_registered_not_verified"
+    },
+    {
+      "asset_id": "asset.archive.season01.20",
+      "entity_ids": [
+        "archive.season01.20"
+      ],
+      "scope_ids": [
+        "S21"
+      ],
+      "source_descriptor_path": "source/content/en-US/archive.season01.20.md",
+      "export_descriptor_path": "game/content/locales/en-US/archive.season01.20.json",
+      "provenance_path": "source/provenance/asset.archive.season01.20.json",
+      "canonical_verification_path": "release/content-evidence/asset.archive.season01.20.json",
+      "canonical_verification_created": false,
+      "actual_sources": [
+        {
+          "path": "game/events/content/season.01.json",
+          "sha256": "eefe232fedd19ae081af05e87051ce12ba1e8e300cf51de997b3d7c81d2aff96"
+        },
+        {
+          "path": "game/mobile/assets/events/season.01.json",
+          "sha256": "eefe232fedd19ae081af05e87051ce12ba1e8e300cf51de997b3d7c81d2aff96"
+        },
+        {
+          "path": "game/mobile/lib/season_screen.dart",
+          "sha256": "f05af571cdbdbd84d194f08a51bb91cb7544a9a366fa90babba2f29a354040e5"
+        },
+        {
+          "path": "game/mobile/lib/story_state.dart",
+          "sha256": "008c4c5ad721794809d38a00b72de32ecd98402a1acf2724f9eb1c4af6860cc4"
+        },
+        {
+          "path": "game/events/lib/src/pass.dart",
+          "sha256": "22f732cd81150b3cf47f01aa926ba9b51bf3c4e4d8e946f89392d824922a8e5d"
+        }
+      ],
+      "selector": "rewards[content_id=archive.season01.20]",
+      "runtime_routes": [
+        "SeasonScreen Pass tab / level expansion / free reward claim and retained archive text"
+      ],
+      "registered_exports": [
+        {
+          "path": "game/content/locales/en-US/archive.season01.20.json",
+          "sha256": "633861a1d52f0e08e22502396a175c11a2b461fe6b659db706cf7639f0141440"
+        }
+      ],
+      "delivery_channel": "client_package",
+      "required_variants": [
+        "text_scale_100",
+        "text_scale_150",
+        "text_scale_200",
+        "pseudolocalized"
+      ],
+      "variants_remaining_open": [
+        "text_scale_100",
+        "text_scale_150",
+        "text_scale_200",
+        "pseudolocalized"
+      ],
+      "status": "authored_registered_not_verified"
+    },
+    {
+      "asset_id": "asset.support.help",
+      "entity_ids": [
+        "support.help"
+      ],
+      "scope_ids": [
+        "S27"
+      ],
+      "source_descriptor_path": "source/content/en-US/support.help.md",
+      "export_descriptor_path": "game/content/locales/en-US/support.help.json",
+      "provenance_path": "source/provenance/asset.support.help.json",
+      "canonical_verification_path": "release/content-evidence/asset.support.help.json",
+      "canonical_verification_created": false,
+      "actual_sources": [
+        {
+          "path": "game/mobile/lib/help_content.dart",
+          "sha256": "73434078cd083feaac50bc12d2f75242044d5ae5e6158eddf1c9ab56836e3ef7"
+        },
+        {
+          "path": "game/mobile/lib/help_screen.dart",
+          "sha256": "f5ecfa5f2af2d9fea56f8c52fa1411040bfc72f5e8fac133c5766b075fb42850"
+        },
+        {
+          "path": "game/mobile/lib/app.dart",
+          "sha256": "c26efdd6b59c7a8ce4404c9c8dee538b40ee2b3809be9df76e3eae537b360c20"
+        },
+        {
+          "path": "game/mobile/lib/presentation.dart",
+          "sha256": "0b891f8baa973d11f1aabe6d985fafbe8bf0e08904007cb0f218e68044fd9b63"
+        },
+        {
+          "path": "source/art/registration/help-runtime-extract.json",
+          "sha256": "bbc671c448b7173abae2c3b9b5e04debfee3d82eb1f65e736c3e1f98a08e1db6"
+        }
+      ],
+      "selector": "HelpTopic.play, HelpTopic.rechart, HelpTopic.away, HelpTopic.notes",
+      "runtime_routes": [
+        "Logbook / harbor handbook / HelpScreen topic",
+        "play",
+        "rechart",
+        "away",
+        "notes"
+      ],
+      "registered_exports": [
+        {
+          "path": "game/content/locales/en-US/support.help.json",
+          "sha256": "97fc457025252ae3f78590391d6f6c82d956a7a89674828ae9629ce12be40f03"
+        }
+      ],
+      "delivery_channel": "client_package",
+      "required_variants": [
+        "text_scale_100",
+        "text_scale_150",
+        "text_scale_200",
+        "pseudolocalized"
+      ],
+      "variants_remaining_open": [
+        "text_scale_100",
+        "text_scale_150",
+        "text_scale_200",
+        "pseudolocalized"
+      ],
+      "status": "authored_registered_not_verified"
+    },
+    {
+      "asset_id": "asset.support.recovery_guide",
+      "entity_ids": [
+        "support.recovery_guide"
+      ],
+      "scope_ids": [
+        "S27"
+      ],
+      "source_descriptor_path": "source/content/en-US/support.recovery_guide.md",
+      "export_descriptor_path": "game/content/locales/en-US/support.recovery_guide.json",
+      "provenance_path": "source/provenance/asset.support.recovery_guide.json",
+      "canonical_verification_path": "release/content-evidence/asset.support.recovery_guide.json",
+      "canonical_verification_created": false,
+      "actual_sources": [
+        {
+          "path": "game/mobile/lib/help_content.dart",
+          "sha256": "73434078cd083feaac50bc12d2f75242044d5ae5e6158eddf1c9ab56836e3ef7"
+        },
+        {
+          "path": "game/mobile/lib/help_screen.dart",
+          "sha256": "f5ecfa5f2af2d9fea56f8c52fa1411040bfc72f5e8fac133c5766b075fb42850"
+        },
+        {
+          "path": "game/mobile/lib/app.dart",
+          "sha256": "c26efdd6b59c7a8ce4404c9c8dee538b40ee2b3809be9df76e3eae537b360c20"
+        },
+        {
+          "path": "game/mobile/lib/presentation.dart",
+          "sha256": "0b891f8baa973d11f1aabe6d985fafbe8bf0e08904007cb0f218e68044fd9b63"
+        },
+        {
+          "path": "source/art/registration/help-runtime-extract.json",
+          "sha256": "bbc671c448b7173abae2c3b9b5e04debfee3d82eb1f65e736c3e1f98a08e1db6"
+        }
+      ],
+      "selector": "HelpTopic.recovery",
+      "runtime_routes": [
+        "Logbook / harbor handbook / HelpScreen topic",
+        "recovery"
+      ],
+      "registered_exports": [
+        {
+          "path": "game/content/locales/en-US/support.recovery_guide.json",
+          "sha256": "3306053a37ad360ad8ee4f04a2c5ad585359df4afcc4a79785745e164831feeb"
+        }
+      ],
+      "delivery_channel": "client_package",
+      "required_variants": [
+        "text_scale_100",
+        "text_scale_150",
+        "text_scale_200",
+        "pseudolocalized"
+      ],
+      "variants_remaining_open": [
+        "text_scale_100",
+        "text_scale_150",
+        "text_scale_200",
+        "pseudolocalized"
+      ],
+      "status": "authored_registered_not_verified"
+    },
+    {
+      "asset_id": "asset.support.release_notes",
+      "entity_ids": [
+        "support.release_notes"
+      ],
+      "scope_ids": [
+        "S27"
+      ],
+      "source_descriptor_path": "source/content/en-US/support.release_notes.md",
+      "export_descriptor_path": "game/content/locales/en-US/support.release_notes.json",
+      "provenance_path": "source/provenance/asset.support.release_notes.json",
+      "canonical_verification_path": "release/content-evidence/asset.support.release_notes.json",
+      "canonical_verification_created": false,
+      "actual_sources": [
+        {
+          "path": "game/mobile/lib/help_content.dart",
+          "sha256": "73434078cd083feaac50bc12d2f75242044d5ae5e6158eddf1c9ab56836e3ef7"
+        },
+        {
+          "path": "game/mobile/lib/help_screen.dart",
+          "sha256": "f5ecfa5f2af2d9fea56f8c52fa1411040bfc72f5e8fac133c5766b075fb42850"
+        },
+        {
+          "path": "game/mobile/lib/app.dart",
+          "sha256": "c26efdd6b59c7a8ce4404c9c8dee538b40ee2b3809be9df76e3eae537b360c20"
+        },
+        {
+          "path": "game/mobile/lib/presentation.dart",
+          "sha256": "0b891f8baa973d11f1aabe6d985fafbe8bf0e08904007cb0f218e68044fd9b63"
+        },
+        {
+          "path": "source/art/registration/help-runtime-extract.json",
+          "sha256": "bbc671c448b7173abae2c3b9b5e04debfee3d82eb1f65e736c3e1f98a08e1db6"
+        }
+      ],
+      "selector": "HelpTopic.releaseNotes",
+      "runtime_routes": [
+        "Logbook / harbor handbook / HelpScreen topic",
+        "releaseNotes"
+      ],
+      "registered_exports": [
+        {
+          "path": "game/content/locales/en-US/support.release_notes.json",
+          "sha256": "cfac60cb01c55d2d0887ca34bccf6aea7a7a60171914134f6e9fdb2903ac70dc"
+        }
+      ],
+      "delivery_channel": "client_package",
+      "required_variants": [
+        "text_scale_100",
+        "text_scale_150",
+        "text_scale_200",
+        "pseudolocalized"
+      ],
+      "variants_remaining_open": [
+        "text_scale_100",
+        "text_scale_150",
+        "text_scale_200",
+        "pseudolocalized"
+      ],
+      "status": "authored_registered_not_verified"
+    },
+    {
+      "asset_id": "asset.support.credits",
+      "entity_ids": [
+        "support.credits"
+      ],
+      "scope_ids": [
+        "S27"
+      ],
+      "source_descriptor_path": "source/content/en-US/support.credits.md",
+      "export_descriptor_path": "game/content/locales/en-US/support.credits.json",
+      "provenance_path": "source/provenance/asset.support.credits.json",
+      "canonical_verification_path": "release/content-evidence/asset.support.credits.json",
+      "canonical_verification_created": false,
+      "actual_sources": [
+        {
+          "path": "game/mobile/lib/help_content.dart",
+          "sha256": "73434078cd083feaac50bc12d2f75242044d5ae5e6158eddf1c9ab56836e3ef7"
+        },
+        {
+          "path": "game/mobile/lib/help_screen.dart",
+          "sha256": "f5ecfa5f2af2d9fea56f8c52fa1411040bfc72f5e8fac133c5766b075fb42850"
+        },
+        {
+          "path": "game/mobile/lib/app.dart",
+          "sha256": "c26efdd6b59c7a8ce4404c9c8dee538b40ee2b3809be9df76e3eae537b360c20"
+        },
+        {
+          "path": "game/mobile/lib/presentation.dart",
+          "sha256": "0b891f8baa973d11f1aabe6d985fafbe8bf0e08904007cb0f218e68044fd9b63"
+        },
+        {
+          "path": "source/art/registration/help-runtime-extract.json",
+          "sha256": "bbc671c448b7173abae2c3b9b5e04debfee3d82eb1f65e736c3e1f98a08e1db6"
+        }
+      ],
+      "selector": "HelpTopic.credits",
+      "runtime_routes": [
+        "Logbook / harbor handbook / HelpScreen topic",
+        "credits"
+      ],
+      "registered_exports": [
+        {
+          "path": "game/content/locales/en-US/support.credits.json",
+          "sha256": "e6ac2b0f9704e5ed95e39d3e0cf0ca0bc70d2e14356eb1e776bb08142b7130c3"
+        }
+      ],
+      "delivery_channel": "client_package",
+      "required_variants": [
+        "text_scale_100",
+        "text_scale_150",
+        "text_scale_200",
+        "pseudolocalized"
+      ],
+      "variants_remaining_open": [
+        "text_scale_100",
+        "text_scale_150",
+        "text_scale_200",
+        "pseudolocalized"
+      ],
+      "status": "authored_registered_not_verified"
+    },
+    {
+      "asset_id": "asset.support.operations_runbooks",
+      "entity_ids": [
+        "support.operations_runbooks"
+      ],
+      "scope_ids": [
+        "S27",
+        "S37",
+        "S38"
+      ],
+      "source_descriptor_path": "source/operations/runbooks.md",
+      "export_descriptor_path": "release/runbooks/index.md",
+      "provenance_path": "source/provenance/asset.support.operations_runbooks.json",
+      "canonical_verification_path": "release/content-evidence/asset.support.operations_runbooks.json",
+      "canonical_verification_created": false,
+      "actual_sources": [
+        {
+          "path": "release/runbooks/README.md",
+          "sha256": "2082ff02c37e595aebd2c0dc385dbb27819c9338c11e95585fc68814ce6613da"
+        },
+        {
+          "path": "release/runbooks/LAUNCH_HANDOVER.md",
+          "sha256": "10e33e5be7cf3f6d127aba75597bdedcf873b0423c4fdc264d812bf15559c6d4"
+        },
+        {
+          "path": "release/runbooks/launch-coverage-template.json",
+          "sha256": "0e868ab527abcf49c57579054ba210aa72c24198b22be0132ef0738dba0ee9bf"
+        },
+        {
+          "path": "services/docs/OPERATIONS.md",
+          "sha256": "3be712146c74a024a58d632febd96a7b85fc67e0a0ded8f50105d4f8504cc3b7"
+        },
+        {
+          "path": "services/docs/FULFILLMENT.md",
+          "sha256": "6d440ccb2dacefd0dabc1ce9fe26133223f8e782448c0b7cb053244ccacf9723"
+        },
+        {
+          "path": "services/docs/PRIVACY.md",
+          "sha256": "f9071535a30041df0cd6d55bb5040f815ce617c8d9ed0d3692aa9b87f4df131b"
+        }
+      ],
+      "selector": "Internal operating package index with source-specific procedures",
+      "runtime_routes": [
+        "Internal release package only; no client route"
+      ],
+      "registered_exports": [
+        {
+          "path": "release/runbooks/index.md",
+          "sha256": "4af3587a036ff632b2b6b9d3866d531850492192b5b3671a5875cfdceab83188"
+        }
+      ],
+      "delivery_channel": "internal_release_package",
+      "required_variants": [
+        "internal_document_review"
+      ],
+      "variants_remaining_open": [
+        "internal_document_review"
+      ],
+      "status": "authored_registered_not_verified"
+    },
+    {
+      "asset_id": "asset.support.season02_brief",
+      "entity_ids": [
+        "support.season02_brief"
+      ],
+      "scope_ids": [
+        "S27",
+        "S37",
+        "S38"
+      ],
+      "source_descriptor_path": "source/planning/season-2-brief.md",
+      "export_descriptor_path": "release/season-2-brief.md",
+      "provenance_path": "source/provenance/asset.support.season02_brief.json",
+      "canonical_verification_path": "release/content-evidence/asset.support.season02_brief.json",
+      "canonical_verification_created": false,
+      "actual_sources": [
+        {
+          "path": "release/season-2-brief.md",
+          "sha256": "d5bf44b381b28171a181bf233df025bb1f83d4c809951d261f53366317a9801e"
+        }
+      ],
+      "selector": "Initial B21/M7-01 brief; later M7-08/OPS-14 update remains separate",
+      "runtime_routes": [
+        "Internal release package only; no client route"
+      ],
+      "registered_exports": [
+        {
+          "path": "release/season-2-brief.md",
+          "sha256": "d5bf44b381b28171a181bf233df025bb1f83d4c809951d261f53366317a9801e"
+        }
+      ],
+      "delivery_channel": "internal_release_package",
+      "required_variants": [
+        "internal_document_review"
+      ],
+      "variants_remaining_open": [
+        "internal_document_review"
+      ],
+      "status": "authored_registered_not_verified"
+    },
+    {
+      "asset_id": "asset.season.01.copy",
+      "entity_ids": [
+        "season.01"
+      ],
+      "scope_ids": [
+        "S20",
+        "S21"
+      ],
+      "source_descriptor_path": "source/content/en-US/season.01.copy.md",
+      "export_descriptor_path": "game/content/locales/en-US/season.01.copy.json",
+      "provenance_path": "source/provenance/asset.season.01.copy.json",
+      "canonical_verification_path": "release/content-evidence/asset.season.01.copy.json",
+      "canonical_verification_created": false,
+      "actual_sources": [
+        {
+          "path": "game/events/content/season.01.json",
+          "sha256": "eefe232fedd19ae081af05e87051ce12ba1e8e300cf51de997b3d7c81d2aff96"
+        },
+        {
+          "path": "game/mobile/assets/events/season.01.json",
+          "sha256": "eefe232fedd19ae081af05e87051ce12ba1e8e300cf51de997b3d7c81d2aff96"
+        },
+        {
+          "path": "game/mobile/lib/season_screen.dart",
+          "sha256": "f05af571cdbdbd84d194f08a51bb91cb7544a9a366fa90babba2f29a354040e5"
+        },
+        {
+          "path": "game/mobile/lib/story_state.dart",
+          "sha256": "008c4c5ad721794809d38a00b72de32ecd98402a1acf2724f9eb1c4af6860cc4"
+        }
+      ],
+      "selector": "title, copy, milestone titles/bodies, reward titles/bodies",
+      "runtime_routes": [
+        "Logbook / SeasonScreen / Fleet, Pass and Contracts tabs"
+      ],
+      "registered_exports": [
+        {
+          "path": "game/content/locales/en-US/season.01.copy.json",
+          "sha256": "de75d25e1ee40b5cfdb68764e52edbc45d760fc2137f4c8e54c906d92343ad87"
+        }
+      ],
+      "delivery_channel": "client_package",
+      "required_variants": [
+        "text_scale_100",
+        "text_scale_150",
+        "text_scale_200",
+        "pseudolocalized"
+      ],
+      "variants_remaining_open": [
+        "text_scale_100",
+        "text_scale_150",
+        "text_scale_200",
+        "pseudolocalized"
+      ],
+      "status": "authored_registered_not_verified"
+    },
+    {
+      "asset_id": "asset.season.01.presentation",
+      "entity_ids": [
+        "season.01"
+      ],
+      "scope_ids": [
+        "S19",
+        "S20",
+        "S21"
+      ],
+      "source_descriptor_path": "source/art/season_presentation/season.01.presentation.scene.json",
+      "export_descriptor_path": "game/assets/season_presentation/season.01.presentation.presentation.json",
+      "provenance_path": "source/provenance/asset.season.01.presentation.json",
+      "canonical_verification_path": "release/content-evidence/asset.season.01.presentation.json",
+      "canonical_verification_created": false,
+      "actual_sources": [
+        {
+          "path": "game/mobile/lib/season_screen.dart",
+          "sha256": "f05af571cdbdbd84d194f08a51bb91cb7544a9a366fa90babba2f29a354040e5"
+        },
+        {
+          "path": "game/mobile/lib/harbor_art.dart",
+          "sha256": "50c7fa6e1fe63da71c5add51442a5fcef6fc46ae6f7f14079c6382c514ef6979"
+        },
+        {
+          "path": "game/mobile/lib/producer_art.dart",
+          "sha256": "ecf1c624c01e0df5fd92801fef84bc38b218bb8bc7d23543d25cbe7ac3ff2526"
+        },
+        {
+          "path": "game/mobile/lib/cosmetic_art.dart",
+          "sha256": "3921e51bbbc79a40d6cdc9ece131b65f4910fb235d749f525cf18e373e780811"
+        },
+        {
+          "path": "game/mobile/lib/palette.dart",
+          "sha256": "1da79c2cd009e271dcaf3dd349f20e380950fbbb67ca54e10ea5180b2ed86d83"
+        },
+        {
+          "path": "game/mobile/lib/presentation.dart",
+          "sha256": "0b891f8baa973d11f1aabe6d985fafbe8bf0e08904007cb0f218e68044fd9b63"
+        },
+        {
+          "path": "game/mobile/lib/app.dart",
+          "sha256": "c26efdd6b59c7a8ce4404c9c8dee538b40ee2b3809be9df76e3eae537b360c20"
+        },
+        {
+          "path": "game/events/content/season.01.json",
+          "sha256": "eefe232fedd19ae081af05e87051ce12ba1e8e300cf51de997b3d7c81d2aff96"
+        }
+      ],
+      "selector": "SeasonScreen Fleet, Pass and Contracts composition",
+      "runtime_routes": [
+        "TideglassApp._openSeason / SeasonScreen",
+        "SeasonScreen initialTab 0, 1, 2"
+      ],
+      "registered_exports": [
+        {
+          "path": "game/assets/season_presentation/season.01.presentation.presentation.json",
+          "sha256": "6af400f09631ebff60f5c12debdb4c6ee32d53d56efbcb839848fdbac2694534"
+        },
+        {
+          "path": "game/assets/season_presentation/exports/season.01.fleet-small-phone.png",
+          "sha256": "a63429d0a40dcc13e5fd87708a492fc0f79ff8e85508b51d8ac3bbd1bf25a4f3"
+        },
+        {
+          "path": "game/assets/season_presentation/exports/season.01.fleet-small-phone-large-text.png",
+          "sha256": "8852cf48cead1c0d73ea9019507713a1b4a1885b6de57ab7cf00523901a0d5e5"
+        },
+        {
+          "path": "game/assets/season_presentation/exports/season.01.fleet-tablet.png",
+          "sha256": "4e9d4ac75e89a6501d1694b8da57d4ebf6a934ceaeabc256c1e79418f5b74984"
+        },
+        {
+          "path": "game/assets/season_presentation/exports/season.01.pass-preview.png",
+          "sha256": "b9626d100b7f9de2723c8db522d5f1cbeb0cccd093454f9b50e1b204fb4b02fe"
+        },
+        {
+          "path": "game/assets/season_presentation/exports/season.01.thumbnail.png",
+          "sha256": "f6559916f7f86357efac5cf119fdf00000ef82408927e85b2ec2eef8d34933d6"
+        }
+      ],
+      "delivery_channel": "client_package",
+      "required_variants": [
+        "equipped",
+        "preview",
+        "thumbnail",
+        "reduced_motion_static",
+        "small_phone",
+        "tablet"
+      ],
+      "variants_remaining_open": [
+        "equipped",
+        "preview",
+        "thumbnail",
+        "reduced_motion_static",
+        "small_phone",
+        "tablet"
+      ],
+      "status": "authored_registered_not_verified"
+    }
+  ],
+  "blocked_public_assets": [
+    {
+      "asset_id": "asset.support.privacy_page",
+      "status": "unproduced",
+      "public_url": null,
+      "owner": null,
+      "reason": "Actual operator/data behavior, approved public policy and functioning endpoint absent; internal privacy inventory is not a replacement."
+    },
+    {
+      "asset_id": "asset.support.support_page",
+      "status": "unproduced",
+      "public_url": null,
+      "contact": null,
+      "reason": "Actual public endpoint, responsible owner/contact and response process absent; no mailbox or public policy invented."
+    }
+  ],
+  "release_ready": false
+}

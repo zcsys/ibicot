@@ -1,0 +1,52 @@
+Running Gradle task 'assembleDebug'...                             23.4s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...           5.4s
+D/nativeloader( 4140): Load /data/app/~~kxADceUSiPmbYY5ERh-ODw==/dev.tideglass.game-GfWrckt1kuPG6noWl2Vviw==/base.apk!/lib/arm64-v8a/libdartjni.so using ns clns-7 from class loader (caller=/data/app/~~kxADceUSiPmbYY5ERh-ODw==/dev.tideglass.game-GfWrckt1kuPG6noWl2Vviw==/base.apk!classes9.dex): ok
+W/.tideglass.game( 4140): Accessing hidden method Landroid/view/accessibility/AccessibilityNodeInfo;->getSourceNodeId()J (unsupported,test-api, reflection, allowed)
+W/.tideglass.game( 4140): Accessing hidden method Landroid/view/accessibility/AccessibilityRecord;->getSourceNodeId()J (unsupported, reflection, allowed)
+W/.tideglass.game( 4140): Accessing hidden field Landroid/view/accessibility/AccessibilityNodeInfo;->mChildNodeIds:Landroid/util/LongArray; (unsupported, reflection, allowed)
+W/.tideglass.game( 4140): Accessing hidden method Landroid/util/LongArray;->get(I)J (unsupported, reflection, allowed)
+D/AccessibilityBridge( 4140): Setting not found: accessibility_display_inversion_enabled, using default: 0
+D/FlutterRenderer( 4140): Width is zero. 0,0
+W/HWUI    ( 4140): Unknown dataspace 0
+D/ProfileInstaller( 4140): Installing profile for dev.tideglass.game
+I/WindowExtensionsImpl( 4140): Initializing Window Extensions, vendor API level=6, activity embedding enabled=true
+D/FlutterRenderer( 4140): Width is zero. 0,0
+D/FlutterJNI( 4140): Sending viewport metrics to the engine.
+W/HWUI    ( 4140): Failed to choose config with EGL_SWAP_BEHAVIOR_PRESERVED, retrying without...
+W/HWUI    ( 4140): Failed to initialize 101010-2 format, error = EGL_SUCCESS
+VMServiceFlutterDriver: Connecting to Flutter application at http://127.0.0.1:51013/mhQXVxoDGSs=/
+I/Gralloc4( 4140): mapper 4.x is not supported
+VMServiceFlutterDriver: Isolate found with number: 5403142628838403
+I/.tideglass.game( 4140): Compiler allocated 5250KB to compile void android.view.ViewRootImpl.performTraversals()
+VMServiceFlutterDriver: Isolate 5403142628838403 is runnable.
+VMServiceFlutterDriver: Isolate is paused at start.
+VMServiceFlutterDriver: Attempting to resume isolate
+I/Choreographer( 4140): Skipped 184 frames!  The application may be doing too much work on its main thread.
+I/.tideglass.game( 4140): Compiler allocated 5427KB to compile void android.view.ViewRootImpl.performTraversals()
+I/flutter ( 4140): 00:00 +0: seeded native purchase, confirmed Rechart and durable reload
+VMServiceFlutterDriver: Connected to Flutter application.
+I/Choreographer( 4140): Skipped 136 frames!  The application may be doing too much work on its main thread.
+D/FlutterJNI( 4140): Sending viewport metrics to the engine.
+I/.tideglass.game( 4140): NativeAlloc concurrent mark compact GC freed 2366KB AllocSpace bytes, 3(60KB) LOS objects, 49% free, 2986KB/5972KB, paused 231us,10.369ms total 98.924ms
+D/EGL_emulation( 4140): app_time_stats: avg=803.04ms min=124.72ms max=1481.36ms count=2
+D/EGL_emulation( 4140): app_time_stats: avg=308.62ms min=38.03ms max=636.93ms count=4
+D/EGL_emulation( 4140): app_time_stats: avg=3677.21ms min=450.75ms max=6903.66ms count=2
+I/.tideglass.game( 4140): NativeAlloc concurrent mark compact GC freed 268KB AllocSpace bytes, 0(0B) LOS objects, 49% free, 2974KB/5948KB, paused 320us,17.060ms total 76.350ms
+D/EGL_emulation( 4140): app_time_stats: avg=556.84ms min=140.35ms max=815.56ms count=3
+D/EGL_emulation( 4140): app_time_stats: avg=219.87ms min=23.65ms max=767.28ms count=5
+D/EGL_emulation( 4140): app_time_stats: avg=1149.37ms min=1149.37ms max=1149.37ms count=1
+W/WindowOnBackDispatcher( 4140): OnBackInvokedCallback is not enabled for the application.
+W/WindowOnBackDispatcher( 4140): Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+D/EGL_emulation( 4140): app_time_stats: avg=4376.96ms min=4376.96ms max=4376.96ms count=1
+D/EGL_emulation( 4140): app_time_stats: avg=433.11ms min=133.68ms max=1169.18ms count=4
+W/WindowOnBackDispatcher( 4140): OnBackInvokedCallback is not enabled for the application.
+W/WindowOnBackDispatcher( 4140): Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+D/EGL_emulation( 4140): app_time_stats: avg=111.63ms min=52.47ms max=220.68ms count=9
+D/EGL_emulation( 4140): app_time_stats: avg=1741.13ms min=1741.13ms max=1741.13ms count=1
+D/EGL_emulation( 4140): app_time_stats: avg=4714.83ms min=4714.83ms max=4714.83ms count=1
+D/EGL_emulation( 4140): app_time_stats: avg=350.61ms min=89.56ms max=702.65ms count=4
+I/flutter ( 4140): 00:18 +1: (tearDownAll)
+I/flutter ( 4140): 00:19 +2: All tests passed!
+All tests passed.
+Leaving the application running.

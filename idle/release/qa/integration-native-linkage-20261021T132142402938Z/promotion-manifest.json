@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "purpose": "Review and guarded promotion only; no runtime/native acceptance",
+  "files": [
+    {
+      "source": "release/study/native-linkage-staging/game/platform/lib/study_recorder.dart",
+      "target": "game/platform/lib/study_recorder.dart",
+      "source_sha256": "d19cea0821852f4190f9366ae989b417dd83840225aaa939882dafec8228f255",
+      "baseline_target_sha256": "40be5e8ae640edfe67c6704074bbfb5a2f62fca2e8060b0d96cf50d22b72904f"
+    },
+    {
+      "source": "release/study/native-linkage-staging/game/platform/lib/study_native_context.dart",
+      "target": "game/platform/lib/study_native_context.dart",
+      "source_sha256": "712c8c34082008b8596a89d451e7da05d573384cf8158fc6e5e2b23bda2fe154",
+      "baseline_target_sha256": null
+    },
+    {
+      "source": "release/study/native-linkage-staging/game/platform/test/native_linkage_test.dart",
+      "target": "game/platform/test/native_linkage_test.dart",
+      "source_sha256": "29ee51cce685bfaf0e35b8c900333e6c603decb768bc593e2916a453bb9fd5fc",
+      "baseline_target_sha256": null
+    },
+    {
+      "source": "release/study/native-linkage-staging/game/mobile/lib/study_gate.dart",
+      "target": "game/mobile/lib/study_gate.dart",
+      "source_sha256": "99757790494004865b5b68a4798191170955ff7b4bc000c98cc4f78094b9f7d9",
+      "baseline_target_sha256": "bc019a763d72476ddd38594c96f90c081ffb9992b0e650aa1defd8a3514d923b"
+    },
+    {
+      "source": "release/study/native-linkage-staging/game/mobile/lib/study_native_context.dart",
+      "target": "game/mobile/lib/study_native_context.dart",
+      "source_sha256": "c4d8541682aa31e7379d953146ef46b475c75bb991a34ef8394de93282332c22",
+      "baseline_target_sha256": null
+    },
+    {
+      "source": "release/study/native-linkage-staging/game/mobile/test/study_native_consent_test.dart",
+      "target": "game/mobile/test/study_native_consent_test.dart",
+      "source_sha256": "d7ace935f2ecc8a96e0e5ce0227d55fdbdac3cd8816e3559690a889251bdc94b",
+      "baseline_target_sha256": null
+    },
+    {
+      "source": "release/study/native-linkage-staging/game/mobile/ios/Runner/AppDelegate.swift",
+      "target": "game/mobile/ios/Runner/AppDelegate.swift",
+      "source_sha256": "5c7bac17fd6ab5c3995ff25e4c7af74c653fa5c02dc94b2bbe1751fdd9fa1dc1",
+      "baseline_target_sha256": "93b0d32d184bdd94c5737acc503cceb6257851b2a844caf02c7f5fd232fd8601"
+    },
+    {
+      "source": "release/study/native-linkage-staging/game/mobile/android/app/src/main/kotlin/dev/tideglass/game/MainActivity.kt",
+      "target": "game/mobile/android/app/src/main/kotlin/dev/tideglass/game/MainActivity.kt",
+      "source_sha256": "d6fdd6373c1e400d9c5f27e4e2ec56b32e73473f5f5d3316215bd7ec13a4abdf",
+      "baseline_target_sha256": "b53bd92f01e9847f53e785d44f1591b4abb7ae8539cae84e5e73b473892914b9"
+    },
+    {
+      "source": "release/study/native-linkage-staging/tool/study_adjudicate.py",
+      "target": "tool/study_adjudicate.py",
+      "source_sha256": "ccf31107cced115bb7a417407a2b7cfa1498845ce10899b14a1f3ca533a406e6",
+      "baseline_target_sha256": "b158d082812603f6f02576ddc950b834c06254e718e3e0efadb4bb26679b87b6"
+    },
+    {
+      "source": "release/study/native-linkage-staging/tool/test_study_adjudicate.py",
+      "target": "tool/test_study_adjudicate.py",
+      "source_sha256": "8a3cff4fe950a049a0df9e2af2fe5a065f5baa107f417d0c63f705b879454683",
+      "baseline_target_sha256": "b5786db7acdd1b8f23ed3a2a7888ffb22ef464cdf943d81b0f82c2aa6b9fb472"
+    },
+    {
+      "source": "tool/study_native_diagnostics.py",
+      "target": "tool/study_native_diagnostics.py",
+      "source_sha256": "e2f8972b786e83cbd2dbe521623548b342c0b118aefd712df604df65909daa78",
+      "already_in_root": true
+    },
+    {
+      "source": "tool/test_study_native_diagnostics.py",
+      "target": "tool/test_study_native_diagnostics.py",
+      "source_sha256": "a7c90ef72449fe8ad37e5755a80dd6e664efd416bba4897cba669d413a9c18ac",
+      "already_in_root": true
+    },
+    {
+      "source": "release/study/native-linkage-staging/game/platform/test/generate_migration.dart",
+      "target": "game/platform/test/generate_native_linkage_fixture.dart",
+      "source_sha256": "78fc274e9cbe704e28fea6afeabea38d330422d53fff822d719c7fb7fb673551",
+      "baseline_target_sha256": null
+    },
+    {
+      "source": "release/study/native-linkage-staging/fixtures/migration-v3/legacy-before.json",
+      "target": "release/study/fixtures/native-linkage-v2/legacy-before.json",
+      "source_sha256": "5291d73961dd13d0255f052cefe28bc8cdfa58de2913b4a6c5bf8d51f906eddd",
+      "baseline_target_sha256": null,
+      "synthetic_fixture": true
+    },
+    {
+      "source": "release/study/native-linkage-staging/fixtures/migration-v3/manifest.json",
+      "target": "release/study/fixtures/native-linkage-v2/manifest.json",
+      "source_sha256": "2050584b37740d1619c7f77acbf01ed0066ee1e43a1c4cc037d504f616fb9859",
+      "baseline_target_sha256": null,
+      "synthetic_fixture": true
+    },
+    {
+      "source": "release/study/native-linkage-staging/fixtures/migration-v3/migrated-available.json",
+      "target": "release/study/fixtures/native-linkage-v2/migrated-available.json",
+      "source_sha256": "f490630fe9d059408bbcd799af071bda4394ebe4f4bb18e8ce8c0f13111dc8aa",
+      "baseline_target_sha256": null,
+      "synthetic_fixture": true
+    },
+    {
+      "source": "release/study/native-linkage-staging/fixtures/migration-v3/unavailable.json",
+      "target": "release/study/fixtures/native-linkage-v2/unavailable.json",
+      "source_sha256": "741ee7d21980088467c2602421f97c34586001fee840411b2000e716a4484a78",
+      "baseline_target_sha256": null,
+      "synthetic_fixture": true
+    },
+    {
+      "source": "release/study/native-linkage-staging/fixtures/migration-v3/withdrawn.json",
+      "target": "release/study/fixtures/native-linkage-v2/withdrawn.json",
+      "source_sha256": "e7912b778d6f5e5a20363f80b4a17960dc671031520dfe46e9cd1e9bea0a7c13",
+      "baseline_target_sha256": null,
+      "synthetic_fixture": true
+    }
+  ]
+}

@@ -1,0 +1,238 @@
+{
+  "format": "tideglass-serving-preparation-author-v1",
+  "source_sha256": "c4f612fd13561ad74e5077afc2ac5b60313744c48bd71b503f499a9125688cd1",
+  "source_files": [
+    {
+      "path": "implementation/contracts/save-envelope.schema.json",
+      "sha256": "4cbdbb028df188aa585ee3dba347a720fb44c2395c492e6f5ae41b81873d5fb8",
+      "ownership": "unchanged-runtime-context"
+    },
+    {
+      "path": "implementation/tools/validate_save_contract.py",
+      "sha256": "7306c21c2effb01acae4ad9aeead5c77802ea0317ece8a67f46707d6279fb8c6",
+      "ownership": "unchanged-runtime-context"
+    },
+    {
+      "path": "services/deployment/alerts.disabled.example.json",
+      "sha256": "c000a7d86a127bb078a12b98972caf252ac91b6ffcc67d1ab5875b4f8c02df0f",
+      "ownership": "new-preparation"
+    },
+    {
+      "path": "services/deployment/serving.loopback.example.json",
+      "sha256": "6d3172b889cbfa29a1679d5fd13776cfe4010f16555924f6b0583aeea5eb3567",
+      "ownership": "new-preparation"
+    },
+    {
+      "path": "services/deployment/tideglass-operator.service.example",
+      "sha256": "2ebc818c67dc3806fa601a80b4bb580deea46594158d83c09109e674e60de18d",
+      "ownership": "new-preparation"
+    },
+    {
+      "path": "services/deployment/tideglass.service.example",
+      "sha256": "a69746b4b834234f39f7be9583ee2b423ccc37c830b50442d7af509dbaa4736d",
+      "ownership": "new-preparation"
+    },
+    {
+      "path": "services/docs/DEPLOYMENT_PREPARATION.md",
+      "sha256": "5ded333b368a695006dde16a14f1062d767d00cb423f35a826259f3674db5613",
+      "ownership": "new-preparation"
+    },
+    {
+      "path": "services/rehearse_deployment.py",
+      "sha256": "5500d5c89ef0665ddc2924fa38704b43fad8fa7fb1af276b0105beb5791a2b06",
+      "ownership": "new-preparation"
+    },
+    {
+      "path": "services/requirements-deployment.lock",
+      "sha256": "60eb46d24a1476906b09ede2a9bb7074714fd67f0d3836a19e569ba8fdfb882e",
+      "ownership": "new-preparation"
+    },
+    {
+      "path": "services/tideglass_service/__init__.py",
+      "sha256": "6eac6c027f1f807b92e5edb8a51a64b6286148636313c27a336ddf8cab9567bf",
+      "ownership": "unchanged-runtime-context"
+    },
+    {
+      "path": "services/tideglass_service/__main__.py",
+      "sha256": "863351517cad12425f85e7a0e32c7dd13b2d44ffab70111d89144349b05d5718",
+      "ownership": "unchanged-runtime-context"
+    },
+    {
+      "path": "services/tideglass_service/alert_transport.py",
+      "sha256": "7a95b524dc73cde5fe04dc182afb80e5d2a5f3bb4323b8630e39b89b5343f7be",
+      "ownership": "new-preparation"
+    },
+    {
+      "path": "services/tideglass_service/api.py",
+      "sha256": "3d84629e39d5747e1ea55e412a1d52728890244058bdfde1f25dd384645a9003",
+      "ownership": "unchanged-runtime-context"
+    },
+    {
+      "path": "services/tideglass_service/deployment.py",
+      "sha256": "b16bc1d245b0050931b0e6d9f9f5dacc55094af910233b964404d8cb392acf17",
+      "ownership": "new-preparation"
+    },
+    {
+      "path": "services/tideglass_service/factory.py",
+      "sha256": "9125fc374367e68381bd42fa26e96b9434f705aad01389c8d8d78fe1cc134bcc",
+      "ownership": "unchanged-runtime-context"
+    },
+    {
+      "path": "services/tideglass_service/health.py",
+      "sha256": "03cc85d2104833765d1a5f84ee8cab882571a11e83fc8199c7ee21e1e8407a3c",
+      "ownership": "unchanged-runtime-context"
+    },
+    {
+      "path": "services/tideglass_service/leases.py",
+      "sha256": "24bba0c2406f95e2d25dc7fdc66394e1788a19e5098a7042bd17d588c576e6ba",
+      "ownership": "unchanged-runtime-context"
+    },
+    {
+      "path": "services/tideglass_service/operating_config.py",
+      "sha256": "d673918d05e680e8ec959f1959162a9ef106aeef0f5d51f591f6f5e3e3d3a265",
+      "ownership": "new-preparation"
+    },
+    {
+      "path": "services/tideglass_service/operator_cycle.py",
+      "sha256": "edc7f632f531582c0fbec7bc927fb2cf94665c61bb58a906990309fc3609c224",
+      "ownership": "new-preparation"
+    },
+    {
+      "path": "services/tideglass_service/ops.py",
+      "sha256": "b00b5e05df46584a2a2704fd2ee3795eedfbf57e09e83c8d8d7f131aa6f39ee9",
+      "ownership": "unchanged-runtime-context"
+    },
+    {
+      "path": "services/tideglass_service/providers/__init__.py",
+      "sha256": "d895fba33401cc4d59c667843f73dd92be1cf1082816574f923b5c2877e551b9",
+      "ownership": "unchanged-runtime-context"
+    },
+    {
+      "path": "services/tideglass_service/providers/admob.py",
+      "sha256": "1d0bfa147d47251009e89f632cad4049036edf28f51c0b2e6aacd2bc75f9d4de",
+      "ownership": "unchanged-runtime-context"
+    },
+    {
+      "path": "services/tideglass_service/providers/notifications.py",
+      "sha256": "725ff389ba132914b3022e435c2d3a375b1fe9db6b4e8d34564f2ac761b70a8e",
+      "ownership": "unchanged-runtime-context"
+    },
+    {
+      "path": "services/tideglass_service/providers/stores.py",
+      "sha256": "f8352f576d77ce1dcd588cb60de4bde7c4e92ae831a7645dd59935eabf8165bf",
+      "ownership": "unchanged-runtime-context"
+    },
+    {
+      "path": "services/tideglass_service/reconcile.py",
+      "sha256": "4f0da70207404c25d4b447168e597295e2e14380e7da8659e65cddd13ace3ca9",
+      "ownership": "unchanged-runtime-context"
+    },
+    {
+      "path": "services/tideglass_service/recovery.py",
+      "sha256": "b0d0142a7db7a6a3411e1df9714ed7c632116e8687f8ecd4ee8c3f51ecc5af50",
+      "ownership": "unchanged-runtime-context"
+    },
+    {
+      "path": "services/tideglass_service/soundtrack.py",
+      "sha256": "11d3cbc023a70487e8aac610bb71a85a1b063aadf6649036971b553cb7dc2206",
+      "ownership": "unchanged-runtime-context"
+    },
+    {
+      "path": "services/tideglass_service/storage.py",
+      "sha256": "3c640f16a6deb226b78e54238009a12955096161d425e04326bb23321e8ea6ad",
+      "ownership": "unchanged-runtime-context"
+    },
+    {
+      "path": "services/tideglass_service/vault.py",
+      "sha256": "88a983dcfb473e6480574ff6fbda25156f16bde4ceb5e0cc5de4460ed71a0f19",
+      "ownership": "unchanged-runtime-context"
+    },
+    {
+      "path": "services/tideglass_service/verification.py",
+      "sha256": "da37c39c7781320cd5b381b432c5b0654464d687ccf32b94c797acbe5a675f08",
+      "ownership": "unchanged-runtime-context"
+    },
+    {
+      "path": "services/tideglass_service/web_deletion.py",
+      "sha256": "48e4f99a9f3f871c8620ee396355a44711fe92f10418d636960fe76dbd50225d",
+      "ownership": "unchanged-runtime-context"
+    },
+    {
+      "path": "services/tideglass_service/web_deletion_static/delete.css",
+      "sha256": "23188f87efa36e959073a4a919b528718113ebd201fa94e0966a7e08f7d59451",
+      "ownership": "unchanged-runtime-context"
+    },
+    {
+      "path": "services/tideglass_service/web_deletion_static/delete.js",
+      "sha256": "0a36ae50235fe3bb66f9768c0f1d86bfa6d85482a42d8f010ca77f13e9387112",
+      "ownership": "unchanged-runtime-context"
+    },
+    {
+      "path": "services/tideglass_service/web_deletion_static/index.html",
+      "sha256": "4aa25c185f5380690efc56f1cf41b7c8785ba69daeadb202c66a41a91dfc99bb",
+      "ownership": "unchanged-runtime-context"
+    },
+    {
+      "path": "services/verify_deployment_preparation.py",
+      "sha256": "24a2cd5fe1ec42a6c7bd5ac7113a74dd5f15722644efedbdee575df811eb5f1a",
+      "ownership": "new-preparation"
+    },
+    {
+      "path": "tests/services/operations/test_operating_delivery.py",
+      "sha256": "5db44250c55602c2e84e239e4b362c96742e22bae4a27aa8f6a4c7e9d17348b2",
+      "ownership": "new-preparation"
+    }
+  ],
+  "python": "/Users/csys/Desktop/ibicot/idle/.tooling/deployment-venv/bin/python",
+  "host": "macOS-26.7-arm64-arm-64bit-Mach-O",
+  "synthetic_only": true,
+  "release_gate_verified": false,
+  "commands": [
+    {
+      "label": "dependency-pins",
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/deployment-venv/bin/python",
+        "-c",
+        "import importlib.metadata as m,json; from services.tideglass_service.deployment import VERSIONS; actual={n:m.version(n) for n in VERSIONS}; print(json.dumps(actual,sort_keys=True)); assert actual==VERSIONS"
+      ],
+      "cwd": "/Users/csys/Desktop/ibicot/idle/services/evidence/deployment-20261021T135903754934Z/source",
+      "exit_code": 0,
+      "seconds": 0.12938566700177034,
+      "log_sha256": "3b8f673d8ac7bededf6af0fc9cb8a7283cf9d224f738b96a5ae07e3ee7d648de"
+    },
+    {
+      "label": "author-tests",
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/deployment-venv/bin/python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests/services/operations",
+        "-p",
+        "test_operating_delivery.py",
+        "-v"
+      ],
+      "cwd": "/Users/csys/Desktop/ibicot/idle/services/evidence/deployment-20261021T135903754934Z/source",
+      "exit_code": 0,
+      "seconds": 6.511864542000694,
+      "log_sha256": "26eb2bb5add1b57ffda1db7ba46102ab1bc2b4039633ac8ff802fca9b809772f"
+    },
+    {
+      "label": "actual-http-tls-rehearsal",
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/deployment-venv/bin/python",
+        "services/rehearse_deployment.py",
+        "--output",
+        "/Users/csys/Desktop/ibicot/idle/services/evidence/deployment-20261021T135903754934Z/rehearsal"
+      ],
+      "cwd": "/Users/csys/Desktop/ibicot/idle/services/evidence/deployment-20261021T135903754934Z/source",
+      "exit_code": 0,
+      "seconds": 5.0149268329987535,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "rehearsal_report_sha256": "1a3f41bfade3d55da50df3ece8d311c8be92626e15a0d41c746d00ed7d1187ab",
+  "source_drift": [],
+  "status": "passed"
+}

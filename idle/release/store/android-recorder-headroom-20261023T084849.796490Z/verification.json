@@ -1,0 +1,55 @@
+{
+  "created_utc": "20261023T084849.796490Z",
+  "before_sha256": "77ddd47079b1373e8dc4b99b239b03f1ac8cd8200d125b777c4d0adaa3fe5d18",
+  "after_sha256": "b1cbf7d75e58bba41db1fe43d7b3cfd4bb59b888fadda36d8ed1ed68f58ad2c3",
+  "tests": [
+    {
+      "command": [
+        "python3",
+        "/Users/csys/Desktop/ibicot/idle/release/store/android-recorder-headroom-20261023T084849.796490Z/test_staged_recording.py"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "python3",
+        "/Users/csys/Desktop/ibicot/idle/release/store/android-recorder-headroom-20261023T084849.796490Z/test_ack_publication.py"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "live_unchanged": true,
+  "prior_failed_report": "/Users/csys/Desktop/ibicot/idle/release/native-proof/integration-android-20261023T084432.592521Z/verification.json",
+  "prior_failed_report_sha256": "7b1e37695890e9df364520bfeaa875b8a68d5649e398dd1ee25f29ce2836d305",
+  "prior_failure_pins": {
+    "android-capture-challenge.png": "3fd2f0c0cad10a321a62495dd3770ab2f3f303bb60b586f04b3678ae2a0d5c3f",
+    "run.log": "aa6c4c4491140d90fa4867354297baab354a504859a0e8012d752b8dc6346f1b",
+    "native_recording.py": "77ddd47079b1373e8dc4b99b239b03f1ac8cd8200d125b777c4d0adaa3fe5d18",
+    "recording.json": "5e53620763b17714e9602f95f03289b3cd4ba6cf7d04cb83ae0350947cd139fb",
+    "android-capture-main.png": "8b4a2cf0baab437abc11df9b535cbc2ec1824b44d395f194a1e3fd93bf4dd73d",
+    "driver.dart": "ec880d16153b1ac577a221a46f81e7c309dd5417fbba8aae4ce68f7acbcfb668",
+    "verify_native.py": "68297f66fc4e32a173b17da2594872334d59ba2b88b7d5878b5ee8905f9b89e5",
+    "android-capture-chapter.png": "7cca1aa5fadb91051eae2ef04a3cf42cd7c1a0ba8985366cabbace79e89c02b0",
+    "gameplay.mp4": "e708536dfd845afe0e8e5b9fe374e609fb7d16e0e17ef71bd539c72bcf4ba679",
+    "android-capture-season.png": "45a994cd56c3178319e3e456ccba0e2fae5b8e920dc7a39cb8a8edac35beb699",
+    "harness.dart": "1c8ed846dff6c007edb867d801d6f592a1cbd8b297e75de21e690603081afb31",
+    "verification.json": "7b1e37695890e9df364520bfeaa875b8a68d5649e398dd1ee25f29ce2836d305",
+    "native_video_metadata.swift": "2a3bb616cc2108f7d25cb6d2edd910b460bd4efc406fd0a2875cdc4197402450",
+    "recorder.log": "7275caeebaba6d5ebf6fae6716cac06e9efa538a809035e1dbc4b55cbf7ca5c9"
+  },
+  "actual_measured_done_gameplay_ms": 26779,
+  "actual_last_screenshot_host_start_since_recorded_identity_s": 27.111292166,
+  "actual_last_screenshot_host_end_since_recorded_identity_s": 27.882499833,
+  "actual_prior_raw_video_seconds": 27.5444,
+  "limits": "The record start identity timestamp follows recorder spawn/identity reads; the app stopwatch starts only after an additional one-second readiness hold and app-private signal. No exact host DONE timestamp was recorded. DO NOT claim DONE preceded natural expiry.",
+  "outputs_sha256": {
+    "test_ack_publication.py.log": "9e5c5bde8306de95c707a5bde4a498b266c0f2345cc210d5705d6232e6d3c0b8",
+    "test_ack_publication.py": "5b3a606dbd31a60a0d9189445429e9ca198d5ab5f36a3e5a966cb5e5586815f5",
+    "test_staged_recording.py": "635e69f26708e65b29618ea9521431c8179dfddcbfc8f4bfb96d1ebe8edc600a",
+    "headroom.patch": "20e5dc05d5841f243a13888d35560a0dfc691723986af5d2d50b37d1732172c0",
+    "test_staged_recording.py.log": "529af7dae3121942780eedf5dc3f9160f9274a1b667b177753e4fb204722a765",
+    "before/native_recording.py": "77ddd47079b1373e8dc4b99b239b03f1ac8cd8200d125b777c4d0adaa3fe5d18",
+    "staged/native_recording.py": "b1cbf7d75e58bba41db1fe43d7b3cfd4bb59b888fadda36d8ed1ed68f58ad2c3",
+    "staged/__pycache__/native_recording.cpython-313.pyc": "f941ad15303f0cf09115bedb9df86141c0332c5e949cec040abd88d4e45482f9"
+  }
+}

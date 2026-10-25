@@ -1,0 +1,216 @@
+{
+  "schema_version": 1,
+  "id": "season.01.presentation",
+  "asset_id": "asset.season.01.presentation",
+  "implementation": "existing_code_native_scene_composition",
+  "widget": "SeasonScreen",
+  "source": "game/mobile/lib/season_screen.dart",
+  "route": "TideglassApp._openSeason",
+  "tabs": [
+    {
+      "index": 0,
+      "method": "_fleet",
+      "parts": [
+        "lifecycle_copy",
+        "HarborArt",
+        "seasonal_wallet",
+        "StagedProducerArt",
+        "milestone_cards",
+        "synergy_panel"
+      ]
+    },
+    {
+      "index": 1,
+      "method": "_pass",
+      "parts": [
+        "pass_selection",
+        "level_expansions",
+        "CosmeticPreview",
+        "fragment_copy",
+        "verified_ownership_projection"
+      ]
+    },
+    {
+      "index": 2,
+      "method": "_contracts",
+      "parts": [
+        "same_daily_slot_bindings",
+        "claim_controls"
+      ]
+    }
+  ],
+  "harbor_binding": {
+    "counts": "season.fleet.counts",
+    "restoration": "season.claimedMilestones.length",
+    "phase": 0
+  },
+  "reuse": [
+    "HarborArt",
+    "StagedProducerArt",
+    "CosmeticPreview",
+    "LocalizedText"
+  ],
+  "season_new_unique_cosmetics": 0,
+  "economic_logic_in_art": false,
+  "limitations": [
+    "The season is a screen composition, not an additional equipable cosmetic.",
+    "The new thumbnail is an exact host component export; no runtime thumbnail route is implemented.",
+    "Original equipped/preview/thumbnail/native/viewport variants remain open; host captures do not waive them."
+  ],
+  "descriptor_loaded_by_client": false,
+  "host_exports": [
+    {
+      "path": "game/assets/season_presentation/exports/season.01.fleet-small-phone.png",
+      "width": 320,
+      "height": 720,
+      "inputs": {
+        "asset_id": "asset.season.01.presentation",
+        "synthetic_now_utc": "2026-10-21T12:00:00.000Z",
+        "season_phase": "live",
+        "counts": [
+          1,
+          0,
+          0,
+          0,
+          0
+        ],
+        "claimed_milestones": 0,
+        "text_scale": 1.0,
+        "reduced_motion": true,
+        "phase": 0,
+        "tab": 0,
+        "viewport": [
+          320.0,
+          720.0
+        ],
+        "paid_ownership": false
+      },
+      "renderer": "Flutter host widget test",
+      "native_device_acceptance": false
+    },
+    {
+      "path": "game/assets/season_presentation/exports/season.01.fleet-small-phone-large-text.png",
+      "width": 320,
+      "height": 720,
+      "inputs": {
+        "asset_id": "asset.season.01.presentation",
+        "synthetic_now_utc": "2026-10-21T12:00:00.000Z",
+        "season_phase": "live",
+        "counts": [
+          1,
+          0,
+          0,
+          0,
+          0
+        ],
+        "claimed_milestones": 0,
+        "text_scale": 2.0,
+        "reduced_motion": true,
+        "phase": 0,
+        "tab": 0,
+        "viewport": [
+          320.0,
+          720.0
+        ],
+        "paid_ownership": false
+      },
+      "renderer": "Flutter host widget test",
+      "native_device_acceptance": false
+    },
+    {
+      "path": "game/assets/season_presentation/exports/season.01.fleet-tablet.png",
+      "width": 1024,
+      "height": 768,
+      "inputs": {
+        "asset_id": "asset.season.01.presentation",
+        "synthetic_now_utc": "2026-10-21T12:00:00.000Z",
+        "season_phase": "live",
+        "counts": [
+          1,
+          0,
+          0,
+          0,
+          0
+        ],
+        "claimed_milestones": 0,
+        "text_scale": 1.0,
+        "reduced_motion": true,
+        "phase": 0,
+        "tab": 0,
+        "viewport": [
+          1024.0,
+          768.0
+        ],
+        "paid_ownership": false
+      },
+      "renderer": "Flutter host widget test",
+      "native_device_acceptance": false
+    },
+    {
+      "path": "game/assets/season_presentation/exports/season.01.pass-preview.png",
+      "width": 640,
+      "height": 900,
+      "inputs": {
+        "asset_id": "asset.season.01.presentation",
+        "synthetic_now_utc": "2026-10-21T12:00:00.000Z",
+        "season_phase": "live",
+        "counts": [
+          1,
+          0,
+          0,
+          0,
+          0
+        ],
+        "claimed_milestones": 0,
+        "text_scale": 1.0,
+        "reduced_motion": true,
+        "phase": 0,
+        "tab": 1,
+        "viewport": [
+          640.0,
+          900.0
+        ],
+        "paid_ownership": false
+      },
+      "renderer": "Flutter host widget test",
+      "native_device_acceptance": false
+    },
+    {
+      "path": "game/assets/season_presentation/exports/season.01.thumbnail.png",
+      "width": 256,
+      "height": 155,
+      "inputs": {
+        "asset_id": "asset.season.01.presentation",
+        "component": "SeasonScreen HarborArt",
+        "counts": [
+          1,
+          0,
+          0,
+          0,
+          0
+        ],
+        "restoration": 0,
+        "phase": 0,
+        "text_scale": 1,
+        "reduced_motion": true,
+        "viewport": [
+          256,
+          155
+        ],
+        "runtime_thumbnail_route": null
+      },
+      "renderer": "Flutter host widget test",
+      "native_device_acceptance": false
+    }
+  ],
+  "original_required_variants": [
+    "equipped",
+    "preview",
+    "thumbnail",
+    "reduced_motion_static",
+    "small_phone",
+    "tablet"
+  ],
+  "production_status": "in_production",
+  "verification_evidence": null
+}

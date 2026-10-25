@@ -1,0 +1,7 @@
+# Independent Android recorder headroom review
+
+Approve exact staged recorder b1cbf7d7 for promotion and a fresh gallery attempt after the live reminder run. The entire source change reconstructs as two27→29 literals: recorder launch and exact owned argv identity verification. No other recorder byte changes. This adjusts the OS safety timeout, not the independent15–30second final footage gate or actual-stop requirement.
+
+Measured failed output contains four acknowledged screenshots and app DONE at26.779seconds, but final screenshot capture itself extends past27seconds after the recorded recorder identity timestamp. There is no exact host DONE timestamp. This supports insufficient recording headroom; it does not establish that DONE preceded expiry. The earlier wording suggesting a pre-expiry race is not used as evidence. All14 failed native files remain unchanged.
+
+Root independently reproduced the four added controls: rejecting an old27-second identity, requiring targeted stop and receipt at the measured endpoint, rejecting natural expiry before endpoint, and rejecting30.001second output. The previous broad recorder/ACK implementation has separate root reviews; the author also passes all40 orchestration and13 actual host shell checks. No adb/device or Flutter command ran for this review. Real raw duration, native completion and exact stop proof must still pass on the next attempt. No media or release acceptance follows from this test-only fix.

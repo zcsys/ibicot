@@ -1,43 +1,80 @@
-# Native platform handoff — 16 October 2026
+# Native platform handoff — frozen 152 candidate
 
-## Delivered implementation
+Completed 21October2026. Candidate `152805bf9e269f49d14486286656ac0174a808384d10e6623533a4f92690dc11` now has three debug exports, two unsigned release exports and22 passing native scenarios. This is local engineering evidence for independent review. Finished-v1 and public-release acceptance remain open.
 
-Project-local Flutter 3.47.7 / Dart 3.13.5, Java 17.0.20.1+1, Android SDK prerequisites and pinned native dependency setup. Actual iOS/Android/macOS projects use development identity `dev.tideglass.game`; product floors are iOS 16 and Android API 29. No signing secrets or global Java settings were changed. Swift Package Manager links the real purchase and ad SDKs; official sample ad app IDs prevent the native startup crash found during the probe. Release signing is intentionally unconfigured and Android has no debug-key release fallback.
+Start with the [qualification summary](20261021T101953.650199Z/local-qualification-summary.json), [final integrity check](20261021T120204.582776Z-152-final-verification/final-verification.json), [exact runtime index](20261021T120204.582776Z-152-final-verification/runtime-matrix.json) and [42-log superseding audit](20261021T120204.582776Z-152-final-verification/native-log-audit.json). Historical d85 documentation is [preserved unchanged](20261016T112921.896155Z/platform-handoff-d85-preserved.md), along with every original candidate and failed attempt.
 
-`tool/build_native.py` snapshots verified immutable source, builds a separate workspace and preserves source manifest/archive, logs, artifact hashes and outputs. Future snapshots include the fixture/validator/contract files required by host tests and avoid recursively copying QA workspaces. `--mode release ios android` now selects an unsigned iOS device bundle and Android release AAB; that new release mode has not yet been executed. Root requested waiting for story/Support integration and QA fixes before the next candidate.
+## Source and build evidence
 
-`tool/verify_native.py` checks unchanged production inputs and captures the exact harness. Runtime verification ID, candidate/harness fingerprints, scenario, label and run ID must all match; compile/start failure markers invalidate the result even when Flutter exits zero. The driver keeps the installation, explicitly stops its native process and exports isolated native save slots. A per-candidate lock prevents concurrent verification runs from overwriting test builds.
+The immutable candidate lives at `.tooling/build-candidates/20261021T101953.650199Z-152805bf9e26`. It derives from 667 solely by the reviewed help copy correction about saved daily offset/backward-clock protection; it makes no promise of authenticated forward-clock time. The [source manifest](20261021T101953.650199Z/candidate-manifest.json) and [host ancestry](20261021T101953.650199Z/host-gate-chain.json) identify the exact change.
 
-Original lighthouse/star SVG and 1024 PNG are in `game/client/art/`; all native launcher catalogs and launch screens now use original assets. Source is generated reproducibly by `tool/generate_native_icons.py`. XML parsing and Apple icon dimensions/opaque RGB checks passed. These assets are newer than the tested candidate and need the next native build plus final visual approval.
-
-## Native evidence
-
-Tested production candidate: `ce46598c4b513477c643f0dff4f5160400ac800b4ee76579c48ca2a5e08e1ffd`.
-
-| Evidence | Result | Location under `release/native-proof/` |
+| Gate | Observed result | Evidence |
 |---|---|---|
-| iOS simulator, Android debug APK, macOS debug exports | All compile; source snapshot unchanged | `20261016T095427.771900Z/build-report.json` |
-| iPhone seeded UI purchase, Rechart cancel/confirm and disk reload | Pass | `integration-ios-phone-20261016T095946.013088Z/` |
-| Android equivalent seeded fixture | Pass | `integration-android-phone-20261016T100111.069907Z/` |
-| iPad equivalent seeded fixture | Pass | `integration-ios-tablet-20261016T100227.506479Z/` |
-| iPhone fresh real-clock first purchase | Pass; 36.131 seconds; PID 75638 | `integration-ios-phone-20261016T100825.809052Z/` |
-| iPhone new-process reload | Pass; PID 76465; 2 Skiffs and time-away credit retained | `integration-ios-phone-20261016T101005.788792Z/` |
-| Android fresh real-clock first purchase | Pass; 37.719 seconds; PID 5138 | `integration-android-phone-20261016T101059.120074Z/` |
-| Android new-process reload | Pass; PID 5292; 2 Skiffs and time-away credit retained | `integration-android-phone-20261016T101211.206142Z/` |
-| Independent controller/persistence regression | 3 pass; fractional cursor bug fixed by persistence owner | `controller-review.md`, `controller-review-test.log` |
+| Parent667 host checks |705 tests pass: core176, persistence19, progression27, events31, platform41, simulation14, mobile300, base Python50, providers32, native tools15; seven analyzers clean |[Parent report](20261021T101431.356858Z/build-report.json) |
+| Final152 copy checks | Fresh6English and6expanded pseudolocale help tests pass; whole mobile analyzer clean |[Final copy gate](final-copy-gate-20261021T102032.868811Z/verification.json) |
+| Debug exports | iOS simulator, Android APK, internal macOS app pass |[Debug report](20261021T102112.746555Z/build-report.json) |
+| Unsigned release exports | iOS device bundle and Android AAB pass |[Release report](20261021T103632.486357Z/build-report.json) |
+| Signature absence | No iOS signature/provisioning profile; AAB reports unsigned and has no signature entries |[iOS inspection](20261021T103632.486357Z/ios-unsigned-inspection.json), [Android inspection](20261021T103632.486357Z/android-unsigned-inspection.json) |
+| Final integrity | Frozen source, production inputs and dependency locks match; all five artifact hashes match;22 required runtime cells accepted |[Final check](20261021T120204.582776Z-152-final-verification/final-verification.json) |
 
-Seeded tests start from explicitly prepared 60 R or prestige-threshold states; they assert the exact 33.6 R purchase, 26.4 R remainder, 10 Charts, reset boundary and lifetime preservation. They are not natural pacing evidence. Natural tests start from an absent save with zero currency, use the actual native clock/timer, buy through the UI and exercise the real application bootstrap. Native save paths, exported slot files, process IDs, source identities, screenshots and logs are retained in each run directory. Screenshots were visually inspected on phone/tablet, including purchase and confirmation/reset states.
+The 705 tests were executed on the explicitly unchanged parent source, followed by the fresh final-copy checks; they were not all rerun on 152. The debug workspace matches every captured input. The release workspace differs only in the pinned SDK's generated Android plugin registrant, which excludes the development integration-test plugin. No signing fallback or manual generated plugin list was used. Artifact hashes and exact commands are in the linked reports. Reproducibility covers this host's pinned source, locks, recipes and recorded outputs; it does not establish a second-host or byte-identical rebuild.
 
-The candidate's independent host-test gate **failed**: its old negative test expected the now-supported schema version 2 to be rejected. Later working-tree fixes are not inherited by this candidate. The candidate is therefore not accepted for release despite the native passes.
+## Native runtime matrix
 
-Two failed/invalid harness attempts remain visible: `100415.147682Z` compiled an incorrect import and Flutter reused a previous binary; that result was explicitly invalidated. `100648.818501Z` could not reload because Flutter's default cleanup uninstalled the app and its sandbox; the corrected wrapper preserves the installation. Neither attempt is counted as a pass.
+| Actual scenario | iPhone17Pro / iOS26.3.1 | Android15 API35 / arm64 | Dedicated iPad mini / iPadOS26.3.1 |
+|---|---:|---:|---:|
+| Seeded purchase/Rechart and native disk reload | Pass | Pass | Pass |
+| Fresh save,35 actual seconds and UI purchase | Pass | Pass | — |
+| Separate-process natural-save reload | Pass | Pass | — |
+| Seeded24h worker, cosmetic collection,25producer stages and native audio | Pass | Pass | Pass |
+| Separate-process session reload | Pass | Pass | — |
+| Actual monotonic clock and OS Home/reopen | Pass | Pass | — |
+| Separate-process clock scope | Pass | Pass | — |
+| Actual native share sheet and cancellation | Pass | Pass | Pass |
+| Four raw production screens and gameplay footage | Pass | Pass | Pass |
+| Total |9|9|4|
 
-## Active runtimes and next actions
+The [runtime index](20261021T120204.582776Z-152-final-verification/runtime-matrix.json) records every device identifier, exact harness hash, result, log and run ID. Natural scenarios start with an absent isolated save and a free Skiff, wait real time, buy through the UI and restore the second Skiff in a different native process. Worker/cosmetic fixtures explicitly seed 24 hours of absence, Notes and earned chapter appearance; they execute production replay, collection, spending and disk paths. They do not establish natural pacing or retention.
 
-- Android emulator: `emulator-5556`, local AVD `Tideglass_API_35`, Pixel 6 / API 35 ARM64. Long-running execution handle **43501** remains active. It can be reused; close with the SDK emulator command when no longer needed.
-- iPhone simulator: `F05BE4B0-52C1-4CA1-B721-BD64AE559E3F` (iPhone 17 Pro, iOS 26.3.1).
-- iPad simulator: `F103390E-7B7C-4F0B-9404-5E029C7131FF` (iPad mini A17 Pro, iOS 26.3.1).
-- Verification app processes are stopped after successful checks; test installations and isolated save data remain. The latest installed test harness is not the ordinary playable entrypoint. Install/launch the next stable main-app artifact for user review.
-- Root should signal stable integration, then run a new immutable candidate with native debug/QA checks and the new local release packaging mode. Recheck the latest candidate, icons and source-specific test results.
+Clock probes use actual MethodChannel samples. Home/reopen was performed through the OS, not injected Flutter lifecycle callbacks. Android retained its same-boot epoch across process restart; Apple received a new process epoch. Android's guest wall clock differed from the host, and no authenticated UTC claim is made. Native clock deltas are preserved without exporting private raw uptime/epochs.
 
-No store sandbox purchase, real rewarded-ad delivery, hosted cloud conflict, signed distribution, physical-device performance, minimum-OS runtime coverage or human playtest is accepted. Exact account/device/hosting/tester dependencies and locally possible follow-ups are listed in `external-dependencies.md`. The user confirmed none are presently available. B02 remains unaccepted; this does not block continuing local development.
+All eleven bundled AAC assets decoded with positive duration and the playback clock advanced on each platform. Production audio switched all three music tracks and exercised foreground cue gating. Android audio output was disabled. These are decoder/playback-state checks, not audible-quality, headphone, mute-switch or interruption qualification. Debug simulator worker/startup samples are not physical p95 or battery results.
+
+Share tests invoked the production export function with a test-only download substitution and a synthetic 201-byte ZIP. The actual iOS popover/Android chooser was observed, captured and cancelled without choosing a recipient. This proves sheet invocation/cancellation; paid ownership, hosted download and receiving-app delivery remain unproven.
+
+## Raw screenshots and footage
+
+| Device | Raw pixels | Actual silent video duration | Source-pinned manifest and review |
+|---|---|---:|---|
+| iPhone |1206×2622|25.275s|[Manifest](integration-ios-phone-20261021T112255.702927Z/capture-manifest.json), [visual review](integration-ios-phone-20261021T112255.702927Z/visual-review.json) |
+| Android |1080×2400|29.3351s|[Manifest](integration-android-20261021T114929.560297Z/capture-manifest.json), [visual review](integration-android-20261021T114929.560297Z/visual-review.json) |
+| Dedicated iPad |1488×2266|25.5633s|[Manifest](integration-ios-tablet-20261021T115934.504362Z/capture-manifest.json), [visual review](integration-ios-tablet-20261021T115934.504362Z/visual-review.json) |
+
+Each set contains actual main, chapter, challenge and season UI. Footage contains a real scripted purchase and navigation from explicitly seeded progression. Raw files were not edited; video decoding and representative-frame inspection are recorded separately. Integration-test pointer overlays can appear during taps. These are engineering drafts, not promotion-ready material or representations of the later working-tree build. S43 requires final shipped-source captures after the outstanding changes.
+
+Original ordinary-main apps were restored after harness runs. The [dedicated tablet launch](main-launch-tablet-20261021T1201Z/main-launch.json) shows fresh onboarding; the [Android retry](main-launch-android-retry-20261021T112658.548926Z/main-launch.json) shows its existing guest save/offline dialog. The first Android ordinary launch timed out under concurrent resource load; its failure remains preserved. The successful retry used the same APK. An earlier externally changed tablet session was not attributed to test actions and was left untouched.
+
+## Failures and audit repairs
+
+Five 152native attempts remain failed/invalid: an overly short playback wait; two double-disposal teardown runs; an invalid gallery lifetime/Charts fixture; and Android's static screenshot waiting for a frame after surface conversion. Harness fixes used bounded playback polling, exactly-once audio cleanup, valid lifetime entitlement and the SDK-required frame pump. Successful retries use the same frozen production source and separately pinned harnesses.
+
+The old verifier incorrectly accepted the two teardown failures because the driver printed success and returned zero. Its replacement requires a positive native completion count plus driver completion and rejects framework/uncaught errors, including Android E/flutter output. The [independent review](../qa/lead-native-completion-20261021T113003923748Z/REVIEW.md) reproduced counterexamples and repairs. The final 42-log audit preserves original reports and explicitly supersedes exactly those two false passes; d85's 12accepted native runs remain valid under this stricter log check. Legacy d85 payloads predate some152identity fields, which the audit reports without inventing them.
+
+## Check against original v1 scope
+
+| Scope | Evidence contributed here | Acceptance still open |
+|---|---|---|
+| S01 native phones/tablets/public launch | Native phone and dedicated tablet checks; ordinary app launches; internal macOS export | Final source, physical usability, signed install/update and both public store launches |
+| S12 saves/recovery | Frozen persistence suite, actual native disk reopen and seeded worker/cosmetic retention | Newer native file-lock and economic migration repair, broader physical interruption/upgrade/cloud recovery matrix |
+| S23 audio/supporter soundtrack | Eleven native AAC decodes, production music controls/gating, synthetic export sheet cancellation | Physical audible quality/interruption and verified purchased soundtrack delivery |
+| S24 commerce | Native package links and synthetic export boundary | Both store sandbox purchases, restore/pending/retry/refund/revocation and verified delivery |
+| S31 performance | Debug simulator worker execution and individual samples | Named physical 60/30fps, startup p95 ≤5s,24h replay≤3s,30-minute battery/thermal measurements |
+| S36 platform/store acceptance | Unsigned packages and reviewable raw screen drafts | Current submission review, configured products/reviewer access and final store acceptance |
+| S40 builds/configuration | Pinned SDK/locks, five exports, immutable ancestry and integrity; actual native probes | Newer complete candidate including S14/native locking, independent full-candidate review |
+| S43 polish/store assets | Twelve raw screen captures and three 15–30second clips inspected | Newer final-source capture, human content/usability findings, store-ready material and publication |
+
+Newer soundtrack cache, campaign optionality/content migration, opt-in study recorder/UI, art catalogue tests, backend operations, S14 transition and native file-lock work are excluded from152. Future build tooling now explicitly captures synthetic study fixtures and runs nested provider/operations/study suites; those later tooling gates do not retroactively change152host evidence.
+
+The user has no developer accounts, physical devices, hosting or human testers. [External dependencies](external-dependencies.md) remain open. No work-package or public-release acceptance is added by this handoff.
+
+The iPhone, Android emulator and dedicated Verification tablet were shut down after restoring ordinary main apps. The protected Development tablet `F103390E-7B7C-4F0B-9404-5E029C7131FF` remains untouched. Root owns the Flutter lane again; the repaired current-source art sample awaits root/gameplay stability. See [runtime inventory](20261021T101953.650199Z/runtime-state-at-handoff.json).

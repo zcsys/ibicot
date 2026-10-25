@@ -315,6 +315,12 @@ class TideglassServiceClient {
     'receipt_id': receiptId,
     'save_id': saveId,
   });
+  Future<Map<String, dynamic>> readTelemetryConsent() =>
+      _request('GET', '/v1/telemetry/consent');
+
+  Future<Map<String, dynamic>> ownershipLease() =>
+      _request('GET', '/v1/entitlements/lease');
+
   Future<int> setTelemetryConsent(bool enabled) {
     final generation = _sessionGeneration;
     final operation = _consentTail.then((_) async {
@@ -429,6 +435,7 @@ class ConsentTelemetryBuffer {
       _events.clear();
       _enabled = false;
       _consentRevision = null;
+      _rejectedRevision = null;
       _boundAccount = client.session?.accountId;
       _boundGeneration = client.sessionGeneration;
       _consentIntent++;
@@ -436,11 +443,37 @@ class ConsentTelemetryBuffer {
   }
 
   int? _consentRevision;
+  int? _rejectedRevision;
   int droppedEventCount = 0;
   bool _flushing = false;
   int get pendingEventCount {
     _checkBinding();
     return _events.length;
+  }
+
+  /// The native consent owner already confirmed this revision with the service.
+  /// This attaches its local choice without sending a second opt-in or reviving
+  /// a withdrawn remote consent. Null stops collection and clears queued data.
+  void useConfirmedConsent(int? revision) {
+    _checkBinding();
+    if (revision != null && revision < 1) {
+      throw ArgumentError('A positive confirmed consent revision is required.');
+    }
+    if (revision == null || client.session == null) {
+      _consentIntent++;
+      _enabled = false;
+      _consentRevision = null;
+      _events.clear();
+      return;
+    }
+    if (revision == _rejectedRevision) return;
+    if (_enabled && _consentRevision == revision) return;
+    _consentIntent++;
+    // A newer consent cannot retroactively authorize older buffered events.
+    if (_consentRevision != revision) _events.clear();
+    _consentRevision = revision;
+    _rejectedRevision = null;
+    _enabled = true;
   }
 
   Future<void> optIn() async {
@@ -457,6 +490,7 @@ class ConsentTelemetryBuffer {
       if (intent != _consentIntent || generation != client.sessionGeneration)
         return;
       _consentRevision = revision;
+      _rejectedRevision = null;
       _pendingOptOutAccounts.remove(account);
       _enabled = true;
     });
@@ -565,6 +599,7 @@ class ConsentTelemetryBuffer {
               (error.status == 403 ||
                   error.code == 'consent_revision_changed')) {
             _enabled = false;
+            _rejectedRevision = _consentRevision;
             _consentRevision = null;
             _events.clear();
           }

@@ -1,0 +1,74 @@
+--- fixture-adapted-original-boundary.py
++++ author-descriptor-boundary.py
+@@ -1,6 +1,10 @@
+-"""Independent, disposable-fixture counterexamples. No device or Flutter use."""
++"""Author retargeting of preserved independent probes to the descriptor boundary.
++Rejection assertions retained; a fresh independent replay is still required.
++"""
+ import importlib.util
+ import json
++import os
++import time
+ from pathlib import Path
+ import subprocess
+ import sys
+@@ -46,21 +50,22 @@
+             target.write_text('SYNTHETIC ALLOWED BYTES')
+             outside = Path(directory).resolve() / 'outside-synthetic-sentinel'
+             outside.write_text('DISPOSABLE OUTSIDE SENTINEL')
+-            original_open = Path.open
++            original_open = os.open
+             swapped = False
+ 
+             def racing_open(path, *args, **kwargs):
+                 nonlocal swapped
+-                if path == target and not swapped:
++                if path == target.name and not swapped:
+                     swapped = True
+-                    path.unlink()
+-                    path.symlink_to(outside)
++                    target.unlink()
++                    target.symlink_to(outside)
+                 return original_open(path, *args, **kwargs)
+ 
+-            with patch.object(Path, 'open', racing_open):
++            with patch.object(os, 'open', racing_open):
+                 try:
+                     result = o.local_storage(base)
+                 except (ValueError, OSError):
++                    self.assertTrue(swapped, 'Descriptor boundary injection must execute')
+                     return
+             (HERE / 'accepted-outside-fixture-read.json').write_text(json.dumps({
+                 'synthetic_only': True,
+@@ -79,6 +84,9 @@
+             (outside / 'support/tideglass-study.json').write_text('DISPOSABLE OUTSIDE SENTINEL')
+             host = object.__new__(o.Host)
+             host.platform, host.base = 'ios', base
++            host.storage_root_identity = o.storage_root_identity(base)
++            host.commands, host.runner = [], subprocess.run
++            host.deadline = time.monotonic() + 2
+             # Reproduces the post-Host.__init__, pre-Host.storage boundary.
+             base.rmdir()
+             base.symlink_to(outside, target_is_directory=True)
+@@ -93,15 +101,16 @@
+ import sys
+ spec=importlib.util.spec_from_file_location('o',sys.argv[1]);o=importlib.util.module_from_spec(spec);spec.loader.exec_module(o)
+ if True:
+- base=Path(sys.argv[2]);(base/'support').mkdir();target=base/'support/tideglass-study.json';target.write_text('fixture')
+- original=Path.open
++ base=Path(sys.argv[2]).resolve();(base/'support').mkdir();target=base/'support/tideglass-study.json';target.write_text('fixture')
++ original=os.open;swapped=[]
+  def racing_open(path,*args,**kwargs):
+-  if path==target:
+-   path.unlink();os.mkfifo(path)
++  if path==target.name and not swapped:
++   swapped.append(True);target.unlink();os.mkfifo(target)
+   return original(path,*args,**kwargs)
+- with patch.object(Path,'open',racing_open):
++ with patch.object(os,'open',racing_open):
+   try:o.local_storage(base)
+   except (ValueError,OSError):pass
++ assert swapped, 'Descriptor boundary injection must execute'
+ '''
+         with tempfile.TemporaryDirectory() as directory:
+             try:

@@ -1,0 +1,17 @@
+# Android system UI operator method
+
+Lead decision, 25 October 2026. Applies prospectively to the owned `emulator-5556`, workspace AVD `Tideglass_API_35`, API35, and current Tideglass package `dev.tideglass.game`.
+
+The installed Android SDK may operate actual system UI for notification and offline-flow qualification. M3-05/S26 and S02 require actual platform behavior; they do not require a human to perform every gesture. The available desktop UI tool cannot bind the bare Qt emulator. The prior lead checkpoint's blanket prohibition on shell input was unnecessarily broad and is superseded by this bounded method. Prior sealed reports and failed attempts are retained unchanged.
+
+The native owner must confirm device identity, capture the current actual screenshot and UI hierarchy, visually inspect the screenshot, and target an observed enabled control. Installed `uiautomator dump /dev/tty` supplies hierarchy observations; `adb -s emulator-5556 shell input` may send the corresponding real tap, swipe, text input or navigation key. Capture the command, timestamps, exit result and resulting UI state. Use current observations rather than guessed coordinates. Home and Back are explicit system navigation events. Return through the observed launcher app icon when the test calls for an app-icon return.
+
+Permission changes must result from actual OS dialog or Settings controls. Network changes must result from actual Android Settings or Quick Settings controls. Direct permission grants/revocations, appops or settings mutations, programmatic radio commands, host-network changes, state resets and altered test clocks are excluded. No production code, test assertion or timeout changes are authorized by this decision.
+
+A stale permission dialog from a terminal run may be dismissed with a separately recorded actual Back event. Capture its old task/process association and the resulting state. That cleanup is not a result for the old or new test. A new test must establish its own run ID, native PID, readiness marker and actual UI association before any test action. Both timed-out attempts remain failures without a recorded permission decision.
+
+Keep the existing 150-second permission bound, real delivery interval, save/lifecycle checks and strict native outcomes. For S02, retain actual radio/default-network observations, a continuously healthy nonce-bound local listener, real gameplay and new-process restore checks. UI automation is an operator method, not evidence that the application passed. Existing runner statements about no automatic permission changes mean that the runner does not secretly grant/revoke permission; companion operator receipts must explicitly identify automated actual UI gestures.
+
+The native owner authors the execution evidence; QA independently checks outcomes and the lead integrates them. This decision does not accept any package or scope requirement. There is no physical-device, human-comprehension or store qualification claim.
+
+Sources checked on 25 October 2026: [Android UI Automator](https://developer.android.com/training/testing/other-components/ui-automator), [Android input commands](https://developer.android.com/tools/agents/android-cli/commands/input), and [ADB device targeting and shell commands](https://developer.android.com/tools/adb). The installed SDK capability observations, independent procedure review and fresh run receipts remain separate evidence.

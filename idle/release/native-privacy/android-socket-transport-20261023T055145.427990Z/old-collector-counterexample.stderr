@@ -1,0 +1,38 @@
+test_actual_read_failure_retains_status_and_rejects (test_socket_transport.SocketTransportTests.test_actual_read_failure_retains_status_and_rejects) ... ok
+test_android_identity_uses_four_binary_scoped_reads (test_socket_transport.SocketTransportTests.test_android_identity_uses_four_binary_scoped_reads) ... ok
+test_android_storage_stays_unavailable_no_command (test_socket_transport.SocketTransportTests.test_android_storage_stays_unavailable_no_command) ... ok
+test_exact_socket_argv_only_uses_shell (test_socket_transport.SocketTransportTests.test_exact_socket_argv_only_uses_shell) ... FAIL
+test_exact_uid_inode_record_parses (test_socket_transport.SocketTransportTests.test_exact_uid_inode_record_parses) ... ok
+test_identity_reuse_and_uid_change_still_reject (test_socket_transport.SocketTransportTests.test_identity_reuse_and_uid_change_still_reject) ... ok
+test_incomplete_tables_never_empty_success (test_socket_transport.SocketTransportTests.test_incomplete_tables_never_empty_success) ... ok
+test_ios_path_unchanged (test_socket_transport.SocketTransportTests.test_ios_path_unchanged) ... ok
+test_legacy_zero_status_wrapper_prose_rejected (test_socket_transport.SocketTransportTests.test_legacy_zero_status_wrapper_prose_rejected) ... ok
+test_non_protocol_output_rejected (test_socket_transport.SocketTransportTests.test_non_protocol_output_rejected) ... ok
+test_nonzero_even_with_complete_looking_tables_rejected (test_socket_transport.SocketTransportTests.test_nonzero_even_with_complete_looking_tables_rejected) ... ok
+test_other_process_inode_rejected (test_socket_transport.SocketTransportTests.test_other_process_inode_rejected) ... ok
+test_other_uid_rejected (test_socket_transport.SocketTransportTests.test_other_uid_rejected) ... ok
+test_remote_identity_stays_binary_exec_out (test_socket_transport.SocketTransportTests.test_remote_identity_stays_binary_exec_out) ... ok
+test_shell_roundtrip_script_is_single_unquoted_child_argument (test_socket_transport.SocketTransportTests.test_shell_roundtrip_script_is_single_unquoted_child_argument) ... ok
+test_size_limit_unchanged (test_socket_transport.SocketTransportTests.test_size_limit_unchanged) ... ok
+test_timeout_and_budget_unchanged (test_socket_transport.SocketTransportTests.test_timeout_and_budget_unchanged) ... ok
+test_unchanged_socket_script_filters_on_device (test_socket_transport.SocketTransportTests.test_unchanged_socket_script_filters_on_device) ... ok
+
+======================================================================
+FAIL: test_exact_socket_argv_only_uses_shell (test_socket_transport.SocketTransportTests.test_exact_socket_argv_only_uses_shell)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/var/folders/v5/s8bkjm8j2_142b2bq970kylh0000gn/T/tmp2gazsxsv/test_socket_transport.py", line 21, in test_exact_socket_argv_only_uses_shell
+    self.assertEqual(h.commands[0]['argv'],['/owned/adb','-s','emulator-5556','shell','run-as','dev.tideglass.game','sh','-c',shlex.quote(o.ANDROID_SOCKETS),'observer','7435','10209'])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['/ow[29 chars]6', 'exec-out', 'run-as', 'dev.tideglass.game'[804 chars]209'] != ['/ow[29 chars]6', 'shell', 'run-as', 'dev.tideglass.game', '[801 chars]209']
+
+First differing element 3:
+'exec-out'
+'shell'
+
+Diff is 1067 characters long. Set self.maxDiff to None to see it.
+
+----------------------------------------------------------------------
+Ran 18 tests in 0.007s
+
+FAILED (failures=1)

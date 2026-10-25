@@ -1,0 +1,44 @@
+{
+  "candidate_fingerprint": "152805bf9e269f49d14486286656ac0174a808384d10e6623533a4f92690dc11",
+  "device": "089884DC-AD2A-4D69-8C60-C50271AC21BF",
+  "artifact_sha256": "d4713f0a890fd03ef92052c0545c81c04d24b9e13e51cd9329efc828fac71515",
+  "ordinary_main_restored": true,
+  "actions": [
+    {
+      "command": [
+        "xcrun",
+        "simctl",
+        "install",
+        "089884DC-AD2A-4D69-8C60-C50271AC21BF",
+        "/Users/csys/Desktop/ibicot/idle/.tooling/native-main-20261021T103014.378318Z/Runner.app"
+      ],
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "command": [
+        "xcrun",
+        "simctl",
+        "launch",
+        "089884DC-AD2A-4D69-8C60-C50271AC21BF",
+        "dev.tideglass.game"
+      ],
+      "exit_code": 0,
+      "output": "dev.tideglass.game: 45417\n"
+    },
+    {
+      "command": [
+        "xcrun",
+        "simctl",
+        "io",
+        "089884DC-AD2A-4D69-8C60-C50271AC21BF",
+        "screenshot",
+        "release/native-proof/main-launch-tablet-20261021T1201Z/ordinary-main.png"
+      ],
+      "exit_code": 0,
+      "output": "Detected file type from extension: PNG\nNote: No display specified. Defaulting to display: A8F68330-2010-4864-B7D7-934E763F80B1 (screenID: 1, name: LCD)\nWrote screenshot to: /Users/csys/Desktop/ibicot/idle/release/native-proof/main-launch-tablet-20261021T1201Z/ordinary-main.png\n"
+    }
+  ],
+  "screenshot_sha256": "df061916c2fe2c0aa0e40e46919c3e9dce6de218f6134107da88176a48b34bc0",
+  "scope": "Original archived debug main, separate Verification tablet. No harness fixture imported into ordinary save. Protected Development tablet untouched."
+}

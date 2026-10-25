@@ -1,0 +1,75 @@
+[
+  {
+    "name": "python-base",
+    "command": [
+      "/Users/csys/Desktop/ibicot/idle/.tooling/services-venv/bin/python",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests/services",
+      "-p",
+      "test_service.py",
+      "-v"
+    ],
+    "exit_code": 0,
+    "seconds": 11.720051050186157
+  },
+  {
+    "name": "python-provider",
+    "command": [
+      "/Users/csys/Desktop/ibicot/idle/.tooling/services-venv/bin/python",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests/services/providers",
+      "-v"
+    ],
+    "exit_code": 0,
+    "seconds": 3.8849189281463623
+  },
+  {
+    "name": "python-independent",
+    "command": [
+      "/Users/csys/Desktop/ibicot/idle/.tooling/services-venv/bin/python",
+      "game/qa/integration_fulfillment_test.py"
+    ],
+    "exit_code": 0,
+    "seconds": 1.9931342601776123
+  },
+  [
+    {
+      "name": "dart-pub-get",
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/dart",
+        "pub",
+        "get"
+      ],
+      "exit_code": 0,
+      "seconds": 0.27229905128479004
+    },
+    {
+      "name": "dart-cache-tests",
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/dart",
+        "test",
+        "test/signed_entitlements_test.dart",
+        "test/qa_integration_signed_cache_test.dart",
+        "--reporter",
+        "expanded"
+      ],
+      "exit_code": 0,
+      "seconds": 4.777683973312378
+    },
+    {
+      "name": "dart-analysis",
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/dart",
+        "analyze"
+      ],
+      "exit_code": 0,
+      "seconds": 0.7401230335235596
+    }
+  ]
+]

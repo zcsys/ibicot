@@ -1,0 +1,17 @@
+--- original callbacks
++++ new callbacks
+@@ -406,7 +406,13 @@
+       await tester.runAsync(() async {
+         expect((await repository(directory).load()).snapshot, isNotNull);
+       });
+-      expect(base.listSync().map((entry) => entry.path), [directory.path]);
++      final cache = Directory('${base.path}/tideglass-soundtrack-exports');
++      await settleIo(tester, until: cache.existsSync);
++      expect(
++        base.listSync().map((entry) => entry.path),
++        unorderedEquals([directory.path, cache.path]),
++      );
++      expect(cache.listSync(), isEmpty);
+       await tester.pumpWidget(const SizedBox());
+       await tester.runAsync(
+         () async => Future<void>.delayed(const Duration(milliseconds: 20)),

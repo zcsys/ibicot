@@ -1,0 +1,38 @@
+{
+  "checker_sha256": "2bbf0a53b581f220bcbdb5b453ae0ebc50df4abb38f2eea33b4eb9bc4c5b1ed3",
+  "results": [
+    {
+      "command": [
+        "python3",
+        "game/qa/integration_art_checker_test.py"
+      ],
+      "exit_code": 0,
+      "log_sha256": "d45fccb004c0b836b2fd843a699f051b46fdba2e7ef2c0bd53955b6755fbacfe"
+    },
+    {
+      "command": [
+        "python3",
+        "source/art/verification/check_matrix.py",
+        "/Users/csys/Desktop/ibicot/idle/release/art/catalogue-variants/root-art-full-20261021T122040.006324Z/matrix-results.json",
+        "--proof",
+        "/Users/csys/Desktop/ibicot/idle/release/native-proof/root-art-full-20261021T122040.006324Z",
+        "--full"
+      ],
+      "exit_code": 0,
+      "log_sha256": "c2baede8cb922a66aea2ccacdd718ec67bf616c25d6b8d4774f43506fa394108"
+    },
+    {
+      "command": [
+        "python3",
+        "source/art/verification/check_matrix.py",
+        "/Users/csys/Desktop/ibicot/idle/release/art/catalogue-variants/root-art-pseudo-full-20261021T122636.246158Z/matrix-results.json",
+        "--proof",
+        "/Users/csys/Desktop/ibicot/idle/release/native-proof/root-art-pseudo-full-20261021T122636.246158Z",
+        "--full"
+      ],
+      "exit_code": 0,
+      "log_sha256": "9289590f597cc2afbedf39f83f9a41d3e10b5143b71111fe0f1f51d1a7a959e6"
+    }
+  ],
+  "limits": "Checker integrity repair; original actual executions and archives unchanged; no runtime edits or acceptance promotion."
+}

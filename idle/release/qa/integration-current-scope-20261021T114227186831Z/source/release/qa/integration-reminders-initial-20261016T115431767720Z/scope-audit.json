@@ -1,0 +1,134 @@
+{
+  "reviewer": "/root/qa_integration",
+  "completed_utc": "2026-10-19T13:54:25.274896+00:00",
+  "source_fingerprint": "88bf971fc5ffa7898178e6a7e03552c5222ef46280b4ccf7688ee46486577d6d",
+  "status": "partial_reminder_host_review_not_package_or_release_acceptance",
+  "context_validation": {
+    "scope_requirement_count": 44,
+    "original_production_package_count": 65,
+    "original_acceptance_dependency_changes": [],
+    "reciprocal_scope_mapping_errors": [],
+    "source_fingerprints_match": {
+      "TIDEGLASS_DESIGN.md": true,
+      "V1_ROADMAP.md": true,
+      "v1_backlog.json": true,
+      "economy.json": true
+    },
+    "accepted_original_count": 4,
+    "bootstrap_count": 3,
+    "bootstrap_separate_from_production": true
+  },
+  "scope_to_implementation": [
+    {
+      "scope_id": "S02",
+      "requirement": "Guest offline core, optional cloud, English externalized text and pseudolocalization",
+      "work_items": [
+        "M1-05",
+        "M3-06",
+        "M5-02"
+      ],
+      "evidence": "30 pinned host tests; quiet-hour, opt-in, cancellation, persistence/replay, native API request and narrow reminder expanded-copy checks.",
+      "full_requirement_verified": false,
+      "remaining": "Across-target native/physical behavior and full accessibility/localization acceptance remain open."
+    },
+    {
+      "scope_id": "S26",
+      "requirement": "Settings, target input, readable numbers, contextual help and opt-in quiet-hour notifications",
+      "work_items": [
+        "M3-05",
+        "M5-02"
+      ],
+      "evidence": "30 pinned host tests; quiet-hour, opt-in, cancellation, persistence/replay, native API request and narrow reminder expanded-copy checks.",
+      "full_requirement_verified": false,
+      "remaining": "Across-target native/physical behavior and full accessibility/localization acceptance remain open."
+    }
+  ],
+  "implementation_to_scope": [
+    {
+      "implementation": "notification_service.dart",
+      "scope_ids": [
+        "S26"
+      ],
+      "evidence": "Default-off permission boundary, separate bounded preferences, pure planner, serial native operations and cancellation."
+    },
+    {
+      "implementation": "reminder_lifecycle.dart",
+      "scope_ids": [
+        "S26",
+        "S08",
+        "S12"
+      ],
+      "evidence": "Scheduling requires final replay and durable save; generation guards cancel stale return/close work."
+    },
+    {
+      "implementation": "app.dart/bootstrap.dart/game_controller.dart pinned call sites",
+      "scope_ids": [
+        "S26"
+      ],
+      "evidence": "Inactive suspends without planning; paused/detached persist then plan; returned cancels; optional initialization."
+    },
+    {
+      "implementation": "notification_copy.dart/notification_settings.dart",
+      "scope_ids": [
+        "S26",
+        "S02"
+      ],
+      "evidence": "Opt-in controls, quiet-hour editor and 320px/200% expanded-copy tests; narrow surface only."
+    },
+    {
+      "implementation": "Android/iOS configuration and pinned plugin dependencies",
+      "scope_ids": [
+        "S26"
+      ],
+      "evidence": "Static native setup and mocked method arguments; no OS delivery qualification."
+    },
+    {
+      "implementation": "qa_integration_reminders_test.dart",
+      "scope_ids": [
+        "S26",
+        "S02"
+      ],
+      "evidence": "Eight independent adversarial cases including 384 timezone departure cases."
+    }
+  ],
+  "original_contracts": [
+    {
+      "id": "M3-05",
+      "title": "Complete settings and notification controls",
+      "status": "in_progress",
+      "source_acceptance": "Text scale, number notation, motion/audio controls, input navigation and opt-in quiet-hour notifications function across targets.",
+      "source_acceptance_dependencies": [
+        "M1-05",
+        "M3-01"
+      ],
+      "scope_ids": [
+        "S26"
+      ]
+    },
+    {
+      "id": "M5-02",
+      "title": "Complete accessibility and language readiness",
+      "status": "in_progress",
+      "source_acceptance": "Critical flows work at large text, without color/audio/motion dependencies and via target inputs; pseudolocalization has no blocking overflow.",
+      "source_acceptance_dependencies": [
+        "M3-05",
+        "M4-03",
+        "M4-06"
+      ],
+      "scope_ids": [
+        "S02",
+        "S09",
+        "S17",
+        "S26"
+      ]
+    }
+  ],
+  "new_packages_accepted": [],
+  "external_resources": "No developer accounts, physical devices, hosting or human playtesters available.",
+  "broader_audit_reference": "release/qa/integration-services-repaired-20261016T114721906724Z/scope-audit.json",
+  "limits": [
+    "Host Flutter/plugin-method-channel tests and package timezone database only.",
+    "Moving localization, unrelated simulation/core optimization and full native candidate are excluded.",
+    "No notification delivery, elapsed days, physical accessibility or platform power-management proof."
+  ]
+}

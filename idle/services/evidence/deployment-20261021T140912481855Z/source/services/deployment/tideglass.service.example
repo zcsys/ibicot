@@ -1,0 +1,41 @@
+# Preparation only; replace absolute paths and provision a dedicated OS user.
+# Not installed or enabled. Direct TLS, or layer-4 pass-through only.
+[Unit]
+Description=Tideglass bounded API
+After=network.target
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+[Service]
+Type=simple
+User=tideglass
+Group=tideglass
+WorkingDirectory=/opt/tideglass/current
+Environment=PYTHONUNBUFFERED=1
+ExecStart=/opt/tideglass/venv/bin/python -m services.tideglass_service.deployment --config /etc/tideglass/serving.json
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=15
+KillMode=control-group
+UMask=0077
+LimitNOFILE=512
+LimitCORE=0
+MemoryMax=512M
+MemorySwapMax=0
+TasksMax=32
+CPUQuota=200%
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/tideglass /run/tideglass
+RuntimeDirectory=tideglass
+RuntimeDirectoryMode=0700
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+StandardOutput=journal
+StandardError=journal
+LogRateLimitIntervalSec=30s
+LogRateLimitBurst=100
+
+[Install]
+WantedBy=multi-user.target

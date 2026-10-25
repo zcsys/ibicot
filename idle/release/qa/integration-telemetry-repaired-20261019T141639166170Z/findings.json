@@ -1,0 +1,34 @@
+[
+  {
+    "id": "QA015",
+    "status": "repaired_independently_verified",
+    "original_failure_count": 2,
+    "unchanged_independent_probes_passed": 8,
+    "scope_ids": [
+      "S39",
+      "S27"
+    ],
+    "source": "game/mobile/lib/native_services.dart",
+    "source_sha256": "c35cc352677c972f57987d4623135d14c74203bc2985c29b736d7b709816ab5d",
+    "original_evidence": "release/qa/integration-telemetry-initial-20261019T141159734022Z/independent-telemetry-probes.jsonl",
+    "limits": "Backend rejection remained in force; no unauthorized backend event acceptance was established."
+  },
+  {
+    "id": "QA014",
+    "status": "repaired_independently_verified",
+    "scope_ids": [
+      "S11"
+    ],
+    "evidence": "Actual-controller exhausted-dossier test in six passing simulation/client probes."
+  },
+  {
+    "id": "SIM001",
+    "status": "repaired_independently_verified",
+    "scope_ids": [
+      "S08",
+      "S11",
+      "S33"
+    ],
+    "evidence": "Updated final daily parity assertions and unchanged economic/partition assertions pass; initial gap test remains immutable."
+  }
+]

@@ -1,0 +1,46 @@
+[
+  {
+    "label": "compile-export_preview",
+    "command": [
+      "xcrun",
+      "swiftc",
+      "/Users/csys/Desktop/ibicot/idle/release/qa/client-preview-tool-20261023T032106.818906Z/export_preview.swift",
+      "-o",
+      "/Users/csys/Desktop/ibicot/idle/release/qa/client-preview-tool-20261023T032106.818906Z/export_preview"
+    ],
+    "exit_code": 0
+  },
+  {
+    "label": "compile-inspect_preview",
+    "command": [
+      "xcrun",
+      "swiftc",
+      "/Users/csys/Desktop/ibicot/idle/release/qa/client-preview-tool-20261023T032106.818906Z/inspect_preview.swift",
+      "-o",
+      "/Users/csys/Desktop/ibicot/idle/release/qa/client-preview-tool-20261023T032106.818906Z/inspect_preview"
+    ],
+    "exit_code": 0
+  },
+  {
+    "label": "historical-export",
+    "command": [
+      "/Users/csys/Desktop/ibicot/idle/release/qa/client-preview-tool-20261023T032106.818906Z/export_preview",
+      "/Users/csys/Desktop/ibicot/idle/release/native-proof/integration-ios-phone-20261021T112255.702927Z/gameplay.mp4",
+      "/Users/csys/Desktop/ibicot/idle/release/qa/client-preview-tool-20261023T032106.818906Z/historical-review.mp4",
+      "2",
+      "20",
+      "886",
+      "1920"
+    ],
+    "exit_code": 0
+  },
+  {
+    "label": "historical-inspect",
+    "command": [
+      "/Users/csys/Desktop/ibicot/idle/release/qa/client-preview-tool-20261023T032106.818906Z/inspect_preview",
+      "/Users/csys/Desktop/ibicot/idle/release/qa/client-preview-tool-20261023T032106.818906Z/historical-review.mp4",
+      "/Users/csys/Desktop/ibicot/idle/release/qa/client-preview-tool-20261023T032106.818906Z/decoded"
+    ],
+    "exit_code": 0
+  }
+]

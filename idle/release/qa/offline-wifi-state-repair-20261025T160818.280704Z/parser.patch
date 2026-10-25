@@ -1,0 +1,24 @@
+--- before/offline_support.py
++++ offline_support.py
+@@ -160,8 +160,11 @@
+     out = lambda k: commands[k]['stdout'].strip()
+     if out('sdk') != '35':
+         raise ValueError('Unexpected emulator SDK; API36 build target is not runtime qualification')
+-    if out('airplane') not in ('0', '1') or out('wifi') not in ('0', '1') or out('data') not in ('0', '1'):
++    if out('airplane') not in ('0', '1') or out('wifi') not in ('0', '1', '3') or out('data') not in ('0', '1'):
+         raise ValueError('Unknown actual radio settings')
++    # Android 15 WifiSettingsStore: 3 is WIFI_DISABLED_APM_ON, not enabled.
++    if out('wifi') == '3' and out('airplane') != '1':
++        raise ValueError('Airplane-disabled Wi-Fi state without airplane mode')
+     matches = re.findall(r'^\s*Active default network: (none|\d+)\s*$', out('connectivity'), re.M)
+     if len(matches) != 1:
+         raise ValueError('Unknown/ambiguous default-network state; inspect raw dump')
+@@ -265,7 +268,7 @@
+         phase = row['marker']['phase']
+         state = parse_os(row)
+         states[phase] = state
+-        if phase.startswith('offline-') and (state['airplane'] != '1' or state['wifi'] != '0' or state['default'] != 'none'):
++        if phase.startswith('offline-') and (state['airplane'] != '1' or state['wifi'] not in ('0', '3') or state['default'] != 'none'):
+             raise ValueError('Airplane alone insufficient: actual default network/wifi still available')
+         if phase in ('before-online', 'after-restored') and (state['airplane'] != '0' or state['default'] == 'none'):
+             raise ValueError('Before/restored OS network not active')

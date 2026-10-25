@@ -1,0 +1,7 @@
+# Lead acceptance: M3-09 and provenance integration
+
+Accept M3-09 at its unchanged original producer/daily-icon criterion and accepted M2-05 prerequisite. The assigned independent client reviewer (/root/qa_release, different from icon author) inspected actual code and exact existing25-stage proof, verified all12 author daily conditions and the root's two independent daily conditions plus combined Rechart checks. Locked/error branches are source-inspected and distinguished from newly rendered cases. Text equivalents, status meaning and all original counts are retained; no economic rule changed.
+
+Integrate the exact34 independently reviewed provenance proposals from42 declared bindings across4 source changes. Historical provenance/source bytes, all297 export bindings, original captures, null review/rights fields and approval states remain preserved. The earlier37 existence-only updates were independently reproduced. A proposed record's author-time review-pending flag is retained as historical proposal data; this integration record supplies the later independent decision. No existing PNG is relabeled as a current capture and no whole-asset/native approval is added.
+
+Seventeen original packages and three separate bootstrap contributions are accepted. S04 and broader asset/native/physical/rights/provider/human/release gates remain separate. All65 original criteria/dependencies and44 scope records are unchanged.

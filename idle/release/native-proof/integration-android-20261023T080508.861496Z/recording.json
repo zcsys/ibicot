@@ -1,0 +1,65 @@
+{
+  "platform": "android",
+  "device": "emulator-5556",
+  "audio_recorded": false,
+  "editing": "None; native simulator screen recorder output",
+  "commands": [
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "exec-out",
+        "screencap",
+        "-p"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "raw_bytes": 154091
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "sh",
+        "-c",
+        "'set -C; cat > /data/user/0/dev.tideglass.game/files/native-verification/capture-android-v3b00-android-gallery-surface-fixed/screenshot-1-ready.json.pending && ln /data/user/0/dev.tideglass.game/files/native-verification/capture-android-v3b00-android-gallery-surface-fixed/screenshot-1-ready.json.pending /data/user/0/dev.tideglass.game/files/native-verification/capture-android-v3b00-android-gallery-surface-fixed/screenshot-1-ready.json && rm /data/user/0/dev.tideglass.game/files/native-verification/capture-android-v3b00-android-gallery-surface-fixed/screenshot-1-ready.json.pending'"
+      ],
+      "exit_code": 1,
+      "output": "ln: cannot create hard link from '/data/user/0/dev.tideglass.game/files/native-verification/capture-android-v3b00-android-gallery-surface-fixed/screenshot-1-ready.json.pending' to '/data/user/0/dev.tideglass.game/files/native-verification/capture-android-v3b00-android-gallery-surface-fixed/screenshot-1-ready.json': Permission denied\n"
+    }
+  ],
+  "errors": [
+    "Recorder orchestration: Native capture command failed: /Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+    "No synchronized gallery start marker",
+    "No completed gameplay marker",
+    "Native video artifact is missing"
+  ],
+  "android_screenshots": [
+    {
+      "verification_id": "integration-android-20261023T080508.861496Z",
+      "candidate_fingerprint": "3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59",
+      "harness_sha256": "1925106cb014a4a21575af3aa3bd85fc997873c1c9be74249c966da1cf28318b",
+      "device_label": "android",
+      "run_id": "v3b00-android-gallery-surface-fixed",
+      "platform": "android",
+      "scenario": "capture-gallery",
+      "directory": "/data/user/0/dev.tideglass.game/files/native-verification/capture-android-v3b00-android-gallery-surface-fixed",
+      "sequence": 1,
+      "file": "android-capture-main.png",
+      "width": 1080,
+      "height": 1920,
+      "gameplay_elapsed_ms": 0,
+      "sha256": "5af6b247b2e9222cb69900092271c0e0ef277f6fb3786d6426c4e2fd6eece1e4",
+      "bytes": 154091,
+      "capture_method": "adb exec-out screencap -p",
+      "host_capture_start_monotonic_ns": 65854420611250,
+      "host_capture_end_monotonic_ns": 65856697947500
+    }
+  ],
+  "passed": false
+}

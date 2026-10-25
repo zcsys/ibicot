@@ -1,0 +1,55 @@
+{
+  "scope": "Preserves original reports; this correction overrides two false-positive session verdicts caused by driver success after failed harness teardown.",
+  "verifier_sha256": "a70c04ef92b4d1359ac1c88f9618d669302d0494ff0f5350419bf3cf8139c3fd",
+  "harness_sha256": "d88a0141cede2c2032ce1f55d4ba93e54de6ee15037b341a4ece3291ec0284aa",
+  "tests_passed": 17,
+  "results": [
+    {
+      "directory": "release/native-proof/integration-ios-phone-20261021T105421.273826Z",
+      "original_reported_passed": true,
+      "raw_log_errors": [],
+      "accepted_passed": true
+    },
+    {
+      "directory": "release/native-proof/integration-ios-phone-20261021T105636.380850Z",
+      "original_reported_passed": true,
+      "raw_log_errors": [],
+      "accepted_passed": true
+    },
+    {
+      "directory": "release/native-proof/integration-ios-phone-20261021T105807.287111Z",
+      "original_reported_passed": true,
+      "raw_log_errors": [],
+      "accepted_passed": true
+    },
+    {
+      "directory": "release/native-proof/integration-ios-phone-20261021T105903.318495Z",
+      "original_reported_passed": false,
+      "raw_log_errors": [
+        "Native build/test failure in log: Some tests failed.",
+        "Native build/test failure in log: EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK",
+        "Native test or teardown error marker in log",
+        "No successful test completion in native log"
+      ],
+      "accepted_passed": false
+    },
+    {
+      "directory": "release/native-proof/integration-ios-phone-20261021T110101.188894Z",
+      "original_reported_passed": true,
+      "raw_log_errors": [
+        "Native build/test failure in log: Some tests failed.",
+        "Native test or teardown error marker in log"
+      ],
+      "accepted_passed": false
+    },
+    {
+      "directory": "release/native-proof/integration-ios-phone-20261021T110448.691349Z",
+      "original_reported_passed": true,
+      "raw_log_errors": [
+        "Native build/test failure in log: Some tests failed.",
+        "Native test or teardown error marker in log"
+      ],
+      "accepted_passed": false
+    }
+  ]
+}

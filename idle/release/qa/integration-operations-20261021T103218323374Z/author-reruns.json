@@ -1,0 +1,44 @@
+[
+  {
+    "name": "operations",
+    "command": [
+      "/Users/csys/Desktop/ibicot/idle/.tooling/services-venv/bin/python",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests/services/operations",
+      "-v"
+    ],
+    "exit_code": 0,
+    "tail": ". ok\ntest_restore_deletion_manifest_validation (test_operations.OperationsTests.test_restore_deletion_manifest_validation) ... ok\ntest_restore_missing_corrupt_newer_and_low_space_fail_without_touch (test_operations.OperationsTests.test_restore_missing_corrupt_newer_and_low_space_fail_without_touch) ... ok\ntest_restore_preserves_source_and_removes_temporary_copy (test_operations.OperationsTests.test_restore_preserves_source_and_removes_temporary_copy) ... ok\ntest_restore_reads_committed_wal_not_just_main_file (test_operations.OperationsTests.test_restore_reads_committed_wal_not_just_main_file) ... ok\ntest_stale_ownership_and_reconciliation_queue (test_operations.OperationsTests.test_stale_ownership_and_reconciliation_queue) ... ok\ntest_symlink_and_directory_rejected (test_operations.OperationsTests.test_symlink_and_directory_rejected) ... ok\ntest_telemetry_excludes_synthetic_and_reports_bad_rows (test_operations.OperationsTests.test_telemetry_excludes_synthetic_and_reports_bad_rows) ... ok\ntest_telemetry_failure_threshold_low_sample_and_scan_limit (test_operations.OperationsTests.test_telemetry_failure_threshold_low_sample_and_scan_limit) ... ok\ntest_tiny_deadline_and_invalid_thresholds_fail_closed (test_operations.OperationsTests.test_tiny_deadline_and_invalid_thresholds_fail_closed) ... ok\ntest_trigger_rejected_before_restore_behavior (test_operations.OperationsTests.test_trigger_rejected_before_restore_behavior) ... ok\ntest_undelivered_support_exact_day_threshold (test_operations.OperationsTests.test_undelivered_support_exact_day_threshold) ... ok\ntest_unknown_newer_schema_is_not_migrated (test_operations.OperationsTests.test_unknown_newer_schema_is_not_migrated) ... ok\n\n----------------------------------------------------------------------\nRan 29 tests in 0.998s\n\nOK\n"
+  },
+  {
+    "name": "base-services",
+    "command": [
+      "/Users/csys/Desktop/ibicot/idle/.tooling/services-venv/bin/python",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests/services",
+      "-v"
+    ],
+    "exit_code": 0,
+    "tail": ".ServiceTests.test_restart_persistence_and_consistent_backup) ... ok\ntest_snapshot_replay_conflict_and_explicit_selection_no_merge (test_service.ServiceTests.test_snapshot_replay_conflict_and_explicit_selection_no_merge) ... ok\ntest_stale_provider_verification_cannot_authorize_forever (test_service.ServiceTests.test_stale_provider_verification_cannot_authorize_forever) ... ok\ntest_two_real_concurrent_devices_preserve_both_and_cas_selection (test_service.ServiceTests.test_two_real_concurrent_devices_preserve_both_and_cas_selection) ... /Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/socket.py:706: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x1085e3f10>\n  def readinto(self, b):\nResourceWarning: Enable tracemalloc to get the object allocation traceback\n/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/socket.py:706: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x108678040>\n  def readinto(self, b):\nResourceWarning: Enable tracemalloc to get the object allocation traceback\nok\ntest_unconfigured_store_and_ad_cannot_grant (test_service.ServiceTests.test_unconfigured_store_and_ad_cannot_grant) ... ok\ntest_unknown_parent_preserved_requires_selection_and_no_cross_account_reads (test_service.ServiceTests.test_unknown_parent_preserved_requires_selection_and_no_cross_account_reads) ... ok\ntest_authenticated_read_does_not_mutate_revision (test_telemetry_consent_read.ConsentReadTests.test_authenticated_read_does_not_mutate_revision) ... ok\ntest_remote_withdrawal_read_cannot_authorize_old_revision (test_telemetry_consent_read.ConsentReadTests.test_remote_withdrawal_read_cannot_authorize_old_revision) ... ok\n\n----------------------------------------------------------------------\nRan 50 tests in 26.820s\n\nOK\n"
+  },
+  {
+    "name": "providers",
+    "command": [
+      "/Users/csys/Desktop/ibicot/idle/.tooling/services-venv/bin/python",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests/services/providers",
+      "-v"
+    ],
+    "exit_code": 0,
+    "tail": "k\ntest_real_apple_sdk_rejects_forged_jws (test_provider_adapters.ProviderTests.test_real_apple_sdk_rejects_forged_jws) ... ok\ntest_real_ecdsa_ad_signature_binding_and_tamper (test_provider_adapters.ProviderTests.test_real_ecdsa_ad_signature_binding_and_tamper) ... ok\ntest_signed_callback_commits_once_and_forgery_cannot_use_duplicate_fast_path (test_provider_adapters.ProviderTests.test_signed_callback_commits_once_and_forgery_cannot_use_duplicate_fast_path) ... ok\ntest_binding_survives_token_account_deletion (test_vault_key_binding.VaultKeyBindingTests.test_binding_survives_token_account_deletion) ... ok\ntest_empty_current_epoch_still_rejects_wrong_same_id_material (test_vault_key_binding.VaultKeyBindingTests.test_empty_current_epoch_still_rejects_wrong_same_id_material) ... ok\ntest_legacy_empty_epoch_requires_explicit_new_id_and_old_id_stays_retired (test_vault_key_binding.VaultKeyBindingTests.test_legacy_empty_epoch_requires_explicit_new_id_and_old_id_stays_retired) ... ok\ntest_legacy_migration_checks_all_rows_and_rolls_back_on_corruption (test_vault_key_binding.VaultKeyBindingTests.test_legacy_migration_checks_all_rows_and_rolls_back_on_corruption) ... ok\ntest_legacy_populated_database_authenticates_before_migration (test_vault_key_binding.VaultKeyBindingTests.test_legacy_populated_database_authenticates_before_migration) ... ok\ntest_stale_rotation_cannot_overwrite_a_newer_active_epoch (test_vault_key_binding.VaultKeyBindingTests.test_stale_rotation_cannot_overwrite_a_newer_active_epoch) ... ok\ntest_write_and_rotate_recheck_key_binding_after_initialization (test_vault_key_binding.VaultKeyBindingTests.test_write_and_rotate_recheck_key_binding_after_initialization) ... ok\n\n----------------------------------------------------------------------\nRan 32 tests in 4.249s\n\nOK\n"
+  }
+]

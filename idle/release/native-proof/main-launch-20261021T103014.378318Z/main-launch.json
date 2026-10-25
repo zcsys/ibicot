@@ -1,0 +1,79 @@
+{
+  "candidate_fingerprint": "152805bf9e269f49d14486286656ac0174a808384d10e6623533a4f92690dc11",
+  "artifact": "release/native-proof/20261021T102112.746555Z/artifacts/tideglass-ios-debug.zip",
+  "artifact_sha256": "d4713f0a890fd03ef92052c0545c81c04d24b9e13e51cd9329efc828fac71515",
+  "scope": "Ordinary archived debug main application; existing local guest installation data retained; no seeded harness or natural pacing claim. Simulator only.",
+  "commands": [
+    {
+      "command": [
+        "xcrun",
+        "simctl",
+        "install",
+        "F05BE4B0-52C1-4CA1-B721-BD64AE559E3F",
+        "/Users/csys/Desktop/ibicot/idle/.tooling/native-main-20261021T103014.378318Z/Runner.app"
+      ],
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "command": [
+        "xcrun",
+        "simctl",
+        "launch",
+        "F05BE4B0-52C1-4CA1-B721-BD64AE559E3F",
+        "dev.tideglass.game"
+      ],
+      "exit_code": 0,
+      "output": "dev.tideglass.game: 14598\n"
+    },
+    {
+      "command": [
+        "xcrun",
+        "simctl",
+        "install",
+        "F103390E-7B7C-4F0B-9404-5E029C7131FF",
+        "/Users/csys/Desktop/ibicot/idle/.tooling/native-main-20261021T103014.378318Z/Runner.app"
+      ],
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "command": [
+        "xcrun",
+        "simctl",
+        "launch",
+        "F103390E-7B7C-4F0B-9404-5E029C7131FF",
+        "dev.tideglass.game"
+      ],
+      "exit_code": 0,
+      "output": "dev.tideglass.game: 14638\n"
+    }
+  ],
+  "screenshots": [
+    {
+      "file": "ios-phone-main.png",
+      "width": 1206,
+      "height": 2622,
+      "sha256": "a4b8ab044f51c9aad52f5b4dabf22011b6f70d865d769ae787ebcd669c4b9153"
+    },
+    {
+      "file": "ios-tablet-main.png",
+      "width": 1488,
+      "height": 2266,
+      "sha256": "420363756e348d5911516bc3b9105126085c3e146946c195af782fc6ae889997"
+    }
+  ],
+  "visual_review": {
+    "method": "Actual Device Hub accessibility state plus raw simctl screenshots inspected by AI agent",
+    "result": "Both ordinary apps reached the real harbor and onboarding UI; clear labels, art and navigation without observed clipping. Radiance timer visible.",
+    "ios_phone_existing_progress": "141.7K R and one lightkeeper observed; retained guest save, not fresh-run timing evidence",
+    "ios_tablet_observation": "45.26 R and one lightkeeper observed; no deliberate data reset",
+    "not_claimed": [
+      "human usability",
+      "physical screen-reader acceptance",
+      "fresh-run pacing",
+      "store submission"
+    ]
+  },
+  "ordinary_main_launch_observed": true
+}

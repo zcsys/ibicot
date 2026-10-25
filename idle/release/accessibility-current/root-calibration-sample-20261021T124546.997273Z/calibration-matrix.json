@@ -1,0 +1,971 @@
+{
+  "schema_version": 1,
+  "scope": "M5-02/M3-04 S02/S09/S17/S26 bounded host interaction qualification",
+  "locale": "en-US",
+  "pseudo_enabled": false,
+  "expected_pattern_display_cases": 144,
+  "expected_state_rows": 432,
+  "observed_passing_state_rows": 36,
+  "complete_matrix_observed": false,
+  "runner_exit_status_is_also_required": true,
+  "source_sha256": {
+    "test/calibration_accessibility_matrix_test.dart": "ad1e0e8edb61f33b8b10bc5591ba726dc53875729f73e2b9ce9f9b894d8f8794",
+    "test/calibration_test.dart": "049d71f3953c81091c145a87ac6ff5e51729495dd00c88a573d7ff6ca12f6e65",
+    "lib/calibration_screen.dart": "541613d83be2a8bbe9c8ac9a41f8fae97138727586ceb29213b5d15d9b0a3d51",
+    "lib/calibration_pattern.dart": "5da6ff66b8a9d8317d047c0ec99795a98c89b6b3afe83c640c7a129391899c74",
+    "lib/game_controller.dart": "f050c9b0c6c13dc31dad95e0dc5b51f78ee2f17c383ce59a3ab553c89adb4afa",
+    "lib/story_state.dart": "008c4c5ad721794809d38a00b72de32ecd98402a1acf2724f9eb1c4af6860cc4",
+    "lib/presentation.dart": "0b891f8baa973d11f1aabe6d985fafbe8bf0e08904007cb0f218e68044fd9b63",
+    "lib/strings.dart": "a1f75c799a56c1fdb5125f65eacb6f637912be042bbd748303ac3bbea7b6abb8",
+    "lib/palette.dart": "1da79c2cd009e271dcaf3dd349f20e380950fbbb67ca54e10ea5180b2ed86d83",
+    "../core/lib/src/daily_engine.dart": "1949239d4ae3bba5c72d716a3a027c0ada52ec97e434431a132c941001db322f",
+    "../core/lib/src/engine.dart": "0fbc3f3dfbb54df8a0cef41a8b8c788baef473d0bbffe643301a3d9c9d9eade6",
+    "assets/calibrations/calibration.01.pattern.json": "da374a476f45c6c542052093c8275a8122407908fb8b6a0af5a8ae40ccbf9e2f",
+    "assets/calibrations/calibration.02.pattern.json": "7accb0f5f23fdcda860ab0e08ee66164c772d195a79a52fc0e1be7df98c892b6",
+    "assets/calibrations/calibration.03.pattern.json": "d86a3527f1ed772cd6052210cf8b01e38ba1c457cedc56d8dce830ad6a9b76a8",
+    "assets/calibrations/calibration.04.pattern.json": "92d291c24c4c7c04d59f8200ec30773ef5bbfe9c546eefe2d95e938736c35d0e",
+    "assets/calibrations/calibration.05.pattern.json": "b7593e40c0cee34d705f103a13380733d50ac708e3b8d1d19f6a31c9dce231c8",
+    "assets/calibrations/calibration.06.pattern.json": "34dbd4fc6f077b9e04b3cd6facb0d9de13ddbebfb0db389268c729d6a7b89d30",
+    "assets/calibrations/calibration.07.pattern.json": "fbd0709352d9d78f262f9f30f60dfc13e88e033ea55b5b658ce0082a06393c38",
+    "assets/calibrations/calibration.08.pattern.json": "1c486001555913893e001a67459b3f4b2d1219ce82359185ef0941f5c7fc52ac",
+    "assets/calibrations/calibration.09.pattern.json": "c05f17ec3077c73d62c22524b56d2ade291939f6f10b20087bc7c0578be96d70",
+    "assets/calibrations/calibration.10.pattern.json": "743955d5cefe72601f7eb177e964ba7a2314e025e7feea6915c881f3ace83ef7",
+    "assets/calibrations/calibration.11.pattern.json": "6821f5dd9d9d9a89c52afcdddc78fe2f663f0455b69b2c352fa30b4641769371",
+    "assets/calibrations/calibration.12.pattern.json": "db649ab28e1b1c82112ff4bfa87f4a7263f8e17f43d68541f5bb045057522288"
+  },
+  "conditions": [
+    {
+      "condition_id": "en-US-phone-100-normal",
+      "locale": "en-US",
+      "viewport": [
+        320.0,
+        720.0
+      ],
+      "text_scale": 1.0,
+      "reduced_motion": false
+    },
+    {
+      "condition_id": "en-US-phone-100-reduced",
+      "locale": "en-US",
+      "viewport": [
+        320.0,
+        720.0
+      ],
+      "text_scale": 1.0,
+      "reduced_motion": true
+    },
+    {
+      "condition_id": "en-US-phone-150-normal",
+      "locale": "en-US",
+      "viewport": [
+        320.0,
+        720.0
+      ],
+      "text_scale": 1.5,
+      "reduced_motion": false
+    },
+    {
+      "condition_id": "en-US-phone-150-reduced",
+      "locale": "en-US",
+      "viewport": [
+        320.0,
+        720.0
+      ],
+      "text_scale": 1.5,
+      "reduced_motion": true
+    },
+    {
+      "condition_id": "en-US-phone-200-normal",
+      "locale": "en-US",
+      "viewport": [
+        320.0,
+        720.0
+      ],
+      "text_scale": 2.0,
+      "reduced_motion": false
+    },
+    {
+      "condition_id": "en-US-phone-200-reduced",
+      "locale": "en-US",
+      "viewport": [
+        320.0,
+        720.0
+      ],
+      "text_scale": 2.0,
+      "reduced_motion": true
+    },
+    {
+      "condition_id": "en-US-tablet-100-normal",
+      "locale": "en-US",
+      "viewport": [
+        1024.0,
+        768.0
+      ],
+      "text_scale": 1.0,
+      "reduced_motion": false
+    },
+    {
+      "condition_id": "en-US-tablet-100-reduced",
+      "locale": "en-US",
+      "viewport": [
+        1024.0,
+        768.0
+      ],
+      "text_scale": 1.0,
+      "reduced_motion": true
+    },
+    {
+      "condition_id": "en-US-tablet-150-normal",
+      "locale": "en-US",
+      "viewport": [
+        1024.0,
+        768.0
+      ],
+      "text_scale": 1.5,
+      "reduced_motion": false
+    },
+    {
+      "condition_id": "en-US-tablet-150-reduced",
+      "locale": "en-US",
+      "viewport": [
+        1024.0,
+        768.0
+      ],
+      "text_scale": 1.5,
+      "reduced_motion": true
+    },
+    {
+      "condition_id": "en-US-tablet-200-normal",
+      "locale": "en-US",
+      "viewport": [
+        1024.0,
+        768.0
+      ],
+      "text_scale": 2.0,
+      "reduced_motion": false
+    },
+    {
+      "condition_id": "en-US-tablet-200-reduced",
+      "locale": "en-US",
+      "viewport": [
+        1024.0,
+        768.0
+      ],
+      "text_scale": 2.0,
+      "reduced_motion": true
+    }
+  ],
+  "rows": [
+    {
+      "pattern_id": "calibration.01",
+      "condition_id": "en-US-phone-100-normal",
+      "locale": "en-US",
+      "viewport": [
+        320.0,
+        720.0
+      ],
+      "text_scale": 1.0,
+      "reduced_motion": false,
+      "state": "unearned",
+      "normal_and_crew_core_story_persistence_equal": true,
+      "single_charge_600_seconds_20_percent": true,
+      "collectible_set_does_not_duplicate": true,
+      "undo_restart_and_route_traversed": true,
+      "duplicate_controls_disabled": true,
+      "reachable_48px_controls_and_named_semantics": true,
+      "layout_exception": false,
+      "before_core_sha256": "f197bfd755b54edee49d4cf951dee8368e0c270dce45fc0d707055ab4e9a9bdc",
+      "after_core_sha256": "1b1bf8913596ece7599b1a0c758f94b1c7a343a090512c3d53481fe5ecb4012f",
+      "after_session_sha256": "29731a418af10d7a206c714a7d54e1c56db8690d0bafe7e0aa02f021968ae67e",
+      "result": "passed_bounded_host_case"
+    },
+    {
+      "pattern_id": "calibration.01",
+      "condition_id": "en-US-phone-100-normal",
+      "locale": "en-US",
+      "viewport": [
+        320.0,
+        720.0
+      ],
+      "text_scale": 1.0,
+      "reduced_motion": false,
+      "state": "previously_earned",
+      "normal_and_crew_core_story_persistence_equal": true,
+      "single_charge_600_seconds_20_percent": true,
+      "collectible_set_does_not_duplicate": true,
+      "undo_restart_and_route_traversed": true,
+      "duplicate_controls_disabled": true,
+      "reachable_48px_controls_and_named_semantics": true,
+      "layout_exception": false,
+      "before_core_sha256": "1b1bf8913596ece7599b1a0c758f94b1c7a343a090512c3d53481fe5ecb4012f",
+      "after_core_sha256": "9432f421e2d123a7a2b345c8579876618da2276891b4dc664f7bad2c169f98fb",
+      "after_session_sha256": "6d721950a96a0069d2597e72c022d78c702a153d848326b40d221367308f4381",
+      "result": "passed_bounded_host_case"
+    },
+    {
+      "pattern_id": "calibration.01",
+      "condition_id": "en-US-phone-100-normal",
+      "locale": "en-US",
+      "viewport": [
+        320.0,
+        720.0
+      ],
+      "text_scale": 1.0,
+      "reduced_motion": false,
+      "state": "no_stored_focus_practice",
+      "full_route_undo_restart_work": true,
+      "both_claims_disabled_before_and_after_solving": true,
+      "commands": 0,
+      "save_writes": 0,
+      "complete_core_and_story_unchanged": true,
+      "reachable_48px_controls_and_named_semantics": true,
+      "layout_exception": false,
+      "unchanged_core_sha256": "343d1656879a57d9ab62bdfc77d46aa9843d095767186516928d6e17acd64136",
+      "result": "passed_bounded_host_case"
+    },
+    {
+      "pattern_id": "calibration.02",
+      "condition_id": "en-US-phone-100-normal",
+      "locale": "en-US",
+      "viewport": [
+        320.0,
+        720.0
+      ],
+      "text_scale": 1.0,
+      "reduced_motion": false,
+      "state": "unearned",
+      "normal_and_crew_core_story_persistence_equal": true,
+      "single_charge_600_seconds_20_percent": true,
+      "collectible_set_does_not_duplicate": true,
+      "undo_restart_and_route_traversed": true,
+      "duplicate_controls_disabled": true,
+      "reachable_48px_controls_and_named_semantics": true,
+      "layout_exception": false,
+      "before_core_sha256": "f197bfd755b54edee49d4cf951dee8368e0c270dce45fc0d707055ab4e9a9bdc",
+      "after_core_sha256": "de104c16b7396832df7172ff914f6cef8bd6db6cfdba74dc98bc05efef5243f7",
+      "after_session_sha256": "e9ba7b58296d1d8db92ab0ed9b030a8f38961c94aa511b54a25fa6795ad35c41",
+      "result": "passed_bounded_host_case"
+    },
+    {
+      "pattern_id": "calibration.02",
+      "condition_id": "en-US-phone-100-normal",
+      "locale": "en-US",
+      "viewport": [
+        320.0,
+        720.0
+      ],
+      "text_scale": 1.0,
+      "reduced_motion": false,
+      "state": "previously_earned",
+      "normal_and_crew_core_story_persistence_equal": true,
+      "single_charge_600_seconds_20_percent": true,
+      "collectible_set_does_not_duplicate": true,
+      "undo_restart_and_route_traversed": true,
+      "duplicate_controls_disabled": true,
+      "reachable_48px_controls_and_named_semantics": true,
+      "layout_exception": false,
+      "before_core_sha256": "de104c16b7396832df7172ff914f6cef8bd6db6cfdba74dc98bc05efef5243f7",
+      "after_core_sha256": "f28bd39a7c6066f0d3ba7e9d9a6d48e8b1d1cb749f39d2bbe49f53e089fd85ff",
+      "after_session_sha256": "447bee88a1c2e63c3d59990e007acda1f538a643042278f1c0a66ea0ce003e60",
+      "result": "passed_bounded_host_case"
+    },
+    {
+      "pattern_id": "calibration.02",
+      "condition_id": "en-US-phone-100-normal",
+      "locale": "en-US",
+      "viewport": [
+        320.0,
+        720.0
+      ],
+      "text_scale": 1.0,
+      "reduced_motion": false,
+      "state": "no_stored_focus_practice",
+      "full_route_undo_restart_work": true,
+      "both_claims_disabled_before_and_after_solving": true,
+      "commands": 0,
+      "save_writes": 0,
+      "complete_core_and_story_unchanged": true,
+      "reachable_48px_controls_and_named_semantics": true,
+      "layout_exception": false,
+      "unchanged_core_sha256": "343d1656879a57d9ab62bdfc77d46aa9843d095767186516928d6e17acd64136",
+      "result": "passed_bounded_host_case"
+    },
+    {
+      "pattern_id": "calibration.03",
+      "condition_id": "en-US-phone-100-normal",
+      "locale": "en-US",
+      "viewport": [
+        320.0,
+        720.0
+      ],
+      "text_scale": 1.0,
+      "reduced_motion": false,
+      "state": "unearned",
+      "normal_and_crew_core_story_persistence_equal": true,
+      "single_charge_600_seconds_20_percent": true,
+      "collectible_set_does_not_duplicate": true,
+      "undo_restart_and_route_traversed": true,
+      "duplicate_controls_disabled": true,
+      "reachable_48px_controls_and_named_semantics": true,
+      "layout_exception": false,
+      "before_core_sha256": "f197bfd755b54edee49d4cf951dee8368e0c270dce45fc0d707055ab4e9a9bdc",
+      "after_core_sha256": "692739de8abb01b660f85a229dffb691e84d51c716a54e12d7c22bd28f3c6f80",
+      "after_session_sha256": "64285d747af535e05f71b9adda6b6a2b1064ec1e693a8f3d91288cf6c9fcb37a",
+      "result": "passed_bounded_host_case"
+    },
+    {
+      "pattern_id": "calibration.03",
+      "condition_id": "en-US-phone-100-normal",
+      "locale": "en-US",
+      "viewport": [
+        320.0,
+        720.0
+      ],
+      "text_scale": 1.0,
+      "reduced_motion": false,
+      "state": "previously_earned",
+      "normal_and_crew_core_story_persistence_equal": true,
+      "single_charge_600_seconds_20_percent": true,
+      "collectible_set_does_not_duplicate": true,
+      "undo_restart_and_route_traversed": true,
+      "duplicate_controls_disabled": true,
+      "reachable_48px_controls_and_named_semantics": true,
+      "layout_exception": false,
+      "before_core_sha256": "692739de8abb01b660f85a229dffb691e84d51c716a54e12d7c22bd28f3c6f80",
+      "after_core_sha256": "dffbb187fea6b183e2d7dfc017ec86ab392eb9cd57d1a97f02754472ce193cb5",
+      "after_session_sha256": "76c7a307c0309c55560298376a4aeb32f3217e56d07238667effed2163fe81c6",
+      "result": "passed_bounded_host_case"
+    },
+    {
+      "pattern_id": "calibration.03",
+      "condition_id": "en-US-phone-100-normal",
+      "locale": "en-US",
+      "viewport": [
+        320.0,
+        720.0
+      ],
+      "text_scale": 1.0,
+      "reduced_motion": false,
+      "state": "no_stored_focus_practice",
+      "full_route_undo_restart_work": true,
+      "both_claims_disabled_before_and_after_solving": true,
+      "commands": 0,
+      "save_writes": 0,
+      "complete_core_and_story_unchanged": true,
+      "reachable_48px_controls_and_named_semantics": true,
+      "layout_exception": false,
+      "unchanged_core_sha256": "343d1656879a57d9ab62bdfc77d46aa9843d095767186516928d6e17acd64136",
+      "result": "passed_bounded_host_case"
+    },
+    {
+      "pattern_id": "calibration.04",
+      "condition_id": "en-US-phone-100-normal",
+      "locale": "en-US",
+      "viewport": [
+        320.0,
+        720.0
+      ],
+      "text_scale": 1.0,
+      "reduced_motion": false,
+      "state": "unearned",
+      "normal_and_crew_core_story_persistence_equal": true,
+      "single_charge_600_seconds_20_percent": true,
+      "collectible_set_does_not_duplicate": true,
+      "undo_restart_and_route_traversed": true,
+      "duplicate_controls_disabled": true,
+      "reachable_48px_controls_and_named_semantics": true,
+      "layout_exception": false,
+      "before_core_sha256": "f197bfd755b54edee49d4cf951dee8368e0c270dce45fc0d707055ab4e9a9bdc",
+      "after_core_sha256": "b9e17da3eb319e7393bc0f50a1bd797412d6a70903026240b94cb88d804a15bb",
+      "after_session_sha256": "ed50d878800cad1e972003cf5f7f6600e0b71e3ff6a732c8f1b7819c82c7d1aa",
+      "result": "passed_bounded_host_case"
+    },
+    {
+      "pattern_id": "calibration.04",
+      "condition_id": "en-US-phone-100-normal",
+      "locale": "en-US",
+      "viewport": [
+        320.0,
+        720.0
+      ],
+      "text_scale": 1.0,
+      "reduced_motion": false,
+      "state": "previously_earned",
+      "normal_and_crew_core_story_persistence_equal": true,
+      "single_charge_600_seconds_20_percent": true,
+      "collectible_set_does_not_duplicate": true,
+      "undo_restart_and_route_traversed": true,
+      "duplicate_controls_disabled": true,
+      "reachable_48px_controls_and_named_semantics": true,
+      "layout_exception": false,
+      "before_core_sha256": "b9e17da3eb319e7393bc0f50a1bd797412d6a70903026240b94cb88d804a15bb",
+      "after_core_sha256": "2ed86f8bfa148a50a85de942832e40545a1a27d6fe85fdd826e7dff09a1c2016",
+      "after_session_sha256": "bef1d48aa6f14bfccc1a69d779920847f9b59ed5bc86d74aeb3ba7c819bbe60d",
+      "result": "passed_bounded_host_case"
+    },
+    {
+      "pattern_id": "calibration.04",
+      "condition_id": "en-US-phone-100-normal",
+      "locale": "en-US",
+      "viewport": [
+        320.0,
+        720.0
+      ],
+      "text_scale": 1.0,
+      "reduced_motion": false,
+      "state": "no_stored_focus_practice",
+      "full_route_undo_restart_work": true,
+      "both_claims_disabled_before_and_after_solving": true,
+      "commands": 0,
+      "save_writes": 0,
+      "complete_core_and_story_unchanged": true,
+      "reachable_48px_controls_and_named_semantics": true,
+      "layout_exception": false,
+      "unchanged_core_sha256": "343d1656879a57d9ab62bdfc77d46aa9843d095767186516928d6e17acd64136",
+      "result": "passed_bounded_host_case"
+    },
+    {
+      "pattern_id": "calibration.05",
+      "condition_id": "en-US-phone-100-normal",
+      "locale": "en-US",
+      "viewport": [
+        320.0,
+        720.0
+      ],
+      "text_scale": 1.0,
+      "reduced_motion": false,
+      "state": "unearned",
+      "normal_and_crew_core_story_persistence_equal": true,
+      "single_charge_600_seconds_20_percent": true,
+      "collectible_set_does_not_duplicate": true,
+      "undo_restart_and_route_traversed": true,
+      "duplicate_controls_disabled": true,
+      "reachable_48px_controls_and_named_semantics": true,
+      "layout_exception": false,
+      "before_core_sha256": "f197bfd755b54edee49d4cf951dee8368e0c270dce45fc0d707055ab4e9a9bdc",
+      "after_core_sha256": "1e72b7ef4b484ea2de43aa6f0eecfa3093d35bd05a6803d60004e28ed6425859",
+      "after_session_sha256": "f4e7f33b65f211102d31091462ba666c1dfe1cc215a17c964c48cb94c6aa92cc",
+      "result": "passed_bounded_host_case"
+    },
+    {
+      "pattern_id": "calibration.05",
+      "condition_id": "en-US-phone-100-normal",
+      "locale": "en-US",
+      "viewport": [
+        320.0,
+        720.0
+      ],
+      "text_scale": 1.0,
+      "reduced_motion": false,
+      "state": "previously_earned",
+      "normal_and_crew_core_story_persistence_equal": true,
+      "single_charge_600_seconds_20_percent": true,
+      "collectible_set_does_not_duplicate": true,
+      "undo_restart_and_route_traversed": true,
+      "duplicate_controls_disabled": true,
+      "reachable_48px_controls_and_named_semantics": true,
+      "layout_exception": false,
+      "before_core_sha256": "1e72b7ef4b484ea2de43aa6f0eecfa3093d35bd05a6803d60004e28ed6425859",
+      "after_core_sha256": "769f0cd2bde4bf22a166ba78327b1ca664c2ec103137afdb71f86caa698c7304",
+      "after_session_sha256": "5d6de1b8f5943395259f0cbef865487bc69aeacd701d91b069d62451bb638b6f",
+      "result": "passed_bounded_host_case"
+    },
+    {
+      "pattern_id": "calibration.05",
+      "condition_id": "en-US-phone-100-normal",
+      "locale": "en-US",
+      "viewport": [
+        320.0,
+        720.0
+      ],
+      "text_scale": 1.0,
+      "reduced_motion": false,
+      "state": "no_stored_focus_practice",
+      "full_route_undo_restart_work": true,
+      "both_claims_disabled_before_and_after_solving": true,
+      "commands": 0,
+      "save_writes": 0,
+      "complete_core_and_story_unchanged": true,
+      "reachable_48px_controls_and_named_semantics": true,
+      "layout_exception": false,
+      "unchanged_core_sha256": "343d1656879a57d9ab62bdfc77d46aa9843d095767186516928d6e17acd64136",
+      "result": "passed_bounded_host_case"
+    },
+    {
+      "pattern_id": "calibration.06",
+      "condition_id": "en-US-phone-100-normal",
+      "locale": "en-US",
+      "viewport": [
+        320.0,
+        720.0
+      ],
+      "text_scale": 1.0,
+      "reduced_motion": false,
+      "state": "unearned",
+      "normal_and_crew_core_story_persistence_equal": true,
+      "single_charge_600_seconds_20_percent": true,
+      "collectible_set_does_not_duplicate": true,
+      "undo_restart_and_route_traversed": true,
+      "duplicate_controls_disabled": true,
+      "reachable_48px_controls_and_named_semantics": true,
+      "layout_exception": false,
+      "before_core_sha256": "f197bfd755b54edee49d4cf951dee8368e0c270dce45fc0d707055ab4e9a9bdc",
+      "after_core_sha256": "6933e608f242aef36d247fd86471e003f90cfad1c8d69bcde286264fd051afae",
+      "after_session_sha256": "e9d4aa6acd86d65f4644654c8fa41ecdb786ebd1b4fdd03230a8e8d8a7d9c51a",
+      "result": "passed_bounded_host_case"
+    },
+    {
+      "pattern_id": "calibration.06",
+      "condition_id": "en-US-phone-100-normal",
+      "locale": "en-US",
+      "viewport": [
+        320.0,
+        720.0
+      ],
+      "text_scale": 1.0,
+      "reduced_motion": false,
+      "state": "previously_earned",
+      "normal_and_crew_core_story_persistence_equal": true,
+      "single_charge_600_seconds_20_percent": true,
+      "collectible_set_does_not_duplicate": true,
+      "undo_restart_and_route_traversed": true,
+      "duplicate_controls_disabled": true,
+      "reachable_48px_controls_and_named_semantics": true,
+      "layout_exception": false,
+      "before_core_sha256": "6933e608f242aef36d247fd86471e003f90cfad1c8d69bcde286264fd051afae",
+      "after_core_sha256": "e297883be270f1c68e34dee5e5357634cd8eb7d8f666cf169b23edecccf64a15",
+      "after_session_sha256": "d8f85a1149c3a70518baac8f8ed8d642138dba75b67d7a5da2685f33fa41a43f",
+      "result": "passed_bounded_host_case"
+    },
+    {
+      "pattern_id": "calibration.06",
+      "condition_id": "en-US-phone-100-normal",
+      "locale": "en-US",
+      "viewport": [
+        320.0,
+        720.0
+      ],
+      "text_scale": 1.0,
+      "reduced_motion": false,
+      "state": "no_stored_focus_practice",
+      "full_route_undo_restart_work": true,
+      "both_claims_disabled_before_and_after_solving": true,
+      "commands": 0,
+      "save_writes": 0,
+      "complete_core_and_story_unchanged": true,
+      "reachable_48px_controls_and_named_semantics": true,
+      "layout_exception": false,
+      "unchanged_core_sha256": "343d1656879a57d9ab62bdfc77d46aa9843d095767186516928d6e17acd64136",
+      "result": "passed_bounded_host_case"
+    },
+    {
+      "pattern_id": "calibration.07",
+      "condition_id": "en-US-phone-100-normal",
+      "locale": "en-US",
+      "viewport": [
+        320.0,
+        720.0
+      ],
+      "text_scale": 1.0,
+      "reduced_motion": false,
+      "state": "unearned",
+      "normal_and_crew_core_story_persistence_equal": true,
+      "single_charge_600_seconds_20_percent": true,
+      "collectible_set_does_not_duplicate": true,
+      "undo_restart_and_route_traversed": true,
+      "duplicate_controls_disabled": true,
+      "reachable_48px_controls_and_named_semantics": true,
+      "layout_exception": false,
+      "before_core_sha256": "f197bfd755b54edee49d4cf951dee8368e0c270dce45fc0d707055ab4e9a9bdc",
+      "after_core_sha256": "804b42ab84928b225d1a382aae2e54fce87740b6c657ab049788177f795cb2f1",
+      "after_session_sha256": "00d1c032539e41a1a845f43168df070de1b03c260e2787af2a4a9457eae0c603",
+      "result": "passed_bounded_host_case"
+    },
+    {
+      "pattern_id": "calibration.07",
+      "condition_id": "en-US-phone-100-normal",
+      "locale": "en-US",
+      "viewport": [
+        320.0,
+        720.0
+      ],
+      "text_scale": 1.0,
+      "reduced_motion": false,
+      "state": "previously_earned",
+      "normal_and_crew_core_story_persistence_equal": true,
+      "single_charge_600_seconds_20_percent": true,
+      "collectible_set_does_not_duplicate": true,
+      "undo_restart_and_route_traversed": true,
+      "duplicate_controls_disabled": true,
+      "reachable_48px_controls_and_named_semantics": true,
+      "layout_exception": false,
+      "before_core_sha256": "804b42ab84928b225d1a382aae2e54fce87740b6c657ab049788177f795cb2f1",
+      "after_core_sha256": "077a0cc1d0141e598a4fd9b9476718af18c5cc9f61291b400f4cbb959af3b995",
+      "after_session_sha256": "d131da754a06b6d8484a00bb877da544ed15385bbf76bcbca30800a65b8255e1",
+      "result": "passed_bounded_host_case"
+    },
+    {
+      "pattern_id": "calibration.07",
+      "condition_id": "en-US-phone-100-normal",
+      "locale": "en-US",
+      "viewport": [
+        320.0,
+        720.0
+      ],
+      "text_scale": 1.0,
+      "reduced_motion": false,
+      "state": "no_stored_focus_practice",
+      "full_route_undo_restart_work": true,
+      "both_claims_disabled_before_and_after_solving": true,
+      "commands": 0,
+      "save_writes": 0,
+      "complete_core_and_story_unchanged": true,
+      "reachable_48px_controls_and_named_semantics": true,
+      "layout_exception": false,
+      "unchanged_core_sha256": "343d1656879a57d9ab62bdfc77d46aa9843d095767186516928d6e17acd64136",
+      "result": "passed_bounded_host_case"
+    },
+    {
+      "pattern_id": "calibration.08",
+      "condition_id": "en-US-phone-100-normal",
+      "locale": "en-US",
+      "viewport": [
+        320.0,
+        720.0
+      ],
+      "text_scale": 1.0,
+      "reduced_motion": false,
+      "state": "unearned",
+      "normal_and_crew_core_story_persistence_equal": true,
+      "single_charge_600_seconds_20_percent": true,
+      "collectible_set_does_not_duplicate": true,
+      "undo_restart_and_route_traversed": true,
+      "duplicate_controls_disabled": true,
+      "reachable_48px_controls_and_named_semantics": true,
+      "layout_exception": false,
+      "before_core_sha256": "f197bfd755b54edee49d4cf951dee8368e0c270dce45fc0d707055ab4e9a9bdc",
+      "after_core_sha256": "0ad80c6cd679e8ffe354e9044f3b4c59164713f8941abfe30a9ff5d69d621d12",
+      "after_session_sha256": "360016fce51eb265a1e88dbb1f19f23d8ea898973daebcad4a452eaedbfddd07",
+      "result": "passed_bounded_host_case"
+    },
+    {
+      "pattern_id": "calibration.08",
+      "condition_id": "en-US-phone-100-normal",
+      "locale": "en-US",
+      "viewport": [
+        320.0,
+        720.0
+      ],
+      "text_scale": 1.0,
+      "reduced_motion": false,
+      "state": "previously_earned",
+      "normal_and_crew_core_story_persistence_equal": true,
+      "single_charge_600_seconds_20_percent": true,
+      "collectible_set_does_not_duplicate": true,
+      "undo_restart_and_route_traversed": true,
+      "duplicate_controls_disabled": true,
+      "reachable_48px_controls_and_named_semantics": true,
+      "layout_exception": false,
+      "before_core_sha256": "0ad80c6cd679e8ffe354e9044f3b4c59164713f8941abfe30a9ff5d69d621d12",
+      "after_core_sha256": "c66722d4b3414e395c80dc584f813058174a9ac0ae7151adebd69d7589d8eb4a",
+      "after_session_sha256": "947b4b8aa67f1803a824f87f3e48e7c08f0c10353feb7516c0340546b2f7dd27",
+      "result": "passed_bounded_host_case"
+    },
+    {
+      "pattern_id": "calibration.08",
+      "condition_id": "en-US-phone-100-normal",
+      "locale": "en-US",
+      "viewport": [
+        320.0,
+        720.0
+      ],
+      "text_scale": 1.0,
+      "reduced_motion": false,
+      "state": "no_stored_focus_practice",
+      "full_route_undo_restart_work": true,
+      "both_claims_disabled_before_and_after_solving": true,
+      "commands": 0,
+      "save_writes": 0,
+      "complete_core_and_story_unchanged": true,
+      "reachable_48px_controls_and_named_semantics": true,
+      "layout_exception": false,
+      "unchanged_core_sha256": "343d1656879a57d9ab62bdfc77d46aa9843d095767186516928d6e17acd64136",
+      "result": "passed_bounded_host_case"
+    },
+    {
+      "pattern_id": "calibration.09",
+      "condition_id": "en-US-phone-100-normal",
+      "locale": "en-US",
+      "viewport": [
+        320.0,
+        720.0
+      ],
+      "text_scale": 1.0,
+      "reduced_motion": false,
+      "state": "unearned",
+      "normal_and_crew_core_story_persistence_equal": true,
+      "single_charge_600_seconds_20_percent": true,
+      "collectible_set_does_not_duplicate": true,
+      "undo_restart_and_route_traversed": true,
+      "duplicate_controls_disabled": true,
+      "reachable_48px_controls_and_named_semantics": true,
+      "layout_exception": false,
+      "before_core_sha256": "f197bfd755b54edee49d4cf951dee8368e0c270dce45fc0d707055ab4e9a9bdc",
+      "after_core_sha256": "274bd4f4bbc53f883c13594924bd50f8252b4c0e639014a8c7127596209d3a22",
+      "after_session_sha256": "48707f193b6197b96c66d13bdf2e2f360e5711eb1d3f2a1934a33072a9f7169c",
+      "result": "passed_bounded_host_case"
+    },
+    {
+      "pattern_id": "calibration.09",
+      "condition_id": "en-US-phone-100-normal",
+      "locale": "en-US",
+      "viewport": [
+        320.0,
+        720.0
+      ],
+      "text_scale": 1.0,
+      "reduced_motion": false,
+      "state": "previously_earned",
+      "normal_and_crew_core_story_persistence_equal": true,
+      "single_charge_600_seconds_20_percent": true,
+      "collectible_set_does_not_duplicate": true,
+      "undo_restart_and_route_traversed": true,
+      "duplicate_controls_disabled": true,
+      "reachable_48px_controls_and_named_semantics": true,
+      "layout_exception": false,
+      "before_core_sha256": "274bd4f4bbc53f883c13594924bd50f8252b4c0e639014a8c7127596209d3a22",
+      "after_core_sha256": "3740b9325711b4af7ef285dcbfab1393b85c7b72e0cfa86e5549e879c1849238",
+      "after_session_sha256": "319d2c9a719c75f9e956fbc112c78ffaecef4a1d4e74a1b583296db13c4ae42a",
+      "result": "passed_bounded_host_case"
+    },
+    {
+      "pattern_id": "calibration.09",
+      "condition_id": "en-US-phone-100-normal",
+      "locale": "en-US",
+      "viewport": [
+        320.0,
+        720.0
+      ],
+      "text_scale": 1.0,
+      "reduced_motion": false,
+      "state": "no_stored_focus_practice",
+      "full_route_undo_restart_work": true,
+      "both_claims_disabled_before_and_after_solving": true,
+      "commands": 0,
+      "save_writes": 0,
+      "complete_core_and_story_unchanged": true,
+      "reachable_48px_controls_and_named_semantics": true,
+      "layout_exception": false,
+      "unchanged_core_sha256": "343d1656879a57d9ab62bdfc77d46aa9843d095767186516928d6e17acd64136",
+      "result": "passed_bounded_host_case"
+    },
+    {
+      "pattern_id": "calibration.10",
+      "condition_id": "en-US-phone-100-normal",
+      "locale": "en-US",
+      "viewport": [
+        320.0,
+        720.0
+      ],
+      "text_scale": 1.0,
+      "reduced_motion": false,
+      "state": "unearned",
+      "normal_and_crew_core_story_persistence_equal": true,
+      "single_charge_600_seconds_20_percent": true,
+      "collectible_set_does_not_duplicate": true,
+      "undo_restart_and_route_traversed": true,
+      "duplicate_controls_disabled": true,
+      "reachable_48px_controls_and_named_semantics": true,
+      "layout_exception": false,
+      "before_core_sha256": "f197bfd755b54edee49d4cf951dee8368e0c270dce45fc0d707055ab4e9a9bdc",
+      "after_core_sha256": "3e15e6404465e4008f94b1194640611a32b2d0a7c8e36b16a08a2055d75aff82",
+      "after_session_sha256": "a7aeffd0b78cd123a3d4711d3170ad3e3d40883045a9c6970eef97d97edf44f5",
+      "result": "passed_bounded_host_case"
+    },
+    {
+      "pattern_id": "calibration.10",
+      "condition_id": "en-US-phone-100-normal",
+      "locale": "en-US",
+      "viewport": [
+        320.0,
+        720.0
+      ],
+      "text_scale": 1.0,
+      "reduced_motion": false,
+      "state": "previously_earned",
+      "normal_and_crew_core_story_persistence_equal": true,
+      "single_charge_600_seconds_20_percent": true,
+      "collectible_set_does_not_duplicate": true,
+      "undo_restart_and_route_traversed": true,
+      "duplicate_controls_disabled": true,
+      "reachable_48px_controls_and_named_semantics": true,
+      "layout_exception": false,
+      "before_core_sha256": "3e15e6404465e4008f94b1194640611a32b2d0a7c8e36b16a08a2055d75aff82",
+      "after_core_sha256": "83c51569e1200edbb933612900558f66b7ccda6aa43ba368495803f9b1672aad",
+      "after_session_sha256": "f0b632d54d6e203fea257fcc8071105ea85be347fcf6fce5d75c002951a378cc",
+      "result": "passed_bounded_host_case"
+    },
+    {
+      "pattern_id": "calibration.10",
+      "condition_id": "en-US-phone-100-normal",
+      "locale": "en-US",
+      "viewport": [
+        320.0,
+        720.0
+      ],
+      "text_scale": 1.0,
+      "reduced_motion": false,
+      "state": "no_stored_focus_practice",
+      "full_route_undo_restart_work": true,
+      "both_claims_disabled_before_and_after_solving": true,
+      "commands": 0,
+      "save_writes": 0,
+      "complete_core_and_story_unchanged": true,
+      "reachable_48px_controls_and_named_semantics": true,
+      "layout_exception": false,
+      "unchanged_core_sha256": "343d1656879a57d9ab62bdfc77d46aa9843d095767186516928d6e17acd64136",
+      "result": "passed_bounded_host_case"
+    },
+    {
+      "pattern_id": "calibration.11",
+      "condition_id": "en-US-phone-100-normal",
+      "locale": "en-US",
+      "viewport": [
+        320.0,
+        720.0
+      ],
+      "text_scale": 1.0,
+      "reduced_motion": false,
+      "state": "unearned",
+      "normal_and_crew_core_story_persistence_equal": true,
+      "single_charge_600_seconds_20_percent": true,
+      "collectible_set_does_not_duplicate": true,
+      "undo_restart_and_route_traversed": true,
+      "duplicate_controls_disabled": true,
+      "reachable_48px_controls_and_named_semantics": true,
+      "layout_exception": false,
+      "before_core_sha256": "f197bfd755b54edee49d4cf951dee8368e0c270dce45fc0d707055ab4e9a9bdc",
+      "after_core_sha256": "8d7c2f609699b93b4a618034f1c8f26ba47a849c5f035b889bdadab259d2bee2",
+      "after_session_sha256": "13cd7c9400531f9f2489d260ddcad7aae039571993b4c85428573a128370f19f",
+      "result": "passed_bounded_host_case"
+    },
+    {
+      "pattern_id": "calibration.11",
+      "condition_id": "en-US-phone-100-normal",
+      "locale": "en-US",
+      "viewport": [
+        320.0,
+        720.0
+      ],
+      "text_scale": 1.0,
+      "reduced_motion": false,
+      "state": "previously_earned",
+      "normal_and_crew_core_story_persistence_equal": true,
+      "single_charge_600_seconds_20_percent": true,
+      "collectible_set_does_not_duplicate": true,
+      "undo_restart_and_route_traversed": true,
+      "duplicate_controls_disabled": true,
+      "reachable_48px_controls_and_named_semantics": true,
+      "layout_exception": false,
+      "before_core_sha256": "8d7c2f609699b93b4a618034f1c8f26ba47a849c5f035b889bdadab259d2bee2",
+      "after_core_sha256": "a7acb6ed1a49e74e3064196d353189d724a98798ca497e8bd05336a0d1384ff4",
+      "after_session_sha256": "cf3e8814d81568f09d407167569a94fa24d6f34f9b26f28153c39627b0284f22",
+      "result": "passed_bounded_host_case"
+    },
+    {
+      "pattern_id": "calibration.11",
+      "condition_id": "en-US-phone-100-normal",
+      "locale": "en-US",
+      "viewport": [
+        320.0,
+        720.0
+      ],
+      "text_scale": 1.0,
+      "reduced_motion": false,
+      "state": "no_stored_focus_practice",
+      "full_route_undo_restart_work": true,
+      "both_claims_disabled_before_and_after_solving": true,
+      "commands": 0,
+      "save_writes": 0,
+      "complete_core_and_story_unchanged": true,
+      "reachable_48px_controls_and_named_semantics": true,
+      "layout_exception": false,
+      "unchanged_core_sha256": "343d1656879a57d9ab62bdfc77d46aa9843d095767186516928d6e17acd64136",
+      "result": "passed_bounded_host_case"
+    },
+    {
+      "pattern_id": "calibration.12",
+      "condition_id": "en-US-phone-100-normal",
+      "locale": "en-US",
+      "viewport": [
+        320.0,
+        720.0
+      ],
+      "text_scale": 1.0,
+      "reduced_motion": false,
+      "state": "unearned",
+      "normal_and_crew_core_story_persistence_equal": true,
+      "single_charge_600_seconds_20_percent": true,
+      "collectible_set_does_not_duplicate": true,
+      "undo_restart_and_route_traversed": true,
+      "duplicate_controls_disabled": true,
+      "reachable_48px_controls_and_named_semantics": true,
+      "layout_exception": false,
+      "before_core_sha256": "f197bfd755b54edee49d4cf951dee8368e0c270dce45fc0d707055ab4e9a9bdc",
+      "after_core_sha256": "95dd0dc9e8265b99478e28313a2b7ce5400ab8c905f33021fc8a589b8381372d",
+      "after_session_sha256": "e7d65f77cdb01c098b7984fdd145115982d3d671ec87f0294fc0fab557ba3383",
+      "result": "passed_bounded_host_case"
+    },
+    {
+      "pattern_id": "calibration.12",
+      "condition_id": "en-US-phone-100-normal",
+      "locale": "en-US",
+      "viewport": [
+        320.0,
+        720.0
+      ],
+      "text_scale": 1.0,
+      "reduced_motion": false,
+      "state": "previously_earned",
+      "normal_and_crew_core_story_persistence_equal": true,
+      "single_charge_600_seconds_20_percent": true,
+      "collectible_set_does_not_duplicate": true,
+      "undo_restart_and_route_traversed": true,
+      "duplicate_controls_disabled": true,
+      "reachable_48px_controls_and_named_semantics": true,
+      "layout_exception": false,
+      "before_core_sha256": "95dd0dc9e8265b99478e28313a2b7ce5400ab8c905f33021fc8a589b8381372d",
+      "after_core_sha256": "8410276c910706929a9f1a4ec4b8298077251cb98bc3c0bea30c60aeb898d2cc",
+      "after_session_sha256": "4e13cfe5e03b7532914b7f3e658f0eb986b93c8390d8f7d4f3f8163671ff0218",
+      "result": "passed_bounded_host_case"
+    },
+    {
+      "pattern_id": "calibration.12",
+      "condition_id": "en-US-phone-100-normal",
+      "locale": "en-US",
+      "viewport": [
+        320.0,
+        720.0
+      ],
+      "text_scale": 1.0,
+      "reduced_motion": false,
+      "state": "no_stored_focus_practice",
+      "full_route_undo_restart_work": true,
+      "both_claims_disabled_before_and_after_solving": true,
+      "commands": 0,
+      "save_writes": 0,
+      "complete_core_and_story_unchanged": true,
+      "reachable_48px_controls_and_named_semantics": true,
+      "layout_exception": false,
+      "unchanged_core_sha256": "343d1656879a57d9ab62bdfc77d46aa9843d095767186516928d6e17acd64136",
+      "result": "passed_bounded_host_case"
+    }
+  ],
+  "limits": [
+    "Synthetic fixed-clock controller fixtures, not human pacing or natural unlock proof.",
+    "Host semantics, hit-testing and layout only; not physical screen-reader or touch qualification.",
+    "Calibration artwork is static in both motion conditions; no animation claim.",
+    "Persistence callback equality, not a filesystem, cloud or provider durability test.",
+    "Compile-time English and pseudo require separate runs; passing rows are not scope acceptance."
+  ]
+}

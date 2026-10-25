@@ -1,0 +1,435 @@
+{
+  "schema_version": 1,
+  "scope": "M5-02/M3-04 S02/S09/S17/S26 bounded host interaction qualification",
+  "locale": "qps-ploc",
+  "pseudo_enabled": true,
+  "expected_pattern_display_cases": 144,
+  "expected_state_rows": 432,
+  "observed_passing_state_rows": 12,
+  "complete_matrix_observed": false,
+  "runner_exit_status_is_also_required": true,
+  "source_sha256": {
+    "test/calibration_accessibility_matrix_test.dart": "ad1e0e8edb61f33b8b10bc5591ba726dc53875729f73e2b9ce9f9b894d8f8794",
+    "test/calibration_test.dart": "049d71f3953c81091c145a87ac6ff5e51729495dd00c88a573d7ff6ca12f6e65",
+    "lib/calibration_screen.dart": "5c392ede4071705a4efbafb7c79906bef4c94c99ab2dee765d358dda43537f94",
+    "lib/calibration_pattern.dart": "5da6ff66b8a9d8317d047c0ec99795a98c89b6b3afe83c640c7a129391899c74",
+    "lib/game_controller.dart": "f050c9b0c6c13dc31dad95e0dc5b51f78ee2f17c383ce59a3ab553c89adb4afa",
+    "lib/story_state.dart": "008c4c5ad721794809d38a00b72de32ecd98402a1acf2724f9eb1c4af6860cc4",
+    "lib/presentation.dart": "0b891f8baa973d11f1aabe6d985fafbe8bf0e08904007cb0f218e68044fd9b63",
+    "lib/strings.dart": "a1f75c799a56c1fdb5125f65eacb6f637912be042bbd748303ac3bbea7b6abb8",
+    "lib/palette.dart": "1da79c2cd009e271dcaf3dd349f20e380950fbbb67ca54e10ea5180b2ed86d83",
+    "../core/lib/src/daily_engine.dart": "1949239d4ae3bba5c72d716a3a027c0ada52ec97e434431a132c941001db322f",
+    "../core/lib/src/engine.dart": "0fbc3f3dfbb54df8a0cef41a8b8c788baef473d0bbffe643301a3d9c9d9eade6",
+    "assets/calibrations/calibration.01.pattern.json": "da374a476f45c6c542052093c8275a8122407908fb8b6a0af5a8ae40ccbf9e2f",
+    "assets/calibrations/calibration.02.pattern.json": "7accb0f5f23fdcda860ab0e08ee66164c772d195a79a52fc0e1be7df98c892b6",
+    "assets/calibrations/calibration.03.pattern.json": "d86a3527f1ed772cd6052210cf8b01e38ba1c457cedc56d8dce830ad6a9b76a8",
+    "assets/calibrations/calibration.04.pattern.json": "92d291c24c4c7c04d59f8200ec30773ef5bbfe9c546eefe2d95e938736c35d0e",
+    "assets/calibrations/calibration.05.pattern.json": "b7593e40c0cee34d705f103a13380733d50ac708e3b8d1d19f6a31c9dce231c8",
+    "assets/calibrations/calibration.06.pattern.json": "34dbd4fc6f077b9e04b3cd6facb0d9de13ddbebfb0db389268c729d6a7b89d30",
+    "assets/calibrations/calibration.07.pattern.json": "fbd0709352d9d78f262f9f30f60dfc13e88e033ea55b5b658ce0082a06393c38",
+    "assets/calibrations/calibration.08.pattern.json": "1c486001555913893e001a67459b3f4b2d1219ce82359185ef0941f5c7fc52ac",
+    "assets/calibrations/calibration.09.pattern.json": "c05f17ec3077c73d62c22524b56d2ade291939f6f10b20087bc7c0578be96d70",
+    "assets/calibrations/calibration.10.pattern.json": "743955d5cefe72601f7eb177e964ba7a2314e025e7feea6915c881f3ace83ef7",
+    "assets/calibrations/calibration.11.pattern.json": "6821f5dd9d9d9a89c52afcdddc78fe2f663f0455b69b2c352fa30b4641769371",
+    "assets/calibrations/calibration.12.pattern.json": "db649ab28e1b1c82112ff4bfa87f4a7263f8e17f43d68541f5bb045057522288"
+  },
+  "conditions": [
+    {
+      "condition_id": "qps-ploc-phone-100-normal",
+      "locale": "qps-ploc",
+      "viewport": [
+        320.0,
+        720.0
+      ],
+      "text_scale": 1.0,
+      "reduced_motion": false
+    },
+    {
+      "condition_id": "qps-ploc-phone-100-reduced",
+      "locale": "qps-ploc",
+      "viewport": [
+        320.0,
+        720.0
+      ],
+      "text_scale": 1.0,
+      "reduced_motion": true
+    },
+    {
+      "condition_id": "qps-ploc-phone-150-normal",
+      "locale": "qps-ploc",
+      "viewport": [
+        320.0,
+        720.0
+      ],
+      "text_scale": 1.5,
+      "reduced_motion": false
+    },
+    {
+      "condition_id": "qps-ploc-phone-150-reduced",
+      "locale": "qps-ploc",
+      "viewport": [
+        320.0,
+        720.0
+      ],
+      "text_scale": 1.5,
+      "reduced_motion": true
+    },
+    {
+      "condition_id": "qps-ploc-phone-200-normal",
+      "locale": "qps-ploc",
+      "viewport": [
+        320.0,
+        720.0
+      ],
+      "text_scale": 2.0,
+      "reduced_motion": false
+    },
+    {
+      "condition_id": "qps-ploc-phone-200-reduced",
+      "locale": "qps-ploc",
+      "viewport": [
+        320.0,
+        720.0
+      ],
+      "text_scale": 2.0,
+      "reduced_motion": true
+    },
+    {
+      "condition_id": "qps-ploc-tablet-100-normal",
+      "locale": "qps-ploc",
+      "viewport": [
+        1024.0,
+        768.0
+      ],
+      "text_scale": 1.0,
+      "reduced_motion": false
+    },
+    {
+      "condition_id": "qps-ploc-tablet-100-reduced",
+      "locale": "qps-ploc",
+      "viewport": [
+        1024.0,
+        768.0
+      ],
+      "text_scale": 1.0,
+      "reduced_motion": true
+    },
+    {
+      "condition_id": "qps-ploc-tablet-150-normal",
+      "locale": "qps-ploc",
+      "viewport": [
+        1024.0,
+        768.0
+      ],
+      "text_scale": 1.5,
+      "reduced_motion": false
+    },
+    {
+      "condition_id": "qps-ploc-tablet-150-reduced",
+      "locale": "qps-ploc",
+      "viewport": [
+        1024.0,
+        768.0
+      ],
+      "text_scale": 1.5,
+      "reduced_motion": true
+    },
+    {
+      "condition_id": "qps-ploc-tablet-200-normal",
+      "locale": "qps-ploc",
+      "viewport": [
+        1024.0,
+        768.0
+      ],
+      "text_scale": 2.0,
+      "reduced_motion": false
+    },
+    {
+      "condition_id": "qps-ploc-tablet-200-reduced",
+      "locale": "qps-ploc",
+      "viewport": [
+        1024.0,
+        768.0
+      ],
+      "text_scale": 2.0,
+      "reduced_motion": true
+    }
+  ],
+  "rows": [
+    {
+      "pattern_id": "calibration.01",
+      "condition_id": "qps-ploc-phone-200-normal",
+      "locale": "qps-ploc",
+      "viewport": [
+        320.0,
+        720.0
+      ],
+      "text_scale": 2.0,
+      "reduced_motion": false,
+      "state": "unearned",
+      "normal_and_crew_core_story_persistence_equal": true,
+      "single_charge_600_seconds_20_percent": true,
+      "collectible_set_does_not_duplicate": true,
+      "undo_restart_and_route_traversed": true,
+      "duplicate_controls_disabled": true,
+      "reachable_48px_controls_and_named_semantics": true,
+      "layout_exception": false,
+      "before_core_sha256": "f197bfd755b54edee49d4cf951dee8368e0c270dce45fc0d707055ab4e9a9bdc",
+      "after_core_sha256": "1b1bf8913596ece7599b1a0c758f94b1c7a343a090512c3d53481fe5ecb4012f",
+      "after_session_sha256": "29731a418af10d7a206c714a7d54e1c56db8690d0bafe7e0aa02f021968ae67e",
+      "result": "passed_bounded_host_case"
+    },
+    {
+      "pattern_id": "calibration.01",
+      "condition_id": "qps-ploc-phone-200-normal",
+      "locale": "qps-ploc",
+      "viewport": [
+        320.0,
+        720.0
+      ],
+      "text_scale": 2.0,
+      "reduced_motion": false,
+      "state": "previously_earned",
+      "normal_and_crew_core_story_persistence_equal": true,
+      "single_charge_600_seconds_20_percent": true,
+      "collectible_set_does_not_duplicate": true,
+      "undo_restart_and_route_traversed": true,
+      "duplicate_controls_disabled": true,
+      "reachable_48px_controls_and_named_semantics": true,
+      "layout_exception": false,
+      "before_core_sha256": "1b1bf8913596ece7599b1a0c758f94b1c7a343a090512c3d53481fe5ecb4012f",
+      "after_core_sha256": "9432f421e2d123a7a2b345c8579876618da2276891b4dc664f7bad2c169f98fb",
+      "after_session_sha256": "6d721950a96a0069d2597e72c022d78c702a153d848326b40d221367308f4381",
+      "result": "passed_bounded_host_case"
+    },
+    {
+      "pattern_id": "calibration.01",
+      "condition_id": "qps-ploc-phone-200-normal",
+      "locale": "qps-ploc",
+      "viewport": [
+        320.0,
+        720.0
+      ],
+      "text_scale": 2.0,
+      "reduced_motion": false,
+      "state": "no_stored_focus_practice",
+      "full_route_undo_restart_work": true,
+      "both_claims_disabled_before_and_after_solving": true,
+      "commands": 0,
+      "save_writes": 0,
+      "complete_core_and_story_unchanged": true,
+      "reachable_48px_controls_and_named_semantics": true,
+      "layout_exception": false,
+      "unchanged_core_sha256": "343d1656879a57d9ab62bdfc77d46aa9843d095767186516928d6e17acd64136",
+      "result": "passed_bounded_host_case"
+    },
+    {
+      "pattern_id": "calibration.12",
+      "condition_id": "qps-ploc-phone-200-normal",
+      "locale": "qps-ploc",
+      "viewport": [
+        320.0,
+        720.0
+      ],
+      "text_scale": 2.0,
+      "reduced_motion": false,
+      "state": "unearned",
+      "normal_and_crew_core_story_persistence_equal": true,
+      "single_charge_600_seconds_20_percent": true,
+      "collectible_set_does_not_duplicate": true,
+      "undo_restart_and_route_traversed": true,
+      "duplicate_controls_disabled": true,
+      "reachable_48px_controls_and_named_semantics": true,
+      "layout_exception": false,
+      "before_core_sha256": "f197bfd755b54edee49d4cf951dee8368e0c270dce45fc0d707055ab4e9a9bdc",
+      "after_core_sha256": "95dd0dc9e8265b99478e28313a2b7ce5400ab8c905f33021fc8a589b8381372d",
+      "after_session_sha256": "e7d65f77cdb01c098b7984fdd145115982d3d671ec87f0294fc0fab557ba3383",
+      "result": "passed_bounded_host_case"
+    },
+    {
+      "pattern_id": "calibration.12",
+      "condition_id": "qps-ploc-phone-200-normal",
+      "locale": "qps-ploc",
+      "viewport": [
+        320.0,
+        720.0
+      ],
+      "text_scale": 2.0,
+      "reduced_motion": false,
+      "state": "previously_earned",
+      "normal_and_crew_core_story_persistence_equal": true,
+      "single_charge_600_seconds_20_percent": true,
+      "collectible_set_does_not_duplicate": true,
+      "undo_restart_and_route_traversed": true,
+      "duplicate_controls_disabled": true,
+      "reachable_48px_controls_and_named_semantics": true,
+      "layout_exception": false,
+      "before_core_sha256": "95dd0dc9e8265b99478e28313a2b7ce5400ab8c905f33021fc8a589b8381372d",
+      "after_core_sha256": "8410276c910706929a9f1a4ec4b8298077251cb98bc3c0bea30c60aeb898d2cc",
+      "after_session_sha256": "4e13cfe5e03b7532914b7f3e658f0eb986b93c8390d8f7d4f3f8163671ff0218",
+      "result": "passed_bounded_host_case"
+    },
+    {
+      "pattern_id": "calibration.12",
+      "condition_id": "qps-ploc-phone-200-normal",
+      "locale": "qps-ploc",
+      "viewport": [
+        320.0,
+        720.0
+      ],
+      "text_scale": 2.0,
+      "reduced_motion": false,
+      "state": "no_stored_focus_practice",
+      "full_route_undo_restart_work": true,
+      "both_claims_disabled_before_and_after_solving": true,
+      "commands": 0,
+      "save_writes": 0,
+      "complete_core_and_story_unchanged": true,
+      "reachable_48px_controls_and_named_semantics": true,
+      "layout_exception": false,
+      "unchanged_core_sha256": "343d1656879a57d9ab62bdfc77d46aa9843d095767186516928d6e17acd64136",
+      "result": "passed_bounded_host_case"
+    },
+    {
+      "pattern_id": "calibration.01",
+      "condition_id": "qps-ploc-phone-200-reduced",
+      "locale": "qps-ploc",
+      "viewport": [
+        320.0,
+        720.0
+      ],
+      "text_scale": 2.0,
+      "reduced_motion": true,
+      "state": "unearned",
+      "normal_and_crew_core_story_persistence_equal": true,
+      "single_charge_600_seconds_20_percent": true,
+      "collectible_set_does_not_duplicate": true,
+      "undo_restart_and_route_traversed": true,
+      "duplicate_controls_disabled": true,
+      "reachable_48px_controls_and_named_semantics": true,
+      "layout_exception": false,
+      "before_core_sha256": "f197bfd755b54edee49d4cf951dee8368e0c270dce45fc0d707055ab4e9a9bdc",
+      "after_core_sha256": "1b1bf8913596ece7599b1a0c758f94b1c7a343a090512c3d53481fe5ecb4012f",
+      "after_session_sha256": "29731a418af10d7a206c714a7d54e1c56db8690d0bafe7e0aa02f021968ae67e",
+      "result": "passed_bounded_host_case"
+    },
+    {
+      "pattern_id": "calibration.01",
+      "condition_id": "qps-ploc-phone-200-reduced",
+      "locale": "qps-ploc",
+      "viewport": [
+        320.0,
+        720.0
+      ],
+      "text_scale": 2.0,
+      "reduced_motion": true,
+      "state": "previously_earned",
+      "normal_and_crew_core_story_persistence_equal": true,
+      "single_charge_600_seconds_20_percent": true,
+      "collectible_set_does_not_duplicate": true,
+      "undo_restart_and_route_traversed": true,
+      "duplicate_controls_disabled": true,
+      "reachable_48px_controls_and_named_semantics": true,
+      "layout_exception": false,
+      "before_core_sha256": "1b1bf8913596ece7599b1a0c758f94b1c7a343a090512c3d53481fe5ecb4012f",
+      "after_core_sha256": "9432f421e2d123a7a2b345c8579876618da2276891b4dc664f7bad2c169f98fb",
+      "after_session_sha256": "6d721950a96a0069d2597e72c022d78c702a153d848326b40d221367308f4381",
+      "result": "passed_bounded_host_case"
+    },
+    {
+      "pattern_id": "calibration.01",
+      "condition_id": "qps-ploc-phone-200-reduced",
+      "locale": "qps-ploc",
+      "viewport": [
+        320.0,
+        720.0
+      ],
+      "text_scale": 2.0,
+      "reduced_motion": true,
+      "state": "no_stored_focus_practice",
+      "full_route_undo_restart_work": true,
+      "both_claims_disabled_before_and_after_solving": true,
+      "commands": 0,
+      "save_writes": 0,
+      "complete_core_and_story_unchanged": true,
+      "reachable_48px_controls_and_named_semantics": true,
+      "layout_exception": false,
+      "unchanged_core_sha256": "343d1656879a57d9ab62bdfc77d46aa9843d095767186516928d6e17acd64136",
+      "result": "passed_bounded_host_case"
+    },
+    {
+      "pattern_id": "calibration.12",
+      "condition_id": "qps-ploc-phone-200-reduced",
+      "locale": "qps-ploc",
+      "viewport": [
+        320.0,
+        720.0
+      ],
+      "text_scale": 2.0,
+      "reduced_motion": true,
+      "state": "unearned",
+      "normal_and_crew_core_story_persistence_equal": true,
+      "single_charge_600_seconds_20_percent": true,
+      "collectible_set_does_not_duplicate": true,
+      "undo_restart_and_route_traversed": true,
+      "duplicate_controls_disabled": true,
+      "reachable_48px_controls_and_named_semantics": true,
+      "layout_exception": false,
+      "before_core_sha256": "f197bfd755b54edee49d4cf951dee8368e0c270dce45fc0d707055ab4e9a9bdc",
+      "after_core_sha256": "95dd0dc9e8265b99478e28313a2b7ce5400ab8c905f33021fc8a589b8381372d",
+      "after_session_sha256": "e7d65f77cdb01c098b7984fdd145115982d3d671ec87f0294fc0fab557ba3383",
+      "result": "passed_bounded_host_case"
+    },
+    {
+      "pattern_id": "calibration.12",
+      "condition_id": "qps-ploc-phone-200-reduced",
+      "locale": "qps-ploc",
+      "viewport": [
+        320.0,
+        720.0
+      ],
+      "text_scale": 2.0,
+      "reduced_motion": true,
+      "state": "previously_earned",
+      "normal_and_crew_core_story_persistence_equal": true,
+      "single_charge_600_seconds_20_percent": true,
+      "collectible_set_does_not_duplicate": true,
+      "undo_restart_and_route_traversed": true,
+      "duplicate_controls_disabled": true,
+      "reachable_48px_controls_and_named_semantics": true,
+      "layout_exception": false,
+      "before_core_sha256": "95dd0dc9e8265b99478e28313a2b7ce5400ab8c905f33021fc8a589b8381372d",
+      "after_core_sha256": "8410276c910706929a9f1a4ec4b8298077251cb98bc3c0bea30c60aeb898d2cc",
+      "after_session_sha256": "4e13cfe5e03b7532914b7f3e658f0eb986b93c8390d8f7d4f3f8163671ff0218",
+      "result": "passed_bounded_host_case"
+    },
+    {
+      "pattern_id": "calibration.12",
+      "condition_id": "qps-ploc-phone-200-reduced",
+      "locale": "qps-ploc",
+      "viewport": [
+        320.0,
+        720.0
+      ],
+      "text_scale": 2.0,
+      "reduced_motion": true,
+      "state": "no_stored_focus_practice",
+      "full_route_undo_restart_work": true,
+      "both_claims_disabled_before_and_after_solving": true,
+      "commands": 0,
+      "save_writes": 0,
+      "complete_core_and_story_unchanged": true,
+      "reachable_48px_controls_and_named_semantics": true,
+      "layout_exception": false,
+      "unchanged_core_sha256": "343d1656879a57d9ab62bdfc77d46aa9843d095767186516928d6e17acd64136",
+      "result": "passed_bounded_host_case"
+    }
+  ],
+  "limits": [
+    "Synthetic fixed-clock controller fixtures, not human pacing or natural unlock proof.",
+    "Host semantics, hit-testing and layout only; not physical screen-reader or touch qualification.",
+    "Calibration artwork is static in both motion conditions; no animation claim.",
+    "Persistence callback equality, not a filesystem, cloud or provider durability test.",
+    "Compile-time English and pseudo require separate runs; passing rows are not scope acceptance."
+  ]
+}

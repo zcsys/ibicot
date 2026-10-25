@@ -1,0 +1,377 @@
+{
+  "synthetic_local_data_only": true,
+  "unchanged_backup_sha256": "5f9ea88f900cd8390463056eaf22078103d02adc35e9391b4b004578c162bdca",
+  "records": [
+    {
+      "scenario": "healthy_structure_no_samples",
+      "exit_code": 3,
+      "output": {
+        "format": "tideglass-local-health-v1",
+        "generated_at": 1792578963,
+        "status": "unknown",
+        "exit_code": 3,
+        "thresholds": {
+          "database_seconds": 5.0,
+          "minimum_free_bytes": 1073741824,
+          "minimum_free_fraction": 0.05,
+          "backup_max_age_seconds": 86400,
+          "acknowledgement_age_seconds": 600,
+          "delivery_age_seconds": 86400,
+          "reconciliation_failure_streak": 3,
+          "telemetry_window_seconds": 86400,
+          "telemetry_max_rows": 100000,
+          "critical_flow_failure_fraction": 0.01,
+          "critical_flow_min_samples": 100
+        },
+        "checks": [
+          {
+            "name": "database",
+            "status": "ok",
+            "code": "schema_1_integrity_and_foreign_keys_verified"
+          },
+          {
+            "name": "google_acknowledgements",
+            "status": "ok",
+            "code": "no_pending_rows",
+            "count": 0,
+            "oldest_age_seconds": null,
+            "critical_age_seconds": 600,
+            "age_basis": "last_provider_observation"
+          },
+          {
+            "name": "support_delivery",
+            "status": "ok",
+            "code": "no_pending_rows",
+            "count": 0,
+            "oldest_age_seconds": null,
+            "critical_age_seconds": 86400,
+            "age_basis": "claim_creation"
+          },
+          {
+            "name": "apple_native_completion",
+            "status": "ok",
+            "code": "no_pending_rows",
+            "count": 0
+          },
+          {
+            "name": "ownership_observations",
+            "status": "ok",
+            "code": "provider_freshness_counts",
+            "stale_count": 0,
+            "future_count": 0,
+            "freshness_seconds": 86400
+          },
+          {
+            "name": "reconciliation",
+            "status": "unknown",
+            "code": "no_worker_table"
+          },
+          {
+            "name": "telemetry_consent",
+            "status": "ok",
+            "code": "events_without_current_consent",
+            "count": 0
+          },
+          {
+            "name": "critical_flows",
+            "status": "unknown",
+            "code": "retained_consented_event_sample",
+            "sample_count": 0,
+            "failure_count": 0,
+            "failure_fraction": null,
+            "invalid_count": 0,
+            "excluded_synthetic_count": 0,
+            "sufficient_samples": false,
+            "window_seconds": 86400
+          },
+          {
+            "name": "disk",
+            "status": "ok",
+            "code": "filesystem_free_space",
+            "free_bytes": 228611915776,
+            "free_fraction": 0.2298386602450622
+          },
+          {
+            "name": "backup",
+            "status": "ok",
+            "code": "integrity_and_filesystem_mtime_only",
+            "age_seconds": 0,
+            "maximum_age_seconds": 86400,
+            "creation_time_authenticated": false
+          }
+        ],
+        "signals": [
+          {
+            "check": "reconciliation",
+            "status": "unknown",
+            "code": "no_worker_table"
+          },
+          {
+            "check": "critical_flows",
+            "status": "unknown",
+            "code": "retained_consented_event_sample"
+          }
+        ],
+        "outbound_notifications_sent": false,
+        "release_gate_verified": false,
+        "limits": [
+          "Local database state only; no endpoint, provider or scheduler availability proof.",
+          "Telemetry covers retained consenting accounts, not all installs or native crash reporting.",
+          "Backup mtime can be changed; encrypted storage, offsite retention and deletion replay are not verified."
+        ]
+      }
+    },
+    {
+      "scenario": "missing_path",
+      "exit_code": 2,
+      "output": {
+        "format": "tideglass-local-health-v1",
+        "generated_at": 1792578963,
+        "status": "critical",
+        "exit_code": 2,
+        "thresholds": {
+          "database_seconds": 5.0,
+          "minimum_free_bytes": 1073741824,
+          "minimum_free_fraction": 0.05,
+          "backup_max_age_seconds": 86400,
+          "acknowledgement_age_seconds": 600,
+          "delivery_age_seconds": 86400,
+          "reconciliation_failure_streak": 3,
+          "telemetry_window_seconds": 86400,
+          "telemetry_max_rows": 100000,
+          "critical_flow_failure_fraction": 0.01,
+          "critical_flow_min_samples": 100
+        },
+        "checks": [
+          {
+            "name": "database",
+            "status": "critical",
+            "code": "database_missing"
+          },
+          {
+            "name": "disk",
+            "status": "ok",
+            "code": "filesystem_free_space",
+            "free_bytes": 228611883008,
+            "free_fraction": 0.22983862730122726
+          },
+          {
+            "name": "backup",
+            "status": "unknown",
+            "code": "backup_not_specified"
+          }
+        ],
+        "signals": [
+          {
+            "check": "database",
+            "status": "critical",
+            "code": "database_missing"
+          },
+          {
+            "check": "backup",
+            "status": "unknown",
+            "code": "backup_not_specified"
+          }
+        ],
+        "outbound_notifications_sent": false,
+        "release_gate_verified": false,
+        "limits": [
+          "Local database state only; no endpoint, provider or scheduler availability proof.",
+          "Telemetry covers retained consenting accounts, not all installs or native crash reporting.",
+          "Backup mtime can be changed; encrypted storage, offsite retention and deletion replay are not verified."
+        ]
+      }
+    },
+    {
+      "scenario": "isolated_restore",
+      "exit_code": 0,
+      "output": {
+        "format": "tideglass-isolated-restore-drill-v1",
+        "generated_at": 1792578963,
+        "status": "local_drill_passed",
+        "exit_code": 0,
+        "source_opened_read_only": true,
+        "live_database_replaced": false,
+        "eligible_for_live_restore": false,
+        "provider_verification_performed": false,
+        "production_packages_accepted": false,
+        "limits": [
+          "Dispatch checks use a new synthetic account and ledger only in a deleted temporary copy.",
+          "Matching encrypted rows does not prove vault key availability or provider entitlement freshness.",
+          "Deletion/consent history completeness, session revocation, signed-lease high water and provider replay need a recovery authority before live activation.",
+          "No native save migration, season archive, actual purchase replay or hosted recovery was exercised."
+        ],
+        "source_inventory": {
+          "sha256": "027ea57fc90e0855175a8a607c66ee103c19229c9f94631ceb70bb7cb716ed7b",
+          "table_rows": {
+            "accounts": 1,
+            "ad_receipts": 0,
+            "flags": 4,
+            "operations": 0,
+            "purchases": 0,
+            "rate_limits": 0,
+            "schema_version": 1,
+            "sessions": 1,
+            "snapshots": 0,
+            "support_claims": 0,
+            "telemetry": 0
+          }
+        },
+        "copied_inventory_matches": true,
+        "deletion_replay": {
+          "status": "unknown",
+          "code": "no_external_deletion_manifest",
+          "complete_history_verified": false
+        },
+        "behavior_checks": [
+          "synthetic_account_creation",
+          "synthetic_account_reauthentication",
+          "new_account_telemetry_off",
+          "synthetic_fresh_ledger_read",
+          "stale_ledger_has_no_access",
+          "revoked_ledger_has_no_access",
+          "synthetic_consented_event",
+          "optional_feature_disables",
+          "disabled_cloud_rejected",
+          "ownership_read_survives_purchase_disable",
+          "free_support_survives_ad_disable",
+          "withdrawal_survives_telemetry_disable",
+          "export_survives_disables_and_hides_credentials",
+          "deletion_survives_disables",
+          "deleted_session_rejected",
+          "deletion_cascade_sessions",
+          "deletion_cascade_purchases",
+          "deletion_cascade_support_claims",
+          "deletion_cascade_telemetry",
+          "post_drill_foreign_keys"
+        ],
+        "temporary_copy_removed": true,
+        "elapsed_seconds": 0.030757
+      }
+    },
+    {
+      "scenario": "old_pending_acknowledgement",
+      "exit_code": 2,
+      "output": {
+        "format": "tideglass-local-health-v1",
+        "generated_at": 1792578963,
+        "status": "critical",
+        "exit_code": 2,
+        "thresholds": {
+          "database_seconds": 5.0,
+          "minimum_free_bytes": 1073741824,
+          "minimum_free_fraction": 0.05,
+          "backup_max_age_seconds": 86400,
+          "acknowledgement_age_seconds": 600,
+          "delivery_age_seconds": 86400,
+          "reconciliation_failure_streak": 3,
+          "telemetry_window_seconds": 86400,
+          "telemetry_max_rows": 100000,
+          "critical_flow_failure_fraction": 0.01,
+          "critical_flow_min_samples": 100
+        },
+        "checks": [
+          {
+            "name": "database",
+            "status": "ok",
+            "code": "schema_1_integrity_and_foreign_keys_verified"
+          },
+          {
+            "name": "google_acknowledgements",
+            "status": "critical",
+            "code": "pending_age_threshold",
+            "count": 1,
+            "oldest_age_seconds": 601,
+            "critical_age_seconds": 600,
+            "age_basis": "last_provider_observation"
+          },
+          {
+            "name": "support_delivery",
+            "status": "ok",
+            "code": "no_pending_rows",
+            "count": 0,
+            "oldest_age_seconds": null,
+            "critical_age_seconds": 86400,
+            "age_basis": "claim_creation"
+          },
+          {
+            "name": "apple_native_completion",
+            "status": "ok",
+            "code": "no_pending_rows",
+            "count": 0
+          },
+          {
+            "name": "ownership_observations",
+            "status": "ok",
+            "code": "provider_freshness_counts",
+            "stale_count": 0,
+            "future_count": 0,
+            "freshness_seconds": 86400
+          },
+          {
+            "name": "reconciliation",
+            "status": "unknown",
+            "code": "no_worker_table"
+          },
+          {
+            "name": "telemetry_consent",
+            "status": "ok",
+            "code": "events_without_current_consent",
+            "count": 0
+          },
+          {
+            "name": "critical_flows",
+            "status": "unknown",
+            "code": "retained_consented_event_sample",
+            "sample_count": 0,
+            "failure_count": 0,
+            "failure_fraction": null,
+            "invalid_count": 0,
+            "excluded_synthetic_count": 0,
+            "sufficient_samples": false,
+            "window_seconds": 86400
+          },
+          {
+            "name": "disk",
+            "status": "ok",
+            "code": "filesystem_free_space",
+            "free_bytes": 228611870720,
+            "free_fraction": 0.22983861494728913
+          },
+          {
+            "name": "backup",
+            "status": "ok",
+            "code": "integrity_and_filesystem_mtime_only",
+            "age_seconds": 0,
+            "maximum_age_seconds": 86400,
+            "creation_time_authenticated": false
+          }
+        ],
+        "signals": [
+          {
+            "check": "google_acknowledgements",
+            "status": "critical",
+            "code": "pending_age_threshold"
+          },
+          {
+            "check": "reconciliation",
+            "status": "unknown",
+            "code": "no_worker_table"
+          },
+          {
+            "check": "critical_flows",
+            "status": "unknown",
+            "code": "retained_consented_event_sample"
+          }
+        ],
+        "outbound_notifications_sent": false,
+        "release_gate_verified": false,
+        "limits": [
+          "Local database state only; no endpoint, provider or scheduler availability proof.",
+          "Telemetry covers retained consenting accounts, not all installs or native crash reporting.",
+          "Backup mtime can be changed; encrypted storage, offsite retention and deletion replay are not verified."
+        ]
+      }
+    }
+  ]
+}

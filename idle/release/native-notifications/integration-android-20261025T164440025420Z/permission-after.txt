@@ -1,0 +1,226 @@
+Activity Resolver Table:
+  Non-Data Actions:
+      android.intent.action.MAIN:
+        72991e2 dev.tideglass.game/.MainActivity filter df22973
+          Action: "android.intent.action.MAIN"
+          Category: "android.intent.category.LAUNCHER"
+
+Receiver Resolver Table:
+  Non-Data Actions:
+      android.intent.action.BATTERY_OKAY:
+        e59cf5c dev.tideglass.game/androidx.work.impl.background.systemalarm.ConstraintProxy$BatteryNotLowProxy filter 6938265
+          Action: "android.intent.action.BATTERY_OKAY"
+          Action: "android.intent.action.BATTERY_LOW"
+      android.intent.action.ACTION_POWER_DISCONNECTED:
+        6d2ea2e dev.tideglass.game/androidx.work.impl.background.systemalarm.ConstraintProxy$BatteryChargingProxy filter 8bbe9cf
+          Action: "android.intent.action.ACTION_POWER_DISCONNECTED"
+          Action: "android.intent.action.ACTION_POWER_CONNECTED"
+      androidx.profileinstaller.action.SAVE_PROFILE:
+        f12b560 dev.tideglass.game/androidx.profileinstaller.ProfileInstallReceiver filter c50e4bf
+          Action: "androidx.profileinstaller.action.SAVE_PROFILE"
+      android.intent.action.DEVICE_STORAGE_LOW:
+        da77b3a dev.tideglass.game/androidx.work.impl.background.systemalarm.ConstraintProxy$StorageNotLowProxy filter b753eb
+          Action: "android.intent.action.DEVICE_STORAGE_LOW"
+          Action: "android.intent.action.DEVICE_STORAGE_OK"
+      android.net.conn.CONNECTIVITY_CHANGE:
+        c628548 dev.tideglass.game/androidx.work.impl.background.systemalarm.ConstraintProxy$NetworkStateProxy filter 83edfe1
+          Action: "android.net.conn.CONNECTIVITY_CHANGE"
+      android.intent.action.DEVICE_STORAGE_OK:
+        da77b3a dev.tideglass.game/androidx.work.impl.background.systemalarm.ConstraintProxy$StorageNotLowProxy filter b753eb
+          Action: "android.intent.action.DEVICE_STORAGE_LOW"
+          Action: "android.intent.action.DEVICE_STORAGE_OK"
+      EXTRA_CHOSEN_COMPONENT:
+        aaee030 dev.tideglass.game/dev.fluttercommunity.plus.share.SharePlusPendingIntent filter 9e444a9
+          Action: "EXTRA_CHOSEN_COMPONENT"
+      androidx.profileinstaller.action.INSTALL_PROFILE:
+        f12b560 dev.tideglass.game/androidx.profileinstaller.ProfileInstallReceiver filter 67aaa19
+          Action: "androidx.profileinstaller.action.INSTALL_PROFILE"
+      android.intent.action.BATTERY_LOW:
+        e59cf5c dev.tideglass.game/androidx.work.impl.background.systemalarm.ConstraintProxy$BatteryNotLowProxy filter 6938265
+          Action: "android.intent.action.BATTERY_OKAY"
+          Action: "android.intent.action.BATTERY_LOW"
+      android.intent.action.TIMEZONE_CHANGED:
+        4021106 dev.tideglass.game/androidx.work.impl.background.systemalarm.RescheduleReceiver filter 6b543c7
+          Action: "android.intent.action.TIMEZONE_CHANGED"
+          Action: "android.intent.action.TIME_SET"
+          Action: "android.intent.action.BOOT_COMPLETED"
+      android.intent.action.TIME_SET:
+        4021106 dev.tideglass.game/androidx.work.impl.background.systemalarm.RescheduleReceiver filter 6b543c7
+          Action: "android.intent.action.TIMEZONE_CHANGED"
+          Action: "android.intent.action.TIME_SET"
+          Action: "android.intent.action.BOOT_COMPLETED"
+      androidx.profileinstaller.action.SKIP_FILE:
+        f12b560 dev.tideglass.game/androidx.profileinstaller.ProfileInstallReceiver filter a643ade
+          Action: "androidx.profileinstaller.action.SKIP_FILE"
+      androidx.profileinstaller.action.BENCHMARK_OPERATION:
+        f12b560 dev.tideglass.game/androidx.profileinstaller.ProfileInstallReceiver filter eddc78c
+          Action: "androidx.profileinstaller.action.BENCHMARK_OPERATION"
+      android.intent.action.BOOT_COMPLETED:
+        4021106 dev.tideglass.game/androidx.work.impl.background.systemalarm.RescheduleReceiver filter 6b543c7
+          Action: "android.intent.action.TIMEZONE_CHANGED"
+          Action: "android.intent.action.TIME_SET"
+          Action: "android.intent.action.BOOT_COMPLETED"
+      android.intent.action.ACTION_POWER_CONNECTED:
+        6d2ea2e dev.tideglass.game/androidx.work.impl.background.systemalarm.ConstraintProxy$BatteryChargingProxy filter 8bbe9cf
+          Action: "android.intent.action.ACTION_POWER_DISCONNECTED"
+          Action: "android.intent.action.ACTION_POWER_CONNECTED"
+      androidx.work.diagnostics.REQUEST_DIAGNOSTICS:
+        b1e3792 dev.tideglass.game/androidx.work.impl.diagnostics.DiagnosticsReceiver filter db85563
+          Action: "androidx.work.diagnostics.REQUEST_DIAGNOSTICS"
+      androidx.work.impl.background.systemalarm.UpdateProxies:
+        8beadf4 dev.tideglass.game/androidx.work.impl.background.systemalarm.ConstraintProxyUpdateReceiver filter e8991d
+          Action: "androidx.work.impl.background.systemalarm.UpdateProxies"
+
+Domain verification status:
+
+Permissions:
+  Permission [dev.tideglass.game.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION] (d5facc):
+    sourcePackage=dev.tideglass.game
+    uid=10209 gids=[] type=0 prot=signature
+    perm=PermissionInfo{5c0102f dev.tideglass.game.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION}
+    flags=0x0
+
+Registered ContentProviders:
+  dev.tideglass.game/androidx.startup.InitializationProvider:
+    Provider{b0f663c dev.tideglass.game/androidx.startup.InitializationProvider}
+  dev.tideglass.game/dev.fluttercommunity.plus.share.ShareFileProvider:
+    Provider{51cffc5 dev.tideglass.game/dev.fluttercommunity.plus.share.ShareFileProvider}
+  dev.tideglass.game/com.google.android.gms.ads.MobileAdsInitProvider:
+    Provider{aa51d1a dev.tideglass.game/com.google.android.gms.ads.MobileAdsInitProvider}
+
+ContentProvider Authorities:
+  [dev.tideglass.game.androidx-startup]:
+    Provider{b0f663c dev.tideglass.game/androidx.startup.InitializationProvider}
+      applicationInfo=ApplicationInfo{34e2115 dev.tideglass.game}
+  [dev.tideglass.game.flutter.share_provider]:
+    Provider{51cffc5 dev.tideglass.game/dev.fluttercommunity.plus.share.ShareFileProvider}
+      applicationInfo=ApplicationInfo{196ac2a dev.tideglass.game}
+  [dev.tideglass.game.mobileadsinitprovider]:
+    Provider{aa51d1a dev.tideglass.game/com.google.android.gms.ads.MobileAdsInitProvider}
+      applicationInfo=ApplicationInfo{8184a1b dev.tideglass.game}
+
+Key Set Manager:
+  [dev.tideglass.game]
+      Signing KeySets: 59
+
+Packages:
+  Package [dev.tideglass.game] (48cd14f):
+    appId=10209
+    pkg=Package{f67f0e6 dev.tideglass.game}
+    codePath=/data/app/~~yjGdMHd7obP1rnV020k9-Q==/dev.tideglass.game-Y_-jg6bAQV_EfRKbH3q2-w==
+    resourcePath=/data/app/~~yjGdMHd7obP1rnV020k9-Q==/dev.tideglass.game-Y_-jg6bAQV_EfRKbH3q2-w==
+    legacyNativeLibraryDir=/data/app/~~yjGdMHd7obP1rnV020k9-Q==/dev.tideglass.game-Y_-jg6bAQV_EfRKbH3q2-w==/lib
+    extractNativeLibs=false
+    primaryCpuAbi=arm64-v8a
+    secondaryCpuAbi=null
+    cpuAbiOverride=null
+    versionCode=1 minSdk=29 targetSdk=36
+    minExtensionVersions=[]
+    versionName=0.1.0
+    hiddenApiEnforcementPolicy=2
+    usesNonSdkApi=false
+    splits=[base]
+    apkSigningVersion=2
+    flags=[ DEBUGGABLE HAS_CODE ALLOW_CLEAR_USER_DATA ]
+    privateFlags=[ PRIVATE_FLAG_ACTIVITIES_RESIZE_MODE_RESIZEABLE_VIA_SDK_VERSION ALLOW_AUDIO_PLAYBACK_CAPTURE PARTIALLY_DIRECT_BOOT_AWARE PRIVATE_FLAG_ALLOW_NATIVE_HEAP_POINTER_TAGGING ]
+    forceQueryable=false
+    queriesPackages=[com.android.vending]
+    queriesIntents=[Intent { act=android.intent.action.PROCESS_TEXT dat=content://*/... typ=text/plain }, Intent { act=android.intent.action.VIEW cat=[android.intent.category.BROWSABLE] dat=https:/... }, Intent { act=android.support.customtabs.action.CustomTabsService }, Intent { act=android.intent.action.INSERT dat=content://*/... typ=vnd.android.cursor.dir/event }, Intent { act=android.intent.action.VIEW dat=sms:xx }, Intent { act=android.intent.action.DIAL }, Intent { act=com.android.vending.billing.InAppBillingService.BIND }, Intent { act=com.google.android.apps.play.billingtestcompanion.BillingOverrideService.BIND }]
+    scannedAsStoppedSystemApp=false
+    supportsScreens=[small, medium, large, xlarge, resizeable, anyDensity]
+    usesOptionalLibraries:
+      androidx.window.extensions
+      androidx.window.sidecar
+      android.ext.adservices
+    usesLibraryFiles:
+      /system_ext/framework/androidx.window.extensions.jar
+      /system_ext/framework/androidx.window.sidecar.jar
+    timeStamp=2026-10-25 19:45:03
+    lastUpdateTime=2026-10-25 19:45:03
+    installerPackageName=null
+    installerPackageUid=-1
+    initiatingPackageName=com.android.shell
+    originatingPackageName=null
+    packageSource=1
+    appMetadataFilePath=null
+    appMetadataSource=0
+    signatures=PackageSignatures{3f53402 version:2, signatures:[f8f17c9f], past signatures:[]}
+    installPermissionsFixed=false
+    pkgFlags=[ DEBUGGABLE HAS_CODE ALLOW_CLEAR_USER_DATA ]
+    privatePkgFlags=[ PRIVATE_FLAG_ACTIVITIES_RESIZE_MODE_RESIZEABLE_VIA_SDK_VERSION ALLOW_AUDIO_PLAYBACK_CAPTURE PARTIALLY_DIRECT_BOOT_AWARE PRIVATE_FLAG_ALLOW_NATIVE_HEAP_POINTER_TAGGING ]
+    apexModuleName=null
+    declared permissions:
+      dev.tideglass.game.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION: prot=signature
+    requested permissions:
+      android.permission.ACCESS_ADSERVICES_TOPICS
+      android.permission.POST_NOTIFICATIONS
+      android.permission.FOREGROUND_SERVICE
+      android.permission.ACCESS_ADSERVICES_AD_ID
+      android.permission.INTERNET
+      com.android.vending.BILLING
+      android.permission.ACCESS_NETWORK_STATE
+      android.permission.ACCESS_ADSERVICES_ATTRIBUTION
+      dev.tideglass.game.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
+      android.permission.VIBRATE
+      com.google.android.gms.permission.AD_ID
+      android.permission.WAKE_LOCK
+    install permissions:
+      android.permission.ACCESS_ADSERVICES_TOPICS: granted=true
+      android.permission.FOREGROUND_SERVICE: granted=true
+      android.permission.ACCESS_ADSERVICES_AD_ID: granted=true
+      android.permission.INTERNET: granted=true
+      android.permission.ACCESS_NETWORK_STATE: granted=true
+      android.permission.ACCESS_ADSERVICES_ATTRIBUTION: granted=true
+      dev.tideglass.game.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION: granted=true
+      android.permission.VIBRATE: granted=true
+      com.google.android.gms.permission.AD_ID: granted=true
+      android.permission.WAKE_LOCK: granted=true
+    User 0: ceDataInode=360941 deDataInode=98314 installed=true hidden=false suspended=false distractionFlags=0 stopped=false notLaunched=false enabled=0 instant=false virtual=false quarantined=false
+      installReason=0
+      dataDir=/data/user/0/dev.tideglass.game
+      firstInstallTime=2026-10-16 13:11:16
+      uninstallReason=0
+      overlay paths:
+        /product/overlay/EmulationPixel6/EmulationPixel6Overlay.apk
+        /product/overlay/NavigationBarModeGestural/NavigationBarModeGesturalOverlay.apk
+      legacy overlay paths:
+        /product/overlay/EmulationPixel6/EmulationPixel6Overlay.apk
+        /product/overlay/NavigationBarModeGestural/NavigationBarModeGesturalOverlay.apk
+      gids=[3003]
+      runtime permissions:
+        android.permission.POST_NOTIFICATIONS: granted=false, flags=[ USER_SET|USER_SENSITIVE_WHEN_GRANTED|USER_SENSITIVE_WHEN_DENIED]
+      enabledComponents:
+        androidx.work.impl.background.systemjob.SystemJobService
+
+Queries:
+  system apps queryable: false
+  queries via forceQueryable:
+  queries via package name:
+  queries via component:
+    com.google.android.as:
+      dev.tideglass.game
+    com.google.android.settings.intelligence:
+      dev.tideglass.game
+    dev.tideglass.game:
+      com.google.android.dialer
+      com.google.android.apps.messaging
+      com.android.chrome
+      com.google.android.apps.docs
+      com.google.android.calendar
+  queryable via interaction:
+    User 0:
+      [com.android.DeviceAsWebcam,com.android.server.telecom,com.android.localtransport,android,com.android.settings,com.android.dynsystem,com.android.providers.settings,com.android.emulator.multidisplay,com.android.location.fused,com.android.keychain,com.android.inputdevices]:
+        dev.tideglass.game
+      com.google.android.inputmethod.latin:
+        dev.tideglass.game
+  queryable via uses-library:
+
+Dexopt state:
+  [dev.tideglass.game]
+    path: /data/app/~~yjGdMHd7obP1rnV020k9-Q==/dev.tideglass.game-Y_-jg6bAQV_EfRKbH3q2-w==/base.apk
+      arm64: [status=run-from-apk] [reason=unknown] [primary-abi]
+        [location is error]
+
+Compiler stats:
+  [dev.tideglass.game]
+    (No recorded stats)

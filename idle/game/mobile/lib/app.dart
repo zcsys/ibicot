@@ -3,11 +3,13 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:tideglass_core/tideglass_core.dart';
 import 'game_controller.dart';
+import 'game_telemetry.dart';
 import 'harbor_art.dart';
 import 'number_format.dart';
 import 'palette.dart';
 import 'strings.dart';
 import 'daily_panel.dart';
+import 'daily_icon_label.dart';
 import 'story_screen.dart';
 import 'support_screen.dart';
 import 'season_screen.dart';
@@ -23,6 +25,10 @@ import 'service_cosmetics.dart';
 import 'notification_service.dart';
 import 'notification_settings.dart';
 import 'reminder_lifecycle.dart';
+import 'help_content.dart';
+import 'help_screen.dart';
+import 'study_gate.dart';
+import 'rechart_estimate.dart';
 
 class ClientPreferences {
   const ClientPreferences({
@@ -90,7 +96,24 @@ class _TideglassAppState extends State<TideglassApp>
   final fleetKey = GlobalKey();
   bool returnVisible = false, recoveryDismissed = false;
   ReminderLifecycle? reminders;
+  GameTelemetry? telemetry;
+  Future<void>? _resumeWork;
   GameController get game => widget.controller;
+  StudySession? study;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final next = StudyScope.of(context);
+    if (identical(next, study)) return;
+    study = next;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted && identical(next, study) && next != null) {
+        unawaited(next.capture(next.recorder.interactiveHarbor));
+      }
+    });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -102,6 +125,10 @@ class _TideglassAppState extends State<TideglassApp>
     WidgetsBinding.instance.addObserver(this);
     game.addListener(_changed);
     widget.services?.addListener(_changed);
+    if (widget.services != null) {
+      telemetry = GameTelemetry(game: game, services: widget.services!);
+      unawaited(telemetry!.returned());
+    }
     if (widget.notifications != null) {
       reminders = ReminderLifecycle(game, widget.notifications!);
       unawaited(reminders!.returned());
@@ -114,6 +141,10 @@ class _TideglassAppState extends State<TideglassApp>
       unawaited(_resume());
     } else if (state == AppLifecycleState.paused ||
         state == AppLifecycleState.detached) {
+      if (widget.services != null) {
+        unawaited(widget.services!.checkpointOwnership());
+      }
+      if (telemetry != null) unawaited(telemetry!.backgrounded());
       if (reminders != null) {
         unawaited(reminders!.backgrounded());
       } else {
@@ -126,9 +157,30 @@ class _TideglassAppState extends State<TideglassApp>
     }
   }
 
-  Future<void> _resume() async {
+  Future<void> _resume() {
+    if (_resumeWork != null) return _resumeWork!;
+    final work = _resumeSession();
+    _resumeWork = work;
+    return work.whenComplete(() {
+      if (identical(_resumeWork, work)) _resumeWork = null;
+    });
+  }
+
+  Future<void> _resumeSession() async {
     if (reminders != null) unawaited(reminders!.returned());
-    await game.resumeWithProgress();
+    if (telemetry != null) unawaited(telemetry!.returned());
+    final watch = Stopwatch()..start();
+    var settled = false;
+    try {
+      await game.resumeWithProgress();
+      settled = game.replayError == null;
+    } finally {
+      watch.stop();
+      telemetry?.resumeFinished(watch.elapsed, succeeded: settled);
+      if (settled && mounted && study != null) {
+        unawaited(study!.capture(study!.recorder.interactiveHarbor));
+      }
+    }
     final services = widget.services;
     if (!mounted || services == null || !services.signedIn) return;
     try {
@@ -148,6 +200,7 @@ class _TideglassAppState extends State<TideglassApp>
     game.removeListener(_changed);
     widget.services?.removeListener(_changed);
     reminders?.close();
+    telemetry?.dispose();
     animation.dispose();
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
@@ -263,25 +316,30 @@ class _TideglassAppState extends State<TideglassApp>
             prefs.reduceMotion || MediaQuery.disableAnimationsOf(context);
         if (reduced && animation.isAnimating) animation.stop();
         if (!reduced && !animation.isAnimating) animation.repeat();
+        final expandedLabels =
+            Presentation.pseudoEnabled ||
+            MediaQuery.textScalerOf(context).scale(16) > 24;
         return Scaffold(
           appBar: AppBar(
             backgroundColor: TideColors.deep,
             surfaceTintColor: Colors.transparent,
-            toolbarHeight: 80,
-            titleSpacing: 24,
+            toolbarHeight: expandedLabels ? 160 : 80,
+            titleSpacing: expandedLabels ? 16 : 24,
             title: Row(
               children: [
-                const Icon(
-                  Icons.auto_awesome_outlined,
-                  color: TideColors.amber,
-                  size: 26,
-                ),
-                const SizedBox(width: 12),
+                if (!expandedLabels) ...[
+                  const Icon(
+                    Icons.auto_awesome_outlined,
+                    color: TideColors.amber,
+                    size: 26,
+                  ),
+                  const SizedBox(width: 12),
+                ],
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      LocalizedText(
+                      Text(
                         Copy.title,
                         style: Theme.of(
                           context,
@@ -289,6 +347,9 @@ class _TideglassAppState extends State<TideglassApp>
                       ),
                       const LocalizedText(
                         Copy.subtitle,
+                        maxLines: 4,
+                        softWrap: true,
+                        overflow: TextOverflow.visible,
                         style: TextStyle(color: TideColors.muted, fontSize: 11),
                       ),
                     ],
@@ -329,6 +390,7 @@ class _TideglassAppState extends State<TideglassApp>
             ),
           ),
           bottomNavigationBar: NavigationBar(
+            height: expandedLabels ? 120 : 80,
             selectedIndex: tab,
             onDestinationSelected: (v) => setState(() => tab = v),
             destinations: [
@@ -607,7 +669,7 @@ class _TideglassAppState extends State<TideglassApp>
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     LocalizedText(
-                      TideglassEngine.producerNames[tier],
+                      UiEnglish.producerNames[tier],
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         color: unlocked ? TideColors.text : TideColors.muted,
                       ),
@@ -730,7 +792,7 @@ class _TideglassAppState extends State<TideglassApp>
             LocalizedText(
               UiEnglish.appNeedsTideglassEngineProducerNamesTier(
                 Presentation.authored(
-                  (TideglassEngine.producerNames[tier - 1]).toString(),
+                  (UiEnglish.producerNames[tier - 1]).toString(),
                 ),
               ),
               style: const TextStyle(color: TideColors.muted, fontSize: 12),
@@ -816,7 +878,7 @@ class _TideglassAppState extends State<TideglassApp>
               FilledButton(
                 key: const ValueKey('preview-rechart'),
                 onPressed: eligible
-                    ? () => _confirmRechart(context, claim)
+                    ? () => _confirmRechart(context)
                     : null,
                 child: LocalizedText(
                   eligible
@@ -898,62 +960,71 @@ class _TideglassAppState extends State<TideglassApp>
       ],
     ),
   );
-  Future<void> _confirmRechart(
-    BuildContext context,
-    BigInt claim,
-  ) => showDialog<void>(
-    context: context,
-    builder: (dialog) => AlertDialog(
-      title: const LocalizedText(UiCopy.chartABrighterOcean),
-      content: SingleChildScrollView(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            LocalizedText(
-              UiEnglish.appClaimClaimNewCharts(claim),
-              style: const TextStyle(color: TideColors.amber, fontSize: 23),
-            ),
-            const SizedBox(height: 12),
-            LocalizedText(
-              UiEnglish.appPermanentPowerGameEnginePrestigeMultiplierGameState(
-                game.engine
-                    .prestigeMultiplier(game.state.charts)
-                    .toDecimalString(decimals: 2),
-                game.engine
-                    .prestigeMultiplier(game.state.charts + claim)
-                    .toDecimalString(decimals: 2),
+  Future<void> _confirmRechart(BuildContext context) {
+    final previewState = game.state;
+    final claim = game.engine.prestigeAward(previewState);
+    return showDialog<void>(
+      context: context,
+      builder: (dialog) => ReadingDialog(
+        title: const LocalizedText(UiCopy.chartABrighterOcean),
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              LocalizedText(
+                UiEnglish.appClaimClaimNewCharts(claim),
+                style: const TextStyle(color: TideColors.amber, fontSize: 23),
               ),
-            ),
-            const SizedBox(height: 18),
-            const LocalizedText(Copy.rechartLost),
-            const SizedBox(height: 12),
-            const LocalizedText(Copy.rechartKept),
-            const SizedBox(height: 12),
-            const LocalizedText(
-              UiCopy.yourCurrentFleetStopsEarningAs,
-              style: TextStyle(color: TideColors.muted),
-            ),
-          ],
+              const SizedBox(height: 12),
+              LocalizedText(
+                UiEnglish.appPermanentPowerGameEnginePrestigeMultiplierGameState(
+                  game.engine
+                      .prestigeMultiplier(previewState.charts)
+                      .toDecimalString(decimals: 2),
+                  game.engine
+                      .prestigeMultiplier(previewState.charts + claim)
+                      .toDecimalString(decimals: 2),
+                ),
+              ),
+              const SizedBox(height: 18),
+              const LocalizedText(Copy.rechartLost),
+              const SizedBox(height: 12),
+              const LocalizedText(Copy.rechartKept),
+              const SizedBox(height: 12),
+              const LocalizedText(
+                UiCopy.yourCurrentFleetStopsEarningAs,
+                style: TextStyle(color: TideColors.muted),
+              ),
+              const SizedBox(height: 18),
+              const Divider(),
+              const SizedBox(height: 18),
+              RechartEstimatePanel(
+                key: const ValueKey('rechart-estimate'),
+                snapshot: previewState,
+              ),
+            ],
+          ),
         ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(dialog),
+            child: const LocalizedText(UiCopy.keepBuilding),
+          ),
+          FilledButton(
+            key: const ValueKey('confirm-rechart'),
+            onPressed: () {
+              game.rechart();
+              Navigator.pop(dialog);
+              setState(() => tab = 0);
+            },
+            child: const LocalizedText(UiCopy.rechart),
+          ),
+        ],
       ),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.pop(dialog),
-          child: const LocalizedText(UiCopy.keepBuilding),
-        ),
-        FilledButton(
-          key: const ValueKey('confirm-rechart'),
-          onPressed: () {
-            game.rechart();
-            Navigator.pop(dialog);
-            setState(() => tab = 0);
-          },
-          child: const LocalizedText(UiCopy.rechart),
-        ),
-      ],
-    ),
-  );
+    );
+  }
+
   Widget _journal(BuildContext context) => _page(
     children: [
       LocalizedText(
@@ -1022,15 +1093,7 @@ class _TideglassAppState extends State<TideglassApp>
           padding: const EdgeInsets.only(bottom: 18),
           child: OutlinedButton.icon(
             key: const ValueKey('open-services'),
-            onPressed: () => Navigator.of(context).push(
-              MaterialPageRoute<void>(
-                builder: (_) => ServiceSettings(
-                  manager: widget.services!,
-                  onExportHarbor: widget.onExport!,
-                  onImportHarbor: widget.onImport!,
-                ),
-              ),
-            ),
+            onPressed: () => _openAccount(context),
             icon: const Icon(Icons.cloud_outlined),
             label: const LocalizedText(UiEnglish.appAccountCloudSaves),
           ),
@@ -1089,6 +1152,13 @@ class _TideglassAppState extends State<TideglassApp>
       const SizedBox(height: 24),
       LocalizedText(Copy.help, style: Theme.of(context).textTheme.titleLarge),
       const SizedBox(height: 16),
+      OutlinedButton.icon(
+        key: const ValueKey('open-handbook'),
+        onPressed: () => _openHandbook(context),
+        icon: const Icon(Icons.help_outline),
+        label: const LocalizedText(HelpCopy.title),
+      ),
+      const SizedBox(height: 16),
       _help(UiCopy.whileYouAreAway, Copy.offlineHelp, Icons.bedtime_outlined),
       _help(
         UiCopy.aGrowingFleet,
@@ -1139,7 +1209,11 @@ class _TideglassAppState extends State<TideglassApp>
           style: Theme.of(context).textTheme.titleLarge,
         ),
         const SizedBox(height: 14),
-        _dataRow(UiCopy.focusStored, '${game.state.focusCharges} / 12'),
+        _dataRow(
+          UiCopy.focusStored,
+          '${game.state.focusCharges} / 12',
+          icon: Icons.auto_awesome_outlined,
+        ),
         const SizedBox(height: 8),
         const LocalizedText(
           UiCopy.oneChargeEveryTwoHoursEach,
@@ -1163,7 +1237,11 @@ class _TideglassAppState extends State<TideglassApp>
           child: const LocalizedText(UiCopy.focusTheConstellation),
         ),
         const SizedBox(height: 22),
-        _dataRow(UiCopy.surveysComplete, '${game.state.completedSurveys} / 3'),
+        _dataRow(
+          UiCopy.surveysComplete,
+          '${game.state.completedSurveys} / 3',
+          icon: Icons.explore_outlined,
+        ),
         const SizedBox(height: 8),
         const LocalizedText(
           UiCopy.oneSurveyEveryEightHoursUp,
@@ -1186,6 +1264,78 @@ class _TideglassAppState extends State<TideglassApp>
       ],
     ),
   );
+  bool get _hasAccountActions =>
+      widget.services != null &&
+      widget.onExport != null &&
+      widget.onImport != null;
+
+  Future<void> _openAccount(BuildContext context) => Navigator.of(context).push(
+    MaterialPageRoute<void>(
+      builder: (_) => ServiceSettings(
+        manager: widget.services!,
+        onExportHarbor: widget.onExport!,
+        onImportHarbor: widget.onImport!,
+      ),
+    ),
+  );
+
+  Future<void> _openHandbook(BuildContext context) =>
+      Navigator.of(context).push(
+        MaterialPageRoute<void>(
+          builder: (helpContext) => HelpScreen(
+            onOpenAccount: _hasAccountActions
+                ? () => _openAccount(helpContext)
+                : null,
+            onOpenPrivacySettings: _hasAccountActions
+                ? () => _openAccount(helpContext)
+                : null,
+            onOpenLocalRecovery:
+                widget.onExport != null || widget.onImport != null
+                ? () => _localRecoveryActions(helpContext)
+                : null,
+          ),
+        ),
+      );
+
+  Future<void> _localRecoveryActions(BuildContext context) => showDialog<void>(
+    context: context,
+    builder: (dialog) => ReadingDialog(
+      title: const LocalizedText(UiCopy.yourHarborBackup),
+      content: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            if (widget.onExport != null)
+              OutlinedButton.icon(
+                onPressed: () {
+                  Navigator.pop(dialog);
+                  _export(context);
+                },
+                icon: const Icon(Icons.file_upload_outlined),
+                label: const LocalizedText(UiCopy.exportMyHarbor),
+              ),
+            if (widget.onImport != null)
+              OutlinedButton.icon(
+                onPressed: () {
+                  Navigator.pop(dialog);
+                  _import(context);
+                },
+                icon: const Icon(Icons.file_download_outlined),
+                label: const LocalizedText(UiCopy.importASavedHarbor),
+              ),
+          ],
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(dialog),
+          child: const LocalizedText(UiCopy.done),
+        ),
+      ],
+    ),
+  );
+
   Future<void> _openSeason(BuildContext context) async {
     final audio = game.audio;
     if (audio != null) unawaited(audio.startMusic(TideMusic.current));
@@ -1256,7 +1406,7 @@ class _TideglassAppState extends State<TideglassApp>
   Widget _returnDialog(
     BuildContext context,
     ReturnReport report,
-  ) => AlertDialog(
+  ) => ReadingDialog(
     title: const LocalizedText(Copy.returnTitle),
     content: SingleChildScrollView(
       child: Column(
@@ -1361,10 +1511,21 @@ class _TideglassAppState extends State<TideglassApp>
                   AudioSettings(audio: game.audio!),
                   const SizedBox(height: 24),
                 ],
+                if (study != null) ...[
+                  StudyControls(session: study!),
+                  const SizedBox(height: 24),
+                ],
                 if (widget.notifications != null) ...[
                   NotificationSettings(service: widget.notifications!),
                   const SizedBox(height: 24),
                 ],
+                OutlinedButton.icon(
+                  key: const ValueKey('open-handbook-settings'),
+                  onPressed: () => _openHandbook(context),
+                  icon: const Icon(Icons.help_outline),
+                  label: const LocalizedText(HelpCopy.title),
+                ),
+                const SizedBox(height: 16),
                 FilledButton(
                   onPressed: () => Navigator.pop(context),
                   child: const LocalizedText(UiCopy.returnToTheHarbor),
@@ -1380,7 +1541,7 @@ class _TideglassAppState extends State<TideglassApp>
     final text = TextEditingController();
     final backup = await showDialog<String>(
       context: context,
-      builder: (dialog) => AlertDialog(
+      builder: (dialog) => ReadingDialog(
         title: const LocalizedText(UiCopy.chooseASavedHarbor),
         content: SizedBox(
           width: 500,
@@ -1440,7 +1601,7 @@ class _TideglassAppState extends State<TideglassApp>
       if (!context.mounted) return;
       await showDialog<void>(
         context: context,
-        builder: (dialog) => AlertDialog(
+        builder: (dialog) => ReadingDialog(
           title: const LocalizedText(UiCopy.yourHarborBackup),
           content: SizedBox(
             width: 500,
@@ -1521,12 +1682,19 @@ class _TideglassAppState extends State<TideglassApp>
     ),
     child: Material(color: Colors.transparent, child: child),
   );
-  Widget _dataRow(String label, String value) => Wrap(
+  Widget _dataRow(String label, String value, {IconData? icon}) => Wrap(
     alignment: WrapAlignment.spaceBetween,
     spacing: 20,
     runSpacing: 4,
     children: [
-      LocalizedText(label, style: const TextStyle(color: TideColors.muted)),
+      if (icon == null)
+        LocalizedText(label, style: const TextStyle(color: TideColors.muted))
+      else
+        DailyIconLabel(
+          icon: icon,
+          label: label,
+          style: const TextStyle(color: TideColors.muted),
+        ),
       LocalizedText(value, style: const TextStyle(fontWeight: FontWeight.w600)),
     ],
   );

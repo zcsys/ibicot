@@ -1,0 +1,72 @@
+{
+  "complete": false,
+  "conditions_attempted": 6,
+  "full_conditions_passed": 5,
+  "conditions_unrun": 6,
+  "findings": [
+    "CONTENT003"
+  ],
+  "runs": [
+    {
+      "condition": "phone-100-en",
+      "exit_code": 0,
+      "path": "release/content-presentation/full-matrix-20261021T141858575299Z/phone-100-en",
+      "success": 73,
+      "failed": 0,
+      "observed_rows": 137,
+      "verified_full_condition": true,
+      "log_sha256": "c35fa4ffe01e7f4362f9d41455760a28bbc059f22223ab9d16926d7623c2889e"
+    },
+    {
+      "condition": "phone-100-pseudo",
+      "exit_code": 0,
+      "path": "release/content-presentation/full-matrix-20261021T141858575299Z/phone-100-pseudo",
+      "success": 73,
+      "failed": 0,
+      "observed_rows": 137,
+      "verified_full_condition": true,
+      "log_sha256": "6acf70285041c76e9e3d0279574a46d06896965ab5a64f36dce4ed54686aec29"
+    },
+    {
+      "condition": "phone-150-en",
+      "exit_code": 0,
+      "path": "release/content-presentation/full-matrix-20261021T141858575299Z/phone-150-en",
+      "success": 73,
+      "failed": 0,
+      "observed_rows": 137,
+      "verified_full_condition": true,
+      "log_sha256": "31b174f3f1ff4de1624dd7b425f035c4e764811b9a664b200a3ec8db0e3812d3"
+    },
+    {
+      "condition": "phone-150-pseudo",
+      "exit_code": 0,
+      "path": "release/content-presentation/full-matrix-20261021T141858575299Z/phone-150-pseudo",
+      "success": 73,
+      "failed": 0,
+      "observed_rows": 137,
+      "verified_full_condition": true,
+      "log_sha256": "0f4f6b6473c5eb36a3afec09cc5a9f2ea37f5b8c54a20b38a0b933709a08aa2d"
+    },
+    {
+      "condition": "phone-200-en",
+      "exit_code": 0,
+      "path": "release/content-presentation/full-matrix-20261021T141858575299Z/phone-200-en",
+      "success": 73,
+      "failed": 0,
+      "observed_rows": 137,
+      "verified_full_condition": true,
+      "log_sha256": "e329f402ebaa61e963d065033f7484da49fc8c0fc625d7a0e7145368fa473ae1"
+    },
+    {
+      "condition": "phone-200-pseudo",
+      "exit_code": 1,
+      "path": "release/content-presentation/full-matrix-20261021T141858575299Z/phone-200-pseudo",
+      "success": 49,
+      "failed": 24,
+      "observed_rows": 107,
+      "verified_full_condition": false,
+      "log_sha256": "4a622dc0c22b74a546a331149ede2f01800b47b08dea33dc9d1ba9e39acf47b1"
+    }
+  ],
+  "release_acceptance": false
+}

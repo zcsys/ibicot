@@ -239,7 +239,7 @@ void main() {
     },
   );
   test(
-    'ending needs six selected dossiers and nooptionalNotesinkorpaidreward',
+    'ending needs six dossiers and no Focus, optional Note sink or paid reward',
     () {
       final main = GameState(
         counts: [25, 25, 10, 10, 1],
@@ -250,7 +250,7 @@ void main() {
         main: main,
         recharts: 5,
         surveysCollected: 12,
-        calibrations: {'calibration.01', 'calibration.02', 'calibration.03'},
+        calibrations: {},
         completedChallenges: {
           'challenge.01',
           'challenge.02',

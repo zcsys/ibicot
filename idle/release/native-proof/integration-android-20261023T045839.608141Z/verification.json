@@ -1,0 +1,65 @@
+{
+  "candidate_fingerprint": "3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59",
+  "device": "emulator-5556",
+  "label": "android",
+  "platform": "android",
+  "started_utc": "20261023T045839.608141Z",
+  "command": [
+    "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+    "drive",
+    "--driver=test_driver/evidence_911183b5d9ee.dart",
+    "--target=integration_test/evidence_071635c01ed5_test.dart",
+    "-d",
+    "emulator-5556",
+    "--dart-define=TIDEGLASS_DEVICE_LABEL=android",
+    "--dart-define=TIDEGLASS_SCENARIO=session-start",
+    "--dart-define=TIDEGLASS_RUN_ID=v3b00-android-session",
+    "--dart-define=TIDEGLASS_VERIFICATION_ID=integration-android-20261023T045839.608141Z",
+    "--dart-define=TIDEGLASS_CANDIDATE_FINGERPRINT=3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59",
+    "--dart-define=TIDEGLASS_HARNESS_SHA256=071635c01ed508077b467462bac279107a8716861ac97a5b657a5401b2cc3506",
+    "--keep-app-running",
+    "--timeout=180",
+    "--no-pub"
+  ],
+  "runner_sha256": "68297f66fc4e32a173b17da2594872334d59ba2b88b7d5878b5ee8905f9b89e5",
+  "candidate_validation_runner_sha256": "59ee4e7b94a1445e2c8effadfe4c0510c9c189df0278c7ede6e87f1807bf38ee",
+  "scenario": "session-start",
+  "run_id": "v3b00-android-session",
+  "harness_sha256": {
+    "harness.dart": "071635c01ed508077b467462bac279107a8716861ac97a5b657a5401b2cc3506",
+    "driver.dart": "911183b5d9ee8ec80769836f477a293dadb66e20cc0c5d5e44314415889749a8"
+  },
+  "production_inputs_match_snapshot": true,
+  "provenance": "Seeded native boundary/presentation test; no natural pacing or physical-device claim",
+  "exit_code": 0,
+  "production_input_differences_after_run": [],
+  "source_snapshot_unchanged": true,
+  "harness_source_differences_during_run": [],
+  "native_process_stop": {
+    "command": [
+      "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "shell",
+      "am",
+      "force-stop",
+      "dev.tideglass.game"
+    ],
+    "exit_code": 0,
+    "output": ""
+  },
+  "verification_errors": [],
+  "passed": true,
+  "evidence_sha256": {
+    "native-save-progress.1.json": "330d1fd80c211182dd86b17d058587773255204c704cfd61883c1098f5b7ee0f",
+    "native-save-progress.0.json": "af8ba147040f49e28d49acbf4c0b3c2407d328670f174db5bfa99f74dacefb55",
+    "result.json": "4ada75f4ddd6b54ca3765b4a111af572c6b71b99a3cd86c24ad4591fbc346357",
+    "run.log": "fdbb34ef73269bad0fd9048133943e2d375cb3c2afa688ad6a90203468f3ff6f",
+    "android-session-start-harbor.png": "02352ea223602660333d8f229cafa5a284f3fd86bc24862e9d6bb1ae9e8431e2",
+    "driver.dart": "911183b5d9ee8ec80769836f477a293dadb66e20cc0c5d5e44314415889749a8",
+    "verify_native.py": "68297f66fc4e32a173b17da2594872334d59ba2b88b7d5878b5ee8905f9b89e5",
+    "android-session-start-producer-stages.png": "0fd202d5ed6c9baf0306a359597a744267aa630379600987a9c63f8ba39978ac",
+    "harness.dart": "071635c01ed508077b467462bac279107a8716861ac97a5b657a5401b2cc3506",
+    "android-session-start-collection.png": "7a4c3a34b23f065b47ac74a8fcc6a3e06d9f5ece6c066e54d53a31fd9ca97496"
+  }
+}

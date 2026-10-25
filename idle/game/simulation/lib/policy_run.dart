@@ -44,7 +44,12 @@ enum ResetPolicy { atVisits, hourlyAutomatic }
 
 enum PurchasePolicy { bestPayback, lowestTierFirst, highestTierFirst }
 
-enum ContractPolicy { surveysOnly, oneReadyPerVisit, allReady }
+enum ContractPolicy {
+  surveysOnly,
+  oneReadyPerVisit,
+  allReady,
+  pursueWithSeason,
+}
 
 class PolicyRun {
   PolicyRun(
@@ -112,9 +117,30 @@ class PolicyRun {
   BigInt surveyNotesEarned = BigInt.zero, contractNotesEarned = BigInt.zero;
   int _visitContractClaims = 0;
   int? firstResetSeconds;
+  int? fullNoteBudgetSeconds, fullCollectionAffordableSeconds;
+  int archiveReflections = 0,
+      seasonalContractBindings = 0,
+      seasonalContractClaims = 0;
   SeasonEngine get seasonEngine => SeasonEngine(content.season);
   PassEngine get passEngine => PassEngine([content.season]);
   Duration get elapsed => cursor.difference(epoch);
+
+  List<String> get availableDiscoveries => [
+    'archive',
+    if (campaign.restoredHarbor >= 3 &&
+        content.challenges.any((d) => !dossiers.completed.contains(d.id)))
+      'challenge',
+    if (main.focusCharges > 0 || main.completedCalibrationIds.isNotEmpty)
+      'calibration',
+  ];
+
+  void _refreshDaily() => _main(
+    engine.refreshContracts(
+      main,
+      cursor,
+      availableDiscoveryKinds: availableDiscoveries,
+    ),
+  );
 
   void _main(TransitionResult result) {
     if (result.accepted) main = result.state;
@@ -190,6 +216,11 @@ class PolicyRun {
     if (event.accepted) season = event.state;
     cursor = through;
     _evaluate();
+    if (!offline &&
+        jsonEncode(main.daily.availableDiscoveryKinds) !=
+            jsonEncode(availableDiscoveries)) {
+      _refreshDaily();
+    }
   }
 
   void advanceTo(DateTime target, {required bool offline}) {
@@ -217,6 +248,12 @@ class PolicyRun {
         receipt: receipt,
         finalChunk: cursor.add(step) == target,
       );
+    }
+    if (offline) {
+      // A returned player sees newly assigned missed-day slots only after the
+      // whole absence has settled, matching the native worker's final commit.
+      _refreshDaily();
+      pass = passEngine.pruneAlternatives(main, pass).pass;
     }
   }
 
@@ -259,24 +296,17 @@ class PolicyRun {
   }
 
   void _visitActions() {
-    final discoveries = [
-      'archive',
-      if (campaign.restoredHarbor >= 3) 'challenge',
-      if (main.focusCharges > 0 || main.completedCalibrationIds.isNotEmpty)
-        'calibration',
-    ];
-    _main(
-      engine.refreshContracts(
-        main,
-        cursor,
-        availableDiscoveryKinds: discoveries,
-      ),
-    );
+    if (contractPolicy == ContractPolicy.pursueWithSeason &&
+        season.phase == SeasonPhase.archived &&
+        !season.archiveActive) {
+      season = seasonEngine.resumeArchive(season, cursor).state;
+    }
+    _refreshDaily();
     final beforeSurveys = main.surveyNotes;
     _main(engine.collectSurveys(main));
     surveyNotesEarned += main.surveyNotes - beforeSurveys;
-    // Three accessible completions are mandatory chapter content; the minimal
-    // policy stops there, so it is explicitly not a zero-Focus experiment.
+    // The legacy minimal policy voluntarily stops after three accessible
+    // completions. They are optional; this is not a zero-Focus experiment.
     while (bonus != BonusPolicy.none &&
         main.focusCharges > 0 &&
         (bonus != BonusPolicy.requiredCalibrationsOnly ||
@@ -307,6 +337,7 @@ class PolicyRun {
         ),
       );
       readArchives.add(id);
+      archiveReflections++;
     }
     for (final contract in main.dailyContracts.toList()) {
       if (contractPolicy == ContractPolicy.surveysOnly ||
@@ -314,7 +345,47 @@ class PolicyRun {
               _visitContractClaims >= 1))
         break;
       final beforeClaim = main.surveyNotes;
-      final result = passEngine.claimDaily(main, pass, contract.id);
+      var result = passEngine.claimDaily(main, pass, contract.id);
+      if (!result.accepted &&
+          !contract.claimed &&
+          contractPolicy == ContractPolicy.pursueWithSeason) {
+        // Reflection is a repeatable player command in the real client; it
+        // consumes a fresh operation sequence without granting Focus or power.
+        if (contract.discoveryKind == 'archive') {
+          _main(
+            engine.recordDiscovery(
+              main,
+              'archive',
+              operationSequence: main.nextDiscoverySequence,
+              contentId: 'archive.intro',
+            ),
+          );
+          archiveReflections++;
+          result = passEngine.claimDaily(main, pass, contract.id);
+        }
+        if (!result.accepted) {
+          if (pass.alternatives.containsKey(contract.id)) {
+            result = passEngine.claimDaily(
+              main,
+              pass,
+              contract.id,
+              alternativeSeason: season,
+            );
+            if (result.accepted) seasonalContractClaims++;
+          } else {
+            final binding = passEngine.bindEventAlternative(
+              main,
+              pass,
+              contract.id,
+              season,
+            );
+            if (binding.accepted) {
+              pass = binding.pass;
+              seasonalContractBindings++;
+            }
+          }
+        }
+      }
       if (result.accepted) {
         main = result.main;
         pass = result.pass;
@@ -394,6 +465,13 @@ class PolicyRun {
     for (final milestone in content.season.milestones) {
       final claimed = seasonEngine.claimMilestone(season, milestone.id);
       if (claimed.accepted) season = claimed.state;
+    }
+    if (notesSpent + main.surveyNotes >= BigInt.from(1750)) {
+      fullNoteBudgetSeconds ??= elapsed.inSeconds;
+    }
+    if (dossiers.completed.length == 12 &&
+        main.surveyNotes >= BigInt.from(550)) {
+      fullCollectionAffordableSeconds ??= elapsed.inSeconds;
     }
   }
 
@@ -484,10 +562,16 @@ class PolicyRun {
     'notes_earned': (notesSpent + main.surveyNotes).toString(),
     'notes_from_surveys': surveyNotesEarned.toString(),
     'notes_from_contracts': contractNotesEarned.toString(),
+    'full_note_budget_seconds_upper_bound': fullNoteBudgetSeconds,
+    'full_collection_affordable_seconds_upper_bound':
+        fullCollectionAffordableSeconds,
     'optional_plan_decoration_budget_remaining': 550,
     'focus_charges_used': focusUsed,
     'free_support_tokens_used': supportUsed,
     'contracts_claimed': contractsClaimed,
+    'archive_reflections': archiveReflections,
+    'seasonal_contract_bindings': seasonalContractBindings,
+    'seasonal_contract_claims': seasonalContractClaims,
     'chapters_completed': campaign.restoredHarbor,
     'chapter_seconds_upper_bounds': {...chapterAt},
     'dossiers_completed': dossiers.completed.toList()..sort(),

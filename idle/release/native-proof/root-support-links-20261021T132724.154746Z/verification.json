@@ -1,0 +1,42 @@
+{
+  "scope": "Current-source host support-links; not candidate152/native/human qualification",
+  "source_differences": [],
+  "results": [
+    {
+      "name": "analyzer",
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+        "analyze"
+      ],
+      "exit_code": 0,
+      "log_sha256": "ff6913b558257a53c58e304c98c8450f3c5aabca71b2a1a536a73331e221da5f"
+    },
+    {
+      "name": "support-english",
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+        "test",
+        "test/public_links_test.dart",
+        "test/help_test.dart",
+        "--reporter=expanded",
+        "--timeout=120s"
+      ],
+      "exit_code": 0,
+      "log_sha256": "75059b980df4d803fb645615648738a7251bad910155ae7b527cdd8e1d01031c"
+    },
+    {
+      "name": "support-pseudo",
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+        "test",
+        "test/public_links_test.dart",
+        "test/help_test.dart",
+        "--reporter=expanded",
+        "--timeout=120s",
+        "--dart-define=TIDEGLASS_PSEUDO=true"
+      ],
+      "exit_code": 0,
+      "log_sha256": "75059b980df4d803fb645615648738a7251bad910155ae7b527cdd8e1d01031c"
+    }
+  ]
+}

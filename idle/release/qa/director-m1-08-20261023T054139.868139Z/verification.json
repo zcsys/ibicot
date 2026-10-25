@@ -1,0 +1,56 @@
+{
+  "created_utc": "2026-10-23T05:41:39.885557+00:00",
+  "status": "criterion_supported_original_dependency_pending",
+  "work_item": {
+    "id": "M1-08",
+    "title": "Port oracle cases and failure fixtures",
+    "owner": "qa_release",
+    "reviewer": "director",
+    "batch": "B04",
+    "source": "v1_backlog.json",
+    "source_acceptance": "Existing checks become production fixtures; add save corruption, rounding, rapid reset and interrupted-transaction cases.",
+    "source_acceptance_dependencies": [
+      "M1-01",
+      "M1-02",
+      "M1-03"
+    ],
+    "scope_ids": [
+      "S12",
+      "S28"
+    ],
+    "status": "in_progress",
+    "evidence": [
+      "game/core/test/persistence_integration_test.dart",
+      "game/persistence/test/save_repository_test.dart"
+    ],
+    "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+    "evidence_note": "Component implementation/authoring evidence only; complete source acceptance and upstream gates remain required."
+  },
+  "pins": {
+    "game/core/test/economy_test.dart": "a404e6856cecdd4ae6aecd3575752ec2c02091869cfa4483dac54d4919211cfd",
+    "game/core/test/persistence_integration_test.dart": "ca4facb94437c41b7f0806c2330597ab8ad0983081e701fc8bb158dcdf9311a8",
+    "game/persistence/test/save_repository_test.dart": "eec0a2f853b7cd6bb8b96b1117d3f66e9e739f5b6954064a1425c52b4dec003f",
+    "game/persistence/lib/tideglass_persistence.dart": "ffaf6292b76a8c2fbb43669cc506b09ce58ace3653c990f3902a67a9c94f14dd",
+    "implementation/fixtures/economy_reference.json": "f6c3496764c7b67c4f3f7c62d28e6aec728971d04fdc7db94d565c16619ef396",
+    "game/core/lib/src/daily.dart": "1a43e6a035472d52430c6fc1ca609bcb4cd2f564794e2b49a36cef507803338a",
+    "game/core/lib/src/daily_engine.dart": "1949239d4ae3bba5c72d716a3a027c0ada52ec97e434431a132c941001db322f",
+    "game/core/lib/src/engine.dart": "0fbc3f3dfbb54df8a0cef41a8b8c788baef473d0bbffe643301a3d9c9d9eade6",
+    "game/core/lib/src/fixed.dart": "c167fdf3c4b95965f1bfc3658095dad81b6f013c71fa5abc7505b7731d6c698f",
+    "game/core/lib/src/state.dart": "04e1210cb26e7cc15cf3294c682f43bd266d9c52acbc238465061d9c7aa46a9e",
+    "game/core/lib/src/support.dart": "b09af96c6523177cc62214d58d34dbb83467c0b0a384d024ba1b4ead46ebaa23",
+    "game/core/lib/src/support_engine.dart": "ae08becad0f438878f4bdf2bbd9f2045c7bcdcf1bcf17e6a39943e574ad79e53",
+    "game/core/lib/tideglass_core.dart": "8c0d10c89cc961221fc04c217fde4d3c799e574c8abd178f1249632a565ccee4",
+    "release/qa/current-native-20261023T044903.849353Z/seal.json": "f580f27c861427982fa2df316a66631d11a982eab1fc2faa6a65b00c3692c06b",
+    "release/qa/current-native-20261023T044903.849353Z/REVIEW.md": "b9db136fdc8a0e56cd7a678e6f763c9049943e9c05bbd6ad1bb94a08564ea94c",
+    "release/qa/current-native-20261023T044903.849353Z/clause-matrix.json": "d2238a2dafd639970c153502b8caa7a8218344e583e9319bcfc4cfaab27675a5",
+    "release/qa/current-native-20261023T044903.849353Z/clause-source-bridge.json": "44c832f6931923b53f12fa60429c96fbe0f001f1ebffc2699c706308d8d5aa8c",
+    "release/native-proof/20261023T040548.338966Z/build-report.json": "a213b980716a4c0c1fa929269187ef5ae01703ef5fbe29e172f2842d900d15ee",
+    "release/native-proof/20261023T040548.338966Z/core-test.log": "ea77d11ccd958c4615e820053e552a4db3f849426d2a7875a9e44f01b586451b",
+    "release/native-proof/20261023T040548.338966Z/persistence-test.log": "29115bd3c655d7d3a8bfd6a25aa231fbbfd09534bb49c4e43afb5838d8a5aa29",
+    "implementation/program.json": "0d971dd1030678026bb50bd1ef8a4bb81cac298ab28338fdef48e7f75059dcf0"
+  },
+  "qa_sealed_outputs_verified": 33,
+  "source_files_frozen_and_live": 13,
+  "tests_rerun": false,
+  "review_sha256": "af3f30890d9b5bcf21148950f0b00cc45caeba77483818811475ab7b7c5ee64c"
+}

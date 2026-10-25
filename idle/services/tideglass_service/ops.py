@@ -3,6 +3,7 @@ import argparse
 import json
 import time
 from .storage import Database
+from .health import CheckError, Thresholds, health, require_existing_database
 
 
 def dashboard(database):
@@ -48,13 +49,52 @@ def main():
     parser.add_argument('--database', required=True)
     commands = parser.add_subparsers(dest='command',required=True)
     commands.add_parser('dashboard')
+    check = commands.add_parser('health')
+    check.add_argument('--backup')
+    check.add_argument('--database-seconds', type=float, default=5.0)
+    check.add_argument('--minimum-free-bytes', type=int, default=1024**3)
+    check.add_argument('--minimum-free-fraction', type=float, default=0.05)
+    check.add_argument('--backup-max-age-seconds', type=int, default=86400)
+    drill = commands.add_parser('restore-drill')
+    drill.add_argument('--deletion-manifest')
+    drill.add_argument('--seconds', type=float, default=30.0)
     backup = commands.add_parser('backup'); backup.add_argument('destination')
     flag = commands.add_parser('feature'); flag.add_argument('name'); flag.add_argument('state',choices=['on','off'])
     commands.add_parser('prune')
-    args = parser.parse_args(); db = Database(args.database)
+    rotate=commands.add_parser('rotate-vault'); rotate.add_argument('--key-file',required=True)
+    args = parser.parse_args()
+    # Diagnostic paths never initialize/migrate a missing or unknown database.
+    if args.command == 'health':
+        try:
+            result = health(args.database, backup=args.backup, thresholds=Thresholds(
+                database_seconds=args.database_seconds,
+                minimum_free_bytes=args.minimum_free_bytes,
+                minimum_free_fraction=args.minimum_free_fraction,
+                backup_max_age_seconds=args.backup_max_age_seconds))
+        except ValueError:
+            result = {'status': 'critical', 'exit_code': 2, 'failure_code': 'invalid_health_thresholds'}
+        print(json.dumps(result, indent=2))
+        raise SystemExit(result['exit_code'])
+    if args.command == 'restore-drill':
+        from .recovery import restore_drill
+        try:
+            result = restore_drill(args.database, deletion_manifest=args.deletion_manifest, seconds=args.seconds)
+        except ValueError:
+            result = {'status': 'failed', 'exit_code': 2, 'failure_code': 'invalid_drill_parameters'}
+        print(json.dumps(result, indent=2))
+        raise SystemExit(result['exit_code'])
+    try:
+        require_existing_database(args.database)
+    except CheckError as error:
+        print(json.dumps({'status': 'critical', 'exit_code': 2, 'failure_code': str(error)}))
+        raise SystemExit(2)
+    db = Database(args.database)
     if args.command=='dashboard':result=dashboard(db)
     elif args.command=='backup':result={'backup':db.backup(args.destination)}
     elif args.command=='feature':set_feature(db,args.name,args.state=='on');result={'updated':True}
+    elif args.command=='rotate-vault':
+        from .vault import TokenVault,VaultKeys
+        result={'rotated_tokens':TokenVault(db,VaultKeys(args.key_file),rotation=True).rotate()}
     else:
         with db.transaction() as connection:
             now=int(time.time())

@@ -1,0 +1,58 @@
+{
+  "verification_id": "integration-android-20261025T170413580881Z",
+  "candidate_fingerprint": "3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59",
+  "harness_sha256": "de04f52b3c2311b3eb8e1c7fb83fcf7da41256a63a9a3b9f0ca4f732e8667eb4",
+  "scenario": "revoked-prepare",
+  "run_id": "v3b00-r20261025-revoked-restart2",
+  "device_label": "android",
+  "platform": "android",
+  "process_id": 10787,
+  "host_timeline": {
+    "before": {
+      "utc_ns": 1792947901900720000,
+      "monotonic_lower_ns": 63939708708875,
+      "monotonic_upper_ns": 63939708709208
+    },
+    "action_started": {
+      "utc_ns": 1792947909707439000,
+      "monotonic_lower_ns": 63947515218208,
+      "monotonic_upper_ns": 63947515218416
+    },
+    "action_finished": {
+      "utc_ns": 1792947909742602000,
+      "monotonic_lower_ns": 63947550379708,
+      "monotonic_upper_ns": 63947550380458
+    },
+    "after": {
+      "utc_ns": 1792947912466848000,
+      "monotonic_lower_ns": 63950274552458,
+      "monotonic_upper_ns": 63950274552875
+    }
+  },
+  "before_utc_ms": 1792947901900,
+  "action_started_utc_ms": 1792947909707,
+  "action_finished_utc_ms": 1792947909742,
+  "after_utc_ms": 1792947912466,
+  "tap_argv": [
+    "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+    "-s",
+    "emulator-5556",
+    "shell",
+    "input",
+    "touchscreen",
+    "tap",
+    "916",
+    "1061"
+  ],
+  "tap_exit_code": 0,
+  "files_sha256": {
+    "before.xml": "576e3af93210d2290ffab4a52e150d4985a7f0eff29b2394e27e0b4c01066178",
+    "after.xml": "060ea92ef08bb8936f9b7b9539d9906459a1d49ba892e128b99ff78366e88928",
+    "before.png": "fc7a2db373b87896e8da7976e4c5d9e2ad42f7f9848d130aebacdb2d92b91b4b",
+    "after.png": "3e098c64e494441a2e5d9ea60bfee1b7e7ec17f39ee02e995958be774ec9a3d4",
+    "settings-activities.txt": "d3e2660096e1c51fe0702187307c6b6d5b0546096285a07a39076edacfc7974d",
+    "pid-observations.json": "836a99caa68c57872e83da090186fb8e069c9dfba8d7ebc2d077dc3666ed0515"
+  },
+  "operator": "Automated actual observed Android Settings switch; no direct permission API",
+  "method_sha256": "4b841ade92aee43a7292c07bbaa0e0d1306a9468c840e2318eaf0a43fc0e796a"
+}

@@ -1,0 +1,26 @@
+[
+  {
+    "mode": "default",
+    "exit_code": 0,
+    "expected": 0,
+    "summary": "PLAN CONTRACT VALID: 164 asset packages; 164 unfinished."
+  },
+  {
+    "mode": "self-test",
+    "exit_code": 0,
+    "expected": 0,
+    "summary": "PLAN CONTRACT VALID: 164 asset packages; 164 unfinished."
+  },
+  {
+    "mode": "content-gate",
+    "exit_code": 1,
+    "expected": 1,
+    "summary": "CONTENT GATE VALIDATION FAILED: 362 issues"
+  },
+  {
+    "mode": "release",
+    "exit_code": 1,
+    "expected": 1,
+    "summary": "RELEASE VALIDATION FAILED: 380 issues"
+  }
+]

@@ -1,0 +1,72 @@
+{
+  "status": "pass",
+  "checks": 282,
+  "old_to_new_existing_source_changes": [
+    "game/content/locales/en-US/chapter.03.copy.json",
+    "game/content/progression/campaign.json",
+    "game/simulation/bin/run_policies.dart"
+  ],
+  "manifest_diff_paths": [
+    "/files/assets/progression/campaign.json/bytes",
+    "/files/assets/progression/campaign.json/sha256"
+  ],
+  "zero_bonus_endings": [
+    {
+      "visits": 1,
+      "horizon": 30,
+      "ending_days": 11.17013888888889
+    },
+    {
+      "visits": 1,
+      "horizon": 90,
+      "ending_days": 11.17013888888889
+    },
+    {
+      "visits": 3,
+      "horizon": 30,
+      "ending_days": 10.503472222222221
+    },
+    {
+      "visits": 3,
+      "horizon": 90,
+      "ending_days": 10.503472222222221
+    },
+    {
+      "visits": 6,
+      "horizon": 30,
+      "ending_days": 11.166666666666666
+    },
+    {
+      "visits": 6,
+      "horizon": 90,
+      "ending_days": 11.166666666666666
+    }
+  ],
+  "free_ad_pairs": [
+    {
+      "visits": 1,
+      "exact_diff_paths": [
+        "/bonus_policy",
+        "/checkpoints_at_last_visit/30/bonus_policy",
+        "/checkpoints_at_last_visit/30/main_serialized_bytes"
+      ]
+    },
+    {
+      "visits": 3,
+      "exact_diff_paths": [
+        "/bonus_policy",
+        "/checkpoints_at_last_visit/30/bonus_policy",
+        "/checkpoints_at_last_visit/30/main_serialized_bytes"
+      ]
+    },
+    {
+      "visits": 6,
+      "exact_diff_paths": [
+        "/bonus_policy",
+        "/checkpoints_at_last_visit/30/bonus_policy",
+        "/checkpoints_at_last_visit/30/main_serialized_bytes"
+      ]
+    }
+  ],
+  "scope": "Exact content/source diff, all 15 ledger summaries and all three free/ad summary pairs; no human pacing or native migration claim"
+}

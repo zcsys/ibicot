@@ -5,6 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:tideglass/app.dart';
 import 'package:tideglass/bootstrap.dart';
 import 'package:tideglass/bundled_content.dart';
+import 'package:tideglass/content_compatibility.dart';
 import 'package:tideglass/game_controller.dart';
 import 'package:tideglass/story_state.dart';
 import 'package:tideglass_core/tideglass_core.dart';
@@ -67,6 +68,49 @@ void main() {
     final pinned = game.story.toJson()..['content_digest'] = 'f' * 64;
     expect(() => StoryProgress.fromJson(pinned), throwsFormatException);
   });
+
+  test(
+    'known optional-calibration migration preserves every earned field',
+    () async {
+      final catalogue = await StoryCatalogue.load();
+      final game = GameController(catalogue: catalogue, startTicker: false);
+      addTearDown(game.dispose);
+      for (var completed = 0; completed <= 6; completed++) {
+        final old = game.story.toJson();
+        old['content_digest'] = optionalCalibrationPreviousDigest;
+        old['campaign'] = {
+          'completed_chapters': [
+            for (var i = 1; i <= completed; i++)
+              'chapter.${i.toString().padLeft(2, '0')}',
+          ],
+        };
+        final expected = Map<String, dynamic>.from(old)
+          ..['content_digest'] = bundledManifestDigest;
+        final migrated = StoryProgress.fromJson(
+          old,
+          seasonDefinition: catalogue.seasonDefinition,
+        );
+        expect(migrated.toJson(), expected);
+        expect(StoryProgress.fromJson(migrated.toJson()).toJson(), expected);
+        final payload = {
+          'client_schema_version': 2,
+          'core': game.state.toJson(),
+          'story': old,
+          'client_preferences': const ClientPreferences().toJson(),
+        };
+        validateClientPayload(payload, catalogue: catalogue);
+        expect(game.state.toJson(), payload['core']);
+      }
+      for (final unsupported in [
+        '0' * 64,
+        'f' * 64,
+        '${optionalCalibrationPreviousDigest}x',
+      ]) {
+        final old = game.story.toJson()..['content_digest'] = unsupported;
+        expect(() => StoryProgress.fromJson(old), throwsFormatException);
+      }
+    },
+  );
 
   test(
     'incompatible newest snapshot never silently rolls back to backup',

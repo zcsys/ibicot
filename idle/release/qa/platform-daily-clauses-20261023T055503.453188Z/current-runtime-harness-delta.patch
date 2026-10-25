@@ -1,0 +1,37 @@
+--- frozen/game/mobile/integration_test/current_runtime_test.dart
++++ current/game/mobile/integration_test/current_runtime_test.dart
+@@ -839,6 +839,34 @@
+         'Injected8record bound stops durably with capacity gap and visible production status; no silent unbounded growth.',
+       );
+     } else {
++      // The settings pointer queues a production interaction write. Drain that
++      // queue through the already-interactive serialized no-op before injecting
++      // a different writer's guard; visible widgets do not imply durable I/O.
++      int interactiveRecords() =>
++          (jsonDecode(current.recorder.exportRaw()!)['records'] as List)
++              .where(
++                (record) =>
++                    record['kind'] == 'harbor_interactive' &&
++                    record['process_id'] == current.recorder.processId &&
++                    record['session_id'] == current.recorder.sessionId,
++              )
++              .length;
++      expect(current.active, isTrue);
++      expect(current.failed, isFalse);
++      expect(current.failureCode, isNull);
++      expect(current.recorder.hasPendingStorageGap, isFalse);
++      final interactiveBefore = interactiveRecords();
++      expect(interactiveBefore, 1);
++      await current.capture(current.recorder.interactiveHarbor);
++      expect(current.active, isTrue);
++      expect(current.failed, isFalse);
++      expect(current.failureCode, isNull);
++      expect(current.recorder.hasPendingStorageGap, isFalse);
++      expect(interactiveRecords(), interactiveBefore);
++      checked(
++        'Queued production interaction finishes through a healthy already-interactive serialized no-op before synthetic guard injection.',
++      );
++
+       // Deliberately create our own synthetic stale CAS guard. This is a real
+       // native-filesystem refusal, not a full-volume/physical-disk simulation.
+       final guard = File('${support.path}/tideglass-study.json.cas-guard');

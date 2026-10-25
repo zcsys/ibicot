@@ -1,0 +1,33 @@
+[
+  {
+    "utc": "2026-10-25T16:42:59.724155+00:00",
+    "argv": [
+      "/Users/csys/Library/Android/sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "exec-out",
+      "screencap",
+      "-p"
+    ],
+    "exit_code": 0,
+    "file": "restore-return.png",
+    "sha256": "3ce4b3e69b72dfc66cdb3e3df72b62b4839e141ce9c5e4524c738a98e5aceb03",
+    "stderr": ""
+  },
+  {
+    "utc": "2026-10-25T16:43:00.856859+00:00",
+    "argv": [
+      "/Users/csys/Library/Android/sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "shell",
+      "dumpsys",
+      "activity",
+      "activities"
+    ],
+    "exit_code": 0,
+    "file": "restore-return-activities.txt",
+    "sha256": "2d75c23c9508e5d9edace4c462f122a5193432b2f3fd1c461fa90d8399755973",
+    "stderr": ""
+  }
+]

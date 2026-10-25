@@ -1,0 +1,68 @@
+# Original platform review: M3-01 and M3-02
+
+**Recommendation: accept M3-01 at its unchanged original criterion, then accept M3-02 at its unchanged original criterion.** No blocking defect was found in these two local deterministic packages. M2-01, M1-03 and M1-06 are accepted in the pinned intake. M3-02 must follow the lead's adoption of M3-01; this review does not change either status or any dependency.
+
+Reviewer: `/root/art_audio_native`, explicitly assigned by the lead to the saved **platform** review role. The original gameplay owner and platform reviewer remain intact. I previously authored audio/art components and some audio-facing native integration, but did not author the economic timeline, daily ledger or contract implementation reviewed here. Audio/art acceptance is excluded. The separate QA and gameplay reviewers cited below supply executed evidence for shared native/persistence integration; this is not self-approval of an audio/native contribution.
+
+The frozen application candidate is `3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59`. This review inspected actual source, frozen test cases, current unfiltered host run logs, independent executed collision records and their source bridges. Its own reproduction used Python only: **298 evidence/arithmetic checks passed; 194 distinct input files were rehashed with no drift during the final replay.** These are evidence checks, not 298 new game tests. No Dart, Flutter, device or native command was run; no production or status file was changed.
+
+## Original acceptance and prerequisites
+
+| Package | Exact original acceptance | Original prerequisites | Recommendation |
+|---|---|---|---|
+| M3-01 | 2-hour Focus, 8-hour Surveys, 24/72-hour offline envelope, bonus expiry and account-day boundaries resolve in a single event timeline. | M2-01 accepted; M1-03 accepted | Accept |
+| M3-02 | Seeded contracts, snapshots, offline progress, rerolls and 21-slot backlog preserve claim IDs and do not duplicate rewards. | M3-01 requires the immediately preceding adoption; M1-06 accepted | Accept after M3-01 |
+
+The copied intake program SHA-256 is `1e04f5b00e2a6f2b852530b0979b2eaab742d57278cb378954e365c595d6fd17`; the scope SHA-256 is `9e8fb8cf64406aec2e7d5f15eedc351f660c85555f7f1ce06cea8d64f6c89155`. The replay compares all 65 original package clauses and dependencies with `v1_backlog.json`; none was changed. These copies bind the review even if the lead later adopts packages.
+
+M1-03's accepted dependency is supported by the both-target sealed checkpoint `release/native-proof/execution-3b00-20261023T040612.562001Z/sealed-m1-03-20261023T054217.678143Z/checkpoint.json`, SHA-256 `eb1f40c77da66ce4c1910c0c76a1085c1abb05f029e68eba005cd44593270256`, the original gameplay-role review `release/qa/gameplay-m1-03-android-20261023T054815140862Z/REVIEW.md`, and lead adoption `release/qa/lead-persistence-fixtures-adoption-20261023T055444.443133Z/adoption.json`, SHA-256 `bc17ff116f3bb3138918e269bec4ff50430789e5fdfc45e8792a9e0f5cc61450`. I verified those identities and read the review, rather than rerunning its already closed native tests. That review explicitly relies on different-author QA for author-owned components.
+
+## Source and executed evidence
+
+The complete obligation mapping is in `CLAUSE_MATRIX.md`. Important implementation conclusions from direct source inspection:
+
+- `game/core/lib/src/engine.dart:416` runs the same immutable event integrator online and offline. It selects the earliest boundary among Focus/Survey generation, bonus expiry, the 24/72-hour envelope, salvage slices, account day and automation. It accrues the old rate and bonus through the half-open preceding interval, preserving integer residue; then it expires effects, generates bounded charges/Surveys, advances the account day and performs the eligible reset/purchase policy. The final-boundary policy also executes when no interval remains.
+- The Focus cycle is 7,200 real seconds, capped at 12 charges. Surveys cycle every 28,800 real seconds, capped at three. A full queue stops phase accumulation; collecting restarts progress without a manual dispatch or hidden overflow. Offline income is full rate through 24 hours, one quarter for the next 48 hours, and zero thereafter. Bonus durations remain real time, including in the quarter-rate tail.
+- `game/core/lib/src/daily_engine.dart:33` selects a deterministic family from the fixed account seed, account day, slot and reroll bit. Discovery appears only when an available discovery kind exists. Contract IDs remain `contract:<seed>:<day>:<slot>`. Frozen unboosted rate and cheapest unlocked next-purchase cost define Restore as `ceil(600 × R_ref)` Radiance and Build as `clamp(floor(300 × R_ref / C_min), 1, 5)` purchases; Discover requires one eligible completion.
+- Daily refresh uses a monotone UTC anchor/day high-water mark with the account offset fixed at initialization. Previously assigned contracts accrue offline progress from cumulative statistics. Missed-day contracts are created after the return settlement using the current snapshot and baseline, so past income cannot instantly complete newly assigned work. Only the latest seven account days, three slots each, survive. A newly created account gets only its current three slots.
+- Reroll is once per unclaimed contract, changes the family, preserves its stable ID and difficulty snapshots, and begins fresh progress baselines. Claiming atomically marks that contract and its credited pass while adding exactly 10 Notes and 250 XP. It does not add Radiance or lifetime income. Ordinary and validated alternative completion paths share the same claim receipt; duplicate claims, mismatched alternatives, invalid discovery sequences and replayed offline settlements reject without a second award. Rechart retains the daily ledger and claimed receipts.
+- The controller settles return intervals before refreshing missed contracts. It publishes multiple timeline partitions and the UTC cursor only after all succeed. The different-author integration suite checks actual controller returns and reloads; persistence dependency evidence covers durable reopen and interrupted writes.
+
+Current host evidence is `release/native-proof/20261023T040548.338966Z/build-report.json` with `core-test.log`, `persistence-test.log` and `mobile-test.log`: unfiltered commands exited zero and ended at **206 / 28 / 640 passed**. The report binds the unchanged candidate. The relevant test files and controller match both frozen source bytes and the candidate manifest. Concurrent expanded test logs do not print every case name individually; complete unfiltered execution plus frozen test discovery and successful terminal counts are the basis for inclusion, not a claim that each case has a separate log line.
+
+The source-bound independent review `release/qa/current-native-20261023T044903.849353Z/REVIEW.md` and its clause bridge were inspected; all 33 sealed output hashes were rechecked. Eight core library files still match the separately executed October 21 numeric evidence, whose five raw proof files were rehashed. Those historical numeric assertions are attributed evidence, not new assertions counted in this review.
+
+## Independent arithmetic reproduction
+
+| Calculation | Independently calculated result | Executed comparison |
+|---|---:|---|
+| 2 / 8 / 24 / 48 / 72 / 168 hours absent at 1 R/s | 7,200 / 28,800 / 86,400 / 108,000 / 129,600 / 129,600 R | Current core envelope fixtures and actual controller return tests |
+| One hour in quarter-rate tail, first 600 seconds under Focus | `(600 × 1.20 + 3,000) / 4 = 930 R` | Current `economy_test.dart` tail-expiry case |
+| 600 seconds Focus+Support, 600 Support, one base second | `600 × 1.45 + 600 × 1.25 + 1 = 1,621 R` | Current `support_test.dart` independent expiry case |
+| One base-rate day with 12 Focus uses and six Support boosts | `86,400 + 1,440 + 1,800 = 89,640 R` | Independent executed free/ad-route parity observation, `89,640,000,000` micro-R |
+| 20 accelerated days, three claims/day | 60 claims; 15,000 XP; 600 Notes implied by the fixed per-claim rule | Historical independent 60-claim/15,000-XP observation; not 20 days of player observation |
+| Collision's one second before reset | `floor(35 × (1 + sqrt(10)) × 1.45 × 10^6) = 211,235,591` micro-R | All four current-core independent collision records |
+
+The 100-digit Decimal collision computation is independent of Dart's returned rate. This fixture is about 0.253545 micro-R above the integer boundary; its agreement does not constitute a universal floating-point error proof. Production uses its reviewed fixed-point arithmetic. The Python envelope and claim calculations validate reference arithmetic; they are not substitute executions of the game.
+
+The four separately executed collision cases are in `release/qa/midnight-rechart-20261023T050752.410870Z`. They cover offsets 0 and +180 minutes, online and offline. At elapsed `600000000` microseconds the exact event sequence is Focus expiry, Support expiry, Focus generation, Survey completion, account-day advance, then Rechart. All record five awarded Charts, 105 total Charts, 10 Notes and 250 XP, whole/split equality and receipt-replay rejection. Online contracts capture the boundary before reset; offline contracts capture the return after reset. The final strengthened test and all nine core library/two package pins were rechecked. This **post-candidate test** is evidence against unchanged candidate core bytes; it is not represented as a test included in the older 206-test run.
+
+Historical daily evidence from `release/qa/integration-final-20261016T105843545492Z` is bounded explicitly: the saved daily ledger source is byte-identical, and `daily_engine.dart` differs only by eight added `_requireRules(state)` fail-closed checks. `daily-history-bridge.patch` records the exact diff. The entire historical runtime is not claimed unchanged, and its old analyzer/native claims are not inherited. Current full suites, current source review and the more recent core bridge cover the current implementation.
+
+## Reconciled unrelated harness change
+
+The initial replay honestly found one mismatch: `game/mobile/integration_test/current_runtime_test.dart` changed while this review was underway. That failed check, initial pins and the original replay script remain in `initial-*`. The lead confirmed an authorized test-only promotion for a separate withdrawal test. I inspected the exact source diff and independent review and verified the promotion record.
+
+The old hash `102be09eb8043ce9bb496156d9f37b1834c3084ddf58fef073e7c25cdc3c55d5` remains in frozen candidate evidence. Current hash `997e7510aaef0dcebfa6505fc0dcde7d136a25e8a76abea78ede8602b0a4fef9` contains one 28-line insertion that drains a queued interaction write through the recorder's healthy already-interactive no-op before synthetic guard injection. Original injection/withdrawal assertions remain intact; recorder production pins still match the candidate. The reviewed root verification SHA-256 is `1bb1e8dcde71b1cee55651405d59b61534909d6ca4e2c12cb0040698f36465c1`.
+
+During final sealing a second concurrent capture-harness change was detected. `preseal-*` preserves the 293-check intermediate success and that final drift. The separate root review `release/qa/lead-capture-repair-20261023T053647.917618Z/verification.json`, SHA-256 `1e37fbdb65c30ff7f699348d8527fe13e42bc06e20c232578607ac48de8f47da`, and the capture-trio adoption record bind the exact before/staged/current bytes. I inspected the capture-only diff: Android uses an acknowledged raw OS screenshot handshake, and capture requires the actual settled Season route. Prior capture hash `071635c01ed508077b467462bac279107a8716861ac97a5b657a5401b2cc3506` and current hash `1925106cb014a4a21575af3aa3bd85fc997873c1c9be74249c966da1cf28318b` are explicit; the original candidate hash remains separately archived. This does not approve a fresh media capture or the native tooling beyond the original root review.
+
+Thus **74 of the previous 76 clause input hashes remain unchanged; two test-only deltas are explicit and independently reconciled**. The original failed withdrawal evidence is not erased or converted to a pass. No conclusion about the pending fresh native withdrawal/reopen runs is made here. This delta does not change the timeline/contract implementation or any host-test evidence used for these two packages.
+
+## Limits and adoption
+
+Adopt only M3-01, followed by M3-02, without changing their criteria, dependencies, owner or reviewer. The complete S08 scope still contains its separate p95 return performance requirement; this review does not verify that distribution or promote S08. S10/S11 have their separate adopted scope decisions. Full M3-10 keeps its own complete criterion, director review and dependencies; the collision appendix closes a specific evidence gap only.
+
+Physical-device qualification, actual provider/store/cloud integration, trusted-clock service behavior, human retention evidence and real elapsed-season coverage remain in their existing release gates. They are not invented prerequisites for these pure local clauses. This recommendation is not finished-v1 or release acceptance.
+
+Replay: `python3 release/qa/platform-daily-clauses-20261023T055503.453188Z/replay.py` from the repository root. The script denies subprocesses/signals and writes outside this review folder. `verification.json`, `source-bridge.json`, `arithmetic.json`, `checks.json`, `input-sha256.json` and `seal.json` preserve the reviewable result. Replaying after a lead metadata adoption will correctly report a live/intake difference; the pinned intake still defines this recommendation.

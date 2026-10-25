@@ -1,0 +1,80 @@
+{
+  "scope": "Current study diagnostics and explicit original UI repro; no152 scope",
+  "results": [
+    {
+      "name": "initial-qa",
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+        "test",
+        "/Users/csys/Desktop/ibicot/idle/release/native-proof/root-study-diagnostic-20261021T113317.022817Z/initial_start_test.dart",
+        "--reporter=expanded",
+        "--timeout=60s"
+      ],
+      "exit_code": 1,
+      "source_before": {
+        "game/mobile/lib/study_gate.dart": "090bdc910f06a0067d5cacd74c1e0e7bac485e306962c8198528d111818904d7",
+        "game/mobile/test/study_gate_test.dart": "86eb51c6b64749f246e0f1305a1617164987d56dab50da72208eede2987327ee",
+        "game/platform/lib/study_recorder.dart": "40be5e8ae640edfe67c6704074bbfb5a2f62fca2e8060b0d96cf50d22b72904f",
+        "game/mobile/test/qa_integration_study_start_test.dart": "6a10da9bce039214b784e851c7e577d08aa7394153fd64b1402e06c0812e3b30"
+      },
+      "source_after": {
+        "game/mobile/lib/study_gate.dart": "090bdc910f06a0067d5cacd74c1e0e7bac485e306962c8198528d111818904d7",
+        "game/mobile/test/study_gate_test.dart": "86eb51c6b64749f246e0f1305a1617164987d56dab50da72208eede2987327ee",
+        "game/platform/lib/study_recorder.dart": "40be5e8ae640edfe67c6704074bbfb5a2f62fca2e8060b0d96cf50d22b72904f",
+        "game/mobile/test/qa_integration_study_start_test.dart": "6a10da9bce039214b784e851c7e577d08aa7394153fd64b1402e06c0812e3b30"
+      },
+      "source_differences": [],
+      "log_sha256": "14a541e59d22bc0083598291d360924ae4c5c69f007f16de72922dc753b320e4"
+    },
+    {
+      "name": "current-qa",
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+        "test",
+        "test/qa_integration_study_start_test.dart",
+        "--reporter=expanded",
+        "--timeout=60s"
+      ],
+      "exit_code": 0,
+      "source_before": {
+        "game/mobile/lib/study_gate.dart": "090bdc910f06a0067d5cacd74c1e0e7bac485e306962c8198528d111818904d7",
+        "game/mobile/test/study_gate_test.dart": "86eb51c6b64749f246e0f1305a1617164987d56dab50da72208eede2987327ee",
+        "game/platform/lib/study_recorder.dart": "40be5e8ae640edfe67c6704074bbfb5a2f62fca2e8060b0d96cf50d22b72904f",
+        "game/mobile/test/qa_integration_study_start_test.dart": "6a10da9bce039214b784e851c7e577d08aa7394153fd64b1402e06c0812e3b30"
+      },
+      "source_after": {
+        "game/mobile/lib/study_gate.dart": "090bdc910f06a0067d5cacd74c1e0e7bac485e306962c8198528d111818904d7",
+        "game/mobile/test/study_gate_test.dart": "86eb51c6b64749f246e0f1305a1617164987d56dab50da72208eede2987327ee",
+        "game/platform/lib/study_recorder.dart": "40be5e8ae640edfe67c6704074bbfb5a2f62fca2e8060b0d96cf50d22b72904f",
+        "game/mobile/test/qa_integration_study_start_test.dart": "6a10da9bce039214b784e851c7e577d08aa7394153fd64b1402e06c0812e3b30"
+      },
+      "source_differences": [],
+      "log_sha256": "7fe653cc087e7376ffbab1da9f9b0101b0b7b27960ce62bbd7a2dd0cb8eca851"
+    },
+    {
+      "name": "english-diagnostic",
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+        "test",
+        "test/study_gate_test.dart",
+        "--reporter=expanded",
+        "--timeout=60s"
+      ],
+      "exit_code": 1,
+      "source_before": {
+        "game/mobile/lib/study_gate.dart": "090bdc910f06a0067d5cacd74c1e0e7bac485e306962c8198528d111818904d7",
+        "game/mobile/test/study_gate_test.dart": "86eb51c6b64749f246e0f1305a1617164987d56dab50da72208eede2987327ee",
+        "game/platform/lib/study_recorder.dart": "40be5e8ae640edfe67c6704074bbfb5a2f62fca2e8060b0d96cf50d22b72904f",
+        "game/mobile/test/qa_integration_study_start_test.dart": "6a10da9bce039214b784e851c7e577d08aa7394153fd64b1402e06c0812e3b30"
+      },
+      "source_after": {
+        "game/mobile/lib/study_gate.dart": "090bdc910f06a0067d5cacd74c1e0e7bac485e306962c8198528d111818904d7",
+        "game/mobile/test/study_gate_test.dart": "86eb51c6b64749f246e0f1305a1617164987d56dab50da72208eede2987327ee",
+        "game/platform/lib/study_recorder.dart": "40be5e8ae640edfe67c6704074bbfb5a2f62fca2e8060b0d96cf50d22b72904f",
+        "game/mobile/test/qa_integration_study_start_test.dart": "6a10da9bce039214b784e851c7e577d08aa7394153fd64b1402e06c0812e3b30"
+      },
+      "source_differences": [],
+      "log_sha256": "a8202301d49c4f47fe9047f9c1e53a4115d56622b31c11be1c23aa4f8b1848d6"
+    }
+  ]
+}

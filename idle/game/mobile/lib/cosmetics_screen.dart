@@ -79,8 +79,9 @@ class _CosmeticsScreenState extends State<CosmeticsScreen> {
       },
     );
     return Scaffold(
-      appBar: AppBar(
-        title: const LocalizedText(UiEnglish.cosmeticsHarborCollection),
+      appBar: readingAppBar(
+        context,
+        title: UiEnglish.cosmeticsHarborCollection,
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -303,8 +304,9 @@ class _CosmeticsScreenState extends State<CosmeticsScreen> {
     context: context,
     builder: (dialog) => Dialog.fullscreen(
       child: Scaffold(
-        appBar: AppBar(
-          title: LocalizedText(item.title),
+        appBar: readingAppBar(
+          dialog,
+          title: item.title,
           leading: CloseButton(onPressed: () => Navigator.pop(dialog)),
         ),
         body: SafeArea(

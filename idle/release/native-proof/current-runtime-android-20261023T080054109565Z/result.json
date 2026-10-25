@@ -1,0 +1,30 @@
+{
+  "verification_id": "current-runtime-android-20261023T080054109565Z",
+  "candidate_fingerprint": "3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59",
+  "harness_sha256": "997e7510aaef0dcebfa6505fc0dcde7d136a25e8a76abea78ede8602b0a4fef9",
+  "scenario": "runtime-study-withdraw-reopen",
+  "run_id": "v3b00-android-withdraw-barrier",
+  "device_label": "android",
+  "platform": "android",
+  "os_version": "sdk_gphone64_arm64-userdebug 15 AE3A.240806.043 12960925 dev-keys",
+  "process_id": 12546,
+  "fixture_kind": "INTERNAL SYNTHETIC QUALIFICATION ONLY",
+  "checks": [
+    "Separate native process respects durable withdrawal tombstone; no collection session or renewed enrollment."
+  ],
+  "completed": true,
+  "limitations": [
+    "No real participant, consent, paid transaction or receiving-app delivery.",
+    "Process termination is not physical power loss or a lifecycle callback.",
+    "Injected predecessor/rate/clock/bounds are qualification fixtures only.",
+    "Consented production process observations do not prove release AOT fatal-report matching or a crash-free rate."
+  ],
+  "shared_cache_preflight": "Absent/empty before bootstrap; optional production maintenance may create an empty shared cache.",
+  "fixture_directory": "/data/user/0/dev.tideglass.game/files/native-current-verification/android-v3b00-android-withdraw-barrier/study",
+  "preparation_verification_id": "current-runtime-android-20261023T075948335247Z",
+  "preparation_checkpoint_sha256": "2ba95d7d11d7aed51d2570b253895772ca30d0db6aa015efc7c2c0e73ab303c3",
+  "previous_native_process_id": 12200,
+  "native_study_samples": 0,
+  "withdrawal_durable": true,
+  "screenshots": []
+}

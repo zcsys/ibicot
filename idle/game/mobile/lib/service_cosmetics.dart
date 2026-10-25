@@ -7,6 +7,8 @@ import 'cosmetics_screen.dart';
 import 'game_controller.dart';
 import 'native_services.dart';
 import 'palette.dart';
+import 'soundtrack_export.dart';
+import 'package:tideglass_platform/soundtrack_cache.dart';
 
 /// Server ownership and earned XP are independently required. A stored equipped
 /// ID, premium claim, store callback or cached product price cannot grant items.
@@ -40,8 +42,8 @@ Set<String> verifiedPaidCosmetics(
 }
 
 /// Uses only localized offers actually returned by the native storefront.
-/// Supporter purchase stays unavailable until authenticated soundtrack delivery
-/// exists; its four already-verified appearances are still projected above.
+/// Supporter purchase requires explicit configuration and a current, validated
+/// service capability. The included appearances remain the same four shop IDs.
 List<CosmeticStoreOffer> cosmeticStoreOffers(NativeServicesManager manager) {
   if (!manager.commerceAvailable ||
       !manager.recoveryAcknowledged ||
@@ -63,7 +65,9 @@ List<CosmeticStoreOffer> cosmeticStoreOffers(NativeServicesManager manager) {
     for (final product in manager.offers)
       if (product.price.trim().isNotEmpty &&
           product.title.trim().isNotEmpty &&
-          product.id != 'dev.tideglass.supporter' &&
+          (product.id != 'dev.tideglass.supporter' ||
+              (manager.supporterDeliveryReady &&
+                  !owned.contains('soundtrack.01'))) &&
           !inFlight.contains(manager.purchaseStates[product.id]) &&
           !(product.id == 'dev.tideglass.pass.01' &&
               owned.contains('pass.01')) &&
@@ -78,6 +82,9 @@ List<CosmeticStoreOffer> cosmeticStoreOffers(NativeServicesManager manager) {
 }
 
 Set<String> _productCosmetics(String productId) {
+  if (productId == 'dev.tideglass.supporter') {
+    return {for (var i = 1; i <= 4; i++) 'cosmetic.shop.0$i'};
+  }
   if (productId == 'dev.tideglass.pass.01') {
     return {
       for (final item in cosmeticCatalogue)
@@ -94,9 +101,16 @@ Set<String> _productCosmetics(String productId) {
 }
 
 class CommerceScreen extends StatefulWidget {
-  const CommerceScreen({super.key, required this.game, required this.manager});
+  const CommerceScreen({
+    super.key,
+    required this.game,
+    required this.manager,
+    this.onExportSoundtrack,
+  });
   final GameController game;
   final NativeServicesManager manager;
+  final Future<SoundtrackExportResult> Function(NativeServicesManager, Rect)?
+  onExportSoundtrack;
   @override
   State<CommerceScreen> createState() => _CommerceScreenState();
 }
@@ -130,6 +144,42 @@ class _CommerceScreenState extends State<CommerceScreen> {
     } catch (error) {
       if (mounted) setState(() => _message = _failure(error));
       rethrow;
+    }
+  }
+
+  Future<void> _downloadSoundtrack(BuildContext buttonContext) async {
+    if (busy) return;
+    final box = buttonContext.findRenderObject()! as RenderBox;
+    final anchor = box.localToGlobal(Offset.zero) & box.size;
+    setState(() {
+      _working = true;
+      _message = UiEnglish.soundtrackChecking;
+    });
+    try {
+      final result = await (widget.onExportSoundtrack ?? exportSoundtrack)(
+        manager,
+        anchor,
+      );
+      if (!mounted) return;
+      setState(
+        () => _message = switch (result) {
+          SoundtrackExportResult.handedOff => UiEnglish.soundtrackHandedOff,
+          SoundtrackExportResult.cancelled => UiEnglish.soundtrackCancelled,
+          SoundtrackExportResult.unknown => UiEnglish.soundtrackUnknown,
+        },
+      );
+    } on SoundtrackCacheException catch (error) {
+      if (mounted) {
+        setState(
+          () => _message = error.code == 'recent_exports_at_capacity'
+              ? UiEnglish.soundtrackCacheFull
+              : UiEnglish.soundtrackFailed,
+        );
+      }
+    } catch (_) {
+      if (mounted) setState(() => _message = UiEnglish.soundtrackFailed);
+    } finally {
+      if (mounted) setState(() => _working = false);
     }
   }
 
@@ -303,10 +353,39 @@ class _CommerceScreenState extends State<CommerceScreen> {
             ),
           ),
         const SizedBox(height: 16),
-        const LocalizedText(
-          UiEnglish.serviceTheSupporterBundleReusesTheFourShop,
-          key: ValueKey('supporter-fulfillment-unavailable'),
+        LocalizedText(
+          manager.supporterDeliveryReady
+              ? UiEnglish.soundtrackReady
+              : UiEnglish.soundtrackUnavailable,
+          key: const ValueKey('supporter-fulfillment-status'),
         ),
+        for (final offer in cosmeticStoreOffers(
+          manager,
+        ).where((offer) => offer.productId == 'dev.tideglass.supporter'))
+          OutlinedButton(
+            key: const ValueKey('purchase-supporter-bundle'),
+            onPressed: busy
+                ? null
+                : () => _run(
+                    () => _purchase(offer),
+                    UiEnglish.serviceWaitingForTheAppStore,
+                  ),
+            child: LocalizedText(
+              UiEnglish.cosmeticStoreOffer(
+                offer.productTitle,
+                offer.localizedPrice,
+              ),
+            ),
+          ),
+        if (manager.ownedEntitlementIds.contains('soundtrack.01'))
+          Builder(
+            builder: (buttonContext) => OutlinedButton.icon(
+              key: const ValueKey('download-soundtrack'),
+              onPressed: busy ? null : () => _downloadSoundtrack(buttonContext),
+              icon: const Icon(Icons.download_rounded),
+              label: const LocalizedText(UiEnglish.soundtrackDownload),
+            ),
+          ),
         const SizedBox(height: 12),
         const LocalizedText(
           UiEnglish.servicePremiumAppearancesAlsoRequireTheirEarnedPass,

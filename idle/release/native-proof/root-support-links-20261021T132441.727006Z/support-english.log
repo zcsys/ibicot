@@ -1,0 +1,43 @@
+00:00 +0: loading /Users/csys/Desktop/ibicot/idle/game/mobile/test/public_links_test.dart
+00:00 +0: /Users/csys/Desktop/ibicot/idle/game/mobile/test/public_links_test.dart: configuration fails closed and preserves exact public destinations
+00:00 +1: /Users/csys/Desktop/ibicot/idle/game/mobile/test/public_links_test.dart: default missing configuration never calls a launcher
+00:00 +2: /Users/csys/Desktop/ibicot/idle/game/mobile/test/public_links_test.dart: default missing configuration never calls a launcher
+00:00 +3: /Users/csys/Desktop/ibicot/idle/game/mobile/test/help_test.dart: all eight real routes and sections readable at 320px 200%
+00:01 +3: /Users/csys/Desktop/ibicot/idle/game/mobile/test/public_links_test.dart: all three real help actions launch only the exact selected URL
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: true
+  Actual: <false>
+
+When the exception was thrown, this was the stack:
+#4      main.tap (file:///Users/csys/Desktop/ibicot/idle/game/mobile/test/public_links_test.dart:38:5)
+<asynchronous suspension>
+#5      main.<anonymous closure> (file:///Users/csys/Desktop/ibicot/idle/game/mobile/test/public_links_test.dart:162:7)
+<asynchronous suspension>
+#6      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#7      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/csys/Desktop/ibicot/idle/game/mobile/test/public_links_test.dart line 38
+The test description was:
+  all three real help actions launch only the exact selected URL
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:01 +3 -1: /Users/csys/Desktop/ibicot/idle/game/mobile/test/help_test.dart: all eight real routes and sections readable at 320px 200%
+00:01 +3 -1: /Users/csys/Desktop/ibicot/idle/game/mobile/test/public_links_test.dart: all three real help actions launch only the exact selected URL [E]
+  Test failed. See exception logs above.
+  The test description was: all three real help actions launch only the exact selected URL
+  
+00:01 +4 -1: /Users/csys/Desktop/ibicot/idle/game/mobile/test/help_test.dart: all eight real routes and sections readable at 320px 200%
+00:01 +5 -1: /Users/csys/Desktop/ibicot/idle/game/mobile/test/help_test.dart: all eight real routes and sections readable at 320px 200%
+00:01 +6 -1: /Users/csys/Desktop/ibicot/idle/game/mobile/test/help_test.dart: only supplied real account recovery and privacy actions appear
+00:01 +7 -1: /Users/csys/Desktop/ibicot/idle/game/mobile/test/help_test.dart: credits open actual bundled software licenses
+00:01 +8 -1: /Users/csys/Desktop/ibicot/idle/game/mobile/test/help_test.dart: actual Logbook and settings open help and existing local export
+00:02 +9 -1: /Users/csys/Desktop/ibicot/idle/game/mobile/test/help_test.dart: capture production help at expanded size
+00:02 +10 -1: Some tests failed.
+
+Failing tests:
+  /Users/csys/Desktop/ibicot/idle/game/mobile/test/public_links_test.dart: all three real help actions launch only the exact selected URL

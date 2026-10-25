@@ -20,6 +20,39 @@ abstract interface class DailyContractAlternative {
 class TideglassEngine {
   const TideglassEngine();
 
+  /// A compiled implementation identity. Remote values cannot select code.
+  String get rulesVersion => economyVersion;
+
+  void _requireRules(GameState state) {
+    if (state.rulesVersion != rulesVersion) {
+      throw StateError('State and selected economic rules differ');
+    }
+  }
+
+  /// A compiled compatibility edge may adopt an already settled state without
+  /// changing its currency basis, numeric residue or frozen daily objectives.
+  /// Persistence must first settle the old rules through its authorized UTC
+  /// boundary and atomically commit this state with that cursor and new pin.
+  /// This method alone is not a durable economic transition.
+  TransitionResult adoptCompatibleState(GameState state,
+      {required String sourceRulesVersion}) {
+    if (state.rulesVersion != sourceRulesVersion ||
+        sourceRulesVersion == rulesVersion) {
+      return _reject(state, 'economic_transition_source_mismatch');
+    }
+    if (state.support.activeSettlementId != null) {
+      return _reject(state, 'economic_transition_requires_closed_settlement');
+    }
+    final after = state.copyWith(
+        rulesVersion: rulesVersion, revision: state.revision + 1);
+    return TransitionResult(after, events: [
+      _event(after, 'economic_rules_adopted', details: {
+        'from': sourceRulesVersion,
+        'to': rulesVersion,
+      })
+    ]);
+  }
+
   static const producerNames = [
     'Spark Skiff',
     'Prism Nursery',
@@ -90,6 +123,7 @@ class TideglassEngine {
   }
 
   bool isUnlocked(GameState state, int tierIndex) {
+    _requireRules(state);
     _tier(tierIndex);
     return tierIndex == 0 || state.counts[tierIndex - 1] >= 10;
   }
@@ -109,6 +143,7 @@ class TideglassEngine {
   }
 
   Fixed synergyMultiplier(GameState state, int tierIndex) {
+    _requireRules(state);
     _tier(tierIndex);
     if (state.charts < BigInt.from(25) || tierIndex < 3) return Fixed.one;
     final x1 = _synergyCountLog(state.counts[0]);
@@ -126,6 +161,7 @@ class TideglassEngine {
   /// Unboosted producer rate. Focus is applied by the timeline, not hidden in
   /// this value; forecasts explicitly state whether bonuses are ignored.
   Fixed producerOutputPerSecond(GameState state, int tierIndex) {
+    _requireRules(state);
     _tier(tierIndex);
     final direct = BigInt.from(state.counts[tierIndex]) *
         BigInt.from(20).pow(tierIndex) *
@@ -135,7 +171,10 @@ class TideglassEngine {
   }
 
   Fixed outputPerSecond(GameState state) {
-    if (state.charts.bitLength <= 4096) {
+    _requireRules(state);
+    // Scenario subclasses override producer rules and may read other state.
+    // Only this exact baseline type has the complete key declared below.
+    if (runtimeType == TideglassEngine && state.charts.bitLength <= 4096) {
       final n = state.counts;
       return _rates.read((n[0], n[1], n[2], n[3], n[4], state.charts),
           () => _uncachedOutputPerSecond(state));
@@ -178,12 +217,14 @@ class TideglassEngine {
   }
 
   BigInt prestigeAward(GameState state) {
+    _requireRules(state);
     if (state.lifetimeMicros < firstPrestigeMicros) return BigInt.zero;
     final difference = prestigeEntitlement(state.lifetimeMicros) - state.charts;
     return difference > BigInt.zero ? difference : BigInt.zero;
   }
 
   BigInt nextChartLifetimeMicros(GameState state) {
+    _requireRules(state);
     return lifetimeForCharts(state.charts + BigInt.one);
   }
 
@@ -197,11 +238,13 @@ class TideglassEngine {
   }
 
   int nextMilestoneQuantity(GameState state, int tierIndex) {
+    _requireRules(state);
     _tier(tierIndex);
     return 25 - state.counts[tierIndex] % 25;
   }
 
   int maximumAffordable(GameState state, int tierIndex) {
+    _requireRules(state);
     _tier(tierIndex);
     if (!isUnlocked(state, tierIndex) ||
         priceMicros(tierIndex, state.counts[tierIndex]) > state.walletMicros)
@@ -244,12 +287,13 @@ class TideglassEngine {
   CoreEvent _event(GameState after, String kind,
           {int index = 0, Map<String, dynamic> details = const {}}) =>
       CoreEvent(
-          id: '$economyVersion:${after.revision}:$index:$kind',
+          id: '$rulesVersion:${after.revision}:$index:$kind',
           kind: kind,
           elapsedMicros: after.elapsedMicros,
           details: details);
 
   TransitionResult buy(GameState state, int tierIndex, int quantity) {
+    _requireRules(state);
     _tier(tierIndex);
     if (quantity <= 0) return _reject(state, 'quantity_must_be_positive');
     if (!isUnlocked(state, tierIndex)) return _reject(state, 'producer_locked');
@@ -277,6 +321,7 @@ class TideglassEngine {
   }
 
   TransitionResult buyMax(GameState state, int tierIndex) {
+    _requireRules(state);
     final amount = maximumAffordable(state, tierIndex);
     return amount == 0
         ? _reject(state, 'no_affordable_unlocked_purchase')
@@ -284,6 +329,7 @@ class TideglassEngine {
   }
 
   TransitionResult rechart(GameState state) {
+    _requireRules(state);
     final award = prestigeAward(state);
     if (award == BigInt.zero) return _reject(state, 'no_new_eligible_charts');
     final after = state.copyWith(
@@ -299,6 +345,7 @@ class TideglassEngine {
   }
 
   TransitionResult setAutoBuy(GameState state, bool enabled) {
+    _requireRules(state);
     if (enabled && state.charts < BigInt.from(10))
       return _reject(state, 'autobuy_requires_10_charts');
     if (state.autoBuyEnabled == enabled)
@@ -311,6 +358,7 @@ class TideglassEngine {
   }
 
   TransitionResult activateFocus(GameState state, {int charges = 1}) {
+    _requireRules(state);
     if (charges <= 0 || charges > state.focusCharges)
       return _reject(state, 'insufficient_focus');
     final after = state.copyWith(
@@ -324,6 +372,7 @@ class TideglassEngine {
   }
 
   TransitionResult collectSurveys(GameState state) {
+    _requireRules(state);
     if (state.completedSurveys == 0)
       return _reject(state, 'no_completed_surveys');
     final gained = BigInt.from(state.completedSurveys * 10);
@@ -375,6 +424,7 @@ class TideglassEngine {
     String? offlineSettlementId,
     bool finalizeOfflineSettlement = true,
   }) {
+    _requireRules(initial);
     if (offlineSettlementId != null)
       return _reject(
           initial,
@@ -420,6 +470,7 @@ class TideglassEngine {
     BigInt? legacyThroughUtc,
     bool finalizeOfflineSettlement = true,
   }) {
+    _requireRules(initial);
     if (duration.isNegative || offlineElapsedBefore.isNegative)
       return _reject(initial, 'negative_elapsed_time');
     if (maximumEvents <= 0)

@@ -1,0 +1,153 @@
+--- a/game/mobile/integration_test/current_runtime_test.dart
++++ b/game/mobile/integration_test/current_runtime_test.dart
+@@ -30,6 +30,9 @@
+ const candidate = String.fromEnvironment('TIDEGLASS_CANDIDATE_FINGERPRINT');
+ const harness = String.fromEnvironment('TIDEGLASS_HARNESS_SHA256');
+ const verification = String.fromEnvironment('TIDEGLASS_VERIFICATION_ID');
++const privacyObservation = bool.fromEnvironment(
++  'TIDEGLASS_PRIVACY_OBSERVATION',
++);
+ const allowedScenarios = <String>{
+   'runtime-lock-exclusion',
+   'runtime-save-hold-beforeWrite',
+@@ -72,6 +75,12 @@
+       }
+     });
+     expect(allowedScenarios, contains(scenario));
++    if (privacyObservation) {
++      expect({
++        'runtime-study-default',
++        'runtime-study-enroll',
++      }, contains(scenario));
++    }
+     expect(const String.fromEnvironment('TIDEGLASS_SERVICE_URL'), isEmpty);
+     expect(const bool.fromEnvironment('TIDEGLASS_COMMERCE'), isFalse);
+     expect(const bool.fromEnvironment('TIDEGLASS_REWARDED_ADS'), isFalse);
+@@ -119,10 +128,58 @@
+     } else if (scenario == 'runtime-cache-grace') {
+       await cacheGrace();
+     }
++    if (privacyObservation) await privacyWindow(tester);
+     expect(tester.takeException(), isNull);
+     await tester.pumpWidget(const SizedBox.shrink());
+     report['completed'] = true;
+   });
++}
++
++Future<void> privacyWindow(WidgetTester tester) async {
++  // Observational test instrumentation only. This does not open a socket or
++  // record a participant; the separate host collector is read-only.
++  final stopwatch = Stopwatch()..start();
++  final common = <String, dynamic>{
++    for (final key in [
++      'verification_id',
++      'candidate_fingerprint',
++      'harness_sha256',
++      'scenario',
++      'run_id',
++      'device_label',
++      'platform',
++      'process_id',
++      'fixture_directory',
++    ])
++      key: report[key],
++    'mode': scenario == 'runtime-study-default'
++        ? 'default-unprovisioned'
++        : 'synthetic-consented',
++    'window_id': '$verification-privacy',
++    'maximum_ms': 20000,
++  };
++  Map<String, dynamic> checkpoint() => {
++    ...common,
++    'native_elapsed_us': stopwatch.elapsedMicroseconds,
++    'native_utc_ms': DateTime.now().toUtc().millisecondsSinceEpoch,
++  };
++  final opened = checkpoint();
++  // ignore: avoid_print -- atomic host checkpoint must not be debugPrint-wrapped.
++  print('TIDEGLASS_PRIVACY_WINDOW_OPEN ${jsonEncode(opened)}');
++  //15s intended hold with20s absolute qualification bound. No real-world
++  //progression/retention inference is made from this synthetic pause.
++  while (stopwatch.elapsed < const Duration(seconds: 15)) {
++    await Future<void>.delayed(const Duration(milliseconds: 50));
++    await tester.pump();
++  }
++  final closed = checkpoint();
++  expect(stopwatch.elapsed, lessThanOrEqualTo(const Duration(seconds: 20)));
++  // ignore: avoid_print -- same atomic host checkpoint protocol as OPEN.
++  print('TIDEGLASS_PRIVACY_WINDOW_CLOSE ${jsonEncode(closed)}');
++  report['privacy_observation_window'] = {'opened': opened, 'closed': closed};
++  checked(
++    'Bounded synthetic process observation interval completed; not a traffic absence claim.',
++  );
+ }
+ 
+ void checked(String message) => (report['checks'] as List<String>).add(message);
+@@ -550,6 +607,37 @@
+     checked(
+       'Default StudyGate bypasses recorder opening and leaves absent native study support path absent.',
+     );
++    if (privacyObservation) {
++      await guardEmptySharedCache();
++      final guestDirectory = Directory('${directory.path}/game');
++      await tester.pumpWidget(
++        StudyGate(
++          provision: '',
++          supportDirectory: support,
++          sampleNativeContext: sampleNative,
++          openRecorder: (_) async {
++            recorderOpened = true;
++            throw StateError('Default observation must not open a recorder.');
++          },
++          child: TideglassBootstrap(
++            directory: guestDirectory,
++            notifications: isolatedNotifications(guestDirectory),
++            enableAudio: false,
++          ),
++        ),
++      );
++      await until(
++        tester,
++        () => find.byType(TideglassApp).evaluate().length == 1,
++        'Default unprovisioned actual guest opens for process observation.',
++      );
++      expect(recorderOpened, isFalse);
++      expect(nativeSamples, 0);
++      expect(await support.exists(), isFalse);
++      checked(
++        'Optional observed guest uses production Bootstrap with isolated save and no study provision.',
++      );
++    }
+     return;
+   }
+   Map<String, dynamic>? prior;
+--- a/tool/verify_current_runtime.py
++++ b/tool/verify_current_runtime.py
+@@ -482,6 +482,8 @@
+ 
+ def run(args) -> int:
+     platform = validate_request(args.device, args.label, args.scenario, args.run_id)
++    observe_privacy = getattr(args, 'observe_privacy', False)
++    require(not observe_privacy or args.scenario in ('runtime-study-default', 'runtime-study-enroll'), 'Privacy observation only allowed for default/enroll cases')
+     require(bool(args.predecessor) == (args.scenario in PREDECESSORS), 'Supply predecessor exactly for recovery/reopen scenarios')
+     candidate = args.candidate.resolve()
+     manifest = read_json(candidate / 'manifest.json')
+@@ -518,8 +520,10 @@
+         for key, value in [('DEVICE_LABEL', args.label), ('SCENARIO', args.scenario), ('RUN_ID', args.run_id), ('VERIFICATION_ID', name),
+                            ('CANDIDATE_FINGERPRINT', context['candidate_fingerprint']), ('HARNESS_SHA256', context['harness_sha256'])]:
+             command.append('--dart-define=TIDEGLASS_' + key + '=' + value)
++        if observe_privacy:
++            command.append('--dart-define=TIDEGLASS_PRIVACY_OBSERVATION=true')
+         command += ['--keep-app-running', '--timeout=180', '--no-pub']
+-        report = dict(context, command=command, candidate_path=str(candidate), status='failed', passed=False, verification_errors=[],
++        report = dict(context, privacy_observation_enabled=observe_privacy, command=command, candidate_path=str(candidate), status='failed', passed=False, verification_errors=[],
+                       provenance='INTERNAL SYNTHETIC QUALIFICATION ONLY; simulator native execution; no participant, crash-free metric, physical power-loss, store, or receiving-app claim')
+         if prior:
+             report['predecessor'] = {'path': str(args.predecessor.resolve()), 'sha256': digest(args.predecessor.read_bytes()), 'verification_id': prior['verification_id']}
+@@ -627,6 +631,7 @@
+     parser.add_argument('--scenario', required=True, choices=sorted(SCENARIOS))
+     parser.add_argument('--run-id', required=True)
+     parser.add_argument('--predecessor', type=Path)
++    parser.add_argument('--observe-privacy', action='store_true', help='Optional bounded default/enroll observation window; separate collector required')
+     args = parser.parse_args()
+     return run(args)
+ 

@@ -1,0 +1,75 @@
+Running Gradle task 'assembleDebug'...                             24.5s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...        1,352ms
+D/FlutterJNI( 4006): Sending viewport metrics to the engine.
+W/HWUI    ( 4006): Failed to choose config with EGL_SWAP_BEHAVIOR_PRESERVED, retrying without...
+W/HWUI    ( 4006): Failed to initialize 101010-2 format, error = EGL_SUCCESS
+I/Gralloc4( 4006): mapper 4.x is not supported
+I/.tideglass.game( 4006): Compiler allocated 5250KB to compile void android.view.ViewRootImpl.performTraversals()
+I/Choreographer( 4006): Skipped 71 frames!  The application may be doing too much work on its main thread.
+D/FlutterJNI( 4006): Sending viewport metrics to the engine.
+VMServiceFlutterDriver: Connecting to Flutter application at http://127.0.0.1:60637/zJLs9vrY_vk=/
+VMServiceFlutterDriver: Isolate found with number: 8268243088640483
+VMServiceFlutterDriver: Isolate 8268243088640483 is runnable.
+VMServiceFlutterDriver: Isolate is paused at start.
+VMServiceFlutterDriver: Attempting to resume isolate
+I/flutter ( 4006): 00:00 +0: real OS reminder qualification: denied
+VMServiceFlutterDriver: Connected to Flutter application.
+I/Choreographer( 4006): Skipped 30 frames!  The application may be doing too much work on its main thread.
+D/ProfileInstaller( 4006): Installing profile for dev.tideglass.game
+D/FlutterJNI( 4006): Sending viewport metrics to the engine.
+I/flutter ( 4006): TIDEGLASS_REMINDER_ACTION {"verification_id":"integration-android-20261025T151708326800Z","candidate_fingerprint":"3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59","harness_sha256":"330ab6428203ec80e4de19e4eb727ad8dcfc6f63572e9ea1b0ef3ff7dc7a71da","scenario":"denied","run_id":"v3b00-r20261025-android-denied","device_label":"android","platform":"android","process_id":4006,"action":"deny_permission_if_prompted","utc_ms":1792941466808}
+I/.tideglass.game( 4006): Background concurrent mark compact GC freed 2775KB AllocSpace bytes, 7(140KB) LOS objects, 49% free, 3065KB/6131KB, paused 38us,1.927ms total 199.872ms
+I/flutter ( 4006): ══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+I/flutter ( 4006): The following TimeoutException was thrown running a test:
+I/flutter ( 4006): TimeoutException after 0:02:30.000000: Future not completed
+I/flutter ( 4006): 
+I/flutter ( 4006): When the exception was thrown, this was the stack:
+I/flutter ( 4006): <asynchronous suspension>
+I/flutter ( 4006): #1      main.<anonymous closure> (file:///Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261023T040445.261666Z-3b00cc8f7122/workspace/game/mobile/integration_test/reminders_330ab6428203ec80_test.dart:209:7)
+I/flutter ( 4006): <asynchronous suspension>
+I/flutter ( 4006): #2      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+I/flutter ( 4006): <asynchronous suspension>
+I/flutter ( 4006): #3      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+I/flutter ( 4006): <asynchronous suspension>
+I/flutter ( 4006): #4      TestWidgetsFlutterBinding._createTestCompletionHandler.<anonymous closure> (package:flutter_test/src/binding.dart:1707:12)
+I/flutter ( 4006): <asynchronous suspension>
+I/flutter ( 4006): (elided one frame from dart:async)
+I/flutter ( 4006): 
+I/flutter ( 4006): The test description was:
+I/flutter ( 4006):   real OS reminder qualification: denied
+I/flutter ( 4006): ════════════════════════════════════════════════════════════════════════════════════════════════════
+I/flutter ( 4006): 02:32 +0: real OS reminder qualification: denied [E]
+I/flutter ( 4006):   Test failed. See exception logs above.
+I/flutter ( 4006):   The test description was: real OS reminder qualification: denied
+I/flutter ( 4006):   
+D/EGL_emulation( 4006): app_time_stats: avg=37945.63ms min=50.68ms max=150280.72ms count=4
+I/flutter ( 4006): 02:32 +0 -1: (tearDownAll)
+I/flutter ( 4006): 02:32 +1 -1: Some tests failed.
+Failure Details:
+Failure in method: real OS reminder qualification: denied
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞═════════════════
+The following TimeoutException was thrown running a test:
+TimeoutException after 0:02:30.000000: Future not completed
+
+When the exception was thrown, this was the stack:
+<asynchronous suspension>
+#1      main.<anonymous closure> (file:///Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261023T040445.261666Z-3b00cc8f7122/workspace/game/mobile/integration_test/reminders_330ab6428203ec80_test.dart:209:7)
+<asynchronous suspension>
+#2      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#3      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+#4      TestWidgetsFlutterBinding._createTestCompletionHandler.<anonymous closure> (package:flutter_test/src/binding.dart:1707:12)
+<asynchronous suspension>
+(elided one frame from dart:async)
+
+The test description was:
+  real OS reminder qualification: denied
+═════════════════════════════════════════════════════════════════
+
+end of failure 1
+
+
+
+Leaving the application running.

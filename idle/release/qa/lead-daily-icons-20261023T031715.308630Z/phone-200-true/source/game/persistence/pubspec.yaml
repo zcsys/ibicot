@@ -1,0 +1,11 @@
+name: tideglass_persistence
+description: Versioned, recoverable local state for Tideglass native clients.
+version: 0.1.0
+publish_to: none
+environment:
+  sdk: '>=3.10.0 <4.0.0'
+dependencies:
+  crypto: ^3.0.7
+  ffi: 2.2.0
+dev_dependencies:
+  test: ^1.26.0

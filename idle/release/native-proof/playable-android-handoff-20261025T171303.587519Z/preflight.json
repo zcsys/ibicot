@@ -1,0 +1,79 @@
+[
+  {
+    "utc": "2026-10-25T17:13:03.589663+00:00",
+    "argv": [
+      "/Users/csys/Library/Android/sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "emu",
+      "avd",
+      "name"
+    ],
+    "exit": 0,
+    "stderr": "",
+    "file": "before-avd.txt",
+    "sha256": "12f02d5f9c4612981f46d817db8e1ed0f176156a62b01a2fb813c42dd89d5909"
+  },
+  {
+    "utc": "2026-10-25T17:13:03.651243+00:00",
+    "argv": [
+      "/Users/csys/Library/Android/sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "shell",
+      "getprop",
+      "ro.build.version.sdk"
+    ],
+    "exit": 0,
+    "stderr": "",
+    "file": "before-api.txt",
+    "sha256": "90d7ec0f0acef104d8b6252794295f661a0149634868d02a1ae0c358099638f5"
+  },
+  {
+    "utc": "2026-10-25T17:13:03.685364+00:00",
+    "argv": [
+      "/Users/csys/Library/Android/sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "shell",
+      "pidof",
+      "dev.tideglass.game"
+    ],
+    "exit": 1,
+    "stderr": "",
+    "file": "before-pid.txt",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "utc": "2026-10-25T17:13:03.715543+00:00",
+    "argv": [
+      "/Users/csys/Library/Android/sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "shell",
+      "pm",
+      "path",
+      "dev.tideglass.game"
+    ],
+    "exit": 0,
+    "stderr": "",
+    "file": "before-apk.txt",
+    "sha256": "c290f534fb396d4c75012393e0dcda34fc4b410e9857572a1bbbf7f4c8f50d87"
+  },
+  {
+    "utc": "2026-10-25T17:13:03.752159+00:00",
+    "argv": [
+      "/Users/csys/Library/Android/sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "shell",
+      "dumpsys",
+      "package",
+      "dev.tideglass.game"
+    ],
+    "exit": 0,
+    "stderr": "",
+    "file": "before-permissions.txt",
+    "sha256": "e246d435bd8495d0e67518af6a0514406f03996a92bb562efe0216249504df66"
+  }
+]

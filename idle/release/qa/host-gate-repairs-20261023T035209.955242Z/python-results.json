@@ -1,0 +1,51 @@
+[
+  {
+    "name": "focused-35",
+    "command": [
+      "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tool",
+      "-p",
+      "test_native_*.py",
+      "-v"
+    ],
+    "cwd": "/Users/csys/Desktop/ibicot/idle",
+    "exit_code": 0
+  },
+  {
+    "name": "actual-lock-19",
+    "command": [
+      "/Users/csys/Desktop/ibicot/idle/.tooling/services-venv/bin/python",
+      "/Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261023T032609.052120Z-a052a4405347/workspace/tool/check_provider_environment.py",
+      "/Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261023T032609.052120Z-a052a4405347/workspace/services/requirements-providers.lock"
+    ],
+    "cwd": "/Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261023T032609.052120Z-a052a4405347/workspace",
+    "exit_code": 0
+  },
+  {
+    "name": "actual-operations-59",
+    "command": [
+      "/Users/csys/Desktop/ibicot/idle/.tooling/services-venv/bin/python",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests/services/operations",
+      "-v"
+    ],
+    "cwd": "/Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261023T032609.052120Z-a052a4405347/workspace",
+    "exit_code": 0
+  },
+  {
+    "name": "independent-negative",
+    "command": [
+      "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3",
+      "/Users/csys/Desktop/ibicot/idle/release/qa/host-gate-repairs-20261023T035209.955242Z/independent_environment_probe.py"
+    ],
+    "cwd": "/Users/csys/Desktop/ibicot/idle",
+    "exit_code": 1
+  }
+]

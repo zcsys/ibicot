@@ -1,0 +1,73 @@
+{
+  "freeze": "release/economy-transition/source-v2-20261021T121308Z",
+  "freeze_index_sha256": "3e299f1bfac9f932f26a4a8a9a2be3f6e6846230b900207bea1848444e1ad4ec",
+  "source_unchanged": true,
+  "baseline_configuration_sha256": "9e5b9bcfcfc7a68d4eaeebc97e8d40cd42d04532fa59f514c7483efee885d2b6",
+  "qualification_fixture_sha256": "9ecd3addb659b78144ecf733239b8003ab3af516897f7e7f7ee2c810955295c6",
+  "core_tests_passed": 196,
+  "new_core_transition_tests": 20,
+  "persistence_tests_passed": 28,
+  "new_persistence_lock_tests": 5,
+  "new_persistence_transition_tests": 4,
+  "scenario_assertions_passed": 2658,
+  "scenario_rules": 14,
+  "scenario_traces": 26,
+  "arithmetic_regression_source": "scenario-cache-regression.json",
+  "before_and_after": {
+    "game/core/lib/src/daily.dart": {
+      "before": "1a43e6a035472d52430c6fc1ca609bcb4cd2f564794e2b49a36cef507803338a",
+      "after": "1a43e6a035472d52430c6fc1ca609bcb4cd2f564794e2b49a36cef507803338a",
+      "changed": false
+    },
+    "game/core/lib/src/daily_engine.dart": {
+      "before": "9724e2e9c5369b287f8058d43108adca9cc89be54a781ac0ac2058d7736f5580",
+      "after": "1949239d4ae3bba5c72d716a3a027c0ada52ec97e434431a132c941001db322f",
+      "changed": true
+    },
+    "game/core/lib/src/engine.dart": {
+      "before": "a87e4d6f5fdcb5a169befadba9824df42d792ff4b5cd8d5cf3dfee849c6577d4",
+      "after": "0fbc3f3dfbb54df8a0cef41a8b8c788baef473d0bbffe643301a3d9c9d9eade6",
+      "changed": true
+    },
+    "game/core/lib/src/fixed.dart": {
+      "before": "c167fdf3c4b95965f1bfc3658095dad81b6f013c71fa5abc7505b7731d6c698f",
+      "after": "c167fdf3c4b95965f1bfc3658095dad81b6f013c71fa5abc7505b7731d6c698f",
+      "changed": false
+    },
+    "game/core/lib/src/state.dart": {
+      "before": "b877f1ce17a9e41484009fc0286ad31b8a33ec6f1aef87c710c3e9c9790c9240",
+      "after": "04e1210cb26e7cc15cf3294c682f43bd266d9c52acbc238465061d9c7aa46a9e",
+      "changed": true
+    },
+    "game/core/lib/src/support.dart": {
+      "before": "b09af96c6523177cc62214d58d34dbb83467c0b0a384d024ba1b4ead46ebaa23",
+      "after": "b09af96c6523177cc62214d58d34dbb83467c0b0a384d024ba1b4ead46ebaa23",
+      "changed": false
+    },
+    "game/core/lib/src/support_engine.dart": {
+      "before": "c4d25aa48e86d177148d7056a403296ff9613f5ae206d7483f81b24ec01ded1a",
+      "after": "ae08becad0f438878f4bdf2bbd9f2045c7bcdcf1bcf17e6a39943e574ad79e53",
+      "changed": true
+    },
+    "game/core/lib/tideglass_core.dart": {
+      "before": "8c0d10c89cc961221fc04c217fde4d3c799e574c8abd178f1249632a565ccee4",
+      "after": "8c0d10c89cc961221fc04c217fde4d3c799e574c8abd178f1249632a565ccee4",
+      "changed": false
+    },
+    "game/persistence/lib/tideglass_persistence.dart": {
+      "before": "f8aebe4d5deb90378e7ee7cccd5af2eb9603453ae9907cf74656b34ee8b9e4a0",
+      "after": "ffaf6292b76a8c2fbb43669cc506b09ce58ace3653c990f3902a67a9c94f14dd",
+      "changed": true
+    }
+  },
+  "independent_review": "Pending QA v2 review. ECON001 discovered by independent QA fixed in v2. Other hardening author-identified and independently reproduced.",
+  "native_validation": "Root-owned mobile/native qualification pending; no device power-loss claim.",
+  "baseline_parity_cases": 11,
+  "baseline_parity_byte_equal": true,
+  "root_flutter_integration": {
+    "checks_passed": 18,
+    "evidence": "release/native-proof/root-transition-20261021T121321.388435Z",
+    "owner": "root",
+    "limits": "Actual Flutter bootstrap/widget path; not physical-device power-loss proof."
+  }
+}

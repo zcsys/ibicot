@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "recorded_utc": "2026-10-21T13:19:58.598528+00:00",
+  "status": "staged_author_checks_passed_native_and_flutter_pending",
+  "counts": {
+    "pure_dart": 36,
+    "clean_python": 39,
+    "widget_authored_not_run": 4
+  },
+  "source_sha256": {
+    "release/study/native-linkage-staging/game/platform/lib/study_recorder.dart": "d19cea0821852f4190f9366ae989b417dd83840225aaa939882dafec8228f255",
+    "release/study/native-linkage-staging/game/platform/lib/study_native_context.dart": "712c8c34082008b8596a89d451e7da05d573384cf8158fc6e5e2b23bda2fe154",
+    "release/study/native-linkage-staging/game/platform/test/native_linkage_test.dart": "29ee51cce685bfaf0e35b8c900333e6c603decb768bc593e2916a453bb9fd5fc",
+    "release/study/native-linkage-staging/game/mobile/lib/study_gate.dart": "99757790494004865b5b68a4798191170955ff7b4bc000c98cc4f78094b9f7d9",
+    "release/study/native-linkage-staging/game/mobile/lib/study_native_context.dart": "c4d8541682aa31e7379d953146ef46b475c75bb991a34ef8394de93282332c22",
+    "release/study/native-linkage-staging/game/mobile/test/study_native_consent_test.dart": "d7ace935f2ecc8a96e0e5ce0227d55fdbdac3cd8816e3559690a889251bdc94b",
+    "release/study/native-linkage-staging/game/mobile/ios/Runner/AppDelegate.swift": "5c7bac17fd6ab5c3995ff25e4c7af74c653fa5c02dc94b2bbe1751fdd9fa1dc1",
+    "release/study/native-linkage-staging/game/mobile/android/app/src/main/kotlin/dev/tideglass/game/MainActivity.kt": "d6fdd6373c1e400d9c5f27e4e2ec56b32e73473f5f5d3316215bd7ec13a4abdf",
+    "release/study/native-linkage-staging/tool/study_adjudicate.py": "ccf31107cced115bb7a417407a2b7cfa1498845ce10899b14a1f3ca533a406e6",
+    "release/study/native-linkage-staging/tool/test_study_adjudicate.py": "8a3cff4fe950a049a0df9e2af2fe5a065f5baa107f417d0c63f705b879454683",
+    "tool/study_native_diagnostics.py": "e2f8972b786e83cbd2dbe521623548b342c0b118aefd712df604df65909daa78",
+    "tool/test_study_native_diagnostics.py": "a7c90ef72449fe8ad37e5755a80dd6e664efd416bba4897cba669d413a9c18ac",
+    "release/study/native-linkage-staging/game/platform/test/generate_migration.dart": "78fc274e9cbe704e28fea6afeabea38d330422d53fff822d719c7fb7fb673551",
+    "release/study/native-linkage-staging/fixtures/migration-v3/legacy-before.json": "5291d73961dd13d0255f052cefe28bc8cdfa58de2913b4a6c5bf8d51f906eddd",
+    "release/study/native-linkage-staging/fixtures/migration-v3/manifest.json": "2050584b37740d1619c7f77acbf01ed0066ee1e43a1c4cc037d504f616fb9859",
+    "release/study/native-linkage-staging/fixtures/migration-v3/migrated-available.json": "f490630fe9d059408bbcd799af071bda4394ebe4f4bb18e8ce8c0f13111dc8aa",
+    "release/study/native-linkage-staging/fixtures/migration-v3/unavailable.json": "741ee7d21980088467c2602421f97c34586001fee840411b2000e716a4484a78",
+    "release/study/native-linkage-staging/fixtures/migration-v3/withdrawn.json": "e7912b778d6f5e5a20363f80b4a17960dc671031520dfe46e9cd1e9bea0a7c13"
+  },
+  "baseline_check": {
+    "game/platform/lib/study_recorder.dart": {
+      "original": "40be5e8ae640edfe67c6704074bbfb5a2f62fca2e8060b0d96cf50d22b72904f",
+      "current": "40be5e8ae640edfe67c6704074bbfb5a2f62fca2e8060b0d96cf50d22b72904f",
+      "unchanged": true
+    },
+    "game/mobile/lib/study_gate.dart": {
+      "original": "bc019a763d72476ddd38594c96f90c081ffb9992b0e650aa1defd8a3514d923b",
+      "current": "bc019a763d72476ddd38594c96f90c081ffb9992b0e650aa1defd8a3514d923b",
+      "unchanged": true
+    },
+    "game/mobile/ios/Runner/AppDelegate.swift": {
+      "original": "93b0d32d184bdd94c5737acc503cceb6257851b2a844caf02c7f5fd232fd8601",
+      "current": "93b0d32d184bdd94c5737acc503cceb6257851b2a844caf02c7f5fd232fd8601",
+      "unchanged": true
+    },
+    "game/mobile/android/app/src/main/kotlin/dev/tideglass/game/MainActivity.kt": {
+      "original": "b53bd92f01e9847f53e785d44f1591b4abb7ae8539cae84e5e73b473892914b9",
+      "current": "b53bd92f01e9847f53e785d44f1591b4abb7ae8539cae84e5e73b473892914b9",
+      "unchanged": true
+    },
+    "tool/study_adjudicate.py": {
+      "original": "b158d082812603f6f02576ddc950b834c06254e718e3e0efadb4bb26679b87b6",
+      "current": "b158d082812603f6f02576ddc950b834c06254e718e3e0efadb4bb26679b87b6",
+      "unchanged": true
+    }
+  },
+  "evidence_sha256": {
+    "dart-minimized-final.log": "8c294be0e56d44fe69c77b6beab715e83200bf4f469fbf78e3a9ad74014cdf23",
+    "python-clean-tool-replay.log": "dff964a796bd711dcb8ac06c092524d50ec5b05d58fbd0694f247d5c271efcc8",
+    "clean-tool-replay.json": "3d42d3beb0e9c9c49b19b58c9b0dde7a50019ecbcb3eb209cd02933dbf6d5972",
+    "dart-fixtures-final.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "dart-restart-failure.log": "393ee70d8efabde68cf97d8e39bbf1be643aab9a772557d6e84d76d0fe72d476"
+  },
+  "promotion_manifest_sha256": "f5018756bbc79401bb46aafd1e177ca27a0bc686aa608bc5405160ae5db000f4",
+  "implementation_diff_sha256": "ce9552c4abb8b69fa3bac8d9820b40705232d1ae11e3b5ca54568d5ec4018002",
+  "handoff_sha256": "74739e17b95271a7ef92cf96a6e6940d8634dc68d9eaa9dc6c2298ca797513ae",
+  "real_participants": 0,
+  "actual_native_fatal_reports": 0,
+  "native_channel_executed": false,
+  "flutter_executed": false,
+  "live_runtime_modified_by_lane": false,
+  "release_ready": false
+}
