@@ -1,0 +1,50 @@
+[
+  {
+    "utc": "2026-10-25T16:20:38.782485+00:00",
+    "argv": [
+      "/Users/csys/Library/Android/sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "shell",
+      "-tt",
+      "uiautomator",
+      "dump",
+      "/dev/tty"
+    ],
+    "exit_code": 0,
+    "file": "operator-notification-shade-hierarchy.txt",
+    "sha256": "e3c6447b481b87f686106a93e9af2414d5cf36c1701c39e98870a7b0ad641e0b",
+    "stderr": ""
+  },
+  {
+    "utc": "2026-10-25T16:20:41.298317+00:00",
+    "argv": [
+      "/Users/csys/Library/Android/sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "exec-out",
+      "screencap",
+      "-p"
+    ],
+    "exit_code": 0,
+    "file": "operator-notification-shade.png",
+    "sha256": "96c53e71d1e089d10ec8f26bf651f07fa1e3adeb9b7cc3436349eb3026b8c98a",
+    "stderr": ""
+  },
+  {
+    "utc": "2026-10-25T16:20:41.493252+00:00",
+    "argv": [
+      "/Users/csys/Library/Android/sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "shell",
+      "dumpsys",
+      "activity",
+      "activities"
+    ],
+    "exit_code": 0,
+    "file": "operator-notification-shade-activities.txt",
+    "sha256": "64a7ee5156c8c14cbd60ae39b87b251025b419973b1461526a5344480d1be704",
+    "stderr": ""
+  }
+]

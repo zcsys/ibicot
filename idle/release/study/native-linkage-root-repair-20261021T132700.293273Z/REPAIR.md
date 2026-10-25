@@ -1,0 +1,1 @@
+Root repair overlay for independent LINK001 strict numeric schema findings. Original author staging and18-filepromotion manifest remain unchanged. Installation provenance requires exact Python int; erased Dart envelopes validate integer before early return. New durable regression cases authored, not run yet. Promotion/reproduction pending independent frozen review.

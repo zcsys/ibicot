@@ -1,0 +1,122 @@
+
+# These limits reject poor measurements; they are not a guessed clock offset or
+# a tolerance added to the event time. Event translation uses measured bounds.
+MAX_PROBE_RTT_NS = 250_000_000
+MAX_OFFSET_WIDTH_NS = 100_000_000
+MAX_HOST_DRIFT_NS = 5_000_000
+MAX_STAMP_READ_NS = 1_000_000
+MAX_CLOCK_SPAN_NS = 210_000_000_000
+MAX_CLOCK_STALE_NS = 30_000_000_000
+
+
+def host_stamp():
+    lower=time.monotonic_ns()
+    wall=time.time_ns()
+    upper=time.monotonic_ns()
+    return {'utc_ns':wall,'monotonic_lower_ns':lower,'monotonic_upper_ns':upper}
+
+
+def checked_stamp(value):
+    require(isinstance(value,dict) and set(value)=={'utc_ns','monotonic_lower_ns','monotonic_upper_ns'},'Missing bounded host clock stamp')
+    require(all(type(n) is int and n>0 for n in value.values()),'Invalid host clock stamp')
+    require(0<=value['monotonic_upper_ns']-value['monotonic_lower_ns']<=MAX_STAMP_READ_NS,'Host clock read too broad/reversed')
+    return value
+
+
+def host_clock_consistency(stamps):
+    values=[checked_stamp(s) for s in stamps]
+    require(values,'Host clock observations missing')
+    lower=min(s['utc_ns']-s['monotonic_upper_ns'] for s in values)
+    upper=max(s['utc_ns']-s['monotonic_lower_ns'] for s in values)
+    require(upper-lower<=MAX_HOST_DRIFT_NS,'Host wall/monotonic clock jumped or drifted beyond measurement quality bound')
+    return {'wall_minus_monotonic_lower_ns':lower,'wall_minus_monotonic_upper_ns':upper}
+
+
+def receipt_stamps(row):
+    start=checked_stamp(row.get('started_stamp'));end=checked_stamp(row.get('finished_stamp'))
+    require(start['monotonic_upper_ns']<=end['monotonic_lower_ns'],'Host command chronology reversed')
+    require(row.get('started_utc_ms')==start['utc_ns']//1_000_000 and row.get('finished_utc_ms')==end['utc_ns']//1_000_000,'Legacy receipt milliseconds differ from raw host clock stamps')
+    return start,end
+
+
+def device_nanoseconds(raw):
+    require(isinstance(raw,str) and re.fullmatch(r'[0-9]{10,12}\.[0-9]{9}\r?\n?',raw),'Invalid actual device nanosecond date output')
+    seconds,fraction=raw.strip().split('.')
+    return int(seconds)*1_000_000_000+int(fraction)
+
+
+def clock_model(samples, context, pid):
+    require(isinstance(samples,list) and len(samples)==6,'Exactly three prospective and three post-death clock samples required')
+    require([s.get('clock_phase') for s in samples]==['before_exports']*3+['after_death']*3,'Clock samples are missing, reordered or borrowed')
+    expected={k:context[k] for k in IDENTITY};expected.update(device=context['device'],process_id=pid)
+    bounds=[];stamps=[];device=[]
+    for sample in samples:
+        require(sample.get('clock_context')==expected,'Clock sample run/device/PID identity mismatch')
+        cmd=sample.get('argv',[])
+        require(len(cmd)==7 and Path(cmd[0]).name=='adb' and cmd[1:]==['-s',context['device'],'shell','date','-u','+%s.%N'],'Clock sample was not the exact read-only device date command')
+        require(sample.get('exit_code')==0 and not sample.get('stderr'),'Clock probe failed')
+        start,end=receipt_stamps(sample);stamps += [start,end]
+        require(end['monotonic_upper_ns']-start['monotonic_lower_ns']<=MAX_PROBE_RTT_NS,'Clock probe round trip too broad')
+        d=device_nanoseconds(sample.get('stdout'));device.append(d)
+        # Device date was sampled sometime during this host request/response.
+        bounds.append((start['utc_ns']-d,end['utc_ns']-d))
+    require(all(stamps[i]['monotonic_upper_ns']<=stamps[i+1]['monotonic_lower_ns'] for i in range(len(stamps)-1)),'Clock samples overlap or reorder')
+    require(device==sorted(set(device)),'Device clock samples did not increase')
+    require(stamps[-1]['monotonic_upper_ns']-stamps[0]['monotonic_lower_ns']<=MAX_CLOCK_SPAN_NS,'Clock brackets are stale for this bounded preparation')
+    host=host_clock_consistency(stamps)
+    groups=[(max(x[0] for x in bounds[i:i+3]),min(x[1] for x in bounds[i:i+3])) for i in (0,3)]
+    require(all(lo<=hi for lo,hi in groups),'Inconsistent device/host clock samples within phase')
+    require(max(g[0] for g in groups)<=min(g[1] for g in groups),'Device/host offset changed between pre/post brackets')
+    # Retain the conservative envelope of both phase intervals rather than a
+    # selected midpoint or the narrower cross-phase intersection.
+    low=min(g[0] for g in groups);high=max(g[1] for g in groups)
+    require(high-low<=MAX_OFFSET_WIDTH_NS,'Measured offset uncertainty too broad')
+    return {'version':1,'samples':samples,'host_minus_device_lower_ns':low,
+            'host_minus_device_upper_ns':high,'device_before_ns':device[0],
+            'device_pre_end_ns':device[2],'device_after_ns':device[3],
+            'device_post_end_ns':device[-1],**host}
+
+
+def validate_clock_event(model, context, marker, kill_ms):
+    expected=clock_model(model.get('samples'),context,marker['process_id'])
+    require(model==expected,'Recorded measured clock model differs from raw brackets')
+    marker_ns=marker['utc_ms']*1_000_000;kill_ns=kill_ms*1_000_000
+    require(marker_ns<=model['device_before_ns']<=marker_ns+MAX_CLOCK_STALE_NS,'Prospective clock bracket is stale or precedes this device marker')
+    require(model['device_pre_end_ns']<kill_ns<=model['device_after_ns'],'Clock samples do not prospectively bracket this actual device kill')
+    require(model['device_after_ns']-kill_ns<=MAX_CLOCK_STALE_NS,'Post-death clock bracket too late')
+    return (kill_ns+model['host_minus_device_lower_ns'],
+            kill_ns+1_000_000+model['host_minus_device_upper_ns'])
+
+
+def validate_operator_timing(packet, prior, pid_rows):
+    prep=prior['restart_preparation'];death=prior['restart_death'];model=death['clock_model']
+    kill_low,kill_high=validate_clock_event(model,prior,prep['marker'],death['kill_utc_ms'])
+    timeline=packet.get('host_timeline',{})
+    names=('before','action_started','action_finished','after')
+    require(set(timeline)==set(names),'Missing actual operator wall/monotonic timeline')
+    stamps=[checked_stamp(timeline[name]) for name in names]
+    require(all(stamps[i]['monotonic_upper_ns']<=stamps[i+1]['monotonic_lower_ns'] for i in range(3)),'Operator monotonic order invalid')
+    for name,stamp in zip(names,stamps):require(packet.get(name+'_utc_ms')==stamp['utc_ns']//1_000_000,'Operator milliseconds differ from raw host stamp')
+    ready=checked_stamp(prep.get('host_ready_stamp'))
+    require(ready['monotonic_upper_ns']<=stamps[0]['monotonic_lower_ns'],'Operator began before confirmed prekill export')
+    require(isinstance(pid_rows,list) and len(pid_rows)==2,'Require actual live-before and absent-after PID receipts')
+    pid_stamps=[]
+    for row,alive in zip(pid_rows,(True,False)):
+        cmd=row.get('argv',[])
+        require(len(cmd)==6 and Path(cmd[0]).name=='adb' and cmd[1:]==['-s',prior['device'],'shell','pidof',BUNDLE],'Operator PID observation targets wrong process/device')
+        require(not row.get('stderr') and row.get('exit_code')==(0 if alive else 1) and row.get('stdout','').strip()==(str(prep['native_pid']) if alive else ''),'Missing actual live/absent PID state')
+        start,end=receipt_stamps(row);pid_stamps += [start,end]
+    require(stamps[0]['monotonic_upper_ns']<=pid_stamps[0]['monotonic_lower_ns'] and pid_stamps[1]['monotonic_upper_ns']<=stamps[1]['monotonic_lower_ns'],'PID was not observed alive between actual ON observation and tap')
+    require(stamps[1]['monotonic_upper_ns']-pid_stamps[1]['monotonic_lower_ns']<=5_000_000_000,'Pre-tap alive observation is stale')
+    require(stamps[2]['monotonic_upper_ns']<=pid_stamps[2]['monotonic_lower_ns'] and pid_stamps[3]['monotonic_upper_ns']<=stamps[3]['monotonic_lower_ns'],'PID absence was not observed after actual tap and before final OFF observation')
+    require(stamps[3]['monotonic_upper_ns']-stamps[1]['monotonic_lower_ns']<=MAX_CLOCK_STALE_NS,'Actual OFF observation too late')
+    require(stamps[3]['monotonic_upper_ns']<=model['samples'][-1]['finished_stamp']['monotonic_upper_ns']+MAX_CLOCK_STALE_NS,'Operator observations stale relative to this run clock bracket')
+    # An asynchronous permission kill may follow command completion. Require
+    # consistency with the measured tap-to-OFF interval, not exact sub-RTT
+    # ordering that the calibration cannot prove. Alive-before/absent-after,
+    # ON/OFF UI, unique PID/reason, and the same-device180s guard supply the
+    # independent causal evidence. Do not call an interval overlap a timestamp
+    # proof that the kill occurred during the shell command.
+    require(kill_high>=stamps[1]['utc_ns'] and kill_low<=stamps[3]['utc_ns'],'Measured kill interval is inconsistent with actual tap-to-OFF observations')
+    host_clock_consistency(stamps+pid_stamps+[ready]+[s[k] for s in model['samples'] for k in ('started_stamp','finished_stamp')])
+    return {'kill_host_interval_ns':[kill_low,kill_high],'timing_relation':'consistent_with_actual_tap_to_off_interval; causal_PID_UI_evidence_also_required'}

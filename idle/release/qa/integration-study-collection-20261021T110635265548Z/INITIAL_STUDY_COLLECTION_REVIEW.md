@@ -1,0 +1,21 @@
+# Initial independent study-collection review — repairs required
+
+The48-file author snapshot is independently preserved under fingerprint `7a4f2ec7fc782d412161bf68fca3e126ef670b56f247792350a3cefbcae6605f`. These findings address local preparation code, not real participants. No production/package acceptance is assigned. Root Flutter integration is moving and excluded from the frozen component claim; relevant static callsite observations are described separately below.
+
+## Reproduced defects
+
+**STUDY002 — atomic CAS contract not upheld.** On the actual filesystem, two concurrent AtomicStudyFileStore objects targeting the same file both read the same expected generation and both return successful writes, losing one result. The same occurs across two Dart isolates in the same process and with equivalent `/./` path spellings. A read barrier exposes a valid interleaving between read and rename; it does not replace the production locking/writing code. Advisory process-associated file locks do not serialize these writers. Three unchanged expected-one-winner tests fail. Separately, StudyConfig permits the reserved `unqualified_config` label which the adjudicator rejects; this boundary mismatch has a fourth failing case.
+
+**STUDY003 — raw session/order validation admits impossible histories.** Three independent cases are accepted but should reject: a same-process inactivity session after an explicit terminal; a background inactivity-start without its atomic foreground trigger; and a crash attached to an older session after a later process restart whose timestamp shares the same UTC second. The crash bound uses a strict timestamp comparison and misses the later ordered session. Controls for a strictly later restart boundary and positive observation/coverage-gap handling pass. Native report bytes here are explicitly synthetic; no real crash is claimed.
+
+**STUDY004 — failed withdrawal permits queued collection.** A withdrawal store failure leaves the recorder eligible, and an activity already queued behind it then writes a new gap/activity. A synchronous withdrawal-intent gate is required even if erasure cannot persist. The current moving StudySession UI catches erasure failure after awaiting it, so it cannot prevent an already queued capture. The independent pure-recorder failure remains sufficient without relying on that UI. Retaining old bytes after I/O failure must remain disclosed; the repair must stop new collection and allow explicit erasure retry.
+
+## Reproduction and controls
+
+`game/qa/integration_study_collection_test.dart` contains6 independent cases at the current expanded checkpoint:3 concurrency failures,1 reserved-label failure,1 exact-inactivity control pass and1 withdrawal failure. Initial3-case, expanded5-case and separate withdrawal logs are retained. `game/qa/integration_study_collection_test.py` contains5 independent cases:3 semantic rejection failures and2 passing controls. No failing assertion has been weakened.
+
+All15 recorder author cases independently pass on this exact snapshot. All30 Python author cases independently pass (17 adjudicator and13 previously reviewed descriptive-analyzer cases). Actual adjudication and analysis CLIs also pass; their synthetic schema2 output digest is `a1fc5d70d7190d5245c1bab0bc3fa25e2da9a48b31c67ea515f038a00eea3916`, matching the author fixture. Those passes do not override the independent failures. Output remains local, contains no recruited people and explicitly marks release_ready false.
+
+## Scope limits
+
+This provides new implementation evidence for M5-04/M5-05/M6-01 and S30/S34/S39, with open local defects. The fixed registry/opt-in population, missing raw streams, exact config identity, explicit evidence linkage, bounded retention and conservative unknown outcomes are reviewed design choices. Hash chains cannot authenticate a complete fabricated history, truthful device time, legal consent or native evidence meaning. Pre-Dart/pre-consent/pre-successful-write starts remain unobservable. Existing observed-session requirements, physical/native qualification, real recruits,10,000sessions,D30/28day elapsed gates and release acceptance remain open. All65 original criteria/dependencies and the separate bootstrap status remain unchanged.

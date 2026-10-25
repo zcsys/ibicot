@@ -1,0 +1,10 @@
+{
+  "device": "089884DC-AD2A-4D69-8C60-C50271AC21BF",
+  "observed_window": "Tideglass Tablet Verification \u2013 iPadOS26.3.1",
+  "window_id": "com.apple.dt.DeviceKit.DeviceManagementWindow-AppWindow-2",
+  "precondition": "Fresh CUA AX and screenshot show selected row7 Verification tablet, native ZIP201bytes popover and PopoverDismissRegion with Cancel secondary action. Protected Development tablet row6 not selected or manipulated.",
+  "action": "cua nativeDevices.performSecondaryAction(53, Cancel)",
+  "postcondition": "Fresh CUA AX shows PopoverDismissRegion removed; screenshot returns to synthetic share button; no recipient or delivery destination selected.",
+  "screenshot_sha256": "81404579bc30f4b672d2b52ad52ee1f083ce3ab307723b22712cedffad4c6c3e",
+  "scope": "Actual native share popover cancellation only; synthetic201byte ZIP, no paid ownership or receiving app delivery."
+}

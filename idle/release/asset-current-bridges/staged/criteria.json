@@ -1,0 +1,643 @@
+{
+  "original_validation_gates": [
+    {
+      "id": "ART-V01",
+      "level": "static",
+      "run_in_batches": [
+        "B05",
+        "B10",
+        "B12",
+        "B15",
+        "B21"
+      ],
+      "requirement": "Every manifest asset resolves to exactly one contract and exported descriptor; all child media files exist, hashes match, names are stable, provenance is complete and expected variants are declared. Refuse placeholder/unproduced states in release mode.",
+      "planned_output": "release/art/asset-integrity.json"
+    },
+    {
+      "id": "ART-V02",
+      "level": "import",
+      "run_in_batches": [
+        "B02",
+        "B06",
+        "B12",
+        "B15"
+      ],
+      "requirement": "Import actual native builds with zero missing references; verify color space, alpha premultiplication, crop, pivots and sorting; atlas gutters remain clean under scaled/filtered previews; fonts contain required glyphs. Compare uncompressed reference to compressed output on both native targets.",
+      "planned_output": "release/art/import-comparison.json"
+    },
+    {
+      "id": "ART-V03",
+      "level": "device",
+      "run_in_batches": [
+        "B06",
+        "B12",
+        "B15",
+        "B21"
+      ],
+      "requirement": "Exercise every harbor/stage/cosmetic in a deterministic capture harness at reference viewports and text scales, default/reduced motion and UI states. No clipped controls, illegible contrast, visual reward mismatch or state-dependent missing sprite.",
+      "planned_output": "release/accessibility/presentation.json"
+    },
+    {
+      "id": "ART-V04",
+      "level": "device_performance",
+      "run_in_batches": [
+        "B06",
+        "B15",
+        "B21"
+      ],
+      "requirement": "Capture worst-case active scene and transition peak texture memory including atlas padding/mips; verify package size and frame time against qualified device targets. Long background/resume and repeated scene changes show no retained asset growth.",
+      "planned_output": "release/art/performance-budget.json"
+    },
+    {
+      "id": "ART-V05",
+      "level": "audio",
+      "run_in_batches": [
+        "B12",
+        "B15",
+        "B21"
+      ],
+      "requirement": "Verify all package members decode on both targets, loops are seamless, no clipping/clicks, volume buses and mute persist, concurrent cues respect voice limits, background interruption/headphone change/resume is correct and paused earnings generate no delayed audio burst. Readable visual equivalents remain.",
+      "planned_output": "release/audio/playback-report.json"
+    },
+    {
+      "id": "ART-V06",
+      "level": "commerce",
+      "run_in_batches": [
+        "B14",
+        "B21"
+      ],
+      "requirement": "Every equipped/preview/pass/shop cosmetic points to the same registered appearance. Supporter grants only cosmetic.shop.01 through .04 and audio.soundtrack; soundtrack download/restoration works with documented redistribution rights. All exports remain cosmetic-only.",
+      "planned_output": "release/content-evidence/cosmetic-and-soundtrack-fulfillment.json"
+    },
+    {
+      "id": "ART-V07",
+      "level": "editorial",
+      "run_in_batches": [
+        "B10",
+        "B12",
+        "B15",
+        "B21"
+      ],
+      "requirement": "Every narrative text states true objectives and rewards; ending needs no paid pass/all Note sinks; season archival copy does not invent expiration. Accessible calibration copy gives the same reward and cost. Credits, help, recovery and privacy descriptions match real behavior.",
+      "planned_output": "release/content-evidence/editorial-review.json"
+    }
+  ],
+  "original_variant_contract": {
+    "producer_stages": "Five presentations per family correspond exactly to 0/25/50/75/100; gift/unlock state does not create a sixth cosmetic or milestone presentation.",
+    "motion": "Every animated harbor/producer/cosmetic/season presentation has a static reduced-motion state showing the same unlock and reward information. No flashing or camera shake carries unique information; particles, bounce and parallax can be disabled independently of progression.",
+    "text": "All player-facing copy uses externalized IDs and the qualified font. Test 100%, 150% and 200% text scale with reflow/scrolling on minimum phone and tablet; pseudolocalized strings must not overlap costs, cover confirm buttons or truncate retained-progress details.",
+    "color": "Unavailable/selected/complete/error states have shape/text/icon differences rather than relying only on color. Theme and cosmetic colors cannot hide economic state.",
+    "cosmetics": "Each item has an equipped view, owned/locked preview and thumbnail; previews use the same visual asset and cosmetics do not change hitboxes or core logic.",
+    "audio": "All information in milestone/Rechart/interaction cues has a visual/text equivalent. Music and SFX have independent persistent volume controls plus mute. Mute/background/resume must not replay stale reward queues."
+  },
+  "original_artist_items": [
+    {
+      "work_item_id": "M0-05",
+      "batch": "B01",
+      "delivery_owner": "art_content",
+      "independent_reviewer": "client",
+      "source_acceptance": "Approve one harbor look, one producer milestone transformation, asset reuse rules and a complete asset manifest.",
+      "source_dependencies": [
+        "M0-01"
+      ],
+      "manifest_asset_ids_initially_delivered": [],
+      "output_paths": [
+        "source/art/style-guide.md",
+        "source/art/catalog.json",
+        "release/art/style-qualification.json"
+      ],
+      "acceptance": [
+        "One harbor treatment and producer.01.stage.0 to producer.01.stage.1 comparison evaluated inside the qualified client; consistent palette, scale, silhouette and reduction strategy selected.",
+        "Approve category budgets and reusable parts; draft styles are not final delivered launch assets."
+      ],
+      "status": "not_started",
+      "evidence": []
+    },
+    {
+      "work_item_id": "M1-07",
+      "batch": "B05",
+      "delivery_owner": "art_content",
+      "independent_reviewer": "client",
+      "source_acceptance": "Deliver modular producer parts, harbor layers, typography, icons and UI states sufficient for the slice.",
+      "source_dependencies": [
+        "M0-05"
+      ],
+      "manifest_asset_ids_initially_delivered": [],
+      "output_paths": [
+        "source/art/common/",
+        "game/assets/common/",
+        "source/art/ui/tokens.json",
+        "source/art/ui/icons.svg",
+        "source/art/ui/font-manifest.json",
+        "release/art/common-import-report.json"
+      ],
+      "acceptance": [
+        "Reusable scene parts, typography, icons and control states support every slice flow.",
+        "Source font files and redistribution licenses are present; code-generated icons remain editable; measured text reflow and reduced-motion behavior work in client."
+      ],
+      "status": "not_started",
+      "evidence": []
+    },
+    {
+      "work_item_id": "M2-05",
+      "batch": "B06",
+      "delivery_owner": "art_content",
+      "independent_reviewer": "client",
+      "source_acceptance": "One area, all five base silhouettes and a milestone sequence establish final visual quality, including reduced-motion variants.",
+      "source_dependencies": [
+        "M1-07"
+      ],
+      "manifest_asset_ids_initially_delivered": [
+        "asset.harbor.unlit",
+        "asset.producer.01.stage.0",
+        "asset.producer.01.stage.1",
+        "asset.producer.01.stage.2",
+        "asset.producer.01.stage.3",
+        "asset.producer.01.stage.4",
+        "asset.producer.02.stage.0",
+        "asset.producer.03.stage.0",
+        "asset.producer.04.stage.0",
+        "asset.producer.05.stage.0"
+      ],
+      "output_paths": [
+        "game/assets/harbor/harbor.unlit.presentation.json",
+        "game/assets/producers/",
+        "release/art/slice-device-captures/"
+      ],
+      "acceptance": [
+        "All five base silhouettes, one initial harbor and producer.01 stages 0 through 4 are integrated.",
+        "Default and reduced-motion presentation preserve state information at reference phone/tablet sizes; visual quality is affordable within budgets."
+      ],
+      "status": "not_started",
+      "evidence": []
+    },
+    {
+      "work_item_id": "M3-09",
+      "batch": "B10",
+      "delivery_owner": "art_content",
+      "independent_reviewer": "client",
+      "source_acceptance": "Five producer families each have base plus four milestone presentations; daily-loop icons and status states are final.",
+      "source_dependencies": [
+        "M2-05"
+      ],
+      "manifest_asset_ids_initially_delivered": [
+        "asset.producer.02.stage.1",
+        "asset.producer.02.stage.2",
+        "asset.producer.02.stage.3",
+        "asset.producer.02.stage.4",
+        "asset.producer.03.stage.1",
+        "asset.producer.03.stage.2",
+        "asset.producer.03.stage.3",
+        "asset.producer.03.stage.4",
+        "asset.producer.04.stage.1",
+        "asset.producer.04.stage.2",
+        "asset.producer.04.stage.3",
+        "asset.producer.04.stage.4",
+        "asset.producer.05.stage.1",
+        "asset.producer.05.stage.2",
+        "asset.producer.05.stage.3",
+        "asset.producer.05.stage.4"
+      ],
+      "output_paths": [
+        "game/assets/producers/",
+        "game/assets/common/",
+        "release/art/producer-stage-matrix.json"
+      ],
+      "acceptance": [
+        "All 25 producer stage IDs resolve to distinct intended milestone appearances, built through reusable parts.",
+        "Focus/Survey/contract/automation icons and idle, available, locked, queued, complete and error states have text equivalents."
+      ],
+      "status": "not_started",
+      "evidence": []
+    },
+    {
+      "work_item_id": "M4-07",
+      "batch": "B12",
+      "delivery_owner": "art_content",
+      "independent_reviewer": "client",
+      "source_acceptance": "Six harbor restoration states and the fixed 36-item cosmetic manifest are complete; commissioned audio is integrated through client work.",
+      "source_dependencies": [
+        "M3-09",
+        "M4-06"
+      ],
+      "manifest_asset_ids_initially_delivered": [
+        "asset.harbor.restored.01",
+        "asset.harbor.restored.02",
+        "asset.harbor.restored.03",
+        "asset.harbor.restored.04",
+        "asset.harbor.restored.05",
+        "asset.harbor.restored.06",
+        "asset.cosmetic.core.chapter.01",
+        "asset.cosmetic.core.chapter.02",
+        "asset.cosmetic.core.chapter.03",
+        "asset.cosmetic.core.chapter.04",
+        "asset.cosmetic.core.chapter.05",
+        "asset.cosmetic.core.chapter.06",
+        "asset.cosmetic.core.decoration.01",
+        "asset.cosmetic.core.decoration.02",
+        "asset.cosmetic.core.decoration.03",
+        "asset.cosmetic.core.decoration.04",
+        "asset.cosmetic.core.decoration.05",
+        "asset.cosmetic.core.decoration.06",
+        "asset.cosmetic.free_pass.01",
+        "asset.cosmetic.free_pass.02",
+        "asset.cosmetic.free_pass.03",
+        "asset.cosmetic.free_pass.04",
+        "asset.cosmetic.free_pass.05",
+        "asset.cosmetic.free_pass.06",
+        "asset.cosmetic.free_pass.07",
+        "asset.cosmetic.free_pass.08",
+        "asset.cosmetic.free_pass.09",
+        "asset.cosmetic.free_pass.10",
+        "asset.cosmetic.premium_pass.01",
+        "asset.cosmetic.premium_pass.02",
+        "asset.cosmetic.premium_pass.03",
+        "asset.cosmetic.premium_pass.04",
+        "asset.cosmetic.premium_pass.05",
+        "asset.cosmetic.premium_pass.06",
+        "asset.cosmetic.premium_pass.07",
+        "asset.cosmetic.premium_pass.08",
+        "asset.cosmetic.premium_pass.09",
+        "asset.cosmetic.premium_pass.10",
+        "asset.cosmetic.shop.01",
+        "asset.cosmetic.shop.02",
+        "asset.cosmetic.shop.03",
+        "asset.cosmetic.shop.04",
+        "asset.audio.ambient_score",
+        "asset.audio.interaction",
+        "asset.audio.milestone",
+        "asset.audio.rechart",
+        "asset.audio.soundtrack",
+        "asset.season.01.presentation"
+      ],
+      "output_paths": [
+        "game/assets/harbor/",
+        "game/assets/cosmetics/",
+        "game/assets/season_presentation/",
+        "game/assets/audio/",
+        "release/content-evidence/"
+      ],
+      "acceptance": [
+        "Initial harbor plus six restored states and all 36 unique cosmetic IDs are integrated; ownership and previews use the same assets.",
+        "Season presentation is complete; five audio package obligations and soundtrack fulfillment are verified; supporter reuses four existing shop cosmetics."
+      ],
+      "status": "not_started",
+      "evidence": []
+    },
+    {
+      "work_item_id": "M5-06",
+      "batch": "B15",
+      "delivery_owner": "art_content",
+      "independent_reviewer": "client",
+      "source_acceptance": "Remove placeholders, integrate final sound direction, and prepare representative screenshots, icon and short footage.",
+      "source_dependencies": [
+        "M4-07"
+      ],
+      "manifest_asset_ids_initially_delivered": [],
+      "output_paths": [
+        "release/art/final-import-report.json",
+        "release/audio/playback-report.json",
+        "release/store-assets/",
+        "release/accessibility/presentation.json"
+      ],
+      "acceptance": [
+        "No placeholder, missing glyph, asset warning or unresolved provenance remains.",
+        "Capture real build screenshots/icon/short footage; device-tested audio, memory, frame-time and readable scaled layouts meet the agreed release budgets."
+      ],
+      "status": "not_started",
+      "evidence": []
+    },
+    {
+      "work_item_id": "M6-06",
+      "batch": "B19",
+      "delivery_owner": "art_content",
+      "independent_reviewer": "client",
+      "source_acceptance": "Address readability, repeated visual issues and content defects without increasing the launch asset count.",
+      "source_dependencies": [
+        "M5-06",
+        "M6-01"
+      ],
+      "manifest_asset_ids_initially_delivered": [],
+      "output_paths": [
+        "release/fix-evidence/art-content/",
+        "release/cohorts/observations/presentation-findings.json"
+      ],
+      "acceptance": [
+        "Observed readability, consistency and content defects have before/after build evidence and regression cases.",
+        "Corrections reuse existing IDs and preserve the 36-item count; no unapproved launch inventory expansion."
+      ],
+      "status": "not_started",
+      "evidence": []
+    },
+    {
+      "work_item_id": "M7-05",
+      "batch": "B21",
+      "delivery_owner": "art_content",
+      "independent_reviewer": "client",
+      "source_acceptance": "Screenshots, footage, credits, help visuals and release assets describe the actual shipped game and offers.",
+      "source_dependencies": [
+        "M6-06",
+        "M7-01"
+      ],
+      "manifest_asset_ids_initially_delivered": [
+        "asset.support.help",
+        "asset.support.recovery_guide",
+        "asset.support.release_notes",
+        "asset.support.credits",
+        "asset.support.support_page"
+      ],
+      "output_paths": [
+        "release/store-listings/",
+        "release/store-assets/",
+        "game/content/locales/en-US/",
+        "release/art/release-provenance-index.json"
+      ],
+      "acceptance": [
+        "Final store footage and screenshots come from the release candidate and reflect actual gameplay, offers and restore flows.",
+        "Credits, help visuals, recovery copy and support references match the shipped implementation; release provenance index covers every shipped visual, audio and font."
+      ],
+      "status": "not_started",
+      "evidence": []
+    }
+  ],
+  "original_shared_narrative": [
+    {
+      "work_items": [
+        "M1-06",
+        "M3-08",
+        "M4-06"
+      ],
+      "batches": [
+        "B05",
+        "B10",
+        "B12"
+      ],
+      "accountable_for_objectives_rewards": "director",
+      "accountable_for_authored_copy_and_asset_delivery": "art_content",
+      "runtime_owner": "gameplay",
+      "reviewers": [
+        "qa_release",
+        "client"
+      ],
+      "manifest_groups": [
+        "chapters",
+        "ending",
+        "challenges",
+        "calibrations",
+        "main_archive",
+        "season_fragments",
+        "season",
+        "pass"
+      ],
+      "output_paths": [
+        "game/content/progression/",
+        "game/content/challenges/",
+        "game/content/calibrations/",
+        "source/content/en-US/",
+        "game/content/locales/en-US/"
+      ],
+      "acceptance": "All six chapters plus ending, 12 challenge instructions, 12 pattern/accessibility text pairs, 18 main entries and 20 seasonal fragments are authored and integrated; objective/reward data remains director/gameplay-owned, not inferred from narrative copy.",
+      "status": "not_started"
+    },
+    {
+      "work_items": [
+        "M5-03",
+        "M5-04",
+        "M7-05"
+      ],
+      "batches": [
+        "B16",
+        "B21"
+      ],
+      "accountable_for_factual_service_and_privacy_behavior": "platform",
+      "accountable_for_player_copy_and_help_visuals": "art_content",
+      "manifest_groups": [
+        "support_content",
+        "ui_flows"
+      ],
+      "output_paths": [
+        "source/content/en-US/",
+        "game/content/locales/en-US/",
+        "release/privacy/",
+        "release/runbooks/",
+        "release/store-listings/"
+      ],
+      "acceptance": "Help/recovery/credits/support/privacy copy is reviewed against actual system behavior; platform authors operational runbooks; art/content edits for clarity without making unverified policy claims.",
+      "status": "not_started"
+    },
+    {
+      "work_items": [
+        "M7-01",
+        "M7-08",
+        "OPS-14"
+      ],
+      "batches": [
+        "B21",
+        "B22",
+        "B23"
+      ],
+      "accountable_owner": "director",
+      "contributing_owner": "art_content",
+      "manifest_ids": [
+        "support.season02_brief"
+      ],
+      "output_paths": [
+        "release/season-2-brief.md"
+      ],
+      "acceptance": "Director delivers and verifies the initial scoped Season 2 brief in B21/M7-01 before B22 full content acceptance. B22 hands it to operations; B23/OPS-14 updates it with actual launch observations. No produced Season 2 assets expand v1.",
+      "status": "not_started"
+    }
+  ],
+  "original_audio_delivery": {
+    "manifest_ids": [
+      "audio.ambient_score",
+      "audio.interaction",
+      "audio.milestone",
+      "audio.rechart",
+      "audio.soundtrack"
+    ],
+    "source_master_format": "PCM WAV, proposed 48 kHz / 24-bit; final source/import formats confirmed in B02/ART-G03.",
+    "runtime_format": "Engine-supported compressed streamed music and suitably imported short cues, qualified on iOS/Android; do not assume a codec solely from its extension.",
+    "mix_target": "Document music/SFX loudness and peak measurements; proposed true-peak ceiling -1 dBTP and no audible clipping. Exact loudness balanced in-client; headphones and device speakers both reviewed.",
+    "package_members": "Each package descriptor contains member IDs, source WAV/license paths, runtime exports, loop points, gain/bus, duration, hashes and credits. Soundtrack descriptor lists reused ambient masters, metadata and download artifact hash.",
+    "capability_status": "authored_synthesis_and_actual_exports_demonstrated",
+    "license_status": "original_authoring_record_owner_distribution_terms_review_pending",
+    "actual_audio_created": true,
+    "blocking_batches": [
+      "B12",
+      "B14",
+      "B15",
+      "B21"
+    ]
+  },
+  "original_provenance_rules": [
+    "Keep generation prompt, tool/model metadata when returned, references and original output for AI bitmap sources; record unavailable metadata explicitly instead of inventing a seed/model.",
+    "For original authored SVG, source text, procedural assets and audio, record authorship and source revision. Do not assume tool availability implies permission to use a reference.",
+    "For external media/fonts/music, retain the actual license and attribution requirements and verify modification, in-game redistribution, commercial use and platform export permissions. Soundtrack must separately permit standalone download redistribution.",
+    "Credits are compiled from provenance, including font/audio obligations. Unknown, missing or contradictory rights evidence fails the asset release gate.",
+    "Never embed private source paths, prompts, reference photos or licensed masters into public build metadata unless intended and authorized."
+  ],
+  "original_acceptance_stages": {
+    "B14": {
+      "validator_mode": "--content-gate",
+      "required": "All gameplay content and associated assets, including audio and supporter fulfillment, must be produced and verified.",
+      "deferred_manifest_content_ids": [
+        "support.help",
+        "support.recovery_guide",
+        "support.release_notes",
+        "support.credits",
+        "support.privacy_page",
+        "support.support_page",
+        "support.operations_runbooks",
+        "support.season02_brief",
+        "ui.help_and_support"
+      ],
+      "deferred_asset_ids": [
+        "asset.support.help",
+        "asset.support.recovery_guide",
+        "asset.support.release_notes",
+        "asset.support.credits",
+        "asset.support.privacy_page",
+        "asset.support.support_page",
+        "asset.support.operations_runbooks",
+        "asset.support.season02_brief"
+      ],
+      "not_a_release_waiver": "Deferred support delivery is mandatory before B22."
+    },
+    "B21": {
+      "required": "All eight support content records/assets, including the initial Season 2 brief, plus ui.help_and_support are produced and verified.",
+      "support_initial_delivery_batches": {
+        "asset.support.help": "B21",
+        "asset.support.recovery_guide": "B21",
+        "asset.support.release_notes": "B21",
+        "asset.support.credits": "B21",
+        "asset.support.privacy_page": "B16",
+        "asset.support.support_page": "B21",
+        "asset.support.operations_runbooks": "B16",
+        "asset.support.season02_brief": "B21"
+      }
+    },
+    "B22": {
+      "validator_mode": "content validator --release",
+      "required": "Full content release acceptance has no support asset exclusions; all manifest assets, rights and evidence are present.",
+      "internal_documents": "operations_runbooks and season02_brief remain required verified release artifacts but are excluded from the client package."
+    },
+    "B23": {
+      "required": "Actual 14-day support evidence and update of the previously accepted Season 2 brief; program --release is final completion after this batch."
+    }
+  },
+  "original_backlog_items": [
+    {
+      "id": "M2-06",
+      "milestone": "M2",
+      "title": "Run moderated first-session studies",
+      "owner": "PD",
+      "effort_person_weeks": 2.6,
+      "dependencies": [
+        "M2-02",
+        "M2-03",
+        "M2-05"
+      ],
+      "acceptance": "At least 15 new testers attempt the first reset; capture understanding, friction and pacing, then resolve the largest blockers.",
+      "status": "not_started",
+      "release_class": "v1_required"
+    },
+    {
+      "id": "M3-09",
+      "milestone": "M3",
+      "title": "Produce producer transformations and core UI art",
+      "owner": "AR",
+      "effort_person_weeks": 4,
+      "dependencies": [
+        "M2-05"
+      ],
+      "acceptance": "Five producer families each have base plus four milestone presentations; daily-loop icons and status states are final.",
+      "status": "not_started",
+      "release_class": "v1_required"
+    },
+    {
+      "id": "M4-06",
+      "milestone": "M4",
+      "title": "Finish all launch content and reward tables",
+      "owner": "PD",
+      "effort_person_weeks": 4.1,
+      "dependencies": [
+        "M3-08",
+        "M4-01",
+        "M4-02"
+      ],
+      "acceptance": "Six chapters, ending, twelve challenges, twelve calibration patterns, eighteen archive entries and Season 1 have complete data and copy.",
+      "status": "not_started",
+      "release_class": "v1_required"
+    },
+    {
+      "id": "M4-07",
+      "milestone": "M4",
+      "title": "Finish launch art and cosmetics",
+      "owner": "AR",
+      "effort_person_weeks": 4.1,
+      "dependencies": [
+        "M3-09",
+        "M4-06"
+      ],
+      "acceptance": "Six harbor restoration states and the fixed 36-item cosmetic manifest are complete; commissioned audio is integrated through client work.",
+      "status": "not_started",
+      "release_class": "v1_required"
+    },
+    {
+      "id": "M5-03",
+      "milestone": "M5",
+      "title": "Complete privacy and service recovery flows",
+      "owner": "BE",
+      "effort_person_weeks": 1.4,
+      "dependencies": [
+        "M3-06",
+        "M4-04",
+        "M4-05"
+      ],
+      "acceptance": "Data inventory matches SDK behavior; consent refusal, export/deletion and service-outage recovery are verified on actual builds.",
+      "status": "not_started",
+      "release_class": "v1_required"
+    },
+    {
+      "id": "M5-06",
+      "milestone": "M5",
+      "title": "Complete presentation and store assets",
+      "owner": "AR",
+      "effort_person_weeks": 2.7,
+      "dependencies": [
+        "M4-07"
+      ],
+      "acceptance": "Remove placeholders, integrate final sound direction, and prepare representative screenshots, icon and short footage.",
+      "status": "not_started",
+      "release_class": "v1_required"
+    },
+    {
+      "id": "M6-07",
+      "milestone": "M6",
+      "title": "Observe real calendar progression",
+      "owner": "QA",
+      "effort_person_weeks": 2.1,
+      "dependencies": [
+        "M6-01"
+      ],
+      "acceptance": "A real 28-day pass and mature D30 cohort are observed; accelerated testing is documented separately.",
+      "status": "not_started",
+      "release_class": "v1_required"
+    },
+    {
+      "id": "M7-05",
+      "milestone": "M7",
+      "title": "Finish store communication and support material",
+      "owner": "AR",
+      "effort_person_weeks": 2,
+      "dependencies": [
+        "M6-06",
+        "M7-01"
+      ],
+      "acceptance": "Screenshots, footage, credits, help visuals and release assets describe the actual shipped game and offers.",
+      "status": "not_started",
+      "release_class": "v1_required"
+    }
+  ]
+}

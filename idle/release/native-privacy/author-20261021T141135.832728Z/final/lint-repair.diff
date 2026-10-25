@@ -1,0 +1,13 @@
+--- repaired/game/mobile/test/ad_privacy_test.dart
++++ final/game/mobile/test/ad_privacy_test.dart
+@@ -496,8 +496,9 @@
+                 'ConsentInformation#getPrivacyOptionsRequirementStatus') {
+               return requirement;
+             }
+-            if (call.method == 'ConsentInformation#canRequestAds')
++            if (call.method == 'ConsentInformation#canRequestAds') {
+               return allowed;
++            }
+             if (call.method == 'ConsentInformation#requestConsentInfoUpdate') {
+               if (updateFailure) {
+                 throw PlatformException(

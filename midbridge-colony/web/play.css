@@ -1,0 +1,38 @@
+* { box-sizing: border-box; }
+body { margin: 0; background: #fff; color: #222; font: 15px/1.5 system-ui, sans-serif; }
+main { max-width: 800px; margin: 64px auto; padding: 0 24px; }
+.cash { display: flex; justify-content: space-between; margin-bottom: 48px; }
+output { font-variant-numeric: tabular-nums; }
+#cash { font-size: 24px; }
+.price-label { display: flex; justify-content: space-between; margin-bottom: 10px; }
+input[type=range] { width: 100%; margin: 0; accent-color: #333; cursor: pointer; }
+input:focus-visible { outline: 2px solid #555; outline-offset: 5px; }
+dl.metrics { margin: 40px 0 0; }
+.metrics > div { display: flex; justify-content: space-between; gap: 24px; padding: 10px 0; }
+.metrics dt span { color: #666; font-size: 13px; }
+.metrics dd { margin: 0; font-variant-numeric: tabular-nums; text-align: right; }
+.metrics .sales { margin-bottom: 16px; align-items: baseline; }
+#sales { font-size: 24px; }
+#status { min-height: 20px; color: #666; font-size: 12px; }
+@media (max-width: 500px) { main { margin-top: 32px; padding: 0 16px; } }
+
+[hidden] { display: none !important; }
+#priceWarning { margin: 12px 0 0; color: #a13b24; font-size: 13px; }
+.inventory { margin-top: 28px; }
+.inventory-heading { display: flex; justify-content: space-between; gap: 16px; }
+#storageTotal { color: #666; font-size: 12px; }
+.inventory-boxes { display: grid; grid-template-columns: repeat(20, 1fr); gap: 4px; margin: 16px 0; }
+.inventory-box { aspect-ratio: 1; border: 1px solid #ddd; border-radius: 3px; }
+.inventory-legend { display: flex; flex-wrap: wrap; gap: 8px 16px; color: #555; font-size: 12px; }
+.inventory-legend span { display: inline-flex; align-items: center; gap: 6px; }
+.inventory-legend i { width: 10px; height: 10px; border: 1px solid #ccc; border-radius: 2px; }
+
+.reset-area { margin-top: 65vh; padding-bottom: 40px; }
+#reset { padding: 9px 14px; background: #fff; color: #555; border: 1px solid #bbb; border-radius: 3px; font: inherit; cursor: pointer; }
+#reset:disabled { opacity: .45; cursor: default; }
+#reset:focus-visible { outline: 2px solid #555; outline-offset: 4px; }
+
+#earnings.negative { color: #a13b24; }
+
+.production-control { margin-top: 28px; }
+.production-limit { color: #666; font-size: 12px; margin: 8px 0 0; }

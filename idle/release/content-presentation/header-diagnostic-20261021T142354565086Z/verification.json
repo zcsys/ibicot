@@ -1,0 +1,64 @@
+{
+  "finding": "CONTENT003",
+  "condition": {
+    "viewport": "phone",
+    "text_percent": 200,
+    "pseudo": true
+  },
+  "source_before": {
+    "game/mobile/test/content_presentation_test.dart": "13fba8f45ed02b9ceb89d99ea268279ee859929f8f80bc6082b06dc0ef468346",
+    "game/mobile/test/content_presentation_probe.dart": "b24417cf9af35d25eaaaab51f48a3d59da953703019c07613cfaf5335854dd93",
+    "game/mobile/test/qa_content_header_test.dart": "b7969af1287fdcb1f160598d299b9fa64319525195aea74a6cefacd4c21f2e39",
+    "game/mobile/test/qa_content_header_probe.dart": "9d5dd5f9f92fefb8583d0a08796b17889f2e944d6a2d431ab172d9ad4d063480",
+    "game/mobile/lib/story_screen.dart": "b546eb1ce88fb8f46ebde390249849a1b728fe28d6b7420466188ed97c92fc2e",
+    "game/mobile/lib/presentation.dart": "0b891f8baa973d11f1aabe6d985fafbe8bf0e08904007cb0f218e68044fd9b63"
+  },
+  "source_after": {
+    "game/mobile/test/content_presentation_test.dart": "13fba8f45ed02b9ceb89d99ea268279ee859929f8f80bc6082b06dc0ef468346",
+    "game/mobile/test/content_presentation_probe.dart": "b24417cf9af35d25eaaaab51f48a3d59da953703019c07613cfaf5335854dd93",
+    "game/mobile/test/qa_content_header_test.dart": "b7969af1287fdcb1f160598d299b9fa64319525195aea74a6cefacd4c21f2e39",
+    "game/mobile/test/qa_content_header_probe.dart": "9d5dd5f9f92fefb8583d0a08796b17889f2e944d6a2d431ab172d9ad4d063480",
+    "game/mobile/lib/story_screen.dart": "b546eb1ce88fb8f46ebde390249849a1b728fe28d6b7420466188ed97c92fc2e",
+    "game/mobile/lib/presentation.dart": "0b891f8baa973d11f1aabe6d985fafbe8bf0e08904007cb0f218e68044fd9b63"
+  },
+  "source_unchanged": true,
+  "observations": [
+    {
+      "control": "chapter-01-header",
+      "rect": [
+        43,
+        221,
+        277,
+        841
+      ],
+      "viewport": [
+        0,
+        342,
+        320,
+        720
+      ],
+      "control_height": 620,
+      "viewport_height": 378
+    },
+    {
+      "control": "archive.main.01-header",
+      "rect": [
+        43,
+        316,
+        277,
+        746
+      ],
+      "viewport": [
+        0,
+        342,
+        320,
+        720
+      ],
+      "control_height": 430,
+      "viewport_height": 378
+    }
+  ],
+  "conclusion": "The controls exceed the available viewport height, so full visibility is impossible at any scroll offset.",
+  "production_edits": false,
+  "assertions_unchanged": true
+}

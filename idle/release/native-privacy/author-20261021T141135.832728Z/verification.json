@@ -1,0 +1,41 @@
+{
+  "recorded_at": "2026-10-21T14:15:16.973773+00:00",
+  "scope": [
+    "M5-03",
+    "S39"
+  ],
+  "status": "author_host_pass_pending_independent_native_provider_review",
+  "report": "AUTHOR_VERIFICATION.md",
+  "report_sha256": "088de7cf19971d37dcfeda676b4a5d3aa00b530243311c9b468dff3dbeb36d8a",
+  "production_unchanged": true,
+  "changed_inputs": [
+    "game/mobile/test/ad_privacy_test.dart"
+  ],
+  "checks": {
+    "english": {
+      "passed": 44,
+      "failed": 0
+    },
+    "pseudo": {
+      "passed": 17,
+      "failed": 0
+    },
+    "analyzer": "clean"
+  },
+  "pins": {
+    "game/mobile/lib/native_services.dart": "f56a6a8ac2ce6fe583b859d1c65336ea4d858711456bf4243ba9d1fa24eb0e73",
+    "game/mobile/lib/service_settings.dart": "ff3a5b61c50a4239a943da85dd652ce81d3ff18e69c96d2b90ae367fcd571115",
+    "game/mobile/lib/ad_privacy_copy.dart": "e7b00d968f6f9b32f4e9688565a3b71972df318a417c0fc4a79f77395920bc79",
+    "game/mobile/test/ad_privacy_test.dart": "82efc50ebdc39444e6c50262d2d78eb17448d51709416c6e58dc148b7ce5c720",
+    "game/mobile/test/native_services_test.dart": "4cc1b90a9958d799e52124cfbc409b9201f4b9d43d71d7a979b39aa00ade2bbf",
+    "game/mobile/test/service_settings_test.dart": "d04d867b80b95cb03ec4983104c323057d839d59cc1a2182d8fc0bad7dea4438",
+    "game/mobile/pubspec.lock": "ef6e4f3380061a48688603cdc5c3446cce611641bb7d6601265a55c472e73b64",
+    "game/mobile/lib/presentation.dart": "0b891f8baa973d11f1aabe6d985fafbe8bf0e08904007cb0f218e68044fd9b63"
+  },
+  "evidence_hashes": {
+    "final/runs.json": "f751b9ed721338134e18024190fa6084d7ea9e36a888b86fb46281a9f5e2869d",
+    "final/english.log": "acfd0397f41646764da7fa2fb21044fdfb90e222fda903e626e8e0f0bca2dba2",
+    "final/pseudo.log": "dddebecbe538f94da489ba4e9218bee131f0f82fa82fb538a52997df322fd398",
+    "final/analyzer.log": "e040f0f2648202c14cbfb728222d5fd2c94e4d2073658a87e7ee2388a588fd95"
+  }
+}

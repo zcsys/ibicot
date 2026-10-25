@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "asset_id": "asset.support.credits",
+  "locale": "en-US",
+  "runtime_source": "game/mobile/lib/help_content.dart",
+  "runtime_selector": [
+    "HelpTopic.credits"
+  ],
+  "handbook_title": "The harbor handbook",
+  "handbook_intro": "Choose a topic. Your harbor keeps its progress while you read.",
+  "development_notice": "Development reference · not a public release announcement",
+  "articles": [
+    {
+      "topic": "credits",
+      "title": "Credits and licenses",
+      "summary": "How this development build was made.",
+      "sections": [
+        {
+          "id": "development-credit",
+          "title": "Development",
+          "paragraphs": [
+            "Tideglass is being created by an AI-assisted development team directed by the project owner."
+          ]
+        },
+        {
+          "id": "visual-credit",
+          "title": "Code-native visuals",
+          "paragraphs": [
+            "The lighthouse, harbor, staged producers and appearance overlays were authored for Tideglass as vector geometry and native drawing code. Their reusable shapes are rendered directly by the client. The store lighthouse artwork uses the same original geometry."
+          ]
+        },
+        {
+          "id": "score-credit",
+          "title": "Original synthesized score",
+          "paragraphs": [
+            "The ambient pieces and effect cues were authored for Tideglass with explicit musical phrases and mathematical synthesis. No third-party recording, sampled instrument library or reference melody was incorporated into that score. Music and effects have independent volume and mute controls."
+          ]
+        },
+        {
+          "id": "software-credit",
+          "title": "Software and notices",
+          "paragraphs": [
+            "Tideglass uses Flutter, Dart and open-source packages. Their bundled license notices are available below."
+          ]
+        }
+      ],
+      "actions": [
+        {
+          "id": "licenses",
+          "label": "Open software licenses"
+        }
+      ]
+    }
+  ],
+  "descriptor_loaded_by_client": false,
+  "export_role": "Exact current HelpContent values; runtime consumes its code-native externalized HelpContent source."
+}

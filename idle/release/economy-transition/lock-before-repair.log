@@ -1,0 +1,17 @@
+00:00 +0: loading test/economic_lock_test.dart
+00:00 +0: independent isolate cannot commit while another holds writer lock
+00:00 +0 -1: independent isolate cannot commit while another holds writer lock [E]
+  Expected: not <Instance of 'SaveSnapshot'>
+    Actual: <Instance of 'SaveSnapshot'>
+  A separate isolate must not commit through the held OS lock.
+  
+  package:matcher                    expect
+  test/economic_lock_test.dart 81:9  main.<fn>
+  
+00:00 +0 -1: Some tests failed.
+
+Failing tests:
+  test/economic_lock_test.dart: independent isolate cannot commit while another holds writer lock
+
+Consider enabling the flag chain-stack-traces to receive more detailed exceptions.
+For example, 'dart test --chain-stack-traces'.

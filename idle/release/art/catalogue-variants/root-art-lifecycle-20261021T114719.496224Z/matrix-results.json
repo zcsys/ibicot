@@ -1,0 +1,145 @@
+{
+  "schema_version": 1,
+  "scope": "Actual widget/card behavior across IDs and display conditions; not complete original asset acceptance",
+  "expected_matrix_rows": 816,
+  "observed_passing_matrix_rows": 0,
+  "complete_matrix_observed": false,
+  "conditions": [
+    {
+      "condition_id": "phone-100-normal",
+      "viewport": [
+        320.0,
+        720.0
+      ],
+      "text_scale": 1.0,
+      "reduced_motion": false,
+      "environment": "Flutter host test; not a physical device"
+    },
+    {
+      "condition_id": "phone-100-reduced",
+      "viewport": [
+        320.0,
+        720.0
+      ],
+      "text_scale": 1.0,
+      "reduced_motion": true,
+      "environment": "Flutter host test; not a physical device"
+    },
+    {
+      "condition_id": "phone-150-normal",
+      "viewport": [
+        320.0,
+        720.0
+      ],
+      "text_scale": 1.5,
+      "reduced_motion": false,
+      "environment": "Flutter host test; not a physical device"
+    },
+    {
+      "condition_id": "phone-150-reduced",
+      "viewport": [
+        320.0,
+        720.0
+      ],
+      "text_scale": 1.5,
+      "reduced_motion": true,
+      "environment": "Flutter host test; not a physical device"
+    },
+    {
+      "condition_id": "phone-200-normal",
+      "viewport": [
+        320.0,
+        720.0
+      ],
+      "text_scale": 2.0,
+      "reduced_motion": false,
+      "environment": "Flutter host test; not a physical device"
+    },
+    {
+      "condition_id": "phone-200-reduced",
+      "viewport": [
+        320.0,
+        720.0
+      ],
+      "text_scale": 2.0,
+      "reduced_motion": true,
+      "environment": "Flutter host test; not a physical device"
+    },
+    {
+      "condition_id": "tablet-100-normal",
+      "viewport": [
+        1024.0,
+        768.0
+      ],
+      "text_scale": 1.0,
+      "reduced_motion": false,
+      "environment": "Flutter host test; not a physical device"
+    },
+    {
+      "condition_id": "tablet-100-reduced",
+      "viewport": [
+        1024.0,
+        768.0
+      ],
+      "text_scale": 1.0,
+      "reduced_motion": true,
+      "environment": "Flutter host test; not a physical device"
+    },
+    {
+      "condition_id": "tablet-150-normal",
+      "viewport": [
+        1024.0,
+        768.0
+      ],
+      "text_scale": 1.5,
+      "reduced_motion": false,
+      "environment": "Flutter host test; not a physical device"
+    },
+    {
+      "condition_id": "tablet-150-reduced",
+      "viewport": [
+        1024.0,
+        768.0
+      ],
+      "text_scale": 1.5,
+      "reduced_motion": true,
+      "environment": "Flutter host test; not a physical device"
+    },
+    {
+      "condition_id": "tablet-200-normal",
+      "viewport": [
+        1024.0,
+        768.0
+      ],
+      "text_scale": 2.0,
+      "reduced_motion": false,
+      "environment": "Flutter host test; not a physical device"
+    },
+    {
+      "condition_id": "tablet-200-reduced",
+      "viewport": [
+        1024.0,
+        768.0
+      ],
+      "text_scale": 2.0,
+      "reduced_motion": true,
+      "environment": "Flutter host test; not a physical device"
+    }
+  ],
+  "rows": [],
+  "supplemental_cases": [
+    {
+      "case": "actual_app_animation_lifecycle",
+      "normal_phase_changes": true,
+      "background_phase_stops": true,
+      "resume_phase_restarts": true,
+      "os_reduce_motion_stops": true,
+      "economic_state_unchanged_at_fixed_clock": true,
+      "disposed_transient_callbacks": 0,
+      "limit": "Host lifecycle dispatch at a fixed synthetic clock, not physical background scheduling or power measurement."
+    }
+  ],
+  "synthetic_paid_ownership": true,
+  "external_store_or_rights_evidence": false,
+  "canonical_verification_written": false
+}

@@ -1,0 +1,44 @@
+{
+  "terminal": {
+    "verification": "/Users/csys/Desktop/ibicot/idle/release/native-notifications/integration-android-20261025T152403718372Z/verification.json",
+    "verification_sha256": "c308f9a85388f8564a9b5b72322f9ec7b23f12b1b913db66a1ec4440541c6b1b",
+    "scenario": "denied",
+    "label": "android",
+    "run_id": "v3b00-r20261025-android-denied-ready2",
+    "passed": false,
+    "classification": "Native permission request timed out; actual denial result not qualified. Actual prompt screenshot preserved. No production defect attribution.",
+    "errors": [
+      "Missing actual evidence: completed",
+      "Actual opt-in permission not observed",
+      "File preference did not preserve actual opt-in result",
+      "Missing native preferences file hash",
+      "Denied scenario retained requests",
+      "Native build/test failure in log: Some tests failed.",
+      "Native build/test failure in log: EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK",
+      "Native test or teardown error marker in log",
+      "No successful native framework completion marker",
+      "No successful driver completion marker",
+      "Native driver exited unsuccessfully"
+    ],
+    "native_evidence_sha256": {
+      "result.json": "0d3152db915dc4d40631b15da132f10d3a7b27a71939f5758d81e0b663ad310c",
+      "run.log": "95b24f48ff4ebd2831b846f00866d319d6dce72b26b47e8804c83c62ff3b7eb7",
+      "verifier-current-ui-capture.json": "0eef78a1dba117f39fed75874a58f1052fdb6a25d4a1b20689263df1fbadbc79",
+      "driver.dart": "ec880d16153b1ac577a221a46f81e7c309dd5417fbba8aae4ce68f7acbcfb668",
+      "verifier-current-ui.png": "fd192aece9e19694439abe41f6d2f6d00e57df365af0acd812cb1e6f91cd5d60",
+      "verify_native.py": "68297f66fc4e32a173b17da2594872334d59ba2b88b7d5878b5ee8905f9b89e5",
+      "started.json": "7e175e41a60fa1418737f9c3b894a6f8f601ceabbf8c6329890efe8b388997ef",
+      "candidate-manifest.json": "b4322606cd0207425b801feacc0bf4084ac9c460b23a028576204b766eeaeada",
+      "verify_native_reminders.py": "2ff5ce93795e3ed4584ce08fc2976e6c268582c26b995aadae9c7e3b337df1ed",
+      "harness.dart": "330ab6428203ec80e4de19e4eb727ad8dcfc6f63572e9ea1b0ef3ff7dc7a71da",
+      "build_native.py": "59ee4e7b94a1445e2c8effadfe4c0510c9c189df0278c7ede6e87f1807bf38ee"
+    },
+    "utc": "2026-10-25T15:27:21.762729+00:00"
+  },
+  "actual_prompt_screenshot": "/Users/csys/Desktop/ibicot/idle/release/native-notifications/integration-android-20261025T152403718372Z/verifier-current-ui.png",
+  "prompt_screenshot_sha256": "fd192aece9e19694439abe41f6d2f6d00e57df365af0acd812cb1e6f91cd5d60",
+  "source_unchanged": [],
+  "frozen_source_unchanged": true,
+  "no_new_attempt_started": true,
+  "limitation": "No decision received within unchanged 150-second native request. UI operators and user reports must be attributed separately. No absent-action or production-defect conclusion beyond native timeout."
+}

@@ -1,0 +1,32 @@
+[
+  {
+    "utc": "2026-10-25T15:42:43.810125+00:00",
+    "argv": [
+      "/Users/csys/Library/Android/sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "exec-out",
+      "screencap",
+      "-p"
+    ],
+    "exit_code": 0,
+    "file": "operator-deny-after.png",
+    "sha256": "a51ff28baf469a73abbf7e8de55171c9570a123ecea9f02939d7864cda1832bf"
+  },
+  {
+    "utc": "2026-10-25T15:42:44.282553+00:00",
+    "argv": [
+      "/Users/csys/Library/Android/sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "shell",
+      "-tt",
+      "uiautomator",
+      "dump",
+      "/dev/tty"
+    ],
+    "exit_code": 0,
+    "file": "operator-deny-after-hierarchy.txt",
+    "sha256": "e0468ce68f84fa035f53ff29b9667e5e91c33b4903ded6c8b19fba220ec2d728"
+  }
+]

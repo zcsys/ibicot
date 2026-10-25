@@ -1,0 +1,85 @@
+{
+  "changes": [
+    {
+      "id": "M3-05",
+      "field": "status",
+      "before": "in_progress",
+      "after": "accepted"
+    },
+    {
+      "id": "M3-05",
+      "field": "evidence",
+      "before": [
+        "game/mobile/lib/audio_settings.dart",
+        "game/mobile/lib/app.dart",
+        "game/mobile/lib/notification_service.dart",
+        "game/mobile/lib/reminder_lifecycle.dart",
+        "game/mobile/test/reminder_lifecycle_test.dart",
+        "release/notifications-author-review.md",
+        "release/qa/integration-reminders-initial-20261016T115431767720Z/REMINDERS_REVIEW.md"
+      ],
+      "after": [
+        "game/mobile/lib/audio_settings.dart",
+        "game/mobile/lib/app.dart",
+        "game/mobile/lib/notification_service.dart",
+        "game/mobile/lib/reminder_lifecycle.dart",
+        "game/mobile/test/reminder_lifecycle_test.dart",
+        "release/notifications-author-review.md",
+        "release/qa/integration-reminders-initial-20261016T115431767720Z/REMINDERS_REVIEW.md",
+        "release/qa/settings-notifications-final-20261025T171045.565766Z/READINESS_REVIEW.md",
+        "release/qa/settings-notifications-final-20261025T171045.565766Z/verification.json",
+        "release/qa/lead-settings-adoption-20261025T171709.890699Z/DECISIONS.md"
+      ]
+    },
+    {
+      "id": "M3-05",
+      "field": "evidence_note",
+      "before": "Local implementation and separately pinned author/independent evidence. Original acceptance and dependencies remain intact; physical/native/provider/human/elapsed observation gates remain open where unmet.",
+      "after": "Accepted at the unchanged original implementation criterion after named independent QA review of actual Settings/input/presentation controls and all five notification cases on each public target runtime. Android revocation uses a qualified expected OS interruption followed by strict new-process recovery with exact saved generations and denied scheduling; the preparation is not a passing integration test. Quiet hours constrain requested scheduling under the existing OS-delay and planning-time-zone disclosures, not an absolute dispatch blackout. M1-05/M3-01 prerequisites are accepted. Physical accessibility/performance/audio, M5-02, provider/store/human/elapsed operating and full-release gates remain separate."
+    },
+    {
+      "id": "S02",
+      "field": "evidence",
+      "before": [],
+      "after": [
+        "release/native-proof/integration-android-offline-20261025T163852.724871Z/verification.json",
+        "release/native-proof/integration-android-offline-20261025T164119.025808Z/verification.json",
+        "release/qa/offline-pair-final-20261025T164515.363498Z/REVIEW.md",
+        "release/qa/settings-notifications-final-20261025T171045.565766Z/FORWARD_AUDIT_ADDENDUM.md"
+      ]
+    },
+    {
+      "id": "S08",
+      "field": "evidence",
+      "before": [],
+      "after": [
+        "release/qa/s08-return-budget-clarification-20261025T154226.278440Z/REVIEW.md",
+        "release/qa/settings-notifications-final-20261025T171045.565766Z/FORWARD_AUDIT_ADDENDUM.md"
+      ]
+    },
+    {
+      "id": "S26",
+      "field": "evidence",
+      "before": [],
+      "after": [
+        "release/qa/settings-notifications-final-20261025T171045.565766Z/READINESS_REVIEW.md",
+        "release/qa/settings-notifications-final-20261025T171045.565766Z/verification.json",
+        "release/qa/lead-settings-adoption-20261025T171709.890699Z/DECISIONS.md"
+      ]
+    },
+    {
+      "id": "S26",
+      "field": "delivery_status",
+      "before": "not_verified",
+      "after": "verified"
+    }
+  ],
+  "program_sha256": "46232c53bb334025be9163920b443d43a483821fc1222dcbadd5f9c115346f6d",
+  "scope_sha256": "9824c7d16f3134b90c23a37be484b048fe8f9b12512ffb3a64299476e2de7bdd",
+  "original_criteria_dependencies_and_remaining_fields_unchanged": true,
+  "M3_05_prerequisites_accepted": true,
+  "S02_S08_not_verified": true,
+  "M5_02_in_progress": true,
+  "product_release_ready": false,
+  "production_or_metadata_mutation": false
+}

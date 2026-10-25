@@ -1,0 +1,40 @@
+[
+  {
+    "name": "pub-get",
+    "command": [
+      "pub",
+      "get"
+    ],
+    "exit_code": 0,
+    "seconds": 0.9472529888153076
+  },
+  {
+    "name": "qa019-unchanged-eight",
+    "command": [
+      "test",
+      "test/qa_integration_signed_native_test.dart",
+      "--reporter",
+      "expanded"
+    ],
+    "exit_code": 0,
+    "seconds": 6.775375127792358
+  },
+  {
+    "name": "full-mobile",
+    "command": [
+      "test",
+      "--reporter",
+      "expanded"
+    ],
+    "exit_code": 1,
+    "seconds": 26.76596188545227
+  },
+  {
+    "name": "full-mobile-analysis",
+    "command": [
+      "analyze"
+    ],
+    "exit_code": 1,
+    "seconds": 6.388017892837524
+  }
+]

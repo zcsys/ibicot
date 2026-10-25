@@ -1,0 +1,64 @@
+{
+  "author": "/root/client_asset_review",
+  "staged_only": true,
+  "live_promotion": false,
+  "prior_stage_verification_sha256": "45a7e82993406894559e3689941bafd39a46a20e67892fc06230f78425d06d70",
+  "staged_sources": {
+    "game/mobile/integration_test/platform_smoke_test.dart": {
+      "expected_live_before_sha256": "071635c01ed508077b467462bac279107a8716861ac97a5b657a5401b2cc3506",
+      "prior_stage_sha256": "68e4873feedf964e5c734b2d45e393bdc79983e58bdbe38b55b8b62300db498c",
+      "staged_path": "release/store/android-capture-repair-season-20261023T054210.236050Z/staged/platform_smoke_test.dart",
+      "staged_sha256": "1925106cb014a4a21575af3aa3bd85fc997873c1c9be74249c966da1cf28318b"
+    },
+    "tool/native_recording.py": {
+      "expected_live_before_sha256": "6e1f4a32167d93461097ef3198256a0da815bee5e0b1fa89511dae7bef5e8a29",
+      "prior_stage_sha256": "343ed23024953c6378bf7a314589a7252a7f97451cd01906168c9018a66c6582",
+      "staged_path": "release/store/android-capture-repair-season-20261023T054210.236050Z/staged/native_recording.py",
+      "staged_sha256": "343ed23024953c6378bf7a314589a7252a7f97451cd01906168c9018a66c6582"
+    },
+    "tool/native_integration_driver.dart": {
+      "expected_live_before_sha256": "911183b5d9ee8ec80769836f477a293dadb66e20cc0c5d5e44314415889749a8",
+      "prior_stage_sha256": "5fa7f526f10afd1b23b4adbfe4577770adb50eda16163fe55039d9e4069e5007",
+      "staged_path": "release/store/android-capture-repair-season-20261023T054210.236050Z/staged/native_integration_driver.dart",
+      "staged_sha256": "5fa7f526f10afd1b23b4adbfe4577770adb50eda16163fe55039d9e4069e5007"
+    }
+  },
+  "recorder_and_driver_identical_to_stage1": true,
+  "inherited_exact_recorder_authored_python_methods_passed": 36,
+  "different_author_reproduction": {
+    "release/qa/lead-capture-repair-20261023T053647.917618Z/original-reviewed-pins.json": "ea06f6777cd8b4ff01b1969341a0cd30adc8decbd893273bf9aac563c0954336",
+    "release/qa/lead-capture-repair-20261023T053647.917618Z/reproduced-host-tests.log": "2ecdc82a33291fcfd2fff46d82dc27dd184952d3eb0f24e5fdba8f5599cc354a"
+  },
+  "stage2_baseline_pins_checked": 28,
+  "prior_failed_android_files_unchanged": 15,
+  "prior_stage_sealed_files_unchanged": 23,
+  "all_preservation_pins_unchanged": true,
+  "full_unified_patch_matches_actual_snapshots": true,
+  "actual_tablet_season_content": "Logbook; failed content evidence retained",
+  "earlier_missing_pump_hypothesis_rejected": true,
+  "exact_original_route_failure_cause_proved": false,
+  "guard_scope": "capture-only, Android and iOS, one hit-tested tap, bounded actual route/landmark waits",
+  "production_or_sdk_modified": false,
+  "native_fix_qualified": false,
+  "flutter_dart_or_native_commands_executed": false,
+  "dart_format_scoped_analysis_pending": true,
+  "fresh_native_and_visual_review_pending": true,
+  "source_writes_stopped": true,
+  "evidence_sha256": {
+    "AUTHOR_HANDOFF.md": "da020e0fba47defb79335df939e09644566eba327eab55371f31b90b02ff2224",
+    "baseline.json": "f1d797b820eb2a915a4a26d4af056d52d6e28e99721aba172576ffb5a4c170b7",
+    "before/native_integration_driver.dart": "911183b5d9ee8ec80769836f477a293dadb66e20cc0c5d5e44314415889749a8",
+    "before/native_recording.py": "6e1f4a32167d93461097ef3198256a0da815bee5e0b1fa89511dae7bef5e8a29",
+    "before/platform_smoke_test.dart": "071635c01ed508077b467462bac279107a8716861ac97a5b657a5401b2cc3506",
+    "complete-capture.patch": "84a1021b4fbd3d5f47723d68709b28da92eea5b505df21f98805b4229a690d75",
+    "preservation-checks.json": "65e68ef571377835ded3c5bb73d94b1bb1fb103804dadb610bd4e03a0a1fb7af",
+    "prior-stage/native_integration_driver.dart": "5fa7f526f10afd1b23b4adbfe4577770adb50eda16163fe55039d9e4069e5007",
+    "prior-stage/native_recording.py": "343ed23024953c6378bf7a314589a7252a7f97451cd01906168c9018a66c6582",
+    "prior-stage/platform_smoke_test.dart": "68e4873feedf964e5c734b2d45e393bdc79983e58bdbe38b55b8b62300db498c",
+    "season-addendum.patch": "47e62f7237415288c168d24422e1ec0d4aef6d51534518adfbd68fbf05a6f9ad",
+    "staged/native_integration_driver.dart": "5fa7f526f10afd1b23b4adbfe4577770adb50eda16163fe55039d9e4069e5007",
+    "staged/native_recording.py": "343ed23024953c6378bf7a314589a7252a7f97451cd01906168c9018a66c6582",
+    "staged/platform_smoke_test.dart": "1925106cb014a4a21575af3aa3bd85fc997873c1c9be74249c966da1cf28318b",
+    "staged-pins.json": "60a0cb51e698bb1c793d042403e351d5257aeb9458168b6c1c9aef6fea925498"
+  }
+}

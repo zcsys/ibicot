@@ -1,0 +1,83 @@
+Running Gradle task 'assembleDebug'...                             18.8s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...           4.3s
+D/FlutterRenderer( 3147): Width is zero. 0,0
+W/HWUI    ( 3147): Unknown dataspace 0
+I/WindowExtensionsImpl( 3147): Initializing Window Extensions, vendor API level=6, activity embedding enabled=true
+D/FlutterRenderer( 3147): Width is zero. 0,0
+D/FlutterJNI( 3147): Sending viewport metrics to the engine.
+W/HWUI    ( 3147): Failed to choose config with EGL_SWAP_BEHAVIOR_PRESERVED, retrying without...
+W/HWUI    ( 3147): Failed to initialize 101010-2 format, error = EGL_SUCCESS
+I/Gralloc4( 3147): mapper 4.x is not supported
+I/.tideglass.game( 3147): Compiler allocated 5250KB to compile void android.view.ViewRootImpl.performTraversals()
+VMServiceFlutterDriver: Connecting to Flutter application at http://127.0.0.1:52105/hiKCvLwqT6o=/
+VMServiceFlutterDriver: Isolate found with number: 4737529156178375
+VMServiceFlutterDriver: Isolate 4737529156178375 is runnable.
+VMServiceFlutterDriver: Isolate is paused at start.
+VMServiceFlutterDriver: Attempting to resume isolate
+I/.tideglass.game( 3147): Compiler allocated 5427KB to compile void android.view.ViewRootImpl.performTraversals()
+I/Choreographer( 3147): Skipped 243 frames!  The application may be doing too much work on its main thread.
+I/flutter ( 3147): 00:00 +0: actual native ownership clock: clock-reload
+VMServiceFlutterDriver: Connected to Flutter application.
+D/ProfileInstaller( 3147): Installing profile for dev.tideglass.game
+I/Choreographer( 3147): Skipped 217 frames!  The application may be doing too much work on its main thread.
+D/FlutterJNI( 3147): Sending viewport metrics to the engine.
+I/HWUI    ( 3147): Davey! duration=3732ms; Flags=1, FrameTimelineVsyncId=10667, IntendedVsync=57606123592, Vsync=61222790114, InputEventId=0, HandleInputStart=61235396445, AnimationStart=61235398612, PerformTraversalsStart=61235399362, DrawStart=61279958612, FrameDeadline=57622790258, FrameInterval=61234473154, FrameStartTime=16666666, SyncQueued=61283752945, SyncStart=61284475320, IssueDrawCommandsStart=61285680445, SwapBuffers=61322900445, FrameCompleted=61339138570, DequeueBufferDuration=4029500, QueueBufferDuration=464875, GpuCompleted=61334962362, SwapBuffersCompleted=61339138570, DisplayPresentTime=72904454231359566, CommandSubmissionCompleted=61322900445, 
+I/.tideglass.game( 3147): NativeAlloc concurrent mark compact GC freed 2291KB AllocSpace bytes, 3(60KB) LOS objects, 49% free, 2998KB/5996KB, paused 258us,9.537ms total 89.129ms
+D/FlutterJNI( 3147): Sending viewport metrics to the engine.
+I/flutter ( 3147): TIDEGLASS_NATIVE_CLOCK_SURFACE_READY
+I/flutter ( 3147): ══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+I/flutter ( 3147): The following TestFailure was thrown running a test:
+I/flutter ( 3147): Expected: <true>
+I/flutter ( 3147):   Actual: <false>
+I/flutter ( 3147): 
+I/flutter ( 3147): When the exception was thrown, this was the stack:
+I/flutter ( 3147): #4      clockScenario.<anonymous closure> (file:///Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261023T040445.261666Z-3b00cc8f7122/workspace/game/mobile/integration_test/evidence_071635c01ed5_test.dart:381:7)
+I/flutter ( 3147): <asynchronous suspension>
+I/flutter ( 3147): #5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+I/flutter ( 3147): <asynchronous suspension>
+I/flutter ( 3147): #6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+I/flutter ( 3147): <asynchronous suspension>
+I/flutter ( 3147): #7      TestWidgetsFlutterBinding._createTestCompletionHandler.<anonymous closure> (package:flutter_test/src/binding.dart:1707:12)
+I/flutter ( 3147): <asynchronous suspension>
+I/flutter ( 3147): 
+I/flutter ( 3147): This was caught by the test expectation on the following line:
+I/flutter ( 3147):   file:///Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261023T040445.261666Z-3b00cc8f7122/workspace/game/mobile/integration_test/evidence_071635c01ed5_test.dart line 381
+I/flutter ( 3147): The test description was:
+I/flutter ( 3147):   actual native ownership clock: clock-reload
+I/flutter ( 3147): ════════════════════════════════════════════════════════════════════════════════════════════════════
+I/flutter ( 3147): 00:05 +0: actual native ownership clock: clock-reload [E]
+I/flutter ( 3147):   Test failed. See exception logs above.
+I/flutter ( 3147):   The test description was: actual native ownership clock: clock-reload
+I/flutter ( 3147):   
+I/flutter ( 3147): 00:06 +0 -1: (tearDownAll)
+I/flutter ( 3147): 00:06 +1 -1: Some tests failed.
+Failure Details:
+Failure in method: actual native ownership clock: clock-reload
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞═════════════════
+The following TestFailure was thrown running a test:
+Expected: <true>
+  Actual: <false>
+
+When the exception was thrown, this was the stack:
+#4      clockScenario.<anonymous closure> (file:///Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261023T040445.261666Z-3b00cc8f7122/workspace/game/mobile/integration_test/evidence_071635c01ed5_test.dart:381:7)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+#7      TestWidgetsFlutterBinding._createTestCompletionHandler.<anonymous closure> (package:flutter_test/src/binding.dart:1707:12)
+<asynchronous suspension>
+
+This was caught by the test expectation on the following line:
+  file:///Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261023T040445.261666Z-3b00cc8f7122/workspace/game/mobile/integration_test/evidence_071635c01ed5_test.dart line 381
+The test description was:
+  actual native ownership clock: clock-reload
+═════════════════════════════════════════════════════════════════
+
+end of failure 1
+
+
+
+D/EGL_emulation( 3147): app_time_stats: avg=1224.35ms min=320.43ms max=2128.26ms count=2
+Leaving the application running.

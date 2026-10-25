@@ -1,0 +1,894 @@
+--- a/game/mobile/integration_test/native_reminders_test.dart
++++ b/game/mobile/integration_test/native_reminders_test.dart
+@@ -23,7 +23,8 @@
+ const candidate = String.fromEnvironment('TIDEGLASS_CANDIDATE_FINGERPRINT');
+ const harness = String.fromEnvironment('TIDEGLASS_HARNESS_SHA256');
+ const verification = String.fromEnvironment('TIDEGLASS_VERIFICATION_ID');
+-const scenarios = {'default', 'denied', 'quiet-cancel', 'delivery', 'revoked'};
++const scenarios = {'default', 'denied', 'quiet-cancel', 'delivery', 'revoked',
++  'revoked-prepare', 'revoked-recover'};
+ late IntegrationTestWidgetsFlutterBinding binding;
+ Map<String, dynamic> get report => binding.reportData!;
+ int utcMs() => DateTime.now().toUtc().millisecondsSinceEpoch;
+@@ -96,6 +97,7 @@
+   testWidgets('real OS reminder qualification: $scenario', (tester) async {
+     expect(Platform.isIOS || Platform.isAndroid, isTrue);
+     expect(scenarios, contains(scenario));
++    if (scenario.startsWith('revoked-')) expect(Platform.isAndroid, isTrue);
+     for (final value in [label, runId, verification]) {
+       expect(RegExp(r'^[A-Za-z0-9_-]{1,160}$').hasMatch(value), isTrue);
+     }
+@@ -129,6 +131,10 @@
+       ],
+     };
+     final support = await getApplicationSupportDirectory();
++    if (scenario == 'revoked-recover') {
++      await recoverRevoked(tester, support);
++      return;
++    }
+     final dir = Directory(
+       '${support.path}/native-reminders/$label-$runId-$scenario',
+     );
+@@ -278,6 +284,30 @@
+           await lifecycle.returned();
+           expect(await pending(gateway), isEmpty);
+           report['return_pending_ids'] = await pending(gateway);
++        } else if (scenario == 'revoked-prepare') {
++          report['background_call_utc_ms'] = utcMs();
++          await lifecycle.backgrounded();
++          await recordPlan(service, gateway, repository, game);
++          report['preferences_sha256'] = await fileDigest(preferenceFile);
++          final checkpoint = <String, dynamic>{
++            'version': 1,
++            'preparation': report,
++            'files_sha256': await restartFiles(dir),
++            'written_utc_ms': utcMs(),
++          };
++          final file = File('${dir.path}/revoke-checkpoint.json');
++          expect(await file.exists(), isFalse);
++          await file.writeAsString(jsonEncode(checkpoint), flush: true);
++          action('revoke_in_os_settings_expect_process_death', {
++            'checkpoint': file.path,
++            'checkpoint_sha256': await fileDigest(file),
++          });
++          await service.openDeviceSettings();
++          // Android may terminate this process for PERMISSION CHANGE. This
++          // preparation never reports a passed/completed integration test.
++          await until(() => false,
++              reason: 'Actual Android permission-change termination required.',
++              seconds: 180);
+         } else if (scenario == 'revoked') {
+           report['background_call_utc_ms'] = utcMs();
+           await lifecycle.backgrounded();
+@@ -526,3 +556,142 @@
+   report['plan_observation'] = observed;
+   report['plan'] = validateObservedReminderPlan(observed);
+ }
++
++
++Future<String> fileDigest(File file) async =>
++    sha256.convert(await file.readAsBytes()).toString();
++
++Future<Map<String, String>> restartFiles(Directory dir,
++    {bool includePreferences = true}) async {
++  final files = <String, String>{};
++  for (final relative in [
++    if (includePreferences) 'notification_preferences.json',
++    'save/progress.0.json', 'save/progress.1.json',
++  ]) {
++    final file = File('${dir.path}/$relative');
++    if (await file.exists()) files[relative] = await fileDigest(file);
++  }
++  expect(files.keys.where((key) => key.startsWith('save/')), isNotEmpty);
++  if (includePreferences) expect(files, contains('notification_preferences.json'));
++  return files;
++}
++
++Future<List<int>> activeReminderIds(NativeNotificationGateway gateway) async =>
++    (await gateway.plugin.getActiveNotifications())
++        .where((item) => ReminderPlanner.ids.contains(item.id))
++        .map((item) => item.id).toList()..sort();
++
++Future<void> recoverRevoked(WidgetTester tester, Directory support) async {
++  const priorId = String.fromEnvironment('TIDEGLASS_PREDECESSOR_ID');
++  const checkpointDigest = String.fromEnvironment('TIDEGLASS_PREDECESSOR_CHECKPOINT');
++  expect(RegExp(r'^[A-Za-z0-9_-]{1,160}$').hasMatch(priorId), isTrue);
++  expect(RegExp(r'^[a-f0-9]{64}$').hasMatch(checkpointDigest), isTrue);
++  final dir = Directory('${support.path}/native-reminders/$label-$runId-revoked-prepare');
++  final checkpointFile = File('${dir.path}/revoke-checkpoint.json');
++  expect(await dir.exists(), isTrue);
++  expect(await fileDigest(checkpointFile), checkpointDigest);
++  final checkpoint = (jsonDecode(await checkpointFile.readAsString()) as Map)
++      .cast<String, dynamic>();
++  expect(checkpoint['version'], 1);
++  final prior = (checkpoint['preparation'] as Map).cast<String, dynamic>();
++  for (final entry in {
++    'verification_id': priorId, 'candidate_fingerprint': candidate,
++    'harness_sha256': harness, 'scenario': 'revoked-prepare', 'run_id': runId,
++    'device_label': label, 'platform': 'android',
++  }.entries) { expect(prior[entry.key], entry.value); }
++  expect(prior['completed'], isFalse);
++  expect(prior['process_id'], isA<int>());
++  expect(prior['process_id'], greaterThan(1));
++  expect(pid, isNot(prior['process_id']));
++  final hashes = (checkpoint['files_sha256'] as Map).cast<String, String>();
++  expect(await restartFiles(dir), hashes);
++  report.addAll({
++    'fixture_directory': dir.path,
++    'predecessor_verification_id': priorId,
++    'predecessor_checkpoint_sha256': checkpointDigest,
++    'previous_process_id': prior['process_id'],
++    'recovery_files_before': await restartFiles(dir),
++    'predecessor_default_opted_out': prior['default_opted_out'],
++  });
++  final store = FileNotificationPreferences(File('${dir.path}/notification_preferences.json'));
++  expect((await store.load()).enabled, isTrue);
++  final gateway = NativeNotificationGateway();
++  final service = NotificationService(gateway: gateway, store: store);
++  final observation = NativeLifecycleObservation();
++  WidgetsBinding.instance.addObserver(observation);
++  addTearDown(() async {
++    WidgetsBinding.instance.removeObserver(observation);
++    await gateway.cancelReminders();
++    service.dispose();
++    await tester.pumpWidget(const SizedBox.shrink());
++  });
++  await tester.pumpWidget(const MaterialApp(home: Scaffold(body: Text(
++      'Tideglass reminder restart qualification. Real permission denial; retained synthetic save.'))));
++  report['permission_before_initialize'] = (await gateway.permission()).name;
++  // Android may already have removed an alarm/notification on revocation.
++  // Record that separately from what production initialization cancels.
++  report['pending_before_initialize'] = await pending(gateway);
++  report['active_before_initialize'] = await activeReminderIds(gateway);
++  expect(report['permission_before_initialize'], 'denied');
++  final initBaseline = observation.events.length;
++  await service.initialize();
++  await tester.pump();
++  report['initialization_lifecycle_events'] = observation.events.skip(initBaseline).toList();
++  expect(observation.events.skip(initBaseline).where((row) => row['state'] != 'resumed'), isEmpty);
++  expect(service.warningKey, isNull);
++  expect(service.permission, ReminderPermission.denied);
++  expect(service.preferences.enabled, isTrue,
++      reason: 'Remembered opt-in is distinct from denied effective permission.');
++  report['permission_after_initialize'] = service.permission.name;
++  report['remembered_opt_in_after_initialize'] = service.preferences.enabled;
++  report['pending_after_initialize'] = await pending(gateway);
++  report['active_after_initialize'] = await activeReminderIds(gateway);
++  expect(report['pending_after_initialize'], isEmpty);
++  expect(report['active_after_initialize'], isEmpty);
++  final repository = SaveRepository(Directory('${dir.path}/save'),
++      economicVersion: economyVersion, economicDigest: bundledEconomicDigest,
++      validatePayload: (payload) { GameState.fromJson(payload); });
++  final saved = (await repository.load()).snapshot;
++  expect(saved, isNotNull);
++  final observed = (prior['plan_observation'] as Map).cast<String, dynamic>();
++  expect(saved!.payload, observed['saved_payload']);
++  expect(saved.saveId, observed['saved_snapshot_id']);
++  expect(saved.settledThrough.toUtc().microsecondsSinceEpoch,
++      observed['saved_settled_through_utc_micros']);
++  report['restored_snapshot_id'] = saved.saveId;
++  report['restored_payload_sha256'] = sha256.convert(utf8.encode(jsonEncode(saved.payload))).toString();
++  report['restored_settled_through_utc_micros'] = saved.settledThrough.toUtc().microsecondsSinceEpoch;
++  // Use the real scheduling path with the preserved saved state. Do not save
++  // or settle it again merely to test the OS permission gate.
++  await service.scheduleForAbsence(state: GameState.fromJson(saved.payload),
++      settledThrough: saved.settledThrough);
++  expect(service.permission, ReminderPermission.denied);
++  expect(service.planned, isEmpty);
++  expect(service.warningKey, isNull);
++  report['denied_schedule_pending_ids'] = await pending(gateway);
++  report['denied_schedule_active_ids'] = await activeReminderIds(gateway);
++  expect(report['denied_schedule_pending_ids'], isEmpty);
++  expect(report['denied_schedule_active_ids'], isEmpty);
++  await service.onReturn();
++  expect(service.warningKey, isNull);
++  report['recovery_files_before_reoptin'] = await restartFiles(dir);
++  expect(report['recovery_files_before_reoptin'], hashes);
++  action('deny_permission_again_if_prompted');
++  await service.enableByPlayer().timeout(const Duration(seconds: 150));
++  expect(service.permission, ReminderPermission.denied);
++  expect((await store.load()).enabled, isFalse);
++  expect(service.warningKey, isNull);
++  report['permission_after_reoptin'] = service.permission.name;
++  report['preferences_after_reoptin'] = (await store.load()).toJson();
++  report['preferences_sha256'] = await fileDigest(File('${dir.path}/notification_preferences.json'));
++  report['recovery_save_files_after'] = await restartFiles(dir, includePreferences: false);
++  expect(report['recovery_save_files_after'], Map<String, String>.from(hashes)
++      ..remove('notification_preferences.json'));
++  expect(await fileDigest(checkpointFile), checkpointDigest);
++  report['return_pending_ids'] = await pending(gateway);
++  report['return_active_ids'] = await activeReminderIds(gateway);
++  expect(report['return_pending_ids'], isEmpty);
++  expect(report['return_active_ids'], isEmpty);
++  report['lifecycle_events'] = observation.events;
++  report['completed'] = true;
++}
+--- a/tool/verify_native_reminders.py
++++ b/tool/verify_native_reminders.py
+@@ -21,6 +21,7 @@
+ 
+ import build_native
+ import verify_native
++import reminder_restart as restart
+ 
+ ROOT = Path(__file__).resolve().parent.parent
+ BUNDLE = 'dev.tideglass.game'
+@@ -51,7 +52,8 @@
+ def validate_request(device, label, scenario, run_id):
+     require(device.upper() != PROTECTED_DEVICE, 'Protected tablet is never an execution target')
+     require(bool(SAFE.fullmatch(label)) and bool(SAFE.fullmatch(run_id)), 'Explicit safe label and fresh run ID required')
+-    require(scenario in SCENARIOS, 'Reminder scenario is not allowlisted')
++    require(scenario in SCENARIOS | restart.SCENARIOS, 'Reminder scenario is not allowlisted')
++    require(scenario not in restart.SCENARIOS or re.fullmatch(r'emulator-[0-9]+', device), 'Restart protocol requires Android emulator')
+     if re.fullmatch(r'emulator-[0-9]+', device):
+         return 'android'
+     require(bool(re.fullmatch(r'[a-fA-F0-9]{8}(?:-[a-fA-F0-9]{4}){3}-[a-fA-F0-9]{12}', device)), 'Simulator/emulator identifier required')
+@@ -238,9 +240,12 @@
+     parser.add_argument('candidate', type=Path)
+     parser.add_argument('--device', required=True)
+     parser.add_argument('--label', required=True)
+-    parser.add_argument('--scenario', required=True, choices=sorted(SCENARIOS))
++    parser.add_argument('--scenario', required=True, choices=sorted(SCENARIOS | restart.SCENARIOS))
+     parser.add_argument('--run-id', required=True)
++    parser.add_argument('--predecessor', type=Path)
++    parser.add_argument('--revocation-evidence', type=Path)
+     args = parser.parse_args()
++    require(bool(args.predecessor) == (args.scenario == 'revoked-recover') and bool(args.revocation_evidence) == bool(args.predecessor), 'Recovery requires exact predecessor and actual UI evidence; other scenarios forbid both')
+     platform = validate_request(args.device, args.label, args.scenario, args.run_id)
+     candidate = args.candidate.resolve()
+     manifest = json.loads((candidate / 'manifest.json').read_text())
+@@ -260,6 +265,7 @@
+                    'verify_native_reminders.py': Path(__file__),
+                    'verify_native.py': Path(verify_native.__file__),
+                    'build_native.py': Path(build_native.__file__)}
++        sources['reminder_restart.py'] = Path(restart.__file__)
+         pins = {}
+         for name, path in sources.items():
+             shutil.copyfile(path, evidence / name); pins[name] = sha(evidence / name)
+@@ -271,7 +277,7 @@
+         shutil.copyfile(evidence / 'harness.dart', target); shutil.copyfile(evidence / 'driver.dart', driver)
+         context = {'verification_id': evidence.name, 'candidate_fingerprint': manifest['source_fingerprint'],
+                    'harness_sha256': pins['harness.dart'], 'scenario': args.scenario, 'run_id': args.run_id,
+-                   'device_label': args.label, 'platform': platform}
++                   'device_label': args.label, 'platform': platform, 'device': args.device}
+         command = [str(ROOT / 'tool/flutter'), 'drive', '--driver=' + str(driver.relative_to(app)),
+                    '--target=' + str(target.relative_to(app)), '-d', args.device,
+                    *['--dart-define=TIDEGLASS_' + key + '=' + value for key, value in {
+@@ -285,8 +291,28 @@
+                   'passed': False}
+         (evidence / 'started.json').write_text(json.dumps(report, indent=2) + '\n')
+         print('Reminder evidence: ' + str(evidence), flush=True)
+-        errors = []; process = None
++        errors = []; process = None; prior = None; prior_checkpoint = None
++        restart_host = restart.Host(ROOT, context, evidence) if args.scenario in restart.SCENARIOS else None
+         try:
++            if args.scenario == 'revoked-recover':
++                prior, prior_checkpoint = restart.validate_predecessor(args.predecessor.resolve(), context,
++                    pins, args.revocation_evidence.resolve(), verify_native.native_log_errors)
++                report['predecessor'] = {'path': str(args.predecessor.resolve()), 'sha256': sha(args.predecessor)}
++                packet = restart.read_json(args.revocation_evidence)
++                operator_paths = {'operator.json': args.revocation_evidence,
++                    **{name: args.revocation_evidence.parent / name for name in packet['files_sha256']}}
++                report['operator_input_pins'] = {str(path.resolve()): sha(path) for path in operator_paths.values()}
++                for name, path in operator_paths.items(): shutil.copyfile(path, evidence / ('revocation-' + name))
++                denied = restart_host.command('shell', 'dumpsys', 'package', BUNDLE)
++                (evidence / 'recovery-permission-before-launch.txt').write_bytes(denied)
++                restart.permission(denied.decode(), False)
++                for name, want in prior_checkpoint['files_sha256'].items():
++                    require(restart.digest(restart_host.read_private(name)) == want, 'Predecessor data changed before recovery launch')
++                require(restart.digest(restart_host.read_private('revoke-checkpoint.json')) == prior['restart_preparation']['checkpoint_sha256'], 'Device predecessor checkpoint changed')
++                restart_host.save_receipts()
++                command.extend(['--dart-define=TIDEGLASS_PREDECESSOR_ID=' + prior['verification_id'],
++                    '--dart-define=TIDEGLASS_PREDECESSOR_CHECKPOINT=' + prior['restart_preparation']['checkpoint_sha256']])
++                (evidence / 'started.json').write_text(json.dumps(report, indent=2) + '\n')
+             with (evidence / 'run.log').open('w') as log_file:
+                 process = subprocess.Popen(command, cwd=app, env=dict(os.environ, TIDEGLASS_NATIVE_EVIDENCE=str(evidence)),
+                                            stdout=log_file, stderr=subprocess.STDOUT, start_new_session=True)
+@@ -298,6 +324,10 @@
+                     for marker in matches[shown:]:
+                         value = json.loads(marker)
+                         require(all(value.get(k) == context[k] for k in IDENTITY), 'Live action identity mismatch')
++                        if args.scenario == 'revoked-prepare' and value.get('action') == restart.READY:
++                            require('restart_preparation' not in report, 'Repeated revocation checkpoint')
++                            report['restart_preparation'] = restart_host.capture_preparation(value, (evidence / 'run.log').read_bytes())
++                            print('REVOCATION CHECKPOINT CAPTURED ' + json.dumps(report['restart_preparation'], sort_keys=True), flush=True)
+                         print('OS ACTION ' + json.dumps(value, sort_keys=True), flush=True)
+                     shown = len(matches)
+                     require(time.monotonic() - start < 1200, 'Native qualification exceeded20-minute bound')
+@@ -305,8 +335,22 @@
+             log = (evidence / 'run.log').read_text(errors='replace')
+             result_path = evidence / 'result.json'
+             payload = json.loads(result_path.read_text()) if result_path.is_file() else {}
+-            errors.extend(payload_errors(payload, context, log))
+-            if process.returncode != 0: errors.append('Native driver exited unsuccessfully')
++            if args.scenario == 'revoked-prepare':
++                require(not result_path.exists(), 'Interrupted preparation unexpectedly produced a test result')
++                report['restart_death'] = restart_host.capture_death(report.get('restart_preparation', {}))
++                errors.extend(restart.interrupted_errors(log, (evidence / 'run.log').read_bytes(),
++                    report.get('restart_preparation'), report.get('restart_death'), process.returncode, verify_native.native_log_errors))
++            else:
++                if args.scenario == 'revoked-recover':
++                    errors.extend(restart.recovery_errors(payload, context, prior, prior_checkpoint, log, MARKER, verify_native.native_log_errors))
++                    for name, want in payload.get('recovery_save_files_after', {}).items():
++                        require(restart.digest(restart_host.read_private(name)) == want, 'Recovery native save export differs')
++                    require(restart.digest(restart_host.read_private('notification_preferences.json')) == payload.get('preferences_sha256'), 'Recovery native preferences differ')
++                    require(restart.digest(restart_host.read_private('revoke-checkpoint.json')) == prior['restart_preparation']['checkpoint_sha256'], 'Recovery changed predecessor checkpoint')
++                    restart_host.save_receipts()
++                else:
++                    errors.extend(payload_errors(payload, context, log))
++                if process.returncode != 0: errors.append('Native driver exited unsuccessfully')
+             report['artifact_after'] = artifact_inputs(app, platform)
+             report['installed_artifact'] = installed_artifact_check(app, platform, args.device, report['artifact_after'])
+         except BaseException as error:
+@@ -324,6 +368,17 @@
+             finish_observations(report, errors, candidate=candidate, frozen=frozen,
+                 workspace=workspace, production=production, sources=sources, pins=pins,
+                 target=target, driver=driver, platform=platform, device=args.device)
++            if prior is not None:
++                try:
++                    require(sha(args.predecessor) == report['predecessor']['sha256'], 'Predecessor report changed during recovery')
++                    require(all(sha(Path(path)) == want for path, want in report['operator_input_pins'].items()), 'Actual UI evidence changed during recovery')
++                    restart.validate_predecessor(args.predecessor.resolve(), context, pins,
++                        args.revocation_evidence.resolve(), verify_native.native_log_errors)
++                except Exception as error:
++                    errors.append('Final predecessor observation failed: ' + str(error))
++            if restart_host is not None:
++                try: restart_host.save_receipts()
++                except Exception as error: errors.append('Final restart receipts failed: ' + str(error))
+             report['errors'] = errors
+             output_pins = {}
+             for path in evidence.iterdir():
+@@ -333,10 +388,11 @@
+                     except Exception as error:
+                         errors.append('Evidence hashing failed: ' + path.name + ': ' + type(error).__name__)
+             report['evidence_sha256'] = output_pins
+-            report['passed'] = not errors
++            report['passed'] = not errors and args.scenario != 'revoked-prepare'
++            report['status'] = ('os-interrupted-awaiting-ui-evidence' if not errors and args.scenario == 'revoked-prepare' else 'passed' if not errors else 'failed')
+             (evidence / 'verification.json').write_text(json.dumps(report, indent=2) + '\n')
+         print(json.dumps({'evidence': str(evidence), 'passed': report['passed'], 'errors': errors}), flush=True)
+-        return 0 if report['passed'] else 1
++        return 0 if report['passed'] or report['status'] == 'os-interrupted-awaiting-ui-evidence' else 1
+ 
+ 
+ if __name__ == '__main__':
+--- /dev/null
++++ b/tool/reminder_restart.py
+@@ -0,0 +1,309 @@
++"""Android permission-revocation restart protocol; no permission/UI mutations.
++
++Preparation is an interrupted process, never a passed integration test. Recovery
++requires independently inspectable actual UI evidence and actual OS kill records.
++"""
++from __future__ import annotations
++from datetime import datetime, timezone
++import hashlib
++import json
++from pathlib import Path
++import re
++import subprocess
++import time
++import xml.etree.ElementTree as ET
++
++SCENARIOS = frozenset({'revoked-prepare', 'revoked-recover'})
++BUNDLE = 'dev.tideglass.game'
++IDENTITY = ('verification_id','candidate_fingerprint','harness_sha256','scenario','run_id','device_label','platform')
++HEX = re.compile(r'^[a-f0-9]{64}$')
++FILES = {'notification_preferences.json','save/progress.0.json','save/progress.1.json'}
++READY = 'revoke_in_os_settings_expect_process_death'
++MARKER = re.compile(r'^(?:flutter:|I/flutter\s*\(\s*\d+\):)\s*TIDEGLASS_REMINDER_ACTION (\{[^\n]+\})\s*$', re.M)
++
++
++def require(value, message):
++    if not value: raise ValueError(message)
++
++
++def digest(raw): return hashlib.sha256(raw).hexdigest()
++
++
++def read_json(path): return json.loads(Path(path).read_bytes())
++
++
++def fixture(context):
++    require(context['platform']=='android', 'Restart protocol is Android only')
++    for key in ('device_label','run_id'):
++        require(re.fullmatch(r'[A-Za-z0-9_-]{1,80}',context[key]), 'Unsafe fixture identity')
++    return f'/data/user/0/{BUNDLE}/files/native-reminders/{context["device_label"]}-{context["run_id"]}-revoked-prepare'
++
++
++def file_name(relative):
++    require(relative in FILES, 'Unexpected predecessor file')
++    return relative.replace('/','-')
++
++
++def checkpoint(raw, context, marker):
++    require(0 < len(raw) <= 131072, 'Checkpoint size invalid')
++    require(digest(raw)==marker.get('checkpoint_sha256'), 'Checkpoint digest mismatch')
++    value=json.loads(raw); require(type(value) is dict and value.get('version')==1, 'Unsupported checkpoint')
++    prior=value.get('preparation',{})
++    for key in IDENTITY:
++        require(type(prior.get(key)) is type(context[key]) and prior[key]==context[key], 'Checkpoint identity mismatch: '+key)
++        require(marker.get(key)==context[key], 'Marker identity mismatch: '+key)
++    pid=prior.get('process_id'); require(type(pid) is int and pid>1 and marker.get('process_id')==pid, 'Checkpoint PID mismatch')
++    require(marker.get('action')==READY and marker.get('checkpoint')==fixture(context)+'/revoke-checkpoint.json', 'Checkpoint path/action mismatch')
++    require(type(marker.get('utc_ms')) is int and type(value.get('written_utc_ms')) is int and 0<=marker['utc_ms']-value['written_utc_ms']<=30000, 'Checkpoint must precede its marker')
++    expected={'completed':False,'default_opted_out':True,'default_preferences_file_absent':True,'default_pending_ids':[],
++              'permission_after_opt_in':'allowed','gateway':'NativeNotificationGateway','preference_store':'FileNotificationPreferences'}
++    for key,want in expected.items(): require(type(prior.get(key)) is type(want) and prior[key]==want, 'Preparation observation missing: '+key)
++    require(prior.get('permission_before_initialize') in ('allowed','denied') and prior.get('permission_after_initialize')==prior['permission_before_initialize'], 'Preparation initialization changed permission')
++    require(prior.get('preferences_after_opt_in',{}).get('enabled') is True, 'No persisted opt-in')
++    actions=prior.get('actions',[])
++    require(len(actions)==1 and actions[0].get('action')=='allow_permission_if_prompted'
++        and all(actions[0].get(key)==context[key] for key in IDENTITY)
++        and actions[0].get('process_id')==pid, 'Preparation lacks exact actual opt-in action')
++    require(prior.get('lifecycle_callback_failures')==[], 'Preparation callback failed')
++    require(isinstance(prior.get('initialization_lifecycle_events'),list) and all(row.get('state')=='resumed' for row in prior['initialization_lifecycle_events']), 'Initialization opened permission UI')
++    plan=prior.get('plan',{}); observed=prior.get('plan_observation',{})
++    require(plan.get('ids')==[77101] and plan.get('kinds')==['focus'] and plan.get('production_lifecycle') is True, 'Wrong production plan')
++    require(plan.get('body')=='Focus is available for your next constellation. Return whenever you like.', 'Wrong Focus body')
++    require(all(type(plan.get(k)) is int for k in ('due_utc_ms','background_call_utc_ms','scheduled_observed_utc_ms')), 'Missing real plan time')
++    require(plan['due_utc_ms']-plan['background_call_utc_ms']>=300000 and plan['due_utc_ms']>plan['scheduled_observed_utc_ms'], 'Production minimum/future schedule missing')
++    require(observed.get('pending_ids')==[77101] and observed.get('warning_key') is None, 'No actual pending plan')
++    require(observed.get('saved_payload')==observed.get('game_payload') and isinstance(observed.get('saved_payload'),dict), 'Saved gameplay differs')
++    require(observed.get('saved_settled_through_utc_micros')==observed.get('game_settled_through_utc_micros') and type(observed.get('saved_settled_through_utc_micros')) is int, 'Saved cursor differs')
++    require(digest(json.dumps(observed['saved_payload'],separators=(',',':'),ensure_ascii=False).encode())==plan.get('saved_payload_sha256'), 'Saved payload digest differs')
++    require(observed.get('saved_snapshot_id')==plan.get('saved_snapshot_id') and isinstance(plan.get('saved_snapshot_id'),str) and plan['saved_snapshot_id'], 'Saved snapshot missing')
++    hashes=value.get('files_sha256',{})
++    require(isinstance(hashes,dict) and set(hashes)<=FILES and 'notification_preferences.json' in hashes and any(k.startswith('save/') for k in hashes), 'Missing or unsafe durable files')
++    require(all(isinstance(h,str) and HEX.fullmatch(h) for h in hashes.values()), 'Invalid durable digest')
++    require(hashes['notification_preferences.json']==prior.get('preferences_sha256'), 'Preference hash differs')
++    return value
++
++
++def permission(package_text, granted):
++    require(re.search(r'^\s*Package \[dev\.tideglass\.game\]',package_text,re.M), 'Wrong package observation')
++    wanted='true' if granted else 'false'
++    matches=re.findall(r'android\.permission\.POST_NOTIFICATIONS: granted=(true|false),',package_text)
++    require(matches==[wanted], 'Actual OS notification permission differs')
++
++
++def kill_record(exit_text, logcat, marker, offset, observed_ms):
++    require(re.fullmatch(r'[+-][0-9]{4}',offset), 'Missing actual OS UTC offset')
++    blocks=re.split(r'ApplicationExitInfo #[0-9]+:',exit_text)[1:]
++    matches=[]
++    for block in blocks:
++        head=re.search(r'timestamp=([0-9-]+ [0-9:.]+) pid=([0-9]+)\b',block)
++        if head and int(head[2])==marker['process_id']:
++            require(re.search(r'process=dev\.tideglass\.game reason=8 \(PERMISSION CHANGE\)',block), 'Bound PID did not die from permission change')
++            require('description=PermissionHelper' in block, 'Unexpected permission kill origin')
++            at=int(datetime.strptime(head[1]+offset,'%Y-%m-%d %H:%M:%S.%f%z').timestamp()*1000)
++            require(marker['utc_ms']<=at<=observed_ms and at-marker['utc_ms']<=180000, 'Kill outside fresh preparation bound')
++            matches.append(at)
++    require(len(matches)==1, 'Exactly one fresh bound PID exit required')
++    require(re.search(r'Killing '+str(marker['process_id'])+r':dev\.tideglass\.game/[^\n]+: PermissionHelper\s*$',logcat,re.M), 'Missing corroborating actual kill log')
++    return matches[0]
++
++
++class Host:
++    def __init__(self, root, context, evidence):
++        self.root=Path(root); self.context=context; self.evidence=Path(evidence); self.receipts=[]
++        require(re.fullmatch(r'emulator-[0-9]+', context['device']), 'Only an explicit emulator')
++        self.adb=str(self.root/'.tooling/android-sdk/platform-tools/adb')
++    def command(self,*parts,allow_absent=False):
++        cmd=[self.adb,'-s',self.context['device'],*parts]
++        started=int(time.time()*1000)
++        result=subprocess.run(cmd,capture_output=True,timeout=20)
++        self.receipts.append({'argv':cmd,'started_utc_ms':started,'finished_utc_ms':int(time.time()*1000),'exit_code':result.returncode,'stdout':result.stdout.decode(errors='replace'),'stderr':result.stderr.decode(errors='replace')})
++        require(result.returncode==0 or (allow_absent and result.returncode==1 and not result.stdout and not result.stderr), 'Read-only Android observation failed: '+str(parts))
++        return result.stdout
++    def save_receipts(self):
++        (self.evidence/'restart-host-receipts.json').write_text(json.dumps(self.receipts,indent=2)+'\n')
++    def read_private(self, relative):
++        require(relative in FILES|{'revoke-checkpoint.json'}, 'Private file not allowlisted')
++        base=Path(fixture(self.context)); path=base/relative
++        for component in [base, *[p for p in reversed(path.parents) if p.is_relative_to(base) and p!=base], path]:
++            # Inputs belong to our stopped/paused synthetic fixture; reject links.
++            self.command('shell','run-as',BUNDLE,'test','!','-L',str(component))
++        self.command('shell','run-as',BUNDLE,'test','-f',str(path))
++        limit=131072 if relative=='revoke-checkpoint.json' else 2*1024*1024+65536
++        raw=self.command('exec-out','run-as',BUNDLE,'head','-c',str(limit+1),str(path))
++        require(0<len(raw)<=limit, 'Private file exceeds bound')
++        return raw
++    def alive(self, pid):
++        raw=self.command('shell','pidof',BUNDLE,allow_absent=True).decode().split()
++        require(raw==[str(pid)], 'Expected sole exact native process is not alive')
++        cmd=self.command('exec-out','run-as',BUNDLE,'cat',f'/proc/{pid}/cmdline')
++        require(cmd.split(b'\0',1)[0]==BUNDLE.encode(), 'Native PID package mismatch')
++    def capture_preparation(self, marker, raw_log):
++        try:
++            self.alive(marker['process_id'])
++            raw=self.read_private('revoke-checkpoint.json')
++            value=checkpoint(raw,self.context,marker)
++            (self.evidence/'revoke-checkpoint.json').write_bytes(raw)
++            for name,want in value['files_sha256'].items():
++                data=self.read_private(name); require(digest(data)==want,'Prekill durable file mismatch')
++                (self.evidence/file_name(name)).write_bytes(data)
++            prefs=read_json(self.evidence/'notification_preferences.json'); require(prefs.get('enabled') is True,'Stored preference not enabled')
++            permission(self.command('shell','dumpsys','package',BUNDLE).decode(),True)
++            self.alive(marker['process_id'])
++            (self.evidence/'pre-revocation.log').write_bytes(raw_log)
++            return {'marker':marker,'checkpoint_sha256':digest(raw),'native_pid':marker['process_id'],
++                    'pre_log_bytes':len(raw_log),'pre_log_sha256':digest(raw_log),'files_sha256':value['files_sha256']}
++        finally: self.save_receipts()
++    def capture_death(self, preparation):
++        try:
++            texts={}
++            for name,args in [('exit-info.txt',('shell','dumpsys','activity','exit-info',BUNDLE)),('permission-after.txt',('shell','dumpsys','package',BUNDLE)),('death-logcat.txt',('logcat','-d','-t','2000','-v','threadtime')),('device-offset.txt',('shell','date','+%z')),('pid-after.txt',('shell','pidof',BUNDLE))]:
++                data=self.command(*args,allow_absent=name=='pid-after.txt'); (self.evidence/name).write_bytes(data); texts[name]=data.decode()
++            observed=int(time.time()*1000)
++            require(not texts['pid-after.txt'].strip(), 'Predecessor process still alive or was replaced')
++            permission(texts['permission-after.txt'],False)
++            at=kill_record(texts['exit-info.txt'],texts['death-logcat.txt'],preparation['marker'],texts['device-offset.txt'].strip(),observed)
++            for name,want in preparation['files_sha256'].items():
++                require(digest(self.read_private(name))==want,'Durable predecessor changed during OS kill')
++            return {'kill_utc_ms':at,'observed_utc_ms':observed,'reason':'PERMISSION CHANGE','process_id':preparation['native_pid']}
++        finally:self.save_receipts()
++
++
++def interrupted_errors(log, raw_log, preparation, death, exit_code, native_log_errors):
++    errors=[]
++    try:
++        require(preparation and death,'Missing prekill or actual OS termination evidence')
++        require(type(exit_code) is int and exit_code!=0,'Killed preparation cannot report successful test exit')
++        require(digest(raw_log[:preparation['pre_log_bytes']])==preparation['pre_log_sha256'],'Native prekill log prefix changed')
++        markers=[json.loads(raw) for raw in MARKER.findall(log)]
++        require(len(markers)==2 and [m.get('action') for m in markers]==['allow_permission_if_prompted',READY] and markers[1]==preparation['marker'], 'Missing, duplicate or stale preparation markers')
++        require(all(all(m.get(key)==preparation['marker'][key] for key in IDENTITY) and m.get('process_id')==preparation['native_pid'] for m in markers), 'Preparation action identity differs')
++        negative=[x for x in native_log_errors(log) if not x.startswith('No successful')]
++        require(not negative,'Unexpected native failure: '+str(negative))
++        require('DriverError: Failed to fulfill RequestData due to remote error' in log and 'Service has disappeared' in log,'Expected driver disconnection absent')
++        require(death['process_id']==preparation['native_pid'],'OS kill differs from prepared PID')
++    except (ValueError,KeyError,TypeError) as error:errors.append(str(error))
++    return errors
++
++
++def switch(xml_text, checked):
++    start=xml_text.find('<?xml'); end=xml_text.find('</hierarchy>')
++    require(start>=0 and end>=0,'Missing actual UI hierarchy')
++    tree=ET.fromstring(xml_text[start:end+len('</hierarchy>')])
++    nodes=list(tree.iter('node'))
++    require(any(n.get('resource-id')=='com.android.settings:id/switch_text' and n.get('text')=='All Tideglass notifications' for n in nodes),'Wrong Settings notification page')
++    matches=[n for n in nodes if n.get('resource-id')=='android:id/switch_widget' and n.get('package')=='com.android.settings']
++    require(len(matches)==1 and matches[0].get('enabled')=='true' and matches[0].get('checked')==str(checked).lower(),'Actual Settings switch state differs')
++    bounds=re.fullmatch(r'\[(\d+),(\d+)\]\[(\d+),(\d+)\]',matches[0].get('bounds',''))
++    require(bounds is not None,'Missing actual switch bounds')
++    return tuple(map(int,bounds.groups()))
++
++
++def validate_operator(packet_path, prior):
++    """Prospective packet made by the actual UI operator, never generated here.
++
++    JSON has identity, process_id, before/action_started/action_finished/after UTC
++    milliseconds, tap_argv/exit_code, and files_sha256 of before/after XML+PNG and
++    Settings activity dump. Raw UI screenshots also require independent viewing.
++    """
++    packet_path=Path(packet_path); p=read_json(packet_path)
++    for key in IDENTITY:require(p.get(key)==prior.get(key),'Operator run identity differs: '+key)
++    require(p.get('process_id')==prior['restart_preparation']['native_pid'],'Operator PID differs')
++    required={'before.xml','after.xml','before.png','after.png','settings-activities.txt'}
++    hashes=p.get('files_sha256',{}); require(set(hashes)==required,'Incomplete/extra operator evidence')
++    raw={}
++    for name,want in hashes.items():
++        path=packet_path.parent/name; require(path.is_file() and not path.is_symlink() and digest(path.read_bytes())==want,'Operator evidence hash mismatch: '+name); raw[name]=path.read_bytes()
++    x0,y0,x1,y1=switch(raw['before.xml'].decode(),True); switch(raw['after.xml'].decode(),False)
++    activity=raw['settings-activities.txt'].decode()
++    require('android.settings.APP_NOTIFICATION_SETTINGS' in activity and 'launchedFromPackage='+BUNDLE in activity and 'com.android.settings' in activity and re.search(r'ProcessRecord\{[^\n]*\b'+str(p['process_id'])+r':dev\.tideglass\.game/',activity), 'Settings activity lacks bound package/PID route')
++    cmd=p.get('tap_argv',[]); require(len(cmd)==9 and Path(cmd[0]).name=='adb' and cmd[1:7]==['-s',prior['device'],'shell','input','touchscreen','tap'],'Not an actual targeted UI tap')
++    require(all(re.fullmatch(r'\d+',str(n)) for n in cmd[7:]),'Invalid tap coordinates')
++    require(x0<=int(cmd[7])<x1 and y0<=int(cmd[8])<y1 and p.get('tap_exit_code')==0,'Tap outside observed enabled switch or failed')
++    times=[p.get(k) for k in ('before_utc_ms','action_started_utc_ms','action_finished_utc_ms','after_utc_ms')]
++    require(all(type(n) is int for n in times) and times==sorted(times),'Operator timestamps missing/out of order')
++    marker=prior['restart_preparation']['marker']; kill=prior['restart_death']['kill_utc_ms']
++    require(marker['utc_ms']<=times[0]<=times[1]<=kill<=times[2]<=times[3]<=prior['restart_death']['observed_utc_ms']+30000,'UI action does not bind actual fresh permission kill')
++    for name in ('before.png','after.png'):require(raw[name].startswith(b'\x89PNG\r\n\x1a\n') and len(raw[name])>100,'Missing raw UI screenshot')
++    return p
++
++
++def validate_predecessor(path, context, current_pins, operator_path, native_log_errors):
++    path=Path(path); prior=read_json(path)
++    for key in ('candidate_fingerprint','harness_sha256','device','device_label','platform','run_id'):
++        require(prior.get(key)==context[key], 'Predecessor mismatch: '+key)
++    require(prior.get('scenario')=='revoked-prepare' and prior.get('status')=='os-interrupted-awaiting-ui-evidence' and prior.get('passed') is False and prior.get('errors')==[],'Not a qualified interrupted preparation')
++    require(prior.get('production_differences_after')==[] and prior.get('frozen_source_unchanged') is True and prior.get('source_differences_during_run')==[] and prior.get('generated_harness_matches') is True,'Predecessor source integrity failed')
++    require(prior.get('source_pins')==current_pins,'Predecessor tool/harness revision differs')
++    hashes=prior.get('evidence_sha256',{})
++    required={'run.log','revoke-checkpoint.json','pre-revocation.log','restart-host-receipts.json','exit-info.txt','permission-after.txt','death-logcat.txt','device-offset.txt','pid-after.txt',*current_pins}
++    require(required<=hashes.keys(),'Predecessor evidence incomplete')
++    for name,want in hashes.items():
++        require(Path(name).name==name and name not in ('.','..','verification.json'),'Unsafe predecessor evidence path')
++        p=path.parent/name; require(p.is_file() and not p.is_symlink() and digest(p.read_bytes())==want,'Predecessor evidence changed: '+name)
++    require(all(hashes.get(name)==want for name,want in current_pins.items()), 'Archived reviewed source hash differs')
++    raw=(path.parent/'revoke-checkpoint.json').read_bytes(); prep=prior['restart_preparation']
++    c=checkpoint(raw,prior,prep['marker']); require(digest(raw)==prep['checkpoint_sha256'],'Checkpoint pin differs')
++    require((path.parent/'pre-revocation.log').read_bytes()==(path.parent/'run.log').read_bytes()[:prep['pre_log_bytes']],'Prekill log bytes differ')
++    for name,want in c['files_sha256'].items():require(hashes.get(file_name(name))==want,'Predecessor durable export missing')
++    death=prior['restart_death']
++    actual=kill_record((path.parent/'exit-info.txt').read_text(),(path.parent/'death-logcat.txt').read_text(),prep['marker'],(path.parent/'device-offset.txt').read_text().strip(),death['observed_utc_ms'])
++    require(actual==death['kill_utc_ms'] and not (path.parent/'pid-after.txt').read_text().strip(),'Death evidence differs')
++    permission((path.parent/'permission-after.txt').read_text(),False)
++    require(not interrupted_errors((path.parent/'run.log').read_text(),(path.parent/'run.log').read_bytes(),prep,death,prior['exit_code'],native_log_errors),'Interrupted log evidence invalid')
++    validate_host_receipts(read_json(path.parent/'restart-host-receipts.json'), prior, prep, death)
++    validate_operator(operator_path,prior)
++    return prior,c
++
++
++def recovery_errors(payload, context, prior, checkpoint_value, log, marker_pattern, native_log_errors):
++    errors=[]
++    def check(value,message):
++        if not value:errors.append(message)
++    if not isinstance(payload,dict):return ['Recovery result absent']
++    for key in IDENTITY:check(type(payload.get(key)) is type(context[key]) and payload.get(key)==context[key],'Recovery identity mismatch: '+key)
++    for key,want in {'gateway':'NativeNotificationGateway','preference_store':'FileNotificationPreferences','fixture_kind':'SYNTHETIC GAMEPLAY SNAPSHOT; REAL OS NOTIFICATION API','clock':'actual_utc_and_monotonic_stopwatch'}.items():
++        check(payload.get(key)==want,'Missing actual recovery API/provenance: '+key)
++    events=payload.get('lifecycle_events')
++    check(isinstance(events,list) and all(isinstance(e,dict) and e.get('state') in ('resumed','inactive','hidden','paused','detached') and type(e.get('utc_ms')) is int for e in events),'Missing recovery lifecycle observations')
++    pid=payload.get('process_id'); check(type(pid) is int and pid>1 and pid!=prior['restart_preparation']['native_pid'],'Recovery requires a different actual PID')
++    check(payload.get('previous_process_id')==prior['restart_preparation']['native_pid'],'Wrong previous PID')
++    check(payload.get('predecessor_verification_id')==prior['verification_id'] and payload.get('predecessor_checkpoint_sha256')==prior['restart_preparation']['checkpoint_sha256'],'Recovery predecessor differs')
++    check(payload.get('completed') is True and payload.get('predecessor_default_opted_out') is True,'Recovery incomplete/default proof missing')
++    for key in ('permission_before_initialize','permission_after_initialize','permission_after_reoptin'):check(payload.get(key)=='denied','Actual denied permission missing: '+key)
++    check(payload.get('remembered_opt_in_after_initialize') is True,'Restored preference was replaced with fresh default')
++    for key in ('pending_before_initialize','active_before_initialize'):
++        rows=payload.get(key);check(isinstance(rows,list) and all(type(n) is int and n in (77101,77102,77103) for n in rows),'Missing actual pre-initialization observation')
++    for key in ('pending_after_initialize','active_after_initialize','denied_schedule_pending_ids','denied_schedule_active_ids','return_pending_ids','return_active_ids'):check(payload.get(key)==[],'Effective cancellation/no-scheduling missing: '+key)
++    files=checkpoint_value['files_sha256'];saves={k:v for k,v in files.items() if k.startswith('save/')}
++    for key in ('recovery_files_before','recovery_files_before_reoptin'):check(payload.get(key)==files,'Predecessor durable bytes changed: '+key)
++    check(payload.get('recovery_save_files_after')==saves,'Recovered save changed')
++    observed=checkpoint_value['preparation']['plan_observation']; plan=checkpoint_value['preparation']['plan']
++    check(payload.get('restored_snapshot_id')==observed['saved_snapshot_id'] and payload.get('restored_payload_sha256')==plan['saved_payload_sha256'] and payload.get('restored_settled_through_utc_micros')==observed['saved_settled_through_utc_micros'],'Restored durable payload/cursor/snapshot differs')
++    check(payload.get('preferences_after_reoptin',{}).get('enabled') is False and bool(HEX.fullmatch(str(payload.get('preferences_sha256','')))),'Denied re-opt-in was not persisted')
++    init=payload.get('initialization_lifecycle_events');check(isinstance(init,list) and all(row.get('state')=='resumed' for row in init),'Boot unexpectedly opened OS permission UI')
++    try:
++        markers=[json.loads(x) for x in marker_pattern.findall(log)]
++        check(markers==payload.get('actions') and len(markers)==1 and markers[0].get('action')=='deny_permission_again_if_prompted','Wrong recovery action sequence')
++        for m in markers:check(all(m.get(k)==context[k] for k in IDENTITY) and m.get('process_id')==pid and type(m.get('utc_ms')) is int,'Recovery action identity differs')
++    except (ValueError,TypeError):errors.append('Malformed recovery action')
++    errors.extend(native_log_errors(log));return errors
++
++
++def validate_host_receipts(rows, context, preparation, death):
++    require(isinstance(rows,list) and rows,'Missing raw host observations')
++    pid=preparation['native_pid']; marker=preparation['marker']
++    for row in rows:
++        command=row.get('argv',[])
++        require(len(command)>=4 and Path(command[0]).name=='adb' and command[1:3]==['-s',context['device']], 'Host observation targeted another device')
++        require(type(row.get('started_utc_ms')) is int and type(row.get('finished_utc_ms')) is int and row['started_utc_ms']<=row['finished_utc_ms'], 'Host observation time missing')
++    def matching(parts): return [row for row in rows if row['argv'][3:]==parts]
++    live=[row for row in matching(['shell','pidof',BUNDLE]) if row.get('exit_code')==0 and row.get('stdout','').strip()==str(pid) and marker['utc_ms']<=row['started_utc_ms']<=row['finished_utc_ms']<death['kill_utc_ms']]
++    require(len(live)>=2,'Exact PID not observed alive around checkpoint export')
++    cmdline=[row for row in matching(['exec-out','run-as',BUNDLE,'cat',f'/proc/{pid}/cmdline']) if row.get('exit_code')==0 and row.get('stdout','').split('\0',1)[0]==BUNDLE and row['finished_utc_ms']<death['kill_utc_ms']]
++    require(len(cmdline)>=2,'Prekill PID/package binding missing')
++    absent=[row for row in matching(['shell','pidof',BUNDLE]) if row.get('exit_code')==1 and not row.get('stdout') and not row.get('stderr') and row['started_utc_ms']>=death['kill_utc_ms']]
++    require(absent,'Actual absent PID observation missing')
++    for relative,want in {'revoke-checkpoint.json':preparation['checkpoint_sha256'],**preparation['files_sha256']}.items():
++        limit=131072 if relative=='revoke-checkpoint.json' else 2*1024*1024+65536
++        captures=matching(['exec-out','run-as',BUNDLE,'head','-c',str(limit+1),fixture(context)+'/'+relative])
++        require(any(row.get('exit_code')==0 and marker['utc_ms']<=row['started_utc_ms']<=row['finished_utc_ms']<death['kill_utc_ms'] and digest(row.get('stdout','').encode())==want for row in captures),'Missing exact prekill file export: '+relative)
+--- /dev/null
++++ b/tool/test_reminder_restart.py
+@@ -0,0 +1,225 @@
++"""Host-only controls for restart qualification. No device/Flutter invocation."""
++import copy
++from datetime import datetime,timezone
++import json
++from pathlib import Path
++import re
++import subprocess
++from tempfile import TemporaryDirectory
++import unittest
++from unittest.mock import patch
++
++import reminder_restart as restart
++import verify_native_reminders as runner
++
++GOOD_LOG='I/flutter ( 43): 00:10 +1: All tests passed!\nAll tests passed.\n'
++DISCONNECT='Unhandled exception:\nDriverError: Failed to fulfill RequestData due to remote error\nOriginal error: ext.flutter.driver: (112) Service has disappeared\n'
++NOW=1792944470000
++
++
++def encode(value):return json.dumps(value,separators=(',',':')).encode()
++
++
++def shape():
++    context={'verification_id':'fresh-preparation','candidate_fingerprint':'a'*64,'harness_sha256':'b'*64,
++             'scenario':'revoked-prepare','run_id':'pair-one','device_label':'android','platform':'android','device':'emulator-5556'}
++    action={k:context[k] for k in restart.IDENTITY}; action.update(process_id=42,action='allow_permission_if_prompted',utc_ms=NOW-100)
++    payload={'radiance':'synthetic-control'}
++    observed={'warning_key':None,'pending_ids':[77101],'saved_payload':payload,'game_payload':payload,
++              'saved_settled_through_utc_micros':NOW*1000,'game_settled_through_utc_micros':NOW*1000,'saved_snapshot_id':'snapshot-one'}
++    plan={'ids':[77101],'kinds':['focus'],'production_lifecycle':True,'body':'Focus is available for your next constellation. Return whenever you like.',
++          'background_call_utc_ms':NOW-1000,'scheduled_observed_utc_ms':NOW-500,'due_utc_ms':NOW+300000,
++          'saved_snapshot_id':'snapshot-one','saved_payload_sha256':restart.digest(encode(payload))}
++    data={'notification_preferences.json':encode({'enabled':True}),'save/progress.0.json':b'{"save_id":"snapshot-one"}'}
++    prep={**{k:context[k] for k in restart.IDENTITY},'process_id':42,'completed':False,'default_opted_out':True,'default_preferences_file_absent':True,'default_pending_ids':[],
++          'permission_before_initialize':'allowed','permission_after_initialize':'allowed','permission_after_opt_in':'allowed',
++          'gateway':'NativeNotificationGateway','preference_store':'FileNotificationPreferences','preferences_after_opt_in':{'enabled':True},
++          'actions':[action],'initialization_lifecycle_events':[],'lifecycle_callback_failures':[],
++          'plan':plan,'plan_observation':observed,'preferences_sha256':restart.digest(data['notification_preferences.json'])}
++    check={'version':1,'written_utc_ms':NOW,'preparation':prep,'files_sha256':{k:restart.digest(v) for k,v in data.items()}}
++    raw=encode(check)
++    marker={**{k:context[k] for k in restart.IDENTITY},'process_id':42,'action':restart.READY,'utc_ms':NOW+1,
++            'checkpoint':restart.fixture(context)+'/revoke-checkpoint.json','checkpoint_sha256':restart.digest(raw)}
++    return context,check,marker,data
++
++
++def native_log(check,marker):
++    return ''.join('I/flutter ( 42): TIDEGLASS_REMINDER_ACTION '+json.dumps(v)+'\n' for v in [*check['preparation']['actions'],marker])
++
++
++def exit_text(pid=42,reason=8,at=NOW+10000):
++    stamp=datetime.fromtimestamp(at/1000,timezone.utc).strftime('%Y-%m-%d %H:%M:%S.%f')[:-3]
++    return f'package: dev.tideglass.game\nApplicationExitInfo #0:\n timestamp={stamp} pid={pid} realUid=123\n process=dev.tideglass.game reason={reason} (PERMISSION CHANGE) subreason=0\n description=PermissionHelper\n'
++
++
++def xml(checked):
++    return ('<?xml version="1.0"?><hierarchy><node resource-id="com.android.settings:id/switch_text" text="All Tideglass notifications"/>'
++            '<node resource-id="android:id/switch_widget" package="com.android.settings" enabled="true" checked="'+str(checked).lower()+'" bounds="[10,20][40,50]"/></hierarchy>UI hierchary dumped to: /dev/tty')
++
++
++def world(base):
++    context,c,m,data=shape();raw=encode(c); prelog=native_log(c,m).encode();full=prelog+DISCONNECT.encode()
++    source={'harness.dart':b'reviewed harness','driver.dart':b'reviewed driver','verify_native_reminders.py':b'reviewed runner','reminder_restart.py':b'reviewed restart','verify_native.py':b'reviewed verify','build_native.py':b'reviewed build'}
++    # Keep context and checkpoint consistent with the reviewed harness bytes.
++    h=restart.digest(source['harness.dart']);context['harness_sha256']=h;c['preparation']['harness_sha256']=h;c['preparation']['actions'][0]['harness_sha256']=h;m['harness_sha256']=h
++    raw=encode(c);m['checkpoint_sha256']=restart.digest(raw);prelog=native_log(c,m).encode();full=prelog+DISCONNECT.encode()
++    preparation={'marker':m,'checkpoint_sha256':restart.digest(raw),'native_pid':42,'pre_log_bytes':len(prelog),'pre_log_sha256':restart.digest(prelog),'files_sha256':c['files_sha256']}
++    death={'process_id':42,'kill_utc_ms':NOW+10000,'observed_utc_ms':NOW+20000,'reason':'PERMISSION CHANGE'}
++    def receipt(parts,stdout,at,code=0):return {'argv':['/sdk/adb','-s','emulator-5556',*parts],'started_utc_ms':at,'finished_utc_ms':at+1,'exit_code':code,'stdout':stdout,'stderr':''}
++    receipts=[]
++    for at in (NOW+10,NOW+1000):
++        receipts += [receipt(['shell','pidof',restart.BUNDLE],'42\n',at),receipt(['exec-out','run-as',restart.BUNDLE,'cat','/proc/42/cmdline'],restart.BUNDLE+'\0',at+2)]
++    for relative,content in {'revoke-checkpoint.json':raw,**data}.items():
++        limit=131072 if relative=='revoke-checkpoint.json' else 2*1024*1024+65536
++        receipts.append(receipt(['exec-out','run-as',restart.BUNDLE,'head','-c',str(limit+1),restart.fixture(context)+'/'+relative],content.decode(),NOW+100))
++    receipts.append(receipt(['shell','pidof',restart.BUNDLE],'',NOW+11000,1))
++    files={**source,'run.log':full,'pre-revocation.log':prelog,'revoke-checkpoint.json':raw,
++           'restart-host-receipts.json':encode(receipts),'exit-info.txt':exit_text().encode(),
++           'permission-after.txt':b'  Package [dev.tideglass.game]\n android.permission.POST_NOTIFICATIONS: granted=false, flags=[]\n',
++           'death-logcat.txt':b'10-25 16:08:00.000 1 2 I ActivityManager: Killing 42:dev.tideglass.game/u0a2 (adj 700): PermissionHelper\n',
++           'device-offset.txt':b'+0000\n','pid-after.txt':b'',
++           **{restart.file_name(k):v for k,v in data.items()}}
++    for name,content in files.items():(base/name).write_bytes(content)
++    pins={k:restart.digest(v) for k,v in source.items()}
++    prior={**context,'source_pins':pins,'status':'os-interrupted-awaiting-ui-evidence','passed':False,'errors':[],
++           'production_differences_after':[],'frozen_source_unchanged':True,'source_differences_during_run':[],
++           'generated_harness_matches':True,'restart_preparation':preparation,'restart_death':death,'exit_code':1,
++           'evidence_sha256':{k:restart.digest(v) for k,v in files.items()}}
++    (base/'verification.json').write_bytes(encode(prior))
++    opdir=base/'operator';opdir.mkdir()
++    opfiles={'before.xml':xml(True).encode(),'after.xml':xml(False).encode(),'before.png':b'\x89PNG\r\n\x1a\n'+b'a'*150,'after.png':b'\x89PNG\r\n\x1a\n'+b'b'*150,
++             'settings-activities.txt':b'com.android.settings/.Settings$AppNotificationSettingsActivity\nandroid.settings.APP_NOTIFICATION_SETTINGS\nlaunchedFromPackage=dev.tideglass.game\napp=ProcessRecord{abc 42:dev.tideglass.game/u0a2}\n'}
++    for name,content in opfiles.items():(opdir/name).write_bytes(content)
++    op={**{k:prior[k] for k in restart.IDENTITY},'process_id':42,'before_utc_ms':NOW+2000,'action_started_utc_ms':NOW+9000,'action_finished_utc_ms':NOW+10001,'after_utc_ms':NOW+15000,
++        'tap_argv':['/sdk/adb','-s','emulator-5556','shell','input','touchscreen','tap','25','35'],'tap_exit_code':0,'files_sha256':{k:restart.digest(v) for k,v in opfiles.items()}}
++    (opdir/'operator.json').write_bytes(encode(op))
++    recover={**context,'scenario':'revoked-recover','verification_id':'fresh-recovery'}
++    return prior,c,recover,pins,opdir/'operator.json'
++
++
++class RestartProtocolTests(unittest.TestCase):
++    def test_fresh_checkpoint_positive(self):
++        ctx,c,m,_=shape();self.assertEqual(restart.checkpoint(encode(c),ctx,m),c)
++    def test_checkpoint_rejects_stale_identity_pid_path_hash_and_minimum(self):
++        ctx,c,m,_=shape()
++        for key,value in [('process_id',43),('candidate_fingerprint','f'*64),('checkpoint','/tmp/checkpoint'),('checkpoint_sha256','c'*64),('utc_ms',NOW-1)]:
++            bad=copy.deepcopy(m);bad[key]=value
++            with self.subTest(key=key),self.assertRaises(ValueError):restart.checkpoint(encode(c),ctx,bad)
++        bad=copy.deepcopy(c);bad['preparation']['plan']['due_utc_ms']=NOW+1000
++        cm={**m,'checkpoint_sha256':restart.digest(encode(bad))}
++        with self.assertRaises(ValueError):restart.checkpoint(encode(bad),ctx,cm)
++    def test_checkpoint_rejects_replaced_save_and_fresh_optout(self):
++        ctx,c,m,_=shape()
++        for mutate in [lambda q:q['preparation']['plan_observation'].update(game_payload={}),lambda q:q['files_sha256'].update({'../private':'c'*64}),lambda q:q['preparation']['preferences_after_opt_in'].update(enabled=False),lambda q:q['preparation'].update(completed=True),lambda q:q['preparation'].update(lifecycle_callback_failures=[{'error':'x'}])]:
++            bad=copy.deepcopy(c);mutate(bad);cm={**m,'checkpoint_sha256':restart.digest(encode(bad))}
++            with self.assertRaises(ValueError):restart.checkpoint(encode(bad),ctx,cm)
++    def test_actual_permission_kill_positive_and_wrong_old_pid_reason_time_rejected(self):
++        _,_,m,_=shape();log='Killing 42:dev.tideglass.game/u0a2 (adj 700): PermissionHelper\n'
++        self.assertEqual(restart.kill_record(exit_text(),log,m,'+0000',NOW+20000),NOW+10000)
++        for text in [exit_text(pid=41),exit_text(reason=10),exit_text(at=NOW-10000),exit_text(at=NOW+181000),exit_text()+exit_text()]:
++            with self.subTest(text=text),self.assertRaises(ValueError):restart.kill_record(text,log,m,'+0000',NOW+200000)
++        with self.assertRaises(ValueError):restart.kill_record(exit_text(),'unrelated',m,'+0000',NOW+20000)
++    def test_permission_observation_cannot_be_other_package_or_allowed(self):
++        restart.permission('Package [dev.tideglass.game]\nandroid.permission.POST_NOTIFICATIONS: granted=false, flags=[]',False)
++        for text in ['Package [other]\nandroid.permission.POST_NOTIFICATIONS: granted=false,','Package [dev.tideglass.game]\nandroid.permission.POST_NOTIFICATIONS: granted=true,']:
++            with self.assertRaises(ValueError):restart.permission(text,False)
++    def test_full_predecessor_positive_with_realistic_raw_evidence(self):
++        with TemporaryDirectory() as tmp:
++            base=Path(tmp);prior,c,ctx,pins,op=world(base)
++            self.assertEqual(restart.validate_predecessor(base/'verification.json',ctx,pins,op,runner.verify_native.native_log_errors),(prior,c))
++    def test_full_predecessor_rejects_same_process_old_scenario_or_false_pass(self):
++        with TemporaryDirectory() as tmp:
++            base=Path(tmp);prior,c,ctx,pins,op=world(base)
++            for field,value in [('scenario','revoked'),('passed',True),('errors',['old failure']),('frozen_source_unchanged',False),('device','emulator-5554'),('status','passed')]:
++                bad={**prior,field:value};(base/'verification.json').write_bytes(encode(bad))
++                with self.subTest(field=field),self.assertRaises(ValueError):restart.validate_predecessor(base/'verification.json',ctx,pins,op,runner.verify_native.native_log_errors)
++    def test_changed_archived_harness_durable_file_and_unsafe_evidence_rejected(self):
++        for name in ['harness.dart','save-progress.0.json','run.log']:
++            with TemporaryDirectory() as tmp:
++                base=Path(tmp);prior,c,ctx,pins,op=world(base);(base/name).write_text('changed')
++                with self.subTest(name=name),self.assertRaises(ValueError):restart.validate_predecessor(base/'verification.json',ctx,pins,op,runner.verify_native.native_log_errors)
++        with TemporaryDirectory() as tmp:
++            base=Path(tmp);prior,c,ctx,pins,op=world(base);prior['evidence_sha256']['../outside']='c'*64;(base/'verification.json').write_bytes(encode(prior))
++            with self.assertRaises(ValueError):restart.validate_predecessor(base/'verification.json',ctx,pins,op,runner.verify_native.native_log_errors)
++    def test_host_observations_require_actual_live_pid_cmdline_and_prekill_bytes(self):
++        with TemporaryDirectory() as tmp:
++            base=Path(tmp);prior,_,_,_,_=world(base);rows=restart.read_json(base/'restart-host-receipts.json')
++            restart.validate_host_receipts(rows,prior,prior['restart_preparation'],prior['restart_death'])
++            for mutation in [lambda x:[r for r in x if 'pidof' not in r['argv']],lambda x:[r for r in x if 'cmdline' not in ' '.join(r['argv'])],lambda x:[r for r in x if 'head' not in r['argv']]]:
++                with self.assertRaises(ValueError):restart.validate_host_receipts(mutation(copy.deepcopy(rows)),prior,prior['restart_preparation'],prior['restart_death'])
++    def test_actual_ui_packet_rejects_wrong_device_pid_tap_and_temporal_binding(self):
++        with TemporaryDirectory() as tmp:
++            base=Path(tmp);prior,_,_,_,op=world(base);valid=restart.read_json(op)
++            self.assertEqual(restart.validate_operator(op,prior),valid)
++            for field,value in [('process_id',99),('action_started_utc_ms',NOW+11000),('tap_exit_code',1),('tap_argv',['adb','-s','emulator-5554','shell','input','touchscreen','tap','25','35']),('tap_argv',['adb','-s','emulator-5556','shell','input','touchscreen','tap','99','99'])]:
++                op.write_bytes(encode({**valid,field:value}))
++                with self.subTest(field=field),self.assertRaises(ValueError):restart.validate_operator(op,prior)
++    def test_ui_switched_state_and_package_route_are_required(self):
++        with TemporaryDirectory() as tmp:
++            base=Path(tmp);prior,_,_,_,op=world(base);valid=restart.read_json(op)
++            for name,content in [('after.xml',xml(True).encode()),('settings-activities.txt',b'other package')]:
++                (op.parent/name).write_bytes(content);bad=copy.deepcopy(valid);bad['files_sha256'][name]=restart.digest(content);op.write_bytes(encode(bad))
++                with self.assertRaises(ValueError):restart.validate_operator(op,prior)
++    def test_unexpected_test_failure_or_fake_success_is_not_permission_interruption(self):
++        with TemporaryDirectory() as tmp:
++            base=Path(tmp);prior,_,_,_,_=world(base);raw=(base/'run.log').read_bytes();args=(prior['restart_preparation'],prior['restart_death'])
++            self.assertEqual(restart.interrupted_errors(raw.decode(),raw,*args,1,runner.verify_native.native_log_errors),[])
++            for log,code in [(raw.decode()+'\nEXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK',1),(raw.decode(),0),(raw.decode().replace('Service has disappeared','some unrelated error'),1)]:
++                self.assertTrue(restart.interrupted_errors(log,log.encode(),*args,code,runner.verify_native.native_log_errors))
++    def test_private_path_refuses_unlisted_files_before_any_command(self):
++        ctx,_,_,_=shape()
++        with TemporaryDirectory() as tmp,patch.object(restart.subprocess,'run') as execute:
++            host=restart.Host(Path(tmp),ctx,Path(tmp))
++            with self.assertRaises(ValueError):host.read_private('../ordinary-save')
++            execute.assert_not_called()
++    def test_readonly_host_timeout_is_not_a_success(self):
++        ctx,_,_,_=shape()
++        with TemporaryDirectory() as tmp,patch.object(restart.subprocess,'run',side_effect=subprocess.TimeoutExpired('adb',20)):
++            host=restart.Host(Path(tmp),ctx,Path(tmp))
++            with self.assertRaises(subprocess.TimeoutExpired):host.command('shell','pidof',restart.BUNDLE)
++    def test_original_request_refusals_and_android_only_restart(self):
++        for device in [runner.PROTECTED_DEVICE,'R58-physical','01234567-1234-1234-1234-123456789abc']:
++            with self.assertRaises(ValueError):runner.validate_request(device,'android','revoked-prepare','fresh')
++        self.assertEqual(runner.validate_request('emulator-5556','android','revoked-prepare','fresh'),'android')
++
++
++class RecoveryResultTests(unittest.TestCase):
++    def setUp(self):
++        self.tmp=TemporaryDirectory();self.addCleanup(self.tmp.cleanup);self.base=Path(self.tmp.name)
++        self.prior,self.c,self.ctx,self.pins,self.op=world(self.base)
++        act={k:self.ctx[k] for k in restart.IDENTITY};act.update(process_id=43,action='deny_permission_again_if_prompted',utc_ms=NOW+50000)
++        saved=self.c['preparation']['plan_observation'];plan=self.c['preparation']['plan'];files=self.c['files_sha256']
++        self.value={**{k:self.ctx[k] for k in restart.IDENTITY},'process_id':43,'previous_process_id':42,'completed':True,
++            'gateway':'NativeNotificationGateway','preference_store':'FileNotificationPreferences','fixture_kind':'SYNTHETIC GAMEPLAY SNAPSHOT; REAL OS NOTIFICATION API','clock':'actual_utc_and_monotonic_stopwatch','lifecycle_events':[],
++            'predecessor_verification_id':self.prior['verification_id'],'predecessor_checkpoint_sha256':self.prior['restart_preparation']['checkpoint_sha256'],
++            'predecessor_default_opted_out':True,'permission_before_initialize':'denied','permission_after_initialize':'denied','permission_after_reoptin':'denied',
++            'remembered_opt_in_after_initialize':True,'pending_before_initialize':[77101],'active_before_initialize':[],
++            'pending_after_initialize':[],'active_after_initialize':[],'denied_schedule_pending_ids':[],'denied_schedule_active_ids':[],'return_pending_ids':[],'return_active_ids':[],
++            'recovery_files_before':files,'recovery_files_before_reoptin':files,'recovery_save_files_after':{k:v for k,v in files.items() if k.startswith('save/')},
++            'restored_snapshot_id':saved['saved_snapshot_id'],'restored_payload_sha256':plan['saved_payload_sha256'],'restored_settled_through_utc_micros':saved['saved_settled_through_utc_micros'],
++            'preferences_after_reoptin':{'enabled':False},'preferences_sha256':'d'*64,'initialization_lifecycle_events':[],'actions':[act]}
++    def check(self,value):
++        log=''.join('I/flutter ( 43): TIDEGLASS_REMINDER_ACTION '+json.dumps(a)+'\n' for a in value['actions'])+GOOD_LOG
++        return restart.recovery_errors(value,self.ctx,self.prior,self.c,log,runner.MARKER,runner.verify_native.native_log_errors)
++    def test_gateway_clock_and_native_observations_cannot_be_substituted(self):
++        for key,val in [('gateway','MockGateway'),('clock','fake_clock'),('lifecycle_events',None)]:
++            bad=copy.deepcopy(self.value);bad[key]=val
++            with self.subTest(key=key):self.assertTrue(self.check(bad))
++    def test_complete_restart_positive(self):self.assertEqual(self.check(self.value),[])
++    def test_same_pid_wrong_predecessor_or_absent_real_denial_fail(self):
++        for key,val in [('process_id',42),('previous_process_id',99),('predecessor_verification_id','other'),('permission_before_initialize','allowed'),('permission_after_reoptin','allowed'),('completed',False)]:
++            bad=copy.deepcopy(self.value);bad[key]=val
++            with self.subTest(key=key):self.assertTrue(self.check(bad))
++    def test_pending_after_boot_and_changed_save_fail(self):
++        for key,val in [('pending_after_initialize',[77101]),('active_after_initialize',[77101]),('denied_schedule_pending_ids',[77101]),('recovery_files_before',{}),('recovery_save_files_after',{}),('restored_snapshot_id','other'),('remembered_opt_in_after_initialize',False),('preferences_after_reoptin',{'enabled':True})]:
++            bad=copy.deepcopy(self.value);bad[key]=val
++            with self.subTest(key=key):self.assertTrue(self.check(bad))
++    def test_android_already_cleared_pending_is_recorded_honestly(self):
++        self.value['pending_before_initialize']=[];self.assertEqual(self.check(self.value),[])
++    def test_absent_before_observation_or_permission_prompt_on_boot_fail(self):
++        for key,val in [('pending_before_initialize',None),('active_before_initialize',None),('initialization_lifecycle_events',[{'state':'paused','utc_ms':NOW}]),('actions',[])]:
++            bad=copy.deepcopy(self.value);bad[key]=val
++            with self.subTest(key=key):self.assertTrue(self.check(bad))
++
++
++if __name__=='__main__':unittest.main()

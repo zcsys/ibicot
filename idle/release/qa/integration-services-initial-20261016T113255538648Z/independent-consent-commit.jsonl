@@ -1,0 +1,20 @@
+Resolving dependencies...
+Downloading packages...
+  material_color_utilities 0.13.0 (0.13.1 available)
+  test_api 0.7.12 (0.7.15 available)
+Got dependencies!
+2 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
+{"protocolVersion":"0.1.1","runnerVersion":null,"pid":24486,"type":"start","time":0}
+{"suite":{"id":0,"platform":"vm","path":"/Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-services-initial-20261016T113255538648Z/game/mobile/test/qa_integration_consent_commit_test.dart"},"type":"suite","time":0}
+{"test":{"id":1,"name":"loading /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-services-initial-20261016T113255538648Z/game/mobile/test/qa_integration_consent_commit_test.dart","suiteID":0,"groupIDs":[],"metadata":{"skip":false,"skipReason":null},"line":null,"column":null,"url":null},"type":"testStart","time":0}
+{"count":1,"time":3,"type":"allSuites"}
+{"testID":1,"result":"success","skipped":false,"hidden":true,"type":"testDone","time":1400}
+{"group":{"id":2,"suiteID":0,"parentID":null,"name":"","metadata":{"skip":false,"skipReason":null},"testCount":2,"line":null,"column":null,"url":null},"type":"group","time":1402}
+{"test":{"id":3,"name":"QA latest native opt-out also wins at a delayed remote commit","suiteID":0,"groupIDs":[2],"metadata":{"skip":false,"skipReason":null},"line":23,"column":3,"url":"file:///Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-services-initial-20261016T113255538648Z/game/mobile/test/qa_integration_consent_commit_test.dart"},"type":"testStart","time":1403}
+{"testID":3,"error":"Expected: <false>\n  Actual: <true>\n","stackTrace":"package:matcher                                     expect\npackage:flutter_test/src/widget_tester.dart 473:18  expect\ntest/qa_integration_consent_commit_test.dart 42:7   main.<fn>\n","isFailure":true,"type":"error","time":1439}
+{"testID":3,"result":"failure","skipped":false,"hidden":false,"type":"testDone","time":1440}
+{"test":{"id":4,"name":"QA latest buffer opt-out also wins at a delayed remote commit","suiteID":0,"groupIDs":[2],"metadata":{"skip":false,"skipReason":null},"line":46,"column":3,"url":"file:///Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-services-initial-20261016T113255538648Z/game/mobile/test/qa_integration_consent_commit_test.dart"},"type":"testStart","time":1440}
+{"testID":4,"error":"Expected: <false>\n  Actual: <true>\n","stackTrace":"package:matcher                                     expect\npackage:flutter_test/src/widget_tester.dart 473:18  expect\ntest/qa_integration_consent_commit_test.dart 64:7   main.<fn>\n","isFailure":true,"type":"error","time":1449}
+{"testID":4,"result":"failure","skipped":false,"hidden":false,"type":"testDone","time":1455}
+{"success":false,"type":"done","time":1467}

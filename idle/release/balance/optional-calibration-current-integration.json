@@ -1,0 +1,29 @@
+{
+  "status": "local_content_migration_author_and_non_author_flutter_pass",
+  "created_utc": "2026-10-21T11:08:13.596879+00:00",
+  "source_sha256": {
+    "game/content/progression/campaign.json": "37ef158a39b9f6ce944bea6fcfd4e5d2b6bd9c924b86b630b67fe276d812a7da",
+    "game/mobile/assets/progression/campaign.json": "37ef158a39b9f6ce944bea6fcfd4e5d2b6bd9c924b86b630b67fe276d812a7da",
+    "game/mobile/assets/config/manifest.json": "58c8cac53fa8679447d3f524bdc6979bf0c11127670840bf21c57cfffc2bbc72",
+    "game/mobile/lib/bundled_hashes.g.dart": "1e08946fdeb85061e757477602b309e1c6851729fd6f6a17c9168eef60a8e232",
+    "game/mobile/lib/content_compatibility.dart": "6df9f985ccba98b06dcb0de96d2800f31b4b721fde5e80e5de12550876a45552",
+    "game/mobile/lib/story_state.dart": "008c4c5ad721794809d38a00b72de32ecd98402a1acf2724f9eb1c4af6860cc4",
+    "game/mobile/lib/game_controller.dart": "f050c9b0c6c13dc31dad95e0dc5b51f78ee2f17c383ce59a3ab553c89adb4afa",
+    "game/mobile/lib/bootstrap.dart": "a9d0345bd6a22f9ba9de010fd96545efe2da0573049cdba89bd59810497910ef",
+    "game/mobile/test/bundled_content_test.dart": "b8ad84fbd05b3fe035e2cb110830b1870f8dd93e5b7108d25d03730360d5526c",
+    "game/progression/test/progression_test.dart": "e62ce72faf689aedebf51224d5e7740e0d88b4baca8caf99288aa4604d5493f6",
+    "game/content/locales/en-US/chapter.03.copy.json": "9ba739113d617e93e37f53991480041cd457645d83369c9b5727d525dc9ea694",
+    "source/content/en-US/chapter.03.copy.md": "f465c06ad3daac70bcd899ca09c0b492b5085b07abd3843039733d81d3b00671",
+    "game/simulation/lib/policy_run.dart": "2d01ebc469e38702473c5d9bea584bb818ede52a05eb4d8ba72d9be785e10480"
+  },
+  "evidence": [
+    "release/qa/integration-optional-calibration-20261021T110210355242Z/OPTIONAL_CALIBRATION_REVIEW.md",
+    "release/native-proof/root-current-integration-20261021T110234.004565Z/separate-verification.json",
+    "release/balance/optional-calibration-2026-10-21T105107709296Z/qualified-assertions.json"
+  ],
+  "source_drift_notes": [
+    "policy_run.dart stale mandatory comment corrected only; execution unchanged",
+    "Shared bootstrap/app have subsequent study/cache work; focused migration evidence does not qualify whole app"
+  ],
+  "release_ready": false
+}

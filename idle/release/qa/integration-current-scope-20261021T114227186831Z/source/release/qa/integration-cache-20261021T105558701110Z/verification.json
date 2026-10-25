@@ -1,0 +1,77 @@
+{
+  "source_fingerprint": "9b3daa1bd4c43bddfa9c958c1cb120a7fe37110e2876be3721def01d07d69a19",
+  "original_pinned_inputs": 13,
+  "additional_path_dependency_inputs": 19,
+  "all_frozen_hashes_unchanged": true,
+  "live_drift_at_close": [
+    "game/mobile/lib/service_cosmetics.dart",
+    "game/platform/lib/study_recorder.dart"
+  ],
+  "independent_tests": 8,
+  "author_tests_reproduced": 7,
+  "tests": [
+    {
+      "name": "three recent shares survive and fourth download never starts",
+      "result": "success"
+    },
+    {
+      "name": "expired archives removed; backward time protects them",
+      "result": "success"
+    },
+    {
+      "name": "exact 24h boundary retains recent files then removes expired files",
+      "result": "success"
+    },
+    {
+      "name": "fresh directory timestamp protects an archive with old file timestamp",
+      "result": "success"
+    },
+    {
+      "name": "global lock includes a waiting share and releases after callback failure",
+      "result": "success"
+    },
+    {
+      "name": "recent partial and empty reservations also consume the three slots",
+      "result": "success"
+    },
+    {
+      "name": "lock covers receiving sheet and releases after failure",
+      "result": "success"
+    },
+    {
+      "name": "cache root link and child directory link never delete external files",
+      "result": "success"
+    },
+    {
+      "name": "external link is never followed or deleted",
+      "result": "success"
+    },
+    {
+      "name": "unknown files refuse cleanup before any deletion",
+      "result": "success"
+    },
+    {
+      "name": "unknown nested content aborts the whole cleanup before deletion",
+      "result": "success"
+    },
+    {
+      "name": "oversized legacy archive refuses another download",
+      "result": "success"
+    },
+    {
+      "name": "exact per-file limit permits reservation while an extra byte refuses",
+      "result": "success"
+    },
+    {
+      "name": "real createTemp download naming remains recognized on later maintenance",
+      "result": "success"
+    },
+    {
+      "name": "bounded scan refuses large inventories without deleting",
+      "result": "success"
+    }
+  ],
+  "scope": "Pure filesystem policy and static export adapter review; no Flutter/native share proof; moving bootstrap/app excluded",
+  "production_acceptance_changed": false,
+  "harness_failure_preserved": "pub-get.log: omitted transitive path dependency, then exact hashed dependencies added; no production edit"
+}

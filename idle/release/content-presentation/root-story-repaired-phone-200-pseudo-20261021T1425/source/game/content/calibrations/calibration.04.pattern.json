@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "id": "calibration.04",
+  "title": "The Prism",
+  "intro": "One light can keep several colors.",
+  "instructions": "Start at star 1. Follow the drawn links and visit every star once, finishing at the marked last star. Undo or restart whenever you like. There is no timer.",
+  "nodes": [
+    {
+      "key": 0,
+      "label": "Star 1",
+      "x": 0.5,
+      "y": 0.12
+    },
+    {
+      "key": 1,
+      "label": "Star 2",
+      "x": 0.5,
+      "y": 0.88
+    },
+    {
+      "key": 2,
+      "label": "Star 3",
+      "x": 0.82,
+      "y": 0.35
+    },
+    {
+      "key": 3,
+      "label": "Star 4",
+      "x": 0.18,
+      "y": 0.7
+    },
+    {
+      "key": 4,
+      "label": "Star 5",
+      "x": 0.82,
+      "y": 0.7
+    },
+    {
+      "key": 5,
+      "label": "Star 6",
+      "x": 0.18,
+      "y": 0.35
+    }
+  ],
+  "edges": [
+    [
+      0,
+      1
+    ],
+    [
+      0,
+      2
+    ],
+    [
+      1,
+      3
+    ],
+    [
+      1,
+      4
+    ],
+    [
+      2,
+      3
+    ],
+    [
+      2,
+      4
+    ],
+    [
+      3,
+      5
+    ],
+    [
+      4,
+      5
+    ]
+  ],
+  "start": 0,
+  "end": 5,
+  "solution": [
+    0,
+    2,
+    4,
+    1,
+    3,
+    5
+  ],
+  "accessible_label": "Let the crew align The Prism",
+  "accessible_description": "Collect the same pattern and queue the same +20% production for ten minutes. This route uses one Focus charge, just like routing the constellation.",
+  "focus_cost": 1,
+  "reward_profile_id": "calibration.standard",
+  "time_limit_seconds": null,
+  "repeat_collectible_grant": false,
+  "status": "authored_runtime_integration_pending"
+}

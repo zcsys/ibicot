@@ -1,0 +1,7 @@
+# Independent metadata decision and locator clarification
+
+The lead's four-file scope-gate update is accepted at its declared bookkeeping scope. Exact before/after hashes and recursive changed paths are reproduced in `metadata-verification.json`. All65 original acceptance/dependency lists, package statuses and reviewers remain unchanged. All44 requirement/verification sentences remain unchanged; only S07/S33 receive the supported scope status/evidence. Launch-manifest changes only `scope_policy`; all164 asset records are identical. The artist status reference updates only the program hash, preserving historical artist records and every asset approval.
+
+The existing artist program-status cross-reference predates the forward audit. My forward audit's suggestion to create that clarification was stale; the lead correctly supplies the already-existing reference and this independent check confirms it. The sealed forward report remains unchanged.
+
+For precision, the notification symbol names and hashes in the forward report are correct, but its inline approximate line locators were low. The exact current `game/mobile/lib/notification_service.dart` locators are: `NativeNotificationGateway`263; `initialize`277; `permission`299; `requestPermission`322; `cancelReminders`341; `schedule`349; `timeZone`385; `openSettings`388; `NotificationService.native`417; service `initialize`455; `scheduleForAbsence`516. This correction changes no qualification conclusion. The later native reminder author should use these named production entry points and exact source pins.

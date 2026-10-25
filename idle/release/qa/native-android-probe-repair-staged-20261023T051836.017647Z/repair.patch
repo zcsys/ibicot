@@ -1,0 +1,11 @@
+--- a/tool/verify_current_runtime.py
++++ b/tool/verify_current_runtime.py
+@@ -347,7 +347,7 @@
+         # not be symlinks, FIFOs or unreadable directories. These are stopped
+         # synthetic fixtures, not a hostile concurrent-writer security claim.
+         def probe(flag: str, target: Path) -> bool:
+-            self.command(self.adb_command('exec-out', 'run-as', BUNDLE, 'test', flag, str(target)), allow_failure=True)
++            self.command(self.adb_command('shell', 'run-as', BUNDLE, 'test', flag, str(target)), allow_failure=True)
+             observation = self.observations[-1]
+             require(observation['exit_code'] in (0, 1) and not observation['stderr'] and not observation['stdout'],
+                     'Could not establish native fixture type/access')

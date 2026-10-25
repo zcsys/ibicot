@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "/Users/csys/Desktop/ibicot/idle/release/qa/current-native-20261023T044903.849353Z/replay.py", line 255, in <module>
+    main()
+    ~~~~^^
+  File "/Users/csys/Desktop/ibicot/idle/release/qa/current-native-20261023T044903.849353Z/replay.py", line 240, in main
+    for cell in terminal['cells']: review_cell(cell,manifest['source_fingerprint'])
+                                   ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/csys/Desktop/ibicot/idle/release/qa/current-native-20261023T044903.849353Z/replay.py", line 158, in review_cell
+    check('current_runtime_test.dart:845' in log and 'Expected: false' in log and 'Actual: <true>' in log, 'Actual failure located at guard absence precondition')
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/csys/Desktop/ibicot/idle/release/qa/current-native-20261023T044903.849353Z/replay.py", line 49, in check
+    assert ok, reason
+           ^^
+AssertionError: Actual failure located at guard absence precondition

@@ -1,0 +1,58 @@
+test_failed_frozen_verifier_blocks_export_even_if_live_test_passes (__main__.RuntimeBuildGateReview.test_failed_frozen_verifier_blocks_export_even_if_live_test_passes) ... FAIL
+test_passed_frozen_verifier_reaches_guarded_export_even_if_live_test_fails (__main__.RuntimeBuildGateReview.test_passed_frozen_verifier_reaches_guarded_export_even_if_live_test_fails) ... FAIL
+test_runtime_verifier_gate_is_not_hidden_by_other_tool_patterns (__main__.RuntimeBuildGateReview.test_runtime_verifier_gate_is_not_hidden_by_other_tool_patterns) ... ok
+
+======================================================================
+FAIL: test_failed_frozen_verifier_blocks_export_even_if_live_test_passes (__main__.RuntimeBuildGateReview.test_failed_frozen_verifier_blocks_export_even_if_live_test_passes)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/csys/Desktop/ibicot/idle/game/qa/review_current_runtime_build_gate.py", line 84, in test_failed_frozen_verifier_blocks_export_even_if_live_test_passes
+    self.probe(frozen_pass=False, live_pass=True)
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/csys/Desktop/ibicot/idle/game/qa/review_current_runtime_build_gate.py", line 63, in probe
+    self.assertEqual(build_native.main(), 1)
+                     ~~~~~~~~~~~~~~~~~^^
+  File "/Users/csys/Desktop/ibicot/idle/tool/build_native.py", line 254, in main
+    checked = subprocess.run(command, cwd=workspace, stdout=log, stderr=subprocess.STDOUT)
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/unittest/mock.py", line 1167, in __call__
+    return self._mock_call(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/unittest/mock.py", line 1171, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/unittest/mock.py", line 1232, in _execute_mock_call
+    result = effect(*args, **kwargs)
+  File "/Users/csys/Desktop/ibicot/idle/game/qa/review_current_runtime_build_gate.py", line 56, in guarded_run
+    self.assertEqual(kwargs['cwd'], candidate / 'workspace')
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: PosixPath('/private/var/folders/v5/s8bkjm8j2_142b2bq9[103 chars]ace') != PosixPath('/var/folders/v5/s8bkjm8j2_142b2bq970kylh00[95 chars]ace')
+
+======================================================================
+FAIL: test_passed_frozen_verifier_reaches_guarded_export_even_if_live_test_fails (__main__.RuntimeBuildGateReview.test_passed_frozen_verifier_reaches_guarded_export_even_if_live_test_fails)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/csys/Desktop/ibicot/idle/game/qa/review_current_runtime_build_gate.py", line 87, in test_passed_frozen_verifier_reaches_guarded_export_even_if_live_test_fails
+    self.probe(frozen_pass=True, live_pass=False)
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/csys/Desktop/ibicot/idle/game/qa/review_current_runtime_build_gate.py", line 63, in probe
+    self.assertEqual(build_native.main(), 1)
+                     ~~~~~~~~~~~~~~~~~^^
+  File "/Users/csys/Desktop/ibicot/idle/tool/build_native.py", line 254, in main
+    checked = subprocess.run(command, cwd=workspace, stdout=log, stderr=subprocess.STDOUT)
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/unittest/mock.py", line 1167, in __call__
+    return self._mock_call(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/unittest/mock.py", line 1171, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/unittest/mock.py", line 1232, in _execute_mock_call
+    result = effect(*args, **kwargs)
+  File "/Users/csys/Desktop/ibicot/idle/game/qa/review_current_runtime_build_gate.py", line 56, in guarded_run
+    self.assertEqual(kwargs['cwd'], candidate / 'workspace')
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: PosixPath('/private/var/folders/v5/s8bkjm8j2_142b2bq9[103 chars]ace') != PosixPath('/var/folders/v5/s8bkjm8j2_142b2bq970kylh00[95 chars]ace')
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.040s
+
+FAILED (failures=2)

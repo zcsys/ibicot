@@ -1,0 +1,40 @@
+Running Xcode build...                                          
+Xcode build done.                                           15.9s
+Failed to build iOS app
+Error output from Xcode build:
+↳
+    ** BUILD FAILED **
+
+
+Xcode's output:
+↳
+    Writing result bundle at path:
+    	/var/folders/v5/s8bkjm8j2_142b2bq970kylh0000gn/T/flutter_tools.m9l3ak/flutter_ios_build_temp_dirMoLqCl/temporary_xcresult_bundle
+
+    integration_test/evidence_9a5b1024430e_test.dart:10:8: Error: Error when reading 'lib/copy.dart': No such file or directory
+    import 'package:tideglass/copy.dart';
+           ^
+    integration_test/evidence_9a5b1024430e_test.dart:247:19: Error: Undefined name 'Copy'.
+        if (find.text(Copy.returnAcknowledge).evaluate().isNotEmpty) {
+                      ^^^^
+    integration_test/evidence_9a5b1024430e_test.dart:248:34: Error: Undefined name 'Copy'.
+          await tester.tap(find.text(Copy.returnAcknowledge));
+                                     ^^^^
+    Target kernel_snapshot_program failed: Exception
+    Failed to package /Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261016T095427.771900Z-ce46598c4b51/workspace/game/mobile.
+    Command PhaseScriptExecution failed with a nonzero exit code
+    note: Run script build phase 'Run Script' will be run during every build because the option to run the script phase "Based on dependency analysis" is unchecked. (in target 'Runner' from project 'Runner')
+    note: Run script build phase 'Thin Binary' will be run during every build because the option to run the script phase "Based on dependency analysis" is unchecked. (in target 'Runner' from project 'Runner')
+
+Could not build the application for the simulator.
+Application failed to start on attempt: 1
+VMServiceFlutterDriver: Connecting to Flutter application at http://127.0.0.1:58484/7WVNTB2nh6M=/
+VMServiceFlutterDriver: Isolate found with number: 3562337637061551
+VMServiceFlutterDriver: Isolate 3562337637061551 is runnable.
+VMServiceFlutterDriver: Isolate is paused at start.
+VMServiceFlutterDriver: Attempting to resume isolate
+flutter: 00:00 +0: seeded native purchase, confirmed Rechart and durable reload
+VMServiceFlutterDriver: Connected to Flutter application.
+flutter: 00:04 +1: (tearDownAll)
+flutter: 00:04 +2: All tests passed!
+All tests passed.

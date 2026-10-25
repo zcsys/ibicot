@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "study_id": "tideglass_v1_preregistration_pending",
+  "synthetic": false,
+  "preregistered_at": null,
+  "enrollment_start": null,
+  "enrollment_end": null,
+  "primary_outcome": "D7",
+  "design": "descriptive_no_experiment",
+  "exclusion_rules": [
+    "staff",
+    "automation",
+    "invalid_install"
+  ],
+  "baseline": {
+    "candidate_sha256": null,
+    "economy_sha256": null,
+    "content_sha256": null,
+    "config": null
+  },
+  "registry_population": "opt_in_study",
+  "registry_source": "Pending: name the independently maintained first-launch registry, lawful collection basis and coverage audit. Current account-only service events are insufficient for an all-install denominator.",
+  "session_definition": "An adjudicated valid return includes an interactive foreground harbor and foreground activity. Sessions begin after 30 minutes of inactivity or process restart and deduplicate by stable ID. First launch precedes harbor loading; startup failures and onboarding departures stay in the registry. Validate the source against local logs before enrollment.",
+  "missing_data_rule": "Keep eligible first-launch records when onboarding ends, consent is refused or observations are missing. Follow deletion requirements; record only lawful aggregate losses. Use mature half-open age windows; publish observation coverage and unidentified-return bounds."
+}

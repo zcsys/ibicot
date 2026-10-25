@@ -1,0 +1,33 @@
+--- /Users/csys/Desktop/ibicot/idle/release/qa/client-native-context-20261021T133429576369Z/source/release/native-proof/native-context-harness-staging/tool/test_current_runtime_verification.py	2026-10-21 16:28:22
++++ /Users/csys/Desktop/ibicot/idle/release/native-proof/native-context-harness-staging/tool/test_current_runtime_verification.py	2026-10-21 16:41:19
+@@ -73,6 +73,30 @@
+         default = context('runtime-study-default')
+         self.assertEqual(v.payload_errors(payload(default), default), [])
+         self.assertTrue(v.payload_errors(dict(payload(default), native_study_samples=1), default))
++
++    def test_checkpoint_identity_rejects_equal_fractional_pid(self):
++        c = context('runtime-save-hold-afterRename')
++        good = checkpoint(c)
++        self.assertEqual(v.validate_checkpoint(json.dumps(good).encode(), c, 123), good)
++        for bad in (123.0, True, '123'):
++            with self.subTest(bad=bad), self.assertRaisesRegex(ValueError, 'native_process_id'):
++                v.validate_checkpoint(json.dumps(dict(good, native_process_id=bad)).encode(), c, 123)
++
++    def test_no_sampling_reports_cannot_include_context_or_logical_identity(self):
++        for scenario in ('runtime-study-default', 'runtime-study-withdraw-reopen'):
++            c = context(scenario)
++            good = payload(c)
++            prior = None
++            if scenario.endswith('withdraw-reopen'):
++                prior = dict(verification_id='prior', checkpoint_sha256='c' * 64, native_process_id=122)
++                good.update(withdrawal_durable=True, preparation_verification_id='prior',
++                            preparation_checkpoint_sha256='c' * 64, previous_native_process_id=122)
++            self.assertEqual(v.payload_errors(good, c, prior), [])
++            for key, value in [('native_study_process_context', native_observation(c)),
++                               ('native_study_logical_process_id', 'synthetic-process'),
++                               ('native_study_process_context', None)]:
++                with self.subTest(scenario=scenario, key=key, value=value):
++                    self.assertTrue(v.payload_errors(dict(good, **{key: value}), c, prior))
+ 
+     def test_protected_tablet_rejected_before_any_external_process(self):
+         with patch.object(v.subprocess, 'run') as run, patch.object(v.subprocess, 'Popen') as popen:

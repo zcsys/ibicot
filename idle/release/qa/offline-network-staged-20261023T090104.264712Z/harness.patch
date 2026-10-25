@@ -1,0 +1,212 @@
+--- current/platform_smoke_test.dart
++++ staged/platform_smoke_offline_test.dart
+@@ -793,6 +793,8 @@
+     tester,
+   ) async {
+     expect(runId, isNotEmpty);
++    final offline = OfflineNetworkProbe(binding, tester, label, scenario);
++    await offline.begin();
+     final directory = Directory(
+       '${(await getApplicationSupportDirectory()).path}/native-verification/natural-$label-$runId',
+     );
+@@ -824,9 +826,10 @@
+         .widget<TideglassApp>(find.byType(TideglassApp))
+         .controller;
+     final before = game.state.toJson();
++    await offline.requireOffline('bootstrap');
+     if (scenario == 'natural-start') {
+       expect(game.state.counts, [1, 0, 0, 0, 0]);
+-      await Future<void>.delayed(const Duration(seconds: 35));
++      await offline.waitOffline(const Duration(seconds: 35));
+       await tester.pump();
+       expect(
+         DateTime.now().toUtc().difference(begin).inSeconds,
+@@ -838,11 +841,13 @@
+       );
+       await tester.ensureVisible(find.byKey(const ValueKey('buy-0')));
+       await tester.pump();
++      await offline.requireOffline('before-purchase');
+       await tester.tap(find.byKey(const ValueKey('buy-0')));
+       await tester.pump();
+       expect(game.state.counts, [2, 0, 0, 0, 0]);
+       await game.save();
+       expect(game.saveError, isNull);
++      await offline.requireOffline('after-save');
+       await checkpoint.writeAsString(
+         jsonEncode({
+           'process_id': pid,
+@@ -852,6 +857,10 @@
+         flush: true,
+       );
+     } else {
++      await offline.requireOffline('before-reload-check');
++      final checkpointBytes = await checkpoint.readAsBytes();
++      offline.predecessorCheckpointSha256 = sha256.convert(checkpointBytes).toString();
++      expect(offline.predecessorCheckpointSha256, const String.fromEnvironment('TIDEGLASS_PREDECESSOR_CHECKPOINT_SHA256'));
+       final previous =
+           jsonDecode(await checkpoint.readAsString()) as Map<String, dynamic>;
+       expect(
+@@ -879,6 +888,9 @@
+     }
+     await tester.ensureVisible(find.text('Your lightkeepers'));
+     await tester.pump();
++    await offline.requireOffline('after-gameplay');
++    offline.checkpointSha256 = sha256.convert(await checkpoint.readAsBytes()).toString();
++    await offline.finish();
+     binding.reportData = {
+       'provenance':
+           'Fresh native bootstrap with real system clock and actual elapsed wait; isolated test save path; no seeded progress. Reload is a separate native OS process.',
+@@ -901,6 +913,7 @@
+           .difference(begin)
+           .inMilliseconds,
+       'save_directory': directory.path,
++      'offline_network': offline.toJson(),
+       'before_core': before,
+       'after_core': game.state.toJson(),
+     };
+@@ -910,7 +923,7 @@
+     await audio?.close();
+     await tester.pumpWidget(const SizedBox.shrink());
+     await tester.pump();
+-  });
++  }, timeout: const Timeout(Duration(minutes: 8)));
+ }
+ 
+ /// Deliberately seeded content/state: this proves native integration, not pace.
+@@ -1252,3 +1265,136 @@
+   await Future<void>.delayed(const Duration(milliseconds: 250));
+   await tester.pump(const Duration(milliseconds: 250));
+ }
++
++/// Test-only local path qualification. No production network service is used.
++class OfflineNetworkProbe {
++  OfflineNetworkProbe(this.binding, this.tester, this.label, this.scenario);
++  final IntegrationTestWidgetsFlutterBinding binding;
++  final WidgetTester tester;
++  final String label;
++  final String scenario;
++  final rows = <Map<String, Object?>>[];
++  String? predecessorCheckpointSha256;
++  String? checkpointSha256;
++  static const runId = String.fromEnvironment('TIDEGLASS_RUN_ID');
++  static const nonce = String.fromEnvironment('TIDEGLASS_OFFLINE_NONCE');
++  static const serverId = String.fromEnvironment('TIDEGLASS_OFFLINE_SERVER_ID');
++  static const port = int.fromEnvironment('TIDEGLASS_OFFLINE_PORT');
++
++  Map<String, Object?> identity() => {
++    'verification_id': const String.fromEnvironment('TIDEGLASS_VERIFICATION_ID'),
++    'candidate_fingerprint': const String.fromEnvironment('TIDEGLASS_CANDIDATE_FINGERPRINT'),
++    'harness_sha256': const String.fromEnvironment('TIDEGLASS_HARNESS_SHA256'),
++    'run_id': runId, 'device_label': label, 'scenario': scenario,
++    'platform': Platform.operatingSystem, 'process_id': pid,
++    'server_id': serverId, 'nonce': nonce,
++  };
++
++  void marker(String phase) {
++    // Runner captures OS state for each phase. Output is evidence, not an action.
++    // ignore: avoid_print
++    print('TIDEGLASS_OFFLINE ' + jsonEncode({...identity(), 'phase': phase,
++      'at': DateTime.now().toUtc().toIso8601String()}));
++  }
++
++  Future<bool> probe(String phase) async {
++    final index = rows.length;
++    final request = {...identity(), 'kind': 'app', 'probe_id': '$scenario-$index'};
++    final row = <String, Object?>{...request, 'phase': phase,
++      'started_utc': DateTime.now().toUtc().toIso8601String()};
++    Socket? socket;
++    try {
++      socket = await Socket.connect('10.0.2.2', port,
++        timeout: const Duration(seconds: 2));
++      socket.write(jsonEncode(request) + '\n');
++      await socket.flush();
++      final response = await socket.cast<List<int>>().transform(utf8.decoder)
++        .transform(const LineSplitter()).first.timeout(const Duration(seconds: 2));
++      final decoded = jsonDecode(response) as Map<String, dynamic>;
++      for (final field in ['run_id', 'nonce', 'server_id', 'probe_id']) {
++        expect(decoded[field], request[field], reason: 'Local listener identity differs');
++      }
++      expect(decoded['ok'], isTrue);
++      row['reachable'] = true;
++      row['receipt'] = decoded;
++    } on SocketException catch (error) {
++      row['reachable'] = false;
++      row['error_type'] = 'SocketException';
++      row['error'] = error.toString();
++    } on TimeoutException catch (error) {
++      row['reachable'] = false;
++      row['error_type'] = 'TimeoutException';
++      row['error'] = error.toString();
++    } finally {
++      socket?.destroy();
++      row['completed_utc'] = DateTime.now().toUtc().toIso8601String();
++      rows.add(row);
++    }
++    return row['reachable'] == true;
++  }
++
++  Future<void> waitFor(bool reachable, String phase) async {
++    final until = DateTime.now().toUtc().add(const Duration(minutes: 2));
++    var consecutive = 0;
++    while (DateTime.now().toUtc().isBefore(until)) {
++      final actual = await probe(phase);
++      final resumed = binding.lifecycleState == AppLifecycleState.resumed;
++      consecutive = actual == reachable && resumed ? consecutive + 1 : 0;
++      if (consecutive >= 3) return;
++      await Future<void>.delayed(const Duration(seconds: 1));
++      if (binding.lifecycleState == AppLifecycleState.resumed) await tester.pump();
++    }
++    fail('Actual app endpoint did not become $reachable while resumed: $phase');
++  }
++
++  Future<void> begin() async {
++    expect(Platform.isAndroid, isTrue);
++    expect(RegExp(r'^[A-Za-z0-9_-]{1,100}$').hasMatch(runId), isTrue);
++    expect(RegExp(r'^[a-f0-9]{64}$').hasMatch(nonce), isTrue);
++    expect(RegExp(r'^[a-f0-9]{32}$').hasMatch(serverId), isTrue);
++    expect(port, inInclusiveRange(1024, 65535));
++    await tester.pumpWidget(const MaterialApp(home: Scaffold(body: Center(
++      child: Text('Local offline qualification: follow the operator log.')))));
++    await tester.pump();
++    if (scenario == 'natural-start') {
++      await waitFor(true, 'before-online');
++      marker('before-online');
++      marker('request-disable');
++      await waitFor(false, 'await-disabled');
++    }
++    await requireOffline('offline-ready');
++    marker('offline-ready');
++  }
++
++  Future<void> requireOffline(String phase) async {
++    expect(binding.lifecycleState, AppLifecycleState.resumed,
++      reason: 'Gameplay qualification must run in the actual foreground app');
++    expect(await probe(phase), isFalse,
++      reason: 'Endpoint reachable; airplane icon alone does not qualify offline play');
++    expect(binding.lifecycleState, AppLifecycleState.resumed);
++  }
++
++  Future<void> waitOffline(Duration duration) async {
++    final end = DateTime.now().toUtc().add(duration);
++    while (DateTime.now().toUtc().isBefore(end)) {
++      await requireOffline('elapsed-earnings');
++      await Future<void>.delayed(const Duration(seconds: 1));
++      await tester.pump();
++    }
++  }
++
++  Future<void> finish() async {
++    marker('offline-complete');
++    if (scenario == 'natural-reload') {
++      marker('request-restore');
++      await waitFor(true, 'after-restored');
++      marker('after-restored');
++    }
++  }
++
++  Map<String, Object?> toJson() => {...identity(),
++    'endpoint': '10.0.2.2:$port', 'scope': 'local host path plus OS network state; no external Internet probe',
++    'samples': rows, 'checkpoint_sha256': checkpointSha256,
++    'predecessor_checkpoint_sha256': predecessorCheckpointSha256,
++  };
++}

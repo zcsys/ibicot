@@ -1,0 +1,306 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:tideglass:save-envelope:1",
+  "title": "Tideglass save envelope v1",
+  "description": "Engine-neutral contract only. Passing validation does not authenticate data, verify commerce, prove elapsed time, preserve files or implement atomic persistence. Gameplay payload validation belongs to a separate versioned core contract.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "format",
+    "schema_version",
+    "save_id",
+    "branch_id",
+    "revision",
+    "parent",
+    "written_at_utc",
+    "settled_through_utc",
+    "economic_config",
+    "gameplay_state",
+    "merge_policy",
+    "preserved_branches",
+    "pending_operations",
+    "applied_operation_ids",
+    "commerce_cache"
+  ],
+  "properties": {
+    "format": {
+      "const": "tideglass-save-envelope"
+    },
+    "schema_version": {
+      "const": 1,
+      "type": "integer"
+    },
+    "save_id": {
+      "$ref": "#/$defs/uuid"
+    },
+    "branch_id": {
+      "$ref": "#/$defs/uuid"
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "parent": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "required": [
+        "save_id",
+        "branch_id",
+        "revision"
+      ],
+      "properties": {
+        "save_id": {
+          "$ref": "#/$defs/uuid"
+        },
+        "branch_id": {
+          "$ref": "#/$defs/uuid"
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "written_at_utc": {
+      "$ref": "#/$defs/utcTime"
+    },
+    "settled_through_utc": {
+      "$ref": "#/$defs/utcTime"
+    },
+    "economic_config": {
+      "$ref": "#/$defs/economicConfig"
+    },
+    "gameplay_state": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "payload"
+      ],
+      "properties": {
+        "schema_version": {
+          "type": "integer",
+          "const": 1
+        },
+        "payload": {
+          "type": "object",
+          "description": "Opaque gameplay data. The envelope checker does not validate economic balances, timers, campaign state or receipts within this object."
+        }
+      }
+    },
+    "merge_policy": {
+      "const": "select_one_progression_branch"
+    },
+    "preserved_branches": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/recoveryReference"
+      },
+      "description": "References to recoverable divergent snapshots, never summed wallets. The storage layer must separately prove these snapshots exist and remain recoverable."
+    },
+    "pending_operations": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/pendingOperation"
+      }
+    },
+    "applied_operation_ids": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/uuid"
+      },
+      "description": "Local deduplication history; not a trusted account/service receipt ledger."
+    },
+    "commerce_cache": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "trust",
+        "authority",
+        "snapshot_reference",
+        "entries"
+      ],
+      "properties": {
+        "trust": {
+          "const": "display_cache_only"
+        },
+        "authority": {
+          "const": "independent_verifier_required"
+        },
+        "snapshot_reference": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        },
+        "entries": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "entitlement_id",
+              "receipt_reference",
+              "display_status"
+            ],
+            "properties": {
+              "entitlement_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "receipt_reference": {
+                "type": "string",
+                "minLength": 1
+              },
+              "display_status": {
+                "enum": [
+                  "active",
+                  "revoked",
+                  "pending_verification"
+                ]
+              }
+            }
+          }
+        }
+      },
+      "description": "Never contains credentials or raw receipts. A local active display flag is not proof of purchase. Commercial grants, reconciliation and merge require independent verification outside this save."
+    }
+  },
+  "$defs": {
+    "uuid": {
+      "type": "string",
+      "format": "uuid",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
+    },
+    "utcTime": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,6})?Z$",
+      "description": "UTC with optional microsecond precision. Settlement cursors preserve fractional production time. This observation is not proof of true elapsed wall time."
+    },
+    "economicConfig": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "version",
+        "sha256"
+      ],
+      "properties": {
+        "version": {
+          "type": "string",
+          "pattern": "^tideglass-economy-[0-9]+\\.[0-9]+\\.[0-9]+$"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      },
+      "description": "Version plus digest pins the configuration used for the unsettled interval. The loader must separately resolve and verify the actual config bytes."
+    },
+    "recoveryReference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "save_id",
+        "branch_id",
+        "revision",
+        "recovery_reference"
+      ],
+      "properties": {
+        "save_id": {
+          "$ref": "#/$defs/uuid"
+        },
+        "branch_id": {
+          "$ref": "#/$defs/uuid"
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "recovery_reference": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "pendingOperation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "operation_id",
+        "idempotency_key",
+        "source_id",
+        "kind",
+        "branch_id",
+        "expected_revision",
+        "economic_config",
+        "offline_interval"
+      ],
+      "properties": {
+        "operation_id": {
+          "$ref": "#/$defs/uuid"
+        },
+        "idempotency_key": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "kind": {
+          "enum": [
+            "offline_settlement",
+            "rechart",
+            "contract_reward",
+            "support_reward",
+            "pass_xp"
+          ]
+        },
+        "branch_id": {
+          "$ref": "#/$defs/uuid"
+        },
+        "expected_revision": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "economic_config": {
+          "$ref": "#/$defs/economicConfig"
+        },
+        "offline_interval": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "additionalProperties": false,
+          "required": [
+            "start_utc",
+            "end_utc"
+          ],
+          "properties": {
+            "start_utc": {
+              "$ref": "#/$defs/utcTime"
+            },
+            "end_utc": {
+              "$ref": "#/$defs/utcTime"
+            }
+          }
+        }
+      },
+      "description": "Prepared proposals only, never evidence that a reward was granted. A commit must atomically advance revision, effects, settlement and deduplication state, then rebase or reject remaining proposals. Source IDs identify the particular reward component; independent components may share a quest but cannot share the same source ID and kind."
+    }
+  },
+  "x-domain-invariants": [
+    "A root snapshot has revision 0 and null parent; every child increments its parent's revision by exactly one.",
+    "A fork preserves a recovery reference to its parent branch; conflicting progression is selected, never added.",
+    "Pending operation IDs, idempotency keys and kind/source pairs are unique; pending IDs do not appear in applied IDs.",
+    "Every pending operation targets this branch, this revision and this exact economic version plus digest.",
+    "At most one offline settlement is pending; it begins at settled_through_utc and has a strictly later end.",
+    "Device clock rollback is not a validation failure; written_at_utc may be earlier than settled_through_utc.",
+    "Commerce cache is untrusted display data; independently verified ownership is not created by importing a save."
+  ]
+}

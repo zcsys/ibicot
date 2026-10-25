@@ -1,0 +1,61 @@
+{
+  "reviewer_agent": "/root/art_audio_native",
+  "assigned_original_reviewer_role": "platform",
+  "adoption_order": [
+    "M3-01",
+    "M3-02"
+  ],
+  "production_or_status_edits": false,
+  "packages": [
+    {
+      "id": "M3-01",
+      "source_acceptance": "2-hour Focus, 8-hour Surveys, 24/72-hour offline envelope, bonus expiry and account-day boundaries resolve in a single event timeline.",
+      "source_acceptance_dependencies": [
+        "M2-01",
+        "M1-03"
+      ],
+      "owner": "gameplay",
+      "reviewer": "platform",
+      "recommendation": "accept",
+      "prerequisite_status_at_intake": {
+        "M2-01": "accepted",
+        "M1-03": "accepted"
+      },
+      "condition": "Original prerequisites met",
+      "evidence": [
+        "REVIEW.md",
+        "CLAUSE_MATRIX.md",
+        "verification.json",
+        "source-bridge.json",
+        "arithmetic.json",
+        "input-sha256.json"
+      ],
+      "scope_or_release_status_change_recommended": false
+    },
+    {
+      "id": "M3-02",
+      "source_acceptance": "Seeded contracts, snapshots, offline progress, rerolls and 21-slot backlog preserve claim IDs and do not duplicate rewards.",
+      "source_acceptance_dependencies": [
+        "M3-01",
+        "M1-06"
+      ],
+      "owner": "gameplay",
+      "reviewer": "platform",
+      "recommendation": "accept",
+      "prerequisite_status_at_intake": {
+        "M3-01": "in_progress",
+        "M1-06": "accepted"
+      },
+      "condition": "After lead adopts M3-01",
+      "evidence": [
+        "REVIEW.md",
+        "CLAUSE_MATRIX.md",
+        "verification.json",
+        "source-bridge.json",
+        "arithmetic.json",
+        "input-sha256.json"
+      ],
+      "scope_or_release_status_change_recommended": false
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "candidate_fingerprint": "d85bdf74433d96d2f6ea6a58a8481290942d526a7cdb8ec14b55e57537e9dced",
+  "device": "emulator-5556",
+  "label": "android-phone",
+  "started_utc": "20261016T114657.623540Z",
+  "command": [
+    "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+    "drive",
+    "--driver=test_driver/evidence_911183b5d9ee.dart",
+    "--target=integration_test/evidence_c9b035999b3b_test.dart",
+    "-d",
+    "emulator-5556",
+    "--dart-define=TIDEGLASS_DEVICE_LABEL=android-phone",
+    "--dart-define=TIDEGLASS_SCENARIO=session-reload",
+    "--dart-define=TIDEGLASS_RUN_ID=integrated-d85-c",
+    "--dart-define=TIDEGLASS_VERIFICATION_ID=integration-android-phone-20261016T114657.623540Z",
+    "--dart-define=TIDEGLASS_CANDIDATE_FINGERPRINT=d85bdf74433d96d2f6ea6a58a8481290942d526a7cdb8ec14b55e57537e9dced",
+    "--dart-define=TIDEGLASS_HARNESS_SHA256=c9b035999b3b128214f41f1627724fb578b1147ef03030d446addf754c40161f",
+    "--keep-app-running",
+    "--timeout=180",
+    "--no-pub"
+  ],
+  "scenario": "session-reload",
+  "run_id": "integrated-d85-c",
+  "harness_sha256": {
+    "harness.dart": "c9b035999b3b128214f41f1627724fb578b1147ef03030d446addf754c40161f",
+    "driver.dart": "911183b5d9ee8ec80769836f477a293dadb66e20cc0c5d5e44314415889749a8"
+  },
+  "production_inputs_match_snapshot": true,
+  "provenance": "Seeded native boundary/presentation test; no natural pacing or physical-device claim",
+  "exit_code": 0,
+  "native_process_stop": {
+    "command": [
+      "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "shell",
+      "am",
+      "force-stop",
+      "dev.tideglass.game"
+    ],
+    "exit_code": 0,
+    "output": ""
+  },
+  "verification_errors": [],
+  "passed": true,
+  "evidence_sha256": {
+    "native-save-progress.1.json": "a1ad065535de4a06400dba9df996eb310aa5b3dedb65eacba4994209abf354ba",
+    "native-save-progress.0.json": "ee9938c039b4f6b565fdc47279ef125e2ffe1185611b1c0e96506858773510b9",
+    "result.json": "a2cab7058c95c3a3aa21850295c5f040111ba926f60f7263ed6b28caadf3d87a",
+    "run.log": "e3220d746fc5a54f3d29195067b1bc38ddc4d1d7337299b8e6eeea68030c9fef",
+    "android-phone-session-reload-producer-stages.png": "d3d726b14db4678cf62d417910e5804632c714a09151c253855108981fc02703",
+    "android-phone-session-reload-collection.png": "eeb07b511009740547eb258d3554fc2d5e51caee8d3b11bae7a552090f329167",
+    "driver.dart": "911183b5d9ee8ec80769836f477a293dadb66e20cc0c5d5e44314415889749a8",
+    "harness.dart": "c9b035999b3b128214f41f1627724fb578b1147ef03030d446addf754c40161f",
+    "android-phone-session-reload-harbor.png": "70d5319f9d7706b379d34b92e3e0832cbade52ed085caa8745ed7b6e51cd6829"
+  }
+}

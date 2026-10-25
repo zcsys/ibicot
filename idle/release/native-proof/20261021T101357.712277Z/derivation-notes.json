@@ -1,0 +1,17 @@
+{
+  "observed_utc": "2026-10-21T10:15:42.101755+00:00",
+  "parent": "c73d05f96e4ae3263b3b8af46f97963b69e292e7f8862d617c1c805c278c4ea6",
+  "derived": "66795d55b998e39d74eec50ef1702aef8f6210d93dee4a9e9cdbae35a56006fe",
+  "exact_changed_files": [
+    "tool/build_native.py",
+    "tool/check_provider_environment.py",
+    "tool/test_native_candidates.py",
+    "release/downloads/tideglass-original-soundtrack.zip"
+  ],
+  "all_game_source_tests_assets_native_configuration_unchanged": true,
+  "preserved_failure": "release/native-proof/20261019T150303.192610Z/build-report.json",
+  "diagnosis": "298 mobile tests passed; two capture tests failed because the isolated workspace did not expose the pinned SDK font path ../../.tooling/flutter/bin/cache/artifacts/material_fonts. Both fonts exist in the original SDK. The candidate now records and validates a workspace link to that same SDK. No application or test assertion was changed.",
+  "provider_gate_repair": "Explicit nested provider suite, pinned interpreter, all dependency lock versions checked, actual soundtrack ZIP included in immutable source. The c73 supplemental provider evidence remains separately attributed.",
+  "provider_fixture_sha256": "620d671ae8817239f89802a9bead7cb584f1e44326aedd4d352ec69fb1f8de3a",
+  "native_acceptance": false
+}

@@ -1,0 +1,41 @@
+{
+  "utc": "2026-10-25T16:06:40.204225+00:00",
+  "argv": [
+    "/Users/csys/Library/Android/sdk/platform-tools/adb",
+    "-s",
+    "emulator-5556",
+    "shell",
+    "input",
+    "touchscreen",
+    "tap",
+    "793",
+    "1094"
+  ],
+  "exit_code": 0,
+  "stdout": "",
+  "stderr": "",
+  "operator": "Automated actual Android UI event",
+  "purpose": "Restore baseline Airplane mode OFF through observed actual tile",
+  "observed_node": {
+    "index": "5",
+    "text": "Airplane mode, On",
+    "resource-id": "",
+    "class": "android.widget.Switch",
+    "package": "com.android.systemui",
+    "content-desc": "Airplane mode",
+    "checkable": "true",
+    "checked": "true",
+    "clickable": "true",
+    "enabled": "true",
+    "focusable": "true",
+    "focused": "false",
+    "scrollable": "false",
+    "long-clickable": "true",
+    "password": "false",
+    "selected": "false",
+    "bounds": "[550,989][1037,1199]"
+  },
+  "pre_image_sha256": "c38656387aa8b9e4b9293ea1d6a21350d1b3f9c913722e42542fb14fb65a4f8a",
+  "pre_hierarchy_sha256": "513fd9a1966c4f0ed2796dfb7be67739231de4d0bdd27d1a6d9870bde31cfac5",
+  "lead_method_sha256": "4b841ade92aee43a7292c07bbaa0e0d1306a9468c840e2318eaf0a43fc0e796a"
+}

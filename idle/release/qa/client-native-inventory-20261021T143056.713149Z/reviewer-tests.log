@@ -1,0 +1,40 @@
+test_different_candidate_report_rejects (__main__.Review.test_different_candidate_report_rejects) ... ok
+test_duplicate_report_identity_rejects (__main__.Review.test_duplicate_report_identity_rejects) ... ok
+test_inflight_artifact_mutation_must_reject (__main__.Review.test_inflight_artifact_mutation_must_reject) ... FAIL
+test_inflight_candidate_source_mutation_must_reject (__main__.Review.test_inflight_candidate_source_mutation_must_reject) ... FAIL
+test_inflight_collector_mutation_must_not_repin_preserved_copy (__main__.Review.test_inflight_collector_mutation_must_not_repin_preserved_copy) ... FAIL
+test_positive_five_exports_retains_nonapproval_flags (__main__.Review.test_positive_five_exports_retains_nonapproval_flags) ... ok
+test_preexisting_artifact_drift_rejects (__main__.Review.test_preexisting_artifact_drift_rejects) ... ok
+test_source_lock_truthy_string_rejects (__main__.Review.test_source_lock_truthy_string_rejects) ... ok
+
+======================================================================
+FAIL: test_inflight_artifact_mutation_must_reject (__main__.Review.test_inflight_artifact_mutation_must_reject)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/csys/Desktop/ibicot/idle/release/qa/client-native-inventory-20261021T143056.713149Z/review_inventory.py", line 126, in test_inflight_artifact_mutation_must_reject
+    self.fail('Collector published artifact hash differing from its successful build report after in-flight mutation')
+    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Collector published artifact hash differing from its successful build report after in-flight mutation
+
+======================================================================
+FAIL: test_inflight_candidate_source_mutation_must_reject (__main__.Review.test_inflight_candidate_source_mutation_must_reject)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/csys/Desktop/ibicot/idle/release/qa/client-native-inventory-20261021T143056.713149Z/review_inventory.py", line 138, in test_inflight_candidate_source_mutation_must_reject
+    self.fail('Collector published candidate source identity after pinned source changed during decoding')
+    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Collector published candidate source identity after pinned source changed during decoding
+
+======================================================================
+FAIL: test_inflight_collector_mutation_must_not_repin_preserved_copy (__main__.Review.test_inflight_collector_mutation_must_not_repin_preserved_copy)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/csys/Desktop/ibicot/idle/release/qa/client-native-inventory-20261021T143056.713149Z/review_inventory.py", line 155, in test_inflight_collector_mutation_must_not_repin_preserved_copy
+    self.fail('Published collector hash does not identify preserved collector.py')
+    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Published collector hash does not identify preserved collector.py
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.056s
+
+FAILED (failures=3)

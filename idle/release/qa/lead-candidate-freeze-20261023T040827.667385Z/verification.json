@@ -1,0 +1,66 @@
+{
+  "candidate": "/Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261023T040445.261666Z-3b00cc8f7122",
+  "fingerprint": "3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59",
+  "source_files": 1190,
+  "frozen_hashes_rechecked": true,
+  "production_input_count": 482,
+  "production_input_differences_from_a052": [
+    "game/simulation/lib/supplemental_run.dart"
+  ],
+  "only_production_map_difference_is_reviewed_simulation_comment": true,
+  "all_noncomment_lines_of_difference_identical": true,
+  "changed_paths": {
+    "game/mobile/integration_test/native_reminders_test.dart": {
+      "old": null,
+      "new": "272fa3495fee356a98256c09ecfa983ef1f7af1ffb1c2c4885db97e74905fd76"
+    },
+    "game/mobile/test/qa_integration_simulation_test.dart": {
+      "old": "46ea2d729595933d2fcc4c059673ca3484350871b4e2cbe8822bafa11d2730ae",
+      "new": "c75e6f918fb8d8ad32bf72c001a4bbe3bc95cb8bebfd63a9b9d60af804b6355a"
+    },
+    "game/simulation/lib/supplemental_run.dart": {
+      "old": "18b486547c10afe90c923fa9c0db380fc78d6ed6e7e24c761d6ad8b554354be3",
+      "new": "858d1ae271cbd3a451b7c60311369f0ed831dc6f3ef6899ee457f5d0a04081a0"
+    },
+    "implementation/content/launch_manifest.json": {
+      "old": "782ad112c6de5a155ce714781fad5e5af609a5b1a785db67c929baccb384ed9d",
+      "new": "7599fe529f0a0d748f2e7968eb3848ca40eaba1cd5dd91f5ff7f0d4fbd8b7bc0"
+    },
+    "tool/build_native.py": {
+      "old": "1fca5f766c6bd816f55fc0aefafe1e3dfb8e66b91e83e1dcb275d48f13cada1d",
+      "new": "59ee4e7b94a1445e2c8effadfe4c0510c9c189df0278c7ede6e87f1807bf38ee"
+    },
+    "tool/render_store_creative.py": {
+      "old": "dbe8681c14a9b33e8d5a002d9bedfd52af3ddf37365ee609fb92a8b899a863f7",
+      "new": "300630f3e08276808012e2d8f9c59dfd562f00a2bb4316f583140fe5fa01d2c0"
+    },
+    "tool/test_native_candidates.py": {
+      "old": "7a69e129772036ee087b8e05116bb25ddb198f0ac3b5dbaf9c6fc9132cd38e35",
+      "new": "c0b1571c070fc9d7ee9a16f1c918bc3496ec36f1fac6b375b8d845021079d05b"
+    },
+    "tool/test_native_reminders.py": {
+      "old": null,
+      "new": "ec7060a8cde7ff99b9460317d11ce9fc3659c9663e77563832284a90dbe28762"
+    },
+    "tool/test_native_service_gate.py": {
+      "old": null,
+      "new": "6e7db9a717c5aeffee49d7cf0eace49a8dff1e15ad2273140ef777564e2bf8ca"
+    },
+    "tool/verify_native_reminders.py": {
+      "old": null,
+      "new": "becfa8587fd8b20995c4e1fc87f827233997b57a784b527c035b4f244c399f18"
+    }
+  },
+  "review_and_author_evidence_sha256": {
+    "release/qa/host-gate-repairs-20261023T035209.955242Z/verification.json": "a16dd11648971cdee4b22075129cb7ae43f4ba1cd2e735d39547d125379b2bc6",
+    "release/qa/host-gate-repairs-20261023T035209.955242Z/METADATA_REVIEW.md": "1f71d4b1e2ee0cad80f771fdf61bf6cd706e6edce9dbc7c9e96dcb1c66e2dbd3",
+    "release/qa/native-google-icon-format-20261023T034940.198444Z/verification.json": "ce081af8cf925f99feef4e044f1c9fea0f7eb64f50f92cc6bd715bcc3a9eb223",
+    "release/qa/scope-forward-20261023T033420.755364Z/verification.json": "f5dccdbb6ffd3c564e40624a55c765900a8d418dc47b36cdea0d2daf6255a6d8",
+    "release/qa/client-reverse-scope-20261023T033233.346454Z/verification.json": "b68202fac45a423b9895b9cc1461fdf83eb9b60c5dd18d88d1a3822bb1cfe1a5",
+    "release/native-notifications/handoff-20261023T035937.098590Z/verification.json": "4581ea9c625950efbc379210f0f75824edb738f0caee098b4ae5d12da75b67dd"
+  },
+  "host_and_native_result": "pending; not qualified by source freeze",
+  "previous_candidate": "failed; preserved",
+  "reminder_independent_review": "pending; native execution withheld",
+  "prior_lead_assertion_failure": "Initial assertion that all production map hashes matched was overbroad: the map includes the comment-only supplemental simulation edit; failed assertion preserved by this correction, no native/runtime outcome implied."
+}

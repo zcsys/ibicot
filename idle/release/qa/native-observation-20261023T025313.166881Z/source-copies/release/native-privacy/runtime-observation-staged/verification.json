@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "source_sha256": {
+    "runtime_observation.py": "de6c5ddd6fae9c5f28cf7a6a66748099051ccf9a74502211bbad204a7fb14cdf",
+    "test_runtime_observation.py": "66c128a79ca36d0dbf738a293e38f6ab03e2f56b54aaa01a2241f065926ea326",
+    "observation-hook.patch": "c8f2de0803bc9423871c3cfe26d768f519fec752348a7b42decf429d9b2a8c22",
+    "HANDOFF.md": "c942db8e0c6abadc74aad353961f19865850638d7b9cd25797c5e353968fcf82",
+    "source/game/mobile/integration_test/current_runtime_test.dart": "102be09eb8043ce9bb496156d9f37b1834c3084ddf58fef073e7c25cdc3c55d5",
+    "source/tool/verify_current_runtime.py": "d849ab8feb642eb1b988f9a6d82558491b7ebef4c63768fb4fa132f49edf3804",
+    "baseline/game/mobile/integration_test/current_runtime_test.dart": "d34649a223a50f08b955691be036fc286131718ed9cb619444419f1b701bc155",
+    "baseline/tool/verify_current_runtime.py": "34239f373943381ecaaa07c071f7e8f3f518f08a32eb17f7f7f1a22ce90637fe"
+  },
+  "source_fingerprint": "9042c85741cb2324c994f0f1d3c6524fcdfd27d8c939262d0e0abcdb04f576c2",
+  "live_inputs_sha256": {
+    "tool/build_native.py": "1fca5f766c6bd816f55fc0aefafe1e3dfb8e66b91e83e1dcb275d48f13cada1d",
+    "tool/verify_native.py": "68297f66fc4e32a173b17da2594872334d59ba2b88b7d5878b5ee8905f9b89e5",
+    "tool/verify_current_runtime.py": "34239f373943381ecaaa07c071f7e8f3f518f08a32eb17f7f7f1a22ce90637fe",
+    "game/mobile/integration_test/current_runtime_test.dart": "d34649a223a50f08b955691be036fc286131718ed9cb619444419f1b701bc155",
+    "release/native-privacy/inspect_artifacts.py": "b9a8e1f993324efd88ceec60f4c0f035141c1c6574020326a351619854f0643b",
+    ".tooling/java/jdk-17.0.20.1+1/Contents/Home/bin/java": "af8b122943345320b179c75c3404d56a981017739746b75f9caf583632f0bea0",
+    ".tooling/android-sdk/build-tools/36.0.0/aapt2": "a8844d4089b442b034aed8953deee1893253053c900e03141ae7173e3edd8157",
+    ".tooling/bundletool/bundletool-all-1.18.3.jar": "a099cfa1543f55593bc2ed16a70a7c67fe54b1747bb7301f37fdfd6d91028e29",
+    ".tooling/android-sdk/platform-tools/adb": "5759ea07285e5a5b66d84f489c118a3fa3998e69cd37725e5a3dc7cbe0597278"
+  },
+  "live_baselines_unchanged": true,
+  "author_tests": {
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "release/native-privacy/runtime-observation-staged",
+      "-p",
+      "test_runtime_observation.py",
+      "-v"
+    ],
+    "log": "author-tests-r3.log",
+    "log_sha256": "b15fa98bb64756e714377753731f7520565224976f1fa269e471d2f54acbb2c7",
+    "tests": 21,
+    "exit_code": 0,
+    "actual_owned_loopback_child": true
+  },
+  "dart_format_only": true,
+  "flutter_analyzed": false,
+  "native_devices_touched": false,
+  "candidate_created": false,
+  "native_qualification": false,
+  "release_acceptance": false,
+  "created_utc": "2026-10-21T14:57:05.383902+00:00"
+}

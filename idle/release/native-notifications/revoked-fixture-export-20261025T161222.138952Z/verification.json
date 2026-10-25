@@ -1,0 +1,57 @@
+{
+  "scope": "Read-only export of old killed-run durable fixture after separate delivery began. Not a successful predecessor or proof of historical exact prekill contents. No file/device mutation.",
+  "native_failed_report": "release/native-notifications/integration-android-20261025T160721674439Z/verification.json",
+  "rows": [
+    {
+      "utc": "2026-10-25T16:12:22.139406+00:00",
+      "argv": [
+        "/Users/csys/Library/Android/sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "exec-out",
+        "run-as",
+        "dev.tideglass.game",
+        "cat",
+        "/data/user/0/dev.tideglass.game/files/native-reminders/android-v3b00-r20261025-android-revoked-ready2-revoked/notification_preferences.json"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "file": "notification_preferences.json",
+      "sha256": "bfe13beb4aa32a70bd85b90c85dedea9451c712aaedf1d8fc1c33c2a3616721f"
+    },
+    {
+      "utc": "2026-10-25T16:12:22.198540+00:00",
+      "argv": [
+        "/Users/csys/Library/Android/sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "exec-out",
+        "run-as",
+        "dev.tideglass.game",
+        "cat",
+        "/data/user/0/dev.tideglass.game/files/native-reminders/android-v3b00-r20261025-android-revoked-ready2-revoked/save/progress.0.json"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "file": "save-progress.0.json",
+      "sha256": "90d807fd6a4c22dfb5c9bda0c5a61d6bcf4f23f0a75274f4c9caf81807bdc611"
+    },
+    {
+      "utc": "2026-10-25T16:12:22.234143+00:00",
+      "argv": [
+        "/Users/csys/Library/Android/sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "exec-out",
+        "run-as",
+        "dev.tideglass.game",
+        "cat",
+        "/data/user/0/dev.tideglass.game/files/native-reminders/android-v3b00-r20261025-android-revoked-ready2-revoked/save/progress.1.json"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "file": "save-progress.1.json",
+      "sha256": "63919610e57407532a9999535d5e714fc509365ac89d3a6f00b6c98cb762b1f0"
+    }
+  ]
+}

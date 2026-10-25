@@ -1,0 +1,68 @@
+Running Xcode build...                                          
+Xcode build done.                                           25.1s
+VMServiceFlutterDriver: Connecting to Flutter application at http://127.0.0.1:50384/xW_HMHtJats=/
+VMServiceFlutterDriver: Isolate found with number: 5795155593587087
+VMServiceFlutterDriver: Isolate 5795155593587087 is runnable.
+VMServiceFlutterDriver: Isolate is paused at start.
+VMServiceFlutterDriver: Attempting to resume isolate
+flutter: 00:00 +0: current native runtime qualification: runtime-study-storage-withdraw
+VMServiceFlutterDriver: Connected to Flutter application.
+flutter: ══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+flutter: The following TestFailure was thrown running a test:
+flutter: Expected: false
+flutter:   Actual: <true>
+flutter:
+flutter: When the exception was thrown, this was the stack:
+flutter: #4      study (file:///Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261023T040445.261666Z-3b00cc8f7122/workspace/game/mobile/integration_test/current_evidence_102be09eb804_test.dart:845:7)
+flutter: <asynchronous suspension>
+flutter: #5      main.<anonymous closure> (file:///Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261023T040445.261666Z-3b00cc8f7122/workspace/game/mobile/integration_test/current_evidence_102be09eb804_test.dart:127:7)
+flutter: <asynchronous suspension>
+flutter: #6      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+flutter: <asynchronous suspension>
+flutter: #7      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+flutter: <asynchronous suspension>
+flutter: #8      TestWidgetsFlutterBinding._createTestCompletionHandler.<anonymous closure> (package:flutter_test/src/binding.dart:1707:12)
+flutter: <asynchronous suspension>
+flutter:
+flutter: This was caught by the test expectation on the following line:
+flutter:   file:///Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261023T040445.261666Z-3b00cc8f7122/workspace/game/mobile/integration_test/current_evidence_102be09eb804_test.dart line 845
+flutter: The test description was:
+flutter:   current native runtime qualification: runtime-study-storage-withdraw
+flutter: ════════════════════════════════════════════════════════════════════════════════════════════════════
+flutter: 00:02 +0: current native runtime qualification: runtime-study-storage-withdraw [E]
+flutter:   Test failed. See exception logs above.
+  The test description was: current native runtime qualification: runtime-study-storage-withdraw
+flutter:
+flutter: 00:02 +0 -1: (tearDownAll)
+flutter: 00:02 +1 -1: Some tests failed.
+Failure Details:
+Failure in method: current native runtime qualification: runtime-study-storage-withdraw
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞═════════════════
+The following TestFailure was thrown running a test:
+Expected: false
+  Actual: <true>
+
+When the exception was thrown, this was the stack:
+#4      study (file:///Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261023T040445.261666Z-3b00cc8f7122/workspace/game/mobile/integration_test/current_evidence_102be09eb804_test.dart:845:7)
+<asynchronous suspension>
+#5      main.<anonymous closure> (file:///Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261023T040445.261666Z-3b00cc8f7122/workspace/game/mobile/integration_test/current_evidence_102be09eb804_test.dart:127:7)
+<asynchronous suspension>
+#6      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#7      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+#8      TestWidgetsFlutterBinding._createTestCompletionHandler.<anonymous closure> (package:flutter_test/src/binding.dart:1707:12)
+<asynchronous suspension>
+
+This was caught by the test expectation on the following line:
+  file:///Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261023T040445.261666Z-3b00cc8f7122/workspace/game/mobile/integration_test/current_evidence_102be09eb804_test.dart line 845
+The test description was:
+  current native runtime qualification:
+  runtime-study-storage-withdraw
+═════════════════════════════════════════════════════════════════
+
+end of failure 1
+
+
+
+Leaving the application running.

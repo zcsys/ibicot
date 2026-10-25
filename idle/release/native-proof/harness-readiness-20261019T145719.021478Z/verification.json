@@ -1,0 +1,45 @@
+{
+  "status": "prepared_not_native_executed",
+  "observed_utc": "20261019T145719.021478Z",
+  "source_sha256": {
+    "game/mobile/integration_test/platform_smoke_test.dart": "01e75606d9a8c2f2d3f8dee052323add97060d0159456251500df79fbf9f04a4",
+    "tool/verify_native.py": "a15278f08c6f576ba681f0820a12d170f4d235c870bfb237e7310738def496cb",
+    "tool/native_recording.py": "962a91d6e1469fb25a99fe0ce7478c3fbc2dcab46489f8caf373751d90a0394a",
+    "tool/native_video_metadata.swift": "2a3bb616cc2108f7d25cb6d2edd910b460bd4efc406fd0a2875cdc4197402450",
+    "tool/native_integration_driver.dart": "911183b5d9ee8ec80769836f477a293dadb66e20cc0c5d5e44314415889749a8",
+    "tool/test_native_verification.py": "b1789dd47d1a86b2b732740d6f412c260025385efb972b2f694b57300b22039d",
+    "tool/build_native.py": "e8adf8bbc8e11746f7399c3197319efdcb082f942dba3c9efb60efa5f710b953",
+    "tool/test_native_candidates.py": "f3f8f34745eab39159432f97dc98ebb7661c4c2025f845fa2147a7a15525f4f2"
+  },
+  "checks": {
+    "native-tool-tests": {
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tool",
+        "-p",
+        "test_native*.py",
+        "-v"
+      ],
+      "exit_code": 0
+    },
+    "video-metadata-typecheck": {
+      "command": [
+        "xcrun",
+        "swiftc",
+        "-typecheck",
+        "tool/native_video_metadata.swift"
+      ],
+      "exit_code": 0
+    }
+  },
+  "native_candidate": null,
+  "scope": "Harness/tooling readiness only. No current-source native compile, runtime, recording, store or physical-device acceptance.",
+  "evidence_sha256": {
+    "video-metadata-typecheck.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "native-tool-tests.log": "d691cfd8998d54118b855baeb3a66344a94b49319d7162c36d7c25713b93e784"
+  }
+}

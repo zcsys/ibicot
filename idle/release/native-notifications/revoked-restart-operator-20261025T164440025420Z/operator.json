@@ -1,0 +1,35 @@
+{
+  "verification_id": "integration-android-20261025T164440025420Z",
+  "candidate_fingerprint": "3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59",
+  "harness_sha256": "de04f52b3c2311b3eb8e1c7fb83fcf7da41256a63a9a3b9f0ca4f732e8667eb4",
+  "scenario": "revoked-prepare",
+  "run_id": "v3b00-r20261025-revoked-restart1",
+  "device_label": "android",
+  "platform": "android",
+  "process_id": 10359,
+  "before_utc_ms": 1792946726918,
+  "action_started_utc_ms": 1792946734991,
+  "action_finished_utc_ms": 1792946735051,
+  "after_utc_ms": 1792946738168,
+  "tap_argv": [
+    "/Users/csys/Library/Android/sdk/platform-tools/adb",
+    "-s",
+    "emulator-5556",
+    "shell",
+    "input",
+    "touchscreen",
+    "tap",
+    "916",
+    "1061"
+  ],
+  "tap_exit_code": 0,
+  "files_sha256": {
+    "before.xml": "576e3af93210d2290ffab4a52e150d4985a7f0eff29b2394e27e0b4c01066178",
+    "after.xml": "060ea92ef08bb8936f9b7b9539d9906459a1d49ba892e128b99ff78366e88928",
+    "before.png": "f67b19c69fde2eca3ec836fe28f71aa873da52b9ca59187ef4973b12a4db2089",
+    "after.png": "42e4a0141e41f0deadb9524dc7ef8511e78d6c3ef22487fb9cf6fc32eff99850",
+    "settings-activities.txt": "67d6cd915e7fedf0e85138e8353d5fca5a2f54ccaa84b95003c06894f547c1b8"
+  },
+  "operator": "Automated actual observed Android Settings switch; no direct permission API",
+  "method_sha256": "4b841ade92aee43a7292c07bbaa0e0d1306a9468c840e2318eaf0a43fc0e796a"
+}

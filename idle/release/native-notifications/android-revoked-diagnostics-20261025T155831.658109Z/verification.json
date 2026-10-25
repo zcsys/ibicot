@@ -1,0 +1,19 @@
+{
+  "utc": "2026-10-25T16:02:01.741078+00:00",
+  "native_report": "/Users/csys/Desktop/ibicot/idle/release/native-notifications/integration-android-20261025T155657188665Z/verification.json",
+  "native_report_sha256": "3526106ff508ffe8535a0152a5e22bc756acfcfe57527cc15db8be85f0222ca4",
+  "result": "failed before any recorded operator action",
+  "facts": [
+    "OS Settings notification Activity opened/drawn at18:57:39 local; native lifecycle returned resumed15:57:47.311UTC with permission still allowed.",
+    "Logcat records ShellBackPreview Finishing gesture at18:57:45.939 then Settings CLOSE. Origin of that gesture is not established by this evidence.",
+    "No input command was sent by this operator in this run; first operator read-only snapshot occurred after native failure.",
+    "Settings exit-info has no new crash and only historical exits. Current failure does not establish production defect or OS crash."
+  ],
+  "files_sha256": {
+    "activities.txt": "95eb8f7c2362e718ff591f1963d23df6d2b9129f943255027cd215c766f2df39",
+    "logcat.txt": "ccef3ceabedbb22d6b63d2b66c7cefe2749b07a22d64a49dbc9a7a8e191f93d5",
+    "package.txt": "5f4193b3541e7bd6755eae0756233e30ffa2445b8369f204b0ceaf67e136aec6",
+    "receipts.json": "aa1686133806168f14b4dad9192a7f403ac03cea82cbac64a2929e13a9dc0601",
+    "settings-exit.txt": "a8cd0129a2ed1c1cc1e7537b8dcf6493ff520d9114e93291cb1058549176d83d"
+  }
+}

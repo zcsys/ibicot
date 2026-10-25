@@ -1,0 +1,9 @@
+{
+  "candidate_fingerprint": "152805bf9e269f49d14486286656ac0174a808384d10e6623533a4f92690dc11",
+  "debug_apk_sha256": "fc856d3cdd2a2c17e9423b2427dd80290ea40d21d9825324c03fbc73335319c2",
+  "android_min_sdk": 29,
+  "android_target_sdk": 36,
+  "manifest_merger_sha256": "18306ac2b82a3ffd33676250ce1c5f0d2748049227dfe772309fd025bad71f29",
+  "observation": "Merged native APK includes WAKE_LOCK from play-services-measurement-sdk-api/work-runtime, FOREGROUND_SERVICE from work-runtime, plus ad identifiers/AdServices permissions from ad dependencies. This differs from the narrower app-authored notification manifest. Presence alone is not evidence of background work, data collection or network transmission. Lead should use actual merged permissions for privacy/store review.",
+  "production_source_changed": false
+}

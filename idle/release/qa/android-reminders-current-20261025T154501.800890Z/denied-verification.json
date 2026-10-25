@@ -1,0 +1,282 @@
+{
+  "utc": "2026-10-25T15:45:35.284627+00:00",
+  "result": "denied_actual_OS_path_supported",
+  "checks": [
+    {
+      "name": "exact checkpoint",
+      "passed": true
+    },
+    {
+      "name": "exact native report",
+      "passed": true
+    },
+    {
+      "name": "archive operator-deny-before.png",
+      "passed": true
+    },
+    {
+      "name": "archive result.json",
+      "passed": true
+    },
+    {
+      "name": "archive operator-deny-after.png",
+      "passed": true
+    },
+    {
+      "name": "archive run.log",
+      "passed": true
+    },
+    {
+      "name": "archive operator-deny-before-activities.txt",
+      "passed": true
+    },
+    {
+      "name": "archive operator-deny-before-pid.txt",
+      "passed": true
+    },
+    {
+      "name": "archive operator-deny-action.json",
+      "passed": true
+    },
+    {
+      "name": "archive operator-deny-before-receipts.json",
+      "passed": true
+    },
+    {
+      "name": "archive driver.dart",
+      "passed": true
+    },
+    {
+      "name": "archive verify_native.py",
+      "passed": true
+    },
+    {
+      "name": "archive started.json",
+      "passed": true
+    },
+    {
+      "name": "archive candidate-manifest.json",
+      "passed": true
+    },
+    {
+      "name": "archive verify_native_reminders.py",
+      "passed": true
+    },
+    {
+      "name": "archive harness.dart",
+      "passed": true
+    },
+    {
+      "name": "archive operator-deny-before-hierarchy.txt",
+      "passed": true
+    },
+    {
+      "name": "archive build_native.py",
+      "passed": true
+    },
+    {
+      "name": "late operator archive operator-deny-after-receipts.json",
+      "passed": true
+    },
+    {
+      "name": "late operator archive operator-deny-after-hierarchy.txt",
+      "passed": true
+    },
+    {
+      "name": "source identity",
+      "passed": true
+    },
+    {
+      "name": "strict native and driver completion",
+      "passed": true
+    },
+    {
+      "name": "actual owned platform",
+      "passed": true
+    },
+    {
+      "name": "production unchanged",
+      "passed": true
+    },
+    {
+      "name": "production before exact frozen candidate",
+      "passed": true
+    },
+    {
+      "name": "installed artifact is actual built APK",
+      "passed": true
+    },
+    {
+      "name": "actual denial leaves opt-out with no pending request",
+      "passed": true
+    },
+    {
+      "name": "same current marker and PID",
+      "passed": true
+    },
+    {
+      "name": "fresh native PID observation",
+      "passed": true
+    },
+    {
+      "name": "permission dialog belongs to live task75 current PID",
+      "passed": true
+    },
+    {
+      "name": "unique current enabled denial button",
+      "passed": true
+    },
+    {
+      "name": "actual tap inside observed control",
+      "passed": true
+    },
+    {
+      "name": "actual input event, no permission API bypass",
+      "passed": true
+    },
+    {
+      "name": "pre-action visual identity",
+      "passed": true
+    },
+    {
+      "name": "after UI removed prompt and returned current app",
+      "passed": true
+    },
+    {
+      "name": "real lifecycle returned from permission UI",
+      "passed": true
+    },
+    {
+      "name": "actual decision within original150second window",
+      "passed": true
+    },
+    {
+      "name": "operator-deny-before-receipts.json:operator-deny-before-hierarchy.txt",
+      "passed": true
+    },
+    {
+      "name": "operator-deny-before-receipts.json:operator-deny-before.png",
+      "passed": true
+    },
+    {
+      "name": "operator-deny-before-receipts.json:operator-deny-before-activities.txt",
+      "passed": true
+    },
+    {
+      "name": "operator-deny-before-receipts.json:operator-deny-before-pid.txt",
+      "passed": true
+    },
+    {
+      "name": "operator-deny-after-receipts.json:operator-deny-after.png",
+      "passed": true
+    },
+    {
+      "name": "operator-deny-after-receipts.json:operator-deny-after-hierarchy.txt",
+      "passed": true
+    },
+    {
+      "name": "prospectively approved method",
+      "passed": true
+    },
+    {
+      "name": "different-author procedure approval",
+      "passed": true
+    },
+    {
+      "name": "reject wrong-run",
+      "passed": true
+    },
+    {
+      "name": "reject incomplete",
+      "passed": true
+    },
+    {
+      "name": "reject enabled-after-denial",
+      "passed": true
+    },
+    {
+      "name": "reject pending-after-denial",
+      "passed": true
+    },
+    {
+      "name": "reject allowed-instead",
+      "passed": true
+    },
+    {
+      "name": "reject late error",
+      "passed": true
+    },
+    {
+      "name": "source and receipts unchanged",
+      "passed": true
+    }
+  ],
+  "checks_passed": 52,
+  "negative_controls": [
+    {
+      "mutation": "wrong-run",
+      "errors": [
+        "Identity mismatch: run_id"
+      ]
+    },
+    {
+      "mutation": "incomplete",
+      "errors": [
+        "Missing actual evidence: completed"
+      ]
+    },
+    {
+      "mutation": "enabled-after-denial",
+      "errors": [
+        "File preference did not preserve actual opt-in result"
+      ]
+    },
+    {
+      "mutation": "pending-after-denial",
+      "errors": [
+        "Denied scenario retained requests"
+      ]
+    },
+    {
+      "mutation": "allowed-instead",
+      "errors": [
+        "Actual opt-in permission not observed"
+      ]
+    }
+  ],
+  "late_error_control": true,
+  "pins": {
+    "release/qa/settings-native-20261023T081631.942859Z/replay_reminder_initial.py": "311882c41b301634a7a0685229dfe389400a1faffc591b31924e9bbc81ed85e7",
+    "release/native-notifications/resume-20261025-20261025T150516.353584Z/android-denied-ready3-checkpoint.json": "1353cde446580ea80206dbac4830c4c1c412d2e1da8750e1ca5fb5b33cfdaea0",
+    "release/native-notifications/integration-android-20261025T154133598181Z/verification.json": "8888701c7606b6e8afc14547fa1ea05050c92fbdab153d567f1385e96cfec504",
+    "release/native-notifications/integration-android-20261025T154133598181Z/result.json": "847e8b4c4d0370f92ac4cce77faeb86038d8e1ca2d1373057bc281785052ee2a",
+    "release/native-notifications/integration-android-20261025T154133598181Z/run.log": "26bd4478fbb7becbc66e72cffdc044cfffd815fe20fb5800c51e16084dacb3c7",
+    "release/native-notifications/integration-android-20261025T154133598181Z/verify_native.py": "68297f66fc4e32a173b17da2594872334d59ba2b88b7d5878b5ee8905f9b89e5",
+    "release/native-notifications/integration-android-20261025T154133598181Z/verify_native_reminders.py": "2ff5ce93795e3ed4584ce08fc2976e6c268582c26b995aadae9c7e3b337df1ed",
+    "release/native-notifications/integration-android-20261025T154133598181Z/operator-deny-before.png": "2e0ca9d2e3d94bdf0449f51a80d1f32e8abb2380c6bcacba17f5b10c9302e361",
+    "release/native-notifications/integration-android-20261025T154133598181Z/operator-deny-after.png": "a51ff28baf469a73abbf7e8de55171c9570a123ecea9f02939d7864cda1832bf",
+    "release/native-notifications/integration-android-20261025T154133598181Z/operator-deny-before-activities.txt": "70fb36defdce2970e5fcfcb87786380aa0eedd5a13b3115da19ad1c27b899850",
+    "release/native-notifications/integration-android-20261025T154133598181Z/operator-deny-before-pid.txt": "dd6fbd60221f1f1b17b76656cd86af1259e3ff00711cb4d9cd091a1fed48d60e",
+    "release/native-notifications/integration-android-20261025T154133598181Z/operator-deny-action.json": "8083293e69809b2b57cb6d90e4c4af791be17c614bec3aab3bf03e63353471ca",
+    "release/native-notifications/integration-android-20261025T154133598181Z/operator-deny-before-receipts.json": "063627dcf2f514ad4b267540b2fb18dc0ef2447440e6b365527c6613cf055099",
+    "release/native-notifications/integration-android-20261025T154133598181Z/driver.dart": "ec880d16153b1ac577a221a46f81e7c309dd5417fbba8aae4ce68f7acbcfb668",
+    "release/native-notifications/integration-android-20261025T154133598181Z/started.json": "755d3b7079c59468f41bbebb4967a5c3ddf31400ff1a3dd008b24432c323d987",
+    "release/native-notifications/integration-android-20261025T154133598181Z/candidate-manifest.json": "b4322606cd0207425b801feacc0bf4084ac9c460b23a028576204b766eeaeada",
+    "release/native-notifications/integration-android-20261025T154133598181Z/harness.dart": "330ab6428203ec80e4de19e4eb727ad8dcfc6f63572e9ea1b0ef3ff7dc7a71da",
+    "release/native-notifications/integration-android-20261025T154133598181Z/operator-deny-before-hierarchy.txt": "45d627dbfa266f8102e7df1637aa4498551461fc5e98dcba20647d71c5a9d4ec",
+    "release/native-notifications/integration-android-20261025T154133598181Z/build_native.py": "59ee4e7b94a1445e2c8effadfe4c0510c9c189df0278c7ede6e87f1807bf38ee",
+    "release/native-notifications/integration-android-20261025T154133598181Z/operator-deny-after-receipts.json": "f52256cddb2b6b512fb67ae423b8c595e65414f12d92683687c3b71973da9705",
+    "release/native-notifications/integration-android-20261025T154133598181Z/operator-deny-after-hierarchy.txt": "e0468ce68f84fa035f53ff29b9667e5e91c33b4903ded6c8b19fba220ec2d728",
+    "docs/quality/android-ui-operator.md": "4b841ade92aee43a7292c07bbaa0e0d1306a9468c840e2318eaf0a43fc0e796a",
+    "release/qa/client-android-ui-procedure-20261025T153851.062431Z/REVIEW.md": "f54589031e9a103cd15e1455f2ac3004dcb3d319a77c7f4ef78dbbcccb9e6067"
+  },
+  "action_delta_from_marker_ms": 38494.79296875,
+  "visual_inspection": "Raw before image visibly contains Allow Tideglass to send you notifications? with Allow and Don\u2019t allow. Raw after image has no permission sheet and displays the reminder qualification app. Actual UI tap is an automated SDK gesture, not a human or CUA event.",
+  "remaining_scenarios": [
+    "quiet-cancel",
+    "delivery",
+    "revoked"
+  ],
+  "physical_banner_or_usability_claim": false,
+  "new_native_device_or_runtime_execution": false
+}

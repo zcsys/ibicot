@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "study_id": "synthetic_cohort",
+  "synthetic": true,
+  "preregistered_at": 0,
+  "enrollment_start": 100,
+  "enrollment_end": 200,
+  "primary_outcome": "D7",
+  "design": "descriptive_no_experiment",
+  "exclusion_rules": [
+    "staff",
+    "automation",
+    "invalid_install"
+  ],
+  "baseline": {
+    "candidate_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "economy_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "content_sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+    "config": "fixture_v1"
+  },
+  "registry_population": "opt_in_study",
+  "registry_source": "Synthetic registry; no people.",
+  "session_definition": "An adjudicated valid return includes an interactive foreground harbor and foreground activity. Sessions begin after 30 minutes of inactivity or process restart and deduplicate by stable ID. First launch precedes harbor loading; startup failures and onboarding departures stay in the registry. Validate the source against local logs before enrollment.",
+  "missing_data_rule": "Keep installs; report unidentified returns as bounds."
+}

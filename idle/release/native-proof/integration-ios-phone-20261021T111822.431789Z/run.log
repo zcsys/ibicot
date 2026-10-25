@@ -1,0 +1,62 @@
+Running Xcode build...                                          
+Xcode build done.                                           34.0s
+VMServiceFlutterDriver: Connecting to Flutter application at http://127.0.0.1:55788/iZkKqyexxog=/
+VMServiceFlutterDriver: Isolate found with number: 5688456012485375
+VMServiceFlutterDriver: Isolate 5688456012485375 is runnable.
+VMServiceFlutterDriver: Isolate is paused at start.
+VMServiceFlutterDriver: Attempting to resume isolate
+flutter: 00:00 +0: seeded native screen set and real-time gameplay footage
+VMServiceFlutterDriver: Connected to Flutter application.
+flutter: ══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+flutter: The following ArgumentError was thrown running a test:
+flutter: Invalid argument(s): Awarded Charts exceed exact earned entitlement
+flutter:
+flutter: When the exception was thrown, this was the stack:
+flutter: #0      GameState.validate (package:tideglass_core/src/state.dart:141:9)
+flutter: #1      new GameState (package:tideglass_core/src/state.dart:88:5)
+flutter: #2      captureGalleryScenario.<anonymous closure> (file:///Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261021T101953.650199Z-152805bf9e26/workspace/game/mobile/integration_test/evidence_d88a0141cede_test.dart:491:21)
+flutter: <asynchronous suspension>
+flutter: #3      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+flutter: <asynchronous suspension>
+flutter: #4      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+flutter: <asynchronous suspension>
+flutter: #5      TestWidgetsFlutterBinding._createTestCompletionHandler.<anonymous closure> (package:flutter_test/src/binding.dart:1707:12)
+flutter: <asynchronous suspension>
+flutter:
+flutter: The test description was:
+flutter:   seeded native screen set and real-time gameplay footage
+flutter: ════════════════════════════════════════════════════════════════════════════════════════════════════
+flutter: 00:00 +0: seeded native screen set and real-time gameplay footage [E]
+flutter:   Test failed. See exception logs above.
+  The test description was: seeded native screen set and real-time gameplay footage
+flutter:
+flutter: 00:00 +0 -1: (tearDownAll)
+flutter: 00:00 +1 -1: Some tests failed.
+Failure Details:
+Failure in method: seeded native screen set and real-time gameplay footage
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞═════════════════
+The following ArgumentError was thrown running a test:
+Invalid argument(s): Awarded Charts exceed exact earned
+entitlement
+
+When the exception was thrown, this was the stack:
+#0      GameState.validate (package:tideglass_core/src/state.dart:141:9)
+#1      new GameState (package:tideglass_core/src/state.dart:88:5)
+#2      captureGalleryScenario.<anonymous closure> (file:///Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261021T101953.650199Z-152805bf9e26/workspace/game/mobile/integration_test/evidence_d88a0141cede_test.dart:491:21)
+<asynchronous suspension>
+#3      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#4      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+#5      TestWidgetsFlutterBinding._createTestCompletionHandler.<anonymous closure> (package:flutter_test/src/binding.dart:1707:12)
+<asynchronous suspension>
+
+The test description was:
+  seeded native screen set and real-time gameplay footage
+═════════════════════════════════════════════════════════════════
+
+end of failure 1
+
+
+
+Leaving the application running.

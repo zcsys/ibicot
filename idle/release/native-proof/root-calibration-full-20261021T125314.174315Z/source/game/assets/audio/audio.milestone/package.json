@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "id": "audio.milestone",
+  "status": "authored_pending_independent_review",
+  "members": [
+    {
+      "id": "audio.milestone.milestone",
+      "title": "Milestone",
+      "source_path": "source/audio/masters/milestone.wav",
+      "source_sha256": "28420e42223b3f260abf0d1a1b9150e6c55ef192d8d67d2e0ec67df6518b78fc",
+      "runtime_path": "game/assets/audio/audio.milestone/milestone.m4a",
+      "runtime_sha256": "7146f48ef14c742f8be5d5217f886793245f041fe33f2f3baf017298039dcb60",
+      "flutter_asset": "audio/milestone.m4a",
+      "codec": "AAC LC in MPEG-4 audio container, 48 kHz stereo, nominal 128 kbit/s",
+      "runtime_bytes": 31091,
+      "bus": "sfx",
+      "loop": false,
+      "loop_start_sample": null,
+      "loop_end_sample_exclusive": null,
+      "source_measurements": {
+        "duration_seconds": 4.95,
+        "samples": 237600,
+        "sample_peak_dbfs": -5.0,
+        "four_times_oversampled_peak_dbtp_estimate": -4.994,
+        "integrated_lufs_bs1770_estimate": -14.376,
+        "dc_offset_max": 1.054524898747345e-07,
+        "boundary_step_dbfs": -240.0,
+        "clipped_samples": 0,
+        "measurement_note": "Local numerical estimate, not a certified meter or a listening review."
+      },
+      "decoded_aac_measurements": {
+        "duration_seconds": 4.95,
+        "samples": 237600,
+        "sample_peak_dbfs": -4.922,
+        "four_times_oversampled_peak_dbtp_estimate": -4.917,
+        "integrated_lufs_bs1770_estimate": -14.375,
+        "dc_offset_max": 1.0150150209695258e-07,
+        "boundary_step_dbfs": -95.041,
+        "clipped_samples": 0,
+        "measurement_note": "Local numerical estimate, not a certified meter or a listening review."
+      },
+      "native_decode_verified": false,
+      "listening_review": null
+    }
+  ],
+  "score_source": "source/audio/score/tideglass.score.json",
+  "source_score_sha256": "55bf62404acc5592967095018b1b1c20bd626cb8509054c6f93ad182d0ceb6a9",
+  "renderer": "tools/audio/render_score.py",
+  "renderer_sha256": "1a0c980c29d85c225771e814cdbbdc0ae75bb14006306e0f60a0975bba3fc3af",
+  "credits": "source/audio/CREDITS.txt",
+  "visual_equivalents": "All cues accompany an explicit accepted action, visible reward or confirmation. Audio never carries unique progression information.",
+  "device_playback_evidence": null
+}

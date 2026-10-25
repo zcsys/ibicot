@@ -1,0 +1,60 @@
+{
+  "author": "/root/client_asset_review",
+  "staged_only": true,
+  "live_promotion": false,
+  "native_fix_qualified": false,
+  "source_diagnosis": "SDK image-view acquisition explains the sparse/frozen raw display; repair inference awaits native rerun",
+  "python_compile_passed": true,
+  "focused_python_tests_passed": 36,
+  "final_test_log_sha256": "e7e14423230638e26503d46688fd4c0ed04be8352eefc2f7cad7d974d0e90e3a",
+  "test_source_sha256": "c2b11accd7fd365afef1d4ccb4bbc40fa855e122464781e5ebda39842fc8bddd",
+  "patch_sha256": "17f6ebe597d7a55688c48f04e07aa46b57d914e6a73bb1d0c7ebd5d2e8d4ed40",
+  "staged_sources": {
+    "game/mobile/integration_test/platform_smoke_test.dart": {
+      "expected_live_before_sha256": "071635c01ed508077b467462bac279107a8716861ac97a5b657a5401b2cc3506",
+      "staged_path": "release/store/android-capture-repair-20261023T052223.188133Z/staged/platform_smoke_test.dart",
+      "staged_sha256": "68e4873feedf964e5c734b2d45e393bdc79983e58bdbe38b55b8b62300db498c"
+    },
+    "tool/native_recording.py": {
+      "expected_live_before_sha256": "6e1f4a32167d93461097ef3198256a0da815bee5e0b1fa89511dae7bef5e8a29",
+      "staged_path": "release/store/android-capture-repair-20261023T052223.188133Z/staged/native_recording.py",
+      "staged_sha256": "343ed23024953c6378bf7a314589a7252a7f97451cd01906168c9018a66c6582"
+    },
+    "tool/native_integration_driver.dart": {
+      "expected_live_before_sha256": "911183b5d9ee8ec80769836f477a293dadb66e20cc0c5d5e44314415889749a8",
+      "staged_path": "release/store/android-capture-repair-20261023T052223.188133Z/staged/native_integration_driver.dart",
+      "staged_sha256": "5fa7f526f10afd1b23b4adbfe4577770adb50eda16163fe55039d9e4069e5007"
+    }
+  },
+  "all_live_and_failed_evidence_pins_unchanged": true,
+  "failed_gallery_file_count": 15,
+  "flutter_dart_or_native_commands_executed": false,
+  "dart_format_and_analysis_pending": true,
+  "new_native_gallery_and_visual_review_pending": true,
+  "source_writes_stopped": true,
+  "evidence_sha256": {
+    "AUTHOR_HANDOFF.md": "8180ae2eff9cfd833c7ad80cd8fa1a2e48755fe6f7c96ca68078a41a3e8c9f5b",
+    "android-capture.patch": "17f6ebe597d7a55688c48f04e07aa46b57d914e6a73bb1d0c7ebd5d2e8d4ed40",
+    "baseline.json": "8b6fed8dd8b92d5b02ec15a1330f67dc0f19c1877e8bd26585ad46ce8d687d7b",
+    "before/native_integration_driver.dart": "911183b5d9ee8ec80769836f477a293dadb66e20cc0c5d5e44314415889749a8",
+    "before/native_recording.py": "6e1f4a32167d93461097ef3198256a0da815bee5e0b1fa89511dae7bef5e8a29",
+    "before/platform_smoke_test.dart": "071635c01ed508077b467462bac279107a8716861ac97a5b657a5401b2cc3506",
+    "diagnostic-inspection-pins.json": "17cf380b23c341096d41c6728ba2b2174a9eb99f4895422404f5e94f6efb412c",
+    "native_recording.pre-hardening.py": "2ea5f3859f7d9a70bcd7726877a1afbdbd3c1fd04edd43f683e30b58d71fc346",
+    "preservation-checks.json": "03d2803539ea78aa4a82e2c9935c30b20f7eef731e8b8b32c487b8de82464e0d",
+    "preservation.log": "3878d1bbd0d350c8427356ae0a9f603df12372b98947a8c37ff2e3004b764ba1",
+    "python-tests-final-sealed.log": "e7e14423230638e26503d46688fd4c0ed04be8352eefc2f7cad7d974d0e90e3a",
+    "python-tests-final.log": "5d5aedd0196ff9380e5b9329e7736aa31f89799e7c07c0ae7f3ff9bc31bff56c",
+    "python-tests-first.log": "f04101367b554ea182069aea9b5de855728e7f9584cf36e92f0520355a4dc44d",
+    "python-tests-second.log": "eec2841c63f8befd9e11b554c69fd5b698a762e423d928fde666e9326a98c208",
+    "seal_stage.py": "de1f890ab9eb79f9b156d43effca26c5e1a17bede83b400cc27c3194568278cd",
+    "stage_dart.py": "ccef56424e95fbc43b9a5cf8f3d167de263103a1b515bc4c56bc6473284bbff3",
+    "stage_native.py": "8e7066e1ece08a287440f7f54c89599482f848a76eadf51ad07fd687876302a8",
+    "staged/native_integration_driver.dart": "5fa7f526f10afd1b23b4adbfe4577770adb50eda16163fe55039d9e4069e5007",
+    "staged/native_recording.py": "343ed23024953c6378bf7a314589a7252a7f97451cd01906168c9018a66c6582",
+    "staged/platform_smoke_test.dart": "68e4873feedf964e5c734b2d45e393bdc79983e58bdbe38b55b8b62300db498c",
+    "staged-pins.json": "ea06f6777cd8b4ff01b1969341a0cd30adc8decbd893273bf9aac563c0954336",
+    "test_staged_recording.first.py": "74b24c185659dd7ebd56f14e4fa4eaa3b7d06bf00db0b0ed168978c4f3d16feb",
+    "test_staged_recording.py": "c2b11accd7fd365afef1d4ccb4bbc40fa855e122464781e5ebda39842fc8bddd"
+  }
+}

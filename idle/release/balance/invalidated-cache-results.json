@@ -1,0 +1,30 @@
+{
+  "finding": "QA018 / cross-engine static rate-cache collision",
+  "reason": "Base fleet memo key omitted virtual engine rule identity; main, challenge and seasonal economies could reuse incompatible rates. Retain these artifacts for defect provenance, not balance conclusions.",
+  "artifacts": [
+    {
+      "path": "release/balance/long-horizon-policies.json",
+      "sha256": "bea3c72abe3b201cffa469897b22d913b930babe4fb1fc462115c8ae016d161a",
+      "source_digest": "76e961e8c3531fe7e0cf55feb2b79e5dcca9929a9b8cc56ffabc9c2515e25dcd",
+      "status": "invalidated_for_cross_engine_rate_cache_collision"
+    },
+    {
+      "path": "release/balance/long-horizon-v2-policies.json",
+      "sha256": "c741495ca39205efd88d2d6fea2a1d12cc4d3d16dbe501302d74c4aabfb2aeec",
+      "source_digest": "7ada925f5c33398e8ae66852ef861cf21cc2d5d0a26a8f7f3a7d29766f71cad1",
+      "status": "invalidated_for_cross_engine_rate_cache_collision"
+    },
+    {
+      "path": "release/balance/long-horizon-v3-policies.json",
+      "sha256": "cbf95401d3fac0faa67c536de646c1c036393d10b11c92ba890310de1999896a",
+      "source_digest": "e1cdbc835a82a531157c2ef57701d0b7bda9fc8a29174a5ba88751c30c7a3ff1",
+      "status": "invalidated_for_cross_engine_rate_cache_collision"
+    },
+    {
+      "path": "release/balance/supplemental-v1.json",
+      "sha256": "ac5104309a1155bae5ecabf337b384f0f80768ae2fe5d56361395e32102d4730",
+      "source_digest": "63786005ca749aec6fbc3c15913dff43e01fae1bdfd4fcb931ce2f712ca80e53",
+      "status": "invalidated_for_cross_engine_rate_cache_collision"
+    }
+  ]
+}

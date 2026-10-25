@@ -1,0 +1,29 @@
+{
+  "candidate": "ce46598c4b513477c643f0dff4f5160400ac800b4ee76579c48ca2a5e08e1ffd",
+  "workspace": "/Users/csys/Desktop/ibicot/idle/game/qa/workspaces/ce46598c4b51",
+  "fixture_sha256": "f6c3496764c7b67c4f3f7c62d28e6aec728971d04fdc7db94d565c16619ef396",
+  "checked_utc": "2026-10-16T10:03:15.767953+00:00",
+  "qualification": "host reproduction only, not physical device or store approval",
+  "auxiliary_inputs": {
+    "implementation/tools/validate_save_contract.py": {
+      "sha256": "7306c21c2effb01acae4ad9aeead5c77802ea0317ece8a67f46707d6279fb8c6",
+      "from_candidate": false
+    },
+    "implementation/contracts/save-envelope.schema.json": {
+      "sha256": "4cbdbb028df188aa585ee3dba347a720fb44c2395c492e6f5ae41b81873d5fb8",
+      "from_candidate": true
+    },
+    "implementation/fixtures/save_contract_cases.json": {
+      "sha256": "d497fdf74c784eb133428fee062a00195aa1d9ab5bc2a7134e2bee8293b3102c",
+      "from_candidate": false
+    },
+    "economy.json": {
+      "sha256": "9e5b9bcfcfc7a68d4eaeebc97e8d40cd42d04532fa59f514c7483efee885d2b6",
+      "from_candidate": true
+    }
+  },
+  "qa_setup_errors_corrected": [
+    "copied frozen game/content data omitted from initial QA workspace",
+    "attached omitted Python validator and fixtures without altering candidate code/tests"
+  ]
+}

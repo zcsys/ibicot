@@ -1,0 +1,59 @@
+Resolving dependencies...
+Downloading packages...
+  material_color_utilities 0.13.0 (0.13.1 available)
+  test_api 0.7.12 (0.7.15 available)
+Got dependencies!
+2 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
+Resolving dependencies...
+Downloading packages...
+  material_color_utilities 0.13.0 (0.13.1 available)
+  test_api 0.7.12 (0.7.15 available)
+Got dependencies!
+2 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
+00:00 +0: loading /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/daily-20261016T101715Z/game/mobile/test/qa_daily_review_test.dart
+00:00 +0: clock rollback reload must not delay the next actual account-day boundary
+00:00 +0 -1: clock rollback reload must not delay the next actual account-day boundary [E]
+  Expected: <20743>
+    Actual: <20742>
+  A preserved future settlement cursor must also preserve the calendar anchor; once real time catches up, next midnight is due.
+  
+  package:matcher                                     expect
+  package:flutter_test/src/widget_tester.dart 473:18  expect
+  test/qa_daily_review_test.dart 22:5                 main.<fn>
+  
+00:00 +0 -1: real repository reload preserves exactly one daily claim
+00:00 +1 -1: long offline return caps backlog and stale command cannot claim expired contract
+00:00 +2 -1: saving a valid imported automation plan without edits preserves exact run duration
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: <90>
+  Actual: <120>
+Opening and saving without edits must not silently change an already supported exact-second plan.
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///Users/csys/Desktop/ibicot/idle/game/qa/workspaces/daily-20261016T101715Z/game/mobile/test/qa_daily_review_test.dart:67:5)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/csys/Desktop/ibicot/idle/game/qa/workspaces/daily-20261016T101715Z/game/mobile/test/qa_daily_review_test.dart line 67
+The test description was:
+  saving a valid imported automation plan without edits preserves exact run duration
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:01 +2 -2: saving a valid imported automation plan without edits preserves exact run duration [E]
+  Test failed. See exception logs above.
+  The test description was: saving a valid imported automation plan without edits preserves exact run duration
+  
+00:01 +2 -2: 320px 200percent daily claim and reroll controls stay laid out
+00:01 +3 -2: Some tests failed.
+
+Failing tests:
+  /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/daily-20261016T101715Z/game/mobile/test/qa_daily_review_test.dart: clock rollback reload must not delay the next actual account-day boundary
+  /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/daily-20261016T101715Z/game/mobile/test/qa_daily_review_test.dart: saving a valid imported automation plan without edits preserves exact run duration

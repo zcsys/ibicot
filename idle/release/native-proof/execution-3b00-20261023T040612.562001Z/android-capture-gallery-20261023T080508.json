@@ -1,0 +1,40 @@
+{
+  "command": [
+    "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3",
+    "/Users/csys/Desktop/ibicot/idle/tool/verify_native.py",
+    "/Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261023T040445.261666Z-3b00cc8f7122",
+    "--device",
+    "emulator-5556",
+    "--label",
+    "android",
+    "--scenario",
+    "capture-gallery",
+    "--run-id",
+    "v3b00-android-gallery-surface-fixed"
+  ],
+  "scenario": "capture-gallery",
+  "label": "android",
+  "run_id": "v3b00-android-gallery-surface-fixed",
+  "predecessor": null,
+  "started_utc": "20261023T080508.392078Z",
+  "exit_code": 1,
+  "verification": "/Users/csys/Desktop/ibicot/idle/release/native-proof/integration-android-20261023T080508.861496Z/verification.json",
+  "verification_sha256": "f74a7b88085702b1ad7df2e470a11ebd6fd1eeb9fa9b42c09c90d3433d38c5bf",
+  "status": "failed",
+  "errors": [
+    "Recorder orchestration: Native capture command failed: /Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+    "No synchronized gallery start marker",
+    "No completed gameplay marker",
+    "Native video artifact is missing",
+    "platform: expected 'android', received None",
+    "device_label: expected 'android', received None",
+    "scenario: expected 'capture-gallery', received None",
+    "run_id: expected 'v3b00-android-gallery-surface-fixed', received None",
+    "verification_id: expected 'integration-android-20261023T080508.861496Z', received None",
+    "candidate_fingerprint: expected '3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59', received None",
+    "harness_sha256: expected '1925106cb014a4a21575af3aa3bd85fc997873c1c9be74249c966da1cf28318b', received None",
+    "No successful native framework completion marker",
+    "No successful driver completion marker"
+  ],
+  "finished_utc": "2026-10-23T08:05:57.789221+00:00"
+}

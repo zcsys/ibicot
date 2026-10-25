@@ -1,0 +1,21 @@
+--- existing-frozen/factory.py
++++ current/factory.py
+@@ -20,7 +20,7 @@
+     # access too; parse strictly and never print its contents on failure.
+     from .vault import private_file, unique_object, VaultKeys, TokenVault
+     config=json.loads(private_file(config_path),object_pairs_hook=unique_object)
+-    allowed={'version','google','apple','admob','ownership','soundtrack'}
++    allowed={'version','google','apple','admob','ownership','soundtrack','web_deletion'}
+     if not isinstance(config,dict) or set(config)-allowed or config.get('version')!=1: raise ValueError('Invalid service configuration.')
+     def section(name,required,optional=()):
+         value=config.get(name)
+@@ -76,4 +76,9 @@
+     if google or apple:
+         from .providers.notifications import StoreNotificationApplication
+         wrapped=StoreNotificationApplication(app,downstream=wrapped,apple=apple,google=google,google_identity=identity)
++    web=section('web_deletion',{'origin'},{'allow_loopback_http'})
++    if web:
++        from .web_deletion import DeletionWebApplication
++        wrapped=DeletionWebApplication(wrapped,origin=web['origin'],
++                                       allow_loopback_http=web.get('allow_loopback_http',False))
+     return ServiceRuntime(app,wrapped,vault)

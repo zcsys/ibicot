@@ -1,0 +1,77 @@
+[
+  {
+    "started_stamp": {
+      "utc_ns": 1792947899223535000,
+      "monotonic_lower_ns": 63937031593583,
+      "monotonic_upper_ns": 63937031595625
+    },
+    "finished_stamp": {
+      "utc_ns": 1792947901617126000,
+      "monotonic_lower_ns": 63939425120125,
+      "monotonic_upper_ns": 63939425122166
+    },
+    "argv": [
+      "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "shell",
+      "-tt",
+      "uiautomator",
+      "dump",
+      "/dev/tty"
+    ],
+    "exit_code": 0,
+    "file": "before.xml",
+    "sha256": "576e3af93210d2290ffab4a52e150d4985a7f0eff29b2394e27e0b4c01066178",
+    "stderr": ""
+  },
+  {
+    "started_stamp": {
+      "utc_ns": 1792947901618032000,
+      "monotonic_lower_ns": 63939426028708,
+      "monotonic_upper_ns": 63939426029000
+    },
+    "finished_stamp": {
+      "utc_ns": 1792947901866157000,
+      "monotonic_lower_ns": 63939674146041,
+      "monotonic_upper_ns": 63939674146875
+    },
+    "argv": [
+      "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "exec-out",
+      "screencap",
+      "-p"
+    ],
+    "exit_code": 0,
+    "file": "before.png",
+    "sha256": "fc7a2db373b87896e8da7976e4c5d9e2ad42f7f9848d130aebacdb2d92b91b4b",
+    "stderr": ""
+  },
+  {
+    "started_stamp": {
+      "utc_ns": 1792947901866924000,
+      "monotonic_lower_ns": 63939674913875,
+      "monotonic_upper_ns": 63939674914083
+    },
+    "finished_stamp": {
+      "utc_ns": 1792947901899100000,
+      "monotonic_lower_ns": 63939707088416,
+      "monotonic_upper_ns": 63939707089250
+    },
+    "argv": [
+      "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "shell",
+      "dumpsys",
+      "activity",
+      "activities"
+    ],
+    "exit_code": 0,
+    "file": "settings-activities.txt",
+    "sha256": "d3e2660096e1c51fe0702187307c6b6d5b0546096285a07a39076edacfc7974d",
+    "stderr": ""
+  }
+]

@@ -1,0 +1,38 @@
+--- /Users/csys/Desktop/ibicot/idle/release/qa/client-native-context-20261021T133429576369Z/source/release/native-proof/native-context-harness-staging/tool/verify_current_runtime.py	2026-10-21 16:28:22
++++ /Users/csys/Desktop/ibicot/idle/release/native-proof/native-context-harness-staging/tool/verify_current_runtime.py	2026-10-21 16:41:19
+@@ -17,6 +17,7 @@
+ 
+ import build_native
+ import verify_native
++import study_native_diagnostics
+ import study_adjudicate
+ import study_report
+ 
+@@ -138,7 +139,7 @@
+     for key, expected in [('candidate_fingerprint', context['candidate_fingerprint']), ('harness_sha256', context['harness_sha256']),
+                           ('device_label', context['label']), ('run_id', context['run_id']),
+                           ('preparation_verification_id', context['verification_id']), ('native_process_id', pid)]:
+-        require(checkpoint.get(key) == expected, 'Checkpoint identity mismatch: ' + key)
++        require(type(checkpoint.get(key)) is type(expected) and checkpoint.get(key) == expected, 'Checkpoint identity mismatch: ' + key)
+     scenario = context['scenario']
+     if scenario.startswith('runtime-save-hold-'):
+         require(checkpoint.get('stage') == scenario.rsplit('-', 1)[1], 'Checkpoint commit stage mismatch')
+@@ -167,6 +168,8 @@
+         expected['native_study_samples'] = 0 if scenario in ('runtime-study-default', 'runtime-study-withdraw-reopen') else 1
+         if expected['native_study_samples'] == 1:
+             errors.extend(native_observation_errors(payload.get('native_study_process_context'), context['platform'], payload.get('process_id')))
++        elif any(key in payload for key in ('native_study_process_context', 'native_study_logical_process_id')):
++            errors.append('Zero-sample scenario contains native study context or logical process identity')
+     if scenario.startswith('runtime-save-recover-'):
+         stage = scenario.rsplit('-', 1)[1]
+         expected.update(recovered_stage=stage, save_loaded_amount=1 if stage == 'afterRename' else 0, save_after_recovery_amount=2)
+@@ -499,7 +502,8 @@
+         evidence.mkdir()
+         sources = {'runner.py': Path(__file__), 'harness.dart': harness_path, 'driver.dart': ROOT / 'tool/native_integration_driver.dart',
+                    'build_native.py': Path(build_native.__file__), 'verify_native.py': Path(verify_native.__file__),
+-                   'study_adjudicate.py': Path(study_adjudicate.__file__), 'study_report.py': Path(study_report.__file__)}
++                   'study_adjudicate.py': Path(study_adjudicate.__file__), 'study_report.py': Path(study_report.__file__),
++                   'study_native_diagnostics.py': Path(study_native_diagnostics.__file__)}
+         for dest, source in sources.items():
+             shutil.copy2(source, evidence / dest)
+         pins = {dest: digest((evidence / dest).read_bytes()) for dest in sources}

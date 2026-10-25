@@ -1,0 +1,127 @@
+{
+  "schema_version": 1,
+  "recorded_utc": "2026-10-21T13:38:46.561870+00:00",
+  "status": "implemented_local_author_checks_passed_independent_review_pending",
+  "source_sha256": {
+    "services/tideglass_service/web_deletion.py": "48e4f99a9f3f871c8620ee396355a44711fe92f10418d636960fe76dbd50225d",
+    "services/tideglass_service/web_deletion_static/index.html": "4aa25c185f5380690efc56f1cf41b7c8785ba69daeadb202c66a41a91dfc99bb",
+    "services/tideglass_service/web_deletion_static/delete.js": "0a36ae50235fe3bb66f9768c0f1d86bfa6d85482a42d8f010ca77f13e9387112",
+    "services/tideglass_service/web_deletion_static/delete.css": "23188f87efa36e959073a4a919b528718113ebd201fa94e0966a7e08f7d59451",
+    "services/tideglass_service/factory.py": "9125fc374367e68381bd42fa26e96b9434f705aad01389c8d8d78fe1cc134bcc",
+    "services/docs/WEB_DELETION.md": "85b50f7d7613a370f0af86d0555335f2719a587909b7dbd7b0624bad538e4306",
+    "tests/services/test_web_deletion.py": "9bf0fa0cdc00341755c6e9f23b332c7784885f77b090be647c5eb657f3ef34de",
+    "tests/services/providers/test_web_deletion_factory.py": "ee1f5b015f5c5fa808a85096395f4d9dd381b5f538dd928321fb7c3e4a00709c",
+    "tests/services/web_deletion_browser.cjs": "04c467d6c7b547e430bb9164b5bde3785e36bc7ebd6dc27774c9c13f080a55d1",
+    "services/evidence/web-deletion/run_browser.py": "648c31b8a3bebcf5065bc2062e1fd068678dd961189c99d5d516668f28b05d29",
+    "services/tideglass_service/api.py": "3d84629e39d5747e1ea55e412a1d52728890244058bdfde1f25dd384645a9003",
+    "services/tideglass_service/storage.py": "3c640f16a6deb226b78e54238009a12955096161d425e04326bb23321e8ea6ad",
+    "services/tideglass_service/vault.py": "88a983dcfb473e6480574ff6fbda25156f16bde4ceb5e0cc5de4460ed71a0f19",
+    "services/tideglass_service/__main__.py": "863351517cad12425f85e7a0e32c7dd13b2d44ffab70111d89144349b05d5718",
+    "services/tideglass_service/verification.py": "da37c39c7781320cd5b381b432c5b0654464d687ccf32b94c797acbe5a675f08",
+    "services/tideglass_service/soundtrack.py": "11d3cbc023a70487e8aac610bb71a85a1b063aadf6649036971b553cb7dc2206",
+    "services/requirements-providers.lock": "ace5ab939db2038acc891f899c6fd61c3263db9d089ad4103f9aa327f70a8df8",
+    "services/docs/PRIVACY.md": "f9071535a30041df0cd6d55bb5040f815ce617c8d9ed0d3692aa9b87f4df131b",
+    "release/public-pages/publication.json": "06384fddf6a1be2a74468f38c8ad2dc1f9585ce632df08e11fd49d535328acdc",
+    "release/public-pages/INDEPENDENT_REVIEW.md": "2a8fc6b56f6962926a4a11fd8eb39b87928ee3b1f03ba9aa4645da16de8c0389",
+    "release/qa/integration-local-remaining-20261021T131244958842Z/LOCAL_REMAINING_REVIEW.md": "346debd4042ee7909b844adc85bde497f02a740984709cee5f0d1c3e52ade27f"
+  },
+  "owned_sources": [
+    "services/tideglass_service/web_deletion.py",
+    "services/tideglass_service/web_deletion_static/index.html",
+    "services/tideglass_service/web_deletion_static/delete.js",
+    "services/tideglass_service/web_deletion_static/delete.css",
+    "services/tideglass_service/factory.py",
+    "services/docs/WEB_DELETION.md",
+    "tests/services/test_web_deletion.py",
+    "tests/services/providers/test_web_deletion_factory.py",
+    "tests/services/web_deletion_browser.cjs",
+    "services/evidence/web-deletion/run_browser.py"
+  ],
+  "unchanged_context": [
+    "services/tideglass_service/api.py",
+    "services/tideglass_service/storage.py",
+    "services/tideglass_service/vault.py",
+    "services/tideglass_service/__main__.py",
+    "services/tideglass_service/verification.py",
+    "services/tideglass_service/soundtrack.py",
+    "services/requirements-providers.lock",
+    "services/docs/PRIVACY.md",
+    "release/public-pages/publication.json",
+    "release/public-pages/INDEPENDENT_REVIEW.md",
+    "release/qa/integration-local-remaining-20261021T131244958842Z/LOCAL_REMAINING_REVIEW.md"
+  ],
+  "factory_baseline_sha256": "ba207ac0d3d7ccbccd9696eefb305f8d3b038dc1ec5f67d31e86908fda29a288",
+  "factory_wrapper_diff_sha256": "0d089c74bafd0934cfad4726f50fdfffcd59355da570248e89e4e5745a61de88",
+  "evidence_sha256": {
+    "http-tests-initial.log": "2101da325e41be08052de4040a3ac0945e32734981124b9145a2e90b4fab4487",
+    "http-tests-repaired.log": "2ce607942371ad3e9a29af1904f5746ddf03164e0f24528c51c7399bb80e68c0",
+    "base-regression.log": "d3c894f0c4554b8abe4e3ff7f65ea774e6a2328a5f7eb3f79eacfd4ce3e61e18",
+    "factory-tests-final.log": "ab051571f1b5e1352a0b84792363075d427204d2d55fca97754d801e18ec5913",
+    "provider-regression.log": "c90437f518f014097f723b78e729e42aa582f00c0849dad0e4b103d48d6e1cfa",
+    "browser-initial/browser-report.json": "660f6c4afcdc4bdf6fecf14fd498ab11f93a3788d9a1831c113d8a4d731617f0",
+    "browser-final-copy/browser-report.json": "621961f9e20f3c58563611ab09fbe73dde0c36485cd7c440ccfb5b7d4f4d694d",
+    "browser-final-copy/runner.json": "1fd48a03702f75e66da9899bd92f94867d5cb4ce60e221530872ac5663b9e721",
+    "browser-final-copy/browser.log": "b6560886ce962f3ff6c27a157f5e33a54702a1797ccc1d4a3170bb2795f7b851",
+    "factory-wrapper.diff": "0d089c74bafd0934cfad4726f50fdfffcd59355da570248e89e4e5745a61de88"
+  },
+  "checks": {
+    "base_http_service_tests": 65,
+    "provider_tests": 36,
+    "new_http_cases": 15,
+    "new_factory_vault_cases": 4,
+    "actual_browser_scenarios": 8
+  },
+  "captures": [
+    {
+      "path": "services/evidence/web-deletion/browser-final-copy/confirmation-compact-200.png",
+      "sha256": "f0280f97b0c1b1336df2c105e33a708c592b95707975fad8230943547c373fe1",
+      "format": "PNG",
+      "width": 320,
+      "height": 6420,
+      "raw_browser_capture": true,
+      "synthetic_empty_or_confirmed_without_credentials": true
+    },
+    {
+      "path": "services/evidence/web-deletion/browser-final-copy/confirmed-desktop.png",
+      "sha256": "995981f5eb84bc5b432c434d024d1c63b298ab0988b6c92dda030407b87a3959",
+      "format": "PNG",
+      "width": 1280,
+      "height": 1238,
+      "raw_browser_capture": true,
+      "synthetic_empty_or_confirmed_without_credentials": true
+    },
+    {
+      "path": "services/evidence/web-deletion/browser-final-copy/empty-compact-200.png",
+      "sha256": "6add5d263283df8e618b3f54cce95ee127d4a26cb4524c90fb21a3696482b912",
+      "format": "PNG",
+      "width": 320,
+      "height": 5764,
+      "raw_browser_capture": true,
+      "synthetic_empty_or_confirmed_without_credentials": true
+    },
+    {
+      "path": "services/evidence/web-deletion/browser-final-copy/empty-desktop.png",
+      "sha256": "0eca24e22aac2d17f3b09b6204d69f5131d0eab23df136bb9523fa88585750c9",
+      "format": "PNG",
+      "width": 1280,
+      "height": 1134,
+      "raw_browser_capture": true,
+      "synthetic_empty_or_confirmed_without_credentials": true
+    }
+  ],
+  "source_snapshot_unchanged": true,
+  "final_copy_note": "The final browser run covers the one-sentence static wording correction; Python implementation was unchanged from full backend/provider runs.",
+  "public_endpoint": null,
+  "publication_json_unchanged": true,
+  "real_accounts_used": false,
+  "real_store_actions": false,
+  "publish_authorized": false,
+  "published": false,
+  "scope": [
+    "M5-03",
+    "M7-05",
+    "S27",
+    "S39"
+  ],
+  "scope_acceptance_changed": false
+}

@@ -1,0 +1,36 @@
+{
+  "candidate_fingerprint": "152805bf9e269f49d14486286656ac0174a808384d10e6623533a4f92690dc11",
+  "snapshot_matches_manifest": true,
+  "snapshot_fingerprint": "152805bf9e269f49d14486286656ac0174a808384d10e6623533a4f92690dc11",
+  "tooling": [
+    {
+      "file": "build_native.py",
+      "sha256": "56714b9cc215a56bcd710c6678f117866be68211e46f6c24b387b8ed8696f556"
+    },
+    {
+      "file": "verify_native.py",
+      "sha256": "13e32332326096b11229ff249dbc79d40d6490815cc8a1e88b218c2ab5f84d6a"
+    },
+    {
+      "file": "native_recording.py",
+      "sha256": "6e1f4a32167d93461097ef3198256a0da815bee5e0b1fa89511dae7bef5e8a29"
+    },
+    {
+      "file": "native_video_metadata.swift",
+      "sha256": "2a3bb616cc2108f7d25cb6d2edd910b460bd4efc406fd0a2875cdc4197402450"
+    },
+    {
+      "file": "test_native_candidates.py",
+      "sha256": "fab8fa9a7a88d3e0e72f2d54cb77c458d637c4e78fa6d22cf2235967e4c450b0"
+    },
+    {
+      "file": "test_native_verification.py",
+      "sha256": "68c3ed22a6ea15898244d1a4ce16b931f8e2c3f56743aaa3566f9052418370ef"
+    },
+    {
+      "file": "native_integration_driver.dart",
+      "sha256": "911183b5d9ee8ec80769836f477a293dadb66e20cc0c5d5e44314415889749a8"
+    }
+  ],
+  "note": "Current native harness and verifier are independently pinned per runtime. These current tool revisions do not alter the frozen 152 host-test source."
+}

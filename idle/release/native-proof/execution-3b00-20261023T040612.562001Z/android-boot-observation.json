@@ -1,0 +1,59 @@
+[
+  {
+    "command": [
+      "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+      "devices",
+      "-l"
+    ],
+    "exit_code": 0,
+    "output": "List of devices attached\nemulator-5556          offline transport_id:1\n\n"
+  },
+  {
+    "command": [
+      "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "shell",
+      "getprop",
+      "sys.boot_completed"
+    ],
+    "exit_code": 1,
+    "output": "adb: device offline\n"
+  },
+  {
+    "command": [
+      "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "shell",
+      "getprop",
+      "ro.build.version.sdk"
+    ],
+    "exit_code": 1,
+    "output": "adb: device offline\n"
+  },
+  {
+    "command": [
+      "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "shell",
+      "getprop",
+      "ro.build.version.release"
+    ],
+    "exit_code": 1,
+    "output": "adb: device offline\n"
+  },
+  {
+    "command": [
+      "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "shell",
+      "wm",
+      "size"
+    ],
+    "exit_code": 1,
+    "output": "adb: device offline\n"
+  }
+]

@@ -1,0 +1,134 @@
+{
+  "format": "independent-study-collection-final-v1",
+  "source_fingerprint": "773be63e2e05586581df29a9bf10e40db51260c1d68a1261c7a8f6c5d646574b",
+  "source_count": 48,
+  "checks": [
+    {
+      "name": "pub-get",
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/dart",
+        "pub",
+        "get",
+        "--offline"
+      ],
+      "cwd": "/Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-study-collection-final-20261021T113037215270Z/game/platform",
+      "exit_code": 0,
+      "log_sha256": "d4cb7a3c68b4133b4f6e58c67ff5bfd13725d8021e930388cdc98da8a575919d"
+    },
+    {
+      "name": "dart-30",
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/dart",
+        "test",
+        "test/study_recorder_test.dart",
+        "test/qa_independent_test.dart",
+        "--reporter=json"
+      ],
+      "cwd": "/Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-study-collection-final-20261021T113037215270Z/game/platform",
+      "exit_code": 0,
+      "log_sha256": "0c3e715d458f977677f5b0d822b1b8c0bfc0e44378d9fb4f5f3c74419cbeb9dc"
+    },
+    {
+      "name": "dart-analysis",
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/dart",
+        "analyze",
+        "lib/study_recorder.dart",
+        "test/study_recorder_test.dart",
+        "test/study_fixture_export.dart"
+      ],
+      "cwd": "/Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-study-collection-final-20261021T113037215270Z/game/platform",
+      "exit_code": 0,
+      "log_sha256": "636a5f185a21d73aee90c3f0f73b08a30f308b25a5623fdc9804a3a528beab79"
+    },
+    {
+      "name": "python-author-30",
+      "command": [
+        "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tool",
+        "-p",
+        "test_study*.py",
+        "-v"
+      ],
+      "cwd": "/Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-study-collection-final-20261021T113037215270Z",
+      "exit_code": 0,
+      "log_sha256": "369eae0321b2c3b470d07d02a7c5bd6ee2b0dacf36a4e2633a19d75cfee6c640"
+    },
+    {
+      "name": "python-independent-5",
+      "command": [
+        "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3",
+        "/Users/csys/Desktop/ibicot/idle/release/qa/integration-study-collection-final-20261021T113037215270Z/integration_study_collection_test.py",
+        "-v"
+      ],
+      "cwd": "/Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-study-collection-final-20261021T113037215270Z",
+      "exit_code": 0,
+      "log_sha256": "722c73e15c1032f99b3abe06d00e013d03baf94e867ccc87a2dd9ed43d61e1ac"
+    },
+    {
+      "name": "actual-dart-export",
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/dart",
+        "run",
+        "test/study_fixture_export.dart",
+        "/Users/csys/Desktop/ibicot/idle/release/qa/integration-study-collection-final-20261021T113037215270Z/regenerated"
+      ],
+      "cwd": "/Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-study-collection-final-20261021T113037215270Z/game/platform",
+      "exit_code": 0,
+      "log_sha256": "5245a530d369a6c22a6526835e930d816fdc1df8269aa7cc808da62e3b4e46b1"
+    },
+    {
+      "name": "adjudicate-generated",
+      "command": [
+        "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3",
+        "tool/study_adjudicate.py",
+        "--protocol",
+        "/Users/csys/Desktop/ibicot/idle/release/qa/integration-study-collection-final-20261021T113037215270Z/regenerated/protocol.json",
+        "--registry",
+        "/Users/csys/Desktop/ibicot/idle/release/qa/integration-study-collection-final-20261021T113037215270Z/regenerated/registry.json",
+        "--raw",
+        "/Users/csys/Desktop/ibicot/idle/release/qa/integration-study-collection-final-20261021T113037215270Z/regenerated/raw.json",
+        "--review",
+        "/Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-study-collection-final-20261021T113037215270Z/release/study/fixtures/collection-v1/review.json",
+        "--evidence-dir",
+        "/Users/csys/Desktop/ibicot/idle/release/qa/integration-study-collection-final-20261021T113037215270Z/regenerated/evidence",
+        "--output-dir",
+        "/Users/csys/Desktop/ibicot/idle/release/qa/integration-study-collection-final-20261021T113037215270Z/qualified"
+      ],
+      "cwd": "/Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-study-collection-final-20261021T113037215270Z",
+      "exit_code": 0,
+      "log_sha256": "c126f8da5e67f00acbfa9bf7b71f8ac7773efb03707ed6f1c65edd241704c7f4"
+    },
+    {
+      "name": "analyze-generated",
+      "command": [
+        "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3",
+        "tool/study_report.py",
+        "--protocol",
+        "/Users/csys/Desktop/ibicot/idle/release/qa/integration-study-collection-final-20261021T113037215270Z/regenerated/protocol.json",
+        "--data",
+        "/Users/csys/Desktop/ibicot/idle/release/qa/integration-study-collection-final-20261021T113037215270Z/qualified/data.json"
+      ],
+      "cwd": "/Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-study-collection-final-20261021T113037215270Z",
+      "exit_code": 0,
+      "log_sha256": "8696c5d6730af31625f36f9f5381445556e86ea5f6a467339666a5dd9f3765ec"
+    }
+  ],
+  "dart_fixture_byte_parity": {
+    "protocol.json": true,
+    "registry.json": true,
+    "raw.json": true,
+    "labels.json": true
+  },
+  "qualified_data_byte_parity": true,
+  "report_semantic_parity": true,
+  "frozen_drift": [],
+  "live_drift": [],
+  "participants_observed": 0,
+  "native_or_ui_claim": false,
+  "packages_accepted": false
+}

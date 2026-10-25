@@ -1,0 +1,1868 @@
+[
+  {
+    "id": "S01",
+    "requirement": "iOS and Android public launch; phone and usable tablet; internal desktop only",
+    "source": [
+      "docs/decisions/engine-and-number-selection.md",
+      "docs/decisions/execution-costs.md",
+      "docs/quality/V1_QUALITY_PROTOCOL.md",
+      "docs/release-contract.md",
+      "game/mobile/integration_test/current_runtime_test.dart",
+      "game/mobile/integration_test/platform_smoke_test.dart",
+      "release/device-matrix.json",
+      "tool/build_native.py",
+      "tool/verify_current_runtime.py",
+      "tool/verify_native.py"
+    ],
+    "work_items": [
+      "M0-01",
+      "M0-02",
+      "M7-03"
+    ],
+    "verification": "Native launch/install/update evidence on declared targets; no substituted web-only release.",
+    "delivery_status": "not_verified",
+    "evidence": [],
+    "implementation_assessment": "Nativeclient/buildpipeline andresponsiveUI implemented.",
+    "required_verification_or_disposition": "Publicinstall/update/signedbothstorelaunch notdone; currenthostgate failed andphysical/accounts absent.",
+    "review_evidence": [
+      "implementation/reports/director-foundation-review.md",
+      "release/native-proof/20261023T032749.977866Z/build-report.json",
+      "release/native-proof/20261023T032749.977866Z/mobile-test.log",
+      "release/native-proof/20261023T032749.977866Z/operations-test.log",
+      "release/qa/FOUNDATION_REVIEW.md"
+    ],
+    "evidence_keys": [
+      "F",
+      "N"
+    ],
+    "release_readiness": "Whole product not release ready."
+  },
+  {
+    "id": "S02",
+    "requirement": "Guest offline core, optional cloud, English externalized text and pseudolocalization",
+    "source": [
+      "game/core/lib/rechart_forecast.dart",
+      "game/mobile/lib/ad_privacy_copy.dart",
+      "game/mobile/lib/app.dart",
+      "game/mobile/lib/game_controller.dart",
+      "game/mobile/lib/native_services.dart",
+      "game/mobile/lib/public_links.dart",
+      "game/mobile/lib/public_links_model.dart",
+      "game/mobile/lib/rechart_forecast_task.dart",
+      "game/mobile/lib/season_screen.dart",
+      "game/mobile/lib/service_settings.dart",
+      "game/mobile/lib/story_screen.dart",
+      "game/mobile/lib/strings.dart",
+      "game/platform/lib/tideglass_platform.dart",
+      "implementation/content/launch_manifest.json",
+      "services/docs/PRIVACY.md",
+      "services/tideglass_service/api.py",
+      "services/tideglass_service/storage.py",
+      "services/tideglass_service/web_deletion.py"
+    ],
+    "work_items": [
+      "M1-05",
+      "M3-06",
+      "M5-02"
+    ],
+    "verification": "Airplane-mode guest flow and localized-layout tests; fresh network services are separate dependencies.",
+    "delivery_status": "not_verified",
+    "evidence": [],
+    "implementation_assessment": "Guestofflinecore/optionalaccount/cachedcontent/externalEnglish+pseudo implemented.",
+    "required_verification_or_disposition": "Hostlayout/localoutageproof exists; exactcurrentnativeairplane/resume andconfiguredcloud qualification remain.",
+    "review_evidence": [
+      "release/content-presentation/full-matrix-repaired-20261021T143209447416Z/verification.json",
+      "release/qa/client-web-deletion-20261021T134443512157Z/WEB_DELETION_REVIEW.md",
+      "release/qa/integration-ad-privacy-20261021T141749224307Z/PRIVACY_REVIEW.md",
+      "release/qa/integration-current-ui-20261021T133115456638Z/CURRENT_UI_REVIEW.md",
+      "release/qa/integration-services-repaired-20261016T114721906724Z/INTEGRATION_REVIEW.md",
+      "release/qa/lead-client-shell-acceptance-20261021T145030.603397Z/DECISIONS.md",
+      "release/qa/lead-content-matrix-20261021T144134.921859Z/MATRIX_REVIEW.md",
+      "release/qa/lead-daily-icons-20261023T031715.308630Z/REVIEW.md",
+      "release/qa/qa-reset-20261023T025256.370588Z/RESET_REVIEW.md"
+    ],
+    "evidence_keys": [
+      "U",
+      "S",
+      "T",
+      "W"
+    ],
+    "release_readiness": "Whole product not release ready."
+  },
+  {
+    "id": "S03",
+    "requirement": "Five producer prices/outputs, tier ratio 20, growth 1.12, previous-tier unlock at 10",
+    "source": [
+      "game/core/lib/src/daily_engine.dart",
+      "game/core/lib/src/engine.dart",
+      "game/core/lib/src/fixed.dart",
+      "game/core/lib/src/state.dart",
+      "game/core/lib/src/support_engine.dart"
+    ],
+    "work_items": [
+      "M1-01",
+      "M1-02",
+      "M2-01",
+      "BOOT-CORE"
+    ],
+    "verification": "Reference conformance plus independent production precision and discrete-purchase boundary tests.",
+    "delivery_status": "verified",
+    "evidence": [
+      "release/qa/integration-current-scope-20261021T114227186831Z/CURRENT_SCOPE_CHECKPOINT.md",
+      "release/qa/integration-current-scope-20261021T114227186831Z/NUMERIC_EVIDENCE_BRIDGE.json",
+      "release/qa/lead-bounded-acceptance-20261021T1148Z/DECISIONS.md",
+      "release/qa/integration-numeric-20261019T135534237861Z/NUMERIC_REVIEW.md",
+      "release/qa/integration-crossengine-20261019T143516578781Z/CROSS_ENGINE_REVIEW.md",
+      "docs/decisions/numbers-and-event-order.md",
+      "release/qa/integration-transition-repaired-20261021T121351672733Z/TRANSITION_REVIEW.md",
+      "release/qa/integration-transition-repaired-20261021T121351672733Z/NUMERIC_EVIDENCE_BRIDGE.json",
+      "release/native-proof/root-transition-20261021T121321.388435Z/verification.json",
+      "release/qa/lead-transition-acceptance-20261021T1221Z/DECISIONS.md"
+    ],
+    "implementation_assessment": "Exactfiveproducer baseline/geometry/unlock implemented.",
+    "required_verification_or_disposition": "Verified originalbounded numerical clause; nochange.",
+    "review_evidence": [
+      "release/qa/integration-transition-repaired-20261021T121351672733Z/NUMERIC_EVIDENCE_BRIDGE.json",
+      "release/qa/lead-bounded-acceptance-20261021T1148Z/DECISIONS.md"
+    ],
+    "evidence_keys": [
+      "Q"
+    ],
+    "release_readiness": "Whole product not release ready."
+  },
+  {
+    "id": "S04",
+    "requirement": "Single, milestone and maximum purchase controls and whole-tier 2x milestones at 25/50/75/100",
+    "source": [
+      "game/core/lib/rechart_forecast.dart",
+      "game/core/lib/src/daily_engine.dart",
+      "game/core/lib/src/engine.dart",
+      "game/core/lib/src/fixed.dart",
+      "game/core/lib/src/state.dart",
+      "game/core/lib/src/support_engine.dart",
+      "game/mobile/lib/app.dart",
+      "game/mobile/lib/cosmetic_art.dart",
+      "game/mobile/lib/cosmetics.dart",
+      "game/mobile/lib/daily_icon_label.dart",
+      "game/mobile/lib/daily_panel.dart",
+      "game/mobile/lib/game_controller.dart",
+      "game/mobile/lib/harbor_art.dart",
+      "game/mobile/lib/producer_art.dart",
+      "game/mobile/lib/rechart_forecast_task.dart",
+      "game/mobile/lib/strings.dart"
+    ],
+    "work_items": [
+      "M1-02",
+      "M1-05",
+      "M3-09"
+    ],
+    "verification": "Bulk/max spending cannot overspend; tier output and displayed transformation agree.",
+    "delivery_status": "not_verified",
+    "evidence": [],
+    "implementation_assessment": "Single/milestone/max purchases and25/50/75/100whole-tiertransformations implemented.",
+    "required_verification_or_disposition": "Core +actualpurchaseUI+25stage proofs exist; narrowcombinedscope decision stillopen, not missingcontrols.",
+    "review_evidence": [
+      "release/qa/integration-art-matrix-20261021T123739647573Z/ART_MATRIX_REVIEW.md",
+      "release/qa/integration-transition-repaired-20261021T121351672733Z/NUMERIC_EVIDENCE_BRIDGE.json",
+      "release/qa/lead-art-scope-acceptance-20261021T124855.896748Z/DECISIONS.md",
+      "release/qa/lead-bounded-acceptance-20261021T1148Z/DECISIONS.md",
+      "release/qa/lead-client-shell-acceptance-20261021T145030.603397Z/DECISIONS.md",
+      "release/qa/lead-daily-art-acceptance-20261023T032547.803843Z/DECISIONS.md",
+      "release/qa/lead-daily-icons-20261023T031715.308630Z/REVIEW.md",
+      "release/qa/qa-provenance-version-20261023T031648.974649Z/M3_09_CLIENT_RECOMMENDATION.md",
+      "release/qa/qa-reset-20261023T025256.370588Z/RESET_REVIEW.md"
+    ],
+    "evidence_keys": [
+      "Q",
+      "U",
+      "I",
+      "J"
+    ],
+    "release_readiness": "Whole product not release ready."
+  },
+  {
+    "id": "S05",
+    "requirement": "Lifetime-based 0.65-exponent Rechart, entitlement subtraction, retained-state preview and permanent power",
+    "source": [
+      "game/core/lib/rechart_forecast.dart",
+      "game/core/lib/src/daily_engine.dart",
+      "game/core/lib/src/engine.dart",
+      "game/core/lib/src/fixed.dart",
+      "game/core/lib/src/state.dart",
+      "game/core/lib/src/support_engine.dart",
+      "game/mobile/lib/app.dart",
+      "game/mobile/lib/bootstrap.dart",
+      "game/mobile/lib/client_economic_transition.dart",
+      "game/mobile/lib/game_controller.dart",
+      "game/mobile/lib/offline_replay.dart",
+      "game/mobile/lib/rechart_forecast_task.dart",
+      "game/mobile/lib/strings.dart",
+      "game/persistence/lib/tideglass_persistence.dart"
+    ],
+    "work_items": [
+      "M1-01",
+      "M1-02",
+      "M2-02",
+      "BOOT-CORE"
+    ],
+    "verification": "Exact award boundary and repeated-reset tests; preview matches retained/reset state.",
+    "delivery_status": "not_verified",
+    "evidence": [],
+    "implementation_assessment": "Lifetime0.65minusawarded Charts,permanentpower/reset/retainedpreview implemented.",
+    "required_verification_or_disposition": "Exactcoreandnewactualdialogproof exists; complete retainedstate client/persistence acceptance review remains.",
+    "review_evidence": [
+      "release/persistence-review.md",
+      "release/qa/integration-transition-repaired-20261021T121351672733Z/NUMERIC_EVIDENCE_BRIDGE.json",
+      "release/qa/integration-transition-repaired-20261021T121351672733Z/TRANSITION_REVIEW.md",
+      "release/qa/lead-bounded-acceptance-20261021T1148Z/DECISIONS.md",
+      "release/qa/lead-client-shell-acceptance-20261021T145030.603397Z/DECISIONS.md",
+      "release/qa/lead-daily-icons-20261023T031715.308630Z/REVIEW.md",
+      "release/qa/lead-transition-acceptance-20261021T1221Z/DECISIONS.md",
+      "release/qa/qa-reset-20261023T025256.370588Z/RESET_REVIEW.md"
+    ],
+    "evidence_keys": [
+      "Q",
+      "U",
+      "P"
+    ],
+    "release_readiness": "Whole product not release ready."
+  },
+  {
+    "id": "S06",
+    "requirement": "Autobuy at 10 Charts, synergies at 25, conditional resets at 100; free plan and five optional 50-Note slots",
+    "source": [
+      "game/core/lib/src/daily.dart",
+      "game/core/lib/src/daily_engine.dart",
+      "game/core/lib/src/engine.dart",
+      "game/core/lib/src/fixed.dart",
+      "game/core/lib/src/state.dart",
+      "game/core/lib/src/support_engine.dart",
+      "game/mobile/lib/daily_panel.dart"
+    ],
+    "work_items": [
+      "M2-01",
+      "M3-03"
+    ],
+    "verification": "Unlock and plan-persistence fixtures; no paid automation lock.",
+    "delivery_status": "verified",
+    "evidence": [
+      "release/qa/platform-package-clauses-20261021T141913194277Z/PACKAGE_RECOMMENDATIONS.md",
+      "release/qa/platform-package-clauses-20261021T141913194277Z/verification.json",
+      "release/qa/lead-automation-acceptance-20261021T143015.491121Z/DECISIONS.md"
+    ],
+    "implementation_assessment": "10/25/100 thresholds and1+5savedplans correct.",
+    "required_verification_or_disposition": "Verifiedoriginalscope; no paidautomationlock.",
+    "review_evidence": [
+      "release/qa/integration-transition-repaired-20261021T121351672733Z/NUMERIC_EVIDENCE_BRIDGE.json",
+      "release/qa/lead-automation-acceptance-20261021T143015.491121Z/DECISIONS.md",
+      "release/qa/lead-bounded-acceptance-20261021T1148Z/DECISIONS.md"
+    ],
+    "evidence_keys": [
+      "A",
+      "Q"
+    ],
+    "release_readiness": "Whole product not release ready."
+  },
+  {
+    "id": "S07",
+    "requirement": "Cross-tier synergy matrix and honest marginal-output/purchase/reset forecasts",
+    "source": [
+      "game/core/lib/rechart_forecast.dart",
+      "game/core/lib/src/daily_engine.dart",
+      "game/core/lib/src/engine.dart",
+      "game/core/lib/src/fixed.dart",
+      "game/core/lib/src/state.dart",
+      "game/core/lib/src/support_engine.dart",
+      "game/mobile/lib/app.dart",
+      "game/mobile/lib/game_controller.dart",
+      "game/mobile/lib/rechart_forecast_task.dart",
+      "game/mobile/lib/strings.dart",
+      "game/simulation/bin/run_optional_calibration.dart",
+      "game/simulation/lib/policy_run.dart",
+      "game/simulation/lib/supplemental_math.dart",
+      "game/simulation/lib/supplemental_run.dart"
+    ],
+    "work_items": [
+      "M2-01",
+      "M2-03",
+      "M5-05"
+    ],
+    "verification": "Observed network value matches preview; forecasts state policy assumptions; late-tier purchase choices assessed.",
+    "delivery_status": "not_verified",
+    "evidence": [],
+    "implementation_assessment": "The exact synergy matrix, full marginal network preview, purchase threshold and conditional reset forecast are implemented and independently reviewed.",
+    "required_verification_or_disposition": "Recommend the unchanged S07 scope criterion: actual preview comparisons and bounded reset assumptions plus225 reachable-fleet assessments cover its exact wording. No universal optimum or human strategy preference is claimed; M5-05 and S44 remain separate.",
+    "review_evidence": [
+      "release/balance/optional-calibration-current-integration.json",
+      "release/qa/integration-balance-20261019T145921108068Z/BALANCE_REVIEW.md",
+      "release/qa/integration-optional-calibration-20261021T110210355242Z/OPTIONAL_CALIBRATION_REVIEW.md",
+      "release/qa/integration-transition-repaired-20261021T121351672733Z/NUMERIC_EVIDENCE_BRIDGE.json",
+      "release/qa/lead-bounded-acceptance-20261021T1148Z/DECISIONS.md",
+      "release/qa/lead-client-shell-acceptance-20261021T145030.603397Z/DECISIONS.md",
+      "release/qa/lead-daily-icons-20261023T031715.308630Z/REVIEW.md",
+      "release/qa/qa-reset-20261023T025256.370588Z/RESET_REVIEW.md"
+    ],
+    "evidence_keys": [
+      "Q",
+      "U",
+      "B"
+    ],
+    "release_readiness": "Whole product not release ready."
+  },
+  {
+    "id": "S08",
+    "requirement": "24 hours full production plus 48 hours at quarter rate; event-driven saved-policy replay",
+    "source": [
+      "game/core/lib/src/daily_engine.dart",
+      "game/core/lib/src/engine.dart",
+      "game/core/lib/src/fixed.dart",
+      "game/core/lib/src/state.dart",
+      "game/core/lib/src/support_engine.dart",
+      "game/mobile/lib/bootstrap.dart",
+      "game/mobile/lib/client_economic_transition.dart",
+      "game/mobile/lib/daily_panel.dart",
+      "game/mobile/lib/offline_replay.dart",
+      "game/persistence/lib/tideglass_persistence.dart"
+    ],
+    "work_items": [
+      "M3-01",
+      "M3-10",
+      "M5-01"
+    ],
+    "verification": "Equivalent event histories match integer decisions; 72-hour cap and 24-hour return budget tested.",
+    "delivery_status": "not_verified",
+    "evidence": [],
+    "implementation_assessment": "Shared eventreplay with24full+48quarter andsavedpolicy.",
+    "required_verification_or_disposition": "Hostexactparity/capproof exists; original24hreplaybudget onphysicalmin unmeasured.",
+    "review_evidence": [
+      "release/persistence-review.md",
+      "release/qa/integration-final-20261016T105843545492Z/INTEGRATION_REVIEW.md",
+      "release/qa/integration-transition-repaired-20261021T121351672733Z/NUMERIC_EVIDENCE_BRIDGE.json",
+      "release/qa/integration-transition-repaired-20261021T121351672733Z/TRANSITION_REVIEW.md",
+      "release/qa/lead-bounded-acceptance-20261021T1148Z/DECISIONS.md",
+      "release/qa/lead-transition-acceptance-20261021T1221Z/DECISIONS.md"
+    ],
+    "evidence_keys": [
+      "D",
+      "P",
+      "Q"
+    ],
+    "release_readiness": "Whole product not release ready."
+  },
+  {
+    "id": "S09",
+    "requirement": "Focus every 2 hours, capacity 12, queued +20% ten-minute charges and equal accessible calibration",
+    "source": [
+      "game/content/calibrations/calibration.01.pattern.json",
+      "game/core/lib/src/daily_engine.dart",
+      "game/core/lib/src/engine.dart",
+      "game/core/lib/src/support_engine.dart",
+      "game/mobile/lib/calibration_pattern.dart",
+      "game/mobile/lib/calibration_screen.dart",
+      "game/mobile/lib/daily_panel.dart",
+      "game/mobile/lib/offline_replay.dart"
+    ],
+    "work_items": [
+      "M3-01",
+      "M3-04",
+      "M5-02"
+    ],
+    "verification": "No hidden reward loss, duration queue bugs or reflex-only route; both completions grant identical value.",
+    "delivery_status": "verified",
+    "evidence": [
+      "release/qa/integration-accessibility-20261021T125317256764Z/CALIBRATION_REVIEW.md",
+      "release/qa/integration-accessibility-20261021T125317256764Z/verification.json",
+      "release/native-proof/root-calibration-full-20261021T125314.174315Z/verification.json",
+      "release/native-proof/root-calibration-pseudo-full-20261021T125549.278518Z/verification.json",
+      "release/qa/lead-calibration-scope-acceptance-20261021T130612.263921Z/DECISIONS.md"
+    ],
+    "implementation_assessment": "2h/cap12/20%600squeue andequalaccessiblecompletion.",
+    "required_verification_or_disposition": "Verifiedbounded originalscope; separateoverallaccessibilitygate.",
+    "review_evidence": [
+      "release/qa/integration-accessibility-20261021T125317256764Z/CALIBRATION_REVIEW.md",
+      "release/qa/integration-final-20261016T105843545492Z/INTEGRATION_REVIEW.md",
+      "release/qa/integration-transition-repaired-20261021T121351672733Z/TRANSITION_REVIEW.md",
+      "release/qa/lead-calibration-scope-acceptance-20261021T130612.263921Z/DECISIONS.md"
+    ],
+    "evidence_keys": [
+      "K",
+      "D"
+    ],
+    "release_readiness": "Whole product not release ready."
+  },
+  {
+    "id": "S10",
+    "requirement": "Automatic 8-hour Surveys, queue capacity 3, 10 Notes per completion",
+    "source": [
+      "game/core/lib/src/daily_engine.dart",
+      "game/core/lib/src/engine.dart",
+      "game/core/lib/src/support_engine.dart",
+      "game/mobile/lib/daily_panel.dart",
+      "game/mobile/lib/offline_replay.dart",
+      "game/mobile/lib/season_screen.dart",
+      "game/mobile/lib/story_screen.dart",
+      "implementation/content/launch_manifest.json"
+    ],
+    "work_items": [
+      "M3-01",
+      "M3-10"
+    ],
+    "verification": "One daily collection retains designed supply; fractional timers persist and completion is idempotent.",
+    "delivery_status": "not_verified",
+    "evidence": [],
+    "implementation_assessment": "8h/cap3/10Notes,phasecarry/automaticresume/idempotentclaim.",
+    "required_verification_or_disposition": "Hosttimeline/dailyUI evidence exists; narrowfulloriginalscope decision anddependencies unclosed.",
+    "review_evidence": [
+      "release/content-presentation/full-matrix-repaired-20261021T143209447416Z/verification.json",
+      "release/qa/integration-final-20261016T105843545492Z/INTEGRATION_REVIEW.md",
+      "release/qa/integration-transition-repaired-20261021T121351672733Z/TRANSITION_REVIEW.md",
+      "release/qa/lead-content-matrix-20261021T144134.921859Z/MATRIX_REVIEW.md"
+    ],
+    "evidence_keys": [
+      "D",
+      "T"
+    ],
+    "release_readiness": "Whole product not release ready."
+  },
+  {
+    "id": "S11",
+    "requirement": "Three daily contracts, 10 Notes and 250 XP each, frozen goals, rerolls and seven-day/21-slot backlog",
+    "source": [
+      "game/core/lib/src/daily_engine.dart",
+      "game/core/lib/src/engine.dart",
+      "game/core/lib/src/support_engine.dart",
+      "game/events/content/season.01.json",
+      "game/events/lib/src/pass.dart",
+      "game/events/lib/src/season.dart",
+      "game/mobile/lib/daily_panel.dart",
+      "game/mobile/lib/offline_replay.dart",
+      "game/mobile/lib/season_screen.dart",
+      "game/mobile/lib/story_screen.dart",
+      "implementation/content/launch_manifest.json"
+    ],
+    "work_items": [
+      "M3-02",
+      "M3-10"
+    ],
+    "verification": "Seed/rollover/claim/overflow cases; no required prestige, ad or purchase objective.",
+    "delivery_status": "not_verified",
+    "evidence": [],
+    "implementation_assessment": "3\u00d710Notes/250XP frozen seededcontracts,one reroll,7day21backlog andno paid/prestigeobjective.",
+    "required_verification_or_disposition": "Coreandactualfullcontentmatrixproof exists; originaltimeline/accountledger prerequisites unclosed.",
+    "review_evidence": [
+      "release/client-season-review.md",
+      "release/content-presentation/full-matrix-repaired-20261021T143209447416Z/verification.json",
+      "release/qa/integration-balance-20261019T145921108068Z/BALANCE_REVIEW.md",
+      "release/qa/integration-final-20261016T105843545492Z/INTEGRATION_REVIEW.md",
+      "release/qa/integration-transition-repaired-20261021T121351672733Z/TRANSITION_REVIEW.md",
+      "release/qa/lead-content-matrix-20261021T144134.921859Z/MATRIX_REVIEW.md"
+    ],
+    "evidence_keys": [
+      "D",
+      "V",
+      "T"
+    ],
+    "release_readiness": "Whole product not release ready."
+  },
+  {
+    "id": "S12",
+    "requirement": "Atomic saves, rolling backups, export/import, migrations and interruption recovery",
+    "source": [
+      "game/mobile/lib/bootstrap.dart",
+      "game/mobile/lib/client_economic_transition.dart",
+      "game/mobile/lib/offline_replay.dart",
+      "game/persistence/lib/tideglass_persistence.dart"
+    ],
+    "work_items": [
+      "M1-03",
+      "M1-08",
+      "M5-07",
+      "BOOT-SAVE"
+    ],
+    "verification": "Contract validation is followed by runtime fault injection; schemas alone cannot pass persistence acceptance.",
+    "delivery_status": "not_verified",
+    "evidence": [],
+    "implementation_assessment": "Runtimechecksummedatomicbackups/import/migration/locking implemented.",
+    "required_verification_or_disposition": "Realhostfault/SIGKILL proof exists; narrowclause acceptance separatefrom physicalmigration/storagegate.",
+    "review_evidence": [
+      "release/persistence-review.md",
+      "release/qa/integration-transition-repaired-20261021T121351672733Z/TRANSITION_REVIEW.md",
+      "release/qa/lead-transition-acceptance-20261021T1221Z/DECISIONS.md"
+    ],
+    "evidence_keys": [
+      "P"
+    ],
+    "release_readiness": "Whole product not release ready."
+  },
+  {
+    "id": "S13",
+    "requirement": "Cloud revision conflicts preserve branches; no adding divergent wallets/lifetime/offline intervals",
+    "source": [
+      "game/mobile/lib/bootstrap.dart",
+      "game/mobile/lib/client_economic_transition.dart",
+      "game/mobile/lib/native_services.dart",
+      "game/mobile/lib/offline_replay.dart",
+      "game/mobile/lib/service_settings.dart",
+      "game/persistence/lib/tideglass_persistence.dart",
+      "game/platform/lib/tideglass_platform.dart",
+      "services/tideglass_service/api.py",
+      "services/tideglass_service/storage.py"
+    ],
+    "work_items": [
+      "M2-04",
+      "M3-06"
+    ],
+    "verification": "Two-device fork and recovery drill; merge only independently verified ownership and deduplicated receipts.",
+    "delivery_status": "not_verified",
+    "evidence": [],
+    "implementation_assessment": "Revisionpreconditions,storedforks,explicitselection,nobalanceaddition.",
+    "required_verification_or_disposition": "Localtwo-clientHTTPselection proof exists; actualconfiguredcross-device/storeownership context unqualified.",
+    "review_evidence": [
+      "release/persistence-review.md",
+      "release/qa/integration-services-repaired-20261016T114721906724Z/INTEGRATION_REVIEW.md",
+      "release/qa/integration-transition-repaired-20261021T121351672733Z/TRANSITION_REVIEW.md",
+      "release/qa/lead-transition-acceptance-20261021T1221Z/DECISIONS.md"
+    ],
+    "evidence_keys": [
+      "S",
+      "P"
+    ],
+    "release_readiness": "Whole product not release ready."
+  },
+  {
+    "id": "S14",
+    "requirement": "Explicit event ordering, numeric remainder policy and pinned economic versions",
+    "source": [
+      "game/core/lib/src/daily_engine.dart",
+      "game/core/lib/src/engine.dart",
+      "game/core/lib/src/fixed.dart",
+      "game/core/lib/src/state.dart",
+      "game/core/lib/src/support_engine.dart",
+      "game/mobile/assets/config/manifest.json",
+      "game/mobile/lib/bootstrap.dart",
+      "game/mobile/lib/bundled_content.dart",
+      "game/mobile/lib/client_economic_transition.dart",
+      "game/mobile/lib/content_compatibility.dart",
+      "game/mobile/lib/offline_replay.dart",
+      "game/persistence/lib/tideglass_persistence.dart"
+    ],
+    "work_items": [
+      "M1-01",
+      "M1-04",
+      "M3-01",
+      "M3-10"
+    ],
+    "verification": "Version transition settles old interval once; no numerical tolerance creates an unaffordable purchase or extra Chart.",
+    "delivery_status": "verified",
+    "evidence": [
+      "release/qa/integration-transition-repaired-20261021T121351672733Z/TRANSITION_REVIEW.md",
+      "release/qa/integration-transition-repaired-20261021T121351672733Z/NUMERIC_EVIDENCE_BRIDGE.json",
+      "release/native-proof/root-transition-20261021T121321.388435Z/verification.json",
+      "release/qa/lead-transition-acceptance-20261021T1221Z/DECISIONS.md"
+    ],
+    "implementation_assessment": "Carriedremainders/explicitorder/pinnedoldintervaltransition.",
+    "required_verification_or_disposition": "Verifiedoriginalbounded transition/numeric clause; no arbitrarymigrationclaim.",
+    "review_evidence": [
+      "release/persistence-review.md",
+      "release/qa/integration-transition-repaired-20261021T121351672733Z/NUMERIC_EVIDENCE_BRIDGE.json",
+      "release/qa/integration-transition-repaired-20261021T121351672733Z/TRANSITION_REVIEW.md",
+      "release/qa/lead-bounded-acceptance-20261021T1148Z/DECISIONS.md",
+      "release/qa/lead-config-acceptance-20261021T141750.104883Z/DECISIONS.md",
+      "release/qa/lead-transition-acceptance-20261021T1221Z/DECISIONS.md"
+    ],
+    "evidence_keys": [
+      "Q",
+      "P",
+      "C"
+    ],
+    "release_readiness": "Whole product not release ready."
+  },
+  {
+    "id": "S15",
+    "requirement": "Six chapters, ending and continued play; target 15\u201330 calendar days without hard time lock",
+    "source": [
+      "game/content/progression/campaign.json",
+      "game/mobile/lib/story_screen.dart",
+      "game/mobile/lib/story_state.dart",
+      "game/mobile/lib/study_gate.dart",
+      "game/mobile/lib/study_native_context.dart",
+      "game/platform/lib/study_recorder.dart",
+      "game/progression/lib/decoration_purchase.dart",
+      "game/progression/lib/tideglass_progression.dart",
+      "game/simulation/bin/run_optional_calibration.dart",
+      "game/simulation/lib/policy_run.dart",
+      "game/simulation/lib/supplemental_math.dart",
+      "game/simulation/lib/supplemental_run.dart",
+      "release/study/protocol-template.json",
+      "tool/study_report.py"
+    ],
+    "work_items": [
+      "M1-06",
+      "M3-08",
+      "M4-06",
+      "M6-02",
+      "BOOT-CONTENT"
+    ],
+    "verification": "All goals reachable; observed later-chapter progression; ending independent of paid/optional completion.",
+    "delivery_status": "not_verified",
+    "evidence": [],
+    "implementation_assessment": "Sixchapters/ending/continue reachablewithoutFocusorpaid/alloptionals; noharddate lock.",
+    "required_verification_or_disposition": "15currentvirtualruns10.5\u201311.17days do notestablishordinary15\u201330dayhumantarget; observedlaterchaptergate absent.",
+    "review_evidence": [
+      "release/balance/optional-calibration-current-integration.json",
+      "release/qa/integration-balance-20261019T145921108068Z/BALANCE_REVIEW.md",
+      "release/qa/integration-optional-calibration-20261021T110210355242Z/OPTIONAL_CALIBRATION_REVIEW.md",
+      "release/qa/integration-study-20261021T102508755253Z/STUDY_REVIEW.md",
+      "release/qa/integration-study-collection-final-20261021T113037215270Z/COLLECTION_REPAIRED_REVIEW.md",
+      "release/study/README.md"
+    ],
+    "evidence_keys": [
+      "G",
+      "B",
+      "H"
+    ],
+    "release_readiness": "Whole product not release ready."
+  },
+  {
+    "id": "S16",
+    "requirement": "Twelve challenge dossiers across three rule families, 100 Notes each",
+    "source": [
+      "game/content/progression/campaign.json",
+      "game/mobile/lib/season_screen.dart",
+      "game/mobile/lib/story_screen.dart",
+      "game/mobile/lib/story_state.dart",
+      "game/progression/lib/decoration_purchase.dart",
+      "game/progression/lib/tideglass_progression.dart",
+      "game/simulation/bin/run_optional_calibration.dart",
+      "game/simulation/lib/policy_run.dart",
+      "game/simulation/lib/supplemental_math.dart",
+      "game/simulation/lib/supplemental_run.dart",
+      "implementation/content/launch_manifest.json"
+    ],
+    "work_items": [
+      "M3-08",
+      "M4-01",
+      "M4-06"
+    ],
+    "verification": "All three families playable; exit/restart isolated; Note acquisition/entry cost validated.",
+    "delivery_status": "not_verified",
+    "evidence": [],
+    "implementation_assessment": "12dossiers/3families/100Notes persistententry andisolatedreplay.",
+    "required_verification_or_disposition": "Allgoals virtualreachable andactualcontentpresented; originalhuman-prerequisite chain remains.",
+    "review_evidence": [
+      "release/balance/optional-calibration-current-integration.json",
+      "release/content-presentation/full-matrix-repaired-20261021T143209447416Z/verification.json",
+      "release/qa/integration-balance-20261019T145921108068Z/BALANCE_REVIEW.md",
+      "release/qa/integration-optional-calibration-20261021T110210355242Z/OPTIONAL_CALIBRATION_REVIEW.md",
+      "release/qa/lead-content-matrix-20261021T144134.921859Z/MATRIX_REVIEW.md"
+    ],
+    "evidence_keys": [
+      "G",
+      "B",
+      "T"
+    ],
+    "release_readiness": "Whole product not release ready."
+  },
+  {
+    "id": "S17",
+    "requirement": "Twelve authored calibration patterns with equivalent accessible completion",
+    "source": [
+      "game/content/calibrations/calibration.01.pattern.json",
+      "game/mobile/lib/calibration_pattern.dart",
+      "game/mobile/lib/calibration_screen.dart"
+    ],
+    "work_items": [
+      "M3-04",
+      "M4-06",
+      "M5-02"
+    ],
+    "verification": "Twelve actual patterns and their equal-value alternate paths are integrated.",
+    "delivery_status": "verified",
+    "evidence": [
+      "release/qa/integration-accessibility-20261021T125317256764Z/CALIBRATION_REVIEW.md",
+      "release/qa/integration-accessibility-20261021T125317256764Z/verification.json",
+      "release/native-proof/root-calibration-full-20261021T125314.174315Z/verification.json",
+      "release/native-proof/root-calibration-pseudo-full-20261021T125549.278518Z/verification.json",
+      "release/qa/lead-calibration-scope-acceptance-20261021T130612.263921Z/DECISIONS.md"
+    ],
+    "implementation_assessment": "12actualauthoredpatternsandidentical-valueaccessiblepath.",
+    "required_verification_or_disposition": "Verifiedoriginalscope.",
+    "review_evidence": [
+      "release/qa/integration-accessibility-20261021T125317256764Z/CALIBRATION_REVIEW.md",
+      "release/qa/lead-calibration-scope-acceptance-20261021T130612.263921Z/DECISIONS.md"
+    ],
+    "evidence_keys": [
+      "K"
+    ],
+    "release_readiness": "Whole product not release ready."
+  },
+  {
+    "id": "S18",
+    "requirement": "Eighteen main archive entries and six optional 50-Note decorations; no forced full collection",
+    "source": [
+      "game/content/progression/campaign.json",
+      "game/mobile/lib/cosmetic_art.dart",
+      "game/mobile/lib/cosmetics.dart",
+      "game/mobile/lib/harbor_art.dart",
+      "game/mobile/lib/producer_art.dart",
+      "game/mobile/lib/season_screen.dart",
+      "game/mobile/lib/story_screen.dart",
+      "game/mobile/lib/story_state.dart",
+      "game/progression/lib/decoration_purchase.dart",
+      "game/progression/lib/tideglass_progression.dart",
+      "game/simulation/bin/run_optional_calibration.dart",
+      "game/simulation/lib/policy_run.dart",
+      "game/simulation/lib/supplemental_math.dart",
+      "game/simulation/lib/supplemental_run.dart",
+      "implementation/content/launch_manifest.json"
+    ],
+    "work_items": [
+      "M4-06",
+      "M4-07",
+      "M5-05"
+    ],
+    "verification": "Content manifest, reachable unlocks and main-ending test with optional sinks unbought.",
+    "delivery_status": "not_verified",
+    "evidence": [],
+    "implementation_assessment": "18archives/six50Noteoptionaldecorations,noallcollectionending.",
+    "required_verification_or_disposition": "Actualread-through/virtualNote-spending proofs exist; per-ID/wholeclause acceptance remains.",
+    "review_evidence": [
+      "release/balance/optional-calibration-current-integration.json",
+      "release/content-presentation/full-matrix-repaired-20261021T143209447416Z/verification.json",
+      "release/qa/integration-art-matrix-20261021T123739647573Z/ART_MATRIX_REVIEW.md",
+      "release/qa/integration-balance-20261019T145921108068Z/BALANCE_REVIEW.md",
+      "release/qa/integration-optional-calibration-20261021T110210355242Z/OPTIONAL_CALIBRATION_REVIEW.md",
+      "release/qa/lead-art-scope-acceptance-20261021T124855.896748Z/DECISIONS.md",
+      "release/qa/lead-content-matrix-20261021T144134.921859Z/MATRIX_REVIEW.md"
+    ],
+    "evidence_keys": [
+      "G",
+      "B",
+      "I",
+      "T"
+    ],
+    "release_readiness": "Whole product not release ready."
+  },
+  {
+    "id": "S19",
+    "requirement": "One harbor with initial plus six restored presentations; 25 producer presentations",
+    "source": [
+      "game/mobile/lib/cosmetic_art.dart",
+      "game/mobile/lib/cosmetics.dart",
+      "game/mobile/lib/harbor_art.dart",
+      "game/mobile/lib/producer_art.dart"
+    ],
+    "work_items": [
+      "M0-05",
+      "M1-07",
+      "M2-05",
+      "M3-09",
+      "M4-07",
+      "BOOT-CONTENT"
+    ],
+    "verification": "Actual integrated assets, all states and reduced-motion variants; registry counts do not imply completed art.",
+    "delivery_status": "verified",
+    "evidence": [
+      "release/qa/integration-art-matrix-20261021T123739647573Z/ART_MATRIX_REVIEW.md",
+      "release/art/catalogue-variants/per-id-evidence.json",
+      "release/native-proof/root-art-full-20261021T122040.006324Z/verification.json",
+      "release/native-proof/root-art-pseudo-full-20261021T122636.246158Z/verification.json",
+      "release/qa/lead-art-scope-acceptance-20261021T124855.896748Z/DECISIONS.md"
+    ],
+    "implementation_assessment": "7harbors/25producers withnormal/reducedmotion actualintegratedart.",
+    "required_verification_or_disposition": "Verifiedoriginalscope; no globalasset/nativeclaim.",
+    "review_evidence": [
+      "release/qa/integration-art-matrix-20261021T123739647573Z/ART_MATRIX_REVIEW.md",
+      "release/qa/lead-art-scope-acceptance-20261021T124855.896748Z/DECISIONS.md"
+    ],
+    "evidence_keys": [
+      "I"
+    ],
+    "release_readiness": "Whole product not release ready."
+  },
+  {
+    "id": "S20",
+    "requirement": "Season 1 Night of Returning Stars, 28-day lifecycle, isolated fleet, specified coefficients and no event prestige",
+    "source": [
+      "game/events/content/season.01.json",
+      "game/events/lib/src/pass.dart",
+      "game/events/lib/src/season.dart",
+      "game/mobile/lib/season_screen.dart",
+      "game/mobile/lib/study_gate.dart",
+      "game/mobile/lib/study_native_context.dart",
+      "game/platform/lib/study_recorder.dart",
+      "game/simulation/bin/run_optional_calibration.dart",
+      "game/simulation/lib/policy_run.dart",
+      "game/simulation/lib/supplemental_math.dart",
+      "game/simulation/lib/supplemental_run.dart",
+      "release/study/protocol-template.json",
+      "tool/study_report.py"
+    ],
+    "work_items": [
+      "M4-02",
+      "M4-06",
+      "M6-07"
+    ],
+    "verification": "New/veteran equality; main power cannot enter; no economic export; actual live/end/archive behavior observed.",
+    "delivery_status": "not_verified",
+    "evidence": [],
+    "implementation_assessment": "28dayisolatedSeason1/coefficients/noprestige/noexports.",
+    "required_verification_or_disposition": "Acceleratednew/veteran/archiveproof exists; actuallivecalendarobservation absent.",
+    "review_evidence": [
+      "release/balance/optional-calibration-current-integration.json",
+      "release/client-season-review.md",
+      "release/qa/integration-balance-20261019T145921108068Z/BALANCE_REVIEW.md",
+      "release/qa/integration-optional-calibration-20261021T110210355242Z/OPTIONAL_CALIBRATION_REVIEW.md",
+      "release/qa/integration-study-20261021T102508755253Z/STUDY_REVIEW.md",
+      "release/qa/integration-study-collection-final-20261021T113037215270Z/COLLECTION_REPAIRED_REVIEW.md",
+      "release/study/README.md"
+    ],
+    "evidence_keys": [
+      "V",
+      "B",
+      "H"
+    ],
+    "release_readiness": "Whole product not release ready."
+  },
+  {
+    "id": "S21",
+    "requirement": "30 levels at 500 XP, 30 free slots with 10 cosmetics/20 fragments, 10 premium cosmetics, selected archived pass",
+    "source": [
+      "game/events/content/season.01.json",
+      "game/events/lib/src/pass.dart",
+      "game/events/lib/src/season.dart",
+      "game/mobile/lib/native_services.dart",
+      "game/mobile/lib/season_screen.dart",
+      "game/mobile/lib/service_cosmetics.dart",
+      "game/mobile/lib/story_screen.dart",
+      "implementation/content/launch_manifest.json",
+      "services/tideglass_service/providers/admob.py",
+      "services/tideglass_service/providers/notifications.py",
+      "services/tideglass_service/providers/stores.py",
+      "services/tideglass_service/reconcile.py",
+      "services/tideglass_service/vault.py"
+    ],
+    "work_items": [
+      "M4-02",
+      "M4-03",
+      "M4-06",
+      "M6-08"
+    ],
+    "verification": "15,000-XP finish; single XP grant, one selected pass and paid-pass continuation after archive.",
+    "delivery_status": "not_verified",
+    "evidence": [],
+    "implementation_assessment": "30\u00d7500XP,10cosmetic+20fragment free,10premium,selectedarchivecontinuation.",
+    "required_verification_or_disposition": "Logic/rewardread-through proof; genuinepaidcontinuation/restore andoriginalprerequisites unfulfilled.",
+    "review_evidence": [
+      "release/client-season-review.md",
+      "release/content-presentation/full-matrix-repaired-20261021T143209447416Z/verification.json",
+      "release/qa/integration-balance-20261019T145921108068Z/BALANCE_REVIEW.md",
+      "release/qa/integration-fulfillment-repaired-20261019T143906718168Z/FULFILLMENT_REPAIRED_REVIEW.md",
+      "release/qa/integration-native-ownership-repaired-20261019T145035575220Z/NATIVE_OWNERSHIP_REPAIRED_REVIEW.md",
+      "release/qa/lead-content-matrix-20261021T144134.921859Z/MATRIX_REVIEW.md"
+    ],
+    "evidence_keys": [
+      "V",
+      "Y",
+      "T"
+    ],
+    "release_readiness": "Whole product not release ready."
+  },
+  {
+    "id": "S22",
+    "requirement": "36 unique cosmetics distributed 12 core, 10 free pass, 10 premium, 4 direct shop; supporter reuses shop items",
+    "source": [
+      "game/events/content/season.01.json",
+      "game/events/lib/src/pass.dart",
+      "game/events/lib/src/season.dart",
+      "game/mobile/lib/cosmetic_art.dart",
+      "game/mobile/lib/cosmetics.dart",
+      "game/mobile/lib/harbor_art.dart",
+      "game/mobile/lib/producer_art.dart",
+      "game/mobile/lib/season_screen.dart",
+      "implementation/art/production_contract.json",
+      "implementation/content/launch_manifest.json"
+    ],
+    "work_items": [
+      "M4-06",
+      "M4-07",
+      "M4-08",
+      "BOOT-CONTENT"
+    ],
+    "verification": "Unique IDs and actual assets match each reward; no power effect or unbudgeted supporter art set.",
+    "delivery_status": "not_verified",
+    "evidence": [],
+    "implementation_assessment": "36actualuniqueappearanceIDs12/10/10/4;supporterreuses4shopitems.",
+    "required_verification_or_disposition": "Artmatrix andzero-economicreward tables exist; exactperassetreview/entitlementfulfillment acceptance unfinished.",
+    "review_evidence": [
+      "release/client-season-review.md",
+      "release/qa/client-assets-current-20261023T025348.813709Z/ASSET_REVIEW.md",
+      "release/qa/integration-art-matrix-20261021T123739647573Z/ART_MATRIX_REVIEW.md",
+      "release/qa/integration-balance-20261019T145921108068Z/BALANCE_REVIEW.md",
+      "release/qa/lead-art-scope-acceptance-20261021T124855.896748Z/DECISIONS.md",
+      "release/qa/lead-daily-art-acceptance-20261023T032547.803843Z/provenance-integration.json",
+      "release/qa/qa-provenance-version-20261023T031648.974649Z/PROVENANCE_REVIEW.md"
+    ],
+    "evidence_keys": [
+      "I",
+      "M",
+      "V"
+    ],
+    "release_readiness": "Whole product not release ready."
+  },
+  {
+    "id": "S23",
+    "requirement": "Ambient soundtrack, interaction/milestone/Rechart cues, independent controls and supporter soundtrack delivery",
+    "source": [
+      "game/mobile/lib/audio_bus.dart",
+      "game/mobile/lib/audio_settings.dart",
+      "game/mobile/lib/notification_service.dart",
+      "game/mobile/lib/notification_settings.dart",
+      "game/mobile/lib/number_format.dart",
+      "game/mobile/lib/reminder_lifecycle.dart",
+      "game/mobile/lib/soundtrack_export.dart",
+      "game/platform/lib/soundtrack_delivery.dart",
+      "implementation/art/production_contract.json",
+      "implementation/content/launch_manifest.json",
+      "services/tideglass_service/soundtrack.py"
+    ],
+    "work_items": [
+      "M1-07",
+      "M4-07",
+      "M5-06"
+    ],
+    "verification": "Licensed actual audio files, playback/volume/mute tests and working purchased soundtrack delivery.",
+    "delivery_status": "not_verified",
+    "evidence": [],
+    "implementation_assessment": "Originalambient/cues/independentcontrols andverifiedarchive deliverycode.",
+    "required_verification_or_disposition": "Actualdriverdecode != mix/interruption/receiving-apporrealpurchasedfulfillment; finalsoundreview/providers/physicalconditions remain.",
+    "review_evidence": [
+      "release/qa/client-assets-current-20261023T025348.813709Z/ASSET_REVIEW.md",
+      "release/qa/integration-fulfillment-repaired-20261019T143906718168Z/FULFILLMENT_REPAIRED_REVIEW.md",
+      "release/qa/integration-reminders-initial-20261016T115431767720Z/REMINDERS_REVIEW.md",
+      "release/qa/lead-daily-art-acceptance-20261023T032547.803843Z/provenance-integration.json",
+      "release/qa/qa-provenance-version-20261023T031648.974649Z/PROVENANCE_REVIEW.md"
+    ],
+    "evidence_keys": [
+      "AU",
+      "R",
+      "M"
+    ],
+    "release_readiness": "Whole product not release ready."
+  },
+  {
+    "id": "S24",
+    "requirement": "Cosmetic previews, localized price, verified purchases, restore, pending/retry/refund/revocation handling",
+    "source": [
+      "game/mobile/lib/native_services.dart",
+      "game/mobile/lib/service_cosmetics.dart",
+      "game/mobile/lib/service_settings.dart",
+      "game/platform/lib/tideglass_platform.dart",
+      "services/tideglass_service/api.py",
+      "services/tideglass_service/providers/admob.py",
+      "services/tideglass_service/providers/notifications.py",
+      "services/tideglass_service/providers/stores.py",
+      "services/tideglass_service/reconcile.py",
+      "services/tideglass_service/storage.py",
+      "services/tideglass_service/vault.py"
+    ],
+    "work_items": [
+      "M4-03",
+      "M4-04",
+      "M5-08"
+    ],
+    "verification": "Native sandbox evidence on both stores; no fake adapter accepted; verified entitlement delivered once.",
+    "delivery_status": "not_verified",
+    "evidence": [],
+    "implementation_assessment": "Nativeprice/preview/status/verifiedgrant/restore/refund/revoke implementations.",
+    "required_verification_or_disposition": "Bothactualstoresandbox absent; fake/syntheticadapter results neverqualifythisscope.",
+    "review_evidence": [
+      "release/qa/integration-fulfillment-repaired-20261019T143906718168Z/FULFILLMENT_REPAIRED_REVIEW.md",
+      "release/qa/integration-native-ownership-repaired-20261019T145035575220Z/NATIVE_OWNERSHIP_REPAIRED_REVIEW.md",
+      "release/qa/integration-services-repaired-20261016T114721906724Z/INTEGRATION_REVIEW.md"
+    ],
+    "evidence_keys": [
+      "Y",
+      "S"
+    ],
+    "release_readiness": "Whole product not release ready."
+  },
+  {
+    "id": "S25",
+    "requirement": "Equal ad/briefing six-token daily allowance; 300-second credits, speed/offline choice and additive buffs",
+    "source": [
+      "game/core/lib/src/daily_engine.dart",
+      "game/core/lib/src/engine.dart",
+      "game/core/lib/src/support_engine.dart",
+      "game/mobile/lib/ad_privacy_copy.dart",
+      "game/mobile/lib/daily_panel.dart",
+      "game/mobile/lib/native_services.dart",
+      "game/mobile/lib/offline_replay.dart",
+      "game/mobile/lib/public_links.dart",
+      "game/mobile/lib/public_links_model.dart",
+      "game/mobile/lib/service_cosmetics.dart",
+      "game/simulation/bin/run_optional_calibration.dart",
+      "game/simulation/lib/policy_run.dart",
+      "game/simulation/lib/supplemental_math.dart",
+      "game/simulation/lib/supplemental_run.dart",
+      "services/docs/PRIVACY.md",
+      "services/tideglass_service/providers/admob.py",
+      "services/tideglass_service/providers/notifications.py",
+      "services/tideglass_service/providers/stores.py",
+      "services/tideglass_service/reconcile.py",
+      "services/tideglass_service/vault.py",
+      "services/tideglass_service/web_deletion.py"
+    ],
+    "work_items": [
+      "M3-07",
+      "M4-05",
+      "M4-08",
+      "M5-05"
+    ],
+    "verification": "No-fill/refusal free path; +25% for 1200 seconds or bounded five-minute slice; +20% and +25% add to 1.45; full trajectories compared.",
+    "delivery_status": "not_verified",
+    "evidence": [],
+    "implementation_assessment": "Shared6slots/300equivalentseconds,speed1200\u00d725%,boundeduniqueofflinecache,additive1.45.",
+    "required_verification_or_disposition": "Hostmath/routeparity/localfaultproof exists; realproviderrefusal/no-fill andwholetrajectory currentversionconclusions remainbounded.",
+    "review_evidence": [
+      "release/balance/optional-calibration-current-integration.json",
+      "release/qa/client-web-deletion-20261021T134443512157Z/WEB_DELETION_REVIEW.md",
+      "release/qa/integration-ad-privacy-20261021T141749224307Z/PRIVACY_REVIEW.md",
+      "release/qa/integration-balance-20261019T145921108068Z/BALANCE_REVIEW.md",
+      "release/qa/integration-current-ui-20261021T133115456638Z/CURRENT_UI_REVIEW.md",
+      "release/qa/integration-final-20261016T105843545492Z/INTEGRATION_REVIEW.md",
+      "release/qa/integration-fulfillment-repaired-20261019T143906718168Z/FULFILLMENT_REPAIRED_REVIEW.md",
+      "release/qa/integration-native-ownership-repaired-20261019T145035575220Z/NATIVE_OWNERSHIP_REPAIRED_REVIEW.md",
+      "release/qa/integration-optional-calibration-20261021T110210355242Z/OPTIONAL_CALIBRATION_REVIEW.md",
+      "release/qa/integration-transition-repaired-20261021T121351672733Z/TRANSITION_REVIEW.md"
+    ],
+    "evidence_keys": [
+      "D",
+      "Y",
+      "B",
+      "W"
+    ],
+    "release_readiness": "Whole product not release ready."
+  },
+  {
+    "id": "S26",
+    "requirement": "Settings, target input, readable numbers, contextual help and opt-in quiet-hour notifications",
+    "source": [
+      "game/core/lib/rechart_forecast.dart",
+      "game/mobile/lib/app.dart",
+      "game/mobile/lib/audio_settings.dart",
+      "game/mobile/lib/font_licenses.dart",
+      "game/mobile/lib/game_controller.dart",
+      "game/mobile/lib/main.dart",
+      "game/mobile/lib/notification_service.dart",
+      "game/mobile/lib/notification_settings.dart",
+      "game/mobile/lib/number_format.dart",
+      "game/mobile/lib/rechart_forecast_task.dart",
+      "game/mobile/lib/reminder_lifecycle.dart",
+      "game/mobile/lib/season_screen.dart",
+      "game/mobile/lib/story_screen.dart",
+      "game/mobile/lib/strings.dart",
+      "implementation/content/launch_manifest.json",
+      "source/art/ui/font-manifest.json"
+    ],
+    "work_items": [
+      "M3-05",
+      "M5-02"
+    ],
+    "verification": "Large text/reduced motion/non-color cues and critical controls work on named targets.",
+    "delivery_status": "not_verified",
+    "evidence": [],
+    "implementation_assessment": "Text/notation/motion/audio/largecontrols/contexthelp/quietnotifications implemented.",
+    "required_verification_or_disposition": "Concreteuncoverednativepermission/delivery/revoke path; namedtargetinput/physicalOSassistiveproof remains.",
+    "review_evidence": [
+      "release/content-presentation/full-matrix-repaired-20261021T143209447416Z/verification.json",
+      "release/qa/integration-reminders-initial-20261016T115431767720Z/REMINDERS_REVIEW.md",
+      "release/qa/lead-client-shell-acceptance-20261021T145030.603397Z/DECISIONS.md",
+      "release/qa/lead-content-matrix-20261021T144134.921859Z/MATRIX_REVIEW.md",
+      "release/qa/lead-daily-icons-20261023T031715.308630Z/REVIEW.md",
+      "release/qa/qa-reset-20261023T025256.370588Z/FONT_NOTICE_REVIEW.md",
+      "release/qa/qa-reset-20261023T025256.370588Z/RESET_REVIEW.md"
+    ],
+    "evidence_keys": [
+      "R",
+      "U",
+      "T",
+      "L"
+    ],
+    "release_readiness": "Whole product not release ready."
+  },
+  {
+    "id": "S27",
+    "requirement": "Help, recovery guide, release notes, credits, privacy/support URLs and runbooks",
+    "source": [
+      "game/mobile/lib/ad_privacy_copy.dart",
+      "game/mobile/lib/public_links.dart",
+      "game/mobile/lib/public_links_model.dart",
+      "game/mobile/lib/season_screen.dart",
+      "game/mobile/lib/story_screen.dart",
+      "implementation/content/launch_manifest.json",
+      "release/runbooks/LAUNCH_HANDOVER.md",
+      "release/runbooks/launch-coverage-template.json",
+      "release/season-2-brief.md",
+      "release/store/metadata.en-US.json",
+      "release/store/tools/export_preview.swift",
+      "release/store/tools/inspect_preview.swift",
+      "services/docs/PRIVACY.md",
+      "services/tideglass_service/web_deletion.py"
+    ],
+    "work_items": [
+      "M5-03",
+      "M5-04",
+      "M7-05",
+      "M7-07"
+    ],
+    "verification": "All pages and review/support links work and match actual data and products.",
+    "delivery_status": "not_verified",
+    "evidence": [],
+    "implementation_assessment": "Actualhelp/recovery/credits/releasenotes/publicpagedrafts/nativeURLlauncher/browserdeletion/runbooks.",
+    "required_verification_or_disposition": "PublicURLsoperatorcontacts/policy andactualworkingreview/supportlinks absent; staleunproducedprosetoberesolvedasbookkeeping.",
+    "review_evidence": [
+      "release/content-presentation/full-matrix-repaired-20261021T143209447416Z/verification.json",
+      "release/qa/client-preview-tool-20261023T032106.818906Z/PREVIEW_TOOL_REVIEW.md",
+      "release/qa/client-web-deletion-20261021T134443512157Z/WEB_DELETION_REVIEW.md",
+      "release/qa/integration-ad-privacy-20261021T141749224307Z/PRIVACY_REVIEW.md",
+      "release/qa/integration-current-ui-20261021T133115456638Z/CURRENT_UI_REVIEW.md",
+      "release/qa/lead-content-matrix-20261021T144134.921859Z/MATRIX_REVIEW.md",
+      "release/store/CLIENT_REVIEW.md"
+    ],
+    "evidence_keys": [
+      "W",
+      "Z",
+      "T"
+    ],
+    "release_readiness": "Whole product not release ready."
+  },
+  {
+    "id": "S28",
+    "requirement": "No known save-loss, duplicate grant, negative wallet or undelivered verified purchase",
+    "source": [
+      "game/mobile/integration_test/current_runtime_test.dart",
+      "game/mobile/integration_test/platform_smoke_test.dart",
+      "game/mobile/lib/bootstrap.dart",
+      "game/mobile/lib/client_economic_transition.dart",
+      "game/mobile/lib/native_services.dart",
+      "game/mobile/lib/offline_replay.dart",
+      "game/mobile/lib/service_cosmetics.dart",
+      "game/persistence/lib/tideglass_persistence.dart",
+      "services/tideglass_service/providers/admob.py",
+      "services/tideglass_service/providers/notifications.py",
+      "services/tideglass_service/providers/stores.py",
+      "services/tideglass_service/reconcile.py",
+      "services/tideglass_service/vault.py",
+      "tool/build_native.py",
+      "tool/verify_current_runtime.py",
+      "tool/verify_native.py"
+    ],
+    "work_items": [
+      "M1-08",
+      "M3-10",
+      "M5-07",
+      "M5-08",
+      "M7-06"
+    ],
+    "verification": "Fault/replay evidence; zero critical or major normal-progression/access/purchase defects at release.",
+    "delivery_status": "not_verified",
+    "evidence": [],
+    "implementation_assessment": "Atomiccore/save/claim/ownership defenses plusfaultfixtures implemented.",
+    "required_verification_or_disposition": "No newproductionintegritydefect foundbythisaudit; cannotdeclarezeroreleaseblockers withoutcurrentgate/provider/physicalproof.",
+    "review_evidence": [
+      "release/native-proof/20261023T032749.977866Z/build-report.json",
+      "release/native-proof/20261023T032749.977866Z/mobile-test.log",
+      "release/native-proof/20261023T032749.977866Z/operations-test.log",
+      "release/persistence-review.md",
+      "release/qa/integration-fulfillment-repaired-20261019T143906718168Z/FULFILLMENT_REPAIRED_REVIEW.md",
+      "release/qa/integration-native-ownership-repaired-20261019T145035575220Z/NATIVE_OWNERSHIP_REPAIRED_REVIEW.md",
+      "release/qa/integration-transition-repaired-20261021T121351672733Z/TRANSITION_REVIEW.md",
+      "release/qa/lead-transition-acceptance-20261021T1221Z/DECISIONS.md"
+    ],
+    "evidence_keys": [
+      "P",
+      "Y",
+      "N"
+    ],
+    "release_readiness": "Whole product not release ready."
+  },
+  {
+    "id": "S29",
+    "requirement": "Numeric parity: matching integer decisions; continuous error budget initially 1e-8 outside near-zero cases",
+    "source": [
+      "game/core/lib/src/daily_engine.dart",
+      "game/core/lib/src/engine.dart",
+      "game/core/lib/src/fixed.dart",
+      "game/core/lib/src/state.dart",
+      "game/core/lib/src/support_engine.dart"
+    ],
+    "work_items": [
+      "M1-01",
+      "M3-10",
+      "M5-05"
+    ],
+    "verification": "Production number policy specifies absolute floor and tolerance without changing award thresholds.",
+    "delivery_status": "verified",
+    "evidence": [
+      "release/qa/integration-current-scope-20261021T114227186831Z/CURRENT_SCOPE_CHECKPOINT.md",
+      "release/qa/integration-current-scope-20261021T114227186831Z/NUMERIC_EVIDENCE_BRIDGE.json",
+      "release/qa/lead-bounded-acceptance-20261021T1148Z/DECISIONS.md",
+      "release/qa/integration-numeric-20261019T135534237861Z/NUMERIC_REVIEW.md",
+      "release/qa/integration-crossengine-20261019T143516578781Z/CROSS_ENGINE_REVIEW.md",
+      "docs/decisions/numbers-and-event-order.md",
+      "release/qa/integration-transition-repaired-20261021T121351672733Z/TRANSITION_REVIEW.md",
+      "release/qa/integration-transition-repaired-20261021T121351672733Z/NUMERIC_EVIDENCE_BRIDGE.json",
+      "release/native-proof/root-transition-20261021T121321.388435Z/verification.json",
+      "release/qa/lead-transition-acceptance-20261021T1221Z/DECISIONS.md"
+    ],
+    "implementation_assessment": "BigIntdiscretedecisions andspecifiedcontinuousprecision/errorbudget.",
+    "required_verification_or_disposition": "Verifiedoriginalscope unchanged; exactnumericbridge retained.",
+    "review_evidence": [
+      "release/qa/integration-transition-repaired-20261021T121351672733Z/NUMERIC_EVIDENCE_BRIDGE.json",
+      "release/qa/lead-bounded-acceptance-20261021T1148Z/DECISIONS.md"
+    ],
+    "evidence_keys": [
+      "Q"
+    ],
+    "release_readiness": "Whole product not release ready."
+  },
+  {
+    "id": "S30",
+    "requirement": "99.5% crash-free sessions over 10,000 observed sessions, per platform/device and critical-flow review",
+    "source": [
+      "game/mobile/integration_test/current_runtime_test.dart",
+      "game/mobile/integration_test/platform_smoke_test.dart",
+      "game/mobile/lib/study_gate.dart",
+      "game/mobile/lib/study_native_context.dart",
+      "game/platform/lib/study_recorder.dart",
+      "release/study/protocol-template.json",
+      "tool/build_native.py",
+      "tool/study_report.py",
+      "tool/verify_current_runtime.py",
+      "tool/verify_native.py"
+    ],
+    "work_items": [
+      "M5-04",
+      "M6-05",
+      "M6-07",
+      "M7-06"
+    ],
+    "verification": "Real instrumented session denominator and device breakdown; no critical-flow crash left open.",
+    "delivery_status": "not_verified",
+    "evidence": [],
+    "implementation_assessment": "Consentedrawsession/diagnosticlinkage/adjudication andcrashdenominator reportingimplemented.",
+    "required_verification_or_disposition": "Zeroobservedplayersessions;99.5%over10000platform/devicegroups cannot be establishedsynthetically.",
+    "review_evidence": [
+      "release/native-proof/20261023T032749.977866Z/build-report.json",
+      "release/native-proof/20261023T032749.977866Z/mobile-test.log",
+      "release/native-proof/20261023T032749.977866Z/operations-test.log",
+      "release/qa/integration-study-20261021T102508755253Z/STUDY_REVIEW.md",
+      "release/qa/integration-study-collection-final-20261021T113037215270Z/COLLECTION_REPAIRED_REVIEW.md",
+      "release/study/README.md"
+    ],
+    "evidence_keys": [
+      "H",
+      "N"
+    ],
+    "release_readiness": "Whole product not release ready."
+  },
+  {
+    "id": "S31",
+    "requirement": "60/30fps targets, p95 startup \u22645s, 24h replay \u22643s, measured 30-minute battery/thermal usability",
+    "source": [
+      "docs/decisions/engine-and-number-selection.md",
+      "docs/decisions/execution-costs.md",
+      "docs/quality/V1_QUALITY_PROTOCOL.md",
+      "docs/release-contract.md",
+      "game/mobile/integration_test/current_runtime_test.dart",
+      "game/mobile/integration_test/platform_smoke_test.dart",
+      "game/mobile/lib/bootstrap.dart",
+      "game/mobile/lib/client_economic_transition.dart",
+      "game/mobile/lib/offline_replay.dart",
+      "game/persistence/lib/tideglass_persistence.dart",
+      "release/device-matrix.json",
+      "tool/build_native.py",
+      "tool/verify_current_runtime.py",
+      "tool/verify_native.py"
+    ],
+    "work_items": [
+      "M5-01",
+      "M5-07"
+    ],
+    "verification": "Named physical devices and test conditions; p95 evidence; progress-visible chunking preserves owed work.",
+    "delivery_status": "not_verified",
+    "evidence": [],
+    "implementation_assessment": "Progress-visiblelosslessworker andperformanceinstrumentation.",
+    "required_verification_or_disposition": "Namedphysicalp95/startup/replay/30minbatterythermal absent; nohost/emulator substitute.",
+    "review_evidence": [
+      "implementation/reports/director-foundation-review.md",
+      "release/native-proof/20261023T032749.977866Z/build-report.json",
+      "release/native-proof/20261023T032749.977866Z/mobile-test.log",
+      "release/native-proof/20261023T032749.977866Z/operations-test.log",
+      "release/persistence-review.md",
+      "release/qa/FOUNDATION_REVIEW.md",
+      "release/qa/integration-transition-repaired-20261021T121351672733Z/TRANSITION_REVIEW.md",
+      "release/qa/lead-transition-acceptance-20261021T1221Z/DECISIONS.md"
+    ],
+    "evidence_keys": [
+      "P",
+      "N",
+      "F"
+    ],
+    "release_readiness": "Whole product not release ready."
+  },
+  {
+    "id": "S32",
+    "requirement": "15 new moderated testers and 80% comprehension target; first prestige 15\u201330 minutes among reachers plus non-reachers",
+    "source": [
+      "game/core/lib/rechart_forecast.dart",
+      "game/mobile/lib/app.dart",
+      "game/mobile/lib/game_controller.dart",
+      "game/mobile/lib/rechart_forecast_task.dart",
+      "game/mobile/lib/strings.dart",
+      "game/mobile/lib/study_gate.dart",
+      "game/mobile/lib/study_native_context.dart",
+      "game/platform/lib/study_recorder.dart",
+      "release/study/protocol-template.json",
+      "tool/study_report.py"
+    ],
+    "work_items": [
+      "M2-06",
+      "M2-07",
+      "M6-04"
+    ],
+    "verification": "Actual study records; no bot population or artificial filtering is called user evidence.",
+    "delivery_status": "not_verified",
+    "evidence": [],
+    "implementation_assessment": "Moderatedinstrumentandtelemetry collectionready.",
+    "required_verification_or_disposition": "15newpeople,80%explanations,medianreacherpaceplusnonreacher proportion absent.",
+    "review_evidence": [
+      "release/qa/integration-study-20261021T102508755253Z/STUDY_REVIEW.md",
+      "release/qa/integration-study-collection-final-20261021T113037215270Z/COLLECTION_REPAIRED_REVIEW.md",
+      "release/qa/lead-client-shell-acceptance-20261021T145030.603397Z/DECISIONS.md",
+      "release/qa/lead-daily-icons-20261023T031715.308630Z/REVIEW.md",
+      "release/qa/qa-reset-20261023T025256.370588Z/RESET_REVIEW.md",
+      "release/study/README.md"
+    ],
+    "evidence_keys": [
+      "H",
+      "U"
+    ],
+    "release_readiness": "Whole product not release ready."
+  },
+  {
+    "id": "S33",
+    "requirement": "30/90-day simulations of visit/reset/buy/bonus strategies and Note scarcity",
+    "source": [
+      "game/simulation/bin/run_optional_calibration.dart",
+      "game/simulation/lib/policy_run.dart",
+      "game/simulation/lib/supplemental_math.dart",
+      "game/simulation/lib/supplemental_run.dart"
+    ],
+    "work_items": [
+      "M5-05",
+      "M6-03"
+    ],
+    "verification": "No-bonus/free/ad full trajectories, 1/3/6 visits and 1,750-Note optional budget with unlock timing.",
+    "delivery_status": "not_verified",
+    "evidence": [],
+    "implementation_assessment": "The corrected historical 184-case simulation and 15 current optional-calibration runs jointly cover 30/90-day visit, reset, buying, bonus and actual 1,750-Note spending comparisons.",
+    "required_verification_or_disposition": "Recommend the bounded S33 simulation criterion for lead decision with S33_BRIDGE.md. No missing trajectory identified. This does not accept M5-05 beta/config/metric freeze or S44 observed-play evidence.",
+    "review_evidence": [
+      "release/balance/optional-calibration-current-integration.json",
+      "release/qa/integration-balance-20261019T145921108068Z/BALANCE_REVIEW.md",
+      "release/qa/integration-optional-calibration-20261021T110210355242Z/OPTIONAL_CALIBRATION_REVIEW.md"
+    ],
+    "evidence_keys": [
+      "B"
+    ],
+    "release_readiness": "Whole product not release ready."
+  },
+  {
+    "id": "S34",
+    "requirement": "Real D30 and 28-day season, targets 500 starts/10,000 sessions; uncertainty and baseline tracking",
+    "source": [
+      "game/events/content/season.01.json",
+      "game/events/lib/src/pass.dart",
+      "game/events/lib/src/season.dart",
+      "game/mobile/lib/season_screen.dart",
+      "game/mobile/lib/study_gate.dart",
+      "game/mobile/lib/study_native_context.dart",
+      "game/platform/lib/study_recorder.dart",
+      "release/study/protocol-template.json",
+      "tool/study_report.py"
+    ],
+    "work_items": [
+      "M6-01",
+      "M6-02",
+      "M6-07",
+      "M5-05"
+    ],
+    "verification": "Full observation windows, retained churned installs in denominator, config/acquisition/exclusion records. Before enrollment preregister primary outcome and duration; state descriptive precision, and separately compute MDE/power for any causal experiment. Planning sample targets are not power guarantees.",
+    "delivery_status": "not_verified",
+    "evidence": [],
+    "implementation_assessment": "Pre-registration/registry/exclusions/maturity/missingness/intervals andseasonlogic.",
+    "required_verification_or_disposition": "No realstarts/cohort/D30/28dayseason;500/10000planningtargets notpowerguarantees.",
+    "review_evidence": [
+      "release/client-season-review.md",
+      "release/qa/integration-balance-20261019T145921108068Z/BALANCE_REVIEW.md",
+      "release/qa/integration-study-20261021T102508755253Z/STUDY_REVIEW.md",
+      "release/qa/integration-study-collection-final-20261021T113037215270Z/COLLECTION_REPAIRED_REVIEW.md",
+      "release/study/README.md"
+    ],
+    "evidence_keys": [
+      "H",
+      "V"
+    ],
+    "release_readiness": "Whole product not release ready."
+  },
+  {
+    "id": "S35",
+    "requirement": "D1/D7/D30 35/15/7% review hypotheses, strategy variety, welfare and commercial cost assessment",
+    "source": [
+      "docs/decisions/engine-and-number-selection.md",
+      "docs/decisions/execution-costs.md",
+      "docs/quality/V1_QUALITY_PROTOCOL.md",
+      "docs/release-contract.md",
+      "game/mobile/lib/study_gate.dart",
+      "game/mobile/lib/study_native_context.dart",
+      "game/platform/lib/study_recorder.dart",
+      "game/simulation/bin/run_optional_calibration.dart",
+      "game/simulation/lib/policy_run.dart",
+      "game/simulation/lib/supplemental_math.dart",
+      "game/simulation/lib/supplemental_run.dart",
+      "release/device-matrix.json",
+      "release/study/protocol-template.json",
+      "tool/study_report.py"
+    ],
+    "work_items": [
+      "M6-02",
+      "M7-01"
+    ],
+    "verification": "Evidence-backed launch/extend/revise decision; no automatic retention waiver of correctness or fairness.",
+    "delivery_status": "not_verified",
+    "evidence": [],
+    "implementation_assessment": "Descriptivereporting/uncertainty/productdecision instruments.",
+    "required_verification_or_disposition": "No actualretention/strategy/welfare/commercialcostdecision;35/15/7 hypotheses notautomaticshipcriteria.",
+    "review_evidence": [
+      "implementation/reports/director-foundation-review.md",
+      "release/balance/optional-calibration-current-integration.json",
+      "release/qa/FOUNDATION_REVIEW.md",
+      "release/qa/integration-balance-20261019T145921108068Z/BALANCE_REVIEW.md",
+      "release/qa/integration-optional-calibration-20261021T110210355242Z/OPTIONAL_CALIBRATION_REVIEW.md",
+      "release/qa/integration-study-20261021T102508755253Z/STUDY_REVIEW.md",
+      "release/qa/integration-study-collection-final-20261021T113037215270Z/COLLECTION_REPAIRED_REVIEW.md",
+      "release/study/README.md"
+    ],
+    "evidence_keys": [
+      "H",
+      "B",
+      "F"
+    ],
+    "release_readiness": "Whole product not release ready."
+  },
+  {
+    "id": "S36",
+    "requirement": "Current platform review, accurate listing, sandbox tests and final store acceptance",
+    "source": [
+      "game/mobile/integration_test/current_runtime_test.dart",
+      "game/mobile/integration_test/platform_smoke_test.dart",
+      "game/mobile/lib/ad_privacy_copy.dart",
+      "game/mobile/lib/native_services.dart",
+      "game/mobile/lib/public_links.dart",
+      "game/mobile/lib/public_links_model.dart",
+      "game/mobile/lib/service_cosmetics.dart",
+      "release/runbooks/LAUNCH_HANDOVER.md",
+      "release/runbooks/launch-coverage-template.json",
+      "release/season-2-brief.md",
+      "release/store/metadata.en-US.json",
+      "release/store/tools/export_preview.swift",
+      "release/store/tools/inspect_preview.swift",
+      "services/docs/PRIVACY.md",
+      "services/tideglass_service/providers/admob.py",
+      "services/tideglass_service/providers/notifications.py",
+      "services/tideglass_service/providers/stores.py",
+      "services/tideglass_service/reconcile.py",
+      "services/tideglass_service/vault.py",
+      "services/tideglass_service/web_deletion.py",
+      "tool/build_native.py",
+      "tool/verify_current_runtime.py",
+      "tool/verify_native.py"
+    ],
+    "work_items": [
+      "M0-03",
+      "M7-03",
+      "M7-07"
+    ],
+    "verification": "Recheck official requirements near submission; accepted native builds and working products/reviewer access.",
+    "delivery_status": "not_verified",
+    "evidence": [],
+    "implementation_assessment": "Nativeprojects/listingdrafts/providerandpublicplumbing.",
+    "required_verification_or_disposition": "Currentofficialsubmissionrecheck andsignedacceptedbuilds/products/revieweraccess requireaccounts; nopublicreviewperformed.",
+    "review_evidence": [
+      "release/native-proof/20261023T032749.977866Z/build-report.json",
+      "release/native-proof/20261023T032749.977866Z/mobile-test.log",
+      "release/native-proof/20261023T032749.977866Z/operations-test.log",
+      "release/qa/client-preview-tool-20261023T032106.818906Z/PREVIEW_TOOL_REVIEW.md",
+      "release/qa/client-web-deletion-20261021T134443512157Z/WEB_DELETION_REVIEW.md",
+      "release/qa/integration-ad-privacy-20261021T141749224307Z/PRIVACY_REVIEW.md",
+      "release/qa/integration-current-ui-20261021T133115456638Z/CURRENT_UI_REVIEW.md",
+      "release/qa/integration-fulfillment-repaired-20261019T143906718168Z/FULFILLMENT_REPAIRED_REVIEW.md",
+      "release/qa/integration-native-ownership-repaired-20261019T145035575220Z/NATIVE_OWNERSHIP_REPAIRED_REVIEW.md",
+      "release/store/CLIENT_REVIEW.md"
+    ],
+    "evidence_keys": [
+      "N",
+      "Y",
+      "W",
+      "Z"
+    ],
+    "release_readiness": "Whole product not release ready."
+  },
+  {
+    "id": "S37",
+    "requirement": "Monitoring, support diagnostics, backups, feature disables, rollout stops and compatible forward repair",
+    "source": [
+      "game/mobile/lib/bootstrap.dart",
+      "game/mobile/lib/client_economic_transition.dart",
+      "game/mobile/lib/offline_replay.dart",
+      "game/persistence/lib/tideglass_persistence.dart",
+      "release/runbooks/LAUNCH_HANDOVER.md",
+      "release/runbooks/launch-coverage-template.json",
+      "release/season-2-brief.md",
+      "release/store/metadata.en-US.json",
+      "release/store/tools/export_preview.swift",
+      "release/store/tools/inspect_preview.swift",
+      "services/tideglass_service/alert_transport.py",
+      "services/tideglass_service/deployment.py",
+      "services/tideglass_service/health.py",
+      "services/tideglass_service/operator_cycle.py",
+      "services/tideglass_service/ops.py",
+      "services/tideglass_service/recovery.py"
+    ],
+    "work_items": [
+      "M5-04",
+      "M6-05",
+      "M6-08",
+      "M7-04",
+      "M7-08"
+    ],
+    "verification": "Staging and live-operation drills; never roll a newer save into an unsupported older executable.",
+    "delivery_status": "not_verified",
+    "evidence": [],
+    "implementation_assessment": "Monitoring/flags/backup/deletionmanifest/reconcile/forwardrepair/stoprunbooks.",
+    "required_verification_or_disposition": "Localrealdrillscomplete; actualstaging/live/alertrecipientcoverage absent. Do notaskforgenericCLIrebuild.",
+    "review_evidence": [
+      "release/persistence-review.md",
+      "release/qa/client-preview-tool-20261023T032106.818906Z/PREVIEW_TOOL_REVIEW.md",
+      "release/qa/gameplay-ops-review-20261021T140405144186Z/OPERATIONS_REVIEW.md",
+      "release/qa/integration-transition-repaired-20261021T121351672733Z/TRANSITION_REVIEW.md",
+      "release/qa/lead-transition-acceptance-20261021T1221Z/DECISIONS.md",
+      "release/store/CLIENT_REVIEW.md",
+      "services/evidence/deployment-20261021T140912481855Z/REPAIRED_AUTHOR_REVIEW.md"
+    ],
+    "evidence_keys": [
+      "O",
+      "P",
+      "Z"
+    ],
+    "release_readiness": "Whole product not release ready."
+  },
+  {
+    "id": "S38",
+    "requirement": "14 actual days of launch coverage, incident follow-through, final v1 record and Season 2 brief",
+    "source": [
+      "release/runbooks/LAUNCH_HANDOVER.md",
+      "release/runbooks/launch-coverage-template.json",
+      "release/season-2-brief.md",
+      "release/store/metadata.en-US.json",
+      "release/store/tools/export_preview.swift",
+      "release/store/tools/inspect_preview.swift"
+    ],
+    "work_items": [
+      "M7-08",
+      "OPS-14"
+    ],
+    "verification": "Dated operating report, fixes/owners and ongoing costs; future content is a brief, not unbudgeted production.",
+    "delivery_status": "not_verified",
+    "evidence": [],
+    "implementation_assessment": "14daycoverage templateandinitialSeason2brief.",
+    "required_verification_or_disposition": "14actualdayslaunchcoverage/incidentfollowthrough/finalrecord absent; noalways-onAIassumption.",
+    "review_evidence": [
+      "release/qa/client-preview-tool-20261023T032106.818906Z/PREVIEW_TOOL_REVIEW.md",
+      "release/store/CLIENT_REVIEW.md"
+    ],
+    "evidence_keys": [
+      "Z"
+    ],
+    "release_readiness": "Whole product not release ready."
+  },
+  {
+    "id": "S39",
+    "requirement": "Privacy, consent/refusal, account deletion/export and service outages reflect actual SDK behavior",
+    "source": [
+      "game/mobile/integration_test/current_runtime_test.dart",
+      "game/mobile/lib/ad_privacy_copy.dart",
+      "game/mobile/lib/native_services.dart",
+      "game/mobile/lib/public_links.dart",
+      "game/mobile/lib/public_links_model.dart",
+      "game/mobile/lib/service_settings.dart",
+      "game/platform/lib/tideglass_platform.dart",
+      "release/native-privacy/inspect_artifacts.py",
+      "release/native-privacy/runtime_observation.py",
+      "services/docs/PRIVACY.md",
+      "services/tideglass_service/api.py",
+      "services/tideglass_service/storage.py",
+      "services/tideglass_service/web_deletion.py"
+    ],
+    "work_items": [
+      "M3-06",
+      "M5-03"
+    ],
+    "verification": "Native network/SDK audit and lifecycle/outage tests; no policy page alone counts as implementation.",
+    "delivery_status": "not_verified",
+    "evidence": [],
+    "implementation_assessment": "Data/lifecycle/consent/refusal/export/delete/outagecodeandboundedcollector.",
+    "required_verification_or_disposition": "Exactfinalnativeartifactinventory anddefault/refusalobservations pending; Androidselectedstorageunavailable; configuredSDK/deploymentpolicy notqualified.",
+    "review_evidence": [
+      "release/native-privacy/observation-integration-20261023T032452.071407Z/verification.json",
+      "release/qa/client-web-deletion-20261021T134443512157Z/WEB_DELETION_REVIEW.md",
+      "release/qa/integration-ad-privacy-20261021T141749224307Z/PRIVACY_REVIEW.md",
+      "release/qa/integration-current-ui-20261021T133115456638Z/CURRENT_UI_REVIEW.md",
+      "release/qa/integration-services-repaired-20261016T114721906724Z/INTEGRATION_REVIEW.md",
+      "release/qa/native-observation-retest-20261023T032106.255153Z/REVIEW.md"
+    ],
+    "evidence_keys": [
+      "W",
+      "X",
+      "S"
+    ],
+    "release_readiness": "Whole product not release ready."
+  },
+  {
+    "id": "S40",
+    "requirement": "Reproducible native builds, explicit stack/toolchain feasibility and configuration compatibility",
+    "source": [
+      "docs/decisions/engine-and-number-selection.md",
+      "docs/decisions/execution-costs.md",
+      "docs/quality/V1_QUALITY_PROTOCOL.md",
+      "docs/release-contract.md",
+      "game/mobile/assets/config/manifest.json",
+      "game/mobile/integration_test/current_runtime_test.dart",
+      "game/mobile/integration_test/platform_smoke_test.dart",
+      "game/mobile/lib/bundled_content.dart",
+      "game/mobile/lib/content_compatibility.dart",
+      "release/device-matrix.json",
+      "tool/build_native.py",
+      "tool/verify_current_runtime.py",
+      "tool/verify_native.py"
+    ],
+    "work_items": [
+      "M0-02",
+      "M0-03",
+      "M0-08",
+      "M1-04"
+    ],
+    "verification": "Actual build/probe logs, pinned versions, safe defaults and rejection of incompatible updates.",
+    "delivery_status": "not_verified",
+    "evidence": [],
+    "implementation_assessment": "Pinnedstack/wrappers/buildsnapshots/validateddefaults/incompatibleupdate rejection.",
+    "required_verification_or_disposition": "Currenta052host26/28failed; newcandidateafterrepairs needed. Account-dependentnativeprobe stillopen.",
+    "review_evidence": [
+      "implementation/reports/director-foundation-review.md",
+      "release/native-proof/20261023T032749.977866Z/build-report.json",
+      "release/native-proof/20261023T032749.977866Z/mobile-test.log",
+      "release/native-proof/20261023T032749.977866Z/operations-test.log",
+      "release/qa/FOUNDATION_REVIEW.md",
+      "release/qa/lead-config-acceptance-20261021T141750.104883Z/DECISIONS.md"
+    ],
+    "evidence_keys": [
+      "F",
+      "N",
+      "C"
+    ],
+    "release_readiness": "Whole product not release ready."
+  },
+  {
+    "id": "S41",
+    "requirement": "Budget and device/test plan adapted to AI delivery; protect scope and independent review",
+    "source": [
+      "docs/decisions/engine-and-number-selection.md",
+      "docs/decisions/execution-costs.md",
+      "docs/quality/V1_QUALITY_PROTOCOL.md",
+      "docs/release-contract.md",
+      "implementation/art/production_contract.json",
+      "implementation/content/launch_manifest.json",
+      "release/device-matrix.json"
+    ],
+    "work_items": [
+      "M0-01",
+      "M0-04",
+      "M0-06",
+      "M0-07"
+    ],
+    "verification": "Execution costs and access needs named; no inherited human-week promise or unsupported tool capability claim.",
+    "delivery_status": "not_verified",
+    "evidence": [],
+    "implementation_assessment": "NamedAIroles/independentreview/deviceplan/costvariables maintained.",
+    "required_verification_or_disposition": "Concreteexternalresource/costarrangement absent; duplicateartiststatusfields stale,notnewassetrejection.",
+    "review_evidence": [
+      "implementation/reports/director-foundation-review.md",
+      "release/qa/FOUNDATION_REVIEW.md",
+      "release/qa/client-assets-current-20261023T025348.813709Z/ASSET_REVIEW.md",
+      "release/qa/lead-daily-art-acceptance-20261023T032547.803843Z/provenance-integration.json",
+      "release/qa/qa-provenance-version-20261023T031648.974649Z/PROVENANCE_REVIEW.md"
+    ],
+    "evidence_keys": [
+      "F",
+      "M"
+    ],
+    "release_readiness": "Whole product not release ready."
+  },
+  {
+    "id": "S42",
+    "requirement": "Complete release evidence pack and approved candidate with only accepted minor issues",
+    "source": [
+      "docs/decisions/engine-and-number-selection.md",
+      "docs/decisions/execution-costs.md",
+      "docs/quality/V1_QUALITY_PROTOCOL.md",
+      "docs/release-contract.md",
+      "game/mobile/integration_test/current_runtime_test.dart",
+      "game/mobile/integration_test/platform_smoke_test.dart",
+      "release/device-matrix.json",
+      "release/runbooks/LAUNCH_HANDOVER.md",
+      "release/runbooks/launch-coverage-template.json",
+      "release/season-2-brief.md",
+      "release/store/metadata.en-US.json",
+      "release/store/tools/export_preview.swift",
+      "release/store/tools/inspect_preview.swift",
+      "tool/build_native.py",
+      "tool/verify_current_runtime.py",
+      "tool/verify_native.py"
+    ],
+    "work_items": [
+      "M7-01",
+      "M7-02",
+      "M7-06"
+    ],
+    "verification": "Evidence from exact candidate/config/content versions; release status cannot be inferred from plan coverage.",
+    "delivery_status": "not_verified",
+    "evidence": [],
+    "implementation_assessment": "Original65/44traceability andfrozen evidencepackmechanisms.",
+    "required_verification_or_disposition": "17original+3bootstrapaccepted/7scopesverified; nofinalapprovedcandidate, allgates andminorissues notclosed.",
+    "review_evidence": [
+      "implementation/reports/director-foundation-review.md",
+      "release/native-proof/20261023T032749.977866Z/build-report.json",
+      "release/native-proof/20261023T032749.977866Z/mobile-test.log",
+      "release/native-proof/20261023T032749.977866Z/operations-test.log",
+      "release/qa/FOUNDATION_REVIEW.md",
+      "release/qa/client-preview-tool-20261023T032106.818906Z/PREVIEW_TOOL_REVIEW.md",
+      "release/store/CLIENT_REVIEW.md"
+    ],
+    "evidence_keys": [
+      "F",
+      "N",
+      "Z"
+    ],
+    "release_readiness": "Whole product not release ready."
+  },
+  {
+    "id": "S43",
+    "requirement": "Polish observed content/UI issues and create accurate store/launch assets",
+    "source": [
+      "game/core/lib/rechart_forecast.dart",
+      "game/mobile/lib/app.dart",
+      "game/mobile/lib/cosmetic_art.dart",
+      "game/mobile/lib/cosmetics.dart",
+      "game/mobile/lib/game_controller.dart",
+      "game/mobile/lib/harbor_art.dart",
+      "game/mobile/lib/producer_art.dart",
+      "game/mobile/lib/rechart_forecast_task.dart",
+      "game/mobile/lib/season_screen.dart",
+      "game/mobile/lib/story_screen.dart",
+      "game/mobile/lib/strings.dart",
+      "implementation/content/launch_manifest.json",
+      "release/runbooks/LAUNCH_HANDOVER.md",
+      "release/runbooks/launch-coverage-template.json",
+      "release/season-2-brief.md",
+      "release/store/metadata.en-US.json",
+      "release/store/tools/export_preview.swift",
+      "release/store/tools/inspect_preview.swift"
+    ],
+    "work_items": [
+      "M6-04",
+      "M6-06",
+      "M5-06",
+      "M7-05"
+    ],
+    "verification": "Changed screens rechecked on targets; final screenshots/footage represent shipped product.",
+    "delivery_status": "not_verified",
+    "evidence": [],
+    "implementation_assessment": "Localreadability/contentrepairs andactualcreative/captureediting tools exist.",
+    "required_verification_or_disposition": "Currentcandidatecaptures/finaleditedmedia andobservedplayerpolish remain; currentnativejob stoppedbeforeexports.",
+    "review_evidence": [
+      "release/content-presentation/full-matrix-repaired-20261021T143209447416Z/verification.json",
+      "release/qa/client-preview-tool-20261023T032106.818906Z/PREVIEW_TOOL_REVIEW.md",
+      "release/qa/integration-art-matrix-20261021T123739647573Z/ART_MATRIX_REVIEW.md",
+      "release/qa/lead-art-scope-acceptance-20261021T124855.896748Z/DECISIONS.md",
+      "release/qa/lead-client-shell-acceptance-20261021T145030.603397Z/DECISIONS.md",
+      "release/qa/lead-content-matrix-20261021T144134.921859Z/MATRIX_REVIEW.md",
+      "release/qa/lead-daily-icons-20261023T031715.308630Z/REVIEW.md",
+      "release/qa/qa-reset-20261023T025256.370588Z/RESET_REVIEW.md",
+      "release/store/CLIENT_REVIEW.md"
+    ],
+    "evidence_keys": [
+      "U",
+      "T",
+      "I",
+      "Z"
+    ],
+    "release_readiness": "Whole product not release ready."
+  },
+  {
+    "id": "S44",
+    "requirement": "Mid/late progression adds meaningful decisions and at least two viable strategy/challenge approaches",
+    "source": [
+      "game/content/progression/campaign.json",
+      "game/mobile/lib/story_screen.dart",
+      "game/mobile/lib/story_state.dart",
+      "game/mobile/lib/study_gate.dart",
+      "game/mobile/lib/study_native_context.dart",
+      "game/platform/lib/study_recorder.dart",
+      "game/progression/lib/decoration_purchase.dart",
+      "game/progression/lib/tideglass_progression.dart",
+      "game/simulation/bin/run_optional_calibration.dart",
+      "game/simulation/lib/policy_run.dart",
+      "game/simulation/lib/supplemental_math.dart",
+      "game/simulation/lib/supplemental_run.dart",
+      "release/study/protocol-template.json",
+      "tool/study_report.py"
+    ],
+    "work_items": [
+      "M1-06",
+      "M3-08",
+      "M5-05",
+      "M6-02"
+    ],
+    "verification": "Combined simulation and observed play; no excessive daily-check-in or paid requirement for ending.",
+    "delivery_status": "not_verified",
+    "evidence": [],
+    "implementation_assessment": "Threechallengefamilies andtwoor morequantitativelyviableresetstrategies withtradeoffs.",
+    "required_verification_or_disposition": "Virtualwinningpolicychangesbyhorizon; meaningfulunderstandablechoices andwelfare requireobservedplay, notarithmetic alone.",
+    "review_evidence": [
+      "release/balance/optional-calibration-current-integration.json",
+      "release/qa/integration-balance-20261019T145921108068Z/BALANCE_REVIEW.md",
+      "release/qa/integration-optional-calibration-20261021T110210355242Z/OPTIONAL_CALIBRATION_REVIEW.md",
+      "release/qa/integration-study-20261021T102508755253Z/STUDY_REVIEW.md",
+      "release/qa/integration-study-collection-final-20261021T113037215270Z/COLLECTION_REPAIRED_REVIEW.md",
+      "release/study/README.md"
+    ],
+    "evidence_keys": [
+      "G",
+      "B",
+      "H"
+    ],
+    "release_readiness": "Whole product not release ready."
+  }
+]

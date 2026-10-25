@@ -1,0 +1,159 @@
+{
+  "all_checks_passed": true,
+  "method": "Pure Python tests, AST compile, exact source and evidence hashes; no device/socket/native commands",
+  "tests": 39,
+  "existing_behavioral_tests": 26,
+  "new_regression_methods": 13,
+  "historical_metadata_test_excluded": "test_no_live_sources_edited_and_original_flow_assertions_retained retained unchanged; older program-note snapshot superseded by current source-before pins",
+  "input_checks": [
+    {
+      "path": "release/qa/offline-network-style-20261025T151630.301516Z/offline_support.py",
+      "expected": "cff5d8314ad8685b3d3309ed57fbd40a775cf1ab816cb933fa673e3558c64998",
+      "actual": "cff5d8314ad8685b3d3309ed57fbd40a775cf1ab816cb933fa673e3558c64998",
+      "match": true
+    },
+    {
+      "path": "release/qa/offline-network-style-20261025T151630.301516Z/verify_offline_native.py",
+      "expected": "ec56e66871ca2b228637cd16063eaf3160060f0aa80a3fa9bf9288666a5767da",
+      "actual": "ec56e66871ca2b228637cd16063eaf3160060f0aa80a3fa9bf9288666a5767da",
+      "match": true
+    },
+    {
+      "path": "release/qa/offline-network-style-20261025T151630.301516Z/platform_smoke_offline_test.dart",
+      "expected": "90dbf5a3c50498c61700a4a066a002dc760e38ed3f75a65f8f49d16af61ddac4",
+      "actual": "90dbf5a3c50498c61700a4a066a002dc760e38ed3f75a65f8f49d16af61ddac4",
+      "match": true
+    },
+    {
+      "path": "release/qa/offline-network-style-20261025T151630.301516Z/test_offline_protocol.py",
+      "expected": "21c75c736b426d1357e0ae3e4e44fe1aad6d6efb6604c155bc104b1cd900976e",
+      "actual": "21c75c736b426d1357e0ae3e4e44fe1aad6d6efb6604c155bc104b1cd900976e",
+      "match": true
+    },
+    {
+      "path": "release/qa/offline-network-style-20261025T151630.301516Z/source-before.json",
+      "expected": "f13b566aba16aa651f0768c2e07bbefedcfc1ecf8dfd9b2d6cc75e8c91bd36ce",
+      "actual": "f13b566aba16aa651f0768c2e07bbefedcfc1ecf8dfd9b2d6cc75e8c91bd36ce",
+      "match": true
+    },
+    {
+      "path": "release/qa/offline-network-style-20261025T151630.301516Z/verification.json",
+      "expected": "f76a251cae8a9b50b30ecc5b07cd7d0515a6a7f9a077e16d7ca19d615545074e",
+      "actual": "f76a251cae8a9b50b30ecc5b07cd7d0515a6a7f9a077e16d7ca19d615545074e",
+      "match": true
+    },
+    {
+      "path": "release/native-proof/integration-android-offline-20261025T160235.910710Z/verification.json",
+      "expected": "db58df8f44328ee257b34f97970133dc7ac9f96ead1a0753db9f90a337efa8c8",
+      "actual": "db58df8f44328ee257b34f97970133dc7ac9f96ead1a0753db9f90a337efa8c8",
+      "match": true
+    },
+    {
+      "path": "release/native-proof/integration-android-offline-20261025T160235.910710Z/os-snapshots.json",
+      "expected": "530f0b21c01fa4ec5fe2982d1e1ee746946d6a5e14379215a2d2ba0488a37b01",
+      "actual": "530f0b21c01fa4ec5fe2982d1e1ee746946d6a5e14379215a2d2ba0488a37b01",
+      "match": true
+    },
+    {
+      "path": "release/native-proof/integration-android-offline-20261025T160235.910710Z/native-save-progress.1.json",
+      "expected": "71f3398ee5f870dfe9233105f31cec573f258880c21ac13356fcfc053c317d1f",
+      "actual": "71f3398ee5f870dfe9233105f31cec573f258880c21ac13356fcfc053c317d1f",
+      "match": true
+    },
+    {
+      "path": "release/native-proof/integration-android-offline-20261025T160235.910710Z/offline_support.py",
+      "expected": "cff5d8314ad8685b3d3309ed57fbd40a775cf1ab816cb933fa673e3558c64998",
+      "actual": "cff5d8314ad8685b3d3309ed57fbd40a775cf1ab816cb933fa673e3558c64998",
+      "match": true
+    },
+    {
+      "path": "release/native-proof/integration-android-offline-20261025T160235.910710Z/native-save-progress.0.json",
+      "expected": "bdeed3bb15666018b3eb3ea9de588517a6379a23bf63cf79b2ae4e9112deb717",
+      "actual": "bdeed3bb15666018b3eb3ea9de588517a6379a23bf63cf79b2ae4e9112deb717",
+      "match": true
+    },
+    {
+      "path": "release/native-proof/integration-android-offline-20261025T160235.910710Z/network-profile.json",
+      "expected": "1ee44f1348509270e3d1978395fea5f4c5cb363994e89cf5ac88fe543e83b771",
+      "actual": "1ee44f1348509270e3d1978395fea5f4c5cb363994e89cf5ac88fe543e83b771",
+      "match": true
+    },
+    {
+      "path": "release/native-proof/integration-android-offline-20261025T160235.910710Z/result.json",
+      "expected": "5d4eefb38bc98846d79dd022a6e15243cd6a4de2945c1735f262bfcdce73a9de",
+      "actual": "5d4eefb38bc98846d79dd022a6e15243cd6a4de2945c1735f262bfcdce73a9de",
+      "match": true
+    },
+    {
+      "path": "release/native-proof/integration-android-offline-20261025T160235.910710Z/listener-prefix.jsonl",
+      "expected": "bfeaf81a5695d290ab23b25405cc14feadcda18deda472d5ed706b3ab98775bc",
+      "actual": "bfeaf81a5695d290ab23b25405cc14feadcda18deda472d5ed706b3ab98775bc",
+      "match": true
+    },
+    {
+      "path": "release/native-proof/integration-android-offline-20261025T160235.910710Z/run.log",
+      "expected": "5866b8681df2d969ddd058cdd71e8d6dcae128cc78331566b8405c37ba925462",
+      "actual": "5866b8681df2d969ddd058cdd71e8d6dcae128cc78331566b8405c37ba925462",
+      "match": true
+    },
+    {
+      "path": "release/native-proof/integration-android-offline-20261025T160235.910710Z/driver.dart",
+      "expected": "ec880d16153b1ac577a221a46f81e7c309dd5417fbba8aae4ce68f7acbcfb668",
+      "actual": "ec880d16153b1ac577a221a46f81e7c309dd5417fbba8aae4ce68f7acbcfb668",
+      "match": true
+    },
+    {
+      "path": "release/native-proof/integration-android-offline-20261025T160235.910710Z/verify_native.py",
+      "expected": "ec56e66871ca2b228637cd16063eaf3160060f0aa80a3fa9bf9288666a5767da",
+      "actual": "ec56e66871ca2b228637cd16063eaf3160060f0aa80a3fa9bf9288666a5767da",
+      "match": true
+    },
+    {
+      "path": "release/native-proof/integration-android-offline-20261025T160235.910710Z/native-checkpoint.json",
+      "expected": "fb2b5e137be41ff09f32b5f15fc76749fc6c78006eba259170c7a119f9ba11d4",
+      "actual": "fb2b5e137be41ff09f32b5f15fc76749fc6c78006eba259170c7a119f9ba11d4",
+      "match": true
+    },
+    {
+      "path": "release/native-proof/integration-android-offline-20261025T160235.910710Z/harness.dart",
+      "expected": "90dbf5a3c50498c61700a4a066a002dc760e38ed3f75a65f8f49d16af61ddac4",
+      "actual": "90dbf5a3c50498c61700a4a066a002dc760e38ed3f75a65f8f49d16af61ddac4",
+      "match": true
+    },
+    {
+      "path": "release/native-proof/integration-android-offline-20261025T160235.910710Z/android-offline-natural-start.png",
+      "expected": "c59bd3dd8bf46bfbd658cbe3b6e075269be64bd282168fbf9ee5fcdc9dff8c0b",
+      "actual": "c59bd3dd8bf46bfbd658cbe3b6e075269be64bd282168fbf9ee5fcdc9dff8c0b",
+      "match": true
+    },
+    {
+      "path": "implementation/program.json",
+      "expected": "d259ba03e1e14727ed6dd557f6bb289b35b091e2ea1acf780c903f2346eef876",
+      "actual": "d259ba03e1e14727ed6dd557f6bb289b35b091e2ea1acf780c903f2346eef876",
+      "match": true
+    },
+    {
+      "path": "release/native-proof/offline-operator-20261025T160225.669991Z/checkpoint.json",
+      "expected": "e53d301abb8c65b4cde4fd8ba02ea51a32ed346384806ad95da72103cff296e4",
+      "actual": "e53d301abb8c65b4cde4fd8ba02ea51a32ed346384806ad95da72103cff296e4",
+      "match": true
+    },
+    {
+      "path": "implementation/scope_requirements.json",
+      "expected": "b215b2cb290721c92810f693142b363586a7266512000b5cbe20ddd7eafab598",
+      "actual": "b215b2cb290721c92810f693142b363586a7266512000b5cbe20ddd7eafab598",
+      "match": true
+    }
+  ],
+  "helper_before_sha256": "cff5d8314ad8685b3d3309ed57fbd40a775cf1ab816cb933fa673e3558c64998",
+  "helper_proposed_sha256": "f726ab534f0d81e3d6191e6397517ad267cbbc1a6375885664aedb242b18eb35",
+  "runner_sha256": "ec56e66871ca2b228637cd16063eaf3160060f0aa80a3fa9bf9288666a5767da",
+  "harness_sha256": "90dbf5a3c50498c61700a4a066a002dc760e38ed3f75a65f8f49d16af61ddac4",
+  "production_code_changes": false,
+  "canonical_metadata_changes": false,
+  "original_report_remains_failed": true,
+  "fresh_pair_required": true,
+  "tests_log_sha256": "2c814d1ea5f61ebdb233a6e92d2e9411528172f60f500f17747362b7553cd9f0",
+  "counterfactual_replay_sha256": "c01fe4c3afb9bd023050b6159bf30c2fd2fdbeb6841c2974c32ee9af27dd7e1f",
+  "aosp_source_sha256": "24855636878b7ce808959215f2e175492fbeb2472e863d3f7be79c1aa3ab67fa"
+}

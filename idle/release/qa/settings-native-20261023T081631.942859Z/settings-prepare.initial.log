@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/Users/csys/Desktop/ibicot/idle/release/qa/settings-native-20261023T081631.942859Z/prepare_settings_review.py", line 41, in <module>
+    check('exact-ui-production-differences',changes==['game/mobile/lib/app.dart','game/mobile/lib/help_screen.dart'],changes)
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/csys/Desktop/ibicot/idle/release/qa/settings-native-20261023T081631.942859Z/prepare_settings_review.py", line 11, in check
+    checks.append({'name':name,'passed':bool(value),'detail':detail}); assert value,(name,detail)
+                                                                              ^^^^^
+AssertionError: ('exact-ui-production-differences', ['game/mobile/lib/app.dart', 'game/mobile/lib/daily_panel.dart', 'game/mobile/lib/help_screen.dart', 'game/mobile/lib/main.dart', 'game/mobile/lib/native_services.dart', 'game/mobile/lib/service_settings.dart', 'game/mobile/lib/story_screen.dart', 'game/mobile/lib/study_gate.dart'])

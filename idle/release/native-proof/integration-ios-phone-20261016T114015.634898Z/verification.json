@@ -1,0 +1,56 @@
+{
+  "candidate_fingerprint": "d85bdf74433d96d2f6ea6a58a8481290942d526a7cdb8ec14b55e57537e9dced",
+  "device": "F05BE4B0-52C1-4CA1-B721-BD64AE559E3F",
+  "label": "ios-phone",
+  "started_utc": "20261016T114015.634898Z",
+  "command": [
+    "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+    "drive",
+    "--driver=test_driver/evidence_911183b5d9ee.dart",
+    "--target=integration_test/evidence_f932c29b6924_test.dart",
+    "-d",
+    "F05BE4B0-52C1-4CA1-B721-BD64AE559E3F",
+    "--dart-define=TIDEGLASS_DEVICE_LABEL=ios-phone",
+    "--dart-define=TIDEGLASS_SCENARIO=natural-start",
+    "--dart-define=TIDEGLASS_RUN_ID=natural-d85-a",
+    "--dart-define=TIDEGLASS_VERIFICATION_ID=integration-ios-phone-20261016T114015.634898Z",
+    "--dart-define=TIDEGLASS_CANDIDATE_FINGERPRINT=d85bdf74433d96d2f6ea6a58a8481290942d526a7cdb8ec14b55e57537e9dced",
+    "--dart-define=TIDEGLASS_HARNESS_SHA256=f932c29b6924ed37165e29b813922a2e734f887c57ecea6bcc9f1c10b53e69c1",
+    "--keep-app-running",
+    "--timeout=180",
+    "--no-pub"
+  ],
+  "scenario": "natural-start",
+  "run_id": "natural-d85-a",
+  "harness_sha256": {
+    "harness.dart": "f932c29b6924ed37165e29b813922a2e734f887c57ecea6bcc9f1c10b53e69c1",
+    "driver.dart": "911183b5d9ee8ec80769836f477a293dadb66e20cc0c5d5e44314415889749a8"
+  },
+  "production_inputs_match_snapshot": true,
+  "provenance": "Real elapsed native bootstrap and separate-process reload; isolated test save directory",
+  "exit_code": 1,
+  "native_process_stop": {
+    "command": [
+      "xcrun",
+      "simctl",
+      "terminate",
+      "F05BE4B0-52C1-4CA1-B721-BD64AE559E3F",
+      "dev.tideglass.game"
+    ],
+    "exit_code": 0,
+    "output": ""
+  },
+  "verification_errors": [
+    "No successful test completion in native log"
+  ],
+  "passed": false,
+  "evidence_sha256": {
+    "native-save-progress.1.json": "e58dfd91c0cb9bef897c35c7cb11c12f7ac504f6eaf6b0e309d9fc564b2240fe",
+    "native-save-progress.0.json": "49d59e6a2f4b3e1595b09b9f307df56d8b9c57e4fabb62c38692d2a84fa92bcb",
+    "result.json": "52d369037307c6adcbd423de109c03a2b46e0e0ba72f5a3a8a7dbb2bce9ecc08",
+    "run.log": "649fb5b6595395568b29cef5ed385683003c6f7b36b334db36149e1cf345bd79",
+    "ios-phone-natural-start.png": "40df1d44f86fa3114ee4851624db5aadbe726e88b3cfeeaa6e515107f61f2434",
+    "driver.dart": "911183b5d9ee8ec80769836f477a293dadb66e20cc0c5d5e44314415889749a8",
+    "harness.dart": "f932c29b6924ed37165e29b813922a2e734f887c57ecea6bcc9f1c10b53e69c1"
+  }
+}

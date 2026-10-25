@@ -1,0 +1,74 @@
+--- game/qa/workspaces/integration-inventory-20261021T104607526377Z/game/mobile/lib/help_content.dart
++++ game/mobile/lib/help_content.dart
+@@ -45,7 +45,7 @@
+   static const brand = 'Tideglass';
+   static const developmentVersion = '0.1.0+1';
+   static const externalUnavailable =
+-      'Public support and privacy links are not configured in this development build. No message is sent from this handbook.';
++      'Public support, privacy and account deletion links are not configured in this development build. No message is sent from this handbook.';
+   static const developmentNotice =
+       'Development reference · not a public release announcement';
+   static String action(HelpAction action) => switch (action) {
+@@ -176,17 +176,21 @@
+           'A configured account service stores account identifiers, explicit save uploads and the records needed for verified purchases and shared Support. It does not use a gameplay export to store your recovery code. A purchase’s verification and restore status is shown separately from your local game.',
+           'Paid appearances require verified ownership. Offline verification can expire, and a fresh online check may be needed to display them again. This does not change production or earned free appearances.',
+         ]),
+-        HelpSection('telemetry-choice', 'Quality reports need their own consent', [
+-          'Telemetry starts off and is separate from cloud consent. Enabling it permits a defined set of session, progression and diagnostic events for that account. The client does not send pre-consent history, recovery codes, free-form text or a wallet dump in those events.',
+-          'Turning reports off clears the local queue immediately and requests deletion of the service’s events. If the service is unreachable, settings show the pending deletion and provide a retry. Guest play continues.',
+-        ]),
++        HelpSection(
++          'telemetry-choice',
++          'Quality reports need their own consent',
++          [
++            'Telemetry starts off and is separate from cloud consent. Enabling it permits a defined set of session, progression and diagnostic events for that account. The client does not send pre-consent history, recovery codes, free-form text or a wallet dump in those events.',
++            'Turning reports off clears the local queue immediately and requests deletion of the service’s events. If the service is unreachable, settings show the pending deletion and provide a retry. Guest play continues.',
++          ],
++        ),
+         HelpSection('data-control', 'Export, delete and choose destinations', [
+           'Account settings offer account-data export and account deletion when the service is configured. Account export excludes raw credentials and store proofs. Your own local copies are separate and remain under your control.',
+           'An authorized soundtrack export uses a destination you choose through the device. A personal copy already saved to another app or location cannot be recalled by account deletion or a later refund.',
++          'The app keeps at most three recent soundtrack export archives in its temporary cache. It removes archives older than 24 hours at the next launch or export. A fourth recent export waits for space; the device can clear its cache sooner. Save the copy in your chosen app when exporting.',
+         ]),
+         HelpSection('support-availability', 'Development availability', [
+-          HelpCopy.externalUnavailable,
+-          'Use the local recovery instructions and available in-app account controls. A public support mailbox and published privacy policy are not available in this development build.',
++          'Use the local recovery instructions and available in-app account controls. Configured public pages appear below; each unavailable destination is identified.',
+           'If you later report a problem through an announced support channel, describe the action, visible error and build version. Leave out account tokens, recovery codes, save exports and payment details unless a verified, appropriate recovery process specifically requires them.',
+         ]),
+       ],
+@@ -220,17 +224,25 @@
+         HelpSection('development-status', 'Local development build', [
+           'This local development build includes the game features below. Its version is shown at the end of this page. Optional online features depend on a configured service and may be unavailable.',
+         ]),
+-        HelpSection('included-systems', 'Implemented game and comfort features', [
+-          'The client includes the main fleet and Rechart, offline settlement and recovery, six restoration chapters, eighteen archive entries, twelve calibrations, twelve challenge dossiers, and a separate seasonal fleet with pass progression.',
+-          'It also includes free shared-slot crew briefings, automation plans, collection appearances, reduced motion, larger text, separate audio controls, and opt-in local reminders with quiet hours. Purchases and rewarded ads appear only through their configured, verified service paths.',
+-        ]),
+-        HelpSection('current-improvements', 'Current development improvements', [
+-          'The handbook now explains reset retention, offline limits, Note spending and recovery. Long headings and confirmations wrap and scroll at larger text sizes.',
+-          'Note-spending guidance distinguishes campaign dossiers from optional plan slots and decorations. Choosing optional purchases first can postpone a needed dossier.',
+-        ]),
++        HelpSection(
++          'included-systems',
++          'Implemented game and comfort features',
++          [
++            'The client includes the main fleet and Rechart, offline settlement and recovery, six restoration chapters, eighteen archive entries, twelve calibrations, twelve challenge dossiers, and a separate seasonal fleet with pass progression.',
++            'It also includes free shared-slot crew briefings, automation plans, collection appearances, reduced motion, larger text, separate audio controls, and opt-in local reminders with quiet hours. Purchases and rewarded ads appear only through their configured, verified service paths.',
++          ],
++        ),
++        HelpSection(
++          'current-improvements',
++          'Current development improvements',
++          [
++            'The handbook now explains reset retention, offline limits, Note spending and recovery. Long headings and confirmations wrap and scroll at larger text sizes.',
++            'Note-spending guidance distinguishes campaign dossiers from optional plan slots and decorations. Choosing optional purchases first can postpone a needed dossier.',
++          ],
++        ),
+         HelpSection('release-limits', 'Unavailable services', [
+           'Online account recovery, verified purchases, rewarded ads and soundtrack downloads may be unavailable. The game shows their configured status; local play and free crew briefings remain available.',
+-          HelpCopy.externalUnavailable,
++          'Available public help pages are listed below. Opening an account deletion page does not itself delete an account.',
+         ]),
+       ],
+     ),

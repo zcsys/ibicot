@@ -1,0 +1,15 @@
+{
+  "host_before_utc": "2026-10-21T11:36:08.244193+00:00",
+  "host_after_utc": "2026-10-21T11:36:08.300401+00:00",
+  "command": [
+    "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+    "-s",
+    "emulator-5556",
+    "shell",
+    "date",
+    "-u"
+  ],
+  "device_output": "Wed Oct 21 11:03:12 UTC 2026\n",
+  "exit_code": 0,
+  "observation": "Resumed emulator UTC wall clock is roughly33minutes behind host. No guest clock adjustment performed. Native elapsed-purchase uses actual wait and in-guest clock; monotonic continuity probes do not claim authenticated UTC. Season remains within scheduled window."
+}

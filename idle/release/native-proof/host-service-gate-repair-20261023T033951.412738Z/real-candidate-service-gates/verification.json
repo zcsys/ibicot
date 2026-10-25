@@ -1,0 +1,62 @@
+{
+  "scope": "Exact unchanged a052 frozen service implementation with repaired host orchestration; no native/Flutter/provider account qualification",
+  "started_utc": "2026-10-23T03:42:17.573601+00:00",
+  "workspace": "/Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261023T032609.052120Z-a052a4405347/workspace",
+  "host_checks": {
+    "services-test": {
+      "command": [
+        "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests/services",
+        "-v"
+      ],
+      "exit_code": 0
+    },
+    "provider-environment": {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/services-venv/bin/python",
+        "/Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261023T032609.052120Z-a052a4405347/workspace/tool/check_provider_environment.py",
+        "/Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261023T032609.052120Z-a052a4405347/workspace/services/requirements-providers.lock"
+      ],
+      "exit_code": 0
+    },
+    "operations-test": {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/services-venv/bin/python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests/services/operations",
+        "-v"
+      ],
+      "exit_code": 0
+    },
+    "provider-test": {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/services-venv/bin/python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests/services/providers",
+        "-v"
+      ],
+      "exit_code": 0
+    }
+  },
+  "provider_fixture_sha256": "620d671ae8817239f89802a9bead7cb584f1e44326aedd4d352ec69fb1f8de3a",
+  "failed_host_checks": [],
+  "finished_utc": "2026-10-23T03:43:03.645342+00:00",
+  "all_passed": true,
+  "log_sha256": {
+    "operations-test.log": "aa6884d376f540b24bb1195d9efec0ec0f74ece13ab1c5cb4658385b1686d0ee",
+    "services-test.log": "446322879e83c490589ec40c70b6afb14078e963b0711fcc4db4fa409b607b20",
+    "orchestration.log": "98b78f31759c7c4ba835866f526b0c86d2b076f1f01238eb1cc55c5c17d9126a",
+    "provider-environment.log": "902cea8ec111644b7d6288506f2a2b2da83f404d40d9f81c191f0119656cc601",
+    "provider-test.log": "4fc2106d6d720f5175d5c93a3f71bbd2fb1e585b252dcf8c0842cb7ad1f010d0"
+  }
+}

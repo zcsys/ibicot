@@ -1,0 +1,32 @@
+Resolving dependencies...
+Downloading packages...
+  material_color_utilities 0.13.0 (0.13.1 available)
+  test_api 0.7.12 (0.7.15 available)
+Got dependencies!
+2 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
+{"protocolVersion":"0.1.1","runnerVersion":null,"pid":19393,"type":"start","time":0}
+{"suite":{"id":0,"platform":"vm","path":"/Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-services-initial-20261016T113255538648Z/game/mobile/test/qa_integration_services_test.dart"},"type":"suite","time":0}
+{"test":{"id":1,"name":"loading /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-services-initial-20261016T113255538648Z/game/mobile/test/qa_integration_services_test.dart","suiteID":0,"groupIDs":[],"metadata":{"skip":false,"skipReason":null},"line":null,"column":null,"url":null},"type":"testStart","time":0}
+{"count":1,"time":3,"type":"allSuites"}
+{"testID":1,"result":"success","skipped":false,"hidden":true,"type":"testDone","time":6624}
+{"group":{"id":2,"suiteID":0,"parentID":null,"name":"","metadata":{"skip":false,"skipReason":null},"testCount":6,"line":null,"column":null,"url":null},"type":"group","time":6627}
+{"test":{"id":3,"name":"QA authenticated operation never adopts a later account while opening HTTP","suiteID":0,"groupIDs":[2],"metadata":{"skip":false,"skipReason":null},"line":85,"column":3,"url":"file:///Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-services-initial-20261016T113255538648Z/game/mobile/test/qa_integration_services_test.dart"},"type":"testStart","time":6628}
+{"testID":3,"error":"Expected: not contains 'Bearer test-session-2'\n  Actual: ['Bearer test-session-2']\nAn operation begun for account 1 must use its captured credential or cancel.\n","stackTrace":"package:matcher                                     expect\npackage:flutter_test/src/widget_tester.dart 473:18  expect\ntest/qa_integration_services_test.dart 118:7        main.<fn>\n","isFailure":true,"type":"error","time":6674}
+{"testID":3,"result":"failure","skipped":false,"hidden":false,"type":"testDone","time":6678}
+{"test":{"id":4,"name":"QA late sign-out response cannot erase a newly recovered account","suiteID":0,"groupIDs":[2],"metadata":{"skip":false,"skipReason":null},"line":126,"column":3,"url":"file:///Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-services-initial-20261016T113255538648Z/game/mobile/test/qa_integration_services_test.dart"},"type":"testStart","time":6678}
+{"testID":4,"error":"Expected: '00000000-0000-4000-8000-000000000002'\n  Actual: <null>\n   Which: not an <Instance of 'String'>\n","stackTrace":"package:matcher                                     expect\npackage:flutter_test/src/widget_tester.dart 473:18  expect\ntest/qa_integration_services_test.dart 170:7        main.<fn>\n","isFailure":true,"type":"error","time":6693}
+{"testID":4,"result":"failure","skipped":false,"hidden":false,"type":"testDone","time":6694}
+{"test":{"id":5,"name":"QA later opt-out wins over a delayed earlier opt-in","suiteID":0,"groupIDs":[2],"metadata":{"skip":false,"skipReason":null},"line":173,"column":3,"url":"file:///Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-services-initial-20261016T113255538648Z/game/mobile/test/qa_integration_services_test.dart"},"type":"testStart","time":6694}
+{"testID":5,"error":"Expected: <false>\n  Actual: <true>\n","stackTrace":"package:matcher                                     expect\npackage:flutter_test/src/widget_tester.dart 473:18  expect\ntest/qa_integration_services_test.dart 189:5        main.<fn>\n","isFailure":true,"type":"error","time":6709}
+{"testID":5,"result":"failure","skipped":false,"hidden":false,"type":"testDone","time":6709}
+{"test":{"id":6,"name":"QA old purchase response cannot complete after account changes","suiteID":0,"groupIDs":[2],"metadata":{"skip":false,"skipReason":null},"line":193,"column":5,"url":"file:///Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-services-initial-20261016T113255538648Z/game/mobile/test/qa_integration_services_test.dart"},"type":"testStart","time":6709}
+{"testID":6,"error":"Expected: <0>\n  Actual: <1>\nA stale verification must remain retryable for its original account and harbor.\n","stackTrace":"package:matcher                                     expect\npackage:flutter_test/src/widget_tester.dart 473:18  expect\ntest/qa_integration_services_test.dart 227:9        main.<fn>\n","isFailure":true,"type":"error","time":6733}
+{"testID":6,"result":"failure","skipped":false,"hidden":false,"type":"testDone","time":6733}
+{"test":{"id":7,"name":"QA old purchase response cannot complete after harbor changes","suiteID":0,"groupIDs":[2],"metadata":{"skip":false,"skipReason":null},"line":193,"column":5,"url":"file:///Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-services-initial-20261016T113255538648Z/game/mobile/test/qa_integration_services_test.dart"},"type":"testStart","time":6733}
+{"testID":7,"error":"Expected: <0>\n  Actual: <1>\nA stale verification must remain retryable for its original account and harbor.\n","stackTrace":"package:matcher                                     expect\npackage:flutter_test/src/widget_tester.dart 473:18  expect\ntest/qa_integration_services_test.dart 227:9        main.<fn>\n","isFailure":true,"type":"error","time":6753}
+{"testID":7,"result":"failure","skipped":false,"hidden":false,"type":"testDone","time":6753}
+{"test":{"id":8,"name":"QA local briefing never syncs to an account selected during its disk write","suiteID":0,"groupIDs":[2],"metadata":{"skip":false,"skipReason":null},"line":240,"column":3,"url":"file:///Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-services-initial-20261016T113255538648Z/game/mobile/test/qa_integration_services_test.dart"},"type":"testStart","time":6753}
+{"testID":8,"error":"Expected: not contains '00000000-0000-4000-8000-000000000002'\n  Actual: ['00000000-0000-4000-8000-000000000002']\n","stackTrace":"package:matcher                                     expect\npackage:flutter_test/src/widget_tester.dart 473:18  expect\ntest/qa_integration_services_test.dart 269:7        main.<fn>\n","isFailure":true,"type":"error","time":6792}
+{"testID":8,"result":"failure","skipped":false,"hidden":false,"type":"testDone","time":6792}
+{"success":false,"type":"done","time":6801}

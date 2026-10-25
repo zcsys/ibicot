@@ -1,0 +1,25 @@
+{
+  "scope": "Two braces around existing screenshot-name safety guard. No executable statement or condition changed; no formatting command. Staged only.",
+  "before_sha256": "5fa7f526f10afd1b23b4adbfe4577770adb50eda16163fe55039d9e4069e5007",
+  "after_sha256": "ec880d16153b1ac577a221a46f81e7c309dd5417fbba8aae4ce68f7acbcfb668",
+  "analysis": {
+    "command": [
+      "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+      "analyze",
+      "--no-pub",
+      "integration_test/capture_stage_1925106cb014_test.dart",
+      "test_driver/capture_lint_ec880d16153b1ac5.dart"
+    ],
+    "cwd": "/Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261023T040445.261666Z-3b00cc8f7122/workspace/game/mobile",
+    "exit_code": 0
+  },
+  "original_diagnostic": "curly_braces_in_flow_control_structures at driver line77, existing guard also present in original911183 driver",
+  "files_sha256": {
+    "analysis.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "analysis.stdout": "84fddc9197a9a9f129c3e312abcfd28b9eeefcba14dd0a2d0d0a9237a79f24ed",
+    "before-driver.dart": "5fa7f526f10afd1b23b4adbfe4577770adb50eda16163fe55039d9e4069e5007",
+    "driver.patch": "25f5fb74591166fed0b0530bb244f03f8d405e7066b769a9e762a99d310472c8",
+    "after-driver.dart": "ec880d16153b1ac577a221a46f81e7c309dd5417fbba8aae4ce68f7acbcfb668"
+  },
+  "live_unchanged": true
+}

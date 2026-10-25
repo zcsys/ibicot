@@ -1,0 +1,7 @@
+# Additional initial-snapshot reproductions
+
+The unchanged initial production pin also reproduces three stale secure-storage failures and two stale ownership-projection failures (QA-010), plus two remote consent commit ordering failures (QA-011). Together with the original eight, there are **15 failing cases across four defect families**. Logs: `independent-credentials.jsonl`, `independent-ownership.jsonl`, `independent-consent-commit.jsonl`, `independent-services.jsonl`, and the two telemetry cases in `independent-replay-telemetry.jsonl`.
+
+The final test versions permit serialized consent by starting opt-out, releasing the older opt-in and then awaiting both. Final refusal assertions are unchanged. These compatible versions are separately copied into this initial workspace under `*_serialized_test.dart`, hashed in `serialization-compatible-probes.json`, and rerun in `serialization-compatible-failures.jsonl`. Original test versions and failure logs remain intact. Brace formatting in four final test files has no behavioral effect.
+
+The replay harness corrections are documented in `INITIAL_REVIEW.md`; all four corrected replay cases pass without a production repair. The independent provider suite contains 18 policy variants across four tests. Cosmetic contact-sheet inspection and dependency account-binding source checks are supplemental evidence, not native store/device confirmation.

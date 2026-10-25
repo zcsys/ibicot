@@ -1,0 +1,232 @@
+{
+  "created_utc": "2026-10-23T05:06:30.105064+00:00",
+  "test_count": 4,
+  "test_exit": 0,
+  "analyzer_exit": 0,
+  "records": [
+    {
+      "offset_minutes": 0,
+      "offline": false,
+      "events": [
+        {
+          "kind": "focus_expired",
+          "elapsed_micros": "600000000",
+          "details": {}
+        },
+        {
+          "kind": "support_expired",
+          "elapsed_micros": "600000000",
+          "details": {}
+        },
+        {
+          "kind": "focus_generated",
+          "elapsed_micros": "600000000",
+          "details": {}
+        },
+        {
+          "kind": "survey_completed",
+          "elapsed_micros": "600000000",
+          "details": {}
+        },
+        {
+          "kind": "account_day_advanced",
+          "elapsed_micros": "600000000",
+          "details": {
+            "account_day": 20743,
+            "materialized_online": true
+          }
+        },
+        {
+          "kind": "rechart",
+          "elapsed_micros": "600000000",
+          "details": {
+            "awarded_charts": "5"
+          }
+        }
+      ],
+      "earned_before_reset_micros": "211235591",
+      "charts": "105",
+      "notes": "10",
+      "pass_xp": "250",
+      "new_contract_snapshot": "midnight_before_reset",
+      "whole_split_equal": true,
+      "receipt_replay_rejected": true
+    },
+    {
+      "offset_minutes": 0,
+      "offline": true,
+      "events": [
+        {
+          "kind": "focus_expired",
+          "elapsed_micros": "600000000",
+          "details": {}
+        },
+        {
+          "kind": "support_expired",
+          "elapsed_micros": "600000000",
+          "details": {}
+        },
+        {
+          "kind": "focus_generated",
+          "elapsed_micros": "600000000",
+          "details": {}
+        },
+        {
+          "kind": "survey_completed",
+          "elapsed_micros": "600000000",
+          "details": {}
+        },
+        {
+          "kind": "account_day_advanced",
+          "elapsed_micros": "600000000",
+          "details": {
+            "account_day": 20743,
+            "materialized_online": false
+          }
+        },
+        {
+          "kind": "rechart",
+          "elapsed_micros": "600000000",
+          "details": {
+            "awarded_charts": "5"
+          }
+        }
+      ],
+      "earned_before_reset_micros": "211235591",
+      "charts": "105",
+      "notes": "10",
+      "pass_xp": "250",
+      "new_contract_snapshot": "return_after_reset",
+      "whole_split_equal": true,
+      "receipt_replay_rejected": true
+    },
+    {
+      "offset_minutes": 180,
+      "offline": false,
+      "events": [
+        {
+          "kind": "focus_expired",
+          "elapsed_micros": "600000000",
+          "details": {}
+        },
+        {
+          "kind": "support_expired",
+          "elapsed_micros": "600000000",
+          "details": {}
+        },
+        {
+          "kind": "focus_generated",
+          "elapsed_micros": "600000000",
+          "details": {}
+        },
+        {
+          "kind": "survey_completed",
+          "elapsed_micros": "600000000",
+          "details": {}
+        },
+        {
+          "kind": "account_day_advanced",
+          "elapsed_micros": "600000000",
+          "details": {
+            "account_day": 20743,
+            "materialized_online": true
+          }
+        },
+        {
+          "kind": "rechart",
+          "elapsed_micros": "600000000",
+          "details": {
+            "awarded_charts": "5"
+          }
+        }
+      ],
+      "earned_before_reset_micros": "211235591",
+      "charts": "105",
+      "notes": "10",
+      "pass_xp": "250",
+      "new_contract_snapshot": "midnight_before_reset",
+      "whole_split_equal": true,
+      "receipt_replay_rejected": true
+    },
+    {
+      "offset_minutes": 180,
+      "offline": true,
+      "events": [
+        {
+          "kind": "focus_expired",
+          "elapsed_micros": "600000000",
+          "details": {}
+        },
+        {
+          "kind": "support_expired",
+          "elapsed_micros": "600000000",
+          "details": {}
+        },
+        {
+          "kind": "focus_generated",
+          "elapsed_micros": "600000000",
+          "details": {}
+        },
+        {
+          "kind": "survey_completed",
+          "elapsed_micros": "600000000",
+          "details": {}
+        },
+        {
+          "kind": "account_day_advanced",
+          "elapsed_micros": "600000000",
+          "details": {
+            "account_day": 20743,
+            "materialized_online": false
+          }
+        },
+        {
+          "kind": "rechart",
+          "elapsed_micros": "600000000",
+          "details": {
+            "awarded_charts": "5"
+          }
+        }
+      ],
+      "earned_before_reset_micros": "211235591",
+      "charts": "105",
+      "notes": "10",
+      "pass_xp": "250",
+      "new_contract_snapshot": "return_after_reset",
+      "whole_split_equal": true,
+      "receipt_replay_rejected": true
+    }
+  ],
+  "source_before": {
+    "game/core/lib/rechart_forecast.dart": "8156bf4fb21c392719c80bd7db429fa6406a63258713e20c33e5f96c42afd425",
+    "game/core/lib/tideglass_core.dart": "8c0d10c89cc961221fc04c217fde4d3c799e574c8abd178f1249632a565ccee4",
+    "game/core/lib/src/support.dart": "b09af96c6523177cc62214d58d34dbb83467c0b0a384d024ba1b4ead46ebaa23",
+    "game/core/lib/src/fixed.dart": "c167fdf3c4b95965f1bfc3658095dad81b6f013c71fa5abc7505b7731d6c698f",
+    "game/core/lib/src/engine.dart": "0fbc3f3dfbb54df8a0cef41a8b8c788baef473d0bbffe643301a3d9c9d9eade6",
+    "game/core/lib/src/support_engine.dart": "ae08becad0f438878f4bdf2bbd9f2045c7bcdcf1bcf17e6a39943e574ad79e53",
+    "game/core/lib/src/daily_engine.dart": "1949239d4ae3bba5c72d716a3a027c0ada52ec97e434431a132c941001db322f",
+    "game/core/lib/src/daily.dart": "1a43e6a035472d52430c6fc1ca609bcb4cd2f564794e2b49a36cef507803338a",
+    "game/core/lib/src/state.dart": "04e1210cb26e7cc15cf3294c682f43bd266d9c52acbc238465061d9c7aa46a9e",
+    "game/core/pubspec.yaml": "ca453f43cad0ff6a8733940980dd289e5a9784c705585aeb05f3040658a8b923",
+    "game/core/pubspec.lock": "ed084432c9f2baba1a51166e36d2ce8c1ebcc31cc04f9c8a0e54e68741aaf095",
+    "docs/decisions/numbers-and-event-order.md": "6dc37d89a0dc804f037674679e680f2b73fb01527adfa6a8d515ce724730b67d",
+    "game/core/test/qa_midnight_rechart_test.dart": "1638d69584bf475aae5c6b6c2a1fcdf6a5147be6992a40b0b5da6d53cd70171d"
+  },
+  "changed": {
+    "game/core/test/qa_midnight_rechart_test.dart": {
+      "before": "1638d69584bf475aae5c6b6c2a1fcdf6a5147be6992a40b0b5da6d53cd70171d",
+      "after": "46fa400433f0a89284a6cdf44db4376b85365411f1f36d15b3a8a85a17a014d6"
+    }
+  },
+  "production_changed": false,
+  "inputs": {
+    "game/core/test/qa_midnight_rechart_test.dart": "46fa400433f0a89284a6cdf44db4376b85365411f1f36d15b3a8a85a17a014d6",
+    "release/qa/lead-midnight-rechart-20261023T050031.491898Z/author-tests.log": "9dbc25c3de6c405af3fa17c8f78d3155a0e11f697339f1b78823d4d531b209ff",
+    "release/qa/lead-midnight-rechart-20261023T050031.491898Z/author-analysis.log": "54c9d00a18d7b53dd89d7bb7da366bd59bdf0448e774a778bd68d2d2ce517cbe",
+    "release/qa/lead-midnight-rechart-20261023T050031.491898Z/source-before.json": "c62dbbb8e2fac690425503c077c4e565a44175989d8d9492cf96524f29edd236",
+    "release/qa/lead-midnight-rechart-20261023T050031.491898Z/AUTHOR_HANDOFF.md": "e1763bed28fcb802000cf4b1ca41824bb391bca50eeaef181f70c7cd99bd839e",
+    "release/qa/lead-midnight-rechart-20261023T050031.491898Z/launch-path-error.txt": "1d96b597ed48e41c70e6cc0308d984b0a2b5a0728f2f33a7275a7e9d81148925"
+  },
+  "independent_review": "pending",
+  "status_changes": false
+}

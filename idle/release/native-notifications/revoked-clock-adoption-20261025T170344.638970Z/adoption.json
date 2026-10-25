@@ -1,0 +1,22 @@
+{
+  "utc": "20261025T170344.638970Z",
+  "decision": "/Users/csys/Desktop/ibicot/idle/release/qa/lead-clock-integration-20261025T170309.688305Z/decision.json",
+  "decision_sha256": "869dc49e0b825c79b7f42bccec27febcfeace9733e01c2ec634c67fd702e207e",
+  "before": {
+    "tool/reminder_restart.py": "c39cc8a832526b3487aaeafafa248d5c5488ae4eea8cebc968f34ed5a7e78c07",
+    "tool/test_reminder_restart.py": "e4fe3c409f51192ab8ae0a7261d3e1ef5fe83ccc47a4f959ba566d99da4a21a3",
+    "tool/test_reminder_clock.py": null
+  },
+  "after": {
+    "tool/reminder_restart.py": "5de097fd817e7fb49573e3a73c44ec805182d8dc107f1c86b8546bbb81dc63d0",
+    "tool/test_reminder_restart.py": "a26fbae8507bb8461859467d867401bb66289846b74a98e8d9783dc0b4ac82b7",
+    "tool/test_reminder_clock.py": "11b003659a4798631d3d2a829fccd53fb588be9b8beb7185558498d750c1a2c7"
+  },
+  "unchanged": {
+    "game/mobile/integration_test/native_reminders_test.dart": "de04f52b3c2311b3eb8e1c7fb83fcf7da41256a63a9a3b9f0ca4f732e8667eb4",
+    "tool/verify_native_reminders.py": "ddc801d4cc1050d51720e5da2bddae0db1f404fcbc6dcefd3d4ef00de9728f5b"
+  },
+  "production_edits": false,
+  "frozen_candidate_edits": false,
+  "scope": "Fresh preparation only; dependent recovery requires actual packet review"
+}

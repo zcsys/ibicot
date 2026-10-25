@@ -1,0 +1,310 @@
+"""Read-only economy projections with the original sequential sum order.
+
+These loops run once per snapshot. No fast-math or parallel reductions: even
+low-order floating-point bits in the dashboard remain unchanged. Numba is
+optional, with Python/NumPy fallbacks for every projection.
+"""
+from collections import namedtuple
+
+import math
+import numpy as np
+
+from ..core import model as M
+from ..core.accounting import allocate_to_lines
+
+
+def project_complexity_balances(world, cfg):
+    """Actual company balances/purchases, shared by installed line count.
+
+    With the starting one-line fleet these are exact company-cohort totals.
+    Multi-complexity owners share their common balances equally across lines,
+    matching the existing overhead allocation and avoiding double counting.
+    """
+    from ..kernel.tick import storage_rent_equity
+    from ..core.state import tier1_storage_capacities
+    result = {}
+    for tier in ('t1', 't2'):
+        n = M.N1 if tier == 't1' else cfg['t2FirmCount']
+        if tier == 't1':
+            comp = np.tile([p['complexity'] for p in M.PRODUCTS], n)
+            footprints = np.array([cfg['footprint'][p['complexity']] for p in M.PRODUCTS])
+            storage_capacity = tier1_storage_capacities(cfg)
+            occupied_goods = (world.raw.reshape(n, M.NE).sum(axis=1)
+                + world.t1Fin.reshape(n, M.NP) @ np.array([p['complexity'] for p in M.PRODUCTS]))
+            spaces = storage_capacity - world.t1Operates.reshape(n,M.NP) @ footprints
+            inventory = world.raw.reshape(n,M.NE).sum(axis=1)
+            inventory += (world.t1Fin*world.t1Operates).reshape(n,M.NP).sum(axis=1)
+            inventory_value = (world.raw*world.rawBasis).reshape(n,M.NE).sum(axis=1)
+            inventory_value += (world.t1Fin*world.t1FinBasis*world.t1Operates).reshape(n,M.NP).sum(axis=1)
+        else:
+            lc = int(world.t2LineCount)
+            comp = np.asarray([p['complexity'] for p in M.T2_PRODUCTS])[world.t2LineProduct[:lc]]
+            storage_capacity = np.full(n, cfg['storage'], dtype=float)
+            occupied_goods = (world.t2Raw[:n*M.NE].reshape(n, M.NE).sum(axis=1)
+                + world.t2T1Raw[:n*M.NI].reshape(n, M.NI) @ np.array([p['complexity'] for p in M.T2_INPUT_PRODUCTS])
+                + np.bincount(world.t2LineFirm[:lc], weights=world.t2Fin[:lc]*comp, minlength=n))
+            spaces = storage_capacity - np.bincount(world.t2LineFirm[:lc],
+                weights=np.array([cfg['footprint'].get(c, 0) for c in range(6)])[comp], minlength=n)
+            inventory = world.t2Raw[:n*M.NE].reshape(n,M.NE).sum(axis=1)
+            inventory += world.t2T1Raw[:n*M.NI].reshape(n,M.NI).sum(axis=1)
+            inventory += np.bincount(world.t2LineFirm[:lc],weights=world.t2Fin[:lc],minlength=n)
+            inventory_value = (world.t2Raw[:n*M.NE]*world.t2RawBasis[:n*M.NE]).reshape(n,M.NE).sum(axis=1)
+            inventory_value += (world.t2T1Raw[:n*M.NI]*world.t2T1Basis[:n*M.NI]).reshape(n,M.NI).sum(axis=1)
+            inventory_value += np.bincount(world.t2LineFirm[:lc], weights=world.t2Fin[:lc]*world.t2FinBasis[:lc], minlength=n)
+        values = dict(storageCapacitySpace=storage_capacity, emptyStorageSpace=np.maximum(0, spaces-occupied_goods),
+                      inventoryValue=inventory_value, spaces=spaces, cash=getattr(world,tier+'Cash')[:n],
+                      equity=storage_rent_equity(world,cfg,tier), inventory=inventory,
+                      bought=getattr(world,tier+'Bought')[:n])
+        for key,value in values.items():
+            totals=np.bincount(comp,weights=allocate_to_lines(world,cfg,tier,value),minlength=5)
+            for complexity in ((1,2) if tier=='t1' else (3,4)):
+                result.setdefault(complexity,{})[key]=float(totals[complexity])
+    return result
+
+try:
+    from ..core.jit import njit
+    HAVE_NUMBA = True
+except Exception:  # pragma: no cover - Numba/LLVM is optional
+    HAVE_NUMBA = False
+    def njit(fn):
+        return fn
+
+NE, NP, N1 = M.NE, M.NP, M.N1
+T1_COUNTS = np.array(M.T1_PRODUCT_FIRM_COUNTS, dtype=np.int64)
+T1_OFFSETS = np.array(M.T1_FIRM_OFFSETS, dtype=np.int64)
+NI = M.NI
+PRODUCT_COUNT, SECTOR_COUNT = len(M.T2_PRODUCTS), len(M.T2_SECTORS)
+_VIEW_FIELDS = ('t1Operates', 'raw', 'rawBasis', 't1Fin', 't1FinBasis', 't1Sold',
+                't1Revenue', 't1COGS', 't1Rel', 't1Cash', 't1EqBook', 't1Price',
+                't1UnitCost', 't1PriceStability', 't1RentArrears')
+RefineryView = namedtuple('RefineryView', _VIEW_FIELDS)
+COMPANY_FIELDS = ('raw', 'finished', 'sold', 'revenue', 'cogs', 'made', 'reliability',
+                  'equity', 'inventoryValue')
+COHORT_FIELDS = ('price', 'unitCost', 'finished', 'raw', 'cash', 'equity', 'made',
+                 'sold', 'revenue', 'cogs', 'reliability', 'stability', 'quotes', 'players')
+TOTAL_FIELDS = ('raw', 'finished', 'cash', 'sold', 'revenue', 'cogs', 'made', 'equity',
+                'activeFirms', 'players', 'reliabilitySum', 'reliabilityCount')
+
+
+@njit
+def _project(w, made_by_line, controller, license_cost):
+    companies = np.zeros((9, N1))
+    totals = np.zeros(12)
+    cohorts = np.zeros((14, NP))
+    volumes, revenues, quotes, quote_counts = (np.zeros(NP), np.zeros(NP), np.zeros(NP), np.zeros(NP))
+    for cid in range(N1):
+        raw = fin = sold = revenue = cogs = made = rel = value = 0.0
+        rel_n = 0
+        # Global equity historically starts from cash + machinery before
+        # accumulating stock, whereas company equity adds inventory last.
+        eqv = w.t1Cash[cid] + w.t1EqBook[cid] - w.t1RentArrears[cid]
+        for e in range(NE):
+            idx = cid * NE + e
+            raw += w.raw[idx]
+            value += w.raw[idx] * w.rawBasis[idx]
+            eqv += w.raw[idx] * w.rawBasis[idx]
+        for p in range(NP):
+            idx = cid * NP + p
+            if not w.t1Operates[idx]:
+                continue
+            fin += w.t1Fin[idx]
+            sold += w.t1Sold[idx]
+            revenue += w.t1Revenue[idx]
+            cogs += w.t1COGS[idx]
+            made += made_by_line[idx]
+            rel += w.t1Rel[idx]
+            rel_n += 1
+            value += w.t1Fin[idx] * w.t1FinBasis[idx]
+            eqv += w.t1Fin[idx] * w.t1FinBasis[idx]
+            totals[3] += w.t1Sold[idx]
+            totals[4] += w.t1Revenue[idx]
+            totals[5] += w.t1COGS[idx]
+            totals[6] += made_by_line[idx]
+            totals[10] += w.t1Rel[idx]
+            totals[11] += 1
+            volumes[p] += w.t1Sold[idx]
+            revenues[p] += w.t1Revenue[idx]
+            if math.isfinite(w.t1Price[idx]):
+                quotes[p] += w.t1Price[idx]
+                quote_counts[p] += 1
+        equity = w.t1Cash[cid] + w.t1EqBook[cid] + value + license_cost - w.t1RentArrears[cid]
+        companies[:, cid] = (raw, fin, sold, revenue, cogs, made, rel / rel_n if rel_n else 0.0, equity, value)
+        totals[0] += raw
+        totals[1] += fin
+        totals[2] += w.t1Cash[cid]
+        totals[7] += eqv + license_cost
+        totals[8] += int(rel_n > 0)
+        totals[9] += int(controller[cid] != 0)
+    for cohort in range(NP):
+        for cid in range(T1_OFFSETS[cohort], T1_OFFSETS[cohort] + T1_COUNTS[cohort]):
+            b = cid * NP + cohort
+            if math.isfinite(w.t1Price[b]):
+                cohorts[0, cohort] += w.t1Price[b]
+                cohorts[12, cohort] += 1
+            cohorts[1, cohort] += w.t1UnitCost[b]
+            cohorts[2, cohort] += w.t1Fin[b]
+            for e in range(NE):
+                cohorts[3, cohort] += w.raw[cid * NE + e]
+            cohorts[4, cohort] += w.t1Cash[cid]
+            cohorts[5, cohort] += companies[7, cid]
+            for p in range(NP):
+                idx = cid * NP + p
+                if w.t1Operates[idx]:
+                    cohorts[6, cohort] += made_by_line[idx]
+                    cohorts[7, cohort] += w.t1Sold[idx]
+                    cohorts[8, cohort] += w.t1Revenue[idx]
+                    cohorts[9, cohort] += w.t1COGS[idx]
+                    if p != cohort:
+                        cohorts[2, cohort] += w.t1Fin[idx]
+            cohorts[10, cohort] += w.t1Rel[b]
+            cohorts[11, cohort] += w.t1PriceStability[b]
+            cohorts[13, cohort] += int(controller[cid] != 0)
+    return companies, cohorts, totals, volumes, revenues, quotes, quote_counts
+
+
+def project_refineries(world, made, controller, license_cost):
+    result = _project(RefineryView(*(getattr(world, k) for k in _VIEW_FIELDS)), made, controller, license_cost)
+    companies, cohorts, totals, *markets = result
+    return (dict(zip(COMPANY_FIELDS, companies)), dict(zip(COHORT_FIELDS, cohorts)),
+            dict(zip(TOTAL_FIELDS, totals)), *markets)
+
+_T2_FIELDS = ('t2LineProduct', 't2LineFirm', 't2Price', 't2Fin', 't2FinBasis',
+              't2UnitCost', 't2Made', 't2Sold', 't2Revenue', 't2COGS', 't2Rel',
+              't2Sector', 't2Controller', 't2Online', 't2Cash', 't2EqBook',
+              't2Raw', 't2RawBasis', 't2T1Raw', 't2T1Basis')
+ManufacturingView = namedtuple('ManufacturingView', _T2_FIELDS)
+
+
+@njit
+def _manufacturing(w, n, line_count, capacity):
+    products = np.zeros((11, PRODUCT_COUNT))
+    sectors = np.zeros((15, SECTOR_COUNT))
+    for firm in range(n):
+        sector = w.t2Sector[firm]
+        sectors[0, sector] += 1
+        sectors[1, sector] += w.t2Controller[firm]
+        sectors[2, sector] += w.t2Controller[firm] & w.t2Online[firm]
+        sectors[3, sector] += w.t2Cash[firm]
+        sectors[4, sector] += w.t2EqBook[firm]
+    # Keep the original material-major reduction order: sum each material
+    # across firms before adding its sector totals to the inventory value.
+    for material in range(NI):
+        raw = np.zeros(SECTOR_COUNT)
+        value = np.zeros(SECTOR_COUNT)
+        for firm in range(n):
+            sector = w.t2Sector[firm]
+            if material < NE:
+                idx = firm * NE + material
+                q, b = w.t2Raw[idx], w.t2RawBasis[idx]
+            else:
+                idx = firm * NI + material
+                q, b = w.t2T1Raw[idx], w.t2T1Basis[idx]
+            raw[sector] += q
+            value[sector] += q * b
+        for sector in range(SECTOR_COUNT):
+            sectors[5, sector] += raw[sector]
+            sectors[6, sector] += value[sector]
+    for line in range(line_count):
+        pid = w.t2LineProduct[line]
+        sector = w.t2Sector[w.t2LineFirm[line]]
+        sold = w.t2Sold[line]
+        basis = w.t2FinBasis[line]
+        products[0, pid] += 1
+        products[1, pid] += w.t2Price[line]
+        products[2, pid] += w.t2Fin[line]
+        products[3, pid] += w.t2Made[line]
+        products[4, pid] += basis if basis != 0 else w.t2UnitCost[line]
+        products[5, pid] += capacity[pid]
+        products[6, pid] += sold
+        products[7, pid] += w.t2Revenue[line]
+        products[8, pid] += w.t2COGS[line]
+        products[9, pid] += w.t2Rel[line]
+        products[10, pid] += sold * sold
+        sectors[7, sector] += 1
+        sectors[8, sector] += w.t2Fin[line]
+        sectors[9, sector] += w.t2Made[line]
+        sectors[10, sector] += sold
+        sectors[11, sector] += w.t2Revenue[line]
+        sectors[12, sector] += w.t2COGS[line]
+        sectors[13, sector] += capacity[pid]
+        sectors[14, sector] += w.t2Fin[line] * basis
+    return products, sectors
+
+
+def project_manufacturing(world, n, line_count, capacity):
+    project = _manufacturing if HAVE_NUMBA else _manufacturing_numpy
+    return project(ManufacturingView(*(getattr(world, k) for k in _T2_FIELDS)), n, line_count, capacity)
+
+
+def _manufacturing_numpy(w, n, lc, capacity):
+    """Vectorized fallback and independent reduction oracle for the fused loop."""
+    pid = w.t2LineProduct[:lc]
+    sold, basis = w.t2Sold[:lc], w.t2FinBasis[:lc]
+    products = np.vstack([
+        np.bincount(pid, minlength=PRODUCT_COUNT),
+        *(np.bincount(pid, weights=values, minlength=PRODUCT_COUNT) for values in (
+            w.t2Price[:lc], w.t2Fin[:lc], w.t2Made[:lc],
+            np.where(basis != 0, basis, w.t2UnitCost[:lc]), capacity[pid], sold,
+            w.t2Revenue[:lc], w.t2COGS[:lc], w.t2Rel[:lc], sold * sold))])
+    sectors = np.zeros((15, SECTOR_COUNT))
+    sector = w.t2Sector[:n]
+    sectors[0] = np.bincount(sector, minlength=SECTOR_COUNT)
+    for i, values in enumerate((w.t2Controller[:n], w.t2Controller[:n] & w.t2Online[:n],
+                                 w.t2Cash[:n], w.t2EqBook[:n]), 1):
+        sectors[i] = np.bincount(sector, weights=values, minlength=SECTOR_COUNT)
+    for material in range(NI):
+        if material < NE:
+            quantity, cost = w.t2Raw[material::NE][:n], w.t2RawBasis[material::NE][:n]
+        else:
+            quantity, cost = w.t2T1Raw[material::NI][:n], w.t2T1Basis[material::NI][:n]
+        sectors[5] += np.bincount(sector, weights=quantity, minlength=SECTOR_COUNT)
+        sectors[6] += np.bincount(sector, weights=quantity * cost, minlength=SECTOR_COUNT)
+    line_sector = sector[w.t2LineFirm[:lc]]
+    sectors[7] = np.bincount(line_sector, minlength=SECTOR_COUNT)
+    for i, values in enumerate((w.t2Fin[:lc], w.t2Made[:lc], sold, w.t2Revenue[:lc],
+                                 w.t2COGS[:lc], capacity[pid], w.t2Fin[:lc] * basis), 8):
+        sectors[i] = np.bincount(line_sector, weights=values, minlength=SECTOR_COUNT)
+    return products, sectors
+
+
+# Stable catalog labels are built once, rather than rediscovered per snapshot.
+_RENT_T1_COMPLEXITY = np.array([p['complexity'] for p in M.PRODUCTS], dtype=np.int64)
+_RENT_T2_COMPLEXITY = np.array([p['complexity'] for p in M.T2_PRODUCTS], dtype=np.int64)
+_RENT_T2_SECTOR = np.array([M.T2_SECTORS.index(p['sector']) for p in M.T2_PRODUCTS], dtype=np.int64)
+
+
+def project_storage_rent(world, cfg):
+    return project_company_amounts(world, cfg, world.t1RentCharge, world.t2RentCharge[:cfg['t2FirmCount']])
+
+
+def project_company_amounts(world, cfg, rent1, rent2, amount0=None):
+    """Reduce actual charges into display groups without scanning firms per group.
+
+    Company overhead is split over that company's installed lines. A product's
+    sector differs from a company's home sector, so industry and cohort totals
+    deliberately use different grouping arrays. Zero-line overhead remains in
+    company/cohort/tier totals and is not assigned to a nonexistent product.
+    """
+    n = cfg['t2FirmCount']
+    operates = world.t1Operates.reshape(N1, NP)
+    market1 = (operates * (rent1 / np.maximum(operates.sum(axis=1), 1))[:, None]).sum(axis=0)
+    lc = int(world.t2LineCount)
+    owners = world.t2LineFirm[:lc]
+    market2 = np.bincount(world.t2LineProduct[:lc],
+        weights=rent2[owners] / np.maximum(world.t2FirmLineCount[owners], 1), minlength=PRODUCT_COUNT)
+    complexity = np.bincount(_RENT_T1_COMPLEXITY, weights=market1, minlength=6)
+    complexity += np.bincount(_RENT_T2_COMPLEXITY, weights=market2, minlength=6)
+    if amount0 is not None:
+        from ..core.accounting import allocate_to_lines
+        elements = allocate_to_lines(world, cfg, 't0', amount0).reshape(M.N0, NE).sum(axis=0)
+        complexity[0] = amount0.sum()
+    else:
+        elements = np.zeros(NE)
+    return {
+        'products': market2,
+        'cohorts1': np.bincount(M.T1_FIRM_PRODUCT, weights=rent1, minlength=NP),
+        'cohorts2': np.bincount(world.t2Sector[:n], weights=rent2, minlength=SECTOR_COUNT),
+        'industries': np.bincount(_RENT_T2_SECTOR, weights=market2, minlength=SECTOR_COUNT),
+        'complexity': complexity,
+        'elements': elements,
+    }

@@ -1,0 +1,339 @@
+--- a/game/mobile/integration_test/native_reminders_test.dart
++++ b/game/mobile/integration_test/native_reminders_test.dart
+@@ -48,7 +48,6 @@
+ }
+ 
+ Future<void> until(
+-  WidgetTester tester,
+   bool Function() ready, {
+   required String reason,
+   int seconds = 120,
+@@ -56,7 +55,8 @@
+   final watch = Stopwatch()..start();
+   while (!ready() && watch.elapsed < Duration(seconds: seconds)) {
+     await Future<void>.delayed(const Duration(milliseconds: 100));
+-    await tester.pump();
++    // OS lifecycle observations do not require a rendered frame. A live
++    // tester.pump can wait indefinitely for the next frame while paused.
+   }
+   expect(ready(), isTrue, reason: reason);
+ }
+@@ -65,14 +65,27 @@
+   final events = <Map<String, dynamic>>[];
+   Future<void> Function(AppLifecycleState)? onChange;
+   Object? error;
++  StackTrace? errorStack;
++  final failures = <Map<String, dynamic>>[];
+   Future<void> tail = Future.value();
+   @override
+   void didChangeAppLifecycleState(AppLifecycleState state) {
+     events.add({'state': state.name, 'utc_ms': utcMs()});
+     final callback = onChange;
+     if (callback != null) {
+-      tail = tail.then((_) => callback(state)).catchError((Object failure) {
+-        error = failure;
++      tail = tail.then((_) => callback(state)).catchError((
++        Object failure,
++        StackTrace stack,
++      ) {
++        error ??= failure;
++        errorStack ??= stack;
++        failures.add({
++          'state': state.name,
++          'utc_ms': utcMs(),
++          'error_type': failure.runtimeType.toString(),
++          'error': failure.toString(),
++          'stack': stack.toString(),
++        });
+       });
+     }
+   }
+@@ -133,6 +146,7 @@
+     final observation = NativeLifecycleObservation();
+     WidgetsBinding.instance.addObserver(observation);
+     report['lifecycle_events'] = observation.events;
++    report['lifecycle_callback_failures'] = observation.failures;
+     GameController? game;
+     ReminderLifecycle? lifecycle;
+     addTearDown(() async {
+@@ -204,8 +218,7 @@
+         expect(
+           service.permission,
+           ReminderPermission.allowed,
+-          reason:
+-              'This scenario requires actual OS approval; inability is unqualified.',
++          reason: 'This scenario requires actual OS approval; inability is unqualified.',
+         );
+         expect(service.preferences.enabled, isTrue);
+         final repository = SaveRepository(
+@@ -273,7 +286,6 @@
+           action('revoke_in_os_settings_then_return_via_app_icon');
+           await service.openDeviceSettings();
+           await until(
+-            tester,
+             () => observation.events
+                 .skip(baseline)
+                 .any((e) => e['state'] == 'resumed'),
+@@ -300,68 +312,77 @@
+           final watch = Stopwatch()..start();
+           bool scheduled = false, returned = false;
+           var earliestReturn = 0;
++          Map<String, dynamic>? observedPlan;
+           observation.onChange = (state) async {
++            // Native callbacks may arrive outside package:test's Zone. Only
++            // observe/call production APIs here; matchers run in the test body.
+             if (state == AppLifecycleState.paused && !scheduled) {
+               report['background_call_utc_ms'] = utcMs();
+               await lifecycle!.backgrounded();
+-              await recordPlan(service, gateway, repository, game!);
+-              earliestReturn =
+-                  service.planned.single.dueUtc.millisecondsSinceEpoch;
++              observedPlan = await observeReminderPlan(
++                service,
++                gateway,
++                repository,
++                game!,
++              );
++              report['plan_observation'] = observedPlan;
+               report['scheduled_elapsed_ms'] = watch.elapsedMilliseconds;
+               scheduled = true;
+-              action('wait_until_due_then_return_via_app_icon', {
+-                'not_before_utc_ms': earliestReturn,
+-              });
++              final plans = observedPlan!['planned'] as List;
++              if (plans.length == 1) {
++                earliestReturn = plans.single['due_utc_ms'] as int;
++                action('wait_until_due_then_return_via_app_icon', {
++                  'not_before_utc_ms': earliestReturn,
++                });
++              }
+             } else if (state == AppLifecycleState.resumed &&
+                 scheduled &&
+                 !returned) {
+               report['returned_utc_ms'] = utcMs();
+               report['returned_elapsed_ms'] = watch.elapsedMilliseconds;
+-              // Observe delivered OS records before production cancellation.
++              // Preserve actual delivered records before production cancellation.
+               final delivered = await gateway.plugin.getActiveNotifications();
+               report['delivered_records'] = [
+                 for (final item in delivered)
+                   if (ReminderPlanner.ids.contains(item.id))
+                     {'id': item.id, 'title': item.title, 'body': item.body},
+               ];
+-              expect(utcMs(), greaterThanOrEqualTo(earliestReturn));
+-              expect(
+-                report['delivered_records'],
+-                isNotEmpty,
+-                reason: 'A scheduled request alone is not actual delivery.',
+-              );
+-              expect(
+-                (report['delivered_records'] as List).any(
+-                  (dynamic row) =>
+-                      row['id'] == 77101 &&
+-                      row['body'] == const NotificationCopy().text('focusBody'),
+-                ),
+-                isTrue,
+-              );
++              report['delivery_observed_utc_ms'] = utcMs();
+               await lifecycle!.returned();
+-              expect(await pending(gateway), isEmpty);
+-              expect(
+-                (await gateway.plugin.getActiveNotifications()).where(
+-                  (x) => ReminderPlanner.ids.contains(x.id),
+-                ),
+-                isEmpty,
+-              );
+               report['return_pending_ids'] = await pending(gateway);
+-              report['return_active_ids'] = <int>[];
++              report['return_active_ids'] = [
++                for (final item
++                    in await gateway.plugin.getActiveNotifications())
++                  if (ReminderPlanner.ids.contains(item.id)) item.id,
++              ];
+               returned = true;
+             }
+           };
+           action('background_app_now_using_os_home');
+           await until(
+-            tester,
+-            () => returned || observation.error != null,
+-            reason:
+-                'Real production-minimum elapsed delivery and native return required.',
++            () => scheduled || observation.error != null,
++            reason: 'An actual native pause must produce a plan observation.',
+             seconds: 720,
+           );
++          rethrowLifecycleFailure(observation);
++          expect(observedPlan, isNotNull);
++          report['plan'] = validateObservedReminderPlan(observedPlan!);
++          // Preserve the original total observation budget, including Home
++          // operation and scheduling; neither phase restarts the real clock.
++          final elapsedSeconds =
++              (watch.elapsedMicroseconds / Duration.microsecondsPerSecond)
++                  .ceil();
++          final remainingSeconds = 720 - elapsedSeconds;
++          expect(remainingSeconds, greaterThan(0));
++          await until(
++            () => returned || observation.error != null,
++            reason: 'Real production-minimum elapsed delivery and native return required.',
++            seconds: remainingSeconds,
++          );
+           await observation.tail;
+-          if (observation.error != null) throw observation.error!;
++          rethrowLifecycleFailure(observation);
+           expect(scheduled && returned, isTrue);
++          validateObservedReminderDelivery(report, earliestReturn);
+           report['actual_background_and_return'] = true;
+           observation.onChange = null;
+         }
+@@ -385,36 +406,123 @@
+         .toList()
+       ..sort();
+ 
++void rethrowLifecycleFailure(NativeLifecycleObservation observation) {
++  final error = observation.error;
++  if (error != null) {
++    Error.throwWithStackTrace(error, observation.errorStack!);
++  }
++}
++
++Future<Map<String, dynamic>> observeReminderPlan(
++  NotificationService service,
++  NativeNotificationGateway gateway,
++  SaveRepository repository,
++  GameController game,
++) async {
++  final warning = service.warningKey;
++  final plans = List<PlannedReminder>.of(service.planned);
++  final ids = await pending(gateway);
++  final saved = (await repository.load()).snapshot;
++  final observed = DateTime.now().toUtc();
++  return {
++    'background_call_utc_ms': report['background_call_utc_ms'],
++    'warning_key': warning,
++    'planned': [
++      for (final plan in plans)
++        {
++          'id': plan.id,
++          'due_utc_ms': plan.dueUtc.millisecondsSinceEpoch,
++          'due_utc_micros': plan.dueUtc.microsecondsSinceEpoch,
++          'zone': plan.zoneName,
++          'kinds': plan.kinds.map((x) => x.name).toList(),
++          'body': plan.body(const NotificationCopy()),
++        },
++    ],
++    'pending_ids': ids,
++    'saved_payload': saved?.payload,
++    'saved_settled_through_utc_micros': saved?.settledThrough
++        .toUtc()
++        .microsecondsSinceEpoch,
++    'saved_snapshot_id': saved?.saveId,
++    'game_payload': game.state.toJson(),
++    'game_settled_through_utc_micros': game.settledThrough
++        .toUtc()
++        .microsecondsSinceEpoch,
++    'observed_utc_ms': observed.millisecondsSinceEpoch,
++    'observed_utc_micros': observed.microsecondsSinceEpoch,
++  };
++}
++
++Map<String, dynamic> validateObservedReminderPlan(
++  Map<String, dynamic> observed,
++) {
++  expect(observed['warning_key'], isNull);
++  final plans = observed['planned'] as List;
++  expect(plans.length, 1);
++  expect(observed['pending_ids'], [77101]);
++  expect(observed['saved_snapshot_id'], isNotNull);
++  expect(observed['saved_payload'], observed['game_payload']);
++  expect(
++    observed['saved_settled_through_utc_micros'],
++    observed['game_settled_through_utc_micros'],
++  );
++  final plan = plans.single as Map;
++  // Evaluate future-ness at the actual scheduling observation, not minutes
++  // later when a suspended test body may first get CPU time after return.
++  expect(plan['due_utc_micros'], greaterThan(observed['observed_utc_micros']));
++  return {
++    'background_call_utc_ms': observed['background_call_utc_ms'],
++    'scheduled_observed_utc_ms': observed['observed_utc_ms'],
++    'due_utc_ms': plan['due_utc_ms'],
++    'settled_through_utc_ms':
++        (observed['game_settled_through_utc_micros'] as int) ~/ 1000,
++    'zone': plan['zone'],
++    'ids': observed['pending_ids'],
++    'kinds': plan['kinds'],
++    'body': plan['body'],
++    'saved_payload_sha256': sha256
++        .convert(utf8.encode(jsonEncode(observed['saved_payload'])))
++        .toString(),
++    'saved_snapshot_id': observed['saved_snapshot_id'],
++    'production_lifecycle': true,
++  };
++}
++
++void validateObservedReminderDelivery(
++  Map<String, dynamic> observed,
++  int dueMs,
++) {
++  expect(observed['delivery_observed_utc_ms'], greaterThanOrEqualTo(dueMs));
++  final delivered = observed['delivered_records'] as List;
++  expect(
++    delivered,
++    isNotEmpty,
++    reason: 'A scheduled request alone is not actual delivery.',
++  );
++  expect(
++    delivered.any(
++      (dynamic row) =>
++          row['id'] == 77101 &&
++          row['body'] == const NotificationCopy().text('focusBody'),
++    ),
++    isTrue,
++  );
++  expect(observed['return_pending_ids'], isEmpty);
++  expect(observed['return_active_ids'], isEmpty);
++}
++
+ Future<void> recordPlan(
+   NotificationService service,
+   NativeNotificationGateway gateway,
+   SaveRepository repository,
+   GameController game,
+ ) async {
+-  expect(service.warningKey, isNull);
+-  expect(service.planned.length, 1);
+-  expect(await pending(gateway), [77101]);
+-  final plan = service.planned.single;
+-  final saved = (await repository.load()).snapshot!;
+-  expect(saved.payload, game.state.toJson());
+-  expect(saved.settledThrough, game.settledThrough.toUtc());
+-  final now = utcMs();
+-  expect(plan.dueUtc.isAfter(DateTime.now().toUtc()), isTrue);
+-  report['plan'] = {
+-    'background_call_utc_ms': report['background_call_utc_ms'],
+-    'scheduled_observed_utc_ms': now,
+-    'due_utc_ms': plan.dueUtc.millisecondsSinceEpoch,
+-    'settled_through_utc_ms': game.settledThrough
+-        .toUtc()
+-        .millisecondsSinceEpoch,
+-    'zone': plan.zoneName,
+-    'ids': await pending(gateway),
+-    'kinds': plan.kinds.map((x) => x.name).toList(),
+-    'body': plan.body(const NotificationCopy()),
+-    'saved_payload_sha256': sha256
+-        .convert(utf8.encode(jsonEncode(saved.payload)))
+-        .toString(),
+-    'saved_snapshot_id': saved.saveId,
+-    'production_lifecycle': true,
+-  };
+-}
++  final observed = await observeReminderPlan(
++    service,
++    gateway,
++    repository,
++    game,
++  );
++  report['plan_observation'] = observed;
++  report['plan'] = validateObservedReminderPlan(observed);
++}

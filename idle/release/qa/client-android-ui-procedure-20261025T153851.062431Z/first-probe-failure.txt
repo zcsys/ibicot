@@ -1,0 +1,1 @@
+Independent read-only check initially asserted the whole probe-02.txt stripped text equals '35'; assertion failed because the author log deliberately appends a blank STDERR section. Actual stdout is 35 and stderr is empty. Corrected checker explicitly parses the recorded delimiter and verifies both fields. No device or product failure is inferred; no author artifact changed.

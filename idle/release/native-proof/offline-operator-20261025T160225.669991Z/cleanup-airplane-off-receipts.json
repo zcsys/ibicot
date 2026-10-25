@@ -1,0 +1,50 @@
+[
+  {
+    "utc": "2026-10-25T16:06:40.308580+00:00",
+    "argv": [
+      "/Users/csys/Library/Android/sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "shell",
+      "-tt",
+      "uiautomator",
+      "dump",
+      "/dev/tty"
+    ],
+    "exit_code": 0,
+    "file": "cleanup-airplane-off-hierarchy.txt",
+    "sha256": "719eb43502d954d87580f86655532b3d51d417739782caa681d1a5558979e0e8",
+    "stderr": ""
+  },
+  {
+    "utc": "2026-10-25T16:06:45.162916+00:00",
+    "argv": [
+      "/Users/csys/Library/Android/sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "exec-out",
+      "screencap",
+      "-p"
+    ],
+    "exit_code": 0,
+    "file": "cleanup-airplane-off.png",
+    "sha256": "7eb0ea47eb77b8465dba3bc951eece7b5d88f7c63dddf247d11c4d3e203df621",
+    "stderr": ""
+  },
+  {
+    "utc": "2026-10-25T16:06:45.653853+00:00",
+    "argv": [
+      "/Users/csys/Library/Android/sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "shell",
+      "dumpsys",
+      "activity",
+      "activities"
+    ],
+    "exit_code": 0,
+    "file": "cleanup-airplane-off-activities.txt",
+    "sha256": "5c0a34d5c682e6a8ab4cdcb7cf51085029fff857aa5674842a846955222538eb",
+    "stderr": ""
+  }
+]

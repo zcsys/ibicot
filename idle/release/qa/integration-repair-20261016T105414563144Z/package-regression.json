@@ -1,0 +1,102 @@
+[
+  [
+    {
+      "package": "core",
+      "step": "pub",
+      "exit_code": 0,
+      "elapsed_seconds": 0.297,
+      "log": "release/qa/integration-repair-20261016T105414563144Z/core-pub.log"
+    },
+    {
+      "package": "core",
+      "step": "analyze",
+      "exit_code": 0,
+      "elapsed_seconds": 1.037,
+      "log": "release/qa/integration-repair-20261016T105414563144Z/core-analyze.log"
+    },
+    {
+      "package": "core",
+      "step": "test",
+      "exit_code": 0,
+      "elapsed_seconds": 11.339,
+      "log": "release/qa/integration-repair-20261016T105414563144Z/core-test.log",
+      "passed": 176,
+      "failed": 0
+    }
+  ],
+  [
+    {
+      "package": "events",
+      "step": "pub",
+      "exit_code": 0,
+      "elapsed_seconds": 0.297,
+      "log": "release/qa/integration-repair-20261016T105414563144Z/events-pub.log"
+    },
+    {
+      "package": "events",
+      "step": "analyze",
+      "exit_code": 0,
+      "elapsed_seconds": 0.929,
+      "log": "release/qa/integration-repair-20261016T105414563144Z/events-analyze.log"
+    },
+    {
+      "package": "events",
+      "step": "test",
+      "exit_code": 1,
+      "elapsed_seconds": 11.045,
+      "log": "release/qa/integration-repair-20261016T105414563144Z/events-test.log",
+      "passed": 30,
+      "failed": 1
+    }
+  ],
+  [
+    {
+      "package": "persistence",
+      "step": "pub",
+      "exit_code": 0,
+      "elapsed_seconds": 0.297,
+      "log": "release/qa/integration-repair-20261016T105414563144Z/persistence-pub.log"
+    },
+    {
+      "package": "persistence",
+      "step": "analyze",
+      "exit_code": 0,
+      "elapsed_seconds": 0.824,
+      "log": "release/qa/integration-repair-20261016T105414563144Z/persistence-analyze.log"
+    },
+    {
+      "package": "persistence",
+      "step": "test",
+      "exit_code": 0,
+      "elapsed_seconds": 8.835,
+      "log": "release/qa/integration-repair-20261016T105414563144Z/persistence-test.log",
+      "passed": 18,
+      "failed": 0
+    }
+  ],
+  [
+    {
+      "package": "progression",
+      "step": "pub",
+      "exit_code": 0,
+      "elapsed_seconds": 0.297,
+      "log": "release/qa/integration-repair-20261016T105414563144Z/progression-pub.log"
+    },
+    {
+      "package": "progression",
+      "step": "analyze",
+      "exit_code": 0,
+      "elapsed_seconds": 0.843,
+      "log": "release/qa/integration-repair-20261016T105414563144Z/progression-analyze.log"
+    },
+    {
+      "package": "progression",
+      "step": "test",
+      "exit_code": 0,
+      "elapsed_seconds": 11.698,
+      "log": "release/qa/integration-repair-20261016T105414563144Z/progression-test.log",
+      "passed": 25,
+      "failed": 0
+    }
+  ]
+]

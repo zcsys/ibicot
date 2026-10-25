@@ -1,0 +1,33 @@
+Running Gradle task 'assembleDebug'...                             19.3s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...           3.1s
+D/FlutterRenderer( 6806): Width is zero. 0,0
+D/FlutterRenderer( 6806): Width is zero. 0,0
+D/FlutterJNI( 6806): Sending viewport metrics to the engine.
+W/HWUI    ( 6806): Failed to choose config with EGL_SWAP_BEHAVIOR_PRESERVED, retrying without...
+W/HWUI    ( 6806): Failed to initialize 101010-2 format, error = EGL_SUCCESS
+I/Gralloc4( 6806): mapper 4.x is not supported
+VMServiceFlutterDriver: Connecting to Flutter application at http://127.0.0.1:56357/_f2UwVaqKD8=/
+VMServiceFlutterDriver: Isolate found with number: 2341057777702243
+I/Choreographer( 6806): Skipped 116 frames!  The application may be doing too much work on its main thread.
+VMServiceFlutterDriver: Isolate 2341057777702243 is runnable.
+VMServiceFlutterDriver: Isolate is paused at start.
+VMServiceFlutterDriver: Attempting to resume isolate
+D/ProfileInstaller( 6806): Installing profile for dev.tideglass.game
+I/.tideglass.game( 6806): Compiler allocated 5427KB to compile void android.view.ViewRootImpl.performTraversals()
+D/FlutterJNI( 6806): Sending viewport metrics to the engine.
+I/flutter ( 6806): 00:00 +0: current native runtime qualification: runtime-transition-start
+VMServiceFlutterDriver: Connected to Flutter application.
+I/Choreographer( 6806): Skipped 34 frames!  The application may be doing too much work on its main thread.
+I/Choreographer( 6806): Skipped 72 frames!  The application may be doing too much work on its main thread.
+I/HWUI    ( 6806): Davey! duration=1300ms; Flags=1, FrameTimelineVsyncId=166828, IntendedVsync=1971489380370, Vsync=1972689380322, InputEventId=0, HandleInputStart=1972709447273, AnimationStart=1972709449857, PerformTraversalsStart=1972709450898, DrawStart=1972714987690, FrameDeadline=1971506047036, FrameInterval=1972703594107, FrameStartTime=16666666, SyncQueued=1972718432398, SyncStart=1972719366690, IssueDrawCommandsStart=1972723958857, SwapBuffers=1972751781732, FrameCompleted=1972790598065, DequeueBufferDuration=5808291, QueueBufferDuration=1168250, GpuCompleted=1972790598065, SwapBuffersCompleted=1972777733773, DisplayPresentTime=72904454231359566, CommandSubmissionCompleted=1972751781732, 
+D/EGL_emulation( 6806): app_time_stats: avg=487.37ms min=53.43ms max=3396.50ms count=9
+D/EGL_emulation( 6806): app_time_stats: avg=293.86ms min=53.65ms max=1977.81ms count=10
+W/WindowOnBackDispatcher( 6806): OnBackInvokedCallback is not enabled for the application.
+W/WindowOnBackDispatcher( 6806): Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+I/.tideglass.game( 6806): NativeAlloc concurrent mark compact GC freed 2459KB AllocSpace bytes, 3(60KB) LOS objects, 49% free, 3006KB/6012KB, paused 125us,3.277ms total 118.570ms
+D/EGL_emulation( 6806): app_time_stats: avg=2966.01ms min=796.92ms max=7199.77ms count=3
+I/flutter ( 6806): 00:10 +1: (tearDownAll)
+I/flutter ( 6806): 00:10 +2: All tests passed!
+All tests passed.
+Leaving the application running.

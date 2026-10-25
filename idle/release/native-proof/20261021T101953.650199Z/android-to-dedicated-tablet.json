@@ -1,0 +1,39 @@
+{
+  "protected_device_untouched": "F103390E-7B7C-4F0B-9404-5E029C7131FF",
+  "actions": [
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "install",
+        "-r",
+        "/Users/csys/Desktop/ibicot/idle/release/native-proof/20261021T102112.746555Z/artifacts/tideglass-debug.apk"
+      ],
+      "exit_code": 0,
+      "output": "Performing Streamed Install\nSuccess\n"
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "emu",
+        "kill"
+      ],
+      "exit_code": 0,
+      "output": "OK: killing emulator, bye bye\nOK\n"
+    },
+    {
+      "command": [
+        "xcrun",
+        "simctl",
+        "boot",
+        "089884DC-AD2A-4D69-8C60-C50271AC21BF"
+      ],
+      "exit_code": 0,
+      "output": ""
+    }
+  ],
+  "note": "Android original archived debug main restored; emulator stopped to reduce memory pressure. Only dedicated verification tablet boot requested."
+}

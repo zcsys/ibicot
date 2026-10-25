@@ -1,0 +1,29 @@
+# Independent fulfillment and signed-cache initial review
+
+Do not accept this original checkpoint. Two actionable defects were independently reproduced: **QA016**, incompatible AES material can write under an existing vault key ID; **QA017**, asynchronous secure-storage delays can extend or return expired ownership. The author is repairing both. This initial source and all four failing assertions remain preserved.
+
+The immutable 79-input fingerprint is `244bf382dac8dd9cf39cb5aa24340a3a8f3eb6b04e320bc0be63fd39ba2c04d7`. All 28 inputs in the author's fulfillment manifest match exactly. Separate manifests pin two new independent test files and the additional events/progression compilation context. No production files were changed by QA. Later native-clock, cache-clear/erase, native integration and repair changes are excluded.
+
+| Checks on this source | Result |
+|---|---:|
+| Original base Python tests |22 / 22 pass|
+| Original provider/fulfillment Python tests |25 / 25 pass|
+| Original signed-cache Dart tests |8 / 8 pass|
+| New independent Python adversarial tests |8 / 9 pass|
+| New independent signed-cache Dart tests |3 / 6 pass|
+| Focused platform analysis |Clean|
+| Total distinct test cases |66 pass, 4 fail / 70|
+
+**QA016 — high priority, vault recoverability.** A database containing ciphertext encrypted under key ID `old` opens with different AES bytes also named `old`. The misconfigured instance writes a second token successfully. The original ring reads only the first row; the wrong ring reads only the second. Neither ring can read or rotate the whole vault. Existing lookup authentication correctly rejects wrong ciphertext, but startup/write validation only verifies key-ID presence and active epoch. Require a durable binding between each key ID and its material, including legacy databases and empty epochs, before permitting new writes. Reproduction is `game/qa/integration_fulfillment_test.py:test_same_key_id_wrong_material_cannot_create_split_vault`; `python-independent-initial.log` preserves the failure without token/key output.
+
+**QA017 — high priority, bounded ownership lifetime.** `accept` captures wall time before awaiting the secure read, then captures native elapsed evidence afterward. Holding that read while a trusted fixture elapsed clock advances 61 seconds, with wall time unchanged, gives a 60-second lease both in the returned IDs and the live getter. Separately, ordinary wall/native expiry during a delayed secure write causes both `accept` and `load` to return expired IDs; their next getter read correctly denies access in these two cases. Capture elapsed evidence at operation entry, include queued/read/verification/write delay, and revalidate before exposing IDs. The three failures are retained in `dart-independent-initial.log`. These are actual production cache methods exercised with explicit clock/storage fixtures, not physical-device measurements.
+
+Passing adversarial cases verify rotation after a committed but lost response, all-or-nothing rollback with a corrupted later row, foreign-account associated-data rejection, nonce-collision preservation, deletion cascading through token/reconciliation/lease state, deleted callback no-resurrection/no provider read, fresh provider foreign-binding denial, refund-before-acknowledgement preflight, lease revision rollback and exclusive expiry, signed-empty replay rejection, failed storage persistence and invalid signature/key denial. Real AES-GCM, Ed25519 and Google-auth RSA verification execute locally. The original author tests independently rerun exact Python-to-Dart signed bytes; provider response identities remain synthetic fixtures.
+
+The actual 52,699,186-byte soundtrack archive was streamed through the authenticated local HTTP route. Its SHA256 is `620d671ae8817239f89802a9bead7cb584f1e44326aedd4d352ec69fb1f8de3a`. Tests verify its exact digest, bounded chunks, denied unauthenticated/unowned/refunded/expired access, rejected query credentials, feature disable, and changed or missing file identity. An already-authorized in-flight transfer and prior personal copies cannot be recalled after refund; this limit is explicit in the service contract.
+
+Static review confirms official provider adapters, explicit credentials, current provider re-reads before changing known ownership, Google acknowledgement after durable grant with fresh eligibility preflight, bounded reconciliation work/backoff, private token/secret files, authenticated fixed download paths, exact signed payload-byte verification, account/seed/issuer binding and a maximum 24-hour lease/freshness window. Apple native completion reporting, periodic hosted execution and operator backup/deletion replay remain open. No synthetic store outcome is represented as a real purchase/refund/ad.
+
+The first isolated Dart dependency resolution failed because the QA snapshot omitted the platform package's events path dependency. Separately pinned events/progression context was added, and resolution, all tests and analysis then ran. That initial log is retained and is not a production defect. A preliminary head-only 22-test run is excluded; counted Python evidence was rerun in the immutable workspace.
+
+`scope-audit.json` verifies both directions across all 44 requirements and 65 original work packages, preserving every original acceptance statement/dependency and all four source fingerprints. Four original packages already accepted remain distinct from three bootstrap packages; this review accepts none. Narrow evidence maps to S24/S25/S27/S30/S37/S39. Real hosted services, provider credentials, native secure storage/clock/download qualification, physical devices, observed crash-free populations, playtests and store/release approval remain unverified. The user has none of those external resources.

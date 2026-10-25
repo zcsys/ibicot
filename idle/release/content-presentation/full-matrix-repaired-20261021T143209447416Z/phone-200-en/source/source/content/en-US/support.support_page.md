@@ -1,0 +1,139 @@
+# support.support_page
+
+Local draft; not a published policy or support service.
+
+Actual HTML: `release/public-pages/dist/index.html`. The following text segments are extracted from that file.
+
+Support · Tideglass
+
+Skip to support
+
+✦
+
+TIDEGLASS
+
+Support
+
+Privacy & data
+
+Development reference · local preview
+
+Tideglass is not publicly released. A support operator, contact address and published service have not been configured. This page does not send requests.
+
+The harbor handbook
+
+Keep your harbor
+
+within reach.
+
+Start with a safe copy. Then choose the recovery or account action that fits what happened.
+
+Protect your progress
+
+Use
+
+Export my harbor
+
+in the Logbook before replacing a save. Store the export somewhere you control.
+
+Save & recovery steps
+
+Understand your choices
+
+Guest play, cloud recovery, quality reports and study participation have separate choices.
+
+Read about your data
+
+On this page
+
+A lost or damaged harbor
+
+Account recovery
+
+Purchases & soundtrack
+
+Offline progress & Support
+
+Export & deletion
+
+Contact availability
+
+A lost or damaged harbor
+
+Keep the app installed and preserve any existing export. Uninstalling or clearing app data can remove local copies.
+
+If the recovery screen offers a valid backup, inspect it before continuing. Keep the damaged copy until you have checked the recovered harbor.
+
+Use the Logbook's local recovery controls to import a compatible export. An import selects one complete branch; it does not add two wallets or combine rewards.
+
+If you previously chose cloud recovery, inspect the available cloud branches and revisions before selecting one. Recovering an account does not automatically overwrite a guest harbor.
+
+Do not edit a save to force a newer version into an older app. If a version is unsupported, retain the file until a compatible build is available.
+
+Account recovery
+
+When optional account services are available, retain both your account ID and recovery code before acknowledging setup. A gameplay export is not an account recovery code.
+
+To rotate a code, retain the proposed replacement before submitting the change. If the response is lost, the server may already have accepted it. Keep the new code and use recovery to check the account.
+
+If the recovery code is lost
+
+Keep any device session that still works and export the local harbor. With no valid session and no code, this recovery method cannot recover the account. A local copy can preserve gameplay, but it cannot prove account or paid ownership.
+
+Never include recovery codes, session tokens or unredacted account screens in a support message.
+
+Purchases & soundtrack
+
+Paid offers are unavailable until the required store and account services are configured. There are no live purchases or fixture prices on this page.
+
+A paid appearance is missing
+
+Use the game's purchase restore/check controls with the intended store and Tideglass account. Wait for verified status. Local paid flags and save exports are not purchase evidence. A pending transaction may need to finish in the store before delivery can be verified.
+
+An offline ownership check can expire and require a fresh connection. This affects paid presentation, not harbor production or earned free appearances. Avoid buying again just to force a restore.
+
+The soundtrack download or share failed
+
+The supporter soundtrack requires verified ownership and an available download service. Wait for the verified download, then choose a destination in the system share sheet. Cancelling the share sheet does not prove that a copy was saved elsewhere.
+
+Recent exports are temporarily retained for receiving apps. If the cache reports capacity, keep any copy already shared and retry after old temporary exports become eligible for cleanup. Do not delete your game save to clear a soundtrack download.
+
+A refund or account deletion
+
+Manage a store transaction through Apple or Google. Deleting a Tideglass account does not cancel or refund the store transaction. A refund can revoke verified cosmetic ownership; a previously exported personal soundtrack copy cannot be remotely recalled.
+
+Offline progress & Support
+
+One absence earns full production for 24 hours, quarter production for the next 48 hours, then stops production until you return. Let the return settlement and save complete; reopening the summary does not create another absence reward.
+
+Free crew briefings and optional rewarded ads share six daily Support slots and the same reward. Refusing an ad, an unavailable ad or a failed ad leaves the free route available. Salvage uses the genuine eligible offline cache shown by the game; it does not double your whole absence.
+
+Reminders are optional and start off. Delayed or denied notifications do not remove earned progress. You can change reminder choices and quiet hours in Settings.
+
+Export & deletion
+
+Use local export for a copy of your harbor. Optional account export is a separate action for service-held data and excludes credentials and raw purchase proofs.
+
+In account settings, choose account deletion and read the confirmation.
+
+Confirm using the current recovery code. A connection is required to confirm remote deletion; an error or an offline credential reset is not confirmation.
+
+After confirmed service deletion, the current local guest harbor remains. Copies you exported to another app or storage provider also remain under your control.
+
+Signing out, forgetting credentials on one device and deleting an account are different actions. Quality reports can be disabled separately. In an explicitly provisioned study, use the study withdrawal control separately.
+
+Read the retention and deletion boundaries.
+
+A web deletion-request route is not available in this local draft and must be configured before public release.
+
+Contact availability
+
+No public support address or request service has been approved. There is no monitored inbox, form or promised response time on this page.
+
+When support is available, start with the app version, device/OS, the screen or action, approximate time, and the exact non-sensitive error. Redact identifiers and payment details from screenshots. Do not post recovery codes, session tokens, complete saves or receipts publicly.
+
+Page reviewed against the development implementation on 21 October 2026. It must be reconciled with the final shipped build, operator and enabled services before publication.
+
+Tideglass · Restore a little light.
+
+Privacy & data

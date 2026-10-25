@@ -1,0 +1,34 @@
+{
+  "checks": [
+    {
+      "argv": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "release/native-privacy",
+        "-p",
+        "test_artifact_inventory.py",
+        "-v"
+      ],
+      "exit_code": 0,
+      "log": "check-0.log"
+    },
+    {
+      "argv": [
+        "python3",
+        "release/qa/client-native-inventory-20261021T143056.713149Z/review_inventory.py"
+      ],
+      "exit_code": 0,
+      "log": "check-1.log"
+    }
+  ],
+  "collector_sha256": "b9a8e1f993324efd88ceec60f4c0f035141c1c6574020326a351619854f0643b",
+  "reviewer_probes_attribution": "Unchanged client_native independent probes rerun by root; fresh review remains required",
+  "native_runtime_claim": false,
+  "independent_review": "release/qa/client-native-inventory-repaired-20261021T143934.214473Z/REPAIRED_REVIEW.md",
+  "independent_review_sha256": "c0ded94e6aa8fb42d1d0a35502938d3b07b6fdb2fc6c155313588e3fa6d81345",
+  "demonstrated_INV001_closed": true,
+  "current_native_qualified": false
+}

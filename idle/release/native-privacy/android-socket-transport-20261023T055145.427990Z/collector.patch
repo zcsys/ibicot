@@ -1,0 +1,11 @@
+--- before/runtime_observation.py
++++ after/runtime_observation.py
+@@ -451,7 +451,7 @@
+             if self.commands[-1]['exit_code'] == 1:
+                 require(not raw and not self.commands[-1]['stderr'], 'lsof inspection unavailable, not empty')
+             return parse_lsof(raw, pid)
+-        raw = self.command(self.remote('sh', '-c', shlex.quote(ANDROID_SOCKETS), 'observer', str(pid), str(self.app_uid)))
++        raw = self.command([str(self.adb), '-s', self.device, 'shell', 'run-as', BUNDLE, 'sh', '-c', shlex.quote(ANDROID_SOCKETS), 'observer', str(pid), str(self.app_uid)])
+         return parse_android_sockets(raw, self.app_uid)
+ 
+     def storage(self):

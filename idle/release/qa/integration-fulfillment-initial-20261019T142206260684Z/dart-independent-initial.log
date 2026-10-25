@@ -1,0 +1,41 @@
+00:00 +0: loading test/qa_integration_signed_cache_test.dart
+00:00 +0: accept storage read cannot restart a lease after trusted elapsed expiry
+00:00 +0 -1: accept storage read cannot restart a lease after trusted elapsed expiry [E]
+  Expected: {'returned': Set:[], 'projected': Set:[]}
+    Actual: {'returned': Set:['pass.01'], 'projected': Set:['pass.01']}
+     Which: at location ['returned'] is Set:['pass.01'] which larger than expected
+  QA017: trusted elapsed time spent awaiting secure read must count against the original lease
+  
+  package:matcher                                  expect
+  test/qa_integration_signed_cache_test.dart 42:5  main.<fn>
+  
+00:00 +0 -1: accept return rechecks expiry after secure persistence finishes
+00:00 +0 -2: accept return rechecks expiry after secure persistence finishes [E]
+  Expected: empty
+    Actual: Set:['pass.01']
+  QA017: accept returned expired ownership after durable write
+  
+  package:matcher                                  expect
+  test/qa_integration_signed_cache_test.dart 56:5  main.<fn>
+  
+00:00 +0 -2: load return rechecks expiry after secure persistence finishes
+00:00 +0 -3: load return rechecks expiry after secure persistence finishes [E]
+  Expected: empty
+    Actual: Set:['pass.01']
+  QA017: load returned expired ownership after durable write
+  
+  package:matcher                                  expect
+  test/qa_integration_signed_cache_test.dart 72:5  main.<fn>
+  
+00:00 +0 -3: empty lease serialization blocks replay across a fresh instance
+00:00 +1 -3: failed secure write never replaces valid storage with a partial lease
+00:00 +2 -3: unknown pinned key and changed exact payload bytes reject before secure write
+00:00 +3 -3: Some tests failed.
+
+Failing tests:
+  test/qa_integration_signed_cache_test.dart: accept return rechecks expiry after secure persistence finishes
+  test/qa_integration_signed_cache_test.dart: accept storage read cannot restart a lease after trusted elapsed expiry
+  test/qa_integration_signed_cache_test.dart: load return rechecks expiry after secure persistence finishes
+
+Consider enabling the flag chain-stack-traces to receive more detailed exceptions.
+For example, 'dart test --chain-stack-traces'.

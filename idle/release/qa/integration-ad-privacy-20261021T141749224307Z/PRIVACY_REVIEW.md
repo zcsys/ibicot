@@ -1,0 +1,9 @@
+# Ad privacy integration independent review
+
+The exact current production source passed 49 English and 22 compile-time pseudo host tests, including five new reviewer cases. The three production privacy files match the final author pin; all recorded runtime, dependency and test inputs remained unchanged.
+
+The implementation performs no ad SDK call during default initialization. Configured Settings entry performs a local status read; explicit Check alone requests bounded consent-information update. A required options form is a separate action. Calls are guarded by privacy revision, session object/generation, account intent and local harbor seed. A visible form keeps optional ad requests blocked indefinitely until it closes; information-update timeouts do not release this boundary. A completed display can retain a subsequently confirmed receipt after privacy changes, while account, seed and slot eligibility still apply.
+
+Independent additions verify delayed-read rejection after seed change, disposal without late listener notification, ten virtual minutes of form exclusivity with repeated actions, rejection of a completed-display receipt after a harbor import, and zero SDK calls for disabled, missing and example-unit configurations. Reproduced author cases include actual Settings cold-error/retry controls at320px/200%, same-account reauthentication, load/configuration/display cancellation, exact SDK method-channel calls and preserved earned receipt. No new defect found.
+
+Forward scope: S39 and M5-03 receive bounded local implementation and host evidence for consent/privacy-option reachability and fail-closed async boundaries. Reverse scope: these tests do not establish real UMP/provider configuration, regional consent behavior, physical-device/network privacy audit, store declarations, policy approval or release readiness. Original criteria/dependencies/statuses are unchanged.

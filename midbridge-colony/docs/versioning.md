@@ -1,0 +1,191 @@
+# Versioning & Product Milestones
+
+This document pins the three release gates — **PoC**, **prototype**, and **MVP** —
+and the full product checklist that separates a prototype from an MVP. It is a
+versioning and scope note, not a design document: the
+[design canon](design_canon.md) remains authoritative for mechanics, and this
+document defers to it wherever they overlap.
+
+## Current position
+
+Current revision `midbridge-invented-105-t1-equal-complexity-500-v17` sets 1,000 T1 firms: 500 C1 / 500 C2, with equal product cohorts of 125 and 50. T2 counts and T3 routing are unchanged. Global company-number blocks follow the new population; older checkpoints are incompatible.
+
+Historical revision `midbridge-invented-105-t3-calibration-v13` retains T0/T1/T2 company counts and total T3 population, reallocating T3 companies between complexities and applies a static 0.80 C4 final-demand routing multiplier (C3 remains 1). The user rounded the tested 0.79 setting to 0.80; its year-17 C4/C3 earnings ratio was 1.437, so the earlier balance does not establish balance at 0.80. The preceding 0.79 calibration completed a seed-137 generation with final-five-year C4/C3 per-company net earnings ratio 1.0329 (annual ratios 1.0195–1.0439); other seeds and later generations remain untested. Earlier trial 0.73 improved the final-five-year C4/C3 earnings ratio to 0.8175, still below the user-confirmed 0.90–1.10 band; the completed 0.61 trial reversed the C4 advantage and did not achieve earnings equality. The balanced-T1 experiment retains its frozen v9 routing; old-revision checkpoints are rejected by the current loader.
+
+The kernel is a deterministic supply-chain simulation (NumPy + Numba) with a
+FastAPI + WebSocket service and a browser dashboard. The market logic is complete
+on both sides: production follows a margin ramp, and industrial purchasing is
+price-sensitive: T0 extraction and T1/T2 purchases first compute economic
+feasibility, then apply the eta response, then legal purchase rounding.
+The feasible quantity is the curve's base; default eta is 2. Distributors retain
+their existing demand mechanism. Distributors retain their incumbent after split
+or partial orders; T1/T2 remember the seller after a positive fill. See the
+[producer purchasing contract](design_canon.md#6-t2-input-buying-and-producer-order-settlement)
+for ranking, fee and preference boundaries.
+
+## Phase 1 — PoC
+
+**Definition.** The complete market logic proves itself: an equilibrium economy
+*may be made to work* on both sides of the market.
+
+**Criteria.**
+
+1. **Supply side.** Pricing, production, and margin behavior of autonomous firms
+   settle at an *interior* equilibrium — not pinned to price bounds
+   ([§2.6, §12.2](design_canon.md#L65)).
+2. **Buy side.** Final demand and — crucially — intermediate (industrial)
+   purchasing are price-sensitive and consistent with the supply side. The
+   approved T2 procurement rule has no buyer production-margin gate; production
+   evaluates its margin separately.
+
+**Honesty caveat.** "An equilibrium exists" is not the same as "the economy is
+validated as fair and healthy." A stable aggregate does not by itself prove
+healthy firms, sound incentives, or correct accounting. The fairness metric
+([§8](design_canon.md#L463)) and long-run health are separate, ongoing
+requirements that run alongside and after the PoC, not part of its completion
+bar.
+
+**Explicitly deferred (per the canon, "deferred for the PoC").** Service layers
+(advertising, financial services, games, utilities, warehouses/land),
+[Storage Royalty](design_canon.md#L141), and
+[product innovation](design_canon.md#L500). The local (single-machine)
+server-client is the PoC's observation and control harness, not a PoC criterion;
+network deployment is deferred to MVP.
+
+## Phase 2 — Prototype
+
+**Definition.** A feature-complete game built on the PoC market logic, still
+running locally (single machine), with no product concerns and no network
+deployment.
+
+- **Scope.** Add the game features on top of the proven market logic. At minimum,
+  develop and integrate the features of all 20 T0 companies across the whole
+  economy, using the approved role roster below.
+- **Bound.** Aspirationally comparable to the PoC effort; this is the phase most
+  like the PoC in kind (feature work, no external dependencies).
+- **Not included.** Everything in the MVP product checklist below — network
+  deployment, payments, security, operations, and so on — is out of scope here.
+
+### Required T0 company features
+
+**Prototype release gate.** Every company must have its assigned role's features
+developed, playable, and integrated with the shared economy. Names, role metadata,
+inactive placeholders, or isolated demonstrations do not satisfy this gate.
+The counts below cover all 20 companies; both companies in each paired role
+must participate in the implemented system.
+
+| Required role | Companies |
+| --- | ---: |
+| Policy making | 1 |
+| Colony administration | 1 |
+| Company marketplace | 1 |
+| Market intelligence | 1 |
+| Research & inventions | 1 |
+| Games & entertainment | 1 |
+| Raw materials | 2 |
+| Automotive & machinery | 2 |
+| Storage & logistics | 2 |
+| Advertisement | 2 |
+| Bots & assistants | 2 |
+| Finance | 2 |
+| Community | 2 |
+| **Total** | **20** |
+
+Company assignments follow the [approved T0 roster](design_canon.md#designated-t0-roles-inactive).
+Raw materials belongs to Raw Materials Corp. and Elements Inc.; The Oligarch is
+one of the two Finance companies.
+
+Integration must cover each feature's relevant company and player decisions,
+interactions with other economic actors, and effects on resources, goods,
+services, money, and accounting. The local game must expose those interactions
+and demonstrate that they work together in the shared simulation. Detailed
+mechanics remain to be specified in the design canon; this milestone requirement
+does not invent fees, transfers, or rules for them.
+
+**Current status.** The designated roles are recorded but inactive. Existing
+extraction and other implemented mechanics alone do not complete this gate.
+These features may remain deferred during PoC, but cannot be deferred beyond
+Prototype. This is a minimum feature requirement; the effort aspiration above
+does not reduce its scope.
+
+## Phase 3 — MVP
+
+**Definition.** The prototype operated as a product. It is the same game plus
+product-ization; the delta is *not* new gameplay but the operational, commercial,
+and trust layer required to ship and run it.
+
+**Every item in this checklist is required for MVP.** It differs from the
+prototype only in being a product in this sense.
+
+### A. Commercial & legal
+
+| Item | Why it is product, not prototype |
+| --- | --- |
+| **Payments & billing** | Real-money subscriptions are already specified in [§7](design_canon.md#L448) (Tier 1 ~$5/yr, Tier 2 $15/yr): processor integration, subscription lifecycle (trial, renewal, dunning, refund, cancel), invoices/receipts, VAT/sales tax, chargebacks and payment fraud. |
+| **Legal & compliance** | Terms of Service, privacy policy, GDPR/CCPA (erasure, export), age gating (COPPA), a real-money-trading / money-laundering policy review, and a gambling-law check (the game is deterministic skill, but that must be established, not assumed). |
+
+### B. Trust & identity
+
+| Item | Why it is product, not prototype |
+| --- | --- |
+| **Security guardrails and admin backdoors** | Authentication and authorization, least-privilege admin tooling, and audit of admin actions over a real-money economy. |
+| **Anti-cheat / market abuse** | Multi-accounting, collusion, botting, scripting, and market manipulation by players. Distinct from economy edge-cases: this is *players* exploiting the system, and it is a fraud surface in a shared real-money economy. |
+| **Account lifecycle** | Registration, email verification, password reset, 2FA, session management, recovery, and account deletion. |
+| **Dispute resolution** | Player disputes resolved by auditable replay, enabled by the [determinism axiom](design_canon.md#L58). |
+
+### C. Durability & operations
+
+| Item | Why it is product, not prototype |
+| --- | --- |
+| **Data durability & migrations** | Automated checkpoint/schema migrations (checkpoint compatibility is already treated as sacred), backups, disaster recovery, retention, and erasure hooks. |
+| **Observability & operations** | Structured logs, error tracking, metrics/alerting, on-call runbooks, and a status page. Distinct from user analytics: this is *service* health — is the economy alive and are the books reconciling now. |
+| **User metric data acquisition** | Product analytics: how users behave, what they retain on, where they drop off. |
+
+### D. Scale & live change
+
+| Item | Why it is product, not prototype |
+| --- | --- |
+| **Actual server deployment** | Hosting, networking, and running the service beyond the single-machine loopback. |
+| **Real concurrency & scale** | Many simultaneous players on one shared live world: tick scheduling under load, latency budget, and cost per user. |
+| **Update deployment cycle** | CI/CD, releases, and rollback. |
+| **Live economy change management** | Rebalancing or adding products to a *running* world without breaking conservation or fairness: canary, rollback, mid-flight schema migration of an economy. |
+| **Edge-case handling system for the economy** | Robustness against pathological states and bounded recovery from them. |
+
+### E. People & UX operations
+
+| Item | Why it is product, not prototype |
+| --- | --- |
+| **Support & moderation workflow** | Ban/appeal, ticket systems, and a policy for what admins may and may not touch in a real-money economy — beyond a bare backdoor button. |
+| **Onboarding & localization/accessibility** | Tutorial/onboarding, localization, and accessibility, so acquisition metrics are meaningful and users can actually play. |
+
+## After MVP — ideas to investigate
+
+### Parallel order formulation with shared settlement
+
+Explore having companies formulate orders independently from the same opening
+market state, then interact through a shared settlement process. This could
+expose parallel work within one interconnected economy while keeping outcomes
+dependent on other agents' orders, available inventory, and cash.
+
+This is a post-MVP research idea, not an approved mechanic or a requirement for
+PoC, prototype, or MVP. It does not change the current sequential execution
+contract. Simultaneous settlement would require explicit rules for allocating
+scarce stock, resolving competing orders, and deciding when sale proceeds and
+newly produced goods become available. Those choices can change economic
+outcomes; they must be evaluated as model changes rather than assumed to be
+behavior-preserving optimizations.
+
+Before adoption, compare economic behavior and measured performance against the
+current model, and verify conservation, accounting reconciliation, and
+deterministic replay. GPU acceleration is a possibility to investigate, not an
+assumed benefit or a commitment.
+
+## Phase character
+
+The three phases are *different kinds* of work, not merely different sizes:
+
+- **PoC** proves the market logic.
+- **Prototype** adds game features (bounded like the PoC, same kind of work).
+- **MVP** adds the product layer, which carries external dependencies — payment
+  processors, legal review, hosting, security audit, scale — that do not compress
+  the way feature work does.

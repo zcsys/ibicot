@@ -1,0 +1,50 @@
+{
+  "completed_utc": "2026-10-19T13:54:25.274896+00:00",
+  "source_captured_utc": "20261016T115431767720Z",
+  "source_fingerprint": "88bf971fc5ffa7898178e6a7e03552c5222ef46280b4ccf7688ee46486577d6d",
+  "frozen_inputs_verified": 303,
+  "supplemental_test_hashes": {
+    "game/mobile/test/qa_integration_reminders_test.dart": "12762abe57c2f201b5f6dee7740155cd3451dcefb03946c69bdfabe930ed40cc"
+  },
+  "test_passes": {
+    "author": 17,
+    "director_integration": 5,
+    "independent": 8,
+    "total": 30
+  },
+  "timezone_departure_cases": 384,
+  "focused_analysis_files": 8,
+  "analysis_issues": 0,
+  "author_source_hash_matches": {
+    "game/mobile/lib/notification_copy.dart": true,
+    "game/mobile/lib/notification_service.dart": true,
+    "game/mobile/lib/notification_settings.dart": true,
+    "game/mobile/test/notification_service_test.dart": true,
+    "game/mobile/test/notification_settings_test.dart": true,
+    "game/mobile/pubspec.yaml": true,
+    "game/mobile/pubspec.lock": true,
+    "game/mobile/android/app/build.gradle.kts": true,
+    "game/mobile/android/app/src/main/AndroidManifest.xml": true,
+    "game/mobile/android/app/src/main/res/drawable/ic_tideglass_notification.xml": true,
+    "game/mobile/android/app/src/main/res/raw/tideglass_keep.xml": true,
+    "game/mobile/ios/Runner/AppDelegate.swift": true,
+    "game/mobile/macos/Flutter/GeneratedPluginRegistrant.swift": true,
+    "release/notifications-author-review.md": true,
+    "release/notifications-tests.log": true,
+    "release/notifications-analysis.log": true
+  },
+  "callsite_hashes": {
+    "game/mobile/lib/app.dart": "5b3f0f7e0757498b0dbe286febea8f9ada25dbbb7ef38631835a9d5177b0c4fa",
+    "game/mobile/lib/bootstrap.dart": "52ade85def9cdc83d3624b2fc18ca4ca9cbe22111c0cead3129dbb6bf45d0684",
+    "game/mobile/lib/game_controller.dart": "1f5b8854e35d3ed736d879aab730d85b42f8ea17fe1f026d41d153536c7c0317"
+  },
+  "actual_os_delivery_tested": false,
+  "physical_device_tested": false,
+  "fresh_full_product_regression_claimed": false,
+  "new_actionable_defects": 0,
+  "limits": [
+    "Host Flutter/plugin-method-channel tests and package timezone database only.",
+    "Moving localization, unrelated simulation/core optimization and full native candidate are excluded.",
+    "No notification delivery, elapsed days, physical accessibility or platform power-management proof."
+  ]
+}

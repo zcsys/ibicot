@@ -1,0 +1,30 @@
+00:00 +0: loading /Users/csys/Desktop/ibicot/idle/release/study/native-linkage-staging/game/platform/test/native_linkage_test.dart
+00:00 +0 -1: loading /Users/csys/Desktop/ibicot/idle/release/study/native-linkage-staging/game/platform/test/native_linkage_test.dart [E]
+  Failed to load "/Users/csys/Desktop/ibicot/idle/release/study/native-linkage-staging/game/platform/test/native_linkage_test.dart":
+  ../../release/study/native-linkage-staging/game/platform/lib/study_recorder.dart:804:26: Error: Property 'available' cannot be accessed on 'StudyProcessObservation?' because it is potentially null.
+   - 'StudyProcessObservation' is from '../../release/study/native-linkage-staging/game/platform/lib/study_native_context.dart'.
+  Try accessing using ?. instead.
+            !nativeContext.available ||
+                           ^^^^^^^^^
+  ../../release/study/native-linkage-staging/game/platform/lib/study_recorder.dart:805:25: Error: Property 'platform' cannot be accessed on 'StudyProcessObservation?' because it is potentially null.
+   - 'StudyProcessObservation' is from '../../release/study/native-linkage-staging/game/platform/lib/study_native_context.dart'.
+  Try accessing using ?. instead.
+            nativeContext.platform == registry!['platform'],
+                          ^^^^^^^^
+00:00 +0 -2: loading /Users/csys/Desktop/ibicot/idle/release/study/native-linkage-staging/game/platform/test/legacy_study_recorder_test.dart [E]
+  Failed to load "/Users/csys/Desktop/ibicot/idle/release/study/native-linkage-staging/game/platform/test/legacy_study_recorder_test.dart":
+  ../../release/study/native-linkage-staging/game/platform/lib/study_recorder.dart:804:26: Error: Property 'available' cannot be accessed on 'StudyProcessObservation?' because it is potentially null.
+   - 'StudyProcessObservation' is from '../../release/study/native-linkage-staging/game/platform/lib/study_native_context.dart'.
+  Try accessing using ?. instead.
+            !nativeContext.available ||
+                           ^^^^^^^^^
+  ../../release/study/native-linkage-staging/game/platform/lib/study_recorder.dart:805:25: Error: Property 'platform' cannot be accessed on 'StudyProcessObservation?' because it is potentially null.
+   - 'StudyProcessObservation' is from '../../release/study/native-linkage-staging/game/platform/lib/study_native_context.dart'.
+  Try accessing using ?. instead.
+            nativeContext.platform == registry!['platform'],
+                          ^^^^^^^^
+00:00 +0 -2: Some tests failed.
+
+Failing tests:
+  /Users/csys/Desktop/ibicot/idle/release/study/native-linkage-staging/game/platform/test/legacy_study_recorder_test.dart: loading /Users/csys/Desktop/ibicot/idle/release/study/native-linkage-staging/game/platform/test/legacy_study_recorder_test.dart
+  /Users/csys/Desktop/ibicot/idle/release/study/native-linkage-staging/game/platform/test/native_linkage_test.dart: loading /Users/csys/Desktop/ibicot/idle/release/study/native-linkage-staging/game/platform/test/native_linkage_test.dart

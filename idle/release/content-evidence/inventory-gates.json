@@ -1,0 +1,76 @@
+[
+  {
+    "name": "default",
+    "command": [
+      "python3",
+      "implementation/tools/validate_content_manifest.py"
+    ],
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "expected_result": true,
+    "log": "release/content-evidence/inventory-default.log",
+    "log_sha256": "ec1b2d5b2888b54646e332b55dbd7a37e72bf1ef192f1586b4f52277cc2b9cb1",
+    "output_lines": 2,
+    "summary": [
+      "PLAN CONTRACT VALID: 164 asset packages; 164 unfinished.",
+      "Registry validation does not prove authored content, playability, reachability, accessibility, or a shippable build."
+    ]
+  },
+  {
+    "name": "self-test",
+    "command": [
+      "python3",
+      "implementation/tools/validate_content_manifest.py",
+      "--self-test"
+    ],
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "expected_result": true,
+    "log": "release/content-evidence/inventory-self-test.log",
+    "log_sha256": "c1452aeff54af8db6e3853e760ac6346a8d11d98f3c915448a08ad71096019c6",
+    "output_lines": 3,
+    "summary": [
+      "PLAN CONTRACT VALID: 164 asset packages; 164 unfinished.",
+      "Registry validation does not prove authored content, playability, reachability, accessibility, or a shippable build.",
+      "REJECTION SELF-TEST PASSED: 33 scope/parity/isolation/false-readiness cases."
+    ]
+  },
+  {
+    "name": "content-gate",
+    "command": [
+      "python3",
+      "implementation/tools/validate_content_manifest.py",
+      "--content-gate"
+    ],
+    "exit_code": 1,
+    "expected_exit_code": 1,
+    "expected_result": true,
+    "log": "release/content-evidence/inventory-content-gate.log",
+    "log_sha256": "17ffa99664ae12872afdbebf8f54926c7a3d3b6881084bb7e62aa975fd254e80",
+    "output_lines": 14,
+    "summary": [
+      "CONTENT GATE VALIDATION FAILED: 362 issues",
+      "- chapter.01: content not verified",
+      "- chapter.02: content not verified"
+    ]
+  },
+  {
+    "name": "release-gate",
+    "command": [
+      "python3",
+      "implementation/tools/validate_content_manifest.py",
+      "--release"
+    ],
+    "exit_code": 1,
+    "expected_exit_code": 1,
+    "expected_result": true,
+    "log": "release/content-evidence/inventory-release-gate.log",
+    "log_sha256": "11ca1233c7ef43e50d3395743f620665151338cd2a54270249c0b03ee38fb034",
+    "output_lines": 14,
+    "summary": [
+      "RELEASE VALIDATION FAILED: 380 issues",
+      "- chapter.01: content not verified",
+      "- chapter.02: content not verified"
+    ]
+  }
+]

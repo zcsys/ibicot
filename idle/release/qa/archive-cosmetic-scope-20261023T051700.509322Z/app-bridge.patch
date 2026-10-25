@@ -1,0 +1,203 @@
+--- /Users/csys/Desktop/ibicot/idle/release/content-presentation/full-matrix-repaired-20261021T143209447416Z/phone-100-en/source/game/mobile/lib/app.dart
++++ /Users/csys/Desktop/ibicot/idle/game/mobile/lib/app.dart
+@@ -9,6 +9,7 @@
+ import 'palette.dart';
+ import 'strings.dart';
+ import 'daily_panel.dart';
++import 'daily_icon_label.dart';
+ import 'story_screen.dart';
+ import 'support_screen.dart';
+ import 'season_screen.dart';
+@@ -27,6 +28,7 @@
+ import 'help_content.dart';
+ import 'help_screen.dart';
+ import 'study_gate.dart';
++import 'rechart_estimate.dart';
+ 
+ class ClientPreferences {
+   const ClientPreferences({
+@@ -876,7 +878,7 @@
+               FilledButton(
+                 key: const ValueKey('preview-rechart'),
+                 onPressed: eligible
+-                    ? () => _confirmRechart(context, claim)
++                    ? () => _confirmRechart(context)
+                     : null,
+                 child: LocalizedText(
+                   eligible
+@@ -958,62 +960,71 @@
+       ],
+     ),
+   );
+-  Future<void> _confirmRechart(
+-    BuildContext context,
+-    BigInt claim,
+-  ) => showDialog<void>(
+-    context: context,
+-    builder: (dialog) => ReadingDialog(
+-      title: const LocalizedText(UiCopy.chartABrighterOcean),
+-      content: SingleChildScrollView(
+-        child: Column(
+-          mainAxisSize: MainAxisSize.min,
+-          crossAxisAlignment: CrossAxisAlignment.start,
+-          children: [
+-            LocalizedText(
+-              UiEnglish.appClaimClaimNewCharts(claim),
+-              style: const TextStyle(color: TideColors.amber, fontSize: 23),
+-            ),
+-            const SizedBox(height: 12),
+-            LocalizedText(
+-              UiEnglish.appPermanentPowerGameEnginePrestigeMultiplierGameState(
+-                game.engine
+-                    .prestigeMultiplier(game.state.charts)
+-                    .toDecimalString(decimals: 2),
+-                game.engine
+-                    .prestigeMultiplier(game.state.charts + claim)
+-                    .toDecimalString(decimals: 2),
+-              ),
+-            ),
+-            const SizedBox(height: 18),
+-            const LocalizedText(Copy.rechartLost),
+-            const SizedBox(height: 12),
+-            const LocalizedText(Copy.rechartKept),
+-            const SizedBox(height: 12),
+-            const LocalizedText(
+-              UiCopy.yourCurrentFleetStopsEarningAs,
+-              style: TextStyle(color: TideColors.muted),
+-            ),
+-          ],
+-        ),
+-      ),
+-      actions: [
+-        TextButton(
+-          onPressed: () => Navigator.pop(dialog),
+-          child: const LocalizedText(UiCopy.keepBuilding),
+-        ),
+-        FilledButton(
+-          key: const ValueKey('confirm-rechart'),
+-          onPressed: () {
+-            game.rechart();
+-            Navigator.pop(dialog);
+-            setState(() => tab = 0);
+-          },
+-          child: const LocalizedText(UiCopy.rechart),
+-        ),
+-      ],
+-    ),
+-  );
++  Future<void> _confirmRechart(BuildContext context) {
++    final previewState = game.state;
++    final claim = game.engine.prestigeAward(previewState);
++    return showDialog<void>(
++      context: context,
++      builder: (dialog) => ReadingDialog(
++        title: const LocalizedText(UiCopy.chartABrighterOcean),
++        content: SingleChildScrollView(
++          child: Column(
++            mainAxisSize: MainAxisSize.min,
++            crossAxisAlignment: CrossAxisAlignment.start,
++            children: [
++              LocalizedText(
++                UiEnglish.appClaimClaimNewCharts(claim),
++                style: const TextStyle(color: TideColors.amber, fontSize: 23),
++              ),
++              const SizedBox(height: 12),
++              LocalizedText(
++                UiEnglish.appPermanentPowerGameEnginePrestigeMultiplierGameState(
++                  game.engine
++                      .prestigeMultiplier(previewState.charts)
++                      .toDecimalString(decimals: 2),
++                  game.engine
++                      .prestigeMultiplier(previewState.charts + claim)
++                      .toDecimalString(decimals: 2),
++                ),
++              ),
++              const SizedBox(height: 18),
++              const LocalizedText(Copy.rechartLost),
++              const SizedBox(height: 12),
++              const LocalizedText(Copy.rechartKept),
++              const SizedBox(height: 12),
++              const LocalizedText(
++                UiCopy.yourCurrentFleetStopsEarningAs,
++                style: TextStyle(color: TideColors.muted),
++              ),
++              const SizedBox(height: 18),
++              const Divider(),
++              const SizedBox(height: 18),
++              RechartEstimatePanel(
++                key: const ValueKey('rechart-estimate'),
++                snapshot: previewState,
++              ),
++            ],
++          ),
++        ),
++        actions: [
++          TextButton(
++            onPressed: () => Navigator.pop(dialog),
++            child: const LocalizedText(UiCopy.keepBuilding),
++          ),
++          FilledButton(
++            key: const ValueKey('confirm-rechart'),
++            onPressed: () {
++              game.rechart();
++              Navigator.pop(dialog);
++              setState(() => tab = 0);
++            },
++            child: const LocalizedText(UiCopy.rechart),
++          ),
++        ],
++      ),
++    );
++  }
++
+   Widget _journal(BuildContext context) => _page(
+     children: [
+       LocalizedText(
+@@ -1198,7 +1209,11 @@
+           style: Theme.of(context).textTheme.titleLarge,
+         ),
+         const SizedBox(height: 14),
+-        _dataRow(UiCopy.focusStored, '${game.state.focusCharges} / 12'),
++        _dataRow(
++          UiCopy.focusStored,
++          '${game.state.focusCharges} / 12',
++          icon: Icons.auto_awesome_outlined,
++        ),
+         const SizedBox(height: 8),
+         const LocalizedText(
+           UiCopy.oneChargeEveryTwoHoursEach,
+@@ -1222,7 +1237,11 @@
+           child: const LocalizedText(UiCopy.focusTheConstellation),
+         ),
+         const SizedBox(height: 22),
+-        _dataRow(UiCopy.surveysComplete, '${game.state.completedSurveys} / 3'),
++        _dataRow(
++          UiCopy.surveysComplete,
++          '${game.state.completedSurveys} / 3',
++          icon: Icons.explore_outlined,
++        ),
+         const SizedBox(height: 8),
+         const LocalizedText(
+           UiCopy.oneSurveyEveryEightHoursUp,
+@@ -1663,12 +1682,19 @@
+     ),
+     child: Material(color: Colors.transparent, child: child),
+   );
+-  Widget _dataRow(String label, String value) => Wrap(
++  Widget _dataRow(String label, String value, {IconData? icon}) => Wrap(
+     alignment: WrapAlignment.spaceBetween,
+     spacing: 20,
+     runSpacing: 4,
+     children: [
+-      LocalizedText(label, style: const TextStyle(color: TideColors.muted)),
++      if (icon == null)
++        LocalizedText(label, style: const TextStyle(color: TideColors.muted))
++      else
++        DailyIconLabel(
++          icon: icon,
++          label: label,
++          style: const TextStyle(color: TideColors.muted),
++        ),
+       LocalizedText(value, style: const TextStyle(fontWeight: FontWeight.w600)),
+     ],
+   );

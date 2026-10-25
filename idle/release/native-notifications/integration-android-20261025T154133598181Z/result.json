@@ -1,0 +1,67 @@
+{
+  "verification_id": "integration-android-20261025T154133598181Z",
+  "candidate_fingerprint": "3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59",
+  "harness_sha256": "330ab6428203ec80e4de19e4eb727ad8dcfc6f63572e9ea1b0ef3ff7dc7a71da",
+  "scenario": "denied",
+  "run_id": "v3b00-r20261025-android-denied-ready3",
+  "device_label": "android",
+  "platform": "android",
+  "process_id": 4797,
+  "fixture_kind": "SYNTHETIC GAMEPLAY SNAPSHOT; REAL OS NOTIFICATION API",
+  "gateway": "NativeNotificationGateway",
+  "preference_store": "FileNotificationPreferences",
+  "clock": "actual_utc_and_monotonic_stopwatch",
+  "completed": true,
+  "actions": [
+    {
+      "verification_id": "integration-android-20261025T154133598181Z",
+      "candidate_fingerprint": "3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59",
+      "harness_sha256": "330ab6428203ec80e4de19e4eb727ad8dcfc6f63572e9ea1b0ef3ff7dc7a71da",
+      "scenario": "denied",
+      "run_id": "v3b00-r20261025-android-denied-ready3",
+      "device_label": "android",
+      "platform": "android",
+      "process_id": 4797,
+      "action": "deny_permission_if_prompted",
+      "utc_ms": 1792942925272
+    }
+  ],
+  "limitations": [
+    "Simulator/emulator only; no physical delivery, battery or lock-screen guarantee.",
+    "Seeded Focus phase is not natural player progression.",
+    "OS permission UI must be operated directly; no grant/revoke bypass.",
+    "API delivered records do not prove that a person saw a banner."
+  ],
+  "fixture_directory": "/data/user/0/dev.tideglass.game/files/native-reminders/android-v3b00-r20261025-android-denied-ready3-denied",
+  "lifecycle_events": [
+    {
+      "state": "inactive",
+      "utc_ms": 1792942925315
+    },
+    {
+      "state": "resumed",
+      "utc_ms": 1792942963742
+    }
+  ],
+  "lifecycle_callback_failures": [],
+  "permission_before_initialize": "denied",
+  "initialization_lifecycle_events": [],
+  "permission_after_initialize": "denied",
+  "default_opted_out": true,
+  "default_preferences_file_absent": true,
+  "default_pending_ids": [],
+  "permission_after_opt_in": "denied",
+  "preferences_after_opt_in": {
+    "version": 1,
+    "enabled": false,
+    "focus": true,
+    "survey": true,
+    "storage": true,
+    "quiet": true,
+    "quiet_start": 1320,
+    "quiet_end": 480
+  },
+  "denied_pending_ids": [],
+  "preferences_sha256": "406e95ee62e73f67fbda37ed357ca5ff81012796c0400173dde431b64015d396",
+  "screenshots": []
+}

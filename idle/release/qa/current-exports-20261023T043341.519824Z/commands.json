@@ -1,0 +1,77 @@
+[
+  {
+    "name": "ios-release-codesign",
+    "argv": [
+      "/usr/bin/codesign",
+      "-d",
+      "--verbose=4",
+      "/Users/csys/Desktop/ibicot/idle/release/qa/current-exports-20261023T043341.519824Z/ios-release-Runner"
+    ],
+    "exit_code": 1,
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderr_sha256": "4ac356a90436dc56d73504439238f6587e71f8ce81334213d6d5c7c70edb97b9"
+  },
+  {
+    "name": "ios-release-ump-build-version",
+    "argv": [
+      "/usr/bin/otool",
+      "-l",
+      "/Users/csys/Desktop/ibicot/idle/release/qa/current-exports-20261023T043341.519824Z/ios-release-UserMessagingPlatform"
+    ],
+    "exit_code": 0,
+    "stdout_sha256": "1a94530fa11796cd2639f7057d0596b897e74748ec1fa14393eb1333036a12f3",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "name": "android-release-jarsigner",
+    "argv": [
+      "/Users/csys/Desktop/ibicot/idle/.tooling/java/jdk-17.0.20.1+1/Contents/Home/bin/jarsigner",
+      "-verify",
+      "/Users/csys/Desktop/ibicot/idle/release/native-proof/20261023T041555.017412Z/artifacts/tideglass-release.aab"
+    ],
+    "exit_code": 0,
+    "stdout_sha256": "cf97a22d129a9e4df5018f53fe9e4c8079cb9276c6885371e2e233cec4d74fe2",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "name": "android-debug-manifest",
+    "argv": [
+      "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/build-tools/36.0.0/aapt2",
+      "dump",
+      "xmltree",
+      "/Users/csys/Desktop/ibicot/idle/release/native-proof/20261023T040548.338966Z/artifacts/tideglass-debug.apk",
+      "--file",
+      "AndroidManifest.xml"
+    ],
+    "exit_code": 0,
+    "stdout_sha256": "3f1e52a747fb56597024712dd8622c201c2dbb84013e1470a874dfb723041bbe",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "name": "android-debug-permissions",
+    "argv": [
+      "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/build-tools/36.0.0/aapt2",
+      "dump",
+      "permissions",
+      "/Users/csys/Desktop/ibicot/idle/release/native-proof/20261023T040548.338966Z/artifacts/tideglass-debug.apk"
+    ],
+    "exit_code": 0,
+    "stdout_sha256": "467fda364381e70d561b50e3647e1f2163db149706da8cf6370df26425192ec6",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "name": "android-release-manifest",
+    "argv": [
+      "/Users/csys/Desktop/ibicot/idle/.tooling/java/jdk-17.0.20.1+1/Contents/Home/bin/java",
+      "-jar",
+      "/Users/csys/Desktop/ibicot/idle/.tooling/bundletool/bundletool-all-1.18.3.jar",
+      "dump",
+      "manifest",
+      "--bundle=/Users/csys/Desktop/ibicot/idle/release/native-proof/20261023T041555.017412Z/artifacts/tideglass-release.aab",
+      "--module=base"
+    ],
+    "exit_code": 0,
+    "stdout_sha256": "35d0f28000479b476ba6f213cfaa6362f9c53f01680ae62aafeee82e80724e86",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+]

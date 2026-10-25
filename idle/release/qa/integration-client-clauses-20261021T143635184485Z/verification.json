@@ -1,0 +1,47 @@
+{
+  "original_backlog_sha256": "779291dbd55db8e73513d3d335fbe5c51c0189c3050dba24c4f8049ac69c80ad",
+  "dependencies": {
+    "M0-04": "accepted",
+    "M1-02": "accepted",
+    "M2-01": "accepted"
+  },
+  "matrix": [
+    {
+      "condition": "phone-english",
+      "tests_passed": 1,
+      "source_unchanged": true,
+      "log_sha256": "9b1dc15fa0249a2607de5b4382ef5ff78679fce21e32a7dd18da9e2347499103"
+    },
+    {
+      "condition": "phone-pseudo",
+      "tests_passed": 1,
+      "source_unchanged": true,
+      "log_sha256": "f4f0fe5827ce788fc65c69fa4eeddc1061f88cd90a66ab6e763dd19287f4bc4c"
+    },
+    {
+      "condition": "tablet-english",
+      "tests_passed": 1,
+      "source_unchanged": true,
+      "log_sha256": "36fcd91433962bc058fb2c5f56c47e363b4589010e57c2f3cebe32d9d9ca69bc"
+    },
+    {
+      "condition": "tablet-pseudo",
+      "tests_passed": 1,
+      "source_unchanged": true,
+      "log_sha256": "93edfd2045ac4659cc513c4530eb64f76ad3e6737746efcedca8126b5808b776"
+    }
+  ],
+  "production_changed": false,
+  "recommendations": {
+    "M1-05": "accept exact original component criterion",
+    "M2-03": "do not accept: conditional reset time/reconstruction estimate absent"
+  },
+  "broader_scope_or_release_acceptance": false,
+  "analyzer": {
+    "scope": "current three new reviewer test files",
+    "exit_code": 0,
+    "log_sha256": "6f630f9b8a95c138682bdcf6dd5863ec4ab1b023eb69573ce3804d96c02190a1",
+    "path": "release/qa/integration-client-clauses-20261021T143635184485Z/final/analyzer-current.log"
+  },
+  "default_test_compatibility": "release/content-presentation/navigation-probe/default-compatible-20261021T144646910373Z"
+}

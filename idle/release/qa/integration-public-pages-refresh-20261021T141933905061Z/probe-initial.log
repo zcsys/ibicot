@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/Users/csys/Desktop/ibicot/idle/release/qa/integration-public-pages-refresh-20261021T141933905061Z/probe.py", line 34, in <module>
+    for rel,h in (p['source_media_sha256']|p['exported_sha256']).items():assert sha(ROOT/rel)==h,rel
+                                                                                ^^^^^^^^^^^^^^^^
+AssertionError: services/docs/PRIVACY.md

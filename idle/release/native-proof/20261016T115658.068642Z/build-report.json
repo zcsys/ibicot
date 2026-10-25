@@ -1,0 +1,32 @@
+{
+  "started_utc": "20261016T115658.068642Z",
+  "purpose": "local export only; no store, signing or runtime acceptance",
+  "mode": "release",
+  "candidate_fingerprint": "d85bdf74433d96d2f6ea6a58a8481290942d526a7cdb8ec14b55e57537e9dced",
+  "candidate_directory": "/Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261016T112921.896155Z-d85bdf74433d",
+  "workspace_directory": "/Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261016T112921.896155Z-d85bdf74433d/workspace-release",
+  "runner_sha256": "366ecc308b077ab4c308334e9a72b42b0e38858a3d22acaf329a379086f2383d",
+  "source_snapshot_unchanged": true,
+  "results": {
+    "android": {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+        "build",
+        "appbundle",
+        "--release"
+      ],
+      "exit_code": 0,
+      "build_succeeded": true,
+      "runtime_launch_proven": false,
+      "artifact": "release/native-proof/20261016T115658.068642Z/artifacts/tideglass-release.aab",
+      "artifact_sha256": "5b64c7e3556821f2b12921ecc84a6be3b0f3b57a8b5ff53f9c26b4a6ecce0f22",
+      "artifact_bytes": 60792587
+    }
+  },
+  "pub_get_exit_code": 0,
+  "workspace_input_differences": [
+    "game/mobile/android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java"
+  ],
+  "dependency_locks_unchanged": true,
+  "current_working_tree_matches_candidate": false
+}

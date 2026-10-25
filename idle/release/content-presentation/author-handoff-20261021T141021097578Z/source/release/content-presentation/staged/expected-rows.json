@@ -1,0 +1,3074 @@
+{
+  "schema_version": 1,
+  "tests_per_condition": 73,
+  "rows_per_condition": 137,
+  "conditions": [
+    {
+      "viewport": "phone",
+      "text_percent": 100,
+      "pseudo": false
+    },
+    {
+      "viewport": "phone",
+      "text_percent": 100,
+      "pseudo": true
+    },
+    {
+      "viewport": "phone",
+      "text_percent": 150,
+      "pseudo": false
+    },
+    {
+      "viewport": "phone",
+      "text_percent": 150,
+      "pseudo": true
+    },
+    {
+      "viewport": "phone",
+      "text_percent": 200,
+      "pseudo": false
+    },
+    {
+      "viewport": "phone",
+      "text_percent": 200,
+      "pseudo": true
+    },
+    {
+      "viewport": "tablet",
+      "text_percent": 100,
+      "pseudo": false
+    },
+    {
+      "viewport": "tablet",
+      "text_percent": 100,
+      "pseudo": true
+    },
+    {
+      "viewport": "tablet",
+      "text_percent": 150,
+      "pseudo": false
+    },
+    {
+      "viewport": "tablet",
+      "text_percent": 150,
+      "pseudo": true
+    },
+    {
+      "viewport": "tablet",
+      "text_percent": 200,
+      "pseudo": false
+    },
+    {
+      "viewport": "tablet",
+      "text_percent": 200,
+      "pseudo": true
+    }
+  ],
+  "rows": [
+    {
+      "id": "asset.chapter.01.copy",
+      "state": "current",
+      "route": "StoryScreen/chapters",
+      "fields": [
+        "title",
+        "status",
+        "intro",
+        "hint-0",
+        "hint-1",
+        "objective-0",
+        "keepsake"
+      ],
+      "assertions": [
+        "prefix_exact",
+        "read_only",
+        "completion_visibility",
+        "actual_header_control"
+      ],
+      "minimum_callbacks": 0,
+      "minimum_controls": 1,
+      "exact_english": {
+        "title": "1. First Light",
+        "intro": "A skiff returns with a single thread of Radiance. The harbor has forgotten how to hold the dawn. Set a light on the water, learn its rhythm, and draw the first new chart.",
+        "hint-0": "• Build toward the Dawn Observatory.",
+        "hint-1": "• Rechart when you are ready; Charts and lifetime earnings remain."
+      }
+    },
+    {
+      "id": "asset.chapter.01.copy",
+      "state": "completed",
+      "route": "StoryScreen/chapters",
+      "fields": [
+        "title",
+        "status",
+        "intro",
+        "hint-0",
+        "hint-1",
+        "objective-0",
+        "keepsake",
+        "completion"
+      ],
+      "assertions": [
+        "prefix_exact",
+        "read_only",
+        "completion_visibility",
+        "actual_header_control"
+      ],
+      "minimum_callbacks": 0,
+      "minimum_controls": 1,
+      "exact_english": {
+        "title": "1. First Light",
+        "intro": "A skiff returns with a single thread of Radiance. The harbor has forgotten how to hold the dawn. Set a light on the water, learn its rhythm, and draw the first new chart.",
+        "hint-0": "• Build toward the Dawn Observatory.",
+        "hint-1": "• Rechart when you are ready; Charts and lifetime earnings remain.",
+        "completion": "The first route survives the rebuilding. One constellation is bright enough to follow home."
+      }
+    },
+    {
+      "id": "asset.chapter.02.copy",
+      "state": "current",
+      "route": "StoryScreen/chapters",
+      "fields": [
+        "title",
+        "status",
+        "intro",
+        "hint-0",
+        "hint-1",
+        "objective-0",
+        "objective-1",
+        "objective-2",
+        "keepsake"
+      ],
+      "assertions": [
+        "prefix_exact",
+        "read_only",
+        "completion_visibility",
+        "actual_header_control"
+      ],
+      "minimum_callbacks": 0,
+      "minimum_controls": 1,
+      "exact_english": {
+        "title": "2. A Shared Horizon",
+        "intro": "A lone light can mark a channel. A network can reveal the whole coast. Small skiffs and prism beds still shape the work of the largest observatories.",
+        "hint-0": "• Reach 25 Charts to reveal cross-tier links.",
+        "hint-1": "• Build 25 Skiffs and 25 Nurseries in the same fleet."
+      }
+    },
+    {
+      "id": "asset.chapter.02.copy",
+      "state": "completed",
+      "route": "StoryScreen/chapters",
+      "fields": [
+        "title",
+        "status",
+        "intro",
+        "hint-0",
+        "hint-1",
+        "objective-0",
+        "objective-1",
+        "objective-2",
+        "keepsake",
+        "completion"
+      ],
+      "assertions": [
+        "prefix_exact",
+        "read_only",
+        "completion_visibility",
+        "actual_header_control"
+      ],
+      "minimum_callbacks": 0,
+      "minimum_controls": 1,
+      "exact_english": {
+        "title": "2. A Shared Horizon",
+        "intro": "A lone light can mark a channel. A network can reveal the whole coast. Small skiffs and prism beds still shape the work of the largest observatories.",
+        "hint-0": "• Reach 25 Charts to reveal cross-tier links.",
+        "hint-1": "• Build 25 Skiffs and 25 Nurseries in the same fleet.",
+        "completion": "The harbor recognizes a pattern: old craft and new instruments belong to the same sky."
+      }
+    },
+    {
+      "id": "asset.chapter.02.copy",
+      "state": "locked",
+      "route": "StoryScreen/chapters",
+      "fields": [
+        "title",
+        "status"
+      ],
+      "assertions": [
+        "entry_status",
+        "read_only"
+      ],
+      "minimum_callbacks": 0,
+      "minimum_controls": 0,
+      "exact_english": {
+        "title": "2. A Shared Horizon"
+      }
+    },
+    {
+      "id": "asset.chapter.03.copy",
+      "state": "current",
+      "route": "StoryScreen/chapters",
+      "fields": [
+        "title",
+        "status",
+        "intro",
+        "hint-0",
+        "hint-1",
+        "objective-0",
+        "keepsake"
+      ],
+      "assertions": [
+        "prefix_exact",
+        "read_only",
+        "completion_visibility",
+        "actual_header_control"
+      ],
+      "minimum_callbacks": 0,
+      "minimum_controls": 1,
+      "exact_english": {
+        "title": "3. The Quiet Watch",
+        "intro": "Survey crews learn the coast while you are away. Let their notes accumulate, then choose a constellation to study. The harbor has no need for a sleepless keeper.",
+        "hint-0": "• Collect twelve completed Surveys over your visits.",
+        "hint-1": "• Calibration patterns are an optional discovery; accessible completion gives the same result."
+      }
+    },
+    {
+      "id": "asset.chapter.03.copy",
+      "state": "completed",
+      "route": "StoryScreen/chapters",
+      "fields": [
+        "title",
+        "status",
+        "intro",
+        "hint-0",
+        "hint-1",
+        "objective-0",
+        "keepsake",
+        "completion"
+      ],
+      "assertions": [
+        "prefix_exact",
+        "read_only",
+        "completion_visibility",
+        "actual_header_control"
+      ],
+      "minimum_callbacks": 0,
+      "minimum_controls": 1,
+      "exact_english": {
+        "title": "3. The Quiet Watch",
+        "intro": "Survey crews learn the coast while you are away. Let their notes accumulate, then choose a constellation to study. The harbor has no need for a sleepless keeper.",
+        "hint-0": "• Collect twelve completed Surveys over your visits.",
+        "hint-1": "• Calibration patterns are an optional discovery; accessible completion gives the same result.",
+        "completion": "The watch stations can carry a night without you. Their patient records reveal the channels that the darkness hid."
+      }
+    },
+    {
+      "id": "asset.chapter.03.copy",
+      "state": "locked",
+      "route": "StoryScreen/chapters",
+      "fields": [
+        "title",
+        "status"
+      ],
+      "assertions": [
+        "entry_status",
+        "read_only"
+      ],
+      "minimum_callbacks": 0,
+      "minimum_controls": 0,
+      "exact_english": {
+        "title": "3. The Quiet Watch"
+      }
+    },
+    {
+      "id": "asset.chapter.04.copy",
+      "state": "current",
+      "route": "StoryScreen/chapters",
+      "fields": [
+        "title",
+        "status",
+        "intro",
+        "hint-0",
+        "hint-1",
+        "objective-0",
+        "objective-1",
+        "objective-2",
+        "keepsake"
+      ],
+      "assertions": [
+        "prefix_exact",
+        "read_only",
+        "completion_visibility",
+        "actual_header_control"
+      ],
+      "minimum_callbacks": 0,
+      "minimum_controls": 1,
+      "exact_english": {
+        "title": "4. Three Ways Through",
+        "intro": "Beyond the harbor lie three difficult passages. Each asks a different question: what can a small fleet achieve, which links matter most, and what plan holds while you are gone?",
+        "hint-0": "• Open and complete one dossier from each rule family.",
+        "hint-1": "• Each dossier costs 100 Survey Notes once and remains replayable."
+      }
+    },
+    {
+      "id": "asset.chapter.04.copy",
+      "state": "completed",
+      "route": "StoryScreen/chapters",
+      "fields": [
+        "title",
+        "status",
+        "intro",
+        "hint-0",
+        "hint-1",
+        "objective-0",
+        "objective-1",
+        "objective-2",
+        "keepsake",
+        "completion"
+      ],
+      "assertions": [
+        "prefix_exact",
+        "read_only",
+        "completion_visibility",
+        "actual_header_control"
+      ],
+      "minimum_callbacks": 0,
+      "minimum_controls": 1,
+      "exact_english": {
+        "title": "4. Three Ways Through",
+        "intro": "Beyond the harbor lie three difficult passages. Each asks a different question: what can a small fleet achieve, which links matter most, and what plan holds while you are gone?",
+        "hint-0": "• Open and complete one dossier from each rule family.",
+        "hint-1": "• Each dossier costs 100 Survey Notes once and remains replayable.",
+        "completion": "Three passages are charted. Their answers disagree in useful ways, and your archive has room for each."
+      }
+    },
+    {
+      "id": "asset.chapter.04.copy",
+      "state": "locked",
+      "route": "StoryScreen/chapters",
+      "fields": [
+        "title",
+        "status"
+      ],
+      "assertions": [
+        "entry_status",
+        "read_only"
+      ],
+      "minimum_callbacks": 0,
+      "minimum_controls": 0,
+      "exact_english": {
+        "title": "4. Three Ways Through"
+      }
+    },
+    {
+      "id": "asset.chapter.05.copy",
+      "state": "current",
+      "route": "StoryScreen/chapters",
+      "fields": [
+        "title",
+        "status",
+        "intro",
+        "hint-0",
+        "hint-1",
+        "objective-0",
+        "objective-1",
+        "objective-2",
+        "keepsake"
+      ],
+      "assertions": [
+        "prefix_exact",
+        "read_only",
+        "completion_visibility",
+        "actual_header_control"
+      ],
+      "minimum_callbacks": 0,
+      "minimum_controls": 1,
+      "exact_english": {
+        "title": "5. The Keeper’s Craft",
+        "intro": "A restored harbor is a practice, not a perfect machine. Rebuild with what you have learned. You can set a plan or keep each decision in your own hands.",
+        "hint-0": "• Reach 100 Charts and complete five Recharts in total.",
+        "hint-1": "• Return to a complete five-tier fleet. Automatic resets remain optional."
+      }
+    },
+    {
+      "id": "asset.chapter.05.copy",
+      "state": "completed",
+      "route": "StoryScreen/chapters",
+      "fields": [
+        "title",
+        "status",
+        "intro",
+        "hint-0",
+        "hint-1",
+        "objective-0",
+        "objective-1",
+        "objective-2",
+        "keepsake",
+        "completion"
+      ],
+      "assertions": [
+        "prefix_exact",
+        "read_only",
+        "completion_visibility",
+        "actual_header_control"
+      ],
+      "minimum_callbacks": 0,
+      "minimum_controls": 1,
+      "exact_english": {
+        "title": "5. The Keeper’s Craft",
+        "intro": "A restored harbor is a practice, not a perfect machine. Rebuild with what you have learned. You can set a plan or keep each decision in your own hands.",
+        "hint-0": "• Reach 100 Charts and complete five Recharts in total.",
+        "hint-1": "• Return to a complete five-tier fleet. Automatic resets remain optional.",
+        "completion": "Your charts describe choices as well as coastlines. Future keepers will know why the lights were placed."
+      }
+    },
+    {
+      "id": "asset.chapter.05.copy",
+      "state": "locked",
+      "route": "StoryScreen/chapters",
+      "fields": [
+        "title",
+        "status"
+      ],
+      "assertions": [
+        "entry_status",
+        "read_only"
+      ],
+      "minimum_callbacks": 0,
+      "minimum_controls": 0,
+      "exact_english": {
+        "title": "5. The Keeper’s Craft"
+      }
+    },
+    {
+      "id": "asset.chapter.06.copy",
+      "state": "current",
+      "route": "StoryScreen/chapters",
+      "fields": [
+        "title",
+        "status",
+        "intro",
+        "hint-0",
+        "hint-1",
+        "objective-0",
+        "objective-1",
+        "objective-2",
+        "keepsake"
+      ],
+      "assertions": [
+        "prefix_exact",
+        "read_only",
+        "completion_visibility",
+        "actual_header_control"
+      ],
+      "minimum_callbacks": 0,
+      "minimum_controls": 1,
+      "exact_english": {
+        "title": "6. A Sea of Stars",
+        "intro": "The final restoration is a map of six safe passages, with two examples of each craft. No single solution should own the sea. Finish the survey, and leave the horizon open.",
+        "hint-0": "• Complete two distinct dossiers from each family.",
+        "hint-1": "• Six optional dossiers, extra plan slots and decorations can remain unpurchased."
+      }
+    },
+    {
+      "id": "asset.chapter.06.copy",
+      "state": "completed",
+      "route": "StoryScreen/chapters",
+      "fields": [
+        "title",
+        "status",
+        "intro",
+        "hint-0",
+        "hint-1",
+        "objective-0",
+        "objective-1",
+        "objective-2",
+        "keepsake",
+        "completion"
+      ],
+      "assertions": [
+        "prefix_exact",
+        "read_only",
+        "completion_visibility",
+        "actual_header_control"
+      ],
+      "minimum_callbacks": 0,
+      "minimum_controls": 1,
+      "exact_english": {
+        "title": "6. A Sea of Stars",
+        "intro": "The final restoration is a map of six safe passages, with two examples of each craft. No single solution should own the sea. Finish the survey, and leave the horizon open.",
+        "hint-0": "• Complete two distinct dossiers from each family.",
+        "hint-1": "• Six optional dossiers, extra plan slots and decorations can remain unpurchased.",
+        "completion": "At dawn, the whole harbor answers. The sea has not become smaller; it has become navigable. Your restoration is complete. Keep charting, revisit a favorite challenge, or let the lights watch over the water until you return."
+      }
+    },
+    {
+      "id": "asset.chapter.06.copy",
+      "state": "locked",
+      "route": "StoryScreen/chapters",
+      "fields": [
+        "title",
+        "status"
+      ],
+      "assertions": [
+        "entry_status",
+        "read_only"
+      ],
+      "minimum_callbacks": 0,
+      "minimum_controls": 0,
+      "exact_english": {
+        "title": "6. A Sea of Stars"
+      }
+    },
+    {
+      "id": "asset.ending.main",
+      "state": "ending",
+      "route": "StoryScreen/chapters",
+      "fields": [
+        "title",
+        "text"
+      ],
+      "assertions": [
+        "ending_unlocked",
+        "returned_to_origin",
+        "read_only"
+      ],
+      "minimum_callbacks": 1,
+      "minimum_controls": 1,
+      "exact_english": {
+        "title": "The Harbor Remembers",
+        "text": "At dawn, the whole harbor answers. The sea has not become smaller; it has become navigable. Your restoration is complete. Keep charting, revisit a favorite challenge, or let the lights watch over the water until you return."
+      }
+    },
+    {
+      "id": "asset.archive.main.01",
+      "state": "locked",
+      "route": "StoryScreen/archive",
+      "fields": [
+        "title"
+      ],
+      "assertions": [
+        "body_hidden",
+        "reflection_unavailable",
+        "read_only"
+      ],
+      "minimum_callbacks": 0,
+      "minimum_controls": 0,
+      "exact_english": {
+        "title": "The First Skiff"
+      }
+    },
+    {
+      "id": "asset.archive.main.01",
+      "state": "reflected",
+      "route": "StoryScreen/archive",
+      "fields": [
+        "title",
+        "text"
+      ],
+      "assertions": [
+        "discovery_once",
+        "actual_reflection_control",
+        "no_direct_notes_xp_or_radiance"
+      ],
+      "minimum_callbacks": 1,
+      "minimum_controls": 2,
+      "exact_english": {
+        "title": "The First Skiff",
+        "text": "The oldest skiffs carried mirrors instead of cargo. A keeper turned each mirror toward a light on shore, and the next boat followed its reflection. Nothing crossed the entire ocean alone."
+      }
+    },
+    {
+      "id": "asset.archive.main.02",
+      "state": "locked",
+      "route": "StoryScreen/archive",
+      "fields": [
+        "title"
+      ],
+      "assertions": [
+        "body_hidden",
+        "reflection_unavailable",
+        "read_only"
+      ],
+      "minimum_callbacks": 0,
+      "minimum_controls": 0,
+      "exact_english": {
+        "title": "A Place to Return"
+      }
+    },
+    {
+      "id": "asset.archive.main.02",
+      "state": "reflected",
+      "route": "StoryScreen/archive",
+      "fields": [
+        "title",
+        "text"
+      ],
+      "assertions": [
+        "discovery_once",
+        "actual_reflection_control",
+        "no_direct_notes_xp_or_radiance"
+      ],
+      "minimum_callbacks": 1,
+      "minimum_controls": 2,
+      "exact_english": {
+        "title": "A Place to Return",
+        "text": "Before the lamps, the harbor was a promise made in chalk on a warehouse wall: leave one mooring open for the last boat. The first restoration returns that promise to the water."
+      }
+    },
+    {
+      "id": "asset.archive.main.03",
+      "state": "locked",
+      "route": "StoryScreen/archive",
+      "fields": [
+        "title"
+      ],
+      "assertions": [
+        "body_hidden",
+        "reflection_unavailable",
+        "read_only"
+      ],
+      "minimum_callbacks": 0,
+      "minimum_controls": 0,
+      "exact_english": {
+        "title": "What a Chart Keeps"
+      }
+    },
+    {
+      "id": "asset.archive.main.03",
+      "state": "reflected",
+      "route": "StoryScreen/archive",
+      "fields": [
+        "title",
+        "text"
+      ],
+      "assertions": [
+        "discovery_once",
+        "actual_reflection_control",
+        "no_direct_notes_xp_or_radiance"
+      ],
+      "minimum_callbacks": 1,
+      "minimum_controls": 2,
+      "exact_english": {
+        "title": "What a Chart Keeps",
+        "text": "A new chart does not preserve every vessel. It preserves a route, a measurement, and the reason a keeper trusted them. The fleet can be rebuilt around knowledge that remains."
+      }
+    },
+    {
+      "id": "asset.archive.main.04",
+      "state": "locked",
+      "route": "StoryScreen/archive",
+      "fields": [
+        "title"
+      ],
+      "assertions": [
+        "body_hidden",
+        "reflection_unavailable",
+        "read_only"
+      ],
+      "minimum_callbacks": 0,
+      "minimum_controls": 0,
+      "exact_english": {
+        "title": "The Nursery Glass"
+      }
+    },
+    {
+      "id": "asset.archive.main.04",
+      "state": "reflected",
+      "route": "StoryScreen/archive",
+      "fields": [
+        "title",
+        "text"
+      ],
+      "assertions": [
+        "discovery_once",
+        "actual_reflection_control",
+        "no_direct_notes_xp_or_radiance"
+      ],
+      "minimum_callbacks": 1,
+      "minimum_controls": 2,
+      "exact_english": {
+        "title": "The Nursery Glass",
+        "text": "Prism nurseries grow slowly enough that their first keepers used weather as a calendar. The glass bends light without deciding where it should go. That is still your work."
+      }
+    },
+    {
+      "id": "asset.archive.main.05",
+      "state": "locked",
+      "route": "StoryScreen/archive",
+      "fields": [
+        "title"
+      ],
+      "assertions": [
+        "body_hidden",
+        "reflection_unavailable",
+        "read_only"
+      ],
+      "minimum_callbacks": 0,
+      "minimum_controls": 0,
+      "exact_english": {
+        "title": "Small Lights, Large Instruments"
+      }
+    },
+    {
+      "id": "asset.archive.main.05",
+      "state": "reflected",
+      "route": "StoryScreen/archive",
+      "fields": [
+        "title",
+        "text"
+      ],
+      "assertions": [
+        "discovery_once",
+        "actual_reflection_control",
+        "no_direct_notes_xp_or_radiance"
+      ],
+      "minimum_callbacks": 1,
+      "minimum_controls": 2,
+      "exact_english": {
+        "title": "Small Lights, Large Instruments",
+        "text": "An observatory can see far and still mistake a nearby rock for open water. Skiffs supply the close observations that make its distance useful. Size is not the same as perspective."
+      }
+    },
+    {
+      "id": "asset.archive.main.06",
+      "state": "locked",
+      "route": "StoryScreen/archive",
+      "fields": [
+        "title"
+      ],
+      "assertions": [
+        "body_hidden",
+        "reflection_unavailable",
+        "read_only"
+      ],
+      "minimum_callbacks": 0,
+      "minimum_controls": 0,
+      "exact_english": {
+        "title": "The Joined Beam"
+      }
+    },
+    {
+      "id": "asset.archive.main.06",
+      "state": "reflected",
+      "route": "StoryScreen/archive",
+      "fields": [
+        "title",
+        "text"
+      ],
+      "assertions": [
+        "discovery_once",
+        "actual_reflection_control",
+        "no_direct_notes_xp_or_radiance"
+      ],
+      "minimum_callbacks": 1,
+      "minimum_controls": 2,
+      "exact_english": {
+        "title": "The Joined Beam",
+        "text": "The first connected harbor lamps appeared brighter together than apart. The keepers argued about the mathematics until a child pointed out the new channel between them. The argument and the channel both remained on the chart."
+      }
+    },
+    {
+      "id": "asset.archive.main.07",
+      "state": "locked",
+      "route": "StoryScreen/archive",
+      "fields": [
+        "title"
+      ],
+      "assertions": [
+        "body_hidden",
+        "reflection_unavailable",
+        "read_only"
+      ],
+      "minimum_callbacks": 0,
+      "minimum_controls": 0,
+      "exact_english": {
+        "title": "The Survey Bell"
+      }
+    },
+    {
+      "id": "asset.archive.main.07",
+      "state": "reflected",
+      "route": "StoryScreen/archive",
+      "fields": [
+        "title",
+        "text"
+      ],
+      "assertions": [
+        "discovery_once",
+        "actual_reflection_control",
+        "no_direct_notes_xp_or_radiance"
+      ],
+      "minimum_callbacks": 1,
+      "minimum_controls": 2,
+      "exact_english": {
+        "title": "The Survey Bell",
+        "text": "The survey bell rings for a completed record, not for a returning keeper. Notes can wait in a dry drawer. A useful harbor should let its people sleep."
+      }
+    },
+    {
+      "id": "asset.archive.main.08",
+      "state": "locked",
+      "route": "StoryScreen/archive",
+      "fields": [
+        "title"
+      ],
+      "assertions": [
+        "body_hidden",
+        "reflection_unavailable",
+        "read_only"
+      ],
+      "minimum_callbacks": 0,
+      "minimum_controls": 0,
+      "exact_english": {
+        "title": "A Pattern Without Hurry"
+      }
+    },
+    {
+      "id": "asset.archive.main.08",
+      "state": "reflected",
+      "route": "StoryScreen/archive",
+      "fields": [
+        "title",
+        "text"
+      ],
+      "assertions": [
+        "discovery_once",
+        "actual_reflection_control",
+        "no_direct_notes_xp_or_radiance"
+      ],
+      "minimum_callbacks": 1,
+      "minimum_controls": 2,
+      "exact_english": {
+        "title": "A Pattern Without Hurry",
+        "text": "Constellations were named by observers who returned to the same question many nights in a row. A fast hand was never a requirement. A careful eye was welcome, and another way to point was equally good."
+      }
+    },
+    {
+      "id": "asset.archive.main.09",
+      "state": "locked",
+      "route": "StoryScreen/archive",
+      "fields": [
+        "title"
+      ],
+      "assertions": [
+        "body_hidden",
+        "reflection_unavailable",
+        "read_only"
+      ],
+      "minimum_callbacks": 0,
+      "minimum_controls": 0,
+      "exact_english": {
+        "title": "The Night Ledger"
+      }
+    },
+    {
+      "id": "asset.archive.main.09",
+      "state": "reflected",
+      "route": "StoryScreen/archive",
+      "fields": [
+        "title",
+        "text"
+      ],
+      "assertions": [
+        "discovery_once",
+        "actual_reflection_control",
+        "no_direct_notes_xp_or_radiance"
+      ],
+      "minimum_callbacks": 1,
+      "minimum_controls": 2,
+      "exact_english": {
+        "title": "The Night Ledger",
+        "text": "A quartermaster began recording not only arrivals, but absences. An empty chair meant someone trusted the harbor to keep working. The ledger made room for that kind of trust."
+      }
+    },
+    {
+      "id": "asset.archive.main.10",
+      "state": "locked",
+      "route": "StoryScreen/archive",
+      "fields": [
+        "title"
+      ],
+      "assertions": [
+        "body_hidden",
+        "reflection_unavailable",
+        "read_only"
+      ],
+      "minimum_callbacks": 0,
+      "minimum_controls": 0,
+      "exact_english": {
+        "title": "The Narrow Fleet"
+      }
+    },
+    {
+      "id": "asset.archive.main.10",
+      "state": "reflected",
+      "route": "StoryScreen/archive",
+      "fields": [
+        "title",
+        "text"
+      ],
+      "assertions": [
+        "discovery_once",
+        "actual_reflection_control",
+        "no_direct_notes_xp_or_radiance"
+      ],
+      "minimum_callbacks": 1,
+      "minimum_controls": 2,
+      "exact_english": {
+        "title": "The Narrow Fleet",
+        "text": "One winter, the channel could carry only a handful of vessels. The keepers stopped asking which boat was best and began asking which combination could bring everyone home."
+      }
+    },
+    {
+      "id": "asset.archive.main.11",
+      "state": "locked",
+      "route": "StoryScreen/archive",
+      "fields": [
+        "title"
+      ],
+      "assertions": [
+        "body_hidden",
+        "reflection_unavailable",
+        "read_only"
+      ],
+      "minimum_callbacks": 0,
+      "minimum_controls": 0,
+      "exact_english": {
+        "title": "A Different Tide"
+      }
+    },
+    {
+      "id": "asset.archive.main.11",
+      "state": "reflected",
+      "route": "StoryScreen/archive",
+      "fields": [
+        "title",
+        "text"
+      ],
+      "assertions": [
+        "discovery_once",
+        "actual_reflection_control",
+        "no_direct_notes_xp_or_radiance"
+      ],
+      "minimum_callbacks": 1,
+      "minimum_controls": 2,
+      "exact_english": {
+        "title": "A Different Tide",
+        "text": "At the outer reefs, familiar links change their strength. A route learned at home can still be useful, but it cannot be copied without looking. The sea rewards attention to what has changed."
+      }
+    },
+    {
+      "id": "asset.archive.main.12",
+      "state": "locked",
+      "route": "StoryScreen/archive",
+      "fields": [
+        "title"
+      ],
+      "assertions": [
+        "body_hidden",
+        "reflection_unavailable",
+        "read_only"
+      ],
+      "minimum_callbacks": 0,
+      "minimum_controls": 0,
+      "exact_english": {
+        "title": "Instructions for Morning"
+      }
+    },
+    {
+      "id": "asset.archive.main.12",
+      "state": "reflected",
+      "route": "StoryScreen/archive",
+      "fields": [
+        "title",
+        "text"
+      ],
+      "assertions": [
+        "discovery_once",
+        "actual_reflection_control",
+        "no_direct_notes_xp_or_radiance"
+      ],
+      "minimum_callbacks": 1,
+      "minimum_controls": 2,
+      "exact_english": {
+        "title": "Instructions for Morning",
+        "text": "The oldest automatic plan was a note pinned beside a lamp: if the tide reaches this mark, move the mirror. The note worked because someone had made the condition precise."
+      }
+    },
+    {
+      "id": "asset.archive.main.13",
+      "state": "locked",
+      "route": "StoryScreen/archive",
+      "fields": [
+        "title"
+      ],
+      "assertions": [
+        "body_hidden",
+        "reflection_unavailable",
+        "read_only"
+      ],
+      "minimum_callbacks": 0,
+      "minimum_controls": 0,
+      "exact_english": {
+        "title": "Tools and Choices"
+      }
+    },
+    {
+      "id": "asset.archive.main.13",
+      "state": "reflected",
+      "route": "StoryScreen/archive",
+      "fields": [
+        "title",
+        "text"
+      ],
+      "assertions": [
+        "discovery_once",
+        "actual_reflection_control",
+        "no_direct_notes_xp_or_radiance"
+      ],
+      "minimum_callbacks": 1,
+      "minimum_controls": 2,
+      "exact_english": {
+        "title": "Tools and Choices",
+        "text": "Some keepers enjoy placing every light themselves. Others prefer to describe a plan and watch it unfold. The craft belongs to both. Automation preserves a decision; it does not supply its purpose."
+      }
+    },
+    {
+      "id": "asset.archive.main.14",
+      "state": "locked",
+      "route": "StoryScreen/archive",
+      "fields": [
+        "title"
+      ],
+      "assertions": [
+        "body_hidden",
+        "reflection_unavailable",
+        "read_only"
+      ],
+      "minimum_callbacks": 0,
+      "minimum_controls": 0,
+      "exact_english": {
+        "title": "The Fifth Rebuilding"
+      }
+    },
+    {
+      "id": "asset.archive.main.14",
+      "state": "reflected",
+      "route": "StoryScreen/archive",
+      "fields": [
+        "title",
+        "text"
+      ],
+      "assertions": [
+        "discovery_once",
+        "actual_reflection_control",
+        "no_direct_notes_xp_or_radiance"
+      ],
+      "minimum_callbacks": 1,
+      "minimum_controls": 2,
+      "exact_english": {
+        "title": "The Fifth Rebuilding",
+        "text": "By the fifth rebuilding, the keeper stopped counting lost hulls and started noticing familiar routes. Learning had become visible in the speed of the harbor’s return."
+      }
+    },
+    {
+      "id": "asset.archive.main.15",
+      "state": "locked",
+      "route": "StoryScreen/archive",
+      "fields": [
+        "title"
+      ],
+      "assertions": [
+        "body_hidden",
+        "reflection_unavailable",
+        "read_only"
+      ],
+      "minimum_callbacks": 0,
+      "minimum_controls": 0,
+      "exact_english": {
+        "title": "A Margin for Doubt"
+      }
+    },
+    {
+      "id": "asset.archive.main.15",
+      "state": "reflected",
+      "route": "StoryScreen/archive",
+      "fields": [
+        "title",
+        "text"
+      ],
+      "assertions": [
+        "discovery_once",
+        "actual_reflection_control",
+        "no_direct_notes_xp_or_radiance"
+      ],
+      "minimum_callbacks": 1,
+      "minimum_controls": 2,
+      "exact_english": {
+        "title": "A Margin for Doubt",
+        "text": "The best charts leave room for notes. Forecasts carry assumptions; plans meet weather. A keeper who writes down uncertainty gives the next watch something more useful than confidence alone."
+      }
+    },
+    {
+      "id": "asset.archive.main.16",
+      "state": "locked",
+      "route": "StoryScreen/archive",
+      "fields": [
+        "title"
+      ],
+      "assertions": [
+        "body_hidden",
+        "reflection_unavailable",
+        "read_only"
+      ],
+      "minimum_callbacks": 0,
+      "minimum_controls": 0,
+      "exact_english": {
+        "title": "Six Safe Passages"
+      }
+    },
+    {
+      "id": "asset.archive.main.16",
+      "state": "reflected",
+      "route": "StoryScreen/archive",
+      "fields": [
+        "title",
+        "text"
+      ],
+      "assertions": [
+        "discovery_once",
+        "actual_reflection_control",
+        "no_direct_notes_xp_or_radiance"
+      ],
+      "minimum_callbacks": 1,
+      "minimum_controls": 2,
+      "exact_english": {
+        "title": "Six Safe Passages",
+        "text": "No two of the six passages ask for exactly the same fleet. That difference is the final lesson of the restoration. A collection of answers can be stronger than a single rule."
+      }
+    },
+    {
+      "id": "asset.archive.main.17",
+      "state": "locked",
+      "route": "StoryScreen/archive",
+      "fields": [
+        "title"
+      ],
+      "assertions": [
+        "body_hidden",
+        "reflection_unavailable",
+        "read_only"
+      ],
+      "minimum_callbacks": 0,
+      "minimum_controls": 0,
+      "exact_english": {
+        "title": "The Last Dark Window"
+      }
+    },
+    {
+      "id": "asset.archive.main.17",
+      "state": "reflected",
+      "route": "StoryScreen/archive",
+      "fields": [
+        "title",
+        "text"
+      ],
+      "assertions": [
+        "discovery_once",
+        "actual_reflection_control",
+        "no_direct_notes_xp_or_radiance"
+      ],
+      "minimum_callbacks": 1,
+      "minimum_controls": 2,
+      "exact_english": {
+        "title": "The Last Dark Window",
+        "text": "The last window lit was an ordinary workshop facing away from the sea. Its owner said the horizon mattered more. The keepers lit it anyway. Returning home is part of a voyage."
+      }
+    },
+    {
+      "id": "asset.archive.main.18",
+      "state": "locked",
+      "route": "StoryScreen/archive",
+      "fields": [
+        "title"
+      ],
+      "assertions": [
+        "body_hidden",
+        "reflection_unavailable",
+        "read_only"
+      ],
+      "minimum_callbacks": 0,
+      "minimum_controls": 0,
+      "exact_english": {
+        "title": "Beyond the Dawn"
+      }
+    },
+    {
+      "id": "asset.archive.main.18",
+      "state": "reflected",
+      "route": "StoryScreen/archive",
+      "fields": [
+        "title",
+        "text"
+      ],
+      "assertions": [
+        "discovery_once",
+        "actual_reflection_control",
+        "no_direct_notes_xp_or_radiance"
+      ],
+      "minimum_callbacks": 1,
+      "minimum_controls": 2,
+      "exact_english": {
+        "title": "Beyond the Dawn",
+        "text": "When the restoration ended, the harbor held a quiet celebration. There were still patterns to discover and rooms to decorate. For the first time, none of them had to be finished before the lights could rest."
+      }
+    },
+    {
+      "id": "asset.challenge.01.copy",
+      "state": "opened",
+      "route": "StoryScreen/passages",
+      "fields": [
+        "title",
+        "intro"
+      ],
+      "assertions": [
+        "confirmation_before_spend",
+        "exact_100_notes",
+        "actual_dossier_identity",
+        "main_power_unchanged"
+      ],
+      "minimum_callbacks": 2,
+      "minimum_controls": 2,
+      "exact_english": {
+        "title": "A Shallow Channel",
+        "intro": "Only Skiffs and Nurseries fit through this inlet. Find a useful balance before the small fleet runs out of room."
+      }
+    },
+    {
+      "id": "asset.challenge.01.copy",
+      "state": "completed",
+      "route": "StoryScreen/passages",
+      "fields": [
+        "title",
+        "completion",
+        "status"
+      ],
+      "assertions": [
+        "actual_final_scene_identity",
+        "goal_met",
+        "read_only"
+      ],
+      "minimum_callbacks": 0,
+      "minimum_controls": 0,
+      "exact_english": {
+        "title": "A Shallow Channel",
+        "completion": "A Shallow Channel is charted. Your route is recorded in the harbor archive. You can replay this dossier without spending more Notes."
+      }
+    },
+    {
+      "id": "asset.challenge.02.copy",
+      "state": "opened",
+      "route": "StoryScreen/passages",
+      "fields": [
+        "title",
+        "intro"
+      ],
+      "assertions": [
+        "confirmation_before_spend",
+        "exact_100_notes",
+        "actual_dossier_identity",
+        "main_power_unchanged"
+      ],
+      "minimum_callbacks": 2,
+      "minimum_controls": 2,
+      "exact_english": {
+        "title": "The Narrow Nursery",
+        "intro": "Prism beds have room to grow, but the skiffs and dynamos do not. Whole-tier milestones matter more than a long row of boats."
+      }
+    },
+    {
+      "id": "asset.challenge.02.copy",
+      "state": "completed",
+      "route": "StoryScreen/passages",
+      "fields": [
+        "title",
+        "completion",
+        "status"
+      ],
+      "assertions": [
+        "actual_final_scene_identity",
+        "goal_met",
+        "read_only"
+      ],
+      "minimum_callbacks": 0,
+      "minimum_controls": 0,
+      "exact_english": {
+        "title": "The Narrow Nursery",
+        "completion": "The Narrow Nursery is charted. Your route is recorded in the harbor archive. You can replay this dossier without spending more Notes."
+      }
+    },
+    {
+      "id": "asset.challenge.03.copy",
+      "state": "opened",
+      "route": "StoryScreen/passages",
+      "fields": [
+        "title",
+        "intro"
+      ],
+      "assertions": [
+        "confirmation_before_spend",
+        "exact_100_notes",
+        "actual_dossier_identity",
+        "main_power_unchanged"
+      ],
+      "minimum_callbacks": 2,
+      "minimum_controls": 2,
+      "exact_english": {
+        "title": "Ten Looms",
+        "intro": "Ten Looms are all this channel can support. Plan the smaller fleet that supplies them."
+      }
+    },
+    {
+      "id": "asset.challenge.03.copy",
+      "state": "completed",
+      "route": "StoryScreen/passages",
+      "fields": [
+        "title",
+        "completion",
+        "status"
+      ],
+      "assertions": [
+        "actual_final_scene_identity",
+        "goal_met",
+        "read_only"
+      ],
+      "minimum_callbacks": 0,
+      "minimum_controls": 0,
+      "exact_english": {
+        "title": "Ten Looms",
+        "completion": "Ten Looms is charted. Your route is recorded in the harbor archive. You can replay this dossier without spending more Notes."
+      }
+    },
+    {
+      "id": "asset.challenge.04.copy",
+      "state": "opened",
+      "route": "StoryScreen/passages",
+      "fields": [
+        "title",
+        "intro"
+      ],
+      "assertions": [
+        "confirmation_before_spend",
+        "exact_100_notes",
+        "actual_dossier_identity",
+        "main_power_unchanged"
+      ],
+      "minimum_callbacks": 2,
+      "minimum_controls": 2,
+      "exact_english": {
+        "title": "A Compact Observatory",
+        "intro": "Space is scarce at every pier. Build the entire network within the published berth limits."
+      }
+    },
+    {
+      "id": "asset.challenge.04.copy",
+      "state": "completed",
+      "route": "StoryScreen/passages",
+      "fields": [
+        "title",
+        "completion",
+        "status"
+      ],
+      "assertions": [
+        "actual_final_scene_identity",
+        "goal_met",
+        "read_only"
+      ],
+      "minimum_callbacks": 0,
+      "minimum_controls": 0,
+      "exact_english": {
+        "title": "A Compact Observatory",
+        "completion": "A Compact Observatory is charted. Your route is recorded in the harbor archive. You can replay this dossier without spending more Notes."
+      }
+    },
+    {
+      "id": "asset.challenge.05.copy",
+      "state": "opened",
+      "route": "StoryScreen/passages",
+      "fields": [
+        "title",
+        "intro"
+      ],
+      "assertions": [
+        "confirmation_before_spend",
+        "exact_100_notes",
+        "actual_dossier_identity",
+        "main_power_unchanged"
+      ],
+      "minimum_callbacks": 2,
+      "minimum_controls": 2,
+      "exact_english": {
+        "title": "The Nursery Thread",
+        "intro": "Nurseries strongly support Looms. Skiffs favor the distant Observatories. Consider the next link as well as the next producer."
+      }
+    },
+    {
+      "id": "asset.challenge.05.copy",
+      "state": "completed",
+      "route": "StoryScreen/passages",
+      "fields": [
+        "title",
+        "completion",
+        "status"
+      ],
+      "assertions": [
+        "actual_final_scene_identity",
+        "goal_met",
+        "read_only"
+      ],
+      "minimum_callbacks": 0,
+      "minimum_controls": 0,
+      "exact_english": {
+        "title": "The Nursery Thread",
+        "completion": "The Nursery Thread is charted. Your route is recorded in the harbor archive. You can replay this dossier without spending more Notes."
+      }
+    },
+    {
+      "id": "asset.challenge.06.copy",
+      "state": "opened",
+      "route": "StoryScreen/passages",
+      "fields": [
+        "title",
+        "intro"
+      ],
+      "assertions": [
+        "confirmation_before_spend",
+        "exact_100_notes",
+        "actual_dossier_identity",
+        "main_power_unchanged"
+      ],
+      "minimum_callbacks": 2,
+      "minimum_controls": 2,
+      "exact_english": {
+        "title": "Skiffs at Dawn",
+        "intro": "A small skiff now carries the strongest link to an Observatory. The earliest tier remains part of the final decision."
+      }
+    },
+    {
+      "id": "asset.challenge.06.copy",
+      "state": "completed",
+      "route": "StoryScreen/passages",
+      "fields": [
+        "title",
+        "completion",
+        "status"
+      ],
+      "assertions": [
+        "actual_final_scene_identity",
+        "goal_met",
+        "read_only"
+      ],
+      "minimum_callbacks": 0,
+      "minimum_controls": 0,
+      "exact_english": {
+        "title": "Skiffs at Dawn",
+        "completion": "Skiffs at Dawn is charted. Your route is recorded in the harbor archive. You can replay this dossier without spending more Notes."
+      }
+    },
+    {
+      "id": "asset.challenge.07.copy",
+      "state": "opened",
+      "route": "StoryScreen/passages",
+      "fields": [
+        "title",
+        "intro"
+      ],
+      "assertions": [
+        "confirmation_before_spend",
+        "exact_100_notes",
+        "actual_dossier_identity",
+        "main_power_unchanged"
+      ],
+      "minimum_callbacks": 2,
+      "minimum_controls": 2,
+      "exact_english": {
+        "title": "An Even Constellation",
+        "intro": "Both early fleets strengthen both late fleets equally. Compare milestone purchases against a wider network."
+      }
+    },
+    {
+      "id": "asset.challenge.07.copy",
+      "state": "completed",
+      "route": "StoryScreen/passages",
+      "fields": [
+        "title",
+        "completion",
+        "status"
+      ],
+      "assertions": [
+        "actual_final_scene_identity",
+        "goal_met",
+        "read_only"
+      ],
+      "minimum_callbacks": 0,
+      "minimum_controls": 0,
+      "exact_english": {
+        "title": "An Even Constellation",
+        "completion": "An Even Constellation is charted. Your route is recorded in the harbor archive. You can replay this dossier without spending more Notes."
+      }
+    },
+    {
+      "id": "asset.challenge.08.copy",
+      "state": "opened",
+      "route": "StoryScreen/passages",
+      "fields": [
+        "title",
+        "intro"
+      ],
+      "assertions": [
+        "confirmation_before_spend",
+        "exact_100_notes",
+        "actual_dossier_identity",
+        "main_power_unchanged"
+      ],
+      "minimum_callbacks": 2,
+      "minimum_controls": 2,
+      "exact_english": {
+        "title": "Two Clear Routes",
+        "intro": "Skiffs favor Looms and Nurseries favor Observatories. Either route can work; their timing is different."
+      }
+    },
+    {
+      "id": "asset.challenge.08.copy",
+      "state": "completed",
+      "route": "StoryScreen/passages",
+      "fields": [
+        "title",
+        "completion",
+        "status"
+      ],
+      "assertions": [
+        "actual_final_scene_identity",
+        "goal_met",
+        "read_only"
+      ],
+      "minimum_callbacks": 0,
+      "minimum_controls": 0,
+      "exact_english": {
+        "title": "Two Clear Routes",
+        "completion": "Two Clear Routes is charted. Your route is recorded in the harbor archive. You can replay this dossier without spending more Notes."
+      }
+    },
+    {
+      "id": "asset.challenge.09.copy",
+      "state": "opened",
+      "route": "StoryScreen/passages",
+      "fields": [
+        "title",
+        "intro"
+      ],
+      "assertions": [
+        "confirmation_before_spend",
+        "exact_100_notes",
+        "actual_dossier_identity",
+        "main_power_unchanged"
+      ],
+      "minimum_callbacks": 2,
+      "minimum_controls": 2,
+      "exact_english": {
+        "title": "A Patient Crew",
+        "intro": "Choose a saved buying policy. The crew carries out construction; you may change their priorities at any time."
+      }
+    },
+    {
+      "id": "asset.challenge.09.copy",
+      "state": "completed",
+      "route": "StoryScreen/passages",
+      "fields": [
+        "title",
+        "completion",
+        "status"
+      ],
+      "assertions": [
+        "actual_final_scene_identity",
+        "goal_met",
+        "read_only"
+      ],
+      "minimum_callbacks": 0,
+      "minimum_controls": 0,
+      "exact_english": {
+        "title": "A Patient Crew",
+        "completion": "A Patient Crew is charted. Your route is recorded in the harbor archive. You can replay this dossier without spending more Notes."
+      }
+    },
+    {
+      "id": "asset.challenge.10.copy",
+      "state": "opened",
+      "route": "StoryScreen/passages",
+      "fields": [
+        "title",
+        "intro"
+      ],
+      "assertions": [
+        "confirmation_before_spend",
+        "exact_100_notes",
+        "actual_dossier_identity",
+        "main_power_unchanged"
+      ],
+      "minimum_callbacks": 2,
+      "minimum_controls": 2,
+      "exact_english": {
+        "title": "Berths by Priority",
+        "intro": "The crew cannot buy extra space. Design a policy that respects capped lower tiers and still reaches the Observatory."
+      }
+    },
+    {
+      "id": "asset.challenge.10.copy",
+      "state": "completed",
+      "route": "StoryScreen/passages",
+      "fields": [
+        "title",
+        "completion",
+        "status"
+      ],
+      "assertions": [
+        "actual_final_scene_identity",
+        "goal_met",
+        "read_only"
+      ],
+      "minimum_callbacks": 0,
+      "minimum_controls": 0,
+      "exact_english": {
+        "title": "Berths by Priority",
+        "completion": "Berths by Priority is charted. Your route is recorded in the harbor archive. You can replay this dossier without spending more Notes."
+      }
+    },
+    {
+      "id": "asset.challenge.11.copy",
+      "state": "opened",
+      "route": "StoryScreen/passages",
+      "fields": [
+        "title",
+        "intro"
+      ],
+      "assertions": [
+        "confirmation_before_spend",
+        "exact_100_notes",
+        "actual_dossier_identity",
+        "main_power_unchanged"
+      ],
+      "minimum_callbacks": 2,
+      "minimum_controls": 2,
+      "exact_english": {
+        "title": "The Long Watch",
+        "intro": "A balanced network must run without manual purchases. Preview an eight-hour watch before choosing its priorities."
+      }
+    },
+    {
+      "id": "asset.challenge.11.copy",
+      "state": "completed",
+      "route": "StoryScreen/passages",
+      "fields": [
+        "title",
+        "completion",
+        "status"
+      ],
+      "assertions": [
+        "actual_final_scene_identity",
+        "goal_met",
+        "read_only"
+      ],
+      "minimum_callbacks": 0,
+      "minimum_controls": 0,
+      "exact_english": {
+        "title": "The Long Watch",
+        "completion": "The Long Watch is charted. Your route is recorded in the harbor archive. You can replay this dossier without spending more Notes."
+      }
+    },
+    {
+      "id": "asset.challenge.12.copy",
+      "state": "opened",
+      "route": "StoryScreen/passages",
+      "fields": [
+        "title",
+        "intro"
+      ],
+      "assertions": [
+        "confirmation_before_spend",
+        "exact_100_notes",
+        "actual_dossier_identity",
+        "main_power_unchanged"
+      ],
+      "minimum_callbacks": 2,
+      "minimum_controls": 2,
+      "exact_english": {
+        "title": "A Plan for the Horizon",
+        "intro": "Two asymmetric links compete for attention. Use an automatic policy and revise it when the fleet reveals a better route."
+      }
+    },
+    {
+      "id": "asset.challenge.12.copy",
+      "state": "completed",
+      "route": "StoryScreen/passages",
+      "fields": [
+        "title",
+        "completion",
+        "status"
+      ],
+      "assertions": [
+        "actual_final_scene_identity",
+        "goal_met",
+        "read_only"
+      ],
+      "minimum_callbacks": 0,
+      "minimum_controls": 0,
+      "exact_english": {
+        "title": "A Plan for the Horizon",
+        "completion": "A Plan for the Horizon is charted. Your route is recorded in the harbor archive. You can replay this dossier without spending more Notes."
+      }
+    },
+    {
+      "id": "asset.archive.season01.01",
+      "state": "locked",
+      "route": "SeasonScreen/pass",
+      "fields": [
+        "title",
+        "locked-placeholder"
+      ],
+      "assertions": [
+        "body_hidden",
+        "claim_disabled",
+        "read_only"
+      ],
+      "minimum_callbacks": 0,
+      "minimum_controls": 2,
+      "exact_english": {}
+    },
+    {
+      "id": "asset.archive.season01.01",
+      "state": "claimed",
+      "route": "SeasonScreen/pass",
+      "fields": [
+        "title",
+        "locked-placeholder",
+        "body"
+      ],
+      "assertions": [
+        "actual_fragment_identity",
+        "one_claim_only",
+        "main_ledger_unchanged",
+        "claimed_control_disabled"
+      ],
+      "minimum_callbacks": 1,
+      "minimum_controls": 2,
+      "exact_english": {
+        "body": "For three nights the harbor kept its lanterns lit. On the fourth, a single point of light answered from beyond the reef."
+      }
+    },
+    {
+      "id": "asset.archive.season01.02",
+      "state": "locked",
+      "route": "SeasonScreen/pass",
+      "fields": [
+        "title",
+        "locked-placeholder"
+      ],
+      "assertions": [
+        "body_hidden",
+        "claim_disabled",
+        "read_only"
+      ],
+      "minimum_callbacks": 0,
+      "minimum_controls": 2,
+      "exact_english": {}
+    },
+    {
+      "id": "asset.archive.season01.02",
+      "state": "claimed",
+      "route": "SeasonScreen/pass",
+      "fields": [
+        "title",
+        "locked-placeholder",
+        "body"
+      ],
+      "assertions": [
+        "actual_fragment_identity",
+        "one_claim_only",
+        "main_ledger_unchanged",
+        "claimed_control_disabled"
+      ],
+      "minimum_callbacks": 1,
+      "minimum_controls": 2,
+      "exact_english": {
+        "body": "Mara ordered a small fleet built from ordinary timber. The old Charts stayed in the archive: this sky would need its own bearings."
+      }
+    },
+    {
+      "id": "asset.archive.season01.03",
+      "state": "locked",
+      "route": "SeasonScreen/pass",
+      "fields": [
+        "title",
+        "locked-placeholder"
+      ],
+      "assertions": [
+        "body_hidden",
+        "claim_disabled",
+        "read_only"
+      ],
+      "minimum_callbacks": 0,
+      "minimum_controls": 2,
+      "exact_english": {}
+    },
+    {
+      "id": "asset.archive.season01.03",
+      "state": "claimed",
+      "route": "SeasonScreen/pass",
+      "fields": [
+        "title",
+        "locked-placeholder",
+        "body"
+      ],
+      "assertions": [
+        "actual_fragment_identity",
+        "one_claim_only",
+        "main_ledger_unchanged",
+        "claimed_control_disabled"
+      ],
+      "minimum_callbacks": 1,
+      "minimum_controls": 2,
+      "exact_english": {
+        "body": "The watchkeeper left a blank line for every returning star. No one knew how many lines the book would need."
+      }
+    },
+    {
+      "id": "asset.archive.season01.04",
+      "state": "locked",
+      "route": "SeasonScreen/pass",
+      "fields": [
+        "title",
+        "locked-placeholder"
+      ],
+      "assertions": [
+        "body_hidden",
+        "claim_disabled",
+        "read_only"
+      ],
+      "minimum_callbacks": 0,
+      "minimum_controls": 2,
+      "exact_english": {}
+    },
+    {
+      "id": "asset.archive.season01.04",
+      "state": "claimed",
+      "route": "SeasonScreen/pass",
+      "fields": [
+        "title",
+        "locked-placeholder",
+        "body"
+      ],
+      "assertions": [
+        "actual_fragment_identity",
+        "one_claim_only",
+        "main_ledger_unchanged",
+        "claimed_control_disabled"
+      ],
+      "minimum_callbacks": 1,
+      "minimum_controls": 2,
+      "exact_english": {
+        "body": "Two crews argued over a heading until they compared their observations. Each had measured a different part of the same current."
+      }
+    },
+    {
+      "id": "asset.archive.season01.05",
+      "state": "locked",
+      "route": "SeasonScreen/pass",
+      "fields": [
+        "title",
+        "locked-placeholder"
+      ],
+      "assertions": [
+        "body_hidden",
+        "claim_disabled",
+        "read_only"
+      ],
+      "minimum_callbacks": 0,
+      "minimum_controls": 2,
+      "exact_english": {}
+    },
+    {
+      "id": "asset.archive.season01.05",
+      "state": "claimed",
+      "route": "SeasonScreen/pass",
+      "fields": [
+        "title",
+        "locked-placeholder",
+        "body"
+      ],
+      "assertions": [
+        "actual_fragment_identity",
+        "one_claim_only",
+        "main_ledger_unchanged",
+        "claimed_control_disabled"
+      ],
+      "minimum_callbacks": 1,
+      "minimum_controls": 2,
+      "exact_english": {
+        "body": "The prisms grew dim before they grew bright. Their keeper called it listening, and asked the crew to wait."
+      }
+    },
+    {
+      "id": "asset.archive.season01.06",
+      "state": "locked",
+      "route": "SeasonScreen/pass",
+      "fields": [
+        "title",
+        "locked-placeholder"
+      ],
+      "assertions": [
+        "body_hidden",
+        "claim_disabled",
+        "read_only"
+      ],
+      "minimum_callbacks": 0,
+      "minimum_controls": 2,
+      "exact_english": {}
+    },
+    {
+      "id": "asset.archive.season01.06",
+      "state": "claimed",
+      "route": "SeasonScreen/pass",
+      "fields": [
+        "title",
+        "locked-placeholder",
+        "body"
+      ],
+      "assertions": [
+        "actual_fragment_identity",
+        "one_claim_only",
+        "main_ledger_unchanged",
+        "claimed_control_disabled"
+      ],
+      "minimum_callbacks": 1,
+      "minimum_controls": 2,
+      "exact_english": {
+        "body": "A second star appeared beside the first. Their light crossed on the water, marking a path no single lantern could reveal."
+      }
+    },
+    {
+      "id": "asset.archive.season01.07",
+      "state": "locked",
+      "route": "SeasonScreen/pass",
+      "fields": [
+        "title",
+        "locked-placeholder"
+      ],
+      "assertions": [
+        "body_hidden",
+        "claim_disabled",
+        "read_only"
+      ],
+      "minimum_callbacks": 0,
+      "minimum_controls": 2,
+      "exact_english": {}
+    },
+    {
+      "id": "asset.archive.season01.07",
+      "state": "claimed",
+      "route": "SeasonScreen/pass",
+      "fields": [
+        "title",
+        "locked-placeholder",
+        "body"
+      ],
+      "assertions": [
+        "actual_fragment_identity",
+        "one_claim_only",
+        "main_ledger_unchanged",
+        "claimed_control_disabled"
+      ],
+      "minimum_callbacks": 1,
+      "minimum_controls": 2,
+      "exact_english": {
+        "body": "The tide wheel turned while the harbor slept. In the morning its quiet work was waiting, with no demand for thanks."
+      }
+    },
+    {
+      "id": "asset.archive.season01.08",
+      "state": "locked",
+      "route": "SeasonScreen/pass",
+      "fields": [
+        "title",
+        "locked-placeholder"
+      ],
+      "assertions": [
+        "body_hidden",
+        "claim_disabled",
+        "read_only"
+      ],
+      "minimum_callbacks": 0,
+      "minimum_controls": 2,
+      "exact_english": {}
+    },
+    {
+      "id": "asset.archive.season01.08",
+      "state": "claimed",
+      "route": "SeasonScreen/pass",
+      "fields": [
+        "title",
+        "locked-placeholder",
+        "body"
+      ],
+      "assertions": [
+        "actual_fragment_identity",
+        "one_claim_only",
+        "main_ledger_unchanged",
+        "claimed_control_disabled"
+      ],
+      "minimum_callbacks": 1,
+      "minimum_controls": 2,
+      "exact_english": {
+        "body": "Mara wrote that the night was less empty now. She left the letter open, hoping to add another observation before dawn."
+      }
+    },
+    {
+      "id": "asset.archive.season01.09",
+      "state": "locked",
+      "route": "SeasonScreen/pass",
+      "fields": [
+        "title",
+        "locked-placeholder"
+      ],
+      "assertions": [
+        "body_hidden",
+        "claim_disabled",
+        "read_only"
+      ],
+      "minimum_callbacks": 0,
+      "minimum_controls": 2,
+      "exact_english": {}
+    },
+    {
+      "id": "asset.archive.season01.09",
+      "state": "claimed",
+      "route": "SeasonScreen/pass",
+      "fields": [
+        "title",
+        "locked-placeholder",
+        "body"
+      ],
+      "assertions": [
+        "actual_fragment_identity",
+        "one_claim_only",
+        "main_ledger_unchanged",
+        "claimed_control_disabled"
+      ],
+      "minimum_callbacks": 1,
+      "minimum_controls": 2,
+      "exact_english": {
+        "body": "The first woven chart looked wrong. Rotated toward the sea, its loose threads matched the currents exactly."
+      }
+    },
+    {
+      "id": "asset.archive.season01.10",
+      "state": "locked",
+      "route": "SeasonScreen/pass",
+      "fields": [
+        "title",
+        "locked-placeholder"
+      ],
+      "assertions": [
+        "body_hidden",
+        "claim_disabled",
+        "read_only"
+      ],
+      "minimum_callbacks": 0,
+      "minimum_controls": 2,
+      "exact_english": {}
+    },
+    {
+      "id": "asset.archive.season01.10",
+      "state": "claimed",
+      "route": "SeasonScreen/pass",
+      "fields": [
+        "title",
+        "locked-placeholder",
+        "body"
+      ],
+      "assertions": [
+        "actual_fragment_identity",
+        "one_claim_only",
+        "main_ledger_unchanged",
+        "claimed_control_disabled"
+      ],
+      "minimum_callbacks": 1,
+      "minimum_controls": 2,
+      "exact_english": {
+        "body": "Children named the lights after boats they remembered. The archivist recorded both the names and the disagreements."
+      }
+    },
+    {
+      "id": "asset.archive.season01.11",
+      "state": "locked",
+      "route": "SeasonScreen/pass",
+      "fields": [
+        "title",
+        "locked-placeholder"
+      ],
+      "assertions": [
+        "body_hidden",
+        "claim_disabled",
+        "read_only"
+      ],
+      "minimum_callbacks": 0,
+      "minimum_controls": 2,
+      "exact_english": {}
+    },
+    {
+      "id": "asset.archive.season01.11",
+      "state": "claimed",
+      "route": "SeasonScreen/pass",
+      "fields": [
+        "title",
+        "locked-placeholder",
+        "body"
+      ],
+      "assertions": [
+        "actual_fragment_identity",
+        "one_claim_only",
+        "main_ledger_unchanged",
+        "claimed_control_disabled"
+      ],
+      "minimum_callbacks": 1,
+      "minimum_controls": 2,
+      "exact_english": {
+        "body": "Clouds hid the stars for a day. The crew kept working from their saved bearings; uncertainty did not erase what they had learned."
+      }
+    },
+    {
+      "id": "asset.archive.season01.12",
+      "state": "locked",
+      "route": "SeasonScreen/pass",
+      "fields": [
+        "title",
+        "locked-placeholder"
+      ],
+      "assertions": [
+        "body_hidden",
+        "claim_disabled",
+        "read_only"
+      ],
+      "minimum_callbacks": 0,
+      "minimum_controls": 2,
+      "exact_english": {}
+    },
+    {
+      "id": "asset.archive.season01.12",
+      "state": "claimed",
+      "route": "SeasonScreen/pass",
+      "fields": [
+        "title",
+        "locked-placeholder",
+        "body"
+      ],
+      "assertions": [
+        "actual_fragment_identity",
+        "one_claim_only",
+        "main_ledger_unchanged",
+        "claimed_control_disabled"
+      ],
+      "minimum_callbacks": 1,
+      "minimum_controls": 2,
+      "exact_english": {
+        "body": "A returning watchkeeper found the instruments still turning. Her replacement had left tea, a neat log, and no list of missed duties."
+      }
+    },
+    {
+      "id": "asset.archive.season01.13",
+      "state": "locked",
+      "route": "SeasonScreen/pass",
+      "fields": [
+        "title",
+        "locked-placeholder"
+      ],
+      "assertions": [
+        "body_hidden",
+        "claim_disabled",
+        "read_only"
+      ],
+      "minimum_callbacks": 0,
+      "minimum_controls": 2,
+      "exact_english": {}
+    },
+    {
+      "id": "asset.archive.season01.13",
+      "state": "claimed",
+      "route": "SeasonScreen/pass",
+      "fields": [
+        "title",
+        "locked-placeholder",
+        "body"
+      ],
+      "assertions": [
+        "actual_fragment_identity",
+        "one_claim_only",
+        "main_ledger_unchanged",
+        "claimed_control_disabled"
+      ],
+      "minimum_callbacks": 1,
+      "minimum_controls": 2,
+      "exact_english": {
+        "body": "The new dome did not make the stars brighter. It gave everyone a place to look at them together."
+      }
+    },
+    {
+      "id": "asset.archive.season01.14",
+      "state": "locked",
+      "route": "SeasonScreen/pass",
+      "fields": [
+        "title",
+        "locked-placeholder"
+      ],
+      "assertions": [
+        "body_hidden",
+        "claim_disabled",
+        "read_only"
+      ],
+      "minimum_callbacks": 0,
+      "minimum_controls": 2,
+      "exact_english": {}
+    },
+    {
+      "id": "asset.archive.season01.14",
+      "state": "claimed",
+      "route": "SeasonScreen/pass",
+      "fields": [
+        "title",
+        "locked-placeholder",
+        "body"
+      ],
+      "assertions": [
+        "actual_fragment_identity",
+        "one_claim_only",
+        "main_ledger_unchanged",
+        "claimed_control_disabled"
+      ],
+      "minimum_callbacks": 1,
+      "minimum_controls": 2,
+      "exact_english": {
+        "body": "The nursery crew and the skiff crew reached the same light by different routes. Both maps earned a place on the wall."
+      }
+    },
+    {
+      "id": "asset.archive.season01.15",
+      "state": "locked",
+      "route": "SeasonScreen/pass",
+      "fields": [
+        "title",
+        "locked-placeholder"
+      ],
+      "assertions": [
+        "body_hidden",
+        "claim_disabled",
+        "read_only"
+      ],
+      "minimum_callbacks": 0,
+      "minimum_controls": 2,
+      "exact_english": {}
+    },
+    {
+      "id": "asset.archive.season01.15",
+      "state": "claimed",
+      "route": "SeasonScreen/pass",
+      "fields": [
+        "title",
+        "locked-placeholder",
+        "body"
+      ],
+      "assertions": [
+        "actual_fragment_identity",
+        "one_claim_only",
+        "main_ledger_unchanged",
+        "claimed_control_disabled"
+      ],
+      "minimum_callbacks": 1,
+      "minimum_controls": 2,
+      "exact_english": {
+        "body": "One beacon shone steadily enough that people stopped mentioning it. The keeper counted that as success."
+      }
+    },
+    {
+      "id": "asset.archive.season01.16",
+      "state": "locked",
+      "route": "SeasonScreen/pass",
+      "fields": [
+        "title",
+        "locked-placeholder"
+      ],
+      "assertions": [
+        "body_hidden",
+        "claim_disabled",
+        "read_only"
+      ],
+      "minimum_callbacks": 0,
+      "minimum_controls": 2,
+      "exact_english": {}
+    },
+    {
+      "id": "asset.archive.season01.16",
+      "state": "claimed",
+      "route": "SeasonScreen/pass",
+      "fields": [
+        "title",
+        "locked-placeholder",
+        "body"
+      ],
+      "assertions": [
+        "actual_fragment_identity",
+        "one_claim_only",
+        "main_ledger_unchanged",
+        "claimed_control_disabled"
+      ],
+      "minimum_callbacks": 1,
+      "minimum_controls": 2,
+      "exact_english": {
+        "body": "From the outer reef, the lights on the water looked like another harbor. For a moment the crew could imagine returning to either one."
+      }
+    },
+    {
+      "id": "asset.archive.season01.17",
+      "state": "locked",
+      "route": "SeasonScreen/pass",
+      "fields": [
+        "title",
+        "locked-placeholder"
+      ],
+      "assertions": [
+        "body_hidden",
+        "claim_disabled",
+        "read_only"
+      ],
+      "minimum_callbacks": 0,
+      "minimum_controls": 2,
+      "exact_english": {}
+    },
+    {
+      "id": "asset.archive.season01.17",
+      "state": "claimed",
+      "route": "SeasonScreen/pass",
+      "fields": [
+        "title",
+        "locked-placeholder",
+        "body"
+      ],
+      "assertions": [
+        "actual_fragment_identity",
+        "one_claim_only",
+        "main_ledger_unchanged",
+        "claimed_control_disabled"
+      ],
+      "minimum_callbacks": 1,
+      "minimum_controls": 2,
+      "exact_english": {
+        "body": "The stars brought no treasure for the warehouses. They brought bearings, stories, and a reason to paint the boats."
+      }
+    },
+    {
+      "id": "asset.archive.season01.18",
+      "state": "locked",
+      "route": "SeasonScreen/pass",
+      "fields": [
+        "title",
+        "locked-placeholder"
+      ],
+      "assertions": [
+        "body_hidden",
+        "claim_disabled",
+        "read_only"
+      ],
+      "minimum_callbacks": 0,
+      "minimum_controls": 2,
+      "exact_english": {}
+    },
+    {
+      "id": "asset.archive.season01.18",
+      "state": "claimed",
+      "route": "SeasonScreen/pass",
+      "fields": [
+        "title",
+        "locked-placeholder",
+        "body"
+      ],
+      "assertions": [
+        "actual_fragment_identity",
+        "one_claim_only",
+        "main_ledger_unchanged",
+        "claimed_control_disabled"
+      ],
+      "minimum_callbacks": 1,
+      "minimum_controls": 2,
+      "exact_english": {
+        "body": "On the final scheduled night, the keeper closed the public watch book. Its observations remained available to anyone who wanted to try the route."
+      }
+    },
+    {
+      "id": "asset.archive.season01.19",
+      "state": "locked",
+      "route": "SeasonScreen/pass",
+      "fields": [
+        "title",
+        "locked-placeholder"
+      ],
+      "assertions": [
+        "body_hidden",
+        "claim_disabled",
+        "read_only"
+      ],
+      "minimum_callbacks": 0,
+      "minimum_controls": 2,
+      "exact_english": {}
+    },
+    {
+      "id": "asset.archive.season01.19",
+      "state": "claimed",
+      "route": "SeasonScreen/pass",
+      "fields": [
+        "title",
+        "locked-placeholder",
+        "body"
+      ],
+      "assertions": [
+        "actual_fragment_identity",
+        "one_claim_only",
+        "main_ledger_unchanged",
+        "claimed_control_disabled"
+      ],
+      "minimum_callbacks": 1,
+      "minimum_controls": 2,
+      "exact_english": {
+        "body": "Mara placed the seasonal map beside the first restoration chart. Neither was a deadline now. Both were invitations."
+      }
+    },
+    {
+      "id": "asset.archive.season01.20",
+      "state": "locked",
+      "route": "SeasonScreen/pass",
+      "fields": [
+        "title",
+        "locked-placeholder"
+      ],
+      "assertions": [
+        "body_hidden",
+        "claim_disabled",
+        "read_only"
+      ],
+      "minimum_callbacks": 0,
+      "minimum_controls": 2,
+      "exact_english": {}
+    },
+    {
+      "id": "asset.archive.season01.20",
+      "state": "claimed",
+      "route": "SeasonScreen/pass",
+      "fields": [
+        "title",
+        "locked-placeholder",
+        "body"
+      ],
+      "assertions": [
+        "actual_fragment_identity",
+        "one_claim_only",
+        "main_ledger_unchanged",
+        "claimed_control_disabled"
+      ],
+      "minimum_callbacks": 1,
+      "minimum_controls": 2,
+      "exact_english": {
+        "body": "The harbor kept one lantern burning after the festival. Anyone returning late would still be able to find the pier."
+      }
+    },
+    {
+      "id": "asset.season.01.copy",
+      "state": "upcoming",
+      "route": "SeasonScreen/fleet",
+      "fields": [
+        "title",
+        "phase-copy"
+      ],
+      "assertions": [
+        "phase_exact",
+        "read_only"
+      ],
+      "minimum_callbacks": 0,
+      "minimum_controls": 0,
+      "exact_english": {
+        "title": "Night of Returning Stars",
+        "phase-copy": "A new night sky is approaching. Every crew will begin with the same small fleet."
+      }
+    },
+    {
+      "id": "asset.season.01.copy",
+      "state": "live",
+      "route": "SeasonScreen/fleet",
+      "fields": [
+        "title",
+        "phase-copy"
+      ],
+      "assertions": [
+        "phase_exact",
+        "read_only"
+      ],
+      "minimum_callbacks": 0,
+      "minimum_controls": 0,
+      "exact_english": {
+        "title": "Night of Returning Stars",
+        "phase-copy": "Build a separate fleet and discover how the returning stars change its connections. Your main harbor keeps working."
+      }
+    },
+    {
+      "id": "asset.season.01.copy",
+      "state": "archived-paused",
+      "route": "SeasonScreen/fleet",
+      "fields": [
+        "title",
+        "phase-copy",
+        "ended",
+        "archive_resume"
+      ],
+      "assertions": [
+        "phase_exact",
+        "read_only"
+      ],
+      "minimum_callbacks": 0,
+      "minimum_controls": 1,
+      "exact_english": {
+        "title": "Night of Returning Stars",
+        "phase-copy": "Continue your fleet whenever you like. Your selected pass can still earn XP from the same daily contracts.",
+        "ended": "The public watch has ended. Your fleet and rewards are safe in the archive.",
+        "archive_resume": "Resume your archived fleet from its saved position. Time spent while the archive is paused grants no fleet production."
+      }
+    },
+    {
+      "id": "asset.season.01.copy",
+      "state": "archive-resume-pause",
+      "route": "SeasonScreen/fleet",
+      "fields": [
+        "phase-copy"
+      ],
+      "assertions": [
+        "resume_then_pause",
+        "no_money_or_xp_grant",
+        "retained_wallet"
+      ],
+      "minimum_callbacks": 2,
+      "minimum_controls": 2,
+      "exact_english": {
+        "phase-copy": "Continue your fleet whenever you like. Your selected pass can still earn XP from the same daily contracts."
+      }
+    },
+    {
+      "id": "asset.season.01.copy",
+      "state": "pass",
+      "route": "SeasonScreen/pass",
+      "fields": [
+        "title",
+        "pass"
+      ],
+      "assertions": [
+        "read_only",
+        "actual_route_copy"
+      ],
+      "minimum_callbacks": 0,
+      "minimum_controls": 0,
+      "exact_english": {
+        "title": "Night of Returning Stars",
+        "pass": "Choose one pass for new contract XP. Free rewards and premium appearances use the same 30-level track."
+      }
+    },
+    {
+      "id": "asset.season.01.copy",
+      "state": "alternatives",
+      "route": "SeasonScreen/contracts",
+      "fields": [
+        "title",
+        "alternative"
+      ],
+      "assertions": [
+        "read_only",
+        "actual_route_copy"
+      ],
+      "minimum_callbacks": 0,
+      "minimum_controls": 0,
+      "exact_english": {
+        "title": "Night of Returning Stars",
+        "alternative": "Assign this daily slot to the seasonal fleet. Complete its frozen production target to claim that same slot once."
+      }
+    },
+    {
+      "id": "asset.support.help",
+      "state": "play",
+      "route": "HelpScreen/play",
+      "fields": [
+        "index-title",
+        "index-intro",
+        "index-summary",
+        "title",
+        "summary",
+        "heading-first-light",
+        "first-light-paragraph-0",
+        "first-light-paragraph-1",
+        "heading-fleet-growth",
+        "fleet-growth-paragraph-0",
+        "fleet-growth-paragraph-1",
+        "heading-calibrations",
+        "calibrations-paragraph-0",
+        "heading-separate-fleets",
+        "separate-fleets-paragraph-0",
+        "separate-fleets-paragraph-1"
+      ],
+      "assertions": [
+        "all_sections_read",
+        "actual_navigation",
+        "callbacks_forwarded",
+        "game_unchanged"
+      ],
+      "minimum_callbacks": 2,
+      "minimum_controls": 2,
+      "exact_english": {
+        "index-title": "The harbor handbook",
+        "index-intro": "Choose a topic. Your harbor keeps its progress while you read.",
+        "index-summary": "Purchases, automation, calibration and separate fleets.",
+        "title": "Build your harbor",
+        "summary": "Purchases, automation, calibration and separate fleets.",
+        "heading-first-light": "Begin with one light",
+        "first-light-paragraph-0": "Your first Spark Skiff already earns Radiance. Buy another from the harbor fleet when its price is affordable. Five producer kinds make Radiance; each successive purchase of a kind costs more.",
+        "first-light-paragraph-1": "Buy 1 makes one purchase. Buy max spends what the fleet can currently afford. Forecasts assume the displayed fleet and conditions; a later purchase or an expiring bonus can change the result.",
+        "heading-fleet-growth": "Let small producers stay useful",
+        "fleet-growth-paragraph-0": "At 25, 50, 75 and 100 of a producer, that entire tier doubles its output. At 25 Charts, cross-tier connections let early producers strengthen later ones. Compare the displayed price and added network output instead of assuming the newest kind is always best.",
+        "fleet-growth-paragraph-1": "Automatic buying unlocks at 10 Charts. Choose payback-based buying or a priority order. One saved plan slot is included; extra slots hold alternative plans and do not produce extra income by themselves. Automatic Rechart needs 100 Charts and your explicit Chart-gain and minimum-run settings.",
+        "heading-calibrations": "A quiet calibration",
+        "calibrations-paragraph-0": "A calibration uses one Focus charge. Trace the constellation without a timer, undo a step, or restart. The accessible crew-help button gives the same completion and Focus effect. No reflex or speed test is required.",
+        "heading-separate-fleets": "Read the rules of each fleet",
+        "separate-fleets-paragraph-0": "Challenge dossiers have separate fleets, goals, caps and connections. Your main harbor continues working. Focus, Support and Rechart are not available inside a challenge, and challenge money does not enter your main wallet.",
+        "separate-fleets-paragraph-1": "The seasonal fleet is also separate. Main-harbor Charts and paid appearances do not increase its production. The Season screen shows its saved dates, badge goals and 30-level pass. After the scheduled end, an archived run can be resumed from that screen. This development build uses a local preview schedule, not an announced public season."
+      }
+    },
+    {
+      "id": "asset.support.help",
+      "state": "rechart",
+      "route": "HelpScreen/rechart",
+      "fields": [
+        "index-title",
+        "index-intro",
+        "index-summary",
+        "title",
+        "summary",
+        "heading-reset-preview",
+        "reset-preview-paragraph-0",
+        "reset-preview-paragraph-1",
+        "heading-reset-loss",
+        "reset-loss-paragraph-0",
+        "heading-reset-retention",
+        "reset-retention-paragraph-0",
+        "reset-retention-paragraph-1"
+      ],
+      "assertions": [
+        "all_sections_read",
+        "actual_navigation",
+        "callbacks_forwarded",
+        "game_unchanged"
+      ],
+      "minimum_callbacks": 2,
+      "minimum_controls": 2,
+      "exact_english": {
+        "index-title": "The harbor handbook",
+        "index-intro": "Choose a topic. Your harbor keeps its progress while you read.",
+        "index-summary": "What resets, what stays, and how to decide.",
+        "title": "Rechart without surprises",
+        "summary": "What resets, what stays, and how to decide.",
+        "heading-reset-preview": "Read the preview first",
+        "reset-preview-paragraph-0": "Rechart exchanges the current main fleet for permanent Charts. The first claim becomes available at 1 billion lifetime Radiance. Preview the additional Charts and the permanent multiplier before confirming. Cancelling the preview keeps your current fleet.",
+        "reset-preview-paragraph-1": "There is no universal best reset moment. A larger claim improves your permanent multiplier, while waiting lets the existing fleet keep earning. Consider the gain and the time you want to spend rebuilding; simulated strategies are not a promise of human completion time.",
+        "heading-reset-loss": "What you rebuild",
+        "reset-loss-paragraph-0": "Your main-harbor Radiance wallet is cleared and purchased main producers are removed. One free starting Spark Skiff returns. New purchases then use the stronger permanent Chart multiplier.",
+        "heading-reset-retention": "What you keep",
+        "reset-retention-paragraph-0": "Keep lifetime Radiance, existing and newly claimed Charts, Survey Notes, stored Focus, remaining Focus time, completed Surveys and their timers, and automation settings and saved plans.",
+        "reset-retention-paragraph-1": "Keep campaign restoration, archive and calibration discoveries, dossier ownership and progress, the separate seasonal fleet and pass progress, earned appearances and your preferences. Current daily contracts and the shared daily Support record remain; Rechart does not refill their allowance. Any remaining Support effect continues for its remaining time."
+      }
+    },
+    {
+      "id": "asset.support.help",
+      "state": "away",
+      "route": "HelpScreen/away",
+      "fields": [
+        "index-title",
+        "index-intro",
+        "index-summary",
+        "title",
+        "summary",
+        "heading-offline-rates",
+        "offline-rates-paragraph-0",
+        "offline-rates-paragraph-1",
+        "heading-stored-timers",
+        "stored-timers-paragraph-0",
+        "stored-timers-paragraph-1",
+        "heading-daily-contracts",
+        "daily-contracts-paragraph-0",
+        "daily-contracts-paragraph-1",
+        "heading-shared-support",
+        "shared-support-paragraph-0",
+        "shared-support-paragraph-1",
+        "shared-support-paragraph-2"
+      ],
+      "assertions": [
+        "all_sections_read",
+        "actual_navigation",
+        "callbacks_forwarded",
+        "game_unchanged"
+      ],
+      "minimum_callbacks": 2,
+      "minimum_controls": 2,
+      "exact_english": {
+        "index-title": "The harbor handbook",
+        "index-intro": "Choose a topic. Your harbor keeps its progress while you read.",
+        "index-summary": "Offline rates, stored timers, contracts and shared Support.",
+        "title": "While you are away",
+        "summary": "Offline rates, stored timers, contracts and shared Support.",
+        "heading-offline-rates": "One absence, three rates",
+        "offline-rates-paragraph-0": "For one continuous absence, the first 24 hours of production earn at full rate. The next 48 hours earn at one quarter rate. Production stops after 72 hours away until you return. This limit is not restarted by a loading chunk or a second tap on the return summary.",
+        "offline-rates-paragraph-1": "Returning settles your actual fleet, purchases and expiring effects over elapsed time. The return summary reports that settlement. Saving and recovery must finish before it is treated as committed progress.",
+        "heading-stored-timers": "Store a little readiness",
+        "stored-timers-paragraph-0": "Focus stores one charge every 2 hours, up to 12. One charge supplies 10 minutes of a 20% production effect. Spending several charges adds time rather than multiplying the strength.",
+        "stored-timers-paragraph-1": "A Survey completes every 8 hours, up to 3 stored Surveys. Collecting each gives 10 Survey Notes. Full storage waits for you to collect or spend; it does not create a streak penalty.",
+        "heading-daily-contracts": "A backlog, not a streak",
+        "daily-contracts-paragraph-0": "Three daily contract slots are retained for up to seven account days. Read each assigned goal and claim it when complete. An unclaimed slot can be rerolled once. Newly assigned goals do not count activity from before assignment.",
+        "daily-contracts-paragraph-1": "A seasonal alternative uses the same daily slot and claim receipt as its main-harbor goal. Completing both routes cannot grant the slot twice. Daily boundaries use the saved account-day offset. Changing time zone does not move that boundary, and turning the clock back does not replay an earlier day.",
+        "heading-shared-support": "Six shared Support slots",
+        "shared-support-paragraph-0": "Free crew briefings and optional verified rewarded ads share six slots per account day. They give the same Support token. Refusing an ad, a failed ad or no available ad does not remove the free briefing route. Unspent daily tokens do not accumulate into a larger allowance tomorrow.",
+        "shared-support-paragraph-1": "Spend a token once on a 20-minute, 25% production effect, or on an eligible offline Salvage cache. Salvage is capped by genuine recorded offline production and the displayed claim; it does not double your whole absence. The token and cache cannot be claimed twice.",
+        "shared-support-paragraph-2": "Local reminders start off. Enable them only if you want them, choose quiet hours and the reminder kinds, and turn them off at any time. Opening a reminder grants nothing. Device delivery can be delayed or denied without affecting play."
+      }
+    },
+    {
+      "id": "asset.support.help",
+      "state": "notes",
+      "route": "HelpScreen/notes",
+      "fields": [
+        "index-title",
+        "index-intro",
+        "index-summary",
+        "title",
+        "summary",
+        "heading-note-costs",
+        "note-costs-paragraph-0",
+        "note-costs-paragraph-1",
+        "heading-campaign-first",
+        "campaign-first-paragraph-0",
+        "campaign-first-paragraph-1",
+        "campaign-first-paragraph-2"
+      ],
+      "assertions": [
+        "all_sections_read",
+        "actual_navigation",
+        "callbacks_forwarded",
+        "game_unchanged"
+      ],
+      "minimum_callbacks": 2,
+      "minimum_controls": 2,
+      "exact_english": {
+        "index-title": "The harbor handbook",
+        "index-intro": "Choose a topic. Your harbor keeps its progress while you read.",
+        "index-summary": "Separate campaign needs from optional storage and decoration.",
+        "title": "Choose how to spend Notes",
+        "summary": "Separate campaign needs from optional storage and decoration.",
+        "heading-note-costs": "The prices to compare",
+        "note-costs-paragraph-0": "A new challenge dossier costs 100 Survey Notes once. An owned dossier can be replayed for free. Only one challenge fleet is active at a time; replacing or restarting it discards that active run, so read the confirmation first.",
+        "note-costs-paragraph-1": "An extra saved automation-plan slot costs 50 Survey Notes. Up to five extra slots are available after automation unlocks. A core harbor decoration also costs 50 Notes once; there are six. These slots and decorations are optional for the campaign ending.",
+        "heading-campaign-first": "Read your current chapter goal",
+        "campaign-first-paragraph-0": "Some chapter goals require particular dossiers. Check Restoration before spending Notes on an optional plan slot, decoration or another dossier. Spending those Notes first can delay access to a needed dossier and therefore delay the ending.",
+        "campaign-first-paragraph-1": "A purchased plan slot only stores another plan. A decoration changes the harbor appearance. Neither is required to increase the existing plan’s efficiency. You can finish the campaign without buying every optional collection item.",
+        "campaign-first-paragraph-2": "Play at your own pace. Balance simulations compare rules and spending choices; they do not predict how many days a person will need to learn or finish the game."
+      }
+    },
+    {
+      "id": "asset.support.recovery_guide",
+      "state": "recovery",
+      "route": "HelpScreen/recovery",
+      "fields": [
+        "index-title",
+        "index-intro",
+        "index-summary",
+        "title",
+        "summary",
+        "heading-local-copies",
+        "local-copies-paragraph-0",
+        "local-copies-paragraph-1",
+        "local-copies-paragraph-2",
+        "heading-cloud-choice",
+        "cloud-choice-paragraph-0",
+        "cloud-choice-paragraph-1",
+        "heading-recovery-code",
+        "recovery-code-paragraph-0",
+        "recovery-code-paragraph-1",
+        "recovery-code-paragraph-2",
+        "heading-logout-delete",
+        "logout-delete-paragraph-0",
+        "logout-delete-paragraph-1"
+      ],
+      "assertions": [
+        "all_sections_read",
+        "actual_navigation",
+        "callbacks_forwarded",
+        "game_unchanged"
+      ],
+      "minimum_callbacks": 4,
+      "minimum_controls": 4,
+      "exact_english": {
+        "index-title": "The harbor handbook",
+        "index-intro": "Choose a topic. Your harbor keeps its progress while you read.",
+        "index-summary": "Local copies, cloud branches, recovery codes and deletion.",
+        "title": "Save and recover your harbor",
+        "summary": "Local copies, cloud branches, recovery codes and deletion.",
+        "heading-local-copies": "Keep a local copy",
+        "local-copies-paragraph-0": "The native game saves locally. Use Export my harbor in the Logbook to copy a complete export into storage you control. Keep an older copy before replacing your current harbor. An export is game data, not an account recovery code or proof of a purchase.",
+        "local-copies-paragraph-1": "If a save is damaged, the recovery screen may offer a valid backup. Keep the damaged files or your export until you have checked the restored harbor. Do not uninstall or clear app data as a first recovery step: that can remove your local copies.",
+        "local-copies-paragraph-2": "Importing chooses one complete compatible branch. It does not combine wallets, Charts or rewards. The import flow preserves the previous local branch before replacement; verify the chosen branch and its progress before continuing.",
+        "heading-cloud-choice": "Cloud is a separate choice",
+        "cloud-choice-paragraph-0": "An account is optional. When an account service is configured, cloud setup asks for consent and shows an account ID and recovery code. Retain both before acknowledging the code or uploading. Credentials belong in secure account storage, never in a game export.",
+        "cloud-choice-paragraph-1": "Recovering an account does not automatically overwrite a guest harbor. Inspect real cloud branches and their revisions, then explicitly choose one. The current local branch is preserved by the import flow. Upload conflicts require reviewing the latest branch; they are not resolved by adding the two wallets together.",
+        "heading-recovery-code": "Protect the code before changing it",
+        "recovery-code-paragraph-0": "Keep the account ID and recovery code somewhere you can reach if this device is lost. Do not send them in a support message or include them in a screenshot.",
+        "recovery-code-paragraph-1": "Code rotation requires the current code. Retain the proposed replacement before submitting the change. If the response is lost, the server may already have changed the code; use the retained replacement to recover and check the account rather than discarding it.",
+        "recovery-code-paragraph-2": "If the code is lost but a valid device session remains, keep that session and export your local harbor. If there is no valid session and no code, this recovery method cannot recover the account. A local save copy may still recover your game, but it cannot prove account or paid ownership.",
+        "heading-logout-delete": "Signing out is not deleting",
+        "logout-delete-paragraph-0": "Signing out ends the requested session when the service confirms it. Forgetting credentials only on this device is an offline local action; it cannot claim to revoke a remote session. Neither action is account deletion.",
+        "logout-delete-paragraph-1": "Account deletion needs explicit confirmation and the current recovery code. Confirmed service deletion removes the active account data while leaving the current local guest game. It does not cancel an Apple or Google purchase or erase an export you saved elsewhere. Backup erasure and third-party storage depend on the final operator’s policy."
+      }
+    },
+    {
+      "id": "asset.support.credits",
+      "state": "credits",
+      "route": "HelpScreen/credits",
+      "fields": [
+        "index-title",
+        "index-intro",
+        "index-summary",
+        "title",
+        "summary",
+        "heading-development-credit",
+        "development-credit-paragraph-0",
+        "heading-visual-credit",
+        "visual-credit-paragraph-0",
+        "heading-score-credit",
+        "score-credit-paragraph-0",
+        "heading-software-credit",
+        "software-credit-paragraph-0"
+      ],
+      "assertions": [
+        "all_sections_read",
+        "actual_navigation",
+        "callbacks_forwarded",
+        "game_unchanged"
+      ],
+      "minimum_callbacks": 3,
+      "minimum_controls": 3,
+      "exact_english": {
+        "index-title": "The harbor handbook",
+        "index-intro": "Choose a topic. Your harbor keeps its progress while you read.",
+        "index-summary": "How this development build was made.",
+        "title": "Credits and licenses",
+        "summary": "How this development build was made.",
+        "heading-development-credit": "Development",
+        "development-credit-paragraph-0": "Tideglass is being created by an AI-assisted development team directed by the project owner.",
+        "heading-visual-credit": "Code-native visuals",
+        "visual-credit-paragraph-0": "The lighthouse, harbor, staged producers and appearance overlays were authored for Tideglass as vector geometry and native drawing code. Their reusable shapes are rendered directly by the client. The store lighthouse artwork uses the same original geometry.",
+        "heading-score-credit": "Original synthesized score",
+        "score-credit-paragraph-0": "The ambient pieces and effect cues were authored for Tideglass with explicit musical phrases and mathematical synthesis. No third-party recording, sampled instrument library or reference melody was incorporated into that score. Music and effects have independent volume and mute controls.",
+        "heading-software-credit": "Software and notices",
+        "software-credit-paragraph-0": "Tideglass uses Flutter, Dart and open-source packages. Their bundled license notices are available below."
+      }
+    },
+    {
+      "id": "asset.support.release_notes",
+      "state": "releaseNotes",
+      "route": "HelpScreen/releaseNotes",
+      "fields": [
+        "index-title",
+        "index-intro",
+        "index-summary",
+        "title",
+        "summary",
+        "heading-development-status",
+        "development-status-paragraph-0",
+        "heading-included-systems",
+        "included-systems-paragraph-0",
+        "included-systems-paragraph-1",
+        "heading-current-improvements",
+        "current-improvements-paragraph-0",
+        "current-improvements-paragraph-1",
+        "heading-release-limits",
+        "release-limits-paragraph-0",
+        "release-limits-paragraph-1",
+        "development-notice"
+      ],
+      "assertions": [
+        "all_sections_read",
+        "actual_navigation",
+        "callbacks_forwarded",
+        "game_unchanged"
+      ],
+      "minimum_callbacks": 2,
+      "minimum_controls": 2,
+      "exact_english": {
+        "index-title": "The harbor handbook",
+        "index-intro": "Choose a topic. Your harbor keeps its progress while you read.",
+        "index-summary": "Current changes and feature availability.",
+        "title": "Development release notes",
+        "summary": "Current changes and feature availability.",
+        "heading-development-status": "Local development build",
+        "development-status-paragraph-0": "This local development build includes the game features below. Its version is shown at the end of this page. Optional online features depend on a configured service and may be unavailable.",
+        "heading-included-systems": "Implemented game and comfort features",
+        "included-systems-paragraph-0": "The client includes the main fleet and Rechart, offline settlement and recovery, six restoration chapters, eighteen archive entries, twelve calibrations, twelve challenge dossiers, and a separate seasonal fleet with pass progression.",
+        "included-systems-paragraph-1": "It also includes free shared-slot crew briefings, automation plans, collection appearances, reduced motion, larger text, separate audio controls, and opt-in local reminders with quiet hours. Purchases and rewarded ads appear only through their configured, verified service paths.",
+        "heading-current-improvements": "Current development improvements",
+        "current-improvements-paragraph-0": "The handbook now explains reset retention, offline limits, Note spending and recovery. Long headings and confirmations wrap and scroll at larger text sizes.",
+        "current-improvements-paragraph-1": "Note-spending guidance distinguishes campaign dossiers from optional plan slots and decorations. Choosing optional purchases first can postpone a needed dossier.",
+        "heading-release-limits": "Unavailable services",
+        "release-limits-paragraph-0": "Online account recovery, verified purchases, rewarded ads and soundtrack downloads may be unavailable. The game shows their configured status; local play and free crew briefings remain available.",
+        "release-limits-paragraph-1": "Public support and privacy links are not configured in this development build. No message is sent from this handbook.",
+        "development-notice": "Development reference · not a public release announcement"
+      }
+    },
+    {
+      "id": "flow.help.privacy-companion",
+      "state": "privacy",
+      "route": "HelpScreen/privacy",
+      "fields": [
+        "index-title",
+        "index-intro",
+        "index-summary",
+        "title",
+        "summary",
+        "heading-guest-privacy",
+        "guest-privacy-paragraph-0",
+        "guest-privacy-paragraph-1",
+        "guest-privacy-paragraph-2",
+        "heading-telemetry-choice",
+        "telemetry-choice-paragraph-0",
+        "telemetry-choice-paragraph-1",
+        "heading-data-control",
+        "data-control-paragraph-0",
+        "data-control-paragraph-1",
+        "data-control-paragraph-2",
+        "heading-support-availability",
+        "support-availability-paragraph-0",
+        "support-availability-paragraph-1"
+      ],
+      "assertions": [
+        "all_sections_read",
+        "actual_navigation",
+        "callbacks_forwarded",
+        "game_unchanged"
+      ],
+      "minimum_callbacks": 4,
+      "minimum_controls": 4,
+      "exact_english": {}
+    },
+    {
+      "id": "flow.daily.contracts",
+      "state": "pending-reroll",
+      "route": "ContractPanel",
+      "fields": [
+        "title",
+        "retention",
+        "status",
+        "account-day"
+      ],
+      "assertions": [
+        "three_pending",
+        "reroll_once",
+        "no_reward"
+      ],
+      "minimum_callbacks": 1,
+      "minimum_controls": 4,
+      "exact_english": {}
+    },
+    {
+      "id": "flow.daily.contracts",
+      "state": "ready-backlog",
+      "route": "ContractPanel",
+      "fields": [
+        "title",
+        "retention",
+        "status",
+        "account-day"
+      ],
+      "assertions": [
+        "seven_days_21_slots",
+        "exact_210_notes_5250_xp",
+        "claims_once"
+      ],
+      "minimum_callbacks": 21,
+      "minimum_controls": 21,
+      "exact_english": {}
+    },
+    {
+      "id": "flow.daily.contracts",
+      "state": "empty",
+      "route": "ContractPanel",
+      "fields": [
+        "title",
+        "retention",
+        "status",
+        "account-day",
+        "empty"
+      ],
+      "assertions": [
+        "all_21_claimed",
+        "no_claim_controls",
+        "read_only"
+      ],
+      "minimum_callbacks": 0,
+      "minimum_controls": 0,
+      "exact_english": {}
+    },
+    {
+      "id": "flow.daily.storage",
+      "state": "queued-ready",
+      "route": "TideglassApp/journal",
+      "fields": [
+        "daily-title",
+        "focus-label",
+        "focus-store",
+        "focus-help",
+        "focus-queued",
+        "survey-label",
+        "survey-store",
+        "survey-help"
+      ],
+      "assertions": [
+        "exact_30_notes",
+        "focus_queue_unchanged",
+        "storage_consumed"
+      ],
+      "minimum_callbacks": 2,
+      "minimum_controls": 3,
+      "exact_english": {}
+    },
+    {
+      "id": "flow.daily.storage",
+      "state": "empty",
+      "route": "TideglassApp/journal",
+      "fields": [
+        "survey-store"
+      ],
+      "assertions": [
+        "disabled_when_empty",
+        "read_only"
+      ],
+      "minimum_callbacks": 0,
+      "minimum_controls": 1,
+      "exact_english": {}
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{"protocolVersion":"0.1.1","runnerVersion":"1.33.0","pid":16679,"type":"start","time":0}
+{"suite":{"id":0,"platform":"vm","path":"test/service_client_test.dart"},"type":"suite","time":0}
+{"test":{"id":1,"name":"loading test/service_client_test.dart","suiteID":0,"groupIDs":[],"metadata":{"skip":false,"skipReason":null},"line":null,"column":null,"url":null},"type":"testStart","time":1}
+{"suite":{"id":2,"platform":"vm","path":"test/signed_entitlements_test.dart"},"type":"suite","time":5}
+{"test":{"id":3,"name":"loading test/signed_entitlements_test.dart","suiteID":2,"groupIDs":[],"metadata":{"skip":false,"skipReason":null},"line":null,"column":null,"url":null},"type":"testStart","time":6}
+{"suite":{"id":4,"platform":"vm","path":"test/telemetry_buffer_test.dart"},"type":"suite","time":7}
+{"test":{"id":5,"name":"loading test/telemetry_buffer_test.dart","suiteID":4,"groupIDs":[],"metadata":{"skip":false,"skipReason":null},"line":null,"column":null,"url":null},"type":"testStart","time":7}
+{"count":3,"time":7,"type":"allSuites"}
+{"testID":1,"result":"success","skipped":false,"hidden":true,"type":"testDone","time":710}
+{"group":{"id":6,"suiteID":0,"parentID":null,"name":"","metadata":{"skip":false,"skipReason":null},"testCount":4,"line":null,"column":null,"url":null},"type":"group","time":711}
+{"test":{"id":7,"name":"HTTPS is required except explicit loopback development","suiteID":0,"groupIDs":[6],"metadata":{"skip":false,"skipReason":null},"line":8,"column":3,"url":"file:///Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-telemetry-repaired-20261019T141639166170Z/game/platform/test/service_client_test.dart"},"type":"testStart","time":712}
+{"testID":7,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":726}
+{"test":{"id":8,"name":"missing opt-in session never contacts transport","suiteID":0,"groupIDs":[6],"metadata":{"skip":false,"skipReason":null},"line":27,"column":3,"url":"file:///Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-telemetry-repaired-20261019T141639166170Z/game/platform/test/service_client_test.dart"},"type":"testStart","time":727}
+{"testID":8,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":733}
+{"test":{"id":9,"name":"real service account lifecycle and fail-closed ownership","suiteID":0,"groupIDs":[6],"metadata":{"skip":false,"skipReason":null},"line":43,"column":3,"url":"file:///Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-telemetry-repaired-20261019T141639166170Z/game/platform/test/service_client_test.dart"},"type":"testStart","time":734}
+{"testID":5,"result":"success","skipped":false,"hidden":true,"type":"testDone","time":897}
+{"group":{"id":10,"suiteID":4,"parentID":null,"name":"","metadata":{"skip":false,"skipReason":null},"testCount":2,"line":null,"column":null,"url":null},"type":"group","time":898}
+{"test":{"id":11,"name":"refusal collects nothing; bounded retry retains IDs; opt-out stops offline","suiteID":4,"groupIDs":[10],"metadata":{"skip":false,"skipReason":null},"line":35,"column":3,"url":"file:///Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-telemetry-repaired-20261019T141639166170Z/game/platform/test/telemetry_buffer_test.dart"},"type":"testStart","time":898}
+{"testID":3,"result":"success","skipped":false,"hidden":true,"type":"testDone","time":902}
+{"group":{"id":12,"suiteID":2,"parentID":null,"name":"","metadata":{"skip":false,"skipReason":null},"testCount":7,"line":null,"column":null,"url":null},"type":"group","time":902}
+{"test":{"id":13,"name":"real Ed25519 verifies exact Python bytes and bound entitlement set","suiteID":2,"groupIDs":[12],"metadata":{"skip":false,"skipReason":null},"line":51,"column":3,"url":"file:///Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-telemetry-repaired-20261019T141639166170Z/game/platform/test/signed_entitlements_test.dart"},"type":"testStart","time":902}
+{"testID":11,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":926}
+{"test":{"id":14,"name":"expiry and unknown fields cannot become an unbounded diagnostics dump","suiteID":4,"groupIDs":[10],"metadata":{"skip":false,"skipReason":null},"line":86,"column":3,"url":"file:///Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-telemetry-repaired-20261019T141639166170Z/game/platform/test/telemetry_buffer_test.dart"},"type":"testStart","time":927}
+{"testID":14,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":929}
+{"testID":13,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":973}
+{"test":{"id":15,"name":"tampering, unpinned keys, wrong identity, excessive TTL and expired leases reject","suiteID":2,"groupIDs":[12],"metadata":{"skip":false,"skipReason":null},"line":70,"column":3,"url":"file:///Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-telemetry-repaired-20261019T141639166170Z/game/platform/test/signed_entitlements_test.dart"},"type":"testStart","time":973}
+{"testID":15,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":1034}
+{"test":{"id":16,"name":"secure reload requires continuing trusted device time; expiry includes sleep","suiteID":2,"groupIDs":[12],"metadata":{"skip":false,"skipReason":null},"line":114,"column":3,"url":"file:///Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-telemetry-repaired-20261019T141639166170Z/game/platform/test/signed_entitlements_test.dart"},"type":"testStart","time":1035}
+{"testID":16,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":1051}
+{"test":{"id":17,"name":"without persistent device evidence restart requires online refresh","suiteID":2,"groupIDs":[12],"metadata":{"skip":false,"skipReason":null},"line":177,"column":3,"url":"file:///Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-telemetry-repaired-20261019T141639166170Z/game/platform/test/signed_entitlements_test.dart"},"type":"testStart","time":1051}
+{"testID":17,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":1060}
+{"test":{"id":18,"name":"observed rollback across launches and native clock rollback reject","suiteID":2,"groupIDs":[12],"metadata":{"skip":false,"skipReason":null},"line":205,"column":3,"url":"file:///Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-telemetry-repaired-20261019T141639166170Z/game/platform/test/signed_entitlements_test.dart"},"type":"testStart","time":1060}
+{"testID":18,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":1070}
+{"test":{"id":19,"name":"higher empty lease and logout retain high-water revision against replay","suiteID":2,"groupIDs":[12],"metadata":{"skip":false,"skipReason":null},"line":247,"column":3,"url":"file:///Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-telemetry-repaired-20261019T141639166170Z/game/platform/test/signed_entitlements_test.dart"},"type":"testStart","time":1070}
+{"testID":19,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":1096}
+{"test":{"id":20,"name":"secure-write failure cannot expose an otherwise valid signed grant","suiteID":2,"groupIDs":[12],"metadata":{"skip":false,"skipReason":null},"line":285,"column":3,"url":"file:///Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-telemetry-repaired-20261019T141639166170Z/game/platform/test/signed_entitlements_test.dart"},"type":"testStart","time":1096}
+{"testID":20,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":1107}
+{"testID":9,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":1108}
+{"test":{"id":21,"name":"redirect cannot forward bearer credentials to another endpoint","suiteID":0,"groupIDs":[6],"metadata":{"skip":false,"skipReason":null},"line":188,"column":3,"url":"file:///Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-telemetry-repaired-20261019T141639166170Z/game/platform/test/service_client_test.dart"},"type":"testStart","time":1108}
+{"testID":21,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":1120}
+{"success":true,"type":"done","time":1122}

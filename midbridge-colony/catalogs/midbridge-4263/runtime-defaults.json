@@ -1,0 +1,96 @@
+{
+  "constants": {
+    "TIME": {
+      "ticksPerMonth": 30,
+      "monthsPerYear": 12,
+      "ticksPerYear": 360,
+      "yearsPerGeneration": 20,
+      "generationsPerAge": 24,
+      "ticksPerGeneration": 7200,
+      "ticksPerAge": 172800
+    },
+    "T1_BASIC_MACHINERY": 15000,
+    "T1_COMPOUND_MACHINERY": 15000,
+    "T2_ROUTE_SETUP": 1000,
+    "MIN_UNIT_PRICE": 0.01,
+    "T2_MAX_PRODUCTS_PER_FIRM": 4,
+    "PROGRESSION_DEFAULTS": {
+      "startingLicenses": [
+        "T1"
+      ],
+      "licenseCosts": {
+        "T1": 0,
+        "T2": 1000000,
+        "T0": null
+      },
+      "houseFoundingCost": 200000
+    },
+    "T2_NEED_TYPES": [
+      "Consumables",
+      "Components",
+      "Assemblies",
+      "Systems"
+    ],
+    "WORLD_STORY": {
+      "alphaPlayableTiers": [
+        "T1"
+      ],
+      "competitors": [
+        "Opportunist human investors",
+        "Robotic executive agents"
+      ],
+      "conflict": "A coming galactic war",
+      "demandScope": "Weapons and ammunition, armor, vehicles, aircraft, fuel, power, electronics, sensors, field medicine, and fortifications for the coming war",
+      "distributors": "One million distributors buying, switching suppliers, and keeping the colony running",
+      "entry": "An initial investment in a refinery or manufacturing business",
+      "name": "Midbridge Colony",
+      "player": "Human investor",
+      "population": 1000000,
+      "producers": "Autonomous refineries and manufacturers building a colony into a supply base",
+      "purpose": "Building a manufacturing colony into the supply base for a coming galactic war",
+      "roboticGeneration": "The colony economy that must keep working before the fighting starts",
+      "society": "Humans and robots in a manufacturing colony in 4263",
+      "tagline": "Build the Colony. Supply the Fleet."
+    },
+    "TIER_BOUNDARIES": {
+      "T1": [
+        1,
+        2
+      ],
+      "T2": [
+        3,
+        4
+      ]
+    }
+  },
+  "refineryTemplate": {
+    "distributorValue": 1.875,
+    "equipmentPrice": 15000
+  },
+  "manufacturerTemplates": {
+    "3": {
+      "kind": "Good",
+      "needType": "Components",
+      "equipmentPrice": 75000,
+      "capacity": 32,
+      "conversionCost": 0.5,
+      "needWeight": 0.5,
+      "demandWeight": 0.05,
+      "demandFactor": 0.2025,
+      "reservationPremium": 1.9,
+      "distributorValue": 3.5
+    },
+    "4": {
+      "kind": "Good",
+      "needType": "Assemblies",
+      "equipmentPrice": 375000,
+      "capacity": 24,
+      "conversionCost": 0.75,
+      "needWeight": 0.16666666666666666,
+      "demandWeight": 0.05,
+      "demandFactor": 0.09112500000000001,
+      "reservationPremium": 2.35,
+      "distributorValue": 4
+    }
+  }
+}

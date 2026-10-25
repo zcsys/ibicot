@@ -1,0 +1,31 @@
+{
+  "scope": "Current-source host art-pseudo-full; not candidate152/native/human qualification",
+  "source_differences": [],
+  "results": [
+    {
+      "name": "analyzer",
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+        "analyze"
+      ],
+      "exit_code": 0,
+      "log_sha256": "ff6913b558257a53c58e304c98c8450f3c5aabca71b2a1a536a73331e221da5f"
+    },
+    {
+      "name": "art",
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+        "test",
+        "test/art_catalogue_variants_test.dart",
+        "--reporter=expanded",
+        "--timeout=12m",
+        "--dart-define=TIDEGLASS_PSEUDO=true",
+        "--dart-define=TIDEGLASS_ART_REPORT_DIR=/Users/csys/Desktop/ibicot/idle/release/art/catalogue-variants/root-art-pseudo-full-20261021T122636.246158Z"
+      ],
+      "exit_code": 0,
+      "log_sha256": "675653635bb999e3c64560be735c89fb045d36d5a6f2f96ca13f85ed41b7aeb8"
+    }
+  ],
+  "art_report_directory": "/Users/csys/Desktop/ibicot/idle/release/art/catalogue-variants/root-art-pseudo-full-20261021T122636.246158Z",
+  "art_report_sha256": "d132e5e2862b280e885acf870a78267d98b117fa1deef705a9dab2b09aa187f2"
+}

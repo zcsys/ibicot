@@ -1,0 +1,35 @@
+{
+  "classification": "environment interruption and expected boot-epoch rejection; not a production defect determination",
+  "details": [
+    "Original clock-start passed with actual OS Home/reopen.",
+    "Owned emulator exited between tests. Its final log shows graceful shutdown; cause not established.",
+    "First reload failed before execution because the emulator was absent.",
+    "Owned Tideglass_API_35 restarted without wipe/reset using original workspace AVD configuration.",
+    "Retained original clock checkpoint then correctly failed the same-boot assertion at harness line 381, because reboot is outside the process-only continuity premise.",
+    "Fresh run ID v3b00-android-clock-boot2 establishes a new start/reload pair. All original outputs remain immutable."
+  ],
+  "reports": [
+    {
+      "verification": "/Users/csys/Desktop/ibicot/idle/release/native-proof/integration-android-20261023T050244.164420Z/verification.json",
+      "sha256": "ccfefe01e4da0124048fcf549593c22e59cacf230c760eaf29fcca3f80c7b05b",
+      "passed": true
+    },
+    {
+      "verification": "/Users/csys/Desktop/ibicot/idle/release/native-proof/integration-android-20261023T050633.188337Z/verification.json",
+      "sha256": "2ffaa7d3f8109ee0d81ef0eb27981ce274aecae490141c1081a6efa011e31da3",
+      "passed": false
+    },
+    {
+      "verification": "/Users/csys/Desktop/ibicot/idle/release/native-proof/integration-android-20261023T050738.127967Z/verification.json",
+      "sha256": "2ad5e9333882d77365c4ba7c1e511ff534ac0b6e516c8759865434adc6c4ce5c",
+      "passed": false
+    },
+    {
+      "verification": "/Users/csys/Desktop/ibicot/idle/release/native-proof/integration-android-20261023T050848.721201Z/verification.json",
+      "sha256": "5d52f8d3c5a473f23f677b3acd1c47e248902b0e96601a19f9f4daa6af9c6bf7",
+      "passed": true
+    }
+  ],
+  "restart_evidence": "/Users/csys/Desktop/ibicot/idle/release/native-proof/execution-3b00-20261023T040612.562001Z/android-restart-20261023T050717.389535Z",
+  "acceptance": false
+}

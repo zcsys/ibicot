@@ -1,0 +1,308 @@
+{
+  "frozen_source_checks": {
+    "count": 1186,
+    "all_match": true,
+    "live_differences_count": 0
+  },
+  "runtime_asset_content": {
+    "count": 29,
+    "all_hashes_and_sizes_match": true
+  },
+  "economy": {
+    "title": "Tideglass",
+    "base_cost": 30.0,
+    "base_output": 1.0,
+    "tier_ratio": 20.0,
+    "purchase_growth": 1.12,
+    "unlock_previous_count": 10,
+    "producer_names": [
+      "Spark Skiff",
+      "Prism Nursery",
+      "Tide Dynamo",
+      "Aurora Loom",
+      "Dawn Observatory"
+    ],
+    "milestone_interval": 25,
+    "milestone_multiplier": 2.0,
+    "milestone_cap": 4,
+    "prestige_scale_earnings": 1000000000.0,
+    "prestige_scale_award": 10.0,
+    "prestige_exponent": 0.65,
+    "prestige_power_scale": 10.0,
+    "prestige_power_exponent": 0.5,
+    "synergy_unlock_charts": 25,
+    "synergy_count_scale": 25.0,
+    "synergy_matrix": [
+      [
+        0,
+        0,
+        0,
+        0.2,
+        0.1
+      ],
+      [
+        0,
+        0,
+        0,
+        0.1,
+        0.25
+      ]
+    ],
+    "full_offline_seconds": 86400,
+    "catchup_tail_seconds": 172800,
+    "catchup_tail_rate": 0.25,
+    "focus_charge_seconds": 7200,
+    "focus_charge_capacity": 12,
+    "survey_cycle_seconds": 28800,
+    "survey_queue_capacity": 3,
+    "survey_notes_per_cycle": 10,
+    "daily_bonus_seconds": 1800,
+    "daily_quest_count": 3,
+    "quest_backlog_days": 7,
+    "season_days": 28,
+    "pass_levels": 30,
+    "pass_xp_per_level": 500
+  },
+  "campaign": {
+    "chapters": 6,
+    "ending": {
+      "id": "ending.main",
+      "chapter_id": "chapter.06",
+      "title": "The Harbor Remembers",
+      "text": "At dawn, the whole harbor answers. The sea has not become smaller; it has become navigable. Your restoration is complete. Keep charting, revisit a favorite challenge, or let the lights watch over the water until you return.",
+      "allows_continued_play": true
+    },
+    "economic_rewards": [
+      [],
+      [],
+      [],
+      [],
+      [],
+      []
+    ],
+    "paid_requirements": [
+      [],
+      [],
+      [],
+      [],
+      [],
+      []
+    ],
+    "rules": {
+      "prior_chapter_required": true,
+      "retroactive_lifetime_stats": true,
+      "ownership_conditions_use_current_fleet": true,
+      "no_calendar_date_locks": true,
+      "automatic_rechart_optional": true,
+      "mandatory_note_sinks": [
+        "six_distinct_challenge_dossiers"
+      ],
+      "maximum_mandatory_dossier_notes": 600,
+      "all_note_sinks_required": false
+    }
+  },
+  "dossiers": {
+    "count": 12,
+    "families": {
+      "constrained_fleets": 4,
+      "synergy_priorities": 4,
+      "automation_planning": 4
+    },
+    "costs": [
+      100
+    ],
+    "replay_costs": [
+      0
+    ],
+    "main_power_import": [
+      false
+    ]
+  },
+  "calibrations": {
+    "count": 12,
+    "ids": [
+      "calibration.01",
+      "calibration.02",
+      "calibration.03",
+      "calibration.04",
+      "calibration.05",
+      "calibration.06",
+      "calibration.07",
+      "calibration.08",
+      "calibration.09",
+      "calibration.10",
+      "calibration.11",
+      "calibration.12"
+    ]
+  },
+  "main_archive_count": 18,
+  "season": {
+    "schema_version": 1,
+    "id": "season.01",
+    "rules_version": "season.01.rules.1",
+    "title": "Night of Returning Stars",
+    "pass_id": "pass.01",
+    "duration_days": 28,
+    "base_economy_version": "tideglass-economy-1.0.0",
+    "synergy_percent_matrix": [
+      [
+        10,
+        20
+      ],
+      [
+        25,
+        10
+      ]
+    ],
+    "synergies_immediate": true,
+    "main_power_import": false,
+    "paid_effects": false,
+    "rechart_enabled": false,
+    "economic_exports": [],
+    "offline_envelope": "24h_full_48h_quarter",
+    "initial_counts": [
+      1,
+      0,
+      0,
+      0,
+      0
+    ],
+    "levels": 30,
+    "xp_per_level": 500,
+    "milestones": [
+      {
+        "id": "season.01.beacon.01",
+        "lifetime_r": "1000000000",
+        "badge_id": "badge.season01.first_signal",
+        "title": "First Signal",
+        "body": "Your fleet has recovered its first shared bearing."
+      },
+      {
+        "id": "season.01.beacon.02",
+        "lifetime_r": "10000000000000",
+        "badge_id": "badge.season01.shared_sky",
+        "title": "Shared Sky",
+        "body": "The observatory and working fleet now read the same sky."
+      },
+      {
+        "id": "season.01.beacon.03",
+        "lifetime_r": "1000000000000000",
+        "badge_id": "badge.season01.returning_stars",
+        "title": "Returning Stars",
+        "body": "The seasonal map is ready to join the harbor archive."
+      }
+    ]
+  },
+  "season_rewards": {
+    "count": 40,
+    "by_track_kind": {
+      "free:archive_fragment": 20,
+      "free:cosmetic": 10,
+      "premium:cosmetic": 10
+    },
+    "economic_effects_empty": true
+  },
+  "cosmetics": {
+    "actual_dart_count": 36,
+    "actual_dart_ids": [
+      "cosmetic.core.chapter.01",
+      "cosmetic.core.chapter.02",
+      "cosmetic.core.chapter.03",
+      "cosmetic.core.chapter.04",
+      "cosmetic.core.chapter.05",
+      "cosmetic.core.chapter.06",
+      "cosmetic.core.decoration.01",
+      "cosmetic.core.decoration.02",
+      "cosmetic.core.decoration.03",
+      "cosmetic.core.decoration.04",
+      "cosmetic.core.decoration.05",
+      "cosmetic.core.decoration.06",
+      "cosmetic.free_pass.01",
+      "cosmetic.free_pass.02",
+      "cosmetic.free_pass.03",
+      "cosmetic.free_pass.04",
+      "cosmetic.free_pass.05",
+      "cosmetic.free_pass.06",
+      "cosmetic.free_pass.07",
+      "cosmetic.free_pass.08",
+      "cosmetic.free_pass.09",
+      "cosmetic.free_pass.10",
+      "cosmetic.premium_pass.01",
+      "cosmetic.premium_pass.02",
+      "cosmetic.premium_pass.03",
+      "cosmetic.premium_pass.04",
+      "cosmetic.premium_pass.05",
+      "cosmetic.premium_pass.06",
+      "cosmetic.premium_pass.07",
+      "cosmetic.premium_pass.08",
+      "cosmetic.premium_pass.09",
+      "cosmetic.premium_pass.10",
+      "cosmetic.shop.01",
+      "cosmetic.shop.02",
+      "cosmetic.shop.03",
+      "cosmetic.shop.04"
+    ],
+    "manifest_origins": {
+      "core": 12,
+      "free_pass": 10,
+      "premium_pass": 10,
+      "shop": 4
+    },
+    "same_runtime_and_manifest_id_set": true,
+    "manifest_all_economic_effects_empty": true
+  },
+  "art": {
+    "canonical_asset_count": 164,
+    "harbor_presentations": 7,
+    "producer_families": 5,
+    "producer_stages": 25,
+    "source_export_provenance_present": true
+  },
+  "supporter_bundle": {
+    "id": "bundle.supporter",
+    "production_status": "in_production",
+    "verification_evidence": null,
+    "cosmetic_ids": [
+      "cosmetic.shop.01",
+      "cosmetic.shop.02",
+      "cosmetic.shop.03",
+      "cosmetic.shop.04"
+    ],
+    "audio_ids": [
+      "audio.soundtrack"
+    ],
+    "economic_effects": [],
+    "new_unique_cosmetics": 0,
+    "fulfillment_status": "in_progress"
+  },
+  "schedule": {
+    "schema_version": 1,
+    "season_id": "season.01",
+    "starts_at": "2026-10-16T00:00:00Z",
+    "duration_days": 28,
+    "environment": "local_development",
+    "public_activation": false
+  },
+  "active_program": {
+    "accepted_original_ids": [
+      "M0-01",
+      "M0-02",
+      "M0-04",
+      "M0-05",
+      "M0-06",
+      "M0-08",
+      "M1-01",
+      "M1-02",
+      "M1-04",
+      "M1-05",
+      "M1-06",
+      "M1-07",
+      "M2-01",
+      "M2-03",
+      "M2-05",
+      "M3-03",
+      "M3-09"
+    ],
+    "product_release_ready": false
+  }
+}

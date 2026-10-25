@@ -1,0 +1,579 @@
+--- a/game/mobile/integration_test/platform_smoke_test.dart
++++ b/game/mobile/integration_test/platform_smoke_test.dart
+@@ -524,6 +524,56 @@
+     expect(await directory.exists(), isFalse);
+     await directory.create(recursive: true);
+     final startSignal = File('${directory.path}/recording-started');
++    final stopSignal = File('${directory.path}/recording-stopped.json');
++    final watch = Stopwatch();
++    final androidScreencaps = <Map<String, dynamic>>[];
++    if (Platform.isAndroid) {
++      binding.reportData!['android_screencaps'] = androidScreencaps;
++    }
++    final captureIdentity = {
++      for (final key in [
++        'verification_id', 'candidate_fingerprint', 'harness_sha256',
++        'device_label', 'run_id', 'platform', 'scenario',
++      ]) key: binding.reportData![key],
++      'directory': directory.path,
++    };
++    Future<void> screenshot(String screen) async {
++      if (!Platform.isAndroid) {
++        await binding.takeScreenshot('$label-capture-$screen');
++        return;
++      }
++      // The integration_test Android image-view conversion retains a frozen
++      // display between screenshot acquisitions. Capture the real OS surface
++      // externally; do not convert/revert it or invoke UI callbacks directly.
++      final sequence = androidScreencaps.length + 1;
++      final request = {
++        ...captureIdentity,
++        'sequence': sequence,
++        'file': '$label-capture-$screen.png',
++        'width': tester.view.physicalSize.width.toInt(),
++        'height': tester.view.physicalSize.height.toInt(),
++        'gameplay_elapsed_ms': watch.elapsedMilliseconds,
++      };
++      final ack = File('${directory.path}/screenshot-$sequence-ready.json');
++      expect(await ack.exists(), isFalse);
++      await tester.pump();
++      debugPrint('TIDEGLASS_NATIVE_SCREENSHOT_READY ${jsonEncode(request)}');
++      await waitForNativeCondition(
++        tester, ack.existsSync,
++        reason: 'The exact Android raw screenshot must be captured and acknowledged',
++        timeout: const Duration(seconds: 10),
++      );
++      final receipt = Map<String, dynamic>.from(
++        jsonDecode(await ack.readAsString()) as Map,
++      );
++      for (final entry in request.entries) {
++        expect(receipt[entry.key], entry.value);
++      }
++      expect(receipt['capture_method'], 'adb exec-out screencap -p');
++      expect(receipt['sha256'], matches(RegExp(r'^[a-f0-9]{64}$')));
++      expect(receipt['bytes'], greaterThan(0));
++      androidScreencaps.add(receipt);
++    }
+     final catalogue = await StoryCatalogue.load();
+     final challenge = ChallengeEconomy(catalogue.dossiers.first);
+     final run = challenge.newRun();
+@@ -568,7 +618,6 @@
+         initialPreferences: const ClientPreferences(onboardingDismissed: true),
+       ),
+     );
+-    if (Platform.isAndroid) await binding.convertFlutterSurfaceToImage();
+     await pumpNativeUi(tester);
+     binding.reportData!.addAll({
+       'seeded_core': subject.state.toJson(),
+@@ -578,9 +627,9 @@
+       'device_pixel_ratio': tester.view.devicePixelRatio,
+       'platform_locale': Platform.localeName,
+     });
+-    await binding.takeScreenshot('$label-capture-main');
++    await screenshot('main');
+     debugPrint(
+-      'TIDEGLASS_NATIVE_CAPTURE_READY ${jsonEncode({'directory': directory.path})}',
++      'TIDEGLASS_NATIVE_CAPTURE_READY ${jsonEncode(Platform.isAndroid ? captureIdentity : {'directory': directory.path})}',
+     );
+     await waitForNativeCondition(
+       tester,
+@@ -588,7 +637,7 @@
+       reason: 'The native recorder must acknowledge it started before gameplay',
+       timeout: const Duration(seconds: 45),
+     );
+-    final watch = Stopwatch()..start();
++    watch.start();
+     Future<void> until(Duration elapsed) async {
+       while (watch.elapsed < elapsed) {
+         await Future<void>.delayed(const Duration(milliseconds: 250));
+@@ -614,22 +663,46 @@
+       find.byKey(const PageStorageKey('chapter-chapter.04')),
+     );
+     await pumpNativeUi(tester);
+-    await binding.takeScreenshot('$label-capture-chapter');
++    await screenshot('chapter');
+     await until(const Duration(seconds: 14));
+     await tap(find.byKey(const ValueKey('story-tab-1')));
+     await tester.ensureVisible(find.byKey(const ValueKey('active-challenge')));
+     await pumpNativeUi(tester);
+-    await binding.takeScreenshot('$label-capture-challenge');
++    await screenshot('challenge');
+     await until(const Duration(seconds: 20));
+     await tester.pageBack();
+     await pumpNativeUi(tester);
+     await tap(find.byKey(const ValueKey('open-season')));
+-    await binding.takeScreenshot('$label-capture-season');
++    await screenshot('season');
+     await until(const Duration(seconds: 25));
+     expect(captureBinding.routedTestPointerEvents, greaterThan(0));
+-    debugPrint('TIDEGLASS_NATIVE_CAPTURE_DONE');
++    final gameplayElapsedMs = watch.elapsedMilliseconds;
++    if (Platform.isAndroid) {
++      final request = {
++        ...captureIdentity, 'gameplay_elapsed_ms': gameplayElapsedMs,
++      };
++      debugPrint('TIDEGLASS_NATIVE_CAPTURE_DONE ${jsonEncode(request)}');
++      // Keep the final production screen present until the owned OS recorder
++      // has stopped. This does not change the gameplay timeline or its speed.
++      await waitForNativeCondition(
++        tester, stopSignal.existsSync,
++        reason: 'The exact Android recorder must stop before removing its UI',
++        timeout: const Duration(seconds: 15),
++      );
++      final receipt = Map<String, dynamic>.from(
++        jsonDecode(await stopSignal.readAsString()) as Map,
++      );
++      for (final entry in request.entries) {
++        expect(receipt[entry.key], entry.value);
++      }
++      expect(receipt['recorder_stopped'], isTrue);
++      binding.reportData!['android_screencaps'] = androidScreencaps;
++      binding.reportData!['android_recording_stop'] = receipt;
++    } else {
++      debugPrint('TIDEGLASS_NATIVE_CAPTURE_DONE');
++    }
+     binding.reportData!.addAll({
+-      'real_gameplay_elapsed_ms': watch.elapsedMilliseconds,
++      'real_gameplay_elapsed_ms': gameplayElapsedMs,
+       'actual_purchase_count_delta': subject.state.counts.first - beforeCount,
+       'automated_pointer_events_routed': captureBinding.routedTestPointerEvents,
+       'screen_set': ['main', 'chapter', 'challenge', 'season'],
+--- a/tool/native_recording.py
++++ b/tool/native_recording.py
+@@ -1,7 +1,10 @@
+ """Unedited simulator capture synchronized with the native gallery fixture."""
+ from __future__ import annotations
+ 
++import hashlib
+ import json
++import shlex
++import zlib
+ from pathlib import Path
+ import re
+ import signal
+@@ -12,6 +15,65 @@
+ APP_ID = 'dev.tideglass.game'
+ READY = 'TIDEGLASS_NATIVE_CAPTURE_READY '
+ DONE = 'TIDEGLASS_NATIVE_CAPTURE_DONE'
++SCREENSHOT = 'TIDEGLASS_NATIVE_SCREENSHOT_READY '
++IDENTITY_KEYS = ('verification_id', 'candidate_fingerprint', 'harness_sha256',
++                 'device_label', 'run_id', 'platform', 'scenario')
++SCREENS = ('main', 'chapter', 'challenge', 'season')
++
++
++def raw_png_size(data: bytes) -> tuple[int, int]:
++    """Validate unmodified adb PNG framing/CRC and dimensions, never encode pixels."""
++    if not 33 <= len(data) <= 32 * 1024 * 1024 or data[:8] != b'\x89PNG\r\n\x1a\n':
++        raise ValueError('Raw screenshot is not a bounded PNG')
++    offset, kinds, size = 8, [], None
++    while offset < len(data):
++        if offset + 12 > len(data):
++            raise ValueError('Truncated raw PNG chunk')
++        length, kind = struct.unpack('>I4s', data[offset:offset + 8])
++        end = offset + length + 12
++        if end > len(data):
++            raise ValueError('Truncated raw PNG payload')
++        body = data[offset + 8:end - 4]
++        crc = struct.unpack('>I', data[end - 4:end])[0]
++        if zlib.crc32(kind + body) & 0xffffffff != crc:
++            raise ValueError('Raw PNG CRC mismatch')
++        if not kinds:
++            if kind != b'IHDR' or length != 13:
++                raise ValueError('Raw PNG has no valid first IHDR')
++            width, height, depth, color, comp, filt, interlace = struct.unpack('>IIBBBBB', body)
++            if not (0 < width <= 8192 and 0 < height <= 8192 and depth == 8
++                    and color in (2, 6) and comp == filt == interlace == 0):
++                raise ValueError('Unexpected Android raw screenshot format')
++            size = (width, height)
++        elif kind == b'IHDR':
++            raise ValueError('Duplicate raw PNG IHDR')
++        kinds.append(kind)
++        offset = end
++        if kind == b'IEND':
++            if length or offset != len(data):
++                raise ValueError('Invalid raw PNG end')
++            break
++    if kinds[-1:] != [b'IEND'] or b'IDAT' not in kinds:
++        raise ValueError('Incomplete raw PNG')
++    return size
++
++
++def process_start_ticks(stat: str, pid: int) -> int:
++    """Linux stat field22, allowing spaces/parentheses in the comm field."""
++    prefix, separator, tail = stat.rpartition(') ')
++    if not separator or not prefix.startswith(f'{pid} ('):
++        raise ValueError('Recorder stat identity is malformed')
++    fields = tail.split()
++    if len(fields) < 20 or not fields[19].isdigit() or int(fields[19]) <= 0:
++        raise ValueError('Recorder process start identity is missing')
++    return int(fields[19])
++
++
++def marker_values(log_text: str, marker: str) -> list[str]:
++    prefix = r'(?:flutter: |[IEW]/flutter\s*\(\s*\d+\s*\): )?'
++    return re.findall(r'^' + prefix + re.escape(marker) + r'([^\r\n]*)$',
++                      log_text, re.MULTILINE)
++
+ 
+ 
+ def capture_manifest(evidence: Path, payload: dict, recording: dict, device: str) -> dict:
+@@ -35,6 +97,25 @@
+     if {row['file'] for row in screenshots} != expected or len(screenshots) != 4:
+         raise ValueError('All four distinct gallery screens are required')
+     video = evidence / 'gameplay.mp4'
++    if payload.get('platform') == 'android':
++        receipts = payload.get('android_screencaps')
++        if (not isinstance(receipts, list) or len(receipts) != 4
++                or any(not isinstance(row, dict) for row in receipts)
++                or receipts != recording.get('android_screenshots')):
++            raise ValueError('Android screenshot receipts do not match host capture')
++        by_file = {row['file']: row for row in screenshots}
++        for index, receipt in enumerate(receipts):
++            name = f"{payload['device_label']}-capture-{SCREENS[index]}.png"
++            if receipt.get('sequence') != index + 1 or receipt.get('file') != name:
++                raise ValueError('Android screenshot receipt order differs')
++            if any(receipt.get(key) != payload.get(key) for key in IDENTITY_KEYS):
++                raise ValueError('Android screenshot receipt identity differs')
++            if any(receipt.get(key) != by_file[name][key] for key in ('sha256', 'bytes', 'width', 'height')):
++                raise ValueError('Android raw screenshot differs from receipt')
++        if payload.get('android_recording_stop') != recording.get('android_recording_stop'):
++            raise ValueError('Android recording stop receipt differs')
++        if not recording.get('android_recording_stop', {}).get('recorder_stopped'):
++            raise ValueError('Android recorder did not acknowledge the real endpoint')
+     if not recording.get('passed') or not video.is_file():
+         raise ValueError('Successful native recording is required for the gallery manifest')
+     return {
+@@ -89,14 +170,22 @@
+         self.recorder_log = None
+         self.started = False
+         self.done = False
++        self.capture_identity = None
++        self.capture_directory = None
++        self.screenshot_markers = []
++        self.android_recorder_identity = None
++        if not re.fullmatch(r'[A-Za-z0-9_.-]+', evidence.name) or '..' in evidence.name:
++            raise ValueError('Unsafe evidence directory identity')
++        if evidence.is_symlink():
++            raise ValueError('Evidence directory must not be a symlink')
+         self.remote = f'/sdcard/tideglass-{evidence.name}.mp4'
+         self.video = evidence / 'gameplay.mp4'
+         self.report = {'platform': platform, 'device': device, 'audio_recorded': False,
+                        'editing': 'None; native simulator screen recorder output',
+                        'commands': [], 'errors': []}
+ 
+-    def run(self, command: list[str], timeout: int = 40):
+-        result = subprocess.run(command, capture_output=True, text=True, timeout=timeout)
++    def run(self, command: list[str], timeout: int = 40, input_text: str | None = None):
++        result = subprocess.run(command, capture_output=True, text=True, timeout=timeout, input=input_text)
+         self.report['commands'].append({'command': command, 'exit_code': result.returncode,
+                                        'output': result.stdout + result.stderr})
+         if result.returncode:
+@@ -107,10 +196,148 @@
+         return [str(self.root / '.tooling/android-sdk/platform-tools/adb'),
+                 '-s', self.device, *args]
+ 
++    def bind_command(self, command: list[str]):
++        if self.platform != 'android':
++            return
++        definitions = {}
++        for part in command:
++            if part.startswith('--dart-define='):
++                key, value = part[len('--dart-define='):].split('=', 1)
++                if key in definitions:
++                    raise ValueError('Duplicate native command identity')
++                definitions[key] = value
++        identity = {
++            'verification_id': definitions.get('TIDEGLASS_VERIFICATION_ID'),
++            'candidate_fingerprint': definitions.get('TIDEGLASS_CANDIDATE_FINGERPRINT'),
++            'harness_sha256': definitions.get('TIDEGLASS_HARNESS_SHA256'),
++            'device_label': definitions.get('TIDEGLASS_DEVICE_LABEL'),
++            'run_id': definitions.get('TIDEGLASS_RUN_ID'),
++            'platform': 'android', 'scenario': definitions.get('TIDEGLASS_SCENARIO'),
++        }
++        if (identity['verification_id'] != self.evidence.name or identity['device_label'] != self.label
++                or identity['run_id'] != self.run_id or identity['scenario'] != 'capture-gallery'
++                or not re.fullmatch(r'[a-f0-9]{64}', identity['candidate_fingerprint'] or '')
++                or identity['harness_sha256'] != hashlib.sha256((self.evidence / 'harness.dart').read_bytes()).hexdigest()):
++            raise ValueError('Android capture command identity does not match evidence')
++        self.capture_identity = identity
++
++    def checked_request(self, raw: str) -> dict:
++        request = json.loads(raw)
++        if not isinstance(request, dict) or self.capture_identity is None:
++            raise ValueError('Android capture request has no bound command identity')
++        if any(request.get(key) != value for key, value in self.capture_identity.items()):
++            raise ValueError('Android capture request identity mismatch')
++        directory = request.get('directory')
++        if not isinstance(directory, str):
++            raise ValueError('Android capture directory is missing')
++        signal_path('android', directory, self.label, self.run_id)
++        if self.capture_directory is not None and directory != self.capture_directory:
++            raise ValueError('Android capture directory changed within this run')
++        self.capture_directory = directory
++        return request
++
++    def acknowledge(self, filename: str, payload: dict):
++        if not re.fullmatch(r'(?:screenshot-[1-4]-ready|recording-stopped)\.json', filename):
++            raise ValueError('Unsafe screenshot acknowledgement name')
++        destination = Path(self.capture_directory) / filename
++        pending = str(destination) + '.pending'
++        # Fully write a fresh temporary, then atomically publish without replacing
++        # an existing acknowledgement. All paths are this exact private fixture.
++        shell = (f'set -C; cat > {shlex.quote(pending)} && '
++                 f'ln {shlex.quote(pending)} {shlex.quote(str(destination))} && '
++                 f'rm {shlex.quote(pending)}')
++        self.run(self.adb('shell', 'run-as', APP_ID, 'sh', '-c', shlex.quote(shell)),
++                 timeout=5, input_text=json.dumps(payload, sort_keys=True) + '\n')
++
++    def capture_android_screenshot(self, raw: str):
++        request = self.checked_request(raw)
++        index = len(self.screenshot_markers)
++        if index >= 4 or request.get('sequence') != index + 1 or type(request.get('sequence')) is not int:
++            raise ValueError('Unexpected Android screenshot sequence')
++        expected = f'{self.label}-capture-{SCREENS[index]}.png'
++        if request.get('file') != expected or self.done or (index == 0 and self.started) or (index > 0 and not self.started):
++            raise ValueError('Unexpected Android screenshot name or phase')
++        elapsed = request.get('gameplay_elapsed_ms')
++        if type(elapsed) is not int or not 0 <= elapsed <= 180000 or (index == 0 and elapsed != 0):
++            raise ValueError('Invalid screenshot real elapsed time')
++        if index and elapsed < self.report['android_screenshots'][-1]['gameplay_elapsed_ms']:
++            raise ValueError('Screenshot real elapsed time moved backward')
++        if any(type(request.get(k)) is not int or not 0 < request[k] <= 8192 for k in ('width', 'height')):
++            raise ValueError('Invalid screenshot device geometry')
++        if index and self.process.poll() is not None:
++            raise RuntimeError('Android recorder exited before gallery completion')
++        path = self.evidence / expected
++        if path.exists() or path.is_symlink():
++            raise ValueError('Refusing to replace a raw Android screenshot')
++        command = self.adb('exec-out', 'screencap', '-p')
++        start = time.monotonic_ns()
++        result = subprocess.run(command, capture_output=True, timeout=5)
++        end = time.monotonic_ns()
++        self.report['commands'].append({'command': command, 'exit_code': result.returncode,
++                                       'stderr': result.stderr.decode(errors='replace'),
++                                       'raw_bytes': len(result.stdout)})
++        if result.returncode:
++            raise RuntimeError('Android raw screencap failed')
++        # Preserve the actual returned bytes even if validation fails; never repair.
++        with path.open('xb') as target:
++            target.write(result.stdout)
++        width, height = raw_png_size(result.stdout)
++        if (width, height) != (request['width'], request['height']):
++            raise ValueError('Raw screenshot geometry differs from the app view')
++        receipt = {**request, 'sha256': hashlib.sha256(result.stdout).hexdigest(),
++                   'bytes': len(result.stdout), 'capture_method': 'adb exec-out screencap -p',
++                   'host_capture_start_monotonic_ns': start, 'host_capture_end_monotonic_ns': end}
++        self.report.setdefault('android_screenshots', []).append(receipt)
++        self.acknowledge(f'screenshot-{index + 1}-ready.json', receipt)
++        self.screenshot_markers.append(raw)
++
++    def recorder_identity(self, pid: int) -> dict:
++        if type(pid) is not int or not 1 < pid < 2**31:
++            raise ValueError('Invalid owned recorder PID')
++        before = self.run(self.adb('shell', 'cat', f'/proc/{pid}/stat'), timeout=5)
++        argv = self.run(self.adb('shell', 'cat', f'/proc/{pid}/cmdline'), timeout=5).split('\0')
++        argv = [value for value in argv if value]
++        after = self.run(self.adb('shell', 'cat', f'/proc/{pid}/stat'), timeout=5)
++        tick = process_start_ticks(before, pid)
++        if tick != process_start_ticks(after, pid):
++            raise ValueError('Owned recorder process identity changed during observation')
++        if (len(argv) != 4 or argv[0] not in ('screenrecord', '/system/bin/screenrecord')
++                or argv[1:] != ['--time-limit', '27', self.remote]):
++            raise ValueError('PID is not the exact owned screenrecord command')
++        return {'pid': pid, 'start_ticks': tick, 'argv': argv}
++
++    def stop_android_recorder(self):
++        identity = self.android_recorder_identity
++        if identity is None:
++            raise ValueError('No validated owned Android recorder identity')
++        current = self.recorder_identity(identity['pid'])
++        if current != identity:
++            raise ValueError('Refusing to signal a changed Android recorder identity')
++        self.run(self.adb('shell', 'kill', '-2', str(identity['pid'])), timeout=5)
++        code = self.process.wait(timeout=8)
++        if code != 0:
++            raise RuntimeError('Owned Android recorder failed during finalization')
++        self.report['android_recorder_stop'] = {'identity': current,
++            'host_monotonic_ns': time.monotonic_ns(), 'exit_code': code}
++
+     def observe(self, log_text: str):
++        if self.platform == 'android':
++            if len(marker_values(log_text, READY)) > 1 or len(marker_values(log_text, DONE + ' ')) > 1:
++                raise ValueError('Repeated Android capture start or end marker')
++            screenshots = marker_values(log_text, SCREENSHOT)
++            if screenshots[:len(self.screenshot_markers)] != self.screenshot_markers:
++                raise ValueError('Screenshot request history changed')
++            for request in screenshots[len(self.screenshot_markers):]:
++                self.capture_android_screenshot(request)
+         if not self.started and READY in log_text:
+             raw = log_text.split(READY, 1)[1].splitlines()[0]
+-            directory = json.loads(raw)['directory']
++            if self.platform == 'android':
++                entries = marker_values(log_text, READY)
++                if len(entries) != 1 or len(self.screenshot_markers) != 1:
++                    raise ValueError('Android recording start requires the exact main screenshot')
++                directory = self.checked_request(entries[0])['directory']
++            else:
++                directory = json.loads(raw)['directory']
+             container = None
+             if self.platform == 'ios':
+                 container = self.run(['xcrun', 'simctl', 'get_app_container', self.device, APP_ID, 'data'])
+@@ -119,7 +346,10 @@
+                 command = ['xcrun', 'simctl', 'io', self.device, 'recordVideo',
+                            '--codec=h264', '--force', str(self.video)]
+             else:
+-                command = self.adb('shell', 'screenrecord', '--time-limit', '27', self.remote)
++                shell = (f'screenrecord --time-limit 27 {shlex.quote(self.remote)} & '
++                         'capture_pid=$!; echo TIDEGLASS_SCREENRECORD_PID=$capture_pid; '
++                         'wait "$capture_pid"')
++                command = self.adb('shell', shell)
+             self.recorder_log = (self.evidence / 'recorder.log').open('w')
+             self.process = subprocess.Popen(command, stdout=self.recorder_log, stderr=subprocess.STDOUT)
+             self.report['commands'].append({'command': command, 'kind': 'screen-recorder'})
+@@ -132,6 +362,18 @@
+                     time.sleep(.1)
+                 self.report['start_acknowledgement'] = 'simctl first recorded video frame'
+             else:
++                deadline = time.monotonic() + 5
++                matches = []
++                while not matches:
++                    matches = re.findall(r'^TIDEGLASS_SCREENRECORD_PID=([0-9]+)\r?$',
++                        (self.evidence / 'recorder.log').read_text(errors='replace'), re.MULTILINE)
++                    if len(matches) > 1 or self.process.poll() is not None or time.monotonic() >= deadline:
++                        raise RuntimeError('No unique owned screenrecord launch PID')
++                    if not matches:
++                        time.sleep(.05)
++                self.android_recorder_identity = self.recorder_identity(int(matches[0]))
++                self.report['android_recorder_start'] = {'identity': self.android_recorder_identity,
++                    'host_monotonic_ns': time.monotonic_ns()}
+                 time.sleep(1)
+                 self.report['start_acknowledgement'] = 'screenrecord process alive after one second; final MP4 duration independently checked'
+             if self.process.poll() is not None:
+@@ -142,6 +384,22 @@
+                 self.run(self.adb('shell', 'run-as', APP_ID, 'touch', str(flag)))
+             self.report['fixture_acknowledged'] = True
+         if DONE in log_text and not self.done:
++            if self.platform == 'android':
++                entries = marker_values(log_text, DONE + ' ')
++                if len(entries) != 1 or len(self.screenshot_markers) != 4 or not self.started:
++                    raise ValueError('Android completed marker requires four exact screenshots')
++                request = self.checked_request(entries[0])
++                elapsed = request.get('gameplay_elapsed_ms')
++                if type(elapsed) is not int or elapsed < self.report['android_screenshots'][-1]['gameplay_elapsed_ms']:
++                    raise ValueError('Invalid Android real endpoint')
++                if self.process.poll() is not None:
++                    raise RuntimeError('Android recorder exited before its real endpoint')
++                self.stop_android_recorder()
++                receipt = {**request, 'recorder_stopped': True,
++                           'recorder_identity': self.android_recorder_identity,
++                           'host_stop_monotonic_ns': time.monotonic_ns()}
++                self.acknowledge('recording-stopped.json', receipt)
++                self.report['android_recording_stop'] = receipt
+             self.done = True
+             if self.platform == 'ios' and self.process and self.process.poll() is None:
+                 self.process.send_signal(signal.SIGINT)
+@@ -152,6 +410,11 @@
+         if not self.done:
+             self.report['errors'].append('No completed gameplay marker')
+         if self.process:
++            if self.platform == 'android' and self.process.poll() is None and self.android_recorder_identity is not None:
++                try:
++                    self.stop_android_recorder()
++                except (OSError, RuntimeError, ValueError, subprocess.TimeoutExpired) as error:
++                    self.report['errors'].append('Android recorder cleanup: ' + str(error))
+             if self.platform == 'ios' and self.process.poll() is None:
+                 self.process.send_signal(signal.SIGINT)
+             try:
+@@ -164,6 +427,8 @@
+                 self.recorder_log.close()
+             if self.platform == 'android':
+                 try:
++                    if self.video.exists() or self.video.is_symlink():
++                        raise RuntimeError('Refusing to replace the raw Android video')
+                     self.run(self.adb('pull', self.remote, str(self.video)))
+                     self.run(self.adb('shell', 'rm', self.remote))
+                 except (RuntimeError, subprocess.TimeoutExpired) as error:
+@@ -187,6 +452,12 @@
+ 
+ def run_with_gallery(command: list[str], cwd: Path, env: dict[str, str], recorder: GalleryRecorder):
+     log_path = recorder.evidence / 'run.log'
++    try:
++        recorder.bind_command(command)
++    except (OSError, ValueError) as error:
++        recorder.report['errors'].append('Capture command binding: ' + str(error))
++        log_path.write_text('Capture command binding failed: ' + str(error) + '\n')
++        return 1, recorder.finish()
+     with log_path.open('w') as log:
+         process = subprocess.Popen(command, cwd=cwd, env=env, stdout=log, stderr=subprocess.STDOUT)
+         try:
+--- a/tool/native_integration_driver.dart
++++ b/tool/native_integration_driver.dart
+@@ -2,6 +2,7 @@
+ import 'dart:io';
+ 
+ import 'package:integration_test/integration_test_driver.dart';
++import 'package:crypto/crypto.dart';
+ 
+ Future<void> main() async {
+   final directory = Directory(
+@@ -15,6 +16,60 @@
+       final result = Map<String, dynamic>.from(data ?? {});
+       final screenshots = result.remove('screenshots') as List<dynamic>? ?? [];
+       final paths = <String>[];
++      final external = result['android_screencaps'];
++      try {
++        if (external != null) {
++          if (result['platform'] != 'android' ||
++              result['scenario'] != 'capture-gallery' ||
++              screenshots.isNotEmpty || external is! List || external.length != 4) {
++            throw FormatException('Unexpected external gallery screenshots');
++          }
++          final label = result['device_label'];
++          if (label is! String || !RegExp(r'^[a-zA-Z0-9_-]+$').hasMatch(label)) {
++            throw FormatException('Unsafe gallery device label');
++          }
++          const screens = ['main', 'chapter', 'challenge', 'season'];
++          for (var index = 0; index < screens.length; index++) {
++            final receipt = Map<String, dynamic>.from(external[index] as Map);
++            final name = '$label-capture-${screens[index]}.png';
++            if (receipt['file'] != name || receipt['sequence'] != index + 1 ||
++                receipt['capture_method'] != 'adb exec-out screencap -p') {
++              throw FormatException('Unexpected raw gallery screenshot identity');
++            }
++            for (final key in [
++              'verification_id', 'candidate_fingerprint', 'harness_sha256',
++              'device_label', 'run_id', 'platform', 'scenario',
++            ]) {
++              if (receipt[key] != result[key]) {
++                throw FormatException('Raw screenshot identity differs: $key');
++              }
++            }
++            final file = File('${directory.path}/$name');
++            if (FileSystemEntity.typeSync(file.path, followLinks: false) !=
++                FileSystemEntityType.file) {
++              throw FormatException('Raw screenshot is missing or is a symlink');
++            }
++            final bytes = await file.readAsBytes();
++            if (bytes.length != receipt['bytes'] ||
++                sha256.convert(bytes).toString() != receipt['sha256']) {
++              throw FormatException('Raw screenshot differs from acknowledged bytes');
++            }
++            paths.add(file.path);
++          }
++        } else if (result['platform'] == 'android' &&
++            result['scenario'] == 'capture-gallery') {
++          throw FormatException('Android gallery raw screenshot receipts are missing');
++        }
++      } catch (error) {
++        // Retain failed Android acknowledgement/hash evidence as well as the
++        // raw files. Rethrow so a partial gallery cannot become a passing run.
++        result['screenshots'] = paths;
++        result['screenshot_collection_error'] = error.toString();
++        await File('${directory.path}/result.json').writeAsString(
++          const JsonEncoder.withIndent('  ').convert(result),
++        );
++        rethrow;
++      }
+       for (final raw in screenshots) {
+         final screenshot = Map<String, dynamic>.from(raw as Map);
+         final name = screenshot['screenshotName'] as String;

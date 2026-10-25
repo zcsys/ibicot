@@ -1,0 +1,46 @@
+name: tideglass
+description: An ocean of small lights, built one constellation at a time.
+publish_to: none
+version: 0.1.0+1
+environment:
+  sdk: '>=3.10.0 <4.0.0'
+dependencies:
+  flutter:
+    sdk: flutter
+  tideglass_core:
+    path: ../core
+  tideglass_persistence:
+    path: ../persistence
+  tideglass_progression:
+    path: ../progression
+  tideglass_events:
+    path: ../events
+  audioplayers: 6.8.1
+  flutter_secure_storage: 11.2.0
+  flutter_local_notifications: 22.3.2
+  flutter_timezone: 5.1.1
+  timezone: 0.11.2
+  tideglass_platform:
+    path: ../platform
+  crypto: ^3.0.6
+  path_provider: ^2.1.5
+  share_plus: 13.3.1
+  url_launcher: 6.3.3
+  cryptography: 2.9.0
+  in_app_purchase: 3.3.1
+  google_mobile_ads: 9.1.0
+dev_dependencies:
+  integration_test:
+    sdk: flutter
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/calibrations/
+    - assets/progression/
+    - assets/challenges/
+    - assets/events/
+    - assets/audio/
+    - assets/config/

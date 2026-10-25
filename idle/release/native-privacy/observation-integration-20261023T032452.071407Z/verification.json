@@ -1,0 +1,38 @@
+{
+  "results": [
+    {
+      "name": "runner-tests",
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tool",
+        "-p",
+        "test_current_runtime_verification.py",
+        "-v"
+      ],
+      "cwd": "/Users/csys/Desktop/ibicot/idle",
+      "exit_code": 0
+    },
+    {
+      "name": "harness-analysis",
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+        "analyze",
+        "--no-pub",
+        "integration_test/current_runtime_test.dart"
+      ],
+      "cwd": "/Users/csys/Desktop/ibicot/idle/game/mobile",
+      "exit_code": 0
+    }
+  ],
+  "source_sha256": {
+    "game/mobile/integration_test/current_runtime_test.dart": "102be09eb8043ce9bb496156d9f37b1834c3084ddf58fef073e7c25cdc3c55d5",
+    "tool/verify_current_runtime.py": "d849ab8feb642eb1b988f9a6d82558491b7ebef4c63768fb4fa132f49edf3804",
+    "release/native-privacy/runtime_observation.py": "f3374fb77c83e2b12ff91a48b4c688aa07c7b66042dd75681f7ec2b5fc00febd"
+  },
+  "source_unchanged": true,
+  "native_execution_performed": false
+}

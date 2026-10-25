@@ -1,0 +1,44 @@
+{
+  "reviewer": "/root",
+  "author": "/root/platform_release",
+  "source_sha256": {
+    "tool/build_native.py": "9f2a54793304639bda691cd0dddb4f2318951d9078c30b20f48ecc7fb1c68563",
+    "tool/test_native_candidates.py": "584e97c14f70e03b9839ad23b9ab9e0c4a069655ff9982c27a0b4426b951df61"
+  },
+  "results": [
+    {
+      "name": "native",
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tool",
+        "-p",
+        "test_native*.py",
+        "-v"
+      ],
+      "exit_code": 0,
+      "log_sha256": "daaf3d8800a965cf00ff730efedb59a309cc171b80409c76fca854b72caa89f1"
+    },
+    {
+      "name": "study",
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tool",
+        "-p",
+        "test_study*.py",
+        "-v"
+      ],
+      "exit_code": 0,
+      "log_sha256": "ad9a64f2a122618ff9048459b0fc9ba24b98a1b3f7eac1df873e907820debdb5"
+    }
+  ],
+  "source_unchanged": true,
+  "scope": "Future candidate study host gate and synthetic fixture capture only; no new native artifact or candidate152 coverage"
+}

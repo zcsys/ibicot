@@ -1,0 +1,7 @@
+# Native artifact collector author handoff
+
+A reusable read-only collector verifies frozen candidate source pins/fingerprint and all five successful artifact report hashes, then reads packaged Apple Info/privacy plists and embedded Android SDK property/version resources. It decodes the release AAB manifest with vendor-hash-verified bundletool1.18.3, and debug APK manifest/permissions with pinned aapt2. Raw selected members and command stdout/stderr are preserved. No install, signing, SDK initialization, traffic collection or publication occurs.
+
+The actual five historical candidate152 exports pass the collector. This qualifies collection tooling only; it is explicitly not current build evidence. Eleven positive/hostile parser/source tests pass. Duplicate/traversal archive members, excessive selected-member sizes, corrupt/nondictionary plists, malformed manifest roots and source drift reject. Apple results are individual declarations, not an official Xcode aggregate report. Exact permissions and SDK versions are declarations, not proof of actual collection or noncollection.
+
+Pending: different-agent collector review, execution on the next current candidate, process-attributed native traffic/storage samples, and final disclosures/provider/physical qualification. Vendor tool provenance is recorded in `.tooling/bundletool/download.json`; official URL https://github.com/google/bundletool/releases/tag/1.18.3 . System curl verified TLS after the local Python install failed certificate-chain verification; no TLS bypass was used.

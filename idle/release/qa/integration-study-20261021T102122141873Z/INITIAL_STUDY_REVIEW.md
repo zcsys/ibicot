@@ -1,0 +1,7 @@
+# Initial independent study instrument finding
+
+**STUDY001: return qualification was also filtering session quality and version exposure.** Under the original documented schema, `valid` described an interactive foreground harbor plus activity. A confirmed startup crash before that point was therefore non-return-valid. The unchanged original analyzer discarded that record before both retention and stability analysis.
+
+The synthetic counterexample records one candidate-B startup crash, one legitimate fixed-registry install, and no qualified return. The analyzer reports zero crashes and zero changed-candidate exposures. Both failed expectations and the complete synthetic input/output are retained in `initial-counterexample.json`; the reproduction exited 1. Original 19-input fingerprint: `47c65fb9ef618ffaaf63d4761492d330f7c3a840275abd4046f923f1b352bea8`. Tool SHA256: `711c14f2ccae06c846b9d957f6ad562aa431d18ff93685d91eda1ebc49398bf3`.
+
+The requested repair separates legitimate session-record validity from retention-return eligibility. Count valid startup crashes and version exposures even when no interactive return occurred; reject invalid records marked return-eligible. The subsequent schema-2 review uses explicitly migrated synthetic semantics and does not claim the same old input was silently reinterpreted. No real participant record exists or was changed. This initial finding/source remains preserved.

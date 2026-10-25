@@ -1,0 +1,78 @@
+--- a/tool/native_recording.py
++++ b/tool/native_recording.py
+@@ -240,12 +240,14 @@
+         if not re.fullmatch(r'(?:screenshot-[1-4]-ready|recording-stopped)\.json', filename):
+             raise ValueError('Unsafe screenshot acknowledgement name')
+         destination = Path(self.capture_directory) / filename
+-        pending = str(destination) + '.pending'
+-        # Fully write a fresh temporary, then atomically publish without replacing
+-        # an existing acknowledgement. All paths are this exact private fixture.
+-        shell = (f'set -C; cat > {shlex.quote(pending)} && '
+-                 f'ln {shlex.quote(pending)} {shlex.quote(str(destination))} && '
+-                 f'rm {shlex.quote(pending)}')
++        complete = str(destination) + '.complete'
++        # Payload creation is exclusive. The reader ignores it until mkdir
++        # atomically publishes readiness after cat has closed successfully.
++        # Keep partial payloads on failure; neither stale path is overwritten.
++        payload_path, marker_path = shlex.quote(str(destination)), shlex.quote(complete)
++        shell = (f'set -C; test ! -e {payload_path} && test ! -L {payload_path} && '
++                 f'test ! -e {marker_path} && test ! -L {marker_path} && '
++                 f'cat > {payload_path} && mkdir {marker_path}')
+         self.run(self.adb('shell', 'run-as', APP_ID, 'sh', '-c', shlex.quote(shell)),
+                  timeout=5, input_text=json.dumps(payload, sort_keys=True) + '\n')
+ 
+--- a/game/mobile/integration_test/platform_smoke_test.dart
++++ b/game/mobile/integration_test/platform_smoke_test.dart
+@@ -569,14 +569,23 @@
+         'gameplay_elapsed_ms': watch.elapsedMilliseconds,
+       };
+       final ack = File('${directory.path}/screenshot-$sequence-ready.json');
+-      expect(await ack.exists(), isFalse);
++      final complete = '${ack.path}.complete';
++      expect(FileSystemEntity.typeSync(ack.path, followLinks: false),
++          FileSystemEntityType.notFound);
++      expect(FileSystemEntity.typeSync(complete, followLinks: false),
++          FileSystemEntityType.notFound);
+       await tester.pump();
+       debugPrint('TIDEGLASS_NATIVE_SCREENSHOT_READY ${jsonEncode(request)}');
+       await waitForNativeCondition(
+-        tester, ack.existsSync,
+-        reason: 'The exact Android raw screenshot must be captured and acknowledged',
++        tester,
++        () => FileSystemEntity.typeSync(complete, followLinks: false) ==
++            FileSystemEntityType.directory,
++        reason: 'The complete Android raw screenshot receipt must be published',
+         timeout: const Duration(seconds: 10),
+       );
++      // JSON existence alone never means ready: the host may still be writing.
++      expect(FileSystemEntity.typeSync(ack.path, followLinks: false),
++          FileSystemEntityType.file);
+       final receipt = Map<String, dynamic>.from(
+         jsonDecode(await ack.readAsString()) as Map,
+       );
+@@ -733,14 +742,23 @@
+       final request = {
+         ...captureIdentity, 'gameplay_elapsed_ms': gameplayElapsedMs,
+       };
++      final complete = '${stopSignal.path}.complete';
++      expect(FileSystemEntity.typeSync(stopSignal.path, followLinks: false),
++          FileSystemEntityType.notFound);
++      expect(FileSystemEntity.typeSync(complete, followLinks: false),
++          FileSystemEntityType.notFound);
+       debugPrint('TIDEGLASS_NATIVE_CAPTURE_DONE ${jsonEncode(request)}');
+       // Keep the final production screen present until the owned OS recorder
+       // has stopped. This does not change the gameplay timeline or its speed.
+       await waitForNativeCondition(
+-        tester, stopSignal.existsSync,
+-        reason: 'The exact Android recorder must stop before removing its UI',
++        tester,
++        () => FileSystemEntity.typeSync(complete, followLinks: false) ==
++            FileSystemEntityType.directory,
++        reason: 'The complete recorder-stop receipt must be published before removing its UI',
+         timeout: const Duration(seconds: 15),
+       );
++      expect(FileSystemEntity.typeSync(stopSignal.path, followLinks: false),
++          FileSystemEntityType.file);
+       final receipt = Map<String, dynamic>.from(
+         jsonDecode(await stopSignal.readAsString()) as Map,
+       );

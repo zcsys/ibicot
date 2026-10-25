@@ -1,0 +1,13 @@
+{
+  "checked_utc": "2026-10-23T04:41:02.632430+00:00",
+  "sources": [
+    {
+      "url": "https://support.google.com/googleplay/android-developer/answer/11926878?hl=en-EN",
+      "finding": "The official page currently requires API36 or higher for new mobile apps and updates from August31,2026. Actual AAB target36 satisfies the inspected target-level field; it proves no API36 runtime behavior or store acceptance."
+    },
+    {
+      "url": "https://developer.apple.com/documentation/xcode/creating-a-static-framework",
+      "finding": "Apple describes resources accompanying statically linked framework code and omission of that linked main binary from the embedded framework. Our exact local static archive, symbol and load-command observations support the resource-stub classification; the page does not certify this particular export."
+    }
+  ]
+}

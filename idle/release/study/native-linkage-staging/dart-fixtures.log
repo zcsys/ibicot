@@ -1,0 +1,10 @@
+../../release/study/native-linkage-staging/game/platform/lib/study_recorder.dart:804:26: Error: Property 'available' cannot be accessed on 'StudyProcessObservation?' because it is potentially null.
+ - 'StudyProcessObservation' is from '../../release/study/native-linkage-staging/game/platform/lib/study_native_context.dart'.
+Try accessing using ?. instead.
+          !nativeContext.available ||
+                         ^^^^^^^^^
+../../release/study/native-linkage-staging/game/platform/lib/study_recorder.dart:805:25: Error: Property 'platform' cannot be accessed on 'StudyProcessObservation?' because it is potentially null.
+ - 'StudyProcessObservation' is from '../../release/study/native-linkage-staging/game/platform/lib/study_native_context.dart'.
+Try accessing using ?. instead.
+          nativeContext.platform == registry!['platform'],
+                        ^^^^^^^^

@@ -1,0 +1,40 @@
+{
+  "utc": "2026-10-25T17:03:55.232259+00:00",
+  "argv": [
+    "/Users/csys/Library/Android/sdk/platform-tools/adb",
+    "-s",
+    "emulator-5556",
+    "shell",
+    "input",
+    "tap",
+    "916",
+    "1061"
+  ],
+  "exit_code": 0,
+  "stdout": "",
+  "stderr": "",
+  "operator": "Automated actual Android UI event",
+  "purpose": "Actual observed Settings OFF-to-ON precondition for fresh revocation pair; no fresh permission-prompt claim",
+  "observed_node": {
+    "index": "1",
+    "text": "",
+    "resource-id": "android:id/switch_widget",
+    "class": "android.widget.Switch",
+    "package": "com.android.settings",
+    "content-desc": "",
+    "checkable": "true",
+    "checked": "false",
+    "clickable": "false",
+    "enabled": "true",
+    "focusable": "false",
+    "focused": "false",
+    "scrollable": "false",
+    "long-clickable": "false",
+    "password": "false",
+    "selected": "false",
+    "bounds": "[848,998][985,1124]"
+  },
+  "pre_image_sha256": "9e30d9a91c53b1a098c3990260e3497eb7ae020385bc01b974756b67586ee290",
+  "pre_hierarchy_sha256": "060ea92ef08bb8936f9b7b9539d9906459a1d49ba892e128b99ff78366e88928",
+  "lead_method_sha256": "4b841ade92aee43a7292c07bbaa0e0d1306a9468c840e2318eaf0a43fc0e796a"
+}

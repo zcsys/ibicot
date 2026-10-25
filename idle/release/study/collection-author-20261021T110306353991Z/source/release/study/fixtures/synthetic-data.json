@@ -1,0 +1,79 @@
+{
+  "schema_version": 2,
+  "synthetic": true,
+  "cutoff": 2678500,
+  "installs": [
+    {
+      "id": "person_0000",
+      "first_launch": 100,
+      "platform": "test",
+      "device_group": "fixture",
+      "acquisition": "fixture",
+      "baseline_config": "fixture_v1",
+      "exclusion": null,
+      "observable_intervals": []
+    },
+    {
+      "id": "person_0001",
+      "first_launch": 100,
+      "platform": "test",
+      "device_group": "fixture",
+      "acquisition": "fixture",
+      "baseline_config": "fixture_v1",
+      "exclusion": null,
+      "observable_intervals": []
+    },
+    {
+      "id": "person_0002",
+      "first_launch": 100,
+      "platform": "test",
+      "device_group": "fixture",
+      "acquisition": "fixture",
+      "baseline_config": "fixture_v1",
+      "exclusion": null,
+      "observable_intervals": [
+        [
+          100,
+          2678500
+        ]
+      ]
+    },
+    {
+      "id": "person_0003",
+      "first_launch": 100,
+      "platform": "test",
+      "device_group": "fixture",
+      "acquisition": "fixture",
+      "baseline_config": "fixture_v1",
+      "exclusion": "automation",
+      "observable_intervals": [
+        [
+          100,
+          2678500
+        ]
+      ]
+    }
+  ],
+  "sessions": [
+    {
+      "install_id": "person_0000",
+      "session_id": "return_day30",
+      "start": 2592100,
+      "end": 2592400,
+      "crashed": false,
+      "valid": true,
+      "config": "fixture_v1",
+      "return_eligible": true
+    },
+    {
+      "install_id": "person_0002",
+      "session_id": "initial",
+      "start": 100,
+      "end": 200,
+      "crashed": false,
+      "valid": true,
+      "config": "fixture_v1",
+      "return_eligible": true
+    }
+  ]
+}

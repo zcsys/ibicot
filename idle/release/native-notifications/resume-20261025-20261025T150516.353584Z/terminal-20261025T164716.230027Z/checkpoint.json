@@ -1,0 +1,43 @@
+{
+  "utc": "20261025T164716.230027Z",
+  "native_sessions": "All terminal: delivery17962/pass; offline9294+42603/pass; listener85617/normalstop; revokedprepare85520/expectedinterrupted but UI timestamp validator rejected; no recovery launched",
+  "current_device": "Owned emulator5556 running; notification SettingsOFF; appPID absent; networking baseline restored0/1/1. No protected simulator action.",
+  "source_pins": {
+    "game/mobile/integration_test/native_reminders_test.dart": "de04f52b3c2311b3eb8e1c7fb83fcf7da41256a63a9a3b9f0ca4f732e8667eb4",
+    "tool/verify_native_reminders.py": "ddc801d4cc1050d51720e5da2bddae0db1f404fcbc6dcefd3d4ef00de9728f5b",
+    "tool/reminder_restart.py": "c39cc8a832526b3487aaeafafa248d5c5488ae4eea8cebc968f34ed5a7e78c07",
+    "tool/test_reminder_restart.py": "e4fe3c409f51192ab8ae0a7261d3e1ef5fe83ccc47a4f959ba566d99da4a21a3"
+  },
+  "links_sha256": {
+    "release/native-notifications/resume-20261025-20261025T150516.353584Z/android-delivery-observed3-checkpoint.json": "932afa59293bd3409cd94fba521c09137231d033ce3686c2d04769460f066249",
+    "release/native-proof/offline-operator-20261025T163838.795705Z/checkpoint.json": "d7cb2c58a36f6e519f6ff5ad62040b1e6042dbafebb2d6905cc0b7d926648eb1",
+    "release/native-notifications/revoked-restart-operator-20261025T164440025420Z/checkpoint.json": "355eb30af3a914e09c2c9a9885b1df21a8c19ee90d15c9aaf1d2f77e9ecc74d8",
+    "release/native-notifications/revocation-clock-diagnostic-20261025T164645.898891Z/diagnostic.json": "637eb1f3ffd56701ad3f56498656b0baf47d8bf8b2d3979917229909988bc934"
+  },
+  "process_observations": [
+    {
+      "argv": [
+        "ps",
+        "-axo",
+        "pid,command"
+      ],
+      "exit_code": 0,
+      "file": "process-0.txt",
+      "sha256": "b5333c4f88ef5d6678a0ae9f42d04e5292258d9d889536be3a4713177e4b982d"
+    },
+    {
+      "argv": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "pidof",
+        "dev.tideglass.game"
+      ],
+      "exit_code": 1,
+      "file": "process-1.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "remaining": "Independent clock-domain protocol repair/review before new eligible revoked pair; root owns acceptance and external/iOS scope. Regular playable app handoff approved but not executed while local tests pending."
+}

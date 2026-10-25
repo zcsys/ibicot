@@ -1,0 +1,11 @@
+# Execution record
+
+The first three focused tests passed, but the `dart test` convenience command implicitly regenerated the progression package configuration with the default user pub-cache path. The original package configuration was captured before execution. The generated version, exact path-only delta and initial test log are preserved; the captured configuration was restored before the final run. Production sources, dependency lock and canonical metadata did not change.
+
+Two attempts to avoid implicit package resolution were rejected before executing tests: `dart test --no-pub` exited 64 because that Dart test command has no such option, and a direct VM invocation with `--suppress-analytics` exited 255 because that VM does not accept the CLI flag. Their exact commands and outputs remain in the `unsupported-no-pub-*` and `unsupported-vm-flag-*` files.
+
+The final invocation directly executed the pinned `test-1.33.0/bin/test.dart` entrypoint using the pinned Dart binary, explicit original `--packages` file and repository `PUB_CACHE`. It executed exactly the same three selected tests, produced a terminal successful JSON stream, exited 0, and left the package configuration and all 191 pinned inputs unchanged. Its precise command, binary/entrypoint/log hashes and process times are in `focused-dart-run.json`. Only the final environment is used for the current-source recommendation; the first passing run is retained as history.
+
+The independent metadata checker initially assumed PNG pixel dimensions equaled the renderer's logical 640×388 view box. Actual export code deliberately produces 1280×776 overlays and 300×182 preview captures. The incorrect helper assertion was corrected from inspected export code and source asset bytes; `audit-first.py` and `audit-first.log` preserve the initial failure. This was a QA assumption failure, not a product or original-scope requirement. The checker additionally verifies every actual PNG against the pre-existing provenance digest and confirms all 36 overlays differ.
+
+The second checker run stopped at the generated package-config drift described above. After restoring the captured config and completing the final direct-entrypoint run, the final 2,536 read-only checks passed. No failed attempt is counted as test success or removed.

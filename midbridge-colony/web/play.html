@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Company</title>
+  <link rel="stylesheet" href="/play.css">
+  <script src="/play.js" defer></script>
+</head>
+<body>
+  <main>
+    <div class="cash">Company cash <output id="cash">—</output></div>
+    <div class="price-label"><label for="price">Price</label><output id="priceValue" for="price">—</output></div>
+    <input id="price" type="range" min="0.01" max="10" step="0.01" aria-describedby="priceWarning" disabled>
+    <p id="priceWarning" role="status" hidden></p>
+    <div id="productionControl" class="production-control">
+      <div class="price-label"><label for="production">Production</label><output id="productionValue" for="production">—</output></div>
+      <input id="production" type="range" min="0" max="6000" step="1" disabled aria-describedby="productionLimit">
+      <p id="productionLimit" class="production-limit" role="status" hidden></p>
+    </div>
+    <dl class="metrics">
+      <div class="sales"><dt>Sales / tick <span>(EMA)</span></dt><dd id="sales">—</dd></div>
+      <div><dt>Net earnings / tick <span>(EMA)</span></dt><dd id="earnings">—</dd></div>
+      <div><dt>Unit cost</dt><dd id="unitCost">—</dd></div>
+    </dl>
+    <section class="inventory" aria-label="Storage">
+      <div class="inventory-heading"><span>Inventory &amp; equipment</span><output id="storageTotal">—</output></div>
+      <div id="inventoryBoxes" class="inventory-boxes" role="img" aria-label="Storage occupancy"></div>
+      <div id="inventoryLegend" class="inventory-legend"></div>
+    </section>
+    <p id="status" role="status" aria-live="polite">Connecting…</p>
+    <div class="reset-area"><button id="reset" type="button" disabled>Reset and start over</button></div>
+  </main>
+</body>
+</html>

@@ -1,0 +1,30 @@
+{
+  "scope": "Current-source host calibration-pseudo-full; not candidate152/native/human qualification",
+  "source_differences": [],
+  "results": [
+    {
+      "name": "analyzer",
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+        "analyze"
+      ],
+      "exit_code": 0,
+      "log_sha256": "e040f0f2648202c14cbfb728222d5fd2c94e4d2073658a87e7ee2388a588fd95"
+    },
+    {
+      "name": "calibration",
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+        "test",
+        "test/calibration_accessibility_matrix_test.dart",
+        "--reporter=expanded",
+        "--timeout=120s",
+        "--dart-define=TIDEGLASS_PSEUDO=true",
+        "--dart-define=TIDEGLASS_ACCESSIBILITY_REPORT_DIR=/Users/csys/Desktop/ibicot/idle/release/accessibility-current/root-calibration-pseudo-full-20261021T125549.278518Z"
+      ],
+      "exit_code": 0,
+      "log_sha256": "d6f4772befc264bfb425ac7f22965f86481e796c5c2a75c879b96da6baca563b"
+    }
+  ],
+  "calibration_report_sha256": "55d2fdd2fa0a88c38ee6cc36c1e3687f29bbb17fb493844c1995e108729bc7bb"
+}

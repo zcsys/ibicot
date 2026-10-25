@@ -1,0 +1,50 @@
+[
+  {
+    "utc": "2026-10-25T16:03:31.208547+00:00",
+    "argv": [
+      "/Users/csys/Library/Android/sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "shell",
+      "-tt",
+      "uiautomator",
+      "dump",
+      "/dev/tty"
+    ],
+    "exit_code": 0,
+    "file": "disable-shade-hierarchy.txt",
+    "sha256": "411103dfee35a75626369749e3c60d5fcb4bb110d5841f97409351e022a6e113",
+    "stderr": ""
+  },
+  {
+    "utc": "2026-10-25T16:03:33.662839+00:00",
+    "argv": [
+      "/Users/csys/Library/Android/sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "exec-out",
+      "screencap",
+      "-p"
+    ],
+    "exit_code": 0,
+    "file": "disable-shade.png",
+    "sha256": "bc2f01e930c1427b220a658199d5171b8d6c56b61a611d2d301a1376abe966e4",
+    "stderr": ""
+  },
+  {
+    "utc": "2026-10-25T16:03:33.895640+00:00",
+    "argv": [
+      "/Users/csys/Library/Android/sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "shell",
+      "dumpsys",
+      "activity",
+      "activities"
+    ],
+    "exit_code": 0,
+    "file": "disable-shade-activities.txt",
+    "sha256": "46b9ec9f2348a6fde8785ed3551f4ac5a5f326e297f95b77162a657608e38c0e",
+    "stderr": ""
+  }
+]

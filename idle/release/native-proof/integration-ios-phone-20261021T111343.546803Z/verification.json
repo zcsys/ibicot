@@ -1,0 +1,61 @@
+{
+  "candidate_fingerprint": "152805bf9e269f49d14486286656ac0174a808384d10e6623533a4f92690dc11",
+  "device": "F05BE4B0-52C1-4CA1-B721-BD64AE559E3F",
+  "label": "ios-phone",
+  "platform": "ios",
+  "started_utc": "20261021T111343.546803Z",
+  "command": [
+    "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+    "drive",
+    "--driver=test_driver/evidence_911183b5d9ee.dart",
+    "--target=integration_test/evidence_d88a0141cede_test.dart",
+    "-d",
+    "F05BE4B0-52C1-4CA1-B721-BD64AE559E3F",
+    "--dart-define=TIDEGLASS_DEVICE_LABEL=ios-phone",
+    "--dart-define=TIDEGLASS_SCENARIO=clock-start",
+    "--dart-define=TIDEGLASS_RUN_ID=final152-oct21-clock",
+    "--dart-define=TIDEGLASS_VERIFICATION_ID=integration-ios-phone-20261021T111343.546803Z",
+    "--dart-define=TIDEGLASS_CANDIDATE_FINGERPRINT=152805bf9e269f49d14486286656ac0174a808384d10e6623533a4f92690dc11",
+    "--dart-define=TIDEGLASS_HARNESS_SHA256=d88a0141cede2c2032ce1f55d4ba93e54de6ee15037b341a4ece3291ec0284aa",
+    "--keep-app-running",
+    "--timeout=180",
+    "--no-pub"
+  ],
+  "runner_sha256": "13e32332326096b11229ff249dbc79d40d6490815cc8a1e88b218c2ab5f84d6a",
+  "candidate_validation_runner_sha256": "56714b9cc215a56bcd710c6678f117866be68211e46f6c24b387b8ed8696f556",
+  "scenario": "clock-start",
+  "run_id": "final152-oct21-clock",
+  "harness_sha256": {
+    "harness.dart": "d88a0141cede2c2032ce1f55d4ba93e54de6ee15037b341a4ece3291ec0284aa",
+    "driver.dart": "911183b5d9ee8ec80769836f477a293dadb66e20cc0c5d5e44314415889749a8"
+  },
+  "production_inputs_match_snapshot": true,
+  "provenance": "Actual native clock and OS lifecycle/process scope; no paid ownership or physical-device security qualification. Epoch remains in private device checkpoint.",
+  "exit_code": 0,
+  "production_input_differences_after_run": [],
+  "source_snapshot_unchanged": true,
+  "harness_source_differences_during_run": [],
+  "native_process_stop": {
+    "command": [
+      "xcrun",
+      "simctl",
+      "terminate",
+      "F05BE4B0-52C1-4CA1-B721-BD64AE559E3F",
+      "dev.tideglass.game"
+    ],
+    "exit_code": 0,
+    "output": ""
+  },
+  "verification_errors": [],
+  "passed": true,
+  "evidence_sha256": {
+    "result.json": "f387a1126af487b22c145acf16f3697ce7bd86c32f1d5b6c2948a12e926be1d6",
+    "run.log": "5e016793e3acf0e39f208eed243a7d138a86225fb039fd5fbc1e6685507ec683",
+    "ios-phone-clock-start.png": "200f56ef6d1deb7e7126d2e14117442c49857030dc8e2f0a94e0b46ceac90dac",
+    "driver.dart": "911183b5d9ee8ec80769836f477a293dadb66e20cc0c5d5e44314415889749a8",
+    "verify_native.py": "13e32332326096b11229ff249dbc79d40d6490815cc8a1e88b218c2ab5f84d6a",
+    "harness.dart": "d88a0141cede2c2032ce1f55d4ba93e54de6ee15037b341a4ece3291ec0284aa",
+    "external-lifecycle-controls.json": "4aec6e9e1203d22a3e29179183559a4dc6f675d2b305de0a3d73f3e5445222d9",
+    "os-home-before-reopen.png": "7d1e2de8416ff7081174d4b51882d07aa3a36a166ed6e7f43a224ed8464df725"
+  }
+}

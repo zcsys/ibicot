@@ -1,0 +1,33 @@
+--- release/qa/integration-current-ui-20261021T133115456638Z/source/game/mobile/lib/help_screen.dart
++++ game/mobile/lib/help_screen.dart
+@@ -71,9 +71,8 @@
+         ? null
+         : HelpContent.article(initialTopic!);
+     final title = article?.title ?? HelpCopy.title;
+-    final scrollHeading = MediaQuery.textScalerOf(context).scale(16) > 24;
+     return Scaffold(
+-      appBar: scrollHeading ? AppBar() : readingAppBar(context, title: title),
++      appBar: AppBar(),
+       body: SafeArea(
+         child: Center(
+           child: ConstrainedBox(
+@@ -86,8 +85,7 @@
+                 child: Column(
+                   crossAxisAlignment: CrossAxisAlignment.stretch,
+                   children: [
+-                    if (scrollHeading) ...[
+-                      Semantics(
++                    Semantics(
+                         header: true,
+                         namesRoute: true,
+                         child: LocalizedText(
+@@ -96,8 +94,7 @@
+                           style: Theme.of(context).textTheme.headlineSmall,
+                         ),
+                       ),
+-                      const SizedBox(height: 20),
+-                    ],
++                    const SizedBox(height: 20),
+                     ...(article == null
+                         ? _index(context)
+                         : _article(context, article)),

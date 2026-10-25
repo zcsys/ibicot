@@ -1,0 +1,98 @@
+{
+  "format": "tideglass-platform-package-clause-review-v1",
+  "status": "passed",
+  "reviewer": "platform",
+  "implementation_owner": "gameplay",
+  "source_sha256": "7e86e1909940e468d11a16456dfa7286892c1bd21463af45a0372a05f2c1eddd",
+  "source_files": 48,
+  "source_manifest_sha256": "afbe91b81a1147152994b74a77f12a8f5b5d5f15923055d714e53233921a418d",
+  "probe_sha256": "4b499856aa499116cdbbfec9390facc5a3489b0ec9e665a3303b68102fe82334",
+  "probe_report_sha256": "5bfc45d61f447799b3104c68127922567ae625ae638b58c8de505abe3f327aad",
+  "probe_assertions": 1943,
+  "targeted_existing_tests": 10,
+  "commands": [
+    {
+      "command": [
+        "dart",
+        "pub",
+        "get",
+        "--offline",
+        "--enforce-lockfile"
+      ],
+      "cwd": "/Users/csys/Desktop/ibicot/idle/release/qa/platform-package-clauses-20261021T141913194277Z/source/game/core",
+      "exit_code": 0,
+      "log": "pub-get.log",
+      "log_sha256": "d4cb7a3c68b4133b4f6e58c67ff5bfd13725d8021e930388cdc98da8a575919d"
+    },
+    {
+      "command": [
+        "dart",
+        "analyze",
+        "clause_probe.dart"
+      ],
+      "cwd": "/Users/csys/Desktop/ibicot/idle/release/qa/platform-package-clauses-20261021T141913194277Z/source/game/core",
+      "exit_code": 0,
+      "log": "analyze-final.log",
+      "log_sha256": "34dbe806af8f8b870a0bb98ae83844063c3c46e0f5aa6aa24314963af32230e8"
+    },
+    {
+      "command": [
+        "dart",
+        "run",
+        "clause_probe.dart",
+        "/Users/csys/Desktop/ibicot/idle/release/qa/platform-package-clauses-20261021T141913194277Z/probe-final.json"
+      ],
+      "cwd": "/Users/csys/Desktop/ibicot/idle/release/qa/platform-package-clauses-20261021T141913194277Z/source/game/core",
+      "exit_code": 0,
+      "log": "probe-final.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "dart",
+        "test",
+        "test/economy_test.dart",
+        "test/daily_test.dart",
+        "--name",
+        "original first-run|synergy creates|offline envelope|offline chunks|autobuy is free|autobuy is deterministic|six plans require|automatic reset requires|reset entitlement boundary|priority plan controls",
+        "--reporter",
+        "expanded"
+      ],
+      "cwd": "/Users/csys/Desktop/ibicot/idle/release/qa/platform-package-clauses-20261021T141913194277Z/source/game/core",
+      "exit_code": 0,
+      "log": "targeted-existing-tests.log",
+      "log_sha256": "4f091932b4e734c1460f16704b17cd0446fe18d184f58d49114eb38bbec16a7f"
+    }
+  ],
+  "dart_sdk": "3.13.5 stable macos_arm64",
+  "dart_executable": "/Users/csys/Desktop/ibicot/idle/.tooling/flutter/bin/cache/dart-sdk/bin/dart",
+  "package_config_sha256": "e36fd5875e02473356172137b93c4b6d059a16c64af8c5b1de75cf078c3311fe",
+  "source_drift": [],
+  "production_edits": false,
+  "status_edits": false,
+  "flutter_or_native_execution": false,
+  "observed_player_sessions": 0,
+  "scope_recommendations": {
+    "S03": "retain existing verification via unchanged source bridge",
+    "S06": "recommend verified at unchanged unlock/free-plan/slot/persistence obligation",
+    "S07": "bounded matrix/marginal support; do not promote complete forecast/UI requirement in this review"
+  },
+  "package_recommendations": [
+    {
+      "id": "M2-01",
+      "recommendation": "accept unchanged original criterion",
+      "prerequisites": [
+        "M1-02 accepted"
+      ]
+    },
+    {
+      "id": "M3-03",
+      "recommendation": "accept unchanged original criterion after director records M2-01 acceptance",
+      "prerequisites": [
+        "M2-01 recommended here; not yet accepted at pin",
+        "M1-06 accepted"
+      ]
+    }
+  ],
+  "release_ready": false
+}

@@ -1,0 +1,129 @@
+{
+  "reviewer": "/root/art_content_engineer",
+  "author": "/root",
+  "date": "2026-10-21",
+  "result": "no_blocking_findings_in_bounded_local_draft_scope",
+  "findings": [
+    {
+      "id": "PP-01",
+      "severity": "low",
+      "blocking_local_draft": false,
+      "summary": "Four .png capture filenames contain JPEG/JFIF bytes.",
+      "paths": [
+        "release/public-pages/evidence/privacy-desktop.png",
+        "release/public-pages/evidence/privacy-phone.png",
+        "release/public-pages/evidence/support-desktop.png",
+        "release/public-pages/evidence/support-phone.png"
+      ],
+      "remedy": "Rename to .jpg and update references/pins or author actual PNG exports with original history retained.",
+      "status": "resolved_by_rename_only_independent_hash_followup"
+    }
+  ],
+  "scope_ids": [
+    "M5-03",
+    "M7-05",
+    "S27",
+    "S39"
+  ],
+  "probe_command": "python3 release/public-pages/independent_probe.py",
+  "probe_exit": 0,
+  "probes_path": "release/public-pages/independent-probes.json",
+  "probes_sha256": "dca34d8f9a39e02c5ce8f866e0b8d977c0dfd184decd5819b242b478c867aff6",
+  "independent_probe_sha256": "e2f65f66f9af42612e272e4c8c6ae923d77f71d184edf6eb4c9f9ad040210289",
+  "report_sha256": "2a8fc6b56f6962926a4a11fd8eb39b87928ee3b1f03ba9aa4645da16de8c0389",
+  "input_sha256": {
+    "release/public-pages/dist/index.html": "6caf956dd5bf845eb4157e0bce9348740be44945e020b5fc2800e03da090e207",
+    "release/public-pages/dist/privacy.html": "fc07dc0655f8e6be5f4b532dbaf03b03bf3f3a491bbfaf2d3593499ed7a530cf",
+    "release/public-pages/dist/site.css": "3c257583c849d9afe1bba403efbba38a65e2df2fb6912792a2ed7282b991b25a",
+    "release/public-pages/publication.json": "06384fddf6a1be2a74468f38c8ad2dc1f9585ce632df08e11fd49d535328acdc",
+    "release/public-pages/register_pages.py": "9ccb79fd981c286ebb1f3eb3fb243d66bc8e87d39e3966a0ac85e5c5c6b738c5",
+    "game/mobile/lib/help_content.dart": "73434078cd083feaac50bc12d2f75242044d5ae5e6158eddf1c9ab56836e3ef7",
+    "services/docs/PRIVACY.md": "f9071535a30041df0cd6d55bb5040f815ce617c8d9ed0d3692aa9b87f4df131b",
+    "game/platform/lib/soundtrack_cache.dart": "9ff5b55ef2c4f907c81e5577add12b016061bedc6f275effee98fe60149a55e6",
+    "game/platform/lib/study_recorder.dart": "40be5e8ae640edfe67c6704074bbfb5a2f62fca2e8060b0d96cf50d22b72904f",
+    "game/mobile/lib/study_gate.dart": "bc019a763d72476ddd38594c96f90c081ffb9992b0e650aa1defd8a3514d923b",
+    "release/public-pages/AUTHOR_REPORT.md": "5d29e6abf38518d06b28e78255ba0c4d42761341de5133c65eea59a7fca33bd8",
+    "release/public-pages/evidence/launch-manifest-before.json": "d100ff2211636f7ca9e5b18749b60f21efafedea53c05ca46aeb2a633d842238",
+    "release/public-pages/evidence/registration.json": "acc2e0c345b756e1e6680e631b91d7bf19da67b8dc32559fb1f0978c793b0bb3",
+    "release/public-pages/evidence/browser-measures.json": "fea763b6b5d084936f3ad62c06fee1fca046d00a2f92943d812fd757ca2c42a8",
+    "implementation/content/launch_manifest.json": "782ad112c6de5a155ce714781fad5e5af609a5b1a785db67c929baccb384ed9d",
+    "release/public-pages/evidence/privacy-phone.png": "a8e4e5fabecd121419adbb8f64e20da8421d6991dbe6290654d5552a6fc35b24",
+    "release/public-pages/evidence/support-desktop.png": "2e69deb29e3d8878633ce119bf753b45dd580f5dd959a84e31c33a302cf8bba9",
+    "release/public-pages/evidence/support-phone.png": "ce4e0db7e822144039b487d0d1d0929803b7ebac722bed8741595c3bf0ceefd8",
+    "release/public-pages/evidence/privacy-desktop.png": "dbcb5a149db1127d91ca72a5ade2bd0f2270b7fbc37870c1097007b8e76c4ce0",
+    "source/provenance/asset.support.privacy_page.json": "34ade7dc8e99170c9508cdc2f23a09169e728ff701feedd6913933eda14cef26",
+    "source/provenance/asset.support.support_page.json": "c824457f7a74e4c01a28f4cc5d7bd2f223d17375b0d8608375fce73e3d0da588"
+  },
+  "image_inspection": [
+    {
+      "path": "release/public-pages/evidence/privacy-desktop.png",
+      "width": 1280,
+      "height": 720,
+      "sha256": "dbcb5a149db1127d91ca72a5ade2bd0f2270b7fbc37870c1097007b8e76c4ce0",
+      "capture_author": "/root",
+      "independently_visually_inspected": true,
+      "actual_format": "JPEG/JFIF",
+      "filename_extension": ".png"
+    },
+    {
+      "path": "release/public-pages/evidence/privacy-phone.png",
+      "width": 320,
+      "height": 780,
+      "sha256": "a8e4e5fabecd121419adbb8f64e20da8421d6991dbe6290654d5552a6fc35b24",
+      "capture_author": "/root",
+      "independently_visually_inspected": true,
+      "actual_format": "JPEG/JFIF",
+      "filename_extension": ".png"
+    },
+    {
+      "path": "release/public-pages/evidence/support-desktop.png",
+      "width": 1280,
+      "height": 720,
+      "sha256": "2e69deb29e3d8878633ce119bf753b45dd580f5dd959a84e31c33a302cf8bba9",
+      "capture_author": "/root",
+      "independently_visually_inspected": true,
+      "actual_format": "JPEG/JFIF",
+      "filename_extension": ".png"
+    },
+    {
+      "path": "release/public-pages/evidence/support-phone.png",
+      "width": 320,
+      "height": 780,
+      "sha256": "ce4e0db7e822144039b487d0d1d0929803b7ebac722bed8741595c3bf0ceefd8",
+      "capture_author": "/root",
+      "independently_visually_inspected": true,
+      "actual_format": "JPEG/JFIF",
+      "filename_extension": ".png"
+    }
+  ],
+  "independent_browser_observation": {
+    "browser": "Chrome",
+    "endpoint": "http://127.0.0.1:8779",
+    "support_disclosure_opened": true,
+    "privacy_header_navigation_observed": true,
+    "complete_native_accessibility_qualification": false
+  },
+  "open_gates": [
+    "complete original text_scale_100 acceptance",
+    "text_scale_150",
+    "text_scale_200",
+    "pseudolocalized",
+    "native link wiring",
+    "target assistive interaction",
+    "physical validation",
+    "rights and distribution approval",
+    "operator/contact/territory/age/retention approval",
+    "final native SDK traffic disclosures",
+    "hosted privacy/support/deletion endpoints"
+  ],
+  "canonical_review_fields_written": false,
+  "runtime_or_source_modified": false,
+  "publication_accepted": false,
+  "legal_policy_approved": false,
+  "correction_followup": {
+    "path": "release/public-pages/rename-followup-probe.json",
+    "sha256": "2df141e04cfbb2d9f855c7cf55e42425a67f81b9eea8b5997273daa061efe73a",
+    "result": "all_four_original_hashes_preserved_with_correct_jpg_names",
+    "new_browser_pass": false
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "source_before": {
+    "tool/build_native.py": "1fca5f766c6bd816f55fc0aefafe1e3dfb8e66b91e83e1dcb275d48f13cada1d",
+    "tool/test_native_candidates.py": "7a69e129772036ee087b8e05116bb25ddb198f0ac3b5dbaf9c6fc9132cd38e35",
+    "tool/verify_current_runtime.py": "f63c8bb1f97e5e486fceb9b5831e416efae0d0f4bc73fe248079ca5e3a7cc834",
+    "tool/test_current_runtime_verification.py": "bd98aed5dabc8d4c900356efd2efc6756f6deda41aad270449730b64165a5b0a",
+    "game/qa/review_current_runtime_build_gate.py": "c31e52af744f0e18fb8677e7112cfc41445e93a0e6ddc2460dd793628ee1a848",
+    "release/native-proof/current-runtime-preparation/current-reviewed-pins.json": "291e6e2bbf5fff8e5910297a0c3cd708331329e011b35c384a42ea448f5ab129"
+  },
+  "source_after": {
+    "tool/build_native.py": "1fca5f766c6bd816f55fc0aefafe1e3dfb8e66b91e83e1dcb275d48f13cada1d",
+    "tool/test_native_candidates.py": "7a69e129772036ee087b8e05116bb25ddb198f0ac3b5dbaf9c6fc9132cd38e35",
+    "tool/verify_current_runtime.py": "f63c8bb1f97e5e486fceb9b5831e416efae0d0f4bc73fe248079ca5e3a7cc834",
+    "tool/test_current_runtime_verification.py": "bd98aed5dabc8d4c900356efd2efc6756f6deda41aad270449730b64165a5b0a",
+    "game/qa/review_current_runtime_build_gate.py": "c31e52af744f0e18fb8677e7112cfc41445e93a0e6ddc2460dd793628ee1a848",
+    "release/native-proof/current-runtime-preparation/current-reviewed-pins.json": "291e6e2bbf5fff8e5910297a0c3cd708331329e011b35c384a42ea448f5ab129"
+  },
+  "sources_unchanged": true,
+  "checks": [
+    {
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tool",
+        "-p",
+        "test_native_*.py",
+        "-v"
+      ],
+      "exit_code": 0,
+      "log": "release/qa/client-current-runtime-build-gate-20261021T125848670103Z/check-0.log",
+      "log_sha256": "ba6586e73b96affcaab87dd7f06a5769028688454ebb8269012f6504993dca48"
+    },
+    {
+      "command": [
+        "python3",
+        "game/qa/review_current_runtime_build_gate.py"
+      ],
+      "exit_code": 1,
+      "log": "release/qa/client-current-runtime-build-gate-20261021T125848670103Z/check-1.log",
+      "log_sha256": "9e18b4928c1ae01ea256d600da25adc04b09eff44d29424c9d05443fb257ece2"
+    }
+  ],
+  "native_flutter_commands_executed": false
+}

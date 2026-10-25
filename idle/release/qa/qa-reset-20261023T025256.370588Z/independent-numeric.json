@@ -1,0 +1,213 @@
+[
+  {
+    "name": "case-0",
+    "oracle": {
+      "keep": "5105052310100000",
+      "reset": "50937123740200000",
+      "first": 60,
+      "break": 60,
+      "rebuild": 0,
+      "keep_charts": "0",
+      "reset_charts": "10"
+    },
+    "actual": {
+      "status": "estimated",
+      "policy": "minute-best-payback-single-reset-v1",
+      "horizon_seconds": 1800,
+      "sample_seconds": 60,
+      "samples": 30,
+      "work": 643,
+      "first_catch_up_seconds": 60,
+      "break_even_seconds": 60,
+      "rebuild_seconds": 0,
+      "keep_gain_micros": "5105052310100000",
+      "reset_gain_micros": "50937123740200000",
+      "next_chart_target": "25",
+      "next_chart_lifetime_micros": "4094636919540164",
+      "unlocked_chart_thresholds": [
+        10
+      ]
+    },
+    "input_unchanged": true
+  },
+  {
+    "name": "case-1",
+    "oracle": {
+      "keep": "114498926700525263",
+      "reset": "88894301771131479",
+      "first": null,
+      "break": null,
+      "rebuild": 600,
+      "keep_charts": "10",
+      "reset_charts": "24"
+    },
+    "actual": {
+      "status": "estimated",
+      "policy": "minute-best-payback-single-reset-v1",
+      "horizon_seconds": 1800,
+      "sample_seconds": 60,
+      "samples": 30,
+      "work": 760,
+      "first_catch_up_seconds": null,
+      "break_even_seconds": null,
+      "rebuild_seconds": 600,
+      "keep_gain_micros": "114498926700525263",
+      "reset_gain_micros": "88894301771131479",
+      "next_chart_target": "25",
+      "next_chart_lifetime_micros": "4094636919540164",
+      "unlocked_chart_thresholds": []
+    },
+    "input_unchanged": true
+  },
+  {
+    "name": "case-2",
+    "oracle": {
+      "keep": "123909585783439619",
+      "reset": "209875863435638508",
+      "first": 1200,
+      "break": 1200,
+      "rebuild": 600,
+      "keep_charts": "10",
+      "reset_charts": "25"
+    },
+    "actual": {
+      "status": "estimated",
+      "policy": "minute-best-payback-single-reset-v1",
+      "horizon_seconds": 1800,
+      "sample_seconds": 60,
+      "samples": 30,
+      "work": 849,
+      "first_catch_up_seconds": 1200,
+      "break_even_seconds": 1200,
+      "rebuild_seconds": 600,
+      "keep_gain_micros": "123909585783439619",
+      "reset_gain_micros": "209875863435638508",
+      "next_chart_target": "100",
+      "next_chart_lifetime_micros": "34551072945922194",
+      "unlocked_chart_thresholds": [
+        25
+      ]
+    },
+    "input_unchanged": true
+  },
+  {
+    "name": "case-3",
+    "oracle": {
+      "keep": "635801155296675460",
+      "reset": "640271291717189269",
+      "first": 1800,
+      "break": 1800,
+      "rebuild": 600,
+      "keep_charts": "25",
+      "reset_charts": "100"
+    },
+    "actual": {
+      "status": "estimated",
+      "policy": "minute-best-payback-single-reset-v1",
+      "horizon_seconds": 1800,
+      "sample_seconds": 60,
+      "samples": 30,
+      "work": 939,
+      "first_catch_up_seconds": 1800,
+      "break_even_seconds": 1800,
+      "rebuild_seconds": 600,
+      "keep_gain_micros": "635801155296675460",
+      "reset_gain_micros": "640271291717189269",
+      "next_chart_target": "101",
+      "next_chart_lifetime_micros": "35084056830149652",
+      "unlocked_chart_thresholds": [
+        100
+      ]
+    },
+    "input_unchanged": true
+  },
+  {
+    "name": "case-4",
+    "oracle": {
+      "keep": "1099170707639663038",
+      "reset": "814854080956094372",
+      "first": null,
+      "break": null,
+      "rebuild": 480,
+      "keep_charts": "100",
+      "reset_charts": "135"
+    },
+    "actual": {
+      "status": "estimated",
+      "policy": "minute-best-payback-single-reset-v1",
+      "horizon_seconds": 1800,
+      "sample_seconds": 60,
+      "samples": 30,
+      "work": 991,
+      "first_catch_up_seconds": null,
+      "break_even_seconds": null,
+      "rebuild_seconds": 480,
+      "keep_gain_micros": "1099170707639663038",
+      "reset_gain_micros": "814854080956094372",
+      "next_chart_target": "136",
+      "next_chart_lifetime_micros": "55450569753755373",
+      "unlocked_chart_thresholds": []
+    },
+    "input_unchanged": true
+  },
+  {
+    "name": "case-5",
+    "oracle": {
+      "keep": "25377726651433703337",
+      "reset": "20426273028343960655",
+      "first": null,
+      "break": null,
+      "rebuild": 240,
+      "keep_charts": "10000",
+      "reset_charts": "10001"
+    },
+    "actual": {
+      "status": "estimated",
+      "policy": "minute-best-payback-single-reset-v1",
+      "horizon_seconds": 1800,
+      "sample_seconds": 60,
+      "samples": 30,
+      "work": 1275,
+      "first_catch_up_seconds": null,
+      "break_even_seconds": null,
+      "rebuild_seconds": 240,
+      "keep_gain_micros": "25377726651433703337",
+      "reset_gain_micros": "20426273028343960655",
+      "next_chart_target": "10002",
+      "next_chart_lifetime_micros": "41258955670463779652",
+      "unlocked_chart_thresholds": []
+    },
+    "input_unchanged": true
+  },
+  {
+    "name": "24h",
+    "oracle": {
+      "keep": "19394345541120000000",
+      "reset": "46589002648200000000",
+      "first": 1560,
+      "break": 1560,
+      "rebuild": 720,
+      "keep_charts": "0",
+      "reset_charts": "10"
+    },
+    "actual": {
+      "status": "estimated",
+      "policy": "minute-best-payback-single-reset-v1",
+      "horizon_seconds": 86400,
+      "sample_seconds": 60,
+      "samples": 1440,
+      "work": 6689,
+      "first_catch_up_seconds": 1560,
+      "break_even_seconds": 1560,
+      "rebuild_seconds": 720,
+      "keep_gain_micros": "19394345541120000000",
+      "reset_gain_micros": "46589002648200000000",
+      "next_chart_target": "25",
+      "next_chart_lifetime_micros": "4094636919540164",
+      "unlocked_chart_thresholds": [
+        10
+      ]
+    },
+    "input_unchanged": true
+  }
+]

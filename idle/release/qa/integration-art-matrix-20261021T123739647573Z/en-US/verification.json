@@ -1,0 +1,22 @@
+{
+  "scope": "Independent four phone groups only; not full matrix/native/asset acceptance",
+  "source_differences": [],
+  "results": [
+    {
+      "name": "art",
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+        "test",
+        "test/art_catalogue_variants_test.dart",
+        "--plain-name",
+        "phone-100-normal",
+        "--reporter=expanded",
+        "--timeout=12m",
+        "--dart-define=TIDEGLASS_ART_REPORT_DIR=/Users/csys/Desktop/ibicot/idle/release/qa/integration-art-matrix-20261021T123739647573Z/en-US/report"
+      ],
+      "exit_code": 0,
+      "log_sha256": "af033ec05ada352730026f0dcc6cf3748de9b03d8771632da654e44e6f0f58b8"
+    }
+  ],
+  "art_report_sha256": "9295ba95d1326cd2af577415c4d24ae9f55b84da3eefb4d98cc91a65ca9c5a34"
+}

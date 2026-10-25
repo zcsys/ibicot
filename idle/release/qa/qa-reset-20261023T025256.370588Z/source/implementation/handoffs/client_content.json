@@ -1,0 +1,170 @@
+{
+  "schema_version": 1,
+  "role_id": "client_content",
+  "role_name": "Client, presentation and content implementation engineer",
+  "status": "active_delivery_role",
+  "charter": "Implement the player-facing native client, accessible interfaces, content registry, asset integration and presentation pipeline. This role owns source changes and executable evidence, not advisory planning alone. Image generation may produce candidate raster art after the visual direction is approved; every generated asset still requires in-game readability, animation, licensing/provenance and performance review. Audio, legal copy, store credentials and actual device evidence are separate required deliverables.",
+  "current_contribution": {
+    "manifest": "implementation/content/launch_manifest.json",
+    "validator": "implementation/tools/validate_content_manifest.py",
+    "scope": "Validated registry and contracts only; no finished UI, text, visuals, audio, native builds or reachable campaign exists yet."
+  },
+  "owned_future_paths": [
+    "implementation/content/**",
+    "implementation/client/**",
+    "implementation/assets/**",
+    "implementation/localization/**",
+    "implementation/tests/client/**"
+  ],
+  "shared_contract_paths_requiring_integration_review": [
+    "implementation/contracts/**"
+  ],
+  "mapped_old_backlog_ids": [
+    "M0-04",
+    "M0-05",
+    "M1-05",
+    "M1-07",
+    "M2-02",
+    "M2-03",
+    "M2-05",
+    "M3-04",
+    "M3-05",
+    "M3-09",
+    "M4-03",
+    "M4-07",
+    "M5-02",
+    "M5-06",
+    "M6-04",
+    "M6-06",
+    "M7-03",
+    "M7-05"
+  ],
+  "collaborative_backlog_ids": [
+    "M0-02",
+    "M1-06",
+    "M3-08",
+    "M4-06",
+    "M4-08",
+    "M5-07",
+    "M7-06"
+  ],
+  "next_implementation_tasks": [
+    {
+      "order": 1,
+      "id": "CLIENT-01",
+      "action": "After native engine qualification, implement harbor shell with five producer rows and pure command dispatch. Bind command results and forecasts from the core rather than duplicating economy formulas.",
+      "depends_on": [
+        "qualified_native_engine",
+        "core_state_and_command_contract"
+      ],
+      "acceptance": "On a native development build a player buys, sees updated state, closes, returns and sees the durable saved state; production continues independently of rendering."
+    },
+    {
+      "order": 2,
+      "id": "CLIENT-02",
+      "action": "Implement first-session, Rechart and offline-return flows, then equal-value calibration and daily claim interfaces.",
+      "depends_on": [
+        "CLIENT-01",
+        "timeline_and_receipt_contract"
+      ],
+      "acceptance": "Reset retained/lost state is accurate; offline ledger agrees with displayed return; single-button calibration grants the same profile and collectible as routing."
+    },
+    {
+      "order": 3,
+      "id": "CONTENT-01",
+      "action": "Author objective and rule specs for six chapters, twelve challenges and twelve calibration patterns; integrate them using stable content IDs.",
+      "depends_on": [
+        "progression_unlock_contract",
+        "challenge_runner_contract"
+      ],
+      "acceptance": "Each objective has a machine-checkable condition, explained target and fresh-profile replay evidence; no paid objective or mandatory all-Note collection."
+    },
+    {
+      "order": 4,
+      "id": "ART-01",
+      "action": "Create the reusable 2D production kit and one complete harbor slice; then produce the 25 producer presentations, seven harbor presentations and 36 cosmetics.",
+      "depends_on": [
+        "qualified_native_engine",
+        "visual_budget_and_direction"
+      ],
+      "acceptance": "Asset files, rights/provenance, readable scale variants and in-engine captures are linked; reduced motion and non-color cues work."
+    },
+    {
+      "order": 5,
+      "id": "CLIENT-03",
+      "action": "Implement archive, challenge, seasonal/pass and shop flows from the manifest and verified entitlement interface.",
+      "depends_on": [
+        "CLIENT-02",
+        "CONTENT-01",
+        "season_and_entitlement_contract"
+      ],
+      "acceptance": "All 40 pass reward slots have tested fulfillment; owned/locked/pending/refunded states match receipts; archived paid pass remains completable."
+    },
+    {
+      "order": 6,
+      "id": "CLIENT-04",
+      "action": "Integrate final copy, audio, help/settings and store creative; perform accessibility and minimum-device validation.",
+      "depends_on": [
+        "CLIENT-03",
+        "ART-01",
+        "approved_audio_and_support_copy"
+      ],
+      "acceptance": "Release-mode manifest validation passes with evidence, no production placeholders remain, native device acceptance covers critical flows."
+    }
+  ],
+  "handoff_contracts": [
+    {
+      "consumer": "core_runtime",
+      "contract": "Client sends named commands with request IDs; authoritative state snapshots provide decimal numeric strings, unlocks, forecast assumptions and version. UI never computes currency grants."
+    },
+    {
+      "consumer": "timeline_and_services",
+      "contract": "Claims and pending purchases use stable receipt IDs, account day, server verification where required and idempotent completion. Client displays pending/error states without granting rewards locally."
+    },
+    {
+      "consumer": "content_runtime",
+      "contract": "Resolve content IDs and reward profile IDs; reject unknown versions/IDs. Unproduced manifest entries cannot be presented as completed shipped content."
+    },
+    {
+      "consumer": "release_quality",
+      "contract": "Every production asset needs a source file, verification evidence and license/provenance evidence. Complete content needs reachable runtime evidence. Plan validation alone cannot approve release."
+    }
+  ],
+  "ui_acceptance": [
+    "large text without clipped critical controls",
+    "reduced motion and skippable celebrations",
+    "non-color state indicators",
+    "independent audio controls",
+    "target input navigation",
+    "discoverable single-button calibration with equal economic and collectible rewards",
+    "forecast assumptions visible",
+    "no required ad, purchase, prestige or friend invite in contracts",
+    "localized native store price and explicit pending/restore states"
+  ],
+  "asset_acceptance": [
+    "manifest counts and stable references preserved",
+    "final source file and provenance evidence exist",
+    "in-engine readability checked on minimum screen",
+    "sprite/texture memory budget measured",
+    "animation respects reduced motion",
+    "content and store screenshots describe actual build"
+  ],
+  "unresolved_production_needs": [
+    "Native engine qualification and device matrix",
+    "Authored objectives, challenge rules, calibration topology and final copy",
+    "All visual and audio source assets",
+    "Store purchase and account service credentials and environments",
+    "Actual native accessibility, rendering, commerce and device evidence",
+    "Human player comprehension and real-time D30/season observation"
+  ],
+  "validation": {
+    "plan_command": "python3 implementation/tools/validate_content_manifest.py --self-test",
+    "plan_result": "pass",
+    "rejection_cases_passed": 21,
+    "release_command": "python3 implementation/tools/validate_content_manifest.py --release",
+    "release_result": "expected_fail_unfinished",
+    "unfinished_asset_packages": 164,
+    "production_completion_claimed": false,
+    "limitations": "Manifest structure and rejection cases are checked. Authored goals, runtime reachability, accessibility, asset quality, native performance and commerce still require actual implementation and evidence."
+  }
+}

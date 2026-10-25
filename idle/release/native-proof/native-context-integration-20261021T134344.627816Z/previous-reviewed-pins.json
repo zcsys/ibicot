@@ -1,0 +1,18 @@
+{
+  "status": "Python independently reviewed; installed Dart harness passes whole-mobile analyzer; native execution pending",
+  "supersedes": "Initial runner pin only; original author-verification.json and failures remain preserved",
+  "source_sha256": {
+    "tool/verify_current_runtime.py": "f63c8bb1f97e5e486fceb9b5831e416efae0d0f4bc73fe248079ca5e3a7cc834",
+    "tool/test_current_runtime_verification.py": "bd98aed5dabc8d4c900356efd2efc6756f6deda41aad270449730b64165a5b0a",
+    "tool/build_native.py": "1fca5f766c6bd816f55fc0aefafe1e3dfb8e66b91e83e1dcb275d48f13cada1d",
+    "tool/test_native_candidates.py": "7a69e129772036ee087b8e05116bb25ddb198f0ac3b5dbaf9c6fc9132cd38e35",
+    "release/native-proof/current-runtime-preparation/staged/current_runtime_test.dart": "99d961e87b100ade13dc3ddda2be059a28b3e75fa979bc5b5a9ef0df598cd50f",
+    "game/mobile/integration_test/current_runtime_test.dart": "40c885f740a17695ffcce62e90d1f8dea3da4f54949d40c4b47c51c5e94a571a"
+  },
+  "independent_review": "release/qa/client-current-runtime-20261021T124650645476Z/RUNTIME_REVIEW.md",
+  "root_tests": "release/qa/lead-current-runtime-repair-20261021T125354.340960Z/verification.json",
+  "build_gate_independent_review": "release/qa/client-current-runtime-build-gate-20261021T125848670103Z/BUILD_GATE_REVIEW.md",
+  "installed_harness_analysis": "release/native-proof/root-current-runtime-analyze-20261021T130030.476507Z/verification.json",
+  "preserved_initial_harness_lints": "release/native-proof/root-current-runtime-analyze-20261021T125943.535168Z/verification.json",
+  "installed_harness_delta": "Single documented avoid_print exception preserves unwrapped integration-only checkpoint; braces on two cache assertion loops. No assertions or runtime behavior changed; named client delta review pending."
+}

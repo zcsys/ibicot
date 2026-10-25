@@ -1,0 +1,20 @@
+[
+  {
+    "argv": [
+      "python3",
+      "release/asset-current-bridges/staged/check_bridge.py",
+      "--self-test"
+    ],
+    "exit_code": 0,
+    "log": "self-test.log"
+  },
+  {
+    "argv": [
+      "python3",
+      "release/asset-current-bridges/staged/check_bridge.py",
+      "--live"
+    ],
+    "exit_code": 0,
+    "log": "live.log"
+  }
+]

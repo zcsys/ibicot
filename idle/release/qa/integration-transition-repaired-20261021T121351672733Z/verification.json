@@ -1,0 +1,48 @@
+{
+  "scope": "Independent host economic transition and writer-isolation review; not a native or release sign-off",
+  "source_fingerprint": "f01f874355b963ac5927f57ae1586b9de0ec50af81edf8dd267708a896fb12be",
+  "source_files": 36,
+  "copied_and_current_source_unchanged": true,
+  "qa_probes": {
+    "game/qa/integration_economic_transition_test.dart": "226847a495c3b455d891ec583b11504f10261d68eeed0dd10a8e7bcd654017cc",
+    "game/qa/integration_lock_load_probe.dart": "c0b6c36946b39ea42d07d9b5ec87b04ebaab279b6f602f9d5ee478c7ba59d02c"
+  },
+  "runs": {
+    "core-tests.jsonl": {
+      "tests": 208,
+      "success": true,
+      "sha256": "76cb1dedd53e68235908bcfde3defe7fe675df1e33a688de93569e0ca6cd5c3d"
+    },
+    "persistence-tests.jsonl": {
+      "tests": 28,
+      "success": true,
+      "sha256": "ab7e66637e00e9d9323e4e18d81674313d3aa5a16d648a517195c5b1708c19a1"
+    }
+  },
+  "author_host_widget_cases": 18,
+  "author_host_archive_inputs_rehashed": 524,
+  "author_host_source_stable": true,
+  "author_host_selected_current_source": {
+    "game/mobile/lib/client_economic_transition.dart": "dacd2a7d55bb861a62598f9b3c2219fe7ffed669d3500208da6ba4665a7ebc79",
+    "game/mobile/lib/bootstrap.dart": "0557d11d67c4be3be66de28c899da89b3c7a72cc45f434ae25ae348b0efbc150",
+    "game/mobile/lib/offline_replay.dart": "f470c4edc7d8b621a72532e1043395ad2f0e24abc389ad7d27fdd5738ff22058",
+    "game/mobile/test/bootstrap_economic_transition_test.dart": "1c4ce521d83c0bf092172d0b04cef12db84c364a5a496be1090e52de5c127238",
+    "game/mobile/test/bootstrap_test.dart": "2ccfd69fd5839d917a030ac0818d831f8b7789c67845eb6225c6512a58461855",
+    "game/mobile/test/offline_replay_test.dart": "ff53cda7ee661ef2c3408080210704c6e1a4ebef7d77a1bb82322e66b15d2e10",
+    "game/mobile/test/qa_integration_replay_test.dart": "07b42ae722c2fcbc49d42a24dab69853e52a8124a0966feb4422bc3fec1f36d6"
+  },
+  "author_host_verification": "release/native-proof/root-transition-20261021T121321.388435Z/verification.json",
+  "historical_writer_isolation_failure_independently_reproduced": true,
+  "historical_failure_sha256": "c535d0d03bf9101bb44f707b369411343c4945d7427e0e8c479ee4c2a57f4074",
+  "ECON001": "repaired; unchanged nested ancestor reentry assertion now passes",
+  "author_identified_hardening_rechecked": [
+    "source envelope receipt binding",
+    "required old and destination cursor validators"
+  ],
+  "numeric_bridge": "NUMERIC_EVIDENCE_BRIDGE.json",
+  "core_analyzer_clean": true,
+  "persistence_analyzer_clean": true,
+  "native_after_transition_verified": false,
+  "scope_status_changed": false,
+  "runtime_file_edits_by_reviewer": false
+}

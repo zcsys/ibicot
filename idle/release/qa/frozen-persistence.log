@@ -1,0 +1,28 @@
+COMMAND /Users/csys/Desktop/ibicot/idle/tool/dart pub get
+Resolving dependencies...
+Downloading packages...
+Got dependencies!
+COMMAND /Users/csys/Desktop/ibicot/idle/tool/dart analyze
+Analyzing persistence...
+No issues found!
+COMMAND /Users/csys/Desktop/ibicot/idle/tool/dart test --reporter expanded
+00:00 +0: loading test/save_repository_test.dart
+00:00 +0: test/save_repository_test.dart: fresh install differs from corrupted save; load before writing
+00:00 +1: test/save_repository_test.dart: rotating snapshots retain previous generation and exact huge values
+00:00 +2: test/save_repository_test.dart: interruption at beforeWrite recovers one consistent committed revision
+00:00 +3: test/save_repository_test.dart: interruption at afterFlush recovers one consistent committed revision
+00:00 +4: test/save_repository_test.dart: interruption at afterRename recovers one consistent committed revision
+00:00 +5: test/save_repository_test.dart: corrupt latest snapshot recovers prior generation with a visible warning
+00:00 +6: test/save_repository_test.dart: no valid generation never silently starts a fresh game
+00:00 +7: test/save_repository_test.dart: concurrent writers are serialized and stale progression is rejected
+00:00 +8: test/save_repository_test.dart: queued writes on one repository commit in order and capture input immediately
+00:00 +9: test/save_repository_test.dart: export/import selects progression and preserves displaced local branch
+00:00 +10: test/save_repository_test.dart: explicit import can recover wholly corrupt saves while preserving raw copies
+00:00 +11: test/save_repository_test.dart: altered import fails checksum before it can change local progress
+00:00 +12: test/save_repository_test.dart: unknown config is rejected without settling or overwriting either generation
+00:00 +13: test/save_repository_test.dart: a signed-in-looking display cache never survives import as purchase authority
+00:00 +14: test/save_repository_test.dart: clock rollback does not erase the prior settlement timestamp
+00:00 +15: test/save_repository_test.dart: snapshot identities are unique and parent refers to prior snapshot
+00:00 +16: test/save_repository_test.dart: fractional settled cursor survives disk and export exactly
+00:00 +17: test/save_repository_test.dart: normal save cannot rewind a committed cursor
+00:00 +18: All tests passed!

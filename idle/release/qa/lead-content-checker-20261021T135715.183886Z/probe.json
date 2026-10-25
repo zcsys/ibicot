@@ -1,0 +1,33 @@
+{
+  "finding": "CONTENT-CHECK001",
+  "rows": [
+    {
+      "case": "unchanged_positive",
+      "accepted": true
+    },
+    {
+      "case": "strict_display_pseudo",
+      "value": 0,
+      "accepted": true,
+      "expected_acceptance": false
+    },
+    {
+      "case": "strict_display_text_percent",
+      "value": 100.0,
+      "accepted": true,
+      "expected_acceptance": false
+    },
+    {
+      "case": "fractional_code_unit_count",
+      "accepted": true,
+      "expected_acceptance": false
+    }
+  ],
+  "sources": {
+    "content_contract.py": "a3af7b741abc7a8e5f8b48e3f33fce37d3ed17514a32bb4add17f3b425480d64",
+    "test_content_checker.py": "a3e6cf3fac5be63594e8cb65b199826c62faa675e708dab4781cbd16aa15d708",
+    "run_content_condition.py": "0f4b5def9750dbd8c438178d9fde5b8062a1087199ce1fef10fa8658ab293286",
+    "check_content_report.py": "6a1f83dd943de73433a0beddeb104b189aa0394d25dbd1605597a076f1f8e6f5"
+  },
+  "scope": "Synthetic checker-only probes; no Flutter or production changes"
+}

@@ -1,0 +1,74 @@
+[
+  {
+    "label": "analyzer",
+    "command": [
+      "../../tool/flutter",
+      "analyze"
+    ],
+    "started_at": "2026-10-21T14:14:15.677146+00:00",
+    "finished_at": "2026-10-21T14:14:19.919002+00:00",
+    "exit_code": 0,
+    "hashes_after": {
+      "game/mobile/lib/native_services.dart": "f56a6a8ac2ce6fe583b859d1c65336ea4d858711456bf4243ba9d1fa24eb0e73",
+      "game/mobile/lib/service_settings.dart": "ff3a5b61c50a4239a943da85dd652ce81d3ff18e69c96d2b90ae367fcd571115",
+      "game/mobile/lib/ad_privacy_copy.dart": "e7b00d968f6f9b32f4e9688565a3b71972df318a417c0fc4a79f77395920bc79",
+      "game/mobile/test/ad_privacy_test.dart": "82efc50ebdc39444e6c50262d2d78eb17448d51709416c6e58dc148b7ce5c720",
+      "game/mobile/test/native_services_test.dart": "4cc1b90a9958d799e52124cfbc409b9201f4b9d43d71d7a979b39aa00ade2bbf",
+      "game/mobile/test/service_settings_test.dart": "d04d867b80b95cb03ec4983104c323057d839d59cc1a2182d8fc0bad7dea4438",
+      "game/mobile/pubspec.lock": "ef6e4f3380061a48688603cdc5c3446cce611641bb7d6601265a55c472e73b64",
+      "game/mobile/lib/presentation.dart": "0b891f8baa973d11f1aabe6d985fafbe8bf0e08904007cb0f218e68044fd9b63"
+    },
+    "source_unchanged": true
+  },
+  {
+    "label": "english",
+    "command": [
+      "../../tool/flutter",
+      "test",
+      "test/ad_privacy_test.dart",
+      "test/native_services_test.dart",
+      "test/service_settings_test.dart",
+      "--reporter",
+      "expanded"
+    ],
+    "started_at": "2026-10-21T14:14:19.920101+00:00",
+    "finished_at": "2026-10-21T14:14:25.822497+00:00",
+    "exit_code": 0,
+    "hashes_after": {
+      "game/mobile/lib/native_services.dart": "f56a6a8ac2ce6fe583b859d1c65336ea4d858711456bf4243ba9d1fa24eb0e73",
+      "game/mobile/lib/service_settings.dart": "ff3a5b61c50a4239a943da85dd652ce81d3ff18e69c96d2b90ae367fcd571115",
+      "game/mobile/lib/ad_privacy_copy.dart": "e7b00d968f6f9b32f4e9688565a3b71972df318a417c0fc4a79f77395920bc79",
+      "game/mobile/test/ad_privacy_test.dart": "82efc50ebdc39444e6c50262d2d78eb17448d51709416c6e58dc148b7ce5c720",
+      "game/mobile/test/native_services_test.dart": "4cc1b90a9958d799e52124cfbc409b9201f4b9d43d71d7a979b39aa00ade2bbf",
+      "game/mobile/test/service_settings_test.dart": "d04d867b80b95cb03ec4983104c323057d839d59cc1a2182d8fc0bad7dea4438",
+      "game/mobile/pubspec.lock": "ef6e4f3380061a48688603cdc5c3446cce611641bb7d6601265a55c472e73b64",
+      "game/mobile/lib/presentation.dart": "0b891f8baa973d11f1aabe6d985fafbe8bf0e08904007cb0f218e68044fd9b63"
+    },
+    "source_unchanged": true
+  },
+  {
+    "label": "pseudo",
+    "command": [
+      "../../tool/flutter",
+      "test",
+      "--dart-define=TIDEGLASS_PSEUDO=true",
+      "test/ad_privacy_test.dart",
+      "--reporter",
+      "expanded"
+    ],
+    "started_at": "2026-10-21T14:14:25.822830+00:00",
+    "finished_at": "2026-10-21T14:14:29.564788+00:00",
+    "exit_code": 0,
+    "hashes_after": {
+      "game/mobile/lib/native_services.dart": "f56a6a8ac2ce6fe583b859d1c65336ea4d858711456bf4243ba9d1fa24eb0e73",
+      "game/mobile/lib/service_settings.dart": "ff3a5b61c50a4239a943da85dd652ce81d3ff18e69c96d2b90ae367fcd571115",
+      "game/mobile/lib/ad_privacy_copy.dart": "e7b00d968f6f9b32f4e9688565a3b71972df318a417c0fc4a79f77395920bc79",
+      "game/mobile/test/ad_privacy_test.dart": "82efc50ebdc39444e6c50262d2d78eb17448d51709416c6e58dc148b7ce5c720",
+      "game/mobile/test/native_services_test.dart": "4cc1b90a9958d799e52124cfbc409b9201f4b9d43d71d7a979b39aa00ade2bbf",
+      "game/mobile/test/service_settings_test.dart": "d04d867b80b95cb03ec4983104c323057d839d59cc1a2182d8fc0bad7dea4438",
+      "game/mobile/pubspec.lock": "ef6e4f3380061a48688603cdc5c3446cce611641bb7d6601265a55c472e73b64",
+      "game/mobile/lib/presentation.dart": "0b891f8baa973d11f1aabe6d985fafbe8bf0e08904007cb0f218e68044fd9b63"
+    },
+    "source_unchanged": true
+  }
+]

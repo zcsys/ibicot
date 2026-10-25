@@ -1,0 +1,15 @@
+test_generated_id_is_accepted_by_actual_unchanged_Dart_contract (test_native_reminders.ReminderIdentityProtocolTests.test_generated_id_is_accepted_by_actual_unchanged_Dart_contract) ... FAIL
+
+======================================================================
+FAIL: test_generated_id_is_accepted_by_actual_unchanged_Dart_contract (test_native_reminders.ReminderIdentityProtocolTests.test_generated_id_is_accepted_by_actual_unchanged_Dart_contract)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/csys/Desktop/ibicot/idle/release/native-notifications/id-protocol-repair-20261023T053546.745058Z/proposed/tool/test_native_reminders.py", line 239, in test_generated_id_is_accepted_by_actual_unchanged_Dart_contract
+    self.assertIsNotNone(self.consumer.fullmatch(identity))
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: unexpectedly None
+
+----------------------------------------------------------------------
+Ran 1 test in 0.011s
+
+FAILED (failures=1)

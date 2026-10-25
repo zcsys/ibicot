@@ -1,0 +1,41 @@
+{
+  "reviewer": "root",
+  "author": "client_asset_review",
+  "independent_protocol_reviewer": "qa_release",
+  "utc": "2026-10-25T16:31:33.506083+00:00",
+  "decision": "Conditionally authorize exact staged integration after current old-harness delivery is terminal and scoped de04 Dart analysis passes.",
+  "source_pins": {
+    "game/mobile/integration_test/native_reminders_test.dart": "de04f52b3c2311b3eb8e1c7fb83fcf7da41256a63a9a3b9f0ca4f732e8667eb4",
+    "tool/verify_native_reminders.py": "ddc801d4cc1050d51720e5da2bddae0db1f404fcbc6dcefd3d4ef00de9728f5b",
+    "tool/reminder_restart.py": "c39cc8a832526b3487aaeafafa248d5c5488ae4eea8cebc968f34ed5a7e78c07",
+    "tool/test_reminder_restart.py": "e4fe3c409f51192ab8ae0a7261d3e1ef5fe83ccc47a4f959ba566d99da4a21a3"
+  },
+  "review_pins": {
+    "release/qa/revoked-restart-independent-20261025T162707.106411Z/REVIEW.md": "a3e2d566f0978c9761f9f2a6f3b50beaa53ef4d4128d4acf77d6d6dc8f871b47",
+    "release/qa/revoked-restart-independent-20261025T162707.106411Z/verification.json": "f9df3879821e90881d78eeb09531f0bda27b33fa8528a5fc3a318d3060827561",
+    "release/qa/revoked-nullability-review-20261025T163020.468764Z/REVIEW.md": "cb3f509082129994b3cc9ab326ccce51dcc2e0a16a526b4e992324945d2c7efb",
+    "release/qa/revoked-nullability-review-20261025T163020.468764Z/verification.json": "d31fb8b6409b7e712250cd06657ac04df3e7eabb1db48501b83e49ab1293ef92",
+    "release/native-notifications/revoked-restart-repair-20261025T161340.874385Z/stage-pins.json": "07d0b3b7dce21679d061eaf1829b0fa5db70eed1554a85da071c66ad3c169916",
+    "release/native-notifications/revoked-restart-nullability-20261025T162921.086686Z/verification.json": "ef9d2bcc8f25a38089714cc15b991a58c972cc3d62e5024351ab672386dd8f0c"
+  },
+  "root_review": [
+    "Read new preparation/recovery Dart branches, runner integration and fail-closed helper including exact file/PID/kill/operator/predecessor checks.",
+    "Read independent43-method plus42-extra-check review and exact nullable-ID amendment review.",
+    "Independently reversed the sole nullability projection to original sealed c9 Dart bytes and rehashed four finalstaged sources."
+  ],
+  "required_before_native": [
+    "Current330ab/2ff5 deliveryterminal; do not mutate sourcepins duringrun.",
+    "Scoped stagedde04 Dartanalyzer clean; retain c9failedanalysis.",
+    "Nativeowner records exactlive330ab/2ff5 baseline and promotes onlyfour reviewed test/tool files."
+  ],
+  "execution_authorization": [
+    "Fresh Android revoked-prepare isolated fixture with actualSettings ON\u2192OFF only after host REVOCATION CHECKPOINT CAPTURED.",
+    "Preparation remains passed=false interruptedcheckpoint, neverfulltestsuccess.",
+    "Seal raw actualUIpacket and expectedkill evidence for QA differentagent visual/kill review before recovery; rootauthorizationrequired fordependent recovery.",
+    "Recovery must preserve rememberedoptin/effectivepermission distinction, exactsavegenerations, newPID, denied permission/scheduling/reoptin and originalframeworkcompletion.",
+    "Use approved operator noUiAutomationfromappiconreturnthroughtestterminal; noSDKhandle manipulation."
+  ],
+  "production_changed": false,
+  "canonical_acceptance_changed": false,
+  "native_pair_qualified": false
+}

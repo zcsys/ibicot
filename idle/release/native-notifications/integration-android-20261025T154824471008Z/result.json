@@ -1,0 +1,425 @@
+{
+  "verification_id": "integration-android-20261025T154824471008Z",
+  "candidate_fingerprint": "3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59",
+  "harness_sha256": "330ab6428203ec80e4de19e4eb727ad8dcfc6f63572e9ea1b0ef3ff7dc7a71da",
+  "scenario": "delivery",
+  "run_id": "v3b00-r20261025-android-delivery",
+  "device_label": "android",
+  "platform": "android",
+  "process_id": 5708,
+  "fixture_kind": "SYNTHETIC GAMEPLAY SNAPSHOT; REAL OS NOTIFICATION API",
+  "gateway": "NativeNotificationGateway",
+  "preference_store": "FileNotificationPreferences",
+  "clock": "actual_utc_and_monotonic_stopwatch",
+  "completed": false,
+  "actions": [
+    {
+      "verification_id": "integration-android-20261025T154824471008Z",
+      "candidate_fingerprint": "3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59",
+      "harness_sha256": "330ab6428203ec80e4de19e4eb727ad8dcfc6f63572e9ea1b0ef3ff7dc7a71da",
+      "scenario": "delivery",
+      "run_id": "v3b00-r20261025-android-delivery",
+      "device_label": "android",
+      "platform": "android",
+      "process_id": 5708,
+      "action": "allow_permission_if_prompted",
+      "utc_ms": 1792943342659
+    },
+    {
+      "verification_id": "integration-android-20261025T154824471008Z",
+      "candidate_fingerprint": "3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59",
+      "harness_sha256": "330ab6428203ec80e4de19e4eb727ad8dcfc6f63572e9ea1b0ef3ff7dc7a71da",
+      "scenario": "delivery",
+      "run_id": "v3b00-r20261025-android-delivery",
+      "device_label": "android",
+      "platform": "android",
+      "process_id": 5708,
+      "action": "background_app_now_using_os_home",
+      "utc_ms": 1792943342791
+    },
+    {
+      "verification_id": "integration-android-20261025T154824471008Z",
+      "candidate_fingerprint": "3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59",
+      "harness_sha256": "330ab6428203ec80e4de19e4eb727ad8dcfc6f63572e9ea1b0ef3ff7dc7a71da",
+      "scenario": "delivery",
+      "run_id": "v3b00-r20261025-android-delivery",
+      "device_label": "android",
+      "platform": "android",
+      "process_id": 5708,
+      "action": "wait_until_due_then_return_via_app_icon",
+      "utc_ms": 1792943384685,
+      "not_before_utc_ms": 1792943700000
+    }
+  ],
+  "limitations": [
+    "Simulator/emulator only; no physical delivery, battery or lock-screen guarantee.",
+    "Seeded Focus phase is not natural player progression.",
+    "OS permission UI must be operated directly; no grant/revoke bypass.",
+    "API delivered records do not prove that a person saw a banner."
+  ],
+  "fixture_directory": "/data/user/0/dev.tideglass.game/files/native-reminders/android-v3b00-r20261025-android-delivery-delivery",
+  "lifecycle_events": [
+    {
+      "state": "inactive",
+      "utc_ms": 1792943383029
+    },
+    {
+      "state": "hidden",
+      "utc_ms": 1792943384025
+    },
+    {
+      "state": "paused",
+      "utc_ms": 1792943384025
+    },
+    {
+      "state": "hidden",
+      "utc_ms": 1792943743860
+    },
+    {
+      "state": "inactive",
+      "utc_ms": 1792943743863
+    },
+    {
+      "state": "resumed",
+      "utc_ms": 1792943744949
+    }
+  ],
+  "lifecycle_callback_failures": [],
+  "permission_before_initialize": "allowed",
+  "initialization_lifecycle_events": [],
+  "permission_after_initialize": "allowed",
+  "default_opted_out": true,
+  "default_preferences_file_absent": true,
+  "default_pending_ids": [],
+  "permission_after_opt_in": "allowed",
+  "preferences_after_opt_in": {
+    "version": 1,
+    "enabled": true,
+    "focus": true,
+    "survey": true,
+    "storage": true,
+    "quiet": true,
+    "quiet_start": 1320,
+    "quiet_end": 480
+  },
+  "background_call_utc_ms": 1792943384053,
+  "plan_observation": {
+    "background_call_utc_ms": 1792943384053,
+    "warning_key": null,
+    "planned": [
+      {
+        "id": 77101,
+        "due_utc_ms": 1792943700000,
+        "due_utc_micros": 1792943700000000,
+        "zone": "Europe/Istanbul",
+        "kinds": [
+          "focus"
+        ],
+        "body": "Focus is available for your next constellation. Return whenever you like."
+      }
+    ],
+    "pending_ids": [
+      77101
+    ],
+    "saved_payload": {
+      "schema_version": 4,
+      "economic_version": "tideglass-economy-1.0.0",
+      "event_order_version": 4,
+      "counts": [
+        1,
+        0,
+        0,
+        0,
+        0
+      ],
+      "wallet_micros": "41300203",
+      "lifetime_micros": "41300203",
+      "charts": "0",
+      "elapsed_micros": "41300203",
+      "earning_remainder": "0",
+      "revision": 2,
+      "auto_buy_enabled": false,
+      "focus_charges": 0,
+      "focus_phase_micros": "7001300203",
+      "focus_remaining_micros": "0",
+      "completed_surveys": 0,
+      "survey_phase_micros": "41300203",
+      "survey_notes": "0",
+      "daily": {
+        "account_seed": "9971cef77841cef8f1ce5be52283f444",
+        "utc_offset_minutes": 180,
+        "day_high_water": 20751,
+        "last_materialized_day": 20751,
+        "utc_anchor_micros": "1792943342758896",
+        "available_discovery_kinds": [
+          "archive"
+        ],
+        "contracts": [
+          {
+            "id": "contract:9971cef77841cef8f1ce5be52283f444:20751:0",
+            "account_day": 20751,
+            "slot": 0,
+            "kind": "restore",
+            "discovery_kind": null,
+            "target": "600000000",
+            "rate_snapshot_raw": "1000000000000000000000000",
+            "cheapest_price_snapshot_micros": "33600000",
+            "lifetime_baseline_micros": "0",
+            "purchased_baseline": "0",
+            "discovery_baseline": "0",
+            "rerolled": false,
+            "claimed": false,
+            "credited_pass_id": null
+          },
+          {
+            "id": "contract:9971cef77841cef8f1ce5be52283f444:20751:1",
+            "account_day": 20751,
+            "slot": 1,
+            "kind": "restore",
+            "discovery_kind": null,
+            "target": "600000000",
+            "rate_snapshot_raw": "1000000000000000000000000",
+            "cheapest_price_snapshot_micros": "33600000",
+            "lifetime_baseline_micros": "0",
+            "purchased_baseline": "0",
+            "discovery_baseline": "0",
+            "rerolled": false,
+            "claimed": false,
+            "credited_pass_id": null
+          },
+          {
+            "id": "contract:9971cef77841cef8f1ce5be52283f444:20751:2",
+            "account_day": 20751,
+            "slot": 2,
+            "kind": "restore",
+            "discovery_kind": null,
+            "target": "600000000",
+            "rate_snapshot_raw": "1000000000000000000000000",
+            "cheapest_price_snapshot_micros": "33600000",
+            "lifetime_baseline_micros": "0",
+            "purchased_baseline": "0",
+            "discovery_baseline": "0",
+            "rerolled": false,
+            "claimed": false,
+            "credited_pass_id": null
+          }
+        ],
+        "discovery_totals": {},
+        "discovery_operation_ids": [],
+        "discovery_sequence": "0",
+        "selected_pass_id": "pass.01",
+        "pass_xp_by_id": {
+          "pass.01": "0"
+        }
+      },
+      "support": {
+        "remaining_micros": "0",
+        "token_day": 20751,
+        "tokens": [],
+        "caches": [],
+        "claimed_slice_ids": [],
+        "closed_settlement_ids": [],
+        "grant_source_ids": [],
+        "last_settlement_sequence": "0",
+        "last_settlement_through_utc_micros": null,
+        "last_finalized_settlement_id": null,
+        "receipt_cursor_migration_required": false,
+        "active_settlement_id": null,
+        "active_settlement_request": null,
+        "source_start_elapsed_micros": "0",
+        "next_offset_micros": "0",
+        "slice_start_offset_micros": "0",
+        "slice_numerator": "0"
+      },
+      "lifetime_purchased_count": "0",
+      "rechart_count": 0,
+      "last_rechart_elapsed_micros": "0",
+      "surveys_collected_total": "0",
+      "completed_calibration_ids": [],
+      "extra_plan_slots": 0,
+      "automation_plans": [
+        {
+          "id": "plan.base",
+          "name": "Base plan",
+          "purchase_policy": "greedy",
+          "tier_priority": [
+            4,
+            3,
+            2,
+            1,
+            0
+          ],
+          "auto_reset_enabled": false,
+          "minimum_additional_charts": "1",
+          "minimum_run_seconds": 600
+        }
+      ],
+      "selected_automation_plan_id": "plan.base"
+    },
+    "saved_settled_through_utc_micros": 1792943384059099,
+    "saved_snapshot_id": "b9c1fab9-3f8d-4b94-9041-6de25c59ac11",
+    "game_payload": {
+      "schema_version": 4,
+      "economic_version": "tideglass-economy-1.0.0",
+      "event_order_version": 4,
+      "counts": [
+        1,
+        0,
+        0,
+        0,
+        0
+      ],
+      "wallet_micros": "41300203",
+      "lifetime_micros": "41300203",
+      "charts": "0",
+      "elapsed_micros": "41300203",
+      "earning_remainder": "0",
+      "revision": 2,
+      "auto_buy_enabled": false,
+      "focus_charges": 0,
+      "focus_phase_micros": "7001300203",
+      "focus_remaining_micros": "0",
+      "completed_surveys": 0,
+      "survey_phase_micros": "41300203",
+      "survey_notes": "0",
+      "daily": {
+        "account_seed": "9971cef77841cef8f1ce5be52283f444",
+        "utc_offset_minutes": 180,
+        "day_high_water": 20751,
+        "last_materialized_day": 20751,
+        "utc_anchor_micros": "1792943342758896",
+        "available_discovery_kinds": [
+          "archive"
+        ],
+        "contracts": [
+          {
+            "id": "contract:9971cef77841cef8f1ce5be52283f444:20751:0",
+            "account_day": 20751,
+            "slot": 0,
+            "kind": "restore",
+            "discovery_kind": null,
+            "target": "600000000",
+            "rate_snapshot_raw": "1000000000000000000000000",
+            "cheapest_price_snapshot_micros": "33600000",
+            "lifetime_baseline_micros": "0",
+            "purchased_baseline": "0",
+            "discovery_baseline": "0",
+            "rerolled": false,
+            "claimed": false,
+            "credited_pass_id": null
+          },
+          {
+            "id": "contract:9971cef77841cef8f1ce5be52283f444:20751:1",
+            "account_day": 20751,
+            "slot": 1,
+            "kind": "restore",
+            "discovery_kind": null,
+            "target": "600000000",
+            "rate_snapshot_raw": "1000000000000000000000000",
+            "cheapest_price_snapshot_micros": "33600000",
+            "lifetime_baseline_micros": "0",
+            "purchased_baseline": "0",
+            "discovery_baseline": "0",
+            "rerolled": false,
+            "claimed": false,
+            "credited_pass_id": null
+          },
+          {
+            "id": "contract:9971cef77841cef8f1ce5be52283f444:20751:2",
+            "account_day": 20751,
+            "slot": 2,
+            "kind": "restore",
+            "discovery_kind": null,
+            "target": "600000000",
+            "rate_snapshot_raw": "1000000000000000000000000",
+            "cheapest_price_snapshot_micros": "33600000",
+            "lifetime_baseline_micros": "0",
+            "purchased_baseline": "0",
+            "discovery_baseline": "0",
+            "rerolled": false,
+            "claimed": false,
+            "credited_pass_id": null
+          }
+        ],
+        "discovery_totals": {},
+        "discovery_operation_ids": [],
+        "discovery_sequence": "0",
+        "selected_pass_id": "pass.01",
+        "pass_xp_by_id": {
+          "pass.01": "0"
+        }
+      },
+      "support": {
+        "remaining_micros": "0",
+        "token_day": 20751,
+        "tokens": [],
+        "caches": [],
+        "claimed_slice_ids": [],
+        "closed_settlement_ids": [],
+        "grant_source_ids": [],
+        "last_settlement_sequence": "0",
+        "last_settlement_through_utc_micros": null,
+        "last_finalized_settlement_id": null,
+        "receipt_cursor_migration_required": false,
+        "active_settlement_id": null,
+        "active_settlement_request": null,
+        "source_start_elapsed_micros": "0",
+        "next_offset_micros": "0",
+        "slice_start_offset_micros": "0",
+        "slice_numerator": "0"
+      },
+      "lifetime_purchased_count": "0",
+      "rechart_count": 0,
+      "last_rechart_elapsed_micros": "0",
+      "surveys_collected_total": "0",
+      "completed_calibration_ids": [],
+      "extra_plan_slots": 0,
+      "automation_plans": [
+        {
+          "id": "plan.base",
+          "name": "Base plan",
+          "purchase_policy": "greedy",
+          "tier_priority": [
+            4,
+            3,
+            2,
+            1,
+            0
+          ],
+          "auto_reset_enabled": false,
+          "minimum_additional_charts": "1",
+          "minimum_run_seconds": 600
+        }
+      ],
+      "selected_automation_plan_id": "plan.base"
+    },
+    "game_settled_through_utc_micros": 1792943384059099,
+    "observed_utc_ms": 1792943384680,
+    "observed_utc_micros": 1792943384680832
+  },
+  "scheduled_elapsed_ms": 41894,
+  "plan": {
+    "background_call_utc_ms": 1792943384053,
+    "scheduled_observed_utc_ms": 1792943384680,
+    "due_utc_ms": 1792943700000,
+    "settled_through_utc_ms": 1792943384059,
+    "zone": "Europe/Istanbul",
+    "ids": [
+      77101
+    ],
+    "kinds": [
+      "focus"
+    ],
+    "body": "Focus is available for your next constellation. Return whenever you like.",
+    "saved_payload_sha256": "2693a22f5a6974ac98ad1c2585426a56d179f0dcaad4856434c2245e11708368",
+    "saved_snapshot_id": "b9c1fab9-3f8d-4b94-9041-6de25c59ac11",
+    "production_lifecycle": true
+  },
+  "returned_utc_ms": 1792943744951,
+  "returned_elapsed_ms": 402161,
+  "delivered_records": [],
+  "delivery_observed_utc_ms": 1792943744967,
+  "return_pending_ids": [],
+  "return_active_ids": [],
+  "screenshots": []
+}

@@ -1,0 +1,62 @@
+{
+  "candidate_fingerprint": "3445498f397a8cfc2c1383e5c128358222f25cd1691a54acdd852e03bbf4b982",
+  "device": "F05BE4B0-52C1-4CA1-B721-BD64AE559E3F",
+  "label": "ios-phone",
+  "started_utc": "20261016T112231.655084Z",
+  "command": [
+    "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+    "drive",
+    "--driver=test_driver/evidence_911183b5d9ee.dart",
+    "--target=integration_test/evidence_4822a6b8ef58_test.dart",
+    "-d",
+    "F05BE4B0-52C1-4CA1-B721-BD64AE559E3F",
+    "--dart-define=TIDEGLASS_DEVICE_LABEL=ios-phone",
+    "--dart-define=TIDEGLASS_SCENARIO=session-start",
+    "--dart-define=TIDEGLASS_RUN_ID=integrated-344-a",
+    "--dart-define=TIDEGLASS_VERIFICATION_ID=integration-ios-phone-20261016T112231.655084Z",
+    "--dart-define=TIDEGLASS_CANDIDATE_FINGERPRINT=3445498f397a8cfc2c1383e5c128358222f25cd1691a54acdd852e03bbf4b982",
+    "--dart-define=TIDEGLASS_HARNESS_SHA256=4822a6b8ef58514d5551460154303fce18b4dcf5754673988535ecf7d6642507",
+    "--keep-app-running",
+    "--timeout=180",
+    "--no-pub"
+  ],
+  "scenario": "session-start",
+  "run_id": "integrated-344-a",
+  "harness_sha256": {
+    "harness.dart": "4822a6b8ef58514d5551460154303fce18b4dcf5754673988535ecf7d6642507",
+    "driver.dart": "911183b5d9ee8ec80769836f477a293dadb66e20cc0c5d5e44314415889749a8"
+  },
+  "production_inputs_match_snapshot": true,
+  "provenance": "Seeded native boundary/presentation test; no natural pacing or physical-device claim",
+  "exit_code": 1,
+  "native_process_stop": {
+    "command": [
+      "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+      "-s",
+      "F05BE4B0-52C1-4CA1-B721-BD64AE559E3F",
+      "shell",
+      "am",
+      "force-stop",
+      "dev.tideglass.game"
+    ],
+    "exit_code": 1,
+    "output": "adb: device 'F05BE4B0-52C1-4CA1-B721-BD64AE559E3F' not found\n"
+  },
+  "verification_errors": [
+    "device_label: expected 'ios-phone', received None",
+    "scenario: expected 'session-start', received None",
+    "run_id: expected 'integrated-344-a', received None",
+    "verification_id: expected 'integration-ios-phone-20261016T112231.655084Z', received None",
+    "candidate_fingerprint: expected '3445498f397a8cfc2c1383e5c128358222f25cd1691a54acdd852e03bbf4b982', received None",
+    "harness_sha256: expected '4822a6b8ef58514d5551460154303fce18b4dcf5754673988535ecf7d6642507', received None",
+    "No successful test completion in native log",
+    "Explicit native process termination failed"
+  ],
+  "passed": false,
+  "evidence_sha256": {
+    "result.json": "6e038c68cae41b41259cb4234fbaa2e36171c2ae6b639911f92985bf9f4bc1e3",
+    "run.log": "91abf6e0fc56734d1ed79c8e0be3c36317ddfd36e14fad22e43d725b7a9a0ba9",
+    "driver.dart": "911183b5d9ee8ec80769836f477a293dadb66e20cc0c5d5e44314415889749a8",
+    "harness.dart": "4822a6b8ef58514d5551460154303fce18b4dcf5754673988535ecf7d6642507"
+  }
+}

@@ -1,0 +1,16 @@
+name: tideglass_simulation
+description: Reproducible policy experiments using the shipping Tideglass engines.
+version: 0.1.0
+publish_to: none
+environment:
+  sdk: '>=3.10.0 <4.0.0'
+dependencies:
+  tideglass_core:
+    path: ../core
+  tideglass_progression:
+    path: ../progression
+  tideglass_events:
+    path: ../events
+  crypto: ^3.0.6
+dev_dependencies:
+  test: ^1.25.8

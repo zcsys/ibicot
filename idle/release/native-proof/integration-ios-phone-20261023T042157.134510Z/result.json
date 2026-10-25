@@ -1,0 +1,286 @@
+{
+  "provenance": "Fresh native bootstrap with real system clock and actual elapsed wait; isolated test save path; no seeded progress. Reload is a separate native OS process.",
+  "verification_id": "integration-ios-phone-20261023T042157.134510Z",
+  "candidate_fingerprint": "3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59",
+  "harness_sha256": "7622fd5997fff4d1e23f1a2facc66694e6a81741ddfbce4a3062fd7e61e1f647",
+  "platform": "ios",
+  "device_label": "ios-phone",
+  "scenario": "natural-start",
+  "run_id": "v3b00-ios-phone-natural",
+  "process_id": 61552,
+  "elapsed_milliseconds": 36546,
+  "save_directory": "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Data/Application/45860C19-0445-46CD-8372-5A95F4137F3C/Library/Application Support/native-verification/natural-ios-phone-v3b00-ios-phone-natural",
+  "before_core": {
+    "schema_version": 4,
+    "economic_version": "tideglass-economy-1.0.0",
+    "event_order_version": 4,
+    "counts": [
+      1,
+      0,
+      0,
+      0,
+      0
+    ],
+    "wallet_micros": "0",
+    "lifetime_micros": "0",
+    "charts": "0",
+    "elapsed_micros": "0",
+    "earning_remainder": "0",
+    "revision": 1,
+    "auto_buy_enabled": false,
+    "focus_charges": 0,
+    "focus_phase_micros": "0",
+    "focus_remaining_micros": "0",
+    "completed_surveys": 0,
+    "survey_phase_micros": "0",
+    "survey_notes": "0",
+    "daily": {
+      "account_seed": "00b7d3d6661e6127e122d5505a9c34d8",
+      "utc_offset_minutes": 180,
+      "day_high_water": 20749,
+      "last_materialized_day": 20749,
+      "utc_anchor_micros": "1792729366580351",
+      "available_discovery_kinds": [
+        "archive"
+      ],
+      "contracts": [
+        {
+          "id": "contract:00b7d3d6661e6127e122d5505a9c34d8:20749:0",
+          "account_day": 20749,
+          "slot": 0,
+          "kind": "build",
+          "discovery_kind": null,
+          "target": "5",
+          "rate_snapshot_raw": "1000000000000000000000000",
+          "cheapest_price_snapshot_micros": "33600000",
+          "lifetime_baseline_micros": "0",
+          "purchased_baseline": "0",
+          "discovery_baseline": "0",
+          "rerolled": false,
+          "claimed": false,
+          "credited_pass_id": null
+        },
+        {
+          "id": "contract:00b7d3d6661e6127e122d5505a9c34d8:20749:1",
+          "account_day": 20749,
+          "slot": 1,
+          "kind": "build",
+          "discovery_kind": null,
+          "target": "5",
+          "rate_snapshot_raw": "1000000000000000000000000",
+          "cheapest_price_snapshot_micros": "33600000",
+          "lifetime_baseline_micros": "0",
+          "purchased_baseline": "0",
+          "discovery_baseline": "0",
+          "rerolled": false,
+          "claimed": false,
+          "credited_pass_id": null
+        },
+        {
+          "id": "contract:00b7d3d6661e6127e122d5505a9c34d8:20749:2",
+          "account_day": 20749,
+          "slot": 2,
+          "kind": "build",
+          "discovery_kind": null,
+          "target": "5",
+          "rate_snapshot_raw": "1000000000000000000000000",
+          "cheapest_price_snapshot_micros": "33600000",
+          "lifetime_baseline_micros": "0",
+          "purchased_baseline": "0",
+          "discovery_baseline": "0",
+          "rerolled": false,
+          "claimed": false,
+          "credited_pass_id": null
+        }
+      ],
+      "discovery_totals": {},
+      "discovery_operation_ids": [],
+      "discovery_sequence": "0",
+      "selected_pass_id": "pass.01",
+      "pass_xp_by_id": {
+        "pass.01": "0"
+      }
+    },
+    "support": {
+      "remaining_micros": "0",
+      "token_day": 20749,
+      "tokens": [],
+      "caches": [],
+      "claimed_slice_ids": [],
+      "closed_settlement_ids": [],
+      "grant_source_ids": [],
+      "last_settlement_sequence": "0",
+      "last_settlement_through_utc_micros": null,
+      "last_finalized_settlement_id": null,
+      "receipt_cursor_migration_required": false,
+      "active_settlement_id": null,
+      "active_settlement_request": null,
+      "source_start_elapsed_micros": "0",
+      "next_offset_micros": "0",
+      "slice_start_offset_micros": "0",
+      "slice_numerator": "0"
+    },
+    "lifetime_purchased_count": "0",
+    "rechart_count": 0,
+    "last_rechart_elapsed_micros": "0",
+    "surveys_collected_total": "0",
+    "completed_calibration_ids": [],
+    "extra_plan_slots": 0,
+    "automation_plans": [
+      {
+        "id": "plan.base",
+        "name": "Base plan",
+        "purchase_policy": "greedy",
+        "tier_priority": [
+          4,
+          3,
+          2,
+          1,
+          0
+        ],
+        "auto_reset_enabled": false,
+        "minimum_additional_charts": "1",
+        "minimum_run_seconds": 600
+      }
+    ],
+    "selected_automation_plan_id": "plan.base"
+  },
+  "after_core": {
+    "schema_version": 4,
+    "economic_version": "tideglass-economy-1.0.0",
+    "event_order_version": 4,
+    "counts": [
+      2,
+      0,
+      0,
+      0,
+      0
+    ],
+    "wallet_micros": "2817250",
+    "lifetime_micros": "36417250",
+    "charts": "0",
+    "elapsed_micros": "36013864",
+    "earning_remainder": "0",
+    "revision": 147,
+    "auto_buy_enabled": false,
+    "focus_charges": 0,
+    "focus_phase_micros": "36013864",
+    "focus_remaining_micros": "0",
+    "completed_surveys": 0,
+    "survey_phase_micros": "36013864",
+    "survey_notes": "0",
+    "daily": {
+      "account_seed": "00b7d3d6661e6127e122d5505a9c34d8",
+      "utc_offset_minutes": 180,
+      "day_high_water": 20749,
+      "last_materialized_day": 20749,
+      "utc_anchor_micros": "1792729366580351",
+      "available_discovery_kinds": [
+        "archive"
+      ],
+      "contracts": [
+        {
+          "id": "contract:00b7d3d6661e6127e122d5505a9c34d8:20749:0",
+          "account_day": 20749,
+          "slot": 0,
+          "kind": "build",
+          "discovery_kind": null,
+          "target": "5",
+          "rate_snapshot_raw": "1000000000000000000000000",
+          "cheapest_price_snapshot_micros": "33600000",
+          "lifetime_baseline_micros": "0",
+          "purchased_baseline": "0",
+          "discovery_baseline": "0",
+          "rerolled": false,
+          "claimed": false,
+          "credited_pass_id": null
+        },
+        {
+          "id": "contract:00b7d3d6661e6127e122d5505a9c34d8:20749:1",
+          "account_day": 20749,
+          "slot": 1,
+          "kind": "build",
+          "discovery_kind": null,
+          "target": "5",
+          "rate_snapshot_raw": "1000000000000000000000000",
+          "cheapest_price_snapshot_micros": "33600000",
+          "lifetime_baseline_micros": "0",
+          "purchased_baseline": "0",
+          "discovery_baseline": "0",
+          "rerolled": false,
+          "claimed": false,
+          "credited_pass_id": null
+        },
+        {
+          "id": "contract:00b7d3d6661e6127e122d5505a9c34d8:20749:2",
+          "account_day": 20749,
+          "slot": 2,
+          "kind": "build",
+          "discovery_kind": null,
+          "target": "5",
+          "rate_snapshot_raw": "1000000000000000000000000",
+          "cheapest_price_snapshot_micros": "33600000",
+          "lifetime_baseline_micros": "0",
+          "purchased_baseline": "0",
+          "discovery_baseline": "0",
+          "rerolled": false,
+          "claimed": false,
+          "credited_pass_id": null
+        }
+      ],
+      "discovery_totals": {},
+      "discovery_operation_ids": [],
+      "discovery_sequence": "0",
+      "selected_pass_id": "pass.01",
+      "pass_xp_by_id": {
+        "pass.01": "0"
+      }
+    },
+    "support": {
+      "remaining_micros": "0",
+      "token_day": 20749,
+      "tokens": [],
+      "caches": [],
+      "claimed_slice_ids": [],
+      "closed_settlement_ids": [],
+      "grant_source_ids": [],
+      "last_settlement_sequence": "0",
+      "last_settlement_through_utc_micros": null,
+      "last_finalized_settlement_id": null,
+      "receipt_cursor_migration_required": false,
+      "active_settlement_id": null,
+      "active_settlement_request": null,
+      "source_start_elapsed_micros": "0",
+      "next_offset_micros": "0",
+      "slice_start_offset_micros": "0",
+      "slice_numerator": "0"
+    },
+    "lifetime_purchased_count": "1",
+    "rechart_count": 0,
+    "last_rechart_elapsed_micros": "0",
+    "surveys_collected_total": "0",
+    "completed_calibration_ids": [],
+    "extra_plan_slots": 0,
+    "automation_plans": [
+      {
+        "id": "plan.base",
+        "name": "Base plan",
+        "purchase_policy": "greedy",
+        "tier_priority": [
+          4,
+          3,
+          2,
+          1,
+          0
+        ],
+        "auto_reset_enabled": false,
+        "minimum_additional_charts": "1",
+        "minimum_run_seconds": 600
+      }
+    ],
+    "selected_automation_plan_id": "plan.base"
+  },
+  "screenshots": [
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/integration-ios-phone-20261023T042157.134510Z/ios-phone-natural-start.png"
+  ]
+}

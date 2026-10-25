@@ -1,0 +1,77 @@
+{
+  "M2-02": {
+    "id": "M2-02",
+    "title": "Build onboarding and Rechart communication",
+    "owner": "client",
+    "reviewer": "qa_release",
+    "batch": "B06",
+    "source": "v1_backlog.json",
+    "source_acceptance": "Teach costs, production, retained progress and automation with skippable guidance; no monetization prompt interrupts onboarding.",
+    "source_acceptance_dependencies": [
+      "M1-05",
+      "M2-01"
+    ],
+    "scope_ids": [
+      "S05"
+    ],
+    "status": "in_progress",
+    "evidence": [
+      "game/mobile/lib/app.dart"
+    ],
+    "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+    "evidence_note": "Component implementation/authoring evidence only; complete source acceptance and upstream gates remain required."
+  },
+  "M1-05": {
+    "id": "M1-05",
+    "title": "Build the playable client shell",
+    "owner": "client",
+    "reviewer": "qa_release",
+    "batch": "B05",
+    "source": "v1_backlog.json",
+    "source_acceptance": "Display wallet, output, producer purchases, milestones, resets and settings on small and large screens.",
+    "source_acceptance_dependencies": [
+      "M0-04",
+      "M1-02"
+    ],
+    "scope_ids": [
+      "S02",
+      "S04"
+    ],
+    "status": "accepted",
+    "evidence": [
+      "game/mobile/lib/app.dart",
+      "game/mobile/lib/bootstrap.dart",
+      "release/qa/integration-client-clauses-20261021T143635184485Z/CLAUSE_RECOMMENDATIONS.md",
+      "release/qa/integration-client-clauses-20261021T143635184485Z/verification.json",
+      "release/qa/lead-client-shell-acceptance-20261021T145030.603397Z/DECISIONS.md"
+    ],
+    "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+    "evidence_note": "Accepted at unchanged original shell criterion after named independent QA review of actual small/large200% English/pseudo wallet/output, independently computed network preview, real milestone purchase, reset cancel/confirm and Settings actions. Original M0-04/M1-02 prerequisites accepted. M2-03 conditional reset estimate remains separate and under implementation; physical/human and broader scope/release gates are not promoted."
+  },
+  "M2-01": {
+    "id": "M2-01",
+    "title": "Complete the first-session economy",
+    "owner": "gameplay",
+    "reviewer": "platform",
+    "batch": "B06",
+    "source": "v1_backlog.json",
+    "source_acceptance": "Cross-tier synergies, free autobuy unlock and baseline offline replay support first session through 25 Charts with deterministic results.",
+    "source_acceptance_dependencies": [
+      "M1-02"
+    ],
+    "scope_ids": [
+      "S03",
+      "S06",
+      "S07"
+    ],
+    "status": "accepted",
+    "evidence": [
+      "game/core/lib/src/engine.dart",
+      "release/qa/platform-package-clauses-20261021T141913194277Z/PACKAGE_RECOMMENDATIONS.md",
+      "release/qa/platform-package-clauses-20261021T141913194277Z/verification.json",
+      "release/qa/lead-automation-acceptance-20261021T143015.491121Z/DECISIONS.md"
+    ],
+    "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+    "evidence_note": "Accepted at unchanged original criterion and original accepted prerequisites, in M2-01 then M3-03 order. Different-author named platform review reproduced earned first-session boundaries, actual online/offline priority/reset/receipt parity, exact free/Note plan capacity and actual repository reopen. No paid gate or economic constants changed. Physical interruption, broader forecast/UI, provider/human and release gates remain separate."
+  }
+}

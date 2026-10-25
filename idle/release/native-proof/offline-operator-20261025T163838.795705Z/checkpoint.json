@@ -1,0 +1,190 @@
+{
+  "utc": "2026-10-25T16:43:38.005887+00:00",
+  "result": "Both local API35 offline start and new-process reload passed; baseline restored; listener terminal0",
+  "run_id": "v3b00-offline-20261025t163838795705z",
+  "rows": [
+    {
+      "report": "/Users/csys/Desktop/ibicot/idle/release/native-proof/integration-android-offline-20261025T163852.724871Z/verification.json",
+      "sha256": "b77fc2974c7e5a0c5606e80118cc6ebaa031e275b14ef0fce3bc9bd0b6435e5d",
+      "scenario": "natural-start",
+      "passed": true,
+      "process_id": 9280,
+      "offline_qualification": {
+        "qualified_local_network_path": true,
+        "states": {
+          "before-online": {
+            "airplane": "0",
+            "wifi": "1",
+            "data": "1",
+            "default": "106"
+          },
+          "offline-ready": {
+            "airplane": "1",
+            "wifi": "3",
+            "data": "1",
+            "default": "none"
+          },
+          "offline-complete": {
+            "airplane": "1",
+            "wifi": "3",
+            "data": "1",
+            "default": "none"
+          }
+        },
+        "samples": 105,
+        "app_to_host_clock_offset_seconds": 0.46132802963256836,
+        "scope": "Android emulator API35 guest offline path; no Internet, iOS, physical, provider or production-traffic absence claim"
+      },
+      "evidence_sha256": {
+        "os-snapshots.json": "f44d3b63b0aa1e775bb55eff3bd1debf96fb41ba70e6c755e9055f322f4d6502",
+        "offline-qualification.json": "26b4d5a2f131f2e93466126618be12fb965568c9c796c7160ed7762be07837eb",
+        "native-save-progress.1.json": "2570713bccbde43c5f329dfdc9bdaffeb637e110e5bcbcd0a328cc54cd30a1ad",
+        "offline_support.py": "f726ab534f0d81e3d6191e6397517ad267cbbc1a6375885664aedb242b18eb35",
+        "native-save-progress.0.json": "e016210d0fb2c4a3a9463968559b72347692c18062226a355be79d5b8952c0ea",
+        "network-profile.json": "62d10b43e87dd1d83f13763470abb47a0bb084279299751b2d589859314b1c87",
+        "result.json": "91b62f3de65e27d2e938b0443a54e3dd1f7184d19a84af6c6fe60ddf1d13a76a",
+        "listener-prefix.jsonl": "8cef92fccac63e12bb7c95948714829e1006b7adbbfdef9d6a9a9b34b901aabb",
+        "run.log": "cb04dc40493a3295cec8244dd6773cd9fdb3166b89ba809260a098ba93e9becd",
+        "driver.dart": "ec880d16153b1ac577a221a46f81e7c309dd5417fbba8aae4ce68f7acbcfb668",
+        "verify_native.py": "ec56e66871ca2b228637cd16063eaf3160060f0aa80a3fa9bf9288666a5767da",
+        "native-checkpoint.json": "a5591758b150e5ddf8b70a905c45158a15c26450534cfeac9c3a9d3e68329d53",
+        "harness.dart": "90dbf5a3c50498c61700a4a066a002dc760e38ed3f75a65f8f49d16af61ddac4",
+        "android-offline-natural-start.png": "c59bd3dd8bf46bfbd658cbe3b6e075269be64bd282168fbf9ee5fcdc9dff8c0b"
+      }
+    },
+    {
+      "report": "/Users/csys/Desktop/ibicot/idle/release/native-proof/integration-android-offline-20261025T164119.025808Z/verification.json",
+      "sha256": "9c44fc5645005e16de0988d51d3ee2e70479602f4028a33191923ed6b07730c5",
+      "scenario": "natural-reload",
+      "passed": true,
+      "process_id": 9798,
+      "offline_qualification": {
+        "qualified_local_network_path": true,
+        "states": {
+          "offline-ready": {
+            "airplane": "1",
+            "wifi": "3",
+            "data": "1",
+            "default": "none"
+          },
+          "offline-complete": {
+            "airplane": "1",
+            "wifi": "3",
+            "data": "1",
+            "default": "none"
+          },
+          "after-restored": {
+            "airplane": "0",
+            "wifi": "1",
+            "data": "1",
+            "default": "108"
+          }
+        },
+        "samples": 66,
+        "app_to_host_clock_offset_seconds": 0.46132802963256836,
+        "scope": "Android emulator API35 guest offline path; no Internet, iOS, physical, provider or production-traffic absence claim"
+      },
+      "evidence_sha256": {
+        "os-snapshots.json": "c4007062639a0d62620cf04534d07ca6af509ad1d3703bb248c5a46db7a356c6",
+        "offline-qualification.json": "1e5293e6c3639cee215f9415ef81e4199773beb89b38d6ec44fa68358faaff77",
+        "native-save-progress.1.json": "f55feda311430688a9c57d21e49d0fdbcc38681aa8f2b2d461792d1ce1f044d1",
+        "offline_support.py": "f726ab534f0d81e3d6191e6397517ad267cbbc1a6375885664aedb242b18eb35",
+        "native-save-progress.0.json": "df0e4ec1a93f584329392769f7653323606210f1aadc4d91590619e260ee6794",
+        "predecessor.json": "99b468f157388c0e3131ad88e0ef42d0b3f457e53e6157541f83268da5410097",
+        "network-profile.json": "62d10b43e87dd1d83f13763470abb47a0bb084279299751b2d589859314b1c87",
+        "result.json": "a1e96e1bcd1f5b8ab130407afe0e2f97ccffc23f7aaf8e12b9239d117df03485",
+        "listener-prefix.jsonl": "6b5140e6741304d050f5715c759455484de26a8a6f0fad0084fb30334707ab8e",
+        "run.log": "d68483f12beb3414645bd09e870d35862314b3eb28ffdc9f71138f8ba96715cb",
+        "driver.dart": "ec880d16153b1ac577a221a46f81e7c309dd5417fbba8aae4ce68f7acbcfb668",
+        "verify_native.py": "ec56e66871ca2b228637cd16063eaf3160060f0aa80a3fa9bf9288666a5767da",
+        "native-checkpoint.json": "a5591758b150e5ddf8b70a905c45158a15c26450534cfeac9c3a9d3e68329d53",
+        "harness.dart": "90dbf5a3c50498c61700a4a066a002dc760e38ed3f75a65f8f49d16af61ddac4",
+        "android-offline-natural-reload.png": "9109d091b0a93b3f9a491ba9e9c26a85b463a8875484073f6c8e1a9f25abd5c0"
+      }
+    }
+  ],
+  "facts": [
+    "Actual observed system Airplane ON and Home/current app-icon return; readonly OS offline snapshots airplane1/wifi3/defaultnone.",
+    "Real native local socket unavailable during purchase/save/new-process reload, independently healthy localhost listener; no host network changes.",
+    "Actual observed Airplane OFF and current app-icon return restored baseline0/1/1 and native online challenges.",
+    "No UiAutomation after either return tap through each native/driver terminal.",
+    "Listener85617 stopped normally by SIGINT after both immutable prefixes/reports.",
+    "Earlier raw3 parser failure and operator no-resume timeout remain failed, no predecessor transfer."
+  ],
+  "limits": [
+    "Android emulator API35/local nonce endpoint only; no Internet/iOS/physical/provider/absence-of-production-traffic claim."
+  ],
+  "operator_files_sha256": {
+    "connectivity.txt": "6cc4560f4c79f004a264636cbe2468efa4902dfa19a009839ca00541c97781b0",
+    "disable-return.png": "d90aa8eb68e8c7683db896de84b31c6e04122669d25f7b810049d186dfad7aff",
+    "restore-expanded-activities.txt": "7635caf0e28a1c1986c3755d4b17ac6d872da43f97b979a25abedbd58126216d",
+    "disable-airplane-action.json": "b1e01d909717fa0f2830b3f55feaefec268f2bf08f9cf1f2505ea7397c214158",
+    "disable-expanded-receipts.json": "3b9fa5c593a6a83d4d06ade4ea50f5eb5d66f3e35e2db68d999bee3f71643eea",
+    "disable-airplane.png": "00d1e8e81faee57770df90af6f16841116080d74659b6a3b8aa443d7e4031770",
+    "disable-expanded-activities.txt": "ddf46c4815732fd89e0d11a4ac5e246e02e5a6977247c2d888a302127e9aa7df",
+    "restore-airplane-receipts.json": "6a84560f54abdead0f567089e31ded68ffdeb528896c6267a6d416d69fec82f9",
+    "avd.txt": "12f02d5f9c4612981f46d817db8e1ed0f176156a62b01a2fb813c42dd89d5909",
+    "disable-before.png": "20e3c262965f7910e911ce1bc9afee38fd04f6b1334f77d7eba9c902d45cd79c",
+    "disable-before-activities.txt": "c2e27e55f0e288c828b6f2c5c3b131b11d80be19d308fc2611de4e45f67ffb0c",
+    "restore-before-pid.txt": "6552932498579d25c41a915a5180c6748b09fbcce96206f2522f471940178a83",
+    "restore-shade-action.json": "8fbdc56936597bb3316d310c4af9ff032bb9a9c72d308bc034b4dfd6b1fc811b",
+    "restore-airplane-action.json": "d0eb8bb4b65b5418d3997308ff93cc206a73ece0979dd7757f835883f6798388",
+    "restore-shade-hierarchy.txt": "f5b38875396b00f7370cfe8c11028ea0c162072390c07e3457b842b63fa6e428",
+    "disable-expanded-action.json": "d25077330e290f5bb4baa540cce17e0d678e07dc08f4ad45168110ae1608ee16",
+    "restore-home-action.json": "c5e092e941534cda50bf39c0fd43058d340a8c6715b1c648fe342fce825c9a1a",
+    "disable-expanded.png": "86532c2d28fb02826ad3ead2121ac14185a15ab5133dbd674487f0db8b8a630e",
+    "disable-before-hierarchy.txt": "411103dfee35a75626369749e3c60d5fcb4bb110d5841f97409351e022a6e113",
+    "wifi.txt": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "restore-return-receipts.json": "121a5f7cd9cda1b5b836453fac9711c689cea0de878f65f3cf20acbc408cf494",
+    "disable-before-pid.txt": "1e8f1764f3f77661f5721b4bb0583cd44a11e02ceac812476ef5fa734df97a2f",
+    "restore-before-activities.txt": "f6bed93ed5d2554f8d45bb0e93c96df3ce342e8e5ca6cca95208128293ffe1de",
+    "restore-expanded-hierarchy.txt": "8753de3935e13e60c760670a239245e9b5705e2237a778aeddb22ebc0effe9ea",
+    "disable-airplane-hierarchy.txt": "c93ff7020a02edbd1f9cf37cba84a271217a40ed007d48c3dfb61fd6612544c5",
+    "restore-before-hierarchy.txt": "cff5578ca62916c3cc4ac5e78c5799f0eec00252fea3f8507efe160fe5de5ef6",
+    "disable-return-action.json": "dc2c8e6ef2b494d8d95c43923cff8542b4bba5bac23f2fbc47b48359f326aa91",
+    "restore-return-action.json": "2ee78855ba13321cd413c260dd458c211fdee515da4e9146cf37417c52dfa3e1",
+    "disable-shade-hierarchy.txt": "7db5466bb88d574c72e611a34c7a0bfea94ed234f461935b249bd310927ccd92",
+    "restore-home-hierarchy.txt": "ef9a63205266f2ba96c5527849fbcc6b3677adfdfb23505c4665aa0f7ac60acc",
+    "restore-expanded-action.json": "c491b70b2b33fdd49f5e6755d8463b05430697e962b288e953f7de888063ce11",
+    "disable-home-hierarchy.txt": "ef9a63205266f2ba96c5527849fbcc6b3677adfdfb23505c4665aa0f7ac60acc",
+    "disable-return-receipts.json": "d081e472a7d62a865051807aad60d589bd959e325591a7dcb7a040d581d84d2f",
+    "restore-airplane-activities.txt": "d56cfc41d0fb20165a4a0a4ae73e1e50c3bd175ae6aaecdd83c760e2beea926c",
+    "api.txt": "90d7ec0f0acef104d8b6252794295f661a0149634868d02a1ae0c358099638f5",
+    "disable-shade-activities.txt": "18c08d1342248fbe2d18d8f08b5fdb5da2571af8ec2c88c4584e8116545ccc39",
+    "baseline-readonly-receipts.json": "3a556de5429b38bae5ffb20751d22825d093d410a568ee928439a14264945a0f",
+    "restore-return-activities.txt": "2d75c23c9508e5d9edace4c462f122a5193432b2f3fd1c461fa90d8399755973",
+    "restore-shade-activities.txt": "c95c23f5727315bf331e5b267b32a9d0c3844b2638fd194038dbb77a933b9b4a",
+    "restore-shade.png": "2731bedb81dcc13482c315bf68b423c7836150d83fef026b6c9cfb7a220c233d",
+    "restore-expanded.png": "500b595d3c2bb5a867e648d14cc061d04528d20bc72f31a8d2ce2abd5a6dc19b",
+    "disable-expanded-hierarchy.txt": "284cbdf50077e534c564e2cb76a290c8710c954080fd6b1af890465a142d07b5",
+    "disable-shade.png": "99674e8a64bcf8a4da14587c3eb8862c41f3c1d9e54e181ce92a13e829403f1b",
+    "restore-airplane-hierarchy.txt": "26e23d89d44506d6b71b6351e2286b61e6634ea0cea854c22b2f0b282dfab7f0",
+    "context.json": "840580f3eecce30ce266934b2de6472e989e9b22a6ae26ecd31328abe91253fc",
+    "disable-airplane-activities.txt": "c255a971947050878ef7f603fedd15046baae5a9acd5b6b64ed3481b0bce028f",
+    "restore-shade-receipts.json": "af03f1a03d75378a59e6ed77dbef4bd0db20b81bd55d0bc9887bb8a14c932af4",
+    "disable-shade-action.json": "4db3b5c0633ee946b94d7006f953537ad1d78beec1bee6c2e2fda37ab2fa25f2",
+    "disable-home.png": "b62ef54ca84d5fcbe5827d48e75ac9e9b70809cfe249ce08e1d8213d8175758e",
+    "disable-home-activities.txt": "90a3c78605e2fb99027b71f8047965362b4be2127c4d475e467d0f74f272ed47",
+    "restore-airplane.png": "9a24bc714ac6a531e1c24c0b00d63673767ebc8f6cc5af25b0435c13efa917c1",
+    "disable-before-receipts.json": "0a3f39a150ec6cb03d7635dcd0f7156de00256381445ef58038df1f58416ecdc",
+    "restore-before.png": "1b3c01f297d1b084ffd5b6715f49596c0728a7116d8d023dfd82679522ec704f",
+    "restore-home.png": "e88a8fb37444cba21da54037318e17b468253c112fe9f0647f8acfc040178e9f",
+    "airplane.txt": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "disable-home-action.json": "616d508999fde8c438d4af5256923e7222db242e342d903f5bbc3ea75edae2b9",
+    "restore-home-receipts.json": "a967a9905b7ee036339eca5e53afdf21622f7c513f93b223b18462a9aa18fdb8",
+    "disable-return-activities.txt": "17adc309123993da167bb71dabc125a66fba9e3c2540eee0317f1398bae85c83",
+    "disable-home-receipts.json": "e745a77944f3e7e4375d22a78f46d5c142dcf752d2c7b66caebdd3cdd8fd1780",
+    "disable-shade-receipts.json": "77a8dd88afe0a97fb4fd9962dd39362d5d2e2549af2c7649e5154fc59b50ccd8",
+    "restore-expanded-receipts.json": "37f3009e21e15a8ada513f5a1b7da01841941134494f19498ece96e4fceb6ccd",
+    "disable-airplane-receipts.json": "f15583ecdbabc11336a2a979f01b455a55fb7b62ec5208d4b60cd37c3aa8cafb",
+    "restore-before-receipts.json": "989853f5dd5c1ddf1ec8bf3015e878c5ec8c076579b1f751447575d440a44aac",
+    "restore-home-activities.txt": "aa7b700f8776fbc67c81ebb137152857cec045226850a2a9cc3f9749f521e615",
+    "data.txt": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "restore-return.png": "3ce4b3e69b72dfc66cdb3e3df72b62b4839e141ce9c5e4524c738a98e5aceb03",
+    "device.txt": "c98373c1abef78070f6beef6b4ae4fbf3de348dac280195c7f93441920584af9"
+  },
+  "listener_files_sha256": {
+    "profile.json": "62d10b43e87dd1d83f13763470abb47a0bb084279299751b2d589859314b1c87",
+    "listener.jsonl": "8574b414877fc4ad998997c47269de3e8800d88c053e887c8daf3ef2d268f83f"
+  }
+}

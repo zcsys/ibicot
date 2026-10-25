@@ -1,0 +1,67 @@
+{
+  "candidate_fingerprint": "152805bf9e269f49d14486286656ac0174a808384d10e6623533a4f92690dc11",
+  "device": "emulator-5556",
+  "label": "android",
+  "platform": "android",
+  "started_utc": "20261021T114228.804840Z",
+  "command": [
+    "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+    "drive",
+    "--driver=test_driver/evidence_911183b5d9ee.dart",
+    "--target=integration_test/evidence_61a3fef7f66e_test.dart",
+    "-d",
+    "emulator-5556",
+    "--dart-define=TIDEGLASS_DEVICE_LABEL=android",
+    "--dart-define=TIDEGLASS_SCENARIO=clock-reload",
+    "--dart-define=TIDEGLASS_RUN_ID=final152-oct21-clock",
+    "--dart-define=TIDEGLASS_VERIFICATION_ID=integration-android-20261021T114228.804840Z",
+    "--dart-define=TIDEGLASS_CANDIDATE_FINGERPRINT=152805bf9e269f49d14486286656ac0174a808384d10e6623533a4f92690dc11",
+    "--dart-define=TIDEGLASS_HARNESS_SHA256=61a3fef7f66e5eb00b77cfa50f3221ba7d2dba1eb42939847f8e45a7bf0e22d3",
+    "--keep-app-running",
+    "--timeout=180",
+    "--no-pub"
+  ],
+  "runner_sha256": "68297f66fc4e32a173b17da2594872334d59ba2b88b7d5878b5ee8905f9b89e5",
+  "candidate_validation_runner_sha256": "9f2a54793304639bda691cd0dddb4f2318951d9078c30b20f48ecc7fb1c68563",
+  "scenario": "clock-reload",
+  "run_id": "final152-oct21-clock",
+  "harness_sha256": {
+    "harness.dart": "61a3fef7f66e5eb00b77cfa50f3221ba7d2dba1eb42939847f8e45a7bf0e22d3",
+    "driver.dart": "911183b5d9ee8ec80769836f477a293dadb66e20cc0c5d5e44314415889749a8"
+  },
+  "production_inputs_match_snapshot": true,
+  "provenance": "Actual native clock and OS lifecycle/process scope; no paid ownership or physical-device security qualification. Epoch remains in private device checkpoint.",
+  "exit_code": 0,
+  "production_input_differences_after_run": [],
+  "source_snapshot_unchanged": true,
+  "harness_source_differences_during_run": [],
+  "native_process_stop": {
+    "command": [
+      "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "shell",
+      "am",
+      "force-stop",
+      "dev.tideglass.game"
+    ],
+    "exit_code": 0,
+    "output": ""
+  },
+  "verification_errors": [
+    "Native build/test failure in log: Some tests failed.",
+    "Native test or teardown error marker in log",
+    "No successful native framework completion marker"
+  ],
+  "passed": false,
+  "evidence_sha256": {
+    "result.json": "061a968f8bc5b6daac5ba13e2f9f24e2e3884733fd945e5c0780a2cdc547b43e",
+    "run.log": "502f717bc60591a4c5ce9f8d2ada3d1d45aa9b7f99acaf9a66869c2674e654ce",
+    "driver.dart": "911183b5d9ee8ec80769836f477a293dadb66e20cc0c5d5e44314415889749a8",
+    "verify_native.py": "68297f66fc4e32a173b17da2594872334d59ba2b88b7d5878b5ee8905f9b89e5",
+    "harness-capture-diagnosis.json": "5376cc2af7f6d873963ead5c86771b938410a680ea57e9d60b3c5318d7492d8e",
+    "waiting-device-log.txt": "20f554338fe2a2dc1b65b04ccd70694ac6127af8d79dfcadface3f429dad8d01",
+    "harness.dart": "61a3fef7f66e5eb00b77cfa50f3221ba7d2dba1eb42939847f8e45a7bf0e22d3",
+    "waiting-state.png": "608b73f8423b4cb480fa6a567017951856b0b21bcc94de5f8d6ece668c55c9b5"
+  }
+}

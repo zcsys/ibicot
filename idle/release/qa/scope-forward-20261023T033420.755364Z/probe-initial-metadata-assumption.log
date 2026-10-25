@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/Users/csys/Desktop/ibicot/idle/release/qa/scope-forward-20261023T033420.755364Z/build_audit.py", line 190, in <module>
+    check(a['id']+' provenance exists',(ROOT/a['license_evidence']).is_file())
+                                        ~~~~^~~~~~~~~~~~~~~~~~~~~~
+TypeError: unsupported operand type(s) for /: 'PosixPath' and 'NoneType'

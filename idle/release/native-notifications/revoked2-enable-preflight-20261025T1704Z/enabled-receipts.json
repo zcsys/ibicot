@@ -1,0 +1,50 @@
+[
+  {
+    "utc": "2026-10-25T17:03:55.271810+00:00",
+    "argv": [
+      "/Users/csys/Library/Android/sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "shell",
+      "-tt",
+      "uiautomator",
+      "dump",
+      "/dev/tty"
+    ],
+    "exit_code": 0,
+    "file": "enabled-hierarchy.txt",
+    "sha256": "576e3af93210d2290ffab4a52e150d4985a7f0eff29b2394e27e0b4c01066178",
+    "stderr": ""
+  },
+  {
+    "utc": "2026-10-25T17:03:57.496763+00:00",
+    "argv": [
+      "/Users/csys/Library/Android/sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "exec-out",
+      "screencap",
+      "-p"
+    ],
+    "exit_code": 0,
+    "file": "enabled.png",
+    "sha256": "58f86b873ae895010ad422eb1fbd21e06f19153895ee27085f1375bfcac940e6",
+    "stderr": ""
+  },
+  {
+    "utc": "2026-10-25T17:03:57.766220+00:00",
+    "argv": [
+      "/Users/csys/Library/Android/sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "shell",
+      "dumpsys",
+      "activity",
+      "activities"
+    ],
+    "exit_code": 0,
+    "file": "enabled-activities.txt",
+    "sha256": "2dd411e67df16b8649ccd0be00838b61af1b9c6f2c74c153cae23318b4ed6910",
+    "stderr": ""
+  }
+]

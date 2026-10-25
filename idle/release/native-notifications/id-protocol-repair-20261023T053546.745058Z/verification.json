@@ -1,0 +1,28 @@
+{
+  "author": "/root/qa_release",
+  "created_utc": "2026-10-23T05:39:11.106519+00:00",
+  "staged_only": true,
+  "changed_files": {
+    "tool/verify_native_reminders.py": {
+      "before_sha256": "becfa8587fd8b20995c4e1fc87f827233997b57a784b527c035b4f244c399f18",
+      "proposed_sha256": "2ff5ce93795e3ed4584ce08fc2976e6c268582c26b995aadae9c7e3b337df1ed"
+    },
+    "tool/test_native_reminders.py": {
+      "before_sha256": "ec7060a8cde7ff99b9460317d11ce9fc3659c9663e77563832284a90dbe28762",
+      "proposed_sha256": "ca219d99b2900eaef2690e6c4638de3c8c520e7e42e4b612d1e4f8d2df8ecc67"
+    }
+  },
+  "harness_unchanged_sha256": "272fa3495fee356a98256c09ecfa983ef1f7af1ffb1c2c4885db97e74905fd76",
+  "runner_delta": "One timestamp formatting literal: preserve six microsecond digits and remove separator dot",
+  "runner_ast_equivalent_after_reversing_one_literal": true,
+  "host_tests": 22,
+  "existing_methods": 15,
+  "new_methods": 7,
+  "original_version_counterexample": "one expected failure; no test errors; native launch blocked",
+  "original_native_failure_preserved": true,
+  "production_or_status_edits": false,
+  "Flutter_device_native_UI_commands": 0,
+  "OS_notification_qualification": false,
+  "live_pins_unchanged": true,
+  "review_required_before_promotion": true
+}

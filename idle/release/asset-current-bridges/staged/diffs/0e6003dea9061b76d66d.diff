@@ -1,0 +1,25 @@
+--- game/qa/workspaces/integration-inventory-20261021T104607526377Z/game/mobile/lib/service_cosmetics.dart
++++ game/mobile/lib/service_cosmetics.dart
+@@ -8,6 +8,7 @@
+ import 'native_services.dart';
+ import 'palette.dart';
+ import 'soundtrack_export.dart';
++import 'package:tideglass_platform/soundtrack_cache.dart';
+ 
+ /// Server ownership and earned XP are independently required. A stored equipped
+ /// ID, premium claim, store callback or cached product price cannot grant items.
+@@ -167,6 +168,14 @@
+           SoundtrackExportResult.unknown => UiEnglish.soundtrackUnknown,
+         },
+       );
++    } on SoundtrackCacheException catch (error) {
++      if (mounted) {
++        setState(
++          () => _message = error.code == 'recent_exports_at_capacity'
++              ? UiEnglish.soundtrackCacheFull
++              : UiEnglish.soundtrackFailed,
++        );
++      }
+     } catch (_) {
+       if (mounted) setState(() => _message = UiEnglish.soundtrackFailed);
+     } finally {

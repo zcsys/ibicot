@@ -1,0 +1,51 @@
+[
+  {
+    "command": [
+      "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+      "devices",
+      "-l"
+    ],
+    "exit_code": 0,
+    "stdout": "List of devices attached\nemulator-5556          device product:sdk_gphone64_arm64 model:sdk_gphone64_arm64 device:emu64a transport_id:2\n\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "shell",
+      "getprop",
+      "sys.boot_completed"
+    ],
+    "exit_code": 0,
+    "stdout": "1\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "emu",
+      "avd",
+      "name"
+    ],
+    "exit_code": 0,
+    "stdout": "Tideglass_API_35\nOK\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "shell",
+      "getprop",
+      "ro.build.fingerprint"
+    ],
+    "exit_code": 0,
+    "stdout": "google/sdk_gphone64_arm64/emu64a:15/AE3A.240806.043/12960925:userdebug/dev-keys\n",
+    "stderr": ""
+  }
+]

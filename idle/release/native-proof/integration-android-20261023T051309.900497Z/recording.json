@@ -1,0 +1,83 @@
+{
+  "platform": "android",
+  "device": "emulator-5556",
+  "audio_recorded": false,
+  "editing": "None; native simulator screen recorder output",
+  "commands": [
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "screenrecord",
+        "--time-limit",
+        "27",
+        "/sdcard/tideglass-integration-android-20261023T051309.900497Z.mp4"
+      ],
+      "kind": "screen-recorder"
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "touch",
+        "/data/user/0/dev.tideglass.game/files/native-verification/capture-android-v3b00-android-gallery/recording-started"
+      ],
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "pull",
+        "/sdcard/tideglass-integration-android-20261023T051309.900497Z.mp4",
+        "/Users/csys/Desktop/ibicot/idle/release/native-proof/integration-android-20261023T051309.900497Z/gameplay.mp4"
+      ],
+      "exit_code": 0,
+      "output": "/sdcard/tideglass-integration-android-20261023T051309.900497Z.mp4: 1 file pulled, 0 skipped. 43.1 MB/s (501250 bytes in 0.011s)\n"
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "rm",
+        "/sdcard/tideglass-integration-android-20261023T051309.900497Z.mp4"
+      ],
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "command": [
+        "xcrun",
+        "swift",
+        "/Users/csys/Desktop/ibicot/idle/tool/native_video_metadata.swift",
+        "/Users/csys/Desktop/ibicot/idle/release/native-proof/integration-android-20261023T051309.900497Z/gameplay.mp4"
+      ],
+      "exit_code": 0,
+      "output": "{\"audio_track_count\":0,\"duration_seconds\":30.474355555555555,\"height\":1920,\"video_track_count\":1,\"width\":1080}\n"
+    }
+  ],
+  "errors": [
+    "Footage duration is outside the requested 15\u201330 seconds"
+  ],
+  "start_acknowledgement": "screenrecord process alive after one second; final MP4 duration independently checked",
+  "fixture_acknowledged": true,
+  "recorder_exit_code": 0,
+  "media": {
+    "audio_track_count": 0,
+    "duration_seconds": 30.474355555555555,
+    "height": 1920,
+    "video_track_count": 1,
+    "width": 1080
+  },
+  "passed": false
+}

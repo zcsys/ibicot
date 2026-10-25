@@ -1,0 +1,971 @@
+[
+  {
+    "id": "R01",
+    "delivered_group": "Native client and internal iteration",
+    "scope_ids": [
+      "S01",
+      "S02",
+      "S40"
+    ],
+    "evidence": [
+      {
+        "path": "game/mobile/lib/bootstrap.dart",
+        "location": "frozen_candidate",
+        "sha256": "0557d11d67c4be3be66de28c899da89b3c7a72cc45f434ae25ae348b0efbc150"
+      },
+      {
+        "path": "game/mobile/pubspec.yaml",
+        "location": "frozen_candidate",
+        "sha256": "f3dcb5384b0341f924cde99a4af00d3332b67a7e9ab21a91fcb7a986b56b6f82"
+      },
+      {
+        "path": "tool/build_native.py",
+        "location": "frozen_candidate",
+        "sha256": "1fca5f766c6bd816f55fc0aefafe1e3dfb8e66b91e83e1dcb275d48f13cada1d"
+      },
+      {
+        "path": "docs/release-contract.md",
+        "location": "current_ancillary",
+        "sha256": "d94e719eb96211da98900ba4bcd2922fda6d7532c30d9082736c973e35e181d4"
+      }
+    ],
+    "observation": "Flutter iOS/Android guest shell, English/pseudo presentation and internal macOS build support. No public desktop, Steam or web game distribution. Native builds and store acceptance remain separate.",
+    "review_result": "mapped_to_original_scope",
+    "does_not_close_scope_requirement": true
+  },
+  {
+    "id": "R02",
+    "delivered_group": "Five-tier production and purchases",
+    "scope_ids": [
+      "S03",
+      "S04",
+      "S29"
+    ],
+    "evidence": [
+      {
+        "path": "game/core/lib/src/engine.dart",
+        "location": "frozen_candidate",
+        "sha256": "0fbc3f3dfbb54df8a0cef41a8b8c788baef473d0bbffe643301a3d9c9d9eade6"
+      },
+      {
+        "path": "game/core/lib/src/fixed.dart",
+        "location": "frozen_candidate",
+        "sha256": "c167fdf3c4b95965f1bfc3658095dad81b6f013c71fa5abc7505b7731d6c698f"
+      },
+      {
+        "path": "game/core/lib/src/state.dart",
+        "location": "frozen_candidate",
+        "sha256": "04e1210cb26e7cc15cf3294c682f43bd266d9c52acbc238465061d9c7aa46a9e"
+      }
+    ],
+    "observation": "Exactly five counts; 30\u00d720^tier base price, 20^tier output, 28/25 purchase growth; preceding ten unlocks; buy-one/bulk/max and four doubled milestones. Integer micro-R settlement and 24-decimal rates are implementation precision choices, not new resources.",
+    "review_result": "mapped_to_original_scope",
+    "does_not_close_scope_requirement": true
+  },
+  {
+    "id": "R03",
+    "delivered_group": "Single Rechart and atlas power",
+    "scope_ids": [
+      "S05"
+    ],
+    "evidence": [
+      {
+        "path": "game/core/lib/src/engine.dart",
+        "location": "frozen_candidate",
+        "sha256": "0fbc3f3dfbb54df8a0cef41a8b8c788baef473d0bbffe643301a3d9c9d9eade6"
+      },
+      {
+        "path": "game/core/lib/src/state.dart",
+        "location": "frozen_candidate",
+        "sha256": "04e1210cb26e7cc15cf3294c682f43bd266d9c52acbc238465061d9c7aa46a9e"
+      }
+    ],
+    "observation": "One lifetime entitlement floor(10(L/1e9)^.65); nonnegative difference against previously awarded Charts, gated at 1e9 Radiance; 1+sqrt(P/10) power. Reset grants one free Skiff and clears wallet/fleet while retaining lifetime and persistent systems. No spendable premium Chart balance or second prestige.",
+    "review_result": "mapped_to_original_scope",
+    "does_not_close_scope_requirement": true
+  },
+  {
+    "id": "R04",
+    "delivered_group": "Cross-tier network and counterfactual forecast",
+    "scope_ids": [
+      "S07"
+    ],
+    "evidence": [
+      {
+        "path": "game/core/lib/src/engine.dart",
+        "location": "frozen_candidate",
+        "sha256": "0fbc3f3dfbb54df8a0cef41a8b8c788baef473d0bbffe643301a3d9c9d9eade6"
+      },
+      {
+        "path": "game/core/lib/rechart_forecast.dart",
+        "location": "frozen_candidate",
+        "sha256": "8156bf4fb21c392719c80bd7db429fa6406a63258713e20c33e5f96c42afd425"
+      },
+      {
+        "path": "game/mobile/lib/rechart_estimate.dart",
+        "location": "frozen_candidate",
+        "sha256": "5884bab9cef9c98b28b01060457e6505ed8d064ecac310e0bbee77e8173b18f7"
+      },
+      {
+        "path": "game/mobile/lib/rechart_copy.dart",
+        "location": "frozen_candidate",
+        "sha256": "49e7d1284bcd13a8e412d170426b8aacf72e18b28c443b2ff5c112b17185f052"
+      },
+      {
+        "path": "game/mobile/lib/rechart_forecast_task.dart",
+        "location": "frozen_candidate",
+        "sha256": "d151e2b2c2028ec456362fd3e3cc6533dc44ac2c4e75d78f1b08c23ab508a2e8"
+      }
+    ],
+    "observation": "25-Chart logarithmic Skiff/Nursery effects feed Loom/Observatory with specified coefficients; marginal value considers whole network. Added reset estimate is a bounded, read-only 24-hour/minute-grid counterfactual with explicit active-buy policy and non-optimum caveat, cancelable worker and unavailable state. It adds neither rewards nor an automatic strategy command.",
+    "review_result": "mapped_to_original_scope",
+    "does_not_close_scope_requirement": true
+  },
+  {
+    "id": "R05",
+    "delivered_group": "Earned automation",
+    "scope_ids": [
+      "S06"
+    ],
+    "evidence": [
+      {
+        "path": "game/core/lib/src/daily.dart",
+        "location": "frozen_candidate",
+        "sha256": "1a43e6a035472d52430c6fc1ca609bcb4cd2f564794e2b49a36cef507803338a"
+      },
+      {
+        "path": "game/core/lib/src/daily_engine.dart",
+        "location": "frozen_candidate",
+        "sha256": "1949239d4ae3bba5c72d716a3a027c0ada52ec97e434431a132c941001db322f"
+      },
+      {
+        "path": "game/core/lib/src/engine.dart",
+        "location": "frozen_candidate",
+        "sha256": "0fbc3f3dfbb54df8a0cef41a8b8c788baef473d0bbffe643301a3d9c9d9eade6"
+      }
+    ],
+    "observation": "10 Charts unlocks free base plan; up to five additional slots cost 50 Notes each; opt-in reset requires 100 Charts and saved conditions. Production timeline applies the saved policy online/offline. No paid automation gate.",
+    "review_result": "mapped_to_original_scope",
+    "does_not_close_scope_requirement": true
+  },
+  {
+    "id": "R06",
+    "delivered_group": "Offline timeline and rule compatibility",
+    "scope_ids": [
+      "S08",
+      "S14",
+      "S28",
+      "S40"
+    ],
+    "evidence": [
+      {
+        "path": "game/core/lib/src/engine.dart",
+        "location": "frozen_candidate",
+        "sha256": "0fbc3f3dfbb54df8a0cef41a8b8c788baef473d0bbffe643301a3d9c9d9eade6"
+      },
+      {
+        "path": "game/mobile/lib/offline_replay.dart",
+        "location": "frozen_candidate",
+        "sha256": "f470c4edc7d8b621a72532e1043395ad2f0e24abc389ad7d27fdd5738ff22058"
+      },
+      {
+        "path": "game/mobile/lib/client_economic_transition.dart",
+        "location": "frozen_candidate",
+        "sha256": "dacd2a7d55bb861a62598f9b3c2219fe7ffed669d3500208da6ba4665a7ebc79"
+      },
+      {
+        "path": "game/mobile/lib/content_compatibility.dart",
+        "location": "frozen_candidate",
+        "sha256": "6df9f985ccba98b06dcb0de96d2800f31b4b721fde5e80e5de12550876a45552"
+      },
+      {
+        "path": "game/persistence/lib/src/economic_transition.dart",
+        "location": "frozen_candidate",
+        "sha256": "2ae8295a976e176947a1ec2b441b510420cfc139d45f0dcb2c33dcdd1ae0821e"
+      }
+    ],
+    "observation": "24 hours at full rate then 48 at quarter rate; elapsed boost queues and carry residues remain explicit. Compiled rule/content compatibility edges and atomic cursor transitions are required save preservation, not remote economic personalization. Known optional-calibration migration restores optionality; unknown configurations fail closed.",
+    "review_result": "mapped_to_original_scope",
+    "does_not_close_scope_requirement": true
+  },
+  {
+    "id": "R07",
+    "delivered_group": "Focus, Surveys and calibrations",
+    "scope_ids": [
+      "S09",
+      "S10",
+      "S17"
+    ],
+    "evidence": [
+      {
+        "path": "game/core/lib/src/engine.dart",
+        "location": "frozen_candidate",
+        "sha256": "0fbc3f3dfbb54df8a0cef41a8b8c788baef473d0bbffe643301a3d9c9d9eade6"
+      },
+      {
+        "path": "game/core/lib/src/daily_engine.dart",
+        "location": "frozen_candidate",
+        "sha256": "1949239d4ae3bba5c72d716a3a027c0ada52ec97e434431a132c941001db322f"
+      },
+      {
+        "path": "game/mobile/lib/calibration_screen.dart",
+        "location": "frozen_candidate",
+        "sha256": "5c392ede4071705a4efbafb7c79906bef4c94c99ab2dee765d358dda43537f94"
+      },
+      {
+        "path": "game/mobile/lib/calibration_pattern.dart",
+        "location": "frozen_candidate",
+        "sha256": "5da6ff66b8a9d8317d047c0ec99795a98c89b6b3afe83c640c7a129391899c74"
+      }
+    ],
+    "observation": "2-hour Focus refill/cap12, +20% per queued 600 seconds; 8-hour Survey/cap3/10 Notes. Twelve authored patterns, with accessible direct route using the same Focus result. No second minigame or required paid precision mechanic.",
+    "review_result": "mapped_to_original_scope",
+    "does_not_close_scope_requirement": true
+  },
+  {
+    "id": "R08",
+    "delivered_group": "Daily contracts and pass XP",
+    "scope_ids": [
+      "S11",
+      "S21"
+    ],
+    "evidence": [
+      {
+        "path": "game/core/lib/src/daily_engine.dart",
+        "location": "frozen_candidate",
+        "sha256": "1949239d4ae3bba5c72d716a3a027c0ada52ec97e434431a132c941001db322f"
+      },
+      {
+        "path": "game/core/lib/src/daily.dart",
+        "location": "frozen_candidate",
+        "sha256": "1a43e6a035472d52430c6fc1ca609bcb4cd2f564794e2b49a36cef507803338a"
+      },
+      {
+        "path": "game/mobile/lib/daily_panel.dart",
+        "location": "frozen_candidate",
+        "sha256": "1cc065131932d2d955a670e354d4df8063a81d258f6956cb8a9ff45da4035e4c"
+      }
+    ],
+    "observation": "Three frozen daily slots, 7-day/21-slot backlog, reroll retaining difficulty snapshot, 10 Notes and 250 XP per claimed slot. Restore/build/discover objectives only; no ad, payment or forced Rechart objective. One selected pass receives XP.",
+    "review_result": "mapped_to_original_scope",
+    "does_not_close_scope_requirement": true
+  },
+  {
+    "id": "R09",
+    "delivered_group": "Save, recovery and optional cloud",
+    "scope_ids": [
+      "S12",
+      "S13",
+      "S28"
+    ],
+    "evidence": [
+      {
+        "path": "game/persistence/lib/tideglass_persistence.dart",
+        "location": "frozen_candidate",
+        "sha256": "ffaf6292b76a8c2fbb43669cc506b09ce58ace3653c990f3902a67a9c94f14dd"
+      },
+      {
+        "path": "game/persistence/lib/src/posix_writer_lock.dart",
+        "location": "frozen_candidate",
+        "sha256": "1124518d6431a9c2c0fd1b694f480696255ad0764bb52fe877e632cbcb178d4a"
+      },
+      {
+        "path": "game/mobile/lib/bootstrap.dart",
+        "location": "frozen_candidate",
+        "sha256": "0557d11d67c4be3be66de28c899da89b3c7a72cc45f434ae25ae348b0efbc150"
+      },
+      {
+        "path": "game/platform/lib/tideglass_platform.dart",
+        "location": "frozen_candidate",
+        "sha256": "95a9eaf116696884f6a4b2f5a9c3cd8a53cfd55fb28e8342c37dadbac55abfca"
+      },
+      {
+        "path": "services/tideglass_service/api.py",
+        "location": "frozen_candidate",
+        "sha256": "3d84629e39d5747e1ea55e412a1d52728890244058bdfde1f25dd384645a9003"
+      }
+    ],
+    "observation": "Atomic local generations, export/import, validation and explicit progression-branch selection preserve conflicts; no summing wallets, Charts or independently accumulated cloud income. Optional account recovery/session service is implemented locally; this is not a hosted availability claim.",
+    "review_result": "mapped_to_original_scope",
+    "does_not_close_scope_requirement": true
+  },
+  {
+    "id": "R10",
+    "delivered_group": "Campaign, ending, archive and Notes choices",
+    "scope_ids": [
+      "S15",
+      "S18",
+      "S44"
+    ],
+    "evidence": [
+      {
+        "path": "game/mobile/assets/progression/campaign.json",
+        "location": "frozen_candidate",
+        "sha256": "37ef158a39b9f6ce944bea6fcfd4e5d2b6bd9c924b86b630b67fe276d812a7da"
+      },
+      {
+        "path": "game/mobile/assets/progression/archive.en.json",
+        "location": "frozen_candidate",
+        "sha256": "3b6067b111e3df5a116c4f925e1d7cc2095771f0298067f1b3087fd6be11ef4e"
+      },
+      {
+        "path": "game/progression/lib/tideglass_progression.dart",
+        "location": "frozen_candidate",
+        "sha256": "7c5a8d0c91796555a056ef1e4ac1fba68f3c7ba7ae862029c163e0962f8162f5"
+      },
+      {
+        "path": "game/progression/lib/decoration_purchase.dart",
+        "location": "frozen_candidate",
+        "sha256": "9db6c18254e682249e419e734003f9d70a56e0475188c707fa9728bf4d622652"
+      },
+      {
+        "path": "game/mobile/lib/game_controller.dart",
+        "location": "frozen_candidate",
+        "sha256": "f050c9b0c6c13dc31dad95e0dc5b51f78ee2f17c383ce59a3ab553c89adb4afa"
+      }
+    ],
+    "observation": "Six ordered chapters, ending with continued play, eighteen entries, six optional 50-Note decorations. Chapter economic_rewards and paid_requirements are empty; campaign requires six distinct dossiers/600 Notes rather than all 1,750 optional Note sinks. No calendar lock; 15\u201330-day completion remains a hypothesis.",
+    "review_result": "mapped_to_original_scope",
+    "does_not_close_scope_requirement": true
+  },
+  {
+    "id": "R11",
+    "delivered_group": "Challenge dossiers",
+    "scope_ids": [
+      "S16",
+      "S44"
+    ],
+    "evidence": [
+      {
+        "path": "game/progression/lib/tideglass_progression.dart",
+        "location": "frozen_candidate",
+        "sha256": "7c5a8d0c91796555a056ef1e4ac1fba68f3c7ba7ae862029c163e0962f8162f5"
+      },
+      {
+        "path": "game/mobile/lib/story_state.dart",
+        "location": "frozen_candidate",
+        "sha256": "008c4c5ad721794809d38a00b72de32ecd98402a1acf2724f9eb1c4af6860cc4"
+      },
+      {
+        "path": "game/mobile/lib/game_controller.dart",
+        "location": "frozen_candidate",
+        "sha256": "f050c9b0c6c13dc31dad95e0dc5b51f78ee2f17c383ce59a3ab553c89adb4afa"
+      }
+    ],
+    "observation": "Twelve 100-Note persistent dossiers, four in each of constrained_fleets, synergy_priorities and automation_planning; free replay and no main-power import. Their isolated rule variation is expressly scoped challenge content, not extra main currencies or production tiers.",
+    "review_result": "mapped_to_original_scope",
+    "does_not_close_scope_requirement": true
+  },
+  {
+    "id": "R12",
+    "delivered_group": "Seasonal fleet and archive",
+    "scope_ids": [
+      "S20"
+    ],
+    "evidence": [
+      {
+        "path": "game/events/lib/src/season.dart",
+        "location": "frozen_candidate",
+        "sha256": "bc085b7a34d34e30a9557c3fc1306e8ed43c86f2a9b32f08f91e49cde658d4b0"
+      },
+      {
+        "path": "game/events/lib/src/definition.dart",
+        "location": "frozen_candidate",
+        "sha256": "e7a6bf1bb17993f08d834badb517bfd4cd3e4e3f512188c08f4be06c620f92fb"
+      },
+      {
+        "path": "game/mobile/assets/events/season.01.json",
+        "location": "frozen_candidate",
+        "sha256": "eefe232fedd19ae081af05e87051ce12ba1e8e300cf51de997b3d7c81d2aff96"
+      },
+      {
+        "path": "game/mobile/assets/events/schedule.json",
+        "location": "frozen_candidate",
+        "sha256": "c17222d387234c36e74daa25b80803365ea2a809c56ff33ca7d3c86056f08ab3"
+      }
+    ],
+    "observation": "One 28-day Night of Returning Stars with identical initial fleet, immediate alternative synergies, no main-power import, no Rechart and no economic exports. Main harbor continues; archive pause/resume is explicit. Bundled dates are local development with public_activation:false; no real 28-day qualification is claimed.",
+    "review_result": "mapped_to_original_scope",
+    "does_not_close_scope_requirement": true
+  },
+  {
+    "id": "R13",
+    "delivered_group": "Pass and cosmetic ownership",
+    "scope_ids": [
+      "S21",
+      "S22"
+    ],
+    "evidence": [
+      {
+        "path": "game/events/lib/src/pass.dart",
+        "location": "frozen_candidate",
+        "sha256": "22f732cd81150b3cf47f01aa926ba9b51bf3c4e4d8e946f89392d824922a8e5d"
+      },
+      {
+        "path": "game/mobile/lib/cosmetics.dart",
+        "location": "frozen_candidate",
+        "sha256": "18fc8203b2d61bd0833f59e1c1788381a388e2a84130063a585d3cbdb5f37936"
+      },
+      {
+        "path": "game/mobile/lib/service_cosmetics.dart",
+        "location": "frozen_candidate",
+        "sha256": "e2ec9111ced9f862775ea464d06e5054a6c70b349fbcc9d87bcb7929217ec3e4"
+      },
+      {
+        "path": "services/tideglass_service/verification.py",
+        "location": "frozen_candidate",
+        "sha256": "da37c39c7781320cd5b381b432c5b0654464d687ccf32b94c797acbe5a675f08"
+      }
+    ],
+    "observation": "30\u00d7500 XP; 30 free rewards (10 cosmetics/20 fragments), ten premium cosmetics at the same earned levels. Exactly36 cosmetic IDs:12 core/10 free/10 premium/4 shop. Provider catalog has four cosmetic products, pass.01 and supporter; supporter reuses all four shop IDs plus soundtrack. No paid XP, tier skips, storage, production or reward multipliers.",
+    "review_result": "mapped_to_original_scope",
+    "does_not_close_scope_requirement": true
+  },
+  {
+    "id": "R14",
+    "delivered_group": "Equal rewarded-ad/free Support",
+    "scope_ids": [
+      "S25"
+    ],
+    "evidence": [
+      {
+        "path": "game/core/lib/src/support_engine.dart",
+        "location": "frozen_candidate",
+        "sha256": "ae08becad0f438878f4bdf2bbd9f2045c7bcdcf1bcf17e6a39943e574ad79e53"
+      },
+      {
+        "path": "game/mobile/lib/support_service_bridge.dart",
+        "location": "frozen_candidate",
+        "sha256": "05cce5ddbc88dd7724806722123fa633d30ee6fb414153d7abb189a2a6f6cbb6"
+      },
+      {
+        "path": "game/mobile/lib/service_support_screen.dart",
+        "location": "frozen_candidate",
+        "sha256": "16c1618913e6655770ebc06885d9ded0b1b674f2c6cfcad9b5d8639f122fe3d5"
+      },
+      {
+        "path": "game/mobile/lib/native_services.dart",
+        "location": "frozen_candidate",
+        "sha256": "f56a6a8ac2ce6fe583b859d1c65336ea4d858711456bf4243ba9d1fa24eb0e73"
+      },
+      {
+        "path": "services/tideglass_service/api.py",
+        "location": "frozen_candidate",
+        "sha256": "3d84629e39d5747e1ea55e412a1d52728890244058bdfde1f25dd384645a9003"
+      }
+    ],
+    "observation": "Shared six account-day slots, each 300 production seconds. Choice is +25% for1,200 seconds or one genuine bounded five-minute unboosted salvage slice; Focus and Support add to1.45\u00d7. Receipt/day/slot binding and free-route fallback remain; no whole-offline doubling or cash purchase of the allowance.",
+    "review_result": "mapped_to_original_scope",
+    "does_not_close_scope_requirement": true
+  },
+  {
+    "id": "R15",
+    "delivered_group": "Native commerce, leases and soundtrack delivery",
+    "scope_ids": [
+      "S23",
+      "S24",
+      "S28"
+    ],
+    "evidence": [
+      {
+        "path": "game/mobile/lib/native_services.dart",
+        "location": "frozen_candidate",
+        "sha256": "f56a6a8ac2ce6fe583b859d1c65336ea4d858711456bf4243ba9d1fa24eb0e73"
+      },
+      {
+        "path": "game/platform/lib/signed_entitlements.dart",
+        "location": "frozen_candidate",
+        "sha256": "018ded6ffbd3672ab6de6747747a4026f7c880a5c0bcec271b58cb25f2d2c66e"
+      },
+      {
+        "path": "game/platform/lib/soundtrack_delivery.dart",
+        "location": "frozen_candidate",
+        "sha256": "7ee1b58f2b11990939b204105ec71079f3ac1529ae08167ab9d05c5637057402"
+      },
+      {
+        "path": "game/platform/lib/soundtrack_cache.dart",
+        "location": "frozen_candidate",
+        "sha256": "9ff5b55ef2c4f907c81e5577add12b016061bedc6f275effee98fe60149a55e6"
+      },
+      {
+        "path": "services/tideglass_service/providers/stores.py",
+        "location": "frozen_candidate",
+        "sha256": "f8352f576d77ce1dcd588cb60de4bde7c4e92ae831a7645dd59935eabf8165bf"
+      },
+      {
+        "path": "services/tideglass_service/leases.py",
+        "location": "frozen_candidate",
+        "sha256": "24bba0c2406f95e2d25dc7fdc66394e1788a19e5098a7042bd17d588c576e6ba"
+      },
+      {
+        "path": "services/tideglass_service/vault.py",
+        "location": "frozen_candidate",
+        "sha256": "88a983dcfb473e6480574ff6fbda25156f16bde4ceb5e0cc5de4460ed71a0f19"
+      }
+    ],
+    "observation": "Actual native/provider adapters, durable verification boundary, cached signed ownership and revocation machinery exist. Local save IDs never authorize paid appearances; displayed prices come from native product data. Encrypted Google token vault and authenticated soundtrack capability serve fulfillment. Synthetic adapters and locally generated signatures do not establish store sandbox transactions or operational delivery.",
+    "review_result": "mapped_to_original_scope",
+    "does_not_close_scope_requirement": true
+  },
+  {
+    "id": "R16",
+    "delivered_group": "Harbor, producer and daily visual presentation",
+    "scope_ids": [
+      "S04",
+      "S19",
+      "S43"
+    ],
+    "evidence": [
+      {
+        "path": "game/mobile/lib/harbor_art.dart",
+        "location": "frozen_candidate",
+        "sha256": "50c7fa6e1fe63da71c5add51442a5fcef6fc46ae6f7f14079c6382c514ef6979"
+      },
+      {
+        "path": "game/mobile/lib/producer_art.dart",
+        "location": "frozen_candidate",
+        "sha256": "ecf1c624c01e0df5fd92801fef84bc38b218bb8bc7d23543d25cbe7ac3ff2526"
+      },
+      {
+        "path": "game/mobile/lib/producer_art_data.dart",
+        "location": "frozen_candidate",
+        "sha256": "305c06487d6d9d8873b5773c23e793b12f781e7b85087f90482cf75ea98e9c26"
+      },
+      {
+        "path": "game/mobile/lib/daily_icon_label.dart",
+        "location": "frozen_candidate",
+        "sha256": "f8e48e4ee497bfb3b7520fe570b8a8bcfe25e358a97e5127581f0b07817f15be"
+      },
+      {
+        "path": "implementation/art/production_contract.json",
+        "location": "current_ancillary",
+        "sha256": "521e151d35ff6da01ec1e566fc687eaf79f08f479d3af27b014aafead7cc11c2"
+      }
+    ],
+    "observation": "One harbor initial+six restorations, five producers\u00d7five presentations and textual status cues. Added three decorative daily icons use existing Material vocabulary and full readable labels. No new asset family. Different-author root and QA evidence is used for that author-contributed repair, not self-approval.",
+    "review_result": "mapped_to_original_scope",
+    "does_not_close_scope_requirement": true
+  },
+  {
+    "id": "R17",
+    "delivered_group": "Audio and original asset preparation",
+    "scope_ids": [
+      "S19",
+      "S22",
+      "S23",
+      "S43"
+    ],
+    "evidence": [
+      {
+        "path": "game/mobile/lib/audio_bus.dart",
+        "location": "frozen_candidate",
+        "sha256": "2cbc1b3a6faa478b47629bb9c14c064861f680138079c9dedc7240ff8d73c3d3"
+      },
+      {
+        "path": "game/mobile/lib/audio_settings.dart",
+        "location": "frozen_candidate",
+        "sha256": "dae81f8e650ee988bb11c9b0dae1cbc316aa430e5e94510687b1a65c587777f7"
+      },
+      {
+        "path": "source/audio/score/tideglass.score.json",
+        "location": "current_ancillary",
+        "sha256": "55bf62404acc5592967095018b1b1c20bd626cb8509054c6f93ad182d0ceb6a9"
+      },
+      {
+        "path": "source/provenance/asset.audio.ambient_score.json",
+        "location": "current_ancillary",
+        "sha256": "34b2e4aa75ad17bd25aea1e98ad80f7522692918064e45c1c0a5610d61924711"
+      },
+      {
+        "path": "source/provenance/asset.audio.soundtrack.json",
+        "location": "current_ancillary",
+        "sha256": "f761d38629827ee4671069d73da38c5beda09324c8748e3521750b46673a8eb5"
+      },
+      {
+        "path": "implementation/content/launch_manifest.json",
+        "location": "frozen_candidate",
+        "sha256": "782ad112c6de5a155ce714781fad5e5af609a5b1a785db67c929baccb384ed9d"
+      }
+    ],
+    "observation": "Five audio asset records cover three ambient tracks, interaction/milestone/Rechart cues and supporter packaging; original authored score/synthesis has no incorporated samples. Independent volume/mute controls and bounded soundtrack export cache are implementation. Asset source/export/provenance existence does not establish listening quality, native audio interruptions, all164 acceptance or public distribution.",
+    "review_result": "mapped_to_original_scope",
+    "does_not_close_scope_requirement": true
+  },
+  {
+    "id": "R18",
+    "delivered_group": "Accessibility, localization and optional reminders",
+    "scope_ids": [
+      "S02",
+      "S26"
+    ],
+    "evidence": [
+      {
+        "path": "game/mobile/lib/presentation.dart",
+        "location": "frozen_candidate",
+        "sha256": "0b891f8baa973d11f1aabe6d985fafbe8bf0e08904007cb0f218e68044fd9b63"
+      },
+      {
+        "path": "game/mobile/lib/strings.dart",
+        "location": "frozen_candidate",
+        "sha256": "a1f75c799a56c1fdb5125f65eacb6f637912be042bbd748303ac3bbea7b6abb8"
+      },
+      {
+        "path": "game/mobile/lib/number_format.dart",
+        "location": "frozen_candidate",
+        "sha256": "f5cccc59b4392842c0d040864715315b71c490033a3bbcf3001ca7e92da19297"
+      },
+      {
+        "path": "game/mobile/lib/palette.dart",
+        "location": "frozen_candidate",
+        "sha256": "1da79c2cd009e271dcaf3dd349f20e380950fbbb67ca54e10ea5180b2ed86d83"
+      },
+      {
+        "path": "game/mobile/lib/notification_service.dart",
+        "location": "frozen_candidate",
+        "sha256": "39cbb50ed595c8c57c1bc39696b555d5148e49f8aee68ceedb5258b73d9a4d19"
+      },
+      {
+        "path": "game/mobile/lib/notification_settings.dart",
+        "location": "frozen_candidate",
+        "sha256": "f135edc13f54379f32d87aef22e1f028d2320bc147b4307b0002cd087bf857be"
+      },
+      {
+        "path": "game/mobile/integration_test/current_runtime_test.dart",
+        "location": "frozen_candidate",
+        "sha256": "102be09eb8043ce9bb496156d9f37b1834c3084ddf58fef073e7c25cdc3c55d5"
+      }
+    ],
+    "observation": "English templates/pseudo, readable number formatting, scalable text, focus/semantics/reduced-motion and bounded reminder preferences. Notifications default off with quiet hours22:00\u201308:00; explicit player enablement requests permission. These are scoped access/return aids; no additional language, mandatory check-in or measured physical assistive-technology claim. Existing current_runtime_test injects QuietFixtureNotificationGateway, so its native scenarios do not qualify OS reminders.",
+    "review_result": "mapped_to_original_scope",
+    "does_not_close_scope_requirement": true
+  },
+  {
+    "id": "R19",
+    "delivered_group": "Font attribution and public information",
+    "scope_ids": [
+      "S19",
+      "S26",
+      "S27",
+      "S36",
+      "S39",
+      "S43"
+    ],
+    "evidence": [
+      {
+        "path": "game/mobile/lib/main.dart",
+        "location": "frozen_candidate",
+        "sha256": "286adf059ea5e8a2f66adabddc10bcc09bd5835b1725e5bdfc455d4d4e7b8fe2"
+      },
+      {
+        "path": "game/mobile/lib/font_licenses.dart",
+        "location": "frozen_candidate",
+        "sha256": "b5ae95e402900285b97081747b9c1736503a0fe51b406967648a68f83e429c65"
+      },
+      {
+        "path": "source/art/ui/font-manifest.json",
+        "location": "current_ancillary",
+        "sha256": "42e67e9b7d65c755cf7798690130580ad9ca5a5645760e15f8603241595c4e7c"
+      },
+      {
+        "path": "game/mobile/lib/help_content.dart",
+        "location": "frozen_candidate",
+        "sha256": "4ae52390f8e12a1e792d23a9c6c29f526281d2ca2613e38d9cd874b8630485b3"
+      },
+      {
+        "path": "game/mobile/lib/public_links_model.dart",
+        "location": "frozen_candidate",
+        "sha256": "d83a7068cb60ab4b2ba7d79ee63fb203272b84fd6d9a53328ec16bd57c7b8e2b"
+      },
+      {
+        "path": "release/public-pages/publication.json",
+        "location": "current_ancillary",
+        "sha256": "06384fddf6a1be2a74468f38c8ad2dc1f9585ce632df08e11fd49d535328acdc"
+      }
+    ],
+    "observation": "Font registry/notice patch makes the existing icon font attribution readable. Exact supplied MaterialIcons notice is retained despite upstream label discrepancy; no inferred relicensing. Help/credits/recovery text and local support/privacy drafts implement original obligations. Public destinations default empty and accept plain HTTPS only; no account identifiers are appended. Not published policy or verified provider disclosure.",
+    "review_result": "mapped_to_original_scope",
+    "does_not_close_scope_requirement": true
+  },
+  {
+    "id": "R20",
+    "delivered_group": "Account privacy and optional operational telemetry",
+    "scope_ids": [
+      "S27",
+      "S37",
+      "S39"
+    ],
+    "evidence": [
+      {
+        "path": "services/docs/PRIVACY.md",
+        "location": "frozen_candidate",
+        "sha256": "30e01d26a0434dd1843e8be587dd43df8e82adc580121fcc4453ebaeda4a7656"
+      },
+      {
+        "path": "services/tideglass_service/api.py",
+        "location": "frozen_candidate",
+        "sha256": "3d84629e39d5747e1ea55e412a1d52728890244058bdfde1f25dd384645a9003"
+      },
+      {
+        "path": "services/tideglass_service/storage.py",
+        "location": "frozen_candidate",
+        "sha256": "3c640f16a6deb226b78e54238009a12955096161d425e04326bb23321e8ea6ad"
+      },
+      {
+        "path": "services/tideglass_service/web_deletion.py",
+        "location": "frozen_candidate",
+        "sha256": "48e4f99a9f3f871c8620ee396355a44711fe92f10418d636960fe76dbd50225d"
+      },
+      {
+        "path": "game/mobile/lib/game_telemetry.dart",
+        "location": "frozen_candidate",
+        "sha256": "53a729de9b0bea339e8de2263952d5cef2382769ebdb4d79960e63cf8682f566"
+      },
+      {
+        "path": "game/mobile/lib/native_services.dart",
+        "location": "frozen_candidate",
+        "sha256": "f56a6a8ac2ce6fe583b859d1c65336ea4d858711456bf4243ba9d1fa24eb0e73"
+      }
+    ],
+    "observation": "Optional UUID account/recovery hashes, sessions, cloud snapshots, purchase/support ledgers and explicit-consent enum telemetry are attributable to recovery/commerce/monitoring. Export and confirmation-gated deletion are implemented. Client telemetry defaults off, bounded memory-only queue has no pre-consent reconstruction; revocation retains pending remote-deletion state on outage. Provider SDK traffic and production backup erasure remain unqualified.",
+    "review_result": "mapped_to_original_scope",
+    "does_not_close_scope_requirement": true
+  },
+  {
+    "id": "R21",
+    "delivered_group": "Opt-in study and native diagnostic linkage",
+    "scope_ids": [
+      "S30",
+      "S32",
+      "S34",
+      "S35",
+      "S39"
+    ],
+    "evidence": [
+      {
+        "path": "game/mobile/lib/study_gate.dart",
+        "location": "frozen_candidate",
+        "sha256": "99757790494004865b5b68a4798191170955ff7b4bc000c98cc4f78094b9f7d9"
+      },
+      {
+        "path": "game/platform/lib/study_recorder.dart",
+        "location": "frozen_candidate",
+        "sha256": "6c6137fa4d62398b120e69f1fff47a49dd3c6e8025cee2b3ccd7f426e15c1775"
+      },
+      {
+        "path": "game/platform/lib/study_native_context.dart",
+        "location": "frozen_candidate",
+        "sha256": "712c8c34082008b8596a89d451e7da05d573384cf8158fc6e5e2b23bda2fe154"
+      },
+      {
+        "path": "game/mobile/lib/study_native_context.dart",
+        "location": "frozen_candidate",
+        "sha256": "c4d8541682aa31e7379d953146ef46b475c75bb991a34ef8394de93282332c22"
+      },
+      {
+        "path": "tool/study_report.py",
+        "location": "frozen_candidate",
+        "sha256": "7109d2e53a8c07b8f00299b749a4c758530e51f38a2d444f4600ae6ef94e7462"
+      },
+      {
+        "path": "tool/study_adjudicate.py",
+        "location": "frozen_candidate",
+        "sha256": "ccf31107cced115bb7a417407a2b7cfa1498845ce10899b14a1f3ca533a406e6"
+      },
+      {
+        "path": "tool/study_native_diagnostics.py",
+        "location": "frozen_candidate",
+        "sha256": "325afe73985b414a23ab3858ad4abc656351258bb3c19e49bd6c665761031430"
+      }
+    ],
+    "observation": "Empty provisioning bypasses store/enrollment. Provisioned voluntary enrollment writes bounded local random install/process/session IDs, frozen registry/config/consent hashes and actual eligible process metadata; exports require deliberate action, withdrawal erases local records. Native PID/app version/time links separately supplied diagnostics; no automatic log collection/upload. This prepares original measured-start/crash/retention obligations and creates zero observed players by itself.",
+    "review_result": "mapped_to_original_scope",
+    "does_not_close_scope_requirement": true
+  },
+  {
+    "id": "R22",
+    "delivered_group": "Service operations and public deletion preparation",
+    "scope_ids": [
+      "S24",
+      "S27",
+      "S37",
+      "S39",
+      "S40"
+    ],
+    "evidence": [
+      {
+        "path": "services/tideglass_service/factory.py",
+        "location": "frozen_candidate",
+        "sha256": "9125fc374367e68381bd42fa26e96b9434f705aad01389c8d8d78fe1cc134bcc"
+      },
+      {
+        "path": "services/tideglass_service/deployment.py",
+        "location": "frozen_candidate",
+        "sha256": "7be8280da2d9d3434abcea0df396e33ad5786ee9506fbbf09af25c7ff3904b13"
+      },
+      {
+        "path": "services/tideglass_service/ops.py",
+        "location": "frozen_candidate",
+        "sha256": "b00b5e05df46584a2a2704fd2ee3795eedfbf57e09e83c8d8d7f131aa6f39ee9"
+      },
+      {
+        "path": "services/tideglass_service/health.py",
+        "location": "frozen_candidate",
+        "sha256": "03cc85d2104833765d1a5f84ee8cab882571a11e83fc8199c7ee21e1e8407a3c"
+      },
+      {
+        "path": "services/tideglass_service/recovery.py",
+        "location": "frozen_candidate",
+        "sha256": "b0d0142a7db7a6a3411e1df9714ed7c632116e8687f8ecd4ee8c3f51ecc5af50"
+      },
+      {
+        "path": "services/tideglass_service/reconcile.py",
+        "location": "frozen_candidate",
+        "sha256": "4f0da70207404c25d4b447168e597295e2e14380e7da8659e65cddd13ace3ca9"
+      },
+      {
+        "path": "services/tideglass_service/operator_cycle.py",
+        "location": "frozen_candidate",
+        "sha256": "edc7f632f531582c0fbec7bc927fb2cf94665c61bb58a906990309fc3609c224"
+      },
+      {
+        "path": "services/tideglass_service/alert_transport.py",
+        "location": "frozen_candidate",
+        "sha256": "fb2c76d0735571ed8d8494825b1a78dca6690edde8b88da2da15f8c512eb7ead"
+      },
+      {
+        "path": "source/operations/runbooks.md",
+        "location": "current_ancillary",
+        "sha256": "4af3587a036ff632b2b6b9d3866d531850492192b5b3671a5875cfdceab83188"
+      }
+    ],
+    "observation": "Bounded private configuration, health/reconciliation/backup/restore, feature switches, HTTPS serving and explicit aggregate alerts support original operational duties. Imports do not activate listener/scheduler/receiver. Default runner is loopback; production provider keys/identity, host, recipients and real drills are absent. No staffing, SLA or hosted-service claim follows.",
+    "review_result": "mapped_to_original_scope",
+    "does_not_close_scope_requirement": true
+  },
+  {
+    "id": "R23",
+    "delivered_group": "Build, test, simulation and independent evidence tooling",
+    "scope_ids": [
+      "S28",
+      "S29",
+      "S30",
+      "S31",
+      "S33",
+      "S40",
+      "S41",
+      "S42"
+    ],
+    "evidence": [
+      {
+        "path": "tool/build_native.py",
+        "location": "frozen_candidate",
+        "sha256": "1fca5f766c6bd816f55fc0aefafe1e3dfb8e66b91e83e1dcb275d48f13cada1d"
+      },
+      {
+        "path": "tool/verify_native.py",
+        "location": "frozen_candidate",
+        "sha256": "68297f66fc4e32a173b17da2594872334d59ba2b88b7d5878b5ee8905f9b89e5"
+      },
+      {
+        "path": "tool/verify_current_runtime.py",
+        "location": "frozen_candidate",
+        "sha256": "d849ab8feb642eb1b988f9a6d82558491b7ebef4c63768fb4fa132f49edf3804"
+      },
+      {
+        "path": "game/simulation/lib/policy_run.dart",
+        "location": "frozen_candidate",
+        "sha256": "2d01ebc469e38702473c5d9bea584bb818ede52a05eb4d8ba72d9be785e10480"
+      },
+      {
+        "path": "game/simulation/lib/supplemental_run.dart",
+        "location": "frozen_candidate",
+        "sha256": "18b486547c10afe90c923fa9c0db380fc78d6ed6e7e24c761d6ad8b554354be3"
+      },
+      {
+        "path": "game/simulation/lib/season_isolation.dart",
+        "location": "frozen_candidate",
+        "sha256": "688333e1344e02c90c44f557b6225798d06176ea6e6f6250b8ab499f75d0062e"
+      },
+      {
+        "path": "implementation/program.json",
+        "location": "current_ancillary",
+        "sha256": "1ecbf41e7020d92c724ff6e4fcfd72ddb88c5d3ee2c983766f318f1dc9ece275"
+      }
+    ],
+    "observation": "Frozen-source build, current-runtime audit, source-bound scenario/fixture/simulation and fault-checking tools are original evidence preparation. They may deliberately seed reachable states or accelerate tests; those conditions are not player pacing, native physical performance, real provider transactions or human studies. Current native five exports/58 cells belong to the separate verifier and are in progress at audit cutoff.",
+    "review_result": "mapped_to_original_scope",
+    "does_not_close_scope_requirement": true
+  },
+  {
+    "id": "R24",
+    "delivered_group": "Store creative and preview preparation",
+    "scope_ids": [
+      "S36",
+      "S43"
+    ],
+    "evidence": [
+      {
+        "path": "tool/render_store_creative.py",
+        "location": "frozen_candidate",
+        "sha256": "dbe8681c14a9b33e8d5a002d9bedfd52af3ddf37365ee609fb92a8b899a863f7"
+      },
+      {
+        "path": "release/store/metadata.en-US.json",
+        "location": "current_ancillary",
+        "sha256": "599d459be24d7875afb5a40ae7ae746f29b34d6c133a983a54a191efd69580b1"
+      },
+      {
+        "path": "release/store/tools/export_preview.swift",
+        "location": "current_ancillary",
+        "sha256": "656ad603bc370df9e4de8ccfb14d6364757a1e44eb5f3792e39959fffc3cf79c"
+      },
+      {
+        "path": "release/store/tools/inspect_preview.swift",
+        "location": "current_ancillary",
+        "sha256": "a1c4dce52b6a67e3ef9fbc0a12223450e12e041bfc40efe7b83e404da23b0dbf"
+      }
+    ],
+    "observation": "Original store draft art/metadata and reversible aspect-fit video export/inspection serve original release-asset obligations. No public submission. Independent historical152 control proved tool behavior only; silent ~2.07Mbps output despite11Mbps target is not final-conforming creative. Current actual native clips and independent final creative review remain separate.",
+    "review_result": "mapped_to_original_scope",
+    "does_not_close_scope_requirement": true
+  },
+  {
+    "id": "R25",
+    "delivered_group": "Launch coverage and Season2 brief",
+    "scope_ids": [
+      "S27",
+      "S37",
+      "S38"
+    ],
+    "evidence": [
+      {
+        "path": "source/operations/runbooks.md",
+        "location": "current_ancillary",
+        "sha256": "4af3587a036ff632b2b6b9d3866d531850492192b5b3671a5875cfdceab83188"
+      },
+      {
+        "path": "release/runbooks/LAUNCH_HANDOVER.md",
+        "location": "current_ancillary",
+        "sha256": "10e33e5be7cf3f6d127aba75597bdedcf873b0423c4fdc264d812bf15559c6d4"
+      },
+      {
+        "path": "release/runbooks/launch-coverage-template.json",
+        "location": "current_ancillary",
+        "sha256": "0e868ab527abcf49c57579054ba210aa72c24198b22be0132ef0738dba0ee9bf"
+      },
+      {
+        "path": "release/season-2-brief.md",
+        "location": "current_ancillary",
+        "sha256": "d5bf44b381b28171a181bf233df025bb1f83d4c809951d261f53366317a9801e"
+      },
+      {
+        "path": "implementation/program.json",
+        "location": "current_ancillary",
+        "sha256": "1ecbf41e7020d92c724ff6e4fcfd72ddb88c5d3ee2c983766f318f1dc9ece275"
+      }
+    ],
+    "observation": "Initial internal handover and future-season brief are original roadmap duties. OPS-14 is the69th program item: explicit tracking of original roadmap14-day support, not an added game feature. Three other non-backlog items are bootstrap artifacts. Season2 is a brief only, with no launch content/product/runtime definition; zero actual launch-support days are inferred.",
+    "review_result": "mapped_to_original_scope",
+    "does_not_close_scope_requirement": true
+  }
+]

@@ -1,0 +1,70 @@
+COMMAND /Users/csys/Desktop/ibicot/idle/tool/flutter pub get
+Resolving dependencies...
+Downloading packages...
+  material_color_utilities 0.13.0 (0.13.1 available)
+  test_api 0.7.12 (0.7.15 available)
+Got dependencies!
+2 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
+COMMAND /Users/csys/Desktop/ibicot/idle/tool/flutter analyze
+Resolving dependencies...
+Downloading packages...
+  material_color_utilities 0.13.0 (0.13.1 available)
+  test_api 0.7.12 (0.7.15 available)
+Got dependencies!
+2 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
+Analyzing mobile...                                             
+
+   info • Statements in an if should be enclosed in a block. Try wrapping the statement in a block • lib/app.dart:119:9 • curly_braces_in_flow_control_structures
+   info • Statements in an if should be enclosed in a block. Try wrapping the statement in a block • lib/calibration_pattern.dart:38:7 • curly_braces_in_flow_control_structures
+   info • Statements in an if should be enclosed in a block. Try wrapping the statement in a block • lib/calibration_pattern.dart:45:13 • curly_braces_in_flow_control_structures
+   info • Statements in an if should be enclosed in a block. Try wrapping the statement in a block • lib/calibration_pattern.dart:60:7 • curly_braces_in_flow_control_structures
+   info • Statements in an if should be enclosed in a block. Try wrapping the statement in a block • lib/calibration_pattern.dart:68:13 • curly_braces_in_flow_control_structures
+   info • Statements in an if should be enclosed in a block. Try wrapping the statement in a block • test/calibration_test.dart:22:5 • curly_braces_in_flow_control_structures
+   info • Statements in an if should be enclosed in a block. Try wrapping the statement in a block • test/calibration_test.dart:27:7 • curly_braces_in_flow_control_structures
+
+7 issues found. (ran in 5.3s)
+COMMAND /Users/csys/Desktop/ibicot/idle/tool/flutter test --reporter expanded
+Resolving dependencies...
+Downloading packages...
+  material_color_utilities 0.13.0 (0.13.1 available)
+  test_api 0.7.12 (0.7.15 available)
+Got dependencies!
+2 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
+00:00 +0: loading /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/ce46598c4b51/game/mobile/test/client_test.dart
+00:00 +0: /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/ce46598c4b51/game/mobile/test/calibration_test.dart: calibration.01 has a valid route found without reading its solution
+00:00 +1: /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/ce46598c4b51/game/mobile/test/client_test.dart: number display handles micro values and huge exact integers
+00:00 +2: /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/ce46598c4b51/game/mobile/test/client_test.dart: number display handles micro values and huge exact integers
+00:00 +3: /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/ce46598c4b51/game/mobile/test/client_test.dart: number display handles micro values and huge exact integers
+00:00 +4: /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/ce46598c4b51/game/mobile/test/client_test.dart: number display handles micro values and huge exact integers
+00:00 +5: /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/ce46598c4b51/game/mobile/test/client_test.dart: number display handles micro values and huge exact integers
+00:00 +6: /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/ce46598c4b51/game/mobile/test/calibration_test.dart: calibration.06 has a valid route found without reading its solution
+00:00 +7: /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/ce46598c4b51/game/mobile/test/calibration_test.dart: calibration.07 has a valid route found without reading its solution
+00:00 +8: /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/ce46598c4b51/game/mobile/test/client_test.dart: controller persists actual purchase and its exact settlement cursor
+00:00 +9: /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/ce46598c4b51/game/mobile/test/client_test.dart: controller persists actual purchase and its exact settlement cursor
+00:00 +10: /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/ce46598c4b51/game/mobile/test/client_test.dart: controller persists actual purchase and its exact settlement cursor
+00:00 +11: /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/ce46598c4b51/game/mobile/test/client_test.dart: controller persists actual purchase and its exact settlement cursor
+00:00 +12: /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/ce46598c4b51/game/mobile/test/client_test.dart: controller persists actual purchase and its exact settlement cursor
+00:00 +13: /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/ce46598c4b51/game/mobile/test/calibration_test.dart: calibration.12 has a valid route found without reading its solution
+00:00 +14: /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/ce46598c4b51/game/mobile/test/client_test.dart: an offline settlement is acknowledged without replay or reward grant
+00:00 +15: /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/ce46598c4b51/game/mobile/test/calibration_test.dart: untimed route and crew completion dispatch the identical pattern command once
+00:00 +16: /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/ce46598c4b51/game/mobile/test/calibration_test.dart: untimed route and crew completion dispatch the identical pattern command once
+00:01 +17: /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/ce46598c4b51/game/mobile/test/calibration_test.dart: untimed route and crew completion dispatch the identical pattern command once
+00:01 +18: /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/ce46598c4b51/game/mobile/test/bootstrap_test.dart: native bootstrap reopens actual persisted core and preferences
+00:01 +19: /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/ce46598c4b51/game/mobile/test/bootstrap_test.dart: native bootstrap reopens actual persisted core and preferences
+00:02 +20: /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/ce46598c4b51/game/mobile/test/bootstrap_test.dart: native bootstrap reopens actual persisted core and preferences
+00:02 +21: /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/ce46598c4b51/game/mobile/test/client_test.dart: Rechart requires confirmation and keeps lifetime while rebuilding
+00:03 +22: /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/ce46598c4b51/game/mobile/test/bootstrap_test.dart: one corrupt snapshot recovers real prior branch with notice
+00:03 +23: /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/ce46598c4b51/game/mobile/test/client_test.dart: daily survey collection and Focus buttons use core stored rewards
+00:03 +24: /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/ce46598c4b51/game/mobile/test/bootstrap_test.dart: both corrupt slots remain untouched and recovery view is honest
+00:03 +25: /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/ce46598c4b51/game/mobile/test/bootstrap_test.dart: both corrupt slots remain untouched and recovery view is honest
+00:03 +26: /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/ce46598c4b51/game/mobile/test/bootstrap_test.dart: both corrupt slots remain untouched and recovery view is honest
+00:03 +27: /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/ce46598c4b51/game/mobile/test/bootstrap_test.dart: both corrupt slots remain untouched and recovery view is honest
+00:03 +28: /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/ce46598c4b51/game/mobile/test/bootstrap_test.dart: both corrupt slots remain untouched and recovery view is honest
+00:03 +29: /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/ce46598c4b51/game/mobile/test/client_test.dart: return acknowledgement closes a settled reward without another grant
+00:04 +30: /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/ce46598c4b51/game/mobile/test/bootstrap_test.dart: explicit import replaces a branch and retains current branch archive
+00:05 +31: /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/ce46598c4b51/game/mobile/test/bootstrap_test.dart: explicit import replaces a branch and retains current branch archive
+00:05 +32: /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/ce46598c4b51/game/mobile/test/client_test.dart: critical layouts fit Size(1024.0, 768.0) at 200 percent text
+00:05 +33: All tests passed!

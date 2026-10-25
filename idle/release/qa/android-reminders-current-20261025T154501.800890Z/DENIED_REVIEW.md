@@ -1,0 +1,9 @@
+# Android actual-denial addendum
+
+The fresh denied scenario is independently supported. Raw screenshot and hierarchy show the current Tideglass notification dialog; actual activity records bind it to task 75 and live app PID 4797. The single recorded SDK tap targets the uniquely observed enabled “Don’t allow” button. It occurs about 38.5 seconds after the identity-bound marker, within the unchanged 150-second bound. The post-action image and hierarchy show the sheet removed and the current app resumed. Native observations report denied permission, disabled preferences and no pending notifications; strict native and driver completion pass.
+
+This is an automated actual Android OS gesture under the prospectively approved procedure, not a human click, CUA event, hidden permission grant or injected callback. The permission-controller package and its resource-ID namespace are correctly distinguished. The result belongs to the fresh run; the earlier orphan cleanup and two timed-out attempts do not become successes.
+
+The independent read-only probe performs 52 checks over 23 pinned inputs, reproduces the archived pure completion verifier and rejects five malformed payloads plus a late native exception. Source, candidate, built/installed APK, UI/action and post-action supplemental checkpoint hashes agree. Both earlier timeout reports remain unchanged and failed, as recorded in denied-seal.json.
+
+Existing Android default, five iPhone scenarios and Settings/UI evidence remain closed. Quiet-cancel, delivery and revoked Android scenarios still await sealed review. M3-05/S26 are not yet recommended for acceptance. Simulator/emulator API results do not establish physical reliability, a person seeing a banner or human comprehension. No canonical edit, Flutter/device command or network action was performed by QA.

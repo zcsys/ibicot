@@ -1,0 +1,13 @@
+--- /Users/csys/Desktop/ibicot/idle/release/native-privacy/runtime-observation-repaired/reviewer-probe-reproduction/review_probes_descriptor_boundary.py
++++ independent/review_probes_descriptor_boundary.py
+@@ -13,8 +13,8 @@
+ from unittest.mock import patch
+ 
+ HERE = Path(__file__).resolve().parent
+-ROOT = HERE.parents[3]
+-STAGE = HERE.parent
++ROOT = HERE.parents[2]
++STAGE = ROOT / 'release/native-privacy/runtime-observation-repaired'
+ spec = importlib.util.spec_from_file_location('author_fixture', STAGE / 'test_runtime_observation.py')
+ author = importlib.util.module_from_spec(spec)
+ spec.loader.exec_module(author)

@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "status": "finalized-partial-observation",
+  "paired_socket_storage_samples": 0,
+  "observation_sha256": "3218f960177bcb28b0180ab333d70e4ef1afef50af4ca5bf10c216a9b836a60c",
+  "native_verification_sha256": "a0dfbe447f365ca1cd3b38ff9a1659a47adc7480723426f4d4d848d25726a797",
+  "native_payload_sha256": "fa7c16bdb3fcd37e33ec4bbe2c26fd22f6389498270a14a5704c4fae577e6abb",
+  "native_log_sha256": "6ef6e5ce101824ae0659f28481c89d04c7fd174705b004b6ac78fa73d6c1ed72",
+  "window": {
+    "opened": {
+      "verification_id": "current-runtime-android-20261023T054227408137Z",
+      "candidate_fingerprint": "3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59",
+      "harness_sha256": "102be09eb8043ce9bb496156d9f37b1834c3084ddf58fef073e7c25cdc3c55d5",
+      "scenario": "runtime-study-enroll",
+      "run_id": "v3b00-android-probe-fixed-enroll",
+      "device_label": "android",
+      "platform": "android",
+      "process_id": 7793,
+      "fixture_directory": "/data/user/0/dev.tideglass.game/files/native-current-verification/android-v3b00-android-probe-fixed-enroll/study",
+      "mode": "synthetic-consented",
+      "window_id": "current-runtime-android-20261023T054227408137Z-privacy",
+      "maximum_ms": 20000,
+      "native_elapsed_us": 330,
+      "native_utc_ms": 1792734188981
+    },
+    "closed": {
+      "verification_id": "current-runtime-android-20261023T054227408137Z",
+      "candidate_fingerprint": "3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59",
+      "harness_sha256": "102be09eb8043ce9bb496156d9f37b1834c3084ddf58fef073e7c25cdc3c55d5",
+      "scenario": "runtime-study-enroll",
+      "run_id": "v3b00-android-probe-fixed-enroll",
+      "device_label": "android",
+      "platform": "android",
+      "process_id": 7793,
+      "fixture_directory": "/data/user/0/dev.tideglass.game/files/native-current-verification/android-v3b00-android-probe-fixed-enroll/study",
+      "mode": "synthetic-consented",
+      "window_id": "current-runtime-android-20261023T054227408137Z-privacy",
+      "maximum_ms": 20000,
+      "native_elapsed_us": 15152216,
+      "native_utc_ms": 1792734204133
+    }
+  },
+  "samples": 3,
+  "socket_statuses": [
+    "unavailable",
+    "unavailable",
+    "unavailable"
+  ],
+  "storage_statuses": [
+    "unavailable",
+    "unavailable",
+    "unavailable"
+  ],
+  "collector_sha256": "90485bd0ca097af8835d1f7cc280f7f2545085ea578d7a44cf10a6b93cf458cc",
+  "completion_verifier_sha256": "68297f66fc4e32a173b17da2594872334d59ba2b88b7d5878b5ee8905f9b89e5",
+  "completion_verifier_mode": "exact-function-from-candidate-pinned-archive",
+  "source_binding": {
+    "candidate_manifest_sha256": "b4322606cd0207425b801feacc0bf4084ac9c460b23a028576204b766eeaeada",
+    "candidate_fingerprint": "3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59",
+    "native_source_sha256": {
+      "verify_native.py": "68297f66fc4e32a173b17da2594872334d59ba2b88b7d5878b5ee8905f9b89e5",
+      "runner.py": "d1ea6d05085f05a0a3bb6c768531ef7659272e41993858c0551618f74ce5c847",
+      "harness.dart": "102be09eb8043ce9bb496156d9f37b1834c3084ddf58fef073e7c25cdc3c55d5"
+    },
+    "verification_tool_bridge": {
+      "candidate_fingerprint": "3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59",
+      "candidate_runner_sha256": "d849ab8feb642eb1b988f9a6d82558491b7ebef4c63768fb4fa132f49edf3804",
+      "executed_runner_sha256": "d1ea6d05085f05a0a3bb6c768531ef7659272e41993858c0551618f74ce5c847",
+      "scope": "Android test exit-status transport only; raw binary transfer unchanged"
+    },
+    "observation_source_sha256": {
+      "collector.py": "90485bd0ca097af8835d1f7cc280f7f2545085ea578d7a44cf10a6b93cf458cc",
+      "completion-verifier.py": "68297f66fc4e32a173b17da2594872334d59ba2b88b7d5878b5ee8905f9b89e5",
+      "native-runner.py": "d1ea6d05085f05a0a3bb6c768531ef7659272e41993858c0551618f74ce5c847",
+      "candidate-manifest.json": "b4322606cd0207425b801feacc0bf4084ac9c460b23a028576204b766eeaeada",
+      "candidate-native-runner.py": "d849ab8feb642eb1b988f9a6d82558491b7ebef4c63768fb4fa132f49edf3804"
+    }
+  },
+  "traffic_absence_claim": false,
+  "release_acceptance": false,
+  "limitations": [
+    "Point-in-time open-socket snapshots are not packets, requests, destinations contacted, or absence of traffic.",
+    "Short-lived sockets between samples, earlier startup and later activity are outside coverage.",
+    "Debug simulator/emulator and automation/VM-service sockets are not release or physical-device behavior.",
+    "Only this PID is selected; subprocesses and OS/SDK services outside it are not observed.",
+    "Host/native UTC containment is required without tolerance; clocks are not authenticated. A mismatch leaves the interval unqualified.",
+    "Private storage inventory covers seven fixed synthetic fixture files, not all SDK caches, Keychain, preferences or files.",
+    "Synthetic study interaction is not participant consent. No paid/provider account, human or crash-free rate evidence.",
+    "Sample identity checks bracket commands; socket descriptors and files may change within a bracket. iOS host ps start time has one-second resolution.",
+    "The window starts after bootstrap/consent assertions; startup activity before OPEN is outside these samples. Audio and reminders use existing harness isolation.",
+    "Android storage is unavailable: no descriptor-anchored native reader has been qualified. No path-check plus shell hash fallback is used.",
+    "Storage identity checks detect lasting replacement or mutation; they are not an atomic filesystem snapshot or protection against a privileged mutation-and-restore adversary.",
+    "Collector and verifier source pins detect lasting changes at operation boundaries; local hashes are integrity records, not external authentication."
+  ]
+}

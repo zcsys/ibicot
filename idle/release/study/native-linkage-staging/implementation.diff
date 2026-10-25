@@ -1,0 +1,720 @@
+--- game/platform/lib/study_recorder.dart
++++ staged/game/platform/lib/study_recorder.dart
+@@ -5,7 +5,11 @@
+ import 'dart:convert';
+ import 'dart:io';
+ import 'dart:math';
++
+ import 'package:crypto/crypto.dart';
++
++import 'study_native_context.dart';
++export 'study_native_context.dart';
+ 
+ String studyCanonical(Object? value) {
+   Object? ordered(Object? item) {
+@@ -450,16 +454,32 @@
+     );
+   }
+ 
+-  static void _payloadShape(Map<String, dynamic> event) {
++  static void _payloadShape(Map<String, dynamic> event, int schema) {
+     final payload = event['payload'] as Map<String, dynamic>;
+     switch (event['kind']) {
+       case 'app_start':
+       case 'session_start':
+         _require(
+-          _shape(payload, {'config', 'reason'}),
++          _shape(payload, {'config', 'reason'}) ||
++              (schema == 2 &&
++                  event['kind'] == 'app_start' &&
++                  _shape(payload, {'config', 'reason', 'native_context'})),
+           'invalid_start_payload',
+         );
+         _configShape(payload['config']);
++        if (payload.containsKey('native_context')) {
++          final observed = StudyProcessObservation.fromJson(
++            Map<String, dynamic>.from(payload['native_context'] as Map),
++          );
++          if (observed.available) {
++            _require(
++              (observed.observedStartUtcMs! - (event['at'] as int) * 1000)
++                      .abs() <=
++                  5000,
++              'native_context_time_mismatch',
++            );
++          }
++        }
+         _require(
+           event['kind'] == 'session_start'
+               ? payload['reason'] == 'inactivity'
+@@ -513,7 +533,7 @@
+             'records',
+             'status',
+           }) &&
+-          doc['schema_version'] == 1,
++          {1, 2}.contains(doc['schema_version']),
+       'invalid_store_fields',
+     );
+     _require(
+@@ -535,6 +555,7 @@
+     var sequence = 0;
+     var lastAt = -1;
+     final events = <String>{};
++    var nativeStarted = false, unavailablePending = false;
+     for (final raw in doc['records'] as List) {
+       final event = Map<String, dynamic>.from(raw as Map);
+       // Nine exact fields; keeping shape validation separate avoids accepting
+@@ -554,7 +575,35 @@
+             }),
+         'invalid_record_fields',
+       );
+-      _payloadShape(event);
++      _payloadShape(event, doc['schema_version'] as int);
++      final native = (event['payload'] as Map)['native_context'];
++      if (native is Map && native['status'] == 'available') {
++        _require(
++          native['platform'] == registry['platform'],
++          'native_platform_mismatch',
++        );
++      }
++      if (unavailablePending) {
++        _require(
++          event['kind'] == 'gap' &&
++              event['payload']['reason'] == 'instrumentationUnavailable' &&
++              event['payload']['from'] == lastAt &&
++              event['payload']['to'] == lastAt &&
++              event['at'] == lastAt,
++          'missing_atomic_native_gap',
++        );
++        unavailablePending = false;
++      }
++      if (event['kind'] == 'app_start') {
++        final hasNative = (event['payload'] as Map).containsKey(
++          'native_context',
++        );
++        _require(!nativeStarted || hasNative, 'legacy_start_after_native_link');
++        nativeStarted = nativeStarted || hasNative;
++        unavailablePending =
++            hasNative &&
++            event['payload']['native_context']['status'] == 'unavailable';
++      }
+       _require(
+         _opaque.hasMatch(event['process_id'] as String) &&
+             _opaque.hasMatch(event['session_id'] as String) &&
+@@ -574,6 +623,11 @@
+       previous = hash as String;
+       lastAt = event['at'] as int;
+     }
++    _require(!unavailablePending, 'missing_atomic_native_gap');
++    _require(
++      doc['schema_version'] != 2 || nativeStarted,
++      'schema2_without_native_start',
++    );
+     _require(
+       (doc['records'] as List).isNotEmpty &&
+           doc['records'][0]['kind'] == 'app_start' &&
+@@ -597,6 +651,25 @@
+       'initial_config_mismatch',
+     );
+   }
++
++  Map<String, Object?> _nativePayload(StudyProcessObservation value, int at) {
++    final payload = value.toJson();
++    _require(
++      utf8.encode(studyCanonical(payload)).length <= 2048,
++      'native_context_oversize',
++    );
++    _require(
++      !value.available || (value.observedStartUtcMs! - at * 1000).abs() <= 5000,
++      'native_context_time_mismatch',
++    );
++    return payload;
++  }
++
++  void _nativeGap(Map<String, dynamic> doc, int at) => _append(doc, 'gap', {
++    'reason': 'instrumentationUnavailable',
++    'from': at,
++    'to': at,
++  }, at);
+ 
+   Future<T> _serial<T>(Future<T> Function() operation) {
+     final completer = Completer<T>();
+@@ -670,12 +743,19 @@
+     StudyEnrollment enrollment,
+     StudyConfig baseline, {
+     required bool eligibleFreshInstall,
++    StudyProcessObservation? nativeContext,
+   }) => _serial(() async {
+     _require(
+       _document == null && eligibleFreshInstall && !_withdrawalRequested,
+       'enrollment_not_allowed',
+     );
+     final now = _now();
++    _require(
++      nativeContext == null ||
++          !nativeContext.available ||
++          nativeContext.platform == enrollment.platform,
++      'native_platform_mismatch',
++    );
+     _require(now >= 0, 'invalid_clock');
+     _process = _newId();
+     _session = _newId();
+@@ -696,7 +776,7 @@
+       'baseline': baseline.toJson(),
+     };
+     final doc = <String, dynamic>{
+-      'schema_version': 1,
++      'schema_version': nativeContext == null ? 1 : 2,
+       'registry': registry,
+       'records': <Map<String, Object?>>[],
+       'status': 'active',
+@@ -704,28 +784,50 @@
+     _append(doc, 'app_start', {
+       'config': baseline.toJson(),
+       'reason': 'enrollment',
++      if (nativeContext != null)
++        'native_context': _nativePayload(nativeContext, now),
+     }, now);
++    if (nativeContext != null && !nativeContext.available) _nativeGap(doc, now);
+     await _commit(doc);
+     _begun = true;
+     _foreground = true;
+     _lastActivity = now;
+   });
+ 
+-  Future<void> beginProcess({required StudyConfig? config}) =>
+-      _serial(() async {
+-        if (!enrolled || exhausted || _begun) return;
+-        _process = _newId();
+-        _session = _newId();
+-        _config = config;
+-        _foreground = true;
+-        _interactive = false;
+-        await _record('app_start', {
+-          'config': config?.toJson(),
+-          'reason': 'process_restart',
+-        }, split: false);
+-        _begun = true;
+-        _lastActivity = _now();
+-      });
++  Future<void> beginProcess({
++    required StudyConfig? config,
++    StudyProcessObservation? nativeContext,
++  }) => _serial(() async {
++    if (!enrolled || exhausted || _begun) return;
++    _require(
++      nativeContext?.available != true ||
++          nativeContext?.platform == registry!['platform'],
++      'native_platform_mismatch',
++    );
++    nativeContext ??= _document?['schema_version'] == 2
++        ? const StudyProcessObservation.unavailable('not_requested')
++        : null;
++    _process = _newId();
++    _session = _newId();
++    _config = config;
++    _foreground = true;
++    _interactive = false;
++    try {
++      await _record('app_start', {
++        'config': config?.toJson(),
++        'reason': 'process_restart',
++        if (nativeContext != null)
++          'native_context': _nativePayload(nativeContext!, _now()),
++      }, split: false);
++    } catch (_) {
++      final previous = (_document!['records'] as List).last;
++      _process = previous['process_id'] as String;
++      _session = previous['session_id'] as String;
++      rethrow;
++    }
++    _begun = true;
++    _lastActivity = _now();
++  });
+ 
+   Future<void> _record(
+     String kind,
+@@ -737,6 +839,11 @@
+     final now = _now();
+     if (_lastAt != null && now < _lastAt!) {
+       final doc = _copy();
++      if (kind == 'app_start') {
++        final previous = (doc['records'] as List).last;
++        _process = previous['process_id'] as String;
++        _session = previous['session_id'] as String;
++      }
+       _append(doc, 'gap', {
+         'reason': 'clockDiscontinuity',
+         'from': now,
+@@ -748,11 +855,20 @@
+     }
+     final doc = _copy();
+     if (_writeFailed) {
++      final proposedProcess = _process;
++      final proposedSession = _session;
++      if (kind == 'app_start') {
++        final previous = (doc['records'] as List).last;
++        _process = previous['process_id'] as String;
++        _session = previous['session_id'] as String;
++      }
+       _append(doc, 'gap', {
+         'reason': 'storageFailure',
+         'from': _lastAt ?? now,
+         'to': now,
+       }, now);
++      _process = proposedProcess;
++      _session = proposedSession;
+     }
+     final startsSession =
+         split && _lastActivity != null && now - _lastActivity! >= 1800;
+@@ -764,10 +880,20 @@
+         'reason': 'inactivity',
+       }, now);
+     }
++    if (kind == 'app_start' && payload.containsKey('native_context'))
++      doc['schema_version'] = 2;
+     _append(doc, kind, payload, now);
++    if (kind == 'app_start' &&
++        (payload['native_context'] as Map?)?['status'] == 'unavailable')
++      _nativeGap(doc, now);
+     if ((doc['records'] as List).length > maximumRecords - 2 ||
+         utf8.encode(studyCanonical(doc)).length > maximumBytes - 8192) {
+       final stopped = _copy();
++      if (kind == 'app_start') {
++        final previous = (stopped['records'] as List).last;
++        _process = previous['process_id'] as String;
++        _session = previous['session_id'] as String;
++      }
+       _append(stopped, 'gap', {
+         'reason': 'capacity',
+         'from': _lastAt ?? now,
+@@ -841,7 +967,10 @@
+       }
+       // A later full-erasure request must supersede prior minimal retention.
+       if (withdrawn && (retainMinimalRegistry || registry == null)) return;
+-      if (!retainMinimalRegistry || _document == null) {
++      // Native identity is never retained by the legacy minimal-registry option.
++      if (!retainMinimalRegistry ||
++          _document == null ||
++          _document!['schema_version'] == 2) {
+         await _commit({
+           'schema_version': 1,
+           'registry': null,
+--- game/mobile/lib/study_gate.dart
++++ staged/game/mobile/lib/study_gate.dart
+@@ -1,14 +1,17 @@
+ import 'dart:async';
+ import 'dart:convert';
+ import 'dart:io';
++
+ import 'package:flutter/material.dart';
+ import 'package:flutter/semantics.dart';
+ import 'package:flutter/services.dart';
+ import 'package:path_provider/path_provider.dart';
+ import 'package:tideglass_platform/study_recorder.dart';
++
+ import 'bundled_content.dart';
+ import 'presentation.dart';
+ import 'palette.dart';
++import 'study_native_context.dart';
+ 
+ /// Only explicitly provisioned study builds display enrollment. A provision is
+ /// preparation, not evidence of ethics approval, valid recruitment or consent.
+@@ -60,8 +63,11 @@
+     contentSha256: bundledManifestDigest,
+     config: data['config'],
+   );
+-  String get information =>
++  static const nativeLinkageInformation =
++      'If you agree, this study also records the app process number, platform, app version/build and observation time with each process start. These bounded records can be matched to a native diagnostic you separately choose to provide. The app does not collect device logs or upload diagnostics. Withdrawal erases this local linkage with the study records.';
++  String get legacyInformation =>
+       '${data['information']}\n\nStudy contact: ${data['contact']}\n\nRetention and deletion: ${data['retention']}';
++  String get information => '$legacyInformation\n\n$nativeLinkageInformation';
+   StudyEnrollment enrollment(String evidence) => StudyEnrollment(
+     studyId: data['study_id'],
+     protocolSha256: data['protocol_sha256'],
+@@ -189,6 +195,7 @@
+     this.provision = const String.fromEnvironment('TIDEGLASS_STUDY_PROVISION'),
+     this.supportDirectory,
+     this.openRecorder,
++    this.sampleNativeContext,
+   });
+   final Widget child;
+   final String provision;
+@@ -196,6 +203,7 @@
+ 
+   /// Test injection for deterministic I/O failure/race qualification.
+   final Future<StudyRecorder> Function(StudyStore)? openRecorder;
++  final Future<StudyProcessObservation> Function()? sampleNativeContext;
+   @override
+   State<StudyGate> createState() => _StudyGateState();
+ }
+@@ -276,8 +284,10 @@
+                   provision!.data['protocol_sha256'] ||
+               registry['consent_version'] !=
+                   provision!.data['consent_version'] ||
+-              registry['information_sha256'] !=
+-                  studyDigest(provision!.information) ||
++              !{
++                studyDigest(provision!.information),
++                studyDigest(provision!.legacyInformation),
++              }.contains(registry['information_sha256']) ||
+               registry['synthetic'] != provision!.data['synthetic'])) {
+         throw const FormatException('Study identity mismatch.');
+       }
+@@ -307,8 +317,22 @@
+         );
+         // The start attempt precedes ordinary bootstrap/interactive events.
+         // A loading-page decline never attaches collection after that attempt.
++        final native =
++            !recorder!.exhausted &&
++                registry!['information_sha256'] ==
++                    studyDigest(provision!.information)
++            ? await (widget.sampleNativeContext ??
++                  NativeStudyProcessContext.sample)()
++            : const StudyProcessObservation.unavailable('consent_not_granted');
++        if (_declinedForLaunch || !mounted) {
++          restored.dispose();
++          return;
++        }
+         await restored.capture(
+-          () => recorder!.beginProcess(config: provision!.currentConfig),
++          () => recorder!.beginProcess(
++            config: provision!.currentConfig,
++            nativeContext: native,
++          ),
+         );
+         if (_declinedForLaunch || !mounted) {
+           restored.dispose();
+@@ -320,8 +344,7 @@
+         prepared = true;
+       }
+     } catch (_) {
+-      error =
+-          'Study collection is unavailable. Your harbor remains available without study recording.';
++      error = 'Study collection is unavailable. Your harbor remains available without study recording.';
+     }
+     if (mounted) setState(() {});
+   }
+@@ -359,16 +382,20 @@
+         'candidate_sha256': provision!.data['candidate_sha256'],
+       });
+       final enrollment = provision!.enrollment(studyDigest(evidence));
++      final native =
++          await (widget.sampleNativeContext ??
++              NativeStudyProcessContext.sample)();
++      if (!mounted || _declinedForLaunch || !consent) return;
+       // A local check supports later independent eligibility adjudication; it
+       // cannot prove first-ever installation or absence of restored backups.
+       await support!.create(recursive: true);
+-      await File(
+-        '${support!.path}/tideglass-study-eligibility.json',
+-      ).writeAsString(evidence, flush: true);
++      await File('${support!.path}/tideglass-study-eligibility.json')
++          .writeAsString(evidence, flush: true);
+       await recorder!.enroll(
+         enrollment,
+         provision!.currentConfig,
+         eligibleFreshInstall: true,
++        nativeContext: native,
+       );
+       await recorder!.beginProcess(config: provision!.currentConfig);
+       if (!mounted) return;
+@@ -379,8 +406,7 @@
+       );
+       ready = true;
+     } catch (_) {
+-      error =
+-          'Enrollment could not be recorded, or this device already has a harbor. Continue without study recording; no previous activity will be added.';
++      error = 'Enrollment could not be recorded, or this device already has a harbor. Continue without study recording; no previous activity will be added.';
+     }
+     if (mounted) setState(() => working = false);
+   }
+@@ -459,6 +485,8 @@
+                   const LocalizedText(
+                     'Study recording is separate from account telemetry. It records pseudonymous app starts, game configuration, foreground activity and collection gaps on this device. It starts only after you agree. You can copy the records or withdraw in Settings. Declining does not change your game or rewards.',
+                   ),
++                  const SizedBox(height: 16),
++                  const LocalizedText(StudyProvision.nativeLinkageInformation),
+                   if (error != null) LocalizedText(error!),
+                   if (error == null && !prepared)
+                     const LocalizedText(
+--- game/mobile/ios/Runner/AppDelegate.swift
++++ staged/game/mobile/ios/Runner/AppDelegate.swift
+@@ -5,6 +5,7 @@
+ 
+ @main
+ @objc class AppDelegate: FlutterAppDelegate, FlutterImplicitEngineDelegate {
++  private var studyProcess: FlutterMethodChannel?
+   private var ownershipClock: FlutterMethodChannel?
+   private var clockObservers: [NSObjectProtocol] = []
+ 
+@@ -18,6 +19,24 @@
+ 
+   func didInitializeImplicitFlutterEngine(_ engineBridge: FlutterImplicitEngineBridge) {
+     GeneratedPluginRegistrant.register(with: engineBridge.pluginRegistry)
++    if let studyRegistrar = engineBridge.pluginRegistry.registrar(forPlugin: "TideglassStudyProcess") {
++      let channel = FlutterMethodChannel(name: "dev.tideglass/study_process", binaryMessenger: studyRegistrar.messenger())
++      studyProcess = channel
++      channel.setMethodCallHandler { call, result in
++        guard call.method == "observe" else { result(FlutterMethodNotImplemented); return }
++        let bundle = Bundle.main
++        guard let identifier = bundle.bundleIdentifier,
++              let version = bundle.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String,
++              let build = bundle.object(forInfoDictionaryKey: "CFBundleVersion") as? String else {
++          result(FlutterError(code: "study_context_unavailable", message: "Process metadata unavailable", details: nil)); return
++        }
++        // Observation time is not a claim of kernel process launch time.
++        result(["version": 1, "status": "available", "source": "native_process_observation_v1",
++                "native_pid": Int(getpid()), "platform": "ios", "application_id": identifier,
++                "application_version": version, "application_build": build,
++                "observed_start_utc_ms": Int64(Date().timeIntervalSince1970 * 1000)])
++      }
++    }
+     guard let registrar = engineBridge.pluginRegistry.registrar(forPlugin: "TideglassOwnershipClock") else { return }
+     let channel = FlutterMethodChannel(name: "dev.tideglass/ownership_clock", binaryMessenger: registrar.messenger())
+     ownershipClock = channel
+--- game/mobile/android/app/src/main/kotlin/dev/tideglass/game/MainActivity.kt
++++ staged/game/mobile/android/app/src/main/kotlin/dev/tideglass/game/MainActivity.kt
+@@ -1,6 +1,8 @@
+ package dev.tideglass.game
+ 
+ import android.os.SystemClock
++import android.os.Process
++import android.os.Build
+ import android.provider.Settings
+ import android.security.keystore.KeyGenParameterSpec
+ import android.security.keystore.KeyProperties
+@@ -14,10 +16,33 @@
+ import javax.crypto.SecretKey
+ 
+ class MainActivity : FlutterActivity() {
++    private var studyProcess: MethodChannel? = null
+     private var ownershipClock: MethodChannel? = null
+ 
+     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
+         super.configureFlutterEngine(flutterEngine)
++        studyProcess = MethodChannel(flutterEngine.dartExecutor.binaryMessenger,
++            "dev.tideglass/study_process").also { channel ->
++            channel.setMethodCallHandler { call, result ->
++                if (call.method != "observe") {
++                    result.notImplemented()
++                } else {
++                    try {
++                        @Suppress("DEPRECATION")
++                        val info = packageManager.getPackageInfo(packageName, 0)
++                        @Suppress("DEPRECATION")
++                        val build = if (Build.VERSION.SDK_INT >= 28) info.longVersionCode else info.versionCode.toLong()
++                        result.success(mapOf("version" to 1, "status" to "available",
++                            "source" to "native_process_observation_v1", "native_pid" to Process.myPid(),
++                            "platform" to "android", "application_id" to packageName,
++                            "application_version" to (info.versionName ?: ""), "application_build" to build.toString(),
++                            "observed_start_utc_ms" to System.currentTimeMillis()))
++                    } catch (_: Exception) {
++                        result.error("study_context_unavailable", "Process metadata unavailable", null)
++                    }
++                }
++            }
++        }
+         ownershipClock = MethodChannel(flutterEngine.dartExecutor.binaryMessenger,
+             "dev.tideglass/ownership_clock").also { channel ->
+             channel.setMethodCallHandler { call, result ->
+@@ -68,6 +93,8 @@
+     }
+ 
+     override fun cleanUpFlutterEngine(flutterEngine: FlutterEngine) {
++        studyProcess?.setMethodCallHandler(null)
++        studyProcess = null
+         ownershipClock?.setMethodCallHandler(null)
+         ownershipClock = null
+         super.cleanUpFlutterEngine(flutterEngine)
+--- tool/study_adjudicate.py
++++ staged/tool/study_adjudicate.py
+@@ -14,6 +14,7 @@
+ import sys
+ 
+ import study_report as analysis
++import study_native_diagnostics as native_diagnostics
+ 
+ OPAQUE = re.compile(r'[a-f0-9]{32}\Z')
+ EVENTS = {'app_start','session_start','foreground','background','harbor_interactive',
+@@ -100,7 +101,7 @@
+ 
+ def decode_records(raw, registry, cutoff):
+     keys(raw, ['schema_version','registry','records','status'])
+-    require(type(raw['schema_version']) is int and raw['schema_version']==1 and
++    require(type(raw['schema_version']) is int and raw['schema_version'] in (1,2) and
+             raw['status'] in {'active','exhausted','withdrawn'}, 'Invalid raw version/status')
+     require(isinstance(raw['records'],list) and len(raw['records'])<=100000, 'Invalid bounded records')
+     if raw['registry'] is None:
+@@ -112,6 +113,7 @@
+     gaps=[]; withdrawn=False; last_activity=None; foreground=False; interactive=False
+     pending_inactivity=None
+     configs={registry['baseline']['config']:registry['baseline']}
++    native_started=False;native_gap_pending=False;process_context=None
+     for seq,event in enumerate(raw['records']):
+         keys(event,['seq','event_id','at','process_id','session_id','kind','payload','previous_sha256','sha256'])
+         require(type(event['seq']) is int and event['seq']==seq and opaque(event['event_id']) and
+@@ -124,6 +126,9 @@
+         require(event['previous_sha256']==previous and event['sha256']==digest(core), 'Broken raw chain')
+         previous=event['sha256']; last_at=event['at']; seen_events.add(event['event_id'])
+         at,kind,payload=event['at'],event['kind'],event['payload']
++        if native_gap_pending:
++            require(kind=='gap' and payload=={'reason':'instrumentationUnavailable','from':at,'to':at} and at==current['start'],'Missing atomic native-unavailable gap')
++            native_gap_pending=False
+         if pending_inactivity is not None:
+             require(at==pending_inactivity['start'] and event['session_id']==pending_inactivity['session_id']
+                     and event['process_id']==pending_inactivity['_process']
+@@ -131,7 +136,18 @@
+                     'Inactivity start missing its atomic foreground/harbor trigger')
+             pending_inactivity=None
+         if kind in {'app_start','session_start'}:
+-            keys(payload,['config','reason']); exact=config(payload['config'])
++            has_native='native_context' in payload
++            keys(payload,['config','reason','native_context'] if has_native else ['config','reason'])
++            require(not has_native or (kind=='app_start' and raw['schema_version']==2),'Native context outside schema2 process start')
++            if kind=='app_start':
++                require(not native_started or has_native,'Legacy start after native context')
++                process_context=native_diagnostics.observation(payload['native_context']) if has_native else None
++                native_started=native_started or has_native
++                if process_context is not None:
++                    native_gap_pending=process_context['status']=='unavailable'
++                    if not native_gap_pending:
++                        require(process_context['platform']==registry['platform'] and abs(process_context['observed_start_utc_ms']-at*1000)<=5000,'Native context identity/time mismatch')
++            exact=config(payload['config'])
+             if exact is not None:
+                 label=exact['config'];require(label not in configs or configs[label]==exact, 'Reused config label with different identity');configs[label]=exact
+             else: label='unqualified_config'
+@@ -150,7 +166,7 @@
+             current={'install_id':registry['install_id'],'session_id':event['session_id'],'start':at,
+                      'end':None,'crashed':False,'valid':True,'return_eligible':False,'config':label,
+                      '_process':event['process_id'],'_config_complete':exact is not None,
+-                     '_terminal':None,'_last_at':at,'_interactive':False,'_activity':False,'_exact_config':exact}
++                     '_terminal':None,'_last_at':at,'_interactive':False,'_activity':False,'_exact_config':exact,'_native_context':process_context}
+             if sessions: sessions[-1]['_next_start']=at
+             if kind=='session_start':pending_inactivity=current
+             sessions.append(current);by_session[event['session_id']]=current
+@@ -184,6 +200,8 @@
+             withdrawn=True;gaps.append([registry['first_launch'],cutoff])
+         else:raise ValueError('Unknown event')
+     require(pending_inactivity is None,'Truncated atomic inactivity transition')
++    require(not native_gap_pending,'Missing atomic native-unavailable gap')
++    require(raw['schema_version']!=2 or native_started,'Schema2 missing native observation')
+     require(raw['records'][0]['kind']=='app_start','Missing earliest startup')
+     require((raw['status']=='withdrawn')==withdrawn,'Withdrawal status inconsistent')
+     if raw['status']=='exhausted':
+@@ -269,16 +287,32 @@
+             'exclusion':judgments[identity]['exclusion'],'observable_intervals':coverage})
+         for session in found:
+             incomplete_configs+=not session['_config_complete'];lookup[(identity,session['session_id'])]=session;sessions.append(session)
+-    crash_links=set()
++    crash_links=set();seen_reports=set();seen_incidents=set();unknown_native=[]
+     for row in review['native_crashes']:
+-        keys(row,['install_id','session_id','process_id','crash_at','report_sha256','linkage_reviewed'])
+-        pair=(row['install_id'],row['session_id']);require(pair in lookup and pair not in crash_links,'Unknown or duplicate crash linkage')
+-        session=lookup[pair]
+-        require(row['linkage_reviewed'] is True and row['process_id']==session['_process'] and integer(row['crash_at']) and
+-                session['_last_at']<=row['crash_at']<=cutoff and session['_terminal'] is None,'Invalid native crash timing/linkage')
+-        next_process=session.get('_next_start',cutoff+1)
+-        require(row['crash_at']<next_process,'Crash occurs after a later session start')
+-        references.add(evidence_file(evidence_dir,row['report_sha256']));session['crashed']=True;crash_links.add(pair)
++        # Legacy review flags have no native process observation or release
++        # binary binding. Preserve readable raw records, never their old claim.
++        legacy={'install_id','session_id','process_id','crash_at','report_sha256','linkage_reviewed'}
++        if isinstance(row,dict) and set(row)==legacy:
++            require(row['install_id'] in enrolled and hash_value(row['report_sha256']), 'Invalid legacy diagnostic reference')
++            require(row['report_sha256'] not in seen_reports, 'Duplicate diagnostic report')
++            seen_reports.add(row['report_sha256'])
++            unknown_native.append({'report_sha256':row['report_sha256'],'reason':'legacy_boolean_review_has_no_native_link'})
++            continue
++        keys(row,['install_id','report_sha256','manifest_sha256','provenance_sha256'])
++        identity=row['install_id'];require(identity in enrolled,'Unknown diagnostic installation')
++        require(row['report_sha256'] not in seen_reports,'Duplicate diagnostic report');seen_reports.add(row['report_sha256'])
++        document=exports.get(identity)
++        if document is None:
++            unknown_native.append({'report_sha256':row['report_sha256'],'reason':'missing_raw_export'});continue
++        result=native_diagnostics.match_diagnostic(raw_document=document,sessions=[s for s in sessions if s['install_id']==identity],
++            report_sha256=row['report_sha256'],manifest_sha256=row['manifest_sha256'],provenance_sha256=row['provenance_sha256'],evidence_dir=evidence_dir)
++        if result['status']!='linked':
++            unknown_native.append({'report_sha256':row['report_sha256'],'reason':result['reason']});continue
++        require(result['crash_at']<=cutoff,'Native event beyond review cutoff')
++        pair=(identity,result['session_id']);require(pair in lookup and pair not in crash_links,'Duplicate native session link')
++        incident=(enrolled[identity]['platform'],result['incident']);require(incident not in seen_incidents,'Duplicate native incident');seen_incidents.add(incident)
++        references.update([row['report_sha256'],row['manifest_sha256'],row['provenance_sha256']])
++        lookup[pair]['crashed']=True;crash_links.add(pair)
+     ended=set()
+     for row in review['terminal_reviews']:
+         keys(row,['install_id','session_id','terminal_event_sha256','evidence_sha256'])
+@@ -290,7 +324,7 @@
+     analysis.validate(protocol,data)
+     audit={'schema_version':1,'status':'synthetic_adjudication' if protocol['synthetic'] else 'qualified_inputs_require_independent_audit',
+            'fixed_registry_entries':len(enrolled),'missing_raw_exports':unknown_streams,'withdrawn_exports':withdrawals,
+-           'sessions_with_incomplete_config':incomplete_configs,'externally_linked_crash_records':len(crash_links),
++           'sessions_with_incomplete_config':incomplete_configs,'externally_linked_crash_records':len(crash_links),'unknown_native_diagnostics':unknown_native,
+            'reviewed_terminal_records':len(ended),'evidence_sha256':sorted(references),
+            'registry_completeness_independently_verified':False,'native_linkage_independently_verified':False,
+            'release_ready':False,'limits':['Source chains and hashes establish reproducibility, not truthful devices, lawful consent or complete enrollment.',
+--- tool/test_study_adjudicate.py
++++ staged/tool/test_study_adjudicate.py
+@@ -2,6 +2,7 @@
+ from datetime import datetime, timezone
+ import hashlib
+ import json
++import os
+ from pathlib import Path
+ import subprocess
+ import sys
+@@ -11,7 +12,7 @@
+ import study_adjudicate as a
+ import study_report
+ 
+-ROOT=Path(__file__).resolve().parents[1]
++ROOT=Path(os.environ.get('TIDEGLASS_TEST_ROOT',Path(__file__).resolve().parents[1]))
+ 
+ class RawStudyTests(unittest.TestCase):
+     def setUp(self):
+@@ -47,17 +48,18 @@
+         self.assertEqual(report['registered_installs'],1);self.assertEqual(report['overall']['sessions']['unknown_outcomes'],1)
+         self.assertEqual(report['overall']['retention'][2]['unresolved_return_status'],1)
+         self.assertEqual(data['sessions'][0]['return_eligible'],False);self.assertFalse(audit['release_ready'])
+-    def test_actual_external_startup_crash_link_counts_without_return(self):
++    def test_legacy_boolean_only_crash_review_remains_unknown(self):
+         proof=self.evidence(b'SYNTHETIC native startup crash report; not real observation')
+         self.review['native_crashes']=[{'install_id':self.entry['install_id'],'session_id':self.session,'process_id':self.process,'crash_at':101,'report_sha256':proof,'linkage_reviewed':True}]
+-        data,_=self.run_it();report=study_report.summarize(self.protocol,data)
+-        self.assertEqual(report['overall']['sessions']['reported_crash_sessions'],1);self.assertFalse(data['sessions'][0]['return_eligible'])
++        data,audit=self.run_it();report=study_report.summarize(self.protocol,data)
++        self.assertEqual(report['overall']['sessions']['reported_crash_sessions'],0);self.assertFalse(data['sessions'][0]['return_eligible'])
++        self.assertEqual(audit['unknown_native_diagnostics'][0]['reason'],'legacy_boolean_review_has_no_native_link')
+         (self.folder/(proof+'.evidence')).unlink()
+-        with self.assertRaises(ValueError):self.run_it()
++        self.assertEqual(self.run_it()[1]['externally_linked_crash_records'],0)
+     def test_crash_cannot_be_invented_from_missing_terminal_or_stale_process(self):
+         proof=self.evidence(b'fixture')
+         self.review['native_crashes']=[{'install_id':self.entry['install_id'],'session_id':self.session,'process_id':'f'*32,'crash_at':101,'report_sha256':proof,'linkage_reviewed':True}]
+-        with self.assertRaises(ValueError):self.run_it()
++        self.assertEqual(self.run_it()[1]['externally_linked_crash_records'],0)
+     def test_interactive_and_foreground_activity_required_for_return(self):
+         self.restart(30*86400+100);self.event('harbor_interactive',30*86400+101,{})
+         data,_=self.run_it();self.assertFalse(data['sessions'][-1]['return_eligible'])
+@@ -131,9 +133,9 @@
+         data,audit=a.adjudicate(**values,protocol_sha256=protocol_hash,evidence_dir=root/'evidence')
+         report=study_report.summarize(values['protocol'],data)
+         self.assertEqual(report['registered_installs'],3)
+-        self.assertEqual(report['overall']['sessions']['reported_crash_sessions'],1)
++        self.assertEqual(report['overall']['sessions']['reported_crash_sessions'],0)
+         self.assertEqual(report['overall']['sessions']['completed_without_reported_crash'],1)
+-        self.assertEqual(report['overall']['sessions']['unknown_outcomes'],1)
++        self.assertEqual(report['overall']['sessions']['unknown_outcomes'],2)
+         self.assertEqual(report['overall']['retention'][2]['observed_returns'],1)
+         self.assertEqual(report['overall']['retention'][2]['unresolved_return_status'],2)
+         self.assertEqual(audit['missing_raw_exports'],1)
+@@ -145,7 +147,7 @@
+             path=self.folder/(name+'.json');path.write_text(json.dumps(value));paths[name]=path
+         # Registry hashes exact bytes, so preserve the original protocol bytes.
+         paths['protocol'].write_bytes((ROOT/'release/study/fixtures/synthetic-protocol.json').read_bytes())
+-        command=[sys.executable,str(ROOT/'tool/study_adjudicate.py')]
++        command=[sys.executable,str(Path(a.__file__))]
+         for key,value in paths.items():command+=['--'+key,str(value)]
+         command+=['--evidence-dir',str(self.folder),'--output-dir',str(self.folder/'out')]
+         result=subprocess.run(command,text=True,capture_output=True)

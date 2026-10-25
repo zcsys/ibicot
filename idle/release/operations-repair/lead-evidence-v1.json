@@ -1,0 +1,27 @@
+{
+  "status": "lead_repairs_pass_independent_recheck_pending",
+  "created_utc": "2026-10-21T10:36:40.748686+00:00",
+  "findings": [
+    "OPS001",
+    "OPS002"
+  ],
+  "original_independent_cases_passed": 10,
+  "operations_author_cases_passed": 32,
+  "source_changes": [
+    "health.py conservative full table DDL comparison preserves CHECK/collation/conflict semantics",
+    "Current quality sample excludes future server receipt times; separate critical anomaly signal"
+  ],
+  "unchanged": [
+    "schema version and service data model",
+    "provider/receipt/gameplay behavior",
+    "restore drill and ops routing"
+  ],
+  "source_files": {
+    "services/tideglass_service/health.py": "e47da81a19f5ebc7de96f80bc9ec8c9e301ee9cc27a7f50c22202c7276946308",
+    "tests/services/operations/test_schema_clock_repairs.py": "98512e6b04a24dfbbc7504ba0c6f0040a1aed0eec70a217caf16a61cb0ba5bb9",
+    "services/docs/OPERATIONS.md": "bc3119a0b001de7215f4ab9d8c60d75e1992bdf098660d535dcb618cfc89e5dd",
+    "release/operations-repair/original-independent-probes.log": "b6ca2a818b2f2b79a6ff37c7cca32a26f47e5b3f6985194a0f4841d1bd4f8804",
+    "release/operations-repair/author-operations-tests.log": "7570670e02d184c3bc62e78ec2068d830f84fa810fa9e303728714e2faecfaf3"
+  },
+  "release_ready": false
+}

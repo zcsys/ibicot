@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "asset_id": "asset.support.release_notes",
+  "locale": "en-US",
+  "runtime_source": "game/mobile/lib/help_content.dart",
+  "runtime_selector": [
+    "HelpTopic.releaseNotes"
+  ],
+  "handbook_title": "The harbor handbook",
+  "handbook_intro": "Choose a topic. Your harbor keeps its progress while you read.",
+  "development_notice": "Development reference · not a public release announcement",
+  "articles": [
+    {
+      "topic": "releaseNotes",
+      "title": "Development release notes",
+      "summary": "Current changes and feature availability.",
+      "sections": [
+        {
+          "id": "development-status",
+          "title": "Local development build",
+          "paragraphs": [
+            "This local development build includes the game features below. Its version is shown at the end of this page. Optional online features depend on a configured service and may be unavailable."
+          ]
+        },
+        {
+          "id": "included-systems",
+          "title": "Implemented game and comfort features",
+          "paragraphs": [
+            "The client includes the main fleet and Rechart, offline settlement and recovery, six restoration chapters, eighteen archive entries, twelve calibrations, twelve challenge dossiers, and a separate seasonal fleet with pass progression.",
+            "It also includes free shared-slot crew briefings, automation plans, collection appearances, reduced motion, larger text, separate audio controls, and opt-in local reminders with quiet hours. Purchases and rewarded ads appear only through their configured, verified service paths."
+          ]
+        },
+        {
+          "id": "current-improvements",
+          "title": "Current development improvements",
+          "paragraphs": [
+            "The handbook now explains reset retention, offline limits, Note spending and recovery. Long headings and confirmations wrap and scroll at larger text sizes.",
+            "Note-spending guidance distinguishes campaign dossiers from optional plan slots and decorations. Choosing optional purchases first can postpone a needed dossier."
+          ]
+        },
+        {
+          "id": "release-limits",
+          "title": "Unavailable services",
+          "paragraphs": [
+            "Online account recovery, verified purchases, rewarded ads and soundtrack downloads may be unavailable. The game shows their configured status; local play and free crew briefings remain available.",
+            "Public support and privacy links are not configured in this development build. No message is sent from this handbook."
+          ]
+        }
+      ],
+      "actions": []
+    }
+  ],
+  "descriptor_loaded_by_client": false,
+  "export_role": "Exact current HelpContent values; runtime consumes its code-native externalized HelpContent source."
+}

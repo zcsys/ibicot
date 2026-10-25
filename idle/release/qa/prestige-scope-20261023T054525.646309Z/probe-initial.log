@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/Users/csys/Desktop/ibicot/idle/release/qa/prestige-scope-20261023T054525.646309Z/probe.py", line 65, in <module>
+    check('selected frozen source ' + path, h == M['source_sha256'][path] and digest(C + '/source/' + path) == h)
+                                                 ~~~~~~~~~~~~~~~~~~^^^^^^
+KeyError: 'TIDEGLASS_DESIGN.md'

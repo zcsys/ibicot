@@ -1,0 +1,207 @@
+--- a/game/mobile/test/localization_test.dart
++++ b/game/mobile/test/localization_test.dart
+@@ -1,6 +1,8 @@
+ import 'dart:convert';
+ import 'dart:io';
++
+ import 'package:flutter/material.dart';
++import 'package:flutter/rendering.dart';
+ import 'package:flutter/services.dart';
+ import 'package:flutter_test/flutter_test.dart';
+ import 'package:tideglass/app.dart';
+@@ -25,6 +27,7 @@
+ import 'package:tideglass/support_screen.dart';
+ import 'package:tideglass_core/tideglass_core.dart';
+ import 'package:tideglass_progression/tideglass_progression.dart';
++
+ import 'bootstrap_test.dart' show repository, settleIo;
+ import 'calibration_test.dart' show allPatterns;
+ import 'notification_service_test.dart'
+@@ -86,6 +89,119 @@
+     expect(tester.takeException(), isNull);
+   }
+ 
++  // Resolve the control, never measure only a text/icon label or the whole
++  // expanded content panel. Unknown containers fail at tap instead of silently
++  // being treated as actionable controls.
++  Finder? interactiveControl(Finder finder) {
++    expect(finder, findsOneWidget);
++    final element = finder.evaluate().single;
++    bool control(Widget widget) =>
++        widget is ButtonStyleButton ||
++        widget is IconButton ||
++        widget is ListTile ||
++        widget is NavigationDestination ||
++        widget is ChoiceChip ||
++        widget is FilterChip ||
++        widget is ActionChip ||
++        widget is InputChip ||
++        widget is Switch ||
++        widget is Checkbox;
++    Finder exact(Element value) =>
++        find.byElementPredicate((candidate) => identical(candidate, value));
++    if (element.widget is Switch || element.widget is Checkbox) {
++      Element? composite;
++      element.visitAncestorElements((ancestor) {
++        if (ancestor.widget is! SwitchListTile &&
++            ancestor.widget is! CheckboxListTile) {
++          return true;
++        }
++        composite = ancestor;
++        return false;
++      });
++      if (composite != null) {
++        // These SDK composites merge semantics and make the entire ListTile
++        // tappable. Their inner toggle deliberately uses shrinkWrap; a
++        // standalone undersized Switch/Checkbox still measures itself below.
++        return find
++            .descendant(of: exact(composite!), matching: find.byType(ListTile))
++            .first;
++      }
++    }
++    if (control(element.widget)) return exact(element);
++    if (element.widget is ExpansionTile ||
++        element.widget is CheckboxListTile ||
++        element.widget is SwitchListTile) {
++      // The first ListTile is the actual header/toggle action; the rest of an
++      // expanded tile may contain unrelated controls and scrollable content.
++      final header = find.descendant(
++        of: finder,
++        matching: find.byType(ListTile),
++      );
++      expect(header, findsWidgets);
++      return header.first;
++    }
++    Element? nearest;
++    element.visitAncestorElements((ancestor) {
++      if (!control(ancestor.widget)) return true;
++      nearest = ancestor;
++      return false;
++    });
++    return nearest == null ? null : exact(nearest!);
++  }
++
++  void expectControlBounds(WidgetTester tester, Finder control) {
++    final rect = tester.getRect(control);
++    expect(rect.width, greaterThanOrEqualTo(48), reason: '$control width');
++    expect(rect.height, greaterThanOrEqualTo(48), reason: '$control height');
++    var visible =
++        Offset.zero & (tester.view.physicalSize / tester.view.devicePixelRatio);
++    var child = tester.element(control).findRenderObject()!;
++    // Intersect all actual ancestor scroll viewports and paint clips. Screen
++    // bounds alone miss controls drawn behind an AppBar or outside a dialog's
++    // small body viewport. No scroll extent is substituted for visible space.
++    RenderObject? parent = child.parent;
++    while (parent != null) {
++      final clip = parent.describeApproximatePaintClip(child);
++      if (clip != null) {
++        visible = visible.intersect(
++          MatrixUtils.transformRect(parent.getTransformTo(null), clip),
++        );
++      }
++      if (parent is RenderAbstractViewport) {
++        visible = visible.intersect(
++          MatrixUtils.transformRect(
++            parent.getTransformTo(null),
++            parent.paintBounds,
++          ),
++        );
++      }
++      child = parent;
++      parent = child.parent;
++    }
++    expect(visible.isEmpty, isFalse, reason: '$control has visible space');
++    final tolerance = visible.inflate(.5);
++    expect(
++      rect.left,
++      greaterThanOrEqualTo(tolerance.left),
++      reason: '$control left in $visible',
++    );
++    expect(
++      rect.top,
++      greaterThanOrEqualTo(tolerance.top),
++      reason: '$control top in $visible',
++    );
++    expect(
++      rect.right,
++      lessThanOrEqualTo(tolerance.right),
++      reason: '$control right in $visible',
++    );
++    expect(
++      rect.bottom,
++      lessThanOrEqualTo(tolerance.bottom),
++      reason: '$control bottom in $visible',
++    );
++  }
++
+   Future<void> reveal(WidgetTester tester, Finder finder) async {
+     if (finder.evaluate().isEmpty) {
+       await tester.scrollUntilVisible(
+@@ -95,8 +211,14 @@
+         maxScrolls: 80,
+       );
+     }
+-    await Scrollable.ensureVisible(tester.element(finder), alignment: .5);
++    final control = interactiveControl(finder);
++    await Scrollable.ensureVisible(
++      tester.element(control ?? finder),
++      alignment: .5,
++    );
+     await tester.pumpAndSettle();
++    expect(tester.takeException(), isNull);
++    if (control != null) expectControlBounds(tester, control);
+   }
+ 
+   Future<void> tap(WidgetTester tester, Finder finder) async {
+@@ -105,7 +227,35 @@
+       await tester.pumpAndSettle();
+     }
+     await reveal(tester, finder);
+-    await tester.tap(finder);
++    final control = interactiveControl(finder);
++    expect(control, isNotNull, reason: '$finder must resolve to an action');
++    final action = control!;
++    expectControlBounds(tester, action);
++    // Insets avoid the mathematical outside edge and rounded corners. These
++    // center/edge hit tests complement, rather than replace, full bounds.
++    for (final at in [
++      Alignment.center,
++      const Alignment(-.98, 0),
++      const Alignment(.98, 0),
++      const Alignment(0, -.98),
++      const Alignment(0, .98),
++    ]) {
++      expect(
++        action.hitTestable(at: at),
++        findsOneWidget,
++        reason: '$action at $at',
++      );
++    }
++    final semantics = tester.getSemantics(action).getSemanticsData();
++    // The pinned SDK exposes IconButton's textual accessibility name through
++    // SemanticsData.tooltip. Both fields are real semantics, not Widget copy.
++    expect(
++      '${semantics.label} ${semantics.tooltip}'.trim(),
++      isNotEmpty,
++      reason: '$action accessible name',
++    );
++    expect(semantics.hasAction(SemanticsAction.tap), isTrue);
++    await tester.tap(action.hitTestable());
+     await tester.pumpAndSettle();
+     expect(tester.takeException(), isNull);
+   }
+@@ -518,7 +668,13 @@
+       await tester.runAsync(() async {
+         expect((await repository(directory).load()).snapshot, isNotNull);
+       });
+-      expect(base.listSync().map((entry) => entry.path), [directory.path]);
++      final cache = Directory('${base.path}/tideglass-soundtrack-exports');
++      await settleIo(tester, until: cache.existsSync);
++      expect(
++        base.listSync().map((entry) => entry.path),
++        unorderedEquals([directory.path, cache.path]),
++      );
++      expect(cache.listSync(), isEmpty);
+       await tester.pumpWidget(const SizedBox());
+       await tester.runAsync(
+         () async => Future<void>.delayed(const Duration(milliseconds: 20)),

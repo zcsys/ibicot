@@ -1,0 +1,78 @@
+[
+  {
+    "id": "S10",
+    "fields": [
+      "delivery_status",
+      "evidence",
+      "verification_note"
+    ],
+    "before": {
+      "id": "S10",
+      "requirement": "Automatic 8-hour Surveys, queue capacity 3, 10 Notes per completion",
+      "source": "TIDEGLASS_DESIGN.md Phase 3; economy.json",
+      "work_items": [
+        "M3-01",
+        "M3-10"
+      ],
+      "verification": "One daily collection retains designed supply; fractional timers persist and completion is idempotent.",
+      "delivery_status": "not_verified",
+      "evidence": []
+    },
+    "after": {
+      "id": "S10",
+      "requirement": "Automatic 8-hour Surveys, queue capacity 3, 10 Notes per completion",
+      "source": "TIDEGLASS_DESIGN.md Phase 3; economy.json",
+      "work_items": [
+        "M3-01",
+        "M3-10"
+      ],
+      "verification": "One daily collection retains designed supply; fractional timers persist and completion is idempotent.",
+      "delivery_status": "verified",
+      "evidence": [
+        "release/qa/current-native-20261023T044903.849353Z/CLAUSE_MATRIX.md",
+        "release/qa/current-native-20261023T044903.849353Z/clause-source-bridge.json",
+        "release/qa/current-native-20261023T044903.849353Z/verification.json",
+        "release/qa/lead-daily-scope-acceptance-20261023T050809.251467Z/DECISIONS.md"
+      ],
+      "verification_note": "Verified deterministic Survey mechanics with current source and successful core/controller/persistence/worker/native seeded-return evidence, independently reviewed in the current native clause matrix: one Survey per8h, queue3,10Notes each, fractional phase retained, idempotent collection and1/3/6 daily visits each30Notes. Synthetic elapsed fixtures are not natural24h observation or physical performance evidence."
+    }
+  },
+  {
+    "id": "S11",
+    "fields": [
+      "delivery_status",
+      "evidence",
+      "verification_note"
+    ],
+    "before": {
+      "id": "S11",
+      "requirement": "Three daily contracts, 10 Notes and 250 XP each, frozen goals, rerolls and seven-day/21-slot backlog",
+      "source": "TIDEGLASS_DESIGN.md Phase 3; V1_ROADMAP.md \u00a73",
+      "work_items": [
+        "M3-02",
+        "M3-10"
+      ],
+      "verification": "Seed/rollover/claim/overflow cases; no required prestige, ad or purchase objective.",
+      "delivery_status": "not_verified",
+      "evidence": []
+    },
+    "after": {
+      "id": "S11",
+      "requirement": "Three daily contracts, 10 Notes and 250 XP each, frozen goals, rerolls and seven-day/21-slot backlog",
+      "source": "TIDEGLASS_DESIGN.md Phase 3; V1_ROADMAP.md \u00a73",
+      "work_items": [
+        "M3-02",
+        "M3-10"
+      ],
+      "verification": "Seed/rollover/claim/overflow cases; no required prestige, ad or purchase objective.",
+      "delivery_status": "verified",
+      "evidence": [
+        "release/qa/current-native-20261023T044903.849353Z/CLAUSE_MATRIX.md",
+        "release/qa/current-native-20261023T044903.849353Z/clause-source-bridge.json",
+        "release/qa/current-native-20261023T044903.849353Z/verification.json",
+        "release/qa/lead-daily-scope-acceptance-20261023T050809.251467Z/DECISIONS.md"
+      ],
+      "verification_note": "Verified current deterministic contract mechanics with current source and successful host integration, independently reviewed in the current native clause matrix:3 seeded stable IDs, frozen goals,10Notes/250XP once, one reroll,7-day/21-slot backlog, stale/duplicate claim rejection, rollback/timezone bounds, and restore/build/discover objectives. Build means earned producer purchase, not monetization. This does not accept full M3-10 or public release."
+    }
+  }
+]

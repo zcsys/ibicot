@@ -1,0 +1,3 @@
+# OBSERVED host-gate regression expectation mismatch
+
+Frozen candidate a052a4405347 failed the test expecting a no-Focus five-day run to stop at chapter2 (actual3). The original failed log stays at release/native-proof/20261023T032749.977866Z/mobile-test.log. The independently reviewed21October decision makes calibration optional; chapter3 requires12 collected Surveys. This repair must align the regression with that source rule while retaining actual three-calibration reward/cost checks. No campaign/economy/production behavior change is authorized by this finding. The supplemental simulator's matching stale mandatory-calibration comment also needs correction; executable code remains byte-identical after comment removal.

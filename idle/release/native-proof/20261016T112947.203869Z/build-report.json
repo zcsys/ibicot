@@ -1,0 +1,229 @@
+{
+  "started_utc": "20261016T112947.203869Z",
+  "purpose": "local export only; no store, signing or runtime acceptance",
+  "mode": "debug",
+  "candidate_fingerprint": "d85bdf74433d96d2f6ea6a58a8481290942d526a7cdb8ec14b55e57537e9dced",
+  "candidate_directory": "/Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261016T112921.896155Z-d85bdf74433d",
+  "workspace_directory": "/Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261016T112921.896155Z-d85bdf74433d/workspace",
+  "runner_sha256": "d3d1e91b10d7304d51fbfc142fff0e9af2822de2668638517dd7f98476235ef9",
+  "source_snapshot_unchanged": true,
+  "results": {
+    "ios": {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+        "build",
+        "ios",
+        "--simulator",
+        "--debug",
+        "--no-codesign",
+        "--no-pub"
+      ],
+      "exit_code": 0,
+      "build_succeeded": true,
+      "runtime_launch_proven": false,
+      "artifact": "release/native-proof/20261016T112947.203869Z/artifacts/tideglass-ios-debug.zip",
+      "artifact_sha256": "4b013293bdcf44659e3709d6dcb7e8c8dc3e13f4ba4d610d6874c109767f6ac5",
+      "artifact_bytes": 57252506
+    },
+    "android": {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+        "build",
+        "apk",
+        "--debug",
+        "--no-pub"
+      ],
+      "exit_code": 0,
+      "build_succeeded": true,
+      "runtime_launch_proven": false,
+      "artifact": "release/native-proof/20261016T112947.203869Z/artifacts/tideglass-debug.apk",
+      "artifact_sha256": "51e0d30d0e632a13c7a5126d75b8081814d7730a3f35ae06b06bc4a06f823701",
+      "artifact_bytes": 178369172
+    },
+    "macos": {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+        "build",
+        "macos",
+        "--debug",
+        "--no-pub"
+      ],
+      "exit_code": 0,
+      "build_succeeded": true,
+      "runtime_launch_proven": false,
+      "artifact": "release/native-proof/20261016T112947.203869Z/artifacts/tideglass-macos-debug.zip",
+      "artifact_sha256": "1b98dfb3c564692b96495d9a75657bd5d45e8e4d6d257c996eb3aa8fca4d9bfd",
+      "artifact_bytes": 40572379
+    }
+  },
+  "pub_get_exit_code": 0,
+  "host_checks": {
+    "core-pub-get": {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/dart",
+        "pub",
+        "get",
+        "--enforce-lockfile"
+      ],
+      "exit_code": 0
+    },
+    "core-analyze": {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/dart",
+        "analyze"
+      ],
+      "exit_code": 0
+    },
+    "core-test": {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/dart",
+        "test"
+      ],
+      "exit_code": 0
+    },
+    "persistence-pub-get": {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/dart",
+        "pub",
+        "get",
+        "--enforce-lockfile"
+      ],
+      "exit_code": 0
+    },
+    "persistence-analyze": {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/dart",
+        "analyze"
+      ],
+      "exit_code": 0
+    },
+    "persistence-test": {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/dart",
+        "test"
+      ],
+      "exit_code": 0
+    },
+    "progression-pub-get": {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/dart",
+        "pub",
+        "get",
+        "--enforce-lockfile"
+      ],
+      "exit_code": 0
+    },
+    "progression-analyze": {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/dart",
+        "analyze"
+      ],
+      "exit_code": 0
+    },
+    "progression-test": {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/dart",
+        "test"
+      ],
+      "exit_code": 0
+    },
+    "events-pub-get": {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/dart",
+        "pub",
+        "get",
+        "--enforce-lockfile"
+      ],
+      "exit_code": 0
+    },
+    "events-analyze": {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/dart",
+        "analyze"
+      ],
+      "exit_code": 0
+    },
+    "events-test": {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/dart",
+        "test"
+      ],
+      "exit_code": 0
+    },
+    "platform-pub-get": {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/dart",
+        "pub",
+        "get",
+        "--enforce-lockfile"
+      ],
+      "exit_code": 0
+    },
+    "platform-analyze": {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/dart",
+        "analyze"
+      ],
+      "exit_code": 0
+    },
+    "platform-test": {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/dart",
+        "test"
+      ],
+      "exit_code": 0
+    },
+    "mobile-pub-get": {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+        "pub",
+        "get",
+        "--enforce-lockfile"
+      ],
+      "exit_code": 0
+    },
+    "mobile-analyze": {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+        "analyze"
+      ],
+      "exit_code": 0
+    },
+    "mobile-test": {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+        "test"
+      ],
+      "exit_code": 0
+    },
+    "services-test": {
+      "command": [
+        "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests/services",
+        "-v"
+      ],
+      "exit_code": 0
+    },
+    "candidate-integrity-test": {
+      "command": [
+        "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tool",
+        "-p",
+        "test_native_*.py",
+        "-v"
+      ],
+      "exit_code": 0
+    }
+  },
+  "host_test_gate": "passed",
+  "failed_host_checks": [],
+  "current_working_tree_matches_candidate": false
+}

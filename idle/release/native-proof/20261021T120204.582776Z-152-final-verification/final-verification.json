@@ -1,0 +1,93 @@
+{
+  "candidate_fingerprint": "152805bf9e269f49d14486286656ac0174a808384d10e6623533a4f92690dc11",
+  "candidate_directory": "/Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261021T101953.650199Z-152805bf9e26",
+  "source_manifest_sha256": "e110ebb2367defdf537063b387f6ba66a190b9dce17277cd06b8fbed5f0ec470",
+  "checks": {
+    "frozen_source_matches_manifest": true,
+    "fingerprint_matches_manifest": true,
+    "workspace_production_and_locks_match": true,
+    "workspace-release_production_and_locks_match": true,
+    "five_artifacts_match": true,
+    "all_22_runtime_cells": true,
+    "protected_device_not_used": true,
+    "native_evidence_hashes_match": true
+  },
+  "workspaces": {
+    "workspace": {
+      "captured_file_differences": [],
+      "production_differences": [],
+      "dependency_lock_differences": []
+    },
+    "workspace-release": {
+      "captured_file_differences": [
+        "game/mobile/android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java"
+      ],
+      "production_differences": [],
+      "dependency_lock_differences": []
+    }
+  },
+  "artifacts": [
+    {
+      "target": "ios",
+      "mode": "debug",
+      "path": "release/native-proof/20261021T102112.746555Z/artifacts/tideglass-ios-debug.zip",
+      "expected_sha256": "d4713f0a890fd03ef92052c0545c81c04d24b9e13e51cd9329efc828fac71515",
+      "actual_sha256": "d4713f0a890fd03ef92052c0545c81c04d24b9e13e51cd9329efc828fac71515",
+      "bytes": 63623223,
+      "matches": true
+    },
+    {
+      "target": "android",
+      "mode": "debug",
+      "path": "release/native-proof/20261021T102112.746555Z/artifacts/tideglass-debug.apk",
+      "expected_sha256": "fc856d3cdd2a2c17e9423b2427dd80290ea40d21d9825324c03fbc73335319c2",
+      "actual_sha256": "fc856d3cdd2a2c17e9423b2427dd80290ea40d21d9825324c03fbc73335319c2",
+      "bytes": 190702518,
+      "matches": true
+    },
+    {
+      "target": "macos",
+      "mode": "debug",
+      "path": "release/native-proof/20261021T102112.746555Z/artifacts/tideglass-macos-debug.zip",
+      "expected_sha256": "261eb71ca274fdcf39774649c16424c334498d15d2892b1944d2f4c2ad792ad5",
+      "actual_sha256": "261eb71ca274fdcf39774649c16424c334498d15d2892b1944d2f4c2ad792ad5",
+      "bytes": 46885523,
+      "matches": true
+    },
+    {
+      "target": "ios",
+      "mode": "release",
+      "path": "release/native-proof/20261021T103632.486357Z/artifacts/tideglass-ios-release.zip",
+      "expected_sha256": "bcdbc19b5fe36674eb9c819ca0ecda432376620a7738a90aa6d6183175086017",
+      "actual_sha256": "bcdbc19b5fe36674eb9c819ca0ecda432376620a7738a90aa6d6183175086017",
+      "bytes": 12661122,
+      "matches": true
+    },
+    {
+      "target": "android",
+      "mode": "release",
+      "path": "release/native-proof/20261021T103632.486357Z/artifacts/tideglass-release.aab",
+      "expected_sha256": "ca343e81926ed209d8389f672e38e6eb19874131bc72996b012995b1b33140d4",
+      "actual_sha256": "ca343e81926ed209d8389f672e38e6eb19874131bc72996b012995b1b33140d4",
+      "bytes": 64327797,
+      "matches": true
+    }
+  ],
+  "passed": true,
+  "runtime_matrix": "runtime-matrix.json",
+  "native_log_audit": "native-log-audit.json",
+  "tooling_sha256": {
+    "test_native_candidates.py": "584e97c14f70e03b9839ad23b9ab9e0c4a069655ff9982c27a0b4426b951df61",
+    "native_integration_driver.dart": "911183b5d9ee8ec80769836f477a293dadb66e20cc0c5d5e44314415889749a8",
+    "native_recording.py": "6e1f4a32167d93461097ef3198256a0da815bee5e0b1fa89511dae7bef5e8a29",
+    "platform_smoke_test.dart": "7622fd5997fff4d1e23f1a2facc66694e6a81741ddfbce4a3062fd7e61e1f647",
+    "verify_native.py": "68297f66fc4e32a173b17da2594872334d59ba2b88b7d5878b5ee8905f9b89e5",
+    "native_video_metadata.swift": "2a3bb616cc2108f7d25cb6d2edd910b460bd4efc406fd0a2875cdc4197402450",
+    "build_native.py": "9f2a54793304639bda691cd0dddb4f2318951d9078c30b20f48ecc7fb1c68563"
+  },
+  "limitations": [
+    "Same-host source, recipe, lock and artifact identity checks only. No second-host or byte-identical rebuild.",
+    "Original candidate reports preserved; newer working-tree source is excluded.",
+    "No physical device, human playtest, paid store transaction, hosted provider, signed distribution or public-release acceptance."
+  ]
+}

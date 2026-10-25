@@ -1,0 +1,43 @@
+Running Gradle task 'assembleDebug'...                             18.0s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...        1,534ms
+I/Choreographer(10359): Skipped 42 frames!  The application may be doing too much work on its main thread.
+D/FlutterJNI(10359): Sending viewport metrics to the engine.
+VMServiceFlutterDriver: Connecting to Flutter application at http://127.0.0.1:50735/mxyPoLJyskY=/
+VMServiceFlutterDriver: Isolate found with number: 3775624748167595
+VMServiceFlutterDriver: Isolate 3775624748167595 is runnable.
+VMServiceFlutterDriver: Isolate is paused at start.
+VMServiceFlutterDriver: Attempting to resume isolate
+I/flutter (10359): 00:00 +0: real OS reminder qualification: revoked-prepare
+VMServiceFlutterDriver: Connected to Flutter application.
+D/FlutterJNI(10359): Sending viewport metrics to the engine.
+I/flutter (10359): TIDEGLASS_REMINDER_ACTION {"verification_id":"integration-android-20261025T164440025420Z","candidate_fingerprint":"3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59","harness_sha256":"de04f52b3c2311b3eb8e1c7fb83fcf7da41256a63a9a3b9f0ca4f732e8667eb4","scenario":"revoked-prepare","run_id":"v3b00-r20261025-revoked-restart1","device_label":"android","platform":"android","process_id":10359,"action":"allow_permission_if_prompted","utc_ms":1792946709524}
+I/flutter (10359): TIDEGLASS_REMINDER_ACTION {"verification_id":"integration-android-20261025T164440025420Z","candidate_fingerprint":"3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59","harness_sha256":"de04f52b3c2311b3eb8e1c7fb83fcf7da41256a63a9a3b9f0ca4f732e8667eb4","scenario":"revoked-prepare","run_id":"v3b00-r20261025-revoked-restart1","device_label":"android","platform":"android","process_id":10359,"action":"revoke_in_os_settings_expect_process_death","utc_ms":1792946709790,"checkpoint":"/data/user/0/dev.tideglass.game/files/native-reminders/android-v3b00-r20261025-revoked-restart1-revoked-prepare/revoke-checkpoint.json","checkpoint_sha256":"db156b6db7950752432e8ac73a5e64aaa95777a4f41fa84998838cf632a0297d"}
+D/ProfileInstaller(10359): Installing profile for dev.tideglass.game
+D/VRI[MainActivity](10359): visibilityChanged oldVisibility=true newVisibility=false
+I/.tideglass.game(10359): Background concurrent mark compact GC freed 3656KB AllocSpace bytes, 9(244KB) LOS objects, 49% free, 3099KB/6199KB, paused 142us,18.016ms total 134.567ms
+Unhandled exception:
+DriverError: Failed to fulfill RequestData due to remote error
+Original error: ext.flutter.driver: (112) Service has disappeared
+Original stack trace:
+#0      new _OutstandingRequest (package:vm_service/src/vm_service.dart:280:34)
+#1      VmService._call.<anonymous closure> (package:vm_service/src/vm_service.dart:1962:25)
+#2      VmService._call (package:vm_service/src/vm_service.dart:1974:8)
+#3      VmService.callServiceExtension (package:vm_service/src/vm_service.dart:1913:14)
+#4      VMServiceFlutterDriver.sendCommand (package:flutter_driver/src/driver/vmservice_driver.dart:327:12)
+#5      FlutterDriver.requestData (package:flutter_driver/src/driver/driver.dart:585:13)
+#6      integrationDriver (package:integration_test/integration_test_driver.dart:71:42)
+<asynchronous suspension>
+#7      main (file:///Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261023T040445.261666Z-3b00cc8f7122/workspace/game/mobile/test_driver/reminders_ec880d16153b1ac5.dart:13:3)
+<asynchronous suspension>
+
+
+#0      VMServiceFlutterDriver.sendCommand (package:flutter_driver/src/driver/vmservice_driver.dart:340:7)
+<asynchronous suspension>
+#1      FlutterDriver.requestData (package:flutter_driver/src/driver/driver.dart:585:7)
+<asynchronous suspension>
+#2      integrationDriver (package:integration_test/integration_test_driver.dart:71:29)
+<asynchronous suspension>
+#3      main (file:///Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261023T040445.261666Z-3b00cc8f7122/workspace/game/mobile/test_driver/reminders_ec880d16153b1ac5.dart:13:3)
+<asynchronous suspension>
+Leaving the application running.

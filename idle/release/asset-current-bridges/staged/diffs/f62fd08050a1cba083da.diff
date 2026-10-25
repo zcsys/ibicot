@@ -1,0 +1,78 @@
+--- release/native-proof/root-art-full-20261021T122040.006324Z/source/game/mobile/lib/service_settings.dart
++++ game/mobile/lib/service_settings.dart
+@@ -1,5 +1,9 @@
++import 'dart:async';
++
++import 'ad_privacy_copy.dart';
+ import 'presentation.dart';
+ import 'strings.dart';
++
+ import 'dart:convert';
+ 
+ import 'package:flutter/material.dart';
+@@ -35,6 +39,26 @@
+   bool _working = false;
+   String? _indexAccount;
+   String? _createdCode;
++
++  @override
++  void initState() {
++    super.initState();
++    _readAdPrivacyOnEntry();
++  }
++
++  @override
++  void didUpdateWidget(covariant ServiceSettings oldWidget) {
++    super.didUpdateWidget(oldWidget);
++    if (!identical(oldWidget.manager, widget.manager)) _readAdPrivacyOnEntry();
++  }
++
++  void _readAdPrivacyOnEntry() {
++    WidgetsBinding.instance.addPostFrameCallback((_) {
++      if (mounted && manager.adPrivacyAvailable) {
++        unawaited(manager.refreshAdPrivacyOptions());
++      }
++    });
++  }
+ 
+   @override
+   void dispose() {
+@@ -746,6 +770,38 @@
+                       _delete,
+                     ),
+                   ],
++                  if (manager.adPrivacyAvailable &&
++                      (manager.adPrivacyRequirement !=
++                              AdPrivacyRequirement.notRequired ||
++                          manager.adPrivacyError != null)) ...[
++                    _section(AdPrivacyCopy.title),
++                    const LocalizedText(AdPrivacyCopy.description),
++                    if (manager.adPrivacyError != null)
++                      const LocalizedText(
++                        AdPrivacyCopy.unavailable,
++                        key: ValueKey('ad-privacy-error'),
++                      ),
++                    if (manager.adPrivacyBusy)
++                      const LocalizedText(
++                        AdPrivacyCopy.waiting,
++                        key: ValueKey('ad-privacy-waiting'),
++                      ),
++                    _button(
++                      manager.adPrivacyRequirement ==
++                              AdPrivacyRequirement.required
++                          ? AdPrivacyCopy.options
++                          : AdPrivacyCopy.check,
++                      'ad-privacy-options',
++                      manager.adPrivacyBusy
++                          ? null
++                          : () => _perform(
++                              manager.adPrivacyRequirement ==
++                                      AdPrivacyRequirement.required
++                                  ? manager.showAdPrivacyOptions
++                                  : manager.updateAdPrivacyOptions,
++                            ),
++                    ),
++                  ],
+                   _section(UiEnglish.serviceOptionalUsageReports),
+                   LocalizedText(
+                     manager.telemetryEnabled

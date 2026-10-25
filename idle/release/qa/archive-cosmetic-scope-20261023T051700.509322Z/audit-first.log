@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/Users/csys/Desktop/ibicot/idle/release/qa/archive-cosmetic-scope-20261023T051700.509322Z/audit.py", line 80, in <module>
+    check(identity+' actual PNG '+key,data[:8]==b'\x89PNG\r\n\x1a\n' and struct.unpack('>II',data[16:24])==(640,388))
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/csys/Desktop/ibicot/idle/release/qa/archive-cosmetic-scope-20261023T051700.509322Z/audit.py", line 15, in check
+    if not value: raise AssertionError(label)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: cosmetic.core.chapter.01 actual PNG exported_overlay

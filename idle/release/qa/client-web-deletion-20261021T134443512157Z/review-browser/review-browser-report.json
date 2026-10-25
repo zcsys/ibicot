@@ -1,0 +1,39 @@
+{
+  "synthetic": true,
+  "passed": false,
+  "failed_stage": "navigation during uncommitted delete revokes temporary session only",
+  "completed": [
+    {
+      "scenario": "confirmation expiry at two minutes sends no request",
+      "passed": true
+    },
+    {
+      "scenario": "duplicate in-flight clicks send one auth and one delete",
+      "passed": true
+    },
+    {
+      "scenario": "navigation before confirmation discards secrets without requests",
+      "passed": true
+    },
+    {
+      "scenario": "malformed auth identity cannot delete and temporary session is revoked",
+      "passed": true
+    },
+    {
+      "scenario": "malformed authentication null never deletes",
+      "passed": true
+    },
+    {
+      "scenario": "malformed authentication oversized never deletes",
+      "passed": true
+    },
+    {
+      "scenario": "malformed authentication invalid JSON never deletes",
+      "passed": true
+    },
+    {
+      "scenario": "malformed deletion flags never display confirmed",
+      "passed": true
+    }
+  ]
+}

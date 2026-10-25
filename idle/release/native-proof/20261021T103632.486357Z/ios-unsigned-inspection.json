@@ -1,0 +1,26 @@
+{
+  "artifact_sha256": "bcdbc19b5fe36674eb9c819ca0ecda432376620a7738a90aa6d6183175086017",
+  "command": [
+    "codesign",
+    "-dvv",
+    "/Users/csys/Desktop/ibicot/idle/.tooling/native-release-inspection-20261021T104500Z/Runner.app"
+  ],
+  "exit_code": 1,
+  "output": "/Users/csys/Desktop/ibicot/idle/.tooling/native-release-inspection-20261021T104500Z/Runner.app: code object is not signed at all\n",
+  "unsigned_confirmed": true,
+  "no_provisioning_profile": true,
+  "info": {
+    "CFBundleIdentifier": "dev.tideglass.game",
+    "CFBundleShortVersionString": "0.1.0",
+    "CFBundleVersion": "1",
+    "MinimumOSVersion": "16.0",
+    "UIDeviceFamily": [
+      1,
+      2
+    ],
+    "CFBundleSupportedPlatforms": [
+      "iPhoneOS"
+    ]
+  },
+  "scope": "Unsigned local export. Not installable store distribution or a physical-device run."
+}

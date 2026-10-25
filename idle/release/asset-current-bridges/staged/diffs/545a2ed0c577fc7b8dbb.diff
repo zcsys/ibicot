@@ -1,0 +1,244 @@
+--- release/native-proof/root-art-full-20261021T122040.006324Z/source/game/mobile/lib/native_services.dart
++++ game/mobile/lib/native_services.dart
+@@ -1,6 +1,7 @@
+ import 'dart:async';
+ import 'dart:convert';
+ import 'dart:io';
++
+ import 'package:crypto/crypto.dart';
+ import 'package:flutter/foundation.dart';
+ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+@@ -100,6 +101,24 @@
+   Future<NativeRewardedAd> load(String unitId);
+ }
+ 
++enum AdPrivacyRequirement { unknown, notRequired, required }
++
++class AdPrivacySnapshot {
++  const AdPrivacySnapshot({
++    required this.requirement,
++    required this.canRequestAds,
++  });
++  final AdPrivacyRequirement requirement;
++  final bool canRequestAds;
++}
++
++/// Optional capability keeps existing RewardedGateway test/adapters compatible.
++abstract interface class AdPrivacyGateway {
++  Future<AdPrivacySnapshot> readAdPrivacyState();
++  Future<AdPrivacySnapshot> updateAdPrivacyState();
++  Future<AdPrivacySnapshot> showAdPrivacyOptions();
++}
++
+ abstract interface class NativeRewardedAd {
+   Future<void> configure({
+     required String accountId,
+@@ -110,7 +129,7 @@
+   Future<void> dispose();
+ }
+ 
+-class SdkRewardedGateway implements RewardedGateway {
++class SdkRewardedGateway implements RewardedGateway, AdPrivacyGateway {
+   @override
+   Future<bool> requestConsent() async {
+     final consent = Completer<void>();
+@@ -139,6 +158,56 @@
+     );
+     await consent.future.timeout(const Duration(seconds: 30));
+     return ConsentInformation.instance.canRequestAds();
++  }
++
++  @override
++  Future<AdPrivacySnapshot> readAdPrivacyState() async {
++    final required = await ConsentInformation.instance
++        .getPrivacyOptionsRequirementStatus();
++    final allowed = await ConsentInformation.instance.canRequestAds();
++    return AdPrivacySnapshot(
++      requirement: switch (required) {
++        PrivacyOptionsRequirementStatus.required =>
++          AdPrivacyRequirement.required,
++        PrivacyOptionsRequirementStatus.notRequired =>
++          AdPrivacyRequirement.notRequired,
++        PrivacyOptionsRequirementStatus.unknown => AdPrivacyRequirement.unknown,
++      },
++      canRequestAds: allowed,
++    );
++  }
++
++  @override
++  Future<AdPrivacySnapshot> updateAdPrivacyState() async {
++    // Explicit Check action only. Updating information does not show a consent
++    // form or initialize/load an ad; a required options form remains a separate
++    // player action after the updated requirement has been presented.
++    final updated = Completer<void>();
++    ConsentInformation.instance.requestConsentInfoUpdate(
++      ConsentRequestParameters(),
++      () {
++        if (!updated.isCompleted) updated.complete();
++      },
++      (_) {
++        if (!updated.isCompleted) {
++          updated.completeError(
++            const ServiceException('ad_privacy_unavailable'),
++          );
++        }
++      },
++    );
++    await updated.future.timeout(const Duration(seconds: 30));
++    return readAdPrivacyState().timeout(const Duration(seconds: 5));
++  }
++
++  @override
++  Future<AdPrivacySnapshot> showAdPrivacyOptions() async {
++    FormError? failure;
++    await ConsentForm.showPrivacyOptionsForm((error) => failure = error);
++    if (failure != null) {
++      throw const ServiceException('ad_privacy_unavailable');
++    }
++    return readAdPrivacyState().timeout(const Duration(seconds: 5));
+   }
+ 
+   @override
+@@ -359,6 +428,83 @@
+       _platform != null &&
+       configuration.rewardedAdUnitId != null &&
+       !configuration.rewardedAdUnitId!.contains('3940256099942544');
++  int _adPrivacyRevision = 0;
++  bool _adPrivacyBusy = false;
++  AdPrivacySnapshot _adPrivacy = const AdPrivacySnapshot(
++    requirement: AdPrivacyRequirement.unknown,
++    canRequestAds: false,
++  );
++  String? _adPrivacyError;
++  AdPrivacyGateway? get _adPrivacyGateway =>
++      _rewarded is AdPrivacyGateway ? _rewarded as AdPrivacyGateway : null;
++  // Device-level choices remain reachable after sign-out. No query is made
++  // from initialize(), a build(), or an unconfigured guest launch.
++  bool get adPrivacyAvailable =>
++      configured &&
++      configuration.adsEnabled &&
++      _platform != null &&
++      configuration.rewardedAdUnitId != null &&
++      !configuration.rewardedAdUnitId!.contains('3940256099942544') &&
++      _adPrivacyGateway != null;
++  AdPrivacyRequirement get adPrivacyRequirement => _adPrivacy.requirement;
++  bool get adPrivacyBusy => _adPrivacyBusy;
++  String? get adPrivacyError => _adPrivacyError;
++
++  Future<void> refreshAdPrivacyOptions() => _adPrivacyAction(show: false);
++  Future<void> updateAdPrivacyOptions() =>
++      _adPrivacyAction(show: false, update: true);
++  Future<void> showAdPrivacyOptions() => _adPrivacyAction(show: true);
++
++  Future<void> _adPrivacyAction({
++    required bool show,
++    bool update = false,
++  }) async {
++    if (!adPrivacyAvailable) {
++      if (show) throw const ServiceException('ad_privacy_unavailable');
++      return;
++    }
++    if (_adPrivacyBusy) return;
++    // Invalidate uncompleted ad work synchronously, before any SDK future.
++    final revision = ++_adPrivacyRevision;
++    final accountIntent = _accountIntent;
++    final expectedSession = session;
++    final sessionGeneration = client!.sessionGeneration;
++    final seed = localAccountSeed?.call();
++    bool current() =>
++        !_disposed &&
++        revision == _adPrivacyRevision &&
++        accountIntent == _accountIntent &&
++        identical(session, expectedSession) &&
++        client!.sessionGeneration == sessionGeneration &&
++        localAccountSeed?.call() == seed;
++    _adPrivacyBusy = true;
++    _adPrivacyError = null;
++    _notify();
++    try {
++      var state = update
++          ? await _adPrivacyGateway!.updateAdPrivacyState().timeout(
++              const Duration(seconds: 35),
++            )
++          : await _adPrivacyGateway!.readAdPrivacyState().timeout(
++              const Duration(seconds: 5),
++            );
++      if (!current()) return;
++      if (show && state.requirement == AdPrivacyRequirement.required) {
++        // User interaction may take as long as needed. Do not time out a visible
++        // form and resume optional ads while that form is still open.
++        state = await _adPrivacyGateway!.showAdPrivacyOptions();
++      }
++      if (current()) _adPrivacy = state;
++    } catch (_) {
++      if (current()) _adPrivacyError = 'ad_privacy_unavailable';
++    } finally {
++      if (revision == _adPrivacyRevision) {
++        _adPrivacyBusy = false;
++        _notify();
++      }
++    }
++  }
++
+   String get _key =>
+       'tideglass.${sha256.convert(utf8.encode(client!.endpoint.origin))}';
+ 
+@@ -1149,16 +1295,48 @@
+     if (!adsAvailable || slot < 0 || slot > 5) {
+       throw const ServiceException('ads_not_configured');
+     }
++    if (_adPrivacyBusy) return null;
+     final requestingAccount = session!.accountId;
++    final requestingSession = session;
++    final requestingGeneration = client!.sessionGeneration;
++    final requestingAccountIntent = _accountIntent;
++    final privacyRevision = _adPrivacyRevision;
+     final requestingSeed = localAccountSeed?.call();
++    var displayCompleted = false;
+     bool stillEligible() =>
+         !_disposed &&
+         signedIn &&
++        identical(session, requestingSession) &&
++        client!.sessionGeneration == requestingGeneration &&
++        _accountIntent == requestingAccountIntent &&
+         session!.accountId == requestingAccount &&
+         localAccountSeed?.call() == requestingSeed &&
++        (displayCompleted ||
++            (!_adPrivacyBusy && privacyRevision == _adPrivacyRevision)) &&
+         (isStillEligible?.call() ?? true);
+     if (!stillEligible()) return null;
+     if (!await _rewarded.requestConsent() || !stillEligible()) return null;
++    if (_adPrivacyGateway != null) {
++      try {
++        final state = await _adPrivacyGateway!.readAdPrivacyState().timeout(
++          const Duration(seconds: 5),
++        );
++        if (!stillEligible()) return null;
++        _adPrivacy = state;
++        _adPrivacyError = null;
++        _notify();
++        if (!state.canRequestAds ||
++            state.requirement == AdPrivacyRequirement.unknown) {
++          return null;
++        }
++      } catch (_) {
++        if (stillEligible()) {
++          _adPrivacyError = 'ad_privacy_unavailable';
++          _notify();
++        }
++        return null;
++      }
++    }
+     var abandoned = false;
+     NativeRewardedAd? ad;
+     try {
+@@ -1181,6 +1359,9 @@
+       if (!stillEligible()) return null;
+       final earned = await ad.show();
+       if (!earned || !stillEligible()) return null;
++      // Later privacy changes affect future optional ads, not a completed
++      // display's verified server receipt. Account/seed/slot guards still apply.
++      displayCompleted = true;
+     } finally {
+       abandoned = true;
+       await ad?.dispose();

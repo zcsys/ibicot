@@ -1,0 +1,33 @@
+[
+  {
+    "name": "full-mobile-with-context",
+    "command": [
+      "test",
+      "--reporter",
+      "expanded"
+    ],
+    "exit_code": 0,
+    "seconds": 25.93311095237732
+  },
+  {
+    "name": "full-mobile-analysis-with-context",
+    "command": [
+      "analyze"
+    ],
+    "exit_code": 0,
+    "seconds": 3.824064016342163
+  },
+  {
+    "name": "pseudo-flows",
+    "command": [
+      "test",
+      "test/localization_test.dart",
+      "test/localization_capture_test.dart",
+      "--dart-define=TIDEGLASS_PSEUDO=true",
+      "--reporter",
+      "expanded"
+    ],
+    "exit_code": 0,
+    "seconds": 11.91412091255188
+  }
+]

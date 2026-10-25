@@ -1,0 +1,2654 @@
+{
+  "format": "semantic-scope-checkpoint-v1",
+  "recorded_at_utc": "2026-10-21T11:42:27.287514+00:00",
+  "reviewer": "/root/qa_integration",
+  "status": "dated_component_checkpoint_not_release_acceptance",
+  "source_fingerprint": "6c16611193bc8b701c494313e1dc3b5c648f5301342ed08e3694790bc09541cc",
+  "input_count": 167,
+  "source_sha256": {
+    "TIDEGLASS_DESIGN.md": "9e8aafbad2af39602db1759b929c2f0088c7efc9a3fa16fc54bee051482f43f5",
+    "V1_ROADMAP.md": "6ac666c0037631eb7cdb29305a34fa9aede5d10f336f9bf95c32f2c6c9813cfa",
+    "docs/quality/PLAYER_STUDY_PROTOCOL.md": "9f7818022e672926668aa852b3110c2e49e19b625dc3b70158e2e7a9b6cb596e",
+    "docs/quality/V1_QUALITY_PROTOCOL.md": "1f76a2f5ff29a09c5733435fed48e1c8ebc8f36548011c9b2e40066ea5244626",
+    "economy.json": "9e5b9bcfcfc7a68d4eaeebc97e8d40cd42d04532fa59f514c7483efee885d2b6",
+    "game/content/progression/campaign.json": "37ef158a39b9f6ce944bea6fcfd4e5d2b6bd9c924b86b630b67fe276d812a7da",
+    "game/core/lib/src/daily.dart": "1a43e6a035472d52430c6fc1ca609bcb4cd2f564794e2b49a36cef507803338a",
+    "game/core/lib/src/daily_engine.dart": "9724e2e9c5369b287f8058d43108adca9cc89be54a781ac0ac2058d7736f5580",
+    "game/core/lib/src/engine.dart": "a87e4d6f5fdcb5a169befadba9824df42d792ff4b5cd8d5cf3dfee849c6577d4",
+    "game/core/lib/src/fixed.dart": "c167fdf3c4b95965f1bfc3658095dad81b6f013c71fa5abc7505b7731d6c698f",
+    "game/core/lib/src/state.dart": "b877f1ce17a9e41484009fc0286ad31b8a33ec6f1aef87c710c3e9c9790c9240",
+    "game/core/lib/src/support.dart": "b09af96c6523177cc62214d58d34dbb83467c0b0a384d024ba1b4ead46ebaa23",
+    "game/core/lib/src/support_engine.dart": "c4d25aa48e86d177148d7056a403296ff9613f5ae206d7483f81b24ec01ded1a",
+    "game/core/lib/tideglass_core.dart": "8c0d10c89cc961221fc04c217fde4d3c799e574c8abd178f1249632a565ccee4",
+    "game/events/lib/src/definition.dart": "e7a6bf1bb17993f08d834badb517bfd4cd3e4e3f512188c08f4be06c620f92fb",
+    "game/events/lib/src/pass.dart": "22f732cd81150b3cf47f01aa926ba9b51bf3c4e4d8e946f89392d824922a8e5d",
+    "game/events/lib/src/season.dart": "bc085b7a34d34e30a9557c3fc1306e8ed43c86f2a9b32f08f91e49cde658d4b0",
+    "game/events/lib/tideglass_events.dart": "d0139d590a85dc9bb2b3cc6cdb9010bf42d4cfecc461b3b5ff2bff27baec7c5f",
+    "game/mobile/lib/app.dart": "c26efdd6b59c7a8ce4404c9c8dee538b40ee2b3809be9df76e3eae537b360c20",
+    "game/mobile/lib/audio_bus.dart": "2cbc1b3a6faa478b47629bb9c14c064861f680138079c9dedc7240ff8d73c3d3",
+    "game/mobile/lib/audio_settings.dart": "dae81f8e650ee988bb11c9b0dae1cbc316aa430e5e94510687b1a65c587777f7",
+    "game/mobile/lib/bootstrap.dart": "a9d0345bd6a22f9ba9de010fd96545efe2da0573049cdba89bd59810497910ef",
+    "game/mobile/lib/bundled_content.dart": "a2b065810f0ed2c73d266cd83810ff4765f97d66da313e4dce586afd5b3fcd2e",
+    "game/mobile/lib/bundled_hashes.g.dart": "1e08946fdeb85061e757477602b309e1c6851729fd6f6a17c9168eef60a8e232",
+    "game/mobile/lib/calibration_pattern.dart": "5da6ff66b8a9d8317d047c0ec99795a98c89b6b3afe83c640c7a129391899c74",
+    "game/mobile/lib/calibration_screen.dart": "541613d83be2a8bbe9c8ac9a41f8fae97138727586ceb29213b5d15d9b0a3d51",
+    "game/mobile/lib/content_compatibility.dart": "6df9f985ccba98b06dcb0de96d2800f31b4b721fde5e80e5de12550876a45552",
+    "game/mobile/lib/cosmetic_art.dart": "3921e51bbbc79a40d6cdc9ece131b65f4910fb235d749f525cf18e373e780811",
+    "game/mobile/lib/cosmetics.dart": "18fc8203b2d61bd0833f59e1c1788381a388e2a84130063a585d3cbdb5f37936",
+    "game/mobile/lib/cosmetics_screen.dart": "9e512d3b8cf730638101cb0f45934068050e4ab90f8d15edff891336ccbdb780",
+    "game/mobile/lib/daily_panel.dart": "e5401ba2eefe9d967a39cea1a7eac6cfc345e69dfa8cbf9cdcb9d4ddb4dcd281",
+    "game/mobile/lib/game_controller.dart": "f050c9b0c6c13dc31dad95e0dc5b51f78ee2f17c383ce59a3ab553c89adb4afa",
+    "game/mobile/lib/game_telemetry.dart": "53a729de9b0bea339e8de2263952d5cef2382769ebdb4d79960e63cf8682f566",
+    "game/mobile/lib/harbor_art.dart": "50c7fa6e1fe63da71c5add51442a5fcef6fc46ae6f7f14079c6382c514ef6979",
+    "game/mobile/lib/help_content.dart": "73434078cd083feaac50bc12d2f75242044d5ae5e6158eddf1c9ab56836e3ef7",
+    "game/mobile/lib/help_screen.dart": "f5ecfa5f2af2d9fea56f8c52fa1411040bfc72f5e8fac133c5766b075fb42850",
+    "game/mobile/lib/main.dart": "3101e0086ea1da6ceb7da83e03a961889a5a775d76f3798783c5846ab7a834ae",
+    "game/mobile/lib/native_services.dart": "884a440659c58f0faab746435cc0aba89b69601ef4e8393fd4f4416f489ddf14",
+    "game/mobile/lib/notification_copy.dart": "ca951a2a03d7404fc16eca09762615df9e3fd88428103bafca3d7d704b49511d",
+    "game/mobile/lib/notification_service.dart": "39cbb50ed595c8c57c1bc39696b555d5148e49f8aee68ceedb5258b73d9a4d19",
+    "game/mobile/lib/notification_settings.dart": "46b00068acccd03516fc5999a4e548e3dfcc7eee1ab02a3b0e139042f7916264",
+    "game/mobile/lib/number_format.dart": "f5cccc59b4392842c0d040864715315b71c490033a3bbcf3001ca7e92da19297",
+    "game/mobile/lib/offline_replay.dart": "a8af4fda8d70d19b187d1be917fbb281895c3dc8c09a7aebc5fa656c4f89fe38",
+    "game/mobile/lib/ownership_clock.dart": "8ef9752fa88e49f1112c80baaee8c9979f9caa6a48e574e1d42256398eba8e26",
+    "game/mobile/lib/palette.dart": "1da79c2cd009e271dcaf3dd349f20e380950fbbb67ca54e10ea5180b2ed86d83",
+    "game/mobile/lib/presentation.dart": "0b891f8baa973d11f1aabe6d985fafbe8bf0e08904007cb0f218e68044fd9b63",
+    "game/mobile/lib/producer_art.dart": "ecf1c624c01e0df5fd92801fef84bc38b218bb8bc7d23543d25cbe7ac3ff2526",
+    "game/mobile/lib/producer_art_data.dart": "305c06487d6d9d8873b5773c23e793b12f781e7b85087f90482cf75ea98e9c26",
+    "game/mobile/lib/reminder_lifecycle.dart": "4e6b3287773176f147a6c840eb74e29ed85afe42b9e669ae6b199022d31f45be",
+    "game/mobile/lib/season_screen.dart": "f05af571cdbdbd84d194f08a51bb91cb7544a9a366fa90babba2f29a354040e5",
+    "game/mobile/lib/service_cosmetics.dart": "e2ec9111ced9f862775ea464d06e5054a6c70b349fbcc9d87bcb7929217ec3e4",
+    "game/mobile/lib/service_settings.dart": "5eaeb67398f371664ffedaa865577f701e8f80e062e33a1e64f59754943dd429",
+    "game/mobile/lib/service_support_screen.dart": "16c1618913e6655770ebc06885d9ded0b1b674f2c6cfcad9b5d8639f122fe3d5",
+    "game/mobile/lib/soundtrack_export.dart": "1f48e56d480d0fc3b42a989bb980143bbc118bfa8c05f70479e1ddaf6cd2fd50",
+    "game/mobile/lib/story_screen.dart": "b546eb1ce88fb8f46ebde390249849a1b728fe28d6b7420466188ed97c92fc2e",
+    "game/mobile/lib/story_state.dart": "008c4c5ad721794809d38a00b72de32ecd98402a1acf2724f9eb1c4af6860cc4",
+    "game/mobile/lib/strings.dart": "a1f75c799a56c1fdb5125f65eacb6f637912be042bbd748303ac3bbea7b6abb8",
+    "game/mobile/lib/study_gate.dart": "bc019a763d72476ddd38594c96f90c081ffb9992b0e650aa1defd8a3514d923b",
+    "game/mobile/lib/support_screen.dart": "97679670e0fe6ec1d41639b7afb737a8a10ac7d7fca3e845f80dc9f30ad01a77",
+    "game/mobile/lib/support_service_bridge.dart": "05cce5ddbc88dd7724806722123fa633d30ee6fb414153d7abb189a2a6f6cbb6",
+    "game/mobile/pubspec.lock": "75d094d1dcd86b951c60cc082db6ded8c45db95aae02ea2b39ebaff0858a1a03",
+    "game/mobile/pubspec.yaml": "3dee7db8606a8d0d36daec69616f3a8110a33c16f1e86cdc11ba1cca4145efea",
+    "game/mobile/test/qa_integration_study_start_test.dart": "6a10da9bce039214b784e851c7e577d08aa7394153fd64b1402e06c0812e3b30",
+    "game/mobile/test/study_gate_test.dart": "5ce105a33599571d44d39063167eaefaf5bd3f0a4d4c3500e4b0c3d7587b128a",
+    "game/persistence/lib/tideglass_persistence.dart": "f8aebe4d5deb90378e7ee7cccd5af2eb9603453ae9907cf74656b34ee8b9e4a0",
+    "game/platform/lib/signed_entitlements.dart": "018ded6ffbd3672ab6de6747747a4026f7c880a5c0bcec271b58cb25f2d2c66e",
+    "game/platform/lib/soundtrack_cache.dart": "9ff5b55ef2c4f907c81e5577add12b016061bedc6f275effee98fe60149a55e6",
+    "game/platform/lib/soundtrack_delivery.dart": "7ee1b58f2b11990939b204105ec71079f3ac1529ae08167ab9d05c5637057402",
+    "game/platform/lib/study_recorder.dart": "40be5e8ae640edfe67c6704074bbfb5a2f62fca2e8060b0d96cf50d22b72904f",
+    "game/platform/lib/tideglass_platform.dart": "95a9eaf116696884f6a4b2f5a9c3cd8a53cfd55fb28e8342c37dadbac55abfca",
+    "game/platform/test/study_recorder_test.dart": "aec20294646ffe210167d419c5b79349a773aef510169c7c23b3a321d6306189",
+    "game/progression/lib/decoration_purchase.dart": "9db6c18254e682249e419e734003f9d70a56e0475188c707fa9728bf4d622652",
+    "game/progression/lib/tideglass_progression.dart": "7c5a8d0c91796555a056ef1e4ac1fba68f3c7ba7ae862029c163e0962f8162f5",
+    "game/qa/build_current_scope_checkpoint.py": "b4aabad8bc02856b717aae4cca8aa6d6dd7389ffc8232a4f85835826b0735a2a",
+    "game/qa/current_scope_judgments.py": "f364ec7d2fe8f4772edfc44d414d3905f24c4a7ba7020b82656972181d06f6fd",
+    "implementation/art/production_contract.json": "53d9e57a85ec9d9dc16fc5a94b07f829e8c792a392b80ecd7f1b1de3199b18b3",
+    "implementation/content/launch_manifest.json": "d100ff2211636f7ca9e5b18749b60f21efafedea53c05ca46aeb2a633d842238",
+    "implementation/program.json": "8672a3ea78d431f238844f8be13c2851e152c2ec04c381f0f6c7977ce7b6df5f",
+    "implementation/scope_requirements.json": "db6d5b49c50a2ccacfab930de6311a7b947bb68167827ff528591c856636a23e",
+    "release/art/import-qualification.json": "972b91d2120ac412cc906fc46927c30b4581d8deab5e9751236b94822f0ebf16",
+    "release/art/producer-independent-review.md": "fd00d0bcc1f1584fb05d604f390c34c698bd09ff210d1c5230548776364362f6",
+    "release/art/style-qualification.json": "dfcc031bfc9855538b92e7e4ba6fbb12a08237bc08bc94816ffb3d27424300a5",
+    "release/audio/capability-and-rights.json": "d4c425664c734a159f1cfa45c8ed907a90b635c93676d2a2a49bab1ef47d893a",
+    "release/localization-author-review.md": "bc2d51a81d97f0c6deed8e4fa45411c8a5e5f2cc6dd932f2d8ff4aa77f992543",
+    "release/native-proof/platform-handoff.md": "c19ec951457370bbb46def0f0bc77bc42f1ab1fa16fa5c1f9869e5d89cd40de3",
+    "release/native-proof/root-study-final-20261021T113721.329611Z/verification.json": "ad861e8a8c4e117bff4ba19374630e7ca2ce07b77c81a3a691a7f94599a962a8",
+    "release/persistence-review.md": "c362dc6d96caacd5ea8029f965c4c7c35d0027c694745eb4c861a0d38610165f",
+    "release/qa/integration-balance-20261019T145921108068Z/BALANCE_REVIEW.md": "bdce336370f8f1aab360f907b4439f05890703f6e27859c2376785011376b24d",
+    "release/qa/integration-balance-20261019T145921108068Z/scope-audit.json": "a74293073194fb2f43c3530fb27c3b30dd5b2334abeb1bdeeea5ca1c99aabb69",
+    "release/qa/integration-balance-20261019T145921108068Z/snapshot.json": "39bf39ae580d9538d74f32c95d6bfae5869c012f292af0891b95873bce378607",
+    "release/qa/integration-balance-20261019T145921108068Z/verification.json": "d243fa7105236e43b34e064824f50331bd4eaba92475b799e3c4d3d9bd5b9c65",
+    "release/qa/integration-cache-20261021T105558701110Z/CACHE_REVIEW.md": "0780946160c8ee76ac679b1578b521de198455bf385a835debfdc05930da14bc",
+    "release/qa/integration-cache-20261021T105558701110Z/scope-audit.json": "cf40902f9e0b254d53c7716fcfa22aa2fa004f654a25ff47db02583b3cdaa674",
+    "release/qa/integration-cache-20261021T105558701110Z/snapshot.json": "e841cc2fef23b7356b8064be5f665cb4dc944047219b9e5672938c15b397b7e0",
+    "release/qa/integration-cache-20261021T105558701110Z/verification.json": "f8511b06a165b8829ab247892b405e3f1991bb5bf9c79fab7c9ccd0878829d9b",
+    "release/qa/integration-crossengine-20261019T143516578781Z/CROSS_ENGINE_REVIEW.md": "f035da17e8cef436ff8204a79db22522337562baa087e3a4c02a214a67489fb9",
+    "release/qa/integration-crossengine-20261019T143516578781Z/scope-audit.json": "9d040047a78e62ae2141d2f1837f66fc1880db0391e3ec8532c14321ed422c37",
+    "release/qa/integration-crossengine-20261019T143516578781Z/snapshot.json": "1c19413c8d830cd1503eb51bfc453676569c9d2dc2b61a06816834e30c4cbb37",
+    "release/qa/integration-crossengine-20261019T143516578781Z/verification.json": "710fcb93c2788f5121d96451ba8df7fbd2e9056d9bb56f2453de55a00c2b640c",
+    "release/qa/integration-entry-gates-20261021T113426797640Z/ENTRY_GATE_REVIEW.md": "2e16c62e7259efcc6517bfd802ba44d0abc6a2b01c848c5f71dc71fa81854807",
+    "release/qa/integration-entry-gates-20261021T113426797640Z/verification.json": "9411ba4da86cf0465e5499563651733d77beccb392767057747a72e54a8ed751",
+    "release/qa/integration-final-20261016T105843545492Z/INTEGRATION_REVIEW.md": "172151cff0a6ba70014203307b59a463a8971a78905033ba66d2a6101addbf7b",
+    "release/qa/integration-final-20261016T105843545492Z/scope-audit.json": "e3bcb14777aa2e4cc3995c2658f011b68971a09754dc16cf8938257f8902fbe0",
+    "release/qa/integration-final-20261016T105843545492Z/snapshot.json": "715cb4d53c09a2e1f5654e8f0c02b4c71ff15dca9d431de578cb3850ffe51ebc",
+    "release/qa/integration-fulfillment-repaired-20261019T143906718168Z/FULFILLMENT_REPAIRED_REVIEW.md": "b6696f96afd99f244db93cc23ee1006100ace9090cd7c2f6f17de258b3d7cce0",
+    "release/qa/integration-fulfillment-repaired-20261019T143906718168Z/scope-audit.json": "d5ecd667e751dcb5b13ffc36aba9c5b7d97b4b612cb91496b8fd210ab5a5bec3",
+    "release/qa/integration-fulfillment-repaired-20261019T143906718168Z/snapshot.json": "8bc0732b315cca766e0065f4c777c883ee3c3273c692a4268eb2f2ec95344172",
+    "release/qa/integration-fulfillment-repaired-20261019T143906718168Z/verification.json": "1cbc1114c0c5aa9e911e85953cd5e8360f2572aa788e6fdeba4297050944c861",
+    "release/qa/integration-help-repaired-20261021T101942186162Z/HELP_REPAIRED_REVIEW.md": "4a30ba066a1c108385c638149748168d1428f8423063a47655b941f0142eb344",
+    "release/qa/integration-help-repaired-20261021T101942186162Z/snapshot.json": "6081420e67b39e5740bcdac21611fdc272bbf43de782242e8404b9623ef64e67",
+    "release/qa/integration-help-repaired-20261021T101942186162Z/verification.json": "01ad89302b3eb5b3937c0242044db614a086d38c70e4509be69edd6bb7b8fd03",
+    "release/qa/integration-initial-20261016T104939468348Z/M0-02_REVIEW.md": "00d2098d58a0537128a8550952c4686593ca4d807a0ae82a5dec96f46ab9013d",
+    "release/qa/integration-initial-20261016T104939468348Z/snapshot.json": "788b6e85b39b9c0e9d8b692f48d20e7bfc7f8c2eea2de86946e72db3eb99eec5",
+    "release/qa/integration-inventory-20261021T104607526377Z/INVENTORY_REVIEW.md": "53d1ba9281a7f1e0eb784038d597d4cb62e65b29ea02d809fc6599d741b061c6",
+    "release/qa/integration-inventory-20261021T104607526377Z/scope-audit.json": "cb7144255fcfda632907a6d51e6a2c9e9afbb21793151b08e8e7c2fac18020db",
+    "release/qa/integration-inventory-20261021T104607526377Z/snapshot.json": "d5b6c7f4eca5f72d5d9a94da0c3c3053779691ff33166cd9c631cd26d7bbe08c",
+    "release/qa/integration-inventory-20261021T104607526377Z/verification.json": "f58d39c4cd60587d909a147cfca284e13c554c6af720278fa54e1d0c5d4a9002",
+    "release/qa/integration-native-ownership-repaired-20261019T145035575220Z/NATIVE_OWNERSHIP_REPAIRED_REVIEW.md": "8d8b934ae4315c15a394bae33b85b5eebdce84b2bcfcf51c0a5dd774c7e32554",
+    "release/qa/integration-native-ownership-repaired-20261019T145035575220Z/scope-audit.json": "b74ff732c2f24bdff857ab82e7e9953316155d039140dd077a6c6d3630a8e135",
+    "release/qa/integration-native-ownership-repaired-20261019T145035575220Z/snapshot.json": "425db6b0fe02f76d32863ff770370eb88f3d87d0bdb698aae308e48fda00dbb8",
+    "release/qa/integration-native-ownership-repaired-20261019T145035575220Z/verification.json": "ef3b3e252529ef59700908c88bf77e67fcca97b81623e98cde60bea051f86b96",
+    "release/qa/integration-numeric-20261019T135534237861Z/NUMERIC_REVIEW.md": "7aea4292591b31b73cf038d3c311273d0fd8eaf4732fd19cdafc317639668d32",
+    "release/qa/integration-numeric-20261019T135534237861Z/scope-audit.json": "a5a9416f7d143b434addea6396f2018846e2833effcf530eff5a334cf580e6d6",
+    "release/qa/integration-numeric-20261019T135534237861Z/snapshot.json": "d25a34bd4212a654cdda0e1d4969a140875d3a4bb701fa8f2c9d49bc7691e967",
+    "release/qa/integration-numeric-20261019T135534237861Z/verification.json": "a8e32586d4f3ac2f9bc9099be097ff7ef2209e1700f1cc9fdb4ab3149a621a9d",
+    "release/qa/integration-operations-final-20261021T104534667043Z/OPERATIONS_REVIEW.md": "e4da127597a0df9430c73cd6b50b86645b39787282edec6f800687180f3a8bd1",
+    "release/qa/integration-operations-final-20261021T104534667043Z/scope-audit.json": "17f0389c7db3c9a59b8b42ca6fbe706e86bb250f876d6b4ead9f2654ecdb8f3e",
+    "release/qa/integration-operations-final-20261021T104534667043Z/snapshot.json": "1990b0627735473998b435fc0267e6e6cb45e8c08551ffa1c861e6894cb745b9",
+    "release/qa/integration-operations-final-20261021T104534667043Z/verification.json": "46aa0039347922cb87628fb4c343964b09d4c9145ba76b7cbbf6df8c38349072",
+    "release/qa/integration-optional-calibration-20261021T110210355242Z/OPTIONAL_CALIBRATION_REVIEW.md": "b1b0590a8f32705009be20accce5bf967e875d0f3aceb4b04d8246faa59575dc",
+    "release/qa/integration-optional-calibration-20261021T110210355242Z/scope-audit.json": "0cef72057eae4143d0a55097f7900c1c5e0ed472f597b86f4c43d7c89576fdcf",
+    "release/qa/integration-optional-calibration-20261021T110210355242Z/snapshot.json": "285794a3ffb31ec6c1fb28213aa06a451af2341472feb27f01966f2665d9b18a",
+    "release/qa/integration-optional-calibration-20261021T110210355242Z/verification.json": "1ce5e9d55b33ec106cb5d96cc140778ac40ff954998b8b7e364dc6d0776dab98",
+    "release/qa/integration-registration-20261021T111626112740Z/REGISTRATION_REVIEW.md": "8afb6128140089dbda6a752b90a01341af44053c43ca4f6ff79c0076df501c50",
+    "release/qa/integration-registration-20261021T111626112740Z/scope-audit.json": "b86a4f8be039f43785116c54d08242b3ec4c4d3c304f4b021f3810fa0ea4f73f",
+    "release/qa/integration-registration-20261021T111626112740Z/snapshot.json": "c825f58a091b8783d53f343cb2380225da77c49f7367e465728b10ef181b123e",
+    "release/qa/integration-registration-20261021T111626112740Z/verification.json": "5290907ecaa8f55712bad3e5038ecdf90e90ed9a97f9ed7e4f40308d32d611a6",
+    "release/qa/integration-reminders-initial-20261016T115431767720Z/REMINDERS_REVIEW.md": "fa0dbb4723ea85c037c4591465a62a57dc794105eb28c0439ec795907c16d20c",
+    "release/qa/integration-reminders-initial-20261016T115431767720Z/scope-audit.json": "5bfab28c9c83733edd8bea0482169a45af9d370e558344daacc3cab7b98f554d",
+    "release/qa/integration-reminders-initial-20261016T115431767720Z/snapshot.json": "bda9a515dee066e027c0bd62dcb115f6ea63ccdc75a626cd1fce3a9a33f38f4f",
+    "release/qa/integration-reminders-initial-20261016T115431767720Z/verification.json": "a28e87654e51cc541897157e503ee26723c6a38de1d6fa753a341ee788511fb5",
+    "release/qa/integration-services-repaired-20261016T114721906724Z/INTEGRATION_REVIEW.md": "b57f7ea0f609db6c952d9f756485942c96aa30a935939bcac46a0b414057a3b3",
+    "release/qa/integration-services-repaired-20261016T114721906724Z/scope-audit.json": "d1f370004e20338d4578387cc940691b2d23c31e0652f7f03fa908c99b884aaa",
+    "release/qa/integration-services-repaired-20261016T114721906724Z/snapshot.json": "90355304b1ea70b5b9c403b2944609cd91bc9b73f62c8bd8158fcc628ea42ff9",
+    "release/qa/integration-services-repaired-20261016T114721906724Z/verification.json": "cc2316fe2c6aef9c652f01127c9224fccda9e591f4b2ee0cb728a71c09f7591f",
+    "release/qa/integration-study-20261021T102508755253Z/STUDY_REVIEW.md": "c19b4e5c5dd013d03502b5679a4cc241bc27a61c2c279732dc3c848d8490665d",
+    "release/qa/integration-study-20261021T102508755253Z/scope-audit.json": "68a7d791a38222b0bd06744a427f8357b17e3f707e66e446033379f08242d7e0",
+    "release/qa/integration-study-20261021T102508755253Z/snapshot.json": "5e13b1a2e93e9f0d778bfea07cef1817f6fc818a35d2026795d5b981fb2abc00",
+    "release/qa/integration-study-20261021T102508755253Z/verification.json": "06a01b987c1be4f5bac9548a77470fbf2ec7caf8273003363f6580d398ba92db",
+    "release/qa/integration-study-collection-final-20261021T113037215270Z/COLLECTION_REPAIRED_REVIEW.md": "dfb0dab78f83fe756fe1a26870dd271aa5bd0e6ff39609618c26dd31c71fb75d",
+    "release/qa/integration-study-collection-final-20261021T113037215270Z/scope-audit.json": "a007231c11fe646610516d8d8fef220ccf5befc1cc470f5f8e93e9c45a856df9",
+    "release/qa/integration-study-collection-final-20261021T113037215270Z/snapshot.json": "61c90a4f7534a265108a26a6ac9e216b2f91d5855c2bcbe0e263316eb9813702",
+    "release/qa/integration-study-collection-final-20261021T113037215270Z/verification.json": "294012649990414397a2f842f81f067706c561776685539afdc737c00a2c97df",
+    "release/qa/integration-study-ui-final-20261021T114011830149Z/STUDY_UI_REVIEW.md": "9a4679d34a169ae0f2b77f29c23b18c54fc9f2738555523879daac683af7978a",
+    "release/qa/integration-study-ui-final-20261021T114011830149Z/verification.json": "3d1820271ade8142a9cd0c68d848c800e7a3127143121081d8cceb8dac2d7920",
+    "release/qa/integration-telemetry-repaired-20261019T141639166170Z/TELEMETRY_REVIEW.md": "83481c59129c3274ba3b6530578a960deb1774d1070621f136ac44ca9a896047",
+    "release/qa/integration-telemetry-repaired-20261019T141639166170Z/scope-audit.json": "4cb80b9ac021e5f4557b8072ccfde3f73cf596a674abb84ac73896054d365603",
+    "release/qa/integration-telemetry-repaired-20261019T141639166170Z/snapshot.json": "d09a9a2844f393a054b031bd0838fea135f4c3c2fb3efd4d453c0f9f12d335bd",
+    "release/qa/integration-telemetry-repaired-20261019T141639166170Z/verification.json": "d8c9908cf36dd4629309f621d6092d052f28dc8ab357e6a9473e1798c38d98ef",
+    "release/store/CLIENT_REVIEW.md": "ff111389b530deca88113b26145a99b9a2fbf0b2022de6bab0641f9a051715a1",
+    "release/study/UI_AUTHOR_HANDOFF.md": "cecd8fe48fe4654e145646429433565c78f5695edff1582e93ecddf174e8659f",
+    "release/study/ui-author-handoff.json": "2439f3112230b3f7d2962af96df5d885cfaf02194bc3fa29186b528fe06fc831",
+    "services/docs/OPERATIONS.md": "3be712146c74a024a58d632febd96a7b85fc67e0a0ded8f50105d4f8504cc3b7",
+    "services/tideglass_service/health.py": "03cc85d2104833765d1a5f84ee8cab882571a11e83fc8199c7ee21e1e8407a3c",
+    "tool/study_adjudicate.py": "b158d082812603f6f02576ddc950b834c06254e718e3e0efadb4bb26679b87b6",
+    "tool/study_report.py": "7109d2e53a8c07b8f00299b749a4c758530e51f38a2d444f4600ae6ef94e7462",
+    "v1_backlog.json": "779291dbd55db8e73513d3d335fbe5c51c0189c3050dba24c4f8049ac69c80ad"
+  },
+  "classification_meaning": "Primary label identifies the dominant evidence condition; each row also gives actual proven local clauses,remaining local action and external conditions. Proven local component does not accept linked packages.",
+  "classification_counts": {
+    "external gate": 14,
+    "missing/weak evidence": 8,
+    "proven local component": 18,
+    "incomplete local work": 4
+  },
+  "scope_count": 44,
+  "original_package_count": 65,
+  "scope_to_implementation": [
+    {
+      "id": "S01",
+      "requirement": "iOS and Android public launch; phone and usable tablet; internal desktop only",
+      "source": "V1_ROADMAP.md \u00a71",
+      "work_items": [
+        "M0-01",
+        "M0-02",
+        "M7-03"
+      ],
+      "verification": "Native launch/install/update evidence on declared targets; no substituted web-only release.",
+      "delivery_status": "not_verified",
+      "evidence": [],
+      "checkpoint_classification": "external gate",
+      "concrete_local_evidence": "Actual iOS/Android native builds, scripted phone flows and tablet samples exist; macOS is internal only.",
+      "remaining_local_work_or_verification": "Freeze and qualify a single current candidate including later campaign/cache/study changes; finish current Android/iPad matrix and upgrade fixtures.",
+      "external_gate": "Signing, install/update on declared physical targets, both public store acceptance and launch.",
+      "evidence_paths": [
+        "release/native-proof/platform-handoff.md",
+        "release/qa/integration-initial-20261016T104939468348Z/M0-02_REVIEW.md"
+      ],
+      "new_delivery_status_proposed": null,
+      "package_acceptance_unchanged": true
+    },
+    {
+      "id": "S02",
+      "requirement": "Guest offline core, optional cloud, English externalized text and pseudolocalization",
+      "source": "V1_ROADMAP.md \u00a7\u00a71,3",
+      "work_items": [
+        "M1-05",
+        "M3-06",
+        "M5-02"
+      ],
+      "verification": "Airplane-mode guest flow and localized-layout tests; fresh network services are separate dependencies.",
+      "delivery_status": "not_verified",
+      "evidence": [],
+      "checkpoint_classification": "missing/weak evidence",
+      "concrete_local_evidence": "Guest bootstrap/replay/persistence and separate optional services work; English copy is externalized and pseudo tests/captures cover many critical flows.",
+      "remaining_local_work_or_verification": "Finish current complete pseudo/layout gate; final study UI13English/12pseudo passes a separate pin. Prove ordinary guest flow with all optional endpoints absent on the final candidate.",
+      "external_gate": "Named-target airplane-mode verification and full physical input/accessibility checks.",
+      "evidence_paths": [
+        "release/qa/integration-services-repaired-20261016T114721906724Z/INTEGRATION_REVIEW.md",
+        "release/qa/integration-native-ownership-repaired-20261019T145035575220Z/NATIVE_OWNERSHIP_REPAIRED_REVIEW.md",
+        "release/localization-author-review.md",
+        "release/qa/integration-reminders-initial-20261016T115431767720Z/REMINDERS_REVIEW.md",
+        "release/qa/integration-help-repaired-20261021T101942186162Z/HELP_REPAIRED_REVIEW.md",
+        "release/qa/integration-study-ui-final-20261021T114011830149Z/STUDY_UI_REVIEW.md"
+      ],
+      "new_delivery_status_proposed": null,
+      "package_acceptance_unchanged": true
+    },
+    {
+      "id": "S03",
+      "requirement": "Five producer prices/outputs, tier ratio 20, growth 1.12, previous-tier unlock at 10",
+      "source": "TIDEGLASS_DESIGN.md Phase 2; economy.json",
+      "work_items": [
+        "M1-01",
+        "M1-02",
+        "M2-01",
+        "BOOT-CORE"
+      ],
+      "verification": "Reference conformance plus independent production precision and discrete-purchase boundary tests.",
+      "delivery_status": "not_verified",
+      "evidence": [],
+      "checkpoint_classification": "proven local component",
+      "concrete_local_evidence": "Production exact arithmetic matches five prices/outputs,20x tier step,1.12 purchase growth and previous-tier10 unlock. Independent floor/ceiling/extreme/bulk fixtures match discrete decisions.",
+      "remaining_local_work_or_verification": "No missing arithmetic implementation found. Reuse pinned proof only while core/config bytes match; whole candidate qualification remains separate.",
+      "external_gate": "No external input is needed for this mathematical verification itself.",
+      "evidence_paths": [
+        "release/qa/integration-numeric-20261019T135534237861Z/NUMERIC_REVIEW.md",
+        "release/qa/integration-crossengine-20261019T143516578781Z/CROSS_ENGINE_REVIEW.md",
+        "release/qa/integration-final-20261016T105843545492Z/INTEGRATION_REVIEW.md"
+      ],
+      "new_delivery_status_proposed": null,
+      "package_acceptance_unchanged": true
+    },
+    {
+      "id": "S04",
+      "requirement": "Single, milestone and maximum purchase controls and whole-tier 2x milestones at 25/50/75/100",
+      "source": "V1_ROADMAP.md \u00a73; economy.json",
+      "work_items": [
+        "M1-02",
+        "M1-05",
+        "M3-09"
+      ],
+      "verification": "Bulk/max spending cannot overspend; tier output and displayed transformation agree.",
+      "delivery_status": "not_verified",
+      "evidence": [],
+      "checkpoint_classification": "proven local component",
+      "concrete_local_evidence": "Single/milestone/max purchases share exact spending; whole-tier2x thresholds25/50/75/100 and stage selector agree. All25 stage geometries have actual exports/native gallery samples.",
+      "remaining_local_work_or_verification": "Complete all viewport/state/motion variant verification; do not treat a25-image gallery as every purchase control accessibility check.",
+      "external_gate": "Physical target presentation/input qualification.",
+      "evidence_paths": [
+        "release/qa/integration-numeric-20261019T135534237861Z/NUMERIC_REVIEW.md",
+        "release/art/producer-independent-review.md",
+        "release/qa/integration-registration-20261021T111626112740Z/REGISTRATION_REVIEW.md",
+        "release/qa/integration-entry-gates-20261021T113426797640Z/ENTRY_GATE_REVIEW.md"
+      ],
+      "new_delivery_status_proposed": null,
+      "package_acceptance_unchanged": true
+    },
+    {
+      "id": "S05",
+      "requirement": "Lifetime-based 0.65-exponent Rechart, entitlement subtraction, retained-state preview and permanent power",
+      "source": "TIDEGLASS_DESIGN.md Phase 2; V1_ROADMAP.md \u00a73",
+      "work_items": [
+        "M1-01",
+        "M1-02",
+        "M2-02",
+        "BOOT-CORE"
+      ],
+      "verification": "Exact award boundary and repeated-reset tests; preview matches retained/reset state.",
+      "delivery_status": "not_verified",
+      "evidence": [],
+      "checkpoint_classification": "proven local component",
+      "concrete_local_evidence": "Lifetime0.65 entitlement minus prior earned Charts, exact award floors, repeated resets and retained-state preview have independent arithmetic/runtime checks.",
+      "remaining_local_work_or_verification": "Recheck complete final retained partitions and current UI in candidate gate; no missing reset formula found.",
+      "external_gate": "Human retained-state comprehension is separately required by S32.",
+      "evidence_paths": [
+        "release/qa/integration-numeric-20261019T135534237861Z/NUMERIC_REVIEW.md",
+        "release/qa/integration-final-20261016T105843545492Z/INTEGRATION_REVIEW.md",
+        "release/qa/integration-balance-20261019T145921108068Z/BALANCE_REVIEW.md"
+      ],
+      "new_delivery_status_proposed": null,
+      "package_acceptance_unchanged": true
+    },
+    {
+      "id": "S06",
+      "requirement": "Autobuy at 10 Charts, synergies at 25, conditional resets at 100; free plan and five optional 50-Note slots",
+      "source": "V1_ROADMAP.md \u00a7\u00a73,7",
+      "work_items": [
+        "M2-01",
+        "M3-03"
+      ],
+      "verification": "Unlock and plan-persistence fixtures; no paid automation lock.",
+      "delivery_status": "not_verified",
+      "evidence": [],
+      "checkpoint_classification": "proven local component",
+      "concrete_local_evidence": "10/25/100 unlocks, saved policies, free base plan and five optional50-Note slots are implemented. Production simulations actually buy slots and preserve ledger amounts.",
+      "remaining_local_work_or_verification": "Final native purchase/restore/migration checks for plan selection and saved policy; no paid automation prerequisite found.",
+      "external_gate": "Physical input/persistence qualification for complete release.",
+      "evidence_paths": [
+        "release/qa/integration-final-20261016T105843545492Z/INTEGRATION_REVIEW.md",
+        "release/qa/integration-balance-20261019T145921108068Z/BALANCE_REVIEW.md",
+        "release/qa/integration-optional-calibration-20261021T110210355242Z/OPTIONAL_CALIBRATION_REVIEW.md"
+      ],
+      "new_delivery_status_proposed": null,
+      "package_acceptance_unchanged": true
+    },
+    {
+      "id": "S07",
+      "requirement": "Cross-tier synergy matrix and honest marginal-output/purchase/reset forecasts",
+      "source": "TIDEGLASS_DESIGN.md Phase 2; V1_ROADMAP.md \u00a73",
+      "work_items": [
+        "M2-01",
+        "M2-03",
+        "M5-05"
+      ],
+      "verification": "Observed network value matches preview; forecasts state policy assumptions; late-tier purchase choices assessed.",
+      "delivery_status": "not_verified",
+      "evidence": [],
+      "checkpoint_classification": "proven local component",
+      "concrete_local_evidence": "Cross-tier marginal output matches the network calculation; conditional reset forecasts state policy assumptions. Independent225 marginal states,6916 forecast and8142 multiplier checks pass on pinned corrected rules.",
+      "remaining_local_work_or_verification": "Retain exact-input boundaries; optional-content update has focused proof but not a wholly rerun184-case matrix. No universal optimal reset claim is justified.",
+      "external_gate": "Observed player strategic understanding remains part of S44.",
+      "evidence_paths": [
+        "release/qa/integration-crossengine-20261019T143516578781Z/CROSS_ENGINE_REVIEW.md",
+        "release/qa/integration-balance-20261019T145921108068Z/BALANCE_REVIEW.md",
+        "release/qa/integration-optional-calibration-20261021T110210355242Z/OPTIONAL_CALIBRATION_REVIEW.md"
+      ],
+      "new_delivery_status_proposed": null,
+      "package_acceptance_unchanged": true
+    },
+    {
+      "id": "S08",
+      "requirement": "24 hours full production plus 48 hours at quarter rate; event-driven saved-policy replay",
+      "source": "V1_ROADMAP.md \u00a7\u00a73,6,8",
+      "work_items": [
+        "M3-01",
+        "M3-10",
+        "M5-01"
+      ],
+      "verification": "Equivalent event histories match integer decisions; 72-hour cap and 24-hour return budget tested.",
+      "delivery_status": "not_verified",
+      "evidence": [],
+      "checkpoint_classification": "proven local component",
+      "concrete_local_evidence": "24h full plus48h quarter and72h production cap, saved-policy event replay, typed/legacy continuation and progress-visible worker are implemented. Paused/retry paths preserve owed state; parity checks cover multi-cap absences.",
+      "remaining_local_work_or_verification": "Final current native lifecycle/replay fault matrix and repeated timing samples remain. Core parity does not certify runtime budgets.",
+      "external_gate": "Physical24h replay<=3s and startup/frame/thermal measurements under S31.",
+      "evidence_paths": [
+        "release/qa/integration-final-20261016T105843545492Z/INTEGRATION_REVIEW.md",
+        "release/qa/integration-balance-20261019T145921108068Z/BALANCE_REVIEW.md",
+        "release/qa/integration-reminders-initial-20261016T115431767720Z/REMINDERS_REVIEW.md",
+        "release/native-proof/platform-handoff.md"
+      ],
+      "new_delivery_status_proposed": null,
+      "package_acceptance_unchanged": true
+    },
+    {
+      "id": "S09",
+      "requirement": "Focus every 2 hours, capacity 12, queued +20% ten-minute charges and equal accessible calibration",
+      "source": "TIDEGLASS_DESIGN.md Phase 3",
+      "work_items": [
+        "M3-01",
+        "M3-04",
+        "M5-02"
+      ],
+      "verification": "No hidden reward loss, duration queue bugs or reflex-only route; both completions grant identical value.",
+      "delivery_status": "not_verified",
+      "evidence": [],
+      "checkpoint_classification": "proven local component",
+      "concrete_local_evidence": "Two-hour Focus,capacity12,+20% queued600s charges and equal accessible calibration are integrated. Optionality repair removes the campaign calibration gate; zero-Focus trajectories reach ending.",
+      "remaining_local_work_or_verification": "All12 pattern interaction/accessible UI variants need complete current target coverage; do not infer usability from equal reward arithmetic.",
+      "external_gate": "Physical assistive-input usability and human observation.",
+      "evidence_paths": [
+        "release/qa/integration-final-20261016T105843545492Z/INTEGRATION_REVIEW.md",
+        "release/qa/integration-optional-calibration-20261021T110210355242Z/OPTIONAL_CALIBRATION_REVIEW.md",
+        "release/qa/integration-inventory-20261021T104607526377Z/INVENTORY_REVIEW.md"
+      ],
+      "new_delivery_status_proposed": null,
+      "package_acceptance_unchanged": true
+    },
+    {
+      "id": "S10",
+      "requirement": "Automatic 8-hour Surveys, queue capacity 3, 10 Notes per completion",
+      "source": "TIDEGLASS_DESIGN.md Phase 3; economy.json",
+      "work_items": [
+        "M3-01",
+        "M3-10"
+      ],
+      "verification": "One daily collection retains designed supply; fractional timers persist and completion is idempotent.",
+      "delivery_status": "not_verified",
+      "evidence": [],
+      "checkpoint_classification": "proven local component",
+      "concrete_local_evidence": "Eight-hour automatic Surveys,capacity3,10-Note claim, fractional timers and idempotent receipts are implemented and exercised in full production trajectories.",
+      "remaining_local_work_or_verification": "Current final native one-daily-collection/return preservation check remains part of candidate regression.",
+      "external_gate": "Actual calendar play is separate from deterministic elapsed-time fixtures.",
+      "evidence_paths": [
+        "release/qa/integration-final-20261016T105843545492Z/INTEGRATION_REVIEW.md",
+        "release/qa/integration-balance-20261019T145921108068Z/BALANCE_REVIEW.md",
+        "release/qa/integration-optional-calibration-20261021T110210355242Z/OPTIONAL_CALIBRATION_REVIEW.md"
+      ],
+      "new_delivery_status_proposed": null,
+      "package_acceptance_unchanged": true
+    },
+    {
+      "id": "S11",
+      "requirement": "Three daily contracts, 10 Notes and 250 XP each, frozen goals, rerolls and seven-day/21-slot backlog",
+      "source": "TIDEGLASS_DESIGN.md Phase 3; V1_ROADMAP.md \u00a73",
+      "work_items": [
+        "M3-02",
+        "M3-10"
+      ],
+      "verification": "Seed/rollover/claim/overflow cases; no required prestige, ad or purchase objective.",
+      "delivery_status": "not_verified",
+      "evidence": [],
+      "checkpoint_classification": "proven local component",
+      "concrete_local_evidence": "Seeded frozen contracts,three daily slots,10Notes/250XP,rerolls,21-slot backlog and claim IDs are integrated. Offline daily refresh and exhausted-dossier availability defects were repaired with unchanged probes.",
+      "remaining_local_work_or_verification": "Current candidate rollover/backlog UI regression must bind final content pin; no ad/purchase/prestige requirement found.",
+      "external_gate": "Trusted real time/provider conditions cannot be inferred from local clocks.",
+      "evidence_paths": [
+        "release/qa/integration-final-20261016T105843545492Z/INTEGRATION_REVIEW.md",
+        "release/qa/integration-balance-20261019T145921108068Z/BALANCE_REVIEW.md",
+        "release/qa/integration-optional-calibration-20261021T110210355242Z/OPTIONAL_CALIBRATION_REVIEW.md",
+        "release/qa/integration-telemetry-repaired-20261019T141639166170Z/TELEMETRY_REVIEW.md"
+      ],
+      "new_delivery_status_proposed": null,
+      "package_acceptance_unchanged": true
+    },
+    {
+      "id": "S12",
+      "requirement": "Atomic saves, rolling backups, export/import, migrations and interruption recovery",
+      "source": "V1_ROADMAP.md \u00a7\u00a73,6,8",
+      "work_items": [
+        "M1-03",
+        "M1-08",
+        "M5-07",
+        "BOOT-SAVE"
+      ],
+      "verification": "Contract validation is followed by runtime fault injection; schemas alone cannot pass persistence acceptance.",
+      "delivery_status": "not_verified",
+      "evidence": [],
+      "checkpoint_classification": "proven local component",
+      "concrete_local_evidence": "Actual file repository fault injection, rolling generations,corruption checks,portable export/import,core schemas1\u20134 and content migration preserve state and reject invalid cross-partitions before commit.",
+      "remaining_local_work_or_verification": "Complete current native migration/interruption matrix, especially newer composed state and final study/cache changes. Study CAS has a separately documented stale-guard availability limit; it is not gameplay-save recovery proof.",
+      "external_gate": "Physical storage/power-loss/OS backup/update qualification.",
+      "evidence_paths": [
+        "release/persistence-review.md",
+        "release/qa/integration-final-20261016T105843545492Z/INTEGRATION_REVIEW.md",
+        "release/qa/integration-services-repaired-20261016T114721906724Z/INTEGRATION_REVIEW.md",
+        "release/qa/integration-native-ownership-repaired-20261019T145035575220Z/NATIVE_OWNERSHIP_REPAIRED_REVIEW.md",
+        "release/qa/integration-optional-calibration-20261021T110210355242Z/OPTIONAL_CALIBRATION_REVIEW.md",
+        "release/qa/integration-study-collection-final-20261021T113037215270Z/COLLECTION_REPAIRED_REVIEW.md",
+        "release/native-proof/platform-handoff.md"
+      ],
+      "new_delivery_status_proposed": null,
+      "package_acceptance_unchanged": true
+    },
+    {
+      "id": "S13",
+      "requirement": "Cloud revision conflicts preserve branches; no adding divergent wallets/lifetime/offline intervals",
+      "source": "V1_ROADMAP.md \u00a76",
+      "work_items": [
+        "M2-04",
+        "M3-06"
+      ],
+      "verification": "Two-device fork and recovery drill; merge only independently verified ownership and deduplicated receipts.",
+      "delivery_status": "not_verified",
+      "evidence": [],
+      "checkpoint_classification": "external gate",
+      "concrete_local_evidence": "Real loopback HTTP branch/revision conflict code preserves divergent saves and selected displaced backup; account/session binding and cloud import consistency were independently probed. No wallet addition merge is used.",
+      "remaining_local_work_or_verification": "Current full-client interruption/selection regression on final configured build; staging provision and operator setup still needed locally.",
+      "external_gate": "Actual two-device fork/recovery drill and hosted service; user has no devices/hosting.",
+      "evidence_paths": [
+        "release/qa/integration-services-repaired-20261016T114721906724Z/INTEGRATION_REVIEW.md",
+        "release/qa/integration-fulfillment-repaired-20261019T143906718168Z/FULFILLMENT_REPAIRED_REVIEW.md",
+        "release/qa/integration-native-ownership-repaired-20261019T145035575220Z/NATIVE_OWNERSHIP_REPAIRED_REVIEW.md",
+        "release/qa/integration-operations-final-20261021T104534667043Z/OPERATIONS_REVIEW.md"
+      ],
+      "new_delivery_status_proposed": null,
+      "package_acceptance_unchanged": true
+    },
+    {
+      "id": "S14",
+      "requirement": "Explicit event ordering, numeric remainder policy and pinned economic versions",
+      "source": "V1_ROADMAP.md \u00a7\u00a76,8",
+      "work_items": [
+        "M1-01",
+        "M1-04",
+        "M3-01",
+        "M3-10"
+      ],
+      "verification": "Version transition settles old interval once; no numerical tolerance creates an unaffordable purchase or extra Chart.",
+      "delivery_status": "not_verified",
+      "evidence": [],
+      "checkpoint_classification": "incomplete local work",
+      "concrete_local_evidence": "Exact event order,rate/remainder policy and pinned economy digest are implemented. Unknown economic digests reject before settlement; known cosmetic/content update preserves completed prefixes.",
+      "remaining_local_work_or_verification": "The current engine implements one fixed economy. There is no exercised old-economic-rules\u2192new-economic-rules interval transition. Explicit transition API/fixture and once-only settlement proof are still required before claiming this verification; content compatibility is not that proof.",
+      "external_gate": "Final native migration qualification after a supported transition exists.",
+      "evidence_paths": [
+        "release/qa/integration-numeric-20261019T135534237861Z/NUMERIC_REVIEW.md",
+        "release/qa/integration-final-20261016T105843545492Z/INTEGRATION_REVIEW.md",
+        "release/qa/integration-optional-calibration-20261021T110210355242Z/OPTIONAL_CALIBRATION_REVIEW.md"
+      ],
+      "new_delivery_status_proposed": null,
+      "package_acceptance_unchanged": true
+    },
+    {
+      "id": "S15",
+      "requirement": "Six chapters, ending and continued play; target 15\u201330 calendar days without hard time lock",
+      "source": "V1_ROADMAP.md \u00a73",
+      "work_items": [
+        "M1-06",
+        "M3-08",
+        "M4-06",
+        "M6-02",
+        "BOOT-CONTENT"
+      ],
+      "verification": "All goals reachable; observed later-chapter progression; ending independent of paid/optional completion.",
+      "delivery_status": "not_verified",
+      "evidence": [],
+      "checkpoint_classification": "missing/weak evidence",
+      "concrete_local_evidence": "Six chapter goals,ending and continued play are integrated. Independent optionality counterexample/fix and six30/90day literal zero-Focus/Support trajectories prove ending without paid/optional completion.",
+      "remaining_local_work_or_verification": "Keep campaign target and policy results explicit: fastest tested paths finish~10.5\u201311.17days, not evidence of15\u201330day human pacing. Do not add a hard time lock merely to match a simulated minimum.",
+      "external_gate": "Observed later-chapter and15\u201330calendar-day player progression, with non-reachers preserved.",
+      "evidence_paths": [
+        "release/qa/integration-optional-calibration-20261021T110210355242Z/OPTIONAL_CALIBRATION_REVIEW.md",
+        "release/qa/integration-balance-20261019T145921108068Z/BALANCE_REVIEW.md",
+        "release/qa/integration-final-20261016T105843545492Z/INTEGRATION_REVIEW.md"
+      ],
+      "new_delivery_status_proposed": null,
+      "package_acceptance_unchanged": true
+    },
+    {
+      "id": "S16",
+      "requirement": "Twelve challenge dossiers across three rule families, 100 Notes each",
+      "source": "V1_ROADMAP.md \u00a7\u00a73,7",
+      "work_items": [
+        "M3-08",
+        "M4-01",
+        "M4-06"
+      ],
+      "verification": "All three families playable; exit/restart isolated; Note acquisition/entry cost validated.",
+      "delivery_status": "not_verified",
+      "evidence": [],
+      "checkpoint_classification": "proven local component",
+      "concrete_local_evidence": "All12 dossiers and3 rule families are playable,isolated and deterministically completable. Entry costs and rewards participate in actual Note ledgers; exit/restart and cache-rule isolation have probes.",
+      "remaining_local_work_or_verification": "Final native all-family restart/exit UI and variants on the exact candidate remain; no missing scenario definition found.",
+      "external_gate": "Observed usability/strategy preference is not supplied by synthetic completion.",
+      "evidence_paths": [
+        "release/qa/integration-crossengine-20261019T143516578781Z/CROSS_ENGINE_REVIEW.md",
+        "release/qa/integration-balance-20261019T145921108068Z/BALANCE_REVIEW.md",
+        "release/qa/integration-final-20261016T105843545492Z/INTEGRATION_REVIEW.md"
+      ],
+      "new_delivery_status_proposed": null,
+      "package_acceptance_unchanged": true
+    },
+    {
+      "id": "S17",
+      "requirement": "Twelve authored calibration patterns with equivalent accessible completion",
+      "source": "V1_ROADMAP.md \u00a73",
+      "work_items": [
+        "M3-04",
+        "M4-06",
+        "M5-02"
+      ],
+      "verification": "Twelve actual patterns and their equal-value alternate paths are integrated.",
+      "delivery_status": "not_verified",
+      "evidence": [],
+      "checkpoint_classification": "proven local component",
+      "concrete_local_evidence": "Twelve actual data patterns and equal-value accessible routes are implemented and content-linked; rewards use the same production transition.",
+      "remaining_local_work_or_verification": "Finish all12 pattern UI/large-text/semantic reachability variants and record per-asset results.",
+      "external_gate": "Named physical assistive-input and usability qualification.",
+      "evidence_paths": [
+        "release/qa/integration-final-20261016T105843545492Z/INTEGRATION_REVIEW.md",
+        "release/qa/integration-inventory-20261021T104607526377Z/INVENTORY_REVIEW.md",
+        "release/qa/integration-registration-20261021T111626112740Z/REGISTRATION_REVIEW.md"
+      ],
+      "new_delivery_status_proposed": null,
+      "package_acceptance_unchanged": true
+    },
+    {
+      "id": "S18",
+      "requirement": "Eighteen main archive entries and six optional 50-Note decorations; no forced full collection",
+      "source": "V1_ROADMAP.md \u00a7\u00a73,7",
+      "work_items": [
+        "M4-06",
+        "M4-07",
+        "M5-05"
+      ],
+      "verification": "Content manifest, reachable unlocks and main-ending test with optional sinks unbought.",
+      "delivery_status": "not_verified",
+      "evidence": [],
+      "checkpoint_classification": "proven local component",
+      "concrete_local_evidence": "18 main archive entries and6 optional50-Note decorations are authored/integrated. Corrected simulations purchase all optional sinks and separate no-purchase ending paths; six real production decoration transitions are exercised.",
+      "remaining_local_work_or_verification": "Current archive/decoration text/state variants and canonical asset review still need complete evidence.",
+      "external_gate": "Observed content comprehension and actual pacing remain separate.",
+      "evidence_paths": [
+        "release/qa/integration-balance-20261019T145921108068Z/BALANCE_REVIEW.md",
+        "release/qa/integration-optional-calibration-20261021T110210355242Z/OPTIONAL_CALIBRATION_REVIEW.md",
+        "release/qa/integration-registration-20261021T111626112740Z/REGISTRATION_REVIEW.md"
+      ],
+      "new_delivery_status_proposed": null,
+      "package_acceptance_unchanged": true
+    },
+    {
+      "id": "S19",
+      "requirement": "One harbor with initial plus six restored presentations; 25 producer presentations",
+      "source": "V1_ROADMAP.md \u00a73",
+      "work_items": [
+        "M0-05",
+        "M1-07",
+        "M2-05",
+        "M3-09",
+        "M4-07",
+        "BOOT-CONTENT"
+      ],
+      "verification": "Actual integrated assets, all states and reduced-motion variants; registry counts do not imply completed art.",
+      "delivery_status": "not_verified",
+      "evidence": [],
+      "checkpoint_classification": "missing/weak evidence",
+      "concrete_local_evidence": "Seven actual harbor states and25 producer states exist with native painters,source/export mapping and actual widget/native captures. Representative style direction now has director+client review.",
+      "remaining_local_work_or_verification": "Execute complete per-ID default/reduced-motion,phone/tablet,text-scale and status matrix.162 canonical registered asset reviewer fields are unapproved;33 registration captures are samples,not full ART-V03. State count alone is insufficient.",
+      "external_gate": "Minimum physical-device import/GPU/frame/battery checks and subjective/human readability.",
+      "evidence_paths": [
+        "release/art/producer-independent-review.md",
+        "release/qa/integration-registration-20261021T111626112740Z/REGISTRATION_REVIEW.md",
+        "release/qa/integration-entry-gates-20261021T113426797640Z/ENTRY_GATE_REVIEW.md",
+        "release/native-proof/platform-handoff.md"
+      ],
+      "new_delivery_status_proposed": null,
+      "package_acceptance_unchanged": true
+    },
+    {
+      "id": "S20",
+      "requirement": "Season 1 Night of Returning Stars, 28-day lifecycle, isolated fleet, specified coefficients and no event prestige",
+      "source": "TIDEGLASS_DESIGN.md Phase 3; V1_ROADMAP.md \u00a73",
+      "work_items": [
+        "M4-02",
+        "M4-06",
+        "M6-07"
+      ],
+      "verification": "New/veteran equality; main power cannot enter; no economic export; actual live/end/archive behavior observed.",
+      "delivery_status": "not_verified",
+      "evidence": [],
+      "checkpoint_classification": "external gate",
+      "concrete_local_evidence": "Season1 isolated fleet/coefficient runtime,main-power exclusion,no economic export and live/end/archive fixtures exist. New/veteran paired engine traces match; scenario cache repair validated all12dossiers+season.",
+      "remaining_local_work_or_verification": "Final native source-pinned full lifecycle/offline transition rehearsal and operator start/end configuration.",
+      "external_gate": "Actual28-day live/end/archive season observation; accelerated time is not elapsed evidence.",
+      "evidence_paths": [
+        "release/qa/integration-crossengine-20261019T143516578781Z/CROSS_ENGINE_REVIEW.md",
+        "release/qa/integration-balance-20261019T145921108068Z/BALANCE_REVIEW.md",
+        "release/qa/integration-final-20261016T105843545492Z/INTEGRATION_REVIEW.md"
+      ],
+      "new_delivery_status_proposed": null,
+      "package_acceptance_unchanged": true
+    },
+    {
+      "id": "S21",
+      "requirement": "30 levels at 500 XP, 30 free slots with 10 cosmetics/20 fragments, 10 premium cosmetics, selected archived pass",
+      "source": "V1_ROADMAP.md \u00a73",
+      "work_items": [
+        "M4-02",
+        "M4-03",
+        "M4-06",
+        "M6-08"
+      ],
+      "verification": "15,000-XP finish; single XP grant, one selected pass and paid-pass continuation after archive.",
+      "delivery_status": "not_verified",
+      "evidence": [],
+      "checkpoint_classification": "external gate",
+      "concrete_local_evidence": "30x500XP,30free slots,10free cosmetics/20fragments,10premium cosmetics and single selected archived pass are integrated. Duplicate XP and fixture ownership boundaries are checked.",
+      "remaining_local_work_or_verification": "Current full pass/archived UI across states and local provider-outage/pending controls must be qualified on final build.",
+      "external_gate": "Verified real paid purchase/restoration and continued archived paid-pass completion through native stores.",
+      "evidence_paths": [
+        "release/qa/integration-final-20261016T105843545492Z/INTEGRATION_REVIEW.md",
+        "release/qa/integration-services-repaired-20261016T114721906724Z/INTEGRATION_REVIEW.md",
+        "release/qa/integration-native-ownership-repaired-20261019T145035575220Z/NATIVE_OWNERSHIP_REPAIRED_REVIEW.md",
+        "release/qa/integration-registration-20261021T111626112740Z/REGISTRATION_REVIEW.md"
+      ],
+      "new_delivery_status_proposed": null,
+      "package_acceptance_unchanged": true
+    },
+    {
+      "id": "S22",
+      "requirement": "36 unique cosmetics distributed 12 core, 10 free pass, 10 premium, 4 direct shop; supporter reuses shop items",
+      "source": "V1_ROADMAP.md \u00a73",
+      "work_items": [
+        "M4-06",
+        "M4-07",
+        "M4-08",
+        "BOOT-CONTENT"
+      ],
+      "verification": "Unique IDs and actual assets match each reward; no power effect or unbudgeted supporter art set.",
+      "delivery_status": "not_verified",
+      "evidence": [],
+      "checkpoint_classification": "proven local component",
+      "concrete_local_evidence": "36 unique IDs and actual painter/assets match12core/10free/10premium/4shop; supporter reuses4shop items. Independent inventory and native ownership checks found no core-power effects.",
+      "remaining_local_work_or_verification": "All36 locked/owned/equipped/thumbnail render/semantic/hitbox variants and per-ID verification still needed; core asset match is distinct from complete presentation acceptance.",
+      "external_gate": "Rights/distribution and actual store ownership qualification.",
+      "evidence_paths": [
+        "release/qa/integration-inventory-20261021T104607526377Z/INVENTORY_REVIEW.md",
+        "release/qa/integration-registration-20261021T111626112740Z/REGISTRATION_REVIEW.md",
+        "release/qa/integration-native-ownership-repaired-20261019T145035575220Z/NATIVE_OWNERSHIP_REPAIRED_REVIEW.md",
+        "release/qa/integration-entry-gates-20261021T113426797640Z/ENTRY_GATE_REVIEW.md"
+      ],
+      "new_delivery_status_proposed": null,
+      "package_acceptance_unchanged": true
+    },
+    {
+      "id": "S23",
+      "requirement": "Ambient soundtrack, interaction/milestone/Rechart cues, independent controls and supporter soundtrack delivery",
+      "source": "V1_ROADMAP.md \u00a73",
+      "work_items": [
+        "M1-07",
+        "M4-07",
+        "M5-06"
+      ],
+      "verification": "Licensed actual audio files, playback/volume/mute tests and working purchased soundtrack delivery.",
+      "delivery_status": "not_verified",
+      "evidence": [],
+      "checkpoint_classification": "external gate",
+      "concrete_local_evidence": "Actual authored AAC/WAV/ZIP assets,independent music/SFX controls,epoch race repair and native simulator decode samples exist. Real loopback authenticated ZIP stream,integrity/cancellation and bounded3-export/24h cache pass independent probes.",
+      "remaining_local_work_or_verification": "Finish current both-target audio/lifecycle/mute/queue/voice-bound checks,export-cache integration and source-credit review. Exact ZIP remains52,699,186bytes; metadata no longer calls implemented delivery absent.",
+      "external_gate": "Owner distribution terms,listening/mix approval,physical call/headphone routes,live host and real purchased soundtrack fulfillment.",
+      "evidence_paths": [
+        "release/qa/integration-native-ownership-repaired-20261019T145035575220Z/NATIVE_OWNERSHIP_REPAIRED_REVIEW.md",
+        "release/qa/integration-cache-20261021T105558701110Z/CACHE_REVIEW.md",
+        "release/qa/integration-entry-gates-20261021T113426797640Z/ENTRY_GATE_REVIEW.md",
+        "release/native-proof/platform-handoff.md",
+        "release/qa/integration-fulfillment-repaired-20261019T143906718168Z/FULFILLMENT_REPAIRED_REVIEW.md"
+      ],
+      "new_delivery_status_proposed": null,
+      "package_acceptance_unchanged": true
+    },
+    {
+      "id": "S24",
+      "requirement": "Cosmetic previews, localized price, verified purchases, restore, pending/retry/refund/revocation handling",
+      "source": "V1_ROADMAP.md \u00a7\u00a73,8,9",
+      "work_items": [
+        "M4-03",
+        "M4-04",
+        "M5-08"
+      ],
+      "verification": "Native sandbox evidence on both stores; no fake adapter accepted; verified entitlement delivered once.",
+      "delivery_status": "not_verified",
+      "evidence": [],
+      "checkpoint_classification": "external gate",
+      "concrete_local_evidence": "Native SDK adapters and backend signed verification/reconciliation handle duplicate,pending,refund,revocation and delayed account/seed changes in host/HTTP tests. Online supersession quarantines stale leases.",
+      "remaining_local_work_or_verification": "Configure actual production public pins/product IDs/environment,then run final full-client fault cases; test fixtures must remain labelled.",
+      "external_gate": "Both-store native sandbox purchase/restore/refund/acknowledgment and verified once-only delivery; no developer accounts available.",
+      "evidence_paths": [
+        "release/qa/integration-services-repaired-20261016T114721906724Z/INTEGRATION_REVIEW.md",
+        "release/qa/integration-fulfillment-repaired-20261019T143906718168Z/FULFILLMENT_REPAIRED_REVIEW.md",
+        "release/qa/integration-native-ownership-repaired-20261019T145035575220Z/NATIVE_OWNERSHIP_REPAIRED_REVIEW.md"
+      ],
+      "new_delivery_status_proposed": null,
+      "package_acceptance_unchanged": true
+    },
+    {
+      "id": "S25",
+      "requirement": "Equal ad/briefing six-token daily allowance; 300-second credits, speed/offline choice and additive buffs",
+      "source": "TIDEGLASS_DESIGN.md Phase 3; V1_ROADMAP.md \u00a7\u00a73,7",
+      "work_items": [
+        "M3-07",
+        "M4-05",
+        "M4-08",
+        "M5-05"
+      ],
+      "verification": "No-fill/refusal free path; +25% for 1200 seconds or bounded five-minute slice; +20% and +25% add to 1.45; full trajectories compared.",
+      "delivery_status": "not_verified",
+      "evidence": [],
+      "checkpoint_classification": "proven local component",
+      "concrete_local_evidence": "Shared six-token/day Support allowance,300-second credits,speed/offline choice and additive1.45 buffs are implemented; refusal/no-fill free route remains. Corrected full and focused current free/ad-fixture trajectories match economics.",
+      "remaining_local_work_or_verification": "Final current bridge persistence/no-fill/delayed callbacks regression; provider fixtures do not establish live ad authenticity.",
+      "external_gate": "Actual native rewarded-ad provider availability/consent/refusal verification.",
+      "evidence_paths": [
+        "release/qa/integration-final-20261016T105843545492Z/INTEGRATION_REVIEW.md",
+        "release/qa/integration-services-repaired-20261016T114721906724Z/INTEGRATION_REVIEW.md",
+        "release/qa/integration-balance-20261019T145921108068Z/BALANCE_REVIEW.md",
+        "release/qa/integration-optional-calibration-20261021T110210355242Z/OPTIONAL_CALIBRATION_REVIEW.md"
+      ],
+      "new_delivery_status_proposed": null,
+      "package_acceptance_unchanged": true
+    },
+    {
+      "id": "S26",
+      "requirement": "Settings, target input, readable numbers, contextual help and opt-in quiet-hour notifications",
+      "source": "V1_ROADMAP.md \u00a73",
+      "work_items": [
+        "M3-05",
+        "M5-02"
+      ],
+      "verification": "Large text/reduced motion/non-color cues and critical controls work on named targets.",
+      "delivery_status": "not_verified",
+      "evidence": [],
+      "checkpoint_classification": "missing/weak evidence",
+      "concrete_local_evidence": "Settings,notation,contextual help,large-text/pseudo samples and opt-in quiet-hour scheduling exist.30reminder tests+384zones cover host lifecycle/quiet-hour planning; help has independent source/copy checks.",
+      "remaining_local_work_or_verification": "Complete all changed screens/critical actions at100/150/200%,phone/tablet,pseudo,non-color states,static motion and keyboard/semantics. Final study UI has a passing narrow pin,not native delivery proof.",
+      "external_gate": "Physical target navigation/screen-reader/notification delivery and OS permission behavior.",
+      "evidence_paths": [
+        "release/qa/integration-reminders-initial-20261016T115431767720Z/REMINDERS_REVIEW.md",
+        "release/qa/integration-help-repaired-20261021T101942186162Z/HELP_REPAIRED_REVIEW.md",
+        "release/localization-author-review.md",
+        "release/qa/integration-entry-gates-20261021T113426797640Z/ENTRY_GATE_REVIEW.md",
+        "release/qa/integration-study-ui-final-20261021T114011830149Z/STUDY_UI_REVIEW.md"
+      ],
+      "new_delivery_status_proposed": null,
+      "package_acceptance_unchanged": true
+    },
+    {
+      "id": "S27",
+      "requirement": "Help, recovery guide, release notes, credits, privacy/support URLs and runbooks",
+      "source": "V1_ROADMAP.md \u00a7\u00a73,9,12",
+      "work_items": [
+        "M5-03",
+        "M5-04",
+        "M7-05",
+        "M7-07"
+      ],
+      "verification": "All pages and review/support links work and match actual data and products.",
+      "delivery_status": "not_verified",
+      "evidence": [],
+      "checkpoint_classification": "incomplete local work",
+      "concrete_local_evidence": "In-game help,recovery,release notes,credits,operations runbooks andSeason2brief are concrete source artifacts with reviewed local entry points.",
+      "remaining_local_work_or_verification": "Public privacy/support pages remain unproduced locally; draft hosting-independent pages from actual data/product behavior and test links. Approved identity/contact/URLs, final credits/licenses and changed-state help review still needed.",
+      "external_gate": "Host/publish approved public endpoints and verify live reviewer/support links with operator identity.",
+      "evidence_paths": [
+        "release/qa/integration-help-repaired-20261021T101942186162Z/HELP_REPAIRED_REVIEW.md",
+        "release/qa/integration-registration-20261021T111626112740Z/REGISTRATION_REVIEW.md",
+        "release/qa/integration-operations-final-20261021T104534667043Z/OPERATIONS_REVIEW.md",
+        "release/qa/integration-entry-gates-20261021T113426797640Z/ENTRY_GATE_REVIEW.md"
+      ],
+      "new_delivery_status_proposed": null,
+      "package_acceptance_unchanged": true
+    },
+    {
+      "id": "S28",
+      "requirement": "No known save-loss, duplicate grant, negative wallet or undelivered verified purchase",
+      "source": "V1_ROADMAP.md \u00a78",
+      "work_items": [
+        "M1-08",
+        "M3-10",
+        "M5-07",
+        "M5-08",
+        "M7-06"
+      ],
+      "verification": "Fault/replay evidence; zero critical or major normal-progression/access/purchase defects at release.",
+      "delivery_status": "not_verified",
+      "evidence": [],
+      "checkpoint_classification": "missing/weak evidence",
+      "concrete_local_evidence": "Independent exact wallet/reset/reward/save/entitlement and account-race probes found and repaired concrete defects; original failures retained. No local report claims a guarantee from passing tests.",
+      "remaining_local_work_or_verification": "Complete final composed-candidate regressions and open issue disposition. STUDY005 final UI host repair passes; a broad zero-major statement still needs exact candidate scope and current fault evidence.",
+      "external_gate": "Real purchase delivery/native device and live-service behavior must meet release gates.",
+      "evidence_paths": [
+        "release/qa/integration-final-20261016T105843545492Z/INTEGRATION_REVIEW.md",
+        "release/qa/integration-services-repaired-20261016T114721906724Z/INTEGRATION_REVIEW.md",
+        "release/qa/integration-fulfillment-repaired-20261019T143906718168Z/FULFILLMENT_REPAIRED_REVIEW.md",
+        "release/qa/integration-native-ownership-repaired-20261019T145035575220Z/NATIVE_OWNERSHIP_REPAIRED_REVIEW.md",
+        "release/qa/integration-study-collection-final-20261021T113037215270Z/COLLECTION_REPAIRED_REVIEW.md",
+        "release/native-proof/platform-handoff.md",
+        "release/qa/integration-study-ui-final-20261021T114011830149Z/STUDY_UI_REVIEW.md"
+      ],
+      "new_delivery_status_proposed": null,
+      "package_acceptance_unchanged": true
+    },
+    {
+      "id": "S29",
+      "requirement": "Numeric parity: matching integer decisions; continuous error budget initially 1e-8 outside near-zero cases",
+      "source": "V1_ROADMAP.md \u00a78",
+      "work_items": [
+        "M1-01",
+        "M3-10",
+        "M5-05"
+      ],
+      "verification": "Production number policy specifies absolute floor and tolerance without changing award thresholds.",
+      "delivery_status": "not_verified",
+      "evidence": [],
+      "checkpoint_classification": "proven local component",
+      "concrete_local_evidence": "Exact discrete decisions with zero purchase/award tolerance and bounded continuous/reference error are documented and independently tested. Main-only cache parity plus repaired scenario order/eviction traces are distinct.",
+      "remaining_local_work_or_verification": "Reuse proof only with pinned numeric sources; do not restore invalidated cache-era88/v2/v3/supplemental-v1 conclusions.",
+      "external_gate": "Native arithmetic fixture reproduction for each final target is a candidate prerequisite.",
+      "evidence_paths": [
+        "release/qa/integration-numeric-20261019T135534237861Z/NUMERIC_REVIEW.md",
+        "release/qa/integration-crossengine-20261019T143516578781Z/CROSS_ENGINE_REVIEW.md",
+        "release/qa/integration-balance-20261019T145921108068Z/BALANCE_REVIEW.md",
+        "release/qa/integration-initial-20261016T104939468348Z/M0-02_REVIEW.md"
+      ],
+      "new_delivery_status_proposed": null,
+      "package_acceptance_unchanged": true
+    },
+    {
+      "id": "S30",
+      "requirement": "99.5% crash-free sessions over 10,000 observed sessions, per platform/device and critical-flow review",
+      "source": "V1_ROADMAP.md \u00a78",
+      "work_items": [
+        "M5-04",
+        "M6-05",
+        "M6-07",
+        "M7-06"
+      ],
+      "verification": "Real instrumented session denominator and device breakdown; no critical-flow crash left open.",
+      "delivery_status": "not_verified",
+      "evidence": [],
+      "checkpoint_classification": "incomplete local work",
+      "concrete_local_evidence": "Opt-in recorder/adjudicator and schema2 valid-vs-return semantics now have65 independent-replayed cases and real Dart\u2192Python fixture parity. Missing starts/streams remain explicit; fixed registry is separate.",
+      "remaining_local_work_or_verification": "Study UI durable-start/withdrawal/retry source and13English/12pseudo host cases now pass. Qualify actual native integration/crash linkage including pre-Dart gaps,collector capacity,registry handling and unknown outcomes; operational telemetry alone is not a crash-free denominator.",
+      "external_gate": "10,000 genuinely observed sessions with>=99.5% crash-free,device/platform and critical-flow review; no participants/devices available.",
+      "evidence_paths": [
+        "release/qa/integration-study-20261021T102508755253Z/STUDY_REVIEW.md",
+        "release/qa/integration-study-collection-final-20261021T113037215270Z/COLLECTION_REPAIRED_REVIEW.md",
+        "release/qa/integration-telemetry-repaired-20261019T141639166170Z/TELEMETRY_REVIEW.md",
+        "release/qa/integration-operations-final-20261021T104534667043Z/OPERATIONS_REVIEW.md",
+        "release/qa/integration-study-ui-final-20261021T114011830149Z/STUDY_UI_REVIEW.md"
+      ],
+      "new_delivery_status_proposed": null,
+      "package_acceptance_unchanged": true
+    },
+    {
+      "id": "S31",
+      "requirement": "60/30fps targets, p95 startup \u22645s, 24h replay \u22643s, measured 30-minute battery/thermal usability",
+      "source": "V1_ROADMAP.md \u00a78",
+      "work_items": [
+        "M5-01",
+        "M5-07"
+      ],
+      "verification": "Named physical devices and test conditions; p95 evidence; progress-visible chunking preserves owed work.",
+      "delivery_status": "not_verified",
+      "evidence": [],
+      "checkpoint_classification": "external gate",
+      "concrete_local_evidence": "Event-driven worker,progress/retry/owed-state preservation and numeric memoization have local correctness/performance evidence; simulator/emulator debug timings are labelled.",
+      "remaining_local_work_or_verification": "Prepare reproducible startup/replay/frame/scene disposal/measurement harness and final candidate before device access; existing single timings do not estimate p95.",
+      "external_gate": "Named physical60/30fps,p95startup<=5s,replay<=3s and30-minute battery/thermal usability with declared conditions.",
+      "evidence_paths": [
+        "release/qa/integration-numeric-20261019T135534237861Z/NUMERIC_REVIEW.md",
+        "release/qa/integration-crossengine-20261019T143516578781Z/CROSS_ENGINE_REVIEW.md",
+        "release/qa/integration-reminders-initial-20261016T115431767720Z/REMINDERS_REVIEW.md",
+        "release/native-proof/platform-handoff.md"
+      ],
+      "new_delivery_status_proposed": null,
+      "package_acceptance_unchanged": true
+    },
+    {
+      "id": "S32",
+      "requirement": "15 new moderated testers and 80% comprehension target; first prestige 15\u201330 minutes among reachers plus non-reachers",
+      "source": "V1_ROADMAP.md \u00a7\u00a75,8",
+      "work_items": [
+        "M2-06",
+        "M2-07",
+        "M6-04"
+      ],
+      "verification": "Actual study records; no bot population or artificial filtering is called user evidence.",
+      "delivery_status": "not_verified",
+      "evidence": [],
+      "checkpoint_classification": "external gate",
+      "concrete_local_evidence": "Moderated first-session protocol,comprehension rubric,first-prestige reacher/non-reacher reporting and no-bot substitutions are specified.",
+      "remaining_local_work_or_verification": "Finalize approved participant materials/recruitment/eligibility and actual study build qualification before enrollment.",
+      "external_gate": "At least15new moderated people,80%comprehension target and observed15\u201330minute first prestige plus non-reachers.",
+      "evidence_paths": [
+        "release/qa/integration-study-20261021T102508755253Z/STUDY_REVIEW.md",
+        "release/qa/integration-study-collection-final-20261021T113037215270Z/COLLECTION_REPAIRED_REVIEW.md"
+      ],
+      "new_delivery_status_proposed": null,
+      "package_acceptance_unchanged": true
+    },
+    {
+      "id": "S33",
+      "requirement": "30/90-day simulations of visit/reset/buy/bonus strategies and Note scarcity",
+      "source": "V1_ROADMAP.md \u00a77",
+      "work_items": [
+        "M5-05",
+        "M6-03"
+      ],
+      "verification": "No-bonus/free/ad full trajectories, 1/3/6 visits and 1,750-Note optional budget with unlock timing.",
+      "delivery_status": "not_verified",
+      "evidence": [],
+      "checkpoint_classification": "proven local component",
+      "concrete_local_evidence": "Corrected94+90 production cases have all184 Note ledgers independently checked;13exact replays and1843real sink purchases verified.1750Note affordability,1/3/6visits,reset/buy/bonus policies covered. Current optionality change adds15focused cases+4exact replays.",
+      "remaining_local_work_or_verification": "184-case output is explicitly pre-optional-calibration content;15current cases prove affected optionality/parity only. If a new full beta matrix is claimed, rerun/review its exact current inputs; no beta freeze accepted.",
+      "external_gate": "Observed pacing is not obtained from virtual-day simulations.",
+      "evidence_paths": [
+        "release/qa/integration-balance-20261019T145921108068Z/BALANCE_REVIEW.md",
+        "release/qa/integration-optional-calibration-20261021T110210355242Z/OPTIONAL_CALIBRATION_REVIEW.md",
+        "release/qa/integration-crossengine-20261019T143516578781Z/CROSS_ENGINE_REVIEW.md"
+      ],
+      "new_delivery_status_proposed": null,
+      "package_acceptance_unchanged": true
+    },
+    {
+      "id": "S34",
+      "requirement": "Real D30 and 28-day season, targets 500 starts/10,000 sessions; uncertainty and baseline tracking",
+      "source": "V1_ROADMAP.md \u00a75",
+      "work_items": [
+        "M6-01",
+        "M6-02",
+        "M6-07",
+        "M5-05"
+      ],
+      "verification": "Full observation windows, retained churned installs in denominator, config/acquisition/exclusion records. Before enrollment preregister primary outcome and duration; state descriptive precision, and separately compute MDE/power for any causal experiment. Planning sample targets are not power guarantees.",
+      "delivery_status": "not_verified",
+      "evidence": [],
+      "checkpoint_classification": "external gate",
+      "concrete_local_evidence": "D7-primary/D30-required descriptive analyzer uses mature half-open windows,Wilson intervals,missingness bounds and fixed enrollment denominator. Collector qualification is separate and synthetic outputs cannot be observations.",
+      "remaining_local_work_or_verification": "Freeze approved pre-enrollment protocol/config/acquisition/exclusions and complete native collector/registry qualification. Compute power only if a causal experiment is actually planned.",
+      "external_gate": "Real matureD30/28-day season,planning500starts/10,000sessions and truthful external evidence; no calendar shortcut.",
+      "evidence_paths": [
+        "release/qa/integration-study-20261021T102508755253Z/STUDY_REVIEW.md",
+        "release/qa/integration-study-collection-final-20261021T113037215270Z/COLLECTION_REPAIRED_REVIEW.md"
+      ],
+      "new_delivery_status_proposed": null,
+      "package_acceptance_unchanged": true
+    },
+    {
+      "id": "S35",
+      "requirement": "D1/D7/D30 35/15/7% review hypotheses, strategy variety, welfare and commercial cost assessment",
+      "source": "V1_ROADMAP.md \u00a78",
+      "work_items": [
+        "M6-02",
+        "M7-01"
+      ],
+      "verification": "Evidence-backed launch/extend/revise decision; no automatic retention waiver of correctness or fairness.",
+      "delivery_status": "not_verified",
+      "evidence": [],
+      "checkpoint_classification": "external gate",
+      "concrete_local_evidence": "35/15/7%review hypotheses,uncertainty,welfare,strategy and costs are preserved; simulation evidence is labelled.",
+      "remaining_local_work_or_verification": "Define final operating cost inputs and preregister actual descriptive decision record; no automatic release waiver.",
+      "external_gate": "Real cohort,welfare/commercial evidence and accountable launch/extend/revise decision.",
+      "evidence_paths": [
+        "release/qa/integration-study-20261021T102508755253Z/STUDY_REVIEW.md",
+        "release/qa/integration-balance-20261019T145921108068Z/BALANCE_REVIEW.md"
+      ],
+      "new_delivery_status_proposed": null,
+      "package_acceptance_unchanged": true
+    },
+    {
+      "id": "S36",
+      "requirement": "Current platform review, accurate listing, sandbox tests and final store acceptance",
+      "source": "V1_ROADMAP.md \u00a79",
+      "work_items": [
+        "M0-03",
+        "M7-03",
+        "M7-07"
+      ],
+      "verification": "Recheck official requirements near submission; accepted native builds and working products/reviewer access.",
+      "delivery_status": "not_verified",
+      "evidence": [],
+      "checkpoint_classification": "external gate",
+      "concrete_local_evidence": "Local native debug/unsigned export pipeline and draft accurate listing/creative exist; unavailable account/product/host dependencies are explicit.",
+      "remaining_local_work_or_verification": "Current store checklist/identity/privacy labels/working product configuration/reviewer instructions must be prepared against actual candidate and official submission-time rules.",
+      "external_gate": "Signed accepted iOS/Android distribution builds,working native sandbox products and platform review approval.",
+      "evidence_paths": [
+        "release/native-proof/platform-handoff.md",
+        "release/store/CLIENT_REVIEW.md"
+      ],
+      "new_delivery_status_proposed": null,
+      "package_acceptance_unchanged": true
+    },
+    {
+      "id": "S37",
+      "requirement": "Monitoring, support diagnostics, backups, feature disables, rollout stops and compatible forward repair",
+      "source": "V1_ROADMAP.md \u00a7\u00a76,12",
+      "work_items": [
+        "M5-04",
+        "M6-05",
+        "M6-08",
+        "M7-04",
+        "M7-08"
+      ],
+      "verification": "Staging and live-operation drills; never roll a newer save into an unsupported older executable.",
+      "delivery_status": "not_verified",
+      "evidence": [],
+      "checkpoint_classification": "external gate",
+      "concrete_local_evidence": "Real read-only health/schema/deadline checks,consistent backup,isolated deletion rehearsal and service feature controls have adversarial Python/CLI evidence. Unknown schemas/indexes and future telemetry now fail clearly.",
+      "remaining_local_work_or_verification": "Prepare final configured staging drill for restore/monitor/alert/stop/forward repair; define operational owners and actual notification destination. No incompatible older-executable rollback is allowed.",
+      "external_gate": "Hosted staging/live operation drills,load/support/refund replay and actual operational alerts.",
+      "evidence_paths": [
+        "release/qa/integration-operations-final-20261021T104534667043Z/OPERATIONS_REVIEW.md",
+        "release/qa/integration-services-repaired-20261016T114721906724Z/INTEGRATION_REVIEW.md",
+        "release/qa/integration-fulfillment-repaired-20261019T143906718168Z/FULFILLMENT_REPAIRED_REVIEW.md"
+      ],
+      "new_delivery_status_proposed": null,
+      "package_acceptance_unchanged": true
+    },
+    {
+      "id": "S38",
+      "requirement": "14 actual days of launch coverage, incident follow-through, final v1 record and Season 2 brief",
+      "source": "V1_ROADMAP.md \u00a712",
+      "work_items": [
+        "M7-08",
+        "OPS-14"
+      ],
+      "verification": "Dated operating report, fixes/owners and ongoing costs; future content is a brief, not unbudgeted production.",
+      "delivery_status": "not_verified",
+      "evidence": [],
+      "checkpoint_classification": "external gate",
+      "concrete_local_evidence": "Season2brief and operating/runbook documents exist; original14-day coverage requirement retained.",
+      "remaining_local_work_or_verification": "Complete approved ownership/escalation/cost/support schedule and final v1 operating-record template against shipped candidate.",
+      "external_gate": "Launch and14actual dated days of incident coverage/follow-through; no simulated elapsed interval.",
+      "evidence_paths": [
+        "release/qa/integration-registration-20261021T111626112740Z/REGISTRATION_REVIEW.md",
+        "release/qa/integration-operations-final-20261021T104534667043Z/OPERATIONS_REVIEW.md"
+      ],
+      "new_delivery_status_proposed": null,
+      "package_acceptance_unchanged": true
+    },
+    {
+      "id": "S39",
+      "requirement": "Privacy, consent/refusal, account deletion/export and service outages reflect actual SDK behavior",
+      "source": "V1_ROADMAP.md \u00a7\u00a76,9",
+      "work_items": [
+        "M3-06",
+        "M5-03"
+      ],
+      "verification": "Native network/SDK audit and lifecycle/outage tests; no policy page alone counts as implementation.",
+      "delivery_status": "not_verified",
+      "evidence": [],
+      "checkpoint_classification": "missing/weak evidence",
+      "concrete_local_evidence": "Independent account/consent/credential races,telemetry withdrawal/deletion,signed-cache revocation and local study erasure pass repaired pins. Optional account services remain separate from guest game/study.",
+      "remaining_local_work_or_verification": "Study UI host/source boundary now passes. Native storage/network behavior and public policy pages from actual SDK inventory remain; permissions/backup and cross-app clipboard/export limits need current-candidate audit.",
+      "external_gate": "Actual native SDK network/refusal/advertising behavior on targets; lawful owner retention/deletion terms and public endpoints.",
+      "evidence_paths": [
+        "release/qa/integration-services-repaired-20261016T114721906724Z/INTEGRATION_REVIEW.md",
+        "release/qa/integration-telemetry-repaired-20261019T141639166170Z/TELEMETRY_REVIEW.md",
+        "release/qa/integration-fulfillment-repaired-20261019T143906718168Z/FULFILLMENT_REPAIRED_REVIEW.md",
+        "release/qa/integration-native-ownership-repaired-20261019T145035575220Z/NATIVE_OWNERSHIP_REPAIRED_REVIEW.md",
+        "release/qa/integration-study-collection-final-20261021T113037215270Z/COLLECTION_REPAIRED_REVIEW.md",
+        "release/qa/integration-cache-20261021T105558701110Z/CACHE_REVIEW.md",
+        "release/qa/integration-study-ui-final-20261021T114011830149Z/STUDY_UI_REVIEW.md"
+      ],
+      "new_delivery_status_proposed": null,
+      "package_acceptance_unchanged": true
+    },
+    {
+      "id": "S40",
+      "requirement": "Reproducible native builds, explicit stack/toolchain feasibility and configuration compatibility",
+      "source": "V1_ROADMAP.md \u00a7\u00a75,6",
+      "work_items": [
+        "M0-02",
+        "M0-03",
+        "M0-08",
+        "M1-04"
+      ],
+      "verification": "Actual build/probe logs, pinned versions, safe defaults and rejection of incompatible updates.",
+      "delivery_status": "not_verified",
+      "evidence": [],
+      "checkpoint_classification": "missing/weak evidence",
+      "concrete_local_evidence": "Pinned toolchain/source/locks,three debug artifacts and unsigned target exports demonstrate build feasibility; incompatible economic/content settings reject safely.",
+      "remaining_local_work_or_verification": "Capture final immutable candidate including newest local work,run all host/native/upgrade checks and archive artifact/config hashes. Current152 and oldd85 are distinct; later source cannot inherit them.",
+      "external_gate": "Signing/distribution accounts and final physical native feasibility/service qualifications.",
+      "evidence_paths": [
+        "release/native-proof/platform-handoff.md",
+        "release/qa/integration-initial-20261016T104939468348Z/M0-02_REVIEW.md",
+        "release/qa/integration-optional-calibration-20261021T110210355242Z/OPTIONAL_CALIBRATION_REVIEW.md"
+      ],
+      "new_delivery_status_proposed": null,
+      "package_acceptance_unchanged": true
+    },
+    {
+      "id": "S41",
+      "requirement": "Budget and device/test plan adapted to AI delivery; protect scope and independent review",
+      "source": "V1_ROADMAP.md \u00a7\u00a71,4,11; user AI replacement instruction",
+      "work_items": [
+        "M0-01",
+        "M0-04",
+        "M0-06",
+        "M0-07"
+      ],
+      "verification": "Execution costs and access needs named; no inherited human-week promise or unsupported tool capability claim.",
+      "delivery_status": "not_verified",
+      "evidence": [],
+      "checkpoint_classification": "proven local component",
+      "concrete_local_evidence": "Six logical AI roles,max4concurrency,independent review,resource/cost plan and user-confirmed missing accounts/devices/hosting/testers are explicit. Original staffing replaced without inventing human-week delivery.",
+      "remaining_local_work_or_verification": "Track actual costs/ownership changes and maintain review separation; M0-07 cannot confirm unavailable resources.",
+      "external_gate": "Procurement/accounts/test recruitment require actual owner resources; no spending inferred.",
+      "evidence_paths": [
+        "implementation/program.json",
+        "docs/quality/V1_QUALITY_PROTOCOL.md"
+      ],
+      "new_delivery_status_proposed": null,
+      "package_acceptance_unchanged": true
+    },
+    {
+      "id": "S42",
+      "requirement": "Complete release evidence pack and approved candidate with only accepted minor issues",
+      "source": "V1_ROADMAP.md \u00a7\u00a78,12",
+      "work_items": [
+        "M7-01",
+        "M7-02",
+        "M7-06"
+      ],
+      "verification": "Evidence from exact candidate/config/content versions; release status cannot be inferred from plan coverage.",
+      "delivery_status": "not_verified",
+      "evidence": [],
+      "checkpoint_classification": "incomplete local work",
+      "concrete_local_evidence": "Many immutable component pins,original failure logs and exact candidate reports exist; original65criteria/dependencies are preserved separately from3BOOT approvals.",
+      "remaining_local_work_or_verification": "Finish comprehensive current audit and final candidate/evidence index; close local defects and disposition only truly minor accepted issues. Plan coverage cannot establish a finished game.",
+      "external_gate": "All external release obligations and accountable final approval remain.",
+      "evidence_paths": [
+        "implementation/program.json",
+        "release/native-proof/platform-handoff.md",
+        "release/qa/integration-study-collection-final-20261021T113037215270Z/COLLECTION_REPAIRED_REVIEW.md",
+        "release/qa/integration-entry-gates-20261021T113426797640Z/ENTRY_GATE_REVIEW.md"
+      ],
+      "new_delivery_status_proposed": null,
+      "package_acceptance_unchanged": true
+    },
+    {
+      "id": "S43",
+      "requirement": "Polish observed content/UI issues and create accurate store/launch assets",
+      "source": "V1_ROADMAP.md \u00a7\u00a75,12",
+      "work_items": [
+        "M6-04",
+        "M6-06",
+        "M5-06",
+        "M7-05"
+      ],
+      "verification": "Changed screens rechecked on targets; final screenshots/footage represent shipped product.",
+      "delivery_status": "not_verified",
+      "evidence": [],
+      "checkpoint_classification": "missing/weak evidence",
+      "concrete_local_evidence": "Draft store graphic/icon/copy had independent pixel/source review; representative current native images are labelled and observed UI issues were repaired.",
+      "remaining_local_work_or_verification": "Recheck all newly changed screens,replace draft screenshots/footage with actual approved final candidate and ensure advertised optional services are enabled/working. No final short footage proof found.",
+      "external_gate": "Store ingestion/crops/current policy and observed-player polish findings require final platform/human context.",
+      "evidence_paths": [
+        "release/store/CLIENT_REVIEW.md",
+        "release/localization-author-review.md",
+        "release/qa/integration-help-repaired-20261021T101942186162Z/HELP_REPAIRED_REVIEW.md",
+        "release/native-proof/platform-handoff.md"
+      ],
+      "new_delivery_status_proposed": null,
+      "package_acceptance_unchanged": true
+    },
+    {
+      "id": "S44",
+      "requirement": "Mid/late progression adds meaningful decisions and at least two viable strategy/challenge approaches",
+      "source": "V1_ROADMAP.md \u00a7\u00a73,7,8",
+      "work_items": [
+        "M1-06",
+        "M3-08",
+        "M5-05",
+        "M6-02"
+      ],
+      "verification": "Combined simulation and observed play; no excessive daily-check-in or paid requirement for ending.",
+      "delivery_status": "not_verified",
+      "evidence": [],
+      "checkpoint_classification": "external gate",
+      "concrete_local_evidence": "Two or more deterministic challenge/purchase/reset approaches and low-tier externalities have production simulation evidence;1dailyvisit zero-bonus ending succeeds without paid/optional gates.",
+      "remaining_local_work_or_verification": "Keep policy objective/censoring and10.5\u201311.17day minimum-path limits explicit; final beta strategy matrix/copy must match current content.",
+      "external_gate": "Combined actual player observations of meaningful decisions,welfare and check-in burden; simulation alone cannot close it.",
+      "evidence_paths": [
+        "release/qa/integration-balance-20261019T145921108068Z/BALANCE_REVIEW.md",
+        "release/qa/integration-optional-calibration-20261021T110210355242Z/OPTIONAL_CALIBRATION_REVIEW.md",
+        "release/qa/integration-crossengine-20261019T143516578781Z/CROSS_ENGINE_REVIEW.md"
+      ],
+      "new_delivery_status_proposed": null,
+      "package_acceptance_unchanged": true
+    }
+  ],
+  "original_packages_to_criteria_and_scope": [
+    {
+      "id": "M0-01",
+      "title": "Define the release contract",
+      "original_acceptance": "Freeze audience, iOS/Android scope, English launch, six-chapter content budget, ethical constraints, device targets and decision owners.",
+      "original_dependencies": [],
+      "program_status": "accepted",
+      "scope_ids": [
+        "S01",
+        "S41"
+      ],
+      "criterion_assessment": "Accepted original foundation: release contract/audience/targets/owners frozen. This does not mean native launch.",
+      "accepted_by_this_audit": false
+    },
+    {
+      "id": "M0-02",
+      "title": "Qualify engine and numeric approach",
+      "original_acceptance": "Build the same deterministic purchase/reset case on both native targets; compare large-number candidates and record the engine decision.",
+      "original_dependencies": [
+        "M0-01"
+      ],
+      "program_status": "accepted",
+      "scope_ids": [
+        "S01",
+        "S40"
+      ],
+      "criterion_assessment": "Accepted narrow foundation: deterministic native probe and numeric decision separately reviewed; later-source native proof is not inherited.",
+      "accepted_by_this_audit": false
+    },
+    {
+      "id": "M0-03",
+      "title": "Prove native service integrations",
+      "original_acceptance": "Demonstrate sandbox purchase/restore, ad availability and cloud revision handling in a throwaway integration build; list SDK and account dependencies.",
+      "original_dependencies": [
+        "M0-01"
+      ],
+      "program_status": "in_progress",
+      "scope_ids": [
+        "S36",
+        "S40"
+      ],
+      "criterion_assessment": "Real SDK/provider code and host/HTTP checks exist; both-store sandbox/ad availability and actual cloud integration build remain external.",
+      "accepted_by_this_audit": false
+    },
+    {
+      "id": "M0-04",
+      "title": "Prototype the player journey",
+      "original_acceptance": "Clickable flows cover first purchase, Rechart preview, offline return and recovery; identify accessibility and small-screen constraints.",
+      "original_dependencies": [
+        "M0-01"
+      ],
+      "program_status": "accepted",
+      "scope_ids": [
+        "S41"
+      ],
+      "criterion_assessment": "Accepted original clickable journey foundation; actual later UI and accessibility still need candidate qualification.",
+      "accepted_by_this_audit": false
+    },
+    {
+      "id": "M0-05",
+      "title": "Set visual production budget",
+      "original_acceptance": "Approve one harbor look, one producer milestone transformation, asset reuse rules and a complete asset manifest.",
+      "original_dependencies": [
+        "M0-01"
+      ],
+      "program_status": "in_progress",
+      "scope_ids": [
+        "S19"
+      ],
+      "criterion_assessment": "Representative actual harbor/producer direction and manifest are now director/client reviewed. Review current program status separately; this is not all-asset approval.",
+      "accepted_by_this_audit": false
+    },
+    {
+      "id": "M0-06",
+      "title": "Create quality and device plan",
+      "original_acceptance": "Name reference devices, severities, reproducible save fixtures, test recruitment plan and the release evidence checklist.",
+      "original_dependencies": [
+        "M0-01"
+      ],
+      "program_status": "accepted",
+      "scope_ids": [
+        "S41"
+      ],
+      "criterion_assessment": "Accepted named-device/severity/fixture/recruitment/evidence plan; no physical test or participant result implied.",
+      "accepted_by_this_audit": false
+    },
+    {
+      "id": "M0-07",
+      "title": "Establish delivery and operating costs",
+      "original_acceptance": "Confirm six role assignments, contractors, distribution accounts, tester recruitment and service cost model; reforecast for holidays and absences.",
+      "original_dependencies": [
+        "M0-01"
+      ],
+      "program_status": "in_progress",
+      "scope_ids": [
+        "S41"
+      ],
+      "criterion_assessment": "AI assignments/cost model explicit, but unavailable distribution accounts,test recruitment,hosting/device access cannot be confirmed.",
+      "accepted_by_this_audit": false
+    },
+    {
+      "id": "M0-08",
+      "title": "Create reproducible builds",
+      "original_acceptance": "Automated builds run on both targets, version configurations and preserve build artifacts; no production secrets enter the client.",
+      "original_dependencies": [
+        "M0-02"
+      ],
+      "program_status": "in_progress",
+      "scope_ids": [
+        "S40"
+      ],
+      "criterion_assessment": "Pinned both-target builds/artifacts/tooling exist; final complete current candidate and configuration matrix remain.",
+      "accepted_by_this_audit": false
+    },
+    {
+      "id": "M1-01",
+      "title": "Implement production number handling",
+      "original_acceptance": "Define precision, comparison and rounding rules; pass bulk-buy and prestige-boundary fixtures including extreme values.",
+      "original_dependencies": [
+        "M0-02"
+      ],
+      "program_status": "in_progress",
+      "scope_ids": [
+        "S03",
+        "S05",
+        "S14",
+        "S29"
+      ],
+      "criterion_assessment": "Production precision/comparison/rounding and extreme/bulk/award probes pass; substantive local arithmetic criterion supported, with prerequisite/status review unchanged.",
+      "accepted_by_this_audit": false
+    },
+    {
+      "id": "M1-02",
+      "title": "Implement the economy state machine",
+      "original_acceptance": "Five producers, unlocks, milestones, lifetime ledger and Rechart run without rendering; explicit event ordering is tested.",
+      "original_dependencies": [
+        "M1-01"
+      ],
+      "program_status": "in_progress",
+      "scope_ids": [
+        "S03",
+        "S04",
+        "S05"
+      ],
+      "criterion_assessment": "Five-producer headless lifetime/Rechart/event state machine implemented and tested; no unresolved arithmetic implementation found.",
+      "accepted_by_this_audit": false
+    },
+    {
+      "id": "M1-03",
+      "title": "Build crash-safe local saves",
+      "original_acceptance": "Atomic saves, rolling backups, checksums, export/import and versioned migration recover from interruption without double rewards.",
+      "original_dependencies": [
+        "M1-02"
+      ],
+      "program_status": "in_progress",
+      "scope_ids": [
+        "S12"
+      ],
+      "criterion_assessment": "Real filesystem atomic generations/checksums/backup/export/import/migration fault tests exist; composed-current/native interruption matrix still required.",
+      "accepted_by_this_audit": false
+    },
+    {
+      "id": "M1-04",
+      "title": "Version configuration and content schemas",
+      "original_acceptance": "Validate configs, pin economic versions to saves and provide safe defaults; reject incompatible updates before application.",
+      "original_dependencies": [
+        "M0-08"
+      ],
+      "program_status": "in_progress",
+      "scope_ids": [
+        "S14",
+        "S40"
+      ],
+      "criterion_assessment": "Configuration schemas/pins/defaults/incompatible rejection implemented. Separate S14 requires genuine cross-economic-version interval settlement, currently absent.",
+      "accepted_by_this_audit": false
+    },
+    {
+      "id": "M1-05",
+      "title": "Build the playable client shell",
+      "original_acceptance": "Display wallet, output, producer purchases, milestones, resets and settings on small and large screens.",
+      "original_dependencies": [
+        "M0-04",
+        "M1-02"
+      ],
+      "program_status": "in_progress",
+      "scope_ids": [
+        "S02",
+        "S04"
+      ],
+      "criterion_assessment": "Playable native shell exists with responsive samples. Complete current small/large-screen and final composed candidate qualification still pending.",
+      "accepted_by_this_audit": false
+    },
+    {
+      "id": "M1-06",
+      "title": "Design the full progression map",
+      "original_acceptance": "Specify six chapter goals, ending, challenge entry requirements, Note source/sink budgets and daily/pass exceptions; no new prestige layer is assumed.",
+      "original_dependencies": [
+        "M0-01"
+      ],
+      "program_status": "in_progress",
+      "scope_ids": [
+        "S15",
+        "S44"
+      ],
+      "criterion_assessment": "Complete progression map,entry/Note budgets and exceptions authored; chapter3calibration gate was removed content-only. No new prestige layer.",
+      "accepted_by_this_audit": false
+    },
+    {
+      "id": "M1-07",
+      "title": "Produce reusable visual components",
+      "original_acceptance": "Deliver modular producer parts, harbor layers, typography, icons and UI states sufficient for the slice.",
+      "original_dependencies": [
+        "M0-05"
+      ],
+      "program_status": "in_progress",
+      "scope_ids": [
+        "S19",
+        "S23"
+      ],
+      "criterion_assessment": "Concrete modular producer/harbor/native UI parts and palette exist; variant/import qualification and predecessor acceptance need explicit closure.",
+      "accepted_by_this_audit": false
+    },
+    {
+      "id": "M1-08",
+      "title": "Port oracle cases and failure fixtures",
+      "original_acceptance": "Existing checks become production fixtures; add save corruption, rounding, rapid reset and interrupted-transaction cases.",
+      "original_dependencies": [
+        "M1-01",
+        "M1-02",
+        "M1-03"
+      ],
+      "program_status": "in_progress",
+      "scope_ids": [
+        "S12",
+        "S28"
+      ],
+      "criterion_assessment": "Oracle precision,corruption,rapid-reset and interruption cases exist in production test suites; no schemas-only acceptance.",
+      "accepted_by_this_audit": false
+    },
+    {
+      "id": "M2-01",
+      "title": "Complete the first-session economy",
+      "original_acceptance": "Cross-tier synergies, free autobuy unlock and baseline offline replay support first session through 25 Charts with deterministic results.",
+      "original_dependencies": [
+        "M1-02"
+      ],
+      "program_status": "in_progress",
+      "scope_ids": [
+        "S03",
+        "S06",
+        "S07"
+      ],
+      "criterion_assessment": "Synergies/free autobuy/offline through25Charts are deterministic; all-scenario cache contamination repaired with original failing probe retained.",
+      "accepted_by_this_audit": false
+    },
+    {
+      "id": "M2-02",
+      "title": "Build onboarding and Rechart communication",
+      "original_acceptance": "Teach costs, production, retained progress and automation with skippable guidance; no monetization prompt interrupts onboarding.",
+      "original_dependencies": [
+        "M1-05",
+        "M2-01"
+      ],
+      "program_status": "in_progress",
+      "scope_ids": [
+        "S05"
+      ],
+      "criterion_assessment": "Skippable cost/retention/automation guidance implemented, without early monetization interruption; actual human understanding remains separately unobserved.",
+      "accepted_by_this_audit": false
+    },
+    {
+      "id": "M2-03",
+      "title": "Add purchase and reset forecasts",
+      "original_acceptance": "Show marginal network output, next threshold and conditional reset estimate with readable assumptions and no claim of a universal optimum.",
+      "original_dependencies": [
+        "M2-01"
+      ],
+      "program_status": "in_progress",
+      "scope_ids": [
+        "S07"
+      ],
+      "criterion_assessment": "Marginal network and conditional reset previews checked against production outcomes with explicit assumptions; no universal optimum claim.",
+      "accepted_by_this_audit": false
+    },
+    {
+      "id": "M2-04",
+      "title": "Implement optional cloud recovery",
+      "original_acceptance": "Save revisions detect conflicts; divergent branches remain recoverable; never add two wallets or replay overlapping offline time.",
+      "original_dependencies": [
+        "M1-03",
+        "M1-04",
+        "M0-03"
+      ],
+      "program_status": "in_progress",
+      "scope_ids": [
+        "S13"
+      ],
+      "criterion_assessment": "Actual HTTP cloud revisions preserve branches and displaced backups; real two-device recovery and service environment remain unqualified.",
+      "accepted_by_this_audit": false
+    },
+    {
+      "id": "M2-05",
+      "title": "Finish representative harbor presentation",
+      "original_acceptance": "One area, all five base silhouettes and a milestone sequence establish final visual quality, including reduced-motion variants.",
+      "original_dependencies": [
+        "M1-07"
+      ],
+      "program_status": "in_progress",
+      "scope_ids": [
+        "S19"
+      ],
+      "criterion_assessment": "Representative harbor/base silhouettes/staged producer native samples selected; complete reduced-motion/variant evidence still partial.",
+      "accepted_by_this_audit": false
+    },
+    {
+      "id": "M2-06",
+      "title": "Run moderated first-session studies",
+      "original_acceptance": "At least 15 new testers attempt the first reset; capture understanding, friction and pacing, then resolve the largest blockers.",
+      "original_dependencies": [
+        "M2-02",
+        "M2-03",
+        "M2-05"
+      ],
+      "program_status": "not_started",
+      "scope_ids": [
+        "S32"
+      ],
+      "criterion_assessment": "No15new moderated testers. Protocol is executable preparation, not observed friction/pacing or blocker resolution from players.",
+      "accepted_by_this_audit": false
+    },
+    {
+      "id": "M2-07",
+      "title": "Certify the vertical slice",
+      "original_acceptance": "Replay purchase/reset/save/resume on reference hardware; publish a slice gate report and evidence for the next funding decision.",
+      "original_dependencies": [
+        "M2-01",
+        "M2-04",
+        "M2-05"
+      ],
+      "program_status": "not_started",
+      "scope_ids": [
+        "S32"
+      ],
+      "criterion_assessment": "Seeded and real-clock scripted simulator flows exist. Required reference hardware and moderated slice gate/funding decision remain absent.",
+      "accepted_by_this_audit": false
+    },
+    {
+      "id": "M3-01",
+      "title": "Implement all real-time boundaries",
+      "original_acceptance": "2-hour Focus, 8-hour Surveys, 24/72-hour offline envelope, bonus expiry and account-day boundaries resolve in a single event timeline.",
+      "original_dependencies": [
+        "M2-01",
+        "M1-03"
+      ],
+      "program_status": "in_progress",
+      "scope_ids": [
+        "S08",
+        "S09",
+        "S10",
+        "S14"
+      ],
+      "criterion_assessment": "Single production timeline covers Focus,Surveys,offlinecap,buffs/day collisions with exact replay and partial request boundaries.",
+      "accepted_by_this_audit": false
+    },
+    {
+      "id": "M3-02",
+      "title": "Implement contracts and their backlog",
+      "original_acceptance": "Seeded contracts, snapshots, offline progress, rerolls and 21-slot backlog preserve claim IDs and do not duplicate rewards.",
+      "original_dependencies": [
+        "M3-01",
+        "M1-06"
+      ],
+      "program_status": "in_progress",
+      "scope_ids": [
+        "S11"
+      ],
+      "criterion_assessment": "Seeded contract/backlog/reroll/frozen-goal/claim implementation integrated; exhausted eligibility/final refresh defects repaired.",
+      "accepted_by_this_audit": false
+    },
+    {
+      "id": "M3-03",
+      "title": "Implement player automation plans",
+      "original_acceptance": "Purchase priorities and opt-in reset conditions work identically online/offline; free base plan and Note-priced extra slots follow the blueprint.",
+      "original_dependencies": [
+        "M2-01",
+        "M1-06"
+      ],
+      "program_status": "in_progress",
+      "scope_ids": [
+        "S06"
+      ],
+      "criterion_assessment": "Online/offline saved priorities/conditional reset/free base/optional50Note slots implemented and exercised in actual simulations.",
+      "accepted_by_this_audit": false
+    },
+    {
+      "id": "M3-04",
+      "title": "Build calibration and daily interfaces",
+      "original_acceptance": "Untimed calibration, equal-value accessible completion, queued Focus, Surveys and contract management form a complete daily session.",
+      "original_dependencies": [
+        "M3-01",
+        "M3-02"
+      ],
+      "program_status": "in_progress",
+      "scope_ids": [
+        "S09",
+        "S17"
+      ],
+      "criterion_assessment": "Complete daily/calibration/Survey/contract UI exists; all-pattern accessible variant/input verification remains to be completed.",
+      "accepted_by_this_audit": false
+    },
+    {
+      "id": "M3-05",
+      "title": "Complete settings and notification controls",
+      "original_acceptance": "Text scale, number notation, motion/audio controls, input navigation and opt-in quiet-hour notifications function across targets.",
+      "original_dependencies": [
+        "M1-05",
+        "M3-01"
+      ],
+      "program_status": "in_progress",
+      "scope_ids": [
+        "S26"
+      ],
+      "criterion_assessment": "Settings/reminder source and host tests exist; actual named-target inputs/permissions/delivery and complete variants remain.",
+      "accepted_by_this_audit": false
+    },
+    {
+      "id": "M3-06",
+      "title": "Complete account lifecycle and branch recovery",
+      "original_acceptance": "Guest linking, account recovery, export, deletion and divergent-save selection preserve recovery copies and purchased ownership.",
+      "original_dependencies": [
+        "M2-04"
+      ],
+      "program_status": "in_progress",
+      "scope_ids": [
+        "S02",
+        "S13",
+        "S39"
+      ],
+      "criterion_assessment": "Guest/account/recovery/deletion/export/branch paths implemented with adversarial account/session races; real devices/host and final native data audit remain.",
+      "accepted_by_this_audit": false
+    },
+    {
+      "id": "M3-07",
+      "title": "Build the entitlement and claim ledger",
+      "original_acceptance": "Unique receipts and idempotent grants separate cosmetics, Support allowance, pass XP and gameplay saves; interrupted grants resume safely.",
+      "original_dependencies": [
+        "M0-03",
+        "M1-04",
+        "M3-06"
+      ],
+      "program_status": "in_progress",
+      "scope_ids": [
+        "S25"
+      ],
+      "criterion_assessment": "Unique Support/XP/cosmetic ledgers and signed provider handling tested including save failure/late callback; native verified provider prerequisites still open.",
+      "accepted_by_this_audit": false
+    },
+    {
+      "id": "M3-08",
+      "title": "Author chapter and challenge specifications",
+      "original_acceptance": "Six chapters and twelve challenges have objectives, unlock rules, reward budgets and completion evidence; passive and active routes are covered.",
+      "original_dependencies": [
+        "M1-06",
+        "M2-06"
+      ],
+      "program_status": "in_progress",
+      "scope_ids": [
+        "S15",
+        "S16",
+        "S44"
+      ],
+      "criterion_assessment": "Six chapter/12challenge specifications and completion evidence exist with passive no-calibration ending; dependency on actual first-session studies remains.",
+      "accepted_by_this_audit": false
+    },
+    {
+      "id": "M3-09",
+      "title": "Produce producer transformations and core UI art",
+      "original_acceptance": "Five producer families each have base plus four milestone presentations; daily-loop icons and status states are final.",
+      "original_dependencies": [
+        "M2-05"
+      ],
+      "program_status": "in_progress",
+      "scope_ids": [
+        "S04",
+        "S19"
+      ],
+      "criterion_assessment": "25 actual source/export/native producer appearances and UI states exist. Full state/scale/motion asset verification is incomplete.",
+      "accepted_by_this_audit": false
+    },
+    {
+      "id": "M3-10",
+      "title": "Validate the entire daily timeline",
+      "original_acceptance": "Test 1/3/6 visits, 2/8/24/48/72-hour absences, clock changes, bonus queues and reset/day-boundary collisions; report exact and approximate differences.",
+      "original_dependencies": [
+        "M3-01",
+        "M3-02",
+        "M3-03",
+        "M3-06",
+        "M3-07"
+      ],
+      "program_status": "in_progress",
+      "scope_ids": [
+        "S08",
+        "S10",
+        "S11",
+        "S14",
+        "S28",
+        "S29"
+      ],
+      "criterion_assessment": "Exact daily/absence/visit/reset/claim core and worker tests plus trajectories exist; whole current cloud/commerce/native matrix and prerequisite closure remain.",
+      "accepted_by_this_audit": false
+    },
+    {
+      "id": "M4-01",
+      "title": "Build reusable challenge scenarios",
+      "original_acceptance": "Challenge state is isolated, goals are deterministic, main automation continues and exit/restart cannot export economic rewards.",
+      "original_dependencies": [
+        "M3-08",
+        "M3-03"
+      ],
+      "program_status": "in_progress",
+      "scope_ids": [
+        "S16"
+      ],
+      "criterion_assessment": "12 real isolated scenarios,main continuation,entry/restart and no economic export tested; actual runtime-family cache repair independently checked.",
+      "accepted_by_this_audit": false
+    },
+    {
+      "id": "M4-02",
+      "title": "Build the seasonal event state machine",
+      "original_acceptance": "Season start/end/archive, event coefficients, pinned versions and offline transitions work; no paid or main-world power enters the event.",
+      "original_dependencies": [
+        "M4-01",
+        "M3-01"
+      ],
+      "program_status": "in_progress",
+      "scope_ids": [
+        "S20",
+        "S21"
+      ],
+      "criterion_assessment": "Isolated event coefficients/version/end/archive/offline runtime implemented with paired new/veteran traces; actual28day observation remains separate.",
+      "accepted_by_this_audit": false
+    },
+    {
+      "id": "M4-03",
+      "title": "Build cosmetic shop and pass experience",
+      "original_acceptance": "Preview, price, ownership, restoration, selected pass and archived completion are understandable; shared XP grants only once.",
+      "original_dependencies": [
+        "M3-07",
+        "M4-02"
+      ],
+      "program_status": "in_progress",
+      "scope_ids": [
+        "S21",
+        "S24"
+      ],
+      "criterion_assessment": "Actual cosmetic/price/pending/selected/archived-pass UI and verified-ownership projections exist. Real store localization/restore/paid continuation and all-state presentation remain.",
+      "accepted_by_this_audit": false
+    },
+    {
+      "id": "M4-04",
+      "title": "Integrate production purchase handling",
+      "original_acceptance": "Validate, grant, acknowledge, restore and reconcile purchases; pending, duplicate, refunded and interrupted cases have explicit states.",
+      "original_dependencies": [
+        "M3-07",
+        "M0-03"
+      ],
+      "program_status": "in_progress",
+      "scope_ids": [
+        "S24"
+      ],
+      "criterion_assessment": "Real native adapter/backend validation,ack,reconciliation and signed expiry implemented; native store sandbox proof unavailable.",
+      "accepted_by_this_audit": false
+    },
+    {
+      "id": "M4-05",
+      "title": "Integrate optional ads and equal free rewards",
+      "original_acceptance": "Ad and briefing routes consume the same allowance; no-fill, refusal and duplicate callbacks preserve access and cannot multiply rewards.",
+      "original_dependencies": [
+        "M3-07",
+        "M3-01"
+      ],
+      "program_status": "in_progress",
+      "scope_ids": [
+        "S25"
+      ],
+      "criterion_assessment": "Shared allowance/free refusal/no-fill/idempotent callback source and host tests implemented; live provider evidence unavailable.",
+      "accepted_by_this_audit": false
+    },
+    {
+      "id": "M4-06",
+      "title": "Finish all launch content and reward tables",
+      "original_acceptance": "Six chapters, ending, twelve challenges, twelve calibration patterns, eighteen archive entries and Season 1 have complete data and copy.",
+      "original_dependencies": [
+        "M3-08",
+        "M4-01",
+        "M4-02"
+      ],
+      "program_status": "in_progress",
+      "scope_ids": [
+        "S15",
+        "S16",
+        "S17",
+        "S18",
+        "S20",
+        "S21",
+        "S22"
+      ],
+      "criterion_assessment": "All game content/reward data and copy have concrete registration and reachability. Final editorial/state-layout verification still incomplete;2publicsupport assets outside game content absent.",
+      "accepted_by_this_audit": false
+    },
+    {
+      "id": "M4-07",
+      "title": "Finish launch art and cosmetics",
+      "original_acceptance": "Six harbor restoration states and the fixed 36-item cosmetic manifest are complete; commissioned audio is integrated through client work.",
+      "original_dependencies": [
+        "M3-09",
+        "M4-06"
+      ],
+      "program_status": "in_progress",
+      "scope_ids": [
+        "S18",
+        "S19",
+        "S22",
+        "S23"
+      ],
+      "criterion_assessment": "Seven harbor/36cosmetic/audio sources integrated with actual samples; perasset variants,rights/listening/native budgets and predecessor acceptance remain.",
+      "accepted_by_this_audit": false
+    },
+    {
+      "id": "M4-08",
+      "title": "Verify content and monetization boundaries",
+      "original_acceptance": "Every content ID and reward is reachable; full pass is completable free of paid speed; no event or cosmetic increases core power.",
+      "original_dependencies": [
+        "M4-03",
+        "M4-04",
+        "M4-05",
+        "M4-06",
+        "M4-07"
+      ],
+      "program_status": "in_progress",
+      "scope_ids": [
+        "S22",
+        "S25"
+      ],
+      "criterion_assessment": "IDs/rewards/XP/free trajectories and no-power boundaries have local evidence; real IAP/ad fulfillment and complete art/context acceptance remain dependencies.",
+      "accepted_by_this_audit": false
+    },
+    {
+      "id": "M5-01",
+      "title": "Optimize runtime and offline replay",
+      "original_acceptance": "Meet measured frame/startup/resume budgets on minimum devices; heavy replay is chunked and never silently drops earned time.",
+      "original_dependencies": [
+        "M3-10",
+        "M4-02"
+      ],
+      "program_status": "in_progress",
+      "scope_ids": [
+        "S08",
+        "S31"
+      ],
+      "criterion_assessment": "Replay chunking/owned-time parity/numeric speedups are implemented. Physical min-device frame/startup/replay/battery targets are unmeasured.",
+      "accepted_by_this_audit": false
+    },
+    {
+      "id": "M5-02",
+      "title": "Complete accessibility and language readiness",
+      "original_acceptance": "Critical flows work at large text, without color/audio/motion dependencies and via target inputs; pseudolocalization has no blocking overflow.",
+      "original_dependencies": [
+        "M3-05",
+        "M4-03",
+        "M4-06"
+      ],
+      "program_status": "in_progress",
+      "scope_ids": [
+        "S02",
+        "S09",
+        "S17",
+        "S26"
+      ],
+      "criterion_assessment": "Many large-text/pseudo/non-color/accessible controls tested. Complete all-ID/new-screen matrix and physical assistive input still needed.",
+      "accepted_by_this_audit": false
+    },
+    {
+      "id": "M5-03",
+      "title": "Complete privacy and service recovery flows",
+      "original_acceptance": "Data inventory matches SDK behavior; consent refusal, export/deletion and service-outage recovery are verified on actual builds.",
+      "original_dependencies": [
+        "M3-06",
+        "M4-04",
+        "M4-05"
+      ],
+      "program_status": "in_progress",
+      "scope_ids": [
+        "S27",
+        "S39"
+      ],
+      "criterion_assessment": "Local account/consent/outage/export/erase implementation independently reviewed. Public policy pages/native SDK network/storage qualification incomplete.",
+      "accepted_by_this_audit": false
+    },
+    {
+      "id": "M5-04",
+      "title": "Ship measurement and operating tools",
+      "original_acceptance": "Validate economy/session events, entitlement dashboards, alerts, backups, support receipts and feature disable switches in staging.",
+      "original_dependencies": [
+        "M3-07",
+        "M4-04"
+      ],
+      "program_status": "in_progress",
+      "scope_ids": [
+        "S27",
+        "S30",
+        "S37"
+      ],
+      "criterion_assessment": "Telemetry/health/backup/delete/feature switches and opt-in collector/adjudicator implemented. Study UI now has a passing narrow host pin; native crash linkage and actual staging dashboard/alerts/operator drills remain.",
+      "accepted_by_this_audit": false
+    },
+    {
+      "id": "M5-05",
+      "title": "Run long-horizon economy and content audit",
+      "original_acceptance": "Simulate 30/90 days across visit and bonus policies, audit Note sinks and content pacing, freeze beta config and metric definitions.",
+      "original_dependencies": [
+        "M4-06",
+        "M5-04"
+      ],
+      "program_status": "in_progress",
+      "scope_ids": [
+        "S07",
+        "S18",
+        "S25",
+        "S29",
+        "S33",
+        "S34",
+        "S44"
+      ],
+      "criterion_assessment": "Corrected184long cases and15current focused cases audited. Final current beta matrix/config/metrics freeze is not approved; measured-player outcomes separate.",
+      "accepted_by_this_audit": false
+    },
+    {
+      "id": "M5-06",
+      "title": "Complete presentation and store assets",
+      "original_acceptance": "Remove placeholders, integrate final sound direction, and prepare representative screenshots, icon and short footage.",
+      "original_dependencies": [
+        "M4-07"
+      ],
+      "program_status": "in_progress",
+      "scope_ids": [
+        "S23",
+        "S43"
+      ],
+      "criterion_assessment": "Actual sound/art and draft store icon/graphic exist. Final audio quality/rights,all placeholders/current presentation and representative screenshots/short footage still open.",
+      "accepted_by_this_audit": false
+    },
+    {
+      "id": "M5-07",
+      "title": "Run device and migration regression",
+      "original_acceptance": "Complete the device matrix, storage/network interruptions, upgrade migrations and install/return flows with zero open blocking issues.",
+      "original_dependencies": [
+        "M5-01",
+        "M5-02",
+        "M5-03"
+      ],
+      "program_status": "in_progress",
+      "scope_ids": [
+        "S12",
+        "S28",
+        "S31"
+      ],
+      "criterion_assessment": "Host fault/migrations and simulator native scenarios exist. Full current candidate/upgrade matrix and named physical storage/network/install-return checks incomplete.",
+      "accepted_by_this_audit": false
+    },
+    {
+      "id": "M5-08",
+      "title": "Run commerce and service fault tests",
+      "original_acceptance": "Purchase/restore/refund/ad callbacks are tested under packet loss, retries, duplicate messages, crashes and backend outages.",
+      "original_dependencies": [
+        "M4-04",
+        "M4-05",
+        "M5-04"
+      ],
+      "program_status": "in_progress",
+      "scope_ids": [
+        "S24",
+        "S28"
+      ],
+      "criterion_assessment": "Backend/HTTP/host adversarial purchase/ad/session/refund/signature tests substantial; real native sandbox packet-loss/crash/provider delivery matrix missing.",
+      "accepted_by_this_audit": false
+    },
+    {
+      "id": "M6-01",
+      "title": "Recruit and freeze the measurement cohort",
+      "original_acceptance": "Enroll the D30 cohort during week 27; record baseline config, acquisition source, denominator and exclusions before analysis.",
+      "original_dependencies": [
+        "M5-05",
+        "M5-07",
+        "M5-08"
+      ],
+      "program_status": "not_started",
+      "scope_ids": [
+        "S34"
+      ],
+      "criterion_assessment": "No enrolled real cohort. Protocol/collector is local preparation with independently qualified baseline requirements still open.",
+      "accepted_by_this_audit": false
+    },
+    {
+      "id": "M6-02",
+      "title": "Evaluate retention and content outcomes",
+      "original_acceptance": "Report mature D1/D7/D30 with confidence intervals, campaign progress, bonus impact, satisfaction and explicit ship/change decisions.",
+      "original_dependencies": [
+        "M6-01"
+      ],
+      "program_status": "not_started",
+      "scope_ids": [
+        "S15",
+        "S34",
+        "S35",
+        "S44"
+      ],
+      "criterion_assessment": "No real mature retention/content/satisfaction result. Synthetic analysis outputs must not be called a launch/change decision.",
+      "accepted_by_this_audit": false
+    },
+    {
+      "id": "M6-03",
+      "title": "Resolve economy and simulation findings",
+      "original_acceptance": "Fix core bugs using replay fixtures; version any balance changes and keep affected cohorts separate.",
+      "original_dependencies": [
+        "M5-01",
+        "M6-01"
+      ],
+      "program_status": "not_started",
+      "scope_ids": [
+        "S33"
+      ],
+      "criterion_assessment": "Concrete local core/simulation bugs were repaired with preserved replay evidence. Existing cohort separation cannot be demonstrated without an actual cohort; prerequisite remains.",
+      "accepted_by_this_audit": false
+    },
+    {
+      "id": "M6-04",
+      "title": "Resolve comprehension and interaction findings",
+      "original_acceptance": "Reduce observed onboarding/recovery friction without adding pressure, hidden rewards or paid advantages.",
+      "original_dependencies": [
+        "M5-02",
+        "M6-01"
+      ],
+      "program_status": "not_started",
+      "scope_ids": [
+        "S32",
+        "S43"
+      ],
+      "criterion_assessment": "Agent-observed layout/recovery defects repaired; no observed-player comprehension/friction study exists.",
+      "accepted_by_this_audit": false
+    },
+    {
+      "id": "M6-05",
+      "title": "Operate staged access and support",
+      "original_acceptance": "Exercise service load, support recovery, purchase reconciliation and feature disable controls with real opt-in testers.",
+      "original_dependencies": [
+        "M5-04",
+        "M6-01"
+      ],
+      "program_status": "not_started",
+      "scope_ids": [
+        "S30",
+        "S37"
+      ],
+      "criterion_assessment": "Local operations/recovery drills exist; real opt-in tester load/support/reconciliation/feature-disable operation absent.",
+      "accepted_by_this_audit": false
+    },
+    {
+      "id": "M6-06",
+      "title": "Polish content from observed play",
+      "original_acceptance": "Address readability, repeated visual issues and content defects without increasing the launch asset count.",
+      "original_dependencies": [
+        "M5-06",
+        "M6-01"
+      ],
+      "program_status": "not_started",
+      "scope_ids": [
+        "S43"
+      ],
+      "criterion_assessment": "Agent pixel/editorial polish exists without asset-count expansion; required observed-play feedback remains absent.",
+      "accepted_by_this_audit": false
+    },
+    {
+      "id": "M6-07",
+      "title": "Observe real calendar progression",
+      "original_acceptance": "A real 28-day pass and mature D30 cohort are observed; accelerated testing is documented separately.",
+      "original_dependencies": [
+        "M6-01"
+      ],
+      "program_status": "not_started",
+      "scope_ids": [
+        "S20",
+        "S30",
+        "S34"
+      ],
+      "criterion_assessment": "No actual28-day pass or matureD30 cohort. Accelerated/synthetic runs remain separately labelled.",
+      "accepted_by_this_audit": false
+    },
+    {
+      "id": "M6-08",
+      "title": "Rehearse season and release recovery",
+      "original_acceptance": "Exercise season archive, paid pass continuation, save migration, purchase replay and compatible rollback/forward repair.",
+      "original_dependencies": [
+        "M4-08",
+        "M6-05"
+      ],
+      "program_status": "not_started",
+      "scope_ids": [
+        "S21",
+        "S37"
+      ],
+      "criterion_assessment": "Local archive/signed pass/save/purchase fixtures exist. Full hosted staged recovery/compatible forward-repair rehearsal and real paid continuation remain.",
+      "accepted_by_this_audit": false
+    },
+    {
+      "id": "M7-01",
+      "title": "Decide readiness and freeze release scope",
+      "original_acceptance": "Review all hard gates and product thresholds, assign accepted minor issues, and freeze the release candidate configuration.",
+      "original_dependencies": [
+        "M6-02",
+        "M6-07",
+        "M6-08"
+      ],
+      "program_status": "not_started",
+      "scope_ids": [
+        "S35",
+        "S42"
+      ],
+      "criterion_assessment": "No final launch readiness/config freeze. All hard/external gates and product outcomes must be reviewed by accountable lead.",
+      "accepted_by_this_audit": false
+    },
+    {
+      "id": "M7-02",
+      "title": "Stabilize final game build",
+      "original_acceptance": "Fix remaining blockers, tag deterministic core/config versions and prove candidate replay compatibility.",
+      "original_dependencies": [
+        "M6-03",
+        "M7-01"
+      ],
+      "program_status": "not_started",
+      "scope_ids": [
+        "S42"
+      ],
+      "criterion_assessment": "Many deterministic fixes/pins exist; final approved candidate and complete current compatibility evidence not yet frozen.",
+      "accepted_by_this_audit": false
+    },
+    {
+      "id": "M7-03",
+      "title": "Package native release candidates",
+      "original_acceptance": "Signing, install/update, responsive layouts, licensed assets and store-visible flows work in final distribution builds.",
+      "original_dependencies": [
+        "M6-04",
+        "M7-01"
+      ],
+      "program_status": "not_started",
+      "scope_ids": [
+        "S01",
+        "S36"
+      ],
+      "criterion_assessment": "Native unsigned/debug artifacts exist. Signing/final distribution install-update/licensed assets/current responsive flows remain unqualified.",
+      "accepted_by_this_audit": false
+    },
+    {
+      "id": "M7-04",
+      "title": "Prepare safe staged release",
+      "original_acceptance": "Version-compatible config rollback, feature disables, capacity, backups and entitlement replay are rehearsed and documented.",
+      "original_dependencies": [
+        "M6-05",
+        "M7-01"
+      ],
+      "program_status": "not_started",
+      "scope_ids": [
+        "S37"
+      ],
+      "criterion_assessment": "Local safe config rejection/feature controls/backups exist; actual staged capacity/stop/entitlement replay and forward repair still required.",
+      "accepted_by_this_audit": false
+    },
+    {
+      "id": "M7-05",
+      "title": "Finish store communication and support material",
+      "original_acceptance": "Screenshots, footage, credits, help visuals and release assets describe the actual shipped game and offers.",
+      "original_dependencies": [
+        "M6-06",
+        "M7-01"
+      ],
+      "program_status": "not_started",
+      "scope_ids": [
+        "S27",
+        "S43"
+      ],
+      "criterion_assessment": "Help/credits/local draft listing/graphics exist; public support/privacy pages,final screenshots/footage and shipped-offer alignment are incomplete.",
+      "accepted_by_this_audit": false
+    },
+    {
+      "id": "M7-06",
+      "title": "Approve the release evidence pack",
+      "original_acceptance": "All gate evidence is linked; no blocker, save-loss, duplication or unresolved purchase-delivery issue remains.",
+      "original_dependencies": [
+        "M7-02",
+        "M7-03",
+        "M7-04"
+      ],
+      "program_status": "not_started",
+      "scope_ids": [
+        "S28",
+        "S30",
+        "S42"
+      ],
+      "criterion_assessment": "Component evidence abundant but incomplete current release pack. No final zero-blocker/save-loss/duplicate/verified-delivery approval.",
+      "accepted_by_this_audit": false
+    },
+    {
+      "id": "M7-07",
+      "title": "Submit and manage platform review",
+      "original_acceptance": "Recheck current platform requirements, provide reviewer access and working products, and resolve review findings before launch.",
+      "original_dependencies": [
+        "M7-05",
+        "M7-06"
+      ],
+      "program_status": "not_started",
+      "scope_ids": [
+        "S27",
+        "S36"
+      ],
+      "criterion_assessment": "No store submission/acceptance. Current policy/reviewer/products/account resources must be verified near submission.",
+      "accepted_by_this_audit": false
+    },
+    {
+      "id": "M7-08",
+      "title": "Hand over launch operations",
+      "original_acceptance": "Document 14-day coverage, escalation, incident response and Season 2 preparation; launch authority and rollout stop conditions are explicit.",
+      "original_dependencies": [
+        "M7-04",
+        "M7-06"
+      ],
+      "program_status": "not_started",
+      "scope_ids": [
+        "S37",
+        "S38"
+      ],
+      "criterion_assessment": "Runbooks/Season2brief prepared; approved operator coverage/escalation/costs and actual14daylaunch service record remain.",
+      "accepted_by_this_audit": false
+    }
+  ],
+  "evidence_to_scope": [
+    {
+      "path": "docs/quality/V1_QUALITY_PROTOCOL.md",
+      "scope_ids": [
+        "S41"
+      ]
+    },
+    {
+      "path": "implementation/program.json",
+      "scope_ids": [
+        "S41",
+        "S42"
+      ]
+    },
+    {
+      "path": "release/art/producer-independent-review.md",
+      "scope_ids": [
+        "S04",
+        "S19"
+      ]
+    },
+    {
+      "path": "release/localization-author-review.md",
+      "scope_ids": [
+        "S02",
+        "S26",
+        "S43"
+      ]
+    },
+    {
+      "path": "release/native-proof/platform-handoff.md",
+      "scope_ids": [
+        "S01",
+        "S08",
+        "S12",
+        "S19",
+        "S23",
+        "S28",
+        "S31",
+        "S36",
+        "S40",
+        "S42",
+        "S43"
+      ]
+    },
+    {
+      "path": "release/persistence-review.md",
+      "scope_ids": [
+        "S12"
+      ]
+    },
+    {
+      "path": "release/qa/integration-balance-20261019T145921108068Z/BALANCE_REVIEW.md",
+      "scope_ids": [
+        "S05",
+        "S06",
+        "S07",
+        "S08",
+        "S10",
+        "S11",
+        "S15",
+        "S16",
+        "S18",
+        "S20",
+        "S25",
+        "S29",
+        "S33",
+        "S35",
+        "S44"
+      ]
+    },
+    {
+      "path": "release/qa/integration-cache-20261021T105558701110Z/CACHE_REVIEW.md",
+      "scope_ids": [
+        "S23",
+        "S39"
+      ]
+    },
+    {
+      "path": "release/qa/integration-crossengine-20261019T143516578781Z/CROSS_ENGINE_REVIEW.md",
+      "scope_ids": [
+        "S03",
+        "S07",
+        "S16",
+        "S20",
+        "S29",
+        "S31",
+        "S33",
+        "S44"
+      ]
+    },
+    {
+      "path": "release/qa/integration-entry-gates-20261021T113426797640Z/ENTRY_GATE_REVIEW.md",
+      "scope_ids": [
+        "S04",
+        "S19",
+        "S22",
+        "S23",
+        "S26",
+        "S27",
+        "S42"
+      ]
+    },
+    {
+      "path": "release/qa/integration-final-20261016T105843545492Z/INTEGRATION_REVIEW.md",
+      "scope_ids": [
+        "S03",
+        "S05",
+        "S06",
+        "S08",
+        "S09",
+        "S10",
+        "S11",
+        "S12",
+        "S14",
+        "S15",
+        "S16",
+        "S17",
+        "S20",
+        "S21",
+        "S25",
+        "S28"
+      ]
+    },
+    {
+      "path": "release/qa/integration-fulfillment-repaired-20261019T143906718168Z/FULFILLMENT_REPAIRED_REVIEW.md",
+      "scope_ids": [
+        "S13",
+        "S23",
+        "S24",
+        "S28",
+        "S37",
+        "S39"
+      ]
+    },
+    {
+      "path": "release/qa/integration-help-repaired-20261021T101942186162Z/HELP_REPAIRED_REVIEW.md",
+      "scope_ids": [
+        "S02",
+        "S26",
+        "S27",
+        "S43"
+      ]
+    },
+    {
+      "path": "release/qa/integration-initial-20261016T104939468348Z/M0-02_REVIEW.md",
+      "scope_ids": [
+        "S01",
+        "S29",
+        "S40"
+      ]
+    },
+    {
+      "path": "release/qa/integration-inventory-20261021T104607526377Z/INVENTORY_REVIEW.md",
+      "scope_ids": [
+        "S09",
+        "S17",
+        "S22"
+      ]
+    },
+    {
+      "path": "release/qa/integration-native-ownership-repaired-20261019T145035575220Z/NATIVE_OWNERSHIP_REPAIRED_REVIEW.md",
+      "scope_ids": [
+        "S02",
+        "S12",
+        "S13",
+        "S21",
+        "S22",
+        "S23",
+        "S24",
+        "S28",
+        "S39"
+      ]
+    },
+    {
+      "path": "release/qa/integration-numeric-20261019T135534237861Z/NUMERIC_REVIEW.md",
+      "scope_ids": [
+        "S03",
+        "S04",
+        "S05",
+        "S14",
+        "S29",
+        "S31"
+      ]
+    },
+    {
+      "path": "release/qa/integration-operations-final-20261021T104534667043Z/OPERATIONS_REVIEW.md",
+      "scope_ids": [
+        "S13",
+        "S27",
+        "S30",
+        "S37",
+        "S38"
+      ]
+    },
+    {
+      "path": "release/qa/integration-optional-calibration-20261021T110210355242Z/OPTIONAL_CALIBRATION_REVIEW.md",
+      "scope_ids": [
+        "S06",
+        "S07",
+        "S09",
+        "S10",
+        "S11",
+        "S12",
+        "S14",
+        "S15",
+        "S18",
+        "S25",
+        "S33",
+        "S40",
+        "S44"
+      ]
+    },
+    {
+      "path": "release/qa/integration-registration-20261021T111626112740Z/REGISTRATION_REVIEW.md",
+      "scope_ids": [
+        "S04",
+        "S17",
+        "S18",
+        "S19",
+        "S21",
+        "S22",
+        "S27",
+        "S38"
+      ]
+    },
+    {
+      "path": "release/qa/integration-reminders-initial-20261016T115431767720Z/REMINDERS_REVIEW.md",
+      "scope_ids": [
+        "S02",
+        "S08",
+        "S26",
+        "S31"
+      ]
+    },
+    {
+      "path": "release/qa/integration-services-repaired-20261016T114721906724Z/INTEGRATION_REVIEW.md",
+      "scope_ids": [
+        "S02",
+        "S12",
+        "S13",
+        "S21",
+        "S24",
+        "S25",
+        "S28",
+        "S37",
+        "S39"
+      ]
+    },
+    {
+      "path": "release/qa/integration-study-20261021T102508755253Z/STUDY_REVIEW.md",
+      "scope_ids": [
+        "S30",
+        "S32",
+        "S34",
+        "S35"
+      ]
+    },
+    {
+      "path": "release/qa/integration-study-collection-final-20261021T113037215270Z/COLLECTION_REPAIRED_REVIEW.md",
+      "scope_ids": [
+        "S12",
+        "S28",
+        "S30",
+        "S32",
+        "S34",
+        "S39",
+        "S42"
+      ]
+    },
+    {
+      "path": "release/qa/integration-study-ui-final-20261021T114011830149Z/STUDY_UI_REVIEW.md",
+      "scope_ids": [
+        "S02",
+        "S26",
+        "S28",
+        "S30",
+        "S39"
+      ]
+    },
+    {
+      "path": "release/qa/integration-telemetry-repaired-20261019T141639166170Z/TELEMETRY_REVIEW.md",
+      "scope_ids": [
+        "S11",
+        "S30",
+        "S39"
+      ]
+    },
+    {
+      "path": "release/store/CLIENT_REVIEW.md",
+      "scope_ids": [
+        "S36",
+        "S43"
+      ]
+    }
+  ],
+  "original_acceptance_and_dependencies_unchanged": true,
+  "original_accepted": [
+    "M0-01",
+    "M0-02",
+    "M0-04",
+    "M0-06"
+  ],
+  "bootstrap_accepted_separately": [
+    "BOOT-CORE",
+    "BOOT-CONTENT",
+    "BOOT-SAVE"
+  ],
+  "additional_calendar_item": "OPS-14 remains additional actual operating coverage,not a replacement for any65originalcriteria",
+  "unrequested_product_scope_found": [],
+  "product_release_ready": false,
+  "new_packages_accepted": [],
+  "scope_status_mutations": [],
+  "native_boundary": "Oldd85 handoff is historical. Candidate152 current matrix is still running. Final study/cache/optional-campaign changes have separate component proofs and require a new integrated candidate.",
+  "known_current_host_study_result": "FinalUIbc019a English13,pseudo12,analysisclean;STUDY005 originalfailure retained; doesnotinheritcandidate152nativeproof.",
+  "remaining_priority_local_work": [
+    "All-ID/state actual-widget variant/semantic/palette/animation verification with canonical perasset records",
+    "Public privacy/support page content and approved-data/SDK/offer linkage",
+    "Supported economic-version interval transition fixture/implementation forS14",
+    "Complete native collector/crash linkage and capacity/registry qualification before anyreal study",
+    "Final current candidate/fullhost/pseudo/native/upgrade/return/sourcepack",
+    "Actual final screenshots/short footage and exact enabled-offer alignment",
+    "Staging operational configuration,alert destinations/recovery/forward-repair rehearsal when resourceavailable"
+  ],
+  "external_resources": "User confirms no developer accounts,physicaldevices,hosting or humanplaytesters. These do not excuse the listed local work."
+}

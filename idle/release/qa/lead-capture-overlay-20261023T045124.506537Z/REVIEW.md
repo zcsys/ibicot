@@ -1,0 +1,7 @@
+# Independent capture-only pointer correction review
+
+The capture-only correction is cleared for native recapture. Root inspected the actual failed preview frame, the raw-capture finding, exact final diff and pinned Flutter implementation, then reproduced the author's focused hit/miss test successfully. A hit activates the real gesture target once; an outside miss does not activate it. All four down/up events retain their coordinates and order through the propagated framework branch.
+
+The capture scenario alone selects the subclass. The SDK's ordinary device-propagation branch reaches the same gesture hit-testing and dispatch without recording test crosshairs; event data is forwarded unchanged. Real tester tap/pageBack actions, fatal hit-test warnings, production widgets, fixture state, one-purchase assertion and the real 25-second schedule remain. No callback substitution, image filtering, coordinate modification or production change is introduced. The counters and report explicitly say automated inputs, not physical or human input.
+
+All 482 mapped production inputs still match frozen candidate 3b00 exactly. The final author analyzer is clean; root reproduces the one routing probe, without claiming a new native run. Old gallery and failed preview remain unchanged. New separately pinned native captures must pass ordinary verification and visual inspection before their media can be approved. This report does not approve current footage or alter any package/scope status.

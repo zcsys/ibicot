@@ -1,0 +1,341 @@
+{
+  "verification_id": "integration-ios-tablet-20261023T080707.958916Z",
+  "candidate_fingerprint": "3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59",
+  "harness_sha256": "1925106cb014a4a21575af3aa3bd85fc997873c1c9be74249c966da1cf28318b",
+  "platform": "ios",
+  "os_version": "Version 26.3.1 (Build 23D8133)",
+  "device_label": "ios-tablet",
+  "scenario": "capture-gallery",
+  "run_id": "v3b00-ios-tablet-gallery-season-fixed",
+  "process_id": 16076,
+  "provenance": "Seeded chapters, fleet, currencies, earned appearance and passage. Production UI and real timer/actions during the clip. No natural retention, paid ownership, human playtest or published store-material claim.",
+  "audio_recorded": false,
+  "pointer_dispatch": "Automated hit-tested UI gestures through device propagation; no painted test pointer, physical input or human-playtest claim.",
+  "seeded_core": {
+    "schema_version": 4,
+    "economic_version": "tideglass-economy-1.0.0",
+    "event_order_version": 4,
+    "counts": [
+      60,
+      30,
+      10,
+      2,
+      0
+    ],
+    "wallet_micros": "10094669190777",
+    "lifetime_micros": "10000094669190777",
+    "charts": "25",
+    "elapsed_micros": "1268684",
+    "earning_remainder": "27899599011319929177889600",
+    "revision": 5,
+    "auto_buy_enabled": false,
+    "focus_charges": 0,
+    "focus_phase_micros": "1268684",
+    "focus_remaining_micros": "0",
+    "completed_surveys": 0,
+    "survey_phase_micros": "1268684",
+    "survey_notes": "200",
+    "daily": {
+      "account_seed": "ca29831699428c55a8ccb47033bebbee",
+      "utc_offset_minutes": 180,
+      "day_high_water": 20749,
+      "last_materialized_day": 20749,
+      "utc_anchor_micros": "1792742893710539",
+      "available_discovery_kinds": [
+        "archive",
+        "challenge"
+      ],
+      "contracts": [
+        {
+          "id": "contract:ca29831699428c55a8ccb47033bebbee:20749:0",
+          "account_day": 20749,
+          "slot": 0,
+          "kind": "restore",
+          "discovery_kind": null,
+          "target": "44771996000000",
+          "rate_snapshot_raw": "74619992667259734494585176311",
+          "cheapest_price_snapshot_micros": "17975953273",
+          "lifetime_baseline_micros": "10000000000000000",
+          "purchased_baseline": "0",
+          "discovery_baseline": "0",
+          "rerolled": false,
+          "claimed": false,
+          "credited_pass_id": null
+        },
+        {
+          "id": "contract:ca29831699428c55a8ccb47033bebbee:20749:1",
+          "account_day": 20749,
+          "slot": 1,
+          "kind": "restore",
+          "discovery_kind": null,
+          "target": "44771996000000",
+          "rate_snapshot_raw": "74619992667259734494585176311",
+          "cheapest_price_snapshot_micros": "17975953273",
+          "lifetime_baseline_micros": "10000000000000000",
+          "purchased_baseline": "0",
+          "discovery_baseline": "0",
+          "rerolled": false,
+          "claimed": false,
+          "credited_pass_id": null
+        },
+        {
+          "id": "contract:ca29831699428c55a8ccb47033bebbee:20749:2",
+          "account_day": 20749,
+          "slot": 2,
+          "kind": "restore",
+          "discovery_kind": null,
+          "target": "44771996000000",
+          "rate_snapshot_raw": "74619992667259734494585176311",
+          "cheapest_price_snapshot_micros": "17975953273",
+          "lifetime_baseline_micros": "10000000000000000",
+          "purchased_baseline": "0",
+          "discovery_baseline": "0",
+          "rerolled": false,
+          "claimed": false,
+          "credited_pass_id": null
+        }
+      ],
+      "discovery_totals": {},
+      "discovery_operation_ids": [],
+      "discovery_sequence": "0",
+      "selected_pass_id": "pass.01",
+      "pass_xp_by_id": {
+        "pass.01": "0"
+      }
+    },
+    "support": {
+      "remaining_micros": "0",
+      "token_day": 20749,
+      "tokens": [],
+      "caches": [],
+      "claimed_slice_ids": [],
+      "closed_settlement_ids": [],
+      "grant_source_ids": [],
+      "last_settlement_sequence": "0",
+      "last_settlement_through_utc_micros": null,
+      "last_finalized_settlement_id": null,
+      "receipt_cursor_migration_required": false,
+      "active_settlement_id": null,
+      "active_settlement_request": null,
+      "source_start_elapsed_micros": "0",
+      "next_offset_micros": "0",
+      "slice_start_offset_micros": "0",
+      "slice_numerator": "0"
+    },
+    "lifetime_purchased_count": "0",
+    "rechart_count": 0,
+    "last_rechart_elapsed_micros": "0",
+    "surveys_collected_total": "0",
+    "completed_calibration_ids": [],
+    "extra_plan_slots": 0,
+    "automation_plans": [
+      {
+        "id": "plan.base",
+        "name": "Base plan",
+        "purchase_policy": "greedy",
+        "tier_priority": [
+          4,
+          3,
+          2,
+          1,
+          0
+        ],
+        "auto_reset_enabled": false,
+        "minimum_additional_charts": "1",
+        "minimum_run_seconds": 600
+      }
+    ],
+    "selected_automation_plan_id": "plan.base"
+  },
+  "seeded_story": {
+    "schema_version": 4,
+    "campaign": {
+      "completed_chapters": [
+        "chapter.01",
+        "chapter.02",
+        "chapter.03"
+      ]
+    },
+    "dossiers": {
+      "schema_version": 1,
+      "owned": [
+        "challenge.01"
+      ],
+      "completed": [],
+      "active": {
+        "dossier_id": "challenge.01",
+        "fleet": {
+          "schema_version": 4,
+          "economic_version": "tideglass-economy-1.0.0",
+          "event_order_version": 4,
+          "counts": [
+            1,
+            0,
+            0,
+            0,
+            0
+          ],
+          "wallet_micros": "91268684",
+          "lifetime_micros": "91268684",
+          "charts": "0",
+          "elapsed_micros": "91268684",
+          "earning_remainder": "0",
+          "revision": 5,
+          "auto_buy_enabled": false,
+          "focus_charges": 0,
+          "focus_phase_micros": "91268684",
+          "focus_remaining_micros": "0",
+          "completed_surveys": 0,
+          "survey_phase_micros": "91268684",
+          "survey_notes": "0",
+          "daily": {
+            "account_seed": null,
+            "utc_offset_minutes": 0,
+            "day_high_water": -1,
+            "last_materialized_day": -1,
+            "utc_anchor_micros": null,
+            "available_discovery_kinds": [],
+            "contracts": [],
+            "discovery_totals": {},
+            "discovery_operation_ids": [],
+            "discovery_sequence": "0",
+            "selected_pass_id": "pass.01",
+            "pass_xp_by_id": {
+              "pass.01": "0"
+            }
+          },
+          "support": {
+            "remaining_micros": "0",
+            "token_day": -1,
+            "tokens": [],
+            "caches": [],
+            "claimed_slice_ids": [],
+            "closed_settlement_ids": [],
+            "grant_source_ids": [],
+            "last_settlement_sequence": "0",
+            "last_settlement_through_utc_micros": null,
+            "last_finalized_settlement_id": null,
+            "receipt_cursor_migration_required": false,
+            "active_settlement_id": null,
+            "active_settlement_request": null,
+            "source_start_elapsed_micros": "0",
+            "next_offset_micros": "0",
+            "slice_start_offset_micros": "0",
+            "slice_numerator": "0"
+          },
+          "lifetime_purchased_count": "0",
+          "rechart_count": 0,
+          "last_rechart_elapsed_micros": "0",
+          "surveys_collected_total": "0",
+          "completed_calibration_ids": [],
+          "extra_plan_slots": 0,
+          "automation_plans": [
+            {
+              "id": "plan.base",
+              "name": "Base plan",
+              "purchase_policy": "greedy",
+              "tier_priority": [
+                4,
+                3,
+                2,
+                1,
+                0
+              ],
+              "auto_reset_enabled": false,
+              "minimum_additional_charts": "1",
+              "minimum_run_seconds": 600
+            }
+          ],
+          "selected_automation_plan_id": "plan.base"
+        },
+        "automatic": false,
+        "policy": "bestPayback",
+        "priority": [
+          4,
+          3,
+          2,
+          1,
+          0
+        ],
+        "complete": false
+      }
+    },
+    "decorations": [
+      "cosmetic.core.decoration.01"
+    ],
+    "equipped_decoration": "cosmetic.core.decoration.01",
+    "season": {
+      "schema_version": 1,
+      "season_id": "season.01",
+      "rules_version": "season.01.rules.1",
+      "rules_digest": "29e1fce96b22399af4b3de7ca8a0f9a2756874ec1e9021ffd321115bdd1fd1e0",
+      "base_economy_version": "tideglass-economy-1.0.0",
+      "run_id": "season:ca29831699428c55a8ccb47033bebbee:1792742893710539",
+      "starts_at_micros": "1792108800000000",
+      "ends_at_micros": "1794528000000000",
+      "settled_through_micros": "1792742894979223",
+      "fleet": {
+        "counts": [
+          1,
+          0,
+          0,
+          0,
+          0
+        ],
+        "wallet_micros": "1268684",
+        "lifetime_micros": "1268684",
+        "elapsed_micros": "1268684",
+        "earning_remainder": "0"
+      },
+      "automatic": false,
+      "archive_active": false,
+      "policy": "bestPayback",
+      "priority": [
+        4,
+        3,
+        2,
+        1,
+        0
+      ],
+      "claimed_milestones": []
+    },
+    "pass": {
+      "schema_version": 1,
+      "definition_digests": {
+        "pass.01": "29e1fce96b22399af4b3de7ca8a0f9a2756874ec1e9021ffd321115bdd1fd1e0"
+      },
+      "claims": {},
+      "alternatives": {}
+    },
+    "content_digest": "58c8cac53fa8679447d3f524bdc6979bf0c11127670840bf21c57cfffc2bbc72",
+    "equipped_appearance": "cosmetic.core.chapter.03"
+  },
+  "device_physical_width": 2064.0,
+  "device_physical_height": 2752.0,
+  "device_pixel_ratio": 2.0,
+  "platform_locale": "en_TR",
+  "season_capture_landmark": {
+    "widget": "SeasonScreen",
+    "key": "season-tab-0",
+    "selected": true,
+    "route_is_current": true,
+    "primary_animation_status": "completed",
+    "secondary_animation_status": "dismissed",
+    "gameplay_elapsed_ms": 21903
+  },
+  "real_gameplay_elapsed_ms": 25086,
+  "actual_purchase_count_delta": 1,
+  "automated_pointer_events_routed": 12,
+  "screen_set": [
+    "main",
+    "chapter",
+    "challenge",
+    "season"
+  ],
+  "screenshots": [
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/integration-ios-tablet-20261023T080707.958916Z/ios-tablet-capture-main.png",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/integration-ios-tablet-20261023T080707.958916Z/ios-tablet-capture-chapter.png",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/integration-ios-tablet-20261023T080707.958916Z/ios-tablet-capture-challenge.png",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/integration-ios-tablet-20261023T080707.958916Z/ios-tablet-capture-season.png"
+  ]
+}

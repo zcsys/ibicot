@@ -1,0 +1,53 @@
+{
+  "candidate_fingerprint": "3445498f397a8cfc2c1383e5c128358222f25cd1691a54acdd852e03bbf4b982",
+  "device": "F05BE4B0-52C1-4CA1-B721-BD64AE559E3F",
+  "label": "ios-phone",
+  "started_utc": "20261016T112358.065429Z",
+  "command": [
+    "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+    "drive",
+    "--driver=test_driver/evidence_911183b5d9ee.dart",
+    "--target=integration_test/evidence_974aa564355e_test.dart",
+    "-d",
+    "F05BE4B0-52C1-4CA1-B721-BD64AE559E3F",
+    "--dart-define=TIDEGLASS_DEVICE_LABEL=ios-phone",
+    "--dart-define=TIDEGLASS_SCENARIO=session-start",
+    "--dart-define=TIDEGLASS_RUN_ID=integrated-344-b",
+    "--dart-define=TIDEGLASS_VERIFICATION_ID=integration-ios-phone-20261016T112358.065429Z",
+    "--dart-define=TIDEGLASS_CANDIDATE_FINGERPRINT=3445498f397a8cfc2c1383e5c128358222f25cd1691a54acdd852e03bbf4b982",
+    "--dart-define=TIDEGLASS_HARNESS_SHA256=974aa564355e40585d731eda53a19657c6a955d8552e9fa9fb06c54a7404eee0",
+    "--keep-app-running",
+    "--timeout=180",
+    "--no-pub"
+  ],
+  "scenario": "session-start",
+  "run_id": "integrated-344-b",
+  "harness_sha256": {
+    "harness.dart": "974aa564355e40585d731eda53a19657c6a955d8552e9fa9fb06c54a7404eee0",
+    "driver.dart": "911183b5d9ee8ec80769836f477a293dadb66e20cc0c5d5e44314415889749a8"
+  },
+  "production_inputs_match_snapshot": true,
+  "provenance": "Seeded native boundary/presentation test; no natural pacing or physical-device claim",
+  "exit_code": 1,
+  "native_process_stop": {
+    "command": [
+      "xcrun",
+      "simctl",
+      "terminate",
+      "F05BE4B0-52C1-4CA1-B721-BD64AE559E3F",
+      "dev.tideglass.game"
+    ],
+    "exit_code": 0,
+    "output": ""
+  },
+  "verification_errors": [
+    "No successful test completion in native log"
+  ],
+  "passed": false,
+  "evidence_sha256": {
+    "result.json": "c8c2dbf959a0efd07eb56a221c1d4e7879b339614fd8ff1b821cf37e0f56bcd7",
+    "run.log": "24b9bf34d1b1109ec2786e82fa827208f751e5f1a3cd9b4e4fe02cf8b107a63a",
+    "driver.dart": "911183b5d9ee8ec80769836f477a293dadb66e20cc0c5d5e44314415889749a8",
+    "harness.dart": "974aa564355e40585d731eda53a19657c6a955d8552e9fa9fb06c54a7404eee0"
+  }
+}

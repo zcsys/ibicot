@@ -1,0 +1,81 @@
+{
+  "platform": "android",
+  "device": "emulator-5556",
+  "audio_recorded": false,
+  "editing": "None; native simulator screen recorder output",
+  "commands": [
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "screenrecord",
+        "--time-limit",
+        "27",
+        "/sdcard/tideglass-integration-android-20261021T114929.560297Z.mp4"
+      ],
+      "kind": "screen-recorder"
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "run-as",
+        "dev.tideglass.game",
+        "touch",
+        "/data/user/0/dev.tideglass.game/files/native-verification/capture-android-final152-oct21-capture/recording-started"
+      ],
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "pull",
+        "/sdcard/tideglass-integration-android-20261021T114929.560297Z.mp4",
+        "/Users/csys/Desktop/ibicot/idle/release/native-proof/integration-android-20261021T114929.560297Z/gameplay.mp4"
+      ],
+      "exit_code": 0,
+      "output": "/sdcard/tideglass-integration-android-20261021T114929.560297Z.mp4: 1 file pulled, 0 skipped. 53.9 MB/s (359051 bytes in 0.006s)\n"
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "rm",
+        "/sdcard/tideglass-integration-android-20261021T114929.560297Z.mp4"
+      ],
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "command": [
+        "xcrun",
+        "swift",
+        "/Users/csys/Desktop/ibicot/idle/tool/native_video_metadata.swift",
+        "/Users/csys/Desktop/ibicot/idle/release/native-proof/integration-android-20261021T114929.560297Z/gameplay.mp4"
+      ],
+      "exit_code": 0,
+      "output": "{\"audio_track_count\":0,\"duration_seconds\":29.335100000000001,\"height\":2400,\"video_track_count\":1,\"width\":1080}\n"
+    }
+  ],
+  "errors": [],
+  "start_acknowledgement": "screenrecord process alive after one second; final MP4 duration independently checked",
+  "fixture_acknowledged": true,
+  "recorder_exit_code": 0,
+  "media": {
+    "audio_track_count": 0,
+    "duration_seconds": 29.3351,
+    "height": 2400,
+    "video_track_count": 1,
+    "width": 1080
+  },
+  "passed": true
+}

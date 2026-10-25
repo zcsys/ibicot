@@ -1,0 +1,69 @@
+{
+  "runs": [
+    {
+      "condition": "100-false",
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+        "test",
+        "--reporter=json",
+        "--dart-define=TIDEGLASS_TEST_TEXT_PERCENT=100",
+        "--dart-define=TIDEGLASS_PSEUDO=false",
+        "test/qa_content_story_navigation_test.dart",
+        "test/qa_client_shell_clauses_test.dart"
+      ],
+      "exit_code": 0,
+      "source_unchanged": true,
+      "expected_tests": 2,
+      "log_sha256": "4927b7f942cc0708a006f421c6d703931b9643d7371f1f937791342465d9e18e"
+    },
+    {
+      "condition": "100-true",
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+        "test",
+        "--reporter=json",
+        "--dart-define=TIDEGLASS_TEST_TEXT_PERCENT=100",
+        "--dart-define=TIDEGLASS_PSEUDO=true",
+        "test/qa_content_story_navigation_test.dart",
+        "test/qa_client_shell_clauses_test.dart"
+      ],
+      "exit_code": 0,
+      "source_unchanged": true,
+      "expected_tests": 2,
+      "log_sha256": "94af1160731600958e6fad8a355285b3176f153283a50499bd95012ff58742e4"
+    },
+    {
+      "condition": "200-false",
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+        "test",
+        "--reporter=json",
+        "--dart-define=TIDEGLASS_TEST_TEXT_PERCENT=200",
+        "--dart-define=TIDEGLASS_PSEUDO=false",
+        "test/qa_content_story_navigation_test.dart"
+      ],
+      "exit_code": 0,
+      "source_unchanged": true,
+      "expected_tests": 1,
+      "log_sha256": "c4f352c4bd593c646415d1872421bb9f62f320447673eeb99e0cb3ab84c17be4"
+    },
+    {
+      "condition": "200-true",
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+        "test",
+        "--reporter=json",
+        "--dart-define=TIDEGLASS_TEST_TEXT_PERCENT=200",
+        "--dart-define=TIDEGLASS_PSEUDO=true",
+        "test/qa_content_story_navigation_test.dart"
+      ],
+      "exit_code": 0,
+      "source_unchanged": true,
+      "expected_tests": 1,
+      "log_sha256": "0e6532e83ff043c5cbc6c5836083b84f23cba3fc4f90053d66f3a45efbd96e70"
+    }
+  ],
+  "passed_tests": 6,
+  "note": "Actual200-percent named/header/compact-back assertions are unchanged. At default100, the probe instead permits the intended reading AppBar and still checks full title/back behavior. Addeddefault shell cases pass too.",
+  "production_changed": false
+}

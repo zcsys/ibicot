@@ -1,0 +1,82 @@
+Running Xcode build...                                          
+Xcode build done.                                           22.9s
+VMServiceFlutterDriver: Connecting to Flutter application at http://127.0.0.1:65247/t5pcY0Di0mQ=/
+VMServiceFlutterDriver: Isolate found with number: 1710608293259567
+VMServiceFlutterDriver: Isolate 1710608293259567 is runnable.
+VMServiceFlutterDriver: Isolate is paused at start.
+VMServiceFlutterDriver: Attempting to resume isolate
+flutter: 00:00 +0: real elapsed first purchase and native process reload: natural-start
+VMServiceFlutterDriver: Connected to Flutter application.
+flutter: ══╡ EXCEPTION CAUGHT BY SCHEDULER LIBRARY ╞═════════════════════════════════════════════════════════
+flutter: The following message was thrown:
+flutter: An animation is still running even after the widget tree was disposed.
+flutter:
+flutter: There were 2 transient callbacks left. The stack traces for when they were registered are as
+flutter: follows:
+flutter: ── callback 61 ──
+flutter: #2      SchedulerBinding.scheduleFrameCallback (package:flutter/src/scheduler/binding.dart:617:49)
+flutter: #3      FramePositionUpdater._tick (package:audioplayers/src/position_updater.dart:75:52)
+flutter: #4      SchedulerBinding._invokeFrameCallback (package:flutter/src/scheduler/binding.dart:1430:15)
+flutter: #5      SchedulerBinding.handleBeginFrame.<anonymous closure> (package:flutter/src/scheduler/binding.dart:1263:11)
+flutter: #6      _LinkedHashMapMixin.forEach (dart:_compact_hash:721:13)
+flutter: #7      SchedulerBinding.handleBeginFrame (package:flutter/src/scheduler/binding.dart:1261:17)
+flutter: #8      LiveTestWidgetsFlutterBinding.handleBeginFrame (package:flutter_test/src/binding.dart:2800:13)
+flutter: #9      SchedulerBinding.scheduleWarmUpFrame.<anonymous closure> (package:flutter/src/scheduler/binding.dart:1051:9)
+flutter: #20     _RawReceivePort._handleMessage (dart:isolate-patch/isolate_patch.dart:192:12)
+flutter: (elided 12 frames from class _FrameCallbackEntry, class _Timer, dart:async, and dart:async-patch)
+flutter: ── callback 62 ──
+flutter: #2      SchedulerBinding.scheduleFrameCallback (package:flutter/src/scheduler/binding.dart:617:49)
+flutter: #3      FramePositionUpdater._tick (package:audioplayers/src/position_updater.dart:75:52)
+flutter: #4      SchedulerBinding._invokeFrameCallback (package:flutter/src/scheduler/binding.dart:1430:15)
+flutter: #5      SchedulerBinding.handleBeginFrame.<anonymous closure> (package:flutter/src/scheduler/binding.dart:1263:11)
+flutter: #6      _LinkedHashMapMixin.forEach (dart:_compact_hash:721:13)
+flutter: #7      SchedulerBinding.handleBeginFrame (package:flutter/src/scheduler/binding.dart:1261:17)
+flutter: #8      LiveTestWidgetsFlutterBinding.handleBeginFrame (package:flutter_test/src/binding.dart:2800:13)
+flutter: #9      SchedulerBinding.scheduleWarmUpFrame.<anonymous closure> (package:flutter/src/scheduler/binding.dart:1051:9)
+flutter: #20     _RawReceivePort._handleMessage (dart:isolate-patch/isolate_patch.dart:192:12)
+flutter: (elided 12 frames from class _FrameCallbackEntry, class _Timer, dart:async, and dart:async-patch)
+flutter: ════════════════════════════════════════════════════════════════════════════════════════════════════
+flutter: 00:37 +0: real elapsed first purchase and native process reload: natural-start [E]
+flutter:   Test failed. See exception logs above.
+  The test description was: real elapsed first purchase and native process reload: natural-start
+flutter:
+flutter: 00:37 +0 -1: (tearDownAll)
+flutter: 00:37 +1 -1: Some tests failed.
+Failure Details:
+Failure in method: real elapsed first purchase and native process reload: natural-start
+══╡ EXCEPTION CAUGHT BY SCHEDULER LIBRARY ╞══════════════════════
+The following message was thrown:
+An animation is still running even after the widget tree was
+disposed.
+
+There were 2 transient callbacks left. The stack traces for when
+they were registered are as follows:
+── callback 61 ──
+#2      SchedulerBinding.scheduleFrameCallback (package:flutter/src/scheduler/binding.dart:617:49)
+#3      FramePositionUpdater._tick (package:audioplayers/src/position_updater.dart:75:52)
+#4      SchedulerBinding._invokeFrameCallback (package:flutter/src/scheduler/binding.dart:1430:15)
+#5      SchedulerBinding.handleBeginFrame.<anonymous closure> (package:flutter/src/scheduler/binding.dart:1263:11)
+#6      _LinkedHashMapMixin.forEach (dart:_compact_hash:721:13)
+#7      SchedulerBinding.handleBeginFrame (package:flutter/src/scheduler/binding.dart:1261:17)
+#8      LiveTestWidgetsFlutterBinding.handleBeginFrame (package:flutter_test/src/binding.dart:2800:13)
+#9      SchedulerBinding.scheduleWarmUpFrame.<anonymous closure> (package:flutter/src/scheduler/binding.dart:1051:9)
+#20     _RawReceivePort._handleMessage (dart:isolate-patch/isolate_patch.dart:192:12)
+(elided 12 frames from class _FrameCallbackEntry, class _Timer, dart:async, and dart:async-patch)
+── callback 62 ──
+#2      SchedulerBinding.scheduleFrameCallback (package:flutter/src/scheduler/binding.dart:617:49)
+#3      FramePositionUpdater._tick (package:audioplayers/src/position_updater.dart:75:52)
+#4      SchedulerBinding._invokeFrameCallback (package:flutter/src/scheduler/binding.dart:1430:15)
+#5      SchedulerBinding.handleBeginFrame.<anonymous closure> (package:flutter/src/scheduler/binding.dart:1263:11)
+#6      _LinkedHashMapMixin.forEach (dart:_compact_hash:721:13)
+#7      SchedulerBinding.handleBeginFrame (package:flutter/src/scheduler/binding.dart:1261:17)
+#8      LiveTestWidgetsFlutterBinding.handleBeginFrame (package:flutter_test/src/binding.dart:2800:13)
+#9      SchedulerBinding.scheduleWarmUpFrame.<anonymous closure> (package:flutter/src/scheduler/binding.dart:1051:9)
+#20     _RawReceivePort._handleMessage (dart:isolate-patch/isolate_patch.dart:192:12)
+(elided 12 frames from class _FrameCallbackEntry, class _Timer, dart:async, and dart:async-patch)
+═════════════════════════════════════════════════════════════════
+
+end of failure 1
+
+
+
+Leaving the application running.

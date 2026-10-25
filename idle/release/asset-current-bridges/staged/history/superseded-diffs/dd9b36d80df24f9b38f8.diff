@@ -1,0 +1,31 @@
+--- release/native-proof/root-art-full-20261021T122040.006324Z/source/game/mobile/lib/story_screen.dart
++++ game/mobile/lib/story_screen.dart
+@@ -37,7 +37,9 @@
+   Widget build(BuildContext context) => ListenableBuilder(
+     listenable: game,
+     builder: (context, _) => Scaffold(
+-      appBar: readingAppBar(context, title: UiEnglish.storyTheRestoration),
++      appBar: MediaQuery.textScalerOf(context).scale(16) > 24
++          ? AppBar()
++          : readingAppBar(context, title: UiEnglish.storyTheRestoration),
+       body: SafeArea(
+         child: SingleChildScrollView(
+           controller: scroll,
+@@ -48,6 +50,17 @@
+               child: Column(
+                 crossAxisAlignment: CrossAxisAlignment.stretch,
+                 children: [
++                  if (MediaQuery.textScalerOf(context).scale(16) > 24) ...[
++                    Semantics(
++                      header: true,
++                      namesRoute: true,
++                      child: LocalizedText(
++                        UiEnglish.storyTheRestoration,
++                        style: Theme.of(context).textTheme.headlineMedium,
++                      ),
++                    ),
++                    const SizedBox(height: 20),
++                  ],
+                   Wrap(
+                     spacing: 8,
+                     runSpacing: 8,

@@ -1,0 +1,35 @@
+{
+  "candidate_fingerprint": "152805bf9e269f49d14486286656ac0174a808384d10e6623533a4f92690dc11",
+  "capture_manifest_sha256": "aad4e37d3b71071132d754289492ad015e84b065fc210635e407ea1445ffd72e",
+  "screenshots_inspected": [
+    "android-capture-main.png",
+    "android-capture-chapter.png",
+    "android-capture-challenge.png",
+    "android-capture-season.png"
+  ],
+  "screenshot_observation": "All four raw1080x2400 production screens visually inspected: main harbor, chapter4 restoration, active passage and season. Text and controls readable; scrolling content extends below viewport as expected; no error UI observed.",
+  "video": {
+    "file": "gameplay.mp4",
+    "bytes": 359051,
+    "sha256": "0a79c40e24c78449ed9af6b09a842c1df67030dba6da4c0ac52a8e14ebf36d20",
+    "audio_track_count": 0,
+    "duration_seconds": 29.3351,
+    "height": 2400,
+    "video_track_count": 1,
+    "width": 1080
+  },
+  "video_review": "Unedited MP4 decoded by AVFoundation. Representative frames from actual times0,12.9643,17.2232 seconds inspected: harbor, expanded restoration and passage fleet. Shows real production UI navigation. The decoder selects available sample timestamps rather than requested exact times; see preserved logs.",
+  "video_review_frames": {
+    "review-exact-frames/frame-11s.png": "add6eb3e079bb1e251ec7ec5db2008a3b49ebc69379a30af2720c7d416d5def7",
+    "review-exact-frames/frame-17s.png": "39b7b5efc438fc9e6942edadad502f869e31a931c784ed4f32ab6fe4a751b5aa",
+    "review-exact-frames/frame-1s.png": "add6eb3e079bb1e251ec7ec5db2008a3b49ebc69379a30af2720c7d416d5def7",
+    "review-exact-frames/frame-23s.png": "4cd1e6fce75ef9f379c8cad4b5224985854a8c8143364737310d4c2e8de5df28",
+    "review-exact-frames/frame-6s.png": "add6eb3e079bb1e251ec7ec5db2008a3b49ebc69379a30af2720c7d416d5def7"
+  },
+  "limitations": [
+    "Seeded state, automated native UI actions, simulator only; no natural human playtest or physical performance claim.",
+    "Silent engineering footage; integration test pointer can appear during taps. Not store-promotional or submission approval.",
+    "Android guest wall clock differed from host; actual metadata duration29.3351seconds, requested screenrecord limit27seconds; no wall-clock authenticity claim."
+  ],
+  "raw_media_edited": false
+}

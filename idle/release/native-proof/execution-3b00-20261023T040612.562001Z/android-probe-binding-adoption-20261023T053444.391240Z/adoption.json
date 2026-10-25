@@ -1,0 +1,38 @@
+{
+  "utc": "2026-10-23T05:34:44.543568+00:00",
+  "scope": "Explicit lead-authorized exact two-file verification-tool adoption, following different-author reviews. No native pass inferred.",
+  "candidate": "/Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261023T040445.261666Z-3b00cc8f7122",
+  "candidate_fingerprint": "3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59",
+  "candidate_manifest_sha256": "b4322606cd0207425b801feacc0bf4084ac9c460b23a028576204b766eeaeada",
+  "frozen_source_files": 1190,
+  "frozen_source_unchanged": true,
+  "mapped_production_inputs": 482,
+  "unchanged_original_harness_sha256": "102be09eb8043ce9bb496156d9f37b1834c3084ddf58fef073e7c25cdc3c55d5",
+  "reviews": [
+    {
+      "path": "/Users/csys/Desktop/ibicot/idle/release/qa/lead-android-probe-review-20261023T0524Z/verification.json",
+      "sha256": "0638ea47b737c19a6a2f1aaeba7471fc6ed2a9d4afe23662ff891f5162900994"
+    },
+    {
+      "path": "/Users/csys/Desktop/ibicot/idle/release/qa/android-observer-binding-20261023T052628.059630Z/verification.json",
+      "sha256": "0268b2d9f6a580e38ad0d4284658716951db61c74095a07001cac0bd821c6073"
+    }
+  ],
+  "changes": [
+    {
+      "role": "runner",
+      "live": "/Users/csys/Desktop/ibicot/idle/tool/verify_current_runtime.py",
+      "staged": "/Users/csys/Desktop/ibicot/idle/release/qa/native-android-probe-repair-staged-20261023T051836.017647Z/verify_current_runtime.py",
+      "before_sha256": "d849ab8feb642eb1b988f9a6d82558491b7ebef4c63768fb4fa132f49edf3804",
+      "after_sha256": "d1ea6d05085f05a0a3bb6c768531ef7659272e41993858c0551618f74ce5c847"
+    },
+    {
+      "role": "collector",
+      "live": "/Users/csys/Desktop/ibicot/idle/release/native-privacy/runtime_observation.py",
+      "staged": "/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-probe-binding-staged-20261023T052041.391323Z/runtime_observation.py",
+      "before_sha256": "f3374fb77c83e2b12ff91a48b4c688aa07c7b66042dd75681f7ec2b5fc00febd",
+      "after_sha256": "90485bd0ca097af8835d1f7cc280f7f2545085ea578d7a44cf10a6b93cf458cc"
+    }
+  ],
+  "native_or_release_acceptance": false
+}

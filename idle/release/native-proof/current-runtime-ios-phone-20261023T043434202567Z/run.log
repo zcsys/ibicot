@@ -1,0 +1,35 @@
+Running Xcode build...                                          
+Xcode build done.                                           27.1s
+VMServiceFlutterDriver: Connecting to Flutter application at http://127.0.0.1:49753/5J5Gem1huNw=/
+VMServiceFlutterDriver: Isolate found with number: 7781537037541687
+VMServiceFlutterDriver: Isolate 7781537037541687 is runnable.
+VMServiceFlutterDriver: Isolate is paused at start.
+VMServiceFlutterDriver: Attempting to resume isolate
+flutter: 00:00 +0: current native runtime qualification: runtime-save-hold-afterFlush
+VMServiceFlutterDriver: Connected to Flutter application.
+flutter: TIDEGLASS_RUNTIME_KILL_READY {"verification_id":"current-runtime-ios-phone-20261023T043434202567Z","candidate_fingerprint":"3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59","harness_sha256":"102be09eb8043ce9bb496156d9f37b1834c3084ddf58fef073e7c25cdc3c55d5","scenario":"runtime-save-hold-afterFlush","process_id":69785,"checkpoint":"/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Data/Application/E791AFE9-833E-48AD-AA6E-322B49B8D67E/Library/Application Support/native-current-verification/ios-phone-v3b00-ios-phone-save-afterFlush/save-afterFlush/checkpoint.json","checkpoint_sha256":"8f5de328c031f43fb53b98104dfe384ba972eade408dcc42a5733d7fa7a5a0f9"}
+Unhandled exception:
+DriverError: Failed to fulfill RequestData due to remote error
+Original error: ext.flutter.driver: (112) Service has disappeared
+Original stack trace:
+#0      new _OutstandingRequest (package:vm_service/src/vm_service.dart:280:34)
+#1      VmService._call.<anonymous closure> (package:vm_service/src/vm_service.dart:1962:25)
+#2      VmService._call (package:vm_service/src/vm_service.dart:1974:8)
+#3      VmService.callServiceExtension (package:vm_service/src/vm_service.dart:1913:14)
+#4      VMServiceFlutterDriver.sendCommand (package:flutter_driver/src/driver/vmservice_driver.dart:327:12)
+#5      FlutterDriver.requestData (package:flutter_driver/src/driver/driver.dart:585:13)
+#6      integrationDriver (package:integration_test/integration_test_driver.dart:71:42)
+<asynchronous suspension>
+#7      main (file:///Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261023T040445.261666Z-3b00cc8f7122/workspace/game/mobile/test_driver/current_evidence_911183b5d9ee.dart:12:3)
+<asynchronous suspension>
+
+
+#0      VMServiceFlutterDriver.sendCommand (package:flutter_driver/src/driver/vmservice_driver.dart:340:7)
+<asynchronous suspension>
+#1      FlutterDriver.requestData (package:flutter_driver/src/driver/driver.dart:585:7)
+<asynchronous suspension>
+#2      integrationDriver (package:integration_test/integration_test_driver.dart:71:29)
+<asynchronous suspension>
+#3      main (file:///Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261023T040445.261666Z-3b00cc8f7122/workspace/game/mobile/test_driver/current_evidence_911183b5d9ee.dart:12:3)
+<asynchronous suspension>
+Leaving the application running.

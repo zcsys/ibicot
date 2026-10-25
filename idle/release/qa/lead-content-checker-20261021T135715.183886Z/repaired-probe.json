@@ -1,0 +1,37 @@
+{
+  "finding": "CONTENT-CHECK001",
+  "rows": [
+    {
+      "case": "unchanged_positive",
+      "accepted": true,
+      "expected_acceptance": true,
+      "error": null
+    },
+    {
+      "case": "strict_display_pseudo",
+      "accepted": false,
+      "expected_acceptance": false,
+      "error": "pseudo exact bool"
+    },
+    {
+      "case": "strict_display_text_percent",
+      "accepted": false,
+      "expected_acceptance": false,
+      "error": "text scale type/value"
+    },
+    {
+      "case": "fractional_code_unit_count",
+      "accepted": false,
+      "expected_acceptance": false,
+      "error": "text length mismatch"
+    }
+  ],
+  "sources": {
+    "content_contract.py": "a3af7b741abc7a8e5f8b48e3f33fce37d3ed17514a32bb4add17f3b425480d64",
+    "check_source_relationships.py": "a12aeef5d51aac08763a91747949fc3ab2fe00136582bfd916f2f3912692855e",
+    "test_content_checker.py": "54429dd235c8aa96134fa211ec7403312cd8733a9e017e7c1a3bc30a8d432867",
+    "run_content_condition.py": "0c03300170e5491578b45d0d408238346d642b0477f0daf28f5274bba7a559fb",
+    "check_content_report.py": "8b3f9c46815bfb9feaf771a2af3217423d947e055f2acf2712038dd15286b678"
+  },
+  "scope": "Synthetic checker-only probes; no Flutter or production changes"
+}

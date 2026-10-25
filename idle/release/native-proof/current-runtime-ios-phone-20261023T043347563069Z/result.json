@@ -1,0 +1,30 @@
+{
+  "verification_id": "current-runtime-ios-phone-20261023T043347563069Z",
+  "candidate_fingerprint": "3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59",
+  "harness_sha256": "102be09eb8043ce9bb496156d9f37b1834c3084ddf58fef073e7c25cdc3c55d5",
+  "scenario": "runtime-save-recover-beforeWrite",
+  "run_id": "v3b00-ios-phone-save-beforeWrite",
+  "device_label": "ios-phone",
+  "platform": "ios",
+  "os_version": "Version 26.3.1 (Build 23D8133)",
+  "process_id": 69053,
+  "fixture_kind": "INTERNAL SYNTHETIC QUALIFICATION ONLY",
+  "checks": [
+    "After externally recorded process kill at beforeWrite, expected generation loads and OS writer lock is released."
+  ],
+  "completed": true,
+  "limitations": [
+    "No real participant, consent, paid transaction or receiving-app delivery.",
+    "Process termination is not physical power loss or a lifecycle callback.",
+    "Injected predecessor/rate/clock/bounds are qualification fixtures only.",
+    "Consented production process observations do not prove release AOT fatal-report matching or a crash-free rate."
+  ],
+  "fixture_directory": "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Data/Application/6411CE66-CEE8-4E15-B166-304F4D26076C/Library/Application Support/native-current-verification/ios-phone-v3b00-ios-phone-save-beforeWrite/save-beforeWrite",
+  "preparation_verification_id": "current-runtime-ios-phone-20261023T043259564984Z",
+  "preparation_checkpoint_sha256": "989c4d16f4e48f2b003dca4cab99ff9e96800b6b31001cb43813439ae170a7c5",
+  "previous_native_process_id": 68331,
+  "recovered_stage": "beforeWrite",
+  "save_loaded_amount": 0,
+  "save_after_recovery_amount": 2,
+  "screenshots": []
+}

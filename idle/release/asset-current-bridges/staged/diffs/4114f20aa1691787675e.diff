@@ -1,0 +1,145 @@
+--- release/native-proof/root-art-full-20261021T122040.006324Z/source/game/mobile/lib/help_screen.dart
++++ game/mobile/lib/help_screen.dart
+@@ -1,7 +1,9 @@
+ import 'package:flutter/material.dart';
++
+ import 'help_content.dart';
+ import 'palette.dart';
+ import 'presentation.dart';
++import 'public_links.dart';
+ 
+ /// Read-only help. Optional host actions open existing account/recovery flows;
+ /// this screen never creates accounts, changes consent, imports or resets saves.
+@@ -12,13 +14,19 @@
+     this.onOpenAccount,
+     this.onOpenLocalRecovery,
+     this.onOpenPrivacySettings,
++    this.publicLinks,
++    this.publicPageLauncher,
+   }) : _indexBelow = false;
+   const HelpScreen._fromIndex({
+     required this.initialTopic,
+     this.onOpenAccount,
+     this.onOpenLocalRecovery,
+     this.onOpenPrivacySettings,
++    this.publicLinks,
++    this.publicPageLauncher,
+   }) : _indexBelow = true;
++  final PublicLinksConfig? publicLinks;
++  final PublicPageLauncher? publicPageLauncher;
+   final bool _indexBelow;
+   final HelpTopic? initialTopic;
+   final VoidCallback? onOpenAccount, onOpenLocalRecovery, onOpenPrivacySettings;
+@@ -35,6 +43,8 @@
+               onOpenAccount: onOpenAccount,
+               onOpenLocalRecovery: onOpenLocalRecovery,
+               onOpenPrivacySettings: onOpenPrivacySettings,
++              publicLinks: publicLinks,
++              publicPageLauncher: publicPageLauncher,
+             ),
+           ),
+         );
+@@ -48,6 +58,8 @@
+           onOpenAccount: onOpenAccount,
+           onOpenLocalRecovery: onOpenLocalRecovery,
+           onOpenPrivacySettings: onOpenPrivacySettings,
++          publicLinks: publicLinks,
++          publicPageLauncher: publicPageLauncher,
+         ),
+       ),
+     );
+@@ -58,8 +70,9 @@
+     final article = initialTopic == null
+         ? null
+         : HelpContent.article(initialTopic!);
++    final title = article?.title ?? HelpCopy.title;
+     return Scaffold(
+-      appBar: readingAppBar(context, title: article?.title ?? HelpCopy.title),
++      appBar: AppBar(),
+       body: SafeArea(
+         child: Center(
+           child: ConstrainedBox(
+@@ -71,9 +84,21 @@
+                 policy: ReadingOrderTraversalPolicy(),
+                 child: Column(
+                   crossAxisAlignment: CrossAxisAlignment.stretch,
+-                  children: article == null
+-                      ? _index(context)
+-                      : _article(context, article),
++                  children: [
++                    Semantics(
++                        header: true,
++                        namesRoute: true,
++                        child: LocalizedText(
++                          title,
++                          key: const ValueKey('help-scroll-heading'),
++                          style: Theme.of(context).textTheme.headlineSmall,
++                        ),
++                      ),
++                    const SizedBox(height: 20),
++                    ...(article == null
++                        ? _index(context)
++                        : _article(context, article)),
++                  ],
+                 ),
+               ),
+             ),
+@@ -95,28 +120,20 @@
+           alignment: Alignment.centerLeft,
+         ),
+         onPressed: () => _open(context, article.topic),
+-        child: Column(
+-          crossAxisAlignment: CrossAxisAlignment.start,
+-          children: [
+-            LocalizedText(
+-              article.title,
+-              style: Theme.of(context).textTheme.titleMedium,
+-            ),
+-            const SizedBox(height: 8),
+-            LocalizedText(
+-              article.summary,
+-              style: const TextStyle(color: TideColors.muted),
+-            ),
+-          ],
+-        ),
+-      ),
+-      const SizedBox(height: 12),
++        child: LocalizedText(
++          article.title,
++          style: Theme.of(context).textTheme.titleMedium,
++        ),
++      ),
++      const SizedBox(height: 8),
++      LocalizedText(
++        article.summary,
++        style: const TextStyle(color: TideColors.muted),
++      ),
++      const SizedBox(height: 20),
+     ],
+     const SizedBox(height: 8),
+-    const LocalizedText(
+-      HelpCopy.externalUnavailable,
+-      style: TextStyle(color: TideColors.muted),
+-    ),
++    PublicLinksPanel(configuration: publicLinks, launcher: publicPageLauncher),
+   ];
+ 
+   List<Widget> _article(BuildContext context, HelpArticle article) => [
+@@ -151,6 +168,17 @@
+       ),
+       const SizedBox(height: 24),
+     ],
++    if (const {
++      HelpTopic.privacy,
++      HelpTopic.recovery,
++      HelpTopic.releaseNotes,
++    }.contains(article.topic)) ...[
++      PublicLinksPanel(
++        configuration: publicLinks,
++        launcher: publicPageLauncher,
++      ),
++      const SizedBox(height: 24),
++    ],
+     for (final action in article.actions)
+       if (_callback(context, action) != null) ...[
+         OutlinedButton(

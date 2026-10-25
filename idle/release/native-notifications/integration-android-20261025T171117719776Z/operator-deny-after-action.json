@@ -1,0 +1,40 @@
+{
+  "utc": "2026-10-25T17:12:25.487820+00:00",
+  "argv": [
+    "/Users/csys/Library/Android/sdk/platform-tools/adb",
+    "-s",
+    "emulator-5556",
+    "shell",
+    "input",
+    "tap",
+    "540",
+    "1470"
+  ],
+  "exit_code": 0,
+  "stdout": "",
+  "stderr": "",
+  "operator": "Automated actual Android UI event",
+  "purpose": "Actual fresh OS permission dialog following explicit re-opt-in in new recovery process 11142; choose observed Don't allow. No direct permission API and no UiAutomation after the tap through framework terminal.",
+  "observed_node": {
+    "index": "1",
+    "text": "Don\u2019t allow",
+    "resource-id": "com.android.permissioncontroller:id/permission_deny_and_dont_ask_again_button",
+    "class": "android.widget.Button",
+    "package": "com.google.android.permissioncontroller",
+    "content-desc": "",
+    "checkable": "false",
+    "checked": "false",
+    "clickable": "true",
+    "enabled": "true",
+    "focusable": "true",
+    "focused": "false",
+    "scrollable": "false",
+    "long-clickable": "false",
+    "password": "false",
+    "selected": "false",
+    "bounds": "[133,1396][947,1543]"
+  },
+  "pre_image_sha256": "15b28c71f881308a9c0082957de0e5d1c8cbfdbc8b5bc291277437a53edfcc1b",
+  "pre_hierarchy_sha256": "45d627dbfa266f8102e7df1637aa4498551461fc5e98dcba20647d71c5a9d4ec",
+  "lead_method_sha256": "4b841ade92aee43a7292c07bbaa0e0d1306a9468c840e2318eaf0a43fc0e796a"
+}

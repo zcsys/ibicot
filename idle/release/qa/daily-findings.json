@@ -1,0 +1,74 @@
+{
+  "reviewer": "qa_release_native",
+  "findings": [
+    {
+      "id": "QA-006",
+      "severity": "P2",
+      "title": "Rollback reload rewinds calendar anchor and delays next actual account day",
+      "owner": "director",
+      "status": "repaired_by_author_independently_retested",
+      "source_fingerprint": "6d131f25eb6761acfee835ee2e38520a4550a36a82fd57deab7bae0920babbf5",
+      "files": [
+        "game/mobile/lib/game_controller.dart",
+        "game/core/lib/src/daily_engine.dart"
+      ],
+      "steps": [
+        "Create initialized daily state at 2026-10-16T12:00:00Z; persist settlement through that instant.",
+        "Open controller with clock 2026-10-15T12:00:00Z.",
+        "Advance clock to2026-10-17T00:00:00Z and tick."
+      ],
+      "expected": "dayHighWater 20743 and 6 retained contracts; elapsed production only from accepted cursor",
+      "actual": "dayHighWater 20742; calendar anchor was moved backward by constructor refresh",
+      "reproduction": "game/qa/daily_review_test.dart:15",
+      "log": "release/qa/daily-independent.log",
+      "reviewed_sha256": {
+        "game/mobile/lib/game_controller.dart": "1e40790798da60b9ea74e71aaf0e43869e6dc4063f21ea7eb4a5ffa549cb67c6",
+        "game/core/lib/src/daily_engine.dart": "7e8a6b16612eaf232e5060e67c554933ff0f3ae8f9d37d4fe459f5c30de411e9"
+      },
+      "repair_snapshot": "c72586b4be58a033b99c3f541445ea31a914b6e54507009dd1eac7c8e529a261",
+      "repair_source_sha256": {
+        "game/mobile/lib/game_controller.dart": "3477e5d1e169c25385ccec5b1045967315b6aba0b3ec4908ef5a450866cebc49",
+        "game/core/lib/src/daily_engine.dart": "7e8a6b16612eaf232e5060e67c554933ff0f3ae8f9d37d4fe459f5c30de411e9"
+      },
+      "retest_log": "release/qa/daily-independent-retest.log",
+      "original_test_expectations_unchanged": true
+    },
+    {
+      "id": "QA-007",
+      "severity": "P2",
+      "title": "Automation editor silently rounds existing exact-second minimum run",
+      "owner": "director",
+      "status": "repaired_by_author_independently_retested",
+      "source_fingerprint": "6d131f25eb6761acfee835ee2e38520a4550a36a82fd57deab7bae0920babbf5",
+      "files": [
+        "game/mobile/lib/daily_panel.dart"
+      ],
+      "steps": [
+        "Load a valid plan with minimumRunSeconds 90 and 100 Charts.",
+        "Open AutomationScreen; change nothing.",
+        "Press Save and select plan."
+      ],
+      "expected": "minimumRunSeconds remains 90",
+      "actual": "minimumRunSeconds becomes 120 from whole-minute rounding",
+      "reproduction": "game/qa/daily_review_test.dart:60",
+      "log": "release/qa/daily-independent.log",
+      "reviewed_sha256": {
+        "game/mobile/lib/daily_panel.dart": "ccd705a43f7313092b139e89a0cd4ff4e3b7b3fd8f3b49d85a72c08b0ac1c9af"
+      },
+      "repair_snapshot": "c72586b4be58a033b99c3f541445ea31a914b6e54507009dd1eac7c8e529a261",
+      "repair_source_sha256": {
+        "game/mobile/lib/daily_panel.dart": "9fb135aee52dc38049dfd9ddf46abfb52e634f4333be2df3a80621443c0f9aeb"
+      },
+      "retest_log": "release/qa/daily-independent-retest.log",
+      "original_test_expectations_unchanged": true
+    }
+  ],
+  "initial_independent_tests": {
+    "passed": 3,
+    "failed": 2
+  },
+  "retest_independent_tests": {
+    "passed": 5,
+    "failed": 0
+  }
+}

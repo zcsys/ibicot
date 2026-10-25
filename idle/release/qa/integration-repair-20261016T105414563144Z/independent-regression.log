@@ -1,0 +1,48 @@
+Resolving dependencies...
+Downloading packages...
+  material_color_utilities 0.13.0 (0.13.1 available)
+  test_api 0.7.12 (0.7.15 available)
+Got dependencies!
+2 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
+00:00 +0: loading /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-repair-20261016T105414563144Z/game/mobile/test/qa_integration_session_test.dart
+00:00 +0: /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-repair-20261016T105414563144Z/game/mobile/test/qa_integration_session_test.dart: (setUpAll)
+00:00 +0: /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-repair-20261016T105414563144Z/game/mobile/test/qa_integration_audio_test.dart: QA: delayed old music start cannot stop a newer route track
+00:00 +1: /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-repair-20261016T105414563144Z/game/mobile/test/qa_integration_save_boundaries_test.dart: QA: calendar_before import cannot replace an internally consistent branch
+00:00 +1 -1: /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-repair-20261016T105414563144Z/game/mobile/test/qa_integration_save_boundaries_test.dart: QA: calendar_before import cannot replace an internally consistent branch
+00:00 +1 -1: /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-repair-20261016T105414563144Z/game/mobile/test/qa_integration_audio_test.dart: QA: stopped old cue cannot stop a reused voice after foreground return [E]
+  Expected: 'resume'
+    Actual: 'stop'
+     Which: is different.
+            Expected: resume
+              Actual: stop
+                      ^
+             Differ at offset 0
+  An invalidated cue must not silence the new cue using its released voice.
+  
+  package:matcher                                     expect
+  package:flutter_test/src/widget_tester.dart 473:18  expect
+  test/qa_integration_audio_test.dart 120:7           main.<fn>
+  
+00:00 +2 -1: /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-repair-20261016T105414563144Z/game/mobile/test/qa_integration_session_test.dart: QA: import rejects an impossible pass receipt before replacing a valid branch
+00:00 +3 -1: /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-repair-20261016T105414563144Z/game/mobile/test/qa_integration_save_boundaries_test.dart: QA: calendar_after import cannot replace an internally consistent branch
+00:00 +4 -1: /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-repair-20261016T105414563144Z/game/mobile/test/qa_integration_save_boundaries_test.dart: QA: calendar_after import cannot replace an internally consistent branch
+00:00 +5 -1: /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-repair-20261016T105414563144Z/game/mobile/test/qa_integration_session_test.dart: QA: 8-hour return settles both fleets once with exact envelope
+00:00 +6 -1: /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-repair-20261016T105414563144Z/game/mobile/test/qa_integration_save_boundaries_test.dart: QA: season_before import cannot replace an internally consistent branch
+00:00 +7 -1: /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-repair-20261016T105414563144Z/game/mobile/test/qa_integration_session_test.dart: QA: 24-hour return settles both fleets once with exact envelope
+00:00 +8 -1: /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-repair-20261016T105414563144Z/game/mobile/test/qa_integration_save_boundaries_test.dart: QA: season_after import cannot replace an internally consistent branch
+00:00 +9 -1: /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-repair-20261016T105414563144Z/game/mobile/test/qa_integration_session_test.dart: QA: 48-hour return settles both fleets once with exact envelope
+00:00 +10 -1: /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-repair-20261016T105414563144Z/game/mobile/test/qa_integration_save_boundaries_test.dart: QA: receipt_future import cannot replace an internally consistent branch
+00:00 +11 -1: /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-repair-20261016T105414563144Z/game/mobile/test/qa_integration_session_test.dart: QA: 72-hour return settles both fleets once with exact envelope
+00:00 +12 -1: /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-repair-20261016T105414563144Z/game/mobile/test/qa_integration_session_test.dart: QA: 72-hour return settles both fleets once with exact envelope
+00:00 +13 -1: /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-repair-20261016T105414563144Z/game/mobile/test/qa_integration_save_boundaries_test.dart: QA: v2 migrates through the real client and repository without replaying committed income
+00:00 +14 -1: /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-repair-20261016T105414563144Z/game/mobile/test/qa_integration_session_test.dart: QA: 1 daily visits preserve unboosted daily supply
+00:00 +15 -1: /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-repair-20261016T105414563144Z/game/mobile/test/qa_integration_save_boundaries_test.dart: QA: v3 migrates through the real client and repository without replaying committed income
+00:00 +16 -1: /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-repair-20261016T105414563144Z/game/mobile/test/qa_integration_session_test.dart: QA: 3 daily visits preserve unboosted daily supply
+00:00 +17 -1: /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-repair-20261016T105414563144Z/game/mobile/test/qa_integration_session_test.dart: QA: 6 daily visits preserve unboosted daily supply
+00:00 +18 -1: /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-repair-20261016T105414563144Z/game/mobile/test/qa_integration_session_test.dart: QA: failure in a secondary timeline preserves every prior partition
+00:00 +19 -1: /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-repair-20261016T105414563144Z/game/mobile/test/qa_integration_session_test.dart: (tearDownAll)
+00:00 +19 -1: Some tests failed.
+
+Failing tests:
+  /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-repair-20261016T105414563144Z/game/mobile/test/qa_integration_audio_test.dart: QA: stopped old cue cannot stop a reused voice after foreground return

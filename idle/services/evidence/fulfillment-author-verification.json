@@ -1,0 +1,98 @@
+{
+  "recorded_at_utc": "2026-10-19T14:17:36.928372+00:00",
+  "qualification": "Author local HTTP/SQLite/cryptographic/fault tests and explicit synthetic provider-contract fixtures. No actual store purchase/refund/advertising, hosting, native boot clock, physical secure storage or store-release qualification.",
+  "source_sha256": {
+    "game/platform/NATIVE_INTEGRATION.md": "41eef78fc53db3b3fda594f1221d20969aee19e8c05195c3dc9a8c81173f18df",
+    "game/platform/lib/signed_entitlements.dart": "2fffbf6c6199f5e9740280e6837d258ff0306bc8424580fc179da241be8f80fd",
+    "game/platform/pubspec.lock": "d541fad5396cac68b99202c87762a5a106c24a316d32999d533cab8d52a2920e",
+    "game/platform/pubspec.yaml": "b92fad31c0f25bbae5583198324e3e055b332ea6d9ca0d2e9bac94ed685566a8",
+    "game/platform/test/fixtures/python_signed_lease.json": "aefbc99b29a7884fc45a80030c633a2ebcb4366b8eff5a79e22214364bc9802f",
+    "game/platform/test/signed_entitlements_test.dart": "291b169a0cb01daebec4c8669541c56f0ecb4dd222856ce9d2886b6cc1397354",
+    "services/README.md": "a5eb33f70f929771a196e065441629a99bf847789e2329376051ac4a33aa99fb",
+    "services/docs/FULFILLMENT.md": "8a8f68e4222b39eea1e9dbba708432dbf138562b872916a1e553af2743fd2bb5",
+    "services/docs/PROVIDER_ADAPTERS.md": "b4e65287fe077f5cd2a06d3212c98a7fa9f56fe173acd257063d5a0b6962f2db",
+    "services/requirements-providers.lock": "ace5ab939db2038acc891f899c6fd61c3263db9d089ad4103f9aa327f70a8df8",
+    "services/requirements-providers.txt": "9d1a53ccce13a5eb2c912768dfe151ff7779445032c9db66147edca4184583a6",
+    "services/tideglass_service/__init__.py": "6eac6c027f1f807b92e5edb8a51a64b6286148636313c27a336ddf8cab9567bf",
+    "services/tideglass_service/__main__.py": "863351517cad12425f85e7a0e32c7dd13b2d44ffab70111d89144349b05d5718",
+    "services/tideglass_service/api.py": "3d84629e39d5747e1ea55e412a1d52728890244058bdfde1f25dd384645a9003",
+    "services/tideglass_service/factory.py": "ba207ac0d3d7ccbccd9696eefb305f8d3b038dc1ec5f67d31e86908fda29a288",
+    "services/tideglass_service/leases.py": "24bba0c2406f95e2d25dc7fdc66394e1788a19e5098a7042bd17d588c576e6ba",
+    "services/tideglass_service/ops.py": "93168eb26cdb9bb9837d5a5427daece6761896c1daf9f29fd896384a800992e4",
+    "services/tideglass_service/providers/__init__.py": "d895fba33401cc4d59c667843f73dd92be1cf1082816574f923b5c2877e551b9",
+    "services/tideglass_service/providers/admob.py": "1d0bfa147d47251009e89f632cad4049036edf28f51c0b2e6aacd2bc75f9d4de",
+    "services/tideglass_service/providers/notifications.py": "725ff389ba132914b3022e435c2d3a375b1fe9db6b4e8d34564f2ac761b70a8e",
+    "services/tideglass_service/providers/stores.py": "f8352f576d77ce1dcd588cb60de4bde7c4e92ae831a7645dd59935eabf8165bf",
+    "services/tideglass_service/reconcile.py": "4f0da70207404c25d4b447168e597295e2e14380e7da8659e65cddd13ace3ca9",
+    "services/tideglass_service/soundtrack.py": "11d3cbc023a70487e8aac610bb71a85a1b063aadf6649036971b553cb7dc2206",
+    "services/tideglass_service/storage.py": "3c640f16a6deb226b78e54238009a12955096161d425e04326bb23321e8ea6ad",
+    "services/tideglass_service/vault.py": "ff165d1d17b91393bf36c044e3afd30986ae80357633e0da3e460aca6544373d",
+    "services/tideglass_service/verification.py": "da37c39c7781320cd5b381b432c5b0654464d687ccf32b94c797acbe5a675f08",
+    "tests/services/providers/test_fulfillment.py": "f38627a6e853775afd5d89d76418f801e0cc2707450c93ee76931c245da661ce",
+    "tests/services/providers/test_provider_adapters.py": "afbb36a92bc3c909962cf821f0c69aff92f17bb4468320c2b73fd2c69110a528"
+  },
+  "sources_unchanged_during_checks": true,
+  "archive": {
+    "path": "release/downloads/tideglass-original-soundtrack.zip",
+    "bytes": 52699186,
+    "sha256": "620d671ae8817239f89802a9bead7cb584f1e44326aedd4d352ec69fb1f8de3a"
+  },
+  "checks": [
+    {
+      "name": "base_http_sqlite",
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests/services",
+        "-p",
+        "test_service.py",
+        "-v"
+      ],
+      "cwd": ".",
+      "exit_code": 0,
+      "output": "test_before_and_after_commit_fault_no_partial_or_duplicate (test_service.ServiceTests.test_before_and_after_commit_fault_no_partial_or_duplicate) ... ok\ntest_briefing_and_ad_share_six_slots_and_retry_identity (test_service.ServiceTests.test_briefing_and_ad_share_six_slots_and_retry_identity) ... ok\ntest_checksum_parent_cursor_and_secrets_rejected (test_service.ServiceTests.test_checksum_parent_cursor_and_secrets_rejected) ... ok\ntest_consent_refusal_dedup_revocation_and_no_freeform_telemetry (test_service.ServiceTests.test_consent_refusal_dedup_revocation_and_no_freeform_telemetry) ... ok\ntest_dashboard_does_not_call_unknown_session_crash_free (test_service.ServiceTests.test_dashboard_does_not_call_unknown_session_crash_free) ... ok\ntest_delete_requires_recovery_erases_rows_revokes_tokens_guest_copy_retained (test_service.ServiceTests.test_delete_requires_recovery_erases_rows_revokes_tokens_guest_copy_retained) ... ok\ntest_duplicate_json_keys_and_oversized_request_rejected (test_service.ServiceTests.test_duplicate_json_keys_and_oversized_request_rejected) ... ok\ntest_export_excludes_credentials_and_purchase_proofs (test_service.ServiceTests.test_export_excludes_credentials_and_purchase_proofs) ... ok\ntest_future_database_is_rejected_without_applying_schema (test_service.ServiceTests.test_future_database_is_rejected_without_applying_schema) ... ok\ntest_grant_delivery_ack_requires_saved_token_and_retry_is_safe (test_service.ServiceTests.test_grant_delivery_ack_requires_saved_token_and_retry_is_safe) ... ok\ntest_local_commerce_cache_never_grants_ownership (test_service.ServiceTests.test_local_commerce_cache_never_grants_ownership) ... ok\ntest_no_fill_and_feature_disable_preserve_free_route (test_service.ServiceTests.test_no_fill_and_feature_disable_preserve_free_route) ... ok\ntest_opt_in_required_and_no_unauthenticated_cloud (test_service.ServiceTests.test_opt_in_required_and_no_unauthenticated_cloud) ... ok\ntest_purchase_grant_restore_ack_failure_refund_and_stale_observation (test_service.ServiceTests.test_purchase_grant_restore_ack_failure_refund_and_stale_observation) ... ok\ntest_recovery_rotation_lost_response_keeps_known_new_code_usable (test_service.ServiceTests.test_recovery_rotation_lost_response_keeps_known_new_code_usable) ... ok\ntest_recovery_rotation_revokes_all_old_sessions (test_service.ServiceTests.test_recovery_rotation_revokes_all_old_sessions) ... ok\ntest_restart_persistence_and_consistent_backup (test_service.ServiceTests.test_restart_persistence_and_consistent_backup) ... ok\ntest_snapshot_replay_conflict_and_explicit_selection_no_merge (test_service.ServiceTests.test_snapshot_replay_conflict_and_explicit_selection_no_merge) ... ok\ntest_stale_provider_verification_cannot_authorize_forever (test_service.ServiceTests.test_stale_provider_verification_cannot_authorize_forever) ... ok\ntest_two_real_concurrent_devices_preserve_both_and_cas_selection (test_service.ServiceTests.test_two_real_concurrent_devices_preserve_both_and_cas_selection) ... ok\ntest_unconfigured_store_and_ad_cannot_grant (test_service.ServiceTests.test_unconfigured_store_and_ad_cannot_grant) ... ok\ntest_unknown_parent_preserved_requires_selection_and_no_cross_account_reads (test_service.ServiceTests.test_unknown_parent_preserved_requires_selection_and_no_cross_account_reads) ... ok\n\n----------------------------------------------------------------------\nRan 22 tests in 11.759s\n\nOK\n"
+    },
+    {
+      "name": "provider_fulfillment_crypto",
+      "command": [
+        ".tooling/services-venv/bin/python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests/services/providers",
+        "-v"
+      ],
+      "cwd": ".",
+      "exit_code": 0,
+      "output": "test_actual_soundtrack_archive_authenticated_stream_has_expected_hash (test_fulfillment.FulfillmentTests.test_actual_soundtrack_archive_authenticated_stream_has_expected_hash) ... ok\ntest_authenticated_google_notification_refreshes_and_never_trusts_event_state (test_fulfillment.FulfillmentTests.test_authenticated_google_notification_refreshes_and_never_trusts_event_state) ... ok\ntest_ciphertext_account_and_key_tampering_fail_closed (test_fulfillment.FulfillmentTests.test_ciphertext_account_and_key_tampering_fail_closed) ... ok\ntest_commerce_capabilities_requires_login_and_checks_asset_before_ownership (test_fulfillment.FulfillmentTests.test_commerce_capabilities_requires_login_and_checks_asset_before_ownership) ... ok\ntest_configured_factory_soundtrack_and_lease_load_without_provider_secrets (test_fulfillment.FulfillmentTests.test_configured_factory_soundtrack_and_lease_load_without_provider_secrets) ... ok\ntest_encrypted_backup_restores_only_with_matching_keys (test_fulfillment.FulfillmentTests.test_encrypted_backup_restores_only_with_matching_keys) ... ok\ntest_key_permissions_symlinks_missing_key_and_rotation_crash (test_fulfillment.FulfillmentTests.test_key_permissions_symlinks_missing_key_and_rotation_crash) ... ok\ntest_real_google_oidc_signature_identity_audience_and_tamper (test_fulfillment.FulfillmentTests.test_real_google_oidc_signature_identity_audience_and_tamper) ... ok\ntest_reconcile_pending_purchase_ack_refund_and_provider_failure (test_fulfillment.FulfillmentTests.test_reconcile_pending_purchase_ack_refund_and_provider_failure) ... ok\ntest_reconciliation_ack_crash_retries_idempotently (test_fulfillment.FulfillmentTests.test_reconciliation_ack_crash_retries_idempotently) ... ok\ntest_signed_lease_crypto_expiry_revision_and_refund (test_fulfillment.FulfillmentTests.test_signed_lease_crypto_expiry_revision_and_refund) ... ok\ntest_signer_development_origin_requires_explicit_loopback_opt_in (test_fulfillment.FulfillmentTests.test_signer_development_origin_requires_explicit_loopback_opt_in) ... ok\ntest_soundtrack_expiry_and_changed_file_rejected (test_fulfillment.FulfillmentTests.test_soundtrack_expiry_and_changed_file_rejected) ... ok\ntest_soundtrack_http_authorization_hash_chunks_refund_and_missing_asset (test_fulfillment.FulfillmentTests.test_soundtrack_http_authorization_hash_chunks_refund_and_missing_asset) ... ok\ntest_unconfigured_factory_has_no_fabricated_grants_or_download (test_fulfillment.FulfillmentTests.test_unconfigured_factory_has_no_fabricated_grants_or_download) ... ok\ntest_vault_binding_ciphertext_and_cascade_deletion (test_fulfillment.FulfillmentTests.test_vault_binding_ciphertext_and_cascade_deletion) ... ok\ntest_verification_ledger_and_vault_commit_together (test_fulfillment.FulfillmentTests.test_verification_ledger_and_vault_commit_together) ... ok\ntest_ad_expiry_and_unconfigured_provider_reject (test_provider_adapters.ProviderTests.test_ad_expiry_and_unconfigured_provider_reject) ... ok\ntest_apple_fetches_fresh_view_and_checks_binding_then_refund (test_provider_adapters.ProviderTests.test_apple_fetches_fresh_view_and_checks_binding_then_refund) ... ok\ntest_google_acknowledged_retries_do_not_repeat_post (test_provider_adapters.ProviderTests.test_google_acknowledged_retries_do_not_repeat_post) ... ok\ntest_google_binds_account_product_and_hashed_transaction (test_provider_adapters.ProviderTests.test_google_binds_account_product_and_hashed_transaction) ... ok\ntest_google_pending_refund_and_test_environment_fail_closed (test_provider_adapters.ProviderTests.test_google_pending_refund_and_test_environment_fail_closed) ... ok\ntest_real_apple_sdk_rejects_forged_jws (test_provider_adapters.ProviderTests.test_real_apple_sdk_rejects_forged_jws) ... ok\ntest_real_ecdsa_ad_signature_binding_and_tamper (test_provider_adapters.ProviderTests.test_real_ecdsa_ad_signature_binding_and_tamper) ... ok\ntest_signed_callback_commits_once_and_forgery_cannot_use_duplicate_fast_path (test_provider_adapters.ProviderTests.test_signed_callback_commits_once_and_forgery_cannot_use_duplicate_fast_path) ... ok\n\n----------------------------------------------------------------------\nRan 25 tests in 3.482s\n\nOK\n"
+    },
+    {
+      "name": "signed_ownership_dart",
+      "command": [
+        "../../tool/dart",
+        "test",
+        "test/signed_entitlements_test.dart"
+      ],
+      "cwd": "game/platform",
+      "exit_code": 0,
+      "output": "00:00 +0: loading test/signed_entitlements_test.dart\n00:00 +0: HTTP issuer requires explicit loopback-only development opt-in\n00:00 +1: real Ed25519 verifies exact Python bytes and bound entitlement set\n00:00 +2: tampering, unpinned keys, wrong identity, excessive TTL and expired leases reject\n00:00 +3: secure reload requires continuing trusted device time; expiry includes sleep\n00:00 +4: without persistent device evidence restart requires online refresh\n00:00 +5: observed rollback across launches and native clock rollback reject\n00:00 +6: higher empty lease and logout retain high-water revision against replay\n00:00 +7: secure-write failure cannot expose an otherwise valid signed grant\n00:00 +8: All tests passed!\n"
+    },
+    {
+      "name": "signed_ownership_analysis",
+      "command": [
+        "../../tool/dart",
+        "analyze",
+        "lib/signed_entitlements.dart",
+        "test/signed_entitlements_test.dart"
+      ],
+      "cwd": "game/platform",
+      "exit_code": 0,
+      "output": "Analyzing signed_entitlements.dart, signed_entitlements_test.dart...\nNo issues found!\n"
+    }
+  ],
+  "production_gates": "See services/docs/FULFILLMENT.md; independent review and native integration remain separate."
+}

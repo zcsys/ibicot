@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "status": "host_components_passed_native_and_audition_pending",
+  "date": "2026-10-16",
+  "original_audio_package_ids": [
+    "audio.ambient_score",
+    "audio.interaction",
+    "audio.milestone",
+    "audio.rechart",
+    "audio.soundtrack"
+  ],
+  "host_tests": {
+    "policy_and_disk_persistence": 12,
+    "actual_plugin_bridge_mocked_platform": 2,
+    "native_canvas_producer_rendering": 4
+  },
+  "evidence": [
+    "release/audio/components-host-test.log",
+    "release/audio/native-adapter-host-test.log",
+    "release/audio/component-analyzer.log",
+    "release/audio/render-measurements.json",
+    "release/audio/asset-integrity.json",
+    "release/art/producer-contact-sheet.png"
+  ],
+  "file_sha256": {
+    "game/mobile/lib/audio_bus.dart": "a74306b64e385f113ec351c5e7e290c7446e4c65979ae5bb4a80b31aa4d32553",
+    "game/mobile/lib/audio_settings.dart": "111207ee17e0f52bd9dae700455b867f4f3b7d8852523fbfab57befe132a2556",
+    "game/mobile/lib/producer_art.dart": "ecf1c624c01e0df5fd92801fef84bc38b218bb8bc7d23543d25cbe7ac3ff2526",
+    "game/mobile/lib/producer_art_data.dart": "305c06487d6d9d8873b5773c23e793b12f781e7b85087f90482cf75ea98e9c26",
+    "game/mobile/test/audio_bus_test.dart": "c2bfc10cc707ffc54b0a42b243d454fcbb6af56af00d62b3a6032b82b806e22e",
+    "game/mobile/test/audio_native_adapter_test.dart": "3ad7e902526a9908eb66fcbff71201f11c931dc119f7345d84a2acaedd496241",
+    "game/mobile/test/producer_art_test.dart": "17cfb2a44fb9376c0569848657456016707ec467df593c64e285917b62570f42"
+  },
+  "native_device_playback_verified": false,
+  "human_audition_verified": false,
+  "headphone_and_phone_call_interruption_verified": false,
+  "commerce_fulfillment_verified": false,
+  "independent_audio_reviewer": null,
+  "producer_reviewer": "client_native; review file records exact scope",
+  "remaining_gates": "release/audio/IMPLEMENTATION_HANDOFF.md"
+}

@@ -1,0 +1,27 @@
+--- release/public-pages/evidence/documentation-pin-refresh-20261021T143040.492826Z/asset.support.support_page.json
++++ source/provenance/asset.support.support_page.json
+@@ -23,7 +23,7 @@
+     "release/public-pages/dist/site.css": "45b34ebb344d34416d64c6e024c0f51a4cc2462cde3813c9395c566eb2979032",
+     "release/public-pages/publication.json": "06384fddf6a1be2a74468f38c8ad2dc1f9585ce632df08e11fd49d535328acdc",
+     "game/mobile/lib/help_content.dart": "4ae52390f8e12a1e792d23a9c6c29f526281d2ca2613e38d9cd874b8630485b3",
+-    "services/docs/PRIVACY.md": "f9071535a30041df0cd6d55bb5040f815ce617c8d9ed0d3692aa9b87f4df131b",
++    "services/docs/PRIVACY.md": "30e01d26a0434dd1843e8be587dd43df8e82adc580121fcc4453ebaeda4a7656",
+     "game/platform/lib/soundtrack_cache.dart": "9ff5b55ef2c4f907c81e5577add12b016061bedc6f275effee98fe60149a55e6",
+     "game/platform/lib/study_recorder.dart": "6c6137fa4d62398b120e69f1fff47a49dd3c6e8025cee2b3ccd7f426e15c1775",
+     "game/mobile/lib/study_gate.dart": "99757790494004865b5b68a4798191170955ff7b4bc000c98cc4f78094b9f7d9",
+@@ -83,5 +83,14 @@
+       "reason": "Refresh current consented process-link disclosure and public-link implementation pins. Prior independent page review applies to earlier source hashes; this revision awaits review.",
+       "prior_provenance_sha256": "c824457f7a74e4c01a28f4cc5d7bd2f223d17375b0d8608375fce73e3d0da588"
+     }
+-  ]
++  ],
++  "documentation_pin_refresh": {
++    "previous_sha256": "f9071535a30041df0cd6d55bb5040f815ce617c8d9ed0d3692aa9b87f4df131b",
++    "current_sha256": "30e01d26a0434dd1843e8be587dd43df8e82adc580121fcc4453ebaeda4a7656",
++    "independent_review": "release/qa/integration-public-pages-refresh-20261021T141933905061Z/PUBLIC_REFRESH_REVIEW.md",
++    "review_sha256": "714d3b58583400f88f2bdbb4d312ede99b2702894d996566de2c2875ddb3890e",
++    "scope": "Only engineering-inventory disclosure updated for existing consented native process context. Page HTML/CSS/export bytes and asset acceptance unchanged. Prior provenance preserved here.",
++    "evidence": "release/public-pages/evidence/documentation-pin-refresh-20261021T143040.492826Z",
++    "release_acceptance": false
++  }
+ }

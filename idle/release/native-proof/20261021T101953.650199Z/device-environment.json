@@ -1,0 +1,34 @@
+{
+  "ios_simulators": [
+    {
+      "runtime": "com.apple.CoreSimulator.SimRuntime.iOS-26-3",
+      "udid": "F05BE4B0-52C1-4CA1-B721-BD64AE559E3F",
+      "isAvailable": true,
+      "deviceTypeIdentifier": "com.apple.CoreSimulator.SimDeviceType.iPhone-17-Pro",
+      "state": "Booted",
+      "name": "Tideglass Development"
+    },
+    {
+      "runtime": "com.apple.CoreSimulator.SimRuntime.iOS-26-3",
+      "udid": "F103390E-7B7C-4F0B-9404-5E029C7131FF",
+      "isAvailable": true,
+      "deviceTypeIdentifier": "com.apple.CoreSimulator.SimDeviceType.iPad-mini-A17-Pro",
+      "state": "Booted",
+      "name": "Tideglass Tablet Development"
+    }
+  ],
+  "android_emulator": {
+    "serial": "emulator-5556",
+    "headless": true,
+    "audio_output_disabled": true,
+    "properties": {
+      "ro.product.model": "sdk_gphone64_arm64",
+      "ro.build.version.sdk": "35",
+      "ro.build.version.release": "15",
+      "ro.product.cpu.abi": "arm64-v8a",
+      "ro.kernel.qemu": "1"
+    }
+  },
+  "physical_device": false,
+  "note": "Native emulator/simulator evidence only. No physical minimum-OS, energy, audible-output or security qualification."
+}

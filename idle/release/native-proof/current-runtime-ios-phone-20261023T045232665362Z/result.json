@@ -1,0 +1,30 @@
+{
+  "verification_id": "current-runtime-ios-phone-20261023T045232665362Z",
+  "candidate_fingerprint": "3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59",
+  "harness_sha256": "102be09eb8043ce9bb496156d9f37b1834c3084ddf58fef073e7c25cdc3c55d5",
+  "scenario": "runtime-cache-grace",
+  "run_id": "v3b00-ios-phone-cache",
+  "device_label": "ios-phone",
+  "platform": "ios",
+  "os_version": "Version 26.3.1 (Build 23D8133)",
+  "process_id": 81486,
+  "fixture_kind": "INTERNAL SYNTHETIC QUALIFICATION ONLY",
+  "checks": [
+    "Real native files survive backward clock and23h injected grace; fourth export refuses before download;25h cleans expired files.",
+    "Held synthetic receiving-action prevents cleanup/new export; oversized native cache file blocks another download. No actual receiving app is claimed."
+  ],
+  "completed": true,
+  "limitations": [
+    "No real participant, consent, paid transaction or receiving-app delivery.",
+    "Process termination is not physical power loss or a lifecycle callback.",
+    "Injected predecessor/rate/clock/bounds are qualification fixtures only.",
+    "Consented production process observations do not prove release AOT fatal-report matching or a crash-free rate."
+  ],
+  "fixture_directory": "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Data/Application/B9C82D78-2DB2-4FE1-864C-F5F0D54D89BC/Library/Caches/native-current-verification/ios-phone-v3b00-ios-phone-cache/cache",
+  "cache_limits": {
+    "exports": 3,
+    "bytes": 201326592,
+    "grace_seconds": 86400
+  },
+  "screenshots": []
+}

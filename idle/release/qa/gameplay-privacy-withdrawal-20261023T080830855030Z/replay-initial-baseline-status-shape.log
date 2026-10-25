@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/Users/csys/Desktop/ibicot/idle/release/qa/gameplay-privacy-withdrawal-20261023T080830855030Z/replay.py", line 139, in <module>
+    with patch.object(subprocess,'run',blocked),patch.object(subprocess,'Popen',blocked),patch.object(os,'kill',blocked),patch.object(os,'killpg',blocked):main()
+                                                                                                                                                           ~~~~^^
+  File "/Users/csys/Desktop/ibicot/idle/release/qa/gameplay-privacy-withdrawal-20261023T080830855030Z/replay.py", line 48, in main
+    check(r['status']==c['status'],'Recorded Android status '+p.parent.name)
+          ~^^^^^^^^^^
+KeyError: 'status'

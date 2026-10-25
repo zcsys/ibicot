@@ -1,0 +1,153 @@
+{
+  "candidate": "/Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261023T040445.261666Z-3b00cc8f7122",
+  "checks": 291,
+  "unique_input_files": 193,
+  "native_cells": [
+    {
+      "scenario": "runtime-lock-exclusion",
+      "status": "passed",
+      "verification": "/Users/csys/Desktop/ibicot/idle/release/native-proof/current-runtime-ios-phone-20261023T043208754474Z/verification.json",
+      "generations": 0
+    },
+    {
+      "scenario": "runtime-save-hold-beforeWrite",
+      "status": "expected-interrupted",
+      "verification": "/Users/csys/Desktop/ibicot/idle/release/native-proof/current-runtime-ios-phone-20261023T043259564984Z/verification.json",
+      "generations": 1
+    },
+    {
+      "scenario": "runtime-save-recover-beforeWrite",
+      "status": "passed",
+      "verification": "/Users/csys/Desktop/ibicot/idle/release/native-proof/current-runtime-ios-phone-20261023T043347563069Z/verification.json",
+      "generations": 2
+    },
+    {
+      "scenario": "runtime-save-hold-afterFlush",
+      "status": "expected-interrupted",
+      "verification": "/Users/csys/Desktop/ibicot/idle/release/native-proof/current-runtime-ios-phone-20261023T043434202567Z/verification.json",
+      "generations": 1
+    },
+    {
+      "scenario": "runtime-save-recover-afterFlush",
+      "status": "passed",
+      "verification": "/Users/csys/Desktop/ibicot/idle/release/native-proof/current-runtime-ios-phone-20261023T043522664543Z/verification.json",
+      "generations": 2
+    },
+    {
+      "scenario": "runtime-save-hold-afterRename",
+      "status": "expected-interrupted",
+      "verification": "/Users/csys/Desktop/ibicot/idle/release/native-proof/current-runtime-ios-phone-20261023T043612069360Z/verification.json",
+      "generations": 2
+    },
+    {
+      "scenario": "runtime-save-recover-afterRename",
+      "status": "passed",
+      "verification": "/Users/csys/Desktop/ibicot/idle/release/native-proof/current-runtime-ios-phone-20261023T043658778696Z/verification.json",
+      "generations": 2
+    },
+    {
+      "scenario": "runtime-transition-start",
+      "status": "passed",
+      "verification": "/Users/csys/Desktop/ibicot/idle/release/native-proof/current-runtime-ios-phone-20261023T043748008763Z/verification.json",
+      "generations": 2
+    },
+    {
+      "scenario": "runtime-transition-reopen",
+      "status": "passed",
+      "verification": "/Users/csys/Desktop/ibicot/idle/release/native-proof/current-runtime-ios-phone-20261023T043836348648Z/verification.json",
+      "generations": 2
+    }
+  ],
+  "save_envelopes": [
+    {
+      "scenario": "runtime-save-hold-beforeWrite",
+      "file": "generation-0.json",
+      "revision": 0,
+      "checksum": "bde428212e972d12ee3c2379060f4fc3689acccc6d5ef6e367fde7b604dff02d"
+    },
+    {
+      "scenario": "runtime-save-recover-beforeWrite",
+      "file": "generation-0.json",
+      "revision": 0,
+      "checksum": "bde428212e972d12ee3c2379060f4fc3689acccc6d5ef6e367fde7b604dff02d"
+    },
+    {
+      "scenario": "runtime-save-recover-beforeWrite",
+      "file": "generation-1.json",
+      "revision": 1,
+      "checksum": "b3c560f884a018c07dd8212ec8843bec28dedbe296f046a1f40b913f0e99dc05"
+    },
+    {
+      "scenario": "runtime-save-hold-afterFlush",
+      "file": "generation-0.json",
+      "revision": 0,
+      "checksum": "144df6bb44c95cb0dac3994ae222ff91a8c5e62cf5edc9b9bce72e1816499f99"
+    },
+    {
+      "scenario": "runtime-save-recover-afterFlush",
+      "file": "generation-0.json",
+      "revision": 0,
+      "checksum": "144df6bb44c95cb0dac3994ae222ff91a8c5e62cf5edc9b9bce72e1816499f99"
+    },
+    {
+      "scenario": "runtime-save-recover-afterFlush",
+      "file": "generation-1.json",
+      "revision": 1,
+      "checksum": "d6d9258accfa5e643e7aacec443ea3f7bf516f434dcc9f5dcc6b8a5defb385b6"
+    },
+    {
+      "scenario": "runtime-save-hold-afterRename",
+      "file": "generation-0.json",
+      "revision": 0,
+      "checksum": "c423c672241cf4eec0efdd6b10c264b35a38aee77677425cf565332f7c02386e"
+    },
+    {
+      "scenario": "runtime-save-hold-afterRename",
+      "file": "generation-1.json",
+      "revision": 1,
+      "checksum": "4b745fe7a1421616b044aeb752c1e105b4f26bfa7f3a3eea6eec46c6388a220f"
+    },
+    {
+      "scenario": "runtime-save-recover-afterRename",
+      "file": "generation-0.json",
+      "revision": 2,
+      "checksum": "ad0767fc720fa3b1e39228cf0da48176c2a0053a70a88aa6713305521cbc12fd"
+    },
+    {
+      "scenario": "runtime-save-recover-afterRename",
+      "file": "generation-1.json",
+      "revision": 1,
+      "checksum": "4b745fe7a1421616b044aeb752c1e105b4f26bfa7f3a3eea6eec46c6388a220f"
+    },
+    {
+      "scenario": "runtime-transition-start",
+      "file": "generation-0.json",
+      "revision": 2,
+      "checksum": "42bafbd784f99d2806885ce6ea367f4fb1656db412bce6d2ced3193992d6d99a"
+    },
+    {
+      "scenario": "runtime-transition-start",
+      "file": "generation-1.json",
+      "revision": 3,
+      "checksum": "944ec10e132793d296e2b800cb0fca4be7d429e6df4cc1af2d6d02e396011d83"
+    },
+    {
+      "scenario": "runtime-transition-reopen",
+      "file": "generation-0.json",
+      "revision": 6,
+      "checksum": "c1ed929028259a9652633f9de94836feb5b0693168b3d73e465270c1534b141b"
+    },
+    {
+      "scenario": "runtime-transition-reopen",
+      "file": "generation-1.json",
+      "revision": 7,
+      "checksum": "3a6ed8f16a3ef53f4ec156fe0ed62518f2ffe20d0e92403ae6383b744083082a"
+    }
+  ],
+  "drift": {},
+  "host_suites_rerun": false,
+  "native_commands_run": false,
+  "android_evidence_accepted": false,
+  "production_or_status_edits": false,
+  "authorship_limit": "Transition/flock source was historically authored by this gameplay reviewer. Independent prior QA and current sealed native QA are cited, not replaced by self-review."
+}

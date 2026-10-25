@@ -1,0 +1,745 @@
+{
+  "schema_version": 1,
+  "status": "collected-pending-native-completion",
+  "device": "emulator-5556",
+  "candidate": "/Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261023T040445.261666Z-3b00cc8f7122",
+  "native_evidence": "/Users/csys/Desktop/ibicot/idle/release/native-proof/current-runtime-android-20261023T054123378918Z",
+  "samples": [
+    {
+      "started_ns": 57226774320125,
+      "started_utc_ms": 1792734127140,
+      "index": 0,
+      "sockets": {
+        "status": "unavailable",
+        "reason": "Unexpected socket output"
+      },
+      "storage": {
+        "status": "unavailable",
+        "reason": "Android storage unavailable: a descriptor-anchored native reader is not qualified"
+      },
+      "finished_ns": 57227180427291,
+      "finished_utc_ms": 1792734127546,
+      "process_identity": {
+        "pid": 7435,
+        "uid": 10209,
+        "start_ticks": 206738,
+        "boot_id": "fbcb212f-9c1c-460f-b710-99965847b9da",
+        "package": "dev.tideglass.game",
+        "uid_scope": "package run-as UID plus exact PID cmdline"
+      }
+    },
+    {
+      "started_ns": 57227748899083,
+      "started_utc_ms": 1792734128114,
+      "index": 1,
+      "sockets": {
+        "status": "unavailable",
+        "reason": "Unexpected socket output"
+      },
+      "storage": {
+        "status": "unavailable",
+        "reason": "Android storage unavailable: a descriptor-anchored native reader is not qualified"
+      },
+      "finished_ns": 57228218753791,
+      "finished_utc_ms": 1792734128584,
+      "process_identity": {
+        "pid": 7435,
+        "uid": 10209,
+        "start_ticks": 206738,
+        "boot_id": "fbcb212f-9c1c-460f-b710-99965847b9da",
+        "package": "dev.tideglass.game",
+        "uid_scope": "package run-as UID plus exact PID cmdline"
+      }
+    },
+    {
+      "started_ns": 57228894577583,
+      "started_utc_ms": 1792734129260,
+      "index": 2,
+      "sockets": {
+        "status": "unavailable",
+        "reason": "Unexpected socket output"
+      },
+      "storage": {
+        "status": "unavailable",
+        "reason": "Android storage unavailable: a descriptor-anchored native reader is not qualified"
+      },
+      "finished_ns": 57229379914041,
+      "finished_utc_ms": 1792734129745,
+      "process_identity": {
+        "pid": 7435,
+        "uid": 10209,
+        "start_ticks": 206738,
+        "boot_id": "fbcb212f-9c1c-460f-b710-99965847b9da",
+        "package": "dev.tideglass.game",
+        "uid_scope": "package run-as UID plus exact PID cmdline"
+      }
+    }
+  ],
+  "limitations": [
+    "Point-in-time open-socket snapshots are not packets, requests, destinations contacted, or absence of traffic.",
+    "Short-lived sockets between samples, earlier startup and later activity are outside coverage.",
+    "Debug simulator/emulator and automation/VM-service sockets are not release or physical-device behavior.",
+    "Only this PID is selected; subprocesses and OS/SDK services outside it are not observed.",
+    "Host/native UTC containment is required without tolerance; clocks are not authenticated. A mismatch leaves the interval unqualified.",
+    "Private storage inventory covers seven fixed synthetic fixture files, not all SDK caches, Keychain, preferences or files.",
+    "Synthetic study interaction is not participant consent. No paid/provider account, human or crash-free rate evidence.",
+    "Sample identity checks bracket commands; socket descriptors and files may change within a bracket. iOS host ps start time has one-second resolution.",
+    "The window starts after bootstrap/consent assertions; startup activity before OPEN is outside these samples. Audio and reminders use existing harness isolation.",
+    "Android storage is unavailable: no descriptor-anchored native reader has been qualified. No path-check plus shell hash fallback is used.",
+    "Storage identity checks detect lasting replacement or mutation; they are not an atomic filesystem snapshot or protection against a privileged mutation-and-restore adversary.",
+    "Collector and verifier source pins detect lasting changes at operation boundaries; local hashes are integrity records, not external authentication."
+  ],
+  "release_acceptance": false,
+  "traffic_absence_claim": false,
+  "collector_sha256": "90485bd0ca097af8835d1f7cc280f7f2545085ea578d7a44cf10a6b93cf458cc",
+  "source_binding": {
+    "candidate_manifest_sha256": "b4322606cd0207425b801feacc0bf4084ac9c460b23a028576204b766eeaeada",
+    "candidate_fingerprint": "3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59",
+    "native_source_sha256": {
+      "verify_native.py": "68297f66fc4e32a173b17da2594872334d59ba2b88b7d5878b5ee8905f9b89e5",
+      "runner.py": "d1ea6d05085f05a0a3bb6c768531ef7659272e41993858c0551618f74ce5c847",
+      "harness.dart": "102be09eb8043ce9bb496156d9f37b1834c3084ddf58fef073e7c25cdc3c55d5"
+    },
+    "verification_tool_bridge": {
+      "candidate_fingerprint": "3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59",
+      "candidate_runner_sha256": "d849ab8feb642eb1b988f9a6d82558491b7ebef4c63768fb4fa132f49edf3804",
+      "executed_runner_sha256": "d1ea6d05085f05a0a3bb6c768531ef7659272e41993858c0551618f74ce5c847",
+      "scope": "Android test exit-status transport only; raw binary transfer unchanged"
+    },
+    "observation_source_sha256": {
+      "collector.py": "90485bd0ca097af8835d1f7cc280f7f2545085ea578d7a44cf10a6b93cf458cc",
+      "completion-verifier.py": "68297f66fc4e32a173b17da2594872334d59ba2b88b7d5878b5ee8905f9b89e5",
+      "native-runner.py": "d1ea6d05085f05a0a3bb6c768531ef7659272e41993858c0551618f74ce5c847",
+      "candidate-manifest.json": "b4322606cd0207425b801feacc0bf4084ac9c460b23a028576204b766eeaeada",
+      "candidate-native-runner.py": "d849ab8feb642eb1b988f9a6d82558491b7ebef4c63768fb4fa132f49edf3804"
+    }
+  },
+  "errors": [],
+  "context": {
+    "verification_id": "current-runtime-android-20261023T054123378918Z",
+    "candidate_fingerprint": "3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59",
+    "harness_sha256": "102be09eb8043ce9bb496156d9f37b1834c3084ddf58fef073e7c25cdc3c55d5",
+    "platform": "android",
+    "scenario": "runtime-study-default",
+    "run_id": "v3b00-android-probe-fixed-default",
+    "device_label": "android"
+  },
+  "opened": {
+    "verification_id": "current-runtime-android-20261023T054123378918Z",
+    "candidate_fingerprint": "3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59",
+    "harness_sha256": "102be09eb8043ce9bb496156d9f37b1834c3084ddf58fef073e7c25cdc3c55d5",
+    "scenario": "runtime-study-default",
+    "run_id": "v3b00-android-probe-fixed-default",
+    "device_label": "android",
+    "platform": "android",
+    "process_id": 7435,
+    "fixture_directory": "/data/user/0/dev.tideglass.game/files/native-current-verification/android-v3b00-android-probe-fixed-default/study",
+    "mode": "default-unprovisioned",
+    "window_id": "current-runtime-android-20261023T054123378918Z-privacy",
+    "maximum_ms": 20000,
+    "native_elapsed_us": 274,
+    "native_utc_ms": 1792734125959
+  },
+  "opened_observed_ns": 57225912154083,
+  "open_prefix_bytes": 3901,
+  "open_prefix_sha256": "f426c68452d4c90c1aff16b2db56c57c507defc114ca9df670eb85be5db0bc8d",
+  "process_identity": {
+    "pid": 7435,
+    "uid": 10209,
+    "start_ticks": 206738,
+    "boot_id": "fbcb212f-9c1c-460f-b710-99965847b9da",
+    "package": "dev.tideglass.game",
+    "uid_scope": "package run-as UID plus exact PID cmdline"
+  },
+  "commands": [
+    {
+      "argv": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "exec-out",
+        "run-as",
+        "dev.tideglass.game",
+        "id",
+        "-u"
+      ],
+      "exit_code": 0,
+      "started_ns": 57225913569916,
+      "finished_ns": 57226085200791,
+      "stdout_sha256": "cf9dc73bf7324c30cf8214a929d3dd5593822441d386fd8558336af34f282512",
+      "stdout": "10209\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "exec-out",
+        "run-as",
+        "dev.tideglass.game",
+        "cat",
+        "/proc/7435/cmdline"
+      ],
+      "exit_code": 0,
+      "started_ns": 57226085731916,
+      "finished_ns": 57226213607500,
+      "stdout_sha256": "3dcaba9106c427272ee21b94fda611bf229e5a89bc2b1dc28fb2c6ef1e2bc278",
+      "stdout": "dev.tideglass.game\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "exec-out",
+        "run-as",
+        "dev.tideglass.game",
+        "cat",
+        "/proc/7435/stat"
+      ],
+      "exit_code": 0,
+      "started_ns": 57226213662000,
+      "finished_ns": 57226289987291,
+      "stdout_sha256": "b2507bacdd419452f542e4775a10a927d837eefcaf78484009195ae0b259141b",
+      "stdout": "7435 (.tideglass.game) R 367 367 0 0 -1 4194624 93324 0 411 0 1437 816 0 0 10 -10 37 0 206738 25920811008 107214 18446744073709551615 380478406656 380478410592 549068606704 0 0 0 2101764 4097 1140884728 0 0 0 17 2 0 0 0 0 0 380478439424 380478439448 381349679104 549068611049 549068611148 549068611148 549068615646 0\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "exec-out",
+        "run-as",
+        "dev.tideglass.game",
+        "cat",
+        "/proc/7435/status"
+      ],
+      "exit_code": 0,
+      "started_ns": 57226290057583,
+      "finished_ns": 57226376446208,
+      "stdout_sha256": "afb31bff235b3b1962ceb4dd1a9bf5c641d209bd9dc52676016c160e336899df",
+      "stdout": "Name:\t.tideglass.game\nUmask:\t0077\nState:\tR (running)\nTgid:\t7435\nNgid:\t0\nPid:\t7435\nPPid:\t367\nTracerPid:\t0\nUid:\t10209\t10209\t10209\t10209\nGid:\t10209\t10209\t10209\t10209\nFDSize:\t256\nGroups:\t3003 9997 20209 50209 \nKthread:\t0\nVmPeak:\t29608180 kB\nVmSize:\t25313292 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t  430352 kB\nVmRSS:\t  429880 kB\nRssAnon:\t  206972 kB\nRssFile:\t  211260 kB\nRssShmem:\t   11648 kB\nVmData:\t 3111120 kB\nVmStk:\t    8192 kB\nVmExe:\t       4 kB\nVmLib:\t  176852 kB\nVmPTE:\t    1920 kB\nVmSwap:\t   21456 kB\nCoreDumping:\t0\nTHP_enabled:\t1\nuntag_mask:\t0xffffffffffffff\nThreads:\t37\nSigQ:\t0/7810\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000080201204\nSigIgn:\t0000000000001001\nSigCgt:\t0000006e440084f8\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t0000000000000000\nCapAmb:\t0000000000000000\nNoNewPrivs:\t0\nSeccomp:\t2\nSeccomp_filters:\t1\nSpeculation_Store_Bypass:\tthread vulnerable\nSpeculationIndirectBranch:\tunknown\nCpus_allowed:\tf\nCpus_allowed_list:\t0-3\nMems_allowed:\t1\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t819\nnonvoluntary_ctxt_switches:\t1238\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "exec-out",
+        "run-as",
+        "dev.tideglass.game",
+        "cat",
+        "/proc/sys/kernel/random/boot_id"
+      ],
+      "exit_code": 0,
+      "started_ns": 57226376481041,
+      "finished_ns": 57226462160875,
+      "stdout_sha256": "f9223f83cd77b23a92a1ca706b0b79670085cb03e9da9381b7a3f5b4e18bcd6b",
+      "stdout": "fbcb212f-9c1c-460f-b710-99965847b9da\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "exec-out",
+        "run-as",
+        "dev.tideglass.game",
+        "cat",
+        "/proc/7435/cmdline"
+      ],
+      "exit_code": 0,
+      "started_ns": 57226462627875,
+      "finished_ns": 57226539833458,
+      "stdout_sha256": "3dcaba9106c427272ee21b94fda611bf229e5a89bc2b1dc28fb2c6ef1e2bc278",
+      "stdout": "dev.tideglass.game\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "exec-out",
+        "run-as",
+        "dev.tideglass.game",
+        "cat",
+        "/proc/7435/stat"
+      ],
+      "exit_code": 0,
+      "started_ns": 57226539866250,
+      "finished_ns": 57226594125125,
+      "stdout_sha256": "04dd0f4c34bb84681018da316dcffc8ef9ee776e33794b7119c6a4209394362c",
+      "stdout": "7435 (.tideglass.game) R 367 367 0 0 -1 4194624 94347 0 411 0 1464 819 0 0 10 -10 37 0 206738 25920811008 108046 18446744073709551615 380478406656 380478410592 549068606704 0 0 0 2101764 4097 1140884728 0 0 0 17 2 0 0 0 0 0 380478439424 380478439448 381349679104 549068611049 549068611148 549068611148 549068615646 0\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "exec-out",
+        "run-as",
+        "dev.tideglass.game",
+        "cat",
+        "/proc/7435/status"
+      ],
+      "exit_code": 0,
+      "started_ns": 57226594162000,
+      "finished_ns": 57226671310916,
+      "stdout_sha256": "cf51da9623054d6a659e85f26c8332c0db7aca7e6d1996d6800ecc4b44073655",
+      "stdout": "Name:\t.tideglass.game\nUmask:\t0077\nState:\tS (sleeping)\nTgid:\t7435\nNgid:\t0\nPid:\t7435\nPPid:\t367\nTracerPid:\t0\nUid:\t10209\t10209\t10209\t10209\nGid:\t10209\t10209\t10209\t10209\nFDSize:\t256\nGroups:\t3003 9997 20209 50209 \nKthread:\t0\nVmPeak:\t29608180 kB\nVmSize:\t25313292 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t  433336 kB\nVmRSS:\t  433336 kB\nRssAnon:\t  210428 kB\nRssFile:\t  211260 kB\nRssShmem:\t   11648 kB\nVmData:\t 3113680 kB\nVmStk:\t    8192 kB\nVmExe:\t       4 kB\nVmLib:\t  176852 kB\nVmPTE:\t    1928 kB\nVmSwap:\t   21456 kB\nCoreDumping:\t0\nTHP_enabled:\t1\nuntag_mask:\t0xffffffffffffff\nThreads:\t37\nSigQ:\t0/7810\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000080201204\nSigIgn:\t0000000000001001\nSigCgt:\t0000006e440084f8\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t0000000000000000\nCapAmb:\t0000000000000000\nNoNewPrivs:\t0\nSeccomp:\t2\nSeccomp_filters:\t1\nSpeculation_Store_Bypass:\tthread vulnerable\nSpeculationIndirectBranch:\tunknown\nCpus_allowed:\tf\nCpus_allowed_list:\t0-3\nMems_allowed:\t1\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t838\nnonvoluntary_ctxt_switches:\t1251\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "exec-out",
+        "run-as",
+        "dev.tideglass.game",
+        "cat",
+        "/proc/sys/kernel/random/boot_id"
+      ],
+      "exit_code": 0,
+      "started_ns": 57226671352500,
+      "finished_ns": 57226774148541,
+      "stdout_sha256": "f9223f83cd77b23a92a1ca706b0b79670085cb03e9da9381b7a3f5b4e18bcd6b",
+      "stdout": "fbcb212f-9c1c-460f-b710-99965847b9da\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "exec-out",
+        "run-as",
+        "dev.tideglass.game",
+        "sh",
+        "-c",
+        "'\nset -eu\np=\"$1\"; uid=\"$2\"; nodes='\"'\"' '\"'\"'\nfor f in /proc/\"$p\"/fd/*; do\n  link=$(readlink \"$f\" 2>/dev/null) || continue\n  case \"$link\" in socket:\\[*\\]) n=${link#socket:[}; n=${n%]}; case \"$n\" in *[!0-9]*|'\"'\"''\"'\"') exit 71;; esac; nodes=\"$nodes$n \"; printf '\"'\"'FD|%s\\n'\"'\"' \"$n\";; esac\ndone\nfor t in tcp tcp6 udp udp6; do\n  test -r /proc/\"$p\"/net/\"$t\" || exit 72\n  printf '\"'\"'TABLE|%s\\n'\"'\"' \"$t\"\n  while read -r line; do\n    set -- $line\n    test \"$#\" -ge 10 || continue\n    test \"$8\" = \"$uid\" || continue\n    shift 9; inode=\"$1\"\n    case \"$nodes\" in *\" $inode \"*) set -- $line; printf '\"'\"'SOCKET|%s|%s|%s|%s|%s|%s\\n'\"'\"' \"$t\" \"$uid\" \"$inode\" \"$2\" \"$3\" \"$4\";; esac\n  done < /proc/\"$p\"/net/\"$t\"\ndone\n'",
+        "observer",
+        "7435",
+        "10209"
+      ],
+      "exit_code": 0,
+      "started_ns": 57226774371500,
+      "finished_ns": 57226854400166,
+      "stdout_sha256": "2038419ed4e464fcf1fd0e2ad0bf75e0035a96f448ea9485e71b6222125a2cee",
+      "stdout": "observer: \nset -eu\np=\"$1\"; uid=\"$2\"; nodes=' '\nfor f in /proc/\"$p\"/fd/*; do\n  link=$(readlink \"$f\" 2>/dev/null) || continue\n  case \"$link\" in socket:\\[*\\]) n=${link#socket:[}; n=${n%]}; case \"$n\" in *[!0-9]*|'') exit 71;; esac; nodes=\"$nodes$n \"; printf 'FD|%s\\n' \"$n\";; esac\ndone\nfor t in tcp tcp6 udp udp6; do\n  test -r /proc/\"$p\"/net/\"$t\" || exit 72\n  printf 'TABLE|%s\\n' \"$t\"\n  while read -r line; do\n    set -- $line\n    test \"$#\" -ge 10 || continue\n    test \"$8\" = \"$uid\" || continue\n    shift 9; inode=\"$1\"\n    case \"$nodes\" in *\" $inode \"*) set -- $line; printf 'SOCKET|%s|%s|%s|%s|%s|%s\\n' \"$t\" \"$uid\" \"$inode\" \"$2\" \"$3\" \"$4\";; esac\n  done < /proc/\"$p\"/net/\"$t\"\ndone\n: inaccessible or not found\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "exec-out",
+        "run-as",
+        "dev.tideglass.game",
+        "cat",
+        "/proc/7435/cmdline"
+      ],
+      "exit_code": 0,
+      "started_ns": 57226854526291,
+      "finished_ns": 57226944357875,
+      "stdout_sha256": "3dcaba9106c427272ee21b94fda611bf229e5a89bc2b1dc28fb2c6ef1e2bc278",
+      "stdout": "dev.tideglass.game\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "exec-out",
+        "run-as",
+        "dev.tideglass.game",
+        "cat",
+        "/proc/7435/stat"
+      ],
+      "exit_code": 0,
+      "started_ns": 57226944405041,
+      "finished_ns": 57227030401166,
+      "stdout_sha256": "376b05a45eac706cda713b92eab377b9672b89c02fe6792ed1a082489f1510ce",
+      "stdout": "7435 (.tideglass.game) R 367 367 0 0 -1 4194624 99379 0 413 0 1513 830 0 0 10 -10 37 0 206738 25920811008 112813 18446744073709551615 380478406656 380478410592 549068606704 0 0 67108864 2101764 4097 1140884728 0 0 0 17 3 0 0 0 0 0 380478439424 380478439448 381349679104 549068611049 549068611148 549068611148 549068615646 0\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "exec-out",
+        "run-as",
+        "dev.tideglass.game",
+        "cat",
+        "/proc/7435/status"
+      ],
+      "exit_code": 0,
+      "started_ns": 57227030445916,
+      "finished_ns": 57227106072875,
+      "stdout_sha256": "b5650faab4f5f4cba37de1322ab19981241eb567fbdc5fa8b0d1c20596f5eb40",
+      "stdout": "Name:\t.tideglass.game\nUmask:\t0077\nState:\tR (running)\nTgid:\t7435\nNgid:\t0\nPid:\t7435\nPPid:\t367\nTracerPid:\t0\nUid:\t10209\t10209\t10209\t10209\nGid:\t10209\t10209\t10209\t10209\nFDSize:\t256\nGroups:\t3003 9997 20209 50209 \nKthread:\t0\nVmPeak:\t29608180 kB\nVmSize:\t25313292 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t  451640 kB\nVmRSS:\t  451380 kB\nRssAnon:\t  228472 kB\nRssFile:\t  211260 kB\nRssShmem:\t   11648 kB\nVmData:\t 3129040 kB\nVmStk:\t    8192 kB\nVmExe:\t       4 kB\nVmLib:\t  176852 kB\nVmPTE:\t    1956 kB\nVmSwap:\t   21456 kB\nCoreDumping:\t0\nTHP_enabled:\t1\nuntag_mask:\t0xffffffffffffff\nThreads:\t37\nSigQ:\t0/7810\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000080201204\nSigIgn:\t0000000000001001\nSigCgt:\t0000006e440084f8\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t0000000000000000\nCapAmb:\t0000000000000000\nNoNewPrivs:\t0\nSeccomp:\t2\nSeccomp_filters:\t1\nSpeculation_Store_Bypass:\tthread vulnerable\nSpeculationIndirectBranch:\tunknown\nCpus_allowed:\tf\nCpus_allowed_list:\t0-3\nMems_allowed:\t1\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t908\nnonvoluntary_ctxt_switches:\t1282\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "exec-out",
+        "run-as",
+        "dev.tideglass.game",
+        "cat",
+        "/proc/sys/kernel/random/boot_id"
+      ],
+      "exit_code": 0,
+      "started_ns": 57227106116500,
+      "finished_ns": 57227180313250,
+      "stdout_sha256": "f9223f83cd77b23a92a1ca706b0b79670085cb03e9da9381b7a3f5b4e18bcd6b",
+      "stdout": "fbcb212f-9c1c-460f-b710-99965847b9da\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "exec-out",
+        "run-as",
+        "dev.tideglass.game",
+        "cat",
+        "/proc/7435/cmdline"
+      ],
+      "exit_code": 0,
+      "started_ns": 57227385519916,
+      "finished_ns": 57227467735958,
+      "stdout_sha256": "3dcaba9106c427272ee21b94fda611bf229e5a89bc2b1dc28fb2c6ef1e2bc278",
+      "stdout": "dev.tideglass.game\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "exec-out",
+        "run-as",
+        "dev.tideglass.game",
+        "cat",
+        "/proc/7435/stat"
+      ],
+      "exit_code": 0,
+      "started_ns": 57227467802625,
+      "finished_ns": 57227567309791,
+      "stdout_sha256": "8f80668ecf9987d116c525842f9979e78d219203a076de98e0ac4c64570c3d28",
+      "stdout": "7435 (.tideglass.game) R 367 367 0 0 -1 4194624 102718 0 413 0 1560 838 0 0 10 -10 37 0 206738 25920811008 110908 18446744073709551615 380478406656 380478410592 549068606704 0 0 0 2101764 4097 1140884728 0 0 0 17 2 0 0 0 0 0 380478439424 380478439448 381349679104 549068611049 549068611148 549068611148 549068615646 0\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "exec-out",
+        "run-as",
+        "dev.tideglass.game",
+        "cat",
+        "/proc/7435/status"
+      ],
+      "exit_code": 0,
+      "started_ns": 57227567376708,
+      "finished_ns": 57227658232375,
+      "stdout_sha256": "0252d12cce91f54e35ec12692cb06aebc602b70d1ae98b13860c52663d4ccf6f",
+      "stdout": "Name:\t.tideglass.game\nUmask:\t0077\nState:\tR (running)\nTgid:\t7435\nNgid:\t0\nPid:\t7435\nPPid:\t367\nTracerPid:\t0\nUid:\t10209\t10209\t10209\t10209\nGid:\t10209\t10209\t10209\t10209\nFDSize:\t256\nGroups:\t3003 9997 20209 50209 \nKthread:\t0\nVmPeak:\t29608180 kB\nVmSize:\t25313292 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t  453408 kB\nVmRSS:\t  443760 kB\nRssAnon:\t  220852 kB\nRssFile:\t  211260 kB\nRssShmem:\t   11648 kB\nVmData:\t 3129040 kB\nVmStk:\t    8192 kB\nVmExe:\t       4 kB\nVmLib:\t  176852 kB\nVmPTE:\t    1956 kB\nVmSwap:\t   21456 kB\nCoreDumping:\t0\nTHP_enabled:\t1\nuntag_mask:\t0xffffffffffffff\nThreads:\t37\nSigQ:\t0/7810\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000080201204\nSigIgn:\t0000000000001001\nSigCgt:\t0000006e440084f8\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t0000000000000000\nCapAmb:\t0000000000000000\nNoNewPrivs:\t0\nSeccomp:\t2\nSeccomp_filters:\t1\nSpeculation_Store_Bypass:\tthread vulnerable\nSpeculationIndirectBranch:\tunknown\nCpus_allowed:\tf\nCpus_allowed_list:\t0-3\nMems_allowed:\t1\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t959\nnonvoluntary_ctxt_switches:\t1311\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "exec-out",
+        "run-as",
+        "dev.tideglass.game",
+        "cat",
+        "/proc/sys/kernel/random/boot_id"
+      ],
+      "exit_code": 0,
+      "started_ns": 57227658291208,
+      "finished_ns": 57227748709625,
+      "stdout_sha256": "f9223f83cd77b23a92a1ca706b0b79670085cb03e9da9381b7a3f5b4e18bcd6b",
+      "stdout": "fbcb212f-9c1c-460f-b710-99965847b9da\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "exec-out",
+        "run-as",
+        "dev.tideglass.game",
+        "sh",
+        "-c",
+        "'\nset -eu\np=\"$1\"; uid=\"$2\"; nodes='\"'\"' '\"'\"'\nfor f in /proc/\"$p\"/fd/*; do\n  link=$(readlink \"$f\" 2>/dev/null) || continue\n  case \"$link\" in socket:\\[*\\]) n=${link#socket:[}; n=${n%]}; case \"$n\" in *[!0-9]*|'\"'\"''\"'\"') exit 71;; esac; nodes=\"$nodes$n \"; printf '\"'\"'FD|%s\\n'\"'\"' \"$n\";; esac\ndone\nfor t in tcp tcp6 udp udp6; do\n  test -r /proc/\"$p\"/net/\"$t\" || exit 72\n  printf '\"'\"'TABLE|%s\\n'\"'\"' \"$t\"\n  while read -r line; do\n    set -- $line\n    test \"$#\" -ge 10 || continue\n    test \"$8\" = \"$uid\" || continue\n    shift 9; inode=\"$1\"\n    case \"$nodes\" in *\" $inode \"*) set -- $line; printf '\"'\"'SOCKET|%s|%s|%s|%s|%s|%s\\n'\"'\"' \"$t\" \"$uid\" \"$inode\" \"$2\" \"$3\" \"$4\";; esac\n  done < /proc/\"$p\"/net/\"$t\"\ndone\n'",
+        "observer",
+        "7435",
+        "10209"
+      ],
+      "exit_code": 0,
+      "started_ns": 57227748940916,
+      "finished_ns": 57227845559083,
+      "stdout_sha256": "2038419ed4e464fcf1fd0e2ad0bf75e0035a96f448ea9485e71b6222125a2cee",
+      "stdout": "observer: \nset -eu\np=\"$1\"; uid=\"$2\"; nodes=' '\nfor f in /proc/\"$p\"/fd/*; do\n  link=$(readlink \"$f\" 2>/dev/null) || continue\n  case \"$link\" in socket:\\[*\\]) n=${link#socket:[}; n=${n%]}; case \"$n\" in *[!0-9]*|'') exit 71;; esac; nodes=\"$nodes$n \"; printf 'FD|%s\\n' \"$n\";; esac\ndone\nfor t in tcp tcp6 udp udp6; do\n  test -r /proc/\"$p\"/net/\"$t\" || exit 72\n  printf 'TABLE|%s\\n' \"$t\"\n  while read -r line; do\n    set -- $line\n    test \"$#\" -ge 10 || continue\n    test \"$8\" = \"$uid\" || continue\n    shift 9; inode=\"$1\"\n    case \"$nodes\" in *\" $inode \"*) set -- $line; printf 'SOCKET|%s|%s|%s|%s|%s|%s\\n' \"$t\" \"$uid\" \"$inode\" \"$2\" \"$3\" \"$4\";; esac\n  done < /proc/\"$p\"/net/\"$t\"\ndone\n: inaccessible or not found\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "exec-out",
+        "run-as",
+        "dev.tideglass.game",
+        "cat",
+        "/proc/7435/cmdline"
+      ],
+      "exit_code": 0,
+      "started_ns": 57227845671541,
+      "finished_ns": 57227927228833,
+      "stdout_sha256": "3dcaba9106c427272ee21b94fda611bf229e5a89bc2b1dc28fb2c6ef1e2bc278",
+      "stdout": "dev.tideglass.game\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "exec-out",
+        "run-as",
+        "dev.tideglass.game",
+        "cat",
+        "/proc/7435/stat"
+      ],
+      "exit_code": 0,
+      "started_ns": 57227927287500,
+      "finished_ns": 57228017416500,
+      "stdout_sha256": "956d39eebf6c68452ca71a316fe517571215715c3b44629f41a6bf3f2a830f65",
+      "stdout": "7435 (.tideglass.game) R 367 367 0 0 -1 4194624 104486 0 413 0 1614 846 0 0 10 -10 37 0 206738 25922920448 111371 18446744073709551615 380478406656 380478410592 549068606704 0 0 0 2101764 4097 1140884728 0 0 0 17 1 0 0 0 0 0 380478439424 380478439448 381349679104 549068611049 549068611148 549068611148 549068615646 0\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "exec-out",
+        "run-as",
+        "dev.tideglass.game",
+        "cat",
+        "/proc/7435/status"
+      ],
+      "exit_code": 0,
+      "started_ns": 57228017473916,
+      "finished_ns": 57228097269666,
+      "stdout_sha256": "f9dc54cc9f2b638b47c1e47090757f14896242b8bdb3e23998c187f4afa375fd",
+      "stdout": "Name:\t.tideglass.game\nUmask:\t0077\nState:\tR (running)\nTgid:\t7435\nNgid:\t0\nPid:\t7435\nPPid:\t367\nTracerPid:\t0\nUid:\t10209\t10209\t10209\t10209\nGid:\t10209\t10209\t10209\t10209\nFDSize:\t256\nGroups:\t3003 9997 20209 50209 \nKthread:\t0\nVmPeak:\t29608180 kB\nVmSize:\t25320536 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t  453408 kB\nVmRSS:\t  450316 kB\nRssAnon:\t  227408 kB\nRssFile:\t  211260 kB\nRssShmem:\t   11648 kB\nVmData:\t 3136276 kB\nVmStk:\t    8192 kB\nVmExe:\t       4 kB\nVmLib:\t  176852 kB\nVmPTE:\t    1972 kB\nVmSwap:\t   21456 kB\nCoreDumping:\t0\nTHP_enabled:\t1\nuntag_mask:\t0xffffffffffffff\nThreads:\t37\nSigQ:\t1/7810\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000080201204\nSigIgn:\t0000000000001001\nSigCgt:\t0000006e440084f8\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t0000000000000000\nCapAmb:\t0000000000000000\nNoNewPrivs:\t0\nSeccomp:\t2\nSeccomp_filters:\t1\nSpeculation_Store_Bypass:\tthread vulnerable\nSpeculationIndirectBranch:\tunknown\nCpus_allowed:\tf\nCpus_allowed_list:\t0-3\nMems_allowed:\t1\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t992\nnonvoluntary_ctxt_switches:\t1368\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "exec-out",
+        "run-as",
+        "dev.tideglass.game",
+        "cat",
+        "/proc/sys/kernel/random/boot_id"
+      ],
+      "exit_code": 0,
+      "started_ns": 57228097318416,
+      "finished_ns": 57228218550708,
+      "stdout_sha256": "f9223f83cd77b23a92a1ca706b0b79670085cb03e9da9381b7a3f5b4e18bcd6b",
+      "stdout": "fbcb212f-9c1c-460f-b710-99965847b9da\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "exec-out",
+        "run-as",
+        "dev.tideglass.game",
+        "cat",
+        "/proc/7435/cmdline"
+      ],
+      "exit_code": 0,
+      "started_ns": 57228420595541,
+      "finished_ns": 57228550879625,
+      "stdout_sha256": "3dcaba9106c427272ee21b94fda611bf229e5a89bc2b1dc28fb2c6ef1e2bc278",
+      "stdout": "dev.tideglass.game\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "exec-out",
+        "run-as",
+        "dev.tideglass.game",
+        "cat",
+        "/proc/7435/stat"
+      ],
+      "exit_code": 0,
+      "started_ns": 57228550952750,
+      "finished_ns": 57228678509000,
+      "stdout_sha256": "ccff8e7fdee2ff6fc053cc47ede7b3ac00cbf2b80521c9b9170236b05dfc3800",
+      "stdout": "7435 (.tideglass.game) R 367 367 0 0 -1 4194624 108247 0 413 0 1679 858 0 0 10 -10 36 0 206738 25904996352 110220 18446744073709551615 380478406656 380478410592 549068606704 0 0 0 2101764 4097 1140884728 0 0 0 17 2 0 0 0 0 0 380478439424 380478439448 381349679104 549068611049 549068611148 549068611148 549068615646 0\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "exec-out",
+        "run-as",
+        "dev.tideglass.game",
+        "cat",
+        "/proc/7435/status"
+      ],
+      "exit_code": 0,
+      "started_ns": 57228678569416,
+      "finished_ns": 57228784658041,
+      "stdout_sha256": "2a6d69441a65f05dcbb853acbde4ea82094e9f04d3fadff6fcf72b50867a4edd",
+      "stdout": "Name:\t.tideglass.game\nUmask:\t0077\nState:\tR (running)\nTgid:\t7435\nNgid:\t0\nPid:\t7435\nPPid:\t367\nTracerPid:\t0\nUid:\t10209\t10209\t10209\t10209\nGid:\t10209\t10209\t10209\t10209\nFDSize:\t256\nGroups:\t3003 9997 20209 50209 \nKthread:\t0\nVmPeak:\t29608180 kB\nVmSize:\t25298296 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t  455948 kB\nVmRSS:\t  451248 kB\nRssAnon:\t  228340 kB\nRssFile:\t  211260 kB\nRssShmem:\t   11648 kB\nVmData:\t 3130708 kB\nVmStk:\t    8192 kB\nVmExe:\t       4 kB\nVmLib:\t  176852 kB\nVmPTE:\t    1968 kB\nVmSwap:\t   21456 kB\nCoreDumping:\t0\nTHP_enabled:\t1\nuntag_mask:\t0xffffffffffffff\nThreads:\t36\nSigQ:\t1/7810\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000080201204\nSigIgn:\t0000000000001001\nSigCgt:\t0000006e440084f8\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t0000000000000000\nCapAmb:\t0000000000000000\nNoNewPrivs:\t0\nSeccomp:\t2\nSeccomp_filters:\t1\nSpeculation_Store_Bypass:\tthread vulnerable\nSpeculationIndirectBranch:\tunknown\nCpus_allowed:\tf\nCpus_allowed_list:\t0-3\nMems_allowed:\t1\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t1041\nnonvoluntary_ctxt_switches:\t1450\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "exec-out",
+        "run-as",
+        "dev.tideglass.game",
+        "cat",
+        "/proc/sys/kernel/random/boot_id"
+      ],
+      "exit_code": 0,
+      "started_ns": 57228784723916,
+      "finished_ns": 57228894375958,
+      "stdout_sha256": "f9223f83cd77b23a92a1ca706b0b79670085cb03e9da9381b7a3f5b4e18bcd6b",
+      "stdout": "fbcb212f-9c1c-460f-b710-99965847b9da\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "exec-out",
+        "run-as",
+        "dev.tideglass.game",
+        "sh",
+        "-c",
+        "'\nset -eu\np=\"$1\"; uid=\"$2\"; nodes='\"'\"' '\"'\"'\nfor f in /proc/\"$p\"/fd/*; do\n  link=$(readlink \"$f\" 2>/dev/null) || continue\n  case \"$link\" in socket:\\[*\\]) n=${link#socket:[}; n=${n%]}; case \"$n\" in *[!0-9]*|'\"'\"''\"'\"') exit 71;; esac; nodes=\"$nodes$n \"; printf '\"'\"'FD|%s\\n'\"'\"' \"$n\";; esac\ndone\nfor t in tcp tcp6 udp udp6; do\n  test -r /proc/\"$p\"/net/\"$t\" || exit 72\n  printf '\"'\"'TABLE|%s\\n'\"'\"' \"$t\"\n  while read -r line; do\n    set -- $line\n    test \"$#\" -ge 10 || continue\n    test \"$8\" = \"$uid\" || continue\n    shift 9; inode=\"$1\"\n    case \"$nodes\" in *\" $inode \"*) set -- $line; printf '\"'\"'SOCKET|%s|%s|%s|%s|%s|%s\\n'\"'\"' \"$t\" \"$uid\" \"$inode\" \"$2\" \"$3\" \"$4\";; esac\n  done < /proc/\"$p\"/net/\"$t\"\ndone\n'",
+        "observer",
+        "7435",
+        "10209"
+      ],
+      "exit_code": 0,
+      "started_ns": 57228894613000,
+      "finished_ns": 57228989840333,
+      "stdout_sha256": "2038419ed4e464fcf1fd0e2ad0bf75e0035a96f448ea9485e71b6222125a2cee",
+      "stdout": "observer: \nset -eu\np=\"$1\"; uid=\"$2\"; nodes=' '\nfor f in /proc/\"$p\"/fd/*; do\n  link=$(readlink \"$f\" 2>/dev/null) || continue\n  case \"$link\" in socket:\\[*\\]) n=${link#socket:[}; n=${n%]}; case \"$n\" in *[!0-9]*|'') exit 71;; esac; nodes=\"$nodes$n \"; printf 'FD|%s\\n' \"$n\";; esac\ndone\nfor t in tcp tcp6 udp udp6; do\n  test -r /proc/\"$p\"/net/\"$t\" || exit 72\n  printf 'TABLE|%s\\n' \"$t\"\n  while read -r line; do\n    set -- $line\n    test \"$#\" -ge 10 || continue\n    test \"$8\" = \"$uid\" || continue\n    shift 9; inode=\"$1\"\n    case \"$nodes\" in *\" $inode \"*) set -- $line; printf 'SOCKET|%s|%s|%s|%s|%s|%s\\n' \"$t\" \"$uid\" \"$inode\" \"$2\" \"$3\" \"$4\";; esac\n  done < /proc/\"$p\"/net/\"$t\"\ndone\n: inaccessible or not found\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "exec-out",
+        "run-as",
+        "dev.tideglass.game",
+        "cat",
+        "/proc/7435/cmdline"
+      ],
+      "exit_code": 0,
+      "started_ns": 57228989960375,
+      "finished_ns": 57229094182625,
+      "stdout_sha256": "3dcaba9106c427272ee21b94fda611bf229e5a89bc2b1dc28fb2c6ef1e2bc278",
+      "stdout": "dev.tideglass.game\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "exec-out",
+        "run-as",
+        "dev.tideglass.game",
+        "cat",
+        "/proc/7435/stat"
+      ],
+      "exit_code": 0,
+      "started_ns": 57229094242666,
+      "finished_ns": 57229192065666,
+      "stdout_sha256": "dcb76716d2f06bf9474ae6cf3125e48bd1a6d92c15607fb1ca9604c357a3d007",
+      "stdout": "7435 (.tideglass.game) R 367 367 0 0 -1 4194624 113279 0 413 0 1728 872 0 0 10 -10 37 0 206738 25922887680 114908 18446744073709551615 380478406656 380478410592 549068606704 0 0 0 2101764 4097 1140884728 0 0 0 17 2 0 0 0 0 0 380478439424 380478439448 381349679104 549068611049 549068611148 549068611148 549068615646 0\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "exec-out",
+        "run-as",
+        "dev.tideglass.game",
+        "cat",
+        "/proc/7435/status"
+      ],
+      "exit_code": 0,
+      "started_ns": 57229192134458,
+      "finished_ns": 57229295679458,
+      "stdout_sha256": "d62b8523f5fbcc7504b44827a3d9af8e1831cf2b96aa90c3f9905f324e846832",
+      "stdout": "Name:\t.tideglass.game\nUmask:\t0077\nState:\tR (running)\nTgid:\t7435\nNgid:\t0\nPid:\t7435\nPPid:\t367\nTracerPid:\t0\nUid:\t10209\t10209\t10209\t10209\nGid:\t10209\t10209\t10209\t10209\nFDSize:\t256\nGroups:\t3003 9997 20209 50209 \nKthread:\t0\nVmPeak:\t29608180 kB\nVmSize:\t25315320 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t  460592 kB\nVmRSS:\t  438400 kB\nRssAnon:\t  215492 kB\nRssFile:\t  211260 kB\nRssShmem:\t   11648 kB\nVmData:\t 3136688 kB\nVmStk:\t    8192 kB\nVmExe:\t       4 kB\nVmLib:\t  176852 kB\nVmPTE:\t    1980 kB\nVmSwap:\t   21456 kB\nCoreDumping:\t0\nTHP_enabled:\t1\nuntag_mask:\t0xffffffffffffff\nThreads:\t37\nSigQ:\t0/7810\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000080201204\nSigIgn:\t0000000000001001\nSigCgt:\t0000006e440084f8\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t0000000000000000\nCapAmb:\t0000000000000000\nNoNewPrivs:\t0\nSeccomp:\t2\nSeccomp_filters:\t1\nSpeculation_Store_Bypass:\tthread vulnerable\nSpeculationIndirectBranch:\tunknown\nCpus_allowed:\tf\nCpus_allowed_list:\t0-3\nMems_allowed:\t1\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t1103\nnonvoluntary_ctxt_switches:\t1526\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "exec-out",
+        "run-as",
+        "dev.tideglass.game",
+        "cat",
+        "/proc/sys/kernel/random/boot_id"
+      ],
+      "exit_code": 0,
+      "started_ns": 57229295750708,
+      "finished_ns": 57229379684250,
+      "stdout_sha256": "f9223f83cd77b23a92a1ca706b0b79670085cb03e9da9381b7a3f5b4e18bcd6b",
+      "stdout": "fbcb212f-9c1c-460f-b710-99965847b9da\n",
+      "stderr": ""
+    }
+  ],
+  "finished_utc": "2026-10-23T05:42:10.190920+00:00"
+}

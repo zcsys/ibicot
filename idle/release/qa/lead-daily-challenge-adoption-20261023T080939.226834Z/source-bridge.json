@@ -1,0 +1,46 @@
+{
+  "candidate_fingerprint": "3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59",
+  "current_QA_clause_inputs_unchanged": 74,
+  "current_QA_clause_inputs_declared_test_only_delta": {
+    "game/mobile/integration_test/current_runtime_test.dart": {
+      "before_sha256": "102be09eb8043ce9bb496156d9f37b1834c3084ddf58fef073e7c25cdc3c55d5",
+      "after_sha256": "997e7510aaef0dcebfa6505fc0dcde7d136a25e8a76abea78ede8602b0a4fef9",
+      "delta": "Exactly one 28-line serialized queue barrier insertion before unrelated withdrawal guard injection",
+      "root_review": "/Users/csys/Desktop/ibicot/idle/release/qa/lead-withdraw-barrier-20261023T045309.713695Z/verification.json",
+      "limits": "No new withdrawal/native acceptance; old frozen harness and failed proof remain preserved"
+    },
+    "game/mobile/integration_test/platform_smoke_test.dart": {
+      "before_sha256": "071635c01ed508077b467462bac279107a8716861ac97a5b657a5401b2cc3506",
+      "after_sha256": "1925106cb014a4a21575af3aa3bd85fc997873c1c9be74249c966da1cf28318b",
+      "delta": "Capture-only Android raw OS screenshot handshake and actual Season route readiness",
+      "root_review": "/Users/csys/Desktop/ibicot/idle/release/qa/lead-capture-repair-20261023T053647.917618Z/verification.json",
+      "limits": "No new media/native acceptance; frozen original proofs remain preserved"
+    }
+  },
+  "current_QA_sealed_outputs_verified": 33,
+  "historical_numeric_core_pins_unchanged": 8,
+  "historical_numeric_evidence_files_verified": 5,
+  "selected_current_test_and_controller_files_match_candidate": [
+    "game/core/test/economy_test.dart",
+    "game/core/test/daily_test.dart",
+    "game/core/test/support_test.dart",
+    "game/core/test/contract_bridge_test.dart",
+    "game/core/test/receipt_sequence_test.dart",
+    "game/core/test/persistence_integration_test.dart",
+    "game/mobile/lib/game_controller.dart",
+    "game/mobile/test/qa_integration_session_test.dart",
+    "game/mobile/test/daily_flow_test.dart",
+    "docs/decisions/numbers-and-event-order.md"
+  ],
+  "current_host_successful_terminal_counts": {
+    "core": 206,
+    "persistence": 28,
+    "mobile": 640
+  },
+  "collision_sealed_outputs_verified": 41,
+  "collision_cases": 4,
+  "collision_test_is_post_candidate": true,
+  "historical_daily_ledger_unchanged": true,
+  "historical_daily_engine_only_delta": "Eight inserted _requireRules(state) fail-closed checks; see patch",
+  "historical_20_day_observation_is_accelerated": true
+}
