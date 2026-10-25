@@ -1,0 +1,51 @@
+{
+  "synthetic": true,
+  "browser": "Playwright Chrome headless",
+  "browser_version": "155.0.8059.85",
+  "real_http": true,
+  "passed": true,
+  "scenarios": [
+    {
+      "scenario": "read-only page and storage",
+      "passed": true
+    },
+    {
+      "scenario": "explicit confirmation and cancel",
+      "passed": true
+    },
+    {
+      "scenario": "wrong recovery code",
+      "passed": true
+    },
+    {
+      "scenario": "actual confirmed deletion",
+      "passed": true
+    },
+    {
+      "scenario": "failed deletion and temporary-session revocation",
+      "passed": true
+    },
+    {
+      "scenario": "response loss after actual committed deletion",
+      "passed": true
+    },
+    {
+      "scenario": "compact large text and keyboard confirmation",
+      "passed": true
+    },
+    {
+      "scenario": "final privacy checks",
+      "passed": true
+    }
+  ],
+  "captures": [
+    "empty-desktop.png",
+    "confirmed-desktop.png",
+    "empty-compact-200.png",
+    "confirmation-compact-200.png"
+  ],
+  "limitations": [
+    "No public deployment, legal approval, physical-device or screen-reader qualification.",
+    "Synthetic accounts only; credentials intentionally omitted from all evidence."
+  ]
+}

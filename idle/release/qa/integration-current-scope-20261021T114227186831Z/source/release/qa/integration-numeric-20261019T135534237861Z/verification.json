@@ -1,0 +1,66 @@
+{
+  "reviewer": "/root/qa_integration",
+  "completed_utc": "2026-10-19T13:59:20.436902+00:00",
+  "source_fingerprint": "e1a7508d208f828057b35f942fd4d6b9b46853d03e5247fce585da79392003af",
+  "original_frozen_inputs_verified": 45,
+  "supplemental_regression_inputs": 4,
+  "supplemental_runner_files": 3,
+  "production_engine_sha256": "99a5c90fd7e893b8c777eaf60e64b7212117b50b0adf60ed0c9fcf1135905150",
+  "baseline_source_hashes_match": {
+    "game/core/lib/tideglass_core.dart": true,
+    "game/core/lib/src/support.dart": true,
+    "game/core/lib/src/fixed.dart": true,
+    "game/core/lib/src/engine.dart": true,
+    "game/core/lib/src/support_engine.dart": true,
+    "game/core/lib/src/daily_engine.dart": true,
+    "game/core/lib/src/daily.dart": true,
+    "game/core/lib/src/state.dart": true
+  },
+  "parity": {
+    "rows": 62,
+    "bytes": 261388,
+    "sha256": "8f713d34938cf526136f5ebdaaeb7fc6f584c82616cade78b7c991367480a9b1",
+    "both_preserved_and_both_fresh_outputs_byte_equal": true
+  },
+  "core_regression": {
+    "passed": 176,
+    "failed": 0
+  },
+  "independent_probes": {
+    "passed": 8,
+    "assertions": 12195,
+    "cases": [
+      "price_churn_4200_keys_and_retention_boundaries",
+      "rate_key_completeness_and_focus_wrapper",
+      "rate_log_chart_churn_1300_states",
+      "chart_fifo_exact_eviction_in_fresh_isolate",
+      "rate_fifo_exact_eviction_in_fresh_isolate",
+      "large_charts_8192_bits_counts_2pow40_and_cache_bypass",
+      "serialized_state_marginals_and_73h_online_offline",
+      "invalid_inputs_and_zero_quantity_after_cache_population"
+    ],
+    "elapsed_ms": 855,
+    "limits": "Host deterministic probes, not physical performance or simulation balance evidence."
+  },
+  "analysis": {
+    "core": "clean",
+    "independent_runner": "clean"
+  },
+  "runner_provenance": {
+    "recorded_before_sha256": "de990472d8f77576266c94bcd55a7eaf5daaa2c04076a8088e9eccfee5348f72",
+    "reviewed_runner_sha256": "c34676fd115e885e961b4de74ce342620c9076d21ad08836f03b183b699ae497",
+    "match": false,
+    "explanation": "Director confirmed tool/numeric_parity.dart was formatted after baseline hash capture using dart format lib/src/engine.dart tool/numeric_parity.dart. This is author testimony; the old runner bytes are not available here. Fresh before/after output equality independently establishes the current runner behavior."
+  },
+  "harness_errors_preserved": [
+    "Initial tool/dart invocation omitted run, causing CLI flag rejection before executing any code.",
+    "First isolated regression lacked external reference fixture and Python validator/schema; exact inputs were supplemental-pinned and final 176-case rerun passed."
+  ],
+  "new_actionable_product_defects": 0,
+  "acceptance": "Recommend retaining exact numeric memoization; do not accept M5-01 or beta freeze.",
+  "limits": [
+    "Host execution, not physical-device timing/battery/thermal qualification.",
+    "Single concurrent timing samples do not establish distributions or a performance budget.",
+    "No fresh UI/localization, simulator balance or native/store delivery acceptance."
+  ]
+}

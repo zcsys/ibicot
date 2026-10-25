@@ -1,0 +1,43 @@
+[
+  {
+    "id": "M2-01",
+    "exact_acceptance": "Cross-tier synergies, free autobuy unlock and baseline offline replay support first session through 25 Charts with deterministic results.",
+    "exact_prerequisites": [
+      "M1-02"
+    ],
+    "current_status_at_pin": "in_progress",
+    "owner": "gameplay",
+    "reviewer": "platform"
+  },
+  {
+    "id": "M3-03",
+    "exact_acceptance": "Purchase priorities and opt-in reset conditions work identically online/offline; free base plan and Note-priced extra slots follow the blueprint.",
+    "exact_prerequisites": [
+      "M2-01",
+      "M1-06"
+    ],
+    "current_status_at_pin": "in_progress",
+    "owner": "gameplay",
+    "reviewer": "platform"
+  },
+  {
+    "id": "M1-02",
+    "exact_acceptance": "Five producers, unlocks, milestones, lifetime ledger and Rechart run without rendering; explicit event ordering is tested.",
+    "exact_prerequisites": [
+      "M1-01"
+    ],
+    "current_status_at_pin": "accepted",
+    "owner": "gameplay",
+    "reviewer": "platform"
+  },
+  {
+    "id": "M1-06",
+    "exact_acceptance": "Specify six chapter goals, ending, challenge entry requirements, Note source/sink budgets and daily/pass exceptions; no new prestige layer is assumed.",
+    "exact_prerequisites": [
+      "M0-01"
+    ],
+    "current_status_at_pin": "accepted",
+    "owner": "director",
+    "reviewer": "qa_release"
+  }
+]

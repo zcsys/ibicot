@@ -1,0 +1,135 @@
+--- release/native-proof/root-art-full-20261021T122040.006324Z/source/game/mobile/test/art_catalogue_variants_test.dart
++++ game/mobile/test/art_catalogue_variants_test.dart
+@@ -10,6 +10,7 @@
+ import 'package:tideglass/game_controller.dart';
+ import 'package:tideglass/harbor_art.dart';
+ import 'package:tideglass/palette.dart';
++import 'package:tideglass/presentation.dart';
+ import 'package:tideglass/producer_art.dart';
+ import 'package:tideglass/producer_art_data.dart';
+ import 'package:tideglass/story_state.dart';
+@@ -20,9 +21,10 @@
+ // All states here are deterministic engineering fixtures. Paid IDs supplied to
+ // the verifier callback are synthetic, not store/provider ownership evidence.
+ // No canonical asset verification, rights or native-device gate is written.
++const _presentationLocale = Presentation.pseudoEnabled ? 'qps-ploc' : 'en-US';
+ const _reportDirectory = String.fromEnvironment(
+   'TIDEGLASS_ART_REPORT_DIR',
+-  defaultValue: '../../release/art/catalogue-variants/author-run',
++  defaultValue: '../../release/art/catalogue-variants/author-run-$_presentationLocale',
+ );
+ final _clock = DateTime.utc(2026, 10, 21, 12);
+ final _rows = <Map<String, Object?>>[];
+@@ -34,9 +36,11 @@
+   final Size size;
+   final double textScale;
+   final bool reducedMotion;
+-  String get id => '$name-${(textScale * 100).round()}-${reducedMotion ? 'reduced' : 'normal'}';
++  String get id => '$_presentationLocale-$name-${(textScale * 100).round()}-${reducedMotion ? 'reduced' : 'normal'}';
+   Map<String, Object?> get json => {
+     'condition_id': id,
++    'presentation_locale': _presentationLocale,
++    'pseudo_enabled': Presentation.pseudoEnabled,
+     'viewport': [size.width, size.height],
+     'text_scale': textScale,
+     'reduced_motion': reducedMotion,
+@@ -135,7 +139,13 @@
+     final directory = Directory(_reportDirectory)..createSync(recursive: true);
+     File('${directory.path}/matrix-results.json').writeAsStringSync(
+       '${const JsonEncoder.withIndent('  ').convert({
+-        'schema_version': 1,
++        'schema_version': 2,
++        'presentation': {
++          'locale': _presentationLocale,
++          'pseudo_enabled': Presentation.pseudoEnabled,
++          'compile_time_define': 'TIDEGLASS_PSEUDO',
++          'mode_source': 'compile-time Presentation.pseudoEnabled',
++        },
+         'scope': 'Actual widget/card behavior across IDs and display conditions; not complete original asset acceptance',
+         'expected_matrix_rows': 816,
+         'observed_passing_matrix_rows': _rows.length,
+@@ -275,14 +285,14 @@
+           expect(art.locked, isFalse);
+           final painter = tester.widget<CustomPaint>(find.descendant(of: artFinder, matching: find.byType(CustomPaint))).painter! as ProducerStagePainter;
+           expect(painter.tier, tier); expect(painter.stage, stage);
+-          expect(find.descendant(of: card, matching: find.text(UiEnglish.producerNames[tier])), findsOneWidget);
++          expect(find.descendant(of: card, matching: find.text(Presentation.text(UiEnglish.producerNames[tier]))), findsOneWidget);
+           final buy = find.byKey(ValueKey('buy-$tier'));
+           await _reachable(tester, buy, display);
+           expect(tester.widget<FilledButton>(buy).onPressed, isNotNull);
+           expect(game.state.toJson(), before, reason: 'Showing art/scrolling did not buy anything.');
+           _row('asset.producer.${(tier + 1).toString().padLeft(2, '0')}.stage.$stage', 'producer', display,
+             {'actual_consumer': 'TideglassApp producer-$tier', 'count': count, 'painter_stage': stage,
+-            'adjacent_name': UiEnglish.producerNames[tier], 'purchase_button_reachable': true,
++            'adjacent_name': Presentation.text(UiEnglish.producerNames[tier]), 'purchase_button_reachable': true,
+             'button_semantics_and_48px_hitbox': true, 'economic_state_unchanged': true,
+             'layout_exception': false});
+         }
+@@ -296,7 +306,8 @@
+         final card = find.byKey(ValueKey('producer-$tier'));
+         await tester.ensureVisible(card); await _frames(tester);
+         expect(find.descendant(of: card, matching: find.byIcon(Icons.lock_outline)), findsWidgets);
+-        expect(find.descendant(of: card, matching: find.textContaining('Needs 10')), findsOneWidget);
++        expect(find.descendant(of: card, matching: find.text(Presentation.text(UiEnglish.appNeedsTideglassEngineProducerNamesTier(
++          Presentation.authored(UiEnglish.producerNames[tier - 1]))))), findsOneWidget);
+         expect(find.byKey(ValueKey('buy-$tier')), findsNothing);
+       }
+       await _disposeView(tester); lockedGame.dispose();
+@@ -314,8 +325,8 @@
+               size: 72, locked: locked, selected: true);
+             await _showScreen(tester, Scaffold(body: SingleChildScrollView(child: Column(children: [
+               art,
+-              Text('${UiEnglish.producerNames[tier]} · stage $stage'),
+-              Text(locked ? 'Locked · synthetic component state' : 'Selected · synthetic component state'),
++              LocalizedText('${UiEnglish.producerNames[tier]} · stage $stage'),
++              LocalizedText(locked ? 'Locked · synthetic component state' : 'Selected · synthetic component state'),
+             ]))), display);
+             final stack = find.descendant(of: find.byType(StagedProducerArt), matching: find.byType(Stack));
+             expect(stack, findsOneWidget);
+@@ -361,13 +372,13 @@
+         await tester.ensureVisible(preview); await _frames(tester);
+         expect(tester.widget<CosmeticPreview>(preview).id, item.id);
+         expect(find.byKey(ValueKey('equip-${item.id}')), findsNothing);
+-        expect(find.descendant(of: card, matching: find.text(item.unlockLabel)), findsOneWidget);
++        expect(find.descendant(of: card, matching: find.text(Presentation.text(item.unlockLabel))), findsOneWidget);
+         await tester.tap(preview); await tester.pump(const Duration(milliseconds: 400)); await _frames(tester);
+         final dialog = find.byType(Dialog);
+         expect(dialog, findsOneWidget);
+         expect(tester.widget<CosmeticPreview>(find.descendant(of: dialog, matching: find.byType(CosmeticPreview))).id, item.id);
+         final imageLabel = tester.getSemantics(find.descendant(of: dialog, matching: find.byType(CosmeticPreview))).getSemanticsData().label;
+-        expect(imageLabel, contains(item.title));
++        expect(imageLabel, contains(Presentation.authored(item.title)));
+         final close = find.descendant(of: dialog, matching: find.byType(CloseButton));
+         await _reachable(tester, close, display);
+         await tester.tap(close); await tester.pump(const Duration(milliseconds: 400)); await _frames(tester);
+@@ -407,12 +418,12 @@
+         expect(game.state.toJson(), economicOwned,
+             reason: 'The normalized ownership fixture must be idempotent.');
+         await _showScreen(tester, screen(), display);
+-        expect(find.descendant(of: card, matching: find.text('Kept in your collection')), findsOneWidget);
++        expect(find.descendant(of: card, matching: find.text(Presentation.text(UiEnglish.cosmeticsKeptInYourCollection))), findsOneWidget);
+         final equip = find.byKey(ValueKey('equip-${item.id}'));
+         await _reachable(tester, equip, display);
+         await tester.tap(equip); await _frames(tester);
+         expect(item.source == CosmeticSource.decoration ? game.story.equippedDecoration : game.visibleAppearance, item.id);
+-        expect(find.descendant(of: card, matching: find.text('Equipped')), findsOneWidget);
++        expect(find.descendant(of: card, matching: find.text(Presentation.text(UiEnglish.cosmeticsEquipped))), findsOneWidget);
+         expect(find.byKey(ValueKey('equip-${item.id}')), findsNothing);
+         expect(game.state.toJson(), economicOwned);
+         await _showApp(tester, game, display);
+@@ -446,13 +457,13 @@
+         // that the product currently has a separate 160px thumbnail route.
+         await _showScreen(tester, Scaffold(body: SingleChildScrollView(child: Column(children: [
+           SizedBox(width: 160, child: CosmeticPreview(id: item.id)),
+-          Text(item.title), const Text('Component thumbnail fixture'),
++          LocalizedText(item.title), const LocalizedText('Component thumbnail fixture'),
+         ]))), display);
+         final small = find.byType(CosmeticPreview);
+         expect(tester.widget<CosmeticPreview>(small).id, item.id);
+         expect(tester.getSize(small).width, 160);
+         expect(tester.widget<CosmeticOverlay>(find.descendant(of: small, matching: find.byType(CosmeticOverlay))).id, item.id);
+-        expect(tester.getSemantics(small).getSemanticsData().label, contains(item.title));
++        expect(tester.getSemantics(small).getSemanticsData().label, contains(Presentation.authored(item.title)));
+         expect(game.state.toJson(), economicOwned);
+         _row('asset.${item.id}', 'cosmetic', display, {
+           'actual_consumers': ['CosmeticsScreen card', 'full preview dialog', 'TideglassApp equipped harbor'],

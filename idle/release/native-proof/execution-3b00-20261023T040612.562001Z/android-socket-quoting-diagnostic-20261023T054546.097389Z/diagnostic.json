@@ -1,0 +1,51 @@
+{
+  "utc": "20261023T054546.097389Z",
+  "collector": "/Users/csys/Desktop/ibicot/idle/release/native-privacy/runtime_observation.py",
+  "collector_sha256": "90485bd0ca097af8835d1f7cc280f7f2545085ea578d7a44cf10a6b93cf458cc",
+  "source_location": "Host.sockets line454 passes shlex.quote(ANDROID_SOCKETS) as an already separate adb exec-out sh -c argument; parse_android_sockets line179 rejects returned command-error prose",
+  "finding": "Archived command output shows the shell attempted to execute the entire already quoted script as one command and reported inaccessible or not found. This is a local transport quoting defect; these outputs do not demonstrate an OS restriction on socket inspection.",
+  "proof_scope": "Offline replay of six archived raw outputs only; no new device command, permission change, reader fallback, source mutation or native rerun. Both original native checks passed; both observer finalizations remain partial/unavailable.",
+  "records": [
+    {
+      "native_verification": "/Users/csys/Desktop/ibicot/idle/release/native-proof/current-runtime-android-20261023T054123378918Z/verification.json",
+      "native_verification_sha256": "9b3ff295ba757f8d3c7ac3934929deda75f76b101d97282425b8b71f83a399d2",
+      "observation": "/Users/csys/Desktop/ibicot/idle/release/native-proof/execution-3b00-20261023T040612.562001Z/observation-current-runtime-android-20261023T054123378918Z/observation.json",
+      "observation_sha256": "b00ee709ea7b252bd0c94f828947f68d871947419d1e5d035888135bbb88f333",
+      "finalization": "/Users/csys/Desktop/ibicot/idle/release/native-proof/execution-3b00-20261023T040612.562001Z/observation-current-runtime-android-20261023T054123378918Z/finalization.json",
+      "finalization_sha256": "62ed8ed1890f36e98453cd1be4279d4cb63a3901d56a6d5438b75207b46b8d72",
+      "socket_commands": "/Users/csys/Desktop/ibicot/idle/release/native-proof/execution-3b00-20261023T040612.562001Z/android-socket-quoting-diagnostic-20261023T054546.097389Z/current-runtime-android-20261023T054123378918Z-socket-commands.json",
+      "socket_commands_sha256": "71b409da879182967e991ea3d0a7626c1f575f81e5cd0b06b9818015b266af4b",
+      "all_socket_statuses": [
+        "unavailable",
+        "unavailable",
+        "unavailable"
+      ],
+      "all_storage_statuses": [
+        "unavailable",
+        "unavailable",
+        "unavailable"
+      ]
+    },
+    {
+      "native_verification": "/Users/csys/Desktop/ibicot/idle/release/native-proof/current-runtime-android-20261023T054227408137Z/verification.json",
+      "native_verification_sha256": "a0dfbe447f365ca1cd3b38ff9a1659a47adc7480723426f4d4d848d25726a797",
+      "observation": "/Users/csys/Desktop/ibicot/idle/release/native-proof/execution-3b00-20261023T040612.562001Z/observation-current-runtime-android-20261023T054227408137Z/observation.json",
+      "observation_sha256": "3218f960177bcb28b0180ab333d70e4ef1afef50af4ca5bf10c216a9b836a60c",
+      "finalization": "/Users/csys/Desktop/ibicot/idle/release/native-proof/execution-3b00-20261023T040612.562001Z/observation-current-runtime-android-20261023T054227408137Z/finalization.json",
+      "finalization_sha256": "d2b163fe191dbe1df24dfa0d45a45fbfa8d791bed765562605230d3c5e33bba3",
+      "socket_commands": "/Users/csys/Desktop/ibicot/idle/release/native-proof/execution-3b00-20261023T040612.562001Z/android-socket-quoting-diagnostic-20261023T054546.097389Z/current-runtime-android-20261023T054227408137Z-socket-commands.json",
+      "socket_commands_sha256": "77e0cdb3f7d1ad03cfb13fe6c7be9d56d85e5cbaf4418914c59045831168ed74",
+      "all_socket_statuses": [
+        "unavailable",
+        "unavailable",
+        "unavailable"
+      ],
+      "all_storage_statuses": [
+        "unavailable",
+        "unavailable",
+        "unavailable"
+      ]
+    }
+  ],
+  "new_native_or_privacy_acceptance": false
+}

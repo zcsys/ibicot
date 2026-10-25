@@ -1,0 +1,1006 @@
+--- a/game/mobile/lib/native_services.dart
++++ b/game/mobile/lib/native_services.dart
+@@ -1,6 +1,7 @@
+ import 'dart:async';
+ import 'dart:convert';
+ import 'dart:io';
++
+ import 'package:crypto/crypto.dart';
+ import 'package:flutter/foundation.dart';
+ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+@@ -100,6 +101,24 @@
+   Future<NativeRewardedAd> load(String unitId);
+ }
+ 
++enum AdPrivacyRequirement { unknown, notRequired, required }
++
++class AdPrivacySnapshot {
++  const AdPrivacySnapshot({
++    required this.requirement,
++    required this.canRequestAds,
++  });
++  final AdPrivacyRequirement requirement;
++  final bool canRequestAds;
++}
++
++/// Optional capability keeps existing RewardedGateway test/adapters compatible.
++abstract interface class AdPrivacyGateway {
++  Future<AdPrivacySnapshot> readAdPrivacyState();
++  Future<AdPrivacySnapshot> updateAdPrivacyState();
++  Future<AdPrivacySnapshot> showAdPrivacyOptions();
++}
++
+ abstract interface class NativeRewardedAd {
+   Future<void> configure({
+     required String accountId,
+@@ -110,7 +129,7 @@
+   Future<void> dispose();
+ }
+ 
+-class SdkRewardedGateway implements RewardedGateway {
++class SdkRewardedGateway implements RewardedGateway, AdPrivacyGateway {
+   @override
+   Future<bool> requestConsent() async {
+     final consent = Completer<void>();
+@@ -139,6 +158,56 @@
+     );
+     await consent.future.timeout(const Duration(seconds: 30));
+     return ConsentInformation.instance.canRequestAds();
++  }
++
++  @override
++  Future<AdPrivacySnapshot> readAdPrivacyState() async {
++    final required = await ConsentInformation.instance
++        .getPrivacyOptionsRequirementStatus();
++    final allowed = await ConsentInformation.instance.canRequestAds();
++    return AdPrivacySnapshot(
++      requirement: switch (required) {
++        PrivacyOptionsRequirementStatus.required =>
++          AdPrivacyRequirement.required,
++        PrivacyOptionsRequirementStatus.notRequired =>
++          AdPrivacyRequirement.notRequired,
++        PrivacyOptionsRequirementStatus.unknown => AdPrivacyRequirement.unknown,
++      },
++      canRequestAds: allowed,
++    );
++  }
++
++  @override
++  Future<AdPrivacySnapshot> updateAdPrivacyState() async {
++    // Explicit Check action only. Updating information does not show a consent
++    // form or initialize/load an ad; a required options form remains a separate
++    // player action after the updated requirement has been presented.
++    final updated = Completer<void>();
++    ConsentInformation.instance.requestConsentInfoUpdate(
++      ConsentRequestParameters(),
++      () {
++        if (!updated.isCompleted) updated.complete();
++      },
++      (_) {
++        if (!updated.isCompleted) {
++          updated.completeError(
++            const ServiceException('ad_privacy_unavailable'),
++          );
++        }
++      },
++    );
++    await updated.future.timeout(const Duration(seconds: 30));
++    return readAdPrivacyState().timeout(const Duration(seconds: 5));
++  }
++
++  @override
++  Future<AdPrivacySnapshot> showAdPrivacyOptions() async {
++    FormError? failure;
++    await ConsentForm.showPrivacyOptionsForm((error) => failure = error);
++    if (failure != null) {
++      throw const ServiceException('ad_privacy_unavailable');
++    }
++    return readAdPrivacyState().timeout(const Duration(seconds: 5));
+   }
+ 
+   @override
+@@ -359,6 +428,83 @@
+       _platform != null &&
+       configuration.rewardedAdUnitId != null &&
+       !configuration.rewardedAdUnitId!.contains('3940256099942544');
++  int _adPrivacyRevision = 0;
++  bool _adPrivacyBusy = false;
++  AdPrivacySnapshot _adPrivacy = const AdPrivacySnapshot(
++    requirement: AdPrivacyRequirement.unknown,
++    canRequestAds: false,
++  );
++  String? _adPrivacyError;
++  AdPrivacyGateway? get _adPrivacyGateway =>
++      _rewarded is AdPrivacyGateway ? _rewarded as AdPrivacyGateway : null;
++  // Device-level choices remain reachable after sign-out. No query is made
++  // from initialize(), a build(), or an unconfigured guest launch.
++  bool get adPrivacyAvailable =>
++      configured &&
++      configuration.adsEnabled &&
++      _platform != null &&
++      configuration.rewardedAdUnitId != null &&
++      !configuration.rewardedAdUnitId!.contains('3940256099942544') &&
++      _adPrivacyGateway != null;
++  AdPrivacyRequirement get adPrivacyRequirement => _adPrivacy.requirement;
++  bool get adPrivacyBusy => _adPrivacyBusy;
++  String? get adPrivacyError => _adPrivacyError;
++
++  Future<void> refreshAdPrivacyOptions() => _adPrivacyAction(show: false);
++  Future<void> updateAdPrivacyOptions() =>
++      _adPrivacyAction(show: false, update: true);
++  Future<void> showAdPrivacyOptions() => _adPrivacyAction(show: true);
++
++  Future<void> _adPrivacyAction({
++    required bool show,
++    bool update = false,
++  }) async {
++    if (!adPrivacyAvailable) {
++      if (show) throw const ServiceException('ad_privacy_unavailable');
++      return;
++    }
++    if (_adPrivacyBusy) return;
++    // Invalidate uncompleted ad work synchronously, before any SDK future.
++    final revision = ++_adPrivacyRevision;
++    final accountIntent = _accountIntent;
++    final expectedSession = session;
++    final sessionGeneration = client!.sessionGeneration;
++    final seed = localAccountSeed?.call();
++    bool current() =>
++        !_disposed &&
++        revision == _adPrivacyRevision &&
++        accountIntent == _accountIntent &&
++        identical(session, expectedSession) &&
++        client!.sessionGeneration == sessionGeneration &&
++        localAccountSeed?.call() == seed;
++    _adPrivacyBusy = true;
++    _adPrivacyError = null;
++    _notify();
++    try {
++      var state = update
++          ? await _adPrivacyGateway!.updateAdPrivacyState().timeout(
++              const Duration(seconds: 35),
++            )
++          : await _adPrivacyGateway!.readAdPrivacyState().timeout(
++              const Duration(seconds: 5),
++            );
++      if (!current()) return;
++      if (show && state.requirement == AdPrivacyRequirement.required) {
++        // User interaction may take as long as needed. Do not time out a visible
++        // form and resume optional ads while that form is still open.
++        state = await _adPrivacyGateway!.showAdPrivacyOptions();
++      }
++      if (current()) _adPrivacy = state;
++    } catch (_) {
++      if (current()) _adPrivacyError = 'ad_privacy_unavailable';
++    } finally {
++      if (revision == _adPrivacyRevision) {
++        _adPrivacyBusy = false;
++        _notify();
++      }
++    }
++  }
++
+   String get _key =>
+       'tideglass.${sha256.convert(utf8.encode(client!.endpoint.origin))}';
+ 
+@@ -1149,16 +1295,48 @@
+     if (!adsAvailable || slot < 0 || slot > 5) {
+       throw const ServiceException('ads_not_configured');
+     }
++    if (_adPrivacyBusy) return null;
+     final requestingAccount = session!.accountId;
++    final requestingSession = session;
++    final requestingGeneration = client!.sessionGeneration;
++    final requestingAccountIntent = _accountIntent;
++    final privacyRevision = _adPrivacyRevision;
+     final requestingSeed = localAccountSeed?.call();
++    var displayCompleted = false;
+     bool stillEligible() =>
+         !_disposed &&
+         signedIn &&
++        identical(session, requestingSession) &&
++        client!.sessionGeneration == requestingGeneration &&
++        _accountIntent == requestingAccountIntent &&
+         session!.accountId == requestingAccount &&
+         localAccountSeed?.call() == requestingSeed &&
++        (displayCompleted ||
++            (!_adPrivacyBusy && privacyRevision == _adPrivacyRevision)) &&
+         (isStillEligible?.call() ?? true);
+     if (!stillEligible()) return null;
+     if (!await _rewarded.requestConsent() || !stillEligible()) return null;
++    if (_adPrivacyGateway != null) {
++      try {
++        final state = await _adPrivacyGateway!.readAdPrivacyState().timeout(
++          const Duration(seconds: 5),
++        );
++        if (!stillEligible()) return null;
++        _adPrivacy = state;
++        _adPrivacyError = null;
++        _notify();
++        if (!state.canRequestAds ||
++            state.requirement == AdPrivacyRequirement.unknown) {
++          return null;
++        }
++      } catch (_) {
++        if (stillEligible()) {
++          _adPrivacyError = 'ad_privacy_unavailable';
++          _notify();
++        }
++        return null;
++      }
++    }
+     var abandoned = false;
+     NativeRewardedAd? ad;
+     try {
+@@ -1181,6 +1359,9 @@
+       if (!stillEligible()) return null;
+       final earned = await ad.show();
+       if (!earned || !stillEligible()) return null;
++      // Later privacy changes affect future optional ads, not a completed
++      // display's verified server receipt. Account/seed/slot guards still apply.
++      displayCompleted = true;
+     } finally {
+       abandoned = true;
+       await ad?.dispose();
+--- a/game/mobile/lib/service_settings.dart
++++ b/game/mobile/lib/service_settings.dart
+@@ -1,5 +1,9 @@
++import 'dart:async';
++
++import 'ad_privacy_copy.dart';
+ import 'presentation.dart';
+ import 'strings.dart';
++
+ import 'dart:convert';
+ 
+ import 'package:flutter/material.dart';
+@@ -35,6 +39,26 @@
+   bool _working = false;
+   String? _indexAccount;
+   String? _createdCode;
++
++  @override
++  void initState() {
++    super.initState();
++    _readAdPrivacyOnEntry();
++  }
++
++  @override
++  void didUpdateWidget(covariant ServiceSettings oldWidget) {
++    super.didUpdateWidget(oldWidget);
++    if (!identical(oldWidget.manager, widget.manager)) _readAdPrivacyOnEntry();
++  }
++
++  void _readAdPrivacyOnEntry() {
++    WidgetsBinding.instance.addPostFrameCallback((_) {
++      if (mounted && manager.adPrivacyAvailable) {
++        unawaited(manager.refreshAdPrivacyOptions());
++      }
++    });
++  }
+ 
+   @override
+   void dispose() {
+@@ -746,6 +770,38 @@
+                       _delete,
+                     ),
+                   ],
++                  if (manager.adPrivacyAvailable &&
++                      (manager.adPrivacyRequirement !=
++                              AdPrivacyRequirement.notRequired ||
++                          manager.adPrivacyError != null)) ...[
++                    _section(AdPrivacyCopy.title),
++                    const LocalizedText(AdPrivacyCopy.description),
++                    if (manager.adPrivacyError != null)
++                      const LocalizedText(
++                        AdPrivacyCopy.unavailable,
++                        key: ValueKey('ad-privacy-error'),
++                      ),
++                    if (manager.adPrivacyBusy)
++                      const LocalizedText(
++                        AdPrivacyCopy.waiting,
++                        key: ValueKey('ad-privacy-waiting'),
++                      ),
++                    _button(
++                      manager.adPrivacyRequirement ==
++                              AdPrivacyRequirement.required
++                          ? AdPrivacyCopy.options
++                          : AdPrivacyCopy.check,
++                      'ad-privacy-options',
++                      manager.adPrivacyBusy
++                          ? null
++                          : () => _perform(
++                              manager.adPrivacyRequirement ==
++                                      AdPrivacyRequirement.required
++                                  ? manager.showAdPrivacyOptions
++                                  : manager.updateAdPrivacyOptions,
++                            ),
++                    ),
++                  ],
+                   _section(UiEnglish.serviceOptionalUsageReports),
+                   LocalizedText(
+                     manager.telemetryEnabled
+--- a/game/mobile/lib/ad_privacy_copy.dart
++++ b/game/mobile/lib/ad_privacy_copy.dart
+@@ -0,0 +1,12 @@
++/// English presentation copy; LocalizedText applies the existing pseudolocale.
++abstract final class AdPrivacyCopy {
++  static const title = 'Advertising privacy';
++  static const description =
++      'Manage the ad provider’s privacy choices for optional ads. Changes apply to future ads. Support you already earned stays yours.';
++  static const options = 'Advertising privacy options';
++  static const check = 'Check advertising privacy options';
++  static const unavailable =
++      'Advertising privacy options could not be loaded. Retry when connected. Free Crew Briefing remains available.';
++  static const waiting =
++      'Waiting for advertising privacy options. Your harbor remains available.';
++}
+--- a/game/mobile/test/ad_privacy_test.dart
++++ b/game/mobile/test/ad_privacy_test.dart
+@@ -0,0 +1,666 @@
++import 'dart:async';
++
++import 'package:flutter/material.dart';
++import 'package:flutter/services.dart';
++import 'package:flutter_test/flutter_test.dart';
++// Test uses the exact pinned SDK wire codec for consent-info request parameters.
++// ignore: implementation_imports
++import 'package:google_mobile_ads/src/ump/user_messaging_codec.dart';
++import 'package:tideglass/native_services.dart';
++import 'package:tideglass/palette.dart';
++import 'package:tideglass/service_settings.dart';
++
++import 'native_services_test.dart' as fixtures;
++
++class PrivacyAd implements NativeRewardedAd {
++  Completer<void>? configuration;
++  Completer<bool>? showing;
++  bool earned = false;
++  int shows = 0, disposes = 0;
++  @override
++  Future<void> configure({
++    required String accountId,
++    required int dayId,
++    required int slot,
++  }) async {
++    await configuration?.future;
++  }
++
++  @override
++  Future<bool> show() async {
++    shows++;
++    return showing == null ? earned : showing!.future;
++  }
++
++  @override
++  Future<void> dispose() async {
++    disposes++;
++  }
++}
++
++class PrivacyGateway implements RewardedGateway, AdPrivacyGateway {
++  int consents = 0, reads = 0, updates = 0, forms = 0, loads = 0;
++  Completer<bool>? consent;
++  Completer<NativeRewardedAd>? loading;
++  Completer<AdPrivacySnapshot>? form, update;
++  bool failRead = false, failForm = false, failUpdate = false;
++  AdPrivacySnapshot state = const AdPrivacySnapshot(
++    requirement: AdPrivacyRequirement.required,
++    canRequestAds: true,
++  );
++  final ad = PrivacyAd();
++  @override
++  Future<bool> requestConsent() async {
++    consents++;
++    return consent == null ? true : consent!.future;
++  }
++
++  @override
++  Future<NativeRewardedAd> load(String unitId) async {
++    loads++;
++    return loading == null ? ad : loading!.future;
++  }
++
++  @override
++  Future<AdPrivacySnapshot> readAdPrivacyState() async {
++    reads++;
++    if (failRead) throw StateError('synthetic status failure');
++    return state;
++  }
++
++  @override
++  Future<AdPrivacySnapshot> updateAdPrivacyState() async {
++    updates++;
++    if (failUpdate) throw StateError('synthetic information-update failure');
++    if (update != null) return update!.future;
++    return state = const AdPrivacySnapshot(
++      requirement: AdPrivacyRequirement.required,
++      canRequestAds: true,
++    );
++  }
++
++  @override
++  Future<AdPrivacySnapshot> showAdPrivacyOptions() async {
++    forms++;
++    if (failForm) throw StateError('synthetic form failure');
++    if (form != null) return form!.future;
++    return state = const AdPrivacySnapshot(
++      requirement: AdPrivacyRequirement.required,
++      canRequestAds: false,
++    );
++  }
++}
++
++class ClaimClient extends fixtures.TestClient {
++  int claimReads = 0;
++  Completer<Map<String, dynamic>>? claims;
++  @override
++  Future<Map<String, dynamic>> supportClaims() async {
++    claimReads++;
++    return claims == null
++        ? {'claims': <Map<String, dynamic>>[]}
++        : claims!.future;
++  }
++}
++
++NativeServicesManager managerFor(
++  PrivacyGateway gateway,
++  ClaimClient client, {
++  bool configured = true,
++}) => NativeServicesManager(
++  client: configured ? client : null,
++  credentials: fixtures.MemoryCredentials(),
++  rewarded: gateway,
++  configuration: const NativeServiceConfiguration(
++    adsEnabled: true,
++    rewardedAdUnitId: 'configured-real-unit',
++  ),
++  platformOverride: 'apple',
++  localAccountSeed: () => 'same-main-seed',
++);
++Future<void> spin(bool Function() predicate) async {
++  for (var i = 0; i < 30 && !predicate(); i++) {
++    await Future<void>.delayed(Duration.zero);
++  }
++  expect(predicate(), isTrue);
++}
++
++void main() {
++  TestWidgetsFlutterBinding.ensureInitialized();
++  test(
++    'default guest and absent capability do not contact the ad SDK',
++    () async {
++      final gateway = PrivacyGateway();
++      final client = ClaimClient();
++      final manager = managerFor(gateway, client, configured: false);
++      await manager.initialize();
++      await manager.refreshAdPrivacyOptions();
++      await manager.updateAdPrivacyOptions();
++      expect(manager.adPrivacyAvailable, false);
++      await expectLater(
++        manager.showAdPrivacyOptions(),
++        throwsA(isA<Exception>()),
++      );
++      expect(
++        [
++          gateway.reads,
++          gateway.updates,
++          gateway.forms,
++          gateway.consents,
++          gateway.loads,
++        ],
++        [0, 0, 0, 0, 0],
++      );
++      final legacy = NativeServicesManager(
++        client: client,
++        rewarded: fixtures.TestRewarded(),
++        credentials: fixtures.MemoryCredentials(),
++        platformOverride: 'apple',
++        configuration: const NativeServiceConfiguration(
++          adsEnabled: true,
++          rewardedAdUnitId: 'configured-real-unit',
++        ),
++      );
++      expect(legacy.adPrivacyAvailable, false);
++      await legacy.createAccount(cloudConsent: true);
++      expect(await legacy.requestRewardedSupport(dayId: 1, slot: 0), null);
++      manager.dispose();
++      legacy.dispose();
++      client.close();
++    },
++  );
++
++  test('configured initialization does not query; explicit local status works after sign-out', () async {
++    final gateway = PrivacyGateway();
++    final client = ClaimClient();
++    final manager = managerFor(gateway, client);
++    await manager.initialize();
++    expect(gateway.reads, 0);
++    expect(gateway.updates, 0);
++    await manager.refreshAdPrivacyOptions();
++    expect(manager.adPrivacyRequirement, AdPrivacyRequirement.required);
++    expect(gateway.consents, 0);
++    expect(gateway.loads, 0);
++    expect(gateway.forms, 0);
++    expect(gateway.updates, 0);
++    manager.dispose();
++    client.close();
++  });
++
++  test('cold unknown can update information then open required options without an ad', () async {
++    final gateway = PrivacyGateway()
++      ..state = const AdPrivacySnapshot(
++        requirement: AdPrivacyRequirement.unknown,
++        canRequestAds: false,
++      );
++    final client = ClaimClient();
++    final manager = managerFor(gateway, client);
++    await manager.initialize();
++    await manager.refreshAdPrivacyOptions();
++    expect(manager.adPrivacyRequirement, AdPrivacyRequirement.unknown);
++    expect(gateway.updates, 0);
++    await manager.updateAdPrivacyOptions();
++    expect(manager.adPrivacyRequirement, AdPrivacyRequirement.required);
++    expect(gateway.updates, 1);
++    expect(gateway.forms, 0);
++    await manager.showAdPrivacyOptions();
++    expect(gateway.forms, 1);
++    expect(gateway.consents, 0);
++    expect(gateway.loads, 0);
++    manager.dispose();
++    client.close();
++  });
++
++  test('explicit information update fails safely and retries; late account response cannot publish', () async {
++    final gateway = PrivacyGateway()
++      ..state = const AdPrivacySnapshot(
++        requirement: AdPrivacyRequirement.unknown,
++        canRequestAds: false,
++      )
++      ..failUpdate = true;
++    final client = ClaimClient();
++    final manager = managerFor(gateway, client);
++    await manager.updateAdPrivacyOptions();
++    expect(manager.adPrivacyError, 'ad_privacy_unavailable');
++    expect(manager.adPrivacyRequirement, AdPrivacyRequirement.unknown);
++    expect(manager.adPrivacyBusy, false);
++    gateway.failUpdate = false;
++    gateway.update = Completer<AdPrivacySnapshot>();
++    final pending = manager.updateAdPrivacyOptions();
++    await spin(() => gateway.updates == 2);
++    await manager.createAccount(cloudConsent: true);
++    gateway.update!.complete(
++      const AdPrivacySnapshot(
++        requirement: AdPrivacyRequirement.required,
++        canRequestAds: true,
++      ),
++    );
++    await pending;
++    expect(manager.adPrivacyRequirement, AdPrivacyRequirement.unknown);
++    gateway.update = null;
++    await manager.updateAdPrivacyOptions();
++    expect(manager.adPrivacyRequirement, AdPrivacyRequirement.required);
++    expect(manager.adPrivacyError, null);
++    expect(gateway.consents, 0);
++    expect(gateway.loads, 0);
++    expect(gateway.forms, 0);
++    manager.dispose();
++    client.close();
++  });
++
++  testWidgets(
++    'stalled explicit information update is bounded and late success cannot publish',
++    (tester) async {
++      final gateway = PrivacyGateway()..update = Completer<AdPrivacySnapshot>();
++      final client = ClaimClient();
++      final manager = managerFor(gateway, client);
++      final pending = manager.updateAdPrivacyOptions();
++      await tester.pump();
++      expect(manager.adPrivacyBusy, true);
++      await tester.pump(const Duration(seconds: 36));
++      await pending;
++      expect(manager.adPrivacyBusy, false);
++      expect(manager.adPrivacyError, 'ad_privacy_unavailable');
++      expect(manager.adPrivacyRequirement, AdPrivacyRequirement.unknown);
++      gateway.update!.complete(
++        const AdPrivacySnapshot(
++          requirement: AdPrivacyRequirement.required,
++          canRequestAds: true,
++        ),
++      );
++      await tester.pump();
++      expect(manager.adPrivacyRequirement, AdPrivacyRequirement.unknown);
++      expect(gateway.consents, 0);
++      expect(gateway.forms, 0);
++      expect(gateway.loads, 0);
++      manager.dispose();
++      client.close();
++    },
++  );
++
++  test('privacy options invalidates delayed consent even if old consent later allows ads', () async {
++    final gateway = PrivacyGateway()..consent = Completer<bool>();
++    final client = ClaimClient();
++    final manager = managerFor(gateway, client);
++    await manager.createAccount(cloudConsent: true);
++    final request = manager.requestRewardedSupport(dayId: 1, slot: 0);
++    await spin(() => gateway.consents == 1);
++    await manager.showAdPrivacyOptions();
++    gateway.consent!.complete(true);
++    expect(await request, null);
++    expect(gateway.loads, 0);
++    expect(gateway.forms, 1);
++    expect(client.claimReads, 0);
++    manager.dispose();
++    client.close();
++  });
++
++  test('options invalidate loaded and configured but unshown ads', () async {
++    for (final loading in [true, false]) {
++      final gateway = PrivacyGateway();
++      final client = ClaimClient();
++      final manager = managerFor(gateway, client);
++      if (loading) {
++        gateway.loading = Completer<NativeRewardedAd>();
++      } else {
++        gateway.ad.configuration = Completer<void>();
++      }
++      await manager.createAccount(cloudConsent: true);
++      final request = manager.requestRewardedSupport(dayId: 1, slot: 0);
++      await spin(() => gateway.loads == 1);
++      await manager.showAdPrivacyOptions();
++      if (loading) {
++        gateway.loading!.complete(gateway.ad);
++        await expectLater(request, throwsA(isA<Exception>()));
++      } else {
++        gateway.ad.configuration!.complete();
++        expect(await request, null);
++      }
++      expect(gateway.ad.shows, 0);
++      expect(gateway.ad.disposes, 1);
++      expect(client.claimReads, 0);
++      manager.dispose();
++      client.close();
++    }
++  });
++
++  test('options invalidate unfinished display and prevent new requests while form is open', () async {
++    final gateway = PrivacyGateway()..form = Completer<AdPrivacySnapshot>();
++    gateway.ad.showing = Completer<bool>();
++    final client = ClaimClient();
++    final manager = managerFor(gateway, client);
++    await manager.createAccount(cloudConsent: true);
++    final request = manager.requestRewardedSupport(dayId: 1, slot: 0);
++    await spin(() => gateway.ad.shows == 1);
++    final options = manager.showAdPrivacyOptions();
++    await spin(() => gateway.forms == 1);
++    expect(await manager.requestRewardedSupport(dayId: 1, slot: 1), null);
++    expect(gateway.consents, 1);
++    gateway.ad.showing!.complete(true);
++    expect(await request, null);
++    expect(client.claimReads, 0);
++    gateway.form!.complete(
++      const AdPrivacySnapshot(
++        requirement: AdPrivacyRequirement.required,
++        canRequestAds: false,
++      ),
++    );
++    await options;
++    expect(gateway.ad.disposes, 1);
++    manager.dispose();
++    client.close();
++  });
++
++  test('completed display keeps its server-confirmed receipt despite later privacy change', () async {
++    final gateway = PrivacyGateway();
++    gateway.ad.earned = true;
++    final client = ClaimClient()..claims = Completer<Map<String, dynamic>>();
++    final manager = managerFor(gateway, client);
++    await manager.createAccount(cloudConsent: true);
++    final request = manager.requestRewardedSupport(dayId: 1, slot: 0);
++    await spin(() => client.claimReads == 1);
++    await manager.showAdPrivacyOptions();
++    final receipt = {
++      'day_id': 1,
++      'slot': 0,
++      'receipt_id': 'already-server-confirmed-synthetic',
++    };
++    client.claims!.complete({
++      'claims': [receipt],
++    });
++    expect(await request, receipt);
++    expect(gateway.ad.disposes, 1);
++    expect(gateway.forms, 1);
++    expect(await manager.requestRewardedSupport(dayId: 1, slot: 1), null);
++    expect(
++      gateway.loads,
++      1,
++    ); // Refused current SDK permission never starts another ad.
++    manager.dispose();
++    client.close();
++  });
++
++  test('same-account reauthentication invalidates old request and late privacy response', () async {
++    final gateway = PrivacyGateway()..consent = Completer<bool>();
++    final client = ClaimClient();
++    final manager = managerFor(gateway, client);
++    await manager.createAccount(cloudConsent: true);
++    await manager.refreshAdPrivacyOptions();
++    final request = manager.requestRewardedSupport(dayId: 1, slot: 0);
++    await spin(() => gateway.consents == 1);
++    gateway.form = Completer<AdPrivacySnapshot>();
++    final options = manager.showAdPrivacyOptions();
++    await spin(() => gateway.forms == 1);
++    await manager.recoverAccount(
++      accountId: client.identity,
++      recoveryCode: 'fixture',
++    );
++    gateway.form!.complete(
++      const AdPrivacySnapshot(
++        requirement: AdPrivacyRequirement.notRequired,
++        canRequestAds: true,
++      ),
++    );
++    await options;
++    gateway.consent!.complete(true);
++    expect(await request, null);
++    expect(gateway.loads, 0);
++    expect(
++      manager.adPrivacyRequirement,
++      AdPrivacyRequirement.required,
++    ); // Late response was not published.
++    manager.dispose();
++    client.close();
++  });
++
++  test(
++    'status/form errors retain an options retry and cannot load ads',
++    () async {
++      final gateway = PrivacyGateway();
++      final client = ClaimClient();
++      final manager = managerFor(gateway, client);
++      await manager.createAccount(cloudConsent: true);
++      await manager.refreshAdPrivacyOptions();
++      gateway.failForm = true;
++      await manager.showAdPrivacyOptions();
++      expect(manager.adPrivacyError, 'ad_privacy_unavailable');
++      expect(manager.adPrivacyRequirement, AdPrivacyRequirement.required);
++      gateway.failRead = true;
++      expect(await manager.requestRewardedSupport(dayId: 1, slot: 0), null);
++      expect(gateway.loads, 0);
++      gateway.failRead = false;
++      gateway.failForm = false;
++      await manager.showAdPrivacyOptions();
++      expect(manager.adPrivacyError, null);
++      manager.dispose();
++      client.close();
++    },
++  );
++
++  test('unknown privacy requirement cannot authorize an ad even with a stale allowed value', () async {
++    final gateway = PrivacyGateway()
++      ..state = const AdPrivacySnapshot(
++        requirement: AdPrivacyRequirement.unknown,
++        canRequestAds: true,
++      );
++    final client = ClaimClient();
++    final manager = managerFor(gateway, client);
++    await manager.createAccount(cloudConsent: true);
++    expect(await manager.requestRewardedSupport(dayId: 1, slot: 0), null);
++    expect(gateway.loads, 0);
++    expect(client.claimReads, 0);
++    manager.dispose();
++    client.close();
++  });
++
++  test('real SDK explicit update resolves cold unknown without loading consent or ads', () async {
++    final channel = MethodChannel(
++      'plugins.flutter.io/google_mobile_ads/ump',
++      StandardMethodCodec(UserMessagingCodec()),
++    );
++    final calls = <String>[];
++    var requirement = 2;
++    var allowed = false;
++    var formFailure = false;
++    var updateFailure = false;
++    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
++        .setMockMethodCallHandler(channel, (call) async {
++          calls.add(call.method);
++          if (call.method ==
++              'ConsentInformation#getPrivacyOptionsRequirementStatus') {
++            return requirement;
++          }
++          if (call.method == 'ConsentInformation#canRequestAds') return allowed;
++          if (call.method == 'ConsentInformation#requestConsentInfoUpdate') {
++            if (updateFailure) {
++              throw PlatformException(
++                code: '2',
++                message: 'synthetic update failure',
++              );
++            }
++            requirement = 1;
++            allowed = true;
++            return null;
++          }
++          if (call.method == 'UserMessagingPlatform#showPrivacyOptionsForm') {
++            if (formFailure) {
++              throw PlatformException(
++                code: '3',
++                message: 'synthetic form failure',
++              );
++            }
++            allowed = false;
++            return null;
++          }
++          throw StateError('Unexpected SDK method');
++        });
++    addTearDown(
++      () => TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
++          .setMockMethodCallHandler(channel, null),
++    );
++    final gateway = SdkRewardedGateway();
++    expect(
++      (await gateway.readAdPrivacyState()).requirement,
++      AdPrivacyRequirement.unknown,
++    );
++    expect(calls, [
++      'ConsentInformation#getPrivacyOptionsRequirementStatus',
++      'ConsentInformation#canRequestAds',
++    ]);
++    expect(
++      (await gateway.updateAdPrivacyState()).requirement,
++      AdPrivacyRequirement.required,
++    );
++    expect(calls.skip(2), [
++      'ConsentInformation#requestConsentInfoUpdate',
++      'ConsentInformation#getPrivacyOptionsRequirementStatus',
++      'ConsentInformation#canRequestAds',
++    ]);
++    expect((await gateway.showAdPrivacyOptions()).canRequestAds, false);
++    formFailure = true;
++    await expectLater(
++      gateway.showAdPrivacyOptions(),
++      throwsA(isA<Exception>()),
++    );
++    updateFailure = true;
++    final beforeFailure = calls.length;
++    await expectLater(
++      gateway.updateAdPrivacyState(),
++      throwsA(isA<Exception>()),
++    );
++    expect(calls.skip(beforeFailure), [
++      'ConsentInformation#requestConsentInfoUpdate',
++    ]);
++    expect(calls.toSet(), {
++      'ConsentInformation#getPrivacyOptionsRequirementStatus',
++      'ConsentInformation#canRequestAds',
++      'ConsentInformation#requestConsentInfoUpdate',
++      'UserMessagingPlatform#showPrivacyOptionsForm',
++    });
++  });
++
++  for (final configured in [false, true]) {
++    testWidgets(
++      'privacy entry absent without configured ads and hidden when not required ($configured)',
++      (tester) async {
++        final gateway = PrivacyGateway()
++          ..state = const AdPrivacySnapshot(
++            requirement: AdPrivacyRequirement.notRequired,
++            canRequestAds: true,
++          );
++        final client = ClaimClient();
++        final manager = managerFor(gateway, client, configured: configured);
++        await tester.pumpWidget(
++          MaterialApp(
++            theme: tideglassTheme(),
++            home: ServiceSettings(
++              manager: manager,
++              onExportHarbor: () async => '{}',
++              onImportHarbor: (_) async {},
++            ),
++          ),
++        );
++        await tester.pumpAndSettle();
++        expect(find.byKey(const ValueKey('ad-privacy-options')), findsNothing);
++        expect(gateway.reads, configured ? 1 : 0);
++        expect(gateway.updates, 0);
++        expect(gateway.consents, 0);
++        expect(gateway.loads, 0);
++        await tester.pumpWidget(const SizedBox.shrink());
++        manager.dispose();
++        client.close();
++      },
++    );
++  }
++
++  for (final coldStart in [false, true]) {
++    testWidgets(
++      'privacy options reachable at320px200percent; cold check/error/retry $coldStart',
++      (tester) async {
++        tester.view.physicalSize = const Size(320, 720);
++        tester.view.devicePixelRatio = 1;
++        addTearDown(tester.view.resetPhysicalSize);
++        addTearDown(tester.view.resetDevicePixelRatio);
++        final gateway = PrivacyGateway();
++        if (coldStart) {
++          gateway.state = const AdPrivacySnapshot(
++            requirement: AdPrivacyRequirement.unknown,
++            canRequestAds: false,
++          );
++        }
++        final client = ClaimClient();
++        final manager = managerFor(gateway, client);
++        await tester.pumpWidget(
++          MaterialApp(
++            theme: tideglassTheme(),
++            builder: (context, child) => MediaQuery(
++              data: MediaQuery.of(context)
++                  .copyWith(textScaler: const TextScaler.linear(2)),
++              child: child!,
++            ),
++            home: ServiceSettings(
++              manager: manager,
++              onExportHarbor: () async => '{}',
++              onImportHarbor: (_) async {},
++            ),
++          ),
++        );
++        await tester.pumpAndSettle();
++        final button = find.byKey(const ValueKey('ad-privacy-options'));
++        final scrollable = find
++            .descendant(
++              of: find.byKey(const ValueKey('services-scroll')),
++              matching: find.byType(Scrollable),
++            )
++            .first;
++        await tester.scrollUntilVisible(
++          button,
++          200,
++          scrollable: scrollable,
++          maxScrolls: 80,
++        );
++        await tester.ensureVisible(button);
++        await tester.pumpAndSettle();
++        final rect = tester.getRect(button);
++        expect(rect.width, greaterThanOrEqualTo(48));
++        expect(rect.height, greaterThanOrEqualTo(48));
++        expect(rect.left, greaterThanOrEqualTo(0));
++        expect(rect.right, lessThanOrEqualTo(320));
++        expect(rect.top, greaterThanOrEqualTo(0));
++        expect(rect.bottom, lessThanOrEqualTo(720));
++        expect(button.hitTestable(), findsOneWidget);
++        expect(gateway.updates, 0);
++        if (coldStart) {
++          gateway.failUpdate = true;
++          await tester.tap(button);
++          await tester.pumpAndSettle();
++          expect(manager.adPrivacyError, 'ad_privacy_unavailable');
++          expect(manager.adPrivacyRequirement, AdPrivacyRequirement.unknown);
++          expect(gateway.forms, 0);
++          gateway.failUpdate = false;
++          await tester.ensureVisible(button);
++          await tester.pumpAndSettle();
++          expect(button.hitTestable(), findsOneWidget);
++          await tester.tap(button);
++          await tester.pumpAndSettle();
++          expect(manager.adPrivacyRequirement, AdPrivacyRequirement.required);
++          expect(manager.adPrivacyError, null);
++          expect(gateway.updates, 2);
++          expect(gateway.forms, 0);
++          await tester.ensureVisible(button);
++          await tester.pumpAndSettle();
++          expect(button.hitTestable(), findsOneWidget);
++        }
++        await tester.tap(button);
++        await tester.pumpAndSettle();
++        expect(gateway.forms, 1);
++        expect(gateway.loads, 0);
++        expect(gateway.consents, 0);
++        expect(tester.takeException(), null);
++        await tester.pumpWidget(const SizedBox.shrink());
++        manager.dispose();
++        client.close();
++      },
++    );
++  }
++}

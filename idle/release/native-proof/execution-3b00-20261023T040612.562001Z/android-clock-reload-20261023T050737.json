@@ -1,0 +1,32 @@
+{
+  "command": [
+    "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3",
+    "/Users/csys/Desktop/ibicot/idle/tool/verify_native.py",
+    "/Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261023T040445.261666Z-3b00cc8f7122",
+    "--device",
+    "emulator-5556",
+    "--label",
+    "android",
+    "--scenario",
+    "clock-reload",
+    "--run-id",
+    "v3b00-android-clock"
+  ],
+  "scenario": "clock-reload",
+  "label": "android",
+  "run_id": "v3b00-android-clock",
+  "predecessor": null,
+  "started_utc": "20261023T050737.677621Z",
+  "exit_code": 1,
+  "verification": "/Users/csys/Desktop/ibicot/idle/release/native-proof/integration-android-20261023T050738.127967Z/verification.json",
+  "verification_sha256": "2ad5e9333882d77365c4ba7c1e511ff534ac0b6e516c8759865434adc6c4ce5c",
+  "status": "failed",
+  "errors": [
+    "Native build/test failure in log: Some tests failed.",
+    "Native build/test failure in log: EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK",
+    "Native test or teardown error marker in log",
+    "No successful native framework completion marker",
+    "No successful driver completion marker"
+  ],
+  "finished_utc": "2026-10-23T05:08:23.967088+00:00"
+}

@@ -1,0 +1,339 @@
+{
+  "baseline": {
+    "candidate_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "config": "fixture_v1",
+    "content_sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+    "economy_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+  },
+  "cutoff": 2678500,
+  "enrollment_closed": true,
+  "exclusions": {
+    "automation": 1
+  },
+  "exploratory_strata": {
+    "acquisition": {
+      "fixture": {
+        "eligible_installs": 3,
+        "retention": [
+          {
+            "day": 1,
+            "eligible_mature_installs": 3,
+            "fully_observable_windows": 1,
+            "missing_data_identification_bounds": [
+              0.0,
+              0.6666666666666666
+            ],
+            "not_yet_mature_installs": 0,
+            "observed_config_change_before_window_end": 0,
+            "observed_fraction_wilson_95": [
+              5.551115123125783e-17,
+              0.5614970317550454
+            ],
+            "observed_return_fraction": 0.0,
+            "observed_returns": 0,
+            "unresolved_return_status": 2
+          },
+          {
+            "day": 7,
+            "eligible_mature_installs": 3,
+            "fully_observable_windows": 1,
+            "missing_data_identification_bounds": [
+              0.0,
+              0.6666666666666666
+            ],
+            "not_yet_mature_installs": 0,
+            "observed_config_change_before_window_end": 0,
+            "observed_fraction_wilson_95": [
+              5.551115123125783e-17,
+              0.5614970317550454
+            ],
+            "observed_return_fraction": 0.0,
+            "observed_returns": 0,
+            "unresolved_return_status": 2
+          },
+          {
+            "day": 30,
+            "eligible_mature_installs": 3,
+            "fully_observable_windows": 1,
+            "missing_data_identification_bounds": [
+              0.3333333333333333,
+              0.6666666666666666
+            ],
+            "not_yet_mature_installs": 0,
+            "observed_config_change_before_window_end": 0,
+            "observed_fraction_wilson_95": [
+              0.06149194472039621,
+              0.7923403991979522
+            ],
+            "observed_return_fraction": 0.3333333333333333,
+            "observed_returns": 1,
+            "unresolved_return_status": 1
+          }
+        ],
+        "sessions": {
+          "completed_fraction_lower_bound": 1.0,
+          "completed_without_reported_crash": 2,
+          "native_crash_reporting_and_critical_flow_gate_verified": false,
+          "observed_completed_fraction_wilson_95": [
+            0.34238022750665303,
+            1.0
+          ],
+          "reported_crash_sessions": 0,
+          "unknown_outcomes": 0,
+          "valid_observed_sessions": 2
+        }
+      }
+    },
+    "platform": {
+      "test": {
+        "eligible_installs": 3,
+        "retention": [
+          {
+            "day": 1,
+            "eligible_mature_installs": 3,
+            "fully_observable_windows": 1,
+            "missing_data_identification_bounds": [
+              0.0,
+              0.6666666666666666
+            ],
+            "not_yet_mature_installs": 0,
+            "observed_config_change_before_window_end": 0,
+            "observed_fraction_wilson_95": [
+              5.551115123125783e-17,
+              0.5614970317550454
+            ],
+            "observed_return_fraction": 0.0,
+            "observed_returns": 0,
+            "unresolved_return_status": 2
+          },
+          {
+            "day": 7,
+            "eligible_mature_installs": 3,
+            "fully_observable_windows": 1,
+            "missing_data_identification_bounds": [
+              0.0,
+              0.6666666666666666
+            ],
+            "not_yet_mature_installs": 0,
+            "observed_config_change_before_window_end": 0,
+            "observed_fraction_wilson_95": [
+              5.551115123125783e-17,
+              0.5614970317550454
+            ],
+            "observed_return_fraction": 0.0,
+            "observed_returns": 0,
+            "unresolved_return_status": 2
+          },
+          {
+            "day": 30,
+            "eligible_mature_installs": 3,
+            "fully_observable_windows": 1,
+            "missing_data_identification_bounds": [
+              0.3333333333333333,
+              0.6666666666666666
+            ],
+            "not_yet_mature_installs": 0,
+            "observed_config_change_before_window_end": 0,
+            "observed_fraction_wilson_95": [
+              0.06149194472039621,
+              0.7923403991979522
+            ],
+            "observed_return_fraction": 0.3333333333333333,
+            "observed_returns": 1,
+            "unresolved_return_status": 1
+          }
+        ],
+        "sessions": {
+          "completed_fraction_lower_bound": 1.0,
+          "completed_without_reported_crash": 2,
+          "native_crash_reporting_and_critical_flow_gate_verified": false,
+          "observed_completed_fraction_wilson_95": [
+            0.34238022750665303,
+            1.0
+          ],
+          "reported_crash_sessions": 0,
+          "unknown_outcomes": 0,
+          "valid_observed_sessions": 2
+        }
+      }
+    },
+    "platform_device": {
+      "test/fixture": {
+        "eligible_installs": 3,
+        "retention": [
+          {
+            "day": 1,
+            "eligible_mature_installs": 3,
+            "fully_observable_windows": 1,
+            "missing_data_identification_bounds": [
+              0.0,
+              0.6666666666666666
+            ],
+            "not_yet_mature_installs": 0,
+            "observed_config_change_before_window_end": 0,
+            "observed_fraction_wilson_95": [
+              5.551115123125783e-17,
+              0.5614970317550454
+            ],
+            "observed_return_fraction": 0.0,
+            "observed_returns": 0,
+            "unresolved_return_status": 2
+          },
+          {
+            "day": 7,
+            "eligible_mature_installs": 3,
+            "fully_observable_windows": 1,
+            "missing_data_identification_bounds": [
+              0.0,
+              0.6666666666666666
+            ],
+            "not_yet_mature_installs": 0,
+            "observed_config_change_before_window_end": 0,
+            "observed_fraction_wilson_95": [
+              5.551115123125783e-17,
+              0.5614970317550454
+            ],
+            "observed_return_fraction": 0.0,
+            "observed_returns": 0,
+            "unresolved_return_status": 2
+          },
+          {
+            "day": 30,
+            "eligible_mature_installs": 3,
+            "fully_observable_windows": 1,
+            "missing_data_identification_bounds": [
+              0.3333333333333333,
+              0.6666666666666666
+            ],
+            "not_yet_mature_installs": 0,
+            "observed_config_change_before_window_end": 0,
+            "observed_fraction_wilson_95": [
+              0.06149194472039621,
+              0.7923403991979522
+            ],
+            "observed_return_fraction": 0.3333333333333333,
+            "observed_returns": 1,
+            "unresolved_return_status": 1
+          }
+        ],
+        "sessions": {
+          "completed_fraction_lower_bound": 1.0,
+          "completed_without_reported_crash": 2,
+          "native_crash_reporting_and_critical_flow_gate_verified": false,
+          "observed_completed_fraction_wilson_95": [
+            0.34238022750665303,
+            1.0
+          ],
+          "reported_crash_sessions": 0,
+          "unknown_outcomes": 0,
+          "valid_observed_sessions": 2
+        }
+      }
+    }
+  },
+  "inputs_sha256": {
+    "analyzer": "7109d2e53a8c07b8f00299b749a4c758530e51f38a2d444f4600ae6ef94e7462",
+    "data": "72383e238a030ff5307879aa8b9b8e4a375832d7e3e1bee9ac8d4d53cb49e013",
+    "protocol": "ecac92cac08ab5d89aee69a69fa296b798a0bbc65b43d9c32fe6b672120a66f9"
+  },
+  "invalid_session_records": 0,
+  "limits": [
+    "Registry provenance and lawful collection require independent verification; this tool cannot recover unrecorded installs.",
+    "Dn uses the full half-open age window [n*24h,(n+1)*24h). Each window includes only mature registered installs.",
+    "Missing observations stay in the denominator. Identification bounds allow every unresolved return to be absent or present.",
+    "Wilson intervals describe observed fractions under binomial sampling; they do not correct consent, missingness or recruitment bias.",
+    "Config changes remain in the primary denominator and are disclosed; material changes require separately preregistered cohorts.",
+    "Strata are exploratory, unadjusted comparisons, not powered causal experiments.",
+    "Unknown session outcomes are not crash-free. Provider telemetry and critical-flow/device review remain required.",
+    "No synthetic run, statistical threshold or calendar timestamp establishes human study, release or support acceptance."
+  ],
+  "overall": {
+    "eligible_installs": 3,
+    "retention": [
+      {
+        "day": 1,
+        "eligible_mature_installs": 3,
+        "fully_observable_windows": 1,
+        "missing_data_identification_bounds": [
+          0.0,
+          0.6666666666666666
+        ],
+        "not_yet_mature_installs": 0,
+        "observed_config_change_before_window_end": 0,
+        "observed_fraction_wilson_95": [
+          5.551115123125783e-17,
+          0.5614970317550454
+        ],
+        "observed_return_fraction": 0.0,
+        "observed_returns": 0,
+        "unresolved_return_status": 2
+      },
+      {
+        "day": 7,
+        "eligible_mature_installs": 3,
+        "fully_observable_windows": 1,
+        "missing_data_identification_bounds": [
+          0.0,
+          0.6666666666666666
+        ],
+        "not_yet_mature_installs": 0,
+        "observed_config_change_before_window_end": 0,
+        "observed_fraction_wilson_95": [
+          5.551115123125783e-17,
+          0.5614970317550454
+        ],
+        "observed_return_fraction": 0.0,
+        "observed_returns": 0,
+        "unresolved_return_status": 2
+      },
+      {
+        "day": 30,
+        "eligible_mature_installs": 3,
+        "fully_observable_windows": 1,
+        "missing_data_identification_bounds": [
+          0.3333333333333333,
+          0.6666666666666666
+        ],
+        "not_yet_mature_installs": 0,
+        "observed_config_change_before_window_end": 0,
+        "observed_fraction_wilson_95": [
+          0.06149194472039621,
+          0.7923403991979522
+        ],
+        "observed_return_fraction": 0.3333333333333333,
+        "observed_returns": 1,
+        "unresolved_return_status": 1
+      }
+    ],
+    "sessions": {
+      "completed_fraction_lower_bound": 1.0,
+      "completed_without_reported_crash": 2,
+      "native_crash_reporting_and_critical_flow_gate_verified": false,
+      "observed_completed_fraction_wilson_95": [
+        0.34238022750665303,
+        1.0
+      ],
+      "reported_crash_sessions": 0,
+      "unknown_outcomes": 0,
+      "valid_observed_sessions": 2
+    }
+  },
+  "planning_targets": {
+    "eligible_starts": 500,
+    "observed_sessions": 10000
+  },
+  "primary_outcome": "D7",
+  "registered_installs": 4,
+  "registry_completeness_independently_verified": false,
+  "registry_population_claim": "opt_in_study",
+  "release_ready": false,
+  "review_hypotheses": {
+    "D1": 0.35,
+    "D30": 0.07,
+    "D7": 0.15
+  },
+  "schema_version": 2,
+  "status": "synthetic_fixture",
+  "study_id": "synthetic_cohort",
+  "whole_registered_window_d30_mature": false
+}

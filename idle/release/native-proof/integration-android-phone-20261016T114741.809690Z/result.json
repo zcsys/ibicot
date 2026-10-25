@@ -1,0 +1,156 @@
+{
+  "provenance": "seeded deterministic fixture; no claim of real elapsed progression, store transaction or human playtest",
+  "verification_id": "integration-android-phone-20261016T114741.809690Z",
+  "candidate_fingerprint": "d85bdf74433d96d2f6ea6a58a8481290942d526a7cdb8ec14b55e57537e9dced",
+  "harness_sha256": "c9b035999b3b128214f41f1627724fb578b1147ef03030d446addf754c40161f",
+  "scenario": "seeded",
+  "run_id": "",
+  "platform": "android",
+  "device_label": "android-phone",
+  "economy_version": "tideglass-economy-1.0.0",
+  "checks": [
+    "UI buy costs 33.6 R, retains 26.4 R and creates second Skiff",
+    "Cancel retains fleet; confirm resets wallet/counts, awards 10 Charts and retains lifetime; disk reload matches exactly"
+  ],
+  "save_directory": "/data/user/0/dev.tideglass.game/files/native-verification/android-phone-FVEFTH",
+  "restored_core_state": {
+    "schema_version": 4,
+    "economic_version": "tideglass-economy-1.0.0",
+    "event_order_version": 4,
+    "counts": [
+      1,
+      0,
+      0,
+      0,
+      0
+    ],
+    "wallet_micros": "0",
+    "lifetime_micros": "1000000000000000",
+    "charts": "10",
+    "elapsed_micros": "0",
+    "earning_remainder": "0",
+    "revision": 2,
+    "auto_buy_enabled": false,
+    "focus_charges": 0,
+    "focus_phase_micros": "0",
+    "focus_remaining_micros": "0",
+    "completed_surveys": 0,
+    "survey_phase_micros": "0",
+    "survey_notes": "0",
+    "daily": {
+      "account_seed": "9a889889b197295284c1f8676c2e1b89",
+      "utc_offset_minutes": 0,
+      "day_high_water": 20742,
+      "last_materialized_day": 20742,
+      "utc_anchor_micros": "1792141200000000",
+      "available_discovery_kinds": [
+        "archive"
+      ],
+      "contracts": [
+        {
+          "id": "contract:9a889889b197295284c1f8676c2e1b89:20742:0",
+          "account_day": 20742,
+          "slot": 0,
+          "kind": "build",
+          "discovery_kind": null,
+          "target": "5",
+          "rate_snapshot_raw": "320000000000000000000000000",
+          "cheapest_price_snapshot_micros": "2337585596",
+          "lifetime_baseline_micros": "1000000000000000",
+          "purchased_baseline": "0",
+          "discovery_baseline": "0",
+          "rerolled": false,
+          "claimed": false,
+          "credited_pass_id": null
+        },
+        {
+          "id": "contract:9a889889b197295284c1f8676c2e1b89:20742:1",
+          "account_day": 20742,
+          "slot": 1,
+          "kind": "build",
+          "discovery_kind": null,
+          "target": "5",
+          "rate_snapshot_raw": "320000000000000000000000000",
+          "cheapest_price_snapshot_micros": "2337585596",
+          "lifetime_baseline_micros": "1000000000000000",
+          "purchased_baseline": "0",
+          "discovery_baseline": "0",
+          "rerolled": false,
+          "claimed": false,
+          "credited_pass_id": null
+        },
+        {
+          "id": "contract:9a889889b197295284c1f8676c2e1b89:20742:2",
+          "account_day": 20742,
+          "slot": 2,
+          "kind": "build",
+          "discovery_kind": null,
+          "target": "5",
+          "rate_snapshot_raw": "320000000000000000000000000",
+          "cheapest_price_snapshot_micros": "2337585596",
+          "lifetime_baseline_micros": "1000000000000000",
+          "purchased_baseline": "0",
+          "discovery_baseline": "0",
+          "rerolled": false,
+          "claimed": false,
+          "credited_pass_id": null
+        }
+      ],
+      "discovery_totals": {},
+      "discovery_operation_ids": [],
+      "discovery_sequence": "0",
+      "selected_pass_id": "pass.01",
+      "pass_xp_by_id": {
+        "pass.01": "0"
+      }
+    },
+    "support": {
+      "remaining_micros": "0",
+      "token_day": 20742,
+      "tokens": [],
+      "caches": [],
+      "claimed_slice_ids": [],
+      "closed_settlement_ids": [],
+      "grant_source_ids": [],
+      "last_settlement_sequence": "0",
+      "last_settlement_through_utc_micros": null,
+      "last_finalized_settlement_id": null,
+      "receipt_cursor_migration_required": false,
+      "active_settlement_id": null,
+      "active_settlement_request": null,
+      "source_start_elapsed_micros": "0",
+      "next_offset_micros": "0",
+      "slice_start_offset_micros": "0",
+      "slice_numerator": "0"
+    },
+    "lifetime_purchased_count": "0",
+    "rechart_count": 1,
+    "last_rechart_elapsed_micros": "0",
+    "surveys_collected_total": "0",
+    "completed_calibration_ids": [],
+    "extra_plan_slots": 0,
+    "automation_plans": [
+      {
+        "id": "plan.base",
+        "name": "Base plan",
+        "purchase_policy": "greedy",
+        "tier_priority": [
+          4,
+          3,
+          2,
+          1,
+          0
+        ],
+        "auto_reset_enabled": false,
+        "minimum_additional_charts": "1",
+        "minimum_run_seconds": 600
+      }
+    ],
+    "selected_automation_plan_id": "plan.base"
+  },
+  "screenshots": [
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/integration-android-phone-20261016T114741.809690Z/android-phone-seeded-purchase.png",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/integration-android-phone-20261016T114741.809690Z/android-phone-seeded-rechart-preview.png",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/integration-android-phone-20261016T114741.809690Z/android-phone-seeded-rechart-complete.png"
+  ]
+}

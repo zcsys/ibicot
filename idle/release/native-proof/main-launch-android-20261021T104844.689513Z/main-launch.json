@@ -1,0 +1,50 @@
+{
+  "candidate_fingerprint": "152805bf9e269f49d14486286656ac0174a808384d10e6623533a4f92690dc11",
+  "device": "emulator-5556",
+  "artifact_sha256": "fc856d3cdd2a2c17e9423b2427dd80290ea40d21d9825324c03fbc73335319c2",
+  "commands": [
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "install",
+        "-r",
+        "/Users/csys/Desktop/ibicot/idle/release/native-proof/20261021T102112.746555Z/artifacts/tideglass-debug.apk"
+      ],
+      "exit_code": 0,
+      "output": "Performing Streamed Install\nSuccess\n"
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "am",
+        "force-stop",
+        "dev.tideglass.game"
+      ],
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "am",
+        "start",
+        "-n",
+        "dev.tideglass.game/.MainActivity"
+      ],
+      "exit_code": 0,
+      "output": "Starting: Intent { cmp=dev.tideglass.game/.MainActivity }\n"
+    }
+  ],
+  "screenshot": "release/native-proof/main-launch-android-20261021T104844.689513Z/android-main.png",
+  "screenshot_sha256": "cdf99be8035e61f7849083e7426952c8c7fa49c69b17010b35816392ec2aea7c",
+  "save_reset": false,
+  "provenance": "Ordinary archived debug main entrypoint, existing guest save preserved. No natural progression or human action attribution."
+}

@@ -1,0 +1,38 @@
+{
+  "host_checks": {
+    "services-test": {
+      "command": [
+        "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests/services",
+        "-v"
+      ],
+      "exit_code": 0
+    },
+    "provider-environment": {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/services-venv/bin/python",
+        "/var/folders/v5/s8bkjm8j2_142b2bq970kylh0000gn/T/tmpwwhss5or/tool/check_provider_environment.py",
+        "/var/folders/v5/s8bkjm8j2_142b2bq970kylh0000gn/T/tmpwwhss5or/services/requirements-providers.lock"
+      ],
+      "exit_code": 1
+    },
+    "operations-test": {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/services-venv/bin/python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests/services/operations",
+        "-v"
+      ],
+      "exit_code": 1,
+      "status": "blocked",
+      "error": "Required provider-environment gate failed; suite was not executed"
+    }
+  }
+}

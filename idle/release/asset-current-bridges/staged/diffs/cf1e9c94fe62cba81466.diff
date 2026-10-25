@@ -1,0 +1,303 @@
+--- release/native-proof/root-art-full-20261021T122040.006324Z/source/game/platform/lib/study_recorder.dart
++++ game/platform/lib/study_recorder.dart
+@@ -5,7 +5,11 @@
+ import 'dart:convert';
+ import 'dart:io';
+ import 'dart:math';
++
+ import 'package:crypto/crypto.dart';
++
++import 'study_native_context.dart';
++export 'study_native_context.dart';
+ 
+ String studyCanonical(Object? value) {
+   Object? ordered(Object? item) {
+@@ -450,16 +454,32 @@
+     );
+   }
+ 
+-  static void _payloadShape(Map<String, dynamic> event) {
++  static void _payloadShape(Map<String, dynamic> event, int schema) {
+     final payload = event['payload'] as Map<String, dynamic>;
+     switch (event['kind']) {
+       case 'app_start':
+       case 'session_start':
+         _require(
+-          _shape(payload, {'config', 'reason'}),
++          _shape(payload, {'config', 'reason'}) ||
++              (schema == 2 &&
++                  event['kind'] == 'app_start' &&
++                  _shape(payload, {'config', 'reason', 'native_context'})),
+           'invalid_start_payload',
+         );
+         _configShape(payload['config']);
++        if (payload.containsKey('native_context')) {
++          final observed = StudyProcessObservation.fromJson(
++            Map<String, dynamic>.from(payload['native_context'] as Map),
++          );
++          if (observed.available) {
++            _require(
++              (observed.observedStartUtcMs! - (event['at'] as int) * 1000)
++                      .abs() <=
++                  5000,
++              'native_context_time_mismatch',
++            );
++          }
++        }
+         _require(
+           event['kind'] == 'session_start'
+               ? payload['reason'] == 'inactivity'
+@@ -513,7 +533,8 @@
+             'records',
+             'status',
+           }) &&
+-          doc['schema_version'] == 1,
++          doc['schema_version'] is int &&
++          {1, 2}.contains(doc['schema_version']),
+       'invalid_store_fields',
+     );
+     _require(
+@@ -535,6 +556,7 @@
+     var sequence = 0;
+     var lastAt = -1;
+     final events = <String>{};
++    var nativeStarted = false, unavailablePending = false;
+     for (final raw in doc['records'] as List) {
+       final event = Map<String, dynamic>.from(raw as Map);
+       // Nine exact fields; keeping shape validation separate avoids accepting
+@@ -554,7 +576,35 @@
+             }),
+         'invalid_record_fields',
+       );
+-      _payloadShape(event);
++      _payloadShape(event, doc['schema_version'] as int);
++      final native = (event['payload'] as Map)['native_context'];
++      if (native is Map && native['status'] == 'available') {
++        _require(
++          native['platform'] == registry['platform'],
++          'native_platform_mismatch',
++        );
++      }
++      if (unavailablePending) {
++        _require(
++          event['kind'] == 'gap' &&
++              event['payload']['reason'] == 'instrumentationUnavailable' &&
++              event['payload']['from'] == lastAt &&
++              event['payload']['to'] == lastAt &&
++              event['at'] == lastAt,
++          'missing_atomic_native_gap',
++        );
++        unavailablePending = false;
++      }
++      if (event['kind'] == 'app_start') {
++        final hasNative = (event['payload'] as Map).containsKey(
++          'native_context',
++        );
++        _require(!nativeStarted || hasNative, 'legacy_start_after_native_link');
++        nativeStarted = nativeStarted || hasNative;
++        unavailablePending =
++            hasNative &&
++            event['payload']['native_context']['status'] == 'unavailable';
++      }
+       _require(
+         _opaque.hasMatch(event['process_id'] as String) &&
+             _opaque.hasMatch(event['session_id'] as String) &&
+@@ -574,6 +624,11 @@
+       previous = hash as String;
+       lastAt = event['at'] as int;
+     }
++    _require(!unavailablePending, 'missing_atomic_native_gap');
++    _require(
++      doc['schema_version'] != 2 || nativeStarted,
++      'schema2_without_native_start',
++    );
+     _require(
+       (doc['records'] as List).isNotEmpty &&
+           doc['records'][0]['kind'] == 'app_start' &&
+@@ -597,6 +652,25 @@
+       'initial_config_mismatch',
+     );
+   }
++
++  Map<String, Object?> _nativePayload(StudyProcessObservation value, int at) {
++    final payload = value.toJson();
++    _require(
++      utf8.encode(studyCanonical(payload)).length <= 2048,
++      'native_context_oversize',
++    );
++    _require(
++      !value.available || (value.observedStartUtcMs! - at * 1000).abs() <= 5000,
++      'native_context_time_mismatch',
++    );
++    return payload;
++  }
++
++  void _nativeGap(Map<String, dynamic> doc, int at) => _append(doc, 'gap', {
++    'reason': 'instrumentationUnavailable',
++    'from': at,
++    'to': at,
++  }, at);
+ 
+   Future<T> _serial<T>(Future<T> Function() operation) {
+     final completer = Completer<T>();
+@@ -670,12 +744,19 @@
+     StudyEnrollment enrollment,
+     StudyConfig baseline, {
+     required bool eligibleFreshInstall,
++    StudyProcessObservation? nativeContext,
+   }) => _serial(() async {
+     _require(
+       _document == null && eligibleFreshInstall && !_withdrawalRequested,
+       'enrollment_not_allowed',
+     );
+     final now = _now();
++    _require(
++      nativeContext == null ||
++          !nativeContext.available ||
++          nativeContext.platform == enrollment.platform,
++      'native_platform_mismatch',
++    );
+     _require(now >= 0, 'invalid_clock');
+     _process = _newId();
+     _session = _newId();
+@@ -696,7 +777,7 @@
+       'baseline': baseline.toJson(),
+     };
+     final doc = <String, dynamic>{
+-      'schema_version': 1,
++      'schema_version': nativeContext == null ? 1 : 2,
+       'registry': registry,
+       'records': <Map<String, Object?>>[],
+       'status': 'active',
+@@ -704,28 +785,50 @@
+     _append(doc, 'app_start', {
+       'config': baseline.toJson(),
+       'reason': 'enrollment',
++      if (nativeContext != null)
++        'native_context': _nativePayload(nativeContext, now),
+     }, now);
++    if (nativeContext != null && !nativeContext.available) _nativeGap(doc, now);
+     await _commit(doc);
+     _begun = true;
+     _foreground = true;
+     _lastActivity = now;
+   });
+ 
+-  Future<void> beginProcess({required StudyConfig? config}) =>
+-      _serial(() async {
+-        if (!enrolled || exhausted || _begun) return;
+-        _process = _newId();
+-        _session = _newId();
+-        _config = config;
+-        _foreground = true;
+-        _interactive = false;
+-        await _record('app_start', {
+-          'config': config?.toJson(),
+-          'reason': 'process_restart',
+-        }, split: false);
+-        _begun = true;
+-        _lastActivity = _now();
+-      });
++  Future<void> beginProcess({
++    required StudyConfig? config,
++    StudyProcessObservation? nativeContext,
++  }) => _serial(() async {
++    if (!enrolled || exhausted || _begun) return;
++    _require(
++      nativeContext?.available != true ||
++          nativeContext?.platform == registry!['platform'],
++      'native_platform_mismatch',
++    );
++    nativeContext ??= _document?['schema_version'] == 2
++        ? const StudyProcessObservation.unavailable('not_requested')
++        : null;
++    _process = _newId();
++    _session = _newId();
++    _config = config;
++    _foreground = true;
++    _interactive = false;
++    try {
++      await _record('app_start', {
++        'config': config?.toJson(),
++        'reason': 'process_restart',
++        if (nativeContext != null)
++          'native_context': _nativePayload(nativeContext!, _now()),
++      }, split: false);
++    } catch (_) {
++      final previous = (_document!['records'] as List).last;
++      _process = previous['process_id'] as String;
++      _session = previous['session_id'] as String;
++      rethrow;
++    }
++    _begun = true;
++    _lastActivity = _now();
++  });
+ 
+   Future<void> _record(
+     String kind,
+@@ -737,6 +840,11 @@
+     final now = _now();
+     if (_lastAt != null && now < _lastAt!) {
+       final doc = _copy();
++      if (kind == 'app_start') {
++        final previous = (doc['records'] as List).last;
++        _process = previous['process_id'] as String;
++        _session = previous['session_id'] as String;
++      }
+       _append(doc, 'gap', {
+         'reason': 'clockDiscontinuity',
+         'from': now,
+@@ -748,11 +856,20 @@
+     }
+     final doc = _copy();
+     if (_writeFailed) {
++      final proposedProcess = _process;
++      final proposedSession = _session;
++      if (kind == 'app_start') {
++        final previous = (doc['records'] as List).last;
++        _process = previous['process_id'] as String;
++        _session = previous['session_id'] as String;
++      }
+       _append(doc, 'gap', {
+         'reason': 'storageFailure',
+         'from': _lastAt ?? now,
+         'to': now,
+       }, now);
++      _process = proposedProcess;
++      _session = proposedSession;
+     }
+     final startsSession =
+         split && _lastActivity != null && now - _lastActivity! >= 1800;
+@@ -764,10 +881,20 @@
+         'reason': 'inactivity',
+       }, now);
+     }
++    if (kind == 'app_start' && payload.containsKey('native_context'))
++      doc['schema_version'] = 2;
+     _append(doc, kind, payload, now);
++    if (kind == 'app_start' &&
++        (payload['native_context'] as Map?)?['status'] == 'unavailable')
++      _nativeGap(doc, now);
+     if ((doc['records'] as List).length > maximumRecords - 2 ||
+         utf8.encode(studyCanonical(doc)).length > maximumBytes - 8192) {
+       final stopped = _copy();
++      if (kind == 'app_start') {
++        final previous = (stopped['records'] as List).last;
++        _process = previous['process_id'] as String;
++        _session = previous['session_id'] as String;
++      }
+       _append(stopped, 'gap', {
+         'reason': 'capacity',
+         'from': _lastAt ?? now,
+@@ -841,7 +968,10 @@
+       }
+       // A later full-erasure request must supersede prior minimal retention.
+       if (withdrawn && (retainMinimalRegistry || registry == null)) return;
+-      if (!retainMinimalRegistry || _document == null) {
++      // Native identity is never retained by the legacy minimal-registry option.
++      if (!retainMinimalRegistry ||
++          _document == null ||
++          _document!['schema_version'] == 2) {
+         await _commit({
+           'schema_version': 1,
+           'registry': null,

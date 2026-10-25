@@ -1,0 +1,450 @@
+{
+  "package": "dev.tideglass.game",
+  "version_code": "1",
+  "version_name": "0.1.0",
+  "sdk": [
+    {
+      "{http://schemas.android.com/apk/res/android}minSdkVersion": "29",
+      "{http://schemas.android.com/apk/res/android}targetSdkVersion": "36"
+    }
+  ],
+  "permissions": [
+    {
+      "{http://schemas.android.com/apk/res/android}name": "android.permission.INTERNET"
+    },
+    {
+      "{http://schemas.android.com/apk/res/android}name": "android.permission.POST_NOTIFICATIONS"
+    },
+    {
+      "{http://schemas.android.com/apk/res/android}name": "android.permission.VIBRATE"
+    },
+    {
+      "{http://schemas.android.com/apk/res/android}name": "android.permission.ACCESS_NETWORK_STATE"
+    },
+    {
+      "{http://schemas.android.com/apk/res/android}name": "com.google.android.gms.permission.AD_ID"
+    },
+    {
+      "{http://schemas.android.com/apk/res/android}name": "android.permission.ACCESS_ADSERVICES_AD_ID"
+    },
+    {
+      "{http://schemas.android.com/apk/res/android}name": "android.permission.ACCESS_ADSERVICES_ATTRIBUTION"
+    },
+    {
+      "{http://schemas.android.com/apk/res/android}name": "android.permission.ACCESS_ADSERVICES_TOPICS"
+    },
+    {
+      "{http://schemas.android.com/apk/res/android}name": "com.android.vending.BILLING"
+    },
+    {
+      "{http://schemas.android.com/apk/res/android}name": "android.permission.WAKE_LOCK"
+    },
+    {
+      "{http://schemas.android.com/apk/res/android}name": "android.permission.FOREGROUND_SERVICE"
+    },
+    {
+      "{http://schemas.android.com/apk/res/android}name": "dev.tideglass.game.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+    }
+  ],
+  "application_attributes": {
+    "{http://schemas.android.com/apk/res/android}allowBackup": "false",
+    "{http://schemas.android.com/apk/res/android}appComponentFactory": "androidx.core.app.CoreComponentFactory",
+    "{http://schemas.android.com/apk/res/android}extractNativeLibs": "false",
+    "{http://schemas.android.com/apk/res/android}icon": "@mipmap/ic_launcher",
+    "{http://schemas.android.com/apk/res/android}label": "Tideglass",
+    "{http://schemas.android.com/apk/res/android}name": "android.app.Application"
+  },
+  "components": [
+    {
+      "kind": "meta-data",
+      "attributes": {
+        "{http://schemas.android.com/apk/res/android}name": "com.google.android.gms.ads.APPLICATION_ID",
+        "{http://schemas.android.com/apk/res/android}value": "ca-app-pub-3940256099942544~3347511713"
+      },
+      "metadata": []
+    },
+    {
+      "kind": "activity",
+      "attributes": {
+        "{http://schemas.android.com/apk/res/android}configChanges": "0x40003fb4",
+        "{http://schemas.android.com/apk/res/android}exported": "true",
+        "{http://schemas.android.com/apk/res/android}hardwareAccelerated": "true",
+        "{http://schemas.android.com/apk/res/android}launchMode": "1",
+        "{http://schemas.android.com/apk/res/android}name": "dev.tideglass.game.MainActivity",
+        "{http://schemas.android.com/apk/res/android}taskAffinity": "",
+        "{http://schemas.android.com/apk/res/android}theme": "@style/LaunchTheme",
+        "{http://schemas.android.com/apk/res/android}windowSoftInputMode": "0x00000010"
+      },
+      "metadata": [
+        {
+          "{http://schemas.android.com/apk/res/android}name": "io.flutter.embedding.android.NormalTheme",
+          "{http://schemas.android.com/apk/res/android}resource": "@style/NormalTheme"
+        }
+      ]
+    },
+    {
+      "kind": "receiver",
+      "attributes": {
+        "{http://schemas.android.com/apk/res/android}exported": "false",
+        "{http://schemas.android.com/apk/res/android}name": "com.dexterous.flutterlocalnotifications.ScheduledNotificationReceiver"
+      },
+      "metadata": []
+    },
+    {
+      "kind": "meta-data",
+      "attributes": {
+        "{http://schemas.android.com/apk/res/android}name": "flutterEmbedding",
+        "{http://schemas.android.com/apk/res/android}value": "2"
+      },
+      "metadata": []
+    },
+    {
+      "kind": "meta-data",
+      "attributes": {
+        "{http://schemas.android.com/apk/res/android}name": "io.flutter.embedded_views_preview",
+        "{http://schemas.android.com/apk/res/android}value": "true"
+      },
+      "metadata": []
+    },
+    {
+      "kind": "provider",
+      "attributes": {
+        "{http://schemas.android.com/apk/res/android}authorities": "dev.tideglass.game.flutter.share_provider",
+        "{http://schemas.android.com/apk/res/android}exported": "false",
+        "{http://schemas.android.com/apk/res/android}grantUriPermissions": "true",
+        "{http://schemas.android.com/apk/res/android}name": "dev.fluttercommunity.plus.share.ShareFileProvider"
+      },
+      "metadata": [
+        {
+          "{http://schemas.android.com/apk/res/android}name": "android.support.FILE_PROVIDER_PATHS",
+          "{http://schemas.android.com/apk/res/android}resource": "@xml/flutter_share_file_paths"
+        }
+      ]
+    },
+    {
+      "kind": "receiver",
+      "attributes": {
+        "{http://schemas.android.com/apk/res/android}exported": "false",
+        "{http://schemas.android.com/apk/res/android}name": "dev.fluttercommunity.plus.share.SharePlusPendingIntent"
+      },
+      "metadata": []
+    },
+    {
+      "kind": "activity",
+      "attributes": {
+        "{http://schemas.android.com/apk/res/android}exported": "false",
+        "{http://schemas.android.com/apk/res/android}name": "io.flutter.plugins.urllauncher.WebViewActivity",
+        "{http://schemas.android.com/apk/res/android}theme": "@android:style/Theme.NoTitleBar.Fullscreen"
+      },
+      "metadata": []
+    },
+    {
+      "kind": "activity",
+      "attributes": {
+        "{http://schemas.android.com/apk/res/android}configChanges": "0x00000fb0",
+        "{http://schemas.android.com/apk/res/android}enableOnBackInvokedCallback": "false",
+        "{http://schemas.android.com/apk/res/android}exported": "false",
+        "{http://schemas.android.com/apk/res/android}name": "com.google.android.gms.ads.AdActivity",
+        "{http://schemas.android.com/apk/res/android}theme": "@android:style/Theme.Translucent"
+      },
+      "metadata": []
+    },
+    {
+      "kind": "provider",
+      "attributes": {
+        "{http://schemas.android.com/apk/res/android}authorities": "dev.tideglass.game.mobileadsinitprovider",
+        "{http://schemas.android.com/apk/res/android}exported": "false",
+        "{http://schemas.android.com/apk/res/android}initOrder": "100",
+        "{http://schemas.android.com/apk/res/android}name": "com.google.android.gms.ads.MobileAdsInitProvider"
+      },
+      "metadata": []
+    },
+    {
+      "kind": "service",
+      "attributes": {
+        "{http://schemas.android.com/apk/res/android}enabled": "true",
+        "{http://schemas.android.com/apk/res/android}exported": "false",
+        "{http://schemas.android.com/apk/res/android}name": "com.google.android.gms.ads.AdService"
+      },
+      "metadata": []
+    },
+    {
+      "kind": "activity",
+      "attributes": {
+        "{http://schemas.android.com/apk/res/android}configChanges": "0x00000fb0",
+        "{http://schemas.android.com/apk/res/android}exported": "false",
+        "{http://schemas.android.com/apk/res/android}name": "com.google.android.gms.ads.OutOfContextTestingActivity"
+      },
+      "metadata": []
+    },
+    {
+      "kind": "activity",
+      "attributes": {
+        "{http://schemas.android.com/apk/res/android}excludeFromRecents": "true",
+        "{http://schemas.android.com/apk/res/android}exported": "false",
+        "{http://schemas.android.com/apk/res/android}launchMode": "2",
+        "{http://schemas.android.com/apk/res/android}name": "com.google.android.gms.ads.NotificationHandlerActivity",
+        "{http://schemas.android.com/apk/res/android}taskAffinity": "",
+        "{http://schemas.android.com/apk/res/android}theme": "@android:style/Theme.Translucent.NoTitleBar"
+      },
+      "metadata": []
+    },
+    {
+      "kind": "meta-data",
+      "attributes": {
+        "{http://schemas.android.com/apk/res/android}name": "com.google.android.gms.ads.flag.OPTIMIZE_AD_LOADING",
+        "{http://schemas.android.com/apk/res/android}value": "true"
+      },
+      "metadata": []
+    },
+    {
+      "kind": "meta-data",
+      "attributes": {
+        "{http://schemas.android.com/apk/res/android}name": "com.google.android.gms.ads.flag.OPTIMIZE_INITIALIZATION",
+        "{http://schemas.android.com/apk/res/android}value": "true"
+      },
+      "metadata": []
+    },
+    {
+      "kind": "meta-data",
+      "attributes": {
+        "{http://schemas.android.com/apk/res/android}name": "com.google.android.play.billingclient.version",
+        "{http://schemas.android.com/apk/res/android}value": "8.0.0"
+      },
+      "metadata": []
+    },
+    {
+      "kind": "activity",
+      "attributes": {
+        "{http://schemas.android.com/apk/res/android}configChanges": "0x000005b0",
+        "{http://schemas.android.com/apk/res/android}exported": "false",
+        "{http://schemas.android.com/apk/res/android}name": "com.android.billingclient.api.ProxyBillingActivity",
+        "{http://schemas.android.com/apk/res/android}theme": "@android:style/Theme.Translucent.NoTitleBar"
+      },
+      "metadata": []
+    },
+    {
+      "kind": "activity",
+      "attributes": {
+        "{http://schemas.android.com/apk/res/android}configChanges": "0x000005b0",
+        "{http://schemas.android.com/apk/res/android}exported": "false",
+        "{http://schemas.android.com/apk/res/android}name": "com.android.billingclient.api.ProxyBillingActivityV2",
+        "{http://schemas.android.com/apk/res/android}theme": "@android:style/Theme.Translucent.NoTitleBar"
+      },
+      "metadata": []
+    },
+    {
+      "kind": "activity",
+      "attributes": {
+        "{http://schemas.android.com/apk/res/android}exported": "false",
+        "{http://schemas.android.com/apk/res/android}name": "com.google.android.gms.common.api.GoogleApiActivity",
+        "{http://schemas.android.com/apk/res/android}theme": "@android:style/Theme.Translucent.NoTitleBar"
+      },
+      "metadata": []
+    },
+    {
+      "kind": "activity",
+      "attributes": {
+        "{http://schemas.android.com/apk/res/android}configChanges": "0x000005a0",
+        "{http://schemas.android.com/apk/res/android}excludeFromRecents": "true",
+        "{http://schemas.android.com/apk/res/android}exported": "false",
+        "{http://schemas.android.com/apk/res/android}launchMode": "1",
+        "{http://schemas.android.com/apk/res/android}name": "com.google.android.play.core.hsdp.service.HsdpShimActivity",
+        "{http://schemas.android.com/apk/res/android}theme": "@style/Theme.HsdpServiceTransparent"
+      },
+      "metadata": []
+    },
+    {
+      "kind": "meta-data",
+      "attributes": {
+        "{http://schemas.android.com/apk/res/android}name": "com.google.android.gms.version",
+        "{http://schemas.android.com/apk/res/android}value": "@integer/google_play_services_version"
+      },
+      "metadata": []
+    },
+    {
+      "kind": "provider",
+      "attributes": {
+        "{http://schemas.android.com/apk/res/android}authorities": "dev.tideglass.game.androidx-startup",
+        "{http://schemas.android.com/apk/res/android}exported": "false",
+        "{http://schemas.android.com/apk/res/android}name": "androidx.startup.InitializationProvider"
+      },
+      "metadata": [
+        {
+          "{http://schemas.android.com/apk/res/android}name": "androidx.work.WorkManagerInitializer",
+          "{http://schemas.android.com/apk/res/android}value": "androidx.startup"
+        },
+        {
+          "{http://schemas.android.com/apk/res/android}name": "androidx.lifecycle.ProcessLifecycleInitializer",
+          "{http://schemas.android.com/apk/res/android}value": "androidx.startup"
+        },
+        {
+          "{http://schemas.android.com/apk/res/android}name": "androidx.profileinstaller.ProfileInstallerInitializer",
+          "{http://schemas.android.com/apk/res/android}value": "androidx.startup"
+        }
+      ]
+    },
+    {
+      "kind": "service",
+      "attributes": {
+        "{http://schemas.android.com/apk/res/android}directBootAware": "false",
+        "{http://schemas.android.com/apk/res/android}enabled": "@bool/enable_system_alarm_service_default",
+        "{http://schemas.android.com/apk/res/android}exported": "false",
+        "{http://schemas.android.com/apk/res/android}name": "androidx.work.impl.background.systemalarm.SystemAlarmService"
+      },
+      "metadata": []
+    },
+    {
+      "kind": "service",
+      "attributes": {
+        "{http://schemas.android.com/apk/res/android}directBootAware": "false",
+        "{http://schemas.android.com/apk/res/android}enabled": "@bool/enable_system_job_service_default",
+        "{http://schemas.android.com/apk/res/android}exported": "true",
+        "{http://schemas.android.com/apk/res/android}name": "androidx.work.impl.background.systemjob.SystemJobService",
+        "{http://schemas.android.com/apk/res/android}permission": "android.permission.BIND_JOB_SERVICE"
+      },
+      "metadata": []
+    },
+    {
+      "kind": "service",
+      "attributes": {
+        "{http://schemas.android.com/apk/res/android}directBootAware": "false",
+        "{http://schemas.android.com/apk/res/android}enabled": "@bool/enable_system_foreground_service_default",
+        "{http://schemas.android.com/apk/res/android}exported": "false",
+        "{http://schemas.android.com/apk/res/android}name": "androidx.work.impl.foreground.SystemForegroundService"
+      },
+      "metadata": []
+    },
+    {
+      "kind": "receiver",
+      "attributes": {
+        "{http://schemas.android.com/apk/res/android}directBootAware": "false",
+        "{http://schemas.android.com/apk/res/android}enabled": "true",
+        "{http://schemas.android.com/apk/res/android}exported": "false",
+        "{http://schemas.android.com/apk/res/android}name": "androidx.work.impl.utils.ForceStopRunnable$BroadcastReceiver"
+      },
+      "metadata": []
+    },
+    {
+      "kind": "receiver",
+      "attributes": {
+        "{http://schemas.android.com/apk/res/android}directBootAware": "false",
+        "{http://schemas.android.com/apk/res/android}enabled": "false",
+        "{http://schemas.android.com/apk/res/android}exported": "false",
+        "{http://schemas.android.com/apk/res/android}name": "androidx.work.impl.background.systemalarm.ConstraintProxy$BatteryChargingProxy"
+      },
+      "metadata": []
+    },
+    {
+      "kind": "receiver",
+      "attributes": {
+        "{http://schemas.android.com/apk/res/android}directBootAware": "false",
+        "{http://schemas.android.com/apk/res/android}enabled": "false",
+        "{http://schemas.android.com/apk/res/android}exported": "false",
+        "{http://schemas.android.com/apk/res/android}name": "androidx.work.impl.background.systemalarm.ConstraintProxy$BatteryNotLowProxy"
+      },
+      "metadata": []
+    },
+    {
+      "kind": "receiver",
+      "attributes": {
+        "{http://schemas.android.com/apk/res/android}directBootAware": "false",
+        "{http://schemas.android.com/apk/res/android}enabled": "false",
+        "{http://schemas.android.com/apk/res/android}exported": "false",
+        "{http://schemas.android.com/apk/res/android}name": "androidx.work.impl.background.systemalarm.ConstraintProxy$StorageNotLowProxy"
+      },
+      "metadata": []
+    },
+    {
+      "kind": "receiver",
+      "attributes": {
+        "{http://schemas.android.com/apk/res/android}directBootAware": "false",
+        "{http://schemas.android.com/apk/res/android}enabled": "false",
+        "{http://schemas.android.com/apk/res/android}exported": "false",
+        "{http://schemas.android.com/apk/res/android}name": "androidx.work.impl.background.systemalarm.ConstraintProxy$NetworkStateProxy"
+      },
+      "metadata": []
+    },
+    {
+      "kind": "receiver",
+      "attributes": {
+        "{http://schemas.android.com/apk/res/android}directBootAware": "false",
+        "{http://schemas.android.com/apk/res/android}enabled": "false",
+        "{http://schemas.android.com/apk/res/android}exported": "false",
+        "{http://schemas.android.com/apk/res/android}name": "androidx.work.impl.background.systemalarm.RescheduleReceiver"
+      },
+      "metadata": []
+    },
+    {
+      "kind": "receiver",
+      "attributes": {
+        "{http://schemas.android.com/apk/res/android}directBootAware": "false",
+        "{http://schemas.android.com/apk/res/android}enabled": "@bool/enable_system_alarm_service_default",
+        "{http://schemas.android.com/apk/res/android}exported": "false",
+        "{http://schemas.android.com/apk/res/android}name": "androidx.work.impl.background.systemalarm.ConstraintProxyUpdateReceiver"
+      },
+      "metadata": []
+    },
+    {
+      "kind": "receiver",
+      "attributes": {
+        "{http://schemas.android.com/apk/res/android}directBootAware": "false",
+        "{http://schemas.android.com/apk/res/android}enabled": "true",
+        "{http://schemas.android.com/apk/res/android}exported": "true",
+        "{http://schemas.android.com/apk/res/android}name": "androidx.work.impl.diagnostics.DiagnosticsReceiver",
+        "{http://schemas.android.com/apk/res/android}permission": "android.permission.DUMP"
+      },
+      "metadata": []
+    },
+    {
+      "kind": "receiver",
+      "attributes": {
+        "{http://schemas.android.com/apk/res/android}directBootAware": "false",
+        "{http://schemas.android.com/apk/res/android}enabled": "true",
+        "{http://schemas.android.com/apk/res/android}exported": "true",
+        "{http://schemas.android.com/apk/res/android}name": "androidx.profileinstaller.ProfileInstallReceiver",
+        "{http://schemas.android.com/apk/res/android}permission": "android.permission.DUMP"
+      },
+      "metadata": []
+    },
+    {
+      "kind": "service",
+      "attributes": {
+        "{http://schemas.android.com/apk/res/android}exported": "false",
+        "{http://schemas.android.com/apk/res/android}name": "com.google.android.datatransport.runtime.backends.TransportBackendDiscovery"
+      },
+      "metadata": [
+        {
+          "{http://schemas.android.com/apk/res/android}name": "backend:com.google.android.datatransport.cct.CctBackendFactory",
+          "{http://schemas.android.com/apk/res/android}value": "cct"
+        }
+      ]
+    },
+    {
+      "kind": "service",
+      "attributes": {
+        "{http://schemas.android.com/apk/res/android}exported": "false",
+        "{http://schemas.android.com/apk/res/android}name": "com.google.android.datatransport.runtime.scheduling.jobscheduling.JobInfoSchedulerService",
+        "{http://schemas.android.com/apk/res/android}permission": "android.permission.BIND_JOB_SERVICE"
+      },
+      "metadata": []
+    },
+    {
+      "kind": "receiver",
+      "attributes": {
+        "{http://schemas.android.com/apk/res/android}exported": "false",
+        "{http://schemas.android.com/apk/res/android}name": "com.google.android.datatransport.runtime.scheduling.jobscheduling.AlarmManagerSchedulerBroadcastReceiver"
+      },
+      "metadata": []
+    },
+    {
+      "kind": "service",
+      "attributes": {
+        "{http://schemas.android.com/apk/res/android}directBootAware": "true",
+        "{http://schemas.android.com/apk/res/android}exported": "false",
+        "{http://schemas.android.com/apk/res/android}name": "androidx.room.MultiInstanceInvalidationService"
+      },
+      "metadata": []
+    }
+  ]
+}

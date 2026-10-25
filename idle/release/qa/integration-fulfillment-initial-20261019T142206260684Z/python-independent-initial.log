@@ -1,0 +1,23 @@
+test_ack_refund_between_refresh_and_preflight_does_not_acknowledge (__main__.IndependentFulfillmentTests.test_ack_refund_between_refresh_and_preflight_does_not_acknowledge) ... ok
+test_callback_fresh_provider_foreign_binding_preserves_original_grant (__main__.IndependentFulfillmentTests.test_callback_fresh_provider_foreign_binding_preserves_original_grant) ... ok
+test_deleted_account_callback_never_reads_provider_or_recreates_state (__main__.IndependentFulfillmentTests.test_deleted_account_callback_never_reads_provider_or_recreates_state) ... ok
+test_foreign_account_aad_transplant_rejects_and_nonce_collision_preserves_first (__main__.IndependentFulfillmentTests.test_foreign_account_aad_transplant_rejects_and_nonce_collision_preserves_first) ... ok
+test_lease_commit_failure_leaves_revision_reusable_and_expiry_is_exclusive (__main__.IndependentFulfillmentTests.test_lease_commit_failure_leaves_revision_reusable_and_expiry_is_exclusive) ... ok
+test_rotation_after_commit_response_loss_recovers_and_old_writer_stops (__main__.IndependentFulfillmentTests.test_rotation_after_commit_response_loss_recovers_and_old_writer_stops) ... ok
+test_rotation_corrupt_later_row_rolls_back_entire_epoch (__main__.IndependentFulfillmentTests.test_rotation_corrupt_later_row_rolls_back_entire_epoch) ... ok
+test_same_key_id_wrong_material_cannot_create_split_vault (__main__.IndependentFulfillmentTests.test_same_key_id_wrong_material_cannot_create_split_vault) ... FAIL
+test_soundtrack_query_credentials_feature_disable_and_replaced_inode_reject (__main__.IndependentFulfillmentTests.test_soundtrack_query_credentials_feature_disable_and_replaced_inode_reject) ... ok
+
+======================================================================
+FAIL: test_same_key_id_wrong_material_cannot_create_split_vault (__main__.IndependentFulfillmentTests.test_same_key_id_wrong_material_cannot_create_split_vault)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-fulfillment-initial-20261019T142206260684Z/game/qa/integration_fulfillment_test.py", line 41, in test_same_key_id_wrong_material_cannot_create_split_vault
+    self.assertFalse(accepted, 'QA016: same key ID accepted different AES material and wrote an incompatible second row; neither keyring can read the whole vault')
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false : QA016: same key ID accepted different AES material and wrote an incompatible second row; neither keyring can read the whole vault
+
+----------------------------------------------------------------------
+Ran 9 tests in 1.709s
+
+FAILED (failures=1)

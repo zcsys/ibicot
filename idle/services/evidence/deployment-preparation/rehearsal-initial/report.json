@@ -1,0 +1,62 @@
+{
+  "elapsed_seconds": 6.517669207998551,
+  "failure": "{72622: 20560}",
+  "failure_type": "AssertionError",
+  "format": "tideglass-local-serving-rehearsal-v1",
+  "host": "darwin",
+  "logs": {
+    "loopback_http-server.log": "43e0ae6a4a57c48b3dabc99b7768ee9426c05b55053d59f02f327bccfa00db84"
+  },
+  "python": "3.13.0 (v3.13.0:60403a5409f, Oct  7 2024, 00:37:40) [Clang 15.0.0 (clang-1500.3.9.4)]",
+  "release_gate_verified": false,
+  "scenarios": [
+    {
+      "client_concurrency": 8,
+      "maximum_ms": 13.805415997921955,
+      "maximum_observed_worker_count": 2,
+      "maximum_sampled_workers_rss_kib": 34832,
+      "name": "loopback_http_concurrent_health",
+      "p50_ms": 8.577812001021812,
+      "p95_ms": 10.642166998877656,
+      "requests": 64,
+      "status": "passed",
+      "status_counts": {
+        "200": 64
+      }
+    },
+    {
+      "name": "loopback_http_request_bounds_and_redacted_logs",
+      "status": "passed"
+    },
+    {
+      "after_worker_pids": [
+        72562,
+        72567
+      ],
+      "before_worker_pids": [
+        72561,
+        72562
+      ],
+      "classification": "controlled_process_stop_not_crash_or_observed_session",
+      "name": "loopback_http_host_killed_worker_replacement",
+      "parent_pid": 72560,
+      "status": "passed"
+    },
+    {
+      "after_worker_pids": [
+        72606,
+        72609
+      ],
+      "before_worker_pids": [
+        72562,
+        72567
+      ],
+      "name": "incomplete_body_worker_timeout_and_recovery",
+      "request_outcome": "not_committed_fixture_invalid_body; general mutation response loss remains unknown",
+      "status": "passed"
+    }
+  ],
+  "status": "failed",
+  "synthetic_only": true,
+  "synthetic_tls_certificate_sha256": "7f79a5a387fbcd4106eba8aa6dd86190728e3d4f34ac2b5ee4793ef2f528f7b2"
+}

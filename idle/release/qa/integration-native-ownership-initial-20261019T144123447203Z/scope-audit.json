@@ -1,0 +1,400 @@
+{
+  "reviewer": "/root/qa_integration",
+  "source_fingerprint": "2e311200b7678dc22348a8705ffd2b22bfb817b747c833009e590174ba0bda67",
+  "context_validation": {
+    "requirements": 44,
+    "original_packages": 65,
+    "source_contract_changes": [],
+    "reciprocal_mapping_errors": [],
+    "source_fingerprints_match": {
+      "TIDEGLASS_DESIGN.md": true,
+      "V1_ROADMAP.md": true,
+      "v1_backlog.json": true,
+      "economy.json": true
+    },
+    "already_accepted_original_packages": 4,
+    "bootstrap_packages_separate": 3
+  },
+  "scope_to_implementation": [
+    {
+      "scope_id": "S02",
+      "requirement": "Guest offline core, optional cloud, English externalized text and pseudolocalization",
+      "work_items": [
+        "M1-05",
+        "M3-06",
+        "M5-02"
+      ],
+      "full_requirement_verified": false,
+      "component_evidence": "Initial root integration QA019 has four failing independent assertions; source contracts/mapping unchanged. No acceptance.",
+      "remaining": "All original external/real-population/native-qualified package gates remain required."
+    },
+    {
+      "scope_id": "S24",
+      "requirement": "Cosmetic previews, localized price, verified purchases, restore, pending/retry/refund/revocation handling",
+      "work_items": [
+        "M4-03",
+        "M4-04",
+        "M5-08"
+      ],
+      "full_requirement_verified": false,
+      "component_evidence": "Initial root integration QA019 has four failing independent assertions; source contracts/mapping unchanged. No acceptance.",
+      "remaining": "All original external/real-population/native-qualified package gates remain required."
+    },
+    {
+      "scope_id": "S25",
+      "requirement": "Equal ad/briefing six-token daily allowance; 300-second credits, speed/offline choice and additive buffs",
+      "work_items": [
+        "M3-07",
+        "M4-05",
+        "M4-08",
+        "M5-05"
+      ],
+      "full_requirement_verified": false,
+      "component_evidence": "Initial root integration QA019 has four failing independent assertions; source contracts/mapping unchanged. No acceptance.",
+      "remaining": "All original external/real-population/native-qualified package gates remain required."
+    },
+    {
+      "scope_id": "S27",
+      "requirement": "Help, recovery guide, release notes, credits, privacy/support URLs and runbooks",
+      "work_items": [
+        "M5-03",
+        "M5-04",
+        "M7-05",
+        "M7-07"
+      ],
+      "full_requirement_verified": false,
+      "component_evidence": "Initial root integration QA019 has four failing independent assertions; source contracts/mapping unchanged. No acceptance.",
+      "remaining": "All original external/real-population/native-qualified package gates remain required."
+    },
+    {
+      "scope_id": "S30",
+      "requirement": "99.5% crash-free sessions over 10,000 observed sessions, per platform/device and critical-flow review",
+      "work_items": [
+        "M5-04",
+        "M6-05",
+        "M6-07",
+        "M7-06"
+      ],
+      "full_requirement_verified": false,
+      "component_evidence": "Initial root integration QA019 has four failing independent assertions; source contracts/mapping unchanged. No acceptance.",
+      "remaining": "All original external/real-population/native-qualified package gates remain required."
+    },
+    {
+      "scope_id": "S37",
+      "requirement": "Monitoring, support diagnostics, backups, feature disables, rollout stops and compatible forward repair",
+      "work_items": [
+        "M5-04",
+        "M6-05",
+        "M6-08",
+        "M7-04",
+        "M7-08"
+      ],
+      "full_requirement_verified": false,
+      "component_evidence": "Initial root integration QA019 has four failing independent assertions; source contracts/mapping unchanged. No acceptance.",
+      "remaining": "All original external/real-population/native-qualified package gates remain required."
+    },
+    {
+      "scope_id": "S39",
+      "requirement": "Privacy, consent/refusal, account deletion/export and service outages reflect actual SDK behavior",
+      "work_items": [
+        "M3-06",
+        "M5-03"
+      ],
+      "full_requirement_verified": false,
+      "component_evidence": "Initial root integration QA019 has four failing independent assertions; source contracts/mapping unchanged. No acceptance.",
+      "remaining": "All original external/real-population/native-qualified package gates remain required."
+    }
+  ],
+  "implementation_to_scope": [
+    {
+      "implementation": "Initial native ownership, clock and soundtrack source",
+      "scope_ids": [
+        "S02",
+        "S24",
+        "S25",
+        "S27",
+        "S30",
+        "S37",
+        "S39"
+      ],
+      "evidence": "40 passing/4 failing unique cases and one actual archive scenario; QA019 requires repair. Repair evidence is a separate pin."
+    }
+  ],
+  "original_contracts": [
+    {
+      "id": "M1-05",
+      "status": "in_progress",
+      "source_acceptance": "Display wallet, output, producer purchases, milestones, resets and settings on small and large screens.",
+      "source_acceptance_dependencies": [
+        "M0-04",
+        "M1-02"
+      ],
+      "scope_ids": [
+        "S02",
+        "S04"
+      ]
+    },
+    {
+      "id": "M3-06",
+      "status": "in_progress",
+      "source_acceptance": "Guest linking, account recovery, export, deletion and divergent-save selection preserve recovery copies and purchased ownership.",
+      "source_acceptance_dependencies": [
+        "M2-04"
+      ],
+      "scope_ids": [
+        "S02",
+        "S13",
+        "S39"
+      ]
+    },
+    {
+      "id": "M3-07",
+      "status": "in_progress",
+      "source_acceptance": "Unique receipts and idempotent grants separate cosmetics, Support allowance, pass XP and gameplay saves; interrupted grants resume safely.",
+      "source_acceptance_dependencies": [
+        "M0-03",
+        "M1-04",
+        "M3-06"
+      ],
+      "scope_ids": [
+        "S25"
+      ]
+    },
+    {
+      "id": "M4-03",
+      "status": "in_progress",
+      "source_acceptance": "Preview, price, ownership, restoration, selected pass and archived completion are understandable; shared XP grants only once.",
+      "source_acceptance_dependencies": [
+        "M3-07",
+        "M4-02"
+      ],
+      "scope_ids": [
+        "S21",
+        "S24"
+      ]
+    },
+    {
+      "id": "M4-04",
+      "status": "in_progress",
+      "source_acceptance": "Validate, grant, acknowledge, restore and reconcile purchases; pending, duplicate, refunded and interrupted cases have explicit states.",
+      "source_acceptance_dependencies": [
+        "M3-07",
+        "M0-03"
+      ],
+      "scope_ids": [
+        "S24"
+      ]
+    },
+    {
+      "id": "M4-05",
+      "status": "in_progress",
+      "source_acceptance": "Ad and briefing routes consume the same allowance; no-fill, refusal and duplicate callbacks preserve access and cannot multiply rewards.",
+      "source_acceptance_dependencies": [
+        "M3-07",
+        "M3-01"
+      ],
+      "scope_ids": [
+        "S25"
+      ]
+    },
+    {
+      "id": "M4-08",
+      "status": "in_progress",
+      "source_acceptance": "Every content ID and reward is reachable; full pass is completable free of paid speed; no event or cosmetic increases core power.",
+      "source_acceptance_dependencies": [
+        "M4-03",
+        "M4-04",
+        "M4-05",
+        "M4-06",
+        "M4-07"
+      ],
+      "scope_ids": [
+        "S22",
+        "S25"
+      ]
+    },
+    {
+      "id": "M5-02",
+      "status": "in_progress",
+      "source_acceptance": "Critical flows work at large text, without color/audio/motion dependencies and via target inputs; pseudolocalization has no blocking overflow.",
+      "source_acceptance_dependencies": [
+        "M3-05",
+        "M4-03",
+        "M4-06"
+      ],
+      "scope_ids": [
+        "S02",
+        "S09",
+        "S17",
+        "S26"
+      ]
+    },
+    {
+      "id": "M5-03",
+      "status": "in_progress",
+      "source_acceptance": "Data inventory matches SDK behavior; consent refusal, export/deletion and service-outage recovery are verified on actual builds.",
+      "source_acceptance_dependencies": [
+        "M3-06",
+        "M4-04",
+        "M4-05"
+      ],
+      "scope_ids": [
+        "S27",
+        "S39"
+      ]
+    },
+    {
+      "id": "M5-04",
+      "status": "in_progress",
+      "source_acceptance": "Validate economy/session events, entitlement dashboards, alerts, backups, support receipts and feature disable switches in staging.",
+      "source_acceptance_dependencies": [
+        "M3-07",
+        "M4-04"
+      ],
+      "scope_ids": [
+        "S27",
+        "S30",
+        "S37"
+      ]
+    },
+    {
+      "id": "M5-05",
+      "status": "in_progress",
+      "source_acceptance": "Simulate 30/90 days across visit and bonus policies, audit Note sinks and content pacing, freeze beta config and metric definitions.",
+      "source_acceptance_dependencies": [
+        "M4-06",
+        "M5-04"
+      ],
+      "scope_ids": [
+        "S07",
+        "S18",
+        "S25",
+        "S29",
+        "S33",
+        "S44",
+        "S34"
+      ]
+    },
+    {
+      "id": "M5-08",
+      "status": "in_progress",
+      "source_acceptance": "Purchase/restore/refund/ad callbacks are tested under packet loss, retries, duplicate messages, crashes and backend outages.",
+      "source_acceptance_dependencies": [
+        "M4-04",
+        "M4-05",
+        "M5-04"
+      ],
+      "scope_ids": [
+        "S24",
+        "S28"
+      ]
+    },
+    {
+      "id": "M6-05",
+      "status": "not_started",
+      "source_acceptance": "Exercise service load, support recovery, purchase reconciliation and feature disable controls with real opt-in testers.",
+      "source_acceptance_dependencies": [
+        "M5-04",
+        "M6-01"
+      ],
+      "scope_ids": [
+        "S30",
+        "S37"
+      ]
+    },
+    {
+      "id": "M6-07",
+      "status": "not_started",
+      "source_acceptance": "A real 28-day pass and mature D30 cohort are observed; accelerated testing is documented separately.",
+      "source_acceptance_dependencies": [
+        "M6-01"
+      ],
+      "scope_ids": [
+        "S20",
+        "S30",
+        "S34"
+      ]
+    },
+    {
+      "id": "M6-08",
+      "status": "not_started",
+      "source_acceptance": "Exercise season archive, paid pass continuation, save migration, purchase replay and compatible rollback/forward repair.",
+      "source_acceptance_dependencies": [
+        "M4-08",
+        "M6-05"
+      ],
+      "scope_ids": [
+        "S21",
+        "S37"
+      ]
+    },
+    {
+      "id": "M7-04",
+      "status": "not_started",
+      "source_acceptance": "Version-compatible config rollback, feature disables, capacity, backups and entitlement replay are rehearsed and documented.",
+      "source_acceptance_dependencies": [
+        "M6-05",
+        "M7-01"
+      ],
+      "scope_ids": [
+        "S37"
+      ]
+    },
+    {
+      "id": "M7-05",
+      "status": "not_started",
+      "source_acceptance": "Screenshots, footage, credits, help visuals and release assets describe the actual shipped game and offers.",
+      "source_acceptance_dependencies": [
+        "M6-06",
+        "M7-01"
+      ],
+      "scope_ids": [
+        "S27",
+        "S43"
+      ]
+    },
+    {
+      "id": "M7-06",
+      "status": "not_started",
+      "source_acceptance": "All gate evidence is linked; no blocker, save-loss, duplication or unresolved purchase-delivery issue remains.",
+      "source_acceptance_dependencies": [
+        "M7-02",
+        "M7-03",
+        "M7-04"
+      ],
+      "scope_ids": [
+        "S28",
+        "S30",
+        "S42"
+      ]
+    },
+    {
+      "id": "M7-07",
+      "status": "not_started",
+      "source_acceptance": "Recheck current platform requirements, provide reviewer access and working products, and resolve review findings before launch.",
+      "source_acceptance_dependencies": [
+        "M7-05",
+        "M7-06"
+      ],
+      "scope_ids": [
+        "S27",
+        "S36"
+      ]
+    },
+    {
+      "id": "M7-08",
+      "status": "not_started",
+      "source_acceptance": "Document 14-day coverage, escalation, incident response and Season 2 preparation; launch authority and rollout stop conditions are explicit.",
+      "source_acceptance_dependencies": [
+        "M7-04",
+        "M7-06"
+      ],
+      "scope_ids": [
+        "S37",
+        "S38"
+      ]
+    }
+  ],
+  "new_packages_accepted": [],
+  "beta_or_release_accepted": false
+}

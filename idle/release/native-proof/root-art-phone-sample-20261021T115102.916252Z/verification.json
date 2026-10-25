@@ -1,0 +1,36 @@
+{
+  "scope": "Current-source host phone100normal art sample only; not152, native or human qualification",
+  "source_differences": [
+    "game/core/lib/src/daily_engine.dart",
+    "game/core/lib/src/engine.dart",
+    "game/core/lib/src/state.dart",
+    "game/core/lib/src/support_engine.dart"
+  ],
+  "results": [
+    {
+      "name": "analyzer",
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+        "analyze"
+      ],
+      "exit_code": 0,
+      "log_sha256": "5538ab824aaab5b0f8d31e2e47cd95f0569c4415521dc9a79fd54eabb2c1ecc5"
+    },
+    {
+      "name": "phone-normal",
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+        "test",
+        "test/art_catalogue_variants_test.dart",
+        "--plain-name",
+        "phone-100-normal",
+        "--reporter=expanded",
+        "--timeout=5m",
+        "--dart-define=TIDEGLASS_ART_REPORT_DIR=/Users/csys/Desktop/ibicot/idle/release/art/catalogue-variants/root-art-phone-sample-20261021T115102.916252Z"
+      ],
+      "exit_code": 1,
+      "log_sha256": "75c475c1afa1861e6ee12a07678771501b166fe2bd06992e63ecdc14e25f0f53"
+    }
+  ],
+  "art_report_directory": "/Users/csys/Desktop/ibicot/idle/release/art/catalogue-variants/root-art-phone-sample-20261021T115102.916252Z"
+}

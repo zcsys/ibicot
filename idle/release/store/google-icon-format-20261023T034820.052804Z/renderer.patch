@@ -1,0 +1,29 @@
+--- before
++++ after
+@@ -34,7 +34,9 @@
+ 
+ icon = Image.new('RGB', (2048, 2048))
+ geometry(ImageDraw.Draw(icon), 2)
+-icon.resize((512, 512), Image.Resampling.LANCZOS).save(OUT / 'google-icon-512.png')
++# Play's listing icon requires a 32-bit PNG. Preserve the original opaque RGB
++# pixels and add its alpha channel only after the geometry is downsampled.
++icon.resize((512, 512), Image.Resampling.LANCZOS).convert('RGBA').save(OUT / 'google-icon-512.png')
+ 
+ scale = 4
+ image = Image.new('RGB', (1024 * scale, 500 * scale), '#071923')
+@@ -77,12 +79,13 @@
+                              'width': rendered.width, 'height': rendered.height,
+                              'mode': rendered.mode, 'bytes': file.stat().st_size}
+ assert outputs['google-icon-512.png']['bytes'] < 1024 * 1024
+-assert all(item['mode'] == 'RGB' for item in outputs.values())
++assert outputs['google-icon-512.png']['mode'] == 'RGBA'
++assert outputs['google-feature-1024x500.png']['mode'] == 'RGB'
+ manifest = {'status': 'authored_pending_independent_visual_review',
+             'purpose': 'Local brand/store preparation; not a gameplay screenshot or published listing',
+             'geometry': 'Original Tideglass lighthouse, reused from native icon source; no third-party artwork',
+             'fonts': 'System Georgia Bold and Arial rendered into pixels; font files are not distributed',
+-            'renderer': 'Pillow, RGB, four-times oversampled feature graphic',
++            'renderer': 'Pillow; opaque RGBA32 icon; RGB24 four-times oversampled feature graphic',
+             'source_sha256': {str(p.relative_to(ROOT) if p.is_relative_to(ROOT) else p):
+                               hashlib.sha256(p.read_bytes()).hexdigest() for p in inputs},
+             'outputs': outputs}

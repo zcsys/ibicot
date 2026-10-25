@@ -1,0 +1,48 @@
+{
+  "reviewer": "/root/qa_integration",
+  "completed_utc": "2026-10-19T14:20:33.660900+00:00",
+  "source_fingerprint": "c3b89321d86675c235c50352b22741e1f73076eee58cf33360b44e96febfb979",
+  "parent_source_fingerprint": "6e54c44cdadad3b0057e45e8a68f37c0407d3d4253c9b7872ff3bc00ef47f3a2",
+  "frozen_inputs_verified": 281,
+  "production_changes_from_initial": [
+    "game/mobile/lib/native_services.dart"
+  ],
+  "tests": {
+    "independent-telemetry-probes": {
+      "passed": 8,
+      "failed": 0
+    },
+    "related-mobile-regression": {
+      "passed": 47,
+      "failed": 0
+    },
+    "platform-tests": {
+      "passed": 13,
+      "failed": 0
+    }
+  },
+  "dart_tests_passed_total": 68,
+  "http_consent_read_tests": {
+    "passed": 2,
+    "source": "release/qa/integration-telemetry-initial-20261019T141159734022Z/http-consent-tests.log",
+    "reused_evidence_on_identical_backend_and_test_inputs": true
+  },
+  "analysis": {
+    "mobile_files": 7,
+    "mobile": "clean",
+    "platform": "clean"
+  },
+  "new_unresolved_product_findings": [],
+  "verified_repairs": [
+    "QA015",
+    "QA014",
+    "SIM001"
+  ],
+  "full_current_head_qualified": false,
+  "physical_or_elapsed_observations": false,
+  "limits": [
+    "Repair-only source combination, not later signed/provider/localization/current94case qualification.",
+    "Injected telemetry service responses in Flutter tests; two consent GET tests use real HTTP/SQLite.",
+    "No real cohort, crash-free denominator, native network audit or physical measurement."
+  ]
+}

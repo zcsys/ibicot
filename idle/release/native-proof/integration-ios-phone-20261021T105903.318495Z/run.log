@@ -1,0 +1,65 @@
+Running Xcode build...                                          
+Xcode build done.                                           30.7s
+VMServiceFlutterDriver: Connecting to Flutter application at http://127.0.0.1:55183/7qbp3dDPcPQ=/
+VMServiceFlutterDriver: Isolate found with number: 8327886699311291
+VMServiceFlutterDriver: Isolate 8327886699311291 is runnable.
+VMServiceFlutterDriver: Isolate is paused at start.
+VMServiceFlutterDriver: Attempting to resume isolate
+flutter: 00:00 +0: seeded worker, cosmetics and native audio: session-start
+VMServiceFlutterDriver: Connected to Flutter application.
+flutter: ══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+flutter: The following TestFailure was thrown running a test:
+flutter: Expected: a value greater than <0>
+flutter:   Actual: <0>
+flutter:    Which: is not a value greater than <0>
+flutter:
+flutter: When the exception was thrown, this was the stack:
+flutter: #4      sessionScenario.<anonymous closure> (file:///Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261021T101953.650199Z-152805bf9e26/workspace/game/mobile/integration_test/evidence_587947638e64_test.dart:950:5)
+flutter: <asynchronous suspension>
+flutter: #5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+flutter: <asynchronous suspension>
+flutter: #6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+flutter: <asynchronous suspension>
+flutter: #7      TestWidgetsFlutterBinding._createTestCompletionHandler.<anonymous closure> (package:flutter_test/src/binding.dart:1707:12)
+flutter: <asynchronous suspension>
+flutter:
+flutter: This was caught by the test expectation on the following line:
+flutter:   file:///Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261021T101953.650199Z-152805bf9e26/workspace/game/mobile/integration_test/evidence_587947638e64_test.dart line 950
+flutter: The test description was:
+flutter:   seeded worker, cosmetics and native audio: session-start
+flutter: ════════════════════════════════════════════════════════════════════════════════════════════════════
+flutter: 00:11 +0: seeded worker, cosmetics and native audio: session-start [E]
+flutter:   Test failed. See exception logs above.
+  The test description was: seeded worker, cosmetics and native audio: session-start
+flutter:
+flutter: 00:11 +0 -1: (tearDownAll)
+flutter: 00:11 +1 -1: Some tests failed.
+Failure Details:
+Failure in method: seeded worker, cosmetics and native audio: session-start
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞═════════════════
+The following TestFailure was thrown running a test:
+Expected: a value greater than <0>
+  Actual: <0>
+   Which: is not a value greater than <0>
+
+When the exception was thrown, this was the stack:
+#4      sessionScenario.<anonymous closure> (file:///Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261021T101953.650199Z-152805bf9e26/workspace/game/mobile/integration_test/evidence_587947638e64_test.dart:950:5)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+#7      TestWidgetsFlutterBinding._createTestCompletionHandler.<anonymous closure> (package:flutter_test/src/binding.dart:1707:12)
+<asynchronous suspension>
+
+This was caught by the test expectation on the following line:
+  file:///Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261021T101953.650199Z-152805bf9e26/workspace/game/mobile/integration_test/evidence_587947638e64_test.dart line 950
+The test description was:
+  seeded worker, cosmetics and native audio: session-start
+═════════════════════════════════════════════════════════════════
+
+end of failure 1
+
+
+
+Leaving the application running.

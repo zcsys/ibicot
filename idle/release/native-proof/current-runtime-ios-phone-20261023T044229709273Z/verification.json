@@ -1,0 +1,236 @@
+{
+  "verification_id": "current-runtime-ios-phone-20261023T044229709273Z",
+  "candidate_fingerprint": "3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59",
+  "harness_sha256": "102be09eb8043ce9bb496156d9f37b1834c3084ddf58fef073e7c25cdc3c55d5",
+  "device": "F05BE4B0-52C1-4CA1-B721-BD64AE559E3F",
+  "label": "ios-phone",
+  "platform": "ios",
+  "scenario": "runtime-study-crash-hold",
+  "run_id": "v3b00-ios-phone-studycrash",
+  "privacy_observation_enabled": false,
+  "command": [
+    "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+    "drive",
+    "--driver=test_driver/current_evidence_911183b5d9ee.dart",
+    "--target=integration_test/current_evidence_102be09eb804_test.dart",
+    "-d",
+    "F05BE4B0-52C1-4CA1-B721-BD64AE559E3F",
+    "--dart-define=TIDEGLASS_DEVICE_LABEL=ios-phone",
+    "--dart-define=TIDEGLASS_SCENARIO=runtime-study-crash-hold",
+    "--dart-define=TIDEGLASS_RUN_ID=v3b00-ios-phone-studycrash",
+    "--dart-define=TIDEGLASS_VERIFICATION_ID=current-runtime-ios-phone-20261023T044229709273Z",
+    "--dart-define=TIDEGLASS_CANDIDATE_FINGERPRINT=3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59",
+    "--dart-define=TIDEGLASS_HARNESS_SHA256=102be09eb8043ce9bb496156d9f37b1834c3084ddf58fef073e7c25cdc3c55d5",
+    "--keep-app-running",
+    "--timeout=180",
+    "--no-pub"
+  ],
+  "candidate_path": "/Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261023T040445.261666Z-3b00cc8f7122",
+  "status": "expected-interrupted",
+  "passed": false,
+  "verification_errors": [],
+  "provenance": "INTERNAL SYNTHETIC QUALIFICATION ONLY; simulator native execution; no participant, crash-free metric, physical power-loss, store, or receiving-app claim",
+  "checkpoint_sha256": "fc1f26d9bcffd46a81e47e8355bc3b720150472f456aaea0b1f2d5860dee2b13",
+  "native_process_id": 76905,
+  "kill_marker": {
+    "verification_id": "current-runtime-ios-phone-20261023T044229709273Z",
+    "candidate_fingerprint": "3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59",
+    "harness_sha256": "102be09eb8043ce9bb496156d9f37b1834c3084ddf58fef073e7c25cdc3c55d5",
+    "scenario": "runtime-study-crash-hold",
+    "process_id": 76905,
+    "checkpoint": "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Data/Application/A19FF26B-27E3-4133-B3C1-50B532669BF3/Library/Application Support/native-current-verification/ios-phone-v3b00-ios-phone-studycrash/study/checkpoint.json",
+    "checkpoint_sha256": "fc1f26d9bcffd46a81e47e8355bc3b720150472f456aaea0b1f2d5860dee2b13"
+  },
+  "fixture_directory": "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Data/Application/A19FF26B-27E3-4133-B3C1-50B532669BF3/Library/Application Support/native-current-verification/ios-phone-v3b00-ios-phone-studycrash/study",
+  "native_kill": {
+    "device": "F05BE4B0-52C1-4CA1-B721-BD64AE559E3F",
+    "native_process_id": 76905,
+    "identity_validated": true,
+    "before_alive": true,
+    "action": "SIGKILL",
+    "signal_sent": true,
+    "pre_kill_log_bytes": 1317,
+    "pre_kill_log_sha256": "09382529a58c86210c5cee8ec635a26e08b3020d12d92e6b727f0a41faf7a2af",
+    "pre_kill_observed_monotonic_ns": 53697225462125,
+    "after_alive": false,
+    "termination_observed": true,
+    "observations": [
+      {
+        "command": [
+          "xcrun",
+          "simctl",
+          "get_app_container",
+          "F05BE4B0-52C1-4CA1-B721-BD64AE559E3F",
+          "dev.tideglass.game",
+          "data"
+        ],
+        "exit_code": 0,
+        "stdout": "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Data/Application/A19FF26B-27E3-4133-B3C1-50B532669BF3\n",
+        "stderr": "",
+        "observed_monotonic_ns": 53697083786333
+      },
+      {
+        "command": [
+          "xcrun",
+          "simctl",
+          "get_app_container",
+          "F05BE4B0-52C1-4CA1-B721-BD64AE559E3F",
+          "dev.tideglass.game",
+          "app"
+        ],
+        "exit_code": 0,
+        "stdout": "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/51C34CB6-E9D5-4692-B326-16E95FF5D696/Runner.app\n",
+        "stderr": "",
+        "observed_monotonic_ns": 53697217295833
+      },
+      {
+        "command": [
+          "ps",
+          "-p",
+          "76905",
+          "-o",
+          "comm="
+        ],
+        "exit_code": 0,
+        "stdout": "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/51C34CB6-E9D5-4692-B326-16E95FF5D696/Runner.app/Runner\n",
+        "stderr": "",
+        "observed_monotonic_ns": 53697225041041
+      },
+      {
+        "action": "os.kill",
+        "pid": 76905,
+        "signal": "SIGKILL",
+        "observed_monotonic_ns": 53697225480791
+      },
+      {
+        "command": [
+          "ps",
+          "-p",
+          "76905",
+          "-o",
+          "comm="
+        ],
+        "exit_code": 0,
+        "stdout": "(Runner)\n",
+        "stderr": "",
+        "observed_monotonic_ns": 53697232339416
+      }
+    ]
+  },
+  "generations": {},
+  "study_artifacts": {
+    "study-raw.json": {
+      "present": true,
+      "size": 2604,
+      "sha256": "25edbfc620d4167000eda15effd38185cc84a5498537bf074cc53539c4a828ae"
+    },
+    "study-eligibility.json": {
+      "present": true,
+      "size": 227,
+      "sha256": "b438367fda36ceed8455b4494b0d268ea1f8d7e348991440d596d118494cf007"
+    },
+    "study-withdrawn.marker": {
+      "present": false,
+      "size": 0,
+      "sha256": null
+    }
+  },
+  "study_structure": {
+    "records": 3,
+    "logical_processes": 1,
+    "decoded_sessions": 1,
+    "gaps": 0,
+    "scope": "Synthetic structural qualification only; no native crash adjudication or cohort acceptance"
+  },
+  "exit_code": 1,
+  "host_observations": [
+    {
+      "command": [
+        "xcrun",
+        "simctl",
+        "get_app_container",
+        "F05BE4B0-52C1-4CA1-B721-BD64AE559E3F",
+        "dev.tideglass.game",
+        "data"
+      ],
+      "exit_code": 0,
+      "stdout": "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Data/Application/A19FF26B-27E3-4133-B3C1-50B532669BF3\n",
+      "stderr": "",
+      "observed_monotonic_ns": 53697083786333
+    },
+    {
+      "command": [
+        "xcrun",
+        "simctl",
+        "get_app_container",
+        "F05BE4B0-52C1-4CA1-B721-BD64AE559E3F",
+        "dev.tideglass.game",
+        "app"
+      ],
+      "exit_code": 0,
+      "stdout": "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/51C34CB6-E9D5-4692-B326-16E95FF5D696/Runner.app\n",
+      "stderr": "",
+      "observed_monotonic_ns": 53697217295833
+    },
+    {
+      "command": [
+        "ps",
+        "-p",
+        "76905",
+        "-o",
+        "comm="
+      ],
+      "exit_code": 0,
+      "stdout": "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/51C34CB6-E9D5-4692-B326-16E95FF5D696/Runner.app/Runner\n",
+      "stderr": "",
+      "observed_monotonic_ns": 53697225041041
+    },
+    {
+      "action": "os.kill",
+      "pid": 76905,
+      "signal": "SIGKILL",
+      "observed_monotonic_ns": 53697225480791
+    },
+    {
+      "command": [
+        "ps",
+        "-p",
+        "76905",
+        "-o",
+        "comm="
+      ],
+      "exit_code": 0,
+      "stdout": "(Runner)\n",
+      "stderr": "",
+      "observed_monotonic_ns": 53697232339416
+    }
+  ],
+  "production_input_differences_after_run": [],
+  "source_snapshot_unchanged": true,
+  "source_pins": {
+    "runner.py": "d849ab8feb642eb1b988f9a6d82558491b7ebef4c63768fb4fa132f49edf3804",
+    "harness.dart": "102be09eb8043ce9bb496156d9f37b1834c3084ddf58fef073e7c25cdc3c55d5",
+    "driver.dart": "911183b5d9ee8ec80769836f477a293dadb66e20cc0c5d5e44314415889749a8",
+    "build_native.py": "59ee4e7b94a1445e2c8effadfe4c0510c9c189df0278c7ede6e87f1807bf38ee",
+    "verify_native.py": "68297f66fc4e32a173b17da2594872334d59ba2b88b7d5878b5ee8905f9b89e5",
+    "study_adjudicate.py": "ccf31107cced115bb7a417407a2b7cfa1498845ce10899b14a1f3ca533a406e6",
+    "study_report.py": "7109d2e53a8c07b8f00299b749a4c758530e51f38a2d444f4600ae6ef94e7462",
+    "study_native_diagnostics.py": "325afe73985b414a23ab3858ad4abc656351258bb3c19e49bd6c665761031430"
+  },
+  "source_changes_during_run": [],
+  "evidence_sha256": {
+    "runner.py": "d849ab8feb642eb1b988f9a6d82558491b7ebef4c63768fb4fa132f49edf3804",
+    "checkpoint.json": "fc1f26d9bcffd46a81e47e8355bc3b720150472f456aaea0b1f2d5860dee2b13",
+    "run.log": "74792d6840ef3616a704264f93c1b7452b932d6a91f54997ccd255ca7464a3fb",
+    "driver.dart": "911183b5d9ee8ec80769836f477a293dadb66e20cc0c5d5e44314415889749a8",
+    "study-eligibility.json": "b438367fda36ceed8455b4494b0d268ea1f8d7e348991440d596d118494cf007",
+    "verify_native.py": "68297f66fc4e32a173b17da2594872334d59ba2b88b7d5878b5ee8905f9b89e5",
+    "study_adjudicate.py": "ccf31107cced115bb7a417407a2b7cfa1498845ce10899b14a1f3ca533a406e6",
+    "pre-kill.log": "09382529a58c86210c5cee8ec635a26e08b3020d12d92e6b727f0a41faf7a2af",
+    "study_native_diagnostics.py": "325afe73985b414a23ab3858ad4abc656351258bb3c19e49bd6c665761031430",
+    "harness.dart": "102be09eb8043ce9bb496156d9f37b1834c3084ddf58fef073e7c25cdc3c55d5",
+    "study-raw.json": "25edbfc620d4167000eda15effd38185cc84a5498537bf074cc53539c4a828ae",
+    "study_report.py": "7109d2e53a8c07b8f00299b749a4c758530e51f38a2d444f4600ae6ef94e7462",
+    "build_native.py": "59ee4e7b94a1445e2c8effadfe4c0510c9c189df0278c7ede6e87f1807bf38ee"
+  }
+}

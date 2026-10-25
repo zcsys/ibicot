@@ -1,0 +1,50 @@
+[
+  {
+    "utc": "2026-10-25T16:24:08.576002+00:00",
+    "argv": [
+      "/Users/csys/Library/Android/sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "shell",
+      "-tt",
+      "uiautomator",
+      "dump",
+      "/dev/tty"
+    ],
+    "exit_code": 0,
+    "file": "disable-airplane-hierarchy.txt",
+    "sha256": "4451146a43bfad51fbc5dc67b8073daa335ce38a7a21d78d6b6c6e54e1ffa178",
+    "stderr": ""
+  },
+  {
+    "utc": "2026-10-25T16:24:11.493385+00:00",
+    "argv": [
+      "/Users/csys/Library/Android/sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "exec-out",
+      "screencap",
+      "-p"
+    ],
+    "exit_code": 0,
+    "file": "disable-airplane.png",
+    "sha256": "a753810c4c5497a61141f54774331f4c18c11f93cbe33c6a999c0fff2bf6bab6",
+    "stderr": ""
+  },
+  {
+    "utc": "2026-10-25T16:24:11.849135+00:00",
+    "argv": [
+      "/Users/csys/Library/Android/sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "shell",
+      "dumpsys",
+      "activity",
+      "activities"
+    ],
+    "exit_code": 0,
+    "file": "disable-airplane-activities.txt",
+    "sha256": "ef12190bc3386d002f0b87ec7ace59f8c220be7bd08acb85d5609c268cd1342c",
+    "stderr": ""
+  }
+]

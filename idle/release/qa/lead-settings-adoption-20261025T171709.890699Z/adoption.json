@@ -1,0 +1,46 @@
+{
+  "decision": "Accept M3-05; verify S26; evidence-only S02/S08 update with statuses retained",
+  "before": {
+    "program": "d259ba03e1e14727ed6dd557f6bb289b35b091e2ea1acf780c903f2346eef876",
+    "scope": "b215b2cb290721c92810f693142b363586a7266512000b5cbe20ddd7eafab598"
+  },
+  "after": {
+    "program": "46232c53bb334025be9163920b443d43a483821fc1222dcbadd5f9c115346f6d",
+    "scope": "9824c7d16f3134b90c23a37be484b048fe8f9b12512ffb3a64299476e2de7bdd"
+  },
+  "inputs": {
+    "release/qa/settings-notifications-final-20261025T171045.565766Z/READINESS_REVIEW.md": "56b0e95862d49b334200a24abd0dcbdeb895fe65fc84d85324d3928f585ff3c5",
+    "release/qa/settings-notifications-final-20261025T171045.565766Z/verification.json": "0c064be69e7500346d3175efe4161a886913753c71cb4f53fea69a69e83945cd",
+    "release/qa/settings-notifications-final-20261025T171045.565766Z/FORWARD_AUDIT_ADDENDUM.md": "d2eae4ccaf72ad4689f3826563f8d44b88bd19f61a74e815f404f84a57276cb0",
+    "release/qa/settings-notifications-final-20261025T171045.565766Z/seal.json": "cfc7791b6bf960ac64b5557915bd4068ae77d1e8f2a489b4b6b371b7ad9fde8b"
+  },
+  "reviewer_input_pins_rehashed": 77,
+  "checks": {
+    "structural": {
+      "argv": [
+        "python3",
+        "implementation/tools/validate_program.py"
+      ],
+      "exit_code": 0,
+      "log_sha256": "04e71b222c741fa28d3d9b433e26803182be81e9d656d9557cdec2a146263efc"
+    },
+    "release": {
+      "argv": [
+        "python3",
+        "implementation/tools/validate_program.py",
+        "--release"
+      ],
+      "exit_code": 1,
+      "log_sha256": "dfc84ee867929dba5786e931a1e73a69765bd07bfb2b5932480866b73a260efc"
+    }
+  },
+  "decisions_sha256": "f8265343ac405d4b52092acb604a55bdb011477ad4ab3dca51cb820da0946cfb",
+  "counts": {
+    "accepted_original": 24,
+    "accepted_bootstrap": 3,
+    "unaccepted_production_support": 42,
+    "verified_scope": 20,
+    "scope_total": 44
+  },
+  "release_ready": false
+}

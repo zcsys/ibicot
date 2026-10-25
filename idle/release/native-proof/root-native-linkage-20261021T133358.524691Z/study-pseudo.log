@@ -1,0 +1,75 @@
+00:00 +0: loading /Users/csys/Desktop/ibicot/idle/game/mobile/test/study_native_consent_test.dart
+00:00 +0: /Users/csys/Desktop/ibicot/idle/game/mobile/test/study_native_consent_test.dart: default empty provision performs no native or study I/O
+00:00 +1: /Users/csys/Desktop/ibicot/idle/game/mobile/test/study_gate_test.dart: default build never creates or reads study persistence
+00:00 +2: /Users/csys/Desktop/ibicot/idle/game/mobile/test/study_native_consent_test.dart: native disclosure is visible before consent and sampling waits for Agree
+00:01 +3: /Users/csys/Desktop/ibicot/idle/game/mobile/test/study_native_consent_test.dart: native disclosure is visible before consent and sampling waits for Agree
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: true
+  Actual: <false>
+
+When the exception was thrown, this was the stack:
+#4      main.until (file:///Users/csys/Desktop/ibicot/idle/game/mobile/test/study_native_consent_test.dart:50:5)
+<asynchronous suspension>
+#5      main.<anonymous closure> (file:///Users/csys/Desktop/ibicot/idle/game/mobile/test/study_native_consent_test.dart:121:7)
+<asynchronous suspension>
+#6      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#7      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/csys/Desktop/ibicot/idle/game/mobile/test/study_native_consent_test.dart line 50
+The test description was:
+  native disclosure is visible before consent and sampling waits for Agree
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:03 +3 -1: /Users/csys/Desktop/ibicot/idle/game/mobile/test/study_gate_test.dart: consent persists start before harbor; interaction and withdrawal persist
+00:03 +3 -1: /Users/csys/Desktop/ibicot/idle/game/mobile/test/study_native_consent_test.dart: native disclosure is visible before consent and sampling waits for Agree [E]
+  Test failed. See exception logs above.
+  The test description was: native disclosure is visible before consent and sampling waits for Agree
+  
+00:06 +3 -1: /Users/csys/Desktop/ibicot/idle/game/mobile/test/study_native_consent_test.dart: decline never samples the native context
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: true
+  Actual: <false>
+
+When the exception was thrown, this was the stack:
+#4      main.until (file:///Users/csys/Desktop/ibicot/idle/game/mobile/test/study_native_consent_test.dart:50:5)
+<asynchronous suspension>
+#5      main.<anonymous closure> (file:///Users/csys/Desktop/ibicot/idle/game/mobile/test/study_native_consent_test.dart:169:5)
+<asynchronous suspension>
+#6      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#7      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/csys/Desktop/ibicot/idle/game/mobile/test/study_native_consent_test.dart line 50
+The test description was:
+  decline never samples the native context
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:06 +3 -2: /Users/csys/Desktop/ibicot/idle/game/mobile/test/study_gate_test.dart: consent persists start before harbor; interaction and withdrawal persist
+00:06 +3 -2: /Users/csys/Desktop/ibicot/idle/game/mobile/test/study_native_consent_test.dart: decline never samples the native context [E]
+  Test failed. See exception logs above.
+  The test description was: decline never samples the native context
+  
+00:06 +4 -2: /Users/csys/Desktop/ibicot/idle/game/mobile/test/study_native_consent_test.dart: legacy consent preserves registry and old events without PID sampling
+00:06 +5 -2: /Users/csys/Desktop/ibicot/idle/game/mobile/test/study_gate_test.dart: existing harbor cannot become a retrospectively enrolled install
+00:08 +6 -2: /Users/csys/Desktop/ibicot/idle/game/mobile/test/study_gate_test.dart: corrupt registry stays intact and cannot silently reenroll
+00:08 +7 -2: /Users/csys/Desktop/ibicot/idle/game/mobile/test/study_gate_test.dart: declining during a pending registry read cannot enable recording later
+00:11 +8 -2: /Users/csys/Desktop/ibicot/idle/game/mobile/test/study_gate_test.dart: invalid provisioning cannot collect or block ordinary play
+00:11 +9 -2: /Users/csys/Desktop/ibicot/idle/game/mobile/test/study_gate_test.dart: pending withdrawal checks original study identity before controls
+00:12 +10 -2: /Users/csys/Desktop/ibicot/idle/game/mobile/test/study_gate_test.dart: pending withdrawal disables export across reopen and retries erasure
+00:13 +11 -2: /Users/csys/Desktop/ibicot/idle/game/mobile/test/study_gate_test.dart: eligibility cleanup failure remains retryable after tombstone and reopen
+00:17 +12 -2: /Users/csys/Desktop/ibicot/idle/game/mobile/test/study_gate_test.dart: stop marker without registry permits cleanup but never enrolls or exports
+00:18 +13 -2: /Users/csys/Desktop/ibicot/idle/game/mobile/test/study_gate_test.dart: narrow expanded enrollment and withdrawal use visible controls
+00:19 +14 -2: Some tests failed.
+
+Failing tests:
+  /Users/csys/Desktop/ibicot/idle/game/mobile/test/study_native_consent_test.dart: decline never samples the native context
+  /Users/csys/Desktop/ibicot/idle/game/mobile/test/study_native_consent_test.dart: native disclosure is visible before consent and sampling waits for Agree

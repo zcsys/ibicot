@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Delete a Tideglass account</title><link rel="stylesheet" href="/account/delete/delete.css"><script src="/account/delete/delete.js" defer></script></head>
+<body><a class="skip" href="#main">Skip to account deletion</a><main id="main">
+<p class="eyebrow">Tideglass · account controls</p><h1>Delete your account</h1>
+<p class="notice"><!-- deployment-notice --></p><p>Service address: <strong id="service-origin">this page’s origin</strong></p>
+<p>This permanently deletes the account’s active cloud saves, service purchase records, support claims, telemetry and sessions. It cannot be undone through this tool.</p>
+<ul><li>Your local guest harbor and personal exports remain on your devices or chosen destinations.</li><li>Apple and Google purchases are not cancelled. Request any store refund through the store.</li><li>Deletion from retained backups depends on the operator’s approved retention and recovery policy; this tool does not confirm backup erasure.</li></ul>
+<p>You need the account ID and recovery code saved when you enabled the optional account. If the recovery code is lost, this page cannot bypass authentication. You can continue playing as a local guest.</p>
+<noscript><p class="notice">JavaScript is required for this deletion flow. This page has not sent a deletion request.</p></noscript>
+<form id="credentials" method="post" action="/account/delete" autocomplete="off">
+<label for="account-id">Account ID</label><input id="account-id" name="account_id" type="text" minlength="36" maxlength="36" required autocomplete="off" autocapitalize="none" spellcheck="false" inputmode="text">
+<label for="recovery-code">Recovery code</label><input id="recovery-code" name="recovery_code" type="password" minlength="43" maxlength="43" required autocomplete="off" autocapitalize="none" spellcheck="false">
+<p class="detail">Credentials stay in memory only while this request is in progress. This tool uses no cookies, analytics or browser storage.</p>
+<button type="submit">Continue to confirmation</button></form>
+<section id="confirmation" hidden aria-labelledby="confirmation-title"><h2 id="confirmation-title" tabindex="-1">Confirm permanent deletion</h2>
+<p>No request has been sent yet. Deleting the account removes its active service records and signs out its sessions. This action cannot be undone.</p>
+<label class="check"><input id="understood" type="checkbox"> <span>I understand that this permanently deletes the account’s active service data and cannot be undone.</span></label>
+<div class="actions"><button id="delete-account" type="button" class="danger" disabled>Delete account permanently</button><button id="cancel" type="button" class="secondary">Cancel</button></div></section>
+<p id="status" role="status" aria-live="polite" tabindex="-1"></p>
+<p class="detail">Only a successful deletion response confirms deletion. A lost connection or failed response leaves the outcome unconfirmed. Reopening this page never deletes an account by itself.</p>
+</main></body></html>

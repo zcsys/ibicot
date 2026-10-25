@@ -1,0 +1,43 @@
+[
+  {
+    "case": "default",
+    "command": [
+      "test",
+      "test/bootstrap_service_configuration_test.dart"
+    ],
+    "exit_code": 0
+  },
+  {
+    "case": "valid-pins",
+    "command": [
+      "test",
+      "test/bootstrap_service_configuration_test.dart",
+      "--dart-define=TIDEGLASS_SERVICE_URL=https://example.invalid",
+      "--dart-define=TIDEGLASS_COMMERCE=true",
+      "--dart-define=TIDEGLASS_TEST_EXPECT_SIGNED_CACHE=true",
+      "--dart-define=TIDEGLASS_OWNERSHIP_PUBLIC_KEYS={\"test-public-only\":\"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=\"}"
+    ],
+    "exit_code": 0
+  },
+  {
+    "case": "missing-pins",
+    "command": [
+      "test",
+      "test/bootstrap_service_configuration_test.dart",
+      "--dart-define=TIDEGLASS_SERVICE_URL=https://example.invalid",
+      "--dart-define=TIDEGLASS_COMMERCE=true"
+    ],
+    "exit_code": 0
+  },
+  {
+    "case": "malformed-pins",
+    "command": [
+      "test",
+      "test/bootstrap_service_configuration_test.dart",
+      "--dart-define=TIDEGLASS_SERVICE_URL=https://example.invalid",
+      "--dart-define=TIDEGLASS_COMMERCE=true",
+      "--dart-define=TIDEGLASS_OWNERSHIP_PUBLIC_KEYS={\"bad\":\"not-a-key\"}"
+    ],
+    "exit_code": 0
+  }
+]

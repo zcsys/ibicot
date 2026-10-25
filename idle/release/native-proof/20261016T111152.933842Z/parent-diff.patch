@@ -1,0 +1,539 @@
+--- parent/game/core/test/persistence_integration_test.dart
++++ derived/game/core/test/persistence_integration_test.dart
+@@ -172,7 +172,12 @@
+         (selected.envelope['preserved_branches'] as List).single as Map;
+     expect(recovery['save_id'], displaced.saveId);
+     expect(
+-        await File(recovery['recovery_reference'] as String).exists(), isTrue);
++        await File('${repo.directory.path}/${recovery['recovery_reference']}')
++            .exists(),
++        isTrue);
++    expect(recovery['recovery_reference'], startsWith('recovery/'));
++    expect(
++        recovery['recovery_reference'], isNot(contains(repo.directory.path)));
+   });
+ 
+   test('wrong economic config cannot settle an existing core state', () async {
+--- parent/game/mobile/integration_test/platform_smoke_test.dart
++++ derived/game/mobile/integration_test/platform_smoke_test.dart
+@@ -1,6 +1,7 @@
+ import 'dart:convert';
+ import 'dart:io';
+ 
++import 'package:audioplayers/audioplayers.dart';
+ import 'package:flutter/material.dart';
+ import 'package:flutter_test/flutter_test.dart';
+ import 'package:integration_test/integration_test.dart';
+@@ -9,6 +10,10 @@
+ import 'package:tideglass/bootstrap.dart';
+ import 'package:tideglass/strings.dart';
+ import 'package:tideglass/game_controller.dart';
++import 'package:tideglass/audio_bus.dart';
++import 'package:tideglass/story_state.dart';
++import 'package:tideglass/producer_art.dart';
++import 'package:tideglass_progression/tideglass_progression.dart';
+ import 'package:tideglass_core/tideglass_core.dart';
+ import 'package:tideglass_persistence/tideglass_persistence.dart';
+ 
+@@ -26,6 +31,10 @@
+   );
+   if (scenario.startsWith('natural-')) {
+     naturalScenario(binding, label, scenario);
++    return;
++  }
++  if (scenario.startsWith('session-')) {
++    sessionScenario(binding, label, scenario);
+     return;
+   }
+   const engine = TideglassEngine();
+@@ -291,3 +300,288 @@
+     await tester.pumpWidget(const SizedBox.shrink());
+   });
+ }
++
++/// Deliberately seeded content/state: this proves native integration, not pace.
++void sessionScenario(
++  IntegrationTestWidgetsFlutterBinding binding,
++  String label,
++  String scenario,
++) {
++  const runId = String.fromEnvironment('TIDEGLASS_RUN_ID');
++  testWidgets('seeded worker, cosmetics and native audio: $scenario', (
++    tester,
++  ) async {
++    final directory = Directory(
++      '${(await getApplicationSupportDirectory()).path}/native-verification/session-$label-$runId',
++    );
++    final checkpoint = File('${directory.path}/session-checkpoint.json');
++    final catalogue = await StoryCatalogue.load();
++    DateTime? seededAt;
++    if (scenario == 'session-start') {
++      expect(await directory.exists(), isFalse);
++      seededAt = DateTime.now().toUtc().subtract(const Duration(hours: 24));
++      final seeded = GameController(
++        catalogue: catalogue,
++        initialState: GameState.initial().copyWith(
++          surveyNotes: BigInt.from(100),
++        ),
++        initialStory: StoryProgress(
++          campaign: CampaignProgress(completed: {'chapter.01'}),
++        ),
++        clock: () => seededAt!,
++        startTicker: false,
++      );
++      final repository = SaveRepository(
++        directory,
++        economicVersion: economyVersion,
++        economicDigest: bundledEconomyDigest,
++        validatePayload: (payload) =>
++            validateClientPayload(payload, catalogue: catalogue),
++      );
++      await repository.load();
++      await repository.save({
++        'client_schema_version': 2,
++        'core': seeded.state.toJson(),
++        'story': seeded.story.toJson(),
++        'client_preferences': const ClientPreferences(
++          reduceMotion: true,
++          onboardingDismissed: true,
++        ).toJson(),
++      }, settledThrough: seededAt);
++      seeded.dispose();
++    } else {
++      expect(await checkpoint.exists(), isTrue);
++    }
++    if (Platform.isAndroid) await binding.convertFlutterSurfaceToImage();
++    final launchWatch = Stopwatch()..start();
++    await tester.pumpWidget(
++      TideglassBootstrap(key: ValueKey(scenario), directory: directory),
++    );
++    for (
++      var i = 0;
++      i < 300 && find.byType(TideglassApp).evaluate().isEmpty;
++      i++
++    ) {
++      await Future<void>.delayed(const Duration(milliseconds: 100));
++      await tester.pump();
++    }
++    expect(find.byType(TideglassApp), findsOneWidget);
++    launchWatch.stop();
++    final game = tester
++        .widget<TideglassApp>(find.byType(TideglassApp))
++        .controller;
++    game.suspend();
++    final loadedCore = game.state.toJson();
++    final loadedCursor = game.settledThrough;
++    final checks = <String>[];
++    if (scenario == 'session-start') {
++      expect(
++        game.returnReport!.absence,
++        greaterThanOrEqualTo(const Duration(hours: 24)),
++      );
++      expect(
++        game.state.walletMicros,
++        greaterThanOrEqualTo(BigInt.from(86400000000)),
++      );
++      expect(game.state.walletMicros, lessThan(BigInt.from(86430000000)));
++      expect(game.state.support.activeSettlementId, isNull);
++      expect(game.state.support.caches, isNotEmpty);
++      checks.add(
++        'Native bootstrap completed seeded 24-hour worker replay and finalized salvage receipt',
++      );
++    } else {
++      final previous =
++          jsonDecode(await checkpoint.readAsString()) as Map<String, dynamic>;
++      expect(pid, isNot(previous['process_id']));
++      expect(game.visibleAppearance, 'cosmetic.core.chapter.01');
++      expect(game.story.equippedDecoration, 'cosmetic.core.decoration.01');
++      expect(game.state.surveyNotes, BigInt.from(50));
++      final saved = GameState.fromJson(
++        Map<String, dynamic>.from(previous['core'] as Map),
++      );
++      expect(game.state.walletMicros, greaterThanOrEqualTo(saved.walletMicros));
++      checks.add(
++        'Separate native process retained both cosmetic selections, 50 Notes and earned Radiance',
++      );
++    }
++    if (find.text(Copy.returnAcknowledge).evaluate().isNotEmpty) {
++      await tester.tap(find.text(Copy.returnAcknowledge));
++      await tester.pump(const Duration(milliseconds: 350));
++    }
++    await game.resumeWithProgress();
++    await tester.pump();
++    await tester.tap(find.text('Logbook'));
++    await tester.pump(const Duration(milliseconds: 350));
++    await tester.ensureVisible(find.byKey(const ValueKey('open-cosmetics')));
++    await tester.tap(find.byKey(const ValueKey('open-cosmetics')));
++    await tester.pumpAndSettle();
++    await tester.tap(find.byKey(const ValueKey('cosmetic-filter-2')));
++    await tester.pumpAndSettle();
++    if (scenario == 'session-start') {
++      await tester.ensureVisible(
++        find.byKey(const ValueKey('equip-cosmetic.core.chapter.01')),
++      );
++      await tester.tap(
++        find.byKey(const ValueKey('equip-cosmetic.core.chapter.01')),
++      );
++      await tester.pumpAndSettle();
++      await tester.ensureVisible(
++        find.byKey(const ValueKey('acquire-cosmetic.core.decoration.01')),
++      );
++      await tester.tap(
++        find.byKey(const ValueKey('acquire-cosmetic.core.decoration.01')),
++      );
++      await tester.pumpAndSettle();
++      expect(game.state.surveyNotes, BigInt.from(50));
++      expect(game.visibleAppearance, 'cosmetic.core.chapter.01');
++      expect(game.story.equippedDecoration, 'cosmetic.core.decoration.01');
++      checks.add(
++        'Collection route equipped earned chapter appearance and spent exactly 50 Notes on coexisting decoration',
++      );
++    }
++    await binding.takeScreenshot('$label-$scenario-collection');
++    await tester.pageBack();
++    await tester.pumpAndSettle();
++    await tester.tap(find.text('Harbor'));
++    await tester.pumpAndSettle();
++    await binding.takeScreenshot('$label-$scenario-harbor');
++    final audio = game.audio!;
++    await audio.initialize();
++    expect(audio.warning, isNull);
++    for (final track in TideMusic.values) {
++      await audio.startMusic(track);
++      expect(audio.warning, isNull);
++    }
++    expect(await audio.playCue(TideCue.purchase), isTrue);
++    await audio.setForeground(false);
++    expect(await audio.playCue(TideCue.claim), isFalse);
++    await audio.setForeground(true);
++    expect(audio.warning, isNull);
++    checks.add(
++      'Production native audio driver initialized, switched all three tracks and respected foreground cue gating',
++    );
++    await game.save();
++    expect(game.saveError, isNull);
++    await checkpoint.writeAsString(
++      jsonEncode({
++        'process_id': pid,
++        'core': game.state.toJson(),
++        'cursor': game.settledThrough.toIso8601String(),
++      }),
++      flush: true,
++    );
++    final finalCore = game.state.toJson();
++    await tester.pumpWidget(const SizedBox.shrink());
++    await audio.close();
++
++    // Decode every bundled AAC through the real OS plugin; keep this probe silent.
++    final decoded = <Map<String, Object>>[];
++    final probe = AudioPlayer(playerId: 'tideglass.native.codec.probe');
++    await probe.setVolume(0);
++    for (final name in [
++      ...TideMusic.values.map((v) => v.name),
++      ...TideCue.values.map((v) => v.name),
++    ]) {
++      await probe.setSource(AssetSource('audio/$name.m4a'));
++      final duration = await probe.getDuration();
++      expect(duration, isNotNull);
++      expect(duration!.inMilliseconds, greaterThan(0));
++      decoded.add({
++        'asset': '$name.m4a',
++        'duration_ms': duration.inMilliseconds,
++      });
++      await probe.stop();
++    }
++    await probe.setSource(AssetSource('audio/harbor.m4a'));
++    await probe.setReleaseMode(ReleaseMode.loop);
++    await probe.resume();
++    await Future<void>.delayed(const Duration(milliseconds: 400));
++    final position = await probe.getCurrentPosition();
++    expect(probe.state, PlayerState.playing);
++    expect(position!.inMilliseconds, greaterThan(0));
++    await probe.pause();
++    expect(probe.state, PlayerState.paused);
++    await probe.dispose();
++    checks.add(
++      'All eleven AAC assets decoded with positive duration; native music playback clock advanced and paused',
++    );
++
++    await tester.pumpWidget(
++      MaterialApp(
++        home: Scaffold(
++          backgroundColor: const Color(0xFF071E2A),
++          body: SafeArea(
++            child: Column(
++              children: [
++                const Text(
++                  'Native producer stages · seeded visual fixture',
++                  style: TextStyle(color: Colors.white),
++                ),
++                Expanded(
++                  child: GridView.count(
++                    crossAxisCount: 5,
++                    children: [
++                      for (var tier = 0; tier < 5; tier++)
++                        for (var stage = 0; stage < 5; stage++)
++                          Column(
++                            children: [
++                              Expanded(
++                                child: StagedProducerArt(
++                                  tier: tier,
++                                  count: stage * 25,
++                                  size: 60,
++                                ),
++                              ),
++                              Text(
++                                '${tier + 1} / ${stage * 25}',
++                                style: const TextStyle(
++                                  color: Colors.white,
++                                  fontSize: 10,
++                                ),
++                              ),
++                            ],
++                          ),
++                    ],
++                  ),
++                ),
++              ],
++            ),
++          ),
++        ),
++      ),
++    );
++    await tester.pumpAndSettle();
++    expect(find.byType(StagedProducerArt), findsNWidgets(25));
++    await binding.takeScreenshot('$label-$scenario-producer-stages');
++    expect(tester.takeException(), isNull);
++    binding.reportData = {
++      ...?binding.reportData,
++      'verification_id': const String.fromEnvironment(
++        'TIDEGLASS_VERIFICATION_ID',
++      ),
++      'candidate_fingerprint': const String.fromEnvironment(
++        'TIDEGLASS_CANDIDATE_FINGERPRINT',
++      ),
++      'harness_sha256': const String.fromEnvironment(
++        'TIDEGLASS_HARNESS_SHA256',
++      ),
++      'platform': Platform.operatingSystem,
++      'device_label': label,
++      'scenario': scenario,
++      'run_id': runId,
++      'process_id': pid,
++      'provenance':
++          'Seeded 24-hour absence, earned chapter and Notes. Native worker, UI, storage and audio SDK execute normally. No natural pacing, human audio appraisal or physical-device performance claim.',
++      'save_directory': directory.path,
++      'checks': checks,
++      'launch_single_sample_ms': launchWatch.elapsedMilliseconds,
++      'seeded_at': seededAt?.toIso8601String(),
++      'loaded_cursor': loadedCursor.toIso8601String(),
++      'loaded_core': loadedCore,
++      'final_core': finalCore,
++      'audio_decoded': decoded,
++      'audio_clock_position_ms': position.inMilliseconds,
++    };
++    await tester.pumpWidget(const SizedBox.shrink());
++  });
++}
+--- parent/tool/build_native.py
++++ derived/tool/build_native.py
+@@ -3,6 +3,7 @@
+ from __future__ import annotations
+ 
+ import argparse
++import fcntl
+ from datetime import datetime, timezone
+ import hashlib
+ import json
+@@ -85,6 +86,10 @@
+     parser = argparse.ArgumentParser(description=__doc__)
+     parser.add_argument('targets', nargs='*', choices=['ios', 'android', 'macos'])
+     parser.add_argument('--snapshot-only', action='store_true')
++    parser.add_argument('--candidate', type=Path,
++                        help='Reuse a verified frozen candidate instead of capturing the working tree')
++    parser.add_argument('--host-checks', action='store_true',
++                        help='Run source-specific package analysis and tests before native exports')
+     parser.add_argument('--mode', choices=['debug', 'release'], default='debug',
+                         help='debug: simulator/APK; release: unsigned iOS device bundle/Android AAB')
+     args = parser.parse_args()
+@@ -93,12 +98,32 @@
+     stamp = datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%S.%fZ')
+     evidence = ROOT / 'release/native-proof' / stamp
+     evidence.mkdir(parents=True)
+-    candidate, manifest = snapshot(stamp, evidence)
+-    app = candidate / 'workspace/game/mobile'
++    if args.candidate:
++        candidate = args.candidate.resolve()
++        manifest = json.loads((candidate / 'manifest.json').read_text())
++        actual = source_hashes(candidate / 'source')
++        if actual != manifest['source_sha256'] or fingerprint(actual) != manifest['source_fingerprint']:
++            raise RuntimeError('Frozen candidate no longer matches its manifest')
++        (evidence / 'candidate-manifest.json').write_text(json.dumps(manifest, indent=2) + '\n')
++        (evidence / 'artifacts').mkdir()
++    else:
++        candidate, manifest = snapshot(stamp, evidence)
++    candidate_lock = (candidate / '.native-verification.lock').open('w')
++    fcntl.flock(candidate_lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
++    workspace = candidate / ('workspace-release' if args.mode == 'release' else 'workspace')
++    if not workspace.exists():
++        shutil.copytree(candidate / 'source', workspace)
++        for file in workspace.rglob('*'):
++            if file.is_file():
++                file.chmod(file.stat().st_mode | 0o200)
++    app = workspace / 'game/mobile'
+     wrapper = str(ROOT / 'tool/flutter')
+     report = {'started_utc': stamp, 'purpose': 'local export only; no store, signing or runtime acceptance', 'mode': args.mode,
+               'candidate_fingerprint': manifest['source_fingerprint'], 'candidate_directory': str(candidate),
++              'workspace_directory': str(workspace),
++              'runner_sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+               'source_snapshot_unchanged': True, 'results': {}}
++    shutil.copy2(Path(__file__), evidence / 'build_native.py')
+     report_file = evidence / 'build-report.json'
+     report_file.write_text(json.dumps(report, indent=2) + '\n')
+     print(f'Frozen candidate: {candidate}\nEvidence: {evidence}', flush=True)
+@@ -118,6 +143,26 @@
+     if resolved.returncode:
+         report_file.write_text(json.dumps(report, indent=2) + '\n')
+         return resolved.returncode
++    if args.host_checks:
++        report['host_checks'] = {}
++        for package in ['core', 'persistence', 'progression', 'events', 'platform', 'mobile']:
++            directory = workspace / 'game' / package
++            if not (directory / 'pubspec.yaml').exists():
++                continue
++            runner = wrapper if package == 'mobile' else str(ROOT / 'tool/dart')
++            for action in ['pub-get', 'analyze', 'test']:
++                command = [runner, 'pub', 'get', '--enforce-lockfile'] if action == 'pub-get' else [runner, action]
++                key = package + '-' + action
++                with (evidence / (key + '.log')).open('w') as log:
++                    checked = subprocess.run(command, cwd=directory, stdout=log, stderr=subprocess.STDOUT)
++                report['host_checks'][key] = {'command': command, 'exit_code': checked.returncode}
++                report_file.write_text(json.dumps(report, indent=2) + '\n')
++                print(f'{key}: exit {checked.returncode}', flush=True)
++                if checked.returncode:
++                    report['host_test_gate'] = 'failed'
++                    report_file.write_text(json.dumps(report, indent=2) + '\n')
++                    return checked.returncode
++        report['host_test_gate'] = 'passed'
+     for target in args.targets:
+         command = [wrapper, *commands[target], '--no-pub']
+         print(f'Building {target}; log: {evidence / (target + ".log")}', flush=True)
+--- parent/tool/verify_native.py
++++ derived/tool/verify_native.py
+@@ -20,7 +20,7 @@
+     parser.add_argument('candidate', type=Path)
+     parser.add_argument('--device', required=True)
+     parser.add_argument('--label', required=True)
+-    parser.add_argument('--scenario', choices=['seeded', 'natural-start', 'natural-reload'], default='seeded')
++    parser.add_argument('--scenario', choices=['seeded', 'natural-start', 'natural-reload', 'session-start', 'session-reload'], default='seeded')
+     parser.add_argument('--run-id', default='')
+     args = parser.parse_args()
+     if not args.label.replace('-', '').replace('_', '').isalnum():
+@@ -40,8 +40,8 @@
+     stamp = datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%S.%fZ')
+     evidence = ROOT / 'release/native-proof' / ('integration-' + args.label + '-' + stamp)
+     evidence.mkdir()
+-    if args.scenario.startswith('natural-') and not args.run_id:
+-        parser.error('Natural start/reload require the same explicit --run-id')
++    if args.scenario != 'seeded' and not args.run_id:
++        parser.error('Start/reload scenarios require the same explicit --run-id')
+     if args.run_id and not args.run_id.replace('-', '').replace('_', '').isalnum():
+         parser.error('Run id may contain only letters, digits, underscores and hyphens')
+     # Test code can evolve independently while the production application input
+@@ -76,7 +76,7 @@
+               'label': args.label, 'started_utc': stamp, 'command': command,
+               'scenario': args.scenario, 'run_id': args.run_id, 'harness_sha256': harness_hashes,
+               'production_inputs_match_snapshot': not mismatches,
+-              'provenance': 'Seeded native boundary test' if args.scenario == 'seeded' else 'Real elapsed native bootstrap and separate-process reload; isolated test save directory'}
++              'provenance': 'Real elapsed native bootstrap and separate-process reload; isolated test save directory' if args.scenario.startswith('natural-') else 'Seeded native boundary/presentation test; no natural pacing or physical-device claim'}
+     print(f'Native checks for {args.label}; evidence: {evidence}', flush=True)
+     with (evidence / 'run.log').open('w') as log:
+         result = subprocess.run(command, cwd=app, env=env, stdout=log, stderr=subprocess.STDOUT)
+--- parent/tool/derive_native_candidate.py
++++ derived/tool/derive_native_candidate.py
+@@ -0,0 +1,85 @@
++#!/usr/bin/env python3
++"""Derive a new frozen candidate from a parent plus explicitly named source files."""
++from __future__ import annotations
++import argparse
++from datetime import datetime, timezone
++import difflib
++import hashlib
++import json
++from pathlib import Path
++import shutil
++import tarfile
++from build_native import ROOT, source_hashes, fingerprint
++
++
++def main():
++    parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument('parent', type=Path)
++    parser.add_argument('overlays', nargs='+', type=Path)
++    args = parser.parse_args()
++    parent = args.parent.resolve()
++    previous = json.loads((parent / 'manifest.json').read_text())
++    hashes = source_hashes(parent / 'source')
++    if hashes != previous['source_sha256'] or fingerprint(hashes) != previous['source_fingerprint']:
++        raise RuntimeError('Parent source no longer matches its frozen manifest')
++    replacements = {}
++    for relative in args.overlays:
++        if relative.is_absolute() or '..' in relative.parts or str(relative) not in source_hashes(ROOT):
++            parser.error(f'Overlay must identify an included working-tree file: {relative}')
++        replacements[str(relative)] = (ROOT / relative).read_bytes()
++    stamp = datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%S.%fZ')
++    staging = ROOT / '.tooling/build-candidates' / (stamp + '-deriving')
++    source = staging / 'source'
++    shutil.copytree(parent / 'source', source)
++    changes = {}
++    diff = []
++    for relative, data in replacements.items():
++        target = source / relative
++        before = target.read_bytes() if target.exists() else b''
++        if target.exists():
++            target.chmod(target.stat().st_mode | 0o200)
++        else:
++            target.parent.mkdir(parents=True, exist_ok=True)
++        target.write_bytes(data)
++        changes[relative] = {'parent_sha256': hashlib.sha256(before).hexdigest() if before else None,
++                            'derived_sha256': hashlib.sha256(data).hexdigest()}
++        try:
++            diff.extend(difflib.unified_diff(before.decode().splitlines(keepends=True), data.decode().splitlines(keepends=True), fromfile='parent/' + relative, tofile='derived/' + relative))
++        except UnicodeDecodeError:
++            diff.append(f'Binary overlay: {relative}\n')
++    expected = dict(hashes)
++    expected.update({p: hashlib.sha256(data).hexdigest() for p, data in replacements.items()})
++    actual = source_hashes(source)
++    if actual != expected:
++        raise RuntimeError('Derived source differs outside the declared overlays')
++    digest = fingerprint(actual)
++    candidate = staging.with_name(stamp + '-' + digest[:12])
++    staging.rename(candidate)
++    source = candidate / 'source'
++    workspace = candidate / 'workspace'
++    shutil.copytree(source, workspace)
++    for file in workspace.rglob('*'):
++        if file.is_file():
++            file.chmod(file.stat().st_mode | 0o200)
++    for file in source.rglob('*'):
++        if file.is_file():
++            file.chmod(file.stat().st_mode & ~0o222)
++    manifest = {'snapshot_utc': stamp, 'source_fingerprint': digest,
++                'candidate_directory': str(candidate), 'source_directory': str(source),
++                'workspace_directory': str(workspace), 'source_sha256': actual,
++                'sdk_wrapper': str(ROOT / 'tool/flutter'),
++                'parent_fingerprint': previous['source_fingerprint'],
++                'parent_candidate': str(parent), 'declared_overlays': changes,
++                'note': 'New immutable candidate derived from a frozen parent plus exactly the listed file bytes. Original candidate remains unchanged.'}
++    (candidate / 'manifest.json').write_text(json.dumps(manifest, indent=2) + '\n')
++    evidence = ROOT / 'release/native-proof' / stamp
++    (evidence / 'artifacts').mkdir(parents=True)
++    (evidence / 'candidate-manifest.json').write_text(json.dumps(manifest, indent=2) + '\n')
++    (evidence / 'parent-diff.patch').write_text(''.join(diff))
++    shutil.copy2(Path(__file__), evidence / 'derive_native_candidate.py')
++    with tarfile.open(evidence / 'artifacts/candidate-source.tar.gz', 'w:gz') as archive:
++        archive.add(source, arcname='source')
++    print(f'Derived candidate: {candidate}\nEvidence: {evidence}')
++
++if __name__ == '__main__':
++    main()

@@ -1,0 +1,82 @@
+[
+  {
+    "utc": "2026-10-25T15:56:21.158245+00:00",
+    "argv": [
+      "/Users/csys/Library/Android/sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "shell",
+      "dumpsys",
+      "notification",
+      "--noredact"
+    ],
+    "exit_code": 0,
+    "file": "notification.txt",
+    "sha256": "1237e1df706749db992c8e3e8b87220bf4e5fcbcc5ccc5d197dbc822724c4ad2",
+    "stderr": ""
+  },
+  {
+    "utc": "2026-10-25T15:56:21.202953+00:00",
+    "argv": [
+      "/Users/csys/Library/Android/sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "shell",
+      "dumpsys",
+      "alarm"
+    ],
+    "exit_code": 0,
+    "file": "alarm.txt",
+    "sha256": "36b10ba7b65c5fbe679edddae677291a89f5876daad383f74bd7a2c54a70032e",
+    "stderr": ""
+  },
+  {
+    "utc": "2026-10-25T15:56:21.238388+00:00",
+    "argv": [
+      "/Users/csys/Library/Android/sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "shell",
+      "dumpsys",
+      "deviceidle"
+    ],
+    "exit_code": 0,
+    "file": "deviceidle.txt",
+    "sha256": "94d197b311da06280576b241744abae658e6e08e375319492e88e06fa6b08a08",
+    "stderr": ""
+  },
+  {
+    "utc": "2026-10-25T15:56:21.398363+00:00",
+    "argv": [
+      "/Users/csys/Library/Android/sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "shell",
+      "dumpsys",
+      "package",
+      "dev.tideglass.game"
+    ],
+    "exit_code": 0,
+    "file": "package.txt",
+    "sha256": "f24903875b8a917b3fe82d09cfa06ec0f027258a54d994ea76c5ce0a8e08ac35",
+    "stderr": ""
+  },
+  {
+    "utc": "2026-10-25T15:56:21.458888+00:00",
+    "argv": [
+      "/Users/csys/Library/Android/sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "logcat",
+      "-d",
+      "-t",
+      "1500",
+      "-v",
+      "threadtime"
+    ],
+    "exit_code": 0,
+    "file": "logcat.txt",
+    "sha256": "810c5a91b9d686582494295d9077de61063b4edf09bc350543897c58caf84881",
+    "stderr": ""
+  }
+]

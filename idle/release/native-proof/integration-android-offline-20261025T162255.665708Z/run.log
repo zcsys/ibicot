@@ -1,0 +1,99 @@
+Running Gradle task 'assembleDebug'...                             19.8s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...        1,672ms
+I/Choreographer( 8203): Skipped 44 frames!  The application may be doing too much work on its main thread.
+D/FlutterJNI( 8203): Sending viewport metrics to the engine.
+VMServiceFlutterDriver: Connecting to Flutter application at http://127.0.0.1:64977/gRCp4vobj1k=/
+VMServiceFlutterDriver: Isolate found with number: 8267367125805827
+VMServiceFlutterDriver: Isolate 8267367125805827 is runnable.
+VMServiceFlutterDriver: Isolate is paused at start.
+VMServiceFlutterDriver: Attempting to resume isolate
+I/flutter ( 8203): 00:00 +0: real elapsed first purchase and native process reload: natural-start
+VMServiceFlutterDriver: Connected to Flutter application.
+D/FlutterJNI( 8203): Sending viewport metrics to the engine.
+D/ProfileInstaller( 8203): Installing profile for dev.tideglass.game
+D/EGL_emulation( 8203): app_time_stats: avg=555.92ms min=26.54ms max=1071.71ms count=3
+D/EGL_emulation( 8203): app_time_stats: avg=1043.41ms min=1043.41ms max=1043.41ms count=1
+I/flutter ( 8203): TIDEGLASS_OFFLINE {"verification_id":"integration-android-offline-20261025T162255.665708Z","candidate_fingerprint":"3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59","harness_sha256":"90dbf5a3c50498c61700a4a066a002dc760e38ed3f75a65f8f49d16af61ddac4","run_id":"v3b00-offline-20261025t162245861757z","device_label":"android-offline","scenario":"natural-start","platform":"android","process_id":8203,"server_id":"e010a14fde736661bb6cdf62e2671824","nonce":"273800a9d59c5527a2e64ba9018a38619d2521427af640888b62e5c09d687974","phase":"before-online","at":"2026-10-25T16:23:31.210663Z"}
+I/flutter ( 8203): TIDEGLASS_OFFLINE {"verification_id":"integration-android-offline-20261025T162255.665708Z","candidate_fingerprint":"3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59","harness_sha256":"90dbf5a3c50498c61700a4a066a002dc760e38ed3f75a65f8f49d16af61ddac4","run_id":"v3b00-offline-20261025t162245861757z","device_label":"android-offline","scenario":"natural-start","platform":"android","process_id":8203,"server_id":"e010a14fde736661bb6cdf62e2671824","nonce":"273800a9d59c5527a2e64ba9018a38619d2521427af640888b62e5c09d687974","phase":"request-disable","at":"2026-10-25T16:23:31.213318Z"}
+D/EGL_emulation( 8203): app_time_stats: avg=1050.28ms min=1050.28ms max=1050.28ms count=1
+D/EGL_emulation( 8203): app_time_stats: avg=1033.20ms min=1033.20ms max=1033.20ms count=1
+D/EGL_emulation( 8203): app_time_stats: avg=1032.38ms min=1032.38ms max=1032.38ms count=1
+D/EGL_emulation( 8203): app_time_stats: avg=1033.83ms min=1033.83ms max=1033.83ms count=1
+D/EGL_emulation( 8203): app_time_stats: avg=1015.53ms min=1015.53ms max=1015.53ms count=1
+D/EGL_emulation( 8203): app_time_stats: avg=4363.58ms min=1025.85ms max=7701.31ms count=2
+D/EGL_emulation( 8203): app_time_stats: avg=1015.83ms min=1015.83ms max=1015.83ms count=1
+D/EGL_emulation( 8203): app_time_stats: avg=1016.48ms min=1016.48ms max=1016.48ms count=1
+D/EGL_emulation( 8203): app_time_stats: avg=1035.34ms min=1035.34ms max=1035.34ms count=1
+D/EGL_emulation( 8203): app_time_stats: avg=1034.81ms min=1034.81ms max=1034.81ms count=1
+D/EGL_emulation( 8203): app_time_stats: avg=1030.63ms min=1030.63ms max=1030.63ms count=1
+D/EGL_emulation( 8203): app_time_stats: avg=1016.26ms min=1016.26ms max=1016.26ms count=1
+D/EGL_emulation( 8203): app_time_stats: avg=1035.18ms min=1035.18ms max=1035.18ms count=1
+D/EGL_emulation( 8203): app_time_stats: avg=1030.17ms min=1030.17ms max=1030.17ms count=1
+D/EGL_emulation( 8203): app_time_stats: avg=1062.59ms min=1062.59ms max=1062.59ms count=1
+D/EGL_emulation( 8203): app_time_stats: avg=9392.48ms min=9392.48ms max=9392.48ms count=1
+D/EGL_emulation( 8203): app_time_stats: avg=1451.68ms min=1451.68ms max=1451.68ms count=1
+D/EGL_emulation( 8203): app_time_stats: avg=9198.25ms min=9198.25ms max=9198.25ms count=1
+D/EGL_emulation( 8203): app_time_stats: avg=1488.28ms min=1488.28ms max=1488.28ms count=1
+D/EGL_emulation( 8203): app_time_stats: avg=9874.44ms min=9874.44ms max=9874.44ms count=1
+D/EGL_emulation( 8203): app_time_stats: avg=1557.36ms min=1557.36ms max=1557.36ms count=1
+I/flutter ( 8203): ══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+I/flutter ( 8203): The following TestFailure was thrown running a test:
+I/flutter ( 8203): Actual app endpoint did not become false while resumed: await-disabled
+I/flutter ( 8203): 
+I/flutter ( 8203): When the exception was thrown, this was the stack:
+I/flutter ( 8203): #0      fail (package:matcher/src/expect/expect.dart:187:31)
+I/flutter ( 8203): #1      OfflineNetworkProbe.waitFor (file:///Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261023T040445.261666Z-3b00cc8f7122/workspace/game/mobile/integration_test/evidence_90dbf5a3c504_test.dart:1347:5)
+I/flutter ( 8203): <asynchronous suspension>
+I/flutter ( 8203): #2      OfflineNetworkProbe.begin (file:///Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261023T040445.261666Z-3b00cc8f7122/workspace/game/mobile/integration_test/evidence_90dbf5a3c504_test.dart:1363:7)
+I/flutter ( 8203): <asynchronous suspension>
+I/flutter ( 8203): #3      naturalScenario.<anonymous closure> (file:///Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261023T040445.261666Z-3b00cc8f7122/workspace/game/mobile/integration_test/evidence_90dbf5a3c504_test.dart:797:5)
+I/flutter ( 8203): <asynchronous suspension>
+I/flutter ( 8203): #4      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+I/flutter ( 8203): <asynchronous suspension>
+I/flutter ( 8203): #5      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+I/flutter ( 8203): <asynchronous suspension>
+I/flutter ( 8203): #6      TestWidgetsFlutterBinding._createTestCompletionHandler.<anonymous closure> (package:flutter_test/src/binding.dart:1707:12)
+I/flutter ( 8203): <asynchronous suspension>
+I/flutter ( 8203): 
+I/flutter ( 8203): The test description was:
+I/flutter ( 8203):   real elapsed first purchase and native process reload: natural-start
+I/flutter ( 8203): ════════════════════════════════════════════════════════════════════════════════════════════════════
+I/flutter ( 8203): 02:03 +0: real elapsed first purchase and native process reload: natural-start [E]
+I/flutter ( 8203):   Test failed. See exception logs above.
+I/flutter ( 8203):   The test description was: real elapsed first purchase and native process reload: natural-start
+I/flutter ( 8203):   
+I/flutter ( 8203): 02:03 +0 -1: (tearDownAll)
+I/flutter ( 8203): 02:03 +1 -1: Some tests failed.
+Failure Details:
+Failure in method: real elapsed first purchase and native process reload: natural-start
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞═════════════════
+The following TestFailure was thrown running a test:
+Actual app endpoint did not become false while resumed:
+await-disabled
+
+When the exception was thrown, this was the stack:
+#0      fail (package:matcher/src/expect/expect.dart:187:31)
+#1      OfflineNetworkProbe.waitFor (file:///Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261023T040445.261666Z-3b00cc8f7122/workspace/game/mobile/integration_test/evidence_90dbf5a3c504_test.dart:1347:5)
+<asynchronous suspension>
+#2      OfflineNetworkProbe.begin (file:///Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261023T040445.261666Z-3b00cc8f7122/workspace/game/mobile/integration_test/evidence_90dbf5a3c504_test.dart:1363:7)
+<asynchronous suspension>
+#3      naturalScenario.<anonymous closure> (file:///Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261023T040445.261666Z-3b00cc8f7122/workspace/game/mobile/integration_test/evidence_90dbf5a3c504_test.dart:797:5)
+<asynchronous suspension>
+#4      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#5      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._createTestCompletionHandler.<anonymous closure> (package:flutter_test/src/binding.dart:1707:12)
+<asynchronous suspension>
+
+The test description was:
+  real elapsed first purchase and native process reload:
+  natural-start
+═════════════════════════════════════════════════════════════════
+
+end of failure 1
+
+
+
+Leaving the application running.

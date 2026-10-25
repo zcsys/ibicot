@@ -1,0 +1,933 @@
+{
+  "reviewer": "/root/qa_release_native",
+  "observed_utc": "2026-10-16T10:15:41.633715+00:00",
+  "candidate_fingerprint": "ce46598c4b513477c643f0dff4f5160400ac800b4ee76579c48ca2a5e08e1ffd",
+  "status": "partial_implementation_review_not_release_acceptance",
+  "scope_requirement_count": 44,
+  "original_production_package_count": 65,
+  "full_scope_groups_verified": 0,
+  "scope_to_implementation": [
+    {
+      "scope_id": "S01",
+      "requirement": "iOS and Android public launch; phone and usable tablet; internal desktop only",
+      "work_items": [
+        "M0-01",
+        "M0-02",
+        "M7-03"
+      ],
+      "full_requirement_verified": false,
+      "component_evidence": "Native debug builds; seeded phone flows and iOS natural restart are evidenced.",
+      "paths": [
+        "game/mobile/ios",
+        "game/mobile/android",
+        "release/native-proof/20261016T095427.771900Z/build-report.json"
+      ],
+      "remaining_gate": "Public signed distribution, both stores, physical target compatibility and final tablet validation remain open."
+    },
+    {
+      "scope_id": "S02",
+      "requirement": "Guest offline core, optional cloud, English externalized text and pseudolocalization",
+      "work_items": [
+        "M1-05",
+        "M3-06",
+        "M5-02"
+      ],
+      "full_requirement_verified": false,
+      "component_evidence": "Guest local persistence and English core interface exist.",
+      "paths": [
+        "game/mobile/lib/bootstrap.dart",
+        "game/mobile/lib/strings.dart",
+        "game/mobile/test/bootstrap_test.dart"
+      ],
+      "remaining_gate": "Cloud identity/recovery, full text externalization and pseudolocalization/airplane-mode target certification incomplete."
+    },
+    {
+      "scope_id": "S03",
+      "requirement": "Five producer prices/outputs, tier ratio 20, growth 1.12, previous-tier unlock at 10",
+      "work_items": [
+        "M1-01",
+        "M1-02",
+        "M2-01",
+        "BOOT-CORE"
+      ],
+      "full_requirement_verified": false,
+      "component_evidence": "Five exact price/output tiers, 20x step, 1.12 scale and unlocks independently checked.",
+      "paths": [
+        "game/core/lib/src/engine.dart",
+        "release/qa/frozen-numeric-probe.json"
+      ],
+      "remaining_gate": "Final pinned native candidate and prerequisite package acceptance; no claim that current evolving source inherits frozen tests."
+    },
+    {
+      "scope_id": "S04",
+      "requirement": "Single, milestone and maximum purchase controls and whole-tier 2x milestones at 25/50/75/100",
+      "work_items": [
+        "M1-02",
+        "M1-05",
+        "M3-09"
+      ],
+      "full_requirement_verified": false,
+      "component_evidence": "Single/milestone/max commands and whole-tier milestones implemented; exact batch boundaries checked.",
+      "paths": [
+        "game/mobile/lib/app.dart",
+        "game/core/lib/src/engine.dart",
+        "release/qa/frozen-numeric-probe.json"
+      ],
+      "remaining_gate": "All 25 milestone presentations and final UI/runtime coverage remain open."
+    },
+    {
+      "scope_id": "S05",
+      "requirement": "Lifetime-based 0.65-exponent Rechart, entitlement subtraction, retained-state preview and permanent power",
+      "work_items": [
+        "M1-01",
+        "M1-02",
+        "M2-02",
+        "BOOT-CORE"
+      ],
+      "full_requirement_verified": false,
+      "component_evidence": "Exact 0.65 entitlement, differential awards, reset retention and preview implemented; seeded native reset checked.",
+      "paths": [
+        "game/core/lib/src/engine.dart",
+        "game/mobile/lib/strings.dart",
+        "release/qa/frozen-reference-supplement.json"
+      ],
+      "remaining_gate": "Final candidate, current extended-state retention review and natural human comprehension/pacing still required."
+    },
+    {
+      "scope_id": "S06",
+      "requirement": "Autobuy at 10 Charts, synergies at 25, conditional resets at 100; free plan and five optional 50-Note slots",
+      "work_items": [
+        "M2-01",
+        "M3-03"
+      ],
+      "full_requirement_verified": false,
+      "component_evidence": "Frozen core contains 10/25/100 unlocks and plans; current client daily/automation wiring is additional work.",
+      "paths": [
+        "game/core/lib/src/daily_engine.dart",
+        "game/mobile/lib/daily_panel.dart"
+      ],
+      "remaining_gate": "New UI independent/native verification, saved conditional-plan UX and five extra Note slots through complete progression."
+    },
+    {
+      "scope_id": "S07",
+      "requirement": "Cross-tier synergy matrix and honest marginal-output/purchase/reset forecasts",
+      "work_items": [
+        "M2-01",
+        "M2-03",
+        "M5-05"
+      ],
+      "full_requirement_verified": false,
+      "component_evidence": "Synergy and marginal output match independent arithmetic; forecast assumptions are displayed.",
+      "paths": [
+        "game/core/lib/src/engine.dart",
+        "game/mobile/lib/app.dart",
+        "release/qa/frozen-numeric-probe.json"
+      ],
+      "remaining_gate": "Full conditional reset estimate UI and late-game strategy/trajectory evidence still open."
+    },
+    {
+      "scope_id": "S08",
+      "requirement": "24 hours full production plus 48 hours at quarter rate; event-driven saved-policy replay",
+      "work_items": [
+        "M3-01",
+        "M3-10",
+        "M5-01"
+      ],
+      "full_requirement_verified": false,
+      "component_evidence": "Core 24h/full+48h/quarter cap and event replay have exact tests.",
+      "paths": [
+        "game/core/lib/src/engine.dart",
+        "release/qa/frozen-reference-supplement.json"
+      ],
+      "remaining_gate": "Current client chunked stress replay, target throughput and complete saved-policy lifecycle coverage."
+    },
+    {
+      "scope_id": "S09",
+      "requirement": "Focus every 2 hours, capacity 12, queued +20% ten-minute charges and equal accessible calibration",
+      "work_items": [
+        "M3-01",
+        "M3-04",
+        "M5-02"
+      ],
+      "full_requirement_verified": false,
+      "component_evidence": "Focus real-time cap/queue and accessible calibration implementation tested on host.",
+      "paths": [
+        "game/core/lib/src/engine.dart",
+        "game/mobile/lib/calibration_screen.dart",
+        "game/mobile/test/calibration_test.dart"
+      ],
+      "remaining_gate": "Current daily wiring/native discovery and all target accessibility checks; observed equal-route usability."
+    },
+    {
+      "scope_id": "S10",
+      "requirement": "Automatic 8-hour Surveys, queue capacity 3, 10 Notes per completion",
+      "work_items": [
+        "M3-01",
+        "M3-10"
+      ],
+      "full_requirement_verified": false,
+      "component_evidence": "Surveys repeat/cap/collect and fractional state persist in core.",
+      "paths": [
+        "game/core/lib/src/engine.dart",
+        "game/core/test/daily_test.dart"
+      ],
+      "remaining_gate": "Current client claim/reload review and native daily cadence coverage."
+    },
+    {
+      "scope_id": "S11",
+      "requirement": "Three daily contracts, 10 Notes and 250 XP each, frozen goals, rerolls and seven-day/21-slot backlog",
+      "work_items": [
+        "M3-02",
+        "M3-10"
+      ],
+      "full_requirement_verified": false,
+      "component_evidence": "Seeded frozen targets, rerolls, backlog and local claim/XP ledger implemented.",
+      "paths": [
+        "game/core/lib/src/daily_engine.dart",
+        "game/core/lib/src/daily.dart",
+        "game/core/test/daily_test.dart"
+      ],
+      "remaining_gate": "Current UI/native rollover, service authority and full selected-pass integration."
+    },
+    {
+      "scope_id": "S12",
+      "requirement": "Atomic saves, rolling backups, export/import, migrations and interruption recovery",
+      "work_items": [
+        "M1-03",
+        "M1-08",
+        "M5-07",
+        "BOOT-SAVE"
+      ],
+      "full_requirement_verified": false,
+      "component_evidence": "18 repository tests pass; independent real-core integration and native persisted reload evidence exist.",
+      "paths": [
+        "game/persistence/lib/tideglass_persistence.dart",
+        "release/persistence-review.md",
+        "release/qa/frozen-persistence.log"
+      ],
+      "remaining_gate": "Full migration paths, process/storage failure matrix on physical devices and all reward transaction integrations."
+    },
+    {
+      "scope_id": "S13",
+      "requirement": "Cloud revision conflicts preserve branches; no adding divergent wallets/lifetime/offline intervals",
+      "work_items": [
+        "M2-04",
+        "M3-06"
+      ],
+      "full_requirement_verified": false,
+      "component_evidence": "Local stale-writer rejection and explicit selected-branch import preserve displaced branch.",
+      "paths": [
+        "game/persistence/lib/tideglass_persistence.dart"
+      ],
+      "remaining_gate": "Actual cloud revision/identity services and two-device conflict/recovery drill are absent."
+    },
+    {
+      "scope_id": "S14",
+      "requirement": "Explicit event ordering, numeric remainder policy and pinned economic versions",
+      "work_items": [
+        "M1-01",
+        "M1-04",
+        "M3-01",
+        "M3-10"
+      ],
+      "full_requirement_verified": false,
+      "component_evidence": "Versioned state/order, micro-R plus residue, exact comparisons and pinned save digest implemented.",
+      "paths": [
+        "docs/decisions/numbers-and-event-order.md",
+        "game/core/lib/src/state.dart",
+        "game/mobile/lib/bootstrap.dart"
+      ],
+      "remaining_gate": "Runtime config loading/transition settlement and independent review of current v3 extension; frozen candidate is v2."
+    },
+    {
+      "scope_id": "S15",
+      "requirement": "Six chapters, ending and continued play; target 15\u201330 calendar days without hard time lock",
+      "work_items": [
+        "M1-06",
+        "M3-08",
+        "M4-06",
+        "M6-02",
+        "BOOT-CONTENT"
+      ],
+      "full_requirement_verified": false,
+      "component_evidence": "Six authored chapters/ending and standalone objective runtime tested.",
+      "paths": [
+        "game/content/progression/campaign.json",
+        "game/progression/lib/tideglass_progression.dart",
+        "release/qa/frozen-progression-rerun.log"
+      ],
+      "remaining_gate": "Campaign client/persistence integration and observed 15-30-day progression; no optional purchase required for ending."
+    },
+    {
+      "scope_id": "S16",
+      "requirement": "Twelve challenge dossiers across three rule families, 100 Notes each",
+      "work_items": [
+        "M3-08",
+        "M4-01",
+        "M4-06"
+      ],
+      "full_requirement_verified": false,
+      "component_evidence": "12 authored dossiers, 3 isolated rule families and standalone reachability tests exist.",
+      "paths": [
+        "game/content/challenges",
+        "game/progression/lib/tideglass_progression.dart"
+      ],
+      "remaining_gate": "Native entry/restart/completion UI, combined persistence and realistic Note budget trajectories."
+    },
+    {
+      "scope_id": "S17",
+      "requirement": "Twelve authored calibration patterns with equivalent accessible completion",
+      "work_items": [
+        "M3-04",
+        "M4-06",
+        "M5-02"
+      ],
+      "full_requirement_verified": false,
+      "component_evidence": "12 real pattern definitions and host-tested accessible/interactive completion exist.",
+      "paths": [
+        "game/content/calibrations",
+        "game/mobile/lib/calibration_pattern.dart",
+        "game/mobile/test/calibration_test.dart"
+      ],
+      "remaining_gate": "Full device access checks and integration with current saved discoveries/chapters."
+    },
+    {
+      "scope_id": "S18",
+      "requirement": "Eighteen main archive entries and six optional 50-Note decorations; no forced full collection",
+      "work_items": [
+        "M4-06",
+        "M4-07",
+        "M5-05"
+      ],
+      "full_requirement_verified": false,
+      "component_evidence": "18 archive entries authored and chapter reward IDs defined.",
+      "paths": [
+        "game/content/narrative/archive.en.json",
+        "game/content/progression/campaign.json"
+      ],
+      "remaining_gate": "All archive UI/unlocks, six optional decoration assets/shop, ending without optional sinks tested in final game."
+    },
+    {
+      "scope_id": "S19",
+      "requirement": "One harbor with initial plus six restored presentations; 25 producer presentations",
+      "work_items": [
+        "M0-05",
+        "M1-07",
+        "M2-05",
+        "M3-09",
+        "M4-07",
+        "BOOT-CONTENT"
+      ],
+      "full_requirement_verified": false,
+      "component_evidence": "Original native vector harbor and five producer silhouettes form representative art.",
+      "paths": [
+        "game/mobile/lib/harbor_art.dart",
+        "implementation/art/production_contract.json"
+      ],
+      "remaining_gate": "Seven actual restored harbor states, 25 producer states and reduced-motion variants fully integrated; registry is not asset completion."
+    },
+    {
+      "scope_id": "S20",
+      "requirement": "Season 1 Night of Returning Stars, 28-day lifecycle, isolated fleet, specified coefficients and no event prestige",
+      "work_items": [
+        "M4-02",
+        "M4-06",
+        "M6-07"
+      ],
+      "full_requirement_verified": false,
+      "component_evidence": "Season coefficients/content slots specified.",
+      "paths": [
+        "economy.json",
+        "implementation/content/launch_manifest.json"
+      ],
+      "remaining_gate": "Playable isolated 28-day season, state transitions, live/end/archive and real elapsed lifecycle observation."
+    },
+    {
+      "scope_id": "S21",
+      "requirement": "30 levels at 500 XP, 30 free slots with 10 cosmetics/20 fragments, 10 premium cosmetics, selected archived pass",
+      "work_items": [
+        "M4-02",
+        "M4-03",
+        "M4-06",
+        "M6-08"
+      ],
+      "full_requirement_verified": false,
+      "component_evidence": "Daily claims allocate XP to a selected pass ledger.",
+      "paths": [
+        "game/core/lib/src/daily.dart",
+        "game/core/lib/src/daily_engine.dart"
+      ],
+      "remaining_gate": "Complete 30-level reward/pass/archive system, assets, premium continuation and verified entitlements."
+    },
+    {
+      "scope_id": "S22",
+      "requirement": "36 unique cosmetics distributed 12 core, 10 free pass, 10 premium, 4 direct shop; supporter reuses shop items",
+      "work_items": [
+        "M4-06",
+        "M4-07",
+        "M4-08",
+        "BOOT-CONTENT"
+      ],
+      "full_requirement_verified": false,
+      "component_evidence": "Required cosmetic IDs and distribution budget registered.",
+      "paths": [
+        "implementation/content/launch_manifest.json"
+      ],
+      "remaining_gate": "36 unique integrated assets/previews/unlocks, four-item supporter reuse and no-power verification."
+    },
+    {
+      "scope_id": "S23",
+      "requirement": "Ambient soundtrack, interaction/milestone/Rechart cues, independent controls and supporter soundtrack delivery",
+      "work_items": [
+        "M1-07",
+        "M4-07",
+        "M5-06"
+      ],
+      "full_requirement_verified": false,
+      "component_evidence": "Audio asset/package contract exists.",
+      "paths": [
+        "implementation/art/production_contract.json"
+      ],
+      "remaining_gate": "Actual licensed/authored music/cues, controls, playback and purchased soundtrack delivery."
+    },
+    {
+      "scope_id": "S24",
+      "requirement": "Cosmetic previews, localized price, verified purchases, restore, pending/retry/refund/revocation handling",
+      "work_items": [
+        "M4-03",
+        "M4-04",
+        "M5-08"
+      ],
+      "full_requirement_verified": false,
+      "component_evidence": "Pinned native IAP plugin links in compiled apps.",
+      "paths": [
+        "game/mobile/pubspec.yaml",
+        "release/native-proof/qualification.json"
+      ],
+      "remaining_gate": "Store product UI, receipt verification, native sandbox pending/cancel/restore/duplicate/refund/revocation/delivery. No accounts available."
+    },
+    {
+      "scope_id": "S25",
+      "requirement": "Equal ad/briefing six-token daily allowance; 300-second credits, speed/offline choice and additive buffs",
+      "work_items": [
+        "M3-07",
+        "M4-05",
+        "M4-08",
+        "M5-05"
+      ],
+      "full_requirement_verified": false,
+      "component_evidence": "Current tree is adding local shared Support allowance; absent from frozen candidate.",
+      "paths": [
+        "game/core/lib/src/support.dart",
+        "game/core/lib/src/support_engine.dart"
+      ],
+      "remaining_gate": "Independent current review, real rewarded-ad/free route/no-fill and entire 30/90-day compounded trajectory parity."
+    },
+    {
+      "scope_id": "S26",
+      "requirement": "Settings, target input, readable numbers, contextual help and opt-in quiet-hour notifications",
+      "work_items": [
+        "M3-05",
+        "M5-02"
+      ],
+      "full_requirement_verified": false,
+      "component_evidence": "Motion/text/notation preferences, labels, help and responsive host tests exist.",
+      "paths": [
+        "game/mobile/lib/app.dart",
+        "game/mobile/lib/number_format.dart",
+        "game/mobile/test/client_test.dart"
+      ],
+      "remaining_gate": "Opt-in quiet-hour notifications, complete input/audio/help settings and physical screen-reader/large-text coverage."
+    },
+    {
+      "scope_id": "S27",
+      "requirement": "Help, recovery guide, release notes, credits, privacy/support URLs and runbooks",
+      "work_items": [
+        "M5-03",
+        "M5-04",
+        "M7-05",
+        "M7-07"
+      ],
+      "full_requirement_verified": false,
+      "component_evidence": "Internal release contract exists.",
+      "paths": [
+        "docs/release-contract.md"
+      ],
+      "remaining_gate": "Actual help/recovery guide/release notes/credits/privacy/support pages and functional public endpoints/runbooks."
+    },
+    {
+      "scope_id": "S28",
+      "requirement": "No known save-loss, duplicate grant, negative wallet or undelivered verified purchase",
+      "work_items": [
+        "M1-08",
+        "M3-10",
+        "M5-07",
+        "M5-08",
+        "M7-06"
+      ],
+      "full_requirement_verified": false,
+      "component_evidence": "Local exact ledger/save/duplicate-reset failure cases tested.",
+      "paths": [
+        "game/core/test/persistence_integration_test.dart",
+        "game/persistence/test/save_repository_test.dart"
+      ],
+      "remaining_gate": "Complete reward/service/IAP fault matrix and zero blocking incidents on final candidate; no blanket guarantee from unit tests."
+    },
+    {
+      "scope_id": "S29",
+      "requirement": "Numeric parity: matching integer decisions; continuous error budget initially 1e-8 outside near-zero cases",
+      "work_items": [
+        "M1-01",
+        "M3-10",
+        "M5-05"
+      ],
+      "full_requirement_verified": false,
+      "component_evidence": "Independent 474 checks pass with zero discrete tolerance and bounded 1e-20 rate/log comparisons.",
+      "paths": [
+        "docs/decisions/numbers-and-event-order.md",
+        "release/qa/frozen-numeric-probe.json"
+      ],
+      "remaining_gate": "Full current version, native deterministic outcome coverage and later config/state transition cases."
+    },
+    {
+      "scope_id": "S30",
+      "requirement": "99.5% crash-free sessions over 10,000 observed sessions, per platform/device and critical-flow review",
+      "work_items": [
+        "M5-04",
+        "M6-05",
+        "M6-07",
+        "M7-06"
+      ],
+      "full_requirement_verified": false,
+      "component_evidence": "Crash/session denominator protocol prepared.",
+      "paths": [
+        "docs/quality/PLAYER_STUDY_PROTOCOL.md"
+      ],
+      "remaining_gate": "10,000 real observed sessions, >=99.5% crash-free, platform/device breakdown and critical-flow review; no testers yet."
+    },
+    {
+      "scope_id": "S31",
+      "requirement": "60/30fps targets, p95 startup \u22645s, 24h replay \u22643s, measured 30-minute battery/thermal usability",
+      "work_items": [
+        "M5-01",
+        "M5-07"
+      ],
+      "full_requirement_verified": false,
+      "component_evidence": "Named devices, fixed conditions and measurement protocol prepared.",
+      "paths": [
+        "release/device-matrix.json",
+        "docs/quality/V1_QUALITY_PROTOCOL.md"
+      ],
+      "remaining_gate": "Physical fps/startup/replay/30-minute battery/thermal measurements; all physical devices unavailable."
+    },
+    {
+      "scope_id": "S32",
+      "requirement": "15 new moderated testers and 80% comprehension target; first prestige 15\u201330 minutes among reachers plus non-reachers",
+      "work_items": [
+        "M2-06",
+        "M2-07",
+        "M6-04"
+      ],
+      "full_requirement_verified": false,
+      "component_evidence": "15-novice protocol, independent rubric, natural timing and non-reacher reporting prepared.",
+      "paths": [
+        "docs/quality/PLAYER_STUDY_PROTOCOL.md",
+        "release/qa/study-instrument.json"
+      ],
+      "remaining_gate": "Recruitment, consented actual sessions and observed comprehension/pacing; no human result exists."
+    },
+    {
+      "scope_id": "S33",
+      "requirement": "30/90-day simulations of visit/reset/buy/bonus strategies and Note scarcity",
+      "work_items": [
+        "M5-05",
+        "M6-03"
+      ],
+      "full_requirement_verified": false,
+      "component_evidence": "Original bounded reference simulation and Note arithmetic exist.",
+      "paths": [
+        "economy.py",
+        "docs/quality/V1_QUALITY_PROTOCOL.md"
+      ],
+      "remaining_gate": "Production-core 30/90-day 1/3/6-visit, reset/bonus strategies and 1750-Note timing trajectories."
+    },
+    {
+      "scope_id": "S34",
+      "requirement": "Real D30 and 28-day season, targets 500 starts/10,000 sessions; uncertainty and baseline tracking",
+      "work_items": [
+        "M6-01",
+        "M6-02",
+        "M6-07",
+        "M5-05"
+      ],
+      "full_requirement_verified": false,
+      "component_evidence": "Preregistration fields, descriptive precision and separate experimental power requirements prepared.",
+      "paths": [
+        "docs/quality/PLAYER_STUDY_PROTOCOL.md",
+        "release/qa/study-instrument.json"
+      ],
+      "remaining_gate": "Signed pre-enrollment registration, 500 real starts, mature D30, 10,000 sessions and actual 28-day season."
+    },
+    {
+      "scope_id": "S35",
+      "requirement": "D1/D7/D30 35/15/7% review hypotheses, strategy variety, welfare and commercial cost assessment",
+      "work_items": [
+        "M6-02",
+        "M7-01"
+      ],
+      "full_requirement_verified": false,
+      "component_evidence": "Retention hypotheses, welfare, strategy and cost review rules preserved.",
+      "paths": [
+        "docs/quality/PLAYER_STUDY_PROTOCOL.md"
+      ],
+      "remaining_gate": "Actual cohort outcomes and director launch/extend/revise decision; not inferred from simulation."
+    },
+    {
+      "scope_id": "S36",
+      "requirement": "Current platform review, accurate listing, sandbox tests and final store acceptance",
+      "work_items": [
+        "M0-03",
+        "M7-03",
+        "M7-07"
+      ],
+      "full_requirement_verified": false,
+      "component_evidence": "SDK linking/probe defects repaired; actual store gates explicitly remain unproven.",
+      "paths": [
+        "release/native-proof/qualification.json",
+        "release/external-dependencies.json"
+      ],
+      "remaining_gate": "Current store policy review, real sandbox products, listings/signing/URLs and actual acceptance; accounts unavailable."
+    },
+    {
+      "scope_id": "S37",
+      "requirement": "Monitoring, support diagnostics, backups, feature disables, rollout stops and compatible forward repair",
+      "work_items": [
+        "M5-04",
+        "M6-05",
+        "M6-08",
+        "M7-04",
+        "M7-08"
+      ],
+      "full_requirement_verified": false,
+      "component_evidence": "Local backups and incompatible-config rejection implemented.",
+      "paths": [
+        "game/persistence/lib/tideglass_persistence.dart"
+      ],
+      "remaining_gate": "Monitoring/service recovery/feature-disable/rollout-stop and forward-repair staging/live drills."
+    },
+    {
+      "scope_id": "S38",
+      "requirement": "14 actual days of launch coverage, incident follow-through, final v1 record and Season 2 brief",
+      "work_items": [
+        "M7-08",
+        "OPS-14"
+      ],
+      "full_requirement_verified": false,
+      "component_evidence": "Actual calendar/resource requirement retained.",
+      "paths": [
+        "release/external-dependencies.json"
+      ],
+      "remaining_gate": "Launch, 14 dated support days, final v1 record, ongoing owners/costs and Season2 brief."
+    },
+    {
+      "scope_id": "S39",
+      "requirement": "Privacy, consent/refusal, account deletion/export and service outages reflect actual SDK behavior",
+      "work_items": [
+        "M3-06",
+        "M5-03"
+      ],
+      "full_requirement_verified": false,
+      "component_evidence": "Audience and guest/offline intentions defined; linked SDK sample IDs present.",
+      "paths": [
+        "docs/release-contract.md",
+        "game/mobile/ios/Runner/Info.plist",
+        "game/mobile/android/app/src/main/AndroidManifest.xml"
+      ],
+      "remaining_gate": "Actual native network/consent/refusal audit, account deletion/export, outages and accurate policy disclosures."
+    },
+    {
+      "scope_id": "S40",
+      "requirement": "Reproducible native builds, explicit stack/toolchain feasibility and configuration compatibility",
+      "work_items": [
+        "M0-02",
+        "M0-03",
+        "M0-08",
+        "M1-04"
+      ],
+      "full_requirement_verified": false,
+      "component_evidence": "Frozen source, three native build artifacts, logs and pinned local toolchain exist.",
+      "paths": [
+        "tool/build_native.py",
+        "release/native-proof/20261016T095427.771900Z/build-report.json",
+        "release/qa/candidate-reproduction.json"
+      ],
+      "remaining_gate": "Snapshot all test inputs; clean candidate tests/analyzer; config transition and full native/service feasibility gates."
+    },
+    {
+      "scope_id": "S41",
+      "requirement": "Budget and device/test plan adapted to AI delivery; protect scope and independent review",
+      "work_items": [
+        "M0-01",
+        "M0-04",
+        "M0-06",
+        "M0-07"
+      ],
+      "full_requirement_verified": false,
+      "component_evidence": "Six AI roles/max4 concurrency, zero authorized external spend, unavailable resources and independent review specified.",
+      "paths": [
+        "docs/release-contract.md",
+        "docs/decisions/execution-costs.md",
+        "docs/quality/V1_QUALITY_PROTOCOL.md"
+      ],
+      "remaining_gate": "Director review of QA-authored plan, actual service usage/cost model and external resources before their gates."
+    },
+    {
+      "scope_id": "S42",
+      "requirement": "Complete release evidence pack and approved candidate with only accepted minor issues",
+      "work_items": [
+        "M7-01",
+        "M7-02",
+        "M7-06"
+      ],
+      "full_requirement_verified": false,
+      "component_evidence": "This evidence pack names exact tested revision and incomplete/failed checks.",
+      "paths": [
+        "release/qa/scope-audit.json",
+        "release/qa/candidate-reproduction.json"
+      ],
+      "remaining_gate": "All scope/package gates accepted, final candidate approved with only owned minor issues; no release readiness implied."
+    },
+    {
+      "scope_id": "S43",
+      "requirement": "Polish observed content/UI issues and create accurate store/launch assets",
+      "work_items": [
+        "M6-04",
+        "M6-06",
+        "M5-06",
+        "M7-05"
+      ],
+      "full_requirement_verified": false,
+      "component_evidence": "Original icon and representative native visual design exist; prior candidate uses template icons.",
+      "paths": [
+        "game/client/art/app-icon-provenance.json",
+        "game/mobile/lib/harbor_art.dart"
+      ],
+      "remaining_gate": "Final polished states, all changed screens rechecked and accurate store screenshots/footage from final candidate."
+    },
+    {
+      "scope_id": "S44",
+      "requirement": "Mid/late progression adds meaningful decisions and at least two viable strategy/challenge approaches",
+      "work_items": [
+        "M1-06",
+        "M3-08",
+        "M5-05",
+        "M6-02"
+      ],
+      "full_requirement_verified": false,
+      "component_evidence": "Standalone challenge policies and synergy support alternative choices.",
+      "paths": [
+        "game/progression/test/progression_test.dart",
+        "game/core/lib/src/engine.dart"
+      ],
+      "remaining_gate": "Production-longitudinal simulations and observed players demonstrate two viable approaches, Note pacing and low-check-in ending."
+    }
+  ],
+  "implementation_to_scope": [
+    {
+      "path": "game/core",
+      "scope_ids": [
+        "S03",
+        "S04",
+        "S05",
+        "S06",
+        "S07",
+        "S08",
+        "S09",
+        "S10",
+        "S11",
+        "S14",
+        "S21",
+        "S25",
+        "S28",
+        "S29"
+      ],
+      "disposition": "Actual pure runtime; frozen v2 tests distinct from current v3/support edits."
+    },
+    {
+      "path": "game/persistence",
+      "scope_ids": [
+        "S12",
+        "S13",
+        "S14",
+        "S28"
+      ],
+      "disposition": "Actual local two-generation repository; cloud and receipt ledger are not implemented by it."
+    },
+    {
+      "path": "game/progression",
+      "scope_ids": [
+        "S15",
+        "S16",
+        "S18",
+        "S44"
+      ],
+      "disposition": "Actual standalone challenge/campaign rules; not yet native client-complete."
+    },
+    {
+      "path": "game/mobile/lib",
+      "scope_ids": [
+        "S01",
+        "S02",
+        "S04",
+        "S05",
+        "S06",
+        "S07",
+        "S09",
+        "S10",
+        "S11",
+        "S12",
+        "S17",
+        "S19",
+        "S26"
+      ],
+      "disposition": "Actual native UI/controller/bootstrap; inspect current source separately from built candidate."
+    },
+    {
+      "path": "game/mobile/ios",
+      "scope_ids": [
+        "S01",
+        "S24",
+        "S36",
+        "S39",
+        "S40"
+      ],
+      "disposition": "Native configuration/plugins; no signed production or sandbox claim."
+    },
+    {
+      "path": "game/mobile/android",
+      "scope_ids": [
+        "S01",
+        "S24",
+        "S36",
+        "S39",
+        "S40"
+      ],
+      "disposition": "Native configuration/plugins; no signed production or sandbox claim."
+    },
+    {
+      "path": "game/mobile/macos",
+      "scope_ids": [
+        "S01",
+        "S40"
+      ],
+      "disposition": "Internal iteration target expressly allowed; public desktop release not added."
+    },
+    {
+      "path": "game/content",
+      "scope_ids": [
+        "S15",
+        "S16",
+        "S17",
+        "S18",
+        "S20",
+        "S21",
+        "S22"
+      ],
+      "disposition": "Authored content and definitions; per-asset integration status stays unverified."
+    },
+    {
+      "path": "game/client/art",
+      "scope_ids": [
+        "S19",
+        "S43"
+      ],
+      "disposition": "Original icon source/provenance; not all launch assets."
+    },
+    {
+      "path": "tool",
+      "scope_ids": [
+        "S40",
+        "S42"
+      ],
+      "disposition": "Build/export/verification tooling; does not replace required services."
+    },
+    {
+      "path": "game/qa",
+      "scope_ids": [
+        "S03",
+        "S05",
+        "S12",
+        "S28",
+        "S29",
+        "S41",
+        "S42"
+      ],
+      "disposition": "Independent reproducible oracles and review tools; no shipped game feature added."
+    },
+    {
+      "path": "docs/quality",
+      "scope_ids": [
+        "S30",
+        "S31",
+        "S32",
+        "S34",
+        "S35",
+        "S41",
+        "S42"
+      ],
+      "disposition": "Prepared protocols; no fabricated observations."
+    },
+    {
+      "path": "implementation",
+      "scope_ids": [
+        "S01",
+        "S02",
+        "S03",
+        "S04",
+        "S05",
+        "S06",
+        "S07",
+        "S08",
+        "S09",
+        "S10",
+        "S11",
+        "S12",
+        "S13",
+        "S14",
+        "S15",
+        "S16",
+        "S17",
+        "S18",
+        "S19",
+        "S20",
+        "S21",
+        "S22",
+        "S23",
+        "S24",
+        "S25",
+        "S26",
+        "S27",
+        "S28",
+        "S29",
+        "S30",
+        "S31",
+        "S32",
+        "S33",
+        "S34",
+        "S35",
+        "S36",
+        "S37",
+        "S38",
+        "S39",
+        "S40",
+        "S41",
+        "S42",
+        "S43",
+        "S44"
+      ],
+      "disposition": "Traceability and bootstrap fixtures; original 65-package scope remains intact."
+    }
+  ],
+  "unrequested_product_scope_found": [],
+  "external_resources": "User confirms none: developer accounts, physical devices, hosting, human testers. Local work remains actionable."
+}

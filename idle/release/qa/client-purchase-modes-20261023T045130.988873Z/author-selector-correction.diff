@@ -1,0 +1,15 @@
+--- author-initial-test.dart
++++ reviewed-final-test.dart
+@@ -99,7 +99,11 @@
+     final button = keyed('buy-$tier');
+     final producer = keyed('producer-$tier');
+     final price = priceOracle(tier, owned, expectedQuantity);
+-    await probe.read('purchase-price', compactMicros(price), within: producer);
++    await probe.read(
++      'purchase-price',
++      UiEnglish.appNumberGamePriceForTierR(compactMicros(price)),
++      within: producer,
++    );
+     if (disabled) {
+       await probe.checkControl('unaffordable', button, enabled: false);
+       expect(tester.widget<FilledButton>(button).onPressed, isNull);

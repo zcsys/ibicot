@@ -1,0 +1,84 @@
+{
+  "run_id": "v3b00-android-gallery-cadence-fixed",
+  "device": "emulator-5556",
+  "scope": "Gallery only; raw device output, no image resizing",
+  "commands": [
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "wm",
+        "size"
+      ],
+      "exit_code": 0,
+      "stdout": "Physical size: 1080x2400\n",
+      "stderr": "",
+      "utc": "2026-10-23T08:44:31.703263+00:00"
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "wm",
+        "size",
+        "1080x1920"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "utc": "2026-10-23T08:44:32.030511+00:00"
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "wm",
+        "size"
+      ],
+      "exit_code": 0,
+      "stdout": "Physical size: 1080x2400\nOverride size: 1080x1920\n",
+      "stderr": "",
+      "utc": "2026-10-23T08:44:32.168334+00:00"
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "wm",
+        "size",
+        "reset"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "utc": "2026-10-23T08:45:52.796017+00:00"
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5556",
+        "shell",
+        "wm",
+        "size"
+      ],
+      "exit_code": 0,
+      "stdout": "Physical size: 1080x2400\n",
+      "stderr": "",
+      "utc": "2026-10-23T08:45:53.056566+00:00"
+    }
+  ],
+  "original_wm_size": "Physical size: 1080x2400\n",
+  "original_override": null,
+  "capture_wm_size": "Physical size: 1080x2400\nOverride size: 1080x1920\n",
+  "restored_wm_size": "Physical size: 1080x2400\n",
+  "restored_exact_original": true
+}

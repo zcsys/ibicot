@@ -1,0 +1,20 @@
+--- parent/game/mobile/lib/help_content.dart
++++ derived/game/mobile/lib/help_content.dart
+@@ -107,7 +107,7 @@
+       [
+         HelpSection('offline-rates', 'One absence, three rates', [
+           'For one continuous absence, the first 24 hours of production earn at full rate. The next 48 hours earn at one quarter rate. Production stops after 72 hours away until you return. This limit is not restarted by a loading chunk or a second tap on the return summary.',
+-          'Returning settles your actual fleet, purchases and expiring effects over elapsed time. The return summary reports that settlement. Saving and recovery must finish before it is treated as committed progress; changing the device clock is not a reward mechanic.',
++          'Returning settles your actual fleet, purchases and expiring effects over elapsed time. The return summary reports that settlement. Saving and recovery must finish before it is treated as committed progress.',
+         ]),
+         HelpSection('stored-timers', 'Store a little readiness', [
+           'Focus stores one charge every 2 hours, up to 12. One charge supplies 10 minutes of a 20% production effect. Spending several charges adds time rather than multiplying the strength.',
+@@ -115,7 +115,7 @@
+         ]),
+         HelpSection('daily-contracts', 'A backlog, not a streak', [
+           'Three daily contract slots are retained for up to seven account days. Read each assigned goal and claim it when complete. An unclaimed slot can be rerolled once. Newly assigned goals do not count activity from before assignment.',
+-          'A seasonal alternative uses the same daily slot and claim receipt as its main-harbor goal. Completing both routes cannot grant the slot twice. Daily boundaries use the saved account-day offset, so travel or a clock change does not create extra days of rewards.',
++          'A seasonal alternative uses the same daily slot and claim receipt as its main-harbor goal. Completing both routes cannot grant the slot twice. Daily boundaries use the saved account-day offset. Changing time zone does not move that boundary, and turning the clock back does not replay an earlier day.',
+         ]),
+         HelpSection('shared-support', 'Six shared Support slots', [
+           'Free crew briefings and optional verified rewarded ads share six slots per account day. They give the same Support token. Refusing an ad, a failed ad or no available ad does not remove the free briefing route. Unspent daily tokens do not accumulate into a larger allowance tomorrow.',

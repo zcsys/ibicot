@@ -1,0 +1,304 @@
+--- game/mobile/test/qa_integration_simulation_test.dart before
++++ game/mobile/test/qa_integration_simulation_test.dart proposed
+@@ -1,10 +1,12 @@
+ import 'dart:convert';
++
+ import 'package:flutter_test/flutter_test.dart';
+ import 'package:tideglass_core/tideglass_core.dart';
+ import 'package:tideglass_progression/tideglass_progression.dart';
+ import 'package:tideglass/game_controller.dart';
+ import 'package:tideglass/offline_replay.dart';
+ import 'package:tideglass/story_state.dart';
++
+ // Cross-package QA compares the pinned simulator without a production dependency.
+ // ignore: avoid_relative_lib_imports
+ import '../../simulation/lib/policy_run.dart';
+@@ -33,53 +35,47 @@
+     ..remove('daily')
+     ..remove('revision');
+ 
+-  test(
+-    '120h single-absence simulator and native worker preserve economic partitions',
+-    () async {
+-      final catalogue = await StoryCatalogue.load();
+-      final run = policy()..run(days: 5);
+-      final initial = run.main;
+-      final initialStory = story(run);
+-      final from = run.cursor,
+-          through = run.cursor.add(const Duration(hours: 120));
+-      final native = await replayOfflineSession(
+-        main: initial,
+-        story: initialStory,
+-        catalogue: catalogue,
+-        settledThrough: from,
+-        now: through,
+-      );
+-      run.advanceTo(through, offline: true);
+-      expect(economic(run.main), economic(native.main));
+-      expect(run.dossiers.toJson(), native.story.dossiers.toJson());
+-      expect(run.season.toJson(), native.story.season!.toJson());
+-      expect(run.pass.toJson(), native.story.pass!.toJson());
+-      expect(
+-        run.main.support.nextSettlementSequence,
+-        native.main.support.nextSettlementSequence,
+-      );
+-      expect(run.main.support.activeSettlementRequest, isNull);
+-      expect(
+-        run.main.daily.lastMaterializedDay,
+-        native.main.daily.lastMaterializedDay,
+-      );
+-      expect(
+-        run.main.daily.contracts.length,
+-        native.main.daily.contracts.length,
+-      );
+-      // Test-only diagnostic retained in immutable review evidence.
+-      // ignore: avoid_print
+-      print(
+-        jsonEncode({
+-          'finding': 'end_of_run_daily_materialization_parity',
+-          'simulator_last_day': run.main.daily.lastMaterializedDay,
+-          'native_last_day': native.main.daily.lastMaterializedDay,
+-          'simulator_contracts': run.main.daily.contracts.length,
+-          'native_contracts': native.main.daily.contracts.length,
+-        }),
+-      );
+-    },
+-  );
++  test('120h single-absence simulator and native worker preserve economic partitions', () async {
++    final catalogue = await StoryCatalogue.load();
++    final run = policy()..run(days: 5);
++    final initial = run.main;
++    final initialStory = story(run);
++    final from = run.cursor,
++        through = run.cursor.add(const Duration(hours: 120));
++    final native = await replayOfflineSession(
++      main: initial,
++      story: initialStory,
++      catalogue: catalogue,
++      settledThrough: from,
++      now: through,
++    );
++    run.advanceTo(through, offline: true);
++    expect(economic(run.main), economic(native.main));
++    expect(run.dossiers.toJson(), native.story.dossiers.toJson());
++    expect(run.season.toJson(), native.story.season!.toJson());
++    expect(run.pass.toJson(), native.story.pass!.toJson());
++    expect(
++      run.main.support.nextSettlementSequence,
++      native.main.support.nextSettlementSequence,
++    );
++    expect(run.main.support.activeSettlementRequest, isNull);
++    expect(
++      run.main.daily.lastMaterializedDay,
++      native.main.daily.lastMaterializedDay,
++    );
++    expect(run.main.daily.contracts.length, native.main.daily.contracts.length);
++    // Test-only diagnostic retained in immutable review evidence.
++    // ignore: avoid_print
++    print(
++      jsonEncode({
++        'finding': 'end_of_run_daily_materialization_parity',
++        'simulator_last_day': run.main.daily.lastMaterializedDay,
++        'native_last_day': native.main.daily.lastMaterializedDay,
++        'simulator_contracts': run.main.daily.contracts.length,
++        'native_contracts': native.main.daily.contracts.length,
++      }),
++    );
++  });
+ 
+   test('one 120h absence is invariant under 1h versus 4h simulator chunks', () {
+     final a = policy(chunk: 1)..run(days: 5);
+@@ -113,14 +109,18 @@
+   );
+ 
+   test(
+-    'minimal campaign uses three actual accessible Focus activations; none does not',
++    'zero-Focus campaign reaches chapter3; three calibrations stay optional',
+     () async {
+       final catalogue = await StoryCatalogue.load();
+       final none = policy(bonus: BonusPolicy.none)..run(days: 5);
+       final minimal = policy()..run(days: 5);
+       expect(none.focusUsed, 0);
+       expect(none.main.completedCalibrationIds, isEmpty);
+-      expect(none.campaign.restoredHarbor, 2);
++      expect(
++        none.main.surveysCollectedTotal,
++        greaterThanOrEqualTo(BigInt.from(12)),
++      );
++      expect(none.campaign.completed, contains('chapter.03'));
+       expect(minimal.focusUsed, 3);
+       expect(minimal.main.completedCalibrationIds.length, 3);
+       expect(minimal.campaign.restoredHarbor, greaterThanOrEqualTo(3));
+@@ -133,6 +133,9 @@
+         startTicker: false,
+       );
+       addTearDown(game.dispose);
++      final campaignBefore = game.story.campaign.toJson();
++      final notesBefore = game.state.surveyNotes;
++      final focusBefore = game.state.focusCharges;
+       for (var n = 1; n <= 3; n++) {
+         expect(
+           game.completeCalibration(
+@@ -142,7 +145,9 @@
+         );
+       }
+       expect(game.state.completedCalibrationIds.length, 3);
+-      expect(game.story.campaign.restoredHarbor, greaterThanOrEqualTo(3));
++      expect(game.story.campaign.toJson(), campaignBefore);
++      expect(game.state.surveyNotes, notesBefore);
++      expect(game.state.focusCharges, focusBefore - 3);
+       expect(game.state.focusRemainingMicros, BigInt.from(1800000000));
+     },
+   );
+@@ -168,74 +173,70 @@
+     },
+   );
+ 
+-  test(
+-    'exhausted first-completion dossiers must not be offered as available discovery',
+-    () async {
+-      final catalogue = await StoryCatalogue.load();
+-      var now = PolicyRun.epoch;
+-      final allIds = catalogue.dossiers.map((d) => d.id).toSet();
+-      GameState? seeded;
+-      DailyContract? goal;
+-      for (var i = 0; i < 100; i++) {
+-        final s = engine
+-            .refreshContracts(
+-              GameState(
+-                counts: [100, 100, 100, 100, 100],
+-                lifetimeMicros: BigInt.from(10).pow(30),
+-                charts: BigInt.from(100),
+-                surveysCollectedTotal: BigInt.from(12),
+-                completedCalibrationIds: {
+-                  'calibration.01',
+-                  'calibration.02',
+-                  'calibration.03',
+-                },
+-                rechartCount: 2,
+-              ),
+-              now,
+-              accountSeed: 'qa-exhausted-$i',
+-              utcOffsetMinutes: 0,
+-              availableDiscoveryKinds: ['archive', 'challenge', 'calibration'],
+-            )
+-            .state;
+-        final goals = s.dailyContracts.where(
+-          (c) => c.discoveryKind == 'challenge',
+-        );
+-        if (goals.isNotEmpty) {
+-          seeded = s;
+-          goal = goals.first;
+-          break;
+-        }
++  test('exhausted first-completion dossiers must not be offered as available discovery', () async {
++    final catalogue = await StoryCatalogue.load();
++    var now = PolicyRun.epoch;
++    final allIds = catalogue.dossiers.map((d) => d.id).toSet();
++    GameState? seeded;
++    DailyContract? goal;
++    for (var i = 0; i < 100; i++) {
++      final s = engine
++          .refreshContracts(
++            GameState(
++              counts: [100, 100, 100, 100, 100],
++              lifetimeMicros: BigInt.from(10).pow(30),
++              charts: BigInt.from(100),
++              surveysCollectedTotal: BigInt.from(12),
++              completedCalibrationIds: {
++                'calibration.01',
++                'calibration.02',
++                'calibration.03',
++              },
++              rechartCount: 2,
++            ),
++            now,
++            accountSeed: 'qa-exhausted-$i',
++            utcOffsetMinutes: 0,
++            availableDiscoveryKinds: ['archive', 'challenge', 'calibration'],
++          )
++          .state;
++      final goals = s.dailyContracts.where(
++        (c) => c.discoveryKind == 'challenge',
++      );
++      if (goals.isNotEmpty) {
++        seeded = s;
++        goal = goals.first;
++        break;
+       }
+-      expect(goal, isNotNull);
+-      final game = GameController(
+-        initialState: seeded,
+-        catalogue: catalogue,
+-        initialStory: StoryProgress(
+-          campaign: CampaignProgress(
+-            completed: {'chapter.01', 'chapter.02', 'chapter.03'},
+-          ),
+-          dossiers: DossierCollection(owned: allIds, completed: allIds),
++    }
++    expect(goal, isNotNull);
++    final game = GameController(
++      initialState: seeded,
++      catalogue: catalogue,
++      initialStory: StoryProgress(
++        campaign: CampaignProgress(
++          completed: {'chapter.01', 'chapter.02', 'chapter.03'},
+         ),
+-        settledThrough: now,
+-        clock: () => now,
+-        startTicker: false,
+-      );
+-      addTearDown(game.dispose);
+-      expect(game.openDossier('challenge.01'), isTrue);
+-      expect(game.setDossierPlan(automatic: true), isTrue);
+-      final before =
+-          game.state.daily.discoveryTotals['challenge'] ?? BigInt.zero;
+-      now = now.add(const Duration(days: 3));
+-      game.tick();
+-      expect(game.story.dossiers.active!.complete, isTrue);
+-      expect(
+-        game.state.daily.discoveryTotals['challenge'] ?? BigInt.zero,
+-        before,
+-      );
+-      expect(engine.contractProgress(game.state, goal!), BigInt.zero);
+-      expect(game.claimContract(goal.id), isFalse);
+-      // Product defect: no further first completion exists to satisfy this kind.
+-      expect(game.availableDiscoveries, isNot(contains('challenge')));
+-    },
+-  );
++        dossiers: DossierCollection(owned: allIds, completed: allIds),
++      ),
++      settledThrough: now,
++      clock: () => now,
++      startTicker: false,
++    );
++    addTearDown(game.dispose);
++    expect(game.openDossier('challenge.01'), isTrue);
++    expect(game.setDossierPlan(automatic: true), isTrue);
++    final before = game.state.daily.discoveryTotals['challenge'] ?? BigInt.zero;
++    now = now.add(const Duration(days: 3));
++    game.tick();
++    expect(game.story.dossiers.active!.complete, isTrue);
++    expect(
++      game.state.daily.discoveryTotals['challenge'] ?? BigInt.zero,
++      before,
++    );
++    expect(engine.contractProgress(game.state, goal!), BigInt.zero);
++    expect(game.claimContract(goal.id), isFalse);
++    // Product defect: no further first completion exists to satisfy this kind.
++    expect(game.availableDiscoveries, isNot(contains('challenge')));
++  });
+ }
+--- game/simulation/lib/supplemental_run.dart before
++++ game/simulation/lib/supplemental_run.dart proposed
+@@ -388,8 +388,8 @@
+     final beforeSurveys = main.surveyNotes;
+     _main(engine.collectSurveys(main));
+     surveyNotesEarned += main.surveyNotes - beforeSurveys;
+-    // Three accessible completions are mandatory chapter content; the minimal
+-    // policy stops there, so it is explicitly not a zero-Focus experiment.
++    // The legacy minimal policy voluntarily stops after three accessible
++    // completions. They are optional; this is not a zero-Focus experiment.
+     while (bonus != BonusPolicy.none &&
+         main.focusCharges > 0 &&
+         (bonus != BonusPolicy.requiredCalibrationsOnly ||

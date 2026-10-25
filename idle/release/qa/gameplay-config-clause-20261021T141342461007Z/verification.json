@@ -1,0 +1,38 @@
+{
+  "format": "tideglass-M1-04-recommendation-v1",
+  "recommendation": "accept original M1-04 clause only",
+  "reviewer": "gameplay_engineer",
+  "transition_implementation_author_is_reviewer": true,
+  "transition_evidence_author": "qa_integration",
+  "original_prerequisite": "M0-08",
+  "prerequisite_accepted": true,
+  "new_commands": [
+    {
+      "command": "python3 audit.py",
+      "exit_code": 0
+    },
+    {
+      "command": "/Users/csys/Desktop/ibicot/idle/tool/dart run compatibility_probe.dart",
+      "exit_code": 0,
+      "independent_assertions": 21
+    }
+  ],
+  "prior_independent_transition_inputs_rehashed": 36,
+  "prior_reviewed_client_inputs_rehashed": 7,
+  "native_commands_run": 0,
+  "program_statuses_edited": false,
+  "full_S40_acceptance": false,
+  "artifacts": {
+    "compatibility_probe.dart": "f9a3a68f4375248fa2d67d65afeddb65585191699d603af611a230fb55697a93",
+    "source-manifest.json": "75570c891e5a0c8b4291289680888dcef3e17650aa092ec1ae842ba6ade4dfd2",
+    "packaging.log": "e0bbb434963550b204892d5a12ad4134590d337eb834a8bb7bc72ed8e1b551f3",
+    "audit.json": "6b551965990cbaf4acb51de38f62c998b9ea5baa462da6e7cbcd5084539c84b2",
+    "compatibility.log": "87fc79c45f97b87958c6379504e549613ada4240b41b2ef8e530a8af7b76e3df",
+    "audit.py": "0f8e1ad9f47ed999ae0482ed5874237f20283a031c90960a4a0c6f9b6b667d16",
+    "audit-initial.log": "46407f612dc68de72b7fa581016b5ad1d52ea552d2222e410b1bf759f95b2995",
+    "audit-initial.py": "e1fdc2a93981c045cabd893d67821519090c8d846ba9314d54eb65e856573066",
+    "compatibility-invocation-initial.log": "83687a1c903f94c9761d5b146ee2be8a1d3065c08d36aae8a680cdcd27bba6ec",
+    "audit.log": "6b551965990cbaf4acb51de38f62c998b9ea5baa462da6e7cbcd5084539c84b2",
+    "M1-04_RECOMMENDATION.md": "494317b35cbe824ca9fcd4be0653d29314ed056b10007f8584113e7721451305"
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "format": "tideglass-ops-ge-repair-author-v1",
+  "review_status": "author-repaired; independent re-review pending",
+  "parent_source_sha256": "d92c120d8601556f6dbe6281b12cefd0ad11fdb1af17a53b8d9d5f2637c92ccf",
+  "source_sha256": "2173e6ec85a78cbc72df5dc87e91bb5355dda80ad918d888a6c96bd0f2a60d87",
+  "verification_sha256": "bcdd336f5b033882fe9e35ef74eb473b6eb5a9a0c485867bf8c1c6c30ac36a67",
+  "repair_diff_sha256": "fce0b75da165e580dd855ccc44a225d0fe77e0785523a4fa54de4a9bcb0c45f9",
+  "changed_files": [
+    {
+      "path": "services/docs/DEPLOYMENT_PREPARATION.md",
+      "before_sha256": "5ded333b368a695006dde16a14f1062d767d00cb423f35a826259f3674db5613",
+      "after_sha256": "06bb9a15339ec171e555f52637db4ce7d81ad013626b9917a77b41288e83eeda"
+    },
+    {
+      "path": "services/tideglass_service/alert_transport.py",
+      "before_sha256": "7a95b524dc73cde5fe04dc182afb80e5d2a5f3bb4323b8630e39b89b5343f7be",
+      "after_sha256": "fb2c76d0735571ed8d8494825b1a78dca6690edde8b88da2da15f8c512eb7ead"
+    },
+    {
+      "path": "services/tideglass_service/deployment.py",
+      "before_sha256": "b16bc1d245b0050931b0e6d9f9f5dacc55094af910233b964404d8cb392acf17",
+      "after_sha256": "7be8280da2d9d3434abcea0df396e33ad5786ee9506fbbf09af25c7ff3904b13"
+    },
+    {
+      "path": "tests/services/operations/test_operating_delivery.py",
+      "before_sha256": "1535a3047453af36b5287494d628fc5c75b46e73a010f22216c51e35f8acf54e",
+      "after_sha256": "abb5aa7b1ad9f557717a14ffe30cfc0ba3b52b3fa49c8952d7443d8dbd0495a4"
+    }
+  ],
+  "author_tests": 25,
+  "actual_http_tls_scenarios": 9,
+  "concurrent_requests": 256,
+  "source_drift": [],
+  "independent_probe_author_replay": {
+    "probe_sha256": "e25e46630c967abf59ab5a35f8cbbc7e147b1fd1b8427648c295c4e239df3d37",
+    "log_sha256": "61cc1491a0eee51937cb26b8c28db36ecdf21cfe80b49c0c6d0287ff47d601b9",
+    "methods": 12,
+    "exit_code": 0,
+    "cwd": "/Users/csys/Desktop/ibicot/idle/services/evidence/deployment-20261021T140912481855Z/source",
+    "command": [
+      "PYTHONPATH=.",
+      "/Users/csys/Desktop/ibicot/idle/.tooling/deployment-venv/bin/python",
+      "/Users/csys/Desktop/ibicot/idle/services/evidence/deployment-20261021T140912481855Z/independent_ops_probes.py",
+      "-v"
+    ]
+  },
+  "release_gate_verified": false,
+  "external_delivery_or_hosting": false,
+  "original_acceptance_changed": false
+}

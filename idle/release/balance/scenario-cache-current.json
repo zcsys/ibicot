@@ -1,0 +1,528 @@
+{
+  "status": "passed",
+  "expected_original_failure": false,
+  "core_source": "game/core",
+  "process_exit_code": 0,
+  "sources_unchanged": true,
+  "source_sha256": {
+    "game/content/challenges/challenge.01.json": "5591106d9523be75d46f31b73830174049b0a96a608557010836a8eb66d13444",
+    "game/content/challenges/challenge.02.json": "d082460d0d34d91e879ea917b48ef72f69e698c22630cfdc3327551cf1f3928d",
+    "game/content/challenges/challenge.03.json": "1a6cb35df1140e89483b3c830a33993a3a7c223fb66f3c1443c4e35204db02f7",
+    "game/content/challenges/challenge.04.json": "3d70280d3552cbc72b847112ca21401d9869987911e77d0093093c8103ebb387",
+    "game/content/challenges/challenge.05.json": "8597f6062640cce3181391f90572d20f581199ae8d86b65ef498e6b3f2b43e20",
+    "game/content/challenges/challenge.06.json": "6261593a9e68f1f4252a0e08563f4276764adc157d560c119de57493bd66125d",
+    "game/content/challenges/challenge.07.json": "3ec485699e751293c0e08a389dc2d9bba91047b3c115ebf75f4037966ff24f0d",
+    "game/content/challenges/challenge.08.json": "81e690b9a9669e96f4c4e36295a9bb61cbfa56ea7e0428bcc78df7937f2431b2",
+    "game/content/challenges/challenge.09.json": "76baf3d7247e84d14ff3bfdff965d2374088a564042bb9738f279c569218d28b",
+    "game/content/challenges/challenge.10.json": "1c7ab9961185e888fc7e19771a5a54baf0833dffa44f147850025c9fdab6c002",
+    "game/content/challenges/challenge.11.json": "802dcd15243a0a2b56dd5a8f6b0937c7764e4bfd78b2fcebff2eefd8dced42a1",
+    "game/content/challenges/challenge.12.json": "544ee2b7a1833e6b210c13c31edd1e3c7f7eee45257b11ef964d0faa17c08830",
+    "game/core/lib/src/daily.dart": "1a43e6a035472d52430c6fc1ca609bcb4cd2f564794e2b49a36cef507803338a",
+    "game/core/lib/src/daily_engine.dart": "9724e2e9c5369b287f8058d43108adca9cc89be54a781ac0ac2058d7736f5580",
+    "game/core/lib/src/engine.dart": "a87e4d6f5fdcb5a169befadba9824df42d792ff4b5cd8d5cf3dfee849c6577d4",
+    "game/core/lib/src/fixed.dart": "c167fdf3c4b95965f1bfc3658095dad81b6f013c71fa5abc7505b7731d6c698f",
+    "game/core/lib/src/state.dart": "b877f1ce17a9e41484009fc0286ad31b8a33ec6f1aef87c710c3e9c9790c9240",
+    "game/core/lib/src/support.dart": "b09af96c6523177cc62214d58d34dbb83467c0b0a384d024ba1b4ead46ebaa23",
+    "game/core/lib/src/support_engine.dart": "c4d25aa48e86d177148d7056a403296ff9613f5ae206d7483f81b24ec01ded1a",
+    "game/core/lib/tideglass_core.dart": "8c0d10c89cc961221fc04c217fde4d3c799e574c8abd178f1249632a565ccee4",
+    "game/events/content/season.01.json": "eefe232fedd19ae081af05e87051ce12ba1e8e300cf51de997b3d7c81d2aff96",
+    "game/events/lib/src/definition.dart": "e7a6bf1bb17993f08d834badb517bfd4cd3e4e3f512188c08f4be06c620f92fb",
+    "game/events/lib/src/pass.dart": "22f732cd81150b3cf47f01aa926ba9b51bf3c4e4d8e946f89392d824922a8e5d",
+    "game/events/lib/src/season.dart": "bc085b7a34d34e30a9557c3fc1306e8ed43c86f2a9b32f08f91e49cde658d4b0",
+    "game/events/lib/tideglass_events.dart": "d0139d590a85dc9bb2b3cc6cdb9010bf42d4cfecc461b3b5ff2bff27baec7c5f",
+    "game/progression/lib/decoration_purchase.dart": "9db6c18254e682249e419e734003f9d70a56e0475188c707fa9728bf4d622652",
+    "game/progression/lib/tideglass_progression.dart": "7c5a8d0c91796555a056ef1e4ac1fba68f3c7ba7ae862029c163e0962f8162f5",
+    "game/qa/integration_scenario_memo.dart": "019da80f352f0d3fa992ddda90f77b5cd2ef04a6f7c427badd817f1900cea41f",
+    "game/qa/run_scenario_memo_probe.py": "7588fd6544814473150c70b1b5dfbdde1a21c19ce25c153a4628e5e4970aab84",
+    "game/simulation/pubspec.lock": "c763d3debac4afa5cd8d93ddc4768912aa62c1fea9edda14a6e0aa08e31f13f5",
+    "game/simulation/pubspec.yaml": "f48267d82a3aa2dc5ca8d6afe1059bdeeaad92371a20f794c2412319c68db1b9",
+    "release/performance/numeric-baseline-source/src/daily.dart": "1a43e6a035472d52430c6fc1ca609bcb4cd2f564794e2b49a36cef507803338a",
+    "release/performance/numeric-baseline-source/src/daily_engine.dart": "9724e2e9c5369b287f8058d43108adca9cc89be54a781ac0ac2058d7736f5580",
+    "release/performance/numeric-baseline-source/src/engine.dart": "675ba2cedd3db92ec42326e67bb9317cfa8f96a022b1b6d6e6e4eaea985f5761",
+    "release/performance/numeric-baseline-source/src/fixed.dart": "c167fdf3c4b95965f1bfc3658095dad81b6f013c71fa5abc7505b7731d6c698f",
+    "release/performance/numeric-baseline-source/src/state.dart": "b877f1ce17a9e41484009fc0286ad31b8a33ec6f1aef87c710c3e9c9790c9240",
+    "release/performance/numeric-baseline-source/src/support.dart": "b09af96c6523177cc62214d58d34dbb83467c0b0a384d024ba1b4ead46ebaa23",
+    "release/performance/numeric-baseline-source/src/support_engine.dart": "c4d25aa48e86d177148d7056a403296ff9613f5ae206d7483f81b24ec01ded1a",
+    "release/performance/numeric-baseline-source/tideglass_core.dart": "8c0d10c89cc961221fc04c217fde4d3c799e574c8abd178f1249632a565ccee4"
+  },
+  "source_digest": "2ab4f7999c7bf52c37df0415ceeb94bc6b924de9e1f0e41bf6549eec8118b4f1",
+  "stdout_sha256": "57363a4da4191ee0eaf12005a51149cec7911cf30a1c939ed361959269145265",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "assertion_result": {
+    "status": "passed",
+    "assertions": 2658,
+    "rate_rule_count": 14,
+    "rotated_forward_reverse_orders": 28,
+    "controlled_count_vectors": 3,
+    "eviction_states": 1300,
+    "exact_scenario_traces": [
+      {
+        "id": "challenge.01",
+        "offline": false,
+        "complete": true,
+        "state": {
+          "counts": [
+            100,
+            100,
+            0,
+            0,
+            0
+          ],
+          "wallet": "7745390508495494",
+          "lifetime": "8183877123559804",
+          "elapsed": "262800000000",
+          "remainder": "0"
+        }
+      },
+      {
+        "id": "challenge.01",
+        "offline": true,
+        "complete": true,
+        "state": {
+          "counts": [
+            100,
+            100,
+            0,
+            0,
+            0
+          ],
+          "wallet": "3269870508495494",
+          "lifetime": "3708357123559804",
+          "elapsed": "262800000000",
+          "remainder": "0"
+        }
+      },
+      {
+        "id": "challenge.02",
+        "offline": false,
+        "complete": true,
+        "state": {
+          "counts": [
+            25,
+            50,
+            25,
+            0,
+            0
+          ],
+          "wallet": "6303325585631000",
+          "lifetime": "6306369573036917",
+          "elapsed": "262800000000",
+          "remainder": "0"
+        }
+      },
+      {
+        "id": "challenge.02",
+        "offline": true,
+        "complete": true,
+        "state": {
+          "counts": [
+            25,
+            50,
+            25,
+            0,
+            0
+          ],
+          "wallet": "3099865585631000",
+          "lifetime": "3102909573036917",
+          "elapsed": "262800000000",
+          "remainder": "0"
+        }
+      },
+      {
+        "id": "challenge.03",
+        "offline": false,
+        "complete": true,
+        "state": {
+          "counts": [
+            50,
+            25,
+            25,
+            10,
+            0
+          ],
+          "wallet": "35280907211162444",
+          "lifetime": "35286870884889290",
+          "elapsed": "262800000000",
+          "remainder": "112289973890381569456000000"
+        }
+      },
+      {
+        "id": "challenge.03",
+        "offline": true,
+        "complete": true,
+        "state": {
+          "counts": [
+            50,
+            25,
+            25,
+            10,
+            0
+          ],
+          "wallet": "17357595129625516",
+          "lifetime": "17363558803352362",
+          "elapsed": "262800000000",
+          "remainder": "90724298139981569456000000"
+        }
+      },
+      {
+        "id": "challenge.04",
+        "offline": false,
+        "complete": true,
+        "state": {
+          "counts": [
+            25,
+            25,
+            25,
+            25,
+            10
+          ],
+          "wallet": "707864346806286682",
+          "lifetime": "707982264840212538",
+          "elapsed": "262800000000",
+          "remainder": "277132660234869776550400000"
+        }
+      },
+      {
+        "id": "challenge.04",
+        "offline": true,
+        "complete": true,
+        "state": {
+          "counts": [
+            25,
+            25,
+            25,
+            25,
+            10
+          ],
+          "wallet": "348084486806286682",
+          "lifetime": "348202404840212538",
+          "elapsed": "262800000000",
+          "remainder": "277132660234869776550400000"
+        }
+      },
+      {
+        "id": "challenge.05",
+        "offline": false,
+        "complete": true,
+        "state": {
+          "counts": [
+            220,
+            182,
+            127,
+            134,
+            133
+          ],
+          "wallet": "8101603985062359345",
+          "lifetime": "178136602329082889151",
+          "elapsed": "262800000000",
+          "remainder": "2576375468881688409600000"
+        }
+      },
+      {
+        "id": "challenge.05",
+        "offline": true,
+        "complete": true,
+        "state": {
+          "counts": [
+            213,
+            175,
+            120,
+            127,
+            126
+          ],
+          "wallet": "1631039602997306294",
+          "lifetime": "78546214624735373461",
+          "elapsed": "262800000000",
+          "remainder": "215920474279614250560000000"
+        }
+      },
+      {
+        "id": "challenge.06",
+        "offline": false,
+        "complete": true,
+        "state": {
+          "counts": [
+            222,
+            181,
+            127,
+            132,
+            134
+          ],
+          "wallet": "17057265158327979652",
+          "lifetime": "206163782916065697006",
+          "elapsed": "262800000000",
+          "remainder": "318030889050149017958400000"
+        }
+      },
+      {
+        "id": "challenge.06",
+        "offline": true,
+        "complete": true,
+        "state": {
+          "counts": [
+            215,
+            174,
+            120,
+            125,
+            127
+          ],
+          "wallet": "5884589783411759988",
+          "lifetime": "91426751647227130938",
+          "elapsed": "262800000000",
+          "remainder": "399994952800106076518400000"
+        }
+      },
+      {
+        "id": "challenge.07",
+        "offline": false,
+        "complete": true,
+        "state": {
+          "counts": [
+            216,
+            191,
+            126,
+            134,
+            134
+          ],
+          "wallet": "1191570793412096226",
+          "lifetime": "189992830678392796816",
+          "elapsed": "262800000000",
+          "remainder": "213717733711370918886400000"
+        }
+      },
+      {
+        "id": "challenge.07",
+        "offline": true,
+        "complete": true,
+        "state": {
+          "counts": [
+            209,
+            184,
+            119,
+            126,
+            126
+          ],
+          "wallet": "6520990932445986391",
+          "lifetime": "83910109016727376708",
+          "elapsed": "262800000000",
+          "remainder": "311040257217922711040000000"
+        }
+      },
+      {
+        "id": "challenge.08",
+        "offline": false,
+        "complete": true,
+        "state": {
+          "counts": [
+            207,
+            195,
+            126,
+            134,
+            133
+          ],
+          "wallet": "15921744846843053220",
+          "lifetime": "188226010784319317491",
+          "elapsed": "262800000000",
+          "remainder": "381354754969798724937600000"
+        }
+      },
+      {
+        "id": "challenge.08",
+        "offline": true,
+        "complete": true,
+        "state": {
+          "counts": [
+            199,
+            188,
+            119,
+            127,
+            126
+          ],
+          "wallet": "5251395757216369159",
+          "lifetime": "83006215885169634376",
+          "elapsed": "262800000000",
+          "remainder": "282018295525060586544000000"
+        }
+      },
+      {
+        "id": "challenge.09",
+        "offline": false,
+        "complete": true,
+        "state": {
+          "counts": [
+            211,
+            193,
+            127,
+            133,
+            133
+          ],
+          "wallet": "3891959500778292317",
+          "lifetime": "173568832180991531707",
+          "elapsed": "262800000000",
+          "remainder": "58854449220235677532800000"
+        }
+      },
+      {
+        "id": "challenge.09",
+        "offline": true,
+        "complete": true,
+        "state": {
+          "counts": [
+            204,
+            185,
+            120,
+            125,
+            126
+          ],
+          "wallet": "734971215575054487",
+          "lifetime": "76382686180104136269",
+          "elapsed": "262800000000",
+          "remainder": "101660092818977616643200000"
+        }
+      },
+      {
+        "id": "challenge.10",
+        "offline": false,
+        "complete": true,
+        "state": {
+          "counts": [
+            50,
+            50,
+            50,
+            25,
+            25
+          ],
+          "wallet": "3435035110178605402",
+          "lifetime": "3435737425084164004",
+          "elapsed": "262800000000",
+          "remainder": "393384875306904856982400000"
+        }
+      },
+      {
+        "id": "challenge.10",
+        "offline": true,
+        "complete": true,
+        "state": {
+          "counts": [
+            50,
+            50,
+            50,
+            25,
+            25
+          ],
+          "wallet": "1688478015298116033",
+          "lifetime": "1689180330203674635",
+          "elapsed": "262800000000",
+          "remainder": "57648816426904856982400000"
+        }
+      },
+      {
+        "id": "challenge.11",
+        "offline": false,
+        "complete": true,
+        "state": {
+          "counts": [
+            216,
+            191,
+            126,
+            134,
+            134
+          ],
+          "wallet": "1191570793412096226",
+          "lifetime": "189992830678392796816",
+          "elapsed": "262800000000",
+          "remainder": "213717733711370918886400000"
+        }
+      },
+      {
+        "id": "challenge.11",
+        "offline": true,
+        "complete": true,
+        "state": {
+          "counts": [
+            209,
+            184,
+            119,
+            126,
+            126
+          ],
+          "wallet": "6520990932445986391",
+          "lifetime": "83910109016727376708",
+          "elapsed": "262800000000",
+          "remainder": "311040257217922711040000000"
+        }
+      },
+      {
+        "id": "challenge.12",
+        "offline": false,
+        "complete": true,
+        "state": {
+          "counts": [
+            207,
+            195,
+            126,
+            134,
+            133
+          ],
+          "wallet": "15921744846843053220",
+          "lifetime": "188226010784319317491",
+          "elapsed": "262800000000",
+          "remainder": "381354754969798724937600000"
+        }
+      },
+      {
+        "id": "challenge.12",
+        "offline": true,
+        "complete": true,
+        "state": {
+          "counts": [
+            199,
+            188,
+            119,
+            127,
+            126
+          ],
+          "wallet": "5251395757216369159",
+          "lifetime": "83006215885169634376",
+          "elapsed": "262800000000",
+          "remainder": "282018295525060586544000000"
+        }
+      },
+      {
+        "id": "season.01",
+        "offline": false,
+        "state": {
+          "counts": [
+            216,
+            186,
+            127,
+            133,
+            132
+          ],
+          "wallet": "11417468651435228239",
+          "lifetime": "162011600552739699357",
+          "elapsed": "262800000000",
+          "remainder": "267157025949736805225600000"
+        }
+      },
+      {
+        "id": "season.01",
+        "offline": true,
+        "state": {
+          "counts": [
+            209,
+            179,
+            120,
+            126,
+            125
+          ],
+          "wallet": "3025373962123543265",
+          "lifetime": "71146488303029654384",
+          "elapsed": "262800000000",
+          "remainder": "214067239687219907216000000"
+        }
+      }
+    ],
+    "limits": "Host economic isolation; not native device, services or player evidence"
+  }
+}

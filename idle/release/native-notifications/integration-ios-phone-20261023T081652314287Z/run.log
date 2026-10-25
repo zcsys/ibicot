@@ -1,0 +1,59 @@
+Running Xcode build...                                          
+Xcode build done.                                           24.4s
+VMServiceFlutterDriver: Connecting to Flutter application at http://127.0.0.1:50900/qAgOYfh4NsA=/
+VMServiceFlutterDriver: Isolate found with number: 4173603284771907
+VMServiceFlutterDriver: Isolate 4173603284771907 is runnable.
+VMServiceFlutterDriver: Isolate is paused at start.
+VMServiceFlutterDriver: Attempting to resume isolate
+flutter: 00:00 +0: real OS reminder qualification: delivery
+VMServiceFlutterDriver: Connected to Flutter application.
+flutter: TIDEGLASS_REMINDER_ACTION {"verification_id":"integration-ios-phone-20261023T081652314287Z","candidate_fingerprint":"3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59","harness_sha256":"272fa3495fee356a98256c09ecfa983ef1f7af1ffb1c2c4885db97e74905fd76","scenario":"delivery","run_id":"v3b00-ios-phone-reminder-delivery","device_label":"ios-phone","platform":"ios","process_id":19200,"action":"allow_permission_if_prompted","utc_ms":1792743458118}
+flutter: TIDEGLASS_REMINDER_ACTION {"verification_id":"integration-ios-phone-20261023T081652314287Z","candidate_fingerprint":"3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59","harness_sha256":"272fa3495fee356a98256c09ecfa983ef1f7af1ffb1c2c4885db97e74905fd76","scenario":"delivery","run_id":"v3b00-ios-phone-reminder-delivery","device_label":"ios-phone","platform":"ios","process_id":19200,"action":"background_app_now_using_os_home","utc_ms":1792743458164}
+flutter: ══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+flutter: The following OutsideTestException was thrown running a test:
+flutter: Instance of 'OutsideTestException'
+flutter:
+flutter: When the exception was thrown, this was the stack:
+flutter: #0      main.<anonymous closure> (file:///Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261023T040445.261666Z-3b00cc8f7122/workspace/game/mobile/integration_test/reminders_272fa3495fee356a_test.dart:363:42)
+flutter: <asynchronous suspension>
+flutter: #1      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+flutter: <asynchronous suspension>
+flutter: #2      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+flutter: <asynchronous suspension>
+flutter: #3      TestWidgetsFlutterBinding._createTestCompletionHandler.<anonymous closure> (package:flutter_test/src/binding.dart:1707:12)
+flutter: <asynchronous suspension>
+flutter:
+flutter: The test description was:
+flutter:   real OS reminder qualification: delivery
+flutter: ════════════════════════════════════════════════════════════════════════════════════════════════════
+flutter: 08:06 +0: real OS reminder qualification: delivery [E]
+flutter:   Test failed. See exception logs above.
+  The test description was: real OS reminder qualification: delivery
+flutter:
+flutter: 08:06 +0 -1: (tearDownAll)
+flutter: 08:06 +1 -1: Some tests failed.
+Failure Details:
+Failure in method: real OS reminder qualification: delivery
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞═════════════════
+The following OutsideTestException was thrown running a test:
+Instance of 'OutsideTestException'
+
+When the exception was thrown, this was the stack:
+#0      main.<anonymous closure> (file:///Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261023T040445.261666Z-3b00cc8f7122/workspace/game/mobile/integration_test/reminders_272fa3495fee356a_test.dart:363:42)
+<asynchronous suspension>
+#1      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#2      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+#3      TestWidgetsFlutterBinding._createTestCompletionHandler.<anonymous closure> (package:flutter_test/src/binding.dart:1707:12)
+<asynchronous suspension>
+
+The test description was:
+  real OS reminder qualification: delivery
+═════════════════════════════════════════════════════════════════
+
+end of failure 1
+
+
+
+Leaving the application running.

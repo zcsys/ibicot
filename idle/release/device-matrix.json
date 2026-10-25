@@ -1,0 +1,150 @@
+{
+  "schema_version": 1,
+  "status": "planned_physical_coverage_with_separate_executed_simulator_evidence",
+  "support_floor": {
+    "ios": "16.0",
+    "android_api": 29
+  },
+  "targets": [
+    {
+      "id": "ios-oldest-eligible",
+      "model": "iPhone 8",
+      "kind": "physical",
+      "os_test_target": "iOS16 supported installed version, recorded exactly at execution",
+      "purpose": [
+        "older_eligible_hardware",
+        "minimum_performance",
+        "startup",
+        "thermal",
+        "minimum_os_accessibility"
+      ],
+      "availability": "unavailable_user_confirmed",
+      "evidence": [],
+      "basis": "https://support.apple.com/en-ie/103267",
+      "note": "The iOS16 deployment floor permits older hardware than SE3; this target prevents SE3 evidence being treated as complete minimum-tier coverage."
+    },
+    {
+      "id": "ios-small",
+      "model": "iPhone SE (3rd generation)",
+      "kind": "physical",
+      "purpose": [
+        "small_screen",
+        "large_text",
+        "minimum_performance"
+      ],
+      "availability": "unavailable_user_confirmed",
+      "evidence": []
+    },
+    {
+      "id": "ios-reference",
+      "model": "iPhone 13",
+      "kind": "physical",
+      "purpose": [
+        "reference_performance",
+        "store_sandbox",
+        "thermal"
+      ],
+      "availability": "unavailable_user_confirmed",
+      "evidence": []
+    },
+    {
+      "id": "android-minimum",
+      "model": "Pixel 4a",
+      "kind": "physical",
+      "purpose": [
+        "minimum_performance",
+        "restore",
+        "thermal"
+      ],
+      "availability": "unavailable_user_confirmed",
+      "evidence": []
+    },
+    {
+      "id": "android-reference",
+      "model": "Pixel 7",
+      "kind": "physical",
+      "purpose": [
+        "reference_performance",
+        "store_sandbox"
+      ],
+      "availability": "unavailable_user_confirmed",
+      "evidence": []
+    },
+    {
+      "id": "ios-tablet",
+      "model": "iPad (9th generation)",
+      "kind": "physical",
+      "purpose": [
+        "tablet_layout",
+        "input",
+        "large_text"
+      ],
+      "availability": "unavailable_user_confirmed",
+      "evidence": []
+    },
+    {
+      "id": "android-tablet",
+      "model": "Galaxy Tab A8",
+      "kind": "physical",
+      "purpose": [
+        "tablet_layout",
+        "input",
+        "large_text"
+      ],
+      "availability": "unavailable_user_confirmed",
+      "evidence": []
+    },
+    {
+      "id": "ios-simulator",
+      "model": "iPhone17Pro simulator / iOS26.3.1",
+      "kind": "simulator",
+      "purpose": [
+        "native_build_launch",
+        "flow_automation"
+      ],
+      "availability": "native_seeded_flow_executed",
+      "evidence": [
+        "release/native-proof/integration-ios-phone-20261016T095946.013088Z/verification.json"
+      ]
+    },
+    {
+      "id": "android-emulator",
+      "model": "Pixel6 emulator / API35 / arm64-v8a",
+      "kind": "emulator",
+      "purpose": [
+        "native_build_launch",
+        "flow_automation"
+      ],
+      "availability": "native_seeded_flow_executed",
+      "evidence": [
+        "release/native-proof/integration-android-phone-20261016T100111.069907Z/verification.json"
+      ]
+    }
+  ],
+  "required_scenarios": [
+    "first_purchase",
+    "rechart_preview_and_commit",
+    "offline_return",
+    "corrupt_save_recovery",
+    "two_writer_conflict",
+    "large_text",
+    "reduced_motion",
+    "keyboard_focus",
+    "airplane_mode",
+    "storage_failure",
+    "app_interruption",
+    "install_update_migration",
+    "native_purchase_restore_pending",
+    "30_minute_thermal_session"
+  ],
+  "measurement_rules": {
+    "physical_performance_required": true,
+    "simulator_counts_as_human_study": false,
+    "reference_target_fps": 60,
+    "minimum_target_fps": 30,
+    "cold_start_p95_seconds": 5,
+    "baseline_24h_replay_p95_seconds": 3,
+    "thermal_session_minutes": 30
+  },
+  "availability_confirmed_utc_date": "2026-10-16"
+}

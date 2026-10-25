@@ -1,0 +1,251 @@
+.tooling/flutter/packages/flutter_test/lib/src/binding.dart
+SHA256 7fc560454d2dd0d209b7911ead99b2038e0f8e2dcf3f21c2669d79e868452011
+
+1521:   /// [handlePointerEventForSource] and can be used in the immediate enclosing
+1522:   /// [dispatchEvent].
+1523:   ///
+1524:   /// When [handlePointerEvent] is called directly, [pointerEventSource]
+1525:   /// is [TestBindingEventSource.device].
+1526:   ///
+1527:   /// This means that pointer events triggered by the [WidgetController] (e.g.
+1528:   /// via [WidgetController.tap]) will result in actual interactions with the
+1529:   /// UI, but other pointer events such as those from physical taps will be
+1530:   /// dropped. See also [shouldPropagateDevicePointerEvents] if this is
+1531:   /// undesired.
+1532:   TestBindingEventSource get pointerEventSource => _pointerEventSource;
+1533:   TestBindingEventSource _pointerEventSource = TestBindingEventSource.device;
+1534: 
+1535:   /// Whether pointer events from [TestBindingEventSource.device] will be
+1536:   /// propagated to the framework, or dropped.
+1537:   ///
+1538:   /// Setting this can be useful to interact with the app in some other way
+1539:   /// besides through the [WidgetController], such as with `adb shell input tap`
+1540:   /// on Android.
+1541:   ///
+1542:   /// See also [pointerEventSource].
+1543:   bool shouldPropagateDevicePointerEvents = false;
+1544: 
+1545:   /// Dispatch an event to the targets found by a hit test on its position,
+1546:   /// and remember its source as [pointerEventSource].
+1547:   ///
+1548:   /// This method sets [pointerEventSource] to `source`, forwards the call to
+1549:   /// [handlePointerEvent], then resets [pointerEventSource] to the previous
+1550:   /// value.
+1551:   ///
+1552:   /// If `source` is [TestBindingEventSource.device], then the `event` is based
+1553:   /// in the global coordinate space (for definitions for coordinate spaces,
+1554:   /// see [TestWidgetsFlutterBinding]) and the event is likely triggered by the
+1555:   /// user physically interacting with the screen during a live test on a real
+1556:   /// device (see [LiveTestWidgetsFlutterBinding]).
+1557:   ///
+1558:   /// If `source` is [TestBindingEventSource.test], then the `event` is based
+1559:   /// in the local coordinate space and the event is likely triggered by
+1560:   /// programmatically simulated pointer events, such as:
+1561:   ///
+1562:   ///  * [WidgetController.tap] and alike methods, as well as directly using
+1563:   ///    [TestGesture]. They are usually used in
+1564:   ///    [AutomatedTestWidgetsFlutterBinding] but sometimes in live tests too.
+1565:   ///  * [WidgetController.timedDrag] and alike methods. They are usually used
+1566:   ///    in macrobenchmarks.
+1567:   void handlePointerEventForSource(
+1568:     PointerEvent event, {
+1569:     TestBindingEventSource source = TestBindingEventSource.device,
+1570:   }) {
+1571:     withPointerEventSource(source, () => handlePointerEvent(event));
+1572:   }
+1573: 
+1574:   /// Sets [pointerEventSource] to `source`, runs `task`, then resets `source`
+2858: 
+2859:   final Expando<Map<int, _LiveTestPointerRecord>> _renderViewToPointerIdToPointerRecord =
+2860:       Expando<Map<int, _LiveTestPointerRecord>>();
+2861: 
+2862:   void _handleRenderViewPaint(PaintingContext context, Offset offset, RenderView renderView) {
+2863:     assert(offset == Offset.zero);
+2864: 
+2865:     final Map<int, _LiveTestPointerRecord>? pointerIdToRecord =
+2866:         _renderViewToPointerIdToPointerRecord[renderView];
+2867:     if (pointerIdToRecord != null && pointerIdToRecord.isNotEmpty) {
+2868:       final double radius = renderView.size.shortestSide * 0.05;
+2869:       final path = Path()
+2870:         ..addOval(Rect.fromCircle(center: Offset.zero, radius: radius))
+2871:         ..moveTo(0.0, -radius * 2.0)
+2872:         ..lineTo(0.0, radius * 2.0)
+2873:         ..moveTo(-radius * 2.0, 0.0)
+2874:         ..lineTo(radius * 2.0, 0.0);
+2875:       final Canvas canvas = context.canvas;
+2876:       final paint = Paint()
+2877:         ..strokeWidth = radius / 10.0
+2878:         ..style = PaintingStyle.stroke;
+2879:       var dirty = false;
+2880:       for (final _LiveTestPointerRecord record in pointerIdToRecord.values) {
+2881:         paint.color = record.color.withOpacity(
+2882:           record.decay < 0 ? (record.decay / (_kPointerDecay - 1)) : 1.0,
+2883:         );
+2884:         canvas.drawPath(path.shift(record.position), paint);
+2885:         if (record.decay < 0) {
+2886:           dirty = true;
+2887:         }
+2888:         record.decay += 1;
+2889:       }
+2890:       pointerIdToRecord.keys
+2891:           .where((int pointer) => pointerIdToRecord[pointer]!.decay == 0)
+2892:           .toList()
+2893:           .forEach(pointerIdToRecord.remove);
+2894:       if (dirty) {
+2895:         scheduleMicrotask(() {
+2896:           _markViewsNeedPaint(renderView.flutterView.viewId);
+2897:         });
+2898:       }
+2899:     }
+2900: 
+2901:     _label?.paint(context.canvas, offset - const Offset(0.0, 10.0));
+2902:   }
+2913: 
+2914:   /// Dispatch an event to the targets found by a hit test on its position.
+2915:   ///
+2916:   /// If the [pointerEventSource] is [TestBindingEventSource.test], then
+2917:   /// the event is forwarded to [GestureBinding.dispatchEvent] as usual;
+2918:   /// additionally, down pointers are painted on the screen.
+2919:   ///
+2920:   /// If the [pointerEventSource] is [TestBindingEventSource.device], then
+2921:   /// the event, after being transformed to the local coordinate system, is
+2922:   /// forwarded to [deviceEventDispatcher].
+2923:   @override
+2924:   void handlePointerEvent(PointerEvent event) {
+2925:     switch (pointerEventSource) {
+2926:       case TestBindingEventSource.test:
+2927:         RenderView? target;
+2928:         for (final RenderView renderView in renderViews) {
+2929:           if (renderView.flutterView.viewId == event.viewId) {
+2930:             target = renderView;
+2931:             break;
+2932:           }
+2933:         }
+2934:         if (target != null) {
+2935:           final _LiveTestPointerRecord? record =
+2936:               _renderViewToPointerIdToPointerRecord[target]?[event.pointer];
+2937:           if (record != null) {
+2938:             record.position = event.position;
+2939:             if (!event.down) {
+2940:               record.decay = _kPointerDecay;
+2941:             }
+2942:             _markViewsNeedPaint(event.viewId);
+2943:           } else if (event.down) {
+2944:             _renderViewToPointerIdToPointerRecord[target] ??= <int, _LiveTestPointerRecord>{};
+2945:             _renderViewToPointerIdToPointerRecord[target]![event.pointer] = _LiveTestPointerRecord(
+2946:               event.pointer,
+2947:               event.position,
+2948:             );
+2949:             _markViewsNeedPaint(event.viewId);
+2950:           }
+2951:         }
+2952:         super.handlePointerEvent(event);
+2953:       case TestBindingEventSource.device:
+2954:         if (shouldPropagateDevicePointerEvents) {
+2955:           super.handlePointerEvent(event);
+2956:           break;
+2957:         }
+2958:         if (deviceEventDispatcher != null) {
+2959:           // The pointer events received with this source has a global position
+2960:           // (see [handlePointerEventForSource]). Transform it to the local
+2961:           // coordinate space used by the testing widgets.
+2962:           final RenderView renderView = renderViews.firstWhere(
+2963:             (RenderView r) => r.flutterView.viewId == event.viewId,
+2964:           );
+2965:           final PointerEvent localEvent = event.copyWith(
+2966:             position: globalToLocal(event.position, renderView),
+2967:           );
+2968:           withPointerEventSource(
+2969:             TestBindingEventSource.device,
+2970:             () => super.handlePointerEvent(localEvent),
+2971:           );
+2972:         }
+2973:     }
+2974:   }
+2975: 
+2976:   @override
+2977:   void dispatchEvent(PointerEvent event, HitTestResult? hitTestResult) {
+2978:     switch (pointerEventSource) {
+2979:       case TestBindingEventSource.test:
+2980:         super.dispatchEvent(event, hitTestResult);
+2981:       case TestBindingEventSource.device:
+2982:         assert(hitTestResult != null || event is PointerAddedEvent || event is PointerRemovedEvent);
+2983:         if (shouldPropagateDevicePointerEvents) {
+2984:           super.dispatchEvent(event, hitTestResult);
+2985:           break;
+2986:         }
+2987:         assert(deviceEventDispatcher != null);
+2988:         if (hitTestResult != null) {
+2989:           deviceEventDispatcher!.dispatchEvent(event, hitTestResult);
+2990:         }
+2991:     }
+
+.tooling/flutter/packages/integration_test/lib/integration_test.dart
+SHA256 f80d6c866c22108972859ce1fe65667be324c0d46d87b049c2bc7bf3670a9898
+
+43: /// A subclass of [LiveTestWidgetsFlutterBinding] that reports tests results
+44: /// on a channel to adapt them to native instrumentation test format.
+45: class IntegrationTestWidgetsFlutterBinding extends LiveTestWidgetsFlutterBinding
+46:     implements IntegrationTestResults {
+47:   /// Sets up a listener to report that the tests are finished when everything is
+48:   /// torn down.
+49:   IntegrationTestWidgetsFlutterBinding() {
+50:     tearDownAll(() async {
+51:       if (!_allTestsPassed.isCompleted) {
+133:   @override
+134:   List<Failure> get failureMethodsDetails => results.values.whereType<Failure>().toList();
+135: 
+136:   @override
+137:   void initInstances() {
+138:     super.initInstances();
+139:     _instance = this;
+140:   }
+141: 
+142:   /// The singleton instance of this object.
+143:   ///
+144:   /// Provides access to the features exposed by this class. The binding must
+145:   /// be initialized before using this getter; this is typically done by calling
+146:   /// [IntegrationTestWidgetsFlutterBinding.ensureInitialized].
+147:   static IntegrationTestWidgetsFlutterBinding get instance => BindingBase.checkInstance(_instance);
+148:   static IntegrationTestWidgetsFlutterBinding? _instance;
+149: 
+150:   /// Returns an instance of the [IntegrationTestWidgetsFlutterBinding], creating and
+151:   /// initializing it if necessary.
+152:   ///
+153:   /// See also:
+154:   ///
+155:   ///  * [WidgetsFlutterBinding.ensureInitialized], the equivalent in the widgets framework.
+156:   static IntegrationTestWidgetsFlutterBinding ensureInitialized() {
+157:     if (_instance == null) {
+158:       IntegrationTestWidgetsFlutterBinding();
+159:     }
+160:     return _instance!;
+161:   }
+162: 
+163:   /// Test results that will be populated after the tests have completed.
+164:   ///
+165:   /// Keys are the test descriptions, and values are either [_success] or
+166:   /// a [Failure].
+
+.tooling/flutter/packages/flutter_test/lib/src/widget_tester.dart
+SHA256 3ec4821f7ebec1974295dc35e554db9c6f95d27613db6b57aeef69ff5d38107e
+
+855: 
+856:   @override
+857:   HitTestResult hitTestOnBinding(Offset location, {int? viewId}) {
+858:     viewId ??= view.viewId;
+859:     final RenderView renderView = binding.renderViews.firstWhere(
+860:       (RenderView r) => r.flutterView.viewId == viewId,
+861:     );
+862:     location = binding.localToGlobal(location, renderView);
+863:     return super.hitTestOnBinding(location, viewId: viewId);
+864:   }
+865: 
+866:   @override
+867:   Future<void> sendEventToBinding(PointerEvent event) {
+868:     return TestAsyncUtils.guard<void>(() async {
+869:       binding.handlePointerEventForSource(event, source: TestBindingEventSource.test);
+870:     });
+871:   }
+872: 
+

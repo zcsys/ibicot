@@ -1,0 +1,623 @@
+{
+  "source_of_truth": "Original blueprint and v1 roadmap; AI execution replaces staffing only",
+  "requirements": [
+    {
+      "id": "S01",
+      "requirement": "iOS and Android public launch; phone and usable tablet; internal desktop only",
+      "source": "V1_ROADMAP.md \u00a71",
+      "work_items": [
+        "M0-01",
+        "M0-02",
+        "M7-03"
+      ],
+      "verification": "Native launch/install/update evidence on declared targets; no substituted web-only release.",
+      "delivery_status": "not_verified",
+      "evidence": []
+    },
+    {
+      "id": "S02",
+      "requirement": "Guest offline core, optional cloud, English externalized text and pseudolocalization",
+      "source": "V1_ROADMAP.md \u00a7\u00a71,3",
+      "work_items": [
+        "M1-05",
+        "M3-06",
+        "M5-02"
+      ],
+      "verification": "Airplane-mode guest flow and localized-layout tests; fresh network services are separate dependencies.",
+      "delivery_status": "not_verified",
+      "evidence": []
+    },
+    {
+      "id": "S03",
+      "requirement": "Five producer prices/outputs, tier ratio 20, growth 1.12, previous-tier unlock at 10",
+      "source": "TIDEGLASS_DESIGN.md Phase 2; economy.json",
+      "work_items": [
+        "M1-01",
+        "M1-02",
+        "M2-01",
+        "BOOT-CORE"
+      ],
+      "verification": "Reference conformance plus independent production precision and discrete-purchase boundary tests.",
+      "delivery_status": "verified",
+      "evidence": [
+        "release/qa/integration-current-scope-20261021T114227186831Z/CURRENT_SCOPE_CHECKPOINT.md",
+        "release/qa/integration-current-scope-20261021T114227186831Z/NUMERIC_EVIDENCE_BRIDGE.json",
+        "release/qa/lead-bounded-acceptance-20261021T1148Z/DECISIONS.md",
+        "release/qa/integration-numeric-20261019T135534237861Z/NUMERIC_REVIEW.md",
+        "release/qa/integration-crossengine-20261019T143516578781Z/CROSS_ENGINE_REVIEW.md",
+        "docs/decisions/numbers-and-event-order.md",
+        "release/qa/integration-transition-repaired-20261021T121351672733Z/TRANSITION_REVIEW.md",
+        "release/qa/integration-transition-repaired-20261021T121351672733Z/NUMERIC_EVIDENCE_BRIDGE.json",
+        "release/native-proof/root-transition-20261021T121321.388435Z/verification.json",
+        "release/qa/lead-transition-acceptance-20261021T1221Z/DECISIONS.md"
+      ]
+    },
+    {
+      "id": "S04",
+      "requirement": "Single, milestone and maximum purchase controls and whole-tier 2x milestones at 25/50/75/100",
+      "source": "V1_ROADMAP.md \u00a73; economy.json",
+      "work_items": [
+        "M1-02",
+        "M1-05",
+        "M3-09"
+      ],
+      "verification": "Bulk/max spending cannot overspend; tier output and displayed transformation agree.",
+      "delivery_status": "not_verified",
+      "evidence": []
+    },
+    {
+      "id": "S05",
+      "requirement": "Lifetime-based 0.65-exponent Rechart, entitlement subtraction, retained-state preview and permanent power",
+      "source": "TIDEGLASS_DESIGN.md Phase 2; V1_ROADMAP.md \u00a73",
+      "work_items": [
+        "M1-01",
+        "M1-02",
+        "M2-02",
+        "BOOT-CORE"
+      ],
+      "verification": "Exact award boundary and repeated-reset tests; preview matches retained/reset state.",
+      "delivery_status": "not_verified",
+      "evidence": []
+    },
+    {
+      "id": "S06",
+      "requirement": "Autobuy at 10 Charts, synergies at 25, conditional resets at 100; free plan and five optional 50-Note slots",
+      "source": "V1_ROADMAP.md \u00a7\u00a73,7",
+      "work_items": [
+        "M2-01",
+        "M3-03"
+      ],
+      "verification": "Unlock and plan-persistence fixtures; no paid automation lock.",
+      "delivery_status": "not_verified",
+      "evidence": []
+    },
+    {
+      "id": "S07",
+      "requirement": "Cross-tier synergy matrix and honest marginal-output/purchase/reset forecasts",
+      "source": "TIDEGLASS_DESIGN.md Phase 2; V1_ROADMAP.md \u00a73",
+      "work_items": [
+        "M2-01",
+        "M2-03",
+        "M5-05"
+      ],
+      "verification": "Observed network value matches preview; forecasts state policy assumptions; late-tier purchase choices assessed.",
+      "delivery_status": "not_verified",
+      "evidence": []
+    },
+    {
+      "id": "S08",
+      "requirement": "24 hours full production plus 48 hours at quarter rate; event-driven saved-policy replay",
+      "source": "V1_ROADMAP.md \u00a7\u00a73,6,8",
+      "work_items": [
+        "M3-01",
+        "M3-10",
+        "M5-01"
+      ],
+      "verification": "Equivalent event histories match integer decisions; 72-hour cap and 24-hour return budget tested.",
+      "delivery_status": "not_verified",
+      "evidence": []
+    },
+    {
+      "id": "S09",
+      "requirement": "Focus every 2 hours, capacity 12, queued +20% ten-minute charges and equal accessible calibration",
+      "source": "TIDEGLASS_DESIGN.md Phase 3",
+      "work_items": [
+        "M3-01",
+        "M3-04",
+        "M5-02"
+      ],
+      "verification": "No hidden reward loss, duration queue bugs or reflex-only route; both completions grant identical value.",
+      "delivery_status": "not_verified",
+      "evidence": []
+    },
+    {
+      "id": "S10",
+      "requirement": "Automatic 8-hour Surveys, queue capacity 3, 10 Notes per completion",
+      "source": "TIDEGLASS_DESIGN.md Phase 3; economy.json",
+      "work_items": [
+        "M3-01",
+        "M3-10"
+      ],
+      "verification": "One daily collection retains designed supply; fractional timers persist and completion is idempotent.",
+      "delivery_status": "not_verified",
+      "evidence": []
+    },
+    {
+      "id": "S11",
+      "requirement": "Three daily contracts, 10 Notes and 250 XP each, frozen goals, rerolls and seven-day/21-slot backlog",
+      "source": "TIDEGLASS_DESIGN.md Phase 3; V1_ROADMAP.md \u00a73",
+      "work_items": [
+        "M3-02",
+        "M3-10"
+      ],
+      "verification": "Seed/rollover/claim/overflow cases; no required prestige, ad or purchase objective.",
+      "delivery_status": "not_verified",
+      "evidence": []
+    },
+    {
+      "id": "S12",
+      "requirement": "Atomic saves, rolling backups, export/import, migrations and interruption recovery",
+      "source": "V1_ROADMAP.md \u00a7\u00a73,6,8",
+      "work_items": [
+        "M1-03",
+        "M1-08",
+        "M5-07",
+        "BOOT-SAVE"
+      ],
+      "verification": "Contract validation is followed by runtime fault injection; schemas alone cannot pass persistence acceptance.",
+      "delivery_status": "not_verified",
+      "evidence": []
+    },
+    {
+      "id": "S13",
+      "requirement": "Cloud revision conflicts preserve branches; no adding divergent wallets/lifetime/offline intervals",
+      "source": "V1_ROADMAP.md \u00a76",
+      "work_items": [
+        "M2-04",
+        "M3-06"
+      ],
+      "verification": "Two-device fork and recovery drill; merge only independently verified ownership and deduplicated receipts.",
+      "delivery_status": "not_verified",
+      "evidence": []
+    },
+    {
+      "id": "S14",
+      "requirement": "Explicit event ordering, numeric remainder policy and pinned economic versions",
+      "source": "V1_ROADMAP.md \u00a7\u00a76,8",
+      "work_items": [
+        "M1-01",
+        "M1-04",
+        "M3-01",
+        "M3-10"
+      ],
+      "verification": "Version transition settles old interval once; no numerical tolerance creates an unaffordable purchase or extra Chart.",
+      "delivery_status": "verified",
+      "evidence": [
+        "release/qa/integration-transition-repaired-20261021T121351672733Z/TRANSITION_REVIEW.md",
+        "release/qa/integration-transition-repaired-20261021T121351672733Z/NUMERIC_EVIDENCE_BRIDGE.json",
+        "release/native-proof/root-transition-20261021T121321.388435Z/verification.json",
+        "release/qa/lead-transition-acceptance-20261021T1221Z/DECISIONS.md"
+      ]
+    },
+    {
+      "id": "S15",
+      "requirement": "Six chapters, ending and continued play; target 15\u201330 calendar days without hard time lock",
+      "source": "V1_ROADMAP.md \u00a73",
+      "work_items": [
+        "M1-06",
+        "M3-08",
+        "M4-06",
+        "M6-02",
+        "BOOT-CONTENT"
+      ],
+      "verification": "All goals reachable; observed later-chapter progression; ending independent of paid/optional completion.",
+      "delivery_status": "not_verified",
+      "evidence": []
+    },
+    {
+      "id": "S16",
+      "requirement": "Twelve challenge dossiers across three rule families, 100 Notes each",
+      "source": "V1_ROADMAP.md \u00a7\u00a73,7",
+      "work_items": [
+        "M3-08",
+        "M4-01",
+        "M4-06"
+      ],
+      "verification": "All three families playable; exit/restart isolated; Note acquisition/entry cost validated.",
+      "delivery_status": "not_verified",
+      "evidence": []
+    },
+    {
+      "id": "S17",
+      "requirement": "Twelve authored calibration patterns with equivalent accessible completion",
+      "source": "V1_ROADMAP.md \u00a73",
+      "work_items": [
+        "M3-04",
+        "M4-06",
+        "M5-02"
+      ],
+      "verification": "Twelve actual patterns and their equal-value alternate paths are integrated.",
+      "delivery_status": "not_verified",
+      "evidence": []
+    },
+    {
+      "id": "S18",
+      "requirement": "Eighteen main archive entries and six optional 50-Note decorations; no forced full collection",
+      "source": "V1_ROADMAP.md \u00a7\u00a73,7",
+      "work_items": [
+        "M4-06",
+        "M4-07",
+        "M5-05"
+      ],
+      "verification": "Content manifest, reachable unlocks and main-ending test with optional sinks unbought.",
+      "delivery_status": "not_verified",
+      "evidence": []
+    },
+    {
+      "id": "S19",
+      "requirement": "One harbor with initial plus six restored presentations; 25 producer presentations",
+      "source": "V1_ROADMAP.md \u00a73",
+      "work_items": [
+        "M0-05",
+        "M1-07",
+        "M2-05",
+        "M3-09",
+        "M4-07",
+        "BOOT-CONTENT"
+      ],
+      "verification": "Actual integrated assets, all states and reduced-motion variants; registry counts do not imply completed art.",
+      "delivery_status": "verified",
+      "evidence": [
+        "release/qa/integration-art-matrix-20261021T123739647573Z/ART_MATRIX_REVIEW.md",
+        "release/art/catalogue-variants/per-id-evidence.json",
+        "release/native-proof/root-art-full-20261021T122040.006324Z/verification.json",
+        "release/native-proof/root-art-pseudo-full-20261021T122636.246158Z/verification.json",
+        "release/qa/lead-art-scope-acceptance-20261021T124855.896748Z/DECISIONS.md"
+      ]
+    },
+    {
+      "id": "S20",
+      "requirement": "Season 1 Night of Returning Stars, 28-day lifecycle, isolated fleet, specified coefficients and no event prestige",
+      "source": "TIDEGLASS_DESIGN.md Phase 3; V1_ROADMAP.md \u00a73",
+      "work_items": [
+        "M4-02",
+        "M4-06",
+        "M6-07"
+      ],
+      "verification": "New/veteran equality; main power cannot enter; no economic export; actual live/end/archive behavior observed.",
+      "delivery_status": "not_verified",
+      "evidence": []
+    },
+    {
+      "id": "S21",
+      "requirement": "30 levels at 500 XP, 30 free slots with 10 cosmetics/20 fragments, 10 premium cosmetics, selected archived pass",
+      "source": "V1_ROADMAP.md \u00a73",
+      "work_items": [
+        "M4-02",
+        "M4-03",
+        "M4-06",
+        "M6-08"
+      ],
+      "verification": "15,000-XP finish; single XP grant, one selected pass and paid-pass continuation after archive.",
+      "delivery_status": "not_verified",
+      "evidence": []
+    },
+    {
+      "id": "S22",
+      "requirement": "36 unique cosmetics distributed 12 core, 10 free pass, 10 premium, 4 direct shop; supporter reuses shop items",
+      "source": "V1_ROADMAP.md \u00a73",
+      "work_items": [
+        "M4-06",
+        "M4-07",
+        "M4-08",
+        "BOOT-CONTENT"
+      ],
+      "verification": "Unique IDs and actual assets match each reward; no power effect or unbudgeted supporter art set.",
+      "delivery_status": "not_verified",
+      "evidence": []
+    },
+    {
+      "id": "S23",
+      "requirement": "Ambient soundtrack, interaction/milestone/Rechart cues, independent controls and supporter soundtrack delivery",
+      "source": "V1_ROADMAP.md \u00a73",
+      "work_items": [
+        "M1-07",
+        "M4-07",
+        "M5-06"
+      ],
+      "verification": "Licensed actual audio files, playback/volume/mute tests and working purchased soundtrack delivery.",
+      "delivery_status": "not_verified",
+      "evidence": []
+    },
+    {
+      "id": "S24",
+      "requirement": "Cosmetic previews, localized price, verified purchases, restore, pending/retry/refund/revocation handling",
+      "source": "V1_ROADMAP.md \u00a7\u00a73,8,9",
+      "work_items": [
+        "M4-03",
+        "M4-04",
+        "M5-08"
+      ],
+      "verification": "Native sandbox evidence on both stores; no fake adapter accepted; verified entitlement delivered once.",
+      "delivery_status": "not_verified",
+      "evidence": []
+    },
+    {
+      "id": "S25",
+      "requirement": "Equal ad/briefing six-token daily allowance; 300-second credits, speed/offline choice and additive buffs",
+      "source": "TIDEGLASS_DESIGN.md Phase 3; V1_ROADMAP.md \u00a7\u00a73,7",
+      "work_items": [
+        "M3-07",
+        "M4-05",
+        "M4-08",
+        "M5-05"
+      ],
+      "verification": "No-fill/refusal free path; +25% for 1200 seconds or bounded five-minute slice; +20% and +25% add to 1.45; full trajectories compared.",
+      "delivery_status": "not_verified",
+      "evidence": []
+    },
+    {
+      "id": "S26",
+      "requirement": "Settings, target input, readable numbers, contextual help and opt-in quiet-hour notifications",
+      "source": "V1_ROADMAP.md \u00a73",
+      "work_items": [
+        "M3-05",
+        "M5-02"
+      ],
+      "verification": "Large text/reduced motion/non-color cues and critical controls work on named targets.",
+      "delivery_status": "not_verified",
+      "evidence": []
+    },
+    {
+      "id": "S27",
+      "requirement": "Help, recovery guide, release notes, credits, privacy/support URLs and runbooks",
+      "source": "V1_ROADMAP.md \u00a7\u00a73,9,12",
+      "work_items": [
+        "M5-03",
+        "M5-04",
+        "M7-05",
+        "M7-07"
+      ],
+      "verification": "All pages and review/support links work and match actual data and products.",
+      "delivery_status": "not_verified",
+      "evidence": []
+    },
+    {
+      "id": "S28",
+      "requirement": "No known save-loss, duplicate grant, negative wallet or undelivered verified purchase",
+      "source": "V1_ROADMAP.md \u00a78",
+      "work_items": [
+        "M1-08",
+        "M3-10",
+        "M5-07",
+        "M5-08",
+        "M7-06"
+      ],
+      "verification": "Fault/replay evidence; zero critical or major normal-progression/access/purchase defects at release.",
+      "delivery_status": "not_verified",
+      "evidence": []
+    },
+    {
+      "id": "S29",
+      "requirement": "Numeric parity: matching integer decisions; continuous error budget initially 1e-8 outside near-zero cases",
+      "source": "V1_ROADMAP.md \u00a78",
+      "work_items": [
+        "M1-01",
+        "M3-10",
+        "M5-05"
+      ],
+      "verification": "Production number policy specifies absolute floor and tolerance without changing award thresholds.",
+      "delivery_status": "verified",
+      "evidence": [
+        "release/qa/integration-current-scope-20261021T114227186831Z/CURRENT_SCOPE_CHECKPOINT.md",
+        "release/qa/integration-current-scope-20261021T114227186831Z/NUMERIC_EVIDENCE_BRIDGE.json",
+        "release/qa/lead-bounded-acceptance-20261021T1148Z/DECISIONS.md",
+        "release/qa/integration-numeric-20261019T135534237861Z/NUMERIC_REVIEW.md",
+        "release/qa/integration-crossengine-20261019T143516578781Z/CROSS_ENGINE_REVIEW.md",
+        "docs/decisions/numbers-and-event-order.md",
+        "release/qa/integration-transition-repaired-20261021T121351672733Z/TRANSITION_REVIEW.md",
+        "release/qa/integration-transition-repaired-20261021T121351672733Z/NUMERIC_EVIDENCE_BRIDGE.json",
+        "release/native-proof/root-transition-20261021T121321.388435Z/verification.json",
+        "release/qa/lead-transition-acceptance-20261021T1221Z/DECISIONS.md"
+      ]
+    },
+    {
+      "id": "S30",
+      "requirement": "99.5% crash-free sessions over 10,000 observed sessions, per platform/device and critical-flow review",
+      "source": "V1_ROADMAP.md \u00a78",
+      "work_items": [
+        "M5-04",
+        "M6-05",
+        "M6-07",
+        "M7-06"
+      ],
+      "verification": "Real instrumented session denominator and device breakdown; no critical-flow crash left open.",
+      "delivery_status": "not_verified",
+      "evidence": []
+    },
+    {
+      "id": "S31",
+      "requirement": "60/30fps targets, p95 startup \u22645s, 24h replay \u22643s, measured 30-minute battery/thermal usability",
+      "source": "V1_ROADMAP.md \u00a78",
+      "work_items": [
+        "M5-01",
+        "M5-07"
+      ],
+      "verification": "Named physical devices and test conditions; p95 evidence; progress-visible chunking preserves owed work.",
+      "delivery_status": "not_verified",
+      "evidence": []
+    },
+    {
+      "id": "S32",
+      "requirement": "15 new moderated testers and 80% comprehension target; first prestige 15\u201330 minutes among reachers plus non-reachers",
+      "source": "V1_ROADMAP.md \u00a7\u00a75,8",
+      "work_items": [
+        "M2-06",
+        "M2-07",
+        "M6-04"
+      ],
+      "verification": "Actual study records; no bot population or artificial filtering is called user evidence.",
+      "delivery_status": "not_verified",
+      "evidence": []
+    },
+    {
+      "id": "S33",
+      "requirement": "30/90-day simulations of visit/reset/buy/bonus strategies and Note scarcity",
+      "source": "V1_ROADMAP.md \u00a77",
+      "work_items": [
+        "M5-05",
+        "M6-03"
+      ],
+      "verification": "No-bonus/free/ad full trajectories, 1/3/6 visits and 1,750-Note optional budget with unlock timing.",
+      "delivery_status": "not_verified",
+      "evidence": []
+    },
+    {
+      "id": "S34",
+      "requirement": "Real D30 and 28-day season, targets 500 starts/10,000 sessions; uncertainty and baseline tracking",
+      "source": "V1_ROADMAP.md \u00a75",
+      "work_items": [
+        "M6-01",
+        "M6-02",
+        "M6-07",
+        "M5-05"
+      ],
+      "verification": "Full observation windows, retained churned installs in denominator, config/acquisition/exclusion records. Before enrollment preregister primary outcome and duration; state descriptive precision, and separately compute MDE/power for any causal experiment. Planning sample targets are not power guarantees.",
+      "delivery_status": "not_verified",
+      "evidence": []
+    },
+    {
+      "id": "S35",
+      "requirement": "D1/D7/D30 35/15/7% review hypotheses, strategy variety, welfare and commercial cost assessment",
+      "source": "V1_ROADMAP.md \u00a78",
+      "work_items": [
+        "M6-02",
+        "M7-01"
+      ],
+      "verification": "Evidence-backed launch/extend/revise decision; no automatic retention waiver of correctness or fairness.",
+      "delivery_status": "not_verified",
+      "evidence": []
+    },
+    {
+      "id": "S36",
+      "requirement": "Current platform review, accurate listing, sandbox tests and final store acceptance",
+      "source": "V1_ROADMAP.md \u00a79",
+      "work_items": [
+        "M0-03",
+        "M7-03",
+        "M7-07"
+      ],
+      "verification": "Recheck official requirements near submission; accepted native builds and working products/reviewer access.",
+      "delivery_status": "not_verified",
+      "evidence": []
+    },
+    {
+      "id": "S37",
+      "requirement": "Monitoring, support diagnostics, backups, feature disables, rollout stops and compatible forward repair",
+      "source": "V1_ROADMAP.md \u00a7\u00a76,12",
+      "work_items": [
+        "M5-04",
+        "M6-05",
+        "M6-08",
+        "M7-04",
+        "M7-08"
+      ],
+      "verification": "Staging and live-operation drills; never roll a newer save into an unsupported older executable.",
+      "delivery_status": "not_verified",
+      "evidence": []
+    },
+    {
+      "id": "S38",
+      "requirement": "14 actual days of launch coverage, incident follow-through, final v1 record and Season 2 brief",
+      "source": "V1_ROADMAP.md \u00a712",
+      "work_items": [
+        "M7-08",
+        "OPS-14"
+      ],
+      "verification": "Dated operating report, fixes/owners and ongoing costs; future content is a brief, not unbudgeted production.",
+      "delivery_status": "not_verified",
+      "evidence": []
+    },
+    {
+      "id": "S39",
+      "requirement": "Privacy, consent/refusal, account deletion/export and service outages reflect actual SDK behavior",
+      "source": "V1_ROADMAP.md \u00a7\u00a76,9",
+      "work_items": [
+        "M3-06",
+        "M5-03"
+      ],
+      "verification": "Native network/SDK audit and lifecycle/outage tests; no policy page alone counts as implementation.",
+      "delivery_status": "not_verified",
+      "evidence": []
+    },
+    {
+      "id": "S40",
+      "requirement": "Reproducible native builds, explicit stack/toolchain feasibility and configuration compatibility",
+      "source": "V1_ROADMAP.md \u00a7\u00a75,6",
+      "work_items": [
+        "M0-02",
+        "M0-03",
+        "M0-08",
+        "M1-04"
+      ],
+      "verification": "Actual build/probe logs, pinned versions, safe defaults and rejection of incompatible updates.",
+      "delivery_status": "not_verified",
+      "evidence": []
+    },
+    {
+      "id": "S41",
+      "requirement": "Budget and device/test plan adapted to AI delivery; protect scope and independent review",
+      "source": "V1_ROADMAP.md \u00a7\u00a71,4,11; user AI replacement instruction",
+      "work_items": [
+        "M0-01",
+        "M0-04",
+        "M0-06",
+        "M0-07"
+      ],
+      "verification": "Execution costs and access needs named; no inherited human-week promise or unsupported tool capability claim.",
+      "delivery_status": "not_verified",
+      "evidence": []
+    },
+    {
+      "id": "S42",
+      "requirement": "Complete release evidence pack and approved candidate with only accepted minor issues",
+      "source": "V1_ROADMAP.md \u00a7\u00a78,12",
+      "work_items": [
+        "M7-01",
+        "M7-02",
+        "M7-06"
+      ],
+      "verification": "Evidence from exact candidate/config/content versions; release status cannot be inferred from plan coverage.",
+      "delivery_status": "not_verified",
+      "evidence": []
+    },
+    {
+      "id": "S43",
+      "requirement": "Polish observed content/UI issues and create accurate store/launch assets",
+      "source": "V1_ROADMAP.md \u00a7\u00a75,12",
+      "work_items": [
+        "M6-04",
+        "M6-06",
+        "M5-06",
+        "M7-05"
+      ],
+      "verification": "Changed screens rechecked on targets; final screenshots/footage represent shipped product.",
+      "delivery_status": "not_verified",
+      "evidence": []
+    },
+    {
+      "id": "S44",
+      "requirement": "Mid/late progression adds meaningful decisions and at least two viable strategy/challenge approaches",
+      "source": "V1_ROADMAP.md \u00a7\u00a73,7,8",
+      "work_items": [
+        "M1-06",
+        "M3-08",
+        "M5-05",
+        "M6-02"
+      ],
+      "verification": "Combined simulation and observed play; no excessive daily-check-in or paid requirement for ending.",
+      "delivery_status": "not_verified",
+      "evidence": []
+    }
+  ]
+}

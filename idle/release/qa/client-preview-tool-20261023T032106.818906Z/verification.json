@@ -1,0 +1,266 @@
+{
+  "reviewer": "/root/client_asset_review",
+  "tool_author": "/root",
+  "bounded_tooling_accepted": true,
+  "blocking_findings": [],
+  "historical_only": true,
+  "current_release_creative_or_store_conformance_approved": false,
+  "input_pins": {
+    "release/store/tools/export_preview.swift": "656ad603bc370df9e4de8ccfb14d6364757a1e44eb5f3792e39959fffc3cf79c",
+    "release/store/tools/inspect_preview.swift": "a1c4dce52b6a67e3ef9fbc0a12223450e12e041bfc40efe7b83e404da23b0dbf",
+    "release/store/preview-tool-author-20261021T144742.535298Z/verification.json": "cd646dfaea1b72004288a2defa6acb32bfae64d529716ab6050c9e4f072b7de3",
+    "release/native-proof/integration-ios-phone-20261021T112255.702927Z/gameplay.mp4": "f3e221bfc8f0c7665d34594e53faa563a049d56008df9d3f90f463e353ad6d67"
+  },
+  "original_inputs_unchanged": {
+    "release/store/tools/export_preview.swift": true,
+    "release/store/tools/inspect_preview.swift": true,
+    "release/store/preview-tool-author-20261021T144742.535298Z/verification.json": true,
+    "release/native-proof/integration-ios-phone-20261021T112255.702927Z/gameplay.mp4": true
+  },
+  "audio_fixture_input_sha256": "9ad58a4d1af49d867e156868c6ea10c00cdcc5074ea9a07b47cbe83ddc8a4d77",
+  "actual_transcodes": 2,
+  "negative_checks": 12,
+  "frame_comparisons": 10,
+  "metadata": {
+    "decoded": {
+      "audio_track_count": 0,
+      "codec_fourcc": [
+        "avc1"
+      ],
+      "decoded_video_frames": 600,
+      "display_height": 1920,
+      "display_width": 886,
+      "duration_seconds": 20,
+      "estimated_bits_per_second": 2072202,
+      "first_frame_seconds": 0,
+      "frames": [
+        {
+          "actual_seconds": 0,
+          "file": "frame-0.png",
+          "requested_seconds": 0
+        },
+        {
+          "actual_seconds": 5,
+          "file": "frame-1.png",
+          "requested_seconds": 5
+        },
+        {
+          "actual_seconds": 10,
+          "file": "frame-2.png",
+          "requested_seconds": 10
+        },
+        {
+          "actual_seconds": 15,
+          "file": "frame-3.png",
+          "requested_seconds": 15
+        },
+        {
+          "actual_seconds": 19.933333333333334,
+          "file": "frame-4.png",
+          "requested_seconds": 19.966666666666665
+        }
+      ],
+      "last_frame_seconds": 19.966666666666665,
+      "max_frame_gap_seconds": 0.03333333333333499,
+      "min_frame_gap_seconds": 0.03333333333333144,
+      "nominal_frames_per_second": 30,
+      "sample_read_complete": true,
+      "source": "/Users/csys/Desktop/ibicot/idle/release/qa/client-preview-tool-20261023T032106.818906Z/historical-review.mp4"
+    },
+    "rotated-decoded": {
+      "audio_track_count": 0,
+      "codec_fourcc": [
+        "avc1"
+      ],
+      "decoded_video_frames": 600,
+      "display_height": 886,
+      "display_width": 1920,
+      "duration_seconds": 20,
+      "estimated_bits_per_second": 2141290.5,
+      "first_frame_seconds": 0,
+      "frames": [
+        {
+          "actual_seconds": 0,
+          "file": "frame-0.png",
+          "requested_seconds": 0
+        },
+        {
+          "actual_seconds": 5,
+          "file": "frame-1.png",
+          "requested_seconds": 5
+        },
+        {
+          "actual_seconds": 10,
+          "file": "frame-2.png",
+          "requested_seconds": 10
+        },
+        {
+          "actual_seconds": 15,
+          "file": "frame-3.png",
+          "requested_seconds": 15
+        },
+        {
+          "actual_seconds": 19.933333333333334,
+          "file": "frame-4.png",
+          "requested_seconds": 19.966666666666665
+        }
+      ],
+      "last_frame_seconds": 19.966666666666665,
+      "max_frame_gap_seconds": 0.03333333333333499,
+      "min_frame_gap_seconds": 0.03333333333333144,
+      "nominal_frames_per_second": 30,
+      "sample_read_complete": true,
+      "source": "/Users/csys/Desktop/ibicot/idle/release/qa/client-preview-tool-20261023T032106.818906Z/rotated-review.mp4"
+    },
+    "audio-fixture-decoded": {
+      "audio_track_count": 1,
+      "codec_fourcc": [
+        "avc1"
+      ],
+      "decoded_video_frames": 105,
+      "display_height": 2622,
+      "display_width": 1206,
+      "duration_seconds": 25.275,
+      "estimated_bits_per_second": 1131711.75,
+      "first_frame_seconds": 0,
+      "frames": [
+        {
+          "actual_seconds": 0,
+          "file": "frame-0.png",
+          "requested_seconds": 0
+        },
+        {
+          "actual_seconds": 6.23,
+          "file": "frame-1.png",
+          "requested_seconds": 6.31875
+        },
+        {
+          "actual_seconds": 12.356666666666667,
+          "file": "frame-2.png",
+          "requested_seconds": 12.6375
+        },
+        {
+          "actual_seconds": 18.683333333333334,
+          "file": "frame-3.png",
+          "requested_seconds": 18.956249999999997
+        },
+        {
+          "actual_seconds": 25.191666666666666,
+          "file": "frame-4.png",
+          "requested_seconds": 25.241666666666664
+        }
+      ],
+      "last_frame_seconds": 25.191666666666666,
+      "max_frame_gap_seconds": 0.6666666666666661,
+      "min_frame_gap_seconds": 0.0033333333333303017,
+      "nominal_frames_per_second": 4.128349304199219,
+      "sample_read_complete": true,
+      "source": "/Users/csys/Desktop/ibicot/idle/release/qa/client-preview-tool-20261023T032106.818906Z/with-audio.mp4"
+    }
+  },
+  "visual_samples": [
+    "decoded/frame-0.png",
+    "decoded/frame-2.png",
+    "decoded/frame-4.png",
+    "rotated-decoded/frame-0.png"
+  ],
+  "all_processes_completed": true,
+  "sha256": {
+    "compile-inspect_preview.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "rotated-export.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "audio-fixture-inspect.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "existing-output.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "same-source.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "compare_frames.py": "e1541049b2b673eab797ab255a5a6c7675dd13d0441caf0165af778bbda6a8c1",
+    "long.stderr": "85f24d9d56cd3679e14d9a442221f0ba65a6c11a5bb48091e941e20b788ae1f7",
+    "compile-export_preview.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "fixture-commands.json": "73860715c7df2bd6b956498eabe19cab296773841fe0d185e496463003f2f316",
+    "nan-start.stderr": "85f24d9d56cd3679e14d9a442221f0ba65a6c11a5bb48091e941e20b788ae1f7",
+    "historical-export.stdout": "247d6a0f29eed233d246cbdbe7591e5bc012bbb30505a18e675d481297ff255c",
+    "export_preview": "ab22fa410bac286c3565deb09ade71b38a8e39170588ed70948a62070bc31bc6",
+    "rotate-fixture.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "symlink-source.stderr": "474fafeb0c799903b1efe0f2a5eab67681389d8fd9139335635fae118ee5d734",
+    "PREVIEW_TOOL_REVIEW.md": "e6a16d98c24b97c02cf63a897c2fd2aded5fa48c34484b638f00de1328e63d87",
+    "rotate-fixture.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "symlink-source.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "nan-start.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "historical-export.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "same-source.stderr": "474fafeb0c799903b1efe0f2a5eab67681389d8fd9139335635fae118ee5d734",
+    "existing-output.stderr": "9d4e21ff36ce76df0a8cf2d17a729416904de1f65d8bf076870a2f16c4af5671",
+    "existing-inspection.stderr": "917535a30e001e1a11f627f321bf02bd96f458a36cea8e9b4f40b28d505b1290",
+    "long.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "compile-export_preview.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "frame-comparison.json": "858162269254f8c0c59db2a8012a400fb1cd493efd492408d2824124508d8d13",
+    "compile-inspect_preview.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "rotated-review.mp4": "1dae9f9491dd7895dfdc23d280521bdca9ae6084e972f4ce59a31782e243aace",
+    "audio-fixture-inspect.stdout": "bb6b6524c6140537323f19330b4f1ae14ce35ea098abd25cc30685c90c39def2",
+    "commands.json": "238df543b7c8f94a053a1e5cd3ca4bef3e05349286b0b5dfd080141616373930",
+    "rotated-export.stdout": "be05400a1adaa5681a05fe36c2929c4aedc7c8b5e07c39fb877db9875c4a5525",
+    "rotated-inspect.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "source-frame-probe.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "existing-output.mp4": "0f831b40b4f28f6d38553b0ac82f4b3cafefca52563508eda572bce0faf23dca",
+    "audio-fixture.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "rotated-source-probe.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "outside-source.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "audio-must-not-be-discarded.stderr": "750c56486e7f21699ee7a6f4269c561c0ca0711bf8c88ecda6af30f92d4b1dbf",
+    "odd-size.stderr": "f26f516eda1e61b7b396d15fdb083165f2942a6e3575104da1de11cb7c50d9a6",
+    "compile-source-probe.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "negative-start.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "short.stderr": "85f24d9d56cd3679e14d9a442221f0ba65a6c11a5bb48091e941e20b788ae1f7",
+    "too-large.stderr": "f26f516eda1e61b7b396d15fdb083165f2942a6e3575104da1de11cb7c50d9a6",
+    "historical-inspect.stdout": "4a2cc9c420a3ac684fbed331beca0aed4241d31c7a10584ea56d896f863cc20f",
+    "orientation-commands.json": "4cc396b6a5674e3993cfe86b1bed285313f94a700343aa54800276b3684b88bf",
+    "input-pins.json": "488803fe92cc6331b621583855bac0af7c21620eeebef6ce38ad590b6dd00f2b",
+    "export_preview.swift": "656ad603bc370df9e4de8ccfb14d6364757a1e44eb5f3792e39959fffc3cf79c",
+    "short.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "negative-start.stderr": "85f24d9d56cd3679e14d9a442221f0ba65a6c11a5bb48091e941e20b788ae1f7",
+    "compile-source-probe.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "historical-inspect.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "too-large.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "inspect_preview.swift": "a1c4dce52b6a67e3ef9fbc0a12223450e12e041bfc40efe7b83e404da23b0dbf",
+    "odd-size.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "source_probe.swift": "7abd6ecdbf031c2601db84cb5374488e78326ed49efec45baee5be58ac3cb60d",
+    "negative-checks.json": "baf809e96dc784a94ad4492b524e0122f921c2fd830acbd6ba71c50666fff0e4",
+    "with-audio.mp4": "043a04219a46d3b75d6fdd433f086693a1b9624e951667534505e08cdb38c07c",
+    "audio-fixture.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "outside-source.stderr": "e19d813ef186a9180c5f465f7f859fc6fbca6c997a44f674f365cdeb3ad1257e",
+    "rotated-source-probe.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "audio-must-not-be-discarded.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "inspect_preview": "6ded248f4be7c49cd567ba6bfcbc0737020174163de35b3e7bd52333495c689c",
+    "source-frame-probe.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "rotated-inspect.stdout": "580315474e892979c9053dfbdc4e3d61702ecab7be6759a05bf4fba6a9f72079",
+    "source_probe": "8e12a050c4396e4c8a3bd41173af19212424f920b441aef8fc241f243bd50510",
+    "historical-review.mp4": "b7fa89d73248e5831c77c49775eeb5d1358d07a700bacf4a4ce604d1949f1dd4",
+    "rotated-source.mp4": "1728c2c454fe65d5c898c1b96c68b9cea8101d4ca38d0e60421db3fe2fe39f00",
+    "source-frames/metadata.json": "58ddd8a4179767333ee498a440efe374617b9ae579330eeffb337f1b92b5518f",
+    "source-frames/source-4.png": "69fa840cfb246ce01eba61ccebf92cb8144514116e2b24cefbaaa7d4e4adae5e",
+    "source-frames/source-0.png": "9f33f295232ce94482a5eefae5dc5dd6b860fe85841d6b6534beb2711ab5d010",
+    "source-frames/source-1.png": "96ea7a0f41ad6e85e249dabff0217e1111f8a37818601a6554de3ebde44c1c85",
+    "source-frames/source-3.png": "efe92dc6840da3c9e8835b90096727d4e35f620a8585496663ae82892aa48aad",
+    "source-frames/source-2.png": "b22eb315c2af7d2841955b65e4c599dc167d9e877440998ab76d69e518038bac",
+    "rotated-decoded/frame-4.png": "fe6e3d8f32d56b4a02c14eee04672f787dad022af78d1f5e5bdb0e4d7432f5e6",
+    "rotated-decoded/frame-2.png": "edd365a3680681d5434f50d43d7b619992133e3c2ea83ab3fb360077223986ec",
+    "rotated-decoded/frame-3.png": "431d694a205e975e3f57219ed5bedaba4b8a4cb00d19e69368abb34195dc8b25",
+    "rotated-decoded/frame-1.png": "5f98edfed27c767381d1da610072f781e52a13ff5a08aaf324718b2e85dd537a",
+    "rotated-decoded/frame-0.png": "1c82eef060174c3598dfeff6dcab38b650f2c6598a69c86ac8d2aa1e8ffc1ad1",
+    "rotated-decoded/metadata.json": "4b4ebd362140580654ada02ba6dd950989237dbe34b4fa7c3efe123c4167d3a9",
+    "rotated-source-frames/metadata.json": "97d06ecd5bf2299760ad6aed0c8c944bd458c5dbbca4a3b96b25ee0c3d644a93",
+    "rotated-source-frames/source-4.png": "116ffe70aa3829fc8a9464002a3ccf2dc657548130d795f4108c0282b6879ff5",
+    "rotated-source-frames/source-0.png": "87ebbc62af60a2db3edfd5b9f15477626c5473c618906d1dd1b1d4af87439bc5",
+    "rotated-source-frames/source-1.png": "cd7feee30ef6dda994a6f4a1fb1ead2dc60f2daf89e7a78fb11515b8f9939a83",
+    "rotated-source-frames/source-3.png": "217fbea69f7dbcb2e17a04fc45c260b06de6e91a0d83c5a404526ac45520b59a",
+    "rotated-source-frames/source-2.png": "0d4a94063e345cfd17b5f0b5d4a937ee5910764126c4a37d81231dafd0d3e652",
+    "audio-fixture-decoded/frame-4.png": "ef59e72b119371ec9ae34e2923d34e3f7ee86c7f868df44b2c922528f27ac720",
+    "audio-fixture-decoded/frame-2.png": "37edc4395c15f884e469730d7ad0d9386dd89e6feff8f719d83730abf758d875",
+    "audio-fixture-decoded/frame-3.png": "8438f00087025584d64e15f914fca182aa93003b47332318820701b074ed30c8",
+    "audio-fixture-decoded/frame-1.png": "4878ad02919f4d645eb4792aef7ea0e1eb3199db982aedbf8137a1c6070e29fe",
+    "audio-fixture-decoded/frame-0.png": "218c999fddf4572b5a009ad791611789aec91c9028a8be5fb1d8209cbf7822c9",
+    "audio-fixture-decoded/metadata.json": "900b084dbd786ec63a622ba3c6a8fec2718d3bf298be7e36a4520a6f7512c9ae",
+    "decoded/frame-4.png": "179da9c912779c652fbc1a859fb29f834042513ff4c80f714a5ae648168c9f81",
+    "decoded/frame-2.png": "0cc80bddbc96d918e987bca3d9c3d6845dd681891c3d60e03e829eba57392103",
+    "decoded/frame-3.png": "39d9c06a0852d0b9ed2bb583891c32b0e0a875ffcdb8e9ee27ae1b62c2c3dc0f",
+    "decoded/frame-1.png": "ef8f8b0ff4d661f2490c4dbe0ff56794fb4aaa67fcaaa4e438b9d1ffdf0e6c9b",
+    "decoded/frame-0.png": "b7e5efa4ffb907cd7cdc4479538a7f27583c17def2d64f9ece0fefe84f34c613",
+    "decoded/metadata.json": "0f01500c883f5402ef80e1f4cfd6bf0b78f2de829cbcc8998699dbd26d5f3bf3"
+  }
+}

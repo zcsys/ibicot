@@ -1,0 +1,53 @@
+{
+  "command": [
+    "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3",
+    "/Users/csys/Desktop/ibicot/idle/tool/verify_current_runtime.py",
+    "/Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261023T040445.261666Z-3b00cc8f7122",
+    "--device",
+    "F05BE4B0-52C1-4CA1-B721-BD64AE559E3F",
+    "--label",
+    "ios-phone",
+    "--scenario",
+    "runtime-study-default",
+    "--run-id",
+    "v3b00-ios-phone-default",
+    "--observe-privacy"
+  ],
+  "scenario": "runtime-study-default",
+  "label": "ios-phone",
+  "run_id": "v3b00-ios-phone-default",
+  "predecessor": null,
+  "started_utc": "20261023T043927.291573Z",
+  "observer_command": [
+    "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3",
+    "/Users/csys/Desktop/ibicot/idle/release/native-privacy/runtime_observation.py",
+    "collect",
+    "--root",
+    "/Users/csys/Desktop/ibicot/idle",
+    "--output",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/execution-3b00-20261023T040612.562001Z/observation-current-runtime-ios-phone-20261023T043927564154Z",
+    "--candidate",
+    "/Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261023T040445.261666Z-3b00cc8f7122",
+    "--evidence",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/current-runtime-ios-phone-20261023T043927564154Z",
+    "--device",
+    "F05BE4B0-52C1-4CA1-B721-BD64AE559E3F"
+  ],
+  "exit_code": 0,
+  "observer_exit_code": 0,
+  "verification": "/Users/csys/Desktop/ibicot/idle/release/native-proof/current-runtime-ios-phone-20261023T043927564154Z/verification.json",
+  "verification_sha256": "073f080ee822b8566860e5ad281faef8240f5f97665ca06b6d370c0853be0af7",
+  "status": "passed",
+  "errors": [],
+  "finalize_command": [
+    "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3",
+    "/Users/csys/Desktop/ibicot/idle/release/native-privacy/runtime_observation.py",
+    "finalize",
+    "--root",
+    "/Users/csys/Desktop/ibicot/idle",
+    "--output",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/execution-3b00-20261023T040612.562001Z/observation-current-runtime-ios-phone-20261023T043927564154Z"
+  ],
+  "finalize_exit_code": 0,
+  "finished_utc": "2026-10-23T04:40:30.814942+00:00"
+}

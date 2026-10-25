@@ -1,0 +1,51 @@
+[
+  {
+    "id": "QA-010",
+    "priority": "P2",
+    "title": "Requests and account completion cross a replacement session",
+    "source": [
+      "game/platform/lib/tideglass_platform.dart"
+    ],
+    "reproduction": "Actual loopback HTTP: pause openUrl for an export under A, replace session with B, release; Authorization uses B. Separately pause revoke A response, recover B through HTTP, release revoke; B session becomes null.",
+    "impact": "An operation may run against a different account from its original intent, or remove a newly recovered credential.",
+    "status": "reproduced_pending_lead_repair",
+    "tests": 2
+  },
+  {
+    "id": "QA-011",
+    "priority": "P2",
+    "title": "Consent ordering and telemetry account isolation are missing",
+    "source": [
+      "game/mobile/lib/native_services.dart",
+      "game/platform/lib/tideglass_platform.dart"
+    ],
+    "reproduction": "Delay opt-in, complete later opt-out, then deliver opt-in; both native manager and platform buffer become enabled. Queue A activity, replace session with B, flush; sendTelemetry executes under B.",
+    "impact": "Local refusal can be overridden and old-account events can be submitted under another account. Gameplay reporting is not yet wired; this is a public platform-client and native preference defect.",
+    "status": "reproduced_pending_lead_repair",
+    "tests": 3
+  },
+  {
+    "id": "QA-012",
+    "priority": "P2",
+    "title": "Stale purchase verification completes and clears its retry after identity changes",
+    "source": [
+      "game/mobile/lib/native_services.dart"
+    ],
+    "reproduction": "Delay purchased verification under A and harbor seed X, change account or harbor, release response; native store complete is called and UI marks verified although ownership projection correctly rejects the stale result.",
+    "impact": "Current UI falsely reports delivery and retry context is discarded. No wrong-account paid cosmetic grant occurred.",
+    "status": "reproduced_pending_lead_repair",
+    "tests": 2
+  },
+  {
+    "id": "QA-013",
+    "priority": "P2",
+    "title": "A free briefing syncs to an account chosen during the local save",
+    "source": [
+      "game/mobile/lib/support_service_bridge.dart"
+    ],
+    "reproduction": "Pause onPersist after awarding briefing under A, replace session with B, release save; claimSupport executes for B.",
+    "impact": "The new account may consume the wrong shared daily slot. The local free token remains valid.",
+    "status": "reproduced_pending_lead_repair",
+    "tests": 1
+  }
+]

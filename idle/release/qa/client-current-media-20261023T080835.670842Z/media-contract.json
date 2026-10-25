@@ -1,0 +1,77 @@
+{
+  "original_packages": [
+    {
+      "id": "M5-06",
+      "milestone": "M5",
+      "title": "Complete presentation and store assets",
+      "owner": "AR",
+      "effort_person_weeks": 2.7,
+      "dependencies": [
+        "M4-07"
+      ],
+      "acceptance": "Remove placeholders, integrate final sound direction, and prepare representative screenshots, icon and short footage.",
+      "status": "not_started",
+      "release_class": "v1_required"
+    },
+    {
+      "id": "M7-03",
+      "milestone": "M7",
+      "title": "Package native release candidates",
+      "owner": "UI",
+      "effort_person_weeks": 2.1,
+      "dependencies": [
+        "M6-04",
+        "M7-01"
+      ],
+      "acceptance": "Signing, install/update, responsive layouts, licensed assets and store-visible flows work in final distribution builds.",
+      "status": "not_started",
+      "release_class": "v1_required"
+    },
+    {
+      "id": "M7-05",
+      "milestone": "M7",
+      "title": "Finish store communication and support material",
+      "owner": "AR",
+      "effort_person_weeks": 2,
+      "dependencies": [
+        "M6-06",
+        "M7-01"
+      ],
+      "acceptance": "Screenshots, footage, credits, help visuals and release assets describe the actual shipped game and offers.",
+      "status": "not_started",
+      "release_class": "v1_required"
+    }
+  ],
+  "scope": [
+    {
+      "id": "S23",
+      "requirement": "Ambient soundtrack, interaction/milestone/Rechart cues, independent controls and supporter soundtrack delivery",
+      "source": "V1_ROADMAP.md \u00a73",
+      "work_items": [
+        "M1-07",
+        "M4-07",
+        "M5-06"
+      ],
+      "verification": "Licensed actual audio files, playback/volume/mute tests and working purchased soundtrack delivery.",
+      "delivery_status": "not_verified",
+      "evidence": []
+    },
+    {
+      "id": "S43",
+      "requirement": "Polish observed content/UI issues and create accurate store/launch assets",
+      "source": "V1_ROADMAP.md \u00a7\u00a75,12",
+      "work_items": [
+        "M6-04",
+        "M6-06",
+        "M5-06",
+        "M7-05"
+      ],
+      "verification": "Changed screens rechecked on targets; final screenshots/footage represent shipped product.",
+      "delivery_status": "not_verified",
+      "evidence": []
+    }
+  ],
+  "accepted_phone_boundary": "local listing candidates reviewed, no package/scope status change, no store acceptance",
+  "fresh_current_media_status": "await immutable Android/tablet export packets; no actual new creative accepted",
+  "observed_android_capture_failure": "integration-android-20261023T080508.861496Z: first screencap succeeded; hard-link ACK permission denied; passed false; no video"
+}

@@ -1,0 +1,84 @@
+[
+  {
+    "utc": "2026-10-25T16:50:05.329485+00:00",
+    "argv": [
+      "ditto",
+      "-x",
+      "-k",
+      "/Users/csys/Desktop/ibicot/idle/release/native-proof/20261023T040548.338966Z/artifacts/tideglass-ios-debug.zip",
+      "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted"
+    ],
+    "exit_code": 0,
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "utc": "2026-10-25T16:50:05.726743+00:00",
+    "argv": [
+      "xcrun",
+      "simctl",
+      "get_app_container",
+      "F05BE4B0-52C1-4CA1-B721-BD64AE559E3F",
+      "dev.tideglass.game",
+      "data"
+    ],
+    "exit_code": 0,
+    "stdout_sha256": "3ce6e9c364754408c60426197c45430794a7cc276af9089b89c43aaa32f91056",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "utc": "2026-10-25T16:50:05.922072+00:00",
+    "argv": [
+      "xcrun",
+      "simctl",
+      "get_app_container",
+      "F05BE4B0-52C1-4CA1-B721-BD64AE559E3F",
+      "dev.tideglass.game",
+      "app"
+    ],
+    "exit_code": 0,
+    "stdout_sha256": "de37d149712f957e9433930b16676260b285dbd875711ac5a92f48b610e4bb25",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "utc": "2026-10-25T16:50:06.430333+00:00",
+    "argv": [
+      "xcrun",
+      "simctl",
+      "install",
+      "F05BE4B0-52C1-4CA1-B721-BD64AE559E3F",
+      "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app"
+    ],
+    "exit_code": 0,
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "utc": "2026-10-25T16:50:14.872187+00:00",
+    "argv": [
+      "xcrun",
+      "simctl",
+      "get_app_container",
+      "F05BE4B0-52C1-4CA1-B721-BD64AE559E3F",
+      "dev.tideglass.game",
+      "app"
+    ],
+    "exit_code": 0,
+    "stdout_sha256": "e7ea26893689f1c65b5c23b1a004b36de246da5852a3ef0b7915375b992da56b",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "utc": "2026-10-25T16:50:15.241721+00:00",
+    "argv": [
+      "xcrun",
+      "simctl",
+      "get_app_container",
+      "F05BE4B0-52C1-4CA1-B721-BD64AE559E3F",
+      "dev.tideglass.game",
+      "data"
+    ],
+    "exit_code": 0,
+    "stdout_sha256": "94c638741339611957d4fa8751285e7ff49b8023ce98a278c46edcbbd63f7a66",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+]

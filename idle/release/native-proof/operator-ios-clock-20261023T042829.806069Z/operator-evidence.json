@@ -1,0 +1,33 @@
+{
+  "recorded_utc": "2026-10-23T04:28:29.806580+00:00",
+  "operator": "root via cua_repl Device Hub com.apple.dt.Devices",
+  "device": "F05BE4B0-52C1-4CA1-B721-BD64AE559E3F",
+  "observed_window": "Tideglass Development \u2014 iOS26.3.1",
+  "verification_directory": "/Users/csys/Desktop/ibicot/idle/release/native-proof/integration-ios-phone-20261023T042609.508853Z",
+  "verification_sha256": "28e1844b17588cd145440f05f0b82b1f48c085d21d0a5b19b5840dc8937307c6",
+  "candidate_fingerprint": "3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59",
+  "run_id": "v3b00-ios-phone-clock",
+  "readiness": "Native verifier signaled TIDEGLASS_NATIVE_CLOCK_BACKGROUND_READY before actions",
+  "actions": [
+    {
+      "action": "Click observed Home button AX17",
+      "observation": "AX initially unchanged; immediate CUA screenshot visibly showed native Home."
+    },
+    {
+      "action": "Refresh AX and click second Tideglass icon AX25",
+      "observation": "Icon corresponds to right-hand lighthouse artwork; left-hand icon is older Flutter-logo app. Current native icon binding independently archived by native verifier."
+    },
+    {
+      "action": "Observe screenshot after return",
+      "observation": "By screenshot time the completed harness had already stopped; Home was visible again. Actual lifecycle return is established by the successful native clock test, not an invented visible gameplay screen."
+    }
+  ],
+  "native_home_screenshot": "/Users/csys/Desktop/ibicot/idle/release/native-proof/integration-ios-phone-20261023T042609.508853Z/lead-clock-home.png",
+  "native_home_screenshot_sha256": "9f62f3fd9c59b5559d00d71bdcbb13eb8a4bc9b0c2a5c3435f68d6dd4cb365ad",
+  "screenshot_file_mtime_utc": "2026-10-23T04:27:30.710932+00:00",
+  "native_clock_test_passed": true,
+  "protected_device_touched": false,
+  "clock_injection_or_simulated_callback": false,
+  "simctl_launch_used": false,
+  "limits": "Simulator only. No physical wall-clock/performance or human play evidence."
+}

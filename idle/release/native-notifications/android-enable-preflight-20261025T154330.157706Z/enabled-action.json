@@ -1,0 +1,41 @@
+{
+  "utc": "2026-10-25T15:47:11.699606+00:00",
+  "argv": [
+    "/Users/csys/Library/Android/sdk/platform-tools/adb",
+    "-s",
+    "emulator-5556",
+    "shell",
+    "input",
+    "touchscreen",
+    "tap",
+    "916",
+    "1061"
+  ],
+  "exit_code": 0,
+  "stdout": "",
+  "stderr": "",
+  "operator": "Automated actual Android UI event",
+  "purpose": "Enable actual All Tideglass notifications switch (observed false) as separate precondition after USER_FIXED denial",
+  "observed_node": {
+    "index": "0",
+    "text": "",
+    "resource-id": "com.android.settings:id/main_switch_bar",
+    "class": "android.widget.LinearLayout",
+    "package": "com.android.settings",
+    "content-desc": "",
+    "checkable": "false",
+    "checked": "false",
+    "clickable": "true",
+    "enabled": "true",
+    "focusable": "true",
+    "focused": "false",
+    "scrollable": "false",
+    "long-clickable": "false",
+    "password": "false",
+    "selected": "false",
+    "bounds": "[0,921][1080,1202]"
+  },
+  "pre_image_sha256": "deacd0b787bdfdd02b3cc87a902e5ac28a71ecaaa092d0ea317547b3178bc091",
+  "pre_hierarchy_sha256": "63654a0a9714bdde8dd08a9aab91d966e26c8f66aca7a4bed2471c1c611f1832",
+  "lead_method_sha256": "4b841ade92aee43a7292c07bbaa0e0d1306a9468c840e2318eaf0a43fc0e796a"
+}

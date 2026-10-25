@@ -1,0 +1,13 @@
+--- release/balance/supplemental-source-63786005ca749aec6fbc3c15913dff43e01fae1bdfd4fcb931ce2f712ca80e53/game/core/lib/src/engine.dart	2026-10-16 14:58:29
++++ game/core/lib/src/engine.dart	2026-10-19 17:30:45
+@@ -135,7 +135,9 @@
+   }
+ 
+   Fixed outputPerSecond(GameState state) {
+-    if (state.charts.bitLength <= 4096) {
++    // Scenario subclasses override producer rules and may read other state.
++    // Only this exact baseline type has the complete key declared below.
++    if (runtimeType == TideglassEngine && state.charts.bitLength <= 4096) {
+       final n = state.counts;
+       return _rates.read((n[0], n[1], n[2], n[3], n[4], state.charts),
+           () => _uncachedOutputPerSecond(state));

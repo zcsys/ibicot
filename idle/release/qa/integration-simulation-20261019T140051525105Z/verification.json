@@ -1,0 +1,38 @@
+{
+  "completed_utc": "2026-10-19T14:09:39.187958+00:00",
+  "source_fingerprint": "1c870326cd1d84559bf5f8e45a0896bf0741018ad27aadbf753a822720eb4212",
+  "frozen_files_verified": 222,
+  "tests": {
+    "author-tests": {
+      "passed": 5,
+      "failed": 0,
+      "total": 5
+    },
+    "independent-client-probes": {
+      "passed": 5,
+      "failed": 1,
+      "total": 6
+    }
+  },
+  "analysis": {
+    "simulation": "clean",
+    "independent_test": "clean"
+  },
+  "matrix_accounting": "matrix-accounting.json",
+  "sample_rerun": "reproduced-cases.json",
+  "sample_rows": 4,
+  "summary_fields_per_sample": 35,
+  "entire_88_matrix_rerun": false,
+  "no_production_edits": true,
+  "findings": [
+    "QA014",
+    "SIM001"
+  ],
+  "acceptance": "No beta freeze or new package accepted.",
+  "limits": [
+    "Virtual deterministic policies, no human retention or elapsed observations.",
+    "No native physical timing/delivery or verified provider evidence.",
+    "Expanded94policy runner and subsequent repairs excluded.",
+    "Early QA lint logs retained; assertions unchanged."
+  ]
+}

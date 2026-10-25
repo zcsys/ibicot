@@ -1,0 +1,18 @@
+{
+  "candidate": "3445498f397a8cfc2c1383e5c128358222f25cd1691a54acdd852e03bbf4b982",
+  "finding": "Native audio initialization fails on iOS; bus catches invalid generic audio context assertion.",
+  "production_file": "game/mobile/lib/audio_bus.dart",
+  "production_configuration": {
+    "respectSilence": true,
+    "stayAwake": false,
+    "focus": "mixWithOthers"
+  },
+  "pinned_library_file": ".tooling/pub-cache/hosted/pub.dev/audioplayers_platform_interface-7.2.0/lib/src/api/audio_context_config.dart",
+  "library_sha256": "aabe3a4a58abacff62af3fad6a2e117ea8fc4fbe56869967803f1318c3087364",
+  "assertion": "!(respectSilence && focus == AudioContextConfigFocus.mixWithOthers)",
+  "host_gap": "Native adapter test default platform did not enter buildIOS validation.",
+  "proposed_repair": "Explicit iOS ambient category without mix option; retain existing Android context. Add real configuration-builder regression under iOS target override.",
+  "primary_source": "https://developer.apple.com/documentation/avfaudio/avaudiosession/category-swift.struct/ambient",
+  "status": "owner_notified_no_production_edit_by_platform_release",
+  "release_blocking": true
+}

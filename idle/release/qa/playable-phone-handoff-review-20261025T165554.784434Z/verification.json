@@ -1,0 +1,964 @@
+{
+  "checks": [
+    {
+      "name": "exact terminal handoff seal",
+      "passed": true
+    },
+    {
+      "name": "sealed extract.stdout",
+      "passed": true
+    },
+    {
+      "name": "sealed installation.json",
+      "passed": true
+    },
+    {
+      "name": "sealed app-before.stdout",
+      "passed": true
+    },
+    {
+      "name": "sealed cua-transition.txt",
+      "passed": true
+    },
+    {
+      "name": "sealed installed-bundle.json",
+      "passed": true
+    },
+    {
+      "name": "sealed data-after.json",
+      "passed": true
+    },
+    {
+      "name": "sealed app-before.stderr",
+      "passed": true
+    },
+    {
+      "name": "sealed extract.stderr",
+      "passed": true
+    },
+    {
+      "name": "sealed data-before.json",
+      "passed": true
+    },
+    {
+      "name": "sealed data-reconciliation.json",
+      "passed": true
+    },
+    {
+      "name": "sealed cua-transition.png",
+      "passed": true
+    },
+    {
+      "name": "sealed commands.json",
+      "passed": true
+    },
+    {
+      "name": "sealed data-after.stderr",
+      "passed": true
+    },
+    {
+      "name": "sealed cua-playable.png",
+      "passed": true
+    },
+    {
+      "name": "sealed cua-offline-summary.txt",
+      "passed": true
+    },
+    {
+      "name": "sealed owned-device.json",
+      "passed": true
+    },
+    {
+      "name": "sealed app-after.stdout",
+      "passed": true
+    },
+    {
+      "name": "sealed data-before.stdout",
+      "passed": true
+    },
+    {
+      "name": "sealed cua-before.txt",
+      "passed": true
+    },
+    {
+      "name": "sealed expected-bundle.json",
+      "passed": true
+    },
+    {
+      "name": "sealed install.stdout",
+      "passed": true
+    },
+    {
+      "name": "sealed cua-playable.txt",
+      "passed": true
+    },
+    {
+      "name": "sealed data-before.stderr",
+      "passed": true
+    },
+    {
+      "name": "sealed install.stderr",
+      "passed": true
+    },
+    {
+      "name": "sealed native-playable.png",
+      "passed": true
+    },
+    {
+      "name": "sealed native-playable-receipt.json",
+      "passed": true
+    },
+    {
+      "name": "sealed cua-operator.json",
+      "passed": true
+    },
+    {
+      "name": "sealed app-after.stderr",
+      "passed": true
+    },
+    {
+      "name": "sealed cua-offline-summary.png",
+      "passed": true
+    },
+    {
+      "name": "sealed data-after.stdout",
+      "passed": true
+    },
+    {
+      "name": "sealed cua-before.png",
+      "passed": true
+    },
+    {
+      "name": "archive exact preserved export",
+      "passed": true
+    },
+    {
+      "name": "archive124 complete identity",
+      "passed": true
+    },
+    {
+      "name": "actual installed file flutter_secure_storage_darwin_flutter_secure_storage_darwin.bundle/PrivacyInfo.xcprivacy",
+      "passed": true
+    },
+    {
+      "name": "actual installed file flutter_secure_storage_darwin_flutter_secure_storage_darwin.bundle/Info.plist",
+      "passed": true
+    },
+    {
+      "name": "actual installed file AppIcon60x60@2x.png",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Runner",
+      "passed": true
+    },
+    {
+      "name": "actual installed file share_plus_share_plus.bundle/PrivacyInfo.xcprivacy",
+      "passed": true
+    },
+    {
+      "name": "actual installed file share_plus_share_plus.bundle/Info.plist",
+      "passed": true
+    },
+    {
+      "name": "actual installed file webview_flutter_wkwebview_webview_flutter_wkwebview.bundle/PrivacyInfo.xcprivacy",
+      "passed": true
+    },
+    {
+      "name": "actual installed file webview_flutter_wkwebview_webview_flutter_wkwebview.bundle/Info.plist",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Base.lproj/Main.storyboardc/UIViewController-BYZ-38-t0r.nib",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Base.lproj/Main.storyboardc/BYZ-38-t0r-view-8bC-Xf-vdC.nib",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Base.lproj/Main.storyboardc/Info.plist",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Base.lproj/LaunchScreen.storyboardc/01J-lp-oVM-view-Ze5-6b-2t3.nib",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Base.lproj/LaunchScreen.storyboardc/UIViewController-01J-lp-oVM.nib",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Base.lproj/LaunchScreen.storyboardc/Info.plist",
+      "passed": true
+    },
+    {
+      "name": "actual installed file __preview.dylib",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Runner.debug.dylib",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Assets.car",
+      "passed": true
+    },
+    {
+      "name": "actual installed file AppFrameworkInfo.plist",
+      "passed": true
+    },
+    {
+      "name": "actual installed file AppIcon76x76@2x~ipad.png",
+      "passed": true
+    },
+    {
+      "name": "actual installed file google_mobile_ads_google_mobile_ads.bundle/GADTMediumTemplateView.nib",
+      "passed": true
+    },
+    {
+      "name": "actual installed file google_mobile_ads_google_mobile_ads.bundle/GADTSmallTemplateView.nib",
+      "passed": true
+    },
+    {
+      "name": "actual installed file google_mobile_ads_google_mobile_ads.bundle/GADTFullScreenTemplateView.nib",
+      "passed": true
+    },
+    {
+      "name": "actual installed file google_mobile_ads_google_mobile_ads.bundle/Info.plist",
+      "passed": true
+    },
+    {
+      "name": "actual installed file flutter_timezone_flutter_timezone.bundle/PrivacyInfo.xcprivacy",
+      "passed": true
+    },
+    {
+      "name": "actual installed file flutter_timezone_flutter_timezone.bundle/Info.plist",
+      "passed": true
+    },
+    {
+      "name": "actual installed file flutter_local_notifications_flutter_local_notifications.bundle/PrivacyInfo.xcprivacy",
+      "passed": true
+    },
+    {
+      "name": "actual installed file flutter_local_notifications_flutter_local_notifications.bundle/Info.plist",
+      "passed": true
+    },
+    {
+      "name": "actual installed file PrivacyInfo.xcprivacy",
+      "passed": true
+    },
+    {
+      "name": "actual installed file in_app_purchase_storekit_in_app_purchase_storekit.bundle/PrivacyInfo.xcprivacy",
+      "passed": true
+    },
+    {
+      "name": "actual installed file in_app_purchase_storekit_in_app_purchase_storekit.bundle/Info.plist",
+      "passed": true
+    },
+    {
+      "name": "actual installed file url_launcher_ios_url_launcher_ios.bundle/PrivacyInfo.xcprivacy",
+      "passed": true
+    },
+    {
+      "name": "actual installed file url_launcher_ios_url_launcher_ios.bundle/Info.plist",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Frameworks/objective_c.framework/_CodeSignature/CodeResources",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Frameworks/objective_c.framework/objective_c",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Frameworks/objective_c.framework/Info.plist",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Frameworks/Flutter.framework/_CodeSignature/CodeResources",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Frameworks/Flutter.framework/icudtl.dat",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Frameworks/Flutter.framework/Flutter",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Frameworks/Flutter.framework/Headers/FlutterSceneDelegate.h",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Frameworks/Flutter.framework/Headers/FlutterEngine.h",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Frameworks/Flutter.framework/Headers/FlutterChannels.h",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Frameworks/Flutter.framework/Headers/FlutterPlugin.h",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Frameworks/Flutter.framework/Headers/FlutterAppDelegate.h",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Frameworks/Flutter.framework/Headers/FlutterTexture.h",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Frameworks/Flutter.framework/Headers/FlutterEngineGroup.h",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Frameworks/Flutter.framework/Headers/FlutterPlatformViews.h",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Frameworks/Flutter.framework/Headers/FlutterHeadlessDartRunner.h",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Frameworks/Flutter.framework/Headers/FlutterCodecs.h",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Frameworks/Flutter.framework/Headers/Flutter.h",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Frameworks/Flutter.framework/Headers/FlutterViewController.h",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Frameworks/Flutter.framework/Headers/FlutterMacros.h",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Frameworks/Flutter.framework/Headers/FlutterDartProject.h",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Frameworks/Flutter.framework/Headers/FlutterHourFormat.h",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Frameworks/Flutter.framework/Headers/FlutterPluginAppLifeCycleDelegate.h",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Frameworks/Flutter.framework/Headers/FlutterBinaryMessenger.h",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Frameworks/Flutter.framework/Headers/FlutterCallbackCache.h",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Frameworks/Flutter.framework/Headers/FlutterSceneLifeCycle.h",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Frameworks/Flutter.framework/PrivacyInfo.xcprivacy",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Frameworks/Flutter.framework/Modules/module.modulemap",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Frameworks/Flutter.framework/Info.plist",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Frameworks/App.framework/_CodeSignature/CodeResources",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Frameworks/App.framework/App",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Frameworks/App.framework/flutter_assets/NOTICES.Z",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Frameworks/App.framework/flutter_assets/NativeAssetsManifest.json",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Frameworks/App.framework/flutter_assets/vm_snapshot_data",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Frameworks/App.framework/flutter_assets/isolate_snapshot_data",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Frameworks/App.framework/flutter_assets/kernel_blob.bin",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Frameworks/App.framework/flutter_assets/FontManifest.json",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Frameworks/App.framework/flutter_assets/packages/flutter_local_notifications_web/web/notifications_service_worker.js",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Frameworks/App.framework/flutter_assets/shaders/ink_sparkle.frag",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Frameworks/App.framework/flutter_assets/shaders/stretch_effect.frag",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Frameworks/App.framework/flutter_assets/AssetManifest.bin",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Frameworks/App.framework/flutter_assets/fonts/MaterialIcons-Regular.otf",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Frameworks/App.framework/flutter_assets/assets/licenses/MaterialIcons_LICENSE.txt",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Frameworks/App.framework/flutter_assets/assets/calibrations/calibration.01.pattern.json",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Frameworks/App.framework/flutter_assets/assets/calibrations/calibration.06.pattern.json",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Frameworks/App.framework/flutter_assets/assets/calibrations/calibration.07.pattern.json",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Frameworks/App.framework/flutter_assets/assets/calibrations/calibration.12.pattern.json",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Frameworks/App.framework/flutter_assets/assets/calibrations/calibration.09.pattern.json",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Frameworks/App.framework/flutter_assets/assets/calibrations/calibration.08.pattern.json",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Frameworks/App.framework/flutter_assets/assets/calibrations/calibration.02.pattern.json",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Frameworks/App.framework/flutter_assets/assets/calibrations/calibration.05.pattern.json",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Frameworks/App.framework/flutter_assets/assets/calibrations/calibration.10.pattern.json",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Frameworks/App.framework/flutter_assets/assets/calibrations/calibration.11.pattern.json",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Frameworks/App.framework/flutter_assets/assets/calibrations/calibration.04.pattern.json",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Frameworks/App.framework/flutter_assets/assets/calibrations/calibration.03.pattern.json",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Frameworks/App.framework/flutter_assets/assets/config/economy.json",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Frameworks/App.framework/flutter_assets/assets/config/manifest.json",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Frameworks/App.framework/flutter_assets/assets/challenges/challenge.02.json",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Frameworks/App.framework/flutter_assets/assets/challenges/challenge.03.json",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Frameworks/App.framework/flutter_assets/assets/challenges/challenge.08.json",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Frameworks/App.framework/flutter_assets/assets/challenges/challenge.12.json",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Frameworks/App.framework/flutter_assets/assets/challenges/challenge.04.json",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Frameworks/App.framework/flutter_assets/assets/challenges/challenge.05.json",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Frameworks/App.framework/flutter_assets/assets/challenges/challenge.09.json",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Frameworks/App.framework/flutter_assets/assets/challenges/challenge.06.json",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Frameworks/App.framework/flutter_assets/assets/challenges/challenge.10.json",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Frameworks/App.framework/flutter_assets/assets/challenges/challenge.11.json",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Frameworks/App.framework/flutter_assets/assets/challenges/challenge.07.json",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Frameworks/App.framework/flutter_assets/assets/challenges/challenge.01.json",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Frameworks/App.framework/flutter_assets/assets/audio/claim.m4a",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Frameworks/App.framework/flutter_assets/assets/audio/purchase.m4a",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Frameworks/App.framework/flutter_assets/assets/audio/milestone.m4a",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Frameworks/App.framework/flutter_assets/assets/audio/survey.m4a",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Frameworks/App.framework/flutter_assets/assets/audio/dawn.m4a",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Frameworks/App.framework/flutter_assets/assets/audio/panel.m4a",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Frameworks/App.framework/flutter_assets/assets/audio/harbor.m4a",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Frameworks/App.framework/flutter_assets/assets/audio/calibration.m4a",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Frameworks/App.framework/flutter_assets/assets/audio/rechart.m4a",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Frameworks/App.framework/flutter_assets/assets/audio/unlock.m4a",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Frameworks/App.framework/flutter_assets/assets/audio/current.m4a",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Frameworks/App.framework/flutter_assets/assets/progression/campaign.json",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Frameworks/App.framework/flutter_assets/assets/progression/archive.en.json",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Frameworks/App.framework/flutter_assets/assets/events/season.01.json",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Frameworks/App.framework/flutter_assets/assets/events/schedule.json",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Frameworks/App.framework/Info.plist",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Frameworks/GoogleMobileAds.framework/GoogleMobileAds",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Frameworks/GoogleMobileAds.framework/PrivacyInfo.xcprivacy",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Frameworks/GoogleMobileAds.framework/Info.plist",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Frameworks/UserMessagingPlatform.framework/UserMessagingPlatform",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Frameworks/UserMessagingPlatform.framework/PrivacyInfo.xcprivacy",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Frameworks/UserMessagingPlatform.framework/Info.plist",
+      "passed": true
+    },
+    {
+      "name": "actual installed file Info.plist",
+      "passed": true
+    },
+    {
+      "name": "actual installed file PkgInfo",
+      "passed": true
+    },
+    {
+      "name": "bundle exact",
+      "passed": true
+    },
+    {
+      "name": "exact bounded data-map reconciliation",
+      "passed": true
+    },
+    {
+      "name": "four removed OS snapshot caches only",
+      "passed": true
+    },
+    {
+      "name": "normal game save slots preserved across install",
+      "passed": true
+    },
+    {
+      "name": "initial false container result retained",
+      "passed": true
+    },
+    {
+      "name": "recorded installation only no reset",
+      "passed": true
+    },
+    {
+      "name": "observed regular game action receipt",
+      "passed": true
+    },
+    {
+      "name": "all review input bytes remain unchanged",
+      "passed": true
+    }
+  ],
+  "check_count": 166,
+  "pins": {
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/handoff-seal.json": "d3c8374f02542d0848bf1603b8f0818a01a5adef307f0d84d52fa008e128ba6d",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/installation.json": "0cfe719001899e47f40d02a7a4f185556033c85e2f4ef4880d737df96e899692",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/data-reconciliation.json": "f9977d2f34f2d00526a55552c20cca2b821b90863fc25755f4288f51966f9954",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/data-before.json": "2cc87daed292d9638f5f70debd1bbfd351b291b2187e55c7cdccd7be6343b6ba",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/data-after.json": "09ab1516141407e14430a14e2d1b3222a2d1d329cabe4dd085aa08dedb4dfef7",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/expected-bundle.json": "ad0354afe1820d963b2efdd5606bbea51e3bc9e17c53a7951935068484437de7",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/installed-bundle.json": "ad0354afe1820d963b2efdd5606bbea51e3bc9e17c53a7951935068484437de7",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extract.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/app-before.stdout": "de37d149712f957e9433930b16676260b285dbd875711ac5a92f48b610e4bb25",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/cua-transition.txt": "7deadf12ac021ab1f9f2294dd44d07180f2b2502dcf29382613fb0123809ab43",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/app-before.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extract.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/cua-transition.png": "94988c378193976e5e03cefc799592ef8cecf8a16c1080e47b67afd4bb88b399",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/commands.json": "e62e7696d10dfbc185e192e9a4393d5d5e370cfe23e0e44af805db2c5c845579",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/data-after.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/cua-playable.png": "8a9f731ba6ebbfa76f4850a9316451c5825042632ee204b05d06c0dc41f9dc94",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/cua-offline-summary.txt": "4c582fdd32d59dab9498681a46dd9697bd3fe830e53fb1444e6abd0bd5404316",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/owned-device.json": "e58785d59eb6258093fb2b936638e9d88fbe6045c170d61f98e1e2d6b34e8629",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/app-after.stdout": "e7ea26893689f1c65b5c23b1a004b36de246da5852a3ef0b7915375b992da56b",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/data-before.stdout": "3ce6e9c364754408c60426197c45430794a7cc276af9089b89c43aaa32f91056",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/cua-before.txt": "8d3f7d01bba805148cdf9bf3ab5514082819379f12259751471d6dc7ed0eff50",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/install.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/cua-playable.txt": "325ce396660ba68bb25522ec1eaa36173ba55349cee56d76ca9eec7ba094246d",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/data-before.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/install.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/native-playable.png": "d980a12449b3182e3ce694a3f7a7140711fa81472c59d7b3559c62a23f613e70",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/native-playable-receipt.json": "5c74c657ea5b3bae46964c5826f4f9584f35a89011838a23339134b45a002e2d",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/cua-operator.json": "a266c0c2b3f5244eb84db56323947d83db9a473a0279d0c2ab3bda12a0b4dd48",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/app-after.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/cua-offline-summary.png": "cd8b5ec9f61fd1f261f1e8b3a3faef40460070492231de2564b42fda9841c4b1",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/data-after.stdout": "94c638741339611957d4fa8751285e7ff49b8023ce98a278c46edcbbd63f7a66",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/cua-before.png": "b4c83539af284f54359469f9d282be0f3214b166914c48863a38b6939c93e618",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/20261023T040548.338966Z/artifacts/tideglass-ios-debug.zip": "53c296abed7f7906a73a11e028852133b6860e449599f4c3dd5763099a62aa07",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/flutter_secure_storage_darwin_flutter_secure_storage_darwin.bundle/PrivacyInfo.xcprivacy": "47226a29608df206ad0a110e6afeb5a77ff575ac1df9c76bfdb2d6dfb3fafed1",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/flutter_secure_storage_darwin_flutter_secure_storage_darwin.bundle/PrivacyInfo.xcprivacy": "47226a29608df206ad0a110e6afeb5a77ff575ac1df9c76bfdb2d6dfb3fafed1",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/flutter_secure_storage_darwin_flutter_secure_storage_darwin.bundle/Info.plist": "3d600e8f9f508b7d35a1a84f44f7c6090a623a4dc0047a3473f7671017b8817d",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/flutter_secure_storage_darwin_flutter_secure_storage_darwin.bundle/Info.plist": "3d600e8f9f508b7d35a1a84f44f7c6090a623a4dc0047a3473f7671017b8817d",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/AppIcon60x60@2x.png": "3cb4f9f8fb6be248cfdd9fbef686a93962d17c5dc4830477a84d9ce023973e84",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/AppIcon60x60@2x.png": "3cb4f9f8fb6be248cfdd9fbef686a93962d17c5dc4830477a84d9ce023973e84",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Runner": "6826116bfeaab23083ee480b3db213e0eaa7f13647447ae1c256f1aa1d445d0d",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Runner": "6826116bfeaab23083ee480b3db213e0eaa7f13647447ae1c256f1aa1d445d0d",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/share_plus_share_plus.bundle/PrivacyInfo.xcprivacy": "6d2da0d8d930227d428c1d9363b0ad6e3a12e2c9b68c5ce297158a7412fc8c31",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/share_plus_share_plus.bundle/PrivacyInfo.xcprivacy": "6d2da0d8d930227d428c1d9363b0ad6e3a12e2c9b68c5ce297158a7412fc8c31",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/share_plus_share_plus.bundle/Info.plist": "d3bde16db48cf7d67b961a4e170d170a5f8b76a294cb2c80b8c175989bb5cb5f",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/share_plus_share_plus.bundle/Info.plist": "d3bde16db48cf7d67b961a4e170d170a5f8b76a294cb2c80b8c175989bb5cb5f",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/webview_flutter_wkwebview_webview_flutter_wkwebview.bundle/PrivacyInfo.xcprivacy": "6d2da0d8d930227d428c1d9363b0ad6e3a12e2c9b68c5ce297158a7412fc8c31",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/webview_flutter_wkwebview_webview_flutter_wkwebview.bundle/PrivacyInfo.xcprivacy": "6d2da0d8d930227d428c1d9363b0ad6e3a12e2c9b68c5ce297158a7412fc8c31",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/webview_flutter_wkwebview_webview_flutter_wkwebview.bundle/Info.plist": "0f1758a8dcaf3b52e16eb3ce6eda675bcc656e120245371fd32eab332d8219a5",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/webview_flutter_wkwebview_webview_flutter_wkwebview.bundle/Info.plist": "0f1758a8dcaf3b52e16eb3ce6eda675bcc656e120245371fd32eab332d8219a5",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Base.lproj/Main.storyboardc/UIViewController-BYZ-38-t0r.nib": "cbdd28d89423b2c9beef2b27ce2c9608d30d6c6a9d2e7679f79a53814444e53f",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Base.lproj/Main.storyboardc/UIViewController-BYZ-38-t0r.nib": "cbdd28d89423b2c9beef2b27ce2c9608d30d6c6a9d2e7679f79a53814444e53f",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Base.lproj/Main.storyboardc/BYZ-38-t0r-view-8bC-Xf-vdC.nib": "a3bb094a3cc4ada29dce11898ae26fd164c9be5a2687a58560a8a048713e36c5",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Base.lproj/Main.storyboardc/BYZ-38-t0r-view-8bC-Xf-vdC.nib": "a3bb094a3cc4ada29dce11898ae26fd164c9be5a2687a58560a8a048713e36c5",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Base.lproj/Main.storyboardc/Info.plist": "3e9bdaa408d1eb6ae5e989b813a8644e0a4a981202c536905de52a7291e69aa4",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Base.lproj/Main.storyboardc/Info.plist": "3e9bdaa408d1eb6ae5e989b813a8644e0a4a981202c536905de52a7291e69aa4",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Base.lproj/LaunchScreen.storyboardc/01J-lp-oVM-view-Ze5-6b-2t3.nib": "6f16798d67dbab18a062a84917d922ff9b03510ce0b2ca2e20ecc3491f7e3716",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Base.lproj/LaunchScreen.storyboardc/01J-lp-oVM-view-Ze5-6b-2t3.nib": "6f16798d67dbab18a062a84917d922ff9b03510ce0b2ca2e20ecc3491f7e3716",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Base.lproj/LaunchScreen.storyboardc/UIViewController-01J-lp-oVM.nib": "54f3637f671feba5f19e82ec4f4a7fb448bb3cfc0fb180f089aa571fc8f053e2",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Base.lproj/LaunchScreen.storyboardc/UIViewController-01J-lp-oVM.nib": "54f3637f671feba5f19e82ec4f4a7fb448bb3cfc0fb180f089aa571fc8f053e2",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Base.lproj/LaunchScreen.storyboardc/Info.plist": "1f255d5cc53b531e3f29a9406a8df49a958e2bf9443d3e20bd8374f707f7d5c8",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Base.lproj/LaunchScreen.storyboardc/Info.plist": "1f255d5cc53b531e3f29a9406a8df49a958e2bf9443d3e20bd8374f707f7d5c8",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/__preview.dylib": "6d1a13ad99716f0e0663c9f8e18008f0449df2d9e33680b56397d4d098b7600c",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/__preview.dylib": "6d1a13ad99716f0e0663c9f8e18008f0449df2d9e33680b56397d4d098b7600c",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Runner.debug.dylib": "a1103104118adf723df884ac82d6d756bff54a983aa3de0811683b36c321af0c",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Runner.debug.dylib": "a1103104118adf723df884ac82d6d756bff54a983aa3de0811683b36c321af0c",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Assets.car": "559a0e5149bdfe5cafda6b1b6b05ade2bbaaf51297f0941cd6158a0dd41fa66d",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Assets.car": "559a0e5149bdfe5cafda6b1b6b05ade2bbaaf51297f0941cd6158a0dd41fa66d",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/AppFrameworkInfo.plist": "275c1f7273e185d2d65f8b447af25841e2be7fbdb3df89feb6324634f33ce317",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/AppFrameworkInfo.plist": "275c1f7273e185d2d65f8b447af25841e2be7fbdb3df89feb6324634f33ce317",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/AppIcon76x76@2x~ipad.png": "13b0f10ed12e68c5b4b4e9dd5bb89a0a93a6f3dbc391f141dd8ee9c8f8e008a4",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/AppIcon76x76@2x~ipad.png": "13b0f10ed12e68c5b4b4e9dd5bb89a0a93a6f3dbc391f141dd8ee9c8f8e008a4",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/google_mobile_ads_google_mobile_ads.bundle/GADTMediumTemplateView.nib": "d75b23038df8e71c16d556cabf44d159eeaed58163af748280b50d9477bdbcf7",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/google_mobile_ads_google_mobile_ads.bundle/GADTMediumTemplateView.nib": "d75b23038df8e71c16d556cabf44d159eeaed58163af748280b50d9477bdbcf7",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/google_mobile_ads_google_mobile_ads.bundle/GADTSmallTemplateView.nib": "253b2deeecf3353113a1c3fd68abda743c2bb052e12d527ff3c58f19dd5eb6ad",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/google_mobile_ads_google_mobile_ads.bundle/GADTSmallTemplateView.nib": "253b2deeecf3353113a1c3fd68abda743c2bb052e12d527ff3c58f19dd5eb6ad",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/google_mobile_ads_google_mobile_ads.bundle/GADTFullScreenTemplateView.nib": "fadfa960cc7f8625e07b96fbbf7479fc669a8bd4a67deae2806c752003e8dfed",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/google_mobile_ads_google_mobile_ads.bundle/GADTFullScreenTemplateView.nib": "fadfa960cc7f8625e07b96fbbf7479fc669a8bd4a67deae2806c752003e8dfed",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/google_mobile_ads_google_mobile_ads.bundle/Info.plist": "b26575c4606df30752a01b318c53aeefb38c27ec275ec430332c70f59867f18d",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/google_mobile_ads_google_mobile_ads.bundle/Info.plist": "b26575c4606df30752a01b318c53aeefb38c27ec275ec430332c70f59867f18d",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/flutter_timezone_flutter_timezone.bundle/PrivacyInfo.xcprivacy": "47226a29608df206ad0a110e6afeb5a77ff575ac1df9c76bfdb2d6dfb3fafed1",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/flutter_timezone_flutter_timezone.bundle/PrivacyInfo.xcprivacy": "47226a29608df206ad0a110e6afeb5a77ff575ac1df9c76bfdb2d6dfb3fafed1",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/flutter_timezone_flutter_timezone.bundle/Info.plist": "f57db2817c611a9c14414ad84ccd0662a4732dc4be1c2da38cdf848cb65e118b",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/flutter_timezone_flutter_timezone.bundle/Info.plist": "f57db2817c611a9c14414ad84ccd0662a4732dc4be1c2da38cdf848cb65e118b",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/flutter_local_notifications_flutter_local_notifications.bundle/PrivacyInfo.xcprivacy": "8f4cbf3a6f18b7deaabc8646bd255df453f0d100def074ec05e44463437be9d5",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/flutter_local_notifications_flutter_local_notifications.bundle/PrivacyInfo.xcprivacy": "8f4cbf3a6f18b7deaabc8646bd255df453f0d100def074ec05e44463437be9d5",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/flutter_local_notifications_flutter_local_notifications.bundle/Info.plist": "b75e0f33c6e92a69c7346f9ea379122663b3e0a2c1501fb8ffa76b754a0821c3",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/flutter_local_notifications_flutter_local_notifications.bundle/Info.plist": "b75e0f33c6e92a69c7346f9ea379122663b3e0a2c1501fb8ffa76b754a0821c3",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/PrivacyInfo.xcprivacy": "899aa28e2ea918f3a75efdbfd3b4c39a9b2b17eaa07e98f2d0592b03396fd6c3",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/PrivacyInfo.xcprivacy": "899aa28e2ea918f3a75efdbfd3b4c39a9b2b17eaa07e98f2d0592b03396fd6c3",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/in_app_purchase_storekit_in_app_purchase_storekit.bundle/PrivacyInfo.xcprivacy": "6d2da0d8d930227d428c1d9363b0ad6e3a12e2c9b68c5ce297158a7412fc8c31",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/in_app_purchase_storekit_in_app_purchase_storekit.bundle/PrivacyInfo.xcprivacy": "6d2da0d8d930227d428c1d9363b0ad6e3a12e2c9b68c5ce297158a7412fc8c31",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/in_app_purchase_storekit_in_app_purchase_storekit.bundle/Info.plist": "4e92a100c5987a1e8e782c88ffa2f72e34d604005494b08dceae211b1b10b496",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/in_app_purchase_storekit_in_app_purchase_storekit.bundle/Info.plist": "4e92a100c5987a1e8e782c88ffa2f72e34d604005494b08dceae211b1b10b496",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/url_launcher_ios_url_launcher_ios.bundle/PrivacyInfo.xcprivacy": "6d2da0d8d930227d428c1d9363b0ad6e3a12e2c9b68c5ce297158a7412fc8c31",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/url_launcher_ios_url_launcher_ios.bundle/PrivacyInfo.xcprivacy": "6d2da0d8d930227d428c1d9363b0ad6e3a12e2c9b68c5ce297158a7412fc8c31",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/url_launcher_ios_url_launcher_ios.bundle/Info.plist": "9a28a5e4151ae40360d014ef25b24e01fe31233c00bf755cb6a48b8616ed1dc6",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/url_launcher_ios_url_launcher_ios.bundle/Info.plist": "9a28a5e4151ae40360d014ef25b24e01fe31233c00bf755cb6a48b8616ed1dc6",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Frameworks/objective_c.framework/_CodeSignature/CodeResources": "436838fb0c5317621b3e3f98c49720685f57e2a033c95d72e32549f859c2684a",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Frameworks/objective_c.framework/_CodeSignature/CodeResources": "436838fb0c5317621b3e3f98c49720685f57e2a033c95d72e32549f859c2684a",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Frameworks/objective_c.framework/objective_c": "1bf8c757d5e86fdc7dd1bbcd3a08fb945fd7477681c0fa49ae112f67cd61efa3",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Frameworks/objective_c.framework/objective_c": "1bf8c757d5e86fdc7dd1bbcd3a08fb945fd7477681c0fa49ae112f67cd61efa3",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Frameworks/objective_c.framework/Info.plist": "7896b09dbca92969d6c9b95d57fd87c2c18b2a65d0d9b5216166bfd669f372c8",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Frameworks/objective_c.framework/Info.plist": "7896b09dbca92969d6c9b95d57fd87c2c18b2a65d0d9b5216166bfd669f372c8",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Frameworks/Flutter.framework/_CodeSignature/CodeResources": "e8f892c17976e52ba51740fa329954e4045720daf11295a42f46b9e9b5f45531",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Frameworks/Flutter.framework/_CodeSignature/CodeResources": "e8f892c17976e52ba51740fa329954e4045720daf11295a42f46b9e9b5f45531",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Frameworks/Flutter.framework/icudtl.dat": "325a86063d26334c2eabe1743cea073b612540fbf3d8fc2ef0b5708e3763a8c7",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Frameworks/Flutter.framework/icudtl.dat": "325a86063d26334c2eabe1743cea073b612540fbf3d8fc2ef0b5708e3763a8c7",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Frameworks/Flutter.framework/Flutter": "48a8152d219338c6498a3576d6522fea6214aefd3675ab8bdbb8e210fbc5784f",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Frameworks/Flutter.framework/Flutter": "48a8152d219338c6498a3576d6522fea6214aefd3675ab8bdbb8e210fbc5784f",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Frameworks/Flutter.framework/Headers/FlutterSceneDelegate.h": "1bdbab65e137d7695d6b391e3ffeecbadd2dda103795f72ec47452b8b9a3fa06",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Frameworks/Flutter.framework/Headers/FlutterSceneDelegate.h": "1bdbab65e137d7695d6b391e3ffeecbadd2dda103795f72ec47452b8b9a3fa06",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Frameworks/Flutter.framework/Headers/FlutterEngine.h": "29528cda49a2619ac88f2a31be72b314af4e543918315dfaf11e5622c200742a",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Frameworks/Flutter.framework/Headers/FlutterEngine.h": "29528cda49a2619ac88f2a31be72b314af4e543918315dfaf11e5622c200742a",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Frameworks/Flutter.framework/Headers/FlutterChannels.h": "920d7de42def64b88e9fc29e150532ec3a15b80f55643a6aa012d59fae2e19a2",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Frameworks/Flutter.framework/Headers/FlutterChannels.h": "920d7de42def64b88e9fc29e150532ec3a15b80f55643a6aa012d59fae2e19a2",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Frameworks/Flutter.framework/Headers/FlutterPlugin.h": "349bc734c4eec7babf27b476f7c7a3bcfa01f4b0114bfbc7eae8ed9b09947838",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Frameworks/Flutter.framework/Headers/FlutterPlugin.h": "349bc734c4eec7babf27b476f7c7a3bcfa01f4b0114bfbc7eae8ed9b09947838",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Frameworks/Flutter.framework/Headers/FlutterAppDelegate.h": "ebf60356f3456e2054548d873f08674ea2cdb5d7518d7530a328b5e81d867ba3",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Frameworks/Flutter.framework/Headers/FlutterAppDelegate.h": "ebf60356f3456e2054548d873f08674ea2cdb5d7518d7530a328b5e81d867ba3",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Frameworks/Flutter.framework/Headers/FlutterTexture.h": "25ca4de1af6cbfac729e50f7462eb5d4de72f87a2ea545a9da1cab21707f23c6",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Frameworks/Flutter.framework/Headers/FlutterTexture.h": "25ca4de1af6cbfac729e50f7462eb5d4de72f87a2ea545a9da1cab21707f23c6",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Frameworks/Flutter.framework/Headers/FlutterEngineGroup.h": "4aacef231a815c427753d2c9df6842117b2b1f63f5ea0ba643e810c7a3dd95fe",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Frameworks/Flutter.framework/Headers/FlutterEngineGroup.h": "4aacef231a815c427753d2c9df6842117b2b1f63f5ea0ba643e810c7a3dd95fe",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Frameworks/Flutter.framework/Headers/FlutterPlatformViews.h": "d1a53db8ce90729ce6669b8560e6e3f5d1a51849132a8c0f304449410745d8fe",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Frameworks/Flutter.framework/Headers/FlutterPlatformViews.h": "d1a53db8ce90729ce6669b8560e6e3f5d1a51849132a8c0f304449410745d8fe",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Frameworks/Flutter.framework/Headers/FlutterHeadlessDartRunner.h": "9e6663669bc5097af281fe14f5a3e4362f15708edc2f902d03e098e6e51620bd",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Frameworks/Flutter.framework/Headers/FlutterHeadlessDartRunner.h": "9e6663669bc5097af281fe14f5a3e4362f15708edc2f902d03e098e6e51620bd",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Frameworks/Flutter.framework/Headers/FlutterCodecs.h": "672aa51d8b996e915ebd57a7cbd59d974ad51604bbb33232b2c4a20b269a7853",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Frameworks/Flutter.framework/Headers/FlutterCodecs.h": "672aa51d8b996e915ebd57a7cbd59d974ad51604bbb33232b2c4a20b269a7853",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Frameworks/Flutter.framework/Headers/Flutter.h": "c1f5b26a03d82c2451dbec13b8645bb56df3df3d80592f98171ba204e15d4a36",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Frameworks/Flutter.framework/Headers/Flutter.h": "c1f5b26a03d82c2451dbec13b8645bb56df3df3d80592f98171ba204e15d4a36",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Frameworks/Flutter.framework/Headers/FlutterViewController.h": "e2336e4d76c2899c2aa71d253a64dd292183b3ebaba237681a95ce2bac09a9a5",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Frameworks/Flutter.framework/Headers/FlutterViewController.h": "e2336e4d76c2899c2aa71d253a64dd292183b3ebaba237681a95ce2bac09a9a5",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Frameworks/Flutter.framework/Headers/FlutterMacros.h": "79b0551d265c52701b378851718ab7b6db7afbecf561b73c2954988554e80f99",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Frameworks/Flutter.framework/Headers/FlutterMacros.h": "79b0551d265c52701b378851718ab7b6db7afbecf561b73c2954988554e80f99",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Frameworks/Flutter.framework/Headers/FlutterDartProject.h": "53cabfd086edf6ae0ed8732c09d530213b49753c7c2e3865c7ed1a63cddf1fab",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Frameworks/Flutter.framework/Headers/FlutterDartProject.h": "53cabfd086edf6ae0ed8732c09d530213b49753c7c2e3865c7ed1a63cddf1fab",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Frameworks/Flutter.framework/Headers/FlutterHourFormat.h": "43848b1528212ffe441493f22e0ecf362f49ff1a645557f3ae8d15422407b6b6",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Frameworks/Flutter.framework/Headers/FlutterHourFormat.h": "43848b1528212ffe441493f22e0ecf362f49ff1a645557f3ae8d15422407b6b6",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Frameworks/Flutter.framework/Headers/FlutterPluginAppLifeCycleDelegate.h": "f8f327fb94838f655de9153c09022dfc9625dd3fbc0e1a7b1c89aa033a1ca0d9",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Frameworks/Flutter.framework/Headers/FlutterPluginAppLifeCycleDelegate.h": "f8f327fb94838f655de9153c09022dfc9625dd3fbc0e1a7b1c89aa033a1ca0d9",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Frameworks/Flutter.framework/Headers/FlutterBinaryMessenger.h": "1170e4e2dfbba82a724246abfaaf561ea63d6dc2bc7b2a210b0195b41261332f",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Frameworks/Flutter.framework/Headers/FlutterBinaryMessenger.h": "1170e4e2dfbba82a724246abfaaf561ea63d6dc2bc7b2a210b0195b41261332f",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Frameworks/Flutter.framework/Headers/FlutterCallbackCache.h": "d21f7ebcae4afabf26a13b221817ecebe4ccf50a20d3cf5a7c7032de06dcc035",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Frameworks/Flutter.framework/Headers/FlutterCallbackCache.h": "d21f7ebcae4afabf26a13b221817ecebe4ccf50a20d3cf5a7c7032de06dcc035",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Frameworks/Flutter.framework/Headers/FlutterSceneLifeCycle.h": "b4d90b84efbe3ce2f8db38397e312fe7f0c97d0ad7bbca8763a24b6ebf2d2217",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Frameworks/Flutter.framework/Headers/FlutterSceneLifeCycle.h": "b4d90b84efbe3ce2f8db38397e312fe7f0c97d0ad7bbca8763a24b6ebf2d2217",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Frameworks/Flutter.framework/PrivacyInfo.xcprivacy": "9f95d7e7862a4b56b66ed926bd6d622d2a6545a827d19847278b438d571d4212",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Frameworks/Flutter.framework/PrivacyInfo.xcprivacy": "9f95d7e7862a4b56b66ed926bd6d622d2a6545a827d19847278b438d571d4212",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Frameworks/Flutter.framework/Modules/module.modulemap": "d158eb891a59ec065968fff498c00f3093e18ba2e8301e0c857ccbe63db8b46b",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Frameworks/Flutter.framework/Modules/module.modulemap": "d158eb891a59ec065968fff498c00f3093e18ba2e8301e0c857ccbe63db8b46b",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Frameworks/Flutter.framework/Info.plist": "97bc153e729ad85f3d0c8203a445a9e1dbb2bd58c6d24911a7c089c027d66ba5",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Frameworks/Flutter.framework/Info.plist": "97bc153e729ad85f3d0c8203a445a9e1dbb2bd58c6d24911a7c089c027d66ba5",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Frameworks/App.framework/_CodeSignature/CodeResources": "45c309bbffe71e07fa44b94f5587e694b4ea947745cb54e38fe1309ec327237d",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Frameworks/App.framework/_CodeSignature/CodeResources": "45c309bbffe71e07fa44b94f5587e694b4ea947745cb54e38fe1309ec327237d",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Frameworks/App.framework/App": "c7d648a93afef6c404042d974694d66733a53f49756653b7ccf295d4f4de7b01",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Frameworks/App.framework/App": "c7d648a93afef6c404042d974694d66733a53f49756653b7ccf295d4f4de7b01",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Frameworks/App.framework/flutter_assets/NOTICES.Z": "0a91fc76184d92c076b4b9baa973d8de17c9e094c4605c799dcb58ea562afbe2",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Frameworks/App.framework/flutter_assets/NOTICES.Z": "0a91fc76184d92c076b4b9baa973d8de17c9e094c4605c799dcb58ea562afbe2",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Frameworks/App.framework/flutter_assets/NativeAssetsManifest.json": "fdc6fe9f70fcaa64a59acfe0c9938065a58521290cbe16f0912cda14b4390947",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Frameworks/App.framework/flutter_assets/NativeAssetsManifest.json": "fdc6fe9f70fcaa64a59acfe0c9938065a58521290cbe16f0912cda14b4390947",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Frameworks/App.framework/flutter_assets/vm_snapshot_data": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Frameworks/App.framework/flutter_assets/vm_snapshot_data": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Frameworks/App.framework/flutter_assets/isolate_snapshot_data": "86bca6674ce2054938fb6ef6e827a46e775def9c32ee4bec672085e4047bae7f",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Frameworks/App.framework/flutter_assets/isolate_snapshot_data": "86bca6674ce2054938fb6ef6e827a46e775def9c32ee4bec672085e4047bae7f",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Frameworks/App.framework/flutter_assets/kernel_blob.bin": "06971c71627c04e68b529fb07bb666185388fccb808509ac23ab5de677ee6dc8",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Frameworks/App.framework/flutter_assets/kernel_blob.bin": "06971c71627c04e68b529fb07bb666185388fccb808509ac23ab5de677ee6dc8",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Frameworks/App.framework/flutter_assets/FontManifest.json": "28b1eb2b3d2e1ad60b8c8b0f9100b1ccbf492f7fa97f5bebb51ea97e73926e7d",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Frameworks/App.framework/flutter_assets/FontManifest.json": "28b1eb2b3d2e1ad60b8c8b0f9100b1ccbf492f7fa97f5bebb51ea97e73926e7d",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Frameworks/App.framework/flutter_assets/packages/flutter_local_notifications_web/web/notifications_service_worker.js": "566f47dccc0f417f0164a3d0852334c340d0941472af43fc65ee50a314555058",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Frameworks/App.framework/flutter_assets/packages/flutter_local_notifications_web/web/notifications_service_worker.js": "566f47dccc0f417f0164a3d0852334c340d0941472af43fc65ee50a314555058",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Frameworks/App.framework/flutter_assets/shaders/ink_sparkle.frag": "62ce4ba6e34254371ffdfb8e0670afcc5314f4452edf5ee70afcf079f2ed7ea2",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Frameworks/App.framework/flutter_assets/shaders/ink_sparkle.frag": "62ce4ba6e34254371ffdfb8e0670afcc5314f4452edf5ee70afcf079f2ed7ea2",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Frameworks/App.framework/flutter_assets/shaders/stretch_effect.frag": "21cdf2ecc9b113671fb228620d952ebae0f102a78a39a9df89b6ebdf6aec315a",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Frameworks/App.framework/flutter_assets/shaders/stretch_effect.frag": "21cdf2ecc9b113671fb228620d952ebae0f102a78a39a9df89b6ebdf6aec315a",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Frameworks/App.framework/flutter_assets/AssetManifest.bin": "7f58d1b258f8a48fb97e94780f8b0e7b02437a566dd59b6dd01d622be126318b",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Frameworks/App.framework/flutter_assets/AssetManifest.bin": "7f58d1b258f8a48fb97e94780f8b0e7b02437a566dd59b6dd01d622be126318b",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Frameworks/App.framework/flutter_assets/fonts/MaterialIcons-Regular.otf": "d9865b671a09d683d13a863089d8825e0f61a37696ce5d7d448bc8023aa62453",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Frameworks/App.framework/flutter_assets/fonts/MaterialIcons-Regular.otf": "d9865b671a09d683d13a863089d8825e0f61a37696ce5d7d448bc8023aa62453",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Frameworks/App.framework/flutter_assets/assets/licenses/MaterialIcons_LICENSE.txt": "be698262aecd042c0de6f886cc0af622f8def446462026992cc530275d8a9e74",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Frameworks/App.framework/flutter_assets/assets/licenses/MaterialIcons_LICENSE.txt": "be698262aecd042c0de6f886cc0af622f8def446462026992cc530275d8a9e74",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Frameworks/App.framework/flutter_assets/assets/calibrations/calibration.01.pattern.json": "da374a476f45c6c542052093c8275a8122407908fb8b6a0af5a8ae40ccbf9e2f",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Frameworks/App.framework/flutter_assets/assets/calibrations/calibration.01.pattern.json": "da374a476f45c6c542052093c8275a8122407908fb8b6a0af5a8ae40ccbf9e2f",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Frameworks/App.framework/flutter_assets/assets/calibrations/calibration.06.pattern.json": "34dbd4fc6f077b9e04b3cd6facb0d9de13ddbebfb0db389268c729d6a7b89d30",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Frameworks/App.framework/flutter_assets/assets/calibrations/calibration.06.pattern.json": "34dbd4fc6f077b9e04b3cd6facb0d9de13ddbebfb0db389268c729d6a7b89d30",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Frameworks/App.framework/flutter_assets/assets/calibrations/calibration.07.pattern.json": "fbd0709352d9d78f262f9f30f60dfc13e88e033ea55b5b658ce0082a06393c38",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Frameworks/App.framework/flutter_assets/assets/calibrations/calibration.07.pattern.json": "fbd0709352d9d78f262f9f30f60dfc13e88e033ea55b5b658ce0082a06393c38",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Frameworks/App.framework/flutter_assets/assets/calibrations/calibration.12.pattern.json": "db649ab28e1b1c82112ff4bfa87f4a7263f8e17f43d68541f5bb045057522288",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Frameworks/App.framework/flutter_assets/assets/calibrations/calibration.12.pattern.json": "db649ab28e1b1c82112ff4bfa87f4a7263f8e17f43d68541f5bb045057522288",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Frameworks/App.framework/flutter_assets/assets/calibrations/calibration.09.pattern.json": "c05f17ec3077c73d62c22524b56d2ade291939f6f10b20087bc7c0578be96d70",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Frameworks/App.framework/flutter_assets/assets/calibrations/calibration.09.pattern.json": "c05f17ec3077c73d62c22524b56d2ade291939f6f10b20087bc7c0578be96d70",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Frameworks/App.framework/flutter_assets/assets/calibrations/calibration.08.pattern.json": "1c486001555913893e001a67459b3f4b2d1219ce82359185ef0941f5c7fc52ac",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Frameworks/App.framework/flutter_assets/assets/calibrations/calibration.08.pattern.json": "1c486001555913893e001a67459b3f4b2d1219ce82359185ef0941f5c7fc52ac",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Frameworks/App.framework/flutter_assets/assets/calibrations/calibration.02.pattern.json": "7accb0f5f23fdcda860ab0e08ee66164c772d195a79a52fc0e1be7df98c892b6",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Frameworks/App.framework/flutter_assets/assets/calibrations/calibration.02.pattern.json": "7accb0f5f23fdcda860ab0e08ee66164c772d195a79a52fc0e1be7df98c892b6",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Frameworks/App.framework/flutter_assets/assets/calibrations/calibration.05.pattern.json": "b7593e40c0cee34d705f103a13380733d50ac708e3b8d1d19f6a31c9dce231c8",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Frameworks/App.framework/flutter_assets/assets/calibrations/calibration.05.pattern.json": "b7593e40c0cee34d705f103a13380733d50ac708e3b8d1d19f6a31c9dce231c8",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Frameworks/App.framework/flutter_assets/assets/calibrations/calibration.10.pattern.json": "743955d5cefe72601f7eb177e964ba7a2314e025e7feea6915c881f3ace83ef7",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Frameworks/App.framework/flutter_assets/assets/calibrations/calibration.10.pattern.json": "743955d5cefe72601f7eb177e964ba7a2314e025e7feea6915c881f3ace83ef7",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Frameworks/App.framework/flutter_assets/assets/calibrations/calibration.11.pattern.json": "6821f5dd9d9d9a89c52afcdddc78fe2f663f0455b69b2c352fa30b4641769371",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Frameworks/App.framework/flutter_assets/assets/calibrations/calibration.11.pattern.json": "6821f5dd9d9d9a89c52afcdddc78fe2f663f0455b69b2c352fa30b4641769371",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Frameworks/App.framework/flutter_assets/assets/calibrations/calibration.04.pattern.json": "92d291c24c4c7c04d59f8200ec30773ef5bbfe9c546eefe2d95e938736c35d0e",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Frameworks/App.framework/flutter_assets/assets/calibrations/calibration.04.pattern.json": "92d291c24c4c7c04d59f8200ec30773ef5bbfe9c546eefe2d95e938736c35d0e",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Frameworks/App.framework/flutter_assets/assets/calibrations/calibration.03.pattern.json": "d86a3527f1ed772cd6052210cf8b01e38ba1c457cedc56d8dce830ad6a9b76a8",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Frameworks/App.framework/flutter_assets/assets/calibrations/calibration.03.pattern.json": "d86a3527f1ed772cd6052210cf8b01e38ba1c457cedc56d8dce830ad6a9b76a8",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Frameworks/App.framework/flutter_assets/assets/config/economy.json": "9e5b9bcfcfc7a68d4eaeebc97e8d40cd42d04532fa59f514c7483efee885d2b6",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Frameworks/App.framework/flutter_assets/assets/config/economy.json": "9e5b9bcfcfc7a68d4eaeebc97e8d40cd42d04532fa59f514c7483efee885d2b6",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Frameworks/App.framework/flutter_assets/assets/config/manifest.json": "58c8cac53fa8679447d3f524bdc6979bf0c11127670840bf21c57cfffc2bbc72",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Frameworks/App.framework/flutter_assets/assets/config/manifest.json": "58c8cac53fa8679447d3f524bdc6979bf0c11127670840bf21c57cfffc2bbc72",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Frameworks/App.framework/flutter_assets/assets/challenges/challenge.02.json": "d082460d0d34d91e879ea917b48ef72f69e698c22630cfdc3327551cf1f3928d",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Frameworks/App.framework/flutter_assets/assets/challenges/challenge.02.json": "d082460d0d34d91e879ea917b48ef72f69e698c22630cfdc3327551cf1f3928d",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Frameworks/App.framework/flutter_assets/assets/challenges/challenge.03.json": "1a6cb35df1140e89483b3c830a33993a3a7c223fb66f3c1443c4e35204db02f7",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Frameworks/App.framework/flutter_assets/assets/challenges/challenge.03.json": "1a6cb35df1140e89483b3c830a33993a3a7c223fb66f3c1443c4e35204db02f7",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Frameworks/App.framework/flutter_assets/assets/challenges/challenge.08.json": "81e690b9a9669e96f4c4e36295a9bb61cbfa56ea7e0428bcc78df7937f2431b2",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Frameworks/App.framework/flutter_assets/assets/challenges/challenge.08.json": "81e690b9a9669e96f4c4e36295a9bb61cbfa56ea7e0428bcc78df7937f2431b2",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Frameworks/App.framework/flutter_assets/assets/challenges/challenge.12.json": "544ee2b7a1833e6b210c13c31edd1e3c7f7eee45257b11ef964d0faa17c08830",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Frameworks/App.framework/flutter_assets/assets/challenges/challenge.12.json": "544ee2b7a1833e6b210c13c31edd1e3c7f7eee45257b11ef964d0faa17c08830",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Frameworks/App.framework/flutter_assets/assets/challenges/challenge.04.json": "3d70280d3552cbc72b847112ca21401d9869987911e77d0093093c8103ebb387",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Frameworks/App.framework/flutter_assets/assets/challenges/challenge.04.json": "3d70280d3552cbc72b847112ca21401d9869987911e77d0093093c8103ebb387",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Frameworks/App.framework/flutter_assets/assets/challenges/challenge.05.json": "8597f6062640cce3181391f90572d20f581199ae8d86b65ef498e6b3f2b43e20",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Frameworks/App.framework/flutter_assets/assets/challenges/challenge.05.json": "8597f6062640cce3181391f90572d20f581199ae8d86b65ef498e6b3f2b43e20",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Frameworks/App.framework/flutter_assets/assets/challenges/challenge.09.json": "76baf3d7247e84d14ff3bfdff965d2374088a564042bb9738f279c569218d28b",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Frameworks/App.framework/flutter_assets/assets/challenges/challenge.09.json": "76baf3d7247e84d14ff3bfdff965d2374088a564042bb9738f279c569218d28b",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Frameworks/App.framework/flutter_assets/assets/challenges/challenge.06.json": "6261593a9e68f1f4252a0e08563f4276764adc157d560c119de57493bd66125d",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Frameworks/App.framework/flutter_assets/assets/challenges/challenge.06.json": "6261593a9e68f1f4252a0e08563f4276764adc157d560c119de57493bd66125d",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Frameworks/App.framework/flutter_assets/assets/challenges/challenge.10.json": "1c7ab9961185e888fc7e19771a5a54baf0833dffa44f147850025c9fdab6c002",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Frameworks/App.framework/flutter_assets/assets/challenges/challenge.10.json": "1c7ab9961185e888fc7e19771a5a54baf0833dffa44f147850025c9fdab6c002",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Frameworks/App.framework/flutter_assets/assets/challenges/challenge.11.json": "802dcd15243a0a2b56dd5a8f6b0937c7764e4bfd78b2fcebff2eefd8dced42a1",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Frameworks/App.framework/flutter_assets/assets/challenges/challenge.11.json": "802dcd15243a0a2b56dd5a8f6b0937c7764e4bfd78b2fcebff2eefd8dced42a1",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Frameworks/App.framework/flutter_assets/assets/challenges/challenge.07.json": "3ec485699e751293c0e08a389dc2d9bba91047b3c115ebf75f4037966ff24f0d",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Frameworks/App.framework/flutter_assets/assets/challenges/challenge.07.json": "3ec485699e751293c0e08a389dc2d9bba91047b3c115ebf75f4037966ff24f0d",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Frameworks/App.framework/flutter_assets/assets/challenges/challenge.01.json": "5591106d9523be75d46f31b73830174049b0a96a608557010836a8eb66d13444",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Frameworks/App.framework/flutter_assets/assets/challenges/challenge.01.json": "5591106d9523be75d46f31b73830174049b0a96a608557010836a8eb66d13444",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Frameworks/App.framework/flutter_assets/assets/audio/claim.m4a": "ef0bdc5526cdeb75234ac653419e786d62aaeff1d836df67f84381b4fdb541a7",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Frameworks/App.framework/flutter_assets/assets/audio/claim.m4a": "ef0bdc5526cdeb75234ac653419e786d62aaeff1d836df67f84381b4fdb541a7",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Frameworks/App.framework/flutter_assets/assets/audio/purchase.m4a": "ea5f5b4d1593050b3be28fcf3fc80c892fa5995f23dd16ae253ad06974a01ca6",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Frameworks/App.framework/flutter_assets/assets/audio/purchase.m4a": "ea5f5b4d1593050b3be28fcf3fc80c892fa5995f23dd16ae253ad06974a01ca6",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Frameworks/App.framework/flutter_assets/assets/audio/milestone.m4a": "7146f48ef14c742f8be5d5217f886793245f041fe33f2f3baf017298039dcb60",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Frameworks/App.framework/flutter_assets/assets/audio/milestone.m4a": "7146f48ef14c742f8be5d5217f886793245f041fe33f2f3baf017298039dcb60",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Frameworks/App.framework/flutter_assets/assets/audio/survey.m4a": "55ef3c6838cb6f1dafaa03209dfe9290aeeb8598f065d84bf66755d497d0bb15",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Frameworks/App.framework/flutter_assets/assets/audio/survey.m4a": "55ef3c6838cb6f1dafaa03209dfe9290aeeb8598f065d84bf66755d497d0bb15",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Frameworks/App.framework/flutter_assets/assets/audio/dawn.m4a": "7bb69f4993ce9901ea05841e0dba5104d13b042354020181d59da1d132f998a8",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Frameworks/App.framework/flutter_assets/assets/audio/dawn.m4a": "7bb69f4993ce9901ea05841e0dba5104d13b042354020181d59da1d132f998a8",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Frameworks/App.framework/flutter_assets/assets/audio/panel.m4a": "8ba56ff55e6cf9b405fa215628caf68a3947336b1d851eb982580d98d31295fc",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Frameworks/App.framework/flutter_assets/assets/audio/panel.m4a": "8ba56ff55e6cf9b405fa215628caf68a3947336b1d851eb982580d98d31295fc",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Frameworks/App.framework/flutter_assets/assets/audio/harbor.m4a": "9ad58a4d1af49d867e156868c6ea10c00cdcc5074ea9a07b47cbe83ddc8a4d77",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Frameworks/App.framework/flutter_assets/assets/audio/harbor.m4a": "9ad58a4d1af49d867e156868c6ea10c00cdcc5074ea9a07b47cbe83ddc8a4d77",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Frameworks/App.framework/flutter_assets/assets/audio/calibration.m4a": "7ec904a3691d9d5b4cea65a76f426a662c7e78cb08a9c35bdb13e98b4aca3dc0",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Frameworks/App.framework/flutter_assets/assets/audio/calibration.m4a": "7ec904a3691d9d5b4cea65a76f426a662c7e78cb08a9c35bdb13e98b4aca3dc0",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Frameworks/App.framework/flutter_assets/assets/audio/rechart.m4a": "df8c38f3197204aead3b4f1d150463e3a526a34b99f467c0397c0c354fd68e29",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Frameworks/App.framework/flutter_assets/assets/audio/rechart.m4a": "df8c38f3197204aead3b4f1d150463e3a526a34b99f467c0397c0c354fd68e29",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Frameworks/App.framework/flutter_assets/assets/audio/unlock.m4a": "17a5ef271d57479633d22e46a98565dc04369c67fd2cc7c3ae1e02f405f3049c",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Frameworks/App.framework/flutter_assets/assets/audio/unlock.m4a": "17a5ef271d57479633d22e46a98565dc04369c67fd2cc7c3ae1e02f405f3049c",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Frameworks/App.framework/flutter_assets/assets/audio/current.m4a": "f32ef2d3de8a12b88e733c6d5cd2e6ed00ad4be2f31e0c0f3a83f7bf9d353cdc",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Frameworks/App.framework/flutter_assets/assets/audio/current.m4a": "f32ef2d3de8a12b88e733c6d5cd2e6ed00ad4be2f31e0c0f3a83f7bf9d353cdc",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Frameworks/App.framework/flutter_assets/assets/progression/campaign.json": "37ef158a39b9f6ce944bea6fcfd4e5d2b6bd9c924b86b630b67fe276d812a7da",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Frameworks/App.framework/flutter_assets/assets/progression/campaign.json": "37ef158a39b9f6ce944bea6fcfd4e5d2b6bd9c924b86b630b67fe276d812a7da",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Frameworks/App.framework/flutter_assets/assets/progression/archive.en.json": "3b6067b111e3df5a116c4f925e1d7cc2095771f0298067f1b3087fd6be11ef4e",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Frameworks/App.framework/flutter_assets/assets/progression/archive.en.json": "3b6067b111e3df5a116c4f925e1d7cc2095771f0298067f1b3087fd6be11ef4e",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Frameworks/App.framework/flutter_assets/assets/events/season.01.json": "eefe232fedd19ae081af05e87051ce12ba1e8e300cf51de997b3d7c81d2aff96",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Frameworks/App.framework/flutter_assets/assets/events/season.01.json": "eefe232fedd19ae081af05e87051ce12ba1e8e300cf51de997b3d7c81d2aff96",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Frameworks/App.framework/flutter_assets/assets/events/schedule.json": "c17222d387234c36e74daa25b80803365ea2a809c56ff33ca7d3c86056f08ab3",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Frameworks/App.framework/flutter_assets/assets/events/schedule.json": "c17222d387234c36e74daa25b80803365ea2a809c56ff33ca7d3c86056f08ab3",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Frameworks/App.framework/Info.plist": "448bf45fc4afbdf5a384e44425f995ab5318901915a4f766809b44bed1b1930d",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Frameworks/App.framework/Info.plist": "448bf45fc4afbdf5a384e44425f995ab5318901915a4f766809b44bed1b1930d",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Frameworks/GoogleMobileAds.framework/GoogleMobileAds": "f1fd57013c3ea33a229cd63a77d1c7f1a560ca5a174636b6523f98bfbb535892",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Frameworks/GoogleMobileAds.framework/GoogleMobileAds": "f1fd57013c3ea33a229cd63a77d1c7f1a560ca5a174636b6523f98bfbb535892",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Frameworks/GoogleMobileAds.framework/PrivacyInfo.xcprivacy": "69fb112582fc23fc06c635c961d262a3f7b4b5654d284787491de3000dadf9d2",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Frameworks/GoogleMobileAds.framework/PrivacyInfo.xcprivacy": "69fb112582fc23fc06c635c961d262a3f7b4b5654d284787491de3000dadf9d2",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Frameworks/GoogleMobileAds.framework/Info.plist": "b414aff3f03e0f49b9c8fa2e1ebd158cb9ea90c34fc12cff0e8dec223e8a0358",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Frameworks/GoogleMobileAds.framework/Info.plist": "b414aff3f03e0f49b9c8fa2e1ebd158cb9ea90c34fc12cff0e8dec223e8a0358",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Frameworks/UserMessagingPlatform.framework/UserMessagingPlatform": "f0d9c2f835b6986dcb18b8af0133ce14f538803c5ecf155f794e3177ae500821",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Frameworks/UserMessagingPlatform.framework/UserMessagingPlatform": "f0d9c2f835b6986dcb18b8af0133ce14f538803c5ecf155f794e3177ae500821",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Frameworks/UserMessagingPlatform.framework/PrivacyInfo.xcprivacy": "45b7adb99fcd2d962a1c800fbfcc1325b57a7fa4165f416182323bb5ffe9c900",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Frameworks/UserMessagingPlatform.framework/PrivacyInfo.xcprivacy": "45b7adb99fcd2d962a1c800fbfcc1325b57a7fa4165f416182323bb5ffe9c900",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Frameworks/UserMessagingPlatform.framework/Info.plist": "22a8ed9d28ce82a4934e6a23ecbfc33c5317b74be90016163f1c111c2da4b474",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Frameworks/UserMessagingPlatform.framework/Info.plist": "22a8ed9d28ce82a4934e6a23ecbfc33c5317b74be90016163f1c111c2da4b474",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/Info.plist": "dde7e863d729684ea441eb0ba0693fbf02e35d2293fda9bb64f6c6c74ad7dbd4",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/Info.plist": "dde7e863d729684ea441eb0ba0693fbf02e35d2293fda9bb64f6c6c74ad7dbd4",
+    "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/6702FC0A-9F07-43B0-B4BC-891BE962165A/Runner.app/PkgInfo": "82502191c9484b04d685374f9879a0066069c49b8acae7a04b01d38d07e8eca0",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/playable-phone-handoff-20261025T165004.928296Z/extracted/Runner.app/PkgInfo": "82502191c9484b04d685374f9879a0066069c49b8acae7a04b01d38d07e8eca0",
+    "/Users/csys/Desktop/ibicot/idle/release/qa/current-exports-20261023T043341.519824Z/EXPORT_REVIEW.md": "75712c50b1240f9b12ffa577bc00f256ab4ec4c21265de80e5c364ffa46069c4",
+    "/Users/csys/Desktop/ibicot/idle/implementation/program.json": "d259ba03e1e14727ed6dd557f6bb289b35b091e2ea1acf780c903f2346eef876",
+    "/Users/csys/Desktop/ibicot/idle/implementation/scope_requirements.json": "b215b2cb290721c92810f693142b363586a7266512000b5cbe20ddd7eafab598"
+  },
+  "handoff_supported": true,
+  "new_acceptance_gate": false,
+  "new_native_execution": false,
+  "data_preservation_limit": "Before/after digest inventories show 284 retained files equal and four OS snapshots removed; original container path changed. No claim that data remained static after actual regular gameplay resumed.",
+  "visual_review": [
+    "Actual CUA offline summary +129.6K R; 4d6h away, 1d full,2d quarter,1d6h beyond cap",
+    "Actual CUA and raw native regular Harbor:272.7K Radiance,+1R/s,1 lightkeeper; first-light onboarding"
+  ],
+  "physical_or_store_claim": false
+}

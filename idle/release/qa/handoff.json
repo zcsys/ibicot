@@ -1,0 +1,49 @@
+{
+  "role": "qa_release_native",
+  "completed_utc": "2026-10-16T10:24:08.251221+00:00",
+  "scope": "Foundation B01-B06 and daily/automation independent review; all44 scopeIDs reverse trace",
+  "frozen_candidate": "ce46598c4b513477c643f0dff4f5160400ac800b4ee76579c48ca2a5e08e1ffd",
+  "repaired_host_snapshot": "c72586b4be58a033b99c3f541445ea31a914b6e54507009dd1eac7c8e529a261",
+  "completed": [
+    "474 independent mathematical checks passed",
+    "22 reference supplement cases/39 assertions passed",
+    "Frozen persistence18/progression21/mobile33 passed",
+    "Native3 artifact hashes and4 strict natural run provenance records match",
+    "All44 requirements and65 original packages traced in two directions",
+    "M0-01/M0-04 recommendations and QA-authored M0-06 plan supplied; director controls acceptance",
+    "QA-006/QA-007 repaired by director and5 original independent tests passed",
+    "Repaired host core160 andmobile40 passed; coreanalysisclean"
+  ],
+  "remaining_findings": [
+    {
+      "severity": "P2",
+      "scope": "frozen native candidate",
+      "finding": "Stale schema-negative assertion and missing original test auxiliary inputs; later source tests must not be assigned to old candidate."
+    },
+    {
+      "severity": "P3",
+      "scope": "c72586b4be58a033b99c3f541445ea31a914b6e54507009dd1eac7c8e529a261",
+      "finding": "Mobile analyzer3 brace infos in story_screen.dart lines408,681,692. New candidate must clear/recheck."
+    }
+  ],
+  "deliverables": [
+    "release/qa/FOUNDATION_REVIEW.md",
+    "release/qa/DAILY_REVIEW.md",
+    "release/qa/SCOPE_AUDIT.md",
+    "release/qa/scope-audit.json",
+    "release/qa/daily-findings.json",
+    "release/qa/native-provenance-check.json",
+    "docs/quality/V1_QUALITY_PROTOCOL.md",
+    "docs/quality/PLAYER_STUDY_PROTOCOL.md",
+    "release/qa/study-instrument.json",
+    "release/device-matrix.json",
+    "game/qa/generate_numeric_oracles.py",
+    "game/qa/numeric_probe.dart",
+    "game/qa/reference_cases_probe.dart",
+    "game/qa/daily_review_test.dart",
+    "game/qa/capture_review_snapshot.py"
+  ],
+  "external_gates": "No accounts, physical devices, hosting or humans available. Protocols contain zero fabricated observations; public/native store, human/calendar gates remain open.",
+  "product_release_accepted": false,
+  "next_review": "New stable full native candidate including repaired daily/story/support content and current exact source hashes."
+}

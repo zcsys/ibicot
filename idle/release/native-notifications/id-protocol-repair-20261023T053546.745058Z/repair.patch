@@ -1,0 +1,151 @@
+--- a/tool/verify_native_reminders.py
++++ b/tool/verify_native_reminders.py
+@@ -252,7 +252,7 @@
+         production = verify_native.production_inputs(frozen)
+         require(not production_differences(workspace, production), 'Candidate production workspace differs from frozen source')
+         device_ready(args.device, platform)
+-        stamp = datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%S.%fZ')
++        stamp = datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%S%fZ')
+         evidence = ROOT / 'release/native-notifications' / ('integration-' + args.label + '-' + stamp)
+         evidence.mkdir(parents=True)
+         sources = {'harness.dart': ROOT / 'game/mobile/integration_test/native_reminders_test.dart',
+--- a/tool/test_native_reminders.py
++++ b/tool/test_native_reminders.py
+@@ -1,6 +1,10 @@
+ """Verifier rejection checks only; these fixtures never qualify OS behavior."""
+ import copy
++from contextlib import redirect_stdout
++from datetime import datetime, timezone
++import io
+ import json
++import re
+ import subprocess
+ from pathlib import Path
+ from tempfile import TemporaryDirectory
+@@ -170,5 +174,126 @@
+             self.assertEqual(report['stop']['exit_code'],0)
+ 
+ 
++class ReminderIdentityProtocolTests(unittest.TestCase):
++    """Real runner preparation, with native launch deliberately blocked."""
++    def setUp(self):
++        self.directory = TemporaryDirectory()
++        self.addCleanup(self.directory.cleanup)
++        self.root = Path(self.directory.name)
++        self.harness = (Path(__file__).resolve().parents[1] /
++                        'game/mobile/integration_test/native_reminders_test.dart').read_bytes()
++        # This reads the actual unchanged Dart consumer's ID constraint.
++        expression = re.search(
++            r"for \(final value in \[label, runId, verification\]\) \{\s*"
++            r"expect\(RegExp\(r'([^']+)'\)\.hasMatch\(value\), isTrue\);",
++            self.harness.decode())
++        self.assertIsNotNone(expression)
++        self.consumer = re.compile(expression.group(1))
++        for name, data in {
++            'game/mobile/integration_test/native_reminders_test.dart': self.harness,
++            'tool/native_integration_driver.dart': b'// synthetic driver, never executed\n',
++            'candidate/source/game/mobile/lib/probe.dart': b'// synthetic production source\n',
++            'candidate/workspace/game/mobile/lib/probe.dart': b'// synthetic production source\n',
++        }.items():
++            path = self.root / name
++            path.parent.mkdir(parents=True, exist_ok=True)
++            path.write_bytes(data)
++        self.candidate = self.root / 'candidate'
++        (self.candidate / 'workspace/game/mobile/integration_test').mkdir()
++        frozen = verify.build_native.source_hashes(self.candidate / 'source')
++        manifest = {'source_sha256': frozen,
++                    'source_fingerprint': verify.build_native.fingerprint(frozen)}
++        (self.candidate / 'manifest.json').write_text(json.dumps(manifest))
++
++    def prepare(self, label='ios-phone', run='fresh',
++                at=datetime(2026, 10, 23, 5, 31, 7, 547418, tzinfo=timezone.utc)):
++        class FixedTime:
++            @staticmethod
++            def now(zone):
++                self.assertEqual(zone, timezone.utc)
++                return at
++        args = ['verify_native_reminders.py', str(self.candidate), '--device',
++                '01234567-1234-1234-1234-123456789abc', '--label', label,
++                '--scenario', 'default', '--run-id', run]
++        with patch.object(verify, 'ROOT', self.root), patch.object(verify, 'datetime', FixedTime), \
++                patch('sys.argv', args), patch.object(verify, 'device_ready') as ready, \
++                patch.object(verify.subprocess, 'Popen', side_effect=RuntimeError('HOST TEST: native launch blocked')) as launch, \
++                patch.object(verify.subprocess, 'run', return_value=subprocess.CompletedProcess(['synthetic-stop'], 0, '', '')) as stop, \
++                redirect_stdout(io.StringIO()):
++            code = verify.main()
++        self.assertEqual(code, 1)  # Blocked launch must never become a native pass.
++        ready.assert_called_once()
++        launch.assert_called_once()
++        stop.assert_called_once()
++        self.assertEqual(stop.call_args.args[0][:3], ['xcrun', 'simctl', 'terminate'])
++        evidence = Path(launch.call_args.kwargs['env']['TIDEGLASS_NATIVE_EVIDENCE'])
++        started = json.loads((evidence/'started.json').read_text())
++        terminal = json.loads((evidence/'verification.json').read_text())
++        self.assertFalse(terminal['passed'])
++        self.assertIn('RuntimeError: HOST TEST: native launch blocked', terminal['errors'])
++        return evidence, started, terminal, launch.call_args
++
++    def test_generated_id_is_accepted_by_actual_unchanged_Dart_contract(self):
++        evidence, started, terminal, launch = self.prepare()
++        identity = started['verification_id']
++        self.assertIsNotNone(self.consumer.fullmatch(identity))
++        self.assertEqual(identity, evidence.name)
++        self.assertEqual(terminal['verification_id'], identity)
++        self.assertIn('--dart-define=TIDEGLASS_VERIFICATION_ID='+identity, started['command'])
++        self.assertEqual(launch.kwargs['env']['TIDEGLASS_NATIVE_EVIDENCE'], str(evidence))
++        self.assertEqual(started['harness_sha256'], verify.sha(evidence/'harness.dart'))
++        self.assertEqual((evidence/'harness.dart').read_bytes(), self.harness)
++        self.assertEqual(evidence.parent, self.root/'release/native-notifications')
++        self.assertIsNone(self.consumer.fullmatch('integration-ios-phone-20261023T053107.547418Z'))
++
++    def test_maximum_host_label_and_run_id_remain_inside_Dart_limit(self):
++        evidence, started, _, _ = self.prepare(label='a'*80, run='z'*80)
++        for key in ['verification_id', 'device_label', 'run_id']:
++            self.assertIsNotNone(self.consumer.fullmatch(started[key]), key)
++        self.assertLessEqual(len(evidence.name), 160)
++
++    def test_utc_zero_microseconds_and_single_character_tokens(self):
++        evidence, started, _, _ = self.prepare(label='x', run='y',
++            at=datetime(2028, 2, 29, 0, 0, 0, 0, tzinfo=timezone.utc))
++        self.assertIsNotNone(self.consumer.fullmatch(evidence.name))
++        self.assertEqual(started['device_label'], 'x')
++        self.assertEqual(started['run_id'], 'y')
++
++    def test_existing_evidence_is_never_reused_or_overwritten(self):
++        evidence, _, _, _ = self.prepare()
++        before = {p.name: p.read_bytes() for p in evidence.iterdir() if p.is_file()}
++        with self.assertRaises(FileExistsError):
++            self.prepare(run='another-fresh-run')
++        self.assertEqual({p.name: p.read_bytes() for p in evidence.iterdir() if p.is_file()}, before)
++
++    def test_symlinked_evidence_target_is_refused_before_copying(self):
++        evidence, _, _, _ = self.prepare()
++        evidence.rename(evidence.with_name('retained-original'))
++        outside = self.root/'outside'
++        outside.mkdir()
++        evidence.symlink_to(outside, target_is_directory=True)
++        with self.assertRaises(FileExistsError):
++            self.prepare()
++        self.assertEqual(list(outside.iterdir()), [])
++
++    def test_fractional_precision_still_distinguishes_fresh_evidence(self):
++        first, _, _, _ = self.prepare()
++        second, started, _, _ = self.prepare(run='second',
++            at=datetime(2026, 10, 23, 5, 31, 7, 547419, tzinfo=timezone.utc))
++        self.assertNotEqual(first, second)
++        self.assertTrue(first.is_dir() and second.is_dir())
++        self.assertEqual(started['verification_id'], second.name)
++        self.assertIsNotNone(self.consumer.fullmatch(second.name))
++
++    def test_unsafe_or_overlong_path_tokens_rejected_before_any_OS_action(self):
++        bad = ['', '.', '..', '../escape', '/absolute', 'a/b', 'a\\b',
++               'a.b', 'a b', 'a\n', 'a\x00', '%2f', 'ş', 'a'*81]
++        with patch.object(verify, 'device_ready', side_effect=AssertionError('OS access forbidden')):
++            for value in bad:
++                for label, run in [(value, 'valid'), ('valid', value)]:
++                    with self.subTest(label=label, run=run), self.assertRaises(ValueError):
++                        verify.validate_request('emulator-5556', label, 'default', run)
++
++
+ if __name__ == '__main__':
+     unittest.main()

@@ -1,0 +1,28 @@
+[
+  {
+    "command": [
+      "xcrun",
+      "swiftc",
+      "-parse-as-library",
+      "release/store/tools/export_preview.swift",
+      "-o",
+      "release/qa/client-assets-current-20261023T025348.813709Z/export-preview"
+    ],
+    "exit_code": 1,
+    "source_sha256": "656ad603bc370df9e4de8ccfb14d6364757a1e44eb5f3792e39959fffc3cf79c",
+    "log": "export-preview-compile.log"
+  },
+  {
+    "command": [
+      "xcrun",
+      "swiftc",
+      "-parse-as-library",
+      "release/store/tools/inspect_preview.swift",
+      "-o",
+      "release/qa/client-assets-current-20261023T025348.813709Z/inspect-preview"
+    ],
+    "exit_code": 1,
+    "source_sha256": "a1c4dce52b6a67e3ef9fbc0a12223450e12e041bfc40efe7b83e404da23b0dbf",
+    "log": "inspect-preview-compile.log"
+  }
+]

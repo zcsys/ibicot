@@ -1,0 +1,98 @@
+--- initial/inspect_artifacts.py
++++ repaired/inspect_artifacts.py
+@@ -4,7 +4,6 @@
+ import hashlib
+ import json
+ import plistlib
+-import shutil
+ import subprocess
+ import xml.etree.ElementTree as ET
+ import zipfile
+@@ -90,21 +89,41 @@
+ 
+ 
+ def inspect(root, candidate, reports, output, java, bundletool, aapt2):
+-    manifest = json.loads((candidate / 'manifest.json').read_text())
++    # Bind every input before decoding, then check it again before publishing.
++    # A later hash must never silently replace the identity of bytes we inspected.
++    input_pins = {}
++
++    def pin_bytes(path):
++        path = Path(path)
++        data = path.read_bytes()
++        digest = hashlib.sha256(data).hexdigest()
++        require(path not in input_pins or input_pins[path] == digest,
++                f'input drift during collection: {path}')
++        input_pins[path] = digest
++        return data
++
++    manifest_path = candidate / 'manifest.json'
++    manifest = json.loads(pin_bytes(manifest_path))
+     fingerprint = manifest['source_fingerprint']
+     pins = manifest['source_sha256']
+     for rel, digest in pins.items():
+         safe_relative(rel)
+-        require(sha(candidate / 'source' / rel) == digest, 'candidate source drift')
++        source = candidate / 'source' / rel
++        pin_bytes(source)
++        require(input_pins[source] == digest, 'candidate source drift')
+     require(hashlib.sha256(json.dumps(pins, sort_keys=True, separators=(',', ':'))
+                            .encode()).hexdigest() == fingerprint,
+             'candidate fingerprint mismatch')
++    collector_path = Path(__file__)
++    collector_bytes = pin_bytes(collector_path)
++    report_documents = [(path, json.loads(pin_bytes(path))) for path in reports]
++    pin_bytes(bundletool)
++    pin_bytes(aapt2)
+     output.mkdir(parents=True, exist_ok=False)
+-    shutil.copy2(__file__, output / 'collector.py')
++    (output / 'collector.py').write_bytes(collector_bytes)
+     results = []
+     identities = set()
+-    for report_path in reports:
+-        report = json.loads(report_path.read_text())
++    for report_path, report in report_documents:
+         require(report['candidate_fingerprint'] == fingerprint,
+                 'different artifact candidate')
+         require(Path(report['candidate_directory']).resolve() == candidate,
+@@ -123,7 +142,8 @@
+                     type(build.get('exit_code')) is int and build['exit_code'] == 0,
+                     'unsuccessful native export')
+             artifact = root / str(safe_relative(build['artifact']))
+-            require(sha(artifact) == build['artifact_sha256'] and
++            pin_bytes(artifact)
++            require(input_pins[artifact] == build['artifact_sha256'] and
+                     artifact.stat().st_size == build['artifact_bytes'],
+                     'native artifact hash/size mismatch')
+             dest = output / (platform + '-' + mode)
+@@ -137,9 +157,9 @@
+                 entry['raw_copy'] = str(file.relative_to(output))
+                 inventory.append(entry)
+             record = {'platform': platform, 'mode': mode,
+-                      'artifact': str(artifact), 'artifact_sha256': sha(artifact),
++                      'artifact': str(artifact), 'artifact_sha256': input_pins[artifact],
+                       'build_report': str(report_path),
+-                      'build_report_sha256': sha(report_path), 'members': inventory}
++                      'build_report_sha256': input_pins[report_path], 'members': inventory}
+             if platform == 'android' and mode == 'release':
+                 xml = dest / 'packaged-manifest.xml'
+                 record['manifest_command'] = command(
+@@ -157,11 +177,14 @@
+     require(identities == {('debug', 'ios'), ('debug', 'android'),
+                            ('debug', 'macos'), ('release', 'ios'),
+                            ('release', 'android')}, 'incomplete five-export inventory')
++    for path, digest in input_pins.items():
++        require(path.is_file() and sha(path) == digest,
++                f'input drift during collection: {path}')
+     result = {'schema_version': 1, 'candidate_fingerprint': fingerprint,
+-              'candidate_manifest_sha256': sha(candidate / 'manifest.json'),
+-              'collector_sha256': sha(Path(__file__)),
+-              'tools': {'bundletool_sha256': sha(bundletool),
+-                        'aapt2_sha256': sha(aapt2), 'java': java},
++              'candidate_manifest_sha256': input_pins[manifest_path],
++              'collector_sha256': input_pins[collector_path],
++              'tools': {'bundletool_sha256': input_pins[bundletool],
++                        'aapt2_sha256': input_pins[aapt2], 'java': java},
+               'artifacts': results, 'runtime_traffic_observed': False,
+               'store_disclosure_approved': False, 'release_acceptance': False,
+               'limitations': 'Packaged declarations and versions only. Apple plist '

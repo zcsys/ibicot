@@ -1,0 +1,206 @@
+{
+  "scope": "M1-07 named client reviewer recommendation only",
+  "matrix_checks": [
+    {
+      "mode": "en-US",
+      "command": [
+        "python3",
+        "source/art/verification/check_matrix.py",
+        "/Users/csys/Desktop/ibicot/idle/release/art/catalogue-variants/root-art-full-20261021T122040.006324Z/matrix-results.json",
+        "--proof",
+        "/Users/csys/Desktop/ibicot/idle/release/native-proof/root-art-full-20261021T122040.006324Z",
+        "--full"
+      ],
+      "exit_code": 0,
+      "proof": "release/native-proof/root-art-full-20261021T122040.006324Z",
+      "report_sha256": "717e94848f53ad47fbfe1355e2228144e309bee7cf1a921bcb33477d49d47b91",
+      "source_comparisons": {
+        "game/mobile/lib/producer_art.dart": {
+          "current": "ecf1c624c01e0df5fd92801fef84bc38b218bb8bc7d23543d25cbe7ac3ff2526",
+          "matrix": "ecf1c624c01e0df5fd92801fef84bc38b218bb8bc7d23543d25cbe7ac3ff2526"
+        },
+        "game/mobile/lib/producer_art_data.dart": {
+          "current": "305c06487d6d9d8873b5773c23e793b12f781e7b85087f90482cf75ea98e9c26",
+          "matrix": "305c06487d6d9d8873b5773c23e793b12f781e7b85087f90482cf75ea98e9c26"
+        },
+        "game/mobile/lib/harbor_art.dart": {
+          "current": "50c7fa6e1fe63da71c5add51442a5fcef6fc46ae6f7f14079c6382c514ef6979",
+          "matrix": "50c7fa6e1fe63da71c5add51442a5fcef6fc46ae6f7f14079c6382c514ef6979"
+        },
+        "game/mobile/lib/palette.dart": {
+          "current": "1da79c2cd009e271dcaf3dd349f20e380950fbbb67ca54e10ea5180b2ed86d83",
+          "matrix": "1da79c2cd009e271dcaf3dd349f20e380950fbbb67ca54e10ea5180b2ed86d83"
+        },
+        "game/mobile/lib/app.dart": {
+          "current": "c26efdd6b59c7a8ce4404c9c8dee538b40ee2b3809be9df76e3eae537b360c20",
+          "matrix": "c26efdd6b59c7a8ce4404c9c8dee538b40ee2b3809be9df76e3eae537b360c20"
+        },
+        "game/mobile/lib/season_screen.dart": {
+          "current": "f05af571cdbdbd84d194f08a51bb91cb7544a9a366fa90babba2f29a354040e5",
+          "matrix": "f05af571cdbdbd84d194f08a51bb91cb7544a9a366fa90babba2f29a354040e5"
+        },
+        "game/mobile/lib/story_screen.dart": {
+          "current": "b546eb1ce88fb8f46ebde390249849a1b728fe28d6b7420466188ed97c92fc2e",
+          "matrix": "b546eb1ce88fb8f46ebde390249849a1b728fe28d6b7420466188ed97c92fc2e"
+        },
+        "game/mobile/lib/presentation.dart": {
+          "current": "0b891f8baa973d11f1aabe6d985fafbe8bf0e08904007cb0f218e68044fd9b63",
+          "matrix": "0b891f8baa973d11f1aabe6d985fafbe8bf0e08904007cb0f218e68044fd9b63"
+        },
+        "game/mobile/lib/cosmetics_screen.dart": {
+          "current": "9e512d3b8cf730638101cb0f45934068050e4ab90f8d15edff891336ccbdb780",
+          "matrix": "9e512d3b8cf730638101cb0f45934068050e4ab90f8d15edff891336ccbdb780"
+        }
+      },
+      "all_selected_runtime_inputs_unchanged": true
+    },
+    {
+      "mode": "qps-ploc",
+      "command": [
+        "python3",
+        "source/art/verification/check_matrix.py",
+        "/Users/csys/Desktop/ibicot/idle/release/art/catalogue-variants/root-art-pseudo-full-20261021T122636.246158Z/matrix-results.json",
+        "--proof",
+        "/Users/csys/Desktop/ibicot/idle/release/native-proof/root-art-pseudo-full-20261021T122636.246158Z",
+        "--full"
+      ],
+      "exit_code": 0,
+      "proof": "release/native-proof/root-art-pseudo-full-20261021T122636.246158Z",
+      "report_sha256": "d132e5e2862b280e885acf870a78267d98b117fa1deef705a9dab2b09aa187f2",
+      "source_comparisons": {
+        "game/mobile/lib/producer_art.dart": {
+          "current": "ecf1c624c01e0df5fd92801fef84bc38b218bb8bc7d23543d25cbe7ac3ff2526",
+          "matrix": "ecf1c624c01e0df5fd92801fef84bc38b218bb8bc7d23543d25cbe7ac3ff2526"
+        },
+        "game/mobile/lib/producer_art_data.dart": {
+          "current": "305c06487d6d9d8873b5773c23e793b12f781e7b85087f90482cf75ea98e9c26",
+          "matrix": "305c06487d6d9d8873b5773c23e793b12f781e7b85087f90482cf75ea98e9c26"
+        },
+        "game/mobile/lib/harbor_art.dart": {
+          "current": "50c7fa6e1fe63da71c5add51442a5fcef6fc46ae6f7f14079c6382c514ef6979",
+          "matrix": "50c7fa6e1fe63da71c5add51442a5fcef6fc46ae6f7f14079c6382c514ef6979"
+        },
+        "game/mobile/lib/palette.dart": {
+          "current": "1da79c2cd009e271dcaf3dd349f20e380950fbbb67ca54e10ea5180b2ed86d83",
+          "matrix": "1da79c2cd009e271dcaf3dd349f20e380950fbbb67ca54e10ea5180b2ed86d83"
+        },
+        "game/mobile/lib/app.dart": {
+          "current": "c26efdd6b59c7a8ce4404c9c8dee538b40ee2b3809be9df76e3eae537b360c20",
+          "matrix": "c26efdd6b59c7a8ce4404c9c8dee538b40ee2b3809be9df76e3eae537b360c20"
+        },
+        "game/mobile/lib/season_screen.dart": {
+          "current": "f05af571cdbdbd84d194f08a51bb91cb7544a9a366fa90babba2f29a354040e5",
+          "matrix": "f05af571cdbdbd84d194f08a51bb91cb7544a9a366fa90babba2f29a354040e5"
+        },
+        "game/mobile/lib/story_screen.dart": {
+          "current": "b546eb1ce88fb8f46ebde390249849a1b728fe28d6b7420466188ed97c92fc2e",
+          "matrix": "b546eb1ce88fb8f46ebde390249849a1b728fe28d6b7420466188ed97c92fc2e"
+        },
+        "game/mobile/lib/presentation.dart": {
+          "current": "0b891f8baa973d11f1aabe6d985fafbe8bf0e08904007cb0f218e68044fd9b63",
+          "matrix": "0b891f8baa973d11f1aabe6d985fafbe8bf0e08904007cb0f218e68044fd9b63"
+        },
+        "game/mobile/lib/cosmetics_screen.dart": {
+          "current": "9e512d3b8cf730638101cb0f45934068050e4ab90f8d15edff891336ccbdb780",
+          "matrix": "9e512d3b8cf730638101cb0f45934068050e4ab90f8d15edff891336ccbdb780"
+        }
+      },
+      "all_selected_runtime_inputs_unchanged": true
+    }
+  ],
+  "producer_modularity": [
+    {
+      "tier": 0,
+      "family": "Spark Skiff",
+      "five_stages_reuse_all_previous_shapes": true,
+      "editable_sources_equal_generated_data": true,
+      "shape_counts": [
+        8,
+        11,
+        16,
+        21,
+        27
+      ]
+    },
+    {
+      "tier": 1,
+      "family": "Prism Nursery",
+      "five_stages_reuse_all_previous_shapes": true,
+      "editable_sources_equal_generated_data": true,
+      "shape_counts": [
+        12,
+        18,
+        24,
+        28,
+        35
+      ]
+    },
+    {
+      "tier": 2,
+      "family": "Tide Dynamo",
+      "five_stages_reuse_all_previous_shapes": true,
+      "editable_sources_equal_generated_data": true,
+      "shape_counts": [
+        16,
+        20,
+        26,
+        31,
+        37
+      ]
+    },
+    {
+      "tier": 3,
+      "family": "Aurora Loom",
+      "five_stages_reuse_all_previous_shapes": true,
+      "editable_sources_equal_generated_data": true,
+      "shape_counts": [
+        11,
+        14,
+        15,
+        20,
+        27
+      ]
+    },
+    {
+      "tier": 4,
+      "family": "Dawn Observatory",
+      "five_stages_reuse_all_previous_shapes": true,
+      "editable_sources_equal_generated_data": true,
+      "shape_counts": [
+        10,
+        13,
+        16,
+        21,
+        28
+      ]
+    }
+  ],
+  "source_sha256": {
+    "implementation/program.json": "d6fb9575d82d1117e61aa907ce455310dfc47485905b36d4c453d3fe95d6e981",
+    "game/mobile/lib/producer_art.dart": "ecf1c624c01e0df5fd92801fef84bc38b218bb8bc7d23543d25cbe7ac3ff2526",
+    "game/mobile/lib/producer_art_data.dart": "305c06487d6d9d8873b5773c23e793b12f781e7b85087f90482cf75ea98e9c26",
+    "game/mobile/lib/harbor_art.dart": "50c7fa6e1fe63da71c5add51442a5fcef6fc46ae6f7f14079c6382c514ef6979",
+    "game/mobile/lib/palette.dart": "1da79c2cd009e271dcaf3dd349f20e380950fbbb67ca54e10ea5180b2ed86d83",
+    "game/mobile/lib/app.dart": "c26efdd6b59c7a8ce4404c9c8dee538b40ee2b3809be9df76e3eae537b360c20",
+    "game/mobile/lib/season_screen.dart": "f05af571cdbdbd84d194f08a51bb91cb7544a9a366fa90babba2f29a354040e5",
+    "game/mobile/lib/story_screen.dart": "b546eb1ce88fb8f46ebde390249849a1b728fe28d6b7420466188ed97c92fc2e",
+    "game/mobile/lib/presentation.dart": "0b891f8baa973d11f1aabe6d985fafbe8bf0e08904007cb0f218e68044fd9b63",
+    "game/mobile/lib/cosmetics_screen.dart": "9e512d3b8cf730638101cb0f45934068050e4ab90f8d15edff891336ccbdb780",
+    "game/client/art/app-icon.svg": "7ceb0dc3199f13a9ebf18db5a57f4ca14a07e3c20e9c3f26b084df9df00619fc",
+    "game/client/art/app-icon-1024.png": "1944a2609fc3a063b01c5405979b9f7a60e17373edc5e5b8c19a0afc74fec283",
+    "game/client/art/app-icon-provenance.json": "1cbe725be00e5310f193f31aa8787b08da6031b1c72f539d820d93cc5493b7d0",
+    "source/art/style-guide.md": "f5736d6554b2795dfdc102ff1794b85f488fbd45e74df60f0508e2530cb213bf",
+    "source/art/verification/check_matrix.py": "2bbf0a53b581f220bcbdb5b453ae0ebc50df4abb38f2eea33b4eb9bc4c5b1ed3",
+    "release/qa/integration-art-matrix-20261021T123739647573Z/ART_MATRIX_REVIEW.md": "a77553eb337fae3e8ddb7e25519bd24f6a5486c2f4e404eb1541c7199c1ff15f",
+    "release/qa/integration-art-matrix-20261021T123739647573Z/verification.json": "6305c2cad9835a0acd7cd652ff75c28b7bd9de189a9533aa39a7a9adcd9cc00f"
+  },
+  "visually_inspected_images_sha256": {
+    "release/art/producer-contact-sheet.png": "72fe7bc9c37402c3fbeb03f7e0d34eff45a731d5bda50e9d8abe925948bda891",
+    "source/art/registration/harbor-contact-sheet.png": "140b44fde21882b6be2678bf1b9ce91b93694100529af55310b3ee9d5522fc3a",
+    "game/client/art/app-icon-1024.png": "1944a2609fc3a063b01c5405979b9f7a60e17373edc5e5b8c19a0afc74fec283",
+    "release/native-proof/main-launch-20261021T103014.378318Z/ios-phone-main.png": "a4b8ab044f51c9aad52f5b4dabf22011b6f70d865d769ae787ebcd669c4b9153",
+    "release/native-proof/integration-ios-phone-20261021T111046.293625Z/ios-phone-session-start-producer-stages.png": "0d4807f2238988336072f94c8f966e87cba740c2891d8763462a313da39ec24a"
+  },
+  "new_flutter_or_native_runs": false,
+  "acceptance_edits": false
+}

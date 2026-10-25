@@ -1,0 +1,68 @@
+{
+  "utc": "2026-10-25T15:50:41.990164+00:00",
+  "status": "read-only artifact validation; no install or device action yet",
+  "candidate_fingerprint": "3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59",
+  "build_report": "/Users/csys/Desktop/ibicot/idle/release/native-proof/20261023T040548.338966Z/build-report.json",
+  "build_report_sha256": "a213b980716a4c0c1fa929269187ef5ae01703ef5fbe29e172f2842d900d15ee",
+  "artifacts": {
+    "ios": {
+      "path": "/Users/csys/Desktop/ibicot/idle/release/native-proof/20261023T040548.338966Z/artifacts/tideglass-ios-debug.zip",
+      "sha256": "53c296abed7f7906a73a11e028852133b6860e449599f4c3dd5763099a62aa07",
+      "bytes": 63872985,
+      "export_command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+        "build",
+        "ios",
+        "--simulator",
+        "--debug",
+        "--no-codesign",
+        "--no-pub"
+      ],
+      "info_plist_path": "Runner.app/Info.plist",
+      "info": {
+        "CFBundleIdentifier": "dev.tideglass.game",
+        "CFBundleExecutable": "Runner",
+        "CFBundleName": "tideglass",
+        "CFBundleDisplayName": "Tideglass",
+        "CFBundleVersion": "1",
+        "CFBundleShortVersionString": "0.1.0",
+        "DTPlatformName": "iphonesimulator",
+        "DTSDKName": "iphonesimulator27.1",
+        "DTXcodeBuild": "27A9275"
+      },
+      "zip_member_count": 161,
+      "safe_paths": true
+    },
+    "android": {
+      "path": "/Users/csys/Desktop/ibicot/idle/release/native-proof/20261023T040548.338966Z/artifacts/tideglass-debug.apk",
+      "sha256": "b275ae07dcf76fcf7108c64a02dc688295c0e50371f888ea15a8cdc0ec2cec4e",
+      "bytes": 191034607,
+      "export_command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+        "build",
+        "apk",
+        "--debug",
+        "--no-pub"
+      ],
+      "badging_argv": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/build-tools/36.0.0/aapt2",
+        "dump",
+        "badging",
+        "/Users/csys/Desktop/ibicot/idle/release/native-proof/20261023T040548.338966Z/artifacts/tideglass-debug.apk"
+      ],
+      "badging_sha256": "ec815e897dfb4161f54c19306a5119aa6cc35c67aa782d3cbf951510aad42b5f",
+      "identity_lines": [
+        "package: name='dev.tideglass.game' versionCode='1' versionName='0.1.0' platformBuildVersionName='16' platformBuildVersionCode='36' compileSdkVersion='36' compileSdkVersionCodename='16'",
+        "application-label:'Tideglass'",
+        "application: label='Tideglass' icon='res/mipmap-mdpi-v4/ic_launcher.png'",
+        "launchable-activity: name='dev.tideglass.game.MainActivity'  label='' icon=''"
+      ]
+    }
+  },
+  "proposed_later_actions": [
+    "After reminders and S02 terminal and sealed only: adb -s emulator-5556 install -r exact archived debug APK, no uninstall/clear/reset; verify installed APK bytes match archived hash.",
+    "After test sequence only: extract exact reviewed iOS debug ZIP into this new evidence directory using ditto preserving modes; simctl install owned phoneF05B only, never erase; verify full installed bundle map against extracted archive.",
+    "Preserve existing app data and all isolated test evidence. Observe actual launcher icon/current app identity to open regular main game; capture fresh playable preview and label it a handoff observation, not a new test gate.",
+    "No rebuild, source change, signing/account or public release claim."
+  ]
+}

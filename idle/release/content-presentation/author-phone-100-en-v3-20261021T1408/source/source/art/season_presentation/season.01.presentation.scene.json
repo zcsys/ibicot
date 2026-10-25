@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "id": "season.01.presentation",
+  "asset_id": "asset.season.01.presentation",
+  "implementation": "existing_code_native_scene_composition",
+  "widget": "SeasonScreen",
+  "source": "game/mobile/lib/season_screen.dart",
+  "route": "TideglassApp._openSeason",
+  "tabs": [
+    {
+      "index": 0,
+      "method": "_fleet",
+      "parts": [
+        "lifecycle_copy",
+        "HarborArt",
+        "seasonal_wallet",
+        "StagedProducerArt",
+        "milestone_cards",
+        "synergy_panel"
+      ]
+    },
+    {
+      "index": 1,
+      "method": "_pass",
+      "parts": [
+        "pass_selection",
+        "level_expansions",
+        "CosmeticPreview",
+        "fragment_copy",
+        "verified_ownership_projection"
+      ]
+    },
+    {
+      "index": 2,
+      "method": "_contracts",
+      "parts": [
+        "same_daily_slot_bindings",
+        "claim_controls"
+      ]
+    }
+  ],
+  "harbor_binding": {
+    "counts": "season.fleet.counts",
+    "restoration": "season.claimedMilestones.length",
+    "phase": 0
+  },
+  "reuse": [
+    "HarborArt",
+    "StagedProducerArt",
+    "CosmeticPreview",
+    "LocalizedText"
+  ],
+  "season_new_unique_cosmetics": 0,
+  "economic_logic_in_art": false,
+  "limitations": [
+    "The season is a screen composition, not an additional equipable cosmetic.",
+    "The new thumbnail is an exact host component export; no runtime thumbnail route is implemented.",
+    "Original equipped/preview/thumbnail/native/viewport variants remain open; host captures do not waive them."
+  ]
+}

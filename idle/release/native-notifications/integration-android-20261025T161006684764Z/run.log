@@ -1,0 +1,71 @@
+Running Gradle task 'assembleDebug'...                             17.9s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...        1,477ms
+I/Choreographer( 7603): Skipped 49 frames!  The application may be doing too much work on its main thread.
+D/FlutterJNI( 7603): Sending viewport metrics to the engine.
+VMServiceFlutterDriver: Connecting to Flutter application at http://127.0.0.1:64174/KIX7cTe2SGc=/
+VMServiceFlutterDriver: Isolate found with number: 4105642697316511
+VMServiceFlutterDriver: Isolate 4105642697316511 is runnable.
+VMServiceFlutterDriver: Isolate is paused at start.
+VMServiceFlutterDriver: Attempting to resume isolate
+I/flutter ( 7603): 00:00 +0: real OS reminder qualification: delivery
+VMServiceFlutterDriver: Connected to Flutter application.
+D/FlutterJNI( 7603): Sending viewport metrics to the engine.
+I/flutter ( 7603): TIDEGLASS_REMINDER_ACTION {"verification_id":"integration-android-20261025T161006684764Z","candidate_fingerprint":"3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59","harness_sha256":"330ab6428203ec80e4de19e4eb727ad8dcfc6f63572e9ea1b0ef3ff7dc7a71da","scenario":"delivery","run_id":"v3b00-r20261025-android-delivery-observed2","device_label":"android","platform":"android","process_id":7603,"action":"allow_permission_if_prompted","utc_ms":1792944637186}
+D/ProfileInstaller( 7603): Installing profile for dev.tideglass.game
+I/flutter ( 7603): TIDEGLASS_REMINDER_ACTION {"verification_id":"integration-android-20261025T161006684764Z","candidate_fingerprint":"3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59","harness_sha256":"330ab6428203ec80e4de19e4eb727ad8dcfc6f63572e9ea1b0ef3ff7dc7a71da","scenario":"delivery","run_id":"v3b00-r20261025-android-delivery-observed2","device_label":"android","platform":"android","process_id":7603,"action":"background_app_now_using_os_home","utc_ms":1792944637274}
+D/EGL_emulation( 7603): app_time_stats: avg=7290.99ms min=1050.91ms max=13531.07ms count=2
+D/EGL_emulation( 7603): app_time_stats: avg=9264.29ms min=9264.29ms max=9264.29ms count=1
+D/VRI[MainActivity]( 7603): visibilityChanged oldVisibility=true newVisibility=false
+I/flutter ( 7603): TIDEGLASS_REMINDER_ACTION {"verification_id":"integration-android-20261025T161006684764Z","candidate_fingerprint":"3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59","harness_sha256":"330ab6428203ec80e4de19e4eb727ad8dcfc6f63572e9ea1b0ef3ff7dc7a71da","scenario":"delivery","run_id":"v3b00-r20261025-android-delivery-observed2","device_label":"android","platform":"android","process_id":7603,"action":"wait_until_due_then_return_via_app_icon","utc_ms":1792944660825,"not_before_utc_ms":1792945020000}
+E/SurfaceSyncGroup( 7603): Failed to receive transaction ready in 1000ms. Marking SurfaceSyncGroup(wmsSync-VRI[MainActivity]#4) as ready
+E/SurfaceSyncGroup( 7603): Failed to receive transaction ready in 1000ms. Marking SurfaceSyncGroup(VRI[MainActivity]#5) as ready
+E/SurfaceSyncGroup( 7603): Failed to receive transaction ready in 1000ms. Marking SurfaceSyncGroup(SurfaceView[dev.tideglass.game/dev.tideglass.game.MainActivity]#3) as ready
+I/flutter ( 7603): ══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+I/flutter ( 7603): The following assertion was thrown running a test:
+I/flutter ( 7603): A SemanticsHandle was active at the end of the test.
+I/flutter ( 7603): All SemanticsHandle instances must be disposed by calling dispose() on the SemanticsHandle.
+I/flutter ( 7603): 
+I/flutter ( 7603): When the exception was thrown, this was the stack:
+I/flutter ( 7603): #0      WidgetTester._verifySemanticsHandlesWereDisposed (package:flutter_test/src/widget_tester.dart:1074:7)
+I/flutter ( 7603): #1      WidgetTester._endOfTestVerifications (package:flutter_test/src/widget_tester.dart:1063:5)
+I/flutter ( 7603): #2      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1969:22)
+I/flutter ( 7603): <asynchronous suspension>
+I/flutter ( 7603): #3      TestWidgetsFlutterBinding._createTestCompletionHandler.<anonymous closure> (package:flutter_test/src/binding.dart:1707:12)
+I/flutter ( 7603): <asynchronous suspension>
+I/flutter ( 7603): 
+I/flutter ( 7603): The test description was:
+I/flutter ( 7603):   real OS reminder qualification: delivery
+I/flutter ( 7603): ════════════════════════════════════════════════════════════════════════════════════════════════════
+I/flutter ( 7603): 10:26 +0: real OS reminder qualification: delivery [E]
+I/flutter ( 7603):   Test failed. See exception logs above.
+I/flutter ( 7603):   The test description was: real OS reminder qualification: delivery
+I/flutter ( 7603):   
+D/EGL_emulation( 7603): app_time_stats: avg=665.78ms min=95.53ms max=1236.02ms count=2
+I/flutter ( 7603): 10:26 +0 -1: (tearDownAll)
+I/flutter ( 7603): 10:26 +1 -1: Some tests failed.
+Failure Details:
+Failure in method: real OS reminder qualification: delivery
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞═════════════════
+The following assertion was thrown running a test:
+A SemanticsHandle was active at the end of the test.
+All SemanticsHandle instances must be disposed by calling
+dispose() on the SemanticsHandle.
+
+When the exception was thrown, this was the stack:
+#0      WidgetTester._verifySemanticsHandlesWereDisposed (package:flutter_test/src/widget_tester.dart:1074:7)
+#1      WidgetTester._endOfTestVerifications (package:flutter_test/src/widget_tester.dart:1063:5)
+#2      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1969:22)
+<asynchronous suspension>
+#3      TestWidgetsFlutterBinding._createTestCompletionHandler.<anonymous closure> (package:flutter_test/src/binding.dart:1707:12)
+<asynchronous suspension>
+
+The test description was:
+  real OS reminder qualification: delivery
+═════════════════════════════════════════════════════════════════
+
+end of failure 1
+
+
+
+Leaving the application running.

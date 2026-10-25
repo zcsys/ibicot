@@ -1,0 +1,53 @@
+--- game/qa/workspaces/integration-inventory-20261021T104607526377Z/game/mobile/lib/app.dart
++++ game/mobile/lib/app.dart
+@@ -26,6 +26,7 @@
+ import 'reminder_lifecycle.dart';
+ import 'help_content.dart';
+ import 'help_screen.dart';
++import 'study_gate.dart';
+ 
+ class ClientPreferences {
+   const ClientPreferences({
+@@ -96,6 +97,21 @@
+   GameTelemetry? telemetry;
+   Future<void>? _resumeWork;
+   GameController get game => widget.controller;
++  StudySession? study;
++
++  @override
++  void didChangeDependencies() {
++    super.didChangeDependencies();
++    final next = StudyScope.of(context);
++    if (identical(next, study)) return;
++    study = next;
++    WidgetsBinding.instance.addPostFrameCallback((_) {
++      if (mounted && identical(next, study) && next != null) {
++        unawaited(next.capture(next.recorder.interactiveHarbor));
++      }
++    });
++  }
++
+   @override
+   void initState() {
+     super.initState();
+@@ -159,6 +175,9 @@
+     } finally {
+       watch.stop();
+       telemetry?.resumeFinished(watch.elapsed, succeeded: settled);
++      if (settled && mounted && study != null) {
++        unawaited(study!.capture(study!.recorder.interactiveHarbor));
++      }
+     }
+     final services = widget.services;
+     if (!mounted || services == null || !services.signedIn) return;
+@@ -1473,6 +1492,10 @@
+                   AudioSettings(audio: game.audio!),
+                   const SizedBox(height: 24),
+                 ],
++                if (study != null) ...[
++                  StudyControls(session: study!),
++                  const SizedBox(height: 24),
++                ],
+                 if (widget.notifications != null) ...[
+                   NotificationSettings(service: widget.notifications!),
+                   const SizedBox(height: 24),

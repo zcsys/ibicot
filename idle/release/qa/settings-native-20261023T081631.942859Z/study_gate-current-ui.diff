@@ -1,0 +1,139 @@
+--- release/qa/integration-current-ui-20261021T133115456638Z/source/game/mobile/lib/study_gate.dart
++++ game/mobile/lib/study_gate.dart
+@@ -1,14 +1,17 @@
+ import 'dart:async';
+ import 'dart:convert';
+ import 'dart:io';
++
+ import 'package:flutter/material.dart';
+ import 'package:flutter/semantics.dart';
+ import 'package:flutter/services.dart';
+ import 'package:path_provider/path_provider.dart';
+ import 'package:tideglass_platform/study_recorder.dart';
++
+ import 'bundled_content.dart';
+ import 'presentation.dart';
+ import 'palette.dart';
++import 'study_native_context.dart';
+ 
+ /// Only explicitly provisioned study builds display enrollment. A provision is
+ /// preparation, not evidence of ethics approval, valid recruitment or consent.
+@@ -60,8 +63,11 @@
+     contentSha256: bundledManifestDigest,
+     config: data['config'],
+   );
+-  String get information =>
++  static const nativeLinkageInformation =
++      'If you agree, this study also records the app process number, platform, app version/build and observation time with each process start. These bounded records can be matched to a native diagnostic you separately choose to provide. The app does not collect device logs or upload diagnostics. Withdrawal erases this local linkage with the study records.';
++  String get legacyInformation =>
+       '${data['information']}\n\nStudy contact: ${data['contact']}\n\nRetention and deletion: ${data['retention']}';
++  String get information => '$legacyInformation\n\n$nativeLinkageInformation';
+   StudyEnrollment enrollment(String evidence) => StudyEnrollment(
+     studyId: data['study_id'],
+     protocolSha256: data['protocol_sha256'],
+@@ -189,6 +195,7 @@
+     this.provision = const String.fromEnvironment('TIDEGLASS_STUDY_PROVISION'),
+     this.supportDirectory,
+     this.openRecorder,
++    this.sampleNativeContext,
+   });
+   final Widget child;
+   final String provision;
+@@ -196,6 +203,7 @@
+ 
+   /// Test injection for deterministic I/O failure/race qualification.
+   final Future<StudyRecorder> Function(StudyStore)? openRecorder;
++  final Future<StudyProcessObservation> Function()? sampleNativeContext;
+   @override
+   State<StudyGate> createState() => _StudyGateState();
+ }
+@@ -276,8 +284,10 @@
+                   provision!.data['protocol_sha256'] ||
+               registry['consent_version'] !=
+                   provision!.data['consent_version'] ||
+-              registry['information_sha256'] !=
+-                  studyDigest(provision!.information) ||
++              !{
++                studyDigest(provision!.information),
++                studyDigest(provision!.legacyInformation),
++              }.contains(registry['information_sha256']) ||
+               registry['synthetic'] != provision!.data['synthetic'])) {
+         throw const FormatException('Study identity mismatch.');
+       }
+@@ -307,8 +317,22 @@
+         );
+         // The start attempt precedes ordinary bootstrap/interactive events.
+         // A loading-page decline never attaches collection after that attempt.
++        final native =
++            !recorder!.exhausted &&
++                registry!['information_sha256'] ==
++                    studyDigest(provision!.information)
++            ? await (widget.sampleNativeContext ??
++                  NativeStudyProcessContext.sample)()
++            : const StudyProcessObservation.unavailable('consent_not_granted');
++        if (_declinedForLaunch || !mounted) {
++          restored.dispose();
++          return;
++        }
+         await restored.capture(
+-          () => recorder!.beginProcess(config: provision!.currentConfig),
++          () => recorder!.beginProcess(
++            config: provision!.currentConfig,
++            nativeContext: native,
++          ),
+         );
+         if (_declinedForLaunch || !mounted) {
+           restored.dispose();
+@@ -320,8 +344,7 @@
+         prepared = true;
+       }
+     } catch (_) {
+-      error =
+-          'Study collection is unavailable. Your harbor remains available without study recording.';
++      error = 'Study collection is unavailable. Your harbor remains available without study recording.';
+     }
+     if (mounted) setState(() {});
+   }
+@@ -359,16 +382,20 @@
+         'candidate_sha256': provision!.data['candidate_sha256'],
+       });
+       final enrollment = provision!.enrollment(studyDigest(evidence));
++      final native =
++          await (widget.sampleNativeContext ??
++              NativeStudyProcessContext.sample)();
++      if (!mounted || _declinedForLaunch || !consent) return;
+       // A local check supports later independent eligibility adjudication; it
+       // cannot prove first-ever installation or absence of restored backups.
+       await support!.create(recursive: true);
+-      await File(
+-        '${support!.path}/tideglass-study-eligibility.json',
+-      ).writeAsString(evidence, flush: true);
++      await File('${support!.path}/tideglass-study-eligibility.json')
++          .writeAsString(evidence, flush: true);
+       await recorder!.enroll(
+         enrollment,
+         provision!.currentConfig,
+         eligibleFreshInstall: true,
++        nativeContext: native,
+       );
+       await recorder!.beginProcess(config: provision!.currentConfig);
+       if (!mounted) return;
+@@ -379,8 +406,7 @@
+       );
+       ready = true;
+     } catch (_) {
+-      error =
+-          'Enrollment could not be recorded, or this device already has a harbor. Continue without study recording; no previous activity will be added.';
++      error = 'Enrollment could not be recorded, or this device already has a harbor. Continue without study recording; no previous activity will be added.';
+     }
+     if (mounted) setState(() => working = false);
+   }
+@@ -459,6 +485,8 @@
+                   const LocalizedText(
+                     'Study recording is separate from account telemetry. It records pseudonymous app starts, game configuration, foreground activity and collection gaps on this device. It starts only after you agree. You can copy the records or withdraw in Settings. Declining does not change your game or rewards.',
+                   ),
++                  const SizedBox(height: 16),
++                  const LocalizedText(StudyProvision.nativeLinkageInformation),
+                   if (error != null) LocalizedText(error!),
+                   if (error == null && !prepared)
+                     const LocalizedText(

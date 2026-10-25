@@ -1,0 +1,55 @@
+{
+  "platform": "ios",
+  "device": "C6D76EF5-2DBE-4C7E-BC58-70B2322F4EAB",
+  "audio_recorded": false,
+  "editing": "None; native simulator screen recorder output",
+  "commands": [
+    {
+      "command": [
+        "xcrun",
+        "simctl",
+        "get_app_container",
+        "C6D76EF5-2DBE-4C7E-BC58-70B2322F4EAB",
+        "dev.tideglass.game",
+        "data"
+      ],
+      "exit_code": 0,
+      "output": "/Users/csys/Library/Developer/CoreSimulator/Devices/C6D76EF5-2DBE-4C7E-BC58-70B2322F4EAB/data/Containers/Data/Application/45641E4C-900E-4526-B076-316956C71E88\n"
+    },
+    {
+      "command": [
+        "xcrun",
+        "simctl",
+        "io",
+        "C6D76EF5-2DBE-4C7E-BC58-70B2322F4EAB",
+        "recordVideo",
+        "--codec=h264",
+        "--force",
+        "/Users/csys/Desktop/ibicot/idle/release/native-proof/integration-ios-tablet-20261023T080707.958916Z/gameplay.mp4"
+      ],
+      "kind": "screen-recorder"
+    },
+    {
+      "command": [
+        "xcrun",
+        "swift",
+        "/Users/csys/Desktop/ibicot/idle/tool/native_video_metadata.swift",
+        "/Users/csys/Desktop/ibicot/idle/release/native-proof/integration-ios-tablet-20261023T080707.958916Z/gameplay.mp4"
+      ],
+      "exit_code": 0,
+      "output": "{\"audio_track_count\":0,\"duration_seconds\":25.401666666666667,\"height\":2752,\"video_track_count\":1,\"width\":2064}\n"
+    }
+  ],
+  "errors": [],
+  "start_acknowledgement": "simctl first recorded video frame",
+  "fixture_acknowledged": true,
+  "recorder_exit_code": 0,
+  "media": {
+    "audio_track_count": 0,
+    "duration_seconds": 25.401666666666667,
+    "height": 2752,
+    "video_track_count": 1,
+    "width": 2064
+  },
+  "passed": true
+}

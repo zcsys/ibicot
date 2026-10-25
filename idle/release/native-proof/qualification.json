@@ -1,0 +1,224 @@
+{
+  "observed_on": "2026-10-21",
+  "work_ids": [
+    "M0-02",
+    "M0-03",
+    "M0-08"
+  ],
+  "scope_ids": [
+    "S01",
+    "S36",
+    "S40"
+  ],
+  "candidate": "Flutter 3.47.7 / Dart 3.13.5",
+  "stack_accepted": false,
+  "ios_sdk_link": {
+    "status": "passed",
+    "target": "iOS simulator",
+    "app_kind": "isolated generated scaffold",
+    "purchase_plugin": "3.3.1",
+    "ad_plugin": "9.1.0",
+    "runtime_gameplay_proven": false,
+    "log": "release/native-proof/ios-native-probe.log",
+    "runtime_scaffold_launch_proven": true,
+    "repaired_log": "release/native-proof/ios-native-probe-repaired.log",
+    "launch_evidence": "release/native-proof/ios-probe-launch-repaired.png",
+    "initial_launch_failure": "Missing Google Mobile Ads app ID caused GADInvalidInitializationException; repaired with official sample app ID."
+  },
+  "android_sdk_link": {
+    "status": "passed",
+    "target": "Android debug APK",
+    "app_kind": "isolated generated scaffold",
+    "purchase_plugin": "3.3.1",
+    "ad_plugin": "9.1.0",
+    "log": "release/native-proof/android-native-probe-repaired.log",
+    "runtime_scaffold_launch_proven": true,
+    "runtime_gameplay_proven": false,
+    "launch_evidence": "release/native-proof/android-probe-launch-repaired.png",
+    "initial_launch_failure": "MobileAdsInitProvider failed without appID; repaired with official sample ID."
+  },
+  "simulator": {
+    "device_id": "F05BE4B0-52C1-4CA1-B721-BD64AE559E3F",
+    "runtime": "iOS26.3.1",
+    "device": "iPhone17Pro",
+    "status": "phone_shutdown_after_restoring_ordinary_main_2026_10_21"
+  },
+  "android_emulator": {
+    "serial": "emulator-5556",
+    "api": 35,
+    "image": "google_apis/arm64-v8a",
+    "profile": "Pixel6",
+    "process_handle": null,
+    "status": "shutdown_after_restoring_ordinary_main_2026_10_21"
+  },
+  "store_sandbox": {
+    "status": "not_proven",
+    "needs": [
+      "Authorized developer accounts",
+      "Configured test products",
+      "Native pending/restore/revocation/acknowledgement scenarios"
+    ]
+  },
+  "rewarded_ad_delivery": {
+    "status": "not_proven",
+    "needs": [
+      "Consent-aware initialization",
+      "Test rewarded ad callbacks",
+      "Equal free allowance integration"
+    ]
+  },
+  "cloud_conflict": {
+    "status": "not_proven",
+    "needs": [
+      "Authorized staging provider",
+      "Revision and branch-recovery integration"
+    ]
+  },
+  "signed_distribution": {
+    "status": "not_proven",
+    "needs": [
+      "Approved app identity",
+      "Signing access and release authority"
+    ]
+  },
+  "physical_device_coverage": {
+    "status": "not_proven"
+  },
+  "notes": [
+    "Source, wrapper and compile work is implemented; production package acceptance remains open.",
+    "No live payment, store enrollment, public distribution or cloud account action performed."
+  ],
+  "probe_source_sha256": {
+    "pubspec.yaml": "cd926f83c3e77eefee913d6629a4a9a7d7e2e539f0ed5ca1c75761b217877718",
+    "pubspec.lock": "392a7d00fe424a96201ef45e40d7b15c959e7a8e359f6eaf6d3b34cc8df3494e",
+    "lib/main.dart": "525df2a854f3c54c831302c89f3089afd991cd03900c207e261d821bdc9ec656",
+    "ios/Runner/Info.plist": "477e22f286a3caaab30b0c178d56295ecac0bef2c7a9480fb54da71dfc160f62",
+    "android/app/src/main/AndroidManifest.xml": "418006504d077dd9ef2f2f209a5384f74a900ed3fa72af0cb33bfc1d1e9ff6f1",
+    "ios/Runner.xcworkspace/xcshareddata/swiftpm/Package.resolved": "2b72b035596ea83db3e5b8d83109804035e4e78a962a2ed0b805040c4ba5b6b4"
+  },
+  "gameplay_candidate": {
+    "fingerprint": "ce46598c4b513477c643f0dff4f5160400ac800b4ee76579c48ca2a5e08e1ffd",
+    "build_report": "release/native-proof/20261016T095427.771900Z/build-report.json",
+    "native_builds": {
+      "ios": "passed",
+      "android": "passed",
+      "macos": "passed"
+    },
+    "host_test_gate": "failed: frozen negative test expects supported schema2 to be rejected; later working-tree fix is not inherited",
+    "seeded_native_ui": {
+      "ios_phone": "release/native-proof/integration-ios-phone-20261016T095946.013088Z/verification.json",
+      "android_phone": "release/native-proof/integration-android-phone-20261016T100111.069907Z/verification.json",
+      "ios_tablet": "release/native-proof/integration-ios-tablet-20261016T100227.506479Z/verification.json"
+    },
+    "scope": "Purchase costs 33.6 R and leaves 26.4 R from seeded 60 R; cancel/confirm Rechart, 10 Charts, wallet/fleet reset, lifetime retention and native disk reload. Seeded and real-clock cases are tracked separately.",
+    "natural_first_purchase": {
+      "ios": "release/native-proof/integration-ios-phone-20261016T100825.809052Z/verification.json",
+      "android": "release/native-proof/integration-android-phone-20261016T101059.120074Z/verification.json"
+    },
+    "release_accepted": false,
+    "invalid_run": "release/native-proof/integration-ios-phone-20261016T100415.147682Z/verification.json",
+    "natural_process_reload": {
+      "ios": "release/native-proof/integration-ios-phone-20261016T101005.788792Z/verification.json",
+      "android": "release/native-proof/integration-android-phone-20261016T101211.206142Z/verification.json"
+    },
+    "invalid_or_failed_qa_attempts": {
+      "release/native-proof/integration-ios-phone-20261016T100415.147682Z/verification.json": "Incorrect test import led driver to reuse previous binary; invalidated despite exit zero.",
+      "release/native-proof/integration-ios-phone-20261016T100648.818501Z/verification.json": "Driver default cleanup uninstalled app and removed sandbox; corrected by explicit process stop preserving installation."
+    }
+  },
+  "external_dependency_checklist": "release/native-proof/external-dependencies.md",
+  "future_release_exports": {
+    "status": "Executed on152; both unsigned exports passed and5artifact hashes reverified21October",
+    "command": "python3 tool/build_native.py --mode release ios android",
+    "ios": "Device bundle with --no-codesign",
+    "android": "Release AAB; signing remains unconfigured with no debug-key fallback"
+  },
+  "current_local_candidate": {
+    "fingerprint": "152805bf9e269f49d14486286656ac0174a808384d10e6623533a4f92690dc11",
+    "candidate_directory": "/Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261021T101953.650199Z-152805bf9e26",
+    "parent_fingerprint": "66795d55b998e39d74eec50ef1702aef8f6210d93dee4a9e9cdbae35a56006fe",
+    "host_test_gate": "Inherited unchanged705-test/seven-analyzer parent gate plus fresh6English+6pseudo help tests and whole mobile analyzer; see explicit ancestry",
+    "debug_build_report": "release/native-proof/20261021T102112.746555Z/build-report.json",
+    "debug_build_status": "passed_ios_android_macos",
+    "unsigned_release_status": "passed_ios_device_bundle_and_android_aab_confirmed_unsigned",
+    "unsigned_release_report": "release/native-proof/20261021T103632.486357Z/build-report.json",
+    "runtime_status": "22_source_pinned_native_scenarios_passed",
+    "runtime_matrix": "release/native-proof/20261021T120204.582776Z-152-final-verification/runtime-matrix.json",
+    "failed_or_invalid_native_attempts": 5,
+    "strict_native_log_audit": "release/native-proof/20261021T120204.582776Z-152-final-verification/native-log-audit.json",
+    "newer_working_tree_included": false,
+    "excluded_newer_work": [
+      "Soundtrack export cache and subsequent helper wiring",
+      "Campaign calibration optionality/content migration",
+      "Opt-in local study recorder/UI and consent repairs",
+      "Later art catalogue host matrix and registration",
+      "Genuine S14 economic transition and native file-lock repair",
+      "Backend operations changes after snapshot"
+    ],
+    "final_verification": "release/native-proof/20261021T120204.582776Z-152-final-verification/final-verification.json",
+    "summary": "release/native-proof/20261021T101953.650199Z/local-qualification-summary.json",
+    "release_accepted": false
+  },
+  "prior_local_candidate_3445498f397a": {
+    "fingerprint": "3445498f397a8cfc2c1383e5c128358222f25cd1691a54acdd852e03bbf4b982",
+    "candidate_directory": "/Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261016T111715.537650Z-3445498f397a",
+    "provenance": "Derived candidate; all 294 original captured native production inputs unchanged. Tests, harness and missing test dependencies repaired with explicit parent diff.",
+    "parent_evidence": "release/native-proof/20261016T111715.537650Z/production-parity.json",
+    "host_test_gate": "passed",
+    "host_test_counts": {
+      "core": 176,
+      "persistence": 18,
+      "progression": 25,
+      "events": 31,
+      "platform": 6,
+      "mobile": 134,
+      "services": 48,
+      "candidate_integrity": 3
+    },
+    "debug_build_report": "release/native-proof/20261016T111720.826224Z/build-report.json",
+    "debug_build_status": "passed",
+    "unsigned_release_status": "not_yet_run",
+    "runtime_status": "failed_ios_audio_configuration",
+    "release_accepted": false,
+    "audio_failure_evidence": "release/native-proof/integration-ios-phone-20261016T112519.267147Z/audio-finding.json"
+  },
+  "last_reverified_on": "2026-10-21",
+  "prior_local_candidate_d85bdf74433d": {
+    "fingerprint": "d85bdf74433d96d2f6ea6a58a8481290942d526a7cdb8ec14b55e57537e9dced",
+    "candidate_directory": "/Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261016T112921.896155Z-d85bdf74433d",
+    "parent_fingerprint": "3445498f397a8cfc2c1383e5c128358222f25cd1691a54acdd852e03bbf4b982",
+    "changes": "Explicit iOS ambient audio context, iOS-specific regression, corrected native harness modal timing. All other production code matches parent344.",
+    "host_test_gate": "passed",
+    "host_test_counts": {
+      "core": 176,
+      "persistence": 18,
+      "progression": 25,
+      "events": 31,
+      "platform": 6,
+      "mobile": 135,
+      "services": 48,
+      "candidate_integrity": 3
+    },
+    "debug_build_report": "release/native-proof/20261016T112947.203869Z/build-report.json",
+    "debug_build_status": "passed",
+    "unsigned_release_status": "passed_ios_device_bundle_and_android_aab_confirmed_unsigned",
+    "runtime_status": "passed_12_native_scenarios_on_2026_10_16",
+    "release_accepted": false,
+    "runtime_scope": "iPhone and Android seeded purchase/Rechart, real-clock fresh first purchase and separate-process reload; seeded24h worker/collection/native AAC session and cold reload; iPad seeded boundary and session.",
+    "runtime_matrix": "release/native-proof/matrix-20261016T114535.468775Z/matrix.json",
+    "ordinary_main_launch": "release/native-proof/main-launch-20261016T115329.506624Z/main-launch.json",
+    "unsigned_ios_report": "release/native-proof/20261016T115204.670734Z/build-report.json",
+    "android_export_failure": "release/native-proof/20261016T115204.670734Z/android-packaging-finding.json",
+    "newer_working_tree_included": false,
+    "excluded_newer_work": "Integrated platform services, secure storage, provider extensions, notification plugins/configuration, and later persistence privacy cleanup require a later native candidate.",
+    "final_verification": "release/native-proof/20261019T135402.439115Z-d85-final-verification/final-verification.json",
+    "summary": "release/native-proof/20261016T112921.896155Z/local-qualification-summary.json",
+    "android_unsigned_report": "release/native-proof/20261016T115658.068642Z/build-report.json",
+    "runtime_matrix_note": "The matrix preserves the first Android export failure. The separate repaired export report supplies the successful AAB; no failed attempt was overwritten."
+  },
+  "dedicated_tablet": {
+    "device_id": "089884DC-AD2A-4D69-8C60-C50271AC21BF",
+    "status": "shutdown_after4native_checks_and_ordinary_main_restore",
+    "protected_device_excluded": "F103390E-7B7C-4F0B-9404-5E029C7131FF"
+  }
+}

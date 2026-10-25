@@ -1,0 +1,56 @@
+{
+  "candidate_fingerprint": "d85bdf74433d96d2f6ea6a58a8481290942d526a7cdb8ec14b55e57537e9dced",
+  "device": "emulator-5556",
+  "label": "android-phone",
+  "started_utc": "20261016T114829.379514Z",
+  "command": [
+    "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+    "drive",
+    "--driver=test_driver/evidence_911183b5d9ee.dart",
+    "--target=integration_test/evidence_c9b035999b3b_test.dart",
+    "-d",
+    "emulator-5556",
+    "--dart-define=TIDEGLASS_DEVICE_LABEL=android-phone",
+    "--dart-define=TIDEGLASS_SCENARIO=natural-start",
+    "--dart-define=TIDEGLASS_RUN_ID=natural-d85-c",
+    "--dart-define=TIDEGLASS_VERIFICATION_ID=integration-android-phone-20261016T114829.379514Z",
+    "--dart-define=TIDEGLASS_CANDIDATE_FINGERPRINT=d85bdf74433d96d2f6ea6a58a8481290942d526a7cdb8ec14b55e57537e9dced",
+    "--dart-define=TIDEGLASS_HARNESS_SHA256=c9b035999b3b128214f41f1627724fb578b1147ef03030d446addf754c40161f",
+    "--keep-app-running",
+    "--timeout=180",
+    "--no-pub"
+  ],
+  "scenario": "natural-start",
+  "run_id": "natural-d85-c",
+  "harness_sha256": {
+    "harness.dart": "c9b035999b3b128214f41f1627724fb578b1147ef03030d446addf754c40161f",
+    "driver.dart": "911183b5d9ee8ec80769836f477a293dadb66e20cc0c5d5e44314415889749a8"
+  },
+  "production_inputs_match_snapshot": true,
+  "provenance": "Real elapsed native bootstrap and separate-process reload; isolated test save directory",
+  "exit_code": 0,
+  "native_process_stop": {
+    "command": [
+      "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "shell",
+      "am",
+      "force-stop",
+      "dev.tideglass.game"
+    ],
+    "exit_code": 0,
+    "output": ""
+  },
+  "verification_errors": [],
+  "passed": true,
+  "evidence_sha256": {
+    "native-save-progress.1.json": "9523fd1a023318550bd7630c2a36388b935c9f5224f453f408bd0d1499e5cbbf",
+    "native-save-progress.0.json": "1bc7fd71c50838b0558ecabbfd89bd0b1811336cf98745e0e915dd85f6a2771d",
+    "result.json": "cd873770e56a1a93da818fd3a3252156494dd642d4f429ef5ceeaf54458b879c",
+    "run.log": "a0d028ded06186e0edfef15911e558cce5e47622bb67b3d21c5512255cd1dc60",
+    "driver.dart": "911183b5d9ee8ec80769836f477a293dadb66e20cc0c5d5e44314415889749a8",
+    "android-phone-natural-start.png": "22bd90c2de981b1b65b4d9ff588137e63e8cbc645a51ad528ee231887fee516f",
+    "harness.dart": "c9b035999b3b128214f41f1627724fb578b1147ef03030d446addf754c40161f"
+  }
+}

@@ -1,0 +1,14 @@
+release/store/tools/inspect_preview.swift:9:1: error: expressions are not allowed at the top level
+ 7 | }
+ 8 | 
+ 9 | Task {
+   | `- error: expressions are not allowed at the top level
+10 |     do {
+11 |         guard CommandLine.arguments.count == 3 else {
+
+release/store/tools/inspect_preview.swift:85:1: error: expressions are not allowed at the top level
+83 |     }
+84 | }
+85 | dispatchMain()
+   | `- error: expressions are not allowed at the top level
+86 | 

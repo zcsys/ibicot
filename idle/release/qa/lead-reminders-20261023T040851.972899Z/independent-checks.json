@@ -1,0 +1,92 @@
+{
+  "cases": [
+    {
+      "case": "native PID bound in result and action",
+      "rejected": true,
+      "errors": [
+        "Native OS action identity mismatch",
+        "Native OS action identity mismatch",
+        "Native OS action identity mismatch"
+      ]
+    },
+    {
+      "case": "delivery from other reminder ID",
+      "rejected": true,
+      "errors": [
+        "Scheduled requests are not delivered OS notifications"
+      ]
+    },
+    {
+      "case": "correct notification with wrong body",
+      "rejected": true,
+      "errors": [
+        "Scheduled requests are not delivered OS notifications"
+      ]
+    },
+    {
+      "case": "wall clock forward but insufficient elapsed real time",
+      "rejected": true,
+      "errors": [
+        "Real elapsed production-minimum window not observed"
+      ]
+    },
+    {
+      "case": "resumed before actual home departure is not delivery",
+      "rejected": true,
+      "errors": [
+        "No native background/resume callbacks after OS action and due time"
+      ]
+    },
+    {
+      "case": "unpersisted background snapshot",
+      "rejected": true,
+      "errors": [
+        "Missing actual durable save identity"
+      ]
+    },
+    {
+      "case": "cancelled pending but delivered still present",
+      "rejected": true,
+      "errors": [
+        "Return did not cancel scheduled/delivered notifications"
+      ]
+    },
+    {
+      "case": "quiet plan still queued on return",
+      "rejected": true,
+      "errors": [
+        "Return did not cancel actual queued request"
+      ]
+    },
+    {
+      "case": "revoked OS permission with enabled durable preference",
+      "rejected": true,
+      "errors": [
+        "Actual revocation/denial/cancellation not observed"
+      ]
+    },
+    {
+      "case": "OS action from a different actual process",
+      "rejected": true,
+      "errors": [
+        "Native OS action identity mismatch"
+      ]
+    },
+    {
+      "case": "late native failure overrides both success markers",
+      "rejected": true,
+      "errors": [
+        "Uncaught Dart/native exception in log"
+      ]
+    },
+    {
+      "case": "OS prompt lifecycle during default initialization",
+      "rejected": true,
+      "errors": [
+        "Default initialization left foreground or lacks observation"
+      ]
+    }
+  ],
+  "count": 12,
+  "native_execution": false
+}

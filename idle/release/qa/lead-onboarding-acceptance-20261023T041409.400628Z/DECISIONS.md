@@ -1,0 +1,7 @@
+# Lead acceptance: M2-02
+
+Accept the unchanged original onboarding/Rechart communication criterion following the assigned independent QA recommendation. Costs, production, retained progress and automation are taught through skippable guidance and reachable contextual Help. Monetization entry is explicit and does not interrupt onboarding. Original M1-05/M2-01 prerequisites are accepted.
+
+The lead rehashed all160 inspected source/evidence pins and all sealed review outputs before adoption. Named successful onboarding-dismiss/purchase and unconfigured-guest tests are individually preserved and explicitly bridged to current callbacks/copy. Current shell/reset interactions and the12-condition full-content Help matrix cover presentation and actions. The older Help200% branch comparison and a052 overall failed suite retain their actual limitations. No new reviewer runtime run is claimed or needed for this exact clause. The newly frozen3b00 source is unchanged by this metadata decision.
+
+Eighteen original packages plus three bootstrap contributions are now accepted;48production/support items remain unaccepted. Scope counts remain9verified/35unverified. No whole S05 acceptance, human comprehension/pacing, provider, native/physical, calendar, store or release-wide completion follows. All65 original criteria/dependencies and44 scope requirements remain unchanged. The artist program-status cross-reference changes only its authoritative program hash; its historical planning and per-asset approval fields are untouched.

@@ -1,0 +1,39 @@
+[
+  {
+    "name": "font-phone-english",
+    "command": [
+      "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+      "test",
+      "test/qa_font_licenses_review_test.dart",
+      "--dart-define=TIDEGLASS_TEST_VIEWPORT=phone",
+      "--dart-define=TIDEGLASS_TEST_TEXT_PERCENT=200",
+      "--dart-define=TIDEGLASS_PSEUDO=false",
+      "--dart-define=QA_RESET_REPORT=/Users/csys/Desktop/ibicot/idle/release/qa/qa-reset-20261023T025256.370588Z/font-phone-english.json",
+      "--dart-define=QA_FONT_REPORT=/Users/csys/Desktop/ibicot/idle/release/qa/qa-reset-20261023T025256.370588Z/font-font-phone-english.json",
+      "--reporter",
+      "expanded"
+    ],
+    "exit_code": 0,
+    "runtime_unchanged": true,
+    "log_sha256": "0ab18f846ed6df885b366b709992e9d1fda8352114a8b27b062e9d807bd8074c"
+  },
+  {
+    "name": "tablet-english",
+    "command": [
+      "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+      "test",
+      "test/qa_rechart_forecast_review_test.dart",
+      "test/qa_font_licenses_review_test.dart",
+      "--dart-define=TIDEGLASS_TEST_VIEWPORT=tablet",
+      "--dart-define=TIDEGLASS_TEST_TEXT_PERCENT=200",
+      "--dart-define=TIDEGLASS_PSEUDO=false",
+      "--dart-define=QA_RESET_REPORT=/Users/csys/Desktop/ibicot/idle/release/qa/qa-reset-20261023T025256.370588Z/tablet-english.json",
+      "--dart-define=QA_FONT_REPORT=/Users/csys/Desktop/ibicot/idle/release/qa/qa-reset-20261023T025256.370588Z/font-tablet-english.json",
+      "--reporter",
+      "expanded"
+    ],
+    "exit_code": 1,
+    "runtime_unchanged": true,
+    "log_sha256": "4df89cee1780a539e8499763f3a8099ff54c79752792b469d3e4d9e15b4eecb7"
+  }
+]

@@ -1,0 +1,58 @@
+--- reviewed/app.dart
++++ post-lane/app.dart
+@@ -9,6 +9,7 @@
+ import 'palette.dart';
+ import 'strings.dart';
+ import 'daily_panel.dart';
++import 'daily_icon_label.dart';
+ import 'story_screen.dart';
+ import 'support_screen.dart';
+ import 'season_screen.dart';
+@@ -1208,7 +1209,11 @@
+           style: Theme.of(context).textTheme.titleLarge,
+         ),
+         const SizedBox(height: 14),
+-        _dataRow(UiCopy.focusStored, '${game.state.focusCharges} / 12'),
++        _dataRow(
++          UiCopy.focusStored,
++          '${game.state.focusCharges} / 12',
++          icon: Icons.auto_awesome_outlined,
++        ),
+         const SizedBox(height: 8),
+         const LocalizedText(
+           UiCopy.oneChargeEveryTwoHoursEach,
+@@ -1232,7 +1237,11 @@
+           child: const LocalizedText(UiCopy.focusTheConstellation),
+         ),
+         const SizedBox(height: 22),
+-        _dataRow(UiCopy.surveysComplete, '${game.state.completedSurveys} / 3'),
++        _dataRow(
++          UiCopy.surveysComplete,
++          '${game.state.completedSurveys} / 3',
++          icon: Icons.explore_outlined,
++        ),
+         const SizedBox(height: 8),
+         const LocalizedText(
+           UiCopy.oneSurveyEveryEightHoursUp,
+@@ -1673,12 +1682,19 @@
+     ),
+     child: Material(color: Colors.transparent, child: child),
+   );
+-  Widget _dataRow(String label, String value) => Wrap(
++  Widget _dataRow(String label, String value, {IconData? icon}) => Wrap(
+     alignment: WrapAlignment.spaceBetween,
+     spacing: 20,
+     runSpacing: 4,
+     children: [
+-      LocalizedText(label, style: const TextStyle(color: TideColors.muted)),
++      if (icon == null)
++        LocalizedText(label, style: const TextStyle(color: TideColors.muted))
++      else
++        DailyIconLabel(
++          icon: icon,
++          label: label,
++          style: const TextStyle(color: TideColors.muted),
++        ),
+       LocalizedText(value, style: const TextStyle(fontWeight: FontWeight.w600)),
+     ],
+   );

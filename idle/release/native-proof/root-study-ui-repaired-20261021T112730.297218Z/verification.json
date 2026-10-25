@@ -1,0 +1,47 @@
+{
+  "scope": "Current-root study UI author feedback only; excluded from152",
+  "results": [
+    {
+      "name": "english",
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+        "test",
+        "test/study_gate_test.dart",
+        "--reporter=expanded",
+        "--timeout=60s"
+      ],
+      "exit_code": 1,
+      "log_sha256": "f71666cd2f10895c8edcdb437e1f484683f6c0e5e163b7ba632e62901b9e5753"
+    },
+    {
+      "name": "pseudo",
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+        "test",
+        "test/study_gate_test.dart",
+        "--reporter=expanded",
+        "--timeout=60s",
+        "--dart-define=TIDEGLASS_PSEUDO=true"
+      ],
+      "exit_code": 1,
+      "log_sha256": "73e52a9a8d6f17af22c1d7e8a561fc445c292048751bbc46b8946bf6b8bd039b"
+    },
+    {
+      "name": "analyzer",
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+        "analyze"
+      ],
+      "exit_code": 0,
+      "log_sha256": "15bbc35277ff4ae038a58d06e15173e9582e15a5716157da1fe6bf8087f9e537"
+    }
+  ],
+  "source_after": {
+    "game/mobile/lib/study_gate.dart": "27f6583249bdb7afc34d0b0183f9f7e7dcb9c70e6a8b845532ad71c4f7038505",
+    "game/mobile/test/study_gate_test.dart": "27d4b09aec021b309cfb9c51e561888b282eb0fc083255b88d5ef8b56017b0d1",
+    "game/platform/lib/study_recorder.dart": "40be5e8ae640edfe67c6704074bbfb5a2f62fca2e8060b0d96cf50d22b72904f"
+  },
+  "source_differences": [
+    "game/platform/lib/study_recorder.dart"
+  ]
+}

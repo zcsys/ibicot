@@ -1,0 +1,58 @@
+{
+  "status": "author-host-checks-pass; independent review and fresh native pair required",
+  "intended_files": {
+    "tool/reminder_restart.py": "5de097fd817e7fb49573e3a73c44ec805182d8dc107f1c86b8546bbb81dc63d0",
+    "tool/test_reminder_restart.py": "a26fbae8507bb8461859467d867401bb66289846b74a98e8d9783dc0b4ac82b7",
+    "tool/test_reminder_clock.py": "11b003659a4798631d3d2a829fccd53fb588be9b8beb7185558498d750c1a2c7"
+  },
+  "unchanged_live_baseline": {
+    "tool/reminder_restart.py": "c39cc8a832526b3487aaeafafa248d5c5488ae4eea8cebc968f34ed5a7e78c07",
+    "tool/test_reminder_restart.py": "e4fe3c409f51192ab8ae0a7261d3e1ef5fe83ccc47a4f959ba566d99da4a21a3",
+    "tool/verify_native_reminders.py": "ddc801d4cc1050d51720e5da2bddae0db1f404fcbc6dcefd3d4ef00de9728f5b",
+    "game/mobile/integration_test/native_reminders_test.dart": "de04f52b3c2311b3eb8e1c7fb83fcf7da41256a63a9a3b9f0ca4f732e8667eb4"
+  },
+  "patch_reconstruction": "git apply in new disposable author directory reproduced all three intended hashes",
+  "original_assertions_ast_unchanged": [
+    "checkpoint",
+    "permission",
+    "interrupted_errors",
+    "switch",
+    "recovery_errors",
+    "fixture",
+    "file_name"
+  ],
+  "test_methods": 67,
+  "existing_methods": 43,
+  "new_clock_causal_methods": 24,
+  "test_command": "PYTHONPATH=release/native-notifications/revoked-clock-repair-20261025T165159.000038Z/staged/tool:tool python3 -m unittest -v test_reminder_restart test_native_reminders test_reminder_clock",
+  "test_cwd": "/Users/csys/Desktop/ibicot/idle",
+  "preservation_checks": 42,
+  "preserved_input_count": 37,
+  "old_packet_disposition": "KeyError: 'clock_model'",
+  "changes": [
+    "Test-only helper clock/causal protocol",
+    "Updated synthetic fixture timing",
+    "Focused clock/causal controls"
+  ],
+  "limits": [
+    "No live source promotion",
+    "No Dart or runner change",
+    "No Flutter/device/native execution",
+    "No recovery from rejected f8d460 packet",
+    "No production/scope/status change"
+  ],
+  "output_pins": {
+    "clock-protocol.patch": "4bb2599c43ca3fee6c2adfc74700e1ee7cd49f293105e30eb06d452097aa39fb",
+    "baseline.json": "b9ef395582757e14a9a44835af05732658e40e0d731a986d3db1615e52ec3549",
+    "OPERATOR_PROTOCOL.md": "8f13ead06c25977db15493d4a3b77bb99baefa2bca4e85f5175bf71f6a77397b",
+    "preservation-and-diagnostic.json": "abdc6a6000ee992b3ccd9f786db53bce754bfc5297132fb664ef327bb9a58a28",
+    "author-verify.log": "63d69034bce70e97f2a82a04e0e7d956edb62cd5f1691b7a2bdc5e779afd971f",
+    "initial-tests.log": "892714be4dfba57c42bf8d8dadce28baf70e8f14814a0521092c8ccab1d0ac33",
+    "clock-tests-first.log": "f512c3d0a7e392b7bbf399e0b1c94e393253bd291733cbada2aa583debcef12b",
+    "final-tests.log": "33c45f3c160331a9154b19b9726bcf4dab8bad5e3ea53f9cc400e5c60f4d9a99",
+    "author_verify.py": "b4ada186240b8e2db088df934ce197789cb84c87bc0de77f74b9583e6b832d62",
+    "staged/tool/reminder_restart.py": "5de097fd817e7fb49573e3a73c44ec805182d8dc107f1c86b8546bbb81dc63d0",
+    "staged/tool/test_reminder_restart.py": "a26fbae8507bb8461859467d867401bb66289846b74a98e8d9783dc0b4ac82b7",
+    "staged/tool/test_reminder_clock.py": "11b003659a4798631d3d2a829fccd53fb588be9b8beb7185558498d750c1a2c7"
+  }
+}

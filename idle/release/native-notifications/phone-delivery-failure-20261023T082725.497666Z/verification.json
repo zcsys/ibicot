@@ -1,0 +1,102 @@
+{
+  "native_verification": "/Users/csys/Desktop/ibicot/idle/release/native-notifications/integration-ios-phone-20261023T081652314287Z/verification.json",
+  "native_verification_sha256": "5b404d9bca22bb7167a00d716c90d4f58c4c636cbd979134172d106c1534fcfd",
+  "passed": false,
+  "errors": [
+    "Missing actual evidence: completed",
+    "Missing, repeated or out-of-order native OS action",
+    "Missing native preferences file hash",
+    "Plan is not exact production lifecycle/Focus request",
+    "Missing exact notification body",
+    "Missing actual durable save identity",
+    "Missing actual plan timestamp: scheduled_observed_utc_ms",
+    "Missing actual plan timestamp: due_utc_ms",
+    "Missing actual plan timestamp: settled_through_utc_ms",
+    "Missing actual plan timestamp: background_call_utc_ms",
+    "Delivery lacks actual background and return",
+    "No native background/resume callbacks after OS action and due time",
+    "Return did not cancel scheduled/delivered notifications",
+    "Scheduled requests are not delivered OS notifications",
+    "Missing actual wall/monotonic delivery observation",
+    "Native build/test failure in log: Some tests failed.",
+    "Native build/test failure in log: EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK",
+    "Native test or teardown error marker in log",
+    "No successful native framework completion marker",
+    "No successful driver completion marker",
+    "Native driver exited unsuccessfully"
+  ],
+  "native_process_stop": {
+    "command": [
+      "xcrun",
+      "simctl",
+      "terminate",
+      "F05BE4B0-52C1-4CA1-B721-BD64AE559E3F",
+      "dev.tideglass.game"
+    ],
+    "exit_code": 0,
+    "stderr": ""
+  },
+  "all_native_files_sha256": {
+    "build_native.py": "59ee4e7b94a1445e2c8effadfe4c0510c9c189df0278c7ede6e87f1807bf38ee",
+    "candidate-manifest.json": "b4322606cd0207425b801feacc0bf4084ac9c460b23a028576204b766eeaeada",
+    "driver.dart": "ec880d16153b1ac577a221a46f81e7c309dd5417fbba8aae4ce68f7acbcfb668",
+    "harness.dart": "272fa3495fee356a98256c09ecfa983ef1f7af1ffb1c2c4885db97e74905fd76",
+    "native-process-status-0821.json": "a50b3d3034841cf605f0fe8319e2034902e0df1782ca0260ad07f3c5f3ab72cb",
+    "native-status-0820.png": "b43c0e041f591d85601d4713ddc5baee3e5b5975ef3f254942720c7543ec1dc1",
+    "operator-diagnostic-return-action.json": "d90595aea65419c7ea3417044ba2ac2bf9791a1525f24d3a1437a6b4d234cf27",
+    "operator-diagnostic-return-after.png": "8435c2999c85c71425d39526df03ae9b8e426b4510da954e193d84a2c2a377f3",
+    "operator-diagnostic-return-after.txt": "481dcdb21999832d6f8ad3b0b17f22c39b8d0fb4acbb98affdff884a00772889",
+    "operator-diagnostic-return-before.png": "b06a17f5dcb3c09bac0a7585051ebe596518ee9854fbf7f2b1c2993dd5c62e94",
+    "operator-diagnostic-return-before.txt": "8d3f7d01bba805148cdf9bf3ab5514082819379f12259751471d6dc7ed0eff50",
+    "operator-diagnostic-return-settled.png": "e69ed16ba66b7b8843a9df91f60f16d3751168b85f5401aae87ea90bfc8bc052",
+    "operator-diagnostic-return-settled.txt": "9cde8754563da25e4de87aafe08b24a749a6d6f6df186b973c4822b8b6efd478",
+    "operator-home-action.json": "997a35a747fe43c758b056a751c13bcfff43f3392779323e56adf6b491706679",
+    "operator-home-after.png": "dbb35030d60377b0ea9af35edbceb036a4d34b5452634f56ab06db9f0f297deb",
+    "operator-home-after.txt": "8d3f7d01bba805148cdf9bf3ab5514082819379f12259751471d6dc7ed0eff50",
+    "operator-home-before.png": "b5bce7c7871b915d16823a6b1d5d789897bc8fd14f442b022d03805762d9e1a9",
+    "operator-home-before.txt": "ed687bc7c14c69dba783b3e2b04b6a6d3e891616ab5309b59b18b541e4379b1f",
+    "operator-home-settled.png": "627638c29aaa14dc49d4da5b46404bdc8a933458d7356013d16546808d655f84",
+    "operator-home-settled.txt": "9cde8754563da25e4de87aafe08b24a749a6d6f6df186b973c4822b8b6efd478",
+    "result.json": "641b17cb6e06c030aac13ae96aa79ff68f08f837e7ef4b7b72a93e0093591792",
+    "run.log": "c9e9cd9720e79bfe21159356bee67b6794f16b4df7eeb11acf256b14440e3c35",
+    "started.json": "aec2bbc75cd8befdbb0bb534d5508bb8074f6db07afdf84c8b4b1cc59e8e93d7",
+    "verification.json": "5b404d9bca22bb7167a00d716c90d4f58c4c636cbd979134172d106c1534fcfd",
+    "verify_native.py": "68297f66fc4e32a173b17da2594872334d59ba2b88b7d5878b5ee8905f9b89e5",
+    "verify_native_reminders.py": "2ff5ce93795e3ed4584ce08fc2976e6c268582c26b995aadae9c7e3b337df1ed"
+  },
+  "private_synthetic_fixture": "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Data/Application/9DFE3AC1-A65B-4BD3-85D9-2F41360B9257/Library/Application Support/native-reminders/ios-phone-v3b00-ios-phone-reminder-delivery-delivery",
+  "private_files": [
+    {
+      "relative": "notification_preferences.json",
+      "bytes": 121,
+      "sha256": "bfe13beb4aa32a70bd85b90c85dedea9451c712aaedf1d8fc1c33c2a3616721f"
+    },
+    {
+      "relative": "save/progress.0.json",
+      "bytes": 3636,
+      "sha256": "61e2056a16695c107155133fd059ee04192956e5ce73db5f638319b378242b1e"
+    },
+    {
+      "relative": "save/progress.1.json",
+      "bytes": 3746,
+      "sha256": "57235a91701fe1cfbc6564cac467ad7115b4c4ab25df3e3809c526b6fd80c145"
+    },
+    {
+      "relative": "save/writer.lock",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "harness_sha256": "272fa3495fee356a98256c09ecfa983ef1f7af1ffb1c2c4885db97e74905fd76",
+  "files_sha256": {
+    "FINDING.md": "7c40a433b787b9f9b0c63460aae135bd4ad928df0f07def8daa6c92e4cd370e0",
+    "harness.dart": "272fa3495fee356a98256c09ecfa983ef1f7af1ffb1c2c4885db97e74905fd76",
+    "private-fixture/notification_preferences.json": "bfe13beb4aa32a70bd85b90c85dedea9451c712aaedf1d8fc1c33c2a3616721f",
+    "private-fixture/save/progress.0.json": "61e2056a16695c107155133fd059ee04192956e5ce73db5f638319b378242b1e",
+    "private-fixture/save/progress.1.json": "57235a91701fe1cfbc6564cac467ad7115b4c4ab25df3e3809c526b6fd80c145",
+    "private-fixture/save/writer.lock": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "production_fault_demonstrated": false,
+  "delivery_success_claim": false,
+  "release_acceptance": false
+}

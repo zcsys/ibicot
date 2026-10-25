@@ -1,0 +1,29 @@
+--- game/qa/workspaces/integration-inventory-20261021T104607526377Z/game/content/progression/campaign.json
++++ game/content/progression/campaign.json
+@@ -86,16 +86,11 @@
+           "kind": "stat_min",
+           "stat": "surveys_collected",
+           "value": 12
+-        },
+-        {
+-          "kind": "stat_min",
+-          "stat": "unique_calibrations",
+-          "value": 3
+         }
+       ],
+       "hints": [
+         "Collect twelve completed Surveys over your visits.",
+-        "Discover three calibration patterns; accessible completion gives the same result."
++        "Calibration patterns are an optional discovery; accessible completion gives the same result."
+       ],
+       "reward_cosmetic_id": "cosmetic.core.chapter.03",
+       "harbor_state": "harbor.restored.03",
+@@ -150,7 +145,7 @@
+     },
+     {
+       "id": "chapter.05",
+-      "title": "The Keeper’s Craft",
++      "title": "The Keeper\u2019s Craft",
+       "order": 5,
+       "prerequisite": "chapter.04",
+       "intro": "A restored harbor is a practice, not a perfect machine. Rebuild with what you have learned. You can set a plan or keep each decision in your own hands.",

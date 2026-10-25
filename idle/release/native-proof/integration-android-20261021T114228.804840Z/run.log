@@ -1,0 +1,34 @@
+Running Gradle task 'assembleDebug'...                             17.9s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...          947ms
+I/Choreographer( 6043): Skipped 42 frames!  The application may be doing too much work on its main thread.
+D/FlutterJNI( 6043): Sending viewport metrics to the engine.
+VMServiceFlutterDriver: Connecting to Flutter application at http://127.0.0.1:57216/votdJ1lSgSo=/
+VMServiceFlutterDriver: Isolate found with number: 2585307867279675
+VMServiceFlutterDriver: Isolate 2585307867279675 is runnable.
+VMServiceFlutterDriver: Isolate is paused at start.
+VMServiceFlutterDriver: Attempting to resume isolate
+I/flutter ( 6043): 00:00 +0: actual native ownership clock: clock-reload
+VMServiceFlutterDriver: Connected to Flutter application.
+D/ProfileInstaller( 6043): Installing profile for dev.tideglass.game
+D/FlutterJNI( 6043): Sending viewport metrics to the engine.
+I/flutter ( 6043): 03:00 +0: actual native ownership clock: clock-reload [E]
+I/flutter ( 6043):   TimeoutException after 0:03:00.000000: Test timed out after 3 minutes.
+I/flutter ( 6043):   package:test_api/src/backend/invoker.dart 398:28  Invoker._handleError.<fn>
+I/flutter ( 6043):   dart:async/zone_root.dart 27:47                   _rootRun
+I/flutter ( 6043):   dart:async/zone.dart 810:35                       _CustomZone.run
+I/flutter ( 6043):   package:test_api/src/backend/invoker.dart 396:10  Invoker._handleError
+I/flutter ( 6043):   package:test_api/src/backend/invoker.dart 351:9   Invoker.heartbeat.<fn>.<fn>
+I/flutter ( 6043):   dart:async/zone_root.dart 35:13                   _rootRun
+I/flutter ( 6043):   dart:async/zone.dart 810:35                       _CustomZone.run
+I/flutter ( 6043):   package:test_api/src/backend/invoker.dart 350:38  Invoker.heartbeat.<fn>
+I/flutter ( 6043):   dart:async-patch/timer_patch.dart 18:15           Timer._createTimer.<fn>
+I/flutter ( 6043):   dart:isolate-patch/timer_impl.dart 423:19         _Timer._runTimers
+I/flutter ( 6043):   dart:isolate-patch/timer_impl.dart 454:5          _Timer._handleMessage
+I/flutter ( 6043):   dart:isolate-patch/isolate_patch.dart 192:12      _RawReceivePort._handleMessage
+I/flutter ( 6043):   
+I/flutter ( 6043): 03:00 +0 -1: (tearDownAll)
+D/EGL_emulation( 6043): app_time_stats: avg=89879.94ms min=914.32ms max=178845.56ms count=2
+I/flutter ( 6043): 03:00 +1 -1: Some tests failed.
+All tests passed.
+Leaving the application running.

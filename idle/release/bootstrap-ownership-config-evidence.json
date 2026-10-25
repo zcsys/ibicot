@@ -1,0 +1,60 @@
+{
+  "checked_utc": "2026-10-19T14:39:51.947804+00:00",
+  "scope": "Real production bootstrap compile-time configuration; host only; no external service or SDK evidence",
+  "source_sha256": {
+    "game/mobile/lib/bootstrap.dart": "a631d11ce7692a22ea4b2e3feb9be7529d1da64095cba17abf982112d4496d62",
+    "game/mobile/lib/native_services.dart": "c401ee99527249d1e9c794c9259dbcac254fd56ae12853e9aaa7d90837a6a89b",
+    "game/mobile/test/bootstrap_service_configuration_test.dart": "e8a845769df5ba4a2d6677122af76e3136110139879cfaa473a5fbc8b710639c"
+  },
+  "results": [
+    {
+      "case": "default",
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+        "test",
+        "test/bootstrap_service_configuration_test.dart"
+      ],
+      "exit_code": 0,
+      "log": "release/bootstrap-ownership-config-default.log"
+    },
+    {
+      "case": "valid-pins",
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+        "test",
+        "test/bootstrap_service_configuration_test.dart",
+        "--dart-define=TIDEGLASS_SERVICE_URL=https://example.invalid",
+        "--dart-define=TIDEGLASS_COMMERCE=true",
+        "--dart-define=TIDEGLASS_TEST_EXPECT_SIGNED_CACHE=true",
+        "--dart-define=TIDEGLASS_OWNERSHIP_PUBLIC_KEYS={\"test-public-only\":\"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=\"}"
+      ],
+      "exit_code": 0,
+      "log": "release/bootstrap-ownership-config-valid-pins.log"
+    },
+    {
+      "case": "missing-pins",
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+        "test",
+        "test/bootstrap_service_configuration_test.dart",
+        "--dart-define=TIDEGLASS_SERVICE_URL=https://example.invalid",
+        "--dart-define=TIDEGLASS_COMMERCE=true"
+      ],
+      "exit_code": 0,
+      "log": "release/bootstrap-ownership-config-missing-pins.log"
+    },
+    {
+      "case": "malformed-pins",
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+        "test",
+        "test/bootstrap_service_configuration_test.dart",
+        "--dart-define=TIDEGLASS_SERVICE_URL=https://example.invalid",
+        "--dart-define=TIDEGLASS_COMMERCE=true",
+        "--dart-define=TIDEGLASS_OWNERSHIP_PUBLIC_KEYS={\"bad\":\"not-a-key\"}"
+      ],
+      "exit_code": 0,
+      "log": "release/bootstrap-ownership-config-malformed-pins.log"
+    }
+  ]
+}

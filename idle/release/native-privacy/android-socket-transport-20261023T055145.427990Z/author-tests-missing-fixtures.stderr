@@ -1,0 +1,759 @@
+test_collection_rechecks_collector_before_pending_status (test_observation_repairs.SourceRepairTests.test_collection_rechecks_collector_before_pending_status) ... ERROR
+test_collector_changed_after_module_load_is_rejected (test_observation_repairs.SourceRepairTests.test_collector_changed_after_module_load_is_rejected) ... ERROR
+test_each_preserved_source_archive_is_required_and_exact (test_observation_repairs.SourceRepairTests.test_each_preserved_source_archive_is_required_and_exact) ... 
+  test_each_preserved_source_archive_is_required_and_exact (test_observation_repairs.SourceRepairTests.test_each_preserved_source_archive_is_required_and_exact) (name='collector.py', defect='missing') ... ERROR
+  test_each_preserved_source_archive_is_required_and_exact (test_observation_repairs.SourceRepairTests.test_each_preserved_source_archive_is_required_and_exact) (name='collector.py', defect='changed') ... ERROR
+  test_each_preserved_source_archive_is_required_and_exact (test_observation_repairs.SourceRepairTests.test_each_preserved_source_archive_is_required_and_exact) (name='completion-verifier.py', defect='missing') ... ERROR
+  test_each_preserved_source_archive_is_required_and_exact (test_observation_repairs.SourceRepairTests.test_each_preserved_source_archive_is_required_and_exact) (name='completion-verifier.py', defect='changed') ... ERROR
+  test_each_preserved_source_archive_is_required_and_exact (test_observation_repairs.SourceRepairTests.test_each_preserved_source_archive_is_required_and_exact) (name='native-runner.py', defect='missing') ... ERROR
+  test_each_preserved_source_archive_is_required_and_exact (test_observation_repairs.SourceRepairTests.test_each_preserved_source_archive_is_required_and_exact) (name='native-runner.py', defect='changed') ... ERROR
+  test_each_preserved_source_archive_is_required_and_exact (test_observation_repairs.SourceRepairTests.test_each_preserved_source_archive_is_required_and_exact) (name='candidate-manifest.json', defect='missing') ... ERROR
+  test_each_preserved_source_archive_is_required_and_exact (test_observation_repairs.SourceRepairTests.test_each_preserved_source_archive_is_required_and_exact) (name='candidate-manifest.json', defect='changed') ... ERROR
+test_only_open_log_read_allows_same_inode_append (test_observation_repairs.SourceRepairTests.test_only_open_log_read_allows_same_inode_append) ... ok
+test_preserved_collector_special_replacement_cannot_block (test_observation_repairs.SourceRepairTests.test_preserved_collector_special_replacement_cannot_block) ... 
+  test_preserved_collector_special_replacement_cannot_block (test_observation_repairs.SourceRepairTests.test_preserved_collector_special_replacement_cannot_block) (kind='fifo') ... ERROR
+  test_preserved_collector_special_replacement_cannot_block (test_observation_repairs.SourceRepairTests.test_preserved_collector_special_replacement_cannot_block) (kind='symlink') ... ERROR
+test_runner_and_candidate_verifier_binding_must_match (test_observation_repairs.SourceRepairTests.test_runner_and_candidate_verifier_binding_must_match) ... 
+  test_runner_and_candidate_verifier_binding_must_match (test_observation_repairs.SourceRepairTests.test_runner_and_candidate_verifier_binding_must_match) (target='verify_native.py') ... ERROR
+  test_runner_and_candidate_verifier_binding_must_match (test_observation_repairs.SourceRepairTests.test_runner_and_candidate_verifier_binding_must_match) (target='runner.py') ... ERROR
+  test_runner_and_candidate_verifier_binding_must_match (test_observation_repairs.SourceRepairTests.test_runner_and_candidate_verifier_binding_must_match) (target='candidate-verifier') ... ERROR
+  test_runner_and_candidate_verifier_binding_must_match (test_observation_repairs.SourceRepairTests.test_runner_and_candidate_verifier_binding_must_match) (target='manifest') ... ERROR
+  test_runner_and_candidate_verifier_binding_must_match (test_observation_repairs.SourceRepairTests.test_runner_and_candidate_verifier_binding_must_match) (target='runner-pin') ... ERROR
+test_source_replacement_during_finalization_cannot_publish (test_observation_repairs.SourceRepairTests.test_source_replacement_during_finalization_cannot_publish) ... 
+  test_source_replacement_during_finalization_cannot_publish (test_observation_repairs.SourceRepairTests.test_source_replacement_during_finalization_cannot_publish) (name='collector.py') ... ERROR
+  test_source_replacement_during_finalization_cannot_publish (test_observation_repairs.SourceRepairTests.test_source_replacement_during_finalization_cannot_publish) (name='completion-verifier.py') ... ERROR
+test_sys_modules_and_arbitrary_root_cannot_replace_completion_check (test_observation_repairs.SourceRepairTests.test_sys_modules_and_arbitrary_root_cannot_replace_completion_check) ... ERROR
+test_unavailable_storage_retains_partial_status (test_observation_repairs.SourceRepairTests.test_unavailable_storage_retains_partial_status) ... ERROR
+test_android_storage_is_unavailable_without_shell_or_command (test_observation_repairs.StorageRepairTests.test_android_storage_is_unavailable_without_shell_or_command) ... ok
+test_bounded_read_reports_same_descriptor_metadata (test_observation_repairs.StorageRepairTests.test_bounded_read_reports_same_descriptor_metadata) ... ok
+test_component_replacement_at_open_rejects_symlink_and_directory (test_observation_repairs.StorageRepairTests.test_component_replacement_at_open_rejects_symlink_and_directory) ... ok
+test_leaf_replacement_at_descriptor_open_rejected_without_read (test_observation_repairs.StorageRepairTests.test_leaf_replacement_at_descriptor_open_rejected_without_read) ... ok
+test_missing_host_anchor_rejected_before_commands (test_observation_repairs.StorageRepairTests.test_missing_host_anchor_rejected_before_commands) ... ok
+test_native_caller_enforces_actual_worker_timeout (test_observation_repairs.StorageRepairTests.test_native_caller_enforces_actual_worker_timeout) ... ok
+test_native_worker_rejects_root_replacement_after_host_validation (test_observation_repairs.StorageRepairTests.test_native_worker_rejects_root_replacement_after_host_validation) ... ok
+test_real_storage_worker_is_bounded_and_source_identified (test_observation_repairs.StorageRepairTests.test_real_storage_worker_is_bounded_and_source_identified) ... ok
+test_root_component_and_leaf_swapped_after_open_are_detected (test_observation_repairs.StorageRepairTests.test_root_component_and_leaf_swapped_after_open_are_detected) ... ok
+test_root_identity_pinned_between_host_and_worker (test_observation_repairs.StorageRepairTests.test_root_identity_pinned_between_host_and_worker) ... ok
+test_same_inode_mutation_and_hardlink_are_rejected (test_observation_repairs.StorageRepairTests.test_same_inode_mutation_and_hardlink_are_rejected) ... ok
+test_archive_bytes_revalidated_after_binding (test_probe_binding.ProbeBindingTests.test_archive_bytes_revalidated_after_binding) ... ok
+test_binding_metadata_cannot_omit_bridge (test_probe_binding.ProbeBindingTests.test_binding_metadata_cannot_omit_bridge) ... ok
+test_bridge_cannot_be_used_on_ios_or_unknown_platform (test_probe_binding.ProbeBindingTests.test_bridge_cannot_be_used_on_ios_or_unknown_platform) ... ok
+test_caller_manifest_change_rejected (test_probe_binding.ProbeBindingTests.test_caller_manifest_change_rejected) ... ok
+test_completion_verifier_change_stays_forbidden (test_probe_binding.ProbeBindingTests.test_completion_verifier_change_stays_forbidden) ... ok
+test_exact_android_repair_archives_both_versions (test_probe_binding.ProbeBindingTests.test_exact_android_repair_archives_both_versions) ... ok
+test_extra_change_rejected_even_if_executed_hash_declared (test_probe_binding.ProbeBindingTests.test_extra_change_rejected_even_if_executed_hash_declared) ... ok
+test_extra_runner_change_rejected (test_probe_binding.ProbeBindingTests.test_extra_runner_change_rejected) ... ok
+test_harness_change_stays_forbidden (test_probe_binding.ProbeBindingTests.test_harness_change_stays_forbidden) ... ok
+test_missing_runner_rejected (test_probe_binding.ProbeBindingTests.test_missing_runner_rejected) ... ok
+test_original_candidate_binding_stays_exact (test_probe_binding.ProbeBindingTests.test_original_candidate_binding_stays_exact) ... ok
+test_other_candidate_fingerprint_rejected (test_probe_binding.ProbeBindingTests.test_other_candidate_fingerprint_rejected) ... ok
+test_symlink_runner_rejected (test_probe_binding.ProbeBindingTests.test_symlink_runner_rejected) ... ok
+test_unknown_original_runner_hash_rejected (test_probe_binding.ProbeBindingTests.test_unknown_original_runner_hash_rejected) ... ok
+test_finalization_requires_both_normal_successes_and_pins (test_runtime_observation.FinalizationTests.test_finalization_requires_both_normal_successes_and_pins) ... ERROR
+test_native_failure_zero_count_source_drift_and_false_pass_refused (test_runtime_observation.FinalizationTests.test_native_failure_zero_count_source_drift_and_false_pass_refused) ... 
+  test_native_failure_zero_count_source_drift_and_false_pass_refused (test_runtime_observation.FinalizationTests.test_native_failure_zero_count_source_drift_and_false_pass_refused) (defect='negative-native') ... ERROR
+  test_native_failure_zero_count_source_drift_and_false_pass_refused (test_runtime_observation.FinalizationTests.test_native_failure_zero_count_source_drift_and_false_pass_refused) (defect='zero-count') ... ERROR
+  test_native_failure_zero_count_source_drift_and_false_pass_refused (test_runtime_observation.FinalizationTests.test_native_failure_zero_count_source_drift_and_false_pass_refused) (defect='wrong-device') ... ERROR
+  test_native_failure_zero_count_source_drift_and_false_pass_refused (test_runtime_observation.FinalizationTests.test_native_failure_zero_count_source_drift_and_false_pass_refused) (defect='wrong-pid') ... ERROR
+  test_native_failure_zero_count_source_drift_and_false_pass_refused (test_runtime_observation.FinalizationTests.test_native_failure_zero_count_source_drift_and_false_pass_refused) (defect='drift') ... ERROR
+  test_native_failure_zero_count_source_drift_and_false_pass_refused (test_runtime_observation.FinalizationTests.test_native_failure_zero_count_source_drift_and_false_pass_refused) (defect='no-flag') ... ERROR
+  test_native_failure_zero_count_source_drift_and_false_pass_refused (test_runtime_observation.FinalizationTests.test_native_failure_zero_count_source_drift_and_false_pass_refused) (defect='pin') ... ERROR
+  test_native_failure_zero_count_source_drift_and_false_pass_refused (test_runtime_observation.FinalizationTests.test_native_failure_zero_count_source_drift_and_false_pass_refused) (defect='late-sample') ... ERROR
+  test_native_failure_zero_count_source_drift_and_false_pass_refused (test_runtime_observation.FinalizationTests.test_native_failure_zero_count_source_drift_and_false_pass_refused) (defect='no-close') ... ERROR
+test_android_uid_package_pid_start_and_boot (test_runtime_observation.IdentityTests.test_android_uid_package_pid_start_and_boot) ... ok
+test_changed_uid_or_boot_rejects_sample (test_runtime_observation.IdentityTests.test_changed_uid_or_boot_rejects_sample) ... ok
+test_ios_exact_pid_executable_and_start (test_runtime_observation.IdentityTests.test_ios_exact_pid_executable_and_start) ... ok
+test_protected_and_unapproved_refused_before_command (test_runtime_observation.IdentityTests.test_protected_and_unapproved_refused_before_command) ... ok
+test_reused_pid_changed_start_is_not_same_process (test_runtime_observation.IdentityTests.test_reused_pid_changed_start_is_not_same_process) ... ok
+test_actual_owned_loopback_child_pid_socket (test_runtime_observation.SocketTests.test_actual_owned_loopback_child_pid_socket) ... ok
+test_android_requires_both_uid_and_pid_fd_inode (test_runtime_observation.SocketTests.test_android_requires_both_uid_and_pid_fd_inode) ... ok
+test_complete_empty_snapshot_is_only_empty_rows (test_runtime_observation.SocketTests.test_complete_empty_snapshot_is_only_empty_rows) ... ok
+test_lsof_requires_exact_selected_pid (test_runtime_observation.SocketTests.test_lsof_requires_exact_selected_pid) ... ok
+test_android_command_filters_on_device_without_global_capture (test_runtime_observation.StagingTests.test_android_command_filters_on_device_without_global_capture) ... ok
+test_harness_opt_in_default_unchanged_and_post_assertion (test_runtime_observation.StagingTests.test_harness_opt_in_default_unchanged_and_post_assertion) ... ERROR
+test_runner_opt_in_archive_and_allowlist (test_runtime_observation.StagingTests.test_runner_opt_in_archive_and_allowlist) ... ERROR
+test_only_seven_fixed_fixture_files_are_read (test_runtime_observation.StorageTests.test_only_seven_fixed_fixture_files_are_read) ... ok
+test_root_exact_device_and_synthetic_namespace (test_runtime_observation.StorageTests.test_root_exact_device_and_synthetic_namespace) ... ok
+test_symlink_fifo_and_oversize_refused (test_runtime_observation.StorageTests.test_symlink_fifo_and_oversize_refused) ... ok
+test_host_and_native_interval_attribution_fail_closed (test_runtime_observation.WindowTests.test_host_and_native_interval_attribution_fail_closed) ... ok
+test_marker_schema_and_scenario_guard (test_runtime_observation.WindowTests.test_marker_schema_and_scenario_guard) ... ok
+test_order_complete_and_twenty_second_ceiling (test_runtime_observation.WindowTests.test_order_complete_and_twenty_second_ceiling) ... ok
+test_waiting_or_failed_capture_never_finalizes (test_runtime_observation.WindowTests.test_waiting_or_failed_capture_never_finalizes) ... ok
+test_actual_read_failure_retains_status_and_rejects (test_socket_transport.SocketTransportTests.test_actual_read_failure_retains_status_and_rejects) ... ok
+test_android_identity_uses_four_binary_scoped_reads (test_socket_transport.SocketTransportTests.test_android_identity_uses_four_binary_scoped_reads) ... ok
+test_android_storage_stays_unavailable_no_command (test_socket_transport.SocketTransportTests.test_android_storage_stays_unavailable_no_command) ... ok
+test_exact_socket_argv_only_uses_shell (test_socket_transport.SocketTransportTests.test_exact_socket_argv_only_uses_shell) ... ok
+test_exact_uid_inode_record_parses (test_socket_transport.SocketTransportTests.test_exact_uid_inode_record_parses) ... ok
+test_identity_reuse_and_uid_change_still_reject (test_socket_transport.SocketTransportTests.test_identity_reuse_and_uid_change_still_reject) ... ok
+test_incomplete_tables_never_empty_success (test_socket_transport.SocketTransportTests.test_incomplete_tables_never_empty_success) ... ok
+test_ios_path_unchanged (test_socket_transport.SocketTransportTests.test_ios_path_unchanged) ... ok
+test_legacy_zero_status_wrapper_prose_rejected (test_socket_transport.SocketTransportTests.test_legacy_zero_status_wrapper_prose_rejected) ... ok
+test_non_protocol_output_rejected (test_socket_transport.SocketTransportTests.test_non_protocol_output_rejected) ... ok
+test_nonzero_even_with_complete_looking_tables_rejected (test_socket_transport.SocketTransportTests.test_nonzero_even_with_complete_looking_tables_rejected) ... ok
+test_other_process_inode_rejected (test_socket_transport.SocketTransportTests.test_other_process_inode_rejected) ... ok
+test_other_uid_rejected (test_socket_transport.SocketTransportTests.test_other_uid_rejected) ... ok
+test_remote_identity_stays_binary_exec_out (test_socket_transport.SocketTransportTests.test_remote_identity_stays_binary_exec_out) ... ok
+test_shell_roundtrip_script_is_single_unquoted_child_argument (test_socket_transport.SocketTransportTests.test_shell_roundtrip_script_is_single_unquoted_child_argument) ... ok
+test_size_limit_unchanged (test_socket_transport.SocketTransportTests.test_size_limit_unchanged) ... ok
+test_timeout_and_budget_unchanged (test_socket_transport.SocketTransportTests.test_timeout_and_budget_unchanged) ... ok
+test_unchanged_socket_script_filters_on_device (test_socket_transport.SocketTransportTests.test_unchanged_socket_script_filters_on_device) ... ok
+
+======================================================================
+ERROR: test_collection_rechecks_collector_before_pending_status (test_observation_repairs.SourceRepairTests.test_collection_rechecks_collector_before_pending_status)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/test_observation_repairs.py", line 327, in test_collection_rechecks_collector_before_pending_status
+    evidence, old_output, _ = self.fixture(directory)
+                              ~~~~~~~~~~~~^^^^^^^^^^^
+  File "/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/test_observation_repairs.py", line 205, in fixture
+    return author.FinalizationTests().prepare(Path(directory).resolve())
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/test_runtime_observation.py", line 219, in prepare
+    sources={'tool/verify_native.py': (HERE/'baseline/tool/verify_native.py').read_bytes(),
+                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/pathlib/_abc.py", line 625, in read_bytes
+    with self.open(mode='rb') as f:
+         ~~~~~~~~~^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/pathlib/_local.py", line 537, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/baseline/tool/verify_native.py'
+
+======================================================================
+ERROR: test_collector_changed_after_module_load_is_rejected (test_observation_repairs.SourceRepairTests.test_collector_changed_after_module_load_is_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/test_observation_repairs.py", line 259, in test_collector_changed_after_module_load_is_rejected
+    _, output, _ = self.fixture(directory)
+                   ~~~~~~~~~~~~^^^^^^^^^^^
+  File "/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/test_observation_repairs.py", line 205, in fixture
+    return author.FinalizationTests().prepare(Path(directory).resolve())
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/test_runtime_observation.py", line 219, in prepare
+    sources={'tool/verify_native.py': (HERE/'baseline/tool/verify_native.py').read_bytes(),
+                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/pathlib/_abc.py", line 625, in read_bytes
+    with self.open(mode='rb') as f:
+         ~~~~~~~~~^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/pathlib/_local.py", line 537, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/baseline/tool/verify_native.py'
+
+======================================================================
+ERROR: test_each_preserved_source_archive_is_required_and_exact (test_observation_repairs.SourceRepairTests.test_each_preserved_source_archive_is_required_and_exact) (name='collector.py', defect='missing')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/test_observation_repairs.py", line 233, in test_each_preserved_source_archive_is_required_and_exact
+    _, output, _ = self.fixture(directory)
+                   ~~~~~~~~~~~~^^^^^^^^^^^
+  File "/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/test_observation_repairs.py", line 205, in fixture
+    return author.FinalizationTests().prepare(Path(directory).resolve())
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/test_runtime_observation.py", line 219, in prepare
+    sources={'tool/verify_native.py': (HERE/'baseline/tool/verify_native.py').read_bytes(),
+                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/pathlib/_abc.py", line 625, in read_bytes
+    with self.open(mode='rb') as f:
+         ~~~~~~~~~^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/pathlib/_local.py", line 537, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/baseline/tool/verify_native.py'
+
+======================================================================
+ERROR: test_each_preserved_source_archive_is_required_and_exact (test_observation_repairs.SourceRepairTests.test_each_preserved_source_archive_is_required_and_exact) (name='collector.py', defect='changed')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/test_observation_repairs.py", line 233, in test_each_preserved_source_archive_is_required_and_exact
+    _, output, _ = self.fixture(directory)
+                   ~~~~~~~~~~~~^^^^^^^^^^^
+  File "/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/test_observation_repairs.py", line 205, in fixture
+    return author.FinalizationTests().prepare(Path(directory).resolve())
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/test_runtime_observation.py", line 219, in prepare
+    sources={'tool/verify_native.py': (HERE/'baseline/tool/verify_native.py').read_bytes(),
+                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/pathlib/_abc.py", line 625, in read_bytes
+    with self.open(mode='rb') as f:
+         ~~~~~~~~~^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/pathlib/_local.py", line 537, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/baseline/tool/verify_native.py'
+
+======================================================================
+ERROR: test_each_preserved_source_archive_is_required_and_exact (test_observation_repairs.SourceRepairTests.test_each_preserved_source_archive_is_required_and_exact) (name='completion-verifier.py', defect='missing')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/test_observation_repairs.py", line 233, in test_each_preserved_source_archive_is_required_and_exact
+    _, output, _ = self.fixture(directory)
+                   ~~~~~~~~~~~~^^^^^^^^^^^
+  File "/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/test_observation_repairs.py", line 205, in fixture
+    return author.FinalizationTests().prepare(Path(directory).resolve())
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/test_runtime_observation.py", line 219, in prepare
+    sources={'tool/verify_native.py': (HERE/'baseline/tool/verify_native.py').read_bytes(),
+                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/pathlib/_abc.py", line 625, in read_bytes
+    with self.open(mode='rb') as f:
+         ~~~~~~~~~^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/pathlib/_local.py", line 537, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/baseline/tool/verify_native.py'
+
+======================================================================
+ERROR: test_each_preserved_source_archive_is_required_and_exact (test_observation_repairs.SourceRepairTests.test_each_preserved_source_archive_is_required_and_exact) (name='completion-verifier.py', defect='changed')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/test_observation_repairs.py", line 233, in test_each_preserved_source_archive_is_required_and_exact
+    _, output, _ = self.fixture(directory)
+                   ~~~~~~~~~~~~^^^^^^^^^^^
+  File "/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/test_observation_repairs.py", line 205, in fixture
+    return author.FinalizationTests().prepare(Path(directory).resolve())
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/test_runtime_observation.py", line 219, in prepare
+    sources={'tool/verify_native.py': (HERE/'baseline/tool/verify_native.py').read_bytes(),
+                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/pathlib/_abc.py", line 625, in read_bytes
+    with self.open(mode='rb') as f:
+         ~~~~~~~~~^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/pathlib/_local.py", line 537, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/baseline/tool/verify_native.py'
+
+======================================================================
+ERROR: test_each_preserved_source_archive_is_required_and_exact (test_observation_repairs.SourceRepairTests.test_each_preserved_source_archive_is_required_and_exact) (name='native-runner.py', defect='missing')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/test_observation_repairs.py", line 233, in test_each_preserved_source_archive_is_required_and_exact
+    _, output, _ = self.fixture(directory)
+                   ~~~~~~~~~~~~^^^^^^^^^^^
+  File "/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/test_observation_repairs.py", line 205, in fixture
+    return author.FinalizationTests().prepare(Path(directory).resolve())
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/test_runtime_observation.py", line 219, in prepare
+    sources={'tool/verify_native.py': (HERE/'baseline/tool/verify_native.py').read_bytes(),
+                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/pathlib/_abc.py", line 625, in read_bytes
+    with self.open(mode='rb') as f:
+         ~~~~~~~~~^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/pathlib/_local.py", line 537, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/baseline/tool/verify_native.py'
+
+======================================================================
+ERROR: test_each_preserved_source_archive_is_required_and_exact (test_observation_repairs.SourceRepairTests.test_each_preserved_source_archive_is_required_and_exact) (name='native-runner.py', defect='changed')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/test_observation_repairs.py", line 233, in test_each_preserved_source_archive_is_required_and_exact
+    _, output, _ = self.fixture(directory)
+                   ~~~~~~~~~~~~^^^^^^^^^^^
+  File "/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/test_observation_repairs.py", line 205, in fixture
+    return author.FinalizationTests().prepare(Path(directory).resolve())
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/test_runtime_observation.py", line 219, in prepare
+    sources={'tool/verify_native.py': (HERE/'baseline/tool/verify_native.py').read_bytes(),
+                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/pathlib/_abc.py", line 625, in read_bytes
+    with self.open(mode='rb') as f:
+         ~~~~~~~~~^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/pathlib/_local.py", line 537, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/baseline/tool/verify_native.py'
+
+======================================================================
+ERROR: test_each_preserved_source_archive_is_required_and_exact (test_observation_repairs.SourceRepairTests.test_each_preserved_source_archive_is_required_and_exact) (name='candidate-manifest.json', defect='missing')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/test_observation_repairs.py", line 233, in test_each_preserved_source_archive_is_required_and_exact
+    _, output, _ = self.fixture(directory)
+                   ~~~~~~~~~~~~^^^^^^^^^^^
+  File "/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/test_observation_repairs.py", line 205, in fixture
+    return author.FinalizationTests().prepare(Path(directory).resolve())
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/test_runtime_observation.py", line 219, in prepare
+    sources={'tool/verify_native.py': (HERE/'baseline/tool/verify_native.py').read_bytes(),
+                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/pathlib/_abc.py", line 625, in read_bytes
+    with self.open(mode='rb') as f:
+         ~~~~~~~~~^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/pathlib/_local.py", line 537, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/baseline/tool/verify_native.py'
+
+======================================================================
+ERROR: test_each_preserved_source_archive_is_required_and_exact (test_observation_repairs.SourceRepairTests.test_each_preserved_source_archive_is_required_and_exact) (name='candidate-manifest.json', defect='changed')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/test_observation_repairs.py", line 233, in test_each_preserved_source_archive_is_required_and_exact
+    _, output, _ = self.fixture(directory)
+                   ~~~~~~~~~~~~^^^^^^^^^^^
+  File "/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/test_observation_repairs.py", line 205, in fixture
+    return author.FinalizationTests().prepare(Path(directory).resolve())
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/test_runtime_observation.py", line 219, in prepare
+    sources={'tool/verify_native.py': (HERE/'baseline/tool/verify_native.py').read_bytes(),
+                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/pathlib/_abc.py", line 625, in read_bytes
+    with self.open(mode='rb') as f:
+         ~~~~~~~~~^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/pathlib/_local.py", line 537, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/baseline/tool/verify_native.py'
+
+======================================================================
+ERROR: test_preserved_collector_special_replacement_cannot_block (test_observation_repairs.SourceRepairTests.test_preserved_collector_special_replacement_cannot_block) (kind='fifo')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/test_observation_repairs.py", line 269, in test_preserved_collector_special_replacement_cannot_block
+    _, output, _ = self.fixture(directory)
+                   ~~~~~~~~~~~~^^^^^^^^^^^
+  File "/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/test_observation_repairs.py", line 205, in fixture
+    return author.FinalizationTests().prepare(Path(directory).resolve())
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/test_runtime_observation.py", line 219, in prepare
+    sources={'tool/verify_native.py': (HERE/'baseline/tool/verify_native.py').read_bytes(),
+                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/pathlib/_abc.py", line 625, in read_bytes
+    with self.open(mode='rb') as f:
+         ~~~~~~~~~^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/pathlib/_local.py", line 537, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/baseline/tool/verify_native.py'
+
+======================================================================
+ERROR: test_preserved_collector_special_replacement_cannot_block (test_observation_repairs.SourceRepairTests.test_preserved_collector_special_replacement_cannot_block) (kind='symlink')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/test_observation_repairs.py", line 269, in test_preserved_collector_special_replacement_cannot_block
+    _, output, _ = self.fixture(directory)
+                   ~~~~~~~~~~~~^^^^^^^^^^^
+  File "/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/test_observation_repairs.py", line 205, in fixture
+    return author.FinalizationTests().prepare(Path(directory).resolve())
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/test_runtime_observation.py", line 219, in prepare
+    sources={'tool/verify_native.py': (HERE/'baseline/tool/verify_native.py').read_bytes(),
+                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/pathlib/_abc.py", line 625, in read_bytes
+    with self.open(mode='rb') as f:
+         ~~~~~~~~~^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/pathlib/_local.py", line 537, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/baseline/tool/verify_native.py'
+
+======================================================================
+ERROR: test_runner_and_candidate_verifier_binding_must_match (test_observation_repairs.SourceRepairTests.test_runner_and_candidate_verifier_binding_must_match) (target='verify_native.py')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/test_observation_repairs.py", line 243, in test_runner_and_candidate_verifier_binding_must_match
+    evidence, output, verification = self.fixture(directory)
+                                     ~~~~~~~~~~~~^^^^^^^^^^^
+  File "/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/test_observation_repairs.py", line 205, in fixture
+    return author.FinalizationTests().prepare(Path(directory).resolve())
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/test_runtime_observation.py", line 219, in prepare
+    sources={'tool/verify_native.py': (HERE/'baseline/tool/verify_native.py').read_bytes(),
+                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/pathlib/_abc.py", line 625, in read_bytes
+    with self.open(mode='rb') as f:
+         ~~~~~~~~~^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/pathlib/_local.py", line 537, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/baseline/tool/verify_native.py'
+
+======================================================================
+ERROR: test_runner_and_candidate_verifier_binding_must_match (test_observation_repairs.SourceRepairTests.test_runner_and_candidate_verifier_binding_must_match) (target='runner.py')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/test_observation_repairs.py", line 243, in test_runner_and_candidate_verifier_binding_must_match
+    evidence, output, verification = self.fixture(directory)
+                                     ~~~~~~~~~~~~^^^^^^^^^^^
+  File "/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/test_observation_repairs.py", line 205, in fixture
+    return author.FinalizationTests().prepare(Path(directory).resolve())
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/test_runtime_observation.py", line 219, in prepare
+    sources={'tool/verify_native.py': (HERE/'baseline/tool/verify_native.py').read_bytes(),
+                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/pathlib/_abc.py", line 625, in read_bytes
+    with self.open(mode='rb') as f:
+         ~~~~~~~~~^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/pathlib/_local.py", line 537, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/baseline/tool/verify_native.py'
+
+======================================================================
+ERROR: test_runner_and_candidate_verifier_binding_must_match (test_observation_repairs.SourceRepairTests.test_runner_and_candidate_verifier_binding_must_match) (target='candidate-verifier')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/test_observation_repairs.py", line 243, in test_runner_and_candidate_verifier_binding_must_match
+    evidence, output, verification = self.fixture(directory)
+                                     ~~~~~~~~~~~~^^^^^^^^^^^
+  File "/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/test_observation_repairs.py", line 205, in fixture
+    return author.FinalizationTests().prepare(Path(directory).resolve())
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/test_runtime_observation.py", line 219, in prepare
+    sources={'tool/verify_native.py': (HERE/'baseline/tool/verify_native.py').read_bytes(),
+                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/pathlib/_abc.py", line 625, in read_bytes
+    with self.open(mode='rb') as f:
+         ~~~~~~~~~^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/pathlib/_local.py", line 537, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/baseline/tool/verify_native.py'
+
+======================================================================
+ERROR: test_runner_and_candidate_verifier_binding_must_match (test_observation_repairs.SourceRepairTests.test_runner_and_candidate_verifier_binding_must_match) (target='manifest')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/test_observation_repairs.py", line 243, in test_runner_and_candidate_verifier_binding_must_match
+    evidence, output, verification = self.fixture(directory)
+                                     ~~~~~~~~~~~~^^^^^^^^^^^
+  File "/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/test_observation_repairs.py", line 205, in fixture
+    return author.FinalizationTests().prepare(Path(directory).resolve())
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/test_runtime_observation.py", line 219, in prepare
+    sources={'tool/verify_native.py': (HERE/'baseline/tool/verify_native.py').read_bytes(),
+                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/pathlib/_abc.py", line 625, in read_bytes
+    with self.open(mode='rb') as f:
+         ~~~~~~~~~^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/pathlib/_local.py", line 537, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/baseline/tool/verify_native.py'
+
+======================================================================
+ERROR: test_runner_and_candidate_verifier_binding_must_match (test_observation_repairs.SourceRepairTests.test_runner_and_candidate_verifier_binding_must_match) (target='runner-pin')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/test_observation_repairs.py", line 243, in test_runner_and_candidate_verifier_binding_must_match
+    evidence, output, verification = self.fixture(directory)
+                                     ~~~~~~~~~~~~^^^^^^^^^^^
+  File "/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/test_observation_repairs.py", line 205, in fixture
+    return author.FinalizationTests().prepare(Path(directory).resolve())
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/test_runtime_observation.py", line 219, in prepare
+    sources={'tool/verify_native.py': (HERE/'baseline/tool/verify_native.py').read_bytes(),
+                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/pathlib/_abc.py", line 625, in read_bytes
+    with self.open(mode='rb') as f:
+         ~~~~~~~~~^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/pathlib/_local.py", line 537, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/baseline/tool/verify_native.py'
+
+======================================================================
+ERROR: test_source_replacement_during_finalization_cannot_publish (test_observation_repairs.SourceRepairTests.test_source_replacement_during_finalization_cannot_publish) (name='collector.py')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/test_observation_repairs.py", line 301, in test_source_replacement_during_finalization_cannot_publish
+    _, output, _ = self.fixture(directory)
+                   ~~~~~~~~~~~~^^^^^^^^^^^
+  File "/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/test_observation_repairs.py", line 205, in fixture
+    return author.FinalizationTests().prepare(Path(directory).resolve())
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/test_runtime_observation.py", line 219, in prepare
+    sources={'tool/verify_native.py': (HERE/'baseline/tool/verify_native.py').read_bytes(),
+                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/pathlib/_abc.py", line 625, in read_bytes
+    with self.open(mode='rb') as f:
+         ~~~~~~~~~^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/pathlib/_local.py", line 537, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/baseline/tool/verify_native.py'
+
+======================================================================
+ERROR: test_source_replacement_during_finalization_cannot_publish (test_observation_repairs.SourceRepairTests.test_source_replacement_during_finalization_cannot_publish) (name='completion-verifier.py')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/test_observation_repairs.py", line 301, in test_source_replacement_during_finalization_cannot_publish
+    _, output, _ = self.fixture(directory)
+                   ~~~~~~~~~~~~^^^^^^^^^^^
+  File "/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/test_observation_repairs.py", line 205, in fixture
+    return author.FinalizationTests().prepare(Path(directory).resolve())
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/test_runtime_observation.py", line 219, in prepare
+    sources={'tool/verify_native.py': (HERE/'baseline/tool/verify_native.py').read_bytes(),
+                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/pathlib/_abc.py", line 625, in read_bytes
+    with self.open(mode='rb') as f:
+         ~~~~~~~~~^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/pathlib/_local.py", line 537, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/baseline/tool/verify_native.py'
+
+======================================================================
+ERROR: test_sys_modules_and_arbitrary_root_cannot_replace_completion_check (test_observation_repairs.SourceRepairTests.test_sys_modules_and_arbitrary_root_cannot_replace_completion_check)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/test_observation_repairs.py", line 281, in test_sys_modules_and_arbitrary_root_cannot_replace_completion_check
+    evidence, output, verification = self.fixture(directory)
+                                     ~~~~~~~~~~~~^^^^^^^^^^^
+  File "/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/test_observation_repairs.py", line 205, in fixture
+    return author.FinalizationTests().prepare(Path(directory).resolve())
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/test_runtime_observation.py", line 219, in prepare
+    sources={'tool/verify_native.py': (HERE/'baseline/tool/verify_native.py').read_bytes(),
+                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/pathlib/_abc.py", line 625, in read_bytes
+    with self.open(mode='rb') as f:
+         ~~~~~~~~~^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/pathlib/_local.py", line 537, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/baseline/tool/verify_native.py'
+
+======================================================================
+ERROR: test_unavailable_storage_retains_partial_status (test_observation_repairs.SourceRepairTests.test_unavailable_storage_retains_partial_status)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/test_observation_repairs.py", line 315, in test_unavailable_storage_retains_partial_status
+    _, output, _ = self.fixture(directory)
+                   ~~~~~~~~~~~~^^^^^^^^^^^
+  File "/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/test_observation_repairs.py", line 205, in fixture
+    return author.FinalizationTests().prepare(Path(directory).resolve())
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/test_runtime_observation.py", line 219, in prepare
+    sources={'tool/verify_native.py': (HERE/'baseline/tool/verify_native.py').read_bytes(),
+                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/pathlib/_abc.py", line 625, in read_bytes
+    with self.open(mode='rb') as f:
+         ~~~~~~~~~^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/pathlib/_local.py", line 537, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/baseline/tool/verify_native.py'
+
+======================================================================
+ERROR: test_finalization_requires_both_normal_successes_and_pins (test_runtime_observation.FinalizationTests.test_finalization_requires_both_normal_successes_and_pins)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/test_runtime_observation.py", line 257, in test_finalization_requires_both_normal_successes_and_pins
+    _,output,_=self.prepare(Path(directory))
+               ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/test_runtime_observation.py", line 219, in prepare
+    sources={'tool/verify_native.py': (HERE/'baseline/tool/verify_native.py').read_bytes(),
+                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/pathlib/_abc.py", line 625, in read_bytes
+    with self.open(mode='rb') as f:
+         ~~~~~~~~~^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/pathlib/_local.py", line 537, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/baseline/tool/verify_native.py'
+
+======================================================================
+ERROR: test_native_failure_zero_count_source_drift_and_false_pass_refused (test_runtime_observation.FinalizationTests.test_native_failure_zero_count_source_drift_and_false_pass_refused) (defect='negative-native')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/test_runtime_observation.py", line 267, in test_native_failure_zero_count_source_drift_and_false_pass_refused
+    evidence,output,verification=self.prepare(Path(directory))
+                                 ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/test_runtime_observation.py", line 219, in prepare
+    sources={'tool/verify_native.py': (HERE/'baseline/tool/verify_native.py').read_bytes(),
+                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/pathlib/_abc.py", line 625, in read_bytes
+    with self.open(mode='rb') as f:
+         ~~~~~~~~~^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/pathlib/_local.py", line 537, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/baseline/tool/verify_native.py'
+
+======================================================================
+ERROR: test_native_failure_zero_count_source_drift_and_false_pass_refused (test_runtime_observation.FinalizationTests.test_native_failure_zero_count_source_drift_and_false_pass_refused) (defect='zero-count')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/test_runtime_observation.py", line 267, in test_native_failure_zero_count_source_drift_and_false_pass_refused
+    evidence,output,verification=self.prepare(Path(directory))
+                                 ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/test_runtime_observation.py", line 219, in prepare
+    sources={'tool/verify_native.py': (HERE/'baseline/tool/verify_native.py').read_bytes(),
+                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/pathlib/_abc.py", line 625, in read_bytes
+    with self.open(mode='rb') as f:
+         ~~~~~~~~~^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/pathlib/_local.py", line 537, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/baseline/tool/verify_native.py'
+
+======================================================================
+ERROR: test_native_failure_zero_count_source_drift_and_false_pass_refused (test_runtime_observation.FinalizationTests.test_native_failure_zero_count_source_drift_and_false_pass_refused) (defect='wrong-device')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/test_runtime_observation.py", line 267, in test_native_failure_zero_count_source_drift_and_false_pass_refused
+    evidence,output,verification=self.prepare(Path(directory))
+                                 ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/test_runtime_observation.py", line 219, in prepare
+    sources={'tool/verify_native.py': (HERE/'baseline/tool/verify_native.py').read_bytes(),
+                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/pathlib/_abc.py", line 625, in read_bytes
+    with self.open(mode='rb') as f:
+         ~~~~~~~~~^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/pathlib/_local.py", line 537, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/baseline/tool/verify_native.py'
+
+======================================================================
+ERROR: test_native_failure_zero_count_source_drift_and_false_pass_refused (test_runtime_observation.FinalizationTests.test_native_failure_zero_count_source_drift_and_false_pass_refused) (defect='wrong-pid')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/test_runtime_observation.py", line 267, in test_native_failure_zero_count_source_drift_and_false_pass_refused
+    evidence,output,verification=self.prepare(Path(directory))
+                                 ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/test_runtime_observation.py", line 219, in prepare
+    sources={'tool/verify_native.py': (HERE/'baseline/tool/verify_native.py').read_bytes(),
+                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/pathlib/_abc.py", line 625, in read_bytes
+    with self.open(mode='rb') as f:
+         ~~~~~~~~~^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/pathlib/_local.py", line 537, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/baseline/tool/verify_native.py'
+
+======================================================================
+ERROR: test_native_failure_zero_count_source_drift_and_false_pass_refused (test_runtime_observation.FinalizationTests.test_native_failure_zero_count_source_drift_and_false_pass_refused) (defect='drift')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/test_runtime_observation.py", line 267, in test_native_failure_zero_count_source_drift_and_false_pass_refused
+    evidence,output,verification=self.prepare(Path(directory))
+                                 ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/test_runtime_observation.py", line 219, in prepare
+    sources={'tool/verify_native.py': (HERE/'baseline/tool/verify_native.py').read_bytes(),
+                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/pathlib/_abc.py", line 625, in read_bytes
+    with self.open(mode='rb') as f:
+         ~~~~~~~~~^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/pathlib/_local.py", line 537, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/baseline/tool/verify_native.py'
+
+======================================================================
+ERROR: test_native_failure_zero_count_source_drift_and_false_pass_refused (test_runtime_observation.FinalizationTests.test_native_failure_zero_count_source_drift_and_false_pass_refused) (defect='no-flag')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/test_runtime_observation.py", line 267, in test_native_failure_zero_count_source_drift_and_false_pass_refused
+    evidence,output,verification=self.prepare(Path(directory))
+                                 ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/test_runtime_observation.py", line 219, in prepare
+    sources={'tool/verify_native.py': (HERE/'baseline/tool/verify_native.py').read_bytes(),
+                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/pathlib/_abc.py", line 625, in read_bytes
+    with self.open(mode='rb') as f:
+         ~~~~~~~~~^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/pathlib/_local.py", line 537, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/baseline/tool/verify_native.py'
+
+======================================================================
+ERROR: test_native_failure_zero_count_source_drift_and_false_pass_refused (test_runtime_observation.FinalizationTests.test_native_failure_zero_count_source_drift_and_false_pass_refused) (defect='pin')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/test_runtime_observation.py", line 267, in test_native_failure_zero_count_source_drift_and_false_pass_refused
+    evidence,output,verification=self.prepare(Path(directory))
+                                 ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/test_runtime_observation.py", line 219, in prepare
+    sources={'tool/verify_native.py': (HERE/'baseline/tool/verify_native.py').read_bytes(),
+                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/pathlib/_abc.py", line 625, in read_bytes
+    with self.open(mode='rb') as f:
+         ~~~~~~~~~^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/pathlib/_local.py", line 537, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/baseline/tool/verify_native.py'
+
+======================================================================
+ERROR: test_native_failure_zero_count_source_drift_and_false_pass_refused (test_runtime_observation.FinalizationTests.test_native_failure_zero_count_source_drift_and_false_pass_refused) (defect='late-sample')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/test_runtime_observation.py", line 267, in test_native_failure_zero_count_source_drift_and_false_pass_refused
+    evidence,output,verification=self.prepare(Path(directory))
+                                 ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/test_runtime_observation.py", line 219, in prepare
+    sources={'tool/verify_native.py': (HERE/'baseline/tool/verify_native.py').read_bytes(),
+                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/pathlib/_abc.py", line 625, in read_bytes
+    with self.open(mode='rb') as f:
+         ~~~~~~~~~^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/pathlib/_local.py", line 537, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/baseline/tool/verify_native.py'
+
+======================================================================
+ERROR: test_native_failure_zero_count_source_drift_and_false_pass_refused (test_runtime_observation.FinalizationTests.test_native_failure_zero_count_source_drift_and_false_pass_refused) (defect='no-close')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/test_runtime_observation.py", line 267, in test_native_failure_zero_count_source_drift_and_false_pass_refused
+    evidence,output,verification=self.prepare(Path(directory))
+                                 ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/test_runtime_observation.py", line 219, in prepare
+    sources={'tool/verify_native.py': (HERE/'baseline/tool/verify_native.py').read_bytes(),
+                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/pathlib/_abc.py", line 625, in read_bytes
+    with self.open(mode='rb') as f:
+         ~~~~~~~~~^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/pathlib/_local.py", line 537, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/baseline/tool/verify_native.py'
+
+======================================================================
+ERROR: test_harness_opt_in_default_unchanged_and_post_assertion (test_runtime_observation.StagingTests.test_harness_opt_in_default_unchanged_and_post_assertion)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/test_runtime_observation.py", line 189, in test_harness_opt_in_default_unchanged_and_post_assertion
+    source=(HERE/'source/game/mobile/integration_test/current_runtime_test.dart').read_text()
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/pathlib/_local.py", line 546, in read_text
+    return PathBase.read_text(self, encoding, errors, newline)
+           ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/pathlib/_abc.py", line 632, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/pathlib/_local.py", line 537, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/source/game/mobile/integration_test/current_runtime_test.dart'
+
+======================================================================
+ERROR: test_runner_opt_in_archive_and_allowlist (test_runtime_observation.StagingTests.test_runner_opt_in_archive_and_allowlist)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/test_runtime_observation.py", line 199, in test_runner_opt_in_archive_and_allowlist
+    source=(HERE/'source/tool/verify_current_runtime.py').read_text()
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/pathlib/_local.py", line 546, in read_text
+    return PathBase.read_text(self, encoding, errors, newline)
+           ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/pathlib/_abc.py", line 632, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/pathlib/_local.py", line 537, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/csys/Desktop/ibicot/idle/release/native-privacy/android-socket-transport-20261023T055145.427990Z/source/tool/verify_current_runtime.py'
+
+----------------------------------------------------------------------
+Ran 73 tests in 1.136s
+
+FAILED (errors=33)

@@ -1,0 +1,39 @@
+[
+  {
+    "check": "format-final",
+    "command": [
+      "/Users/csys/Desktop/ibicot/idle/.tooling/flutter/bin/cache/dart-sdk/bin/dart",
+      "format",
+      "integration_test/platform_smoke_test.dart",
+      "/Users/csys/Desktop/ibicot/idle/release/store/capture-overlay-repair-20261023T044221.198274Z/capture_pointer_probe_test.dart"
+    ],
+    "cwd": "/Users/csys/Desktop/ibicot/idle/game/mobile",
+    "exit_code": 0,
+    "log": "format-final.log"
+  },
+  {
+    "check": "analysis-final",
+    "command": [
+      "/Users/csys/Desktop/ibicot/idle/.tooling/flutter/bin/flutter",
+      "analyze",
+      "--no-pub",
+      "integration_test/platform_smoke_test.dart"
+    ],
+    "cwd": "/Users/csys/Desktop/ibicot/idle/game/mobile",
+    "exit_code": 0,
+    "log": "analysis-final.log"
+  },
+  {
+    "check": "host-routing-probe",
+    "command": [
+      "/Users/csys/Desktop/ibicot/idle/.tooling/flutter/bin/flutter",
+      "test",
+      "--no-pub",
+      "--dart-define=INTEGRATION_TEST_SHOULD_REPORT_RESULTS_TO_NATIVE=false",
+      "/Users/csys/Desktop/ibicot/idle/release/store/capture-overlay-repair-20261023T044221.198274Z/capture_pointer_probe_test.dart"
+    ],
+    "cwd": "/Users/csys/Desktop/ibicot/idle/game/mobile",
+    "exit_code": 0,
+    "log": "host-routing-probe.log"
+  }
+]

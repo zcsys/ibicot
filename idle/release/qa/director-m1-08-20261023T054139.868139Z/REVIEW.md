@@ -1,0 +1,13 @@
+# Director review: M1-08 production fixtures
+
+The exact original implementation criterion is supported: “Existing checks become production fixtures; add save corruption, rounding, rapid reset and interrupted-transaction cases.” Package acceptance remains conditional on its original M1-03 prerequisite; M1-01 and M1-02 are already accepted. No package or scope status changes in this review.
+
+| Obligation | Inspected production fixture and evidence |
+|---|---|
+| Port existing checks | `game/core/test/economy_test.dart` reads the original `implementation/fixtures/economy_reference.json` cost, bulk cost, integer entitlement, milestone and synergy cases. It also replays the complete first-run purchase command sequence and checks exact discrete results plus explicitly bounded reference timing/continuous-value differences. |
+| Save corruption | `save_repository_test.dart` corrupts the latest generation and verifies prior-generation recovery with a warning; all-corrupt storage refuses silent restart; altered import checksum fails before mutating local progress; explicit repair preserves both raw corrupt files. |
+| Rounding | One micro-unit below price cannot purchase; exact price does. Bulk splits sum identically. Every next-Chart boundary is checked at the exact micro-unit and one below; huge entitlement is independently bounded with integer powers, without floating-point tolerance for an award. |
+| Rapid reset | The exact first reset retains lifetime, queued Focus and Notes, spends wallet, awards ten Charts; an immediate second reset is refused. The independent numeric/source bridge separately checks repeated entitlement subtraction. This is a command-repetition fixture, not a claim of human input or retention. |
+| Interrupted transaction | All three commit boundaries are injected in the production SaveRepository tests. The actual-core integration test interrupts after committed rename, reloads the cursor, and confirms the same forty-second interval stays at exactly40R. Stale writers and cursor rewinds reject. Native process-interruption qualification belongs to prerequisite M1-03 and remains pending its current Android review. |
+
+The director directly inspected the actual test bodies and independently rechecked their frozen-candidate/live hashes, the current core206/persistence28 terminal logs, and the different-author QA seal. All eight arithmetic inputs remain exactly source-bound to the independently reproduced numeric bridge. Tests were not rerun solely to duplicate closed, unchanged evidence. No new native/physical execution or universal zero-defect claim is made; S28 store-purchase/release acceptance remains separate. Original dependencies and designated reviewer are preserved.

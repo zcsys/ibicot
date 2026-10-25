@@ -1,0 +1,128 @@
+{
+  "observed_utc": "20261019T135402.439115Z",
+  "candidate_fingerprint": "d85bdf74433d96d2f6ea6a58a8481290942d526a7cdb8ec14b55e57537e9dced",
+  "candidate_directory": ".tooling/build-candidates/20261016T112921.896155Z-d85bdf74433d",
+  "source_checks": {
+    "source": {
+      "differences": [],
+      "dependency_locks_unchanged": true
+    },
+    "workspace": {
+      "differences": [],
+      "dependency_locks_unchanged": true
+    },
+    "workspace-release": {
+      "differences": [
+        "game/mobile/android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java"
+      ],
+      "dependency_locks_unchanged": true
+    }
+  },
+  "artifacts": [
+    {
+      "build_report": "release/native-proof/20261016T112947.203869Z/build-report.json",
+      "platform": "ios",
+      "mode": "debug",
+      "path": "release/native-proof/20261016T112947.203869Z/artifacts/tideglass-ios-debug.zip",
+      "sha256": "4b013293bdcf44659e3709d6dcb7e8c8dc3e13f4ba4d610d6874c109767f6ac5",
+      "bytes": 57252506
+    },
+    {
+      "build_report": "release/native-proof/20261016T112947.203869Z/build-report.json",
+      "platform": "android",
+      "mode": "debug",
+      "path": "release/native-proof/20261016T112947.203869Z/artifacts/tideglass-debug.apk",
+      "sha256": "51e0d30d0e632a13c7a5126d75b8081814d7730a3f35ae06b06bc4a06f823701",
+      "bytes": 178369172
+    },
+    {
+      "build_report": "release/native-proof/20261016T112947.203869Z/build-report.json",
+      "platform": "macos",
+      "mode": "debug",
+      "path": "release/native-proof/20261016T112947.203869Z/artifacts/tideglass-macos-debug.zip",
+      "sha256": "1b98dfb3c564692b96495d9a75657bd5d45e8e4d6d257c996eb3aa8fca4d9bfd",
+      "bytes": 40572379
+    },
+    {
+      "build_report": "release/native-proof/20261016T115204.670734Z/build-report.json",
+      "platform": "ios",
+      "mode": "release",
+      "path": "release/native-proof/20261016T115204.670734Z/artifacts/tideglass-ios-release.zip",
+      "sha256": "60b6f229b6eddd244fba9e84c7db7d9185c1e85e441d2f3a1130cd3a2cc9f4a8",
+      "bytes": 12043802
+    },
+    {
+      "build_report": "release/native-proof/20261016T115658.068642Z/build-report.json",
+      "platform": "android",
+      "mode": "release",
+      "path": "release/native-proof/20261016T115658.068642Z/artifacts/tideglass-release.aab",
+      "sha256": "5b64c7e3556821f2b12921ecc84a6be3b0f3b57a8b5ff53f9c26b4a6ecce0f22",
+      "bytes": 60792587
+    }
+  ],
+  "unsigned_checks": {
+    "ios": {
+      "command": [
+        "codesign",
+        "-dv",
+        ".tooling/build-candidates/20261016T112921.896155Z-d85bdf74433d/workspace-release/game/mobile/build/ios/iphoneos/Runner.app"
+      ],
+      "exit_code": 1,
+      "output": ".tooling/build-candidates/20261016T112921.896155Z-d85bdf74433d/workspace-release/game/mobile/build/ios/iphoneos/Runner.app: code object is not signed at all\n",
+      "confirmed_unsigned": true,
+      "bundle_id": "dev.tideglass.game",
+      "version": "0.1.0",
+      "minimum_os": "16.0"
+    },
+    "android": {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/.tooling/java/current/Contents/Home/bin/jarsigner",
+        "-verify",
+        "release/native-proof/20261016T115658.068642Z/artifacts/tideglass-release.aab"
+      ],
+      "exit_code": 0,
+      "output": "\nno manifest.\n\njar is unsigned.\n",
+      "signature_entries": [],
+      "confirmed_unsigned": true
+    }
+  },
+  "note": "Read-only verification of Oct16 outputs after interrupted turn. Native scenarios were executed Oct16, not rerun here. No public release or physical-device acceptance.",
+  "packaging_tool_tests": {
+    "command": [
+      "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tool",
+      "-p",
+      "test_native_*.py",
+      "-v"
+    ],
+    "exit_code": 0,
+    "passed": 4,
+    "runner_sha256": "366ecc308b077ab4c308334e9a72b42b0e38858a3d22acaf329a379086f2383d"
+  },
+  "simulators": {
+    "command": [
+      "xcrun",
+      "simctl",
+      "list",
+      "devices",
+      "booted",
+      "--json"
+    ],
+    "exit_code": 0,
+    "output": "{\n  \"devices\" : {\n    \"com.apple.CoreSimulator.SimRuntime.iOS-26-3\" : [\n\n    ]\n  }\n}\n"
+  },
+  "android": {
+    "command": [
+      "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+      "devices",
+      "-l"
+    ],
+    "exit_code": 0,
+    "output": "List of devices attached\n\n* daemon not running; starting now at tcp:5037\n* daemon started successfully\n"
+  },
+  "passed": true
+}

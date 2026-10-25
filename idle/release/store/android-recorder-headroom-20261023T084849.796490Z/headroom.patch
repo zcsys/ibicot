@@ -1,0 +1,20 @@
+--- before/native_recording.py
++++ staged/native_recording.py
+@@ -304,7 +304,7 @@
+         if tick != process_start_ticks(after, pid):
+             raise ValueError('Owned recorder process identity changed during observation')
+         if (len(argv) != 4 or argv[0] not in ('screenrecord', '/system/bin/screenrecord')
+-                or argv[1:] != ['--time-limit', '27', self.remote]):
++                or argv[1:] != ['--time-limit', '29', self.remote]):
+             raise ValueError('PID is not the exact owned screenrecord command')
+         return {'pid': pid, 'start_ticks': tick, 'argv': argv}
+ 
+@@ -348,7 +348,7 @@
+                 command = ['xcrun', 'simctl', 'io', self.device, 'recordVideo',
+                            '--codec=h264', '--force', str(self.video)]
+             else:
+-                shell = (f'screenrecord --time-limit 27 {shlex.quote(self.remote)} & '
++                shell = (f'screenrecord --time-limit 29 {shlex.quote(self.remote)} & '
+                          'capture_pid=$!; echo TIDEGLASS_SCREENRECORD_PID=$capture_pid; '
+                          'wait "$capture_pid"')
+                 command = self.adb('shell', shell)

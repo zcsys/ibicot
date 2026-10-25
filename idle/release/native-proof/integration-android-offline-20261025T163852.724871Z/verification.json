@@ -1,0 +1,100 @@
+{
+  "candidate_fingerprint": "3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59",
+  "device": "emulator-5556",
+  "label": "android-offline",
+  "platform": "android",
+  "started_utc": "20261025T163852.724871Z",
+  "command": [
+    "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+    "drive",
+    "--driver=test_driver/evidence_ec880d16153b.dart",
+    "--target=integration_test/evidence_90dbf5a3c504_test.dart",
+    "-d",
+    "emulator-5556",
+    "--dart-define=TIDEGLASS_DEVICE_LABEL=android-offline",
+    "--dart-define=TIDEGLASS_SCENARIO=natural-start",
+    "--dart-define=TIDEGLASS_RUN_ID=v3b00-offline-20261025t163838795705z",
+    "--dart-define=TIDEGLASS_VERIFICATION_ID=integration-android-offline-20261025T163852.724871Z",
+    "--dart-define=TIDEGLASS_CANDIDATE_FINGERPRINT=3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59",
+    "--dart-define=TIDEGLASS_HARNESS_SHA256=90dbf5a3c50498c61700a4a066a002dc760e38ed3f75a65f8f49d16af61ddac4",
+    "--keep-app-running",
+    "--timeout=480",
+    "--no-pub",
+    "--dart-define=TIDEGLASS_OFFLINE_NONCE=3325a0146b5ec97ceee0ac1abb26dcd5a8b6d3d6827998c5c8404ed0bdcaf83a",
+    "--dart-define=TIDEGLASS_OFFLINE_SERVER_ID=be4a69f1d3c14913b17343d2829dbe70",
+    "--dart-define=TIDEGLASS_OFFLINE_PORT=49774",
+    "--dart-define=TIDEGLASS_PREDECESSOR_CHECKPOINT_SHA256="
+  ],
+  "runner_sha256": "ec56e66871ca2b228637cd16063eaf3160060f0aa80a3fa9bf9288666a5767da",
+  "candidate_validation_runner_sha256": "59ee4e7b94a1445e2c8effadfe4c0510c9c189df0278c7ede6e87f1807bf38ee",
+  "scenario": "natural-start",
+  "run_id": "v3b00-offline-20261025t163838795705z",
+  "harness_sha256": {
+    "harness.dart": "90dbf5a3c50498c61700a4a066a002dc760e38ed3f75a65f8f49d16af61ddac4",
+    "driver.dart": "ec880d16153b1ac577a221a46f81e7c309dd5417fbba8aae4ce68f7acbcfb668",
+    "offline_support.py": "f726ab534f0d81e3d6191e6397517ad267cbbc1a6375885664aedb242b18eb35"
+  },
+  "production_inputs_match_snapshot": true,
+  "provenance": "Real elapsed native bootstrap and separate-process reload; isolated test save directory",
+  "exit_code": 0,
+  "production_input_differences_after_run": [],
+  "source_snapshot_unchanged": true,
+  "harness_source_differences_during_run": [],
+  "native_process_stop": {
+    "command": [
+      "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "shell",
+      "am",
+      "force-stop",
+      "dev.tideglass.game"
+    ],
+    "exit_code": 0,
+    "output": ""
+  },
+  "offline_qualification": {
+    "qualified_local_network_path": true,
+    "states": {
+      "before-online": {
+        "airplane": "0",
+        "wifi": "1",
+        "data": "1",
+        "default": "106"
+      },
+      "offline-ready": {
+        "airplane": "1",
+        "wifi": "3",
+        "data": "1",
+        "default": "none"
+      },
+      "offline-complete": {
+        "airplane": "1",
+        "wifi": "3",
+        "data": "1",
+        "default": "none"
+      }
+    },
+    "samples": 105,
+    "app_to_host_clock_offset_seconds": 0.46132802963256836,
+    "scope": "Android emulator API35 guest offline path; no Internet, iOS, physical, provider or production-traffic absence claim"
+  },
+  "verification_errors": [],
+  "passed": true,
+  "evidence_sha256": {
+    "os-snapshots.json": "f44d3b63b0aa1e775bb55eff3bd1debf96fb41ba70e6c755e9055f322f4d6502",
+    "offline-qualification.json": "26b4d5a2f131f2e93466126618be12fb965568c9c796c7160ed7762be07837eb",
+    "native-save-progress.1.json": "2570713bccbde43c5f329dfdc9bdaffeb637e110e5bcbcd0a328cc54cd30a1ad",
+    "offline_support.py": "f726ab534f0d81e3d6191e6397517ad267cbbc1a6375885664aedb242b18eb35",
+    "native-save-progress.0.json": "e016210d0fb2c4a3a9463968559b72347692c18062226a355be79d5b8952c0ea",
+    "network-profile.json": "62d10b43e87dd1d83f13763470abb47a0bb084279299751b2d589859314b1c87",
+    "result.json": "91b62f3de65e27d2e938b0443a54e3dd1f7184d19a84af6c6fe60ddf1d13a76a",
+    "listener-prefix.jsonl": "8cef92fccac63e12bb7c95948714829e1006b7adbbfdef9d6a9a9b34b901aabb",
+    "run.log": "cb04dc40493a3295cec8244dd6773cd9fdb3166b89ba809260a098ba93e9becd",
+    "driver.dart": "ec880d16153b1ac577a221a46f81e7c309dd5417fbba8aae4ce68f7acbcfb668",
+    "verify_native.py": "ec56e66871ca2b228637cd16063eaf3160060f0aa80a3fa9bf9288666a5767da",
+    "native-checkpoint.json": "a5591758b150e5ddf8b70a905c45158a15c26450534cfeac9c3a9d3e68329d53",
+    "harness.dart": "90dbf5a3c50498c61700a4a066a002dc760e38ed3f75a65f8f49d16af61ddac4",
+    "android-offline-natural-start.png": "c59bd3dd8bf46bfbd658cbe3b6e075269be64bd282168fbf9ee5fcdc9dff8c0b"
+  }
+}

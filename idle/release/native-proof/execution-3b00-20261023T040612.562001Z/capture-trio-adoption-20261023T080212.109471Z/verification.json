@@ -1,0 +1,48 @@
+{
+  "review": "/Users/csys/Desktop/ibicot/idle/release/qa/lead-capture-repair-20261023T053647.917618Z/verification.json",
+  "review_sha256": "1e37fbdb65c30ff7f699348d8527fe13e42bc06e20c232578607ac48de8f47da",
+  "staged_verification_sha256": "a1f43e5f2e0dd54d0df4b7acbccfe0de1ebe0764964135b08a73b558ff9d7488",
+  "sources": {
+    "game/mobile/integration_test/platform_smoke_test.dart": {
+      "expected_live_before_sha256": "071635c01ed508077b467462bac279107a8716861ac97a5b657a5401b2cc3506",
+      "prior_stage_sha256": "68e4873feedf964e5c734b2d45e393bdc79983e58bdbe38b55b8b62300db498c",
+      "staged_path": "release/store/android-capture-repair-season-20261023T054210.236050Z/staged/platform_smoke_test.dart",
+      "staged_sha256": "1925106cb014a4a21575af3aa3bd85fc997873c1c9be74249c966da1cf28318b"
+    },
+    "tool/native_recording.py": {
+      "expected_live_before_sha256": "6e1f4a32167d93461097ef3198256a0da815bee5e0b1fa89511dae7bef5e8a29",
+      "prior_stage_sha256": "343ed23024953c6378bf7a314589a7252a7f97451cd01906168c9018a66c6582",
+      "staged_path": "release/store/android-capture-repair-season-20261023T054210.236050Z/staged/native_recording.py",
+      "staged_sha256": "343ed23024953c6378bf7a314589a7252a7f97451cd01906168c9018a66c6582"
+    },
+    "tool/native_integration_driver.dart": {
+      "expected_live_before_sha256": "911183b5d9ee8ec80769836f477a293dadb66e20cc0c5d5e44314415889749a8",
+      "prior_stage_sha256": "5fa7f526f10afd1b23b4adbfe4577770adb50eda16163fe55039d9e4069e5007",
+      "staged_path": "release/store/android-capture-repair-season-20261023T054210.236050Z/staged/native_integration_driver.dart",
+      "staged_sha256": "5fa7f526f10afd1b23b4adbfe4577770adb50eda16163fe55039d9e4069e5007"
+    }
+  },
+  "scope": "Approved capture-only harness/driver/recorder correction; no production or frozen source writes",
+  "promoted": true,
+  "scoped_analysis_test_copies_sha256": {
+    "integration_test/capture_stage_1925106cb014_test.dart": "1925106cb014a4a21575af3aa3bd85fc997873c1c9be74249c966da1cf28318b",
+    "test_driver/capture_stage_5fa7f526f10a.dart": "5fa7f526f10afd1b23b4adbfe4577770adb50eda16163fe55039d9e4069e5007"
+  },
+  "scoped_analysis": {
+    "command": [
+      "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+      "analyze",
+      "--no-pub",
+      "integration_test/capture_stage_1925106cb014_test.dart",
+      "test_driver/capture_stage_5fa7f526f10a.dart"
+    ],
+    "exit_code": 1,
+    "stdout_sha256": "9bd00f047268561b9e6ad6585c20caadcb610216c9bdf3e8bcdbb1884c16d59c",
+    "stderr_sha256": "10b3d5f958d44c2a2dee4924eb64e456f4c553033a720ee68934d72ad4a575e4"
+  },
+  "post_analysis_sha256": {
+    "game/mobile/integration_test/platform_smoke_test.dart": "1925106cb014a4a21575af3aa3bd85fc997873c1c9be74249c966da1cf28318b",
+    "tool/native_recording.py": "343ed23024953c6378bf7a314589a7252a7f97451cd01906168c9018a66c6582",
+    "tool/native_integration_driver.dart": "5fa7f526f10afd1b23b4adbfe4577770adb50eda16163fe55039d9e4069e5007"
+  }
+}

@@ -1,0 +1,84 @@
+--- a/game/mobile/integration_test/platform_smoke_test.dart
++++ b/game/mobile/integration_test/platform_smoke_test.dart
+@@ -23,18 +23,46 @@
+ import 'package:tideglass_core/tideglass_core.dart';
+ import 'package:tideglass_persistence/tideglass_persistence.dart';
+ 
++/// Capture-only binding: retain hit-tested gestures without the live test
++/// binding's painted pointer crosshair. These are still automated inputs,
++/// not physical-device or human interaction evidence.
++class CaptureGalleryBinding extends IntegrationTestWidgetsFlutterBinding {
++  CaptureGalleryBinding() {
++    shouldPropagateDevicePointerEvents = true;
++  }
++
++  int routedTestPointerEvents = 0;
++
++  @override
++  void handlePointerEventForSource(
++    PointerEvent event, {
++    TestBindingEventSource source = TestBindingEventSource.device,
++  }) {
++    if (source == TestBindingEventSource.test) routedTestPointerEvents += 1;
++    // The propagated device branch forwards this same event through normal
++    // framework hit testing and gesture dispatch, without recording a painted
++    // test pointer. Do not invoke UI callbacks or alter event coordinates.
++    super.handlePointerEventForSource(
++      event,
++      source: TestBindingEventSource.device,
++    );
++  }
++}
++
+ /// This is an explicitly seeded native boundary test, not natural pacing or a
+ /// human playtest. Identical inputs exercise real UI commands/core/disk on both OSes.
+ void main() {
+-  final binding = IntegrationTestWidgetsFlutterBinding.ensureInitialized();
++  const scenario = String.fromEnvironment(
++    'TIDEGLASS_SCENARIO',
++    defaultValue: 'seeded',
++  );
++  final binding = scenario == 'capture-gallery'
++      ? CaptureGalleryBinding()
++      : IntegrationTestWidgetsFlutterBinding.ensureInitialized();
+   WidgetController.hitTestWarningShouldBeFatal = true;
+   const label = String.fromEnvironment(
+     'TIDEGLASS_DEVICE_LABEL',
+     defaultValue: 'native',
+-  );
+-  const scenario = String.fromEnvironment(
+-    'TIDEGLASS_SCENARIO',
+-    defaultValue: 'seeded',
+   );
+   if (scenario.startsWith('clock-')) {
+     clockScenario(binding, label, scenario);
+@@ -478,11 +506,16 @@
+   testWidgets('seeded native screen set and real-time gameplay footage', (
+     tester,
+   ) async {
++    expect(binding, isA<CaptureGalleryBinding>());
++    final captureBinding = binding as CaptureGalleryBinding;
++    expect(captureBinding.shouldPropagateDevicePointerEvents, isTrue);
+     binding.reportData = {
+       ...nativeIdentity(label, 'capture-gallery'),
+       'provenance':
+           'Seeded chapters, fleet, currencies, earned appearance and passage. Production UI and real timer/actions during the clip. No natural retention, paid ownership, human playtest or published store-material claim.',
+       'audio_recorded': false,
++      'pointer_dispatch':
++          'Automated hit-tested UI gestures through device propagation; no painted test pointer, physical input or human-playtest claim.',
+     };
+     expect(runId, isNotEmpty);
+     final directory = Directory(
+@@ -593,10 +626,12 @@
+     await tap(find.byKey(const ValueKey('open-season')));
+     await binding.takeScreenshot('$label-capture-season');
+     await until(const Duration(seconds: 25));
++    expect(captureBinding.routedTestPointerEvents, greaterThan(0));
+     debugPrint('TIDEGLASS_NATIVE_CAPTURE_DONE');
+     binding.reportData!.addAll({
+       'real_gameplay_elapsed_ms': watch.elapsedMilliseconds,
+       'actual_purchase_count_delta': subject.state.counts.first - beforeCount,
++      'automated_pointer_events_routed': captureBinding.routedTestPointerEvents,
+       'screen_set': ['main', 'chapter', 'challenge', 'season'],
+     });
+     expect(tester.takeException(), isNull);

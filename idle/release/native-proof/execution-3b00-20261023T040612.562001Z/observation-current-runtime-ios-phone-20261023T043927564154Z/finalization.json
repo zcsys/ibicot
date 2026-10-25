@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "status": "finalized-sampled-observation",
+  "paired_socket_storage_samples": 3,
+  "observation_sha256": "fe7734715c104c7c030b7100d7d0324a5dfea1f181417e00e842546aa70f3f7d",
+  "native_verification_sha256": "073f080ee822b8566860e5ad281faef8240f5f97665ca06b6d370c0853be0af7",
+  "native_payload_sha256": "352b0867e088d714cb576a7e8444209ab558b2a28d0472a1d357f4dac9d25f2e",
+  "native_log_sha256": "0845b54c6b6d70a3fc5fbdfa5c58d9423499f2ce89775e7331f4c381c1d6cbfd",
+  "window": {
+    "opened": {
+      "verification_id": "current-runtime-ios-phone-20261023T043927564154Z",
+      "candidate_fingerprint": "3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59",
+      "harness_sha256": "102be09eb8043ce9bb496156d9f37b1834c3084ddf58fef073e7c25cdc3c55d5",
+      "scenario": "runtime-study-default",
+      "run_id": "v3b00-ios-phone-default",
+      "device_label": "ios-phone",
+      "platform": "ios",
+      "process_id": 74341,
+      "fixture_directory": "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Data/Application/F2141831-DDD5-4DBD-9662-65DE96D466EF/Library/Application Support/native-current-verification/ios-phone-v3b00-ios-phone-default/study",
+      "mode": "default-unprovisioned",
+      "window_id": "current-runtime-ios-phone-20261023T043927564154Z-privacy",
+      "maximum_ms": 20000,
+      "native_elapsed_us": 55,
+      "native_utc_ms": 1792730414375
+    },
+    "closed": {
+      "verification_id": "current-runtime-ios-phone-20261023T043927564154Z",
+      "candidate_fingerprint": "3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59",
+      "harness_sha256": "102be09eb8043ce9bb496156d9f37b1834c3084ddf58fef073e7c25cdc3c55d5",
+      "scenario": "runtime-study-default",
+      "run_id": "v3b00-ios-phone-default",
+      "device_label": "ios-phone",
+      "platform": "ios",
+      "process_id": 74341,
+      "fixture_directory": "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Data/Application/F2141831-DDD5-4DBD-9662-65DE96D466EF/Library/Application Support/native-current-verification/ios-phone-v3b00-ios-phone-default/study",
+      "mode": "default-unprovisioned",
+      "window_id": "current-runtime-ios-phone-20261023T043927564154Z-privacy",
+      "maximum_ms": 20000,
+      "native_elapsed_us": 15034396,
+      "native_utc_ms": 1792730429410
+    }
+  },
+  "samples": 3,
+  "socket_statuses": [
+    "observed",
+    "observed",
+    "observed"
+  ],
+  "storage_statuses": [
+    "observed",
+    "observed",
+    "observed"
+  ],
+  "collector_sha256": "f3374fb77c83e2b12ff91a48b4c688aa07c7b66042dd75681f7ec2b5fc00febd",
+  "completion_verifier_sha256": "68297f66fc4e32a173b17da2594872334d59ba2b88b7d5878b5ee8905f9b89e5",
+  "completion_verifier_mode": "exact-function-from-candidate-pinned-archive",
+  "source_binding": {
+    "candidate_manifest_sha256": "b4322606cd0207425b801feacc0bf4084ac9c460b23a028576204b766eeaeada",
+    "candidate_fingerprint": "3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59",
+    "native_source_sha256": {
+      "verify_native.py": "68297f66fc4e32a173b17da2594872334d59ba2b88b7d5878b5ee8905f9b89e5",
+      "runner.py": "d849ab8feb642eb1b988f9a6d82558491b7ebef4c63768fb4fa132f49edf3804",
+      "harness.dart": "102be09eb8043ce9bb496156d9f37b1834c3084ddf58fef073e7c25cdc3c55d5"
+    },
+    "observation_source_sha256": {
+      "collector.py": "f3374fb77c83e2b12ff91a48b4c688aa07c7b66042dd75681f7ec2b5fc00febd",
+      "completion-verifier.py": "68297f66fc4e32a173b17da2594872334d59ba2b88b7d5878b5ee8905f9b89e5",
+      "native-runner.py": "d849ab8feb642eb1b988f9a6d82558491b7ebef4c63768fb4fa132f49edf3804",
+      "candidate-manifest.json": "b4322606cd0207425b801feacc0bf4084ac9c460b23a028576204b766eeaeada"
+    }
+  },
+  "traffic_absence_claim": false,
+  "release_acceptance": false,
+  "limitations": [
+    "Point-in-time open-socket snapshots are not packets, requests, destinations contacted, or absence of traffic.",
+    "Short-lived sockets between samples, earlier startup and later activity are outside coverage.",
+    "Debug simulator/emulator and automation/VM-service sockets are not release or physical-device behavior.",
+    "Only this PID is selected; subprocesses and OS/SDK services outside it are not observed.",
+    "Host/native UTC containment is required without tolerance; clocks are not authenticated. A mismatch leaves the interval unqualified.",
+    "Private storage inventory covers seven fixed synthetic fixture files, not all SDK caches, Keychain, preferences or files.",
+    "Synthetic study interaction is not participant consent. No paid/provider account, human or crash-free rate evidence.",
+    "Sample identity checks bracket commands; socket descriptors and files may change within a bracket. iOS host ps start time has one-second resolution.",
+    "The window starts after bootstrap/consent assertions; startup activity before OPEN is outside these samples. Audio and reminders use existing harness isolation.",
+    "Android storage is unavailable: no descriptor-anchored native reader has been qualified. No path-check plus shell hash fallback is used.",
+    "Storage identity checks detect lasting replacement or mutation; they are not an atomic filesystem snapshot or protection against a privileged mutation-and-restore adversary.",
+    "Collector and verifier source pins detect lasting changes at operation boundaries; local hashes are integrity records, not external authentication."
+  ]
+}

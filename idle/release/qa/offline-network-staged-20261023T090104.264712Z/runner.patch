@@ -1,0 +1,110 @@
+--- current/verify_native.py
++++ staged/verify_offline_native.py
+@@ -12,10 +12,14 @@
+ import shutil
+ import subprocess
+ import sys
++STAGE = Path(__file__).resolve().parent
++ROOT = STAGE.parents[2]
++sys.path.insert(0, str(ROOT / 'tool'))
+ import build_native
+ import native_recording
+-
+-ROOT = Path(__file__).resolve().parent.parent
++import offline_support
++
++
+ 
+ 
+ def production_inputs(files: dict[str, str]) -> dict[str, str]:
+@@ -77,9 +81,18 @@
+     parser.add_argument('--device', required=True)
+     parser.add_argument('--label', required=True)
+     parser.add_argument('--platform', choices=['ios', 'android'])
+-    parser.add_argument('--scenario', choices=['seeded', 'natural-start', 'natural-reload', 'session-start', 'session-reload', 'clock-start', 'clock-reload', 'share-cancel', 'capture-gallery'], default='seeded')
++    parser.add_argument('--scenario', choices=['natural-start', 'natural-reload'], required=True)
+     parser.add_argument('--run-id', default='')
++    parser.add_argument('--network-profile', type=Path, required=True)
++    parser.add_argument('--predecessor', type=Path)
+     args = parser.parse_args()
++    if args.platform != 'android' or args.device != offline_support.DEVICE:
++        parser.error('This staged qualification admits only emulator-5556 / Android API35')
++    if (args.scenario == 'natural-reload') != (args.predecessor is not None):
++        parser.error('Only reload requires an exact successful predecessor report')
++    profile = offline_support.read_profile(args.network_profile, args.run_id, args.device,
++        offline_support.digest(STAGE / 'platform_smoke_offline_test.dart'))
++    predecessor = offline_support.load_predecessor(args.predecessor, args, profile) if args.predecessor else None
+     platform = native_platform(args.device, args.platform)
+     if not args.label.replace('-', '').replace('_', '').isalnum():
+         parser.error('Label may contain only letters, digits, underscores and hyphens')
+@@ -88,6 +101,8 @@
+     frozen = build_native.source_hashes(candidate / 'source')
+     if frozen != manifest['source_sha256'] or build_native.fingerprint(frozen) != manifest['source_fingerprint']:
+         raise RuntimeError('Frozen candidate no longer matches its manifest')
++    if manifest['source_fingerprint'] != offline_support.CANDIDATE:
++        raise ValueError('Wrong frozen candidate')
+     app = candidate / 'workspace/game/mobile'
+     candidate_lock = (candidate / '.native-verification.lock').open('w')
+     fcntl.flock(candidate_lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+@@ -101,17 +116,23 @@
+     evidence = ROOT / 'release/native-proof' / ('integration-' + args.label + '-' + stamp)
+     evidence.mkdir()
+     shutil.copy2(Path(__file__), evidence / 'verify_native.py')
++    shutil.copy2(STAGE / 'offline_support.py', evidence / 'offline_support.py')
++    shutil.copy2(args.network_profile, evidence / 'network-profile.json')
++    if args.predecessor:
++        (evidence / 'predecessor.json').write_text(json.dumps({'path': str(args.predecessor.resolve()),
++            'sha256': offline_support.digest(args.predecessor)}, indent=2) + '\n')
+     if args.scenario != 'seeded' and not args.run_id:
+         parser.error('Start/reload scenarios require the same explicit --run-id')
+     if args.run_id and not args.run_id.replace('-', '').replace('_', '').isalnum():
+         parser.error('Run id may contain only letters, digits, underscores and hyphens')
+     # Test code can evolve independently while the production application input
+     # remains frozen. Capture and hash this exact harness beside its evidence.
+-    sources = {'harness.dart': ROOT / 'game/mobile/integration_test/platform_smoke_test.dart',
++    sources = {'harness.dart': STAGE / 'platform_smoke_offline_test.dart',
+                'driver.dart': ROOT / 'tool/native_integration_driver.dart'}
+     if args.scenario == 'capture-gallery':
+         sources.update({'native_recording.py': ROOT / 'tool/native_recording.py',
+                         'native_video_metadata.swift': ROOT / 'tool/native_video_metadata.swift'})
++    sources['offline_support.py'] = STAGE / 'offline_support.py'
+     harness_hashes = {}
+     for name, source in sources.items():
+         shutil.copy2(source, evidence / name)
+@@ -135,7 +156,11 @@
+                '--dart-define=TIDEGLASS_RUN_ID=' + args.run_id,
+                '--dart-define=TIDEGLASS_VERIFICATION_ID=' + evidence.name,
+                '--dart-define=TIDEGLASS_CANDIDATE_FINGERPRINT=' + manifest['source_fingerprint'],
+-               '--dart-define=TIDEGLASS_HARNESS_SHA256=' + harness_hashes['harness.dart'], '--keep-app-running', '--timeout=180', '--no-pub']
++               '--dart-define=TIDEGLASS_HARNESS_SHA256=' + harness_hashes['harness.dart'], '--keep-app-running', '--timeout=480', '--no-pub',
++               '--dart-define=TIDEGLASS_OFFLINE_NONCE=' + profile['nonce'],
++               '--dart-define=TIDEGLASS_OFFLINE_SERVER_ID=' + profile['server_id'],
++               '--dart-define=TIDEGLASS_OFFLINE_PORT=' + str(profile['port']),
++               '--dart-define=TIDEGLASS_PREDECESSOR_CHECKPOINT_SHA256=' + (predecessor['offline_network']['checkpoint_sha256'] if predecessor else '')]
+     report = {'candidate_fingerprint': manifest['source_fingerprint'], 'device': args.device,
+               'label': args.label, 'platform': platform, 'started_utc': stamp, 'command': command,
+               'runner_sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+@@ -155,8 +180,9 @@
+         exit_code, recording = native_recording.run_with_gallery(command, app, env, recorder)
+         report['recording'] = recording
+     else:
+-        with (evidence / 'run.log').open('w') as log:
+-            exit_code = subprocess.run(command, cwd=app, env=env, stdout=log, stderr=subprocess.STDOUT).returncode
++        expected = {**{key: profile[key] for key in offline_support.IDENTITY},
++            'verification_id': evidence.name, 'device_label': args.label, 'scenario': args.scenario, 'platform': 'android'}
++        exit_code = offline_support.run_command(command, app, env, evidence, ROOT, args, expected)
+     report['exit_code'] = exit_code
+     errors = []
+     if args.scenario == 'capture-gallery' and not recording['passed']:
+@@ -216,6 +242,11 @@
+                 data = b''
+             if data and len(data) <= 1024 * 1024:
+                 (evidence / ('native-save-' + name)).write_bytes(data)
++    if not errors and exit_code == 0:
++        try:
++            report['offline_qualification'] = offline_support.finish(evidence, args, profile, predecessor)
++        except (OSError, ValueError, KeyError, TypeError, subprocess.SubprocessError) as error:
++            errors.append('Offline qualification: ' + str(error))
+     report['verification_errors'] = errors
+     report['passed'] = exit_code == 0 and not errors
+     if capture is not None:

@@ -1,0 +1,3 @@
+# Asset file-existence integration
+
+Applied exactly the 37 independently reviewed production-contract record changes. Each original record digest, ID and registered source/export/provenance existence was rechecked immediately before writing. The complete prior contract is preserved. Only status `in_production`, source existence and export existence changed; all original variants, IDs, verification paths, null approvals and acceptance criteria are unchanged. The frozen 67-proposal packet is preserved unchanged. Its 30 version-lineage proposals and additional subsequent App changes are separate pending work.

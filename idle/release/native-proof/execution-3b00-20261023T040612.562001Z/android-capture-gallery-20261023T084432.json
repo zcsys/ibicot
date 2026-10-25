@@ -1,0 +1,38 @@
+{
+  "command": [
+    "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3",
+    "/Users/csys/Desktop/ibicot/idle/tool/verify_native.py",
+    "/Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261023T040445.261666Z-3b00cc8f7122",
+    "--device",
+    "emulator-5556",
+    "--label",
+    "android",
+    "--scenario",
+    "capture-gallery",
+    "--run-id",
+    "v3b00-android-gallery-cadence-fixed"
+  ],
+  "scenario": "capture-gallery",
+  "label": "android",
+  "run_id": "v3b00-android-gallery-cadence-fixed",
+  "predecessor": null,
+  "started_utc": "20261023T084432.168503Z",
+  "exit_code": 1,
+  "verification": "/Users/csys/Desktop/ibicot/idle/release/native-proof/integration-android-20261023T084432.592521Z/verification.json",
+  "verification_sha256": "7b1e37695890e9df364520bfeaa875b8a68d5649e398dd1ee25f29ce2836d305",
+  "status": "failed",
+  "errors": [
+    "Recorder orchestration: Android recorder exited before its real endpoint",
+    "No completed gameplay marker",
+    "platform: expected 'android', received None",
+    "device_label: expected 'android', received None",
+    "scenario: expected 'capture-gallery', received None",
+    "run_id: expected 'v3b00-android-gallery-cadence-fixed', received None",
+    "verification_id: expected 'integration-android-20261023T084432.592521Z', received None",
+    "candidate_fingerprint: expected '3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59', received None",
+    "harness_sha256: expected '1c8ed846dff6c007edb867d801d6f592a1cbd8b297e75de21e690603081afb31', received None",
+    "No successful native framework completion marker",
+    "No successful driver completion marker"
+  ],
+  "finished_utc": "2026-10-23T08:45:51.422941+00:00"
+}

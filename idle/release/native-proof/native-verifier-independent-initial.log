@@ -1,0 +1,24 @@
+test_both_completions_required (__main__.CompletionReview.test_both_completions_required) ... ok
+test_completion_is_a_line_boundary_not_application_text (__main__.CompletionReview.test_completion_is_a_line_boundary_not_application_text) ... ok
+test_failure_wins_even_if_other_suite_succeeded (__main__.CompletionReview.test_failure_wins_even_if_other_suite_succeeded) ... ok
+test_positive_native_and_driver_completion (__main__.CompletionReview.test_positive_native_and_driver_completion) ... ok
+test_prefixed_native_error_after_success_cannot_qualify (__main__.CompletionReview.test_prefixed_native_error_after_success_cannot_qualify) ... 
+  test_prefixed_native_error_after_success_cannot_qualify (__main__.CompletionReview.test_prefixed_native_error_after_success_cannot_qualify) (error='E/flutter ( 123): [ERROR:flutter/runtime/dart_vm_initializer.cc(40)] Unhandled Exception: error') ... FAIL
+test_uncaught_error_after_native_completion_cannot_qualify (__main__.CompletionReview.test_uncaught_error_after_native_completion_cannot_qualify) ... ok
+test_zero_executed_tests_cannot_qualify (__main__.CompletionReview.test_zero_executed_tests_cannot_qualify) ... ok
+
+======================================================================
+FAIL: test_prefixed_native_error_after_success_cannot_qualify (__main__.CompletionReview.test_prefixed_native_error_after_success_cannot_qualify) (error='E/flutter ( 123): [ERROR:flutter/runtime/dart_vm_initializer.cc(40)] Unhandled Exception: error')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/csys/Desktop/ibicot/idle/game/qa/integration_native_completion_test.py", line 21, in test_prefixed_native_error_after_success_cannot_qualify
+    self.assertTrue(verify_native.native_log_errors(
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        'flutter: 00:05 +2: All tests passed!\nAll tests passed.\n' + error + '\n'))
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: [] is not true
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.001s
+
+FAILED (failures=1)

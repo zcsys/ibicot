@@ -1,0 +1,60 @@
+{
+  "created_utc": "2026-10-16T11:26:37.512857+00:00",
+  "qualification": "Author orchestration, fault, provider mapping and cryptographic checks only. No actual Apple/Google sandbox transactions, native device secure storage or real ads. Separate from frozen base service evidence.",
+  "source_sha256": {
+    "game/mobile/lib/native_services.dart": "242baf20003c233bc1bba21e3cfbe06834b43283ff14a10eb95545d2d1cd2090",
+    "game/mobile/test/native_services_test.dart": "4cc1b90a9958d799e52124cfbc409b9201f4b9d43d71d7a979b39aa00ade2bbf",
+    "game/mobile/pubspec.yaml": "b96bb4a81a8c612d1aeec2ea8e6c38e6804c8ecd739a380a6aeefe385e3fc74c",
+    "game/mobile/pubspec.lock": "d5c3a49bde8a69ad50755128d2281f48a7832ad3e587dc8933d1274c4239a1b0",
+    "game/platform/NATIVE_INTEGRATION.md": "97b41e7c598b2b8fd844852f3a9f0bed239c36bc8f9d88fa69d5665cd212ebd6",
+    "services/requirements-providers.txt": "9d1a53ccce13a5eb2c912768dfe151ff7779445032c9db66147edca4184583a6",
+    "services/requirements-providers.lock": "ace5ab939db2038acc891f899c6fd61c3263db9d089ad4103f9aa327f70a8df8",
+    "services/docs/PROVIDER_ADAPTERS.md": "cc515c74dd9208fd52e3991e46ec366c9abf91f988f913c2dfd1650d29ada687",
+    "tests/services/providers/test_provider_adapters.py": "afbb36a92bc3c909962cf821f0c69aff92f17bb4468320c2b73fd2c69110a528",
+    "services/tideglass_service/providers/admob.py": "1d0bfa147d47251009e89f632cad4049036edf28f51c0b2e6aacd2bc75f9d4de",
+    "services/tideglass_service/providers/__init__.py": "d895fba33401cc4d59c667843f73dd92be1cf1082816574f923b5c2877e551b9",
+    "services/tideglass_service/providers/stores.py": "2e5d65dcfbe0170f493b41df3545f9871b41a6a4f594e0781998772608a446d2"
+  },
+  "results": [
+    {
+      "name": "native_orchestration",
+      "command": [
+        "../../tool/flutter",
+        "test",
+        "--no-pub",
+        "test/native_services_test.dart"
+      ],
+      "cwd": "game/mobile",
+      "exit_code": 0,
+      "output": "00:00 +0: loading /Users/csys/Desktop/ibicot/idle/game/mobile/test/native_services_test.dart\n00:00 +0: delayed privacy response never grants consent to a recovered different account\n00:00 +1: ownership expires and rechecks current account and seed on every read\n00:01 +2: late loaded rewarded ad is disposed after timeout\n00:01 +3: account or slot changes during consent and configuration prevent ad show\n00:01 +4: rewarded setup and show failures both dispose loaded ad\n00:01 +5: secure privacy read failure never hides committed recovery results\n00:01 +6: successful remote logout/deletion clear memory despite secure cleanup failure\n00:01 +7: unconfigured guest initialization touches neither secure store nor billing\n00:01 +8: creation acknowledgement persists; credentials never cross service origins\n00:01 +9: storage failure does not hide recovery code and cannot acknowledge upload\n00:01 +10: native pending and outage grant nothing; retry verifies before completing\n00:01 +11: privacy withdrawal belongs only to its account across sign-out and recovery\n00:01 +12: ownership requires linked main seed; privacy refusal remains pending after outage\n00:01 +13: All tests passed!\n"
+    },
+    {
+      "name": "native_analysis",
+      "command": [
+        "../../tool/flutter",
+        "analyze",
+        "--no-pub",
+        "lib/native_services.dart",
+        "test/native_services_test.dart"
+      ],
+      "cwd": "game/mobile",
+      "exit_code": 0,
+      "output": "Analyzing 2 items...                                            \nNo issues found! (ran in 2.2s)\n"
+    },
+    {
+      "name": "provider_contract_crypto",
+      "command": [
+        ".tooling/services-venv/bin/python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests/services/providers",
+        "-v"
+      ],
+      "cwd": ".",
+      "exit_code": 0,
+      "output": "test_ad_expiry_and_unconfigured_provider_reject (test_provider_adapters.ProviderTests.test_ad_expiry_and_unconfigured_provider_reject) ... ok\ntest_apple_fetches_fresh_view_and_checks_binding_then_refund (test_provider_adapters.ProviderTests.test_apple_fetches_fresh_view_and_checks_binding_then_refund) ... ok\ntest_google_acknowledged_retries_do_not_repeat_post (test_provider_adapters.ProviderTests.test_google_acknowledged_retries_do_not_repeat_post) ... ok\ntest_google_binds_account_product_and_hashed_transaction (test_provider_adapters.ProviderTests.test_google_binds_account_product_and_hashed_transaction) ... ok\ntest_google_pending_refund_and_test_environment_fail_closed (test_provider_adapters.ProviderTests.test_google_pending_refund_and_test_environment_fail_closed) ... ok\ntest_real_apple_sdk_rejects_forged_jws (test_provider_adapters.ProviderTests.test_real_apple_sdk_rejects_forged_jws) ... ok\ntest_real_ecdsa_ad_signature_binding_and_tamper (test_provider_adapters.ProviderTests.test_real_ecdsa_ad_signature_binding_and_tamper) ... ok\ntest_signed_callback_commits_once_and_forgery_cannot_use_duplicate_fast_path (test_provider_adapters.ProviderTests.test_signed_callback_commits_once_and_forgery_cannot_use_duplicate_fast_path) ... ok\n\n----------------------------------------------------------------------\nRan 8 tests in 0.027s\n\nOK\n"
+    }
+  ]
+}

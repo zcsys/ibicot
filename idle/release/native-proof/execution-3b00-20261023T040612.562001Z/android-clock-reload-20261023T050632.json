@@ -1,0 +1,37 @@
+{
+  "command": [
+    "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3",
+    "/Users/csys/Desktop/ibicot/idle/tool/verify_native.py",
+    "/Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261023T040445.261666Z-3b00cc8f7122",
+    "--device",
+    "emulator-5556",
+    "--label",
+    "android",
+    "--scenario",
+    "clock-reload",
+    "--run-id",
+    "v3b00-android-clock"
+  ],
+  "scenario": "clock-reload",
+  "label": "android",
+  "run_id": "v3b00-android-clock",
+  "predecessor": null,
+  "started_utc": "20261023T050632.835904Z",
+  "exit_code": 1,
+  "verification": "/Users/csys/Desktop/ibicot/idle/release/native-proof/integration-android-20261023T050633.188337Z/verification.json",
+  "verification_sha256": "2ffaa7d3f8109ee0d81ef0eb27981ce274aecae490141c1081a6efa011e31da3",
+  "status": "failed",
+  "errors": [
+    "platform: expected 'android', received None",
+    "device_label: expected 'android', received None",
+    "scenario: expected 'clock-reload', received None",
+    "run_id: expected 'v3b00-android-clock', received None",
+    "verification_id: expected 'integration-android-20261023T050633.188337Z', received None",
+    "candidate_fingerprint: expected '3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59', received None",
+    "harness_sha256: expected '071635c01ed508077b467462bac279107a8716861ac97a5b657a5401b2cc3506', received None",
+    "No successful native framework completion marker",
+    "No successful driver completion marker",
+    "Explicit native process termination failed"
+  ],
+  "finished_utc": "2026-10-23T05:06:40.710744+00:00"
+}

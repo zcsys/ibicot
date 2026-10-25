@@ -1,0 +1,20 @@
+--- game/qa/workspaces/integration-inventory-20261021T104607526377Z/game/mobile/lib/game_controller.dart
++++ game/mobile/lib/game_controller.dart
+@@ -10,6 +10,7 @@
+ import 'story_state.dart';
+ import 'audio_bus.dart';
+ import 'bundled_content.dart';
++import 'content_compatibility.dart';
+ import 'offline_replay.dart';
+ import 'cosmetics.dart';
+ 
+@@ -62,8 +63,7 @@
+        _persist = onPersist,
+        _persistSession = onSessionPersist,
+        story = initialStory ?? StoryProgress() {
+-    if (story.contentDigest != null &&
+-        story.contentDigest != bundledManifestDigest) {
++    if (!acceptsStoryContentDigest(story.contentDigest)) {
+       throw const FormatException('Pinned story content differs.');
+     }
+     if (catalogue != null) {

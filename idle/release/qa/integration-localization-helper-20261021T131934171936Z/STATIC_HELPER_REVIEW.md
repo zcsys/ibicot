@@ -1,0 +1,13 @@
+# Independent static review of the localization action helper
+
+Reviewed helper: `game/mobile/test/localization_test.dart`, SHA256 `74a51e160d15c2e13cf7716a2b9555b46fa996c1e89a9672f0ccba244c2d4b0f`. This is a source/SDK review only; no Flutter or native command was run by this reviewer. Production repairs were still moving at this checkpoint and are not qualified by this report.
+
+The helper resolves a label or icon to its actual Material control. For SwitchListTile and CheckboxListTile, the pinned SDK creates a merged, fully tappable ListTile and intentionally shrink-wraps the internal toggle. Resolving that composite to the ListTile measures the correct action. A standalone Switch/Checkbox remains measured directly. ExpansionTile resolves to its first header ListTile, rather than the expanded content. Unknown tap targets reject, and enabled actions require a real semantic tap action and nonempty semantic label or tooltip.
+
+The whole action rectangle must be at least 48 logical pixels in both dimensions and fit the screen intersected with every ancestor viewport and approximate paint clip. The only allowance is 0.5 pixels of rounding. Center and four near-edge hit points complement that full rectangle check. Scroll extent and label size do not substitute for the visible control. A disabled action revealed without tapping still receives bounds checks; this does not establish enabled semantic behavior for every disabled state.
+
+The pinned testWidgets implementation enables and disposes its own semantics handle before invariant checks. The final helper correctly omits the additional handle that caused an earlier independent test-fixture failure. Its actual semantic label/tooltip check does not read arbitrary widget copy as a substitute.
+
+`interaction-delta.diff` compares the complete suffix beginning at the original Finder helper. All eleven original interaction callbacks and the pure template case are retained. The sole suffix delta accommodates the previously implemented soundtrack export-cache directory: it requires the exact unordered pair of harbor/cache directories and an empty cache, preserving the original repository and audio-path assertions. It does not allow arbitrary extra files.
+
+The author's preserved representative run first exposed fixture-resolution/stale-path issues, then genuine season and reminder controls too tall for their viewports. Those failures remain evidence, not passes. The subsequent production changes and full twelve display/language combinations require a later exact source/report review. Static inspection found no new helper defect; this is not a whole accessibility, physical touch, OS screen-reader or original-package acceptance.

@@ -1,0 +1,33 @@
+{
+  "sealed_utc": "2026-10-23T05:21:14.165543+00:00",
+  "scope": "One-line Android boolean probe transport repair only; staged, not promoted",
+  "before_runner_sha256": "d849ab8feb642eb1b988f9a6d82558491b7ebef4c63768fb4fa132f49edf3804",
+  "after_runner_sha256": "d1ea6d05085f05a0a3bb6c768531ef7659272e41993858c0551618f74ce5c847",
+  "author_tests": {
+    "existing_methods": 31,
+    "new_methods": 14,
+    "all_passed": 45,
+    "original_counterexample": "Expected failure: same normal directory falsely classified as symlink under actual exec-out exit-status semantics"
+  },
+  "actual_readonly": "Stopped original failed fixture checkpoint read by staged runner matches original marker SHA; absent optional file explicitly absent; traversal refused before any command",
+  "live_runner_unchanged": true,
+  "live_original_harness_unchanged": true,
+  "native_execution_after_repair": false,
+  "independent_review": false,
+  "candidate_source_mutated": false,
+  "evidence_sha256": {
+    "actual-diagnostic-checkpoint.json": "245538dcbe66a9a91759d33f175732b6991d5ebd1379773089f49de531b8f786",
+    "actual-readonly-verification.json": "95f3eaf6680e37cc9e3374f797467bea7855a97f8c9268de4ccb26231b984f4f",
+    "author-tests.log": "2e4188eccf3f1f429c685c02ad6304be9309f6177c3ce01d0babf29bffdfdb55",
+    "before-verify_current_runtime.py": "d849ab8feb642eb1b988f9a6d82558491b7ebef4c63768fb4fa132f49edf3804",
+    "intermediate-commented-author-tests.log": "b789ee62f173d0082809a46c87228cfa5f54c8706ae8d048969647e58900164b",
+    "intermediate-commented-verify_current_runtime.py": "9ed27a3123a1bae5f30ee290fee095ddc5c8746175ee90aa58b3b9999a81c038",
+    "original-regression-counterexample.log": "e52a3ee7f87c91327ad333f59e80b965395870c80252b75cbb0c9ad3e3c37443",
+    "original-test_current_runtime_verification.py": "fde639aaefdc017503a5b0042300d50b9bca6f75dafddb07abcbc7bd42fd9c6f",
+    "repair.patch": "9a43cb669f347b04d628e7a50df99ee00d7306f342178e6079bd8f42434b2ca1",
+    "run_actual_readonly.py": "b755c338759b4f76663f50e7ed6aa260e4c611dede8f5930e7a3b9f46c49c560",
+    "run_author_tests.py": "86124906428f4547abb65c49770e1930a891002687f992921cb9774f5a5102ad",
+    "test_android_fixture_exit_status.py": "9f2a95fa8be44970d36b8f24c8ec2c71357cf2c9ee3bb4440d44d3319aee322b",
+    "verify_current_runtime.py": "d1ea6d05085f05a0a3bb6c768531ef7659272e41993858c0551618f74ce5c847"
+  }
+}

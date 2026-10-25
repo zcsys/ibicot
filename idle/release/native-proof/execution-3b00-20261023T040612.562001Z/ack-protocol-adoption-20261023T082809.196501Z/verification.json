@@ -1,0 +1,35 @@
+{
+  "review": "/Users/csys/Desktop/ibicot/idle/release/qa/lead-android-ack-20261023T081709.354596Z/verification.json",
+  "review_sha256": "9c313631bed1ab011e9ccf9ad7fd7f083aeaba468fe5aec8578b3b90a909c3bc",
+  "sources": {
+    "tool/native_recording.py": {
+      "expected_live_before_sha256": "343ed23024953c6378bf7a314589a7252a7f97451cd01906168c9018a66c6582",
+      "staged_path": "release/store/android-ack-repair-20261023T081049.643189Z/staged/native_recording.py",
+      "staged_sha256": "77ddd47079b1373e8dc4b99b239b03f1ac8cd8200d125b777c4d0adaa3fe5d18"
+    },
+    "game/mobile/integration_test/platform_smoke_test.dart": {
+      "expected_live_before_sha256": "1925106cb014a4a21575af3aa3bd85fc997873c1c9be74249c966da1cf28318b",
+      "staged_path": "release/store/android-ack-repair-20261023T081049.643189Z/staged/platform_smoke_test.dart",
+      "staged_sha256": "a427de5995a694ecd36c0c8063ce7d2b83145b1a634e249d5bfc37840031e6bc"
+    }
+  },
+  "scope": "Exact reviewed Android receipt payload/complete-directory protocol only. Prior hard-link failure preserved. Frozen and production source unchanged.",
+  "promotion_completed": true,
+  "analysis": {
+    "command": [
+      "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+      "analyze",
+      "--no-pub",
+      "integration_test/capture_ack_a427de5995a6_test.dart"
+    ],
+    "cwd": "/Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261023T040445.261666Z-3b00cc8f7122/workspace/game/mobile",
+    "exit_code": 0,
+    "test_copy_sha256": "a427de5995a694ecd36c0c8063ce7d2b83145b1a634e249d5bfc37840031e6bc",
+    "stdout_sha256": "7286f1057f413fe0b44fdb9f6b1c59fb423c2bc37f5690a8cafedc783eed1b64",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "live_after_sha256": {
+    "tool/native_recording.py": "77ddd47079b1373e8dc4b99b239b03f1ac8cd8200d125b777c4d0adaa3fe5d18",
+    "game/mobile/integration_test/platform_smoke_test.dart": "a427de5995a694ecd36c0c8063ce7d2b83145b1a634e249d5bfc37840031e6bc"
+  }
+}

@@ -1,0 +1,530 @@
+--- original/runtime_observation.py
++++ repaired/runtime_observation.py
+@@ -6,6 +6,7 @@
+ """
+ from __future__ import annotations
+ import argparse
++import ast
+ from datetime import datetime, timezone
+ import hashlib
+ import json
+@@ -41,6 +42,9 @@
+     'Synthetic study interaction is not participant consent. No paid/provider account, human or crash-free rate evidence.',
+     'Sample identity checks bracket commands; socket descriptors and files may change within a bracket. iOS host ps start time has one-second resolution.',
+     'The window starts after bootstrap/consent assertions; startup activity before OPEN is outside these samples. Audio and reminders use existing harness isolation.',
++    'Android storage is unavailable: no descriptor-anchored native reader has been qualified. No path-check plus shell hash fallback is used.',
++    'Storage identity checks detect lasting replacement or mutation; they are not an atomic filesystem snapshot or protection against a privileged mutation-and-restore adversary.',
++    'Collector and verifier source pins detect lasting changes at operation boundaries; local hashes are integrity records, not external authentication.',
+ ]
+ 
+ 
+@@ -53,11 +57,50 @@
+     return hashlib.sha256(data).hexdigest()
+ 
+ 
+-def read_bounded(path, limit=4 * 1024 * 1024):
+-    with Path(path).open('rb') as stream:
+-        data = stream.read(limit + 1)
+-    require(len(data) <= limit, 'Evidence exceeds byte bound')
+-    return data
++def read_bounded(path, limit=4 * 1024 * 1024, *, allow_append=False):
++    # Evidence/source files are regular files too; an absent or FIFO/symlink
++    # replacement must not turn source verification into a blocking open.
++    fd = os.open(path, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK | os.O_CLOEXEC)
++    try:
++        before = os.fstat(fd)
++        require(stat.S_ISREG(before.st_mode) and 0 <= before.st_size <= limit,
++                'Evidence is not a bounded regular file')
++        chunks, size = [], 0
++        while True:
++            block = os.read(fd, min(65536, limit + 1 - size))
++            size += len(block)
++            require(size <= limit, 'Evidence exceeds byte bound')
++            if not block:
++                break
++            chunks.append(block)
++        after = os.fstat(fd)
++        named = os.stat(path, follow_symlinks=False)
++        identity = lambda info: (info.st_dev, info.st_ino, info.st_mode, info.st_size,
++                                 info.st_mtime_ns, info.st_ctime_ns)
++        if allow_append:
++            # Only the in-progress run log may grow. Its exact observed prefix
++            # is archived and later checked against the completed pinned log.
++            require(identity(before)[:3] == identity(after)[:3] == identity(named)[:3]
++                    and before.st_size <= size <= after.st_size <= named.st_size <= limit,
++                    'Growing evidence was replaced, truncated or exceeded its bound')
++        else:
++            require(size == before.st_size and identity(before) == identity(after) == identity(named),
++                    'Evidence changed during read')
++        return b''.join(chunks)
++    finally:
++        os.close(fd)
++
++
++# Captured once when this module is loaded, then checked before/after each
++# operation. The archive is written from these exact bytes, not a second read.
++COLLECTOR_PATH = Path(__file__).absolute()
++COLLECTOR_BYTES = read_bounded(COLLECTOR_PATH)
++COLLECTOR_SHA256 = sha(COLLECTOR_BYTES)
++
++
++def collector_source_unchanged():
++    require(read_bounded(COLLECTOR_PATH) == COLLECTOR_BYTES,
++            'Collector source changed since module load')
+ 
+ 
+ def device_platform(device):
+@@ -194,29 +237,139 @@
+     return actual
+ 
+ 
+-def local_storage(base):
++def inode_identity(info):
++    return (info.st_dev, info.st_ino, stat.S_IFMT(info.st_mode))
++
++
++def file_identity(info):
++    return (inode_identity(info), info.st_size, info.st_mtime_ns,
++            info.st_ctime_ns, info.st_uid, info.st_nlink)
++
++
++class AnchoredDirectory:
++    """Retain every directory descriptor from / to the selected fixture.
++
++    Relative opens cannot follow a swapped ancestor, and every retained entry
++    is compared with its opened descriptor before publishing a sample.
++    """
++    def __init__(self, base):
++        base = Path(base)
++        require(base.is_absolute() and '..' not in base.parts,
++                'Storage root must be a canonical absolute path')
++        self.fds, self.links = [], []
++        flags = os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW | os.O_NONBLOCK | os.O_CLOEXEC
++        try:
++            current = os.open('/', flags)
++            self.fds.append(current)
++            for name in base.parts[1:]:
++                current = self.child(current, name)
++            self.fd = current
++            self.identity = inode_identity(os.fstat(current))
++            self.verify()
++        except BaseException:
++            self.close()
++            raise
++
++    def child(self, parent, name):
++        info = os.stat(name, dir_fd=parent, follow_symlinks=False)
++        require(stat.S_ISDIR(info.st_mode), 'Synthetic fixture directory is a symlink or special file')
++        flags = os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW | os.O_NONBLOCK | os.O_CLOEXEC
++        child = os.open(name, flags, dir_fd=parent)
++        self.fds.append(child)
++        opened = os.fstat(child)
++        require(inode_identity(opened) == inode_identity(info), 'Synthetic fixture directory replaced before open')
++        self.links.append((parent, name, child, inode_identity(opened)))
++        return child
++
++    def verify(self):
++        for parent, name, child, identity in self.links:
++            require(inode_identity(os.fstat(child)) == identity and
++                    inode_identity(os.stat(name, dir_fd=parent, follow_symlinks=False)) == identity,
++                    'Synthetic fixture root/component identity changed')
++
++    def close(self):
++        for fd in reversed(self.fds):
++            os.close(fd)
++        self.fds.clear()
++
++    def __enter__(self):
++        return self
++
++    def __exit__(self, *_):
++        self.close()
++
++
++def storage_root_identity(base):
++    with AnchoredDirectory(base) as anchor:
++        return anchor.identity
++
++
++def local_storage(base, expected_root=None, deadline=None):
++    # O_NONBLOCK prevents a replacement FIFO from waiting for a writer. Only
++    # regular single-link files are read, from the exact fd whose metadata is
++    # recorded. The production caller additionally runs this in a subprocess
++    # with a hard <=2s timeout, covering slow regular-file/kernel operations.
++    deadline = min(deadline or time.monotonic() + 2, time.monotonic() + 2)
+     result = {}
+-    for relative in FILES:
+-        path = base
+-        absent = False
+-        for part in Path(relative).parts:
+-            path /= part
++    with AnchoredDirectory(base) as anchor:
++        require(expected_root is None or tuple(expected_root) == anchor.identity,
++                'Synthetic fixture root replaced since Host validation')
++        for relative in FILES:
++            require(time.monotonic() < deadline, 'Storage read budget exhausted')
++            parent = anchor.fd
++            parts = Path(relative).parts
++            absent = None
++            for part in parts[:-1]:
++                try:
++                    parent = anchor.child(parent, part)
++                except FileNotFoundError:
++                    absent = (parent, part)
++                    break
++            if absent is None:
++                try:
++                    info = os.stat(parts[-1], dir_fd=parent, follow_symlinks=False)
++                except FileNotFoundError:
++                    absent = (parent, parts[-1])
++            if absent is not None:
++                anchor.verify()
++                try:
++                    os.stat(absent[1], dir_fd=absent[0], follow_symlinks=False)
++                except FileNotFoundError:
++                    result[relative] = {'present': False}
++                    continue
++                raise ValueError('Synthetic fixture absent entry changed during sample')
++            require(stat.S_ISREG(info.st_mode) and info.st_nlink == 1,
++                    'Synthetic fixture file is a symlink, special file or hard link')
++            require(0 <= info.st_size <= 2 * 1024 * 1024, 'Synthetic fixture file exceeds bound')
++            flags = os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK | os.O_CLOEXEC
++            fd = os.open(parts[-1], flags, dir_fd=parent)
+             try:
+-                info = path.lstat()
+-            except FileNotFoundError:
+-                absent = True
+-                break
+-            require(not stat.S_ISLNK(info.st_mode), 'Synthetic fixture contains a symlink')
+-            require(stat.S_ISREG(info.st_mode) if path == base / relative else stat.S_ISDIR(info.st_mode), 'Unexpected synthetic fixture type')
+-        if absent:
+-            result[relative] = {'present': False}
+-            continue
+-        require(info.st_size <= 2 * 1024 * 1024, 'Synthetic fixture file exceeds bound')
+-        with path.open('rb') as stream:
+-            data = stream.read(2 * 1024 * 1024 + 1)
+-        require(len(data) <= 2 * 1024 * 1024, 'Synthetic fixture grew beyond bound')
+-        result[relative] = {'present': True, 'size': len(data), 'sha256': sha(data),
+-                            'mtime_ns': info.st_mtime_ns, 'uid': info.st_uid, 'inode': info.st_ino}
++                opened = os.fstat(fd)
++                require(stat.S_ISREG(opened.st_mode) and file_identity(opened) == file_identity(info),
++                        'Synthetic fixture file replaced before open')
++                digest = hashlib.sha256()
++                count = 0
++                while True:
++                    require(time.monotonic() < deadline, 'Storage read budget exhausted')
++                    block = os.read(fd, min(65536, 2 * 1024 * 1024 + 1 - count))
++                    count += len(block)
++                    require(count <= 2 * 1024 * 1024, 'Synthetic fixture grew beyond bound')
++                    if not block:
++                        break
++                    digest.update(block)
++                after = os.fstat(fd)
++                require(count == opened.st_size and file_identity(after) == file_identity(opened),
++                        'Synthetic fixture file mutated during read')
++                anchor.verify()
++                require(file_identity(os.stat(parts[-1], dir_fd=parent, follow_symlinks=False)) == file_identity(opened),
++                        'Synthetic fixture file identity changed during read')
++                result[relative] = {'present': True, 'size': count, 'sha256': digest.hexdigest(),
++                                    'mtime_ns': opened.st_mtime_ns, 'uid': opened.st_uid,
++                                    'inode': opened.st_ino, 'device': opened.st_dev}
++            finally:
++                os.close(fd)
++        anchor.verify()
++        require(time.monotonic() < deadline, 'Storage read budget exhausted')
+     return result
+ 
+ 
+@@ -261,8 +414,7 @@
+             self.app_uid = int(raw)
+         self.base = fixture_root(marker, device, self.data)
+         if self.platform == 'ios':
+-            require(self.base.resolve() == self.base, 'Fixture root has symlink components')
+-            require(self.base.is_dir(), 'Missing synthetic fixture root')
++            self.storage_root_identity = storage_root_identity(self.base)
+ 
+     def remote(self, *args):
+         return [str(self.adb), '-s', self.device, 'exec-out', 'run-as', BUNDLE, *args]
+@@ -303,35 +455,23 @@
+         return parse_android_sockets(raw, self.app_uid)
+ 
+     def storage(self):
+-        if self.platform == 'ios':
+-            return local_storage(self.base)
+-        # One bounded subprocess per file. Test every fixture component, never
+-        # traverse the ordinary app save or recursively enumerate the sandbox.
+-        rows = {}
+-        for relative in FILES:
+-            target = str(self.base / relative)
+-            app_base = Path('/data/user/0') / BUNDLE
+-            all_parts = (self.base / relative).relative_to(app_base).parts
+-            components = [str(app_base.joinpath(*all_parts[:i])) for i in range(1, len(all_parts) + 1)]
+-            checks = '\n'.join('test ! -L ' + shlex.quote(p) + ' || exit 73; if test -e ' + shlex.quote(p) + '; then test -r ' + shlex.quote(p) + ' || exit 76; fi' for p in components)
+-            script = 'set -eu\n' + checks + '\np=' + shlex.quote(target) + '''
+-if test ! -e "$p"; then printf 'absent'; exit 0; fi
+-test -f "$p" || exit 74
+-size=$(stat -c %s "$p"); test "$size" -le 2097152 || exit 75
+-stat -c '%s|%Y|%u|%i' "$p"
+-sha256sum "$p"
+-'''
+-            raw = self.command(self.remote('sh', '-c', shlex.quote(script))).decode().strip()
+-            if raw == 'absent':
+-                rows[relative] = {'present': False}
+-            else:
+-                lines = raw.splitlines()
+-                require(len(lines) == 2 and len(lines[0].split('|')) == 4, 'Malformed storage metadata')
+-                size, mtime, uid, inode = [int(x) for x in lines[0].split('|')]
+-                digest = lines[1].split()[0]
+-                require(HEX.fullmatch(digest) and 0 <= size <= 2097152 and uid == self.app_uid, 'Invalid storage ownership/size/hash')
+-                rows[relative] = {'present': True, 'size': size, 'mtime_seconds': mtime, 'uid': uid, 'inode': inode, 'sha256': digest}
+-        return rows
++        if self.platform != 'ios':
++            raise ValueError('Android storage unavailable: a descriptor-anchored native reader is not qualified')
++        # Every per-sample filesystem operation runs inside the timed worker.
++        # Its constructor-to-worker root identity is mandatory, so even root
++        # replacement cannot silently choose a new synthetic directory.
++        expected = getattr(self, 'storage_root_identity', None)
++        require(expected is not None, 'Storage root lacks anchored Host validation')
++        raw = self.command([sys.executable, str(COLLECTOR_PATH), 'storage-worker',
++                            '--fixture-root', str(self.base),
++                            '--root-identity', json.dumps(expected, separators=(',', ':'))])
++        value = json.loads(raw)
++        require(value.get('collector_sha256') == COLLECTOR_SHA256,
++                'Storage worker collector source differs')
++        require(tuple(value.get('root_identity', ())) == expected,
++                'Storage worker root identity differs')
++        require(set(value['files']) == set(FILES), 'Storage worker returned unexpected files')
++        return value['files']
+ 
+ 
+ def context_for(candidate, evidence, device):
+@@ -346,21 +486,84 @@
+                       'harness_sha256': sha(harness), 'platform': device_platform(device)}
+ 
+ 
++SOURCE_ARCHIVES = {'verify_native.py': 'tool/verify_native.py',
++                   'runner.py': 'tool/verify_current_runtime.py',
++                   'harness.dart': 'game/mobile/integration_test/current_runtime_test.dart'}
++
++
++def source_binding(candidate, evidence, manifest):
++    """Bind the runner's actual archived sources to this exact candidate."""
++    manifest_raw = read_bounded(candidate / 'manifest.json', 16 * 1024 * 1024)
++    require(json.loads(manifest_raw) == manifest, 'Candidate manifest changed')
++    sources = {}
++    for archive, relative in SOURCE_ARCHIVES.items():
++        data = read_bounded(candidate / 'source' / relative)
++        require(sha(data) == manifest['source_sha256'].get(relative),
++                'Candidate omitted or changed reviewed source: ' + relative)
++        require(read_bounded(evidence / archive) == data,
++                'Archived native source differs from candidate: ' + archive)
++        sources[archive] = data
++    binding = {'candidate_manifest_sha256': sha(manifest_raw),
++               'candidate_fingerprint': manifest['source_fingerprint'],
++               'native_source_sha256': {name: sha(data) for name, data in sources.items()}}
++    archives = {'collector.py': COLLECTOR_BYTES,
++                'completion-verifier.py': sources['verify_native.py'],
++                'native-runner.py': sources['runner.py'],
++                'candidate-manifest.json': manifest_raw}
++    binding['observation_source_sha256'] = {name: sha(data) for name, data in archives.items()}
++    return binding, archives
++
++
++def validate_source_binding(report, output):
++    collector_source_unchanged()
++    require(report['collector_sha256'] == COLLECTOR_SHA256 and
++            read_bounded(output / 'collector.py') == COLLECTOR_BYTES,
++            'Preserved collector does not match the collecting/finalizing source')
++    candidate, evidence = Path(report['candidate']), Path(report['native_evidence'])
++    manifest, context = context_for(candidate, evidence, report['device'])
++    require(all(report['context'][key] == value for key, value in context.items()),
++            'Candidate/harness context changed')
++    binding, archives = source_binding(candidate, evidence, manifest)
++    require(binding == report['source_binding'], 'Collector/completion source binding changed')
++    for name, data in archives.items():
++        require(read_bounded(output / name, 16 * 1024 * 1024) == data,
++                'Preserved source archive changed: ' + name)
++    return archives['completion-verifier.py']
++
++
++def archived_completion_errors(source, log):
++    # Execute the exact reviewed function AST from the pinned archive. Do not
++    # import verify_native or its unrelated build/recording modules through a
++    # mutable sys.path or sys.modules cache. Full source hash is retained.
++    tree = ast.parse(source, filename='archived-completion-verifier.py')
++    functions = [node for node in tree.body if isinstance(node, ast.FunctionDef)
++                 and node.name == 'native_log_errors']
++    require(len(functions) == 1 and not functions[0].decorator_list,
++            'Archived verifier lacks exactly one undecorated completion function')
++    namespace = {'re': re, '__builtins__': __builtins__}
++    exec(compile(ast.Module(body=functions, type_ignores=[]),
++                 'archived-completion-verifier.py', 'exec'), namespace)
++    return namespace['native_log_errors'](log)
++
++
+ def collect(root, candidate, evidence, device, output):
+     device_platform(device)  # before any external command or input access
++    collector_source_unchanged()
+     require(not output.exists(), 'Evidence directory already exists')
+     manifest, context = context_for(candidate, evidence, device)
++    binding, archives = source_binding(candidate, evidence, manifest)
+     output.mkdir(parents=True)
+     report = {'schema_version': 1, 'status': 'incomplete', 'device': device,
+               'candidate': str(candidate), 'native_evidence': str(evidence), 'samples': [],
+               'limitations': LIMITATIONS, 'release_acceptance': False, 'traffic_absence_claim': False,
+-              'collector_sha256': sha(Path(__file__).read_bytes()), 'errors': []}
+-    (output / 'collector.py').write_bytes(Path(__file__).read_bytes())
++              'collector_sha256': COLLECTOR_SHA256, 'source_binding': binding, 'errors': []}
++    for name, data in archives.items():
++        (output / name).write_bytes(data)
+     host = None
+     try:
+         deadline = time.monotonic() + 300
+         while True:
+-            raw = read_bounded(evidence / 'run.log')
++            raw = read_bounded(evidence / 'run.log', allow_append=True)
+             values = MARKER.findall(raw.decode(errors='replace'))
+             require(not any(x[0] == 'CLOSE' for x in values), 'Observation window already ended')
+             if values:
+@@ -405,6 +608,7 @@
+             report['samples'].append(attributed_sample(before, after, sample, observed, observed + 17_000_000_000))
+             time.sleep(.2)
+         require(report['samples'], 'No fully attributed sample completed')
++        validate_source_binding(report, output)
+         report['status'] = 'collected-pending-native-completion'
+     except (ValueError, KeyError, OSError, subprocess.SubprocessError) as error:
+         report['errors'].append(type(error).__name__ + ': ' + str(error))
+@@ -421,15 +625,15 @@
+     report_raw = read_bounded(report_path)
+     report = json.loads(report_raw)
+     require(report['status'] == 'collected-pending-native-completion' and not report['errors'], 'Collection incomplete or failed')
++    completion_source = validate_source_binding(report, output)
+     evidence = Path(report['native_evidence'])
+     verification_raw = read_bounded(evidence / 'verification.json')
+     verification = json.loads(verification_raw)
+     payload_raw = read_bounded(evidence / 'result.json')
+     payload = json.loads(payload_raw)
+     log_raw = read_bounded(evidence / 'run.log')
+-    sys.path.insert(0, str(Path(root) / 'tool'))
+-    import verify_native
+-    require(not verify_native.native_log_errors(log_raw.decode(errors='replace')), 'Native framework/driver completion failed')
++    require(not archived_completion_errors(completion_source, log_raw.decode(errors='replace')),
++            'Native framework/driver completion failed')
+     require(verification.get('passed') is True and verification.get('status') == 'passed' and verification.get('exit_code') == 0
+             and not verification.get('verification_errors'), 'Normal native verification did not pass')
+     for key, expected in report['context'].items():
+@@ -440,6 +644,11 @@
+     require(payload.get('completed') is True, 'Native test not complete')
+     require(verification.get('source_snapshot_unchanged') is True and not verification.get('source_changes_during_run') and not verification.get('production_input_differences_after_run'), 'Native source integrity not established')
+     require(verification.get('privacy_observation_enabled') is True and '--dart-define=TIDEGLASS_PRIVACY_OBSERVATION=true' in verification.get('command', []), 'Exact observation flag not archived')
++    require(verification.get('candidate_path') == report['candidate'], 'Runner used another candidate path')
++    for name, expected in report['source_binding']['native_source_sha256'].items():
++        require(verification.get('source_pins', {}).get(name) == expected and
++                verification.get('evidence_sha256', {}).get(name) == expected,
++                'Runner did not pin the exact reviewed native source: ' + name)
+     for name, raw in [('result.json', payload_raw), ('run.log', log_raw), ('harness.dart', read_bounded(evidence / 'harness.dart'))]:
+         require(verification.get('evidence_sha256', {}).get(name) == sha(raw), 'Native evidence pin mismatch: ' + name)
+     require(log_raw.startswith(read_bounded(output / 'open-prefix.log')), 'Observed log prefix changed')
+@@ -461,15 +670,39 @@
+               'window': {'opened': opened, 'closed': closed}, 'samples': len(report['samples']),
+               'socket_statuses': [s['sockets']['status'] for s in report['samples']],
+               'storage_statuses': [s['storage']['status'] for s in report['samples']],
+-              'collector_sha256': report['collector_sha256'], 'completion_verifier_sha256': sha(Path(verify_native.__file__).read_bytes()),
++              'collector_sha256': report['collector_sha256'], 'completion_verifier_sha256': sha(completion_source),
++              'completion_verifier_mode': 'exact-function-from-candidate-pinned-archive',
++              'source_binding': report['source_binding'],
+               'traffic_absence_claim': False, 'release_acceptance': False, 'limitations': LIMITATIONS}
+     target = output / 'finalization.json'
+     require(not target.exists(), 'Finalization already exists')
++    # Revalidate after the decision, before publishing it. Every used input is
++    # also pinned, so a replacement during finalization cannot be silently
++    # reported as the bytes that were actually examined.
++    require(validate_source_binding(report, output) == completion_source,
++            'Completion verifier changed during finalization')
++    for path, before in [(report_path, report_raw), (evidence / 'verification.json', verification_raw),
++                         (evidence / 'result.json', payload_raw), (evidence / 'run.log', log_raw)]:
++        require(read_bounded(path) == before, 'Finalization input changed: ' + path.name)
++    collector_source_unchanged()
+     target.write_text(json.dumps(result, indent=2) + '\n')
+     return result
+ 
+ 
+ def main():
++    if len(sys.argv) > 1 and sys.argv[1] == 'storage-worker':
++        worker = argparse.ArgumentParser(description='Bounded fixed synthetic storage reader')
++        worker.add_argument('action', choices=['storage-worker'])
++        worker.add_argument('--fixture-root', type=Path, required=True)
++        worker.add_argument('--root-identity', required=True)
++        arguments = worker.parse_args()
++        collector_source_unchanged()
++        identity = json.loads(arguments.root_identity)
++        files = local_storage(arguments.fixture_root, identity)
++        collector_source_unchanged()
++        print(json.dumps({'collector_sha256': COLLECTOR_SHA256,
++                          'root_identity': identity, 'files': files}))
++        return 0
+     p = argparse.ArgumentParser(description=__doc__)
+     p.add_argument('action', choices=['collect', 'finalize'])
+     p.add_argument('--root', type=Path, required=True)
+--- original/test_runtime_observation.py
++++ repaired/test_runtime_observation.py
+@@ -154,7 +154,7 @@
+ class StorageTests(unittest.TestCase):
+     def test_only_seven_fixed_fixture_files_are_read(self):
+         with tempfile.TemporaryDirectory() as directory:
+-            base=Path(directory)
++            base=Path(directory).resolve()
+             (base/'support').mkdir()
+             (base/'support/tideglass-study.json').write_text('{"synthetic":true}')
+             (base/'unrelated-secret').write_text('not read')
+@@ -167,7 +167,7 @@
+     def test_symlink_fifo_and_oversize_refused(self):
+         for kind in ['link', 'fifo', 'oversize']:
+             with self.subTest(kind=kind), tempfile.TemporaryDirectory() as directory:
+-                base=Path(directory); (base/'support').mkdir()
++                base=Path(directory).resolve(); (base/'support').mkdir()
+                 file=base/'support/tideglass-study.json'
+                 if kind=='link': file.symlink_to(base/'elsewhere')
+                 if kind=='fifo': os.mkfifo(file)
+@@ -214,22 +214,37 @@
+         evidence=base/'proof-1'; evidence.mkdir()
+         output=base/'observation'; output.mkdir()
+         harness=b'SYNTHETIC HARNESS BYTES'
+-        ctx=dict(context(),harness_sha256=o.sha(harness))
+-        opened=dict(marker(),harness_sha256=o.sha(harness))
++        candidate=base/'candidate'
++        source=candidate/'source'
++        sources={'tool/verify_native.py': (HERE/'baseline/tool/verify_native.py').read_bytes(),
++                 'tool/verify_current_runtime.py': (HERE/'source/tool/verify_current_runtime.py').read_bytes(),
++                 'game/mobile/integration_test/current_runtime_test.dart': harness}
++        for relative, data in sources.items():
++            path=source/relative; path.parent.mkdir(parents=True, exist_ok=True); path.write_bytes(data)
++        pins={name:o.sha(data) for name,data in sources.items()}
++        fingerprint=o.sha(json.dumps(pins,sort_keys=True,separators=(',', ':')).encode())
++        manifest={'source_sha256':pins,'source_fingerprint':fingerprint}
++        (candidate/'manifest.json').write_text(json.dumps(manifest))
++        ctx=dict(context(),candidate_fingerprint=fingerprint,harness_sha256=o.sha(harness))
++        opened=dict(marker(),candidate_fingerprint=fingerprint,harness_sha256=o.sha(harness))
+         closed=dict(opened,native_elapsed_us=15000002,native_utc_ms=115000)
+         prefix='flutter: TIDEGLASS_PRIVACY_WINDOW_OPEN '+json.dumps(opened)+'\n'
+         log=prefix+'flutter: TIDEGLASS_PRIVACY_WINDOW_CLOSE '+json.dumps(closed)+'\nflutter: 00:20 +1: All tests passed!\nAll tests passed.\n'
+         payload=dict(ctx,process_id=123,completed=True,privacy_observation_window={'opened':opened,'closed':closed})
+         payload_raw=json.dumps(payload).encode()
+         for name, data in [('harness.dart',harness),('run.log',log.encode()),('result.json',payload_raw)]: (evidence/name).write_bytes(data)
+-        verification=dict(ctx,label=ctx['device_label'],device='F05BE4B0-52C1-4CA1-B721-BD64AE559E3F',
++        for archive, relative in o.SOURCE_ARCHIVES.items():
++            (evidence/archive).write_bytes(sources[relative])
++        binding, archives=o.source_binding(candidate,evidence,manifest)
++        for name,data in archives.items(): (output/name).write_bytes(data)
++        verification=dict(ctx,candidate_path=str(candidate),source_pins=binding['native_source_sha256'],label=ctx['device_label'],device='F05BE4B0-52C1-4CA1-B721-BD64AE559E3F',
+             passed=True,status='passed',exit_code=0,verification_errors=[],native_process_id=123,
+             source_snapshot_unchanged=True,source_changes_during_run=[],production_input_differences_after_run=[],
+             privacy_observation_enabled=True,command=['--dart-define=TIDEGLASS_PRIVACY_OBSERVATION=true'],
+             evidence_sha256={p.name:o.sha(p.read_bytes()) for p in evidence.iterdir()})
+         (evidence/'verification.json').write_text(json.dumps(verification))
+         (output/'open-prefix.log').write_text(prefix)
+-        report=dict(status='collected-pending-native-completion',errors=[],native_evidence=str(evidence),context=ctx,
++        report=dict(status='collected-pending-native-completion',errors=[],native_evidence=str(evidence),candidate=str(candidate),source_binding=binding,context=ctx,
+             device=verification['device'],opened=opened,open_prefix_sha256=o.sha(prefix.encode()),
+             process_identity={'pid':123},opened_observed_ns=1,collector_sha256=o.sha((HERE/'runtime_observation.py').read_bytes()),
+             samples=[dict(process_identity={'pid':123},started_ns=2,finished_ns=3,

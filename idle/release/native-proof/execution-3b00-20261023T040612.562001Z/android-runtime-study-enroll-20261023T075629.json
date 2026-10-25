@@ -1,0 +1,53 @@
+{
+  "command": [
+    "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3",
+    "/Users/csys/Desktop/ibicot/idle/tool/verify_current_runtime.py",
+    "/Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261023T040445.261666Z-3b00cc8f7122",
+    "--device",
+    "emulator-5556",
+    "--label",
+    "android",
+    "--scenario",
+    "runtime-study-enroll",
+    "--run-id",
+    "v3b00-android-socket-fixed-enroll",
+    "--observe-privacy"
+  ],
+  "scenario": "runtime-study-enroll",
+  "label": "android",
+  "run_id": "v3b00-android-socket-fixed-enroll",
+  "predecessor": null,
+  "started_utc": "20261023T075629.084229Z",
+  "observer_command": [
+    "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3",
+    "/Users/csys/Desktop/ibicot/idle/release/native-privacy/runtime_observation.py",
+    "collect",
+    "--root",
+    "/Users/csys/Desktop/ibicot/idle",
+    "--output",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/execution-3b00-20261023T040612.562001Z/observation-current-runtime-android-20261023T075629289001Z",
+    "--candidate",
+    "/Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261023T040445.261666Z-3b00cc8f7122",
+    "--evidence",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/current-runtime-android-20261023T075629289001Z",
+    "--device",
+    "emulator-5556"
+  ],
+  "exit_code": 0,
+  "observer_exit_code": 0,
+  "verification": "/Users/csys/Desktop/ibicot/idle/release/native-proof/current-runtime-android-20261023T075629289001Z/verification.json",
+  "verification_sha256": "0e5ac30654c13d889f43ef8679619c8768ccb6c6621ad4eb9987786ce785b7a4",
+  "status": "passed",
+  "errors": [],
+  "finalize_command": [
+    "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3",
+    "/Users/csys/Desktop/ibicot/idle/release/native-privacy/runtime_observation.py",
+    "finalize",
+    "--root",
+    "/Users/csys/Desktop/ibicot/idle",
+    "--output",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/execution-3b00-20261023T040612.562001Z/observation-current-runtime-android-20261023T075629289001Z"
+  ],
+  "finalize_exit_code": 0,
+  "finished_utc": "2026-10-23T07:57:38.633165+00:00"
+}

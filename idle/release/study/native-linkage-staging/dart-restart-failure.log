@@ -1,0 +1,21 @@
+00:00 +0: loading /Users/csys/Desktop/ibicot/idle/release/study/native-linkage-staging/game/platform/test/native_linkage_test.dart
+00:00 +0: failed restart retry writes the storage gap under the committed process
+00:00 +0 -1: failed restart retry writes the storage gap under the committed process [E]
+  Expected: '00000000000000000000000000000001'
+    Actual: '00000000000000000000000000000008'
+     Which: is different.
+            Expected: ... 00000000001
+              Actual: ... 00000000008
+                                    ^
+             Differ at offset 31
+  
+  package:matcher                                                                               expect
+  ../../release/study/native-linkage-staging/game/platform/test/native_linkage_test.dart 308:5  main.<fn>
+  
+00:00 +0 -1: Some tests failed.
+
+Failing tests:
+  /Users/csys/Desktop/ibicot/idle/release/study/native-linkage-staging/game/platform/test/native_linkage_test.dart: failed restart retry writes the storage gap under the committed process
+
+Consider enabling the flag chain-stack-traces to receive more detailed exceptions.
+For example, 'dart test --chain-stack-traces'.

@@ -1,0 +1,50 @@
+[
+  {
+    "utc": "2026-10-25T16:42:37.864322+00:00",
+    "argv": [
+      "/Users/csys/Library/Android/sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "shell",
+      "-tt",
+      "uiautomator",
+      "dump",
+      "/dev/tty"
+    ],
+    "exit_code": 0,
+    "file": "restore-airplane-hierarchy.txt",
+    "sha256": "26e23d89d44506d6b71b6351e2286b61e6634ea0cea854c22b2f0b282dfab7f0",
+    "stderr": ""
+  },
+  {
+    "utc": "2026-10-25T16:42:42.566485+00:00",
+    "argv": [
+      "/Users/csys/Library/Android/sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "exec-out",
+      "screencap",
+      "-p"
+    ],
+    "exit_code": 0,
+    "file": "restore-airplane.png",
+    "sha256": "9a24bc714ac6a531e1c24c0b00d63673767ebc8f6cc5af25b0435c13efa917c1",
+    "stderr": ""
+  },
+  {
+    "utc": "2026-10-25T16:42:43.103311+00:00",
+    "argv": [
+      "/Users/csys/Library/Android/sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "shell",
+      "dumpsys",
+      "activity",
+      "activities"
+    ],
+    "exit_code": 0,
+    "file": "restore-airplane-activities.txt",
+    "sha256": "d56cfc41d0fb20165a4a0a4ae73e1e50c3bd175ae6aaecdd83c760e2beea926c",
+    "stderr": ""
+  }
+]

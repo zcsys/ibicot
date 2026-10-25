@@ -1,0 +1,615 @@
+10-21 13:15:02.899     1     1 I init    : Added '/system/etc/init/hw/init.zygote64.rc' to import list
+10-21 13:15:02.900     1     1 I init    : Added '/system/etc/init/hw/init.boringssl.zygote64.rc' to import list
+10-21 13:15:02.930     1     1 I init    : Parsing file /system/etc/init/hw/init.zygote64.rc...
+10-21 13:15:02.937     1     1 I init    : Parsing file /system/etc/init/hw/init.boringssl.zygote64.rc...
+10-21 13:15:03.175     1     1 I init    : Parsing file /system/etc/init/lmkd.rc...
+10-21 13:15:03.398     1     1 I init    : Added '/vendor/etc/boringssl_self_test.zygote64.rc' to import list
+10-21 13:15:03.398     1     1 I init    : Parsing file /vendor/etc/boringssl_self_test.zygote64.rc...
+10-21 13:15:04.101     1     1 I init    : processing action (ro.product.cpu.abilist64=* && early-init) from (/vendor/etc/boringssl_self_test.zygote64.rc:1)
+10-21 13:15:04.268     1     1 I init    : starting service 'lmkd'...
+10-21 13:15:04.268     1     1 I init    : Created socket '/dev/socket/lmkd', mode 660, user 1000, group 1000
+10-21 13:15:04.273     1     1 I init    : ... started service 'lmkd' has pid 155
+10-21 13:15:04.348     1     1 I init    : processing action (ro.product.cpu.abilist64=* && init) from (/system/etc/init/hw/init.boringssl.zygote64.rc:1)
+10-21 13:15:09.895   362   362 D BpfLoader: map /sys/fs/bpf/map_bpfMemEvents_lmkd_rb id 41
+10-21 13:15:09.899   362   362 D BpfLoader: prog /sys/fs/bpf/prog_bpfMemEvents_tracepoint_vmscan_mm_vmscan_direct_reclaim_begin_lmkd id 47
+10-21 13:15:09.900   362   362 D BpfLoader: prog /sys/fs/bpf/prog_bpfMemEvents_tracepoint_vmscan_mm_vmscan_direct_reclaim_end_lmkd id 48
+10-21 13:15:09.901   362   362 D BpfLoader: prog /sys/fs/bpf/prog_bpfMemEvents_tracepoint_vmscan_mm_vmscan_kswapd_wake_lmkd id 49
+10-21 13:15:09.903   362   362 D BpfLoader: prog /sys/fs/bpf/prog_bpfMemEvents_tracepoint_vmscan_mm_vmscan_kswapd_sleep_lmkd id 50
+10-21 13:15:09.967     1     1 I init    : processing action (zygote-start) from (/system/etc/init/hw/init.rc:1092)
+10-21 13:15:10.055     1     1 I init    : starting service 'zygote'...
+10-21 13:15:10.055     1     1 I init    : Created socket '/dev/socket/zygote', mode 660, user 0, group 1000
+10-21 13:15:10.059     1     1 I init    : ... started service 'zygote' has pid 368
+10-21 13:15:10.059     1     1 I init    : Command 'start zygote_secondary' action=zygote-start (/system/etc/init/hw/init.rc:1099) took 0ms and failed: service zygote_secondary not found
+10-21 13:15:10.059     1     1 I init    : processing action (zygote-start) from (/vendor/etc/init/hw/init.ranchu.rc:68)
+10-21 13:15:10.628     1     1 I init    : service 'lmkd' requested start, but it is already running (flags: 36)
+10-21 13:15:10.704     1     1 I init    : processing action (apexd.status=ready && ro.product.cpu.abilist64=*) from (/system/etc/init/hw/init.boringssl.zygote64.rc:3)
+10-21 13:15:10.951     1     1 I init    : processing action (persist.device_config.lmkd_native.thrashing_limit_critical=*) from (/system/etc/init/lmkd.rc:47)
+10-21 13:15:10.993     1     1 I init    : service 'zygote' requested start, but it is already running (flags: 4)
+10-21 13:15:12.964   368   368 D AndroidRuntime: >>>>>> START com.android.internal.os.ZygoteInit uid 0 <<<<<<
+10-21 13:15:13.018   368   368 I zygote64: option[0]=-Xzygote
+10-21 13:15:13.019   368   368 I zygote64: option[1]=exit
+10-21 13:15:13.019   368   368 I zygote64: option[2]=vfprintf
+10-21 13:15:13.019   368   368 I zygote64: option[3]=sensitiveThread
+10-21 13:15:13.019   368   368 I zygote64: option[4]=-verbose:gc
+10-21 13:15:13.019   368   368 I zygote64: option[5]=-XX:PerfettoHprof=true
+10-21 13:15:13.019   368   368 I zygote64: option[6]=-XX:PerfettoJavaHeapStackProf=true
+10-21 13:15:13.019   368   368 I zygote64: option[7]=-Xprimaryzygote
+10-21 13:15:13.019   368   368 I zygote64: option[8]=-Xms8m
+10-21 13:15:13.019   368   368 I zygote64: option[9]=-Xmx512m
+10-21 13:15:13.019   368   368 I zygote64: option[10]=-XX:HeapGrowthLimit=192m
+10-21 13:15:13.019   368   368 I zygote64: option[11]=-XX:HeapMinFree=512k
+10-21 13:15:13.019   368   368 I zygote64: option[12]=-XX:HeapMaxFree=8m
+10-21 13:15:13.019   368   368 I zygote64: option[13]=-XX:HeapTargetUtilization=0.75
+10-21 13:15:13.019   368   368 I zygote64: option[14]=-Xusejit:true
+10-21 13:15:13.019   368   368 I zygote64: option[15]=-Xjitsaveprofilinginfo
+10-21 13:15:13.019   368   368 I zygote64: option[16]=-XMadviseWillNeedVdexFileSize:104857600
+10-21 13:15:13.019   368   368 I zygote64: option[17]=-XMadviseWillNeedOdexFileSize:104857600
+10-21 13:15:13.019   368   368 I zygote64: option[18]=-XMadviseWillNeedArtFileSize:4294967295
+10-21 13:15:13.019   368   368 I zygote64: option[19]=-XjdwpOptions:suspend=n,server=y
+10-21 13:15:13.019   368   368 I zygote64: option[20]=-XjdwpProvider:default
+10-21 13:15:13.019   368   368 I zygote64: option[21]=-Xopaque-jni-ids:swapable
+10-21 13:15:13.019   368   368 I zygote64: option[22]=-Xlockprofthreshold:500
+10-21 13:15:13.019   368   368 I zygote64: option[23]=-Xcompiler-option
+10-21 13:15:13.019   368   368 I zygote64: option[24]=--instruction-set-variant=generic
+10-21 13:15:13.019   368   368 I zygote64: option[25]=-Xcompiler-option
+10-21 13:15:13.019   368   368 I zygote64: option[26]=--instruction-set-features=default
+10-21 13:15:13.019   368   368 I zygote64: option[27]=-Xcompiler-option
+10-21 13:15:13.019   368   368 I zygote64: option[28]=--generate-mini-debug-info
+10-21 13:15:13.019   368   368 I zygote64: option[29]=-Ximage-compiler-option
+10-21 13:15:13.019   368   368 I zygote64: option[30]=--runtime-arg
+10-21 13:15:13.019   368   368 I zygote64: option[31]=-Ximage-compiler-option
+10-21 13:15:13.019   368   368 I zygote64: option[32]=-Xms64m
+10-21 13:15:13.019   368   368 I zygote64: option[33]=-Ximage-compiler-option
+10-21 13:15:13.019   368   368 I zygote64: option[34]=--runtime-arg
+10-21 13:15:13.019   368   368 I zygote64: option[35]=-Ximage-compiler-option
+10-21 13:15:13.019   368   368 I zygote64: option[36]=-Xmx64m
+10-21 13:15:13.019   368   368 I zygote64: option[37]=-Ximage-compiler-option
+10-21 13:15:13.019   368   368 I zygote64: option[38]=--dirty-image-objects=/system/etc/dirty-image-objects
+10-21 13:15:13.019   368   368 I zygote64: option[39]=-Ximage-compiler-option
+10-21 13:15:13.019   368   368 I zygote64: option[40]=--instruction-set-variant=generic
+10-21 13:15:13.019   368   368 I zygote64: option[41]=-Ximage-compiler-option
+10-21 13:15:13.019   368   368 I zygote64: option[42]=--instruction-set-features=default
+10-21 13:15:13.019   368   368 I zygote64: option[43]=-Ximage-compiler-option
+10-21 13:15:13.019   368   368 I zygote64: option[44]=--generate-mini-debug-info
+10-21 13:15:13.019   368   368 I zygote64: option[45]=-Duser.locale=en-US
+10-21 13:15:13.019   368   368 I zygote64: option[46]=--cpu-abilist=arm64-v8a
+10-21 13:15:13.019   368   368 I zygote64: option[47]=-Xcore-platform-api-policy:just-warn
+10-21 13:15:13.019   368   368 I zygote64: option[48]=-Xfingerprint:google/sdk_gphone64_arm64/emu64a:15/AE3A.240806.043/12960925:userdebug/dev-keys
+10-21 13:15:13.023   368   368 I zygote64: Core platform API reporting enabled, enforcing=false
+10-21 13:15:13.023   368   368 I zygote64: Using CollectorTypeCMC GC.
+10-21 13:15:14.357   368   368 D zygote64: u_setTimeZoneFilesDirectory("/apex/com.android.tzdata/etc/tz/versioned/8/icu") succeeded. 
+10-21 13:15:14.364   368   368 D zygote64: I18n APEX ICU file found: /apex/com.android.i18n/etc/icu/icudt75l.dat
+10-21 13:15:15.093   368   368 I zygote64: Using memfd for future sealing
+10-21 13:15:17.536   368   558 I zygote64: Background verification of 159 classes from boot classpath took 194.295ms
+10-21 13:15:17.888   368   368 D Zygote  : begin preload
+10-21 13:15:17.888   368   368 I Zygote  : Calling ZygoteHooks.beginPreload()
+10-21 13:15:18.813   368   368 V Zygote64Timing: BeginPreload took to complete: 926ms
+10-21 13:15:18.813   368   368 I Zygote  : Preloading classes...
+10-21 13:15:18.912   368   368 W Zygote  : Class not found for preloading: android.app.PendingIntent$$ExternalSyntheticLambda3
+10-21 13:15:19.880   368   368 I zygote64: Thread[1,tid=368,Native,Thread*=0xb4000071b08b57b0,peer=0x14002418,"main"] recursive attempt to load library "librtp_jni.so"
+10-21 13:15:20.086   368   368 W Zygote  : Class not found for preloading: android.window.ImeOnBackInvokedDispatcher$$ExternalSyntheticLambda0
+10-21 13:15:20.087   368   368 W Zygote  : Class not found for preloading: android.window.WindowOnBackInvokedDispatcher$OnBackInvokedCallbackWrapper$CallbackRef
+10-21 13:15:20.114   368   368 W zygote64: Core platform API violation: Llibcore/io/Memory;->peekLong(JZ)J from Lcom/android/framework/protobuf/UnsafeUtil; using reflection
+10-21 13:15:20.114   368   368 W zygote64: Core platform API violation: Llibcore/io/Memory;->pokeLong(JJZ)V from Lcom/android/framework/protobuf/UnsafeUtil; using reflection
+10-21 13:15:20.114   368   368 W zygote64: Core platform API violation: Llibcore/io/Memory;->pokeInt(JIZ)V from Lcom/android/framework/protobuf/UnsafeUtil; using reflection
+10-21 13:15:20.114   368   368 W zygote64: Core platform API violation: Llibcore/io/Memory;->peekInt(JZ)I from Lcom/android/framework/protobuf/UnsafeUtil; using reflection
+10-21 13:15:20.114   368   368 W zygote64: Core platform API violation: Llibcore/io/Memory;->pokeByte(JB)V from Lcom/android/framework/protobuf/UnsafeUtil; using reflection
+10-21 13:15:20.114   368   368 W zygote64: Core platform API violation: Llibcore/io/Memory;->peekByte(J)B from Lcom/android/framework/protobuf/UnsafeUtil; using reflection
+10-21 13:15:20.114   368   368 W zygote64: Core platform API violation: Llibcore/io/Memory;->pokeByteArray(J[BII)V from Lcom/android/framework/protobuf/UnsafeUtil; using reflection
+10-21 13:15:20.114   368   368 W zygote64: Core platform API violation: Llibcore/io/Memory;->peekByteArray(J[BII)V from Lcom/android/framework/protobuf/UnsafeUtil; using reflection
+10-21 13:15:21.368   368   368 W Zygote  : Class not found for preloading: sun.util.locale.BaseLocale$Key-IA
+10-21 13:15:21.373   368   368 I Zygote  : ...preloaded 17758 classes in 2559ms.
+10-21 13:15:21.374   368   368 V Zygote64Timing: PreloadClasses took to complete: 2560ms
+10-21 13:15:21.405   368   368 D ApplicationLoaders: Created zygote-cached class loader: /system/framework/android.hidl.base-V1.0-java.jar
+10-21 13:15:21.411   368   368 D ApplicationLoaders: Created zygote-cached class loader: /system/framework/android.hidl.manager-V1.0-java.jar
+10-21 13:15:21.428   368   368 D ApplicationLoaders: Created zygote-cached class loader: /system/framework/android.test.base.jar
+10-21 13:15:21.477   368   368 D ApplicationLoaders: Created zygote-cached class loader: /system/framework/org.apache.http.legacy.jar
+10-21 13:15:21.507   368   368 D ApplicationLoaders: Created zygote-cached class loader: /system_ext/framework/androidx.window.extensions.jar
+10-21 13:15:21.546   368   368 D ApplicationLoaders: Created zygote-cached class loader: /system_ext/framework/androidx.window.sidecar.jar
+10-21 13:15:21.546   368   368 V Zygote64Timing: CacheNonBootClasspathClassLoaders took to complete: 172ms
+10-21 13:15:21.696   368   368 V Zygote64Timing: PreloadResources took to complete: 150ms
+10-21 13:15:21.699   368   368 I Zygote  : Preloading shared libraries...
+10-21 13:15:21.710   368   368 E zygote64: Unable to find pattern file or unable to map it for am
+10-21 13:15:21.722   368   368 I Zygote  : Called ZygoteHooks.endPreload()
+10-21 13:15:21.722   368   368 I Zygote  : Installed AndroidKeyStoreProvider in 0ms.
+10-21 13:15:21.723   368   368 I Zygote  : Warmed up JCA providers in 1ms.
+10-21 13:15:21.723   368   368 D Zygote  : end preload
+10-21 13:15:21.723   368   368 V Zygote64Timing: ZygotePreload took to complete: 3835ms
+10-21 13:15:21.747   368   368 I zygote64: Explicit concurrent mark compact GC freed 3991KB AllocSpace bytes, 4(80KB) LOS objects, 49% free, 8181KB/15MB, paused 33us,773us total 24.784ms
+10-21 13:15:21.769   368   368 I zygote64: Explicit concurrent mark compact GC freed 332KB AllocSpace bytes, 0(0B) LOS objects, 49% free, 7913KB/15MB, paused 45us,1.274ms total 19.756ms
+10-21 13:15:21.769   368   368 V Zygote64Timing: PostZygoteInitGC took to complete: 47ms
+10-21 13:15:21.769   368   368 V Zygote64Timing: ZygoteInit took to complete: 3944ms
+10-21 13:15:21.845   368   368 D Zygote  : Forked child process 579
+10-21 13:15:21.846   368   368 I Zygote  : System server process 579 has been created
+10-21 13:15:21.850   368   368 I Zygote  : Accepting command socket connections
+10-21 13:15:23.963   579   579 W PackageSettings: Missing permission state for package dev.tideglass.tideglass on user 0
+10-21 13:15:23.963   579   579 W PackageSettings: Missing permission state for package dev.tideglass.game on user 0
+10-21 13:15:25.132   579   579 E ArtService: 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:864)
+10-21 13:15:25.163   579   639 I ActivityManager: Connection with lmkd established
+10-21 13:15:25.163   155   155 I lowmemorykiller: lmkd data connection established
+10-21 13:15:25.745   579   692 D SystemServerTimingAsync: InitThreadPoolExec:SecondaryZygotePreload
+10-21 13:15:25.745   579   692 D SystemServerInitThreadPool: Started executing SecondaryZygotePreload
+10-21 13:15:25.745   579   692 I SystemServer: SecondaryZygotePreload
+10-21 13:15:25.745   579   692 D SystemServerTimingAsync: SecondaryZygotePreload
+10-21 13:15:25.745   579   692 V SystemServerTimingAsync: SecondaryZygotePreload took to complete: 0ms
+10-21 13:15:25.745   579   692 D SystemServerInitThreadPool: Finished executing SecondaryZygotePreload
+10-21 13:15:25.745   579   692 V SystemServerTimingAsync: InitThreadPoolExec:SecondaryZygotePreload took to complete: 0ms
+10-21 13:15:26.893   579   579 E SoundTriggerMiddlewareImpl: 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:864)
+10-21 13:15:27.739   579   579 E HealthConnectResContext: 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:864)
+10-21 13:15:27.967   368   368 W zygote64: Waiting for a thread to finish unregistering
+10-21 13:15:27.968   368   368 I Zygote  : Entering forkRepeatedly native zygote loop
+10-21 13:15:27.983   368   368 D Zygote  : Forked child process 833
+10-21 13:15:27.983   579   638 I ActivityManager: Start proc 833:com.android.systemui/u0a179 for service {com.android.systemui/com.android.systemui.wallpapers.ImageWallpaper}
+10-21 13:15:28.080   368   368 D Zygote  : Forked child process 854
+10-21 13:15:28.081   579   638 I ActivityManager: Start proc 854:WebViewLoader-arm64-v8a/1037 [android.webkit.WebViewLibraryLoader$RelroFileCreator] for 
+10-21 13:15:28.110   579   579 W OnDeviceIntelligenceManagerService: 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:864)
+10-21 13:15:28.129   833   833 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.extensions.jar
+10-21 13:15:28.135   833   833 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.sidecar.jar
+10-21 13:15:28.180   854   854 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.extensions.jar
+10-21 13:15:28.353   368   368 D Zygote  : Forked child process 884
+10-21 13:15:28.364   579   638 I ActivityManager: Start proc 884:com.android.networkstack.process/1073 for service {com.google.android.networkstack/com.android.server.NetworkStackService}
+10-21 13:15:28.428   368   368 W Zygote  : forkRepeatedly terminated due to non-simple command
+10-21 13:15:28.428   368   368 D Zygote  : mbuffer starts with 14, nice name is webview_zygote, mEnd = 397, mNext = 165, mLinesLeft = 6, mFd = 5
+10-21 13:15:28.444   368   368 D Zygote  : Forked child process 906
+10-21 13:15:28.450   579   579 V StorageManagerService: Package dev.tideglass.tideglass does not have legacy storage
+10-21 13:15:28.452   579   579 V StorageManagerService: Package dev.tideglass.game does not have legacy storage
+10-21 13:15:28.460   906   906 I webview_zygote: Using CollectorTypeCMC GC.
+10-21 13:15:28.462   906   906 I WebViewZygoteInit: Starting WebViewZygoteInit
+10-21 13:15:28.480   368   368 I Zygote  : Entering forkRepeatedly native zygote loop
+10-21 13:15:28.485   368   368 D Zygote  : Forked child process 917
+10-21 13:15:28.504   579   638 I ActivityManager: Start proc 917:com.google.android.bluetooth/1002 for service {com.google.android.bluetooth/com.android.bluetooth.btservice.AdapterService}
+10-21 13:15:28.513   906   906 I WebViewZygoteInit: Beginning application preload for com.google.android.webview
+10-21 13:15:28.531   368   368 D Zygote  : Forked child process 927
+10-21 13:15:28.541   906   906 W webview_zygote: Entry not found
+10-21 13:15:28.549   906   906 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.extensions.jar
+10-21 13:15:28.565   368   368 I Zygote  : Process 854 exited cleanly (0)
+10-21 13:15:28.606   906   906 I WebViewZygoteInit: Application preload done
+10-21 13:15:28.717   579   638 I ActivityManager: Start proc 927:com.android.se/1068 for added application com.android.se
+10-21 13:15:28.717   579   638 W ActivityManager: Slow operation: 186ms so far, now at startProcess: asking zygote to start proc
+10-21 13:15:28.723   368   368 D Zygote  : Forked child process 956
+10-21 13:15:28.724   579   638 W ActivityManager: Slow operation: 192ms so far, now at startProcess: returned from zygote!
+10-21 13:15:28.738   579   638 I ActivityManager: Start proc 956:com.android.phone/1001 for added application com.android.phone
+10-21 13:15:28.745   368   368 D Zygote  : Forked child process 963
+10-21 13:15:28.755   579   638 I ActivityManager: Start proc 963:com.android.settings/1000 for top-activity {com.android.settings/com.android.settings.FallbackHome}
+10-21 13:15:28.826   963   963 D ApplicationLoaders: Returning zygote-cached class loader: /system/framework/org.apache.http.legacy.jar
+10-21 13:15:28.829   963   963 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.extensions.jar
+10-21 13:15:28.831   963   963 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.sidecar.jar
+10-21 13:15:28.892   368   368 D Zygote  : Forked child process 1000
+10-21 13:15:28.893   579   638 I ActivityManager: Start proc 1000:com.google.android.ext.services/u0a192 for service {com.google.android.ext.services/android.ext.services.autofill.InlineSuggestionRenderServiceImpl}
+10-21 13:15:28.903   956   956 D ApplicationLoaders: Returning zygote-cached class loader: /system/framework/org.apache.http.legacy.jar
+10-21 13:15:28.915   956   956 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.extensions.jar
+10-21 13:15:28.915   956   956 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.sidecar.jar
+10-21 13:15:29.115   884   884 E SystemServiceRegistry: 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:886)
+10-21 13:15:29.247   833   833 W BatteryControllerGoogle: 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:886)
+10-21 13:15:29.678   368   368 D Zygote  : Forked child process 1090
+10-21 13:15:29.678   579   638 I ActivityManager: Start proc 1090:com.google.android.gms.persistent/u0a144 for broadcast {com.google.android.gms/com.google.android.gms.chimera.GmsIntentOperationService$PersistentTrustedReceiver}
+10-21 13:15:29.831  1090  1090 D ApplicationLoaders: Returning zygote-cached class loader: /system/framework/org.apache.http.legacy.jar
+10-21 13:15:29.853  1090  1090 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.extensions.jar
+10-21 13:15:29.853  1090  1090 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.sidecar.jar
+10-21 13:15:29.986   579   579 E Binder  : 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:864)
+10-21 13:15:30.680   368   368 D Zygote  : Forked child process 1170
+10-21 13:15:30.680   579   638 I ActivityManager: Start proc 1170:com.google.android.permissioncontroller/u0a206 for broadcast {com.google.android.permissioncontroller/com.android.permissioncontroller.privacysources.SafetyCenterReceiver}
+10-21 13:15:30.740  1170  1170 D ApplicationLoaders: Returning zygote-cached class loader: /system/framework/org.apache.http.legacy.jar
+10-21 13:15:30.742  1170  1170 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.extensions.jar
+10-21 13:15:30.742  1170  1170 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.sidecar.jar
+10-21 13:15:31.050   368   368 D Zygote  : Forked child process 1198
+10-21 13:15:31.051   579   638 I ActivityManager: Start proc 1198:com.google.android.cellbroadcastreceiver/u0a184 for broadcast {com.google.android.cellbroadcastreceiver/com.android.cellbroadcastreceiver.CellBroadcastReceiver}
+10-21 13:15:31.108  1198  1198 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.extensions.jar
+10-21 13:15:31.111  1198  1198 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.sidecar.jar
+10-21 13:15:32.271   833   833 D OverviewProxyService: 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:886)
+10-21 13:15:32.290   368   368 D Zygote  : Forked child process 1227
+10-21 13:15:32.290   579   638 I ActivityManager: Start proc 1227:com.google.android.apps.nexuslauncher/u0a177 for service {com.google.android.apps.nexuslauncher/com.android.quickstep.TouchInteractionService}
+10-21 13:15:32.448  1227  1227 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.extensions.jar
+10-21 13:15:32.448  1227  1227 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.sidecar.jar
+10-21 13:15:34.577   368   368 W Zygote  : forkRepeatedly terminated due to non-simple command
+10-21 13:15:34.577   368   368 D Zygote  : mbuffer starts with 1 , nice name is , mEnd = 19, mNext = 19, mLinesLeft = 0, mFd = 5
+10-21 13:15:34.654   833  1026 I HWUI    : Davey! duration=1288ms; Flags=0, FrameTimelineVsyncId=860, IntendedVsync=40916394889, Vsync=42016394845, InputEventId=0, HandleInputStart=42032254353, AnimationStart=42032254519, PerformTraversalsStart=42032658561, DrawStart=42118579478, FrameDeadline=42133061507, FrameInterval=42032204769, FrameStartTime=16666666, SyncQueued=42118585811, SyncStart=42215912020, IssueDrawCommandsStart=42215935520, SwapBuffers=42218573436, FrameCompleted=42301748770, DequeueBufferDuration=1504375, QueueBufferDuration=835042, GpuCompleted=42301748770, SwapBuffersCompleted=42221338645, DisplayPresentTime=0, CommandSubmissionCompleted=42218573436, 
+10-21 13:15:34.898   368   368 I Zygote  : Entering forkRepeatedly native zygote loop
+10-21 13:15:34.906   368   368 D Zygote  : Forked child process 1289
+10-21 13:15:34.935   579   638 W ActivityManager: Slow operation: 121ms so far, now at startProcess: returned from zygote!
+10-21 13:15:35.136     1     1 I init    : processing action (sys.boot_completed=1) from (/system/etc/init/lmkd.rc:13)
+10-21 13:15:35.136     1     1 I init    : starting service 'exec 22 (/system/bin/lmkd --boot_completed)'...
+10-21 13:15:35.106   579   622 I ActivityManager: Start proc 1289:com.google.android.inputmethod.latin/u0a165 for service {com.google.android.inputmethod.latin/com.android.inputmethod.latin.LatinIME}
+10-21 13:15:35.119  1289  1289 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.extensions.jar
+10-21 13:15:35.119  1289  1289 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.sidecar.jar
+10-21 13:15:35.120   579   638 W ActivityManager: Slow operation: 211ms so far, now at startProcess: asking zygote to start proc
+10-21 13:15:35.142   368   368 D Zygote  : Forked child process 1307
+10-21 13:15:35.151   579   638 W ActivityManager: Slow operation: 243ms so far, now at startProcess: returned from zygote!
+10-21 13:15:35.152   579   638 I ActivityManager: Start proc 1307:com.google.android.apps.wellbeing/u0a140 for on-hold
+10-21 13:15:35.206     1     1 I init    : ... started service 'exec 22 (/system/bin/lmkd --boot_completed)' has pid 1305
+10-21 13:15:35.206     1     1 I init    : Command 'exec_background /system/bin/lmkd --boot_completed' action=sys.boot_completed=1 (/system/etc/init/lmkd.rc:14) took 70ms and succeeded
+10-21 13:15:35.206     1     1 I init    : processing action (lmkd.reinit=0 && sys.boot_completed=1) from (/system/etc/init/lmkd.rc:17)
+10-21 13:15:35.178   155   155 I lowmemorykiller: lmkd data connection established
+10-21 13:15:35.180   155   155 I lowmemorykiller: lmkd data connection dropped
+10-21 13:15:35.180   155   155 I lowmemorykiller: closing lmkd data connection
+10-21 13:15:35.221     1     1 I init    : Service 'exec 22 (/system/bin/lmkd --boot_completed)' (pid 1305) exited with status 0 oneshot service took 0.084000 seconds in background
+10-21 13:15:35.221     1     1 I init    : Sending signal 9 to service 'exec 22 (/system/bin/lmkd --boot_completed)' (pid 1305) process group...
+10-21 13:15:35.202  1307  1307 D ApplicationLoaders: Returning zygote-cached class loader: /system/framework/org.apache.http.legacy.jar
+10-21 13:15:35.202  1307  1307 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.extensions.jar
+10-21 13:15:35.202  1307  1307 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.sidecar.jar
+10-21 13:15:35.589   833   833 E BatteryInfoBroadcast: 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:886)
+10-21 13:15:35.724     1     1 I init    : processing action (lmkd.reinit=1) from (/system/etc/init/lmkd.rc:10)
+10-21 13:15:35.724     1     1 I init    : starting service 'exec 23 (/system/bin/lmkd --reinit)'...
+10-21 13:15:35.725     1     1 I init    : ... started service 'exec 23 (/system/bin/lmkd --reinit)' has pid 1332
+10-21 13:15:35.772   155   155 I lowmemorykiller: lmkd data connection established
+10-21 13:15:35.851  1332  1332 I lowmemorykiller: lmkd updated properties successfully
+10-21 13:15:35.853   155   155 I lowmemorykiller: lmkd data connection dropped
+10-21 13:15:35.853   155   155 I lowmemorykiller: closing lmkd data connection
+10-21 13:15:35.905     1     1 I init    : Service 'exec 23 (/system/bin/lmkd --reinit)' (pid 1332) exited with status 0 oneshot service took 0.180000 seconds in background
+10-21 13:15:35.905     1     1 I init    : Sending signal 9 to service 'exec 23 (/system/bin/lmkd --reinit)' (pid 1332) process group...
+10-21 13:15:36.482   368   368 D Zygote  : Forked child process 1351
+10-21 13:15:36.485   579   638 I ActivityManager: Start proc 1351:com.google.android.providers.media.module/u0a193 for service {com.google.android.providers.media.module/com.android.providers.media.fuse.ExternalStorageServiceImpl}
+10-21 13:15:36.522   368   368 D Zygote  : Forked child process 1353
+10-21 13:15:36.543   579   638 I ActivityManager: Start proc 1353:com.google.android.as/u0a132 for service {com.google.android.as/com.google.android.apps.miphone.aiai.app.AiAiContentCaptureService}
+10-21 13:15:36.801  1353  1353 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.extensions.jar
+10-21 13:15:36.801  1353  1353 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.sidecar.jar
+10-21 13:15:36.837  1351  1351 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.extensions.jar
+10-21 13:15:36.868  1351  1351 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.sidecar.jar
+10-21 13:15:36.876   368   368 D Zygote  : Forked child process 1384
+10-21 13:15:36.898   579   638 I ActivityManager: Start proc 1384:com.google.android.googlequicksearchbox:interactor/u0a143 for service {com.google.android.googlequicksearchbox/com.google.android.voiceinteraction.GsaVoiceInteractionService}
+10-21 13:15:37.146  1384  1384 D ApplicationLoaders: Returning zygote-cached class loader: /system/framework/org.apache.http.legacy.jar
+10-21 13:15:37.146  1384  1384 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.extensions.jar
+10-21 13:15:37.146  1384  1384 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.sidecar.jar
+10-21 13:15:37.201   368   368 D Zygote  : Forked child process 1401
+10-21 13:15:37.246   579   638 I ActivityManager: Start proc 1401:com.android.printspooler/u0a112 for service {com.android.printspooler/com.android.printspooler.model.PrintSpoolerService}
+10-21 13:15:37.252   368   368 D Zygote  : Forked child process 1411
+10-21 13:15:37.252   579   638 I ActivityManager: Start proc 1411:com.google.android.apps.messaging:rcs/u0a137 for service {com.google.android.apps.messaging/com.google.android.ims.binding.SystemBindingService}
+10-21 13:15:37.288   368   368 D Zygote  : Forked child process 1422
+10-21 13:15:37.323   579   638 I ActivityManager: Start proc 1422:com.android.emulator.multidisplay/1000 for added application com.android.emulator.multidisplay
+10-21 13:15:37.372  1411  1411 D ApplicationLoaders: Returning zygote-cached class loader: /system/framework/org.apache.http.legacy.jar
+10-21 13:15:37.490  1411  1411 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.extensions.jar
+10-21 13:15:37.490  1411  1411 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.sidecar.jar
+10-21 13:15:37.582   579  1385 D ShortcutService: rescan updated package user=0 last scanned=1792422296125
+10-21 13:15:37.582   579  1385 D ShortcutService: forUpdatedPackages for user 0, lastScanTime=1792422296125 afterOta=false
+10-21 13:15:37.963   368   368 D Zygote  : Forked child process 1466
+10-21 13:15:38.005   579   638 I ActivityManager: Start proc 1466:com.android.traceur/u0a117 for broadcast {com.android.traceur/com.android.traceur.Receiver}
+10-21 13:15:38.148   368   368 D Zygote  : Forked child process 1477
+10-21 13:15:38.155   579   638 W ActivityManager: Slow operation: 60ms so far, now at startProcess: returned from zygote!
+10-21 13:15:38.202   579   638 I ActivityManager: Start proc 1477:com.google.android.googlequicksearchbox:search/u0a143 for service {com.google.android.googlequicksearchbox/com.google.android.libraries.assistant.auto.tng.media.mediabrowser.NewsMediaBrowserService}
+10-21 13:15:38.493  1466  1466 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.extensions.jar
+10-21 13:15:38.493  1466  1466 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.sidecar.jar
+10-21 13:15:38.663   368   368 D Zygote  : Forked child process 1511
+10-21 13:15:38.710   579   638 W ActivityManager: Slow operation: 84ms so far, now at startProcess: returned from zygote!
+10-21 13:15:38.712   579   638 I ActivityManager: Start proc 1511:android.process.acore/u0a91 for content provider {com.android.providers.contacts/com.android.providers.contacts.ContactsProvider2}
+10-21 13:15:38.820   368   368 D Zygote  : Forked child process 1519
+10-21 13:15:38.855   579   638 W ActivityManager: Slow operation: 83ms so far, now at startProcess: returned from zygote!
+10-21 13:15:38.858   579   638 I ActivityManager: Start proc 1519:com.google.android.gms/u0a144 for content provider {com.google.android.gms/com.google.android.gms.core.providersettings.GoogleSettingsProvider}
+10-21 13:15:39.011  1477  1477 D ApplicationLoaders: Returning zygote-cached class loader: /system/framework/org.apache.http.legacy.jar
+10-21 13:15:39.011  1477  1477 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.extensions.jar
+10-21 13:15:39.011  1477  1477 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.sidecar.jar
+10-21 13:15:39.208   368   368 D Zygote  : Forked child process 1553
+10-21 13:15:39.216   579   638 W ActivityManager: Slow operation: 117ms so far, now at startProcess: returned from zygote!
+10-21 13:15:39.584   579   638 I ActivityManager: Start proc 1553:com.android.chrome/u0a146 for service {com.android.chrome/org.chromium.components.background_task_scheduler.internal.BackgroundTaskJobService}
+10-21 13:15:39.591  1519  1519 D ApplicationLoaders: Returning zygote-cached class loader: /system/framework/org.apache.http.legacy.jar
+10-21 13:15:40.259  1519  1519 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.extensions.jar
+10-21 13:15:40.259  1519  1519 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.sidecar.jar
+10-21 13:15:40.405   368   368 D Zygote  : Forked child process 1640
+10-21 13:15:40.445   579   638 I ActivityManager: Start proc 1640:com.google.android.deskclock/u0a152 for broadcast {com.google.android.deskclock/com.android.deskclock.AlarmInitReceiver}
+10-21 13:15:40.636   368   368 D Zygote  : Forked child process 1654
+10-21 13:15:40.665   579   638 I ActivityManager: Start proc 1654:com.android.keychain/1000 for service {com.android.keychain/com.android.keychain.KeyChainService}
+10-21 13:15:40.707   579   638 W ActivityManager: Slow operation: 52ms so far, now at startProcess: asking zygote to start proc
+10-21 13:15:40.779   368   368 D Zygote  : Forked child process 1682
+10-21 13:15:40.780   579   638 W ActivityManager: Slow operation: 126ms so far, now at startProcess: returned from zygote!
+10-21 13:15:40.804   579   638 I ActivityManager: Start proc 1682:android.process.media/u0a95 for content provider {com.android.providers.downloads/com.android.providers.downloads.DownloadProvider}
+10-21 13:15:40.865   368   368 D Zygote  : Forked child process 1686
+10-21 13:15:40.874   579   638 W ActivityManager: Slow operation: 95ms so far, now at startProcess: returned from zygote!
+10-21 13:15:40.930   579   638 I ActivityManager: Start proc 1686:com.android.localtransport/1000 for service {com.android.localtransport/com.android.localtransport.LocalTransportService}
+10-21 13:15:41.005  1640  1640 D ApplicationLoaders: Returning zygote-cached class loader: /system/framework/org.apache.http.legacy.jar
+10-21 13:15:41.114  1640  1640 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.extensions.jar
+10-21 13:15:41.114  1640  1640 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.sidecar.jar
+10-21 13:15:44.906   368   368 D Zygote  : Forked child process 1932
+10-21 13:15:44.929   579   638 I ActivityManager: Start proc 1932:com.google.android.as.oss/u0a142 for service {com.google.android.as.oss/com.google.android.apps.miphone.astrea.grpc.AstreaGrpcService}
+10-21 13:15:45.490   368   368 D Zygote  : Forked child process 1976
+10-21 13:15:45.491   579   638 I ActivityManager: Start proc 1976:com.google.android.onetimeinitializer/u0a128 for broadcast {com.google.android.onetimeinitializer/com.google.android.onetimeinitializer.OneTimeInitializerReceiver}
+10-21 13:15:45.499  1932  1932 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.extensions.jar
+10-21 13:15:45.499  1932  1932 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.sidecar.jar
+10-21 13:15:45.862   579   638 W ActivityManager: Slow operation: 62ms so far, now at startProcess: asking zygote to start proc
+10-21 13:15:45.894   368   368 D Zygote  : Forked child process 2012
+10-21 13:15:45.911   579   638 W ActivityManager: Slow operation: 110ms so far, now at startProcess: returned from zygote!
+10-21 13:15:45.993   579   638 I ActivityManager: Start proc 2012:com.google.android.apps.messaging/u0a137 for content provider {com.google.android.apps.messaging/com.google.android.apps.messaging.shared.datamodel.provider.sharedstorage.SharedStorageProvider}
+10-21 13:15:46.075   368   368 D Zygote  : Forked child process 2033
+10-21 13:15:46.083  2012  2012 D ApplicationLoaders: Returning zygote-cached class loader: /system/framework/org.apache.http.legacy.jar
+10-21 13:15:46.104   579   638 I ActivityManager: Start proc 2033:com.android.externalstorage/u0a94 for broadcast {com.android.externalstorage/com.android.externalstorage.MountReceiver}
+10-21 13:15:46.106  2012  2012 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.extensions.jar
+10-21 13:15:46.120  2012  2012 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.sidecar.jar
+10-21 13:15:46.760   368   368 D Zygote  : Forked child process 2080
+10-21 13:15:46.771   579   638 I ActivityManager: Start proc 2080:com.android.camera2/u0a151 for broadcast {com.android.camera2/com.android.camera.SetActivitiesCameraReceiver}
+10-21 13:15:46.848  2080  2080 D ApplicationLoaders: Returning zygote-cached class loader: /system/framework/org.apache.http.legacy.jar
+10-21 13:15:47.114   368   368 D Zygote  : Forked child process 2105
+10-21 13:15:47.192   579   638 I ActivityManager: Start proc 2105:com.android.dynsystem/1000 for broadcast {com.android.dynsystem/com.android.dynsystem.BootCompletedReceiver}
+10-21 13:15:47.529   368   368 D Zygote  : Forked child process 2147
+10-21 13:15:47.530   579   638 I ActivityManager: Start proc 2147:com.android.dynsystem:dynsystem/1000 for service {com.android.dynsystem/com.android.dynsystem.DynamicSystemInstallationService}
+10-21 13:15:47.537   368   368 D Zygote  : Forked child process 2148
+10-21 13:15:47.552   579  1697 I ActivityManager: Start proc 2148:com.android.imsserviceentitlement/u0a141 for broadcast {com.android.imsserviceentitlement/com.android.imsserviceentitlement.fcm.FcmRegistrationReceiver}
+10-21 13:15:47.691  2148  2148 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.extensions.jar
+10-21 13:15:47.691  2148  2148 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.sidecar.jar
+10-21 13:15:47.860   368   368 I Zygote  : Process 1466 exited due to signal 9 (Killed)
+10-21 13:15:47.893   368   368 I Zygote  : Process 1686 exited due to signal 9 (Killed)
+10-21 13:15:48.035   368   368 D Zygote  : Forked child process 2208
+10-21 13:15:48.036   579   638 I ActivityManager: Start proc 2208:com.android.managedprovisioning/u0a100 for broadcast {com.android.managedprovisioning/com.android.managedprovisioning.BootReminder}
+10-21 13:15:48.118   368   368 I Zygote  : Process 1401 exited due to signal 9 (Killed)
+10-21 13:15:48.182  2208  2208 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.extensions.jar
+10-21 13:15:48.182  2208  2208 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.sidecar.jar
+10-21 13:15:48.506   368   368 D Zygote  : Forked child process 2230
+10-21 13:15:48.508   579   638 I ActivityManager: Start proc 2230:com.google.android.apps.wallpaper/u0a181 for content provider {com.google.android.apps.wallpaper/com.google.android.apps.wallpaper.provider.RecentWallpapersProvider}
+10-21 13:15:48.767   579   638 W ActivityManager: Slow operation: 79ms so far, now at startProcess: asking zygote to start proc
+10-21 13:15:48.783   368   368 D Zygote  : Forked child process 2243
+10-21 13:15:48.785   579   638 W ActivityManager: Slow operation: 97ms so far, now at startProcess: returned from zygote!
+10-21 13:15:48.785   579   638 I ActivityManager: Start proc 2243:com.android.providers.calendar/u0a93 for broadcast {com.android.providers.calendar/com.android.providers.calendar.CalendarReceiver}
+10-21 13:15:49.084  2230  2230 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.extensions.jar
+10-21 13:15:49.084  2230  2230 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.sidecar.jar
+10-21 13:15:49.084  2230  2230 D ApplicationLoaders: Returning zygote-cached class loader: /system/framework/org.apache.http.legacy.jar
+10-21 13:15:49.639   368   368 D Zygote  : Forked child process 2284
+10-21 13:15:49.639   579   638 I ActivityManager: Start proc 2284:com.google.android.apps.photos/u0a168 for service {com.google.android.apps.photos/com.google.android.libraries.notifications.entrypoints.scheduled.ScheduledTaskService}
+10-21 13:15:49.748  2284  2284 D ApplicationLoaders: Returning zygote-cached class loader: /system/framework/org.apache.http.legacy.jar
+10-21 13:15:49.748  2284  2284 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.extensions.jar
+10-21 13:15:49.748  2284  2284 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.sidecar.jar
+10-21 13:15:49.756   368   368 D Zygote  : Forked child process 2302
+10-21 13:15:49.758   579   638 I ActivityManager: Start proc 2302:com.android.shell/2000 for broadcast {com.android.shell/com.android.shell.HeapDumpReceiver}
+10-21 13:15:50.061   368   368 D Zygote  : Forked child process 2325
+10-21 13:15:50.061   579   638 I ActivityManager: Start proc 2325:com.google.android.apps.restore/u0a135 for broadcast {com.google.android.apps.restore/androidx.work.impl.background.systemalarm.RescheduleReceiver}
+10-21 13:15:50.110  2325  2325 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.extensions.jar
+10-21 13:15:50.114  2325  2325 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.sidecar.jar
+10-21 13:15:50.158   368   368 D Zygote  : Forked child process 2339
+10-21 13:15:50.158   579   638 I ActivityManager: Start proc 2339:com.google.android.settings.intelligence/u0a138 for service {com.google.android.settings.intelligence/com.google.android.settings.intelligence.modules.routines.impl.PruneDatabaseJobService}
+10-21 13:15:50.231  2339  2339 D ApplicationLoaders: Returning zygote-cached class loader: /system/framework/org.apache.http.legacy.jar
+10-21 13:15:50.232  2339  2339 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.extensions.jar
+10-21 13:15:50.232  2339  2339 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.sidecar.jar
+10-21 13:15:50.376   368   368 I Zygote  : Process 1976 exited due to signal 9 (Killed)
+10-21 13:15:50.767   368   368 D Zygote  : Forked child process 2361
+10-21 13:15:50.768   579   638 I ActivityManager: Start proc 2361:com.google.android.tts/u0a150 for service {com.google.android.tts/com.google.android.apps.speech.tts.googletts.service.GoogleTtsService}
+10-21 13:15:51.385  2361  2361 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.extensions.jar
+10-21 13:15:51.385  2361  2361 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.sidecar.jar
+10-21 13:15:52.057   368   368 D Zygote  : Forked child process 2451
+10-21 13:15:52.061   579   638 I ActivityManager: Start proc 2451:com.google.android.apps.safetyhub/u0a134 for broadcast {com.google.android.apps.safetyhub/com.google.android.apps.safetyhub.startup.StartupBroadcastReceiver_Receiver}
+10-21 13:15:52.207  2451  2451 D ApplicationLoaders: Returning zygote-cached class loader: /system/framework/org.apache.http.legacy.jar
+10-21 13:15:52.207  2451  2451 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.extensions.jar
+10-21 13:15:52.207  2451  2451 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.sidecar.jar
+10-21 13:15:53.414   906   908 I webview_zygote: Background concurrent mark compact GC freed 392KB AllocSpace bytes, 0(0B) LOS objects, 49% free, 1897KB/3794KB, paused 59us,391.220ms total 640.666ms
+10-21 13:15:53.944  2012  2012 W GnpSdk  : 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:886)
+10-21 13:15:54.408   368   368 D Zygote  : Forked child process 2555
+10-21 13:15:54.410   579   638 I ActivityManager: Start proc 2555:com.google.android.configupdater/u0a139 for broadcast {com.google.android.configupdater/com.google.android.configupdater.MainReceiver}
+10-21 13:15:55.515   368   368 D Zygote  : Forked child process 2583
+10-21 13:15:55.516   579   638 I ActivityManager: Start proc 2583:com.google.android.federatedcompute/u0a189 for broadcast {com.google.android.federatedcompute/com.android.federatedcompute.services.FederatedComputeBroadcastReceiver}
+10-21 13:15:55.778  2012  2114 D ApplicationLoaders: Returning zygote-cached class loader: /system/framework/org.apache.http.legacy.jar
+10-21 13:15:55.829  2012  2114 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.extensions.jar
+10-21 13:15:55.829  2012  2114 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.sidecar.jar
+10-21 13:15:55.838   368   368 D Zygote  : Forked child process 2614
+10-21 13:15:55.848   579   638 I ActivityManager: Start proc 2614:com.android.traceur/u0a117 for content provider {com.android.traceur/com.android.traceur.SearchProvider}
+10-21 13:15:55.960   368   368 D Zygote  : Forked child process 2635
+10-21 13:15:55.972   579   638 I ActivityManager: Start proc 2635:com.google.android.healthconnect.controller/u0a186 for broadcast {com.google.android.healthconnect.controller/com.android.healthconnect.controller.safetycenter.SafetySourceBroadcastReceiver}
+10-21 13:15:56.023   368   368 D Zygote  : Forked child process 2656
+10-21 13:15:56.079   579  1648 I ActivityManager: Start proc 2656:com.google.android.gms.ui/u0a144 for content provider {com.google.android.gms/com.google.android.gms.app.search.GmsSearchIndexablesProvider}
+10-21 13:15:56.140  2614  2614 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.extensions.jar
+10-21 13:15:56.141  2614  2614 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.sidecar.jar
+10-21 13:15:56.172  2656  2656 D ApplicationLoaders: Returning zygote-cached class loader: /system/framework/org.apache.http.legacy.jar
+10-21 13:15:56.175  2635  2635 D ApplicationLoaders: Returning zygote-cached class loader: /system/framework/org.apache.http.legacy.jar
+10-21 13:15:56.175  2635  2635 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.extensions.jar
+10-21 13:15:56.175  2635  2635 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.sidecar.jar
+10-21 13:15:56.201  2656  2656 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.extensions.jar
+10-21 13:15:56.201  2656  2656 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.sidecar.jar
+10-21 13:15:57.949   368   368 D Zygote  : Forked child process 2718
+10-21 13:15:57.954   579   638 I ActivityManager: Start proc 2718:com.google.android.marvin.talkback/u0a160 for content provider {com.google.android.marvin.talkback/com.google.android.accessibility.talkback.preference.search.TalkBackSearchIndexablesProvider}
+10-21 13:15:58.273   368   368 D Zygote  : Forked child process 2746
+10-21 13:15:58.285   579   638 I ActivityManager: Start proc 2746:com.google.android.ondevicepersonalization.services/u0a188 for broadcast {com.google.android.ondevicepersonalization.services/com.android.ondevicepersonalization.services.OnDevicePersonalizationBroadcastReceiver}
+10-21 13:15:58.453  2718  2718 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.extensions.jar
+10-21 13:15:58.471  2718  2718 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.sidecar.jar
+10-21 13:15:58.632   368   368 D Zygote  : Forked child process 2770
+10-21 13:15:58.638   579   638 I ActivityManager: Start proc 2770:com.google.android.gms.unstable/u0a144 for service {com.google.android.gms/com.google.android.gms.droidguard.DroidGuardService}
+10-21 13:15:59.332  2770  2770 D ApplicationLoaders: Returning zygote-cached class loader: /system/framework/org.apache.http.legacy.jar
+10-21 13:15:59.356  2770  2770 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.extensions.jar
+10-21 13:15:59.356  2770  2770 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.sidecar.jar
+10-21 13:15:59.736   579   638 W ActivityManager: Slow operation: 201ms so far, now at startProcess: asking zygote to start proc
+10-21 13:15:59.779   368   368 D Zygote  : Forked child process 2830
+10-21 13:15:59.781   579   638 W ActivityManager: Slow operation: 246ms so far, now at startProcess: returned from zygote!
+10-21 13:15:59.927   579   638 I ActivityManager: Start proc 2830:com.google.android.packageinstaller/u0a96 for broadcast {com.google.android.packageinstaller/com.android.packageinstaller.common.TemporaryFileManager}
+10-21 13:16:00.070  1477  2301 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.extensions.jar
+10-21 13:16:00.306   368   368 D Zygote  : Forked child process 2864
+10-21 13:16:00.318   579   638 I ActivityManager: Start proc 2864:com.google.android.partnersetup/u0a131 for broadcast {com.google.android.partnersetup/com.google.android.partnersetup.BootReceiver}
+10-21 13:16:00.751  2864  2864 D ApplicationLoaders: Returning zygote-cached class loader: /system/framework/org.apache.http.legacy.jar
+10-21 13:16:00.770   368   368 D Zygote  : Forked child process 2888
+10-21 13:16:00.779   579   638 I ActivityManager: Start proc 2888:com.google.android.webview:webview_service/u0a153 for service {com.google.android.webview/org.chromium.android_webview.services.VariationsSeedServer}
+10-21 13:16:01.264  2888  2888 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.extensions.jar
+10-21 13:16:01.357   906   906 W webview_zygote: Waiting for a thread to finish unregistering
+10-21 13:16:01.375   906   906 I Zygote  : Entering forkRepeatedly native zygote loop
+10-21 13:16:01.385   906   906 D Zygote  : Forked child process 2917
+10-21 13:16:01.403   579   638 W ActivityManager: Slow operation: 151ms so far, now at startProcess: returned from zygote!
+10-21 13:16:01.467   579   638 I ActivityManager: Start proc 2917:com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0/u0ai9000 for  {com.google.android.googlequicksearchbox/org.chromium.content.app.SandboxedProcessService0:0}
+10-21 13:16:01.726  2917  2917 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.extensions.jar
+10-21 13:16:01.752   368   368 D Zygote  : Forked child process 2934
+10-21 13:16:01.772   579  1613 I ActivityManager: Start proc 2934:com.google.android.rkpdapp/u0a196 for broadcast {com.google.android.rkpdapp/com.android.rkpdapp.BootReceiver}
+10-21 13:16:01.795   579   638 W ActivityManager: Slow operation: 54ms so far, now at startProcess: returned from zygote!
+10-21 13:16:02.602   368   368 D Zygote  : Forked child process 3008
+10-21 13:16:02.606   579   638 I ActivityManager: Start proc 3008:com.google.android.adservices.api/u0a190 for service {com.google.android.adservices.api/com.android.adservices.measurement.MeasurementService}
+10-21 13:16:02.811   368   368 D Zygote  : Forked child process 3036
+10-21 13:16:02.811   579   638 I ActivityManager: Start proc 3036:com.google.android.webview:webview_apk/u0a153 for service {com.google.android.webview/org.chromium.android_webview.nonembedded.AwComponentUpdateService}
+10-21 13:16:02.834  3008  3008 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.extensions.jar
+10-21 13:16:02.834  3008  3008 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.sidecar.jar
+10-21 13:16:02.944  3036  3036 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.extensions.jar
+10-21 13:16:10.547   579   660 I AppsFilter: interaction: PackageSetting{d415ca5 dev.tideglass.game/10209} -> PackageSetting{bace87a com.google.android.partnersetup/10131} BLOCKED
+10-21 13:16:10.547   579   660 I AppsFilter: interaction: PackageSetting{fd0582b dev.tideglass.tideglass/10207} -> PackageSetting{bace87a com.google.android.partnersetup/10131} BLOCKED
+10-21 13:16:11.454  2012  2012 E BugleRcsEngine: 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:886)
+10-21 13:16:26.930   368   368 I Zygote  : Process 963 exited due to signal 9 (Killed)
+10-21 13:16:27.022   368   368 D Zygote  : Forked child process 3382
+10-21 13:16:27.022   579   638 W ActivityManager: Slow operation: 85ms so far, now at startProcess: returned from zygote!
+10-21 13:16:27.030   579   638 I ActivityManager: Start proc 3382:com.android.settings/1000 for content provider {com.android.settings/com.android.settings.search.SettingsSearchIndexablesProvider}
+10-21 13:16:27.471   579   660 I AppsFilter: interaction: PackageSetting{d415ca5 dev.tideglass.game/10209} -> PackageSetting{94ba3c9 com.google.android.settings.intelligence/10138} BLOCKED
+10-21 13:16:27.472   579   660 I AppsFilter: interaction: PackageSetting{fd0582b dev.tideglass.tideglass/10207} -> PackageSetting{94ba3c9 com.google.android.settings.intelligence/10138} BLOCKED
+10-21 13:16:27.475  3382  3382 D ApplicationLoaders: Returning zygote-cached class loader: /system/framework/org.apache.http.legacy.jar
+10-21 13:16:27.475  3382  3382 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.extensions.jar
+10-21 13:16:27.475  3382  3382 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.sidecar.jar
+10-21 13:16:30.024   368   368 I Zygote  : Process 2614 exited due to signal 9 (Killed)
+10-21 13:16:30.037   368   368 D Zygote  : Forked child process 3459
+10-21 13:16:30.038   579   638 I ActivityManager: Start proc 3459:com.android.traceur/u0a117 for content provider {com.android.traceur/com.android.traceur.SearchProvider}
+10-21 13:16:30.140  3459  3459 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.extensions.jar
+10-21 13:16:30.140  3459  3459 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.sidecar.jar
+10-21 13:16:30.181   368   368 D Zygote  : Forked child process 3495
+10-21 13:16:30.185   368   368 I Zygote  : Process 2635 exited due to signal 9 (Killed)
+10-21 13:16:30.200   579   638 I ActivityManager: Start proc 3495:com.google.android.healthconnect.controller/u0a186 for content provider {com.google.android.healthconnect.controller/com.android.healthconnect.controller.searchindexables.HealthConnectSearchIndexablesProvider}
+10-21 13:16:30.202   368   368 I Zygote  : Process 1198 exited due to signal 9 (Killed)
+10-21 13:16:30.209   579   638 W ActivityManager: Slow operation: 87ms so far, now at startProcess: asking zygote to start proc
+10-21 13:16:30.223   368   368 D Zygote  : Forked child process 3515
+10-21 13:16:30.227   579   638 W ActivityManager: Slow operation: 105ms so far, now at startProcess: returned from zygote!
+10-21 13:16:30.227   579   638 I ActivityManager: Start proc 3515:com.google.android.cellbroadcastreceiver/u0a184 for content provider {com.google.android.cellbroadcastreceiver/com.android.cellbroadcastreceiver.CellBroadcastSearchIndexableProvider}
+10-21 13:16:30.288  3515  3515 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.extensions.jar
+10-21 13:16:30.288  3515  3515 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.sidecar.jar
+10-21 13:16:30.291  3495  3495 D ApplicationLoaders: Returning zygote-cached class loader: /system/framework/org.apache.http.legacy.jar
+10-21 13:16:30.291  3495  3495 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.extensions.jar
+10-21 13:16:30.291  3495  3495 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.sidecar.jar
+10-21 13:20:05.399     1     1 I init    : processing action (persist.device_config.lmkd_native.thrashing_limit_critical=*) from (/system/etc/init/lmkd.rc:47)
+10-21 13:20:05.401     1     1 I init    : processing action (lmkd.reinit=1) from (/system/etc/init/lmkd.rc:10)
+10-21 13:20:05.402     1     1 I init    : starting service 'exec 24 (/system/bin/lmkd --reinit)'...
+10-21 13:20:05.440     1     1 I init    : ... started service 'exec 24 (/system/bin/lmkd --reinit)' has pid 3739
+10-21 13:20:05.418   155   155 I lowmemorykiller: lmkd data connection established
+10-21 13:20:05.456  3739  3739 I lowmemorykiller: lmkd updated properties successfully
+10-21 13:20:05.457   155   155 I lowmemorykiller: lmkd data connection dropped
+10-21 13:20:05.457   155   155 I lowmemorykiller: closing lmkd data connection
+10-21 13:20:05.494     1     1 I init    : Service 'exec 24 (/system/bin/lmkd --reinit)' (pid 3739) exited with status 0 oneshot service took 0.086000 seconds in background
+10-21 13:20:05.494     1     1 I init    : Sending signal 9 to service 'exec 24 (/system/bin/lmkd --reinit)' (pid 3739) process group...
+10-21 13:20:05.537   368   368 W Zygote  : forkRepeatedly terminated due to non-simple command
+10-21 13:20:05.537   368   368 D Zygote  : mbuffer starts with 1 , nice name is , mEnd = 35, mNext = 35, mLinesLeft = 0, mFd = 5
+10-21 13:24:08.620   368   368 I Zygote  : Process 1307 exited due to signal 9 (Killed)
+10-21 13:24:56.149   368   368 I Zygote  : Process 2012 exited due to signal 9 (Killed)
+10-21 13:25:41.675   368   368 I Zygote  : Entering forkRepeatedly native zygote loop
+10-21 13:25:41.697   368   368 D Zygote  : Forked child process 3817
+10-21 13:25:41.698   579   638 I ActivityManager: Start proc 3817:com.google.android.apps.messaging/u0a137 for content provider {com.google.android.apps.messaging/com.google.android.apps.messaging.shared.datamodel.provider.sharedstorage.SharedStorageProvider}
+10-21 13:25:41.830  3817  3817 D ApplicationLoaders: Returning zygote-cached class loader: /system/framework/org.apache.http.legacy.jar
+10-21 13:25:41.848   368   368 I Zygote  : Process 2718 exited due to signal 9 (Killed)
+10-21 13:25:41.853   368   368 I Zygote  : Process 2746 exited due to signal 9 (Killed)
+10-21 13:25:41.889   368   368 I Zygote  : Process 2033 exited due to signal 9 (Killed)
+10-21 13:25:41.889  3817  3817 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.extensions.jar
+10-21 13:25:41.889  3817  3817 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.sidecar.jar
+10-21 13:25:41.895   368   368 I Zygote  : Process 2080 exited due to signal 9 (Killed)
+10-21 13:25:41.895   368   368 I Zygote  : Process 2147 exited due to signal 9 (Killed)
+10-21 13:25:41.895   368   368 I Zygote  : Process 2148 exited due to signal 9 (Killed)
+10-21 13:25:41.919   368   368 I Zygote  : Process 2555 exited due to signal 9 (Killed)
+10-21 13:25:41.925   368   368 I Zygote  : Process 1654 exited due to signal 9 (Killed)
+10-21 13:25:41.925   368   368 I Zygote  : Process 2105 exited due to signal 9 (Killed)
+10-21 13:25:41.927   368   368 I Zygote  : Process 2208 exited due to signal 9 (Killed)
+10-21 13:25:41.931   368   368 I Zygote  : Process 3036 exited due to signal 9 (Killed)
+10-21 13:25:41.935   368   368 I Zygote  : Process 2325 exited due to signal 9 (Killed)
+10-21 13:25:41.936   368   368 I Zygote  : Process 2243 exited due to signal 9 (Killed)
+10-21 13:25:41.946   368   368 I Zygote  : Process 2583 exited due to signal 9 (Killed)
+10-21 13:25:41.946   368   368 I Zygote  : Process 2888 exited due to signal 9 (Killed)
+10-21 13:25:41.950   368   368 I Zygote  : Process 1640 exited due to signal 9 (Killed)
+10-21 13:25:41.959   368   368 I Zygote  : Process 2302 exited due to signal 9 (Killed)
+10-21 13:25:41.964   368   368 I Zygote  : Process 2830 exited due to signal 9 (Killed)
+10-21 13:25:41.968   368   368 I Zygote  : Process 3008 exited due to signal 9 (Killed)
+10-21 13:25:41.976   368   368 I Zygote  : Process 2451 exited due to signal 9 (Killed)
+10-21 13:25:41.991   368   368 I Zygote  : Process 2361 exited due to signal 9 (Killed)
+10-21 13:25:57.216  3817  3817 E BugleRcsEngine: 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:886)
+10-21 13:27:57.323   368   368 I Zygote  : Process 2864 exited due to signal 9 (Killed)
+10-21 13:32:03.177   368   368 D Zygote  : Forked child process 3945
+10-21 13:32:03.188   579   638 W ActivityManager: Slow operation: 419ms so far, now at startProcess: returned from zygote!
+10-21 13:32:03.189   579   638 I ActivityManager: Start proc 3945:com.google.android.configupdater/u0a139 for broadcast {com.google.android.configupdater/com.google.android.configupdater.PhenotypeBroadcastReceiver}
+10-21 13:42:37.540   368   368 I Zygote  : Process 1553 exited due to signal 9 (Killed)
+10-21 13:49:11.079   579   637 I ActivityManager: Force stopping dev.tideglass.game appid=10209 user=-1: installPackageLI
+10-21 13:49:11.094   579   660 I PackageManager: Update package dev.tideglass.game code path from /data/app/~~zgUQtAuJd-muuqcaR9inzw==/dev.tideglass.game-0hYpX8YWg3K_oDn8-jHgHw== to /data/app/~~Q7LBJR7WylB9-rZddNf6gQ==/dev.tideglass.game-WiyVVtk4mrDVruz_9TgfsA==; Retain data and using new
+10-21 13:49:11.213   579   660 I AppsFilter: interaction: PackageSetting{172f7b0 dev.tideglass.tideglass/10207} -> PackageSetting{2abc155 dev.tideglass.game/10209} BLOCKED
+10-21 13:49:11.274   579   660 I AppsFilter: interaction: PackageSetting{172f7b0 dev.tideglass.tideglass/10207} -> PackageSetting{1444746 dev.tideglass.game/10209} BLOCKED
+10-21 13:49:12.009   368   368 I Zygote  : Process 2934 exited due to signal 9 (Killed)
+10-21 13:49:12.059   368   368 I Zygote  : Process 1682 exited due to signal 9 (Killed)
+10-21 13:49:13.921   579   660 I AppsFilter: interaction: PackageSetting{fd0582b dev.tideglass.tideglass/10207} -> PackageSetting{70207b3 dev.tideglass.game/10209} BLOCKED
+10-21 13:49:14.771   579   660 I ActivityManager: Force stopping dev.tideglass.game appid=10209 user=0: pkg removed
+10-21 13:49:17.589   579   721 W PackageConfigPersister: App-specific configuration not found for packageName: dev.tideglass.game and userId: 0
+10-21 13:49:17.725   368   368 I Zygote  : Process 3459 exited due to signal 9 (Killed)
+10-21 13:49:17.880   579   793 D ShortcutService: replacing package: dev.tideglass.game userId0
+10-21 13:49:17.886   579   793 D ShortcutService: handlePackageUpdateFinished: dev.tideglass.game user=0
+10-21 13:49:18.012   579   638 W ActivityManager: Slow operation: 166ms so far, now at startProcess: asking zygote to start proc
+10-21 13:49:18.492   579   793 D ShortcutService: rescanPackageIfNeeded 0@dev.tideglass.game, forceRescan=true , isNewApp=true
+10-21 13:49:18.796   579   793 D ShortcutService: Package dev.tideglass.game has 0 manifest shortcut(s), and 0 share target(s)
+10-21 13:49:18.844   368   368 D Zygote  : Forked child process 4167
+10-21 13:49:18.845   579   638 W ActivityManager: Slow operation: 998ms so far, now at startProcess: returned from zygote!
+10-21 13:49:18.845   579   638 I ActivityManager: Start proc 4167:com.android.keychain/1000 for service {com.android.keychain/com.android.keychain.KeyChainService}
+10-21 13:49:18.878  3817  3817 D ActivityThread: Package [dev.tideglass.game] reported as REPLACED, but missing application info. Assuming REMOVED.
+10-21 13:49:18.889  1353  1353 D ActivityThread: Package [dev.tideglass.game] reported as REPLACED, but missing application info. Assuming REMOVED.
+10-21 13:49:18.893  3382  3382 D ActivityThread: Package [dev.tideglass.game] reported as REPLACED, but missing application info. Assuming REMOVED.
+10-21 13:49:18.894  1411  1411 D ActivityThread: Package [dev.tideglass.game] reported as REPLACED, but missing application info. Assuming REMOVED.
+10-21 13:49:18.907   579   579 I Telecom : CarModeTracker: Package dev.tideglass.game is not tracked.: SSH.oR@AD0🔒
+10-21 13:49:18.925  2339  2339 D ActivityThread: Package [dev.tideglass.game] reported as REPLACED, but missing application info. Assuming REMOVED.
+10-21 13:49:18.938   884   884 D ActivityThread: Package [dev.tideglass.game] reported as REPLACED, but missing application info. Assuming REMOVED.
+10-21 13:49:18.941   833   833 D ActivityThread: Package [dev.tideglass.game] reported as REPLACED, but missing application info. Assuming REMOVED.
+10-21 13:49:18.941  1422  1422 D ActivityThread: Package [dev.tideglass.game] reported as REPLACED, but missing application info. Assuming REMOVED.
+10-21 13:49:18.993  1227  1227 D ActivityThread: Package [dev.tideglass.game] reported as REPLACED, but missing application info. Assuming REMOVED.
+10-21 13:49:18.995  1289  1289 D ActivityThread: Package [dev.tideglass.game] reported as REPLACED, but missing application info. Assuming REMOVED.
+10-21 13:49:19.008  2917  2917 D ActivityThread: Package [dev.tideglass.game] reported as REPLACED, but missing application info. Assuming REMOVED.
+10-21 13:49:19.053   579   805 I SdkSandboxManager: No SDKs used. Skipping SDK data reconcilation for CallingInfo{mUid=10209, mPackageName='dev.tideglass.game, mAppProcessToken='null'}
+10-21 13:49:19.053  1384  1384 D ActivityThread: Package [dev.tideglass.game] reported as REPLACED, but missing application info. Assuming REMOVED.
+10-21 13:49:19.054  1090  1090 D ActivityThread: Package [dev.tideglass.game] reported as REPLACED, but missing application info. Assuming REMOVED.
+10-21 13:49:19.097  1351  1351 D ActivityThread: Package [dev.tideglass.game] reported as REPLACED, but missing application info. Assuming REMOVED.
+10-21 13:49:19.155   579   805 I SdkSandboxManager: No SDKs used. Skipping SDK data reconcilation for CallingInfo{mUid=10209, mPackageName='dev.tideglass.game, mAppProcessToken='null'}
+10-21 13:49:19.392  1000  1000 D ActivityThread: Package [dev.tideglass.game] reported as REPLACED, but missing application info. Assuming REMOVED.
+10-21 13:49:19.570  1170  1170 D ActivityThread: Package [dev.tideglass.game] reported as REPLACED, but missing application info. Assuming REMOVED.
+10-21 13:49:19.690   927   927 D ActivityThread: Package [dev.tideglass.game] reported as REPLACED, but missing application info. Assuming REMOVED.
+10-21 13:49:20.455  1519  1519 D ActivityThread: Package [dev.tideglass.game] reported as REPLACED, but missing application info. Assuming REMOVED.
+10-21 13:49:20.580   579   579 D ActivityThread: Package [dev.tideglass.game] reported as REPLACED, but missing application info. Assuming REMOVED.
+10-21 13:49:20.591   579   579 W AlarmManager: Package dev.tideglass.game, uid 10209 lost permission to set exact alarms!
+10-21 13:49:20.759   368   368 D Zygote  : Forked child process 4182
+10-21 13:49:20.783   579   638 W ActivityManager: Slow operation: 189ms so far, now at startProcess: returned from zygote!
+10-21 13:49:20.784   579   638 I ActivityManager: Start proc 4182:com.google.android.apps.wellbeing/u0a140 for content provider {com.google.android.apps.wellbeing/com.google.android.apps.wellbeing.api.impl.WellbeingSettingsProvider}
+10-21 13:49:21.318   956   956 D CarrierSvcBindHelper: onPackageUpdateFinished: dev.tideglass.game
+10-21 13:49:21.439   956   956 D CarrierSvcBindHelper: onPackageModified: dev.tideglass.game
+10-21 13:49:22.630  1477  1477 D ActivityThread: Package [dev.tideglass.game] reported as REPLACED, but missing application info. Assuming REMOVED.
+10-21 13:49:22.676  1170  1170 I SafetyLabelChangedBroadcastReceiver: received broadcast packageName: dev.tideglass.game, current user: UserHandle{0}, packageChangeEvent: UPDATE, intent user: UserHandle{0}
+10-21 13:49:22.963  1353  1353 I AiAiEcho: AppFetcherImpl onPackageChanged dev.tideglass.game.
+10-21 13:49:23.057  1227  1252 D PackageUpdatedTask: Package updated: mOp=UPDATE packages=[dev.tideglass.game]
+10-21 13:49:23.194   579   877 I ActivityManager: Force stopping dev.tideglass.game appid=10209 user=0: from pid 4186
+10-21 13:49:23.421  1353  4193 I AiAiEcho: AppIndexer Package:[dev.tideglass.game] UserProfile:[0] Enabled:[true].
+10-21 13:49:23.425  1353  4193 I AiAiEcho: AppFetcherImplV2 updateApps package:[dev.tideglass.game], userId:[0], reason:[package is updated.].
+10-21 13:49:23.573   579   877 I AppsFilter: interaction: PackageSetting{fd0582b dev.tideglass.tideglass/10207} -> PackageSetting{254ccb4 dev.tideglass.game/10209} BLOCKED
+10-21 13:49:24.688   956  1147 D ImsResolver: maybeAddedImsService, packageName: dev.tideglass.game
+10-21 13:49:26.976   579   776 I AppWidgetServiceImpl: Updating package stopped masked state for uid 10209 package dev.tideglass.game isStopped true
+10-21 13:49:29.705   956   956 D ActivityThread: Package [dev.tideglass.game] reported as REPLACED, but missing application info. Assuming REMOVED.
+10-21 13:49:35.597   956   956 D CarrierSvcBindHelper: onHandleForceStop: [dev.tideglass.game]
+10-21 13:49:39.606   579  1074 I ActivityTaskManager: START u0 {flg=0x10000000 cmp=dev.tideglass.game/.MainActivity} with LAUNCH_SINGLE_TOP from uid 2000 (BAL_ALLOW_PERMISSION) result code=0
+10-21 13:49:39.639   833   878 V WindowManagerShell: Transition requested (#6): android.os.BinderProxy@eb627a3 TransitionRequestInfo { type = OPEN, triggerTask = TaskInfo{userId=0 taskId=21 displayId=0 isRunning=true baseIntent=Intent { flg=0x10000000 cmp=dev.tideglass.game/.MainActivity } baseActivity=ComponentInfo{dev.tideglass.game/dev.tideglass.game.MainActivity} topActivity=ComponentInfo{dev.tideglass.game/dev.tideglass.game.MainActivity} origActivity=null realActivity=ComponentInfo{dev.tideglass.game/dev.tideglass.game.MainActivity} numActivities=1 lastActiveTime=2087294 supportsMultiWindow=true resizeMode=1 isResizeable=true minWidth=-1 minHeight=-1 defaultMinSize=220 token=WCT{android.window.IWindowContainerToken$Stub$Proxy@eb4baa0} topActivityType=1 pictureInPictureParams=null shouldDockBigOverlays=false launchIntoPipHostTaskId=-1 lastParentTaskIdBeforePip=-1 displayCutoutSafeInsets=Rect(0, 128 - 0, 0) topActivityInfo=ActivityInfo{b906659 dev.tideglass.game.MainActivity} launchCookies=[] positionInParent=Point(0, 0) parentTaskId=-1 isFocused=false isVisible=false isVisibleRequested=false isSleeping=false locusId=null displayAreaFeatureId=1 isTopActivityTransparent=false appCompatTaskInfo=AppCompatTaskInfo { topActivityInSizeCompat=false topActivityEligibleForLetterboxEducation= falseisLetterboxEducationEnabled= true isLetterboxDoubleTapEnabled= false topActivityEligibleForUserAspectRatioButton= false topActivityBoundsLetterboxed= false isFromLetterboxDoubleTap= false topActivityLetterboxVerticalPosition= -1 topActivityLetterboxHorizontalPosition= -1 topActivityLetterboxWidth=1080 topActivityLetterboxHeight=2400 isUserFullscreenOverrideEnabled=false isSystemFullscreenOverrideEnabled=false cameraCompatTaskInfo=CameraCompatTaskInfo { cameraCompatControlState=hidden freeformCameraCompatMode=inactive}}}, pipTask = null, remoteTransition = null, displayChange = null, flags = 0, debugId = 6 }
+10-21 13:49:42.181   579  1702 I AppsFilter: interaction: PackageSetting{fd0582b dev.tideglass.tideglass/10207} -> PackageSetting{1357a37 dev.tideglass.game/10209} BLOCKED
+10-21 13:49:42.876  1227  1227 I TopTaskTracker: onTaskMovedToFront: (moved taskInfo to front) taskId=21, baseIntent=Intent { flg=0x10000000 cmp=dev.tideglass.game/.MainActivity }
+10-21 13:49:44.190   579   638 W ActivityManager: Slow operation: 176ms so far, now at startProcess: asking zygote to start proc
+10-21 13:49:45.159   368   368 D Zygote  : Forked child process 4222
+10-21 13:49:45.339   579   638 W ActivityManager: Slow operation: 1231ms so far, now at startProcess: returned from zygote!
+10-21 13:49:45.530  4222  4222 I .tideglass.game: Late-enabling -Xcheck:jni
+10-21 13:49:46.760   579   637 I ActivityManager: Killing 4182:com.google.android.apps.wellbeing/u0a140 (adj 0): start timeout
+10-21 13:49:46.904   579   638 I ActivityManager: Start proc 4222:dev.tideglass.game/u0a209 for next-top-activity {dev.tideglass.game/dev.tideglass.game.MainActivity}
+10-21 13:49:48.074  1090  4227 I ProximityAuth: [RecentAppsMediator] Package added: (user=UserHandle{0}) dev.tideglass.game
+10-21 13:49:49.055   579   630 I BLASTSyncEngine: Unfinished container: ActivityRecord{77fbbe5 u0 dev.tideglass.game/.MainActivity t21}
+10-21 13:49:49.056   579   630 I BLASTSyncEngine:   Window{de0ea79 u0 Splash Screen dev.tideglass.game} NO_SURFACE
+10-21 13:49:49.056   579   630 I BLASTSyncEngine: Unfinished container: Task{4c0f6ba #21 type=standard I=dev.tideglass.game/.MainActivity}
+10-21 13:49:49.056   579   630 I BLASTSyncEngine:   Window{de0ea79 u0 Splash Screen dev.tideglass.game} NO_SURFACE
+10-21 13:49:49.489   579   776 I AppWidgetServiceImpl: Updating package stopped masked state for uid 10209 package dev.tideglass.game isStopped false
+10-21 13:49:49.589  4222  4222 I .tideglass.game: Using CollectorTypeCMC GC.
+10-21 13:49:50.044   416   461 I adbd    : jdwp connection from 4222
+10-21 13:49:51.060   579   627 V WindowManager: Sent Transition (#6) createdAt=10-21 13:49:38.308 via request=TransitionRequestInfo { type = OPEN, triggerTask = TaskInfo{userId=0 taskId=21 displayId=0 isRunning=true baseIntent=Intent { flg=0x10000000 cmp=dev.tideglass.game/.MainActivity } baseActivity=ComponentInfo{dev.tideglass.game/dev.tideglass.game.MainActivity} topActivity=ComponentInfo{dev.tideglass.game/dev.tideglass.game.MainActivity} origActivity=null realActivity=ComponentInfo{dev.tideglass.game/dev.tideglass.game.MainActivity} numActivities=1 lastActiveTime=2087294 supportsMultiWindow=true resizeMode=1 isResizeable=true minWidth=-1 minHeight=-1 defaultMinSize=220 token=WCT{RemoteToken{e796ad0 Task{4c0f6ba #21 type=standard I=dev.tideglass.game/.MainActivity}}} topActivityType=1 pictureInPictureParams=null shouldDockBigOverlays=false launchIntoPipHostTaskId=-1 lastParentTaskIdBeforePip=-1 displayCutoutSafeInsets=Rect(0, 128 - 0, 0) topActivityInfo=ActivityInfo{51e0ac9 dev.tideglass.game.MainActivity} launchCookies=[] positionInParent=Point(0, 0) parentTaskId=-1 isFocused=false isVisible=false isVisibleRequested=false isSleeping=false locusId=null displayAreaFeatureId=1 isTopActivityTransparent=false appCompatTaskInfo=AppCompatTaskInfo { topActivityInSizeCompat=false topActivityEligibleForLetterboxEducation= falseisLetterboxEducationEnabled= true isLetterboxDoubleTapEnabled= false topActivityEligibleForUserAspectRatioButton= false topActivityBoundsLetterboxed= false isFromLetterboxDoubleTap= false topActivityLetterboxVerticalPosition= -1 topActivityLetterboxHorizontalPosition= -1 topActivityLetterboxWidth=1080 topActivityLetterboxHeight=2400 isUserFullscreenOverrideEnabled=false isSystemFullscreenOverrideEnabled=false cameraCompatTaskInfo=CameraCompatTaskInfo { cameraCompatControlState=hidden freeformCameraCompatMode=inactive}}}, pipTask = null, remoteTransition = null, displayChange = null, flags = 0, debugId = 6 }
+10-21 13:49:51.061   579   627 V WindowManager:         {WCT{RemoteToken{e796ad0 Task{4c0f6ba #21 type=standard I=dev.tideglass.game/.MainActivity}}} m=OPEN f=NONE leash=Surface(name=Task=21)/@0xc7a8e34 sb=Rect(0, 0 - 1080, 2400) eb=Rect(0, 0 - 1080, 2400) d=0 taskParent=-1},
+10-21 13:49:51.828  4222  4222 D nativeloader: Load libframework-connectivity-tiramisu-jni.so using APEX ns com_android_tethering for caller /apex/com.android.tethering/javalib/framework-connectivity-t.jar: ok
+10-21 13:49:55.557   579   637 I ActivityManager: Extending process start timeout by 3366ms for ProcessRecord{aff5d45 4182:com.google.android.apps.wellbeing/u0a140}
+10-21 13:49:57.573   579   870 D CoreBackPreview: Window{de0ea79 u0 Splash Screen dev.tideglass.game}: Setting back callback OnBackInvokedCallbackInfo{mCallback=android.window.IOnBackInvokedCallback$Stub$Proxy@e5e3242, mPriority=0, mIsAnimationCallback=false}
+10-21 13:49:57.643  1519  4223 W SQLiteLog: (28) double-quoted string literal: "dev.tideglass.game"
+10-21 13:50:04.661   579   637 W ActivityManager: Process ProcessRecord{1a5a1a 4222:dev.tideglass.game/u0a209} failed to attach
+10-21 13:50:04.687   579   637 W ActivityTaskManager: ProcessRecord{1a5a1a 4222:dev.tideglass.game/u0a209} is removed with pending start ActivityRecord{77fbbe5 u0 dev.tideglass.game/.MainActivity t21}
+10-21 13:50:05.287   833   878 V WindowManagerShell: Transition requested (#7): android.os.BinderProxy@774dcde TransitionRequestInfo { type = CLOSE, triggerTask = TaskInfo{userId=0 taskId=21 displayId=0 isRunning=false baseIntent=Intent { flg=0x10000000 cmp=dev.tideglass.game/.MainActivity } baseActivity=null topActivity=null origActivity=null realActivity=ComponentInfo{dev.tideglass.game/dev.tideglass.game.MainActivity} numActivities=0 lastActiveTime=2087294 supportsMultiWindow=true resizeMode=1 isResizeable=true minWidth=-1 minHeight=-1 defaultMinSize=220 token=WCT{android.window.IWindowContainerToken$Stub$Proxy@9c1debf} topActivityType=1 pictureInPictureParams=null shouldDockBigOverlays=false launchIntoPipHostTaskId=-1 lastParentTaskIdBeforePip=-1 displayCutoutSafeInsets=null topActivityInfo=null launchCookies=[] positionInParent=Point(0, 0) parentTaskId=-1 isFocused=false isVisible=true isVisibleRequested=true isSleeping=false locusId=null displayAreaFeatureId=1 isTopActivityTransparent=false appCompatTaskInfo=AppCompatTaskInfo { topActivityInSizeCompat=false topActivityEligibleForLetterboxEducation= falseisLetterboxEducationEnabled= false isLetterboxDoubleTapEnabled= false topActivityEligibleForUserAspectRatioButton= false topActivityBoundsLetterboxed= false isFromLetterboxDoubleTap= false topActivityLetterboxVerticalPosition= -1 topActivityLetterboxHorizontalPosition= -1 topActivityLetterboxWidth=-1 topActivityLetterboxHeight=-1 isUserFullscreenOverrideEnabled=false isSystemFullscreenOverrideEnabled=false cameraCompatTaskInfo=CameraCompatTaskInfo { cameraCompatControlState=hidden freeformCameraCompatMode=inactive}}}, pipTask = null, remoteTransition = null, displayChange = null, flags = 0, debugId = 7 }
+10-21 13:50:08.008   368   368 I Zygote  : Process 4182 exited due to signal 9 (Killed)
+10-21 13:50:09.696  4222  4240 I .tideglass.game: Background concurrent mark compact GC freed 852KB AllocSpace bytes, 0(0B) LOS objects, 49% free, 1751KB/3502KB, paused 513us,186.324ms total 1.306s
+10-21 13:50:18.308   579   637 I ActivityManager: Killing 4222:dev.tideglass.game/u0a209 (adj -10000): start timeout
+10-21 13:50:21.157   579   639 W libprocessgroup: Still waiting on process(es) to exit for cgroup /sys/fs/cgroup/uid_10209/pid_4222 after 2692 ms
+10-21 13:50:21.157   579   639 E libprocessgroup: Unable to remove cgroup /sys/fs/cgroup/uid_10209/pid_4222: Device or resource busy
+10-21 13:50:22.096    72    72 I binder  : release 4222:4222 transaction 299649 out, still active
+10-21 13:50:22.227   368   368 I Zygote  : Process 4222 exited due to signal 9 (Killed)
+10-21 13:50:22.741   579   627 V WindowManager: Sent Transition (#7) createdAt=10-21 13:50:05.261 via request=TransitionRequestInfo { type = CLOSE, triggerTask = TaskInfo{userId=0 taskId=21 displayId=0 isRunning=false baseIntent=Intent { flg=0x10000000 cmp=dev.tideglass.game/.MainActivity } baseActivity=null topActivity=null origActivity=null realActivity=ComponentInfo{dev.tideglass.game/dev.tideglass.game.MainActivity} numActivities=0 lastActiveTime=2087294 supportsMultiWindow=true resizeMode=1 isResizeable=true minWidth=-1 minHeight=-1 defaultMinSize=220 token=WCT{RemoteToken{e796ad0 Task{4c0f6ba #21 type=standard I=dev.tideglass.game/.MainActivity}}} topActivityType=1 pictureInPictureParams=null shouldDockBigOverlays=false launchIntoPipHostTaskId=-1 lastParentTaskIdBeforePip=-1 displayCutoutSafeInsets=null topActivityInfo=null launchCookies=[] positionInParent=Point(0, 0) parentTaskId=-1 isFocused=false isVisible=true isVisibleRequested=true isSleeping=false locusId=null displayAreaFeatureId=1 isTopActivityTransparent=false appCompatTaskInfo=AppCompatTaskInfo { topActivityInSizeCompat=false topActivityEligibleForLetterboxEducation= falseisLetterboxEducationEnabled= false isLetterboxDoubleTapEnabled= false topActivityEligibleForUserAspectRatioButton= false topActivityBoundsLetterboxed= false isFromLetterboxDoubleTap= false topActivityLetterboxVerticalPosition= -1 topActivityLetterboxHorizontalPosition= -1 topActivityLetterboxWidth=-1 topActivityLetterboxHeight=-1 isUserFullscreenOverrideEnabled=false isSystemFullscreenOverrideEnabled=false cameraCompatTaskInfo=CameraCompatTaskInfo { cameraCompatControlState=hidden freeformCameraCompatMode=inactive}}}, pipTask = null, remoteTransition = null, displayChange = null, flags = 0, debugId = 7 }
+10-21 13:50:22.744   579   627 V WindowManager:         {WCT{RemoteToken{e796ad0 Task{4c0f6ba #21 type=standard I=dev.tideglass.game/.MainActivity}}} m=CLOSE f=NONE leash=Surface(name=Task=21)/@0xc7a8e34 sb=Rect(0, 0 - 1080, 2400) eb=Rect(0, 0 - 1080, 2400) d=0 taskParent=-1},
+10-21 13:50:22.858   579  4269 W ProcessCpuTracker: Failed to stat(/proc/4222): android.system.ErrnoException: stat failed: ENOENT (No such file or directory)
+10-21 13:50:22.858   579  4269 W ProcessCpuTracker: Skipping unknown process pid 4222
+10-21 13:50:25.075   579  3813 W InputManager-JNI: Input channel object 'de0ea79 Splash Screen dev.tideglass.game (client)' was disposed without first being removed with the input manager!
+10-21 13:50:27.762   579   638 W ActivityManager: Slow operation: 5700ms so far, now at startProcess: asking zygote to start proc
+10-21 13:50:28.267   368   368 D Zygote  : Forked child process 4270
+10-21 13:50:28.268   579   638 W ActivityManager: Slow operation: 6207ms so far, now at startProcess: returned from zygote!
+10-21 13:50:28.269   579   638 I ActivityManager: Start proc 4270:com.google.android.apps.wellbeing/u0a140 for content provider {com.google.android.apps.wellbeing/com.google.android.apps.wellbeing.api.impl.WellbeingSettingsProvider}
+10-21 13:50:29.103  1384  1384 E A       : 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:886)
+10-21 13:50:31.495   579  1698 W ActivityManager: No pending application record for pid 4222 (IApplicationThread android.app.IApplicationThread$Stub$Proxy@f4b57e5); dropping process
+10-21 13:50:32.553   579   684 W UsageStatsService: Unexpected activity event reported! (dev.tideglass.game/dev.tideglass.game.MainActivity event : 23 instanceId : 254929259)
+10-21 13:50:42.073  1384  1384 E A       : 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:886)
+10-21 13:50:42.209  4270  4270 D ApplicationLoaders: Returning zygote-cached class loader: /system/framework/org.apache.http.legacy.jar
+10-21 13:50:42.209  4270  4270 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.extensions.jar
+10-21 13:50:42.209  4270  4270 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.sidecar.jar
+10-21 13:50:42.224  1384  1384 E A       : 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:886)
+10-21 13:51:04.955  1519  1545 W gle.android.gms: ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~Q7LBJR7WylB9-rZddNf6gQ==/dev.tideglass.game-WiyVVtk4mrDVruz_9TgfsA==/base.apk' with 1 weak references

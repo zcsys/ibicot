@@ -1,0 +1,115 @@
+{
+  "review": "M2-05 original named client visual-quality criterion",
+  "criterion": "One area, all five base silhouettes and a milestone sequence establish final visual quality, including reduced-motion variants.",
+  "dependency": {
+    "id": "M1-07",
+    "status": "accepted"
+  },
+  "source_before": {
+    "implementation/program.json": "f933f8e68e0a4db58b1b2ab3bcd3f4c7619a96ca01297626817e17ee32afeef2",
+    "game/mobile/lib/harbor_art.dart": "50c7fa6e1fe63da71c5add51442a5fcef6fc46ae6f7f14079c6382c514ef6979",
+    "game/mobile/lib/producer_art.dart": "ecf1c624c01e0df5fd92801fef84bc38b218bb8bc7d23543d25cbe7ac3ff2526",
+    "game/mobile/lib/producer_art_data.dart": "305c06487d6d9d8873b5773c23e793b12f781e7b85087f90482cf75ea98e9c26",
+    "game/mobile/lib/palette.dart": "1da79c2cd009e271dcaf3dd349f20e380950fbbb67ca54e10ea5180b2ed86d83",
+    "game/mobile/lib/app.dart": "c26efdd6b59c7a8ce4404c9c8dee538b40ee2b3809be9df76e3eae537b360c20",
+    "game/mobile/test/art_catalogue_variants_test.dart": "b918a61005548a0d31fc155732f5b0ef3b02f474218ad32cc5efffa4556573e4",
+    "source/art/style-guide.md": "f5736d6554b2795dfdc102ff1794b85f488fbd45e74df60f0508e2530cb213bf",
+    "source/art/verification/check_matrix.py": "2bbf0a53b581f220bcbdb5b453ae0ebc50df4abb38f2eea33b4eb9bc4c5b1ed3",
+    "release/art/style-qualification.json": "dfcc031bfc9855538b92e7e4ba6fbb12a08237bc08bc94816ffb3d27424300a5",
+    "release/qa/integration-art-matrix-20261021T123739647573Z/ART_MATRIX_REVIEW.md": "a77553eb337fae3e8ddb7e25519bd24f6a5486c2f4e404eb1541c7199c1ff15f",
+    "release/qa/integration-art-matrix-20261021T123739647573Z/verification.json": "6305c2cad9835a0acd7cd652ff75c28b7bd9de189a9533aa39a7a9adcd9cc00f",
+    "release/qa/client-current-runtime-components-20261021T125452787579Z/M1_07_CLIENT_REVIEW.md": "323bd5ad81bcd70057244526a3ec6745805abbedcd5c17665095c7aadde2b001"
+  },
+  "source_unchanged": true,
+  "checks": [
+    {
+      "mode": "en-US",
+      "command": [
+        "python3",
+        "source/art/verification/check_matrix.py",
+        "/Users/csys/Desktop/ibicot/idle/release/art/catalogue-variants/root-art-full-20261021T122040.006324Z/matrix-results.json",
+        "--proof",
+        "/Users/csys/Desktop/ibicot/idle/release/native-proof/root-art-full-20261021T122040.006324Z",
+        "--full"
+      ],
+      "exit_code": 0,
+      "log_sha256": "c2baede8cb922a66aea2ccacdd718ec67bf616c25d6b8d4774f43506fa394108",
+      "report_sha256": "717e94848f53ad47fbfe1355e2228144e309bee7cf1a921bcb33477d49d47b91",
+      "exact_S19_ID_condition_coverage": 384,
+      "harbor_rows": 84,
+      "producer_rows": 300,
+      "reduced_harbor_rows": 42,
+      "reduced_producer_rows": 150,
+      "runtime_art_source_identical_to_current": {
+        "game/mobile/lib/harbor_art.dart": true,
+        "game/mobile/lib/producer_art.dart": true,
+        "game/mobile/lib/producer_art_data.dart": true,
+        "game/mobile/lib/palette.dart": true,
+        "game/mobile/lib/app.dart": true
+      },
+      "lifecycle": {
+        "case": "actual_app_animation_lifecycle",
+        "normal_phase_changes": true,
+        "background_phase_stops": true,
+        "resume_phase_restarts": true,
+        "os_reduce_motion_stops": true,
+        "economic_state_unchanged_at_fixed_clock": true,
+        "disposed_transient_callbacks": 0,
+        "limit": "Host lifecycle dispatch at a fixed synthetic clock, not physical background scheduling or power measurement."
+      }
+    },
+    {
+      "mode": "qps-ploc",
+      "command": [
+        "python3",
+        "source/art/verification/check_matrix.py",
+        "/Users/csys/Desktop/ibicot/idle/release/art/catalogue-variants/root-art-pseudo-full-20261021T122636.246158Z/matrix-results.json",
+        "--proof",
+        "/Users/csys/Desktop/ibicot/idle/release/native-proof/root-art-pseudo-full-20261021T122636.246158Z",
+        "--full"
+      ],
+      "exit_code": 0,
+      "log_sha256": "9289590f597cc2afbedf39f83f9a41d3e10b5143b71111fe0f1f51d1a7a959e6",
+      "report_sha256": "d132e5e2862b280e885acf870a78267d98b117fa1deef705a9dab2b09aa187f2",
+      "exact_S19_ID_condition_coverage": 384,
+      "harbor_rows": 84,
+      "producer_rows": 300,
+      "reduced_harbor_rows": 42,
+      "reduced_producer_rows": 150,
+      "runtime_art_source_identical_to_current": {
+        "game/mobile/lib/harbor_art.dart": true,
+        "game/mobile/lib/producer_art.dart": true,
+        "game/mobile/lib/producer_art_data.dart": true,
+        "game/mobile/lib/palette.dart": true,
+        "game/mobile/lib/app.dart": true
+      },
+      "lifecycle": {
+        "case": "actual_app_animation_lifecycle",
+        "normal_phase_changes": true,
+        "background_phase_stops": true,
+        "resume_phase_restarts": true,
+        "os_reduce_motion_stops": true,
+        "economic_state_unchanged_at_fixed_clock": true,
+        "disposed_transient_callbacks": 0,
+        "limit": "Host lifecycle dispatch at a fixed synthetic clock, not physical background scheduling or power measurement."
+      }
+    }
+  ],
+  "inspected_images_sha256": {
+    "source/art/registration/harbor-contact-sheet.png": "140b44fde21882b6be2678bf1b9ce91b93694100529af55310b3ee9d5522fc3a",
+    "release/art/producer-contact-sheet.png": "72fe7bc9c37402c3fbeb03f7e0d34eff45a731d5bda50e9d8abe925948bda891",
+    "release/native-proof/main-launch-20261021T103014.378318Z/ios-phone-main.png": "a4b8ab044f51c9aad52f5b4dabf22011b6f70d865d769ae787ebcd669c4b9153",
+    "release/native-proof/integration-ios-phone-20261021T111046.293625Z/ios-phone-session-start-producer-stages.png": "0d4807f2238988336072f94c8f966e87cba740c2891d8763462a313da39ec24a"
+  },
+  "current_review_reopened_images": [
+    "source/art/registration/harbor-contact-sheet.png",
+    "release/art/producer-contact-sheet.png",
+    "release/native-proof/main-launch-20261021T103014.378318Z/ios-phone-main.png"
+  ],
+  "previous_same_role_native_gallery_inspection": "release/native-proof/integration-ios-phone-20261021T111046.293625Z/ios-phone-session-start-producer-stages.png",
+  "new_flutter_or_native_runs": false,
+  "scope_acceptance_edits": false,
+  "recommendation": "accept M2-05 at its unchanged original criterion",
+  "unmet_exact_clauses": [],
+  "report_sha256": "7633378f4e1af899d0130f6223f64257ddd5c7f1b20dab12b738db647f363d29"
+}

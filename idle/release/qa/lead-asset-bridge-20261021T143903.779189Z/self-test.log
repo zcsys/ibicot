@@ -1,0 +1,70 @@
+{
+  "result": "passed_staged_source_and_lineage_checks",
+  "assertions": 17935,
+  "assets": 164,
+  "frozen_inputs": 1314,
+  "live_recheck": false,
+  "canonical_acceptance": false,
+  "adversarial": {
+    "passing_control": true,
+    "negative_cases": [
+      {
+        "case": "drop_asset",
+        "rejected": true
+      },
+      {
+        "case": "duplicate_id",
+        "rejected": true
+      },
+      {
+        "case": "drop_original_variant",
+        "rejected": true
+      },
+      {
+        "case": "fabricate_reviewer",
+        "rejected": true
+      },
+      {
+        "case": "promote_asset",
+        "rejected": true
+      },
+      {
+        "case": "claim_content_complete",
+        "rejected": true
+      },
+      {
+        "case": "remove_public_review",
+        "rejected": true
+      },
+      {
+        "case": "change_source_relation",
+        "rejected": true
+      },
+      {
+        "case": "invent_human_requirement",
+        "rejected": true
+      },
+      {
+        "case": "invent_rights",
+        "rejected": true
+      },
+      {
+        "case": "blanket_current_transfer",
+        "rejected": true
+      },
+      {
+        "case": "wrong_row_id",
+        "rejected": true
+      },
+      {
+        "case": "missing_remaining_requirements",
+        "rejected": true
+      },
+      {
+        "case": "propose_verified",
+        "rejected": true
+      }
+    ],
+    "passed": 14
+  }
+}

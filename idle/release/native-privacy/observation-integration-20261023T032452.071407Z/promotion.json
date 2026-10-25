@@ -1,0 +1,30 @@
+{
+  "author": "/root/observation_repair",
+  "reviewer": "/root/native_verifier",
+  "integrator": "/root",
+  "baseline": {
+    "tool/verify_current_runtime.py": {
+      "baseline_sha256": "34239f373943381ecaaa07c071f7e8f3f518f08a32eb17f7f7f1a22ce90637fe",
+      "live_sha256": "34239f373943381ecaaa07c071f7e8f3f518f08a32eb17f7f7f1a22ce90637fe"
+    },
+    "game/mobile/integration_test/current_runtime_test.dart": {
+      "baseline_sha256": "d34649a223a50f08b955691be036fc286131718ed9cb619444419f1b701bc155",
+      "live_sha256": "d34649a223a50f08b955691be036fc286131718ed9cb619444419f1b701bc155"
+    },
+    "tool/verify_native.py": {
+      "baseline_sha256": "68297f66fc4e32a173b17da2594872334d59ba2b88b7d5878b5ee8905f9b89e5",
+      "live_sha256": "68297f66fc4e32a173b17da2594872334d59ba2b88b7d5878b5ee8905f9b89e5"
+    }
+  },
+  "promoted_sha256": {
+    "game/mobile/integration_test/current_runtime_test.dart": "102be09eb8043ce9bb496156d9f37b1834c3084ddf58fef073e7c25cdc3c55d5",
+    "tool/verify_current_runtime.py": "d849ab8feb642eb1b988f9a6d82558491b7ebef4c63768fb4fa132f49edf3804",
+    "release/native-privacy/runtime_observation.py": "f3374fb77c83e2b12ff91a48b4c688aa07c7b66042dd75681f7ec2b5fc00febd"
+  },
+  "author_verification_sha256": "de520c87f15d3dda0a5328410b26fff212b3d740e0eee426c08c5026e23e1c30",
+  "review_verification_sha256": "ab6fa4ce10c0ee5bdd416eb8be04558512d1e763caa6ea3191a004586277929c",
+  "review": "release/qa/native-observation-retest-20261023T032106.255153Z/REVIEW.md",
+  "scoped_flutter_analysis_pending": true,
+  "native_execution_performed": false,
+  "android_storage": "explicitly unavailable"
+}

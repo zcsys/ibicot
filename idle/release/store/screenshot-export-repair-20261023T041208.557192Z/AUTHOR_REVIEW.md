@@ -1,0 +1,9 @@
+# Screenshot encoding repair author handoff
+
+The initial failed review is preserved at release/qa/client-screenshot-export-20261023T040546.847914Z. Before-source and baseline are retained here. Only release/store/tools/export_screenshots.py changed, outside frozen native input trees. No native capture or production source changed.
+
+Replaced Pillow-only opacity/sample checks with bounded native-depth decoding for noninterlaced RGB/RGBA8/16 PNG. The decoder checks signature/chunk length/CRC/header, exact bounded decompression, byte-level PNG filters0–4 and every actual alpha sample. It rejects transparency-key chunks and animation.16-bit RGB samples are deliberately rounded to nearest8-bit using(sample+128)//257; source sample loss, maximum error and depth are disclosed per image.8-bit samples remain exact. Dimensions, positions and source color definitions are preserved; there is no resize/crop/compositing. Source iCCP/cICP/gAMA/cHRM/sRGB payloads are carried verbatim; no DisplayP3→sRGB retagging. Non-color metadata is explicitly omitted. Fresh RGB8 PNG is encoded without alpha or tRNS, then independently read by Pillow to verify the declared RGB8 mapping. Source pins remain unchanged.
+
+Twenty-six author cases pass:20 combinations of RGB/RGBA8/16 across all five filters, each declared mapping and output roundtrip; rejection of native alpha65534,alpha254,RGB+tRNS,CRC corruption,truncation and trailing data. Actual four historical phone captures also export successfully. Each output IHDR is8-bit truecolor, maximum native quantization error128/65535. All four remain historical152candidate evidence, not current capture/store-ingestion qualification. These checks are authored by the implementer; separate independent retest is required.
+
+PNG decoding/filter basis: https://www.w3.org/TR/PNG/ (Third Edition,24June2025), inspected23October2026. No image-generation or synthesized UI was used.

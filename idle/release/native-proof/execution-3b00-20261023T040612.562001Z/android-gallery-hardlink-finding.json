@@ -1,0 +1,39 @@
+{
+  "scope": "Android gallery main screenshot acknowledgment failure; original failed attempt preserved, no native completion or video claim",
+  "verification": "/Users/csys/Desktop/ibicot/idle/release/native-proof/integration-android-20261023T080508.861496Z/verification.json",
+  "verification_sha256": "f74a7b88085702b1ad7df2e470a11ebd6fd1eeb9fa9b42c09c90d3433d38c5bf",
+  "display_record": "/Users/csys/Desktop/ibicot/idle/release/native-proof/execution-3b00-20261023T040612.562001Z/android-gallery-display-v3b00-android-gallery-surface-fixed.json",
+  "display_record_sha256": "9e539a7dd4383f745dbc8bc5618dc8a27ca4a679562aac21c13144d1973ed919",
+  "restored_exact_original": true,
+  "native_process_stop": {
+    "command": [
+      "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "shell",
+      "am",
+      "force-stop",
+      "dev.tideglass.game"
+    ],
+    "exit_code": 0,
+    "output": ""
+  },
+  "failed_command": {
+    "command": [
+      "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "shell",
+      "run-as",
+      "dev.tideglass.game",
+      "sh",
+      "-c",
+      "'set -C; cat > /data/user/0/dev.tideglass.game/files/native-verification/capture-android-v3b00-android-gallery-surface-fixed/screenshot-1-ready.json.pending && ln /data/user/0/dev.tideglass.game/files/native-verification/capture-android-v3b00-android-gallery-surface-fixed/screenshot-1-ready.json.pending /data/user/0/dev.tideglass.game/files/native-verification/capture-android-v3b00-android-gallery-surface-fixed/screenshot-1-ready.json && rm /data/user/0/dev.tideglass.game/files/native-verification/capture-android-v3b00-android-gallery-surface-fixed/screenshot-1-ready.json.pending'"
+    ],
+    "exit_code": 1,
+    "output": "ln: cannot create hard link from '/data/user/0/dev.tideglass.game/files/native-verification/capture-android-v3b00-android-gallery-surface-fixed/screenshot-1-ready.json.pending' to '/data/user/0/dev.tideglass.game/files/native-verification/capture-android-v3b00-android-gallery-surface-fixed/screenshot-1-ready.json': Permission denied\n"
+  },
+  "production_input_differences_after_run": [],
+  "source_snapshot_unchanged": true,
+  "recorded_utc": "2026-10-23T08:07:07.470825+00:00"
+}

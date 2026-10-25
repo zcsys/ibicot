@@ -1,0 +1,14 @@
+release/store/tools/export_preview.swift:10:1: error: expressions are not allowed at the top level
+  8 | }
+  9 | 
+ 10 | Task {
+    | `- error: expressions are not allowed at the top level
+ 11 |     do {
+ 12 |         guard #available(macOS 26.0, *) else {
+
+release/store/tools/export_preview.swift:156:1: error: expressions are not allowed at the top level
+154 |     }
+155 | }
+156 | dispatchMain()
+    | `- error: expressions are not allowed at the top level
+157 | 

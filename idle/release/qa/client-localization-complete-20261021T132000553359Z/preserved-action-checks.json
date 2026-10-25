@@ -1,0 +1,50 @@
+{
+  "game/mobile/lib/season_screen.dart": {
+    "ValueKey('season-automatic')": {
+      "before": true,
+      "after": true
+    },
+    "_perform(() => game.setSeasonPlan(automatic: value))": {
+      "before": true,
+      "after": true
+    },
+    "PageStorageKey('level-$value')": {
+      "before": true,
+      "after": true
+    },
+    "_perform(() => game.claimFreePassReward(free.id))": {
+      "before": true,
+      "after": true
+    },
+    "UiEnglish.seasonLevelValueFreeTitle(": {
+      "before": true,
+      "after": true
+    },
+    "UiEnglish.seasonFreeAutomationForThisSeparateFleet": {
+      "before": true,
+      "after": true
+    }
+  },
+  "game/mobile/lib/notification_settings.dart": {
+    "ValueKey('reminder-enable')": {
+      "before": true,
+      "after": true
+    },
+    "service.enableByPlayer()": {
+      "before": true,
+      "after": true
+    },
+    "service.updatePreferences( prefs.copyWith(enabled: false), )": {
+      "before": true,
+      "after": true
+    },
+    "copy.text('permissionHint')": {
+      "before": true,
+      "after": true
+    },
+    "copy.text('enabled')": {
+      "before": true,
+      "after": true
+    }
+  }
+}

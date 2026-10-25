@@ -1,0 +1,57 @@
+00:00 +0: loading /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-native-ownership-initial-20261019T144123447203Z/game/mobile/test/qa_integration_signed_native_test.dart
+00:00 +0: observed revocation cannot revive when a temporarily missing clock recovers
+00:00 +0 -1: observed revocation cannot revive when a temporarily missing clock recovers [E]
+  Expected: empty
+    Actual: Set:['pass.01']
+  QA019: a previously observed empty online entitlement set must invalidate the older signed grant before native clock recovery
+  
+  package:matcher                                     expect
+  package:flutter_test/src/widget_tester.dart 473:18  expect
+  test/qa_integration_signed_native_test.dart 59:5    main.<fn>
+  
+Warning: At least one test in this suite creates an HttpClient. When running a test suite that uses
+TestWidgetsFlutterBinding, all HTTP requests will return status code 400, and no network request
+will actually be made. Any test expecting a real network connection and status code will fail.
+To test code that needs an HttpClient, provide your own HttpClient implementation to the code under
+test, so that your test can consistently provide a testable response to the code under test.
+00:00 +0 -1: observed revocation is hidden while replacement clock sampling is pending
+00:00 +0 -2: observed revocation is hidden while replacement clock sampling is pending [E]
+  Expected: empty
+    Actual: Set:['pass.01']
+  QA019: known revocation must hide older ownership before async sampling completes
+  
+  package:matcher                                     expect
+  package:flutter_test/src/widget_tester.dart 473:18  expect
+  test/qa_integration_signed_native_test.dart 69:5    main.<fn>
+  
+00:00 +0 -2: lease endpoint failure after fresh online observation denies old grant
+00:00 +1 -2: session change during clock sampling cannot install stale lease
+00:00 +2 -2: seed change during clock sampling cannot install old-seed grant
+00:00 +3 -2: unavailable account service retains only independently unexpired lease
+00:00 +4 -2: secure clear failure cannot reload a superseded grant after storage recovers
+00:00 +4 -3: secure clear failure cannot reload a superseded grant after storage recovers [E]
+  Expected: empty
+    Actual: Set:['pass.01']
+  QA019: storage recovery must not reload an older lease after observed supersession
+  
+  package:matcher                                     expect
+  package:flutter_test/src/widget_tester.dart 473:18  expect
+  test/qa_integration_signed_native_test.dart 106:5   main.<fn>
+  
+00:00 +4 -3: a restore already waiting for a clock cannot undo newer revocation
+00:00 +4 -4: a restore already waiting for a clock cannot undo newer revocation [E]
+  Expected: empty
+    Actual: Set:['pass.01']
+  QA019: an older restore must honor a newer online supersession
+  
+  package:matcher                                     expect
+  package:flutter_test/src/widget_tester.dart 473:18  expect
+  test/qa_integration_signed_native_test.dart 117:5   main.<fn>
+  
+00:00 +4 -4: Some tests failed.
+
+Failing tests:
+  /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-native-ownership-initial-20261019T144123447203Z/game/mobile/test/qa_integration_signed_native_test.dart: a restore already waiting for a clock cannot undo newer revocation
+  /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-native-ownership-initial-20261019T144123447203Z/game/mobile/test/qa_integration_signed_native_test.dart: observed revocation cannot revive when a temporarily missing clock recovers
+  /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-native-ownership-initial-20261019T144123447203Z/game/mobile/test/qa_integration_signed_native_test.dart: observed revocation is hidden while replacement clock sampling is pending
+  /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-native-ownership-initial-20261019T144123447203Z/game/mobile/test/qa_integration_signed_native_test.dart: secure clear failure cannot reload a superseded grant after storage recovers

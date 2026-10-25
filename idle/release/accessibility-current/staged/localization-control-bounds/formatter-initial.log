@@ -1,0 +1,1295 @@
+Formatted no files in 0.01 seconds.
+Hit a bug in the formatter when formatting release/accessibility-current/staged/localization-control-bounds/localization_test.dart.
+The formatter produced unexpected output. Input was:
+import 'dart:convert';
+import 'dart:io';
+import 'dart:ui' show SemanticsAction;
+import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:tideglass/app.dart';
+import 'package:tideglass/audio_bus.dart';
+import 'package:tideglass/bootstrap.dart';
+import 'package:tideglass/calibration_screen.dart';
+import 'package:tideglass/cosmetics.dart';
+import 'package:tideglass/cosmetics_screen.dart';
+import 'package:tideglass/daily_panel.dart';
+import 'package:tideglass/game_controller.dart';
+import 'package:tideglass/native_services.dart';
+import 'package:tideglass/notification_copy.dart';
+import 'package:tideglass/notification_service.dart';
+import 'package:tideglass/notification_settings.dart';
+import 'package:tideglass/palette.dart';
+import 'package:tideglass/presentation.dart';
+import 'package:tideglass/season_screen.dart';
+import 'package:tideglass/service_settings.dart';
+import 'package:tideglass/story_screen.dart';
+import 'package:tideglass/story_state.dart';
+import 'package:tideglass/strings.dart';
+import 'package:tideglass/support_screen.dart';
+import 'package:tideglass_core/tideglass_core.dart';
+import 'package:tideglass_progression/tideglass_progression.dart';
+import 'bootstrap_test.dart' show repository, settleIo;
+import 'calibration_test.dart' show allPatterns;
+import 'notification_service_test.dart'
+    show FixtureNotificationGateway, MemoryReminderStore;
+import 'service_settings_test.dart' show FixtureClient, MemoryCredentials;
+
+// Defaults retain the previous phone/200% regression condition. The same
+// interactions can be executed unchanged for every declared display condition.
+const _testViewport = String.fromEnvironment(
+  'TIDEGLASS_TEST_VIEWPORT',
+  defaultValue: 'phone',
+);
+const _testTextPercent = int.fromEnvironment(
+  'TIDEGLASS_TEST_TEXT_PERCENT',
+  defaultValue: 200,
+);
+
+void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
+  late StoryCatalogue catalogue;
+  final now = DateTime.utc(2026, 10, 16, 12);
+  setUpAll(() async {
+    catalogue = await StoryCatalogue.load();
+  });
+  GameController game({GameState? state, StoryProgress? story}) =>
+      GameController(
+        catalogue: catalogue,
+        initialState: state,
+        initialStory: story,
+        clock: () => now,
+        startTicker: false,
+      );
+  void viewport(WidgetTester tester) {
+    final semantics = tester.ensureSemantics();
+    addTearDown(semantics.dispose);
+    if (![100, 150, 200].contains(_testTextPercent)) {
+      throw ArgumentError('Unsupported localization test text scale.');
+    }
+    tester.view.physicalSize = switch (_testViewport) {
+      'phone' => const Size(320, 720),
+      'tablet' => const Size(1024, 768),
+      _ => throw ArgumentError('Unsupported localization test viewport.'),
+    };
+    tester.view.devicePixelRatio = 1;
+    tester.platformDispatcher.textScaleFactorTestValue = _testTextPercent / 100;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+    addTearDown(tester.platformDispatcher.clearTextScaleFactorTestValue);
+  }
+
+  Future<void> show(
+    WidgetTester tester,
+    Widget child, {
+    bool app = false,
+  }) async {
+    viewport(tester);
+    await tester.pumpWidget(
+      app ? child : MaterialApp(theme: tideglassTheme(), home: child),
+    );
+    await tester.pumpAndSettle();
+    expect(tester.takeException(), isNull);
+  }
+
+  // Resolve the control, never measure only a text/icon label or the whole
+  // expanded content panel. Unknown containers fail at tap instead of silently
+  // being treated as actionable controls.
+  Finder? interactiveControl(Finder finder) {
+    expect(finder, findsOneWidget);
+    final element = finder.evaluate().single;
+    bool control(Widget widget) =>
+        widget is ButtonStyleButton ||
+        widget is IconButton ||
+        widget is ListTile ||
+        widget is NavigationDestination ||
+        widget is ChoiceChip ||
+        widget is FilterChip ||
+        widget is ActionChip ||
+        widget is InputChip ||
+        widget is Switch ||
+        widget is Checkbox;
+    Finder exact(Element value) =>
+        find.byElementPredicate((candidate) => identical(candidate, value));
+    if (control(element.widget)) return exact(element);
+    if (element.widget is ExpansionTile ||
+        element.widget is CheckboxListTile ||
+        element.widget is SwitchListTile) {
+      // The first ListTile is the actual header/toggle action; the rest of an
+      // expanded tile may contain unrelated controls and scrollable content.
+      final header = find.descendant(
+        of: finder,
+        matching: find.byType(ListTile),
+      );
+      expect(header, findsWidgets);
+      return header.first;
+    }
+    Element? nearest;
+    element.visitAncestorElements((ancestor) {
+      if (!control(ancestor.widget)) return true;
+      nearest = ancestor;
+      return false;
+    });
+    return nearest == null ? null : exact(nearest!);
+  }
+
+  void expectControlBounds(WidgetTester tester, Finder control) {
+    final rect = tester.getRect(control);
+    expect(rect.width, greaterThanOrEqualTo(48), reason: '$control width');
+    expect(rect.height, greaterThanOrEqualTo(48), reason: '$control height');
+    var visible = Offset.zero &
+        (tester.view.physicalSize / tester.view.devicePixelRatio);
+    var child = tester.element(control).findRenderObject()!;
+    // Intersect all actual ancestor scroll viewports and paint clips. Screen
+    // bounds alone miss controls drawn behind an AppBar or outside a dialog's
+    // small body viewport. No scroll extent is substituted for visible space.
+    while (child.parent case final RenderObject parent) {
+      final clip = parent.describeApproximatePaintClip(child);
+      if (clip != null) {
+        visible = visible.intersect(
+          MatrixUtils.transformRect(parent.getTransformTo(null), clip),
+        );
+      }
+      if (parent is RenderAbstractViewport) {
+        visible = visible.intersect(
+          MatrixUtils.transformRect(
+            parent.getTransformTo(null),
+            parent.paintBounds,
+          ),
+        );
+      }
+      child = parent;
+    }
+    expect(visible.isEmpty, isFalse, reason: '$control has visible space');
+    final tolerance = visible.inflate(.5);
+    expect(rect.left, greaterThanOrEqualTo(tolerance.left), reason: '$control left in $visible');
+    expect(rect.top, greaterThanOrEqualTo(tolerance.top), reason: '$control top in $visible');
+    expect(rect.right, lessThanOrEqualTo(tolerance.right), reason: '$control right in $visible');
+    expect(rect.bottom, lessThanOrEqualTo(tolerance.bottom), reason: '$control bottom in $visible');
+  }
+
+  Future<void> reveal(WidgetTester tester, Finder finder) async {
+    if (finder.evaluate().isEmpty) {
+      await tester.scrollUntilVisible(
+        finder,
+        400,
+        scrollable: find.byType(Scrollable).last,
+        maxScrolls: 80,
+      );
+    }
+    final control = interactiveControl(finder);
+    await Scrollable.ensureVisible(
+      tester.element(control ?? finder),
+      alignment: .5,
+    );
+    await tester.pumpAndSettle();
+    expect(tester.takeException(), isNull);
+    if (control != null) expectControlBounds(tester, control);
+  }
+
+  Future<void> tap(WidgetTester tester, Finder finder) async {
+    if (find.byType(SnackBar).evaluate().isNotEmpty) {
+      await tester.pump(const Duration(seconds: 5));
+      await tester.pumpAndSettle();
+    }
+    await reveal(tester, finder);
+    final control = interactiveControl(finder);
+    expect(control, isNotNull, reason: '$finder must resolve to an action');
+    final action = control!;
+    expectControlBounds(tester, action);
+    // Insets avoid the mathematical outside edge and rounded corners. These
+    // center/edge hit tests complement, rather than replace, full bounds.
+    for (final at in [
+      Alignment.center,
+      const Alignment(-.98, 0),
+      const Alignment(.98, 0),
+      const Alignment(0, -.98),
+      const Alignment(0, .98),
+    ]) {
+      expect(action.hitTestable(at: at), findsOneWidget, reason: '$action at $at');
+    }
+    final semantics = tester.getSemantics(action).getSemanticsData();
+    expect(semantics.label.trim(), isNotEmpty, reason: '$action name');
+    expect(semantics.hasAction(SemanticsAction.tap), isTrue);
+    await tester.tap(action.hitTestable());
+    await tester.pumpAndSettle();
+    expect(tester.takeException(), isNull);
+  }
+
+  Finder key(String value) => find.byKey(ValueKey(value));
+  Finder label(String english) => find.text(Presentation.text(english));
+
+  test(
+    'template expansion preserves exact prices, codes, identifiers and values',
+    () {
+      const price = 'USD 9.99 / ₺123,45';
+      const secret = 'MiXeD-secret-1A2b';
+      final english = Presentation.template(
+        'Buy for {price}. Code {code}; {count} Charts.',
+        {'price': price, 'code': secret, 'count': 10},
+        pseudo: false,
+      );
+      expect(english, 'Buy for $price. Code $secret; 10 Charts.');
+      final expanded = Presentation.template(
+        'Buy for {price}. Code {code}; {count} Charts.',
+        {'price': price, 'code': secret, 'count': 10},
+        pseudo: true,
+      );
+      expect(expanded, startsWith('[!'));
+      expect(expanded, contains(price));
+      expect(expanded, contains(secret));
+      expect(expanded, contains('10'));
+      expect(expanded, isNot(contains('{price}')));
+      expect(Presentation.text(expanded, pseudo: true), expanded);
+      expect(Presentation.text('42.5K / 10', pseudo: true), '42.5K / 10');
+      expect(const NotificationCopy().pseudo, Presentation.pseudoEnabled);
+    },
+  );
+
+  testWidgets(
+    'actual first purchase and primary navigation fit selected text scale',
+    (tester) async {
+      final subject = game(
+        state: const TideglassEngine()
+            .advance(GameState.initial(), const Duration(seconds: 60))
+            .state,
+      );
+      addTearDown(subject.dispose);
+      await show(
+        tester,
+        TideglassApp(
+          controller: subject,
+          initialPreferences: const ClientPreferences(
+            reduceMotion: true,
+            onboardingDismissed: true,
+          ),
+        ),
+        app: true,
+      );
+      expect(label(Copy.subtitle), findsOneWidget);
+      await tap(tester, key('buy-0'));
+      expect(subject.state.counts[0], 2);
+      await tap(tester, find.byType(NavigationDestination).at(1));
+      await tap(tester, find.byType(NavigationDestination).at(2));
+      await tap(tester, key('open-season'));
+      expect(find.byType(SeasonScreen), findsOneWidget);
+      await tester.pageBack();
+      await tester.pumpAndSettle();
+      expect(tester.takeException(), isNull);
+    },
+  );
+
+  testWidgets(
+    'Rechart preview cancellation and confirmation preserve exact core meaning',
+    (tester) async {
+      final initial = GameState(
+        counts: [40, 12, 0, 0, 0],
+        walletMicros: BigInt.from(1000000000),
+        lifetimeMicros: TideglassEngine.firstPrestigeMicros,
+      );
+      final subject = game(state: initial);
+      addTearDown(subject.dispose);
+      await show(
+        tester,
+        TideglassApp(
+          controller: subject,
+          initialPreferences: const ClientPreferences(
+            reduceMotion: true,
+            onboardingDismissed: true,
+          ),
+        ),
+        app: true,
+      );
+      await tap(tester, find.byType(NavigationDestination).at(1));
+      await tap(tester, key('preview-rechart'));
+      await tap(tester, label(UiCopy.keepBuilding));
+      expect(subject.state.charts, BigInt.zero);
+      await tap(tester, key('preview-rechart'));
+      await tap(tester, key('confirm-rechart'));
+      expect(subject.state.charts, BigInt.from(10));
+      expect(subject.state.lifetimeMicros, initial.lifetimeMicros);
+      expect(subject.state.counts, [1, 0, 0, 0, 0]);
+    },
+  );
+
+  testWidgets(
+    'offline return acknowledgement and actual settings stay reachable',
+    (tester) async {
+      final subject = GameController(
+        startTicker: false,
+        settledThrough: now.subtract(const Duration(hours: 48)),
+        clock: () => now,
+      );
+      addTearDown(subject.dispose);
+      await show(
+        tester,
+        TideglassApp(
+          controller: subject,
+          initialPreferences: const ClientPreferences(
+            reduceMotion: true,
+            onboardingDismissed: true,
+          ),
+        ),
+        app: true,
+      );
+      final before = subject.state.lifetimeMicros;
+      await tap(tester, label(Copy.returnAcknowledge));
+      expect(subject.returnReport, isNull);
+      expect(subject.state.lifetimeMicros, before);
+      await tap(tester, find.byTooltip(Presentation.text(Copy.settings)));
+      await tap(tester, label(UiCopy.returnToTheHarbor));
+    },
+  );
+
+  testWidgets(
+    'authored calibration prose expands and accessible completion works once',
+    (tester) async {
+      final pattern = allPatterns().first;
+      final before = pattern.title;
+      final claims = <String>[];
+      await show(
+        tester,
+        CalibrationScreen(
+          patterns: [pattern],
+          focusCharges: () => 1,
+          collectedIds: () => {},
+          onComplete: (id) {
+            claims.add(id);
+            return true;
+          },
+        ),
+      );
+      expect(label(pattern.title), findsOneWidget);
+      await tap(tester, key('claim-accessible-calibration'));
+      expect(claims, [pattern.id]);
+      expect(pattern.title, before);
+    },
+  );
+
+  testWidgets('campaign chapter prose and dossier opening remain navigable', (
+    tester,
+  ) async {
+    final subject = game(
+      state: GameState(surveyNotes: BigInt.from(150)),
+      story: StoryProgress(
+        campaign: CampaignProgress(
+          completed: {'chapter.01', 'chapter.02', 'chapter.03'},
+        ),
+      ),
+    );
+    addTearDown(subject.dispose);
+    final contentBefore = jsonEncode(catalogue.campaign.chapters);
+    await show(tester, StoryScreen(game: subject));
+    await tap(tester, key('story-tab-1'));
+    await tap(tester, key('open-challenge.01'));
+    await tap(tester, label(UiEnglish.storyOpenDossier));
+    expect(subject.state.surveyNotes, BigInt.from(50));
+    expect(subject.story.dossiers.owned, contains('challenge.01'));
+    expect(jsonEncode(catalogue.campaign.chapters), contentBefore);
+  });
+
+  testWidgets(
+    'season isolated fleet and free pass reward use expanded real templates',
+    (tester) async {
+      final subject = game(
+        state: GameState(
+          daily: DailyState(passXpById: {'pass.01': BigInt.from(30000)}),
+        ),
+      );
+      addTearDown(subject.dispose);
+      await show(tester, SeasonScreen(game: subject));
+      await tap(
+        tester,
+        find.descendant(
+          of: key('season-automatic'),
+          matching: find.byType(Switch),
+        ),
+      );
+      expect(subject.story.season!.automatic, isTrue);
+      await tap(tester, key('season-tab-1'));
+      final reward = catalogue.seasonDefinition.rewards.firstWhere(
+        (r) => r.track == 'free',
+      );
+      await tap(tester, find.byKey(PageStorageKey('level-${reward.level}')));
+      await tap(tester, key('claim-${reward.id}'));
+      expect(subject.story.pass!.claims, contains(reward.id));
+      expect(subject.state.charts, BigInt.zero);
+    },
+  );
+
+  testWidgets(
+    'cloud consent and retained recovery code use unmodified secret data',
+    (tester) async {
+      final client = FixtureClient();
+      final manager = NativeServicesManager(
+        client: client,
+        credentials: MemoryCredentials(),
+      );
+      addTearDown(manager.dispose);
+      await manager.initialize();
+      await show(
+        tester,
+        ServiceSettings(
+          manager: manager,
+          onExportHarbor: () async => 'opaque-harbor-export',
+          onImportHarbor: (_) async {},
+        ),
+      );
+      await tap(tester, key('create-account'));
+      await reveal(tester, key('create-account-confirm'));
+      expect(
+        tester.widget<FilledButton>(key('create-account-confirm')).onPressed,
+        isNull,
+      );
+      await tap(tester, key('cloud-consent'));
+      await tap(tester, key('create-account-confirm'));
+      await reveal(tester, key('new-recovery-code'));
+      expect(
+        tester.widget<SelectableText>(key('new-recovery-code')).data,
+        client.currentCode,
+      );
+      expect(manager.recoveryAcknowledged, isFalse);
+      await tap(tester, key('recovery-retained'));
+      await tap(tester, key('recovery-retained-confirm'));
+      expect(manager.recoveryAcknowledged, isTrue);
+      expect(client.calls, isNot(contains('upload')));
+    },
+  );
+
+  testWidgets(
+    'real store price stays exact inside expanded cosmetic purchase label',
+    (tester) async {
+      const price = 'USD 9.99 / ₺123,45';
+      var purchases = 0;
+      await show(
+        tester,
+        CosmeticsScreen(
+          ownedIds: {},
+          equippedId: null,
+          onEquip: (_) {},
+          offers: [
+            CosmeticStoreOffer(
+              productId: 'fixture',
+              productTitle: 'Store title',
+              localizedPrice: price,
+              cosmeticIds: {'cosmetic.shop.01'},
+            ),
+          ],
+          onPurchase: (_) async {
+            purchases++;
+          },
+        ),
+      );
+      await tap(tester, key('cosmetic-filter-5'));
+      final offer = key('purchase-cosmetic.shop.01-fixture');
+      expect(find.textContaining(price), findsOneWidget);
+      await tap(tester, offer);
+      expect(purchases, 1);
+    },
+  );
+
+  testWidgets(
+    'Support briefing and automation save remain available at expanded size',
+    (tester) async {
+      final subject = game(
+        state: GameState(
+          charts: BigInt.from(100),
+          lifetimeMicros: BigInt.from(10).pow(20),
+        ),
+      );
+      addTearDown(subject.dispose);
+      await show(tester, SupportScreen(game: subject));
+      await tap(tester, key('open-briefing'));
+      await tap(tester, key('complete-briefing'));
+      expect(subject.state.support.tokens.length, 1);
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: tideglassTheme(),
+          home: AutomationScreen(game: subject),
+        ),
+      );
+      await tester.pumpAndSettle();
+      await tap(tester, label(UiEnglish.dailySaveAndSelectPlan));
+      expect(subject.state.automationPlans.length, 1);
+    },
+  );
+
+  testWidgets(
+    'notification default copy follows build mode without implicit permission',
+    (tester) async {
+      final gateway = FixtureNotificationGateway();
+      final service = NotificationService(
+        gateway: gateway,
+        store: MemoryReminderStore(),
+      );
+      addTearDown(service.dispose);
+      await service.initialize();
+      await show(
+        tester,
+        Scaffold(
+          body: SingleChildScrollView(
+            padding: const EdgeInsets.all(24),
+            child: NotificationSettings(service: service),
+          ),
+        ),
+      );
+      expect(
+        find.text(const NotificationCopy().text('heading')),
+        findsOneWidget,
+      );
+      expect(gateway.requests, 0);
+      await tap(
+        tester,
+        find.descendant(
+          of: key('reminder-enable'),
+          matching: find.byType(Switch),
+        ),
+      );
+      expect(gateway.requests, 1);
+      await tap(tester, key('reminder-quiet-start'));
+      await tester.enterText(key('reminder-hour-input'), '21');
+      await tap(tester, key('reminder-save-time'));
+      expect(service.preferences.quietStart, 1260);
+    },
+  );
+
+  testWidgets(
+    'actual bootstrap retains exact save and audio paths in both build modes',
+    (tester) async {
+      final base = Directory.systemTemp.createTempSync(
+        'Tideglass-Locale-Paths-',
+      );
+      addTearDown(() => base.deleteSync(recursive: true));
+      final directory = Directory('${base.path}/tideglass')..createSync();
+      final audioFile = File('${directory.path}/audio-preferences.json')
+        ..writeAsStringSync(
+          jsonEncode(const AudioPreferences(muted: true).toJson()),
+        );
+      final messenger =
+          TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger;
+      final channels = [
+        const MethodChannel('plugins.flutter.io/path_provider'),
+        const MethodChannel('xyz.luan/audioplayers'),
+        const MethodChannel('xyz.luan/audioplayers.global'),
+        const MethodChannel('xyz.luan/audioplayers.global/events'),
+        const MethodChannel('xyz.luan/audioplayers/events/tideglass.music'),
+        for (var i = 0; i < 8; i++)
+          MethodChannel('xyz.luan/audioplayers/events/tideglass.sfx.$i'),
+      ];
+      for (final channel in channels) {
+        messenger.setMockMethodCallHandler(
+          channel,
+          (call) async => channel.name == 'plugins.flutter.io/path_provider'
+              ? base.path
+              : null,
+        );
+      }
+      addTearDown(() {
+        for (final channel in channels) {
+          messenger.setMockMethodCallHandler(channel, null);
+        }
+      });
+      final manager = NativeServicesManager(credentials: MemoryCredentials());
+      final notifications = NotificationService(
+        gateway: FixtureNotificationGateway(),
+        store: MemoryReminderStore(),
+      );
+      addTearDown(manager.dispose);
+      addTearDown(notifications.dispose);
+      viewport(tester);
+      await tester.pumpWidget(
+        TideglassBootstrap(services: manager, notifications: notifications),
+      );
+      await settleIo(
+        tester,
+        until: () => find.byType(TideglassApp).evaluate().isNotEmpty,
+      );
+      final app = tester.widget<TideglassApp>(find.byType(TideglassApp));
+      await settleIo(
+        tester,
+        until: () => app.controller.audio!.preferences.muted,
+      );
+      var audioReady = false;
+      app.controller.audio!.initialize().then((_) => audioReady = true);
+      await settleIo(tester, until: () => audioReady);
+      var preferencesSaved = false;
+      app.controller.audio!
+          .setPreferences(const AudioPreferences(muted: true, musicVolume: .35))
+          .then((_) => preferencesSaved = true);
+      await settleIo(tester, until: () => preferencesSaved);
+      var gameSaved = false;
+      app.controller.save().then((_) => gameSaved = true);
+      await settleIo(tester, until: () => gameSaved);
+      expect(jsonDecode(audioFile.readAsStringSync())['music_volume'], .35);
+      await tester.runAsync(() async {
+        expect((await repository(directory).load()).snapshot, isNotNull);
+      });
+      expect(base.listSync().map((entry) => entry.path), [directory.path]);
+      await tester.pumpWidget(const SizedBox());
+      await tester.runAsync(
+        () async => Future<void>.delayed(const Duration(milliseconds: 20)),
+      );
+      expect(tester.takeException(), isNull);
+    },
+  );
+}
+
+Which formatted to:
+import 'dart:convert';
+import 'dart:io';
+import 'dart:ui' show SemanticsAction;
+
+import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:tideglass/app.dart';
+import 'package:tideglass/audio_bus.dart';
+import 'package:tideglass/bootstrap.dart';
+import 'package:tideglass/calibration_screen.dart';
+import 'package:tideglass/cosmetics.dart';
+import 'package:tideglass/cosmetics_screen.dart';
+import 'package:tideglass/daily_panel.dart';
+import 'package:tideglass/game_controller.dart';
+import 'package:tideglass/native_services.dart';
+import 'package:tideglass/notification_copy.dart';
+import 'package:tideglass/notification_service.dart';
+import 'package:tideglass/notification_settings.dart';
+import 'package:tideglass/palette.dart';
+import 'package:tideglass/presentation.dart';
+import 'package:tideglass/season_screen.dart';
+import 'package:tideglass/service_settings.dart';
+import 'package:tideglass/story_screen.dart';
+import 'package:tideglass/story_state.dart';
+import 'package:tideglass/strings.dart';
+import 'package:tideglass/support_screen.dart';
+import 'package:tideglass_core/tideglass_core.dart';
+import 'package:tideglass_progression/tideglass_progression.dart';
+
+import 'bootstrap_test.dart' show repository, settleIo;
+import 'calibration_test.dart' show allPatterns;
+import 'notification_service_test.dart'
+    show FixtureNotificationGateway, MemoryReminderStore;
+import 'service_settings_test.dart' show FixtureClient, MemoryCredentials;
+
+// Defaults retain the previous phone/200% regression condition. The same
+// interactions can be executed unchanged for every declared display condition.
+const _testViewport = String.fromEnvironment(
+  'TIDEGLASS_TEST_VIEWPORT',
+  defaultValue: 'phone',
+);
+const _testTextPercent = int.fromEnvironment(
+  'TIDEGLASS_TEST_TEXT_PERCENT',
+  defaultValue: 200,
+);
+
+void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
+  late StoryCatalogue catalogue;
+  final now = DateTime.utc(2026, 10, 16, 12);
+  setUpAll(() async {
+    catalogue = await StoryCatalogue.load();
+  });
+  GameController game({GameState? state, StoryProgress? story}) =>
+      GameController(
+        catalogue: catalogue,
+        initialState: state,
+        initialStory: story,
+        clock: () => now,
+        startTicker: false,
+      );
+  void viewport(WidgetTester tester) {
+    final semantics = tester.ensureSemantics();
+    addTearDown(semantics.dispose);
+    if (![100, 150, 200].contains(_testTextPercent)) {
+      throw ArgumentError('Unsupported localization test text scale.');
+    }
+    tester.view.physicalSize = switch (_testViewport) {
+      'phone' => const Size(320, 720),
+      'tablet' => const Size(1024, 768),
+      _ => throw ArgumentError('Unsupported localization test viewport.'),
+    };
+    tester.view.devicePixelRatio = 1;
+    tester.platformDispatcher.textScaleFactorTestValue = _testTextPercent / 100;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+    addTearDown(tester.platformDispatcher.clearTextScaleFactorTestValue);
+  }
+
+  Future<void> show(
+    WidgetTester tester,
+    Widget child, {
+    bool app = false,
+  }) async {
+    viewport(tester);
+    await tester.pumpWidget(
+      app ? child : MaterialApp(theme: tideglassTheme(), home: child),
+    );
+    await tester.pumpAndSettle();
+    expect(tester.takeException(), isNull);
+  }
+
+  // Resolve the control, never measure only a text/icon label or the whole
+  // expanded content panel. Unknown containers fail at tap instead of silently
+  // being treated as actionable controls.
+  Finder? interactiveControl(Finder finder) {
+    expect(finder, findsOneWidget);
+    final element = finder.evaluate().single;
+    bool control(Widget widget) =>
+        widget is ButtonStyleButton ||
+        widget is IconButton ||
+        widget is ListTile ||
+        widget is NavigationDestination ||
+        widget is ChoiceChip ||
+        widget is FilterChip ||
+        widget is ActionChip ||
+        widget is InputChip ||
+        widget is Switch ||
+        widget is Checkbox;
+    Finder exact(Element value) =>
+        find.byElementPredicate((candidate) => identical(candidate, value));
+    if (control(element.widget)) return exact(element);
+    if (element.widget is ExpansionTile ||
+        element.widget is CheckboxListTile ||
+        element.widget is SwitchListTile) {
+      // The first ListTile is the actual header/toggle action; the rest of an
+      // expanded tile may contain unrelated controls and scrollable content.
+      final header = find.descendant(
+        of: finder,
+        matching: find.byType(ListTile),
+      );
+      expect(header, findsWidgets);
+      return header.first;
+    }
+    Element? nearest;
+    element.visitAncestorElements((ancestor) {
+      if (!control(ancestor.widget)) return true;
+      nearest = ancestor;
+      return false;
+    });
+    return nearest == null ? null : exact(nearest!);
+  }
+
+  void expectControlBounds(WidgetTester tester, Finder control) {
+    final rect = tester.getRect(control);
+    expect(rect.width, greaterThanOrEqualTo(48), reason: '$control width');
+    expect(rect.height, greaterThanOrEqualTo(48), reason: '$control height');
+    var visible =
+        Offset.zero & (tester.view.physicalSize / tester.view.devicePixelRatio);
+    var child = tester.element(control).findRenderObject()!;
+    // Intersect all actual ancestor scroll viewports and paint clips. Screen
+    // bounds alone miss controls drawn behind an AppBar or outside a dialog's
+    // small body viewport. No scroll extent is substituted for visible space.
+    while (child.parent) {
+      final clip = parent.describeApproximatePaintClip(child);
+      if (clip != null) {
+        visible = visible.intersect(
+          MatrixUtils.transformRect(parent.getTransformTo(null), clip),
+        );
+      }
+      if (parent is RenderAbstractViewport) {
+        visible = visible.intersect(
+          MatrixUtils.transformRect(
+            parent.getTransformTo(null),
+            parent.paintBounds,
+          ),
+        );
+      }
+      child = parent;
+    }
+    expect(visible.isEmpty, isFalse, reason: '$control has visible space');
+    final tolerance = visible.inflate(.5);
+    expect(
+      rect.left,
+      greaterThanOrEqualTo(tolerance.left),
+      reason: '$control left in $visible',
+    );
+    expect(
+      rect.top,
+      greaterThanOrEqualTo(tolerance.top),
+      reason: '$control top in $visible',
+    );
+    expect(
+      rect.right,
+      lessThanOrEqualTo(tolerance.right),
+      reason: '$control right in $visible',
+    );
+    expect(
+      rect.bottom,
+      lessThanOrEqualTo(tolerance.bottom),
+      reason: '$control bottom in $visible',
+    );
+  }
+
+  Future<void> reveal(WidgetTester tester, Finder finder) async {
+    if (finder.evaluate().isEmpty) {
+      await tester.scrollUntilVisible(
+        finder,
+        400,
+        scrollable: find.byType(Scrollable).last,
+        maxScrolls: 80,
+      );
+    }
+    final control = interactiveControl(finder);
+    await Scrollable.ensureVisible(
+      tester.element(control ?? finder),
+      alignment: .5,
+    );
+    await tester.pumpAndSettle();
+    expect(tester.takeException(), isNull);
+    if (control != null) expectControlBounds(tester, control);
+  }
+
+  Future<void> tap(WidgetTester tester, Finder finder) async {
+    if (find.byType(SnackBar).evaluate().isNotEmpty) {
+      await tester.pump(const Duration(seconds: 5));
+      await tester.pumpAndSettle();
+    }
+    await reveal(tester, finder);
+    final control = interactiveControl(finder);
+    expect(control, isNotNull, reason: '$finder must resolve to an action');
+    final action = control!;
+    expectControlBounds(tester, action);
+    // Insets avoid the mathematical outside edge and rounded corners. These
+    // center/edge hit tests complement, rather than replace, full bounds.
+    for (final at in [
+      Alignment.center,
+      const Alignment(-.98, 0),
+      const Alignment(.98, 0),
+      const Alignment(0, -.98),
+      const Alignment(0, .98),
+    ]) {
+      expect(
+        action.hitTestable(at: at),
+        findsOneWidget,
+        reason: '$action at $at',
+      );
+    }
+    final semantics = tester.getSemantics(action).getSemanticsData();
+    expect(semantics.label.trim(), isNotEmpty, reason: '$action name');
+    expect(semantics.hasAction(SemanticsAction.tap), isTrue);
+    await tester.tap(action.hitTestable());
+    await tester.pumpAndSettle();
+    expect(tester.takeException(), isNull);
+  }
+
+  Finder key(String value) => find.byKey(ValueKey(value));
+  Finder label(String english) => find.text(Presentation.text(english));
+
+  test(
+    'template expansion preserves exact prices, codes, identifiers and values',
+    () {
+      const price = 'USD 9.99 / ₺123,45';
+      const secret = 'MiXeD-secret-1A2b';
+      final english = Presentation.template(
+        'Buy for {price}. Code {code}; {count} Charts.',
+        {'price': price, 'code': secret, 'count': 10},
+        pseudo: false,
+      );
+      expect(english, 'Buy for $price. Code $secret; 10 Charts.');
+      final expanded = Presentation.template(
+        'Buy for {price}. Code {code}; {count} Charts.',
+        {'price': price, 'code': secret, 'count': 10},
+        pseudo: true,
+      );
+      expect(expanded, startsWith('[!'));
+      expect(expanded, contains(price));
+      expect(expanded, contains(secret));
+      expect(expanded, contains('10'));
+      expect(expanded, isNot(contains('{price}')));
+      expect(Presentation.text(expanded, pseudo: true), expanded);
+      expect(Presentation.text('42.5K / 10', pseudo: true), '42.5K / 10');
+      expect(const NotificationCopy().pseudo, Presentation.pseudoEnabled);
+    },
+  );
+
+  testWidgets(
+    'actual first purchase and primary navigation fit selected text scale',
+    (tester) async {
+      final subject = game(
+        state: const TideglassEngine()
+            .advance(GameState.initial(), const Duration(seconds: 60))
+            .state,
+      );
+      addTearDown(subject.dispose);
+      await show(
+        tester,
+        TideglassApp(
+          controller: subject,
+          initialPreferences: const ClientPreferences(
+            reduceMotion: true,
+            onboardingDismissed: true,
+          ),
+        ),
+        app: true,
+      );
+      expect(label(Copy.subtitle), findsOneWidget);
+      await tap(tester, key('buy-0'));
+      expect(subject.state.counts[0], 2);
+      await tap(tester, find.byType(NavigationDestination).at(1));
+      await tap(tester, find.byType(NavigationDestination).at(2));
+      await tap(tester, key('open-season'));
+      expect(find.byType(SeasonScreen), findsOneWidget);
+      await tester.pageBack();
+      await tester.pumpAndSettle();
+      expect(tester.takeException(), isNull);
+    },
+  );
+
+  testWidgets(
+    'Rechart preview cancellation and confirmation preserve exact core meaning',
+    (tester) async {
+      final initial = GameState(
+        counts: [40, 12, 0, 0, 0],
+        walletMicros: BigInt.from(1000000000),
+        lifetimeMicros: TideglassEngine.firstPrestigeMicros,
+      );
+      final subject = game(state: initial);
+      addTearDown(subject.dispose);
+      await show(
+        tester,
+        TideglassApp(
+          controller: subject,
+          initialPreferences: const ClientPreferences(
+            reduceMotion: true,
+            onboardingDismissed: true,
+          ),
+        ),
+        app: true,
+      );
+      await tap(tester, find.byType(NavigationDestination).at(1));
+      await tap(tester, key('preview-rechart'));
+      await tap(tester, label(UiCopy.keepBuilding));
+      expect(subject.state.charts, BigInt.zero);
+      await tap(tester, key('preview-rechart'));
+      await tap(tester, key('confirm-rechart'));
+      expect(subject.state.charts, BigInt.from(10));
+      expect(subject.state.lifetimeMicros, initial.lifetimeMicros);
+      expect(subject.state.counts, [1, 0, 0, 0, 0]);
+    },
+  );
+
+  testWidgets(
+    'offline return acknowledgement and actual settings stay reachable',
+    (tester) async {
+      final subject = GameController(
+        startTicker: false,
+        settledThrough: now.subtract(const Duration(hours: 48)),
+        clock: () => now,
+      );
+      addTearDown(subject.dispose);
+      await show(
+        tester,
+        TideglassApp(
+          controller: subject,
+          initialPreferences: const ClientPreferences(
+            reduceMotion: true,
+            onboardingDismissed: true,
+          ),
+        ),
+        app: true,
+      );
+      final before = subject.state.lifetimeMicros;
+      await tap(tester, label(Copy.returnAcknowledge));
+      expect(subject.returnReport, isNull);
+      expect(subject.state.lifetimeMicros, before);
+      await tap(tester, find.byTooltip(Presentation.text(Copy.settings)));
+      await tap(tester, label(UiCopy.returnToTheHarbor));
+    },
+  );
+
+  testWidgets(
+    'authored calibration prose expands and accessible completion works once',
+    (tester) async {
+      final pattern = allPatterns().first;
+      final before = pattern.title;
+      final claims = <String>[];
+      await show(
+        tester,
+        CalibrationScreen(
+          patterns: [pattern],
+          focusCharges: () => 1,
+          collectedIds: () => {},
+          onComplete: (id) {
+            claims.add(id);
+            return true;
+          },
+        ),
+      );
+      expect(label(pattern.title), findsOneWidget);
+      await tap(tester, key('claim-accessible-calibration'));
+      expect(claims, [pattern.id]);
+      expect(pattern.title, before);
+    },
+  );
+
+  testWidgets('campaign chapter prose and dossier opening remain navigable', (
+    tester,
+  ) async {
+    final subject = game(
+      state: GameState(surveyNotes: BigInt.from(150)),
+      story: StoryProgress(
+        campaign: CampaignProgress(
+          completed: {'chapter.01', 'chapter.02', 'chapter.03'},
+        ),
+      ),
+    );
+    addTearDown(subject.dispose);
+    final contentBefore = jsonEncode(catalogue.campaign.chapters);
+    await show(tester, StoryScreen(game: subject));
+    await tap(tester, key('story-tab-1'));
+    await tap(tester, key('open-challenge.01'));
+    await tap(tester, label(UiEnglish.storyOpenDossier));
+    expect(subject.state.surveyNotes, BigInt.from(50));
+    expect(subject.story.dossiers.owned, contains('challenge.01'));
+    expect(jsonEncode(catalogue.campaign.chapters), contentBefore);
+  });
+
+  testWidgets(
+    'season isolated fleet and free pass reward use expanded real templates',
+    (tester) async {
+      final subject = game(
+        state: GameState(
+          daily: DailyState(passXpById: {'pass.01': BigInt.from(30000)}),
+        ),
+      );
+      addTearDown(subject.dispose);
+      await show(tester, SeasonScreen(game: subject));
+      await tap(
+        tester,
+        find.descendant(
+          of: key('season-automatic'),
+          matching: find.byType(Switch),
+        ),
+      );
+      expect(subject.story.season!.automatic, isTrue);
+      await tap(tester, key('season-tab-1'));
+      final reward = catalogue.seasonDefinition.rewards.firstWhere(
+        (r) => r.track == 'free',
+      );
+      await tap(tester, find.byKey(PageStorageKey('level-${reward.level}')));
+      await tap(tester, key('claim-${reward.id}'));
+      expect(subject.story.pass!.claims, contains(reward.id));
+      expect(subject.state.charts, BigInt.zero);
+    },
+  );
+
+  testWidgets(
+    'cloud consent and retained recovery code use unmodified secret data',
+    (tester) async {
+      final client = FixtureClient();
+      final manager = NativeServicesManager(
+        client: client,
+        credentials: MemoryCredentials(),
+      );
+      addTearDown(manager.dispose);
+      await manager.initialize();
+      await show(
+        tester,
+        ServiceSettings(
+          manager: manager,
+          onExportHarbor: () async => 'opaque-harbor-export',
+          onImportHarbor: (_) async {},
+        ),
+      );
+      await tap(tester, key('create-account'));
+      await reveal(tester, key('create-account-confirm'));
+      expect(
+        tester.widget<FilledButton>(key('create-account-confirm')).onPressed,
+        isNull,
+      );
+      await tap(tester, key('cloud-consent'));
+      await tap(tester, key('create-account-confirm'));
+      await reveal(tester, key('new-recovery-code'));
+      expect(
+        tester.widget<SelectableText>(key('new-recovery-code')).data,
+        client.currentCode,
+      );
+      expect(manager.recoveryAcknowledged, isFalse);
+      await tap(tester, key('recovery-retained'));
+      await tap(tester, key('recovery-retained-confirm'));
+      expect(manager.recoveryAcknowledged, isTrue);
+      expect(client.calls, isNot(contains('upload')));
+    },
+  );
+
+  testWidgets(
+    'real store price stays exact inside expanded cosmetic purchase label',
+    (tester) async {
+      const price = 'USD 9.99 / ₺123,45';
+      var purchases = 0;
+      await show(
+        tester,
+        CosmeticsScreen(
+          ownedIds: {},
+          equippedId: null,
+          onEquip: (_) {},
+          offers: [
+            CosmeticStoreOffer(
+              productId: 'fixture',
+              productTitle: 'Store title',
+              localizedPrice: price,
+              cosmeticIds: {'cosmetic.shop.01'},
+            ),
+          ],
+          onPurchase: (_) async {
+            purchases++;
+          },
+        ),
+      );
+      await tap(tester, key('cosmetic-filter-5'));
+      final offer = key('purchase-cosmetic.shop.01-fixture');
+      expect(find.textContaining(price), findsOneWidget);
+      await tap(tester, offer);
+      expect(purchases, 1);
+    },
+  );
+
+  testWidgets(
+    'Support briefing and automation save remain available at expanded size',
+    (tester) async {
+      final subject = game(
+        state: GameState(
+          charts: BigInt.from(100),
+          lifetimeMicros: BigInt.from(10).pow(20),
+        ),
+      );
+      addTearDown(subject.dispose);
+      await show(tester, SupportScreen(game: subject));
+      await tap(tester, key('open-briefing'));
+      await tap(tester, key('complete-briefing'));
+      expect(subject.state.support.tokens.length, 1);
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: tideglassTheme(),
+          home: AutomationScreen(game: subject),
+        ),
+      );
+      await tester.pumpAndSettle();
+      await tap(tester, label(UiEnglish.dailySaveAndSelectPlan));
+      expect(subject.state.automationPlans.length, 1);
+    },
+  );
+
+  testWidgets(
+    'notification default copy follows build mode without implicit permission',
+    (tester) async {
+      final gateway = FixtureNotificationGateway();
+      final service = NotificationService(
+        gateway: gateway,
+        store: MemoryReminderStore(),
+      );
+      addTearDown(service.dispose);
+      await service.initialize();
+      await show(
+        tester,
+        Scaffold(
+          body: SingleChildScrollView(
+            padding: const EdgeInsets.all(24),
+            child: NotificationSettings(service: service),
+          ),
+        ),
+      );
+      expect(
+        find.text(const NotificationCopy().text('heading')),
+        findsOneWidget,
+      );
+      expect(gateway.requests, 0);
+      await tap(
+        tester,
+        find.descendant(
+          of: key('reminder-enable'),
+          matching: find.byType(Switch),
+        ),
+      );
+      expect(gateway.requests, 1);
+      await tap(tester, key('reminder-quiet-start'));
+      await tester.enterText(key('reminder-hour-input'), '21');
+      await tap(tester, key('reminder-save-time'));
+      expect(service.preferences.quietStart, 1260);
+    },
+  );
+
+  testWidgets(
+    'actual bootstrap retains exact save and audio paths in both build modes',
+    (tester) async {
+      final base = Directory.systemTemp.createTempSync(
+        'Tideglass-Locale-Paths-',
+      );
+      addTearDown(() => base.deleteSync(recursive: true));
+      final directory = Directory('${base.path}/tideglass')..createSync();
+      final audioFile = File('${directory.path}/audio-preferences.json')
+        ..writeAsStringSync(
+          jsonEncode(const AudioPreferences(muted: true).toJson()),
+        );
+      final messenger =
+          TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger;
+      final channels = [
+        const MethodChannel('plugins.flutter.io/path_provider'),
+        const MethodChannel('xyz.luan/audioplayers'),
+        const MethodChannel('xyz.luan/audioplayers.global'),
+        const MethodChannel('xyz.luan/audioplayers.global/events'),
+        const MethodChannel('xyz.luan/audioplayers/events/tideglass.music'),
+        for (var i = 0; i < 8; i++)
+          MethodChannel('xyz.luan/audioplayers/events/tideglass.sfx.$i'),
+      ];
+      for (final channel in channels) {
+        messenger.setMockMethodCallHandler(
+          channel,
+          (call) async => channel.name == 'plugins.flutter.io/path_provider'
+              ? base.path
+              : null,
+        );
+      }
+      addTearDown(() {
+        for (final channel in channels) {
+          messenger.setMockMethodCallHandler(channel, null);
+        }
+      });
+      final manager = NativeServicesManager(credentials: MemoryCredentials());
+      final notifications = NotificationService(
+        gateway: FixtureNotificationGateway(),
+        store: MemoryReminderStore(),
+      );
+      addTearDown(manager.dispose);
+      addTearDown(notifications.dispose);
+      viewport(tester);
+      await tester.pumpWidget(
+        TideglassBootstrap(services: manager, notifications: notifications),
+      );
+      await settleIo(
+        tester,
+        until: () => find.byType(TideglassApp).evaluate().isNotEmpty,
+      );
+      final app = tester.widget<TideglassApp>(find.byType(TideglassApp));
+      await settleIo(
+        tester,
+        until: () => app.controller.audio!.preferences.muted,
+      );
+      var audioReady = false;
+      app.controller.audio!.initialize().then((_) => audioReady = true);
+      await settleIo(tester, until: () => audioReady);
+      var preferencesSaved = false;
+      app.controller.audio!
+          .setPreferences(const AudioPreferences(muted: true, musicVolume: .35))
+          .then((_) => preferencesSaved = true);
+      await settleIo(tester, until: () => preferencesSaved);
+      var gameSaved = false;
+      app.controller.save().then((_) => gameSaved = true);
+      await settleIo(tester, until: () => gameSaved);
+      expect(jsonDecode(audioFile.readAsStringSync())['music_volume'], .35);
+      await tester.runAsync(() async {
+        expect((await repository(directory).load()).snapshot, isNotNull);
+      });
+      expect(base.listSync().map((entry) => entry.path), [directory.path]);
+      await tester.pumpWidget(const SizedBox());
+      await tester.runAsync(
+        () async => Future<void>.delayed(const Duration(milliseconds: 20)),
+      );
+      expect(tester.takeException(), isNull);
+    },
+  );
+}
+
+Please report at github.com/dart-lang/dart_style/issues.

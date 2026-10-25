@@ -1,0 +1,78 @@
+Running Gradle task 'assembleDebug'...                             21.1s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...        1,523ms
+D/FlutterRenderer( 6082): Width is zero. 0,0
+D/FlutterJNI( 6082): Sending viewport metrics to the engine.
+I/.tideglass.game( 6082): Compiler allocated 5250KB to compile void android.view.ViewRootImpl.performTraversals()
+I/Choreographer( 6082): Skipped 147 frames!  The application may be doing too much work on its main thread.
+D/FlutterJNI( 6082): Sending viewport metrics to the engine.
+D/ProfileInstaller( 6082): Installing profile for dev.tideglass.game
+VMServiceFlutterDriver: Connecting to Flutter application at http://127.0.0.1:62823/OfJU8Bg4eZc=/
+VMServiceFlutterDriver: Isolate found with number: 6669274681335579
+VMServiceFlutterDriver: Isolate 6669274681335579 is runnable.
+VMServiceFlutterDriver: Isolate is paused at start.
+VMServiceFlutterDriver: Attempting to resume isolate
+I/flutter ( 6082): 00:00 +0: real OS reminder qualification: revoked
+VMServiceFlutterDriver: Connected to Flutter application.
+I/Choreographer( 6082): Skipped 32 frames!  The application may be doing too much work on its main thread.
+D/FlutterJNI( 6082): Sending viewport metrics to the engine.
+I/flutter ( 6082): TIDEGLASS_REMINDER_ACTION {"verification_id":"integration-android-20261025T155657188665Z","candidate_fingerprint":"3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59","harness_sha256":"330ab6428203ec80e4de19e4eb727ad8dcfc6f63572e9ea1b0ef3ff7dc7a71da","scenario":"revoked","run_id":"v3b00-r20261025-android-revoked","device_label":"android","platform":"android","process_id":6082,"action":"allow_permission_if_prompted","utc_ms":1792943858613}
+I/flutter ( 6082): TIDEGLASS_REMINDER_ACTION {"verification_id":"integration-android-20261025T155657188665Z","candidate_fingerprint":"3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59","harness_sha256":"330ab6428203ec80e4de19e4eb727ad8dcfc6f63572e9ea1b0ef3ff7dc7a71da","scenario":"revoked","run_id":"v3b00-r20261025-android-revoked","device_label":"android","platform":"android","process_id":6082,"action":"revoke_in_os_settings_then_return_via_app_icon","utc_ms":1792943858959}
+D/VRI[MainActivity]( 6082): visibilityChanged oldVisibility=true newVisibility=false
+E/SurfaceSyncGroup( 6082): Failed to receive transaction ready in 1000ms. Marking SurfaceSyncGroup(wmsSync-VRI[MainActivity]#4) as ready
+E/SurfaceSyncGroup( 6082): Failed to receive transaction ready in 1000ms. Marking SurfaceSyncGroup(VRI[MainActivity]#5) as ready
+E/SurfaceSyncGroup( 6082): Failed to receive transaction ready in 1000ms. Marking SurfaceSyncGroup(SurfaceView[dev.tideglass.game/dev.tideglass.game.MainActivity]#3) as ready
+I/flutter ( 6082): ══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+I/flutter ( 6082): The following TestFailure was thrown running a test:
+I/flutter ( 6082): Expected: ReminderPermission:<ReminderPermission.denied>
+I/flutter ( 6082):   Actual: ReminderPermission:<ReminderPermission.allowed>
+I/flutter ( 6082): 
+I/flutter ( 6082): When the exception was thrown, this was the stack:
+I/flutter ( 6082): #4      main.<anonymous closure> (file:///Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261023T040445.261666Z-3b00cc8f7122/workspace/game/mobile/integration_test/reminders_330ab6428203ec80_test.dart:302:11)
+I/flutter ( 6082): <asynchronous suspension>
+I/flutter ( 6082): #5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+I/flutter ( 6082): <asynchronous suspension>
+I/flutter ( 6082): #6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+I/flutter ( 6082): <asynchronous suspension>
+I/flutter ( 6082): #7      TestWidgetsFlutterBinding._createTestCompletionHandler.<anonymous closure> (package:flutter_test/src/binding.dart:1707:12)
+I/flutter ( 6082): <asynchronous suspension>
+I/flutter ( 6082): 
+I/flutter ( 6082): This was caught by the test expectation on the following line:
+I/flutter ( 6082):   file:///Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261023T040445.261666Z-3b00cc8f7122/workspace/game/mobile/integration_test/reminders_330ab6428203ec80_test.dart line 302
+I/flutter ( 6082): The test description was:
+I/flutter ( 6082):   real OS reminder qualification: revoked
+I/flutter ( 6082): ════════════════════════════════════════════════════════════════════════════════════════════════════
+I/flutter ( 6082): 00:11 +0: real OS reminder qualification: revoked [E]
+I/flutter ( 6082):   Test failed. See exception logs above.
+I/flutter ( 6082):   The test description was: real OS reminder qualification: revoked
+I/flutter ( 6082):   
+I/flutter ( 6082): 00:11 +0 -1: (tearDownAll)
+I/flutter ( 6082): 00:11 +1 -1: Some tests failed.
+Failure Details:
+Failure in method: real OS reminder qualification: revoked
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞═════════════════
+The following TestFailure was thrown running a test:
+Expected: ReminderPermission:<ReminderPermission.denied>
+  Actual: ReminderPermission:<ReminderPermission.allowed>
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261023T040445.261666Z-3b00cc8f7122/workspace/game/mobile/integration_test/reminders_330ab6428203ec80_test.dart:302:11)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+#7      TestWidgetsFlutterBinding._createTestCompletionHandler.<anonymous closure> (package:flutter_test/src/binding.dart:1707:12)
+<asynchronous suspension>
+
+This was caught by the test expectation on the following line:
+  file:///Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261023T040445.261666Z-3b00cc8f7122/workspace/game/mobile/integration_test/reminders_330ab6428203ec80_test.dart line 302
+The test description was:
+  real OS reminder qualification: revoked
+═════════════════════════════════════════════════════════════════
+
+end of failure 1
+
+
+
+Leaving the application running.

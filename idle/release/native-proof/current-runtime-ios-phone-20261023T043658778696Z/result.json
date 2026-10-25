@@ -1,0 +1,30 @@
+{
+  "verification_id": "current-runtime-ios-phone-20261023T043658778696Z",
+  "candidate_fingerprint": "3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59",
+  "harness_sha256": "102be09eb8043ce9bb496156d9f37b1834c3084ddf58fef073e7c25cdc3c55d5",
+  "scenario": "runtime-save-recover-afterRename",
+  "run_id": "v3b00-ios-phone-save-afterRename",
+  "device_label": "ios-phone",
+  "platform": "ios",
+  "os_version": "Version 26.3.1 (Build 23D8133)",
+  "process_id": 72030,
+  "fixture_kind": "INTERNAL SYNTHETIC QUALIFICATION ONLY",
+  "checks": [
+    "After externally recorded process kill at afterRename, expected generation loads and OS writer lock is released."
+  ],
+  "completed": true,
+  "limitations": [
+    "No real participant, consent, paid transaction or receiving-app delivery.",
+    "Process termination is not physical power loss or a lifecycle callback.",
+    "Injected predecessor/rate/clock/bounds are qualification fixtures only.",
+    "Consented production process observations do not prove release AOT fatal-report matching or a crash-free rate."
+  ],
+  "fixture_directory": "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Data/Application/5D59BBBE-85C3-4951-A9F5-6402422DD249/Library/Application Support/native-current-verification/ios-phone-v3b00-ios-phone-save-afterRename/save-afterRename",
+  "preparation_verification_id": "current-runtime-ios-phone-20261023T043612069360Z",
+  "preparation_checkpoint_sha256": "21d33499be8e0c0db754c065886e658d57de6557211a495bd39a745f8a125c57",
+  "previous_native_process_id": 71300,
+  "recovered_stage": "afterRename",
+  "save_loaded_amount": 1,
+  "save_after_recovery_amount": 2,
+  "screenshots": []
+}

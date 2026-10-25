@@ -1,0 +1,18 @@
+{
+  "checked_utc": "2026-10-23T04:23:48.195810+00:00",
+  "official_source": "https://support.google.com/googleplay/android-developer/answer/11926878?hl=en-EN",
+  "requirement": "New mobile apps/updates target Android16 API36 or higher from31August2026.",
+  "candidate_fingerprint": "3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59",
+  "artifact_inventory": "release/native-proof/execution-3b00-20261023T040612.562001Z/artifact-inventory/inventory.json",
+  "artifact_inventory_sha256": "6cad93c216b3807083f5697db8e6c893f42000c8e9563d4696a63abb75b9dce2",
+  "observed_target_sdk": [
+    {
+      "json_path": "/artifacts/4/manifest_summary/sdk/0/{http://schemas.android.com/apk/res/android}targetSdkVersion",
+      "value": "36"
+    }
+  ],
+  "source_configuration": "game/mobile/android/app/build.gradle.kts uses flutter.targetSdkVersion from pinned SDK",
+  "actual_emulator_os": "Android15 API35; does not establish Android16 runtime qualification",
+  "policy_target_level_satisfied_by_inspected_manifest": true,
+  "store_ingestion_or_public_approval": false
+}

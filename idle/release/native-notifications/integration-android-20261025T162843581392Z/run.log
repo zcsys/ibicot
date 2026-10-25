@@ -1,0 +1,34 @@
+Running Gradle task 'assembleDebug'...                             17.1s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...        1,052ms
+I/WindowExtensionsImpl( 8885): Initializing Window Extensions, vendor API level=6, activity embedding enabled=true
+D/FlutterRenderer( 8885): Width is zero. 0,0
+D/FlutterJNI( 8885): Sending viewport metrics to the engine.
+W/HWUI    ( 8885): Failed to choose config with EGL_SWAP_BEHAVIOR_PRESERVED, retrying without...
+W/HWUI    ( 8885): Failed to initialize 101010-2 format, error = EGL_SUCCESS
+I/Gralloc4( 8885): mapper 4.x is not supported
+I/.tideglass.game( 8885): Compiler allocated 5250KB to compile void android.view.ViewRootImpl.performTraversals()
+I/Choreographer( 8885): Skipped 44 frames!  The application may be doing too much work on its main thread.
+D/FlutterJNI( 8885): Sending viewport metrics to the engine.
+VMServiceFlutterDriver: Connecting to Flutter application at http://127.0.0.1:49322/ha3PE-njVFA=/
+VMServiceFlutterDriver: Isolate found with number: 2238873836411695
+VMServiceFlutterDriver: Isolate 2238873836411695 is runnable.
+VMServiceFlutterDriver: Isolate is paused at start.
+VMServiceFlutterDriver: Attempting to resume isolate
+I/flutter ( 8885): 00:00 +0: real OS reminder qualification: delivery
+VMServiceFlutterDriver: Connected to Flutter application.
+D/FlutterJNI( 8885): Sending viewport metrics to the engine.
+I/flutter ( 8885): TIDEGLASS_REMINDER_ACTION {"verification_id":"integration-android-20261025T162843581392Z","candidate_fingerprint":"3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59","harness_sha256":"330ab6428203ec80e4de19e4eb727ad8dcfc6f63572e9ea1b0ef3ff7dc7a71da","scenario":"delivery","run_id":"v3b00-r20261025-android-delivery-observed3","device_label":"android","platform":"android","process_id":8885,"action":"allow_permission_if_prompted","utc_ms":1792945751705}
+I/flutter ( 8885): TIDEGLASS_REMINDER_ACTION {"verification_id":"integration-android-20261025T162843581392Z","candidate_fingerprint":"3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59","harness_sha256":"330ab6428203ec80e4de19e4eb727ad8dcfc6f63572e9ea1b0ef3ff7dc7a71da","scenario":"delivery","run_id":"v3b00-r20261025-android-delivery-observed3","device_label":"android","platform":"android","process_id":8885,"action":"background_app_now_using_os_home","utc_ms":1792945751803}
+D/ProfileInstaller( 8885): Installing profile for dev.tideglass.game
+D/EGL_emulation( 8885): app_time_stats: avg=6086.49ms min=1052.65ms max=11120.33ms count=2
+D/EGL_emulation( 8885): app_time_stats: avg=9502.67ms min=9502.67ms max=9502.67ms count=1
+D/VRI[MainActivity]( 8885): visibilityChanged oldVisibility=true newVisibility=false
+I/flutter ( 8885): TIDEGLASS_REMINDER_ACTION {"verification_id":"integration-android-20261025T162843581392Z","candidate_fingerprint":"3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59","harness_sha256":"330ab6428203ec80e4de19e4eb727ad8dcfc6f63572e9ea1b0ef3ff7dc7a71da","scenario":"delivery","run_id":"v3b00-r20261025-android-delivery-observed3","device_label":"android","platform":"android","process_id":8885,"action":"wait_until_due_then_return_via_app_icon","utc_ms":1792945773361,"not_before_utc_ms":1792946100000}
+E/SurfaceSyncGroup( 8885): Failed to receive transaction ready in 1000ms. Marking SurfaceSyncGroup(wmsSync-VRI[MainActivity]#4) as ready
+E/SurfaceSyncGroup( 8885): Failed to receive transaction ready in 1000ms. Marking SurfaceSyncGroup(VRI[MainActivity]#5) as ready
+E/SurfaceSyncGroup( 8885): Failed to receive transaction ready in 1000ms. Marking SurfaceSyncGroup(SurfaceView[dev.tideglass.game/dev.tideglass.game.MainActivity]#3) as ready
+I/flutter ( 8885): 08:54 +1: (tearDownAll)
+I/flutter ( 8885): 08:54 +2: All tests passed!
+All tests passed.
+Leaving the application running.

@@ -1,0 +1,11 @@
+# Optional calibration and known-content migration
+
+21 October2026. Director decision resolving an implementation conflict with the original blueprint, not a new economic rule.
+
+`TIDEGLASS_DESIGN.md` defines Focus/calibration as optional. Chapter3 incorrectly required both12 collected Surveys and3 unique calibrations, so literal zero-bonus simulations stalled after chapter2. Remove only the calibration requirement; retain12 Surveys, chapter order, all rewards/IDs, all12 patterns and every economic constant. The second chapter hint is now an optional invitation. Source prose, localized export and bundled campaign bytes agree.
+
+The previous complete content digest is708f083217d4810e8e0a23e4d6519b374ab3c986da08eb001c0dd0a762e5c19c; the new digest is58c8cac53fa8679447d3f524bdc6979bf0c11127670840bf21c57cfffc2bbc72. Both have the same economy digest9e5b9bcfcfc7a68d4eaeebc97e8d40cd42d04532fa59f514c7483efee885d2b6. `content_compatibility.dart` accepts exactly the known predecessor alongside the current manifest and existing legacy-null migration. Reading the predecessor normalizes only its content pin. Completed chapter prefixes, cosmetic/archive ownership, active challenge state, seasonal state and balances are retained. Unknown content remains incompatible before save selection. Newly eligible chapter3 completes through ordinary campaign evaluation and idempotent completion sets; no earlier reward is regranted.
+
+Twenty-five production progression tests pass, including an ending with zero calibrations. Fifteen focused exact-engine policy runs reach all6 chapters;6 no-Focus/no-Support cases cover30/90days and1/3/6daily visits. Three free/ad fixture pairs match after excluding only route labels and serialized receipt byte lengths. The original over-strict metadata comparison failure is preserved, with separate qualification in `release/balance/optional-calibration-2026-10-21T105107709296Z/qualified-assertions.json`. These are virtual policies with upper-bound evaluation times, not human pace or retention. Earlier184-case evidence stays tied to the prior content, not relabeled current.
+
+Client migration tests, independent content/save review and the next native candidate remain pending. Original quantities/ethical monetization and all external empirical gates remain unchanged.

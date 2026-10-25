@@ -1,0 +1,1 @@
+Superseded author staging only. This snapshot used the intermediate StoryScreen 1ff65e84, before final layout repair. It is not full content/native evidence; final files are in the staged root. No canonical file was written.

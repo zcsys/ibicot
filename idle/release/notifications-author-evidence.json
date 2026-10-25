@@ -1,0 +1,107 @@
+{
+  "created_utc": "2026-10-16T11:47:15.916285+00:00",
+  "lane": "client_native",
+  "status": "implemented_host_verified_pending_native_and_independent_review",
+  "baseline_native_candidate_excludes_feature": "d85bdf74433d",
+  "requirements": [
+    "S26",
+    "M3-05",
+    "M5-02"
+  ],
+  "dependencies": {
+    "flutter_local_notifications": "22.3.2",
+    "flutter_timezone": "5.1.1",
+    "timezone": "0.11.2",
+    "android_desugar_jdk_libs": "2.1.4"
+  },
+  "tests": {
+    "command": "../../tool/flutter test test/notification_service_test.dart test/notification_settings_test.dart",
+    "cwd": "game/mobile",
+    "passed": 17,
+    "failed": 0,
+    "actual_os_delivery_tested": false,
+    "plugin_method_channels_mocked": true,
+    "settings_viewport": [
+      320,
+      720
+    ],
+    "settings_text_scale": 2,
+    "pseudo_copy_expansion_percent": 35
+  },
+  "analyze": {
+    "command": "../../tool/flutter analyze lib/notification_copy.dart lib/notification_service.dart lib/notification_settings.dart test/notification_service_test.dart test/notification_settings_test.dart",
+    "issues": 0
+  },
+  "files": {
+    "game/mobile/lib/notification_copy.dart": {
+      "sha256": "e1face0cf9b867a25b5414db35611a823ebb2fb13afb6e04e4ed6e79f9b1f5dd",
+      "bytes": 3985
+    },
+    "game/mobile/lib/notification_service.dart": {
+      "sha256": "39cbb50ed595c8c57c1bc39696b555d5148e49f8aee68ceedb5258b73d9a4d19",
+      "bytes": 17866
+    },
+    "game/mobile/lib/notification_settings.dart": {
+      "sha256": "46b00068acccd03516fc5999a4e548e3dfcc7eee1ab02a3b0e139042f7916264",
+      "bytes": 10040
+    },
+    "game/mobile/test/notification_service_test.dart": {
+      "sha256": "da89c4486ec77d4fe5ec5783a5f512d6ccd826cd5f5f0673914a53d69b05c647",
+      "bytes": 16208
+    },
+    "game/mobile/test/notification_settings_test.dart": {
+      "sha256": "ea2b130c4204a09aab04b1818669af3b38c478d1982eb928d8e9acf84a45d01e",
+      "bytes": 6163
+    },
+    "game/mobile/pubspec.yaml": {
+      "sha256": "c3dd249cb6f57d9ae5ecdc33ac9c1b11cb643b42c6cf9be5e752d21fc355496e",
+      "bytes": 955
+    },
+    "game/mobile/pubspec.lock": {
+      "sha256": "61f75e02a3bc212da454d56af09b03aac363ea3dcbb50d9c11fe23b5932706f9",
+      "bytes": 24103
+    },
+    "game/mobile/android/app/build.gradle.kts": {
+      "sha256": "5d65b273c941478d23e5f1e97ecc3c71a1b20e14c52a6c43339a93a58f80a79b",
+      "bytes": 1846
+    },
+    "game/mobile/android/app/src/main/AndroidManifest.xml": {
+      "sha256": "fc13bc3ecc21ff94a78cc018a95f6f22b95ba2fd02d5d4ed1de120e13ffbfbe2",
+      "bytes": 2843
+    },
+    "game/mobile/android/app/src/main/res/drawable/ic_tideglass_notification.xml": {
+      "sha256": "d76477929cd605b53fc8000a559e50ef918f602f4fa5a898d5058b1d68f61c0a",
+      "bytes": 388
+    },
+    "game/mobile/android/app/src/main/res/raw/tideglass_keep.xml": {
+      "sha256": "bde6893eaf27589d6a7a9dfb20d9a0177e705278b8da4fc78e316b89cd96aad3",
+      "bytes": 114
+    },
+    "game/mobile/ios/Runner/AppDelegate.swift": {
+      "sha256": "2c7e270b0108521f16e9adae8f641429d66391f0a714b3f40bd32ee00975f7b6",
+      "bytes": 619
+    },
+    "game/mobile/macos/Flutter/GeneratedPluginRegistrant.swift": {
+      "sha256": "d4c2c36897285efe1cc7e0ad8428f503e2b5e8aa0e557d35d59d4678c3e407ef",
+      "bytes": 947
+    },
+    "release/notifications-author-review.md": {
+      "sha256": "723bde5474dec1aab5faaccb33ef693d36812cf5b95c39ff4b7b179cebc32365",
+      "bytes": 8510
+    },
+    "release/notifications-tests.log": {
+      "sha256": "81133e5710ffa6a4e297db14f45b9a648439adfa8acfa4a1404ab8c753e2ec85",
+      "bytes": 3323
+    },
+    "release/notifications-analysis.log": {
+      "sha256": "6824e88e9c05c2b069264df313b4a45798d45905ce0344432495f3a2df799e12",
+      "bytes": 376
+    }
+  },
+  "remaining": [
+    "root lifecycle/settings integration",
+    "independent QA",
+    "new native compile with notification plugins",
+    "physical-device permission/delivery/revocation/power-management acceptance"
+  ]
+}

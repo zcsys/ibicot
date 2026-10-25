@@ -1,0 +1,228 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tideglass.invalid/internal/current-runtime-report-data.schema.json",
+  "title": "Synthetic native current-runtime reportData (after existing driver screenshot extraction)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "verification_id",
+    "candidate_fingerprint",
+    "harness_sha256",
+    "scenario",
+    "run_id",
+    "device_label",
+    "platform",
+    "os_version",
+    "process_id",
+    "fixture_kind",
+    "checks",
+    "completed",
+    "limitations"
+  ],
+  "properties": {
+    "verification_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]+$"
+    },
+    "run_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]+$"
+    },
+    "device_label": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]+$"
+    },
+    "candidate_fingerprint": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "harness_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "checkpoint_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "preparation_checkpoint_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "scenario": {
+      "enum": [
+        "runtime-lock-exclusion",
+        "runtime-save-hold-beforeWrite",
+        "runtime-save-recover-beforeWrite",
+        "runtime-save-hold-afterFlush",
+        "runtime-save-recover-afterFlush",
+        "runtime-save-hold-afterRename",
+        "runtime-save-recover-afterRename",
+        "runtime-transition-start",
+        "runtime-transition-reopen",
+        "runtime-study-default",
+        "runtime-study-enroll",
+        "runtime-study-restart",
+        "runtime-study-crash-hold",
+        "runtime-study-crash-reopen",
+        "runtime-study-capacity",
+        "runtime-study-storage-withdraw",
+        "runtime-study-withdraw-reopen",
+        "runtime-cache-grace"
+      ]
+    },
+    "platform": {
+      "enum": [
+        "ios",
+        "android",
+        "macos"
+      ]
+    },
+    "os_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "fixture_kind": {
+      "const": "INTERNAL SYNTHETIC QUALIFICATION ONLY"
+    },
+    "process_id": {
+      "type": "integer",
+      "minimum": 2
+    },
+    "previous_native_process_id": {
+      "type": "integer",
+      "minimum": 2
+    },
+    "completed": {
+      "type": "boolean"
+    },
+    "expected_interruption": {
+      "type": "boolean"
+    },
+    "default_predecessor_registration": {
+      "type": "boolean"
+    },
+    "same_cursor_reopen_checked": {
+      "type": "boolean"
+    },
+    "study_identity_and_chain_retained": {
+      "type": "boolean"
+    },
+    "new_study_process_recorded": {
+      "type": "boolean"
+    },
+    "study_capacity_gap": {
+      "type": "boolean"
+    },
+    "storage_failure_visible": {
+      "type": "boolean"
+    },
+    "withdrawal_durable": {
+      "type": "boolean"
+    },
+    "checks": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "screenshots": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "fixture_directory": {
+      "type": "string",
+      "minLength": 1
+    },
+    "preparation_verification_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "shared_cache_preflight": {
+      "type": "string",
+      "minLength": 1
+    },
+    "lifetime_micros": {
+      "type": "string",
+      "minLength": 1
+    },
+    "recovered_stage": {
+      "enum": [
+        "beforeWrite",
+        "afterFlush",
+        "afterRename"
+      ]
+    },
+    "save_loaded_amount": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "save_after_recovery_amount": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "invented_terminal_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "study_capacity_records": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "study_capacity_bytes": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "cache_limits": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "exports",
+        "bytes",
+        "grace_seconds"
+      ],
+      "properties": {
+        "exports": {
+          "const": 3
+        },
+        "bytes": {
+          "const": 201326592
+        },
+        "grace_seconds": {
+          "const": 86400
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "completed": {
+            "const": true
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "fixture_directory"
+        ],
+        "properties": {
+          "checks": {
+            "minItems": 1
+          }
+        }
+      }
+    }
+  ]
+}

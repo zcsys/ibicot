@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "id": "harbor.restored.03",
+  "asset_id": "asset.harbor.restored.03",
+  "implementation": "existing_code_native_vector",
+  "original_contract_method": "reused_layer_composition_qualified_raster",
+  "view_box": [
+    0,
+    0,
+    640,
+    388
+  ],
+  "geometry_source": "game/mobile/lib/harbor_art.dart",
+  "widget": "HarborArt",
+  "painter": "_HarborPainter.paint",
+  "selector": {
+    "restoration": 3
+  },
+  "dynamic_parameters": [
+    "counts",
+    "phase",
+    "decoration"
+  ],
+  "main_binding": "game.story.campaign.restoredHarbor",
+  "state_geometry": {
+    "dawn_interpolation": 0.5,
+    "constellation_groups_drawn": 3,
+    "quay_lamps_drawn": 3
+  },
+  "layer_order": [
+    "dawn_gradient",
+    "fixed_star_field",
+    "crescent_halo",
+    "restored_constellations",
+    "islands",
+    "ocean_waves",
+    "lighthouse_beam_and_reflection",
+    "lighthouse",
+    "five_base_fleet_silhouettes",
+    "restored_quay_lamps",
+    "optional_earned_decoration"
+  ],
+  "reduced_motion": {
+    "phase": 0,
+    "same_restoration_information": true,
+    "complete_native_acceptance": false
+  },
+  "notes": "This descriptor binds the actual shared painter; it is not a replacement painting. The unlit ID means unrestored: lighthouse and base stars remain visible. Harbor miniatures use earlier base silhouettes, not the separate 25-stage card renderer."
+}

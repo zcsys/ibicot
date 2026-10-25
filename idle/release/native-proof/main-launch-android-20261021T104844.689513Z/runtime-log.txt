@@ -1,0 +1,25 @@
+--------- beginning of main
+D/AndroidRuntime(  368): >>>>>> START com.android.internal.os.ZygoteInit uid 0 <<<<<<
+I/AndroidRuntime(  368): Using default boot image
+I/AndroidRuntime(  368): Leaving lock profiling enabled
+--------- beginning of system
+W/ActivityTaskManager(  579): Skip updateConfiguration because mWindowManager isn't set
+I/ActivityTaskManager(  579): Config changes=20005df8 {1.0 ?mcc0mnc [en_US] ldltr sw411dp w411dp h914dp 420dpi nrml long port ?uimode ?night finger -keyb/v/h -nav/h winConfig={ mBounds=Rect(0, 0 - 1080, 2400) mAppBounds=Rect(0, 0 - 1080, 2400) mMaxBounds=Rect(0, 0 - 1080, 2400) mDisplayRotation=ROTATION_0 mWindowingMode=fullscreen mActivityType=undefined mAlwaysOnTop=undefined mRotation=ROTATION_0} s.2 ?fontWeightAdjustment}
+I/ActivityTaskManager(  579): Config changes=200 {1.0 ?mcc0mnc [en_US] ldltr sw411dp w411dp h914dp 420dpi nrml long port finger -keyb/v/h -nav/h winConfig={ mBounds=Rect(0, 0 - 1080, 2400) mAppBounds=Rect(0, 0 - 1080, 2400) mMaxBounds=Rect(0, 0 - 1080, 2400) mDisplayRotation=ROTATION_0 mWindowingMode=fullscreen mActivityType=undefined mAlwaysOnTop=undefined mRotation=ROTATION_0} s.4 ?fontWeightAdjustment}
+I/ActivityTaskManager(  579): Config changes=10008000 {1.0 ?mcc0mnc [en_US] ldltr sw411dp w411dp h914dp 420dpi nrml long port finger -keyb/v/h -nav/h winConfig={ mBounds=Rect(0, 0 - 1080, 2400) mAppBounds=Rect(0, 0 - 1080, 2400) mMaxBounds=Rect(0, 0 - 1080, 2400) mDisplayRotation=ROTATION_0 mWindowingMode=fullscreen mActivityType=undefined mAlwaysOnTop=undefined mRotation=ROTATION_0} s.6 fontWeightAdjustment=0}
+I/AndroidRuntime(  854): VM exiting with result code 0, cleanup skipped.
+W/ActivityTaskManager(  579): callingPackage for (uid=-1, pid=0) has no WPC
+I/ActivityTaskManager(  579): START u0 {act=android.intent.action.MAIN cat=[android.intent.category.HOME] flg=0x10000100 cmp=com.android.settings/.FallbackHome (has extras)} with LAUNCH_MULTIPLE from uid 0 (BAL_ALLOW_ALLOWLISTED_UID) result code=0
+I/ActivityTaskManager(  579): Displayed com.android.settings/.FallbackHome for user 0: +1s27ms
+I/ActivityTaskManager(  579): Restoring recents for user 0
+W/ActivityTaskManager(  579): callingPackage for (uid=-1, pid=0) has no WPC
+I/ActivityTaskManager(  579): START u0 {act=android.intent.action.MAIN cat=[android.intent.category.HOME] flg=0x10000100 cmp=com.google.android.apps.nexuslauncher/.NexusLauncherActivity (has extras)} with LAUNCH_SINGLE_TASK from uid 0 (BAL_ALLOW_ALLOWLISTED_UID) result code=0
+I/ActivityTaskManager(  579): Config changes=80000000 {1.0 ?mcc0mnc [en_US] ldltr sw411dp w411dp h914dp 420dpi nrml long port finger -keyb/v/h -nav/h winConfig={ mBounds=Rect(0, 0 - 1080, 2400) mAppBounds=Rect(0, 0 - 1080, 2400) mMaxBounds=Rect(0, 0 - 1080, 2400) mDisplayRotation=ROTATION_0 mWindowingMode=fullscreen mActivityType=undefined mAlwaysOnTop=undefined mRotation=ROTATION_0} as.2 s.8 fontWeightAdjustment=0}
+W/ActivityTaskManager(  579): Current config: {1.0 ?mcc0mnc [en_US] ldltr sw411dp w411dp h914dp 420dpi nrml long port finger -keyb/v/h -nav/h winConfig={ mBounds=Rect(0, 0 - 1080, 2400) mAppBounds=Rect(0, 0 - 1080, 2400) mMaxBounds=Rect(0, 0 - 1080, 2400) mDisplayRotation=ROTATION_0 mWindowingMode=fullscreen mActivityType=undefined mAlwaysOnTop=undefined mRotation=ROTATION_0} as.2 s.8 fontWeightAdjustment=0} unchanged for IME proc com.google.android.inputmethod.latin
+V/ActivityTaskManager(  579): Sending to IME proc com.google.android.inputmethod.latin new config {1.0 ?mcc0mnc [en_US] ldltr sw411dp w411dp h914dp 420dpi nrml long port finger -keyb/v/h -nav/h winConfig={ mBounds=Rect(0, 0 - 1080, 2400) mAppBounds=Rect(0, 0 - 1080, 2400) mMaxBounds=Rect(0, 0 - 1080, 2400) mDisplayRotation=ROTATION_0 mWindowingMode=fullscreen mActivityType=undefined mAlwaysOnTop=undefined mRotation=ROTATION_0} as.2 s.23 fontWeightAdjustment=0}
+W/ActivityTaskManager(  579): Launch timeout has expired, giving up wake lock!
+I/ActivityTaskManager(  579): Displayed com.google.android.apps.nexuslauncher/.NexusLauncherActivity for user 0: +10s966ms
+W/ActivityTaskManager(  579): callingPackage for (uid=2000, pid=4206) has no WPC
+I/ActivityTaskManager(  579): START u0 {flg=0x10000000 cmp=dev.tideglass.game/.MainActivity} with LAUNCH_SINGLE_TOP from uid 2000 (BAL_ALLOW_PERMISSION) result code=0
+W/ActivityTaskManager(  579): Launch timeout has expired, giving up wake lock!
+W/ActivityTaskManager(  579): ProcessRecord{1a5a1a 4222:dev.tideglass.game/u0a209} is removed with pending start ActivityRecord{77fbbe5 u0 dev.tideglass.game/.MainActivity t21}

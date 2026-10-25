@@ -1,0 +1,30 @@
+{
+  "verification_id": "current-runtime-android-20261023T053732277809Z",
+  "candidate_fingerprint": "3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59",
+  "harness_sha256": "102be09eb8043ce9bb496156d9f37b1834c3084ddf58fef073e7c25cdc3c55d5",
+  "scenario": "runtime-save-recover-afterFlush",
+  "run_id": "v3b00-android-probe-fixed-save-afterFlush",
+  "device_label": "android",
+  "platform": "android",
+  "os_version": "sdk_gphone64_arm64-userdebug 15 AE3A.240806.043 12960925 dev-keys",
+  "process_id": 5929,
+  "fixture_kind": "INTERNAL SYNTHETIC QUALIFICATION ONLY",
+  "checks": [
+    "After externally recorded process kill at afterFlush, expected generation loads and OS writer lock is released."
+  ],
+  "completed": true,
+  "limitations": [
+    "No real participant, consent, paid transaction or receiving-app delivery.",
+    "Process termination is not physical power loss or a lifecycle callback.",
+    "Injected predecessor/rate/clock/bounds are qualification fixtures only.",
+    "Consented production process observations do not prove release AOT fatal-report matching or a crash-free rate."
+  ],
+  "fixture_directory": "/data/user/0/dev.tideglass.game/files/native-current-verification/android-v3b00-android-probe-fixed-save-afterFlush/save-afterFlush",
+  "preparation_verification_id": "current-runtime-android-20261023T053650354573Z",
+  "preparation_checkpoint_sha256": "00392ba03bf109133e4b168caa7298ff27684834197f91adde9affb2a1d138e1",
+  "previous_native_process_id": 5667,
+  "recovered_stage": "afterFlush",
+  "save_loaded_amount": 0,
+  "save_after_recovery_amount": 2,
+  "screenshots": []
+}

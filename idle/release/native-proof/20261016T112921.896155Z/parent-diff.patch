@@ -1,0 +1,152 @@
+--- parent/game/mobile/lib/audio_bus.dart
++++ derived/game/mobile/lib/audio_bus.dart
+@@ -171,11 +171,17 @@
+   Future<void> _initialize() async {
+     if (_disposed) return;
+     await AudioPlayer.global.setAudioContext(
+-      AudioContextConfig(
+-        respectSilence: true,
+-        stayAwake: false,
+-        focus: AudioContextConfigFocus.mixWithOthers,
+-      ).build(),
++      AudioContext(
++        android: AudioContextConfig(
++          respectSilence: true,
++          stayAwake: false,
++          focus: AudioContextConfigFocus.mixWithOthers,
++        ).buildAndroid(),
++        // Ambient already mixes other audio and respects the Silent switch.
++        // Adding mixWithOthers to the generic silence-respecting config is
++        // rejected by the iOS adapter before a native player can be created.
++        iOS: AudioContextIOS(category: AVAudioSessionCategory.ambient),
++      ),
+     );
+     if (_disposed) return;
+     _music = AudioPlayer(playerId: 'tideglass.music');
+--- parent/game/mobile/test/audio_native_adapter_test.dart
++++ derived/game/mobile/test/audio_native_adapter_test.dart
+@@ -1,6 +1,7 @@
+ import 'dart:async';
+ import 'package:audioplayers/audioplayers.dart';
+ import 'package:flutter/services.dart';
++import 'package:flutter/foundation.dart';
+ import 'package:flutter_test/flutter_test.dart';
+ import 'package:tideglass/audio_bus.dart';
+ 
+@@ -10,6 +11,7 @@
+       TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger;
+   const channel = MethodChannel('xyz.luan/audioplayers');
+   final calls = <MethodCall>[];
++  final globalCalls = <MethodCall>[];
+   var failInitialization = false;
+   setUp(() {
+     messenger.setMockMethodCallHandler(
+@@ -17,10 +19,14 @@
+       (_) async => '/tmp',
+     );
+     calls.clear();
++    globalCalls.clear();
+     failInitialization = false;
+     messenger.setMockMethodCallHandler(
+       const MethodChannel('xyz.luan/audioplayers.global'),
+-      (_) async => null,
++      (call) async {
++        globalCalls.add(call);
++        return null;
++      },
+     );
+     messenger.setMockMethodCallHandler(
+       const MethodChannel('xyz.luan/audioplayers.global/events'),
+@@ -70,6 +76,22 @@
+       );
+     }
+   });
++
++  test(
++    'iOS ambient session initializes without incompatible mix options',
++    () async {
++      debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
++      addTearDown(() => debugDefaultTargetPlatformOverride = null);
++      final driver = NativeTideAudioDriver();
++      await driver.initialize();
++      final context = globalCalls.lastWhere(
++        (call) => call.method == 'setAudioContext',
++      );
++      expect(context.arguments, {'category': 'ambient', 'options': <String>[]});
++      expect(calls.where((call) => call.method == 'create').length, 9);
++      await driver.dispose();
++    },
++  );
+ 
+   test(
+     'partial native setup failure disposes every allocated player',
+--- parent/game/mobile/integration_test/platform_smoke_test.dart
++++ derived/game/mobile/integration_test/platform_smoke_test.dart
+@@ -21,6 +21,7 @@
+ /// human playtest. Identical inputs exercise real UI commands/core/disk on both OSes.
+ void main() {
+   final binding = IntegrationTestWidgetsFlutterBinding.ensureInitialized();
++  WidgetController.hitTestWarningShouldBeFatal = true;
+   const label = String.fromEnvironment(
+     'TIDEGLASS_DEVICE_LABEL',
+     defaultValue: 'native',
+@@ -264,6 +265,8 @@
+       await tester.ensureVisible(find.byKey(const ValueKey('buy-0')));
+       await tester.pump();
+     }
++    await Future<void>.delayed(const Duration(milliseconds: 400));
++    await tester.pump();
+     if (find.text(Copy.returnAcknowledge).evaluate().isNotEmpty) {
+       await tester.tap(find.text(Copy.returnAcknowledge));
+       await tester.pump(const Duration(milliseconds: 350));
+@@ -311,6 +314,22 @@
+   testWidgets('seeded worker, cosmetics and native audio: $scenario', (
+     tester,
+   ) async {
++    binding.reportData = {
++      'verification_id': const String.fromEnvironment(
++        'TIDEGLASS_VERIFICATION_ID',
++      ),
++      'candidate_fingerprint': const String.fromEnvironment(
++        'TIDEGLASS_CANDIDATE_FINGERPRINT',
++      ),
++      'harness_sha256': const String.fromEnvironment(
++        'TIDEGLASS_HARNESS_SHA256',
++      ),
++      'platform': Platform.operatingSystem,
++      'device_label': label,
++      'scenario': scenario,
++      'run_id': runId,
++      'process_id': pid,
++    };
+     final directory = Directory(
+       '${(await getApplicationSupportDirectory()).path}/native-verification/session-$label-$runId',
+     );
+@@ -404,12 +423,15 @@
+         'Separate native process retained both cosmetic selections, 50 Notes and earned Radiance',
+       );
+     }
++    await tester.pumpAndSettle();
+     if (find.text(Copy.returnAcknowledge).evaluate().isNotEmpty) {
+       await tester.tap(find.text(Copy.returnAcknowledge));
+       await tester.pump(const Duration(milliseconds: 350));
+     }
++    await tester.pumpAndSettle();
+     await game.resumeWithProgress();
+-    await tester.pump();
++    await tester.pumpAndSettle();
++    expect(game.returnReport, isNull);
+     await tester.tap(find.text('Logbook'));
+     await tester.pump(const Duration(milliseconds: 350));
+     await tester.ensureVisible(find.byKey(const ValueKey('open-cosmetics')));
+@@ -439,6 +461,10 @@
+         'Collection route equipped earned chapter appearance and spent exactly 50 Notes on coexisting decoration',
+       );
+     }
++    await tester.ensureVisible(
++      find.byKey(const ValueKey('collection-cosmetic.core.decoration.01')),
++    );
++    await tester.pumpAndSettle();
+     await binding.takeScreenshot('$label-$scenario-collection');
+     await tester.pageBack();
+     await tester.pumpAndSettle();

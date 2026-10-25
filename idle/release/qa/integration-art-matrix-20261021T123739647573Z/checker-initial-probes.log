@@ -1,0 +1,28 @@
+test_control_full_proof (__main__.CheckerCounterexamples.test_control_full_proof) ... FAIL
+test_duplicate_asset_pair (__main__.CheckerCounterexamples.test_duplicate_asset_pair) ... ok
+test_failed_actual_command (__main__.CheckerCounterexamples.test_failed_actual_command) ... ok
+test_failed_lifecycle_supplement (__main__.CheckerCounterexamples.test_failed_lifecycle_supplement) ... ok
+test_failed_palette_supplement (__main__.CheckerCounterexamples.test_failed_palette_supplement) ... ok
+test_false_canonical_promotion (__main__.CheckerCounterexamples.test_false_canonical_promotion) ... ok
+test_false_cosmetic_reachability (__main__.CheckerCounterexamples.test_false_cosmetic_reachability) ... ok
+test_false_producer_button_semantics (__main__.CheckerCounterexamples.test_false_producer_button_semantics) ... ok
+test_filtered_attached_option (__main__.CheckerCounterexamples.test_filtered_attached_option) ... ok
+test_filtered_separate_option (__main__.CheckerCounterexamples.test_filtered_separate_option) ... ok
+test_missing_asset_pair (__main__.CheckerCounterexamples.test_missing_asset_pair) ... ok
+test_missing_supplement (__main__.CheckerCounterexamples.test_missing_supplement) ... ok
+test_reported_source_drift (__main__.CheckerCounterexamples.test_reported_source_drift) ... ok
+test_wrong_pseudo_command (__main__.CheckerCounterexamples.test_wrong_pseudo_command) ... ok
+
+======================================================================
+FAIL: test_control_full_proof (__main__.CheckerCounterexamples.test_control_full_proof)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/csys/Desktop/ibicot/idle/game/qa/integration_art_checker_test.py", line 26, in test_control_full_proof
+    def test_control_full_proof(self):self.assertEqual(self.call()[0],0)
+                                      ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+AssertionError: 1 != 0
+
+----------------------------------------------------------------------
+Ran 14 tests in 0.635s
+
+FAILED (failures=1)

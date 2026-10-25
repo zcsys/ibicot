@@ -1,0 +1,2623 @@
+{
+  "title": "Tideglass AI development execution program",
+  "version": 1,
+  "status": "executing",
+  "concurrency_limit_including_director": 4,
+  "logical_delivery_roles": [
+    {
+      "id": "director",
+      "agent": "/root",
+      "responsibility": "Own product/economy decisions, task dispatch, integration, scope and release evidence. Write progression/content data and operating plans; integrate every accepted contribution.",
+      "paths": [
+        "implementation/program.json",
+        "implementation/scope_requirements.json",
+        "implementation/team/",
+        "docs/",
+        "game/content/progression/"
+      ],
+      "reviewer": "qa_release"
+    },
+    {
+      "id": "gameplay",
+      "agent": "/root/gameplay_engineer",
+      "responsibility": "Implement numeric core, purchases, milestones, prestige, synergies, online/offline timeline, automation, challenge/event runtime and simulation.",
+      "paths": [
+        "game/core/",
+        "game/simulation/",
+        "tests/core/",
+        "implementation/fixtures/economy_reference.json",
+        "implementation/tools/export_economy_fixtures.py"
+      ],
+      "reviewer": "platform"
+    },
+    {
+      "id": "client",
+      "agent": "/root/client_native",
+      "responsibility": "Implement native client, onboarding, forecasts, daily interfaces, settings, accessibility, cosmetic/pass UX and distribution packaging. Initial content registry is an integration contribution.",
+      "paths": [
+        "game/client/",
+        "game/platform/client/",
+        "tests/client/",
+        "implementation/content/launch_manifest.json",
+        "implementation/tools/validate_content_manifest.py"
+      ],
+      "reviewer": "qa_release"
+    },
+    {
+      "id": "platform",
+      "agent": "/root/platform_native",
+      "responsibility": "Implement durable persistence, cloud recovery, identity, verified entitlement services, ad/free ledger, telemetry, operations and native SDK adapters.",
+      "paths": [
+        "game/persistence/",
+        "game/platform/services/",
+        "services/",
+        "tests/services/",
+        "implementation/contracts/",
+        "implementation/fixtures/save_contract_cases.json",
+        "implementation/tools/validate_save_contract.py"
+      ],
+      "reviewer": "gameplay"
+    },
+    {
+      "id": "art_content",
+      "agent": "/root/art_content_engineer",
+      "responsibility": "Produce and integrate harbor/producer art, animations, UI assets, cosmetics, narrative and audio assets; maintain asset provenance and completeness.",
+      "paths": [
+        "game/assets/",
+        "game/content/narrative/",
+        "game/content/challenges/",
+        "game/content/calibration/",
+        "game/content/season/",
+        "implementation/art/"
+      ],
+      "reviewer": "client"
+    },
+    {
+      "id": "qa_release",
+      "agent": "/root/qa_release_native",
+      "responsibility": "Own independent regressions, device/fault/accessibility checks, scope audits, cohort measurement, review evidence and release readiness. Never approve an unrun device or store check.",
+      "paths": [
+        "tests/acceptance/",
+        "implementation/reports/",
+        "release/",
+        "implementation/tools/validate_program.py"
+      ],
+      "reviewer": "director"
+    }
+  ],
+  "execution_policy": {
+    "batch_dependencies": "finish-to-start acceptance gates; tasks within a batch may proceed against reviewed contracts",
+    "old_dependencies": "acceptance prerequisites only, copied from v1_backlog.json",
+    "status_flow": [
+      "not_started",
+      "in_progress",
+      "review_pending",
+      "verified",
+      "accepted"
+    ],
+    "acceptance_rule": "Non-author review, relevant checks and integrated evidence are required. External gates cannot pass from stubs or synthetic participants.",
+    "calendar": "Human 36-week plan is historical; AI throughput is measured after accepted slices. D30/store/device/14-day coverage remain real constraints.",
+    "persistence": "Role charters and task/evidence files persist. Session agents are not autonomous background workers."
+  },
+  "source_fingerprints": {
+    "TIDEGLASS_DESIGN.md": "9e8aafbad2af39602db1759b929c2f0088c7efc9a3fa16fc54bee051482f43f5",
+    "V1_ROADMAP.md": "6ac666c0037631eb7cdb29305a34fa9aede5d10f336f9bf95c32f2c6c9813cfa",
+    "v1_backlog.json": "779291dbd55db8e73513d3d335fbe5c51c0189c3050dba24c4f8049ac69c80ad",
+    "economy.json": "9e5b9bcfcfc7a68d4eaeebc97e8d40cd42d04532fa59f514c7483efee885d2b6"
+  },
+  "batches": [
+    {
+      "id": "B00",
+      "title": "Create the execution baseline",
+      "depends_on": [],
+      "work_items": [
+        "BOOT-CORE",
+        "BOOT-CONTENT",
+        "BOOT-SAVE"
+      ],
+      "lead": "director",
+      "steps": [
+        "Freeze the source scope and register six AI delivery roles with file ownership.",
+        "Export reference economy fixtures, register all launch content and validate a versioned save-envelope contract in three independent lanes.",
+        "Cross-review these artifacts, run validators and reconcile scope in both directions. Mark only these development artifacts complete."
+      ],
+      "outputs": [
+        "implementation/fixtures/economy_reference.json",
+        "implementation/content/launch_manifest.json",
+        "implementation/contracts/save-envelope.schema.json",
+        "implementation/reports/"
+      ],
+      "acceptance": [
+        "Reference exports are repeatable; content inventory is structurally complete but unfinished assets remain flagged; invalid save cases are rejected."
+      ],
+      "external_dependencies": [],
+      "status": "accepted"
+    },
+    {
+      "id": "B01",
+      "title": "Lock release decisions and native candidate criteria",
+      "depends_on": [
+        "B00"
+      ],
+      "work_items": [
+        "M0-01",
+        "M0-04",
+        "M0-05",
+        "M0-06",
+        "M0-07"
+      ],
+      "lead": "director",
+      "steps": [
+        "Preserve mobile-first iOS/Android scope, English launch, guest offline play and the full content inventory; replace human staffing assignments with AI role ownership.",
+        "Specify audience, territories, minimum OS/device matrix, numeric precision questions and provider-selection criteria; record unresolved decisions with owners.",
+        "Client implements reviewable first-purchase, Rechart, return and recovery flow prototypes; art owner supplies a reusable visual sample.",
+        "QA lists real-device scenarios and tester recruitment needs; director budgets tool usage, services, hardware, asset licensing and external testing without assuming six payroll positions."
+      ],
+      "outputs": [
+        "docs/release-contract.md",
+        "docs/decisions/",
+        "game/prototypes/",
+        "release/device-matrix.json"
+      ],
+      "acceptance": [
+        "Four critical flows are reviewable; no public desktop, multiplayer or extra prestige tier enters scope; native proof criteria and remaining account/device needs are explicit."
+      ],
+      "external_dependencies": [
+        "Product owner supplies unavailable audience/territory/budget constraints before dependent service enrollment or spending."
+      ],
+      "status": "in_progress"
+    },
+    {
+      "id": "B02",
+      "title": "Qualify and pin the native production stack",
+      "depends_on": [
+        "B01"
+      ],
+      "work_items": [
+        "M0-02",
+        "M0-03",
+        "M0-08"
+      ],
+      "lead": "platform",
+      "steps": [
+        "Inspect host toolchains and repair the local Android Java/build prerequisite; verify changes without altering unrelated projects.",
+        "Shortlist supported engines/runtimes using current official documentation. Build an actual iOS and Android purchase/reset screen with headless economic boundary.",
+        "Prove sandbox purchase/restore, optional ad plus free fallback and cloud revision behavior using candidate adapters. Stub demos cannot satisfy this gate.",
+        "Select the stack from evidence, pin engine/SDK/dependency versions and licenses, create repeatable builds and map conceptual paths to actual project modules."
+      ],
+      "outputs": [
+        "docs/decisions/native-stack.md",
+        "game/",
+        "services/",
+        "build/",
+        "release/native-proof/"
+      ],
+      "acceptance": [
+        "Both native builds launch; sandbox integration evidence exists; reproducible headless/core test entry point runs. An unproven required adapter prevents stack lock."
+      ],
+      "external_dependencies": [
+        "Native account/test-product configuration, signing credentials and available target devices; no real purchases required."
+      ],
+      "status": "in_progress"
+    },
+    {
+      "id": "B03",
+      "title": "Implement production arithmetic and core state",
+      "depends_on": [
+        "B02"
+      ],
+      "work_items": [
+        "M1-01",
+        "M1-02",
+        "M1-04"
+      ],
+      "lead": "gameplay",
+      "steps": [
+        "Define numeric precision, currency accounting units, rounding and exact prestige boundaries before porting formulas.",
+        "Implement five producers, unlocks, bulk/max/milestone purchase commands, milestones, lifetime earnings and atomic Rechart transitions.",
+        "Version economic/content schemas and pin configurations to state; reject invalid or unsupported versions.",
+        "Compare bounded cases with the reference fixtures and add independent extreme-value/property checks; keep all reward logic outside presentation."
+      ],
+      "outputs": [
+        "game/core/",
+        "game/content/economy/",
+        "tests/core/",
+        "docs/decisions/numbers-and-event-order.md"
+      ],
+      "acceptance": [
+        "No unaffordable purchase or repeated entitlement; reset preview agrees with transition; numeric error cannot cross a discrete award boundary."
+      ],
+      "external_dependencies": [],
+      "status": "in_progress"
+    },
+    {
+      "id": "B04",
+      "title": "Implement durable local state",
+      "depends_on": [
+        "B03"
+      ],
+      "work_items": [
+        "M1-03",
+        "M1-08"
+      ],
+      "lead": "platform",
+      "steps": [
+        "Implement crash-safe writes, checksums, rolling recovery copies, migration and export/import against the reviewed envelope contract.",
+        "Commit economic actions and pending operation identities together; retry/recovery never grants a transaction twice.",
+        "QA injects interruption/corruption at every commit stage and ports production conformance fixtures, including rapid reset and version changes."
+      ],
+      "outputs": [
+        "game/persistence/",
+        "tests/persistence/",
+        "tests/fixtures/migrations/"
+      ],
+      "acceptance": [
+        "Fresh, upgraded and corrupted saves recover to valid states; interrupted reward/reset histories do not duplicate or erase committed progression."
+      ],
+      "external_dependencies": [],
+      "status": "in_progress"
+    },
+    {
+      "id": "B05",
+      "title": "Build client shell and complete progression specifications",
+      "depends_on": [
+        "B03"
+      ],
+      "work_items": [
+        "M1-05",
+        "M1-06",
+        "M1-07"
+      ],
+      "lead": "client",
+      "steps": [
+        "Implement responsive harbor, producer controls, wallet/rate/retained-progress displays and settings over the core API.",
+        "Director authors all six chapter goals and the ending, challenge unlocks and required versus optional Note sinks.",
+        "Art owner delivers reusable scene/icon/type components with scales, states and reduced-motion behavior; externalize all text."
+      ],
+      "outputs": [
+        "game/client/",
+        "game/content/progression/",
+        "game/assets/common/"
+      ],
+      "acceptance": [
+        "Playable shell on small phone and tablet; six-chapter goal specification exists; no duplicate economy arithmetic in UI."
+      ],
+      "external_dependencies": [],
+      "status": "in_progress"
+    },
+    {
+      "id": "B06",
+      "title": "Integrate the representative first session",
+      "depends_on": [
+        "B04",
+        "B05"
+      ],
+      "work_items": [
+        "M2-01",
+        "M2-02",
+        "M2-03",
+        "M2-04",
+        "M2-05"
+      ],
+      "lead": "client",
+      "steps": [
+        "Gameplay implements 10-Chart autobuy, 25-Chart synergies and baseline offline replay for the systems present in this slice only; full daily timers and bonuses arrive in B08.",
+        "Client teaches buying/Rechart/automation, displays marginal network output and conditional forecasts, and shows the offline return breakdown.",
+        "Platform adds optional account recovery with revision checks and explicit divergent-branch choice; never sum divergent wallets or offline intervals.",
+        "Art owner integrates a representative harbor, all five base silhouettes and one milestone sequence; exercise the whole path on both targets."
+      ],
+      "outputs": [
+        "game/client/onboarding/",
+        "game/core/automation/",
+        "game/persistence/cloud/",
+        "game/assets/slice/",
+        "release/slice-builds/"
+      ],
+      "acceptance": [
+        "Gifted Skiff to five tiers, Rechart, autobuy, synergy, close/return and recovery is playable; forecasts disclose assumptions."
+      ],
+      "external_dependencies": [
+        "Configured test cloud service and native targets."
+      ],
+      "status": "in_progress"
+    },
+    {
+      "id": "B07",
+      "title": "Validate the slice with people and faults",
+      "depends_on": [
+        "B06"
+      ],
+      "work_items": [
+        "M2-06",
+        "M2-07"
+      ],
+      "lead": "qa_release",
+      "steps": [
+        "Director prepares a neutral moderator script and recruits at least 15 new testers through authorized channels.",
+        "Observe first-session completion and reset/offline understanding; report non-finishers as well as pacing among finishers.",
+        "QA reproduces critical misunderstandings and device/save/resume defects; assigned engineers repair and rerun affected checks.",
+        "Accept the slice only with evidence; use accepted task throughput to produce the first AI delivery forecast."
+      ],
+      "outputs": [
+        "release/slice-study/",
+        "release/slice-gate.md"
+      ],
+      "acceptance": [
+        "At least 80% explanation target is assessed with individual failures; integrated device checks pass; no inference from bots is called human comprehension."
+      ],
+      "external_dependencies": [
+        "Real recruited testers and their consent; agents can prepare and analyze, not impersonate participants."
+      ],
+      "status": "not_started"
+    },
+    {
+      "id": "B08",
+      "title": "Implement the full daily timeline",
+      "depends_on": [
+        "B07"
+      ],
+      "work_items": [
+        "M3-01",
+        "M3-02",
+        "M3-03",
+        "M3-04",
+        "M3-05"
+      ],
+      "lead": "gameplay",
+      "steps": [
+        "Implement Focus and Survey timers, offline full/tail envelope, bonus expiration and account-day boundaries on one ordered timeline.",
+        "Implement seeded contracts, frozen goals, rerolls, claim identities and 21-slot missed-day backlog.",
+        "Implement player purchase priorities, 100-Chart conditional reset plans, one free slot and Note-priced extras.",
+        "Client implements calibration with equal accessible completion, queued Focus, daily UI, text/notation/audio/motion controls and opt-in quiet-hour notifications."
+      ],
+      "outputs": [
+        "game/simulation/",
+        "game/core/contracts/",
+        "game/core/plans/",
+        "game/client/daily/",
+        "game/client/settings/"
+      ],
+      "acceptance": [
+        "2/8/24-hour behavior and 72-hour maximum absence envelope match the blueprint; same policy gives matching discrete outcomes online/offline."
+      ],
+      "external_dependencies": [],
+      "status": "in_progress"
+    },
+    {
+      "id": "B09",
+      "title": "Implement identity and claim services",
+      "depends_on": [
+        "B06"
+      ],
+      "work_items": [
+        "M3-06",
+        "M3-07"
+      ],
+      "lead": "platform",
+      "steps": [
+        "Implement guest linking, account recovery/deletion/export and conflict selection with preserved recovery branches.",
+        "Separate trusted commercial ownership from local progression and cached display flags; introduce idempotent claim and receipt storage.",
+        "Specify Support allowance and pass-XP reconciliation; handle retries, offline claims and concurrent devices without duplicate grants."
+      ],
+      "outputs": [
+        "services/identity/",
+        "services/entitlements/",
+        "game/persistence/claims/",
+        "tests/services/"
+      ],
+      "acceptance": [
+        "Guest economy works without login; confirmed ownership is recoverable; interrupted grants resume once; divergent progression is never silently merged."
+      ],
+      "external_dependencies": [
+        "Chosen test backend/identity provider."
+      ],
+      "status": "in_progress"
+    },
+    {
+      "id": "B10",
+      "title": "Complete the integrated alpha",
+      "depends_on": [
+        "B08",
+        "B09"
+      ],
+      "work_items": [
+        "M3-08",
+        "M3-09",
+        "M3-10"
+      ],
+      "lead": "director",
+      "steps": [
+        "Finish chapter/challenge objectives, unlocks, copy requirements and rewards against passive and active routes.",
+        "Art owner produces all 25 producer presentations and daily UI states through the approved reusable pipeline.",
+        "QA runs combined visit schedules, absences, clock changes, reset/day collisions and bonus queues; engineers resolve failures."
+      ],
+      "outputs": [
+        "game/content/challenges/",
+        "game/assets/producers/",
+        "release/alpha-gate.md"
+      ],
+      "acceptance": [
+        "Every core loop works in one build; 25 presentations are actually integrated; exact/approximate numerical differences are reported."
+      ],
+      "external_dependencies": [],
+      "status": "in_progress"
+    },
+    {
+      "id": "B11",
+      "title": "Implement isolated challenge and season runtimes",
+      "depends_on": [
+        "B10"
+      ],
+      "work_items": [
+        "M4-01",
+        "M4-02"
+      ],
+      "lead": "gameplay",
+      "steps": [
+        "Implement reusable constrained-fleet, synergy-priority and automation-planning scenarios with independent state.",
+        "Implement Season 1 lifecycle, pinned coefficients, start/end/archive transitions and one selected pass.",
+        "Ensure main automation continues while playing optional content; no main/paid power imports or economic exports; test exit/restart/offline boundaries."
+      ],
+      "outputs": [
+        "game/core/challenges/",
+        "game/core/seasons/",
+        "tests/seasons/"
+      ],
+      "acceptance": [
+        "New and veteran players start equally in the event; live/archive transitions preserve legitimate progress and cannot mint economic rewards."
+      ],
+      "external_dependencies": [],
+      "status": "in_progress"
+    },
+    {
+      "id": "B12",
+      "title": "Produce the complete campaign and launch assets",
+      "depends_on": [
+        "B10",
+        "B11"
+      ],
+      "work_items": [
+        "M4-06",
+        "M4-07"
+      ],
+      "lead": "art_content",
+      "steps": [
+        "Author and integrate all six chapters/ending, twelve dossiers, twelve calibration patterns, eighteen main archive entries and Season 1 copy.",
+        "Produce initial harbor plus six restored states, all 36 cosmetics and required UI states; maintain provenance, atlas/memory budgets and actual files.",
+        "Populate 30 free pass slots and ten premium cosmetics, soundtrack delivery, audio cues/volume controls and support material.",
+        "Validate identifiers and reward relationships, inspect actual screens and asset variants; planned placeholders never pass release mode."
+      ],
+      "outputs": [
+        "game/content/",
+        "game/assets/",
+        "implementation/content/launch_manifest.json",
+        "release/content-evidence/"
+      ],
+      "acceptance": [
+        "All fixed quantities are integrated and reachable; supporter bundle reuses its specified cosmetics; none of these assets changes production."
+      ],
+      "external_dependencies": [
+        "A licensed audio source or suitable audio-production capability if the available tools cannot deliver finished audio."
+      ],
+      "status": "in_progress"
+    },
+    {
+      "id": "B13",
+      "title": "Implement cosmetic commerce and equal free rewards",
+      "depends_on": [
+        "B09",
+        "B11"
+      ],
+      "work_items": [
+        "M4-03",
+        "M4-04",
+        "M4-05"
+      ],
+      "lead": "platform",
+      "steps": [
+        "Client implements previews, localized prices, ownership, restoration, pass selection and archived continuation.",
+        "Platform verifies native transactions, grants once, acknowledges/completes, restores and reconciles pending, duplicate, cancelled, interrupted and revoked purchases.",
+        "Integrate optional ads through the same six-token allowance as the free briefing; refusal/no-fill leaves the free route available.",
+        "Test Support buffs, queues and offline claims against the shared ledger; cosmetics and paid pass never add production power."
+      ],
+      "outputs": [
+        "game/client/shop/",
+        "services/commerce/",
+        "game/platform/ads/",
+        "tests/commerce/"
+      ],
+      "acceptance": [
+        "Real sandbox purchase/restore/fault evidence on both stores; no fake receipt or stub ad adapter satisfies acceptance."
+      ],
+      "external_dependencies": [
+        "Store sandbox products, test accounts and approved SDK configuration."
+      ],
+      "status": "in_progress"
+    },
+    {
+      "id": "B14",
+      "title": "Certify complete content and commercial boundaries",
+      "depends_on": [
+        "B12",
+        "B13"
+      ],
+      "work_items": [
+        "M4-08"
+      ],
+      "lead": "qa_release",
+      "steps": [
+        "Traverse all content/reward IDs from realistic entry states and check campaign ending independently of optional completion.",
+        "Run accelerated complete-season and archived paid-pass paths; separately retain the later real-calendar gate.",
+        "Check no ad/cosmetic/event export increases core power beyond the equal free allowance. Run validate_content_manifest.py --content-gate: all gameplay content/assets must be verified; support documents and help/support UI receive final acceptance before B22."
+      ],
+      "outputs": [
+        "release/content-commerce-gate.md"
+      ],
+      "acceptance": [
+        "All content and rewards are reachable with no placeholder; free pass completion requires no purchase; asset and reward counts match scope."
+      ],
+      "external_dependencies": [],
+      "status": "in_progress"
+    },
+    {
+      "id": "B15",
+      "title": "Optimize presentation and device performance",
+      "depends_on": [
+        "B14"
+      ],
+      "work_items": [
+        "M5-01",
+        "M5-02",
+        "M5-06"
+      ],
+      "lead": "client",
+      "steps": [
+        "Measure frame time, startup, 24-hour replay, battery and thermal behavior on the named minimum/midrange hardware.",
+        "Optimize/chunk long replays without discarding owed time; handle large text, color/audio/motion independence and target inputs.",
+        "Run pseudolocalization, integrate final audio and remove placeholders; create screenshots/icon/footage from actual builds."
+      ],
+      "outputs": [
+        "release/performance/",
+        "release/accessibility/",
+        "release/store-assets/"
+      ],
+      "acceptance": [
+        "Roadmap performance/return budgets are measured; critical flows remain accessible; store images represent actual play."
+      ],
+      "external_dependencies": [
+        "Physical minimum/midrange iOS and Android devices; simulators cannot establish thermal/battery results."
+      ],
+      "status": "in_progress"
+    },
+    {
+      "id": "B16",
+      "title": "Verify privacy and operating services",
+      "depends_on": [
+        "B13"
+      ],
+      "work_items": [
+        "M5-03",
+        "M5-04"
+      ],
+      "lead": "platform",
+      "steps": [
+        "Compare actual SDK/network behavior with data inventory, consent and deletion/export flows.",
+        "Implement trustworthy economy/session events, diagnostic exports, entitlement dashboards and version-compatible feature controls.",
+        "Exercise backups, service failure, recovery and minimal-data support tooling; preserve cached offline play."
+      ],
+      "outputs": [
+        "services/ops/",
+        "release/privacy/",
+        "release/runbooks/",
+        "tests/telemetry/"
+      ],
+      "acceptance": [
+        "Declarations match actual collection; consent refusal and outages preserve promised access; metrics and alerts reflect known injected events."
+      ],
+      "external_dependencies": [
+        "Configured staging services and product-owner decisions on required platform declarations."
+      ],
+      "status": "in_progress"
+    },
+    {
+      "id": "B17",
+      "title": "Run long-horizon and release-fault regression",
+      "depends_on": [
+        "B15",
+        "B16"
+      ],
+      "work_items": [
+        "M5-05",
+        "M5-07",
+        "M5-08"
+      ],
+      "lead": "qa_release",
+      "steps": [
+        "Director/gameplay compare 30/90-day trajectories across purchase/reset/visit/bonus policies, Notes and content coverage.",
+        "QA runs minimum-device, storage/network interruption, migration and commerce retry/refund/ad faults.",
+        "Before enrollment, preregister the primary retention/satisfaction outcome, observation duration, exclusions and analysis. Specify descriptive precision; for any causal experiment separately set minimum detectable effect, power and allocation/sample calculation. Freeze beta configuration after faults are resolved; recruit before observation."
+      ],
+      "outputs": [
+        "release/beta-economy-report.md",
+        "release/device-regression/",
+        "release/commerce-faults/",
+        "release/beta-gate.md"
+      ],
+      "acceptance": [
+        "No known save-loss or entitlement blocker; full trajectory bonus parity is assessed; 1,750-Note optional collection is not a hidden main-ending requirement."
+      ],
+      "external_dependencies": [],
+      "status": "in_progress"
+    },
+    {
+      "id": "B18",
+      "title": "Enroll the real measurement cohort",
+      "depends_on": [
+        "B17"
+      ],
+      "work_items": [
+        "M6-01"
+      ],
+      "lead": "director",
+      "steps": [
+        "Prepare distribution, consent, recruitment and baseline version records; use only authorized external outreach and deployment.",
+        "Enroll the principal D30 cohort in a documented window; target 500 eligible starts and 10,000 sessions across the study. These planning counts do not guarantee causal power; do not run an underpowered experiment or substitute them for a power calculation.",
+        "Record denominator, predeclared exclusions, acquisition source and missing telemetry; start real seasonal observation."
+      ],
+      "outputs": [
+        "release/cohorts/baseline.json",
+        "release/cohorts/enrollment-report.md"
+      ],
+      "acceptance": [
+        "Actual participants are enrolled and baseline is frozen; sample shortfall is reported rather than replaced with simulated users."
+      ],
+      "external_dependencies": [
+        "Real people, enrollment funding/access and authorized test distribution."
+      ],
+      "status": "not_started"
+    },
+    {
+      "id": "B19",
+      "title": "Operate testing and correct observed defects",
+      "depends_on": [
+        "B18"
+      ],
+      "work_items": [
+        "M6-03",
+        "M6-04",
+        "M6-05",
+        "M6-06",
+        "M6-07",
+        "M6-08"
+      ],
+      "lead": "qa_release",
+      "steps": [
+        "Engineers resolve reproducible core, client and service findings; art owner fixes readability without expanding scope.",
+        "Operate support and staged access; rehearse season archive, paid continuation, migration, entitlement replay and compatible forward repair.",
+        "Observe an actual 28-day season and mature day-30 windows. A material experience change creates a separately analyzed cohort and may restart the observation requirement."
+      ],
+      "outputs": [
+        "release/cohorts/observations/",
+        "release/recovery-drills/",
+        "release/fix-evidence/"
+      ],
+      "acceptance": [
+        "Real calendar gates mature; controlled fixes have replay evidence; final cohort is not mixed across unrecorded balance changes."
+      ],
+      "external_dependencies": [
+        "At least the full D30 observation opportunity; physical devices and testers remain necessary."
+      ],
+      "status": "not_started"
+    },
+    {
+      "id": "B20",
+      "title": "Decide product readiness from mature evidence",
+      "depends_on": [
+        "B19"
+      ],
+      "work_items": [
+        "M6-02"
+      ],
+      "lead": "director",
+      "steps": [
+        "Compute mature D1/D7/D30 with uncertainty and observability limits; compare provisional 35/15/7% review targets.",
+        "Assess campaign pacing, comprehension, strategy variety, bonuses, satisfaction, pressure and operating cost.",
+        "QA cross-checks calculations; record ship, extend or revise decision. Retention targets cannot waive correctness, ownership or fairness failures."
+      ],
+      "outputs": [
+        "release/cohorts/final-analysis.md",
+        "release/product-decision.md"
+      ],
+      "acceptance": [
+        "Results are based on real eligible participants; non-finishers and missing data are visible; every required review signal has evidence."
+      ],
+      "external_dependencies": [],
+      "status": "not_started"
+    },
+    {
+      "id": "B21",
+      "title": "Freeze and prove the release candidate",
+      "depends_on": [
+        "B20"
+      ],
+      "work_items": [
+        "M7-01",
+        "M7-02",
+        "M7-03",
+        "M7-04",
+        "M7-05"
+      ],
+      "lead": "director",
+      "steps": [
+        "Review all hard gates, freeze candidate/config/content and list only acceptable minor issues with owners.",
+        "Engineers tag compatible builds, exercise signing/install/update/distribution and prepare forward-fix and feature-disable paths.",
+        "Art/client finish accurate store/help/credits materials; platform finishes privacy/support/operations documents and rehearses recovery. Director prepares the initial Season 2 brief before launch; all eight support-content records and help/support UI must be verified before B22."
+      ],
+      "outputs": [
+        "release/candidate/",
+        "release/evidence-index.json",
+        "release/store-listings/"
+      ],
+      "acceptance": [
+        "Candidate passes exact-version regression; no normal-progression/accessibility/purchased-content blocker; listings match shipped build."
+      ],
+      "external_dependencies": [
+        "Distribution signing/account access and reviewable products."
+      ],
+      "status": "not_started"
+    },
+    {
+      "id": "B22",
+      "title": "Submit and launch under explicit release authority",
+      "depends_on": [
+        "B21"
+      ],
+      "work_items": [
+        "M7-06",
+        "M7-07",
+        "M7-08"
+      ],
+      "lead": "qa_release",
+      "steps": [
+        "Run the full content --release check and independently review the evidence pack; recheck current platform rules from official sources. Program --release is the later final-completion check, after actual launch support.",
+        "Prepare review notes, working products/URLs and restore instructions; submit after the concrete build/listing is authorized.",
+        "Resolve review findings, stage rollout where supported and assign 14-day coverage/incident escalation; stop rollout if save or entitlement integrity fails."
+      ],
+      "outputs": [
+        "release/submission/",
+        "release/launch-record.md",
+        "release/coverage.json"
+      ],
+      "acceptance": [
+        "Both stores accept the actual build; rollout is authorized and observed; account actions and postlaunch owner are explicit."
+      ],
+      "external_dependencies": [
+        "Store review duration, account owner authority and explicit authorization for public release."
+      ],
+      "status": "not_started"
+    },
+    {
+      "id": "B23",
+      "title": "Complete launch support and v1 handoff",
+      "depends_on": [
+        "B22"
+      ],
+      "work_items": [
+        "OPS-14"
+      ],
+      "lead": "qa_release",
+      "steps": [
+        "Inspect crash/resume/save/entitlement trends daily for 14 days after actual launch using a named operating arrangement.",
+        "Route incidents to owning agents; reproduce, repair, independently review and release narrowly scoped fixes with appropriate authorization.",
+        "Close incident follow-through, record actual shipped scope/gates/minor issues and ongoing service costs; finalize the prelaunch Season 2 brief using observed issues without expanding v1."
+      ],
+      "outputs": [
+        "release/postlaunch-14-day-report.md",
+        "release/v1-completion.md",
+        "release/season-2-brief.md"
+      ],
+      "acceptance": [
+        "Fourteen days of real operating coverage and incident evidence exist; ongoing ownership is handed off."
+      ],
+      "external_dependencies": [
+        "Elapsed time and an active human/scheduled operating arrangement; session agents are not an always-on service."
+      ],
+      "status": "not_started"
+    }
+  ],
+  "items": [
+    {
+      "id": "M0-01",
+      "title": "Define the release contract",
+      "owner": "director",
+      "reviewer": "qa_release",
+      "batch": "B01",
+      "source": "v1_backlog.json",
+      "source_acceptance": "Freeze audience, iOS/Android scope, English launch, six-chapter content budget, ethical constraints, device targets and decision owners.",
+      "source_acceptance_dependencies": [],
+      "scope_ids": [
+        "S01",
+        "S41"
+      ],
+      "status": "accepted",
+      "evidence": [
+        "docs/release-contract.md",
+        "release/qa/FOUNDATION_REVIEW.md",
+        "implementation/reports/director-foundation-review.md"
+      ],
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+      "evidence_note": "Original foundation package accepted after non-author review on 2026-10-16; full product scope and external gates remain open."
+    },
+    {
+      "id": "M0-02",
+      "title": "Qualify engine and numeric approach",
+      "owner": "gameplay",
+      "reviewer": "platform",
+      "batch": "B02",
+      "source": "v1_backlog.json",
+      "source_acceptance": "Build the same deterministic purchase/reset case on both native targets; compare large-number candidates and record the engine decision.",
+      "source_acceptance_dependencies": [
+        "M0-01"
+      ],
+      "scope_ids": [
+        "S01",
+        "S40"
+      ],
+      "status": "accepted",
+      "evidence": [
+        "docs/decisions/engine-and-number-selection.md",
+        "docs/decisions/numbers-and-event-order.md",
+        "release/number-approach-probe.json",
+        "release/native-proof/platform-handoff.md",
+        "release/qa/FOUNDATION_REVIEW.md",
+        "release/qa/integration-initial-20261016T104939468348Z/M0-02_REVIEW.md"
+      ],
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+      "evidence_note": "Director accepts original narrow engine/number selection after assigning independent QA cross-review to /root/qa_integration; original nominal platform reviewer retained. Ten representation observations independently reproduced; identical native seeded purchase/reset case proven on both targets. This does not accept stale candidate host failure, current schema4 native build, services, physical qualification or release readiness."
+    },
+    {
+      "id": "M0-03",
+      "title": "Prove native service integrations",
+      "owner": "platform",
+      "reviewer": "gameplay",
+      "batch": "B02",
+      "source": "v1_backlog.json",
+      "source_acceptance": "Demonstrate sandbox purchase/restore, ad availability and cloud revision handling in a throwaway integration build; list SDK and account dependencies.",
+      "source_acceptance_dependencies": [
+        "M0-01"
+      ],
+      "scope_ids": [
+        "S36",
+        "S40"
+      ],
+      "status": "in_progress",
+      "evidence": [
+        "release/native-proof/qualification.json"
+      ],
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+      "evidence_note": "Component implementation/authoring evidence only; complete source acceptance and upstream gates remain required."
+    },
+    {
+      "id": "M0-04",
+      "title": "Prototype the player journey",
+      "owner": "client",
+      "reviewer": "qa_release",
+      "batch": "B01",
+      "source": "v1_backlog.json",
+      "source_acceptance": "Clickable flows cover first purchase, Rechart preview, offline return and recovery; identify accessibility and small-screen constraints.",
+      "source_acceptance_dependencies": [
+        "M0-01"
+      ],
+      "scope_ids": [
+        "S41"
+      ],
+      "status": "accepted",
+      "evidence": [
+        "game/mobile/lib/app.dart",
+        "game/mobile/test/client_test.dart",
+        "game/mobile/test/bootstrap_test.dart",
+        "release/qa/FOUNDATION_REVIEW.md",
+        "implementation/reports/director-foundation-review.md"
+      ],
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+      "evidence_note": "Original foundation package accepted after non-author review on 2026-10-16; full product scope and external gates remain open."
+    },
+    {
+      "id": "M0-05",
+      "title": "Set visual production budget",
+      "owner": "art_content",
+      "reviewer": "client",
+      "batch": "B01",
+      "source": "v1_backlog.json",
+      "source_acceptance": "Approve one harbor look, one producer milestone transformation, asset reuse rules and a complete asset manifest.",
+      "source_acceptance_dependencies": [
+        "M0-01"
+      ],
+      "scope_ids": [
+        "S19"
+      ],
+      "status": "accepted",
+      "evidence": [
+        "game/mobile/lib/harbor_art.dart",
+        "implementation/art/production_contract.json",
+        "release/art/style-qualification.json",
+        "release/art/import-qualification.json",
+        "release/qa/integration-entry-gates-20261021T113426797640Z/ENTRY_GATE_REVIEW.md",
+        "release/qa/integration-registration-20261021T111626112740Z/REGISTRATION_REVIEW.md",
+        "release/qa/integration-current-scope-20261021T114227186831Z/CURRENT_SCOPE_CHECKPOINT.md",
+        "release/qa/integration-current-scope-20261021T114227186831Z/NUMERIC_EVIDENCE_BRIDGE.json",
+        "release/qa/lead-bounded-acceptance-20261021T1148Z/DECISIONS.md",
+        "release/art/entry-gates/CLIENT_STYLE_REVIEW.md",
+        "source/art/style-guide.md"
+      ],
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+      "evidence_note": "Director accepts the exact original criterion after independent QA cross-review and current-source evidence reconciliation. See release/qa/lead-bounded-acceptance-20261021T1148Z/DECISIONS.md. Original dependencies and nominal reviewer preserved. Other linked scope clauses, complete asset qualification, final native candidate and release gates are not accepted by this decision."
+    },
+    {
+      "id": "M0-06",
+      "title": "Create quality and device plan",
+      "owner": "qa_release",
+      "reviewer": "director",
+      "batch": "B01",
+      "source": "v1_backlog.json",
+      "source_acceptance": "Name reference devices, severities, reproducible save fixtures, test recruitment plan and the release evidence checklist.",
+      "source_acceptance_dependencies": [
+        "M0-01"
+      ],
+      "scope_ids": [
+        "S41"
+      ],
+      "status": "accepted",
+      "evidence": [
+        "docs/quality/V1_QUALITY_PROTOCOL.md",
+        "docs/quality/PLAYER_STUDY_PROTOCOL.md",
+        "release/device-matrix.json",
+        "release/qa/study-instrument.json",
+        "implementation/reports/director-foundation-review.md"
+      ],
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+      "evidence_note": "Original foundation package accepted after non-author review on 2026-10-16; full product scope and external gates remain open."
+    },
+    {
+      "id": "M0-07",
+      "title": "Establish delivery and operating costs",
+      "owner": "director",
+      "reviewer": "qa_release",
+      "batch": "B01",
+      "source": "v1_backlog.json",
+      "source_acceptance": "Confirm six role assignments, contractors, distribution accounts, tester recruitment and service cost model; reforecast for holidays and absences.",
+      "source_acceptance_dependencies": [
+        "M0-01"
+      ],
+      "scope_ids": [
+        "S41"
+      ],
+      "status": "in_progress",
+      "evidence": [
+        "docs/decisions/execution-costs.md"
+      ],
+      "adaptation": "Replace human staffing/calendar with AI delivery roles and measured execution cost; preserve product scope.",
+      "evidence_note": "Component implementation/authoring evidence only; complete source acceptance and upstream gates remain required."
+    },
+    {
+      "id": "M0-08",
+      "title": "Create reproducible builds",
+      "owner": "gameplay",
+      "reviewer": "platform",
+      "batch": "B02",
+      "source": "v1_backlog.json",
+      "source_acceptance": "Automated builds run on both targets, version configurations and preserve build artifacts; no production secrets enter the client.",
+      "source_acceptance_dependencies": [
+        "M0-02"
+      ],
+      "scope_ids": [
+        "S40"
+      ],
+      "status": "in_progress",
+      "evidence": [
+        "tool/build_native.py",
+        "release/native-proof/20261016T111720.826224Z/build-report.json",
+        "release/native-proof/20261019T135402.439115Z-d85-final-verification/final-verification.json",
+        "release/qa/lead-build-study-gate-20261021T114808187442Z/REVIEW.md"
+      ],
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+      "evidence_note": "Local implementation and source checks are underway. Evidence has distinct source snapshots and author/independent review boundaries. Original acceptance, upstream dependencies, physical-device, real-provider and observation requirements remain unchanged and open where unmet."
+    },
+    {
+      "id": "M1-01",
+      "title": "Implement production number handling",
+      "owner": "gameplay",
+      "reviewer": "platform",
+      "batch": "B03",
+      "source": "v1_backlog.json",
+      "source_acceptance": "Define precision, comparison and rounding rules; pass bulk-buy and prestige-boundary fixtures including extreme values.",
+      "source_acceptance_dependencies": [
+        "M0-02"
+      ],
+      "scope_ids": [
+        "S03",
+        "S05",
+        "S14",
+        "S29"
+      ],
+      "status": "accepted",
+      "evidence": [
+        "game/core/lib/src/fixed.dart",
+        "docs/decisions/numbers-and-event-order.md",
+        "release/qa/integration-current-scope-20261021T114227186831Z/CURRENT_SCOPE_CHECKPOINT.md",
+        "release/qa/integration-current-scope-20261021T114227186831Z/NUMERIC_EVIDENCE_BRIDGE.json",
+        "release/qa/lead-bounded-acceptance-20261021T1148Z/DECISIONS.md",
+        "release/qa/integration-numeric-20261019T135534237861Z/NUMERIC_REVIEW.md",
+        "release/qa/integration-crossengine-20261019T143516578781Z/CROSS_ENGINE_REVIEW.md",
+        "release/qa/integration-final-20261016T105843545492Z/INTEGRATION_REVIEW.md"
+      ],
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+      "evidence_note": "Director accepts the exact original criterion after independent QA cross-review and current-source evidence reconciliation. See release/qa/lead-bounded-acceptance-20261021T1148Z/DECISIONS.md. Original dependencies and nominal reviewer preserved. Other linked scope clauses, complete asset qualification, final native candidate and release gates are not accepted by this decision."
+    },
+    {
+      "id": "M1-02",
+      "title": "Implement the economy state machine",
+      "owner": "gameplay",
+      "reviewer": "platform",
+      "batch": "B03",
+      "source": "v1_backlog.json",
+      "source_acceptance": "Five producers, unlocks, milestones, lifetime ledger and Rechart run without rendering; explicit event ordering is tested.",
+      "source_acceptance_dependencies": [
+        "M1-01"
+      ],
+      "scope_ids": [
+        "S03",
+        "S04",
+        "S05"
+      ],
+      "status": "accepted",
+      "evidence": [
+        "game/core/lib/src/engine.dart",
+        "release/qa/integration-current-scope-20261021T114227186831Z/CURRENT_SCOPE_CHECKPOINT.md",
+        "release/qa/integration-current-scope-20261021T114227186831Z/NUMERIC_EVIDENCE_BRIDGE.json",
+        "release/qa/lead-bounded-acceptance-20261021T1148Z/DECISIONS.md",
+        "release/qa/integration-numeric-20261019T135534237861Z/NUMERIC_REVIEW.md",
+        "release/qa/integration-crossengine-20261019T143516578781Z/CROSS_ENGINE_REVIEW.md",
+        "release/qa/integration-final-20261016T105843545492Z/INTEGRATION_REVIEW.md"
+      ],
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+      "evidence_note": "Director accepts the exact original criterion after independent QA cross-review and current-source evidence reconciliation. See release/qa/lead-bounded-acceptance-20261021T1148Z/DECISIONS.md. Original dependencies and nominal reviewer preserved. Other linked scope clauses, complete asset qualification, final native candidate and release gates are not accepted by this decision."
+    },
+    {
+      "id": "M1-03",
+      "title": "Build crash-safe local saves",
+      "owner": "platform",
+      "reviewer": "gameplay",
+      "batch": "B04",
+      "source": "v1_backlog.json",
+      "source_acceptance": "Atomic saves, rolling backups, checksums, export/import and versioned migration recover from interruption without double rewards.",
+      "source_acceptance_dependencies": [
+        "M1-02"
+      ],
+      "scope_ids": [
+        "S12"
+      ],
+      "status": "in_progress",
+      "evidence": [
+        "game/persistence/lib/tideglass_persistence.dart",
+        "release/persistence-review.md"
+      ],
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+      "evidence_note": "Component implementation/authoring evidence only; complete source acceptance and upstream gates remain required."
+    },
+    {
+      "id": "M1-04",
+      "title": "Version configuration and content schemas",
+      "owner": "platform",
+      "reviewer": "gameplay",
+      "batch": "B03",
+      "source": "v1_backlog.json",
+      "source_acceptance": "Validate configs, pin economic versions to saves and provide safe defaults; reject incompatible updates before application.",
+      "source_acceptance_dependencies": [
+        "M0-08"
+      ],
+      "scope_ids": [
+        "S14",
+        "S40"
+      ],
+      "status": "in_progress",
+      "evidence": [
+        "game/core/lib/src/state.dart",
+        "game/mobile/lib/bootstrap.dart",
+        "game/mobile/lib/bundled_content.dart",
+        "game/mobile/lib/bundled_hashes.g.dart",
+        "tool/package_content.py",
+        "game/mobile/test/bundled_content_test.dart",
+        "game/mobile/lib/content_compatibility.dart",
+        "release/qa/integration-optional-calibration-20261021T110210355242Z/OPTIONAL_CALIBRATION_REVIEW.md"
+      ],
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+      "evidence_note": "Local implementation and independent review in progress. Original upstream dependencies and full production acceptance remain required; external services, devices and real observation are not substituted by local evidence."
+    },
+    {
+      "id": "M1-05",
+      "title": "Build the playable client shell",
+      "owner": "client",
+      "reviewer": "qa_release",
+      "batch": "B05",
+      "source": "v1_backlog.json",
+      "source_acceptance": "Display wallet, output, producer purchases, milestones, resets and settings on small and large screens.",
+      "source_acceptance_dependencies": [
+        "M0-04",
+        "M1-02"
+      ],
+      "scope_ids": [
+        "S02",
+        "S04"
+      ],
+      "status": "in_progress",
+      "evidence": [
+        "game/mobile/lib/app.dart",
+        "game/mobile/lib/bootstrap.dart"
+      ],
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+      "evidence_note": "Component implementation/authoring evidence only; complete source acceptance and upstream gates remain required."
+    },
+    {
+      "id": "M1-06",
+      "title": "Design the full progression map",
+      "owner": "director",
+      "reviewer": "qa_release",
+      "batch": "B05",
+      "source": "v1_backlog.json",
+      "source_acceptance": "Specify six chapter goals, ending, challenge entry requirements, Note source/sink budgets and daily/pass exceptions; no new prestige layer is assumed.",
+      "source_acceptance_dependencies": [
+        "M0-01"
+      ],
+      "scope_ids": [
+        "S15",
+        "S44"
+      ],
+      "status": "in_progress",
+      "evidence": [
+        "game/content/progression/campaign.json",
+        "game/content/progression/challenge-index.json",
+        "release/content-evidence/inventory-report.md",
+        "release/qa/integration-inventory-20261021T104607526377Z/INVENTORY_REVIEW.md"
+      ],
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+      "evidence_note": "Component implementation/authoring evidence only; complete source acceptance and upstream gates remain required. 21Oct source inventory reconciles164/669 assets/files;162 authored,2 absent,0 verified.37 original registration gaps and36 cosmetic renderer re-pins remain local work; subsequent campaign/study/cache changes require new binding."
+    },
+    {
+      "id": "M1-07",
+      "title": "Produce reusable visual components",
+      "owner": "art_content",
+      "reviewer": "client",
+      "batch": "B05",
+      "source": "v1_backlog.json",
+      "source_acceptance": "Deliver modular producer parts, harbor layers, typography, icons and UI states sufficient for the slice.",
+      "source_acceptance_dependencies": [
+        "M0-05"
+      ],
+      "scope_ids": [
+        "S19",
+        "S23"
+      ],
+      "status": "in_progress",
+      "evidence": [
+        "game/mobile/lib/harbor_art.dart",
+        "game/mobile/lib/palette.dart"
+      ],
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+      "evidence_note": "Component implementation/authoring evidence only; complete source acceptance and upstream gates remain required."
+    },
+    {
+      "id": "M1-08",
+      "title": "Port oracle cases and failure fixtures",
+      "owner": "qa_release",
+      "reviewer": "director",
+      "batch": "B04",
+      "source": "v1_backlog.json",
+      "source_acceptance": "Existing checks become production fixtures; add save corruption, rounding, rapid reset and interrupted-transaction cases.",
+      "source_acceptance_dependencies": [
+        "M1-01",
+        "M1-02",
+        "M1-03"
+      ],
+      "scope_ids": [
+        "S12",
+        "S28"
+      ],
+      "status": "in_progress",
+      "evidence": [
+        "game/core/test/persistence_integration_test.dart",
+        "game/persistence/test/save_repository_test.dart"
+      ],
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+      "evidence_note": "Component implementation/authoring evidence only; complete source acceptance and upstream gates remain required."
+    },
+    {
+      "id": "M2-01",
+      "title": "Complete the first-session economy",
+      "owner": "gameplay",
+      "reviewer": "platform",
+      "batch": "B06",
+      "source": "v1_backlog.json",
+      "source_acceptance": "Cross-tier synergies, free autobuy unlock and baseline offline replay support first session through 25 Charts with deterministic results.",
+      "source_acceptance_dependencies": [
+        "M1-02"
+      ],
+      "scope_ids": [
+        "S03",
+        "S06",
+        "S07"
+      ],
+      "status": "in_progress",
+      "evidence": [
+        "game/core/lib/src/engine.dart"
+      ],
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+      "evidence_note": "Component implementation/authoring evidence only; complete source acceptance and upstream gates remain required."
+    },
+    {
+      "id": "M2-02",
+      "title": "Build onboarding and Rechart communication",
+      "owner": "client",
+      "reviewer": "qa_release",
+      "batch": "B06",
+      "source": "v1_backlog.json",
+      "source_acceptance": "Teach costs, production, retained progress and automation with skippable guidance; no monetization prompt interrupts onboarding.",
+      "source_acceptance_dependencies": [
+        "M1-05",
+        "M2-01"
+      ],
+      "scope_ids": [
+        "S05"
+      ],
+      "status": "in_progress",
+      "evidence": [
+        "game/mobile/lib/app.dart"
+      ],
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+      "evidence_note": "Component implementation/authoring evidence only; complete source acceptance and upstream gates remain required."
+    },
+    {
+      "id": "M2-03",
+      "title": "Add purchase and reset forecasts",
+      "owner": "client",
+      "reviewer": "qa_release",
+      "batch": "B06",
+      "source": "v1_backlog.json",
+      "source_acceptance": "Show marginal network output, next threshold and conditional reset estimate with readable assumptions and no claim of a universal optimum.",
+      "source_acceptance_dependencies": [
+        "M2-01"
+      ],
+      "scope_ids": [
+        "S07"
+      ],
+      "status": "in_progress",
+      "evidence": [
+        "game/mobile/lib/app.dart"
+      ],
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+      "evidence_note": "Component implementation/authoring evidence only; complete source acceptance and upstream gates remain required."
+    },
+    {
+      "id": "M2-04",
+      "title": "Implement optional cloud recovery",
+      "owner": "platform",
+      "reviewer": "gameplay",
+      "batch": "B06",
+      "source": "v1_backlog.json",
+      "source_acceptance": "Save revisions detect conflicts; divergent branches remain recoverable; never add two wallets or replay overlapping offline time.",
+      "source_acceptance_dependencies": [
+        "M1-03",
+        "M1-04",
+        "M0-03"
+      ],
+      "scope_ids": [
+        "S13"
+      ],
+      "status": "in_progress",
+      "evidence": [
+        "services/",
+        "services/evidence/director-independent-review.json",
+        "services/README.md",
+        "game/mobile/lib/service_settings.dart",
+        "game/mobile/test/service_settings_test.dart",
+        "release/service-settings-author-review.md",
+        "services/evidence/DIRECTOR_REVIEW.md"
+      ],
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+      "evidence_note": "Local implementation and source checks are underway. Evidence has distinct source snapshots and author/independent review boundaries. Original acceptance, upstream dependencies, physical-device, real-provider and observation requirements remain unchanged and open where unmet."
+    },
+    {
+      "id": "M2-05",
+      "title": "Finish representative harbor presentation",
+      "owner": "art_content",
+      "reviewer": "client",
+      "batch": "B06",
+      "source": "v1_backlog.json",
+      "source_acceptance": "One area, all five base silhouettes and a milestone sequence establish final visual quality, including reduced-motion variants.",
+      "source_acceptance_dependencies": [
+        "M1-07"
+      ],
+      "scope_ids": [
+        "S19"
+      ],
+      "status": "in_progress",
+      "evidence": [
+        "game/mobile/lib/harbor_art.dart",
+        "release/content-evidence/inventory-report.md",
+        "release/qa/integration-inventory-20261021T104607526377Z/INVENTORY_REVIEW.md",
+        "release/art/style-qualification.json",
+        "release/art/import-qualification.json",
+        "release/qa/integration-entry-gates-20261021T113426797640Z/ENTRY_GATE_REVIEW.md",
+        "release/qa/integration-registration-20261021T111626112740Z/REGISTRATION_REVIEW.md"
+      ],
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+      "evidence_note": "Actual source/exports and bounded director/client representative direction reviewed.35 local original registration gaps closed; full per-ID variants/accessibility/native/rights/canonical verification remain unfinished. ART-G01 representative direction selected; ART-G02 adapter selected but physical budgets open. Original package criteria and dependencies remain unchanged."
+    },
+    {
+      "id": "M2-06",
+      "title": "Run moderated first-session studies",
+      "owner": "director",
+      "reviewer": "qa_release",
+      "batch": "B07",
+      "source": "v1_backlog.json",
+      "source_acceptance": "At least 15 new testers attempt the first reset; capture understanding, friction and pacing, then resolve the largest blockers.",
+      "source_acceptance_dependencies": [
+        "M2-02",
+        "M2-03",
+        "M2-05"
+      ],
+      "scope_ids": [
+        "S32"
+      ],
+      "status": "not_started",
+      "evidence": [],
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified."
+    },
+    {
+      "id": "M2-07",
+      "title": "Certify the vertical slice",
+      "owner": "qa_release",
+      "reviewer": "director",
+      "batch": "B07",
+      "source": "v1_backlog.json",
+      "source_acceptance": "Replay purchase/reset/save/resume on reference hardware; publish a slice gate report and evidence for the next funding decision.",
+      "source_acceptance_dependencies": [
+        "M2-01",
+        "M2-04",
+        "M2-05"
+      ],
+      "scope_ids": [
+        "S32"
+      ],
+      "status": "not_started",
+      "evidence": [],
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified."
+    },
+    {
+      "id": "M3-01",
+      "title": "Implement all real-time boundaries",
+      "owner": "gameplay",
+      "reviewer": "platform",
+      "batch": "B08",
+      "source": "v1_backlog.json",
+      "source_acceptance": "2-hour Focus, 8-hour Surveys, 24/72-hour offline envelope, bonus expiry and account-day boundaries resolve in a single event timeline.",
+      "source_acceptance_dependencies": [
+        "M2-01",
+        "M1-03"
+      ],
+      "scope_ids": [
+        "S08",
+        "S09",
+        "S10",
+        "S14"
+      ],
+      "status": "in_progress",
+      "evidence": [
+        "game/core/lib/src/engine.dart"
+      ],
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+      "evidence_note": "Component implementation/authoring evidence only; complete source acceptance and upstream gates remain required."
+    },
+    {
+      "id": "M3-02",
+      "title": "Implement contracts and their backlog",
+      "owner": "gameplay",
+      "reviewer": "platform",
+      "batch": "B08",
+      "source": "v1_backlog.json",
+      "source_acceptance": "Seeded contracts, snapshots, offline progress, rerolls and 21-slot backlog preserve claim IDs and do not duplicate rewards.",
+      "source_acceptance_dependencies": [
+        "M3-01",
+        "M1-06"
+      ],
+      "scope_ids": [
+        "S11"
+      ],
+      "status": "in_progress",
+      "evidence": [],
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+      "evidence_note": "Component implementation/authoring evidence only; complete source acceptance and upstream gates remain required."
+    },
+    {
+      "id": "M3-03",
+      "title": "Implement player automation plans",
+      "owner": "gameplay",
+      "reviewer": "platform",
+      "batch": "B08",
+      "source": "v1_backlog.json",
+      "source_acceptance": "Purchase priorities and opt-in reset conditions work identically online/offline; free base plan and Note-priced extra slots follow the blueprint.",
+      "source_acceptance_dependencies": [
+        "M2-01",
+        "M1-06"
+      ],
+      "scope_ids": [
+        "S06"
+      ],
+      "status": "in_progress",
+      "evidence": [],
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+      "evidence_note": "Component implementation/authoring evidence only; complete source acceptance and upstream gates remain required."
+    },
+    {
+      "id": "M3-04",
+      "title": "Build calibration and daily interfaces",
+      "owner": "client",
+      "reviewer": "qa_release",
+      "batch": "B08",
+      "source": "v1_backlog.json",
+      "source_acceptance": "Untimed calibration, equal-value accessible completion, queued Focus, Surveys and contract management form a complete daily session.",
+      "source_acceptance_dependencies": [
+        "M3-01",
+        "M3-02"
+      ],
+      "scope_ids": [
+        "S09",
+        "S17"
+      ],
+      "status": "in_progress",
+      "evidence": [
+        "game/content/calibrations/calibration.01.pattern.json"
+      ],
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+      "evidence_note": "Component implementation/authoring evidence only; complete source acceptance and upstream gates remain required."
+    },
+    {
+      "id": "M3-05",
+      "title": "Complete settings and notification controls",
+      "owner": "client",
+      "reviewer": "qa_release",
+      "batch": "B08",
+      "source": "v1_backlog.json",
+      "source_acceptance": "Text scale, number notation, motion/audio controls, input navigation and opt-in quiet-hour notifications function across targets.",
+      "source_acceptance_dependencies": [
+        "M1-05",
+        "M3-01"
+      ],
+      "scope_ids": [
+        "S26"
+      ],
+      "status": "in_progress",
+      "evidence": [
+        "game/mobile/lib/audio_settings.dart",
+        "game/mobile/lib/app.dart",
+        "game/mobile/lib/notification_service.dart",
+        "game/mobile/lib/reminder_lifecycle.dart",
+        "game/mobile/test/reminder_lifecycle_test.dart",
+        "release/notifications-author-review.md",
+        "release/qa/integration-reminders-initial-20261016T115431767720Z/REMINDERS_REVIEW.md"
+      ],
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+      "evidence_note": "Local implementation and separately pinned author/independent evidence. Original acceptance and dependencies remain intact; physical/native/provider/human/elapsed observation gates remain open where unmet."
+    },
+    {
+      "id": "M3-06",
+      "title": "Complete account lifecycle and branch recovery",
+      "owner": "platform",
+      "reviewer": "gameplay",
+      "batch": "B09",
+      "source": "v1_backlog.json",
+      "source_acceptance": "Guest linking, account recovery, export, deletion and divergent-save selection preserve recovery copies and purchased ownership.",
+      "source_acceptance_dependencies": [
+        "M2-04"
+      ],
+      "scope_ids": [
+        "S02",
+        "S13",
+        "S39"
+      ],
+      "status": "in_progress",
+      "evidence": [
+        "services/",
+        "services/docs/API.md",
+        "services/evidence/director-independent-review.json",
+        "game/mobile/lib/native_services.dart",
+        "game/mobile/lib/service_settings.dart",
+        "release/service-settings-author-review.md",
+        "release/qa/integration-services-repaired-20261016T114721906724Z/INTEGRATION_REVIEW.md"
+      ],
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+      "evidence_note": "Local implementation and separately pinned author/independent evidence. Original acceptance and dependencies remain intact; physical/native/provider/human/elapsed observation gates remain open where unmet."
+    },
+    {
+      "id": "M3-07",
+      "title": "Build the entitlement and claim ledger",
+      "owner": "platform",
+      "reviewer": "gameplay",
+      "batch": "B09",
+      "source": "v1_backlog.json",
+      "source_acceptance": "Unique receipts and idempotent grants separate cosmetics, Support allowance, pass XP and gameplay saves; interrupted grants resume safely.",
+      "source_acceptance_dependencies": [
+        "M0-03",
+        "M1-04",
+        "M3-06"
+      ],
+      "scope_ids": [
+        "S25"
+      ],
+      "status": "in_progress",
+      "evidence": [
+        "services/",
+        "services/tideglass_service/api.py",
+        "services/evidence/director-independent-review.json",
+        "release/qa/integration-services-repaired-20261016T114721906724Z/INTEGRATION_REVIEW.md"
+      ],
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+      "evidence_note": "Local implementation and separately pinned author/independent evidence. Original acceptance and dependencies remain intact; physical/native/provider/human/elapsed observation gates remain open where unmet."
+    },
+    {
+      "id": "M3-08",
+      "title": "Author chapter and challenge specifications",
+      "owner": "director",
+      "reviewer": "qa_release",
+      "batch": "B10",
+      "source": "v1_backlog.json",
+      "source_acceptance": "Six chapters and twelve challenges have objectives, unlock rules, reward budgets and completion evidence; passive and active routes are covered.",
+      "source_acceptance_dependencies": [
+        "M1-06",
+        "M2-06"
+      ],
+      "scope_ids": [
+        "S15",
+        "S16",
+        "S44"
+      ],
+      "status": "in_progress",
+      "evidence": [
+        "game/content/challenges/challenge.01.json",
+        "game/content/progression/campaign.json"
+      ],
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+      "evidence_note": "Component implementation/authoring evidence only; complete source acceptance and upstream gates remain required."
+    },
+    {
+      "id": "M3-09",
+      "title": "Produce producer transformations and core UI art",
+      "owner": "art_content",
+      "reviewer": "client",
+      "batch": "B10",
+      "source": "v1_backlog.json",
+      "source_acceptance": "Five producer families each have base plus four milestone presentations; daily-loop icons and status states are final.",
+      "source_acceptance_dependencies": [
+        "M2-05"
+      ],
+      "scope_ids": [
+        "S04",
+        "S19"
+      ],
+      "status": "in_progress",
+      "evidence": [
+        "release/art/producer-independent-review.md",
+        "game/mobile/lib/producer_art.dart",
+        "release/art/style-qualification.json",
+        "release/art/import-qualification.json",
+        "release/qa/integration-entry-gates-20261021T113426797640Z/ENTRY_GATE_REVIEW.md",
+        "release/qa/integration-registration-20261021T111626112740Z/REGISTRATION_REVIEW.md"
+      ],
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+      "evidence_note": "Actual source/exports and bounded director/client representative direction reviewed.35 local original registration gaps closed; full per-ID variants/accessibility/native/rights/canonical verification remain unfinished. ART-G01 representative direction selected; ART-G02 adapter selected but physical budgets open. Original package criteria and dependencies remain unchanged."
+    },
+    {
+      "id": "M3-10",
+      "title": "Validate the entire daily timeline",
+      "owner": "qa_release",
+      "reviewer": "director",
+      "batch": "B10",
+      "source": "v1_backlog.json",
+      "source_acceptance": "Test 1/3/6 visits, 2/8/24/48/72-hour absences, clock changes, bonus queues and reset/day-boundary collisions; report exact and approximate differences.",
+      "source_acceptance_dependencies": [
+        "M3-01",
+        "M3-02",
+        "M3-03",
+        "M3-06",
+        "M3-07"
+      ],
+      "scope_ids": [
+        "S08",
+        "S10",
+        "S11",
+        "S14",
+        "S28",
+        "S29"
+      ],
+      "status": "in_progress",
+      "evidence": [
+        "game/mobile/test/offline_replay_test.dart",
+        "release/qa/integration-final-20261016T105843545492Z/INTEGRATION_REVIEW.md",
+        "release/qa/integration-services-repaired-20261016T114721906724Z/INTEGRATION_REVIEW.md"
+      ],
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+      "evidence_note": "Local implementation and separately pinned author/independent evidence. Original acceptance and dependencies remain intact; physical/native/provider/human/elapsed observation gates remain open where unmet."
+    },
+    {
+      "id": "M4-01",
+      "title": "Build reusable challenge scenarios",
+      "owner": "gameplay",
+      "reviewer": "platform",
+      "batch": "B11",
+      "source": "v1_backlog.json",
+      "source_acceptance": "Challenge state is isolated, goals are deterministic, main automation continues and exit/restart cannot export economic rewards.",
+      "source_acceptance_dependencies": [
+        "M3-08",
+        "M3-03"
+      ],
+      "scope_ids": [
+        "S16"
+      ],
+      "status": "in_progress",
+      "evidence": [
+        "game/progression/lib/tideglass_progression.dart",
+        "game/mobile/lib/story_screen.dart",
+        "release/client-story-review.md"
+      ],
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+      "evidence_note": "Local implementation and source checks are underway. Evidence has distinct source snapshots and author/independent review boundaries. Original acceptance, upstream dependencies, physical-device, real-provider and observation requirements remain unchanged and open where unmet."
+    },
+    {
+      "id": "M4-02",
+      "title": "Build the seasonal event state machine",
+      "owner": "gameplay",
+      "reviewer": "platform",
+      "batch": "B11",
+      "source": "v1_backlog.json",
+      "source_acceptance": "Season start/end/archive, event coefficients, pinned versions and offline transitions work; no paid or main-world power enters the event.",
+      "source_acceptance_dependencies": [
+        "M4-01",
+        "M3-01"
+      ],
+      "scope_ids": [
+        "S20",
+        "S21"
+      ],
+      "status": "in_progress",
+      "evidence": [
+        "game/events/README.md",
+        "game/mobile/lib/season_screen.dart",
+        "game/mobile/test/season_session_test.dart",
+        "release/client-season-review.md"
+      ],
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+      "evidence_note": "Local implementation and independent review in progress. Original upstream dependencies and full production acceptance remain required; external services, devices and real observation are not substituted by local evidence."
+    },
+    {
+      "id": "M4-03",
+      "title": "Build cosmetic shop and pass experience",
+      "owner": "client",
+      "reviewer": "qa_release",
+      "batch": "B13",
+      "source": "v1_backlog.json",
+      "source_acceptance": "Preview, price, ownership, restoration, selected pass and archived completion are understandable; shared XP grants only once.",
+      "source_acceptance_dependencies": [
+        "M3-07",
+        "M4-02"
+      ],
+      "scope_ids": [
+        "S21",
+        "S24"
+      ],
+      "status": "in_progress",
+      "evidence": [
+        "game/mobile/lib/season_screen.dart",
+        "release/client-season-review.md",
+        "game/mobile/lib/cosmetics_screen.dart",
+        "game/mobile/test/cosmetic_session_test.dart",
+        "release/qa/integration-services-repaired-20261016T114721906724Z/INTEGRATION_REVIEW.md",
+        "game/mobile/lib/service_cosmetics.dart",
+        "release/commerce-signed-ui-integration-tests.log",
+        "release/qa/integration-native-ownership-repaired-20261019T145035575220Z/NATIVE_OWNERSHIP_REPAIRED_REVIEW.md"
+      ],
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+      "evidence_note": "Local implementation and separately pinned author/independent evidence. Original acceptance and dependencies remain intact; physical/native/provider/human/elapsed observation gates remain open where unmet."
+    },
+    {
+      "id": "M4-04",
+      "title": "Integrate production purchase handling",
+      "owner": "platform",
+      "reviewer": "gameplay",
+      "batch": "B13",
+      "source": "v1_backlog.json",
+      "source_acceptance": "Validate, grant, acknowledge, restore and reconcile purchases; pending, duplicate, refunded and interrupted cases have explicit states.",
+      "source_acceptance_dependencies": [
+        "M3-07",
+        "M0-03"
+      ],
+      "scope_ids": [
+        "S24"
+      ],
+      "status": "in_progress",
+      "evidence": [
+        "services/",
+        "game/mobile/lib/native_services.dart",
+        "services/tideglass_service/providers/stores.py",
+        "release/qa/integration-services-repaired-20261016T114721906724Z/INTEGRATION_REVIEW.md",
+        "docs/decisions/ownership-and-soundtrack-integration.md",
+        "services/evidence/ownership-clock-vault-verification.json",
+        "release/bootstrap-ownership-config-evidence.json",
+        "release/ownership-clock-mobile-integration-tests.log",
+        "release/native-commerce-integration-author-evidence.json",
+        "release/qa/integration-native-ownership-repaired-20261019T145035575220Z/NATIVE_OWNERSHIP_REPAIRED_REVIEW.md"
+      ],
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+      "evidence_note": "Local implementation and separately pinned author/independent evidence. Original acceptance and dependencies remain intact; physical/native/provider/human/elapsed observation gates remain open where unmet."
+    },
+    {
+      "id": "M4-05",
+      "title": "Integrate optional ads and equal free rewards",
+      "owner": "platform",
+      "reviewer": "gameplay",
+      "batch": "B13",
+      "source": "v1_backlog.json",
+      "source_acceptance": "Ad and briefing routes consume the same allowance; no-fill, refusal and duplicate callbacks preserve access and cannot multiply rewards.",
+      "source_acceptance_dependencies": [
+        "M3-07",
+        "M3-01"
+      ],
+      "scope_ids": [
+        "S25"
+      ],
+      "status": "in_progress",
+      "evidence": [
+        "game/mobile/lib/support_screen.dart",
+        "services/",
+        "game/mobile/lib/support_service_bridge.dart",
+        "game/mobile/lib/service_support_screen.dart",
+        "services/tideglass_service/providers/admob.py",
+        "release/qa/integration-services-repaired-20261016T114721906724Z/INTEGRATION_REVIEW.md",
+        "release/content-evidence/inventory-report.md",
+        "release/qa/integration-inventory-20261021T104607526377Z/INVENTORY_REVIEW.md"
+      ],
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+      "evidence_note": "Local implementation and separately pinned author/independent evidence. Original acceptance and dependencies remain intact; physical/native/provider/human/elapsed observation gates remain open where unmet. 21Oct source inventory reconciles164/669 assets/files;162 authored,2 absent,0 verified.37 original registration gaps and36 cosmetic renderer re-pins remain local work; subsequent campaign/study/cache changes require new binding."
+    },
+    {
+      "id": "M4-06",
+      "title": "Finish all launch content and reward tables",
+      "owner": "director",
+      "reviewer": "qa_release",
+      "batch": "B12",
+      "source": "v1_backlog.json",
+      "source_acceptance": "Six chapters, ending, twelve challenges, twelve calibration patterns, eighteen archive entries and Season 1 have complete data and copy.",
+      "source_acceptance_dependencies": [
+        "M3-08",
+        "M4-01",
+        "M4-02"
+      ],
+      "scope_ids": [
+        "S15",
+        "S16",
+        "S17",
+        "S18",
+        "S20",
+        "S21",
+        "S22"
+      ],
+      "status": "in_progress",
+      "evidence": [
+        "implementation/content/launch_manifest.json",
+        "game/mobile/lib/bundled_content.dart",
+        "release/client-story-review.md",
+        "release/client-season-review.md"
+      ],
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+      "evidence_note": "Local implementation and source checks are underway. Evidence has distinct source snapshots and author/independent review boundaries. Original acceptance, upstream dependencies, physical-device, real-provider and observation requirements remain unchanged and open where unmet."
+    },
+    {
+      "id": "M4-07",
+      "title": "Finish launch art and cosmetics",
+      "owner": "art_content",
+      "reviewer": "client",
+      "batch": "B12",
+      "source": "v1_backlog.json",
+      "source_acceptance": "Six harbor restoration states and the fixed 36-item cosmetic manifest are complete; commissioned audio is integrated through client work.",
+      "source_acceptance_dependencies": [
+        "M3-09",
+        "M4-06"
+      ],
+      "scope_ids": [
+        "S18",
+        "S19",
+        "S22",
+        "S23"
+      ],
+      "status": "in_progress",
+      "evidence": [
+        "release/audio/IMPLEMENTATION_HANDOFF.md",
+        "release/art/producer-independent-review.md",
+        "game/mobile/lib/harbor_art.dart",
+        "release/cosmetics-author-review.md",
+        "release/art/cosmetics-contact-sheet.png",
+        "release/art/style-qualification.json",
+        "release/art/import-qualification.json",
+        "release/qa/integration-entry-gates-20261021T113426797640Z/ENTRY_GATE_REVIEW.md",
+        "release/qa/integration-registration-20261021T111626112740Z/REGISTRATION_REVIEW.md"
+      ],
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+      "evidence_note": "Actual source/exports and bounded director/client representative direction reviewed.35 local original registration gaps closed; full per-ID variants/accessibility/native/rights/canonical verification remain unfinished. ART-G01 representative direction selected; ART-G02 adapter selected but physical budgets open. Original package criteria and dependencies remain unchanged."
+    },
+    {
+      "id": "M4-08",
+      "title": "Verify content and monetization boundaries",
+      "owner": "qa_release",
+      "reviewer": "director",
+      "batch": "B14",
+      "source": "v1_backlog.json",
+      "source_acceptance": "Every content ID and reward is reachable; full pass is completable free of paid speed; no event or cosmetic increases core power.",
+      "source_acceptance_dependencies": [
+        "M4-03",
+        "M4-04",
+        "M4-05",
+        "M4-06",
+        "M4-07"
+      ],
+      "scope_ids": [
+        "S22",
+        "S25"
+      ],
+      "status": "in_progress",
+      "evidence": [
+        "release/qa/integration-services-repaired-20261016T114721906724Z/INTEGRATION_REVIEW.md"
+      ],
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+      "evidence_note": "Local implementation and separately pinned author/independent evidence. Original acceptance and dependencies remain intact; physical/native/provider/human/elapsed observation gates remain open where unmet."
+    },
+    {
+      "id": "M5-01",
+      "title": "Optimize runtime and offline replay",
+      "owner": "gameplay",
+      "reviewer": "platform",
+      "batch": "B15",
+      "source": "v1_backlog.json",
+      "source_acceptance": "Meet measured frame/startup/resume budgets on minimum devices; heavy replay is chunked and never silently drops earned time.",
+      "source_acceptance_dependencies": [
+        "M3-10",
+        "M4-02"
+      ],
+      "scope_ids": [
+        "S08",
+        "S31"
+      ],
+      "status": "in_progress",
+      "evidence": [
+        "game/mobile/lib/offline_replay.dart",
+        "game/mobile/test/offline_replay_test.dart",
+        "docs/decisions/offline-replay-and-cosmetic-selection.md",
+        "release/qa/integration-numeric-20261019T135534237861Z/NUMERIC_REVIEW.md",
+        "release/balance/INVALIDATED.md",
+        "release/qa/integration-crossengine-20261019T143516578781Z/CROSS_ENGINE_REVIEW.md",
+        "release/qa/integration-balance-20261019T145921108068Z/BALANCE_REVIEW.md"
+      ],
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+      "evidence_note": "QA018 cross-engine fleet memo repaired with exact base-type cache guard and independently verified. Corrected v4/supplemental v2 simulations independently pass; previous invalidated matrices remain unusable. Physical frame/startup/resume and original dependency gates remain open."
+    },
+    {
+      "id": "M5-02",
+      "title": "Complete accessibility and language readiness",
+      "owner": "client",
+      "reviewer": "qa_release",
+      "batch": "B15",
+      "source": "v1_backlog.json",
+      "source_acceptance": "Critical flows work at large text, without color/audio/motion dependencies and via target inputs; pseudolocalization has no blocking overflow.",
+      "source_acceptance_dependencies": [
+        "M3-05",
+        "M4-03",
+        "M4-06"
+      ],
+      "scope_ids": [
+        "S02",
+        "S09",
+        "S17",
+        "S26"
+      ],
+      "status": "in_progress",
+      "evidence": [
+        "game/mobile/test/service_settings_test.dart",
+        "release/service-settings-author-review.md",
+        "release/localization-author-review.md",
+        "release/localization-author-evidence.json",
+        "release/help-author-review.md",
+        "release/help-author-evidence.json",
+        "game/mobile/lib/help_screen.dart",
+        "game/mobile/lib/help_content.dart",
+        "release/qa/integration-help-repaired-20261021T101942186162Z/HELP_REPAIRED_REVIEW.md"
+      ],
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+      "evidence_note": "Handbook integrated with Logbook/Settings and existing account/privacy/export/import flows.6 English+6 pseudo author tests; current full candidate mobile300 passes. Independent HELP001 found an overbroad clock-change promise and lead corrected only copy; repaired independent/final native checks pending. Existing actual-native, physical-accessibility, SDK/privacy and original prerequisite gates remain open."
+    },
+    {
+      "id": "M5-03",
+      "title": "Complete privacy and service recovery flows",
+      "owner": "platform",
+      "reviewer": "gameplay",
+      "batch": "B16",
+      "source": "v1_backlog.json",
+      "source_acceptance": "Data inventory matches SDK behavior; consent refusal, export/deletion and service-outage recovery are verified on actual builds.",
+      "source_acceptance_dependencies": [
+        "M3-06",
+        "M4-04",
+        "M4-05"
+      ],
+      "scope_ids": [
+        "S27",
+        "S39"
+      ],
+      "status": "in_progress",
+      "evidence": [
+        "services/",
+        "services/docs/PRIVACY.md",
+        "game/persistence/test/save_repository_test.dart",
+        "services/evidence/DIRECTOR_REVIEW.md",
+        "release/qa/integration-services-repaired-20261016T114721906724Z/INTEGRATION_REVIEW.md",
+        "docs/decisions/ownership-and-soundtrack-integration.md",
+        "release/help-author-review.md",
+        "release/help-author-evidence.json",
+        "game/mobile/lib/help_screen.dart",
+        "game/mobile/lib/help_content.dart",
+        "release/qa/integration-help-repaired-20261021T101942186162Z/HELP_REPAIRED_REVIEW.md",
+        "release/public-pages/AUTHOR_REPORT.md",
+        "release/public-pages/INDEPENDENT_REVIEW.md",
+        "release/public-pages/evidence/registration.json"
+      ],
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+      "evidence_note": "Actual local privacy/support page drafts and source/export/provenance records independently reviewed. Operator identity, contacts, complete native SDK disclosures, retention terms, native links, external deletion route and publication remain unresolved; no original acceptance or dependency waived."
+    },
+    {
+      "id": "M5-04",
+      "title": "Ship measurement and operating tools",
+      "owner": "platform",
+      "reviewer": "gameplay",
+      "batch": "B16",
+      "source": "v1_backlog.json",
+      "source_acceptance": "Validate economy/session events, entitlement dashboards, alerts, backups, support receipts and feature disable switches in staging.",
+      "source_acceptance_dependencies": [
+        "M3-07",
+        "M4-04"
+      ],
+      "scope_ids": [
+        "S27",
+        "S30",
+        "S37"
+      ],
+      "status": "in_progress",
+      "evidence": [
+        "services/",
+        "services/tideglass_service/ops.py",
+        "services/docs/OPERATIONS.md",
+        "game/mobile/lib/game_telemetry.dart",
+        "game/mobile/test/game_telemetry_lifecycle_test.dart",
+        "release/telemetry-integration-v2-tests.log",
+        "services/tideglass_service/health.py",
+        "services/tideglass_service/recovery.py",
+        "services/evidence/operations-20261021T102456589294Z/AUTHOR_REVIEW.md",
+        "release/qa/integration-operations-final-20261021T104534667043Z/OPERATIONS_REVIEW.md",
+        "release/operations-repair/lead-evidence.json",
+        "game/platform/lib/study_recorder.dart",
+        "game/mobile/lib/study_gate.dart",
+        "game/mobile/test/study_gate_test.dart",
+        "release/study/collection-repaired-20261021T112122953253Z/verification.json",
+        "release/qa/integration-study-collection-final-20261021T113037215270Z/COLLECTION_REPAIRED_REVIEW.md",
+        "release/study/collection-erasure-upgrade-20261021T112908057695Z/verification.json",
+        "release/native-proof/root-study-final-20261021T113721.329611Z/verification.json",
+        "release/qa/integration-study-ui-final-20261021T114011830149Z/STUDY_UI_REVIEW.md"
+      ],
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+      "evidence_note": "Bounded read-only health and isolated restore drill implemented and independently reviewed:17 QA probes,34 operations cases and4 actual CLI scenarios. Study collector/adjudicator independently reviewed on final48-source773be63e pin with65 distinct Dart/Python cases and exact synthetic roundtrip; STUDY002\u2013004 repaired. Default-disabled study UI has13 English/QA +12 pseudo checks on stable source; final UI review pending. No actual participants, hosted alerts, live restore, provider setup, native SDK traffic qualification or14-day operating coverage."
+    },
+    {
+      "id": "M5-05",
+      "title": "Run long-horizon economy and content audit",
+      "owner": "director",
+      "reviewer": "qa_release",
+      "batch": "B17",
+      "source": "v1_backlog.json",
+      "source_acceptance": "Simulate 30/90 days across visit and bonus policies, audit Note sinks and content pacing, freeze beta config and metric definitions.",
+      "source_acceptance_dependencies": [
+        "M4-06",
+        "M5-04"
+      ],
+      "scope_ids": [
+        "S07",
+        "S18",
+        "S25",
+        "S29",
+        "S33",
+        "S44",
+        "S34"
+      ],
+      "status": "in_progress",
+      "evidence": [
+        "game/simulation/lib/policy_run.dart",
+        "game/simulation/bin/run_policies.dart",
+        "game/simulation/test/policy_run_test.dart",
+        "release/balance/long-horizon-policies.json",
+        "release/balance/long-horizon-v2-policies.json",
+        "release/balance/long-horizon-v3-policies.json",
+        "release/qa/integration-simulation-20261019T140051525105Z/SIMULATION_REVIEW.md",
+        "release/balance/INVALIDATED.md",
+        "release/qa/integration-crossengine-20261019T143516578781Z/CROSS_ENGINE_REVIEW.md",
+        "release/balance/SUPPLEMENTAL_V2_REVIEW.md",
+        "release/balance/long-horizon-v4-verification.json",
+        "release/balance/supplemental-v2-verification.json",
+        "release/balance/corrected-v4-comparison.json",
+        "release/qa/integration-balance-20261019T145921108068Z/BALANCE_REVIEW.md",
+        "release/study/README.md",
+        "release/study/author-evidence.json",
+        "release/qa/integration-study-20261021T102508755253Z/STUDY_REVIEW.md",
+        "release/balance/optional-calibration-2026-10-21T105107709296Z/qualified-assertions.json",
+        "game/simulation/bin/run_optional_calibration.dart",
+        "release/qa/integration-optional-calibration-20261021T110210355242Z/OPTIONAL_CALIBRATION_REVIEW.md",
+        "release/balance/optional-calibration-current-integration.json"
+      ],
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+      "evidence_note": "Corrected184-case baseline/supplemental audit remains pinned historical evidence. Optional chapter3 calibration requirement removed; separate15trajectory audit and focused client content migration review pass with economy unchanged. Independent report records282Python+48Dart checks and4exact replays. All no-bonus routes reach the ending; native/human pacing and prerequisite gates remain open. No beta freeze or actual player observations."
+    },
+    {
+      "id": "M5-06",
+      "title": "Complete presentation and store assets",
+      "owner": "art_content",
+      "reviewer": "client",
+      "batch": "B15",
+      "source": "v1_backlog.json",
+      "source_acceptance": "Remove placeholders, integrate final sound direction, and prepare representative screenshots, icon and short footage.",
+      "source_acceptance_dependencies": [
+        "M4-07"
+      ],
+      "scope_ids": [
+        "S23",
+        "S43"
+      ],
+      "status": "in_progress",
+      "evidence": [
+        "release/store/README.md",
+        "release/store/metadata.en-US.json",
+        "game/client/art/app-icon.svg",
+        "game/client/art/app-icon-1024.png",
+        "tool/render_store_creative.py",
+        "release/store/creative/provenance.json",
+        "release/store/creative/google-feature-1024x500.png",
+        "release/store/creative/google-icon-512.png",
+        "release/store/CLIENT_REVIEW.md",
+        "release/store/creative-review-evidence.json",
+        "release/content-evidence/inventory-report.md",
+        "release/qa/integration-inventory-20261021T104607526377Z/INVENTORY_REVIEW.md"
+      ],
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+      "evidence_note": "English listing and original vector-derived feature/icon locally authored and independently reviewed. Paid-offline verification disclosure repaired; source copy remains draft_not_submittable. Raw final-candidate native screenshots/footage and actual store configuration remain outstanding. No public submission or package acceptance. 21Oct source inventory reconciles164/669 assets/files;162 authored,2 absent,0 verified.37 original registration gaps and36 cosmetic renderer re-pins remain local work; subsequent campaign/study/cache changes require new binding."
+    },
+    {
+      "id": "M5-07",
+      "title": "Run device and migration regression",
+      "owner": "qa_release",
+      "reviewer": "director",
+      "batch": "B17",
+      "source": "v1_backlog.json",
+      "source_acceptance": "Complete the device matrix, storage/network interruptions, upgrade migrations and install/return flows with zero open blocking issues.",
+      "source_acceptance_dependencies": [
+        "M5-01",
+        "M5-02",
+        "M5-03"
+      ],
+      "scope_ids": [
+        "S12",
+        "S28",
+        "S31"
+      ],
+      "status": "in_progress",
+      "evidence": [
+        "release/qa/FOUNDATION_REVIEW.md",
+        "release/qa/DAILY_REVIEW.md",
+        "release/qa/integration-final-20261016T105843545492Z/INTEGRATION_REVIEW.md",
+        "release/qa/integration-services-repaired-20261016T114721906724Z/INTEGRATION_REVIEW.md"
+      ],
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+      "evidence_note": "Local implementation and separately pinned author/independent evidence. Original acceptance and dependencies remain intact; physical/native/provider/human/elapsed observation gates remain open where unmet."
+    },
+    {
+      "id": "M5-08",
+      "title": "Run commerce and service fault tests",
+      "owner": "qa_release",
+      "reviewer": "director",
+      "batch": "B17",
+      "source": "v1_backlog.json",
+      "source_acceptance": "Purchase/restore/refund/ad callbacks are tested under packet loss, retries, duplicate messages, crashes and backend outages.",
+      "source_acceptance_dependencies": [
+        "M4-04",
+        "M4-05",
+        "M5-04"
+      ],
+      "scope_ids": [
+        "S24",
+        "S28"
+      ],
+      "status": "in_progress",
+      "evidence": [
+        "release/qa/integration-services-repaired-20261016T114721906724Z/INTEGRATION_REVIEW.md",
+        "release/qa/integration-fulfillment-initial-20261019T142206260684Z/FULFILLMENT_REVIEW.md",
+        "services/evidence/ownership-clock-vault-verification.json",
+        "release/qa/integration-fulfillment-repaired-20261019T143906718168Z/FULFILLMENT_REPAIRED_REVIEW.md",
+        "release/native-commerce-integration-author-evidence.json",
+        "release/qa019-lead-expanded-probes.log",
+        "release/qa/integration-native-ownership-repaired-20261019T145035575220Z/NATIVE_OWNERSHIP_REPAIRED_REVIEW.md"
+      ],
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+      "evidence_note": "Local implementation and separately pinned author/independent evidence. Original acceptance and dependencies remain intact; physical/native/provider/human/elapsed observation gates remain open where unmet."
+    },
+    {
+      "id": "M6-01",
+      "title": "Recruit and freeze the measurement cohort",
+      "owner": "director",
+      "reviewer": "qa_release",
+      "batch": "B18",
+      "source": "v1_backlog.json",
+      "source_acceptance": "Enroll the D30 cohort during week 27; record baseline config, acquisition source, denominator and exclusions before analysis.",
+      "source_acceptance_dependencies": [
+        "M5-05",
+        "M5-07",
+        "M5-08"
+      ],
+      "scope_ids": [
+        "S34"
+      ],
+      "status": "not_started",
+      "evidence": [
+        "release/study/README.md",
+        "release/study/protocol-template.json",
+        "release/study/author-evidence.json",
+        "release/qa/integration-study-20261021T102508755253Z/STUDY_REVIEW.md",
+        "game/platform/lib/study_recorder.dart",
+        "game/mobile/lib/study_gate.dart",
+        "game/mobile/test/study_gate_test.dart",
+        "release/study/collection-repaired-20261021T112122953253Z/verification.json",
+        "release/qa/integration-study-collection-final-20261021T113037215270Z/COLLECTION_REPAIRED_REVIEW.md",
+        "release/study/collection-erasure-upgrade-20261021T112908057695Z/verification.json",
+        "release/native-proof/root-study-final-20261021T113721.329611Z/verification.json",
+        "release/qa/integration-study-ui-final-20261021T114011830149Z/STUDY_UI_REVIEW.md"
+      ],
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+      "evidence_note": "Preparation only. Fixed-denominator analyzer and raw collector/adjudicator independently reviewed; current25 study UI invocations pass, separate final UI review pending. Explicit consent before bootstrap, no backfilled fresh-install claim, durable stop/erase workflow. No people recruited/enrolled, actual observed cohort, real elapsed D30, approved operating setup or original prerequisite acceptance."
+    },
+    {
+      "id": "M6-02",
+      "title": "Evaluate retention and content outcomes",
+      "owner": "director",
+      "reviewer": "qa_release",
+      "batch": "B20",
+      "source": "v1_backlog.json",
+      "source_acceptance": "Report mature D1/D7/D30 with confidence intervals, campaign progress, bonus impact, satisfaction and explicit ship/change decisions.",
+      "source_acceptance_dependencies": [
+        "M6-01"
+      ],
+      "scope_ids": [
+        "S15",
+        "S34",
+        "S35",
+        "S44"
+      ],
+      "status": "not_started",
+      "evidence": [
+        "release/study/README.md",
+        "release/study/protocol-template.json",
+        "release/study/author-evidence.json",
+        "release/qa/integration-study-20261021T102508755253Z/STUDY_REVIEW.md"
+      ],
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+      "evidence_note": "Preparatory analyzer independently reviewed:13 author+12 independent cases; STUDY001 repaired via schema2 separating valid session records from return eligibility. Registry denominators, missingness, mature windows and Wilson calculations checked. PrimaryD7/requiredD30 preserve original protocol. No actual enrollment, qualified collector, participant outcome or release acceptance."
+    },
+    {
+      "id": "M6-03",
+      "title": "Resolve economy and simulation findings",
+      "owner": "gameplay",
+      "reviewer": "platform",
+      "batch": "B19",
+      "source": "v1_backlog.json",
+      "source_acceptance": "Fix core bugs using replay fixtures; version any balance changes and keep affected cohorts separate.",
+      "source_acceptance_dependencies": [
+        "M5-01",
+        "M6-01"
+      ],
+      "scope_ids": [
+        "S33"
+      ],
+      "status": "not_started",
+      "evidence": [],
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified."
+    },
+    {
+      "id": "M6-04",
+      "title": "Resolve comprehension and interaction findings",
+      "owner": "client",
+      "reviewer": "qa_release",
+      "batch": "B19",
+      "source": "v1_backlog.json",
+      "source_acceptance": "Reduce observed onboarding/recovery friction without adding pressure, hidden rewards or paid advantages.",
+      "source_acceptance_dependencies": [
+        "M5-02",
+        "M6-01"
+      ],
+      "scope_ids": [
+        "S32",
+        "S43"
+      ],
+      "status": "not_started",
+      "evidence": [],
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified."
+    },
+    {
+      "id": "M6-05",
+      "title": "Operate staged access and support",
+      "owner": "platform",
+      "reviewer": "gameplay",
+      "batch": "B19",
+      "source": "v1_backlog.json",
+      "source_acceptance": "Exercise service load, support recovery, purchase reconciliation and feature disable controls with real opt-in testers.",
+      "source_acceptance_dependencies": [
+        "M5-04",
+        "M6-01"
+      ],
+      "scope_ids": [
+        "S30",
+        "S37"
+      ],
+      "status": "not_started",
+      "evidence": [],
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified."
+    },
+    {
+      "id": "M6-06",
+      "title": "Polish content from observed play",
+      "owner": "art_content",
+      "reviewer": "client",
+      "batch": "B19",
+      "source": "v1_backlog.json",
+      "source_acceptance": "Address readability, repeated visual issues and content defects without increasing the launch asset count.",
+      "source_acceptance_dependencies": [
+        "M5-06",
+        "M6-01"
+      ],
+      "scope_ids": [
+        "S43"
+      ],
+      "status": "not_started",
+      "evidence": [],
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified."
+    },
+    {
+      "id": "M6-07",
+      "title": "Observe real calendar progression",
+      "owner": "qa_release",
+      "reviewer": "director",
+      "batch": "B19",
+      "source": "v1_backlog.json",
+      "source_acceptance": "A real 28-day pass and mature D30 cohort are observed; accelerated testing is documented separately.",
+      "source_acceptance_dependencies": [
+        "M6-01"
+      ],
+      "scope_ids": [
+        "S20",
+        "S30",
+        "S34"
+      ],
+      "status": "not_started",
+      "evidence": [],
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified."
+    },
+    {
+      "id": "M6-08",
+      "title": "Rehearse season and release recovery",
+      "owner": "qa_release",
+      "reviewer": "director",
+      "batch": "B19",
+      "source": "v1_backlog.json",
+      "source_acceptance": "Exercise season archive, paid pass continuation, save migration, purchase replay and compatible rollback/forward repair.",
+      "source_acceptance_dependencies": [
+        "M4-08",
+        "M6-05"
+      ],
+      "scope_ids": [
+        "S21",
+        "S37"
+      ],
+      "status": "not_started",
+      "evidence": [
+        "services/evidence/operations-20261021T102456589294Z/AUTHOR_REVIEW.md",
+        "release/runbooks/LAUNCH_HANDOVER.md"
+      ],
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+      "evidence_note": "Preparatory local health/isolated restore and handover evidence only. No live recovery/rollout, actual season archive/provider replay, original dependencies or release acceptance."
+    },
+    {
+      "id": "M7-01",
+      "title": "Decide readiness and freeze release scope",
+      "owner": "director",
+      "reviewer": "qa_release",
+      "batch": "B21",
+      "source": "v1_backlog.json",
+      "source_acceptance": "Review all hard gates and product thresholds, assign accepted minor issues, and freeze the release candidate configuration.",
+      "source_acceptance_dependencies": [
+        "M6-02",
+        "M6-07",
+        "M6-08"
+      ],
+      "scope_ids": [
+        "S35",
+        "S42"
+      ],
+      "status": "not_started",
+      "evidence": [
+        "release/season-2-brief.md",
+        "release/runbooks/README.md"
+      ],
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+      "evidence_note": " Initial internal preparation only, not actual launch operations or postlaunch feedback."
+    },
+    {
+      "id": "M7-02",
+      "title": "Stabilize final game build",
+      "owner": "gameplay",
+      "reviewer": "platform",
+      "batch": "B21",
+      "source": "v1_backlog.json",
+      "source_acceptance": "Fix remaining blockers, tag deterministic core/config versions and prove candidate replay compatibility.",
+      "source_acceptance_dependencies": [
+        "M6-03",
+        "M7-01"
+      ],
+      "scope_ids": [
+        "S42"
+      ],
+      "status": "not_started",
+      "evidence": [],
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified."
+    },
+    {
+      "id": "M7-03",
+      "title": "Package native release candidates",
+      "owner": "client",
+      "reviewer": "qa_release",
+      "batch": "B21",
+      "source": "v1_backlog.json",
+      "source_acceptance": "Signing, install/update, responsive layouts, licensed assets and store-visible flows work in final distribution builds.",
+      "source_acceptance_dependencies": [
+        "M6-04",
+        "M7-01"
+      ],
+      "scope_ids": [
+        "S01",
+        "S36"
+      ],
+      "status": "not_started",
+      "evidence": [],
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified."
+    },
+    {
+      "id": "M7-04",
+      "title": "Prepare safe staged release",
+      "owner": "platform",
+      "reviewer": "gameplay",
+      "batch": "B21",
+      "source": "v1_backlog.json",
+      "source_acceptance": "Version-compatible config rollback, feature disables, capacity, backups and entitlement replay are rehearsed and documented.",
+      "source_acceptance_dependencies": [
+        "M6-05",
+        "M7-01"
+      ],
+      "scope_ids": [
+        "S37"
+      ],
+      "status": "not_started",
+      "evidence": [
+        "services/evidence/operations-20261021T102456589294Z/AUTHOR_REVIEW.md",
+        "release/runbooks/LAUNCH_HANDOVER.md"
+      ],
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+      "evidence_note": "Preparatory local health/isolated restore and handover evidence only. No live recovery/rollout, actual season archive/provider replay, original dependencies or release acceptance."
+    },
+    {
+      "id": "M7-05",
+      "title": "Finish store communication and support material",
+      "owner": "art_content",
+      "reviewer": "client",
+      "batch": "B21",
+      "source": "v1_backlog.json",
+      "source_acceptance": "Screenshots, footage, credits, help visuals and release assets describe the actual shipped game and offers.",
+      "source_acceptance_dependencies": [
+        "M6-06",
+        "M7-01"
+      ],
+      "scope_ids": [
+        "S27",
+        "S43"
+      ],
+      "status": "not_started",
+      "evidence": [
+        "release/help-author-review.md",
+        "release/store/CLIENT_REVIEW.md",
+        "release/store/metadata.en-US.json",
+        "release/qa/integration-help-repaired-20261021T101942186162Z/HELP_REPAIRED_REVIEW.md",
+        "release/public-pages/AUTHOR_REPORT.md",
+        "release/public-pages/INDEPENDENT_REVIEW.md",
+        "release/public-pages/evidence/registration.json"
+      ],
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+      "evidence_note": "Actual local privacy/support page drafts and source/export/provenance records independently reviewed. Operator identity, contacts, complete native SDK disclosures, retention terms, native links, external deletion route and publication remain unresolved; no original acceptance or dependency waived."
+    },
+    {
+      "id": "M7-06",
+      "title": "Approve the release evidence pack",
+      "owner": "qa_release",
+      "reviewer": "director",
+      "batch": "B22",
+      "source": "v1_backlog.json",
+      "source_acceptance": "All gate evidence is linked; no blocker, save-loss, duplication or unresolved purchase-delivery issue remains.",
+      "source_acceptance_dependencies": [
+        "M7-02",
+        "M7-03",
+        "M7-04"
+      ],
+      "scope_ids": [
+        "S28",
+        "S30",
+        "S42"
+      ],
+      "status": "not_started",
+      "evidence": [],
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified."
+    },
+    {
+      "id": "M7-07",
+      "title": "Submit and manage platform review",
+      "owner": "qa_release",
+      "reviewer": "director",
+      "batch": "B22",
+      "source": "v1_backlog.json",
+      "source_acceptance": "Recheck current platform requirements, provide reviewer access and working products, and resolve review findings before launch.",
+      "source_acceptance_dependencies": [
+        "M7-05",
+        "M7-06"
+      ],
+      "scope_ids": [
+        "S27",
+        "S36"
+      ],
+      "status": "not_started",
+      "evidence": [],
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified."
+    },
+    {
+      "id": "M7-08",
+      "title": "Hand over launch operations",
+      "owner": "platform",
+      "reviewer": "gameplay",
+      "batch": "B22",
+      "source": "v1_backlog.json",
+      "source_acceptance": "Document 14-day coverage, escalation, incident response and Season 2 preparation; launch authority and rollout stop conditions are explicit.",
+      "source_acceptance_dependencies": [
+        "M7-04",
+        "M7-06"
+      ],
+      "scope_ids": [
+        "S37",
+        "S38"
+      ],
+      "status": "not_started",
+      "evidence": [
+        "release/runbooks/LAUNCH_HANDOVER.md",
+        "release/runbooks/launch-coverage-template.json",
+        "release/season-2-brief.md"
+      ],
+      "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+      "evidence_note": "Initial internal handover and Season2 preparation authored; coverage template explicitly unstaffed with zero actual days. Independent review pending. No public launch, named staffed coverage,14-day elapsed support, incident observations or final v1 acceptance."
+    },
+    {
+      "id": "BOOT-CORE",
+      "title": "Export bounded economy reference fixtures",
+      "owner": "gameplay",
+      "reviewer": "art_content",
+      "batch": "B00",
+      "source": "Implementation enablement for mapped v1 requirements",
+      "source_acceptance": "Repeatable export and documented scope; not a production numeric implementation.",
+      "source_acceptance_dependencies": [],
+      "scope_ids": [
+        "S03",
+        "S05"
+      ],
+      "status": "accepted",
+      "evidence": [
+        "implementation/fixtures/economy_reference.json",
+        "implementation/reports/bootstrap_validation.json",
+        "implementation/reports/art_gameplay_review.md"
+      ],
+      "adaptation": "Explicit delivery work; does not expand the product scope."
+    },
+    {
+      "id": "BOOT-CONTENT",
+      "title": "Register and validate the launch content inventory",
+      "owner": "client",
+      "reviewer": "qa_release",
+      "batch": "B00",
+      "source": "Implementation enablement for mapped v1 requirements",
+      "source_acceptance": "Stable IDs, relationships and unfinished status; strict release check rejects planned assets.",
+      "source_acceptance_dependencies": [],
+      "scope_ids": [
+        "S15",
+        "S19",
+        "S22"
+      ],
+      "status": "accepted",
+      "evidence": [
+        "implementation/content/launch_manifest.json",
+        "implementation/art/production_contract.json",
+        "implementation/reports/bootstrap_validation.json",
+        "implementation/reports/qa_scope_review.md",
+        "implementation/reports/gameplay_cross_review.md"
+      ],
+      "adaptation": "Explicit delivery work; does not expand the product scope."
+    },
+    {
+      "id": "BOOT-SAVE",
+      "title": "Define and validate the save-envelope contract",
+      "owner": "platform",
+      "reviewer": "gameplay",
+      "batch": "B00",
+      "source": "Implementation enablement for mapped v1 requirements",
+      "source_acceptance": "Positive and negative examples pass appropriate contract checks; not atomic persistence.",
+      "source_acceptance_dependencies": [],
+      "scope_ids": [
+        "S12"
+      ],
+      "status": "accepted",
+      "evidence": [
+        "implementation/contracts/save-envelope.schema.json",
+        "implementation/reports/bootstrap_validation.json",
+        "implementation/reports/gameplay_cross_review.md"
+      ],
+      "adaptation": "Explicit delivery work; does not expand the product scope."
+    },
+    {
+      "id": "OPS-14",
+      "title": "Perform 14 days of launch support and record v1 completion",
+      "owner": "qa_release",
+      "reviewer": "director",
+      "batch": "B23",
+      "source": "V1_ROADMAP.md \u00a712",
+      "source_acceptance": "Actual 14-day coverage, incident evidence, handoff and Season 2 brief.",
+      "source_acceptance_dependencies": [],
+      "scope_ids": [
+        "S38"
+      ],
+      "status": "not_started",
+      "evidence": [
+        "release/runbooks/LAUNCH_HANDOVER.md",
+        "release/runbooks/launch-coverage-template.json",
+        "release/season-2-brief.md"
+      ],
+      "adaptation": "Explicit delivery work; does not expand the product scope.",
+      "evidence_note": "Initial internal handover and Season2 preparation authored; coverage template explicitly unstaffed with zero actual days. Independent review pending. No public launch, named staffed coverage,14-day elapsed support, incident observations or final v1 acceptance."
+    }
+  ],
+  "product_release_ready": false,
+  "program_acceptance_evidence": [
+    "V1_SCOPE_AUDIT.md",
+    "implementation/reports/qa_scope_review.md",
+    "implementation/reports/qa_scope_findings.json"
+  ],
+  "preparation_policy": "User explicitly authorized independent local work while external native-service gates remain open. Portable core, persistence and client preparation proceed provisionally; no downstream package or batch is accepted until its original acceptance prerequisites and evidence hold."
+}

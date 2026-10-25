@@ -1,0 +1,89 @@
+{
+  "verification_id": "integration-ios-phone-20261023T081652314287Z",
+  "candidate_fingerprint": "3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59",
+  "harness_sha256": "272fa3495fee356a98256c09ecfa983ef1f7af1ffb1c2c4885db97e74905fd76",
+  "scenario": "delivery",
+  "run_id": "v3b00-ios-phone-reminder-delivery",
+  "device_label": "ios-phone",
+  "platform": "ios",
+  "process_id": 19200,
+  "fixture_kind": "SYNTHETIC GAMEPLAY SNAPSHOT; REAL OS NOTIFICATION API",
+  "gateway": "NativeNotificationGateway",
+  "preference_store": "FileNotificationPreferences",
+  "clock": "actual_utc_and_monotonic_stopwatch",
+  "completed": false,
+  "actions": [
+    {
+      "verification_id": "integration-ios-phone-20261023T081652314287Z",
+      "candidate_fingerprint": "3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59",
+      "harness_sha256": "272fa3495fee356a98256c09ecfa983ef1f7af1ffb1c2c4885db97e74905fd76",
+      "scenario": "delivery",
+      "run_id": "v3b00-ios-phone-reminder-delivery",
+      "device_label": "ios-phone",
+      "platform": "ios",
+      "process_id": 19200,
+      "action": "allow_permission_if_prompted",
+      "utc_ms": 1792743458118
+    },
+    {
+      "verification_id": "integration-ios-phone-20261023T081652314287Z",
+      "candidate_fingerprint": "3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59",
+      "harness_sha256": "272fa3495fee356a98256c09ecfa983ef1f7af1ffb1c2c4885db97e74905fd76",
+      "scenario": "delivery",
+      "run_id": "v3b00-ios-phone-reminder-delivery",
+      "device_label": "ios-phone",
+      "platform": "ios",
+      "process_id": 19200,
+      "action": "background_app_now_using_os_home",
+      "utc_ms": 1792743458164
+    }
+  ],
+  "limitations": [
+    "Simulator/emulator only; no physical delivery, battery or lock-screen guarantee.",
+    "Seeded Focus phase is not natural player progression.",
+    "OS permission UI must be operated directly; no grant/revoke bypass.",
+    "API delivered records do not prove that a person saw a banner."
+  ],
+  "fixture_directory": "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Data/Application/9DFE3AC1-A65B-4BD3-85D9-2F41360B9257/Library/Application Support/native-reminders/ios-phone-v3b00-ios-phone-reminder-delivery-delivery",
+  "lifecycle_events": [
+    {
+      "state": "inactive",
+      "utc_ms": 1792743524963
+    },
+    {
+      "state": "hidden",
+      "utc_ms": 1792743525738
+    },
+    {
+      "state": "paused",
+      "utc_ms": 1792743525738
+    },
+    {
+      "state": "hidden",
+      "utc_ms": 1792743943232
+    },
+    {
+      "state": "inactive",
+      "utc_ms": 1792743943233
+    }
+  ],
+  "permission_before_initialize": "allowed",
+  "initialization_lifecycle_events": [],
+  "permission_after_initialize": "allowed",
+  "default_opted_out": true,
+  "default_preferences_file_absent": true,
+  "default_pending_ids": [],
+  "permission_after_opt_in": "allowed",
+  "preferences_after_opt_in": {
+    "version": 1,
+    "enabled": true,
+    "focus": true,
+    "survey": true,
+    "storage": true,
+    "quiet": true,
+    "quiet_start": 1320,
+    "quiet_end": 480
+  },
+  "background_call_utc_ms": 1792743525960,
+  "screenshots": []
+}

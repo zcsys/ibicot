@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "author": "/root/native_verifier",
+  "created_utc": "2026-10-23T03:44:34.282840+00:00",
+  "status": "implemented-author-verified-awaiting-independent-review",
+  "scope_ids": [
+    "S40",
+    "S27",
+    "S30",
+    "S37"
+  ],
+  "work_item_ids": [
+    "M0-08",
+    "M5-04"
+  ],
+  "source_sha256": {
+    "tool/build_native.py": "59ee4e7b94a1445e2c8effadfe4c0510c9c189df0278c7ede6e87f1807bf38ee",
+    "tool/test_native_candidates.py": "c0b1571c070fc9d7ee9a16f1c918bc3496ec36f1fac6b375b8d845021079d05b",
+    "tool/test_native_service_gate.py": "6e7db9a717c5aeffee49d7cf0eace49a8dff1e15ad2273140ef777564e2bf8ca"
+  },
+  "source_stable_during_final_tests": true,
+  "focused_tests": 35,
+  "new_orchestration_methods": 11,
+  "actual_suite_tests": {
+    "services-test": 65,
+    "operations-test": 59,
+    "provider-test": 36
+  },
+  "exact_lock_packages": 19,
+  "all_author_checks_passed": true,
+  "failed_a052_evidence_unchanged": true,
+  "a052_frozen_source_unchanged": true,
+  "outputs_sha256": {
+    "focused-regressions.json": "87072ac6762e38d739bf0eaf2b201a426c9ca466146ad13db55779c06e01cad4",
+    "repair.patch": "869ddffe6dcb92fb5e7ff795e5a1ab384237abc652182aaaefbd74fc33b308bc",
+    "AUTHOR_REVIEW.md": "9423d4956fd932e892147e498f2c987cab3ff11c9093852cff74fdb43e5534b7",
+    "initial-service-gate-tests.py": "5c8a61323761c6a2fd8a53be0edd5bedafa7af2e0b68036ced13c519d7587887",
+    "focused-regressions.log": "3bd70173c73f64985a117914b9d97f334539a48e944acfda58f974c3a09ef665",
+    "initial-service-gate-tests.log": "31e379f9c03f9ac6a6bc0551664afbe5d616c6031ecf08d2f6574854fea1f70b",
+    "inputs-before.json": "bd7cb21e0cfeb24b82f2f032b17deb6c6ab6e0192f7067d02d25323aa125ad7f",
+    "author-test-source-before.json": "7532f2a31084387c3612ec34ced5e9da4211d9fece5052446cf51d1379f092f4",
+    "author-test-source-after.json": "7532f2a31084387c3612ec34ced5e9da4211d9fece5052446cf51d1379f092f4",
+    "integrity.json": "680e2ef6b3bad98262610edff49fcdbc9855dda6d8d4f1b425070dbb5bac93ab",
+    "real-candidate-service-gates/operations-test.log": "aa6884d376f540b24bb1195d9efec0ec0f74ece13ab1c5cb4658385b1686d0ee",
+    "real-candidate-service-gates/services-test.log": "446322879e83c490589ec40c70b6afb14078e963b0711fcc4db4fa409b607b20",
+    "real-candidate-service-gates/orchestration.log": "98b78f31759c7c4ba835866f526b0c86d2b076f1f01238eb1cc55c5c17d9126a",
+    "real-candidate-service-gates/provider-environment.log": "902cea8ec111644b7d6288506f2a2b2da83f404d40d9f81c191f0119656cc601",
+    "real-candidate-service-gates/verification.json": "0273c6dee711537a676cdb808d01ed2faffadf16767290171b453c437a45ced7",
+    "real-candidate-service-gates/provider-test.log": "4fc2106d6d720f5175d5c93a3f71bbd2fb1e585b252dcf8c0842cb7ad1f010d0",
+    "before/services/requirements-providers.lock": "ace5ab939db2038acc891f899c6fd61c3263db9d089ad4103f9aa327f70a8df8",
+    "before/tool/test_native_candidates.py": "7a69e129772036ee087b8e05116bb25ddb198f0ac3b5dbaf9c6fc9132cd38e35",
+    "before/tool/check_provider_environment.py": "58837d32d769ed5285a98e354526363037b0a7ce4f3a17185aecc174ea95df45",
+    "before/tool/build_native.py": "1fca5f766c6bd816f55fc0aefafe1e3dfb8e66b91e83e1dcb275d48f13cada1d",
+    "before/tests/services/operations/test_operations.py": "913427821b2d7a53e28c7ae296231d25a36c91b711526b04d97d34811418ab68",
+    "source/tool/test_native_candidates.py": "c0b1571c070fc9d7ee9a16f1c918bc3496ec36f1fac6b375b8d845021079d05b",
+    "source/tool/build_native.py": "59ee4e7b94a1445e2c8effadfe4c0510c9c189df0278c7ede6e87f1807bf38ee",
+    "source/tool/test_native_service_gate.py": "6e7db9a717c5aeffee49d7cf0eace49a8dff1e15ad2273140ef777564e2bf8ca"
+  },
+  "flutter_run": false,
+  "native_devices_touched": false,
+  "native_exports_produced": false,
+  "release_acceptance": false,
+  "original_criteria_or_status_changed": false
+}

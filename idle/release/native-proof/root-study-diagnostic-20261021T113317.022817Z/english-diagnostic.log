@@ -1,0 +1,141 @@
+00:00 +0: loading /Users/csys/Desktop/ibicot/idle/game/mobile/test/study_gate_test.dart
+00:00 +0: default build never creates or reads study persistence
+00:00 +1: declining leaves no registry, eligibility record or backfill
+00:02 +2: consent persists start before harbor; interaction and withdrawal persist
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: true
+  Actual: <false>
+active=true failed=false failureCode=null erasing=false pending=false
+files=[tideglass-study.json.lock, tideglass-study.json, tideglass-study-eligibility.json]
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///Users/csys/Desktop/ibicot/idle/game/mobile/test/study_gate_test.dart:172:7)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/csys/Desktop/ibicot/idle/game/mobile/test/study_gate_test.dart line 172
+The test description was:
+  consent persists start before harbor; interaction and withdrawal persist
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:05 +2 -1: consent persists start before harbor; interaction and withdrawal persist [E]
+  Test failed. See exception logs above.
+  The test description was: consent persists start before harbor; interaction and withdrawal persist
+  
+00:05 +2 -1: existing harbor cannot become a retrospectively enrolled install
+00:07 +3 -1: corrupt registry stays intact and cannot silently reenroll
+00:07 +4 -1: declining during a pending registry read cannot enable recording later
+00:11 +5 -1: invalid provisioning cannot collect or block ordinary play
+00:11 +6 -1: pending withdrawal checks original study identity before controls
+00:12 +7 -1: pending withdrawal disables export across reopen and retries erasure
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: 'withdrawn'
+  Actual: 'active'
+   Which: is different.
+          Expected: withdrawn
+            Actual: active
+                    ^
+           Differ at offset 0
+active=false failed=true failureCode=stale_store_writer erasing=true pending=true
+files=[tideglass-study.json.lock, tideglass-study.json.withdrawn, tideglass-study.json,
+tideglass-study-eligibility.json, tideglass-study.json.cas-guard]
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///Users/csys/Desktop/ibicot/idle/game/mobile/test/study_gate_test.dart:346:7)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/csys/Desktop/ibicot/idle/game/mobile/test/study_gate_test.dart line 346
+The test description was:
+  pending withdrawal disables export across reopen and retries erasure
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:12 +7 -2: pending withdrawal disables export across reopen and retries erasure [E]
+  Test failed. See exception logs above.
+  The test description was: pending withdrawal disables export across reopen and retries erasure
+  
+00:12 +7 -2: eligibility cleanup failure remains retryable after tombstone and reopen
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: 'withdrawn'
+  Actual: 'active'
+   Which: is different.
+          Expected: withdrawn
+            Actual: active
+                    ^
+           Differ at offset 0
+active=false failed=true failureCode=null erasing=true pending=true
+files=[tideglass-study.json.lock, tideglass-study.json, , tideglass-study.json.cas-guard]
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///Users/csys/Desktop/ibicot/idle/game/mobile/test/study_gate_test.dart:368:7)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/csys/Desktop/ibicot/idle/game/mobile/test/study_gate_test.dart line 368
+The test description was:
+  eligibility cleanup failure remains retryable after tombstone and reopen
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:16 +7 -3: eligibility cleanup failure remains retryable after tombstone and reopen [E]
+  Test failed. See exception logs above.
+  The test description was: eligibility cleanup failure remains retryable after tombstone and reopen
+  
+00:16 +7 -3: stop marker without registry permits cleanup but never enrolls or exports
+00:16 +8 -3: narrow expanded enrollment and withdrawal use visible controls
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: 'withdrawn'
+  Actual: 'active'
+   Which: is different.
+          Expected: withdrawn
+            Actual: active
+                    ^
+           Differ at offset 0
+active=false failed=true failureCode=null erasing=true pending=true
+files=[tideglass-study.json.lock, tideglass-study.json, tideglass-study-eligibility.json,
+tideglass-study.json.cas-guard]
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///Users/csys/Desktop/ibicot/idle/game/mobile/test/study_gate_test.dart:425:7)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/csys/Desktop/ibicot/idle/game/mobile/test/study_gate_test.dart line 425
+The test description was:
+  narrow expanded enrollment and withdrawal use visible controls
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:18 +8 -4: narrow expanded enrollment and withdrawal use visible controls [E]
+  Test failed. See exception logs above.
+  The test description was: narrow expanded enrollment and withdrawal use visible controls
+  
+00:18 +8 -4: Some tests failed.
+
+Failing tests:
+  /Users/csys/Desktop/ibicot/idle/game/mobile/test/study_gate_test.dart: consent persists start before harbor; interaction and withdrawal persist
+  /Users/csys/Desktop/ibicot/idle/game/mobile/test/study_gate_test.dart: eligibility cleanup failure remains retryable after tombstone and reopen
+  /Users/csys/Desktop/ibicot/idle/game/mobile/test/study_gate_test.dart: narrow expanded enrollment and withdrawal use visible controls
+  /Users/csys/Desktop/ibicot/idle/game/mobile/test/study_gate_test.dart: pending withdrawal disables export across reopen and retries erasure

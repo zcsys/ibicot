@@ -1,0 +1,24 @@
+--- first-passing
++++ strengthened
+@@ -126,14 +126,13 @@
+         expect(after.daily.dayHighWater, oldDay + 1);
+         expect(after.support.tokens, isEmpty);
+         expect(engine.useSupportBoost(after, f.oldToken).accepted, isFalse);
+-        expect(
+-            engine
+-                .claimSupportToken(after,
+-                    accountDay: oldDay,
+-                    slot: 1,
+-                    sourceId: 'expired-day-fixture')
+-                .accepted,
+-            isFalse);
++        final oldDayGrant = engine.claimSupportToken(after,
++            accountDay: oldDay,
++            slot: 1,
++            sourceId: engine.briefingSourceId(initial, 1));
++        expect(oldDayGrant.accepted, isFalse);
++        expect(oldDayGrant.reason, 'support_account_day_mismatch');
++        expect(oldDayGrant.state.toJson(), after.toJson());
+         expect(after.surveyNotes, initial.surveyNotes);
+         expect(after.daily.passXpById, initial.daily.passXpById);
+         expect(

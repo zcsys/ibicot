@@ -1,0 +1,20 @@
+2026-10-16 12:36:54.964 Runner[54884:5727727] Warning: Unable to create restoration in progress marker file
+*** Terminating app due to uncaught exception 'GADInvalidInitializationException', reason: 'The Google Mobile Ads SDK was initialized without an application ID. Google AdMob publishers, follow instructions at https://goo.gle/admob-ios-update-plist to set a valid application ID. Google Ad Manager publishers, follow instructions at https://goo.gle/ad-manager-ios-update-plist.'
+*** First throw call stack:
+(
+	0   CoreFoundation                      0x00000001804f7348 __exceptionPreprocess + 172
+	1   libobjc.A.dylib                     0x000000018009c094 objc_exception_throw + 72
+	2   CoreFoundation                      0x00000001804f6edc -[NSException init] + 0
+	3   Runner.debug.dylib                  0x00000001041700d4 GADApplicationVerifyPublisherInitializedCorrectly + 160
+	4   Runner.debug.dylib                  0x0000000104170250 GADApplicationVerifyPublisherInitializedCorrectly + 540
+	5   libdispatch.dylib                   0x00000001801c07a8 _dispatch_call_block_and_release + 24
+	6   libdispatch.dylib                   0x00000001801db4b0 _dispatch_client_callout + 12
+	7   libdispatch.dylib                   0x00000001801f6824 _dispatch_workloop_invoke.cold.4 + 28
+	8   libdispatch.dylib                   0x00000001801c509c _dispatch_queue_override_invoke + 1180
+	9   libdispatch.dylib                   0x00000001801d3b14 _dispatch_root_queue_drain + 336
+	10  libdispatch.dylib                   0x00000001801d4510 _dispatch_worker_thread2 + 252
+	11  libsystem_pthread.dylib             0x0000000102fa2bec _pthread_wqthread + 228
+	12  libsystem_pthread.dylib             0x0000000102fa1a28 start_wqthread + 8
+)
+libc++abi: terminating due to uncaught exception of type NSException
+dev.tideglass.tideglass: 54884

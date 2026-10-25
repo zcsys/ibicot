@@ -1,0 +1,63 @@
+{
+  "date": "2026-10-16",
+  "purpose": "AI execution foundation and plan checks; not production game acceptance",
+  "checks": [
+    {
+      "id": "economy_reference",
+      "command": "python3 implementation/tools/export_economy_fixtures.py --check",
+      "expected_exit": 0,
+      "actual_exit": 0,
+      "passed": true,
+      "output": "Verified implementation/fixtures/economy_reference.json: 113 cases; 89 independent identity/invariant checks passed.\n"
+    },
+    {
+      "id": "save_contract",
+      "command": "python3 implementation/tools/validate_save_contract.py --config economy.json",
+      "expected_exit": 0,
+      "actual_exit": 0,
+      "passed": true,
+      "output": "{\n  \"scope\": \"envelope_contract_only\",\n  \"cases\": 43,\n  \"passed\": 43,\n  \"failed\": []\n}\n"
+    },
+    {
+      "id": "content_structure",
+      "command": "python3 implementation/tools/validate_content_manifest.py --self-test",
+      "expected_exit": 0,
+      "actual_exit": 0,
+      "passed": true,
+      "output": "PLAN CONTRACT VALID: 164 asset packages; 164 unfinished.\nRegistry validation does not prove authored content, playability, reachability, accessibility, or a shippable build.\nREJECTION SELF-TEST PASSED: 33 scope/parity/isolation/false-readiness cases.\n"
+    },
+    {
+      "id": "program_scope",
+      "command": "python3 implementation/tools/validate_program.py --self-test",
+      "expected_exit": 0,
+      "actual_exit": 0,
+      "passed": true,
+      "output": "Rejection tests: 6 checked\nPASS: 65 original packages preserved; 69 work items; 44 scope requirements; 24 dependency-checked batches.\nPASS: scope-to-work and work-to-scope mappings agree; source fingerprints match.\nProduct completion: 66 production/support items unaccepted; 44 scope requirements unverified. Plan coverage is not release readiness.\n"
+    },
+    {
+      "id": "unfinished_content_gate_rejected",
+      "command": "python3 implementation/tools/validate_content_manifest.py --content-gate",
+      "expected_exit": 1,
+      "actual_exit": 1,
+      "passed": true,
+      "output": "CONTENT GATE VALIDATION FAILED: 362 issues\n- chapter.01: content not verified\n- chapter.02: content not verified\n- chapter.03: content not verified\n- chapter.04: content not verified\n- chapter.05: content not verified\n- chapter.06: content not verified\n- ending.main: content not verified\n- harbor.unlit: content not verified\n- harbor.restored.01: content not verified\n- harbor.restored.02: content not verified\n- harbor.restored.03: content not verified\n- harbor.restored.04: content not verified\n- ... 350 further unfinished/invalid obligations\n"
+    },
+    {
+      "id": "unfinished_content_release_rejected",
+      "command": "python3 implementation/tools/validate_content_manifest.py --release",
+      "expected_exit": 1,
+      "actual_exit": 1,
+      "passed": true,
+      "output": "RELEASE VALIDATION FAILED: 380 issues\n- chapter.01: content not verified\n- chapter.02: content not verified\n- chapter.03: content not verified\n- chapter.04: content not verified\n- chapter.05: content not verified\n- chapter.06: content not verified\n- ending.main: content not verified\n- harbor.unlit: content not verified\n- harbor.restored.01: content not verified\n- harbor.restored.02: content not verified\n- harbor.restored.03: content not verified\n- harbor.restored.04: content not verified\n- ... 368 further unfinished/invalid obligations\n"
+    },
+    {
+      "id": "unfinished_program_release_rejected",
+      "command": "python3 implementation/tools/validate_program.py --release",
+      "expected_exit": 1,
+      "actual_exit": 1,
+      "passed": true,
+      "output": "FAIL: Unaccepted production/support work: 66 items\nFAIL: Unverified product requirements: 44\n"
+    }
+  ],
+  "release_ready": false
+}

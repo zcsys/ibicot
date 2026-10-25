@@ -1,0 +1,29 @@
+{
+  "status": "lead_repairs_pass_independent_recheck_pending",
+  "created_utc": "2026-10-21T10:44:39.405219+00:00",
+  "findings": [
+    "OPS001",
+    "OPS002"
+  ],
+  "original_and_expanded_independent_cases_passed": 17,
+  "operations_author_cases_passed": 34,
+  "source_changes": [
+    "Conservative full table DDL equality preserves CHECK/collation/conflict semantics",
+    "Exact explicit-index inventory and DDL equality rejects altered/missing/extra indexes",
+    "Literal sqlite_ reserved prefix prevents hidden user triggers/tables/indexes",
+    "Quality sample excludes future server receipt times; separate critical anomaly signal"
+  ],
+  "unchanged": [
+    "schema version and service data model",
+    "provider/receipt/gameplay behavior",
+    "restore drill and ops routing"
+  ],
+  "source_files": {
+    "services/tideglass_service/health.py": "03cc85d2104833765d1a5f84ee8cab882571a11e83fc8199c7ee21e1e8407a3c",
+    "tests/services/operations/test_schema_clock_repairs.py": "bec534944efbf1c7fa3b0fa5ee7bf24bd73b6570121787ea780c82175396ea39",
+    "services/docs/OPERATIONS.md": "3be712146c74a024a58d632febd96a7b85fc67e0a0ded8f50105d4f8504cc3b7",
+    "release/operations-repair/author-operations-tests-v3.log": "4b3c08081a63cb7194cbc044d6cf62c331a5588b738fcd47bdf1d2af0cd8f574",
+    "release/operations-repair/original-independent-probes-v3.log": "cf2197aacf6305f597ff0b448e3bd12d260d06ea59c4fbca53d5d7b25cc1e58f"
+  },
+  "release_ready": false
+}

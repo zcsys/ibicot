@@ -1,0 +1,57 @@
+{
+  "recorded_at_utc": "2026-10-16T11:05:28.639517+00:00",
+  "kind": "author_local_verification",
+  "production_packages_accepted": false,
+  "external_provider_transactions_exercised": false,
+  "independent_review": "pending",
+  "checks": [
+    {
+      "command": [
+        "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests/services",
+        "-v"
+      ],
+      "cwd": ".",
+      "exit_code": 0,
+      "output": "test_before_and_after_commit_fault_no_partial_or_duplicate (test_service.ServiceTests.test_before_and_after_commit_fault_no_partial_or_duplicate) ... ok\ntest_briefing_and_ad_share_six_slots_and_retry_identity (test_service.ServiceTests.test_briefing_and_ad_share_six_slots_and_retry_identity) ... ok\ntest_checksum_parent_cursor_and_secrets_rejected (test_service.ServiceTests.test_checksum_parent_cursor_and_secrets_rejected) ... ok\ntest_consent_refusal_dedup_revocation_and_no_freeform_telemetry (test_service.ServiceTests.test_consent_refusal_dedup_revocation_and_no_freeform_telemetry) ... ok\ntest_dashboard_does_not_call_unknown_session_crash_free (test_service.ServiceTests.test_dashboard_does_not_call_unknown_session_crash_free) ... ok\ntest_delete_requires_recovery_erases_rows_revokes_tokens_guest_copy_retained (test_service.ServiceTests.test_delete_requires_recovery_erases_rows_revokes_tokens_guest_copy_retained) ... ok\ntest_duplicate_json_keys_and_oversized_request_rejected (test_service.ServiceTests.test_duplicate_json_keys_and_oversized_request_rejected) ... ok\ntest_export_excludes_credentials_and_purchase_proofs (test_service.ServiceTests.test_export_excludes_credentials_and_purchase_proofs) ... ok\ntest_future_database_is_rejected_without_applying_schema (test_service.ServiceTests.test_future_database_is_rejected_without_applying_schema) ... ok\ntest_grant_delivery_ack_requires_saved_token_and_retry_is_safe (test_service.ServiceTests.test_grant_delivery_ack_requires_saved_token_and_retry_is_safe) ... ok\ntest_local_commerce_cache_never_grants_ownership (test_service.ServiceTests.test_local_commerce_cache_never_grants_ownership) ... ok\ntest_no_fill_and_feature_disable_preserve_free_route (test_service.ServiceTests.test_no_fill_and_feature_disable_preserve_free_route) ... ok\ntest_opt_in_required_and_no_unauthenticated_cloud (test_service.ServiceTests.test_opt_in_required_and_no_unauthenticated_cloud) ... ok\ntest_purchase_grant_restore_ack_failure_refund_and_stale_observation (test_service.ServiceTests.test_purchase_grant_restore_ack_failure_refund_and_stale_observation) ... ok\ntest_recovery_rotation_lost_response_keeps_known_new_code_usable (test_service.ServiceTests.test_recovery_rotation_lost_response_keeps_known_new_code_usable) ... ok\ntest_recovery_rotation_revokes_all_old_sessions (test_service.ServiceTests.test_recovery_rotation_revokes_all_old_sessions) ... ok\ntest_restart_persistence_and_consistent_backup (test_service.ServiceTests.test_restart_persistence_and_consistent_backup) ... ok\ntest_snapshot_replay_conflict_and_explicit_selection_no_merge (test_service.ServiceTests.test_snapshot_replay_conflict_and_explicit_selection_no_merge) ... ok\ntest_stale_provider_verification_cannot_authorize_forever (test_service.ServiceTests.test_stale_provider_verification_cannot_authorize_forever) ... ok\ntest_two_real_concurrent_devices_preserve_both_and_cas_selection (test_service.ServiceTests.test_two_real_concurrent_devices_preserve_both_and_cas_selection) ... ok\ntest_unconfigured_store_and_ad_cannot_grant (test_service.ServiceTests.test_unconfigured_store_and_ad_cannot_grant) ... ok\ntest_unknown_parent_preserved_requires_selection_and_no_cross_account_reads (test_service.ServiceTests.test_unknown_parent_preserved_requires_selection_and_no_cross_account_reads) ... ok\n\n----------------------------------------------------------------------\nRan 22 tests in 11.945s\n\nOK\n"
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/dart",
+        "test"
+      ],
+      "cwd": "game/platform",
+      "exit_code": 0,
+      "output": "00:00 +0: loading test/service_client_test.dart\n00:00 +0: test/service_client_test.dart: HTTPS is required except explicit loopback development\n00:00 +1: test/telemetry_buffer_test.dart: refusal collects nothing; bounded retry retains IDs; opt-out stops offline\n00:00 +2: test/telemetry_buffer_test.dart: refusal collects nothing; bounded retry retains IDs; opt-out stops offline\n00:00 +3: test/service_client_test.dart: real service account lifecycle and fail-closed ownership\n00:00 +4: test/service_client_test.dart: real service account lifecycle and fail-closed ownership\n00:00 +5: test/service_client_test.dart: redirect cannot forward bearer credentials to another endpoint\n00:00 +6: All tests passed!\n"
+    },
+    {
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/dart",
+        "analyze"
+      ],
+      "cwd": "game/platform",
+      "exit_code": 0,
+      "output": "Analyzing platform...\nNo issues found!\n"
+    }
+  ],
+  "source_sha256": {
+    "game/platform/lib/tideglass_platform.dart": "c8cf2df77afbe4b72ea4c679b4b9390ebe35cddb8eb10e269f0239034b300be4",
+    "game/platform/pubspec.lock": "105cf6d19dcd2dcf0cab74879085b0dcd50ed641375f155c9cdf9de09b87ee9d",
+    "game/platform/pubspec.yaml": "c5e3b608754733aca2ea059612d31e42acec7b6fe454a89c7b3036956720237d",
+    "game/platform/test/service_client_test.dart": "e7a7ff845ced62964dc05b455c35a9e07fb5ce457ecb5ad7d201267307828168",
+    "game/platform/test/telemetry_buffer_test.dart": "5abd25c99666fc0db6491273d39b89704ea2ea9f2011fb0c85788f35ddfb67bd",
+    "implementation/contracts/save-envelope.schema.json": "4cbdbb028df188aa585ee3dba347a720fb44c2395c492e6f5ae41b81873d5fb8",
+    "implementation/tools/validate_save_contract.py": "7306c21c2effb01acae4ad9aeead5c77802ea0317ece8a67f46707d6279fb8c6",
+    "services/tideglass_service/__init__.py": "6eac6c027f1f807b92e5edb8a51a64b6286148636313c27a336ddf8cab9567bf",
+    "services/tideglass_service/__main__.py": "05b9fd251dba58a886da9c1914b047acf723486858ab4e22a178cd71719a0a62",
+    "services/tideglass_service/api.py": "677d6212bd7ca6debd0dbd878f118b22fdac8982b79715ff17f887acbbaba537",
+    "services/tideglass_service/ops.py": "08de01d9c01a515eb13c9b1a10bee28c33f1e5094ca3b24f0c627a452cd7ee9f",
+    "services/tideglass_service/storage.py": "3c640f16a6deb226b78e54238009a12955096161d425e04326bb23321e8ea6ad",
+    "services/tideglass_service/verification.py": "da37c39c7781320cd5b381b432c5b0654464d687ccf32b94c797acbe5a675f08",
+    "tests/services/test_service.py": "38307f7439b7335904c3241c0229e17ff34cbb329033275e817382dddba84d53"
+  }
+}

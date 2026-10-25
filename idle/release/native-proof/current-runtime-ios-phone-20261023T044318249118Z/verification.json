@@ -1,0 +1,242 @@
+{
+  "verification_id": "current-runtime-ios-phone-20261023T044318249118Z",
+  "candidate_fingerprint": "3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59",
+  "harness_sha256": "102be09eb8043ce9bb496156d9f37b1834c3084ddf58fef073e7c25cdc3c55d5",
+  "device": "F05BE4B0-52C1-4CA1-B721-BD64AE559E3F",
+  "label": "ios-phone",
+  "platform": "ios",
+  "scenario": "runtime-study-crash-reopen",
+  "run_id": "v3b00-ios-phone-studycrash",
+  "privacy_observation_enabled": false,
+  "command": [
+    "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+    "drive",
+    "--driver=test_driver/current_evidence_911183b5d9ee.dart",
+    "--target=integration_test/current_evidence_102be09eb804_test.dart",
+    "-d",
+    "F05BE4B0-52C1-4CA1-B721-BD64AE559E3F",
+    "--dart-define=TIDEGLASS_DEVICE_LABEL=ios-phone",
+    "--dart-define=TIDEGLASS_SCENARIO=runtime-study-crash-reopen",
+    "--dart-define=TIDEGLASS_RUN_ID=v3b00-ios-phone-studycrash",
+    "--dart-define=TIDEGLASS_VERIFICATION_ID=current-runtime-ios-phone-20261023T044318249118Z",
+    "--dart-define=TIDEGLASS_CANDIDATE_FINGERPRINT=3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59",
+    "--dart-define=TIDEGLASS_HARNESS_SHA256=102be09eb8043ce9bb496156d9f37b1834c3084ddf58fef073e7c25cdc3c55d5",
+    "--keep-app-running",
+    "--timeout=180",
+    "--no-pub"
+  ],
+  "candidate_path": "/Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261023T040445.261666Z-3b00cc8f7122",
+  "status": "passed",
+  "passed": true,
+  "verification_errors": [],
+  "provenance": "INTERNAL SYNTHETIC QUALIFICATION ONLY; simulator native execution; no participant, crash-free metric, physical power-loss, store, or receiving-app claim",
+  "predecessor": {
+    "path": "/Users/csys/Desktop/ibicot/idle/release/native-proof/current-runtime-ios-phone-20261023T044229709273Z/verification.json",
+    "sha256": "23153df6569301436c9822b528a2975cab698abd55c7b8fca20ce377237977fb",
+    "verification_id": "current-runtime-ios-phone-20261023T044229709273Z"
+  },
+  "exit_code": 0,
+  "native_process_id": 77660,
+  "native_process_stop": {
+    "command": [
+      "xcrun",
+      "simctl",
+      "terminate",
+      "F05BE4B0-52C1-4CA1-B721-BD64AE559E3F",
+      "dev.tideglass.game"
+    ],
+    "termination_observed": true,
+    "observations": [
+      {
+        "command": [
+          "xcrun",
+          "simctl",
+          "get_app_container",
+          "F05BE4B0-52C1-4CA1-B721-BD64AE559E3F",
+          "dev.tideglass.game",
+          "data"
+        ],
+        "exit_code": 0,
+        "stdout": "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Data/Application/D0DEBC6F-5288-4080-A14A-0D11D22C7F75\n",
+        "stderr": "",
+        "observed_monotonic_ns": 53744231749333
+      },
+      {
+        "command": [
+          "xcrun",
+          "simctl",
+          "get_app_container",
+          "F05BE4B0-52C1-4CA1-B721-BD64AE559E3F",
+          "dev.tideglass.game",
+          "app"
+        ],
+        "exit_code": 0,
+        "stdout": "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/10DBABF2-DBD3-4C23-BDC8-3EA85A906C41/Runner.app\n",
+        "stderr": "",
+        "observed_monotonic_ns": 53744365507958
+      },
+      {
+        "command": [
+          "ps",
+          "-p",
+          "77660",
+          "-o",
+          "comm="
+        ],
+        "exit_code": 0,
+        "stdout": "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/10DBABF2-DBD3-4C23-BDC8-3EA85A906C41/Runner.app/Runner\n",
+        "stderr": "",
+        "observed_monotonic_ns": 53744369358666
+      },
+      {
+        "command": [
+          "xcrun",
+          "simctl",
+          "terminate",
+          "F05BE4B0-52C1-4CA1-B721-BD64AE559E3F",
+          "dev.tideglass.game"
+        ],
+        "exit_code": 0,
+        "stdout": "",
+        "stderr": "",
+        "observed_monotonic_ns": 53744511448208
+      },
+      {
+        "command": [
+          "ps",
+          "-p",
+          "77660",
+          "-o",
+          "comm="
+        ],
+        "exit_code": 1,
+        "stdout": "",
+        "stderr": "",
+        "observed_monotonic_ns": 53744515931166
+      }
+    ]
+  },
+  "checkpoint_sha256": "fc1f26d9bcffd46a81e47e8355bc3b720150472f456aaea0b1f2d5860dee2b13",
+  "generations": {},
+  "study_artifacts": {
+    "study-raw.json": {
+      "present": true,
+      "size": 3927,
+      "sha256": "02fd77021b12da383f1df6e22e0041157fe765028b9dce03b7ee2fd3390339f5"
+    },
+    "study-eligibility.json": {
+      "present": true,
+      "size": 227,
+      "sha256": "b438367fda36ceed8455b4494b0d268ea1f8d7e348991440d596d118494cf007"
+    },
+    "study-withdrawn.marker": {
+      "present": false,
+      "size": 0,
+      "sha256": null
+    }
+  },
+  "study_structure": {
+    "records": 5,
+    "logical_processes": 2,
+    "decoded_sessions": 2,
+    "gaps": 0,
+    "scope": "Synthetic structural qualification only; no native crash adjudication or cohort acceptance"
+  },
+  "host_observations": [
+    {
+      "command": [
+        "xcrun",
+        "simctl",
+        "get_app_container",
+        "F05BE4B0-52C1-4CA1-B721-BD64AE559E3F",
+        "dev.tideglass.game",
+        "data"
+      ],
+      "exit_code": 0,
+      "stdout": "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Data/Application/D0DEBC6F-5288-4080-A14A-0D11D22C7F75\n",
+      "stderr": "",
+      "observed_monotonic_ns": 53744231749333
+    },
+    {
+      "command": [
+        "xcrun",
+        "simctl",
+        "get_app_container",
+        "F05BE4B0-52C1-4CA1-B721-BD64AE559E3F",
+        "dev.tideglass.game",
+        "app"
+      ],
+      "exit_code": 0,
+      "stdout": "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/10DBABF2-DBD3-4C23-BDC8-3EA85A906C41/Runner.app\n",
+      "stderr": "",
+      "observed_monotonic_ns": 53744365507958
+    },
+    {
+      "command": [
+        "ps",
+        "-p",
+        "77660",
+        "-o",
+        "comm="
+      ],
+      "exit_code": 0,
+      "stdout": "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/10DBABF2-DBD3-4C23-BDC8-3EA85A906C41/Runner.app/Runner\n",
+      "stderr": "",
+      "observed_monotonic_ns": 53744369358666
+    },
+    {
+      "command": [
+        "xcrun",
+        "simctl",
+        "terminate",
+        "F05BE4B0-52C1-4CA1-B721-BD64AE559E3F",
+        "dev.tideglass.game"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 53744511448208
+    },
+    {
+      "command": [
+        "ps",
+        "-p",
+        "77660",
+        "-o",
+        "comm="
+      ],
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "",
+      "observed_monotonic_ns": 53744515931166
+    }
+  ],
+  "production_input_differences_after_run": [],
+  "source_snapshot_unchanged": true,
+  "source_pins": {
+    "runner.py": "d849ab8feb642eb1b988f9a6d82558491b7ebef4c63768fb4fa132f49edf3804",
+    "harness.dart": "102be09eb8043ce9bb496156d9f37b1834c3084ddf58fef073e7c25cdc3c55d5",
+    "driver.dart": "911183b5d9ee8ec80769836f477a293dadb66e20cc0c5d5e44314415889749a8",
+    "build_native.py": "59ee4e7b94a1445e2c8effadfe4c0510c9c189df0278c7ede6e87f1807bf38ee",
+    "verify_native.py": "68297f66fc4e32a173b17da2594872334d59ba2b88b7d5878b5ee8905f9b89e5",
+    "study_adjudicate.py": "ccf31107cced115bb7a417407a2b7cfa1498845ce10899b14a1f3ca533a406e6",
+    "study_report.py": "7109d2e53a8c07b8f00299b749a4c758530e51f38a2d444f4600ae6ef94e7462",
+    "study_native_diagnostics.py": "325afe73985b414a23ab3858ad4abc656351258bb3c19e49bd6c665761031430"
+  },
+  "source_changes_during_run": [],
+  "evidence_sha256": {
+    "runner.py": "d849ab8feb642eb1b988f9a6d82558491b7ebef4c63768fb4fa132f49edf3804",
+    "checkpoint.json": "fc1f26d9bcffd46a81e47e8355bc3b720150472f456aaea0b1f2d5860dee2b13",
+    "result.json": "1763b0f32053470ceb45fa014c7c73a98658b40a7bb93c596bd93f22fd95b1b7",
+    "run.log": "71be008cb3564edbdbfcee2d9a5c3fd00a9028a888049b93d0e35c18b5816040",
+    "driver.dart": "911183b5d9ee8ec80769836f477a293dadb66e20cc0c5d5e44314415889749a8",
+    "study-eligibility.json": "b438367fda36ceed8455b4494b0d268ea1f8d7e348991440d596d118494cf007",
+    "verify_native.py": "68297f66fc4e32a173b17da2594872334d59ba2b88b7d5878b5ee8905f9b89e5",
+    "study_adjudicate.py": "ccf31107cced115bb7a417407a2b7cfa1498845ce10899b14a1f3ca533a406e6",
+    "study_native_diagnostics.py": "325afe73985b414a23ab3858ad4abc656351258bb3c19e49bd6c665761031430",
+    "harness.dart": "102be09eb8043ce9bb496156d9f37b1834c3084ddf58fef073e7c25cdc3c55d5",
+    "study-raw.json": "02fd77021b12da383f1df6e22e0041157fe765028b9dce03b7ee2fd3390339f5",
+    "study_report.py": "7109d2e53a8c07b8f00299b749a4c758530e51f38a2d444f4600ae6ef94e7462",
+    "build_native.py": "59ee4e7b94a1445e2c8effadfe4c0510c9c189df0278c7ede6e87f1807bf38ee"
+  }
+}

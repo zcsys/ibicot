@@ -1,0 +1,43 @@
+00:00 +0: loading /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-native-ownership-initial-20261019T144123447203Z/game/mobile/test/signed_ownership_integration_test.dart
+00:00 +0: /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-native-ownership-initial-20261019T144123447203Z/game/mobile/test/signed_ownership_integration_test.dart: actual signed grant covers outage only until its elapsed expiry
+00:00 +1: /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-native-ownership-initial-20261019T144123447203Z/game/mobile/test/qa_integration_signed_native_test.dart: observed revocation cannot revive when a temporarily missing clock recovers
+00:00 +1 -1: /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-native-ownership-initial-20261019T144123447203Z/game/mobile/test/signed_ownership_integration_test.dart: fresh refund replaces the cached grant and cannot revive offline
+00:00 +1 -1: /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-native-ownership-initial-20261019T144123447203Z/game/mobile/test/qa_integration_signed_native_test.dart: observed revocation cannot revive when a temporarily missing clock recovers [E]
+  Expected: empty
+    Actual: Set:['pass.01']
+  QA019: a previously observed empty online entitlement set must invalidate the older signed grant before native clock recovery
+  
+  package:matcher                                     expect
+  package:flutter_test/src/widget_tester.dart 473:18  expect
+  test/qa_integration_signed_native_test.dart 59:5    main.<fn>
+  
+Warning: At least one test in this suite creates an HttpClient. When running a test suite that uses
+TestWidgetsFlutterBinding, all HTTP requests will return status code 400, and no network request
+will actually be made. Any test expecting a real network connection and status code will fail.
+To test code that needs an HttpClient, provide your own HttpClient implementation to the code under
+test, so that your test can consistently provide a testable response to the code under test.
+00:00 +2 -1: /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-native-ownership-initial-20261019T144123447203Z/game/mobile/test/qa_integration_signed_native_test.dart: observed revocation is hidden while replacement clock sampling is pending
+00:00 +2 -2: /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-native-ownership-initial-20261019T144123447203Z/game/mobile/test/signed_ownership_integration_test.dart: a superseded same-account ownership response cannot undo newer refund
+00:00 +3 -2: /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-native-ownership-initial-20261019T144123447203Z/game/mobile/test/signed_ownership_integration_test.dart: progression seed mismatch and lease outage fail closed
+00:00 +3 -2: /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-native-ownership-initial-20261019T144123447203Z/game/mobile/test/qa_integration_signed_native_test.dart: observed revocation is hidden while replacement clock sampling is pending [E]
+  Expected: empty
+    Actual: Set:['pass.01']
+  QA019: known revocation must hide older ownership before async sampling completes
+  
+  package:matcher                                     expect
+  package:flutter_test/src/widget_tester.dart 473:18  expect
+  test/qa_integration_signed_native_test.dart 69:5    main.<fn>
+  
+00:00 +4 -2: /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-native-ownership-initial-20261019T144123447203Z/game/mobile/test/qa_integration_signed_native_test.dart: lease endpoint failure after fresh online observation denies old grant
+00:00 +5 -2: /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-native-ownership-initial-20261019T144123447203Z/game/mobile/test/signed_ownership_integration_test.dart: secure restore requires matching device boot and remaining time
+00:00 +6 -2: /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-native-ownership-initial-20261019T144123447203Z/game/mobile/test/signed_ownership_integration_test.dart: secure restore requires matching device boot and remaining time
+00:00 +7 -2: /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-native-ownership-initial-20261019T144123447203Z/game/mobile/test/qa_integration_signed_native_test.dart: seed change during clock sampling cannot install old-seed grant
+00:00 +8 -2: /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-native-ownership-initial-20261019T144123447203Z/game/mobile/test/signed_ownership_integration_test.dart: process restart without native evidence cannot restore ownership
+00:00 +9 -2: /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-native-ownership-initial-20261019T144123447203Z/game/mobile/test/qa_integration_signed_native_test.dart: unavailable account service retains only independently unexpired lease
+00:00 +10 -2: /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-native-ownership-initial-20261019T144123447203Z/game/mobile/test/signed_ownership_integration_test.dart: explicit local signout clears device grant as well as session
+00:00 +11 -2: /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-native-ownership-initial-20261019T144123447203Z/game/mobile/test/signed_ownership_integration_test.dart: confirmed account deletion removes the signed lease device record
+00:00 +12 -2: Some tests failed.
+
+Failing tests:
+  /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-native-ownership-initial-20261019T144123447203Z/game/mobile/test/qa_integration_signed_native_test.dart: observed revocation cannot revive when a temporarily missing clock recovers
+  /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-native-ownership-initial-20261019T144123447203Z/game/mobile/test/qa_integration_signed_native_test.dart: observed revocation is hidden while replacement clock sampling is pending

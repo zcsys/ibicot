@@ -1,0 +1,32 @@
+{
+  "scope": "Current-source host calibration-diagnostic; not candidate152/native/human qualification",
+  "source_differences": [],
+  "results": [
+    {
+      "name": "analyzer",
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+        "analyze"
+      ],
+      "exit_code": 1,
+      "log_sha256": "90e7e6ed10e46a36f1d827c764128e69cffed4cec6a5fcef3fe071e2ac5e955b"
+    },
+    {
+      "name": "calibration",
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+        "test",
+        "test/root_calibration_diagnostic_test.dart",
+        "--plain-name",
+        "calibration.01 exact routes earned practice qps-ploc-phone-200-normal",
+        "--reporter=expanded",
+        "--timeout=120s",
+        "--dart-define=TIDEGLASS_PSEUDO=true",
+        "--dart-define=TIDEGLASS_ACCESSIBILITY_REPORT_DIR=/Users/csys/Desktop/ibicot/idle/release/accessibility-current/root-calibration-diagnostic-20261021T125055.592991Z"
+      ],
+      "exit_code": 1,
+      "log_sha256": "61bbd8c1fc5749fa64d14fdcd18ad17e6df49bf939b4826a8033be8c0f7930ae"
+    }
+  ],
+  "calibration_report_sha256": "ed9eb59ce7b77c1e17ec5d7c6250ae45cf777124164c175f45e5cde8aca1d65f"
+}

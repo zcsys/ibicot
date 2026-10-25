@@ -1,0 +1,5 @@
+# Independent Android capture cadence review
+
+Approve the exact four-line test-only change1c8ed846 for scoped analysis and a fresh native attempt. Reconstructing it from the preserved a427de59 source produces identical bytes. Only Android route-action lower bounds change4/8/14/20→2/5/11/16seconds. iOS waits, actual gesture dispatch, screenshot acknowledgements, route settling, real Stopwatch and final25-second minimum remain unchanged. The native recorder27-second bound and raw15–30second check remain unchanged.
+
+The actual failed attempt captured three screenshots and completed their new acknowledgement protocol, but recording ended at27.2595seconds before Season capture. This is a capture orchestration failure, not a production timing or game-performance conclusion. All13 failed evidence files remain pinned. Shorter idle waits provide margin for the real native UI and screenshot costs; only a new native attempt can establish sufficient margin and complete output. No time scaling, production edit, changed acceptance bound or reuse of failed media is approved.

@@ -1,0 +1,56 @@
+{
+  "candidate_fingerprint": "d85bdf74433d96d2f6ea6a58a8481290942d526a7cdb8ec14b55e57537e9dced",
+  "device": "F103390E-7B7C-4F0B-9404-5E029C7131FF",
+  "label": "ios-tablet",
+  "started_utc": "20261016T115114.931802Z",
+  "command": [
+    "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+    "drive",
+    "--driver=test_driver/evidence_911183b5d9ee.dart",
+    "--target=integration_test/evidence_c9b035999b3b_test.dart",
+    "-d",
+    "F103390E-7B7C-4F0B-9404-5E029C7131FF",
+    "--dart-define=TIDEGLASS_DEVICE_LABEL=ios-tablet",
+    "--dart-define=TIDEGLASS_SCENARIO=session-start",
+    "--dart-define=TIDEGLASS_RUN_ID=integrated-d85-c",
+    "--dart-define=TIDEGLASS_VERIFICATION_ID=integration-ios-tablet-20261016T115114.931802Z",
+    "--dart-define=TIDEGLASS_CANDIDATE_FINGERPRINT=d85bdf74433d96d2f6ea6a58a8481290942d526a7cdb8ec14b55e57537e9dced",
+    "--dart-define=TIDEGLASS_HARNESS_SHA256=c9b035999b3b128214f41f1627724fb578b1147ef03030d446addf754c40161f",
+    "--keep-app-running",
+    "--timeout=180",
+    "--no-pub"
+  ],
+  "scenario": "session-start",
+  "run_id": "integrated-d85-c",
+  "harness_sha256": {
+    "harness.dart": "c9b035999b3b128214f41f1627724fb578b1147ef03030d446addf754c40161f",
+    "driver.dart": "911183b5d9ee8ec80769836f477a293dadb66e20cc0c5d5e44314415889749a8"
+  },
+  "production_inputs_match_snapshot": true,
+  "provenance": "Seeded native boundary/presentation test; no natural pacing or physical-device claim",
+  "exit_code": 0,
+  "native_process_stop": {
+    "command": [
+      "xcrun",
+      "simctl",
+      "terminate",
+      "F103390E-7B7C-4F0B-9404-5E029C7131FF",
+      "dev.tideglass.game"
+    ],
+    "exit_code": 0,
+    "output": ""
+  },
+  "verification_errors": [],
+  "passed": true,
+  "evidence_sha256": {
+    "ios-tablet-session-start-producer-stages.png": "275466c6fe270ed30c2a0c557e7f1f550aebfbc94e109b4e7f71b9cde001e4e3",
+    "native-save-progress.1.json": "4a6161971247f71b52701743b9773d723a38fe315129c5b77fba91ea7ffe9101",
+    "native-save-progress.0.json": "1bab0dddb470694c28a29488e9a16b4601a487a68dc5a44d6442bf8341ecaad2",
+    "result.json": "09f147244cddd6ab029e0dfa67c7e432467c3cb1df2283933aa6974b82d49e6a",
+    "run.log": "2de023e66eda3cdbb3bbb20be315363640ba956f055a9d41859b0d3e52befc1d",
+    "driver.dart": "911183b5d9ee8ec80769836f477a293dadb66e20cc0c5d5e44314415889749a8",
+    "ios-tablet-session-start-harbor.png": "b1ecb6f23be4a5a6ac4ea85446e3ba4f4039ff5a0a5d505b58f1369c43c67c32",
+    "harness.dart": "c9b035999b3b128214f41f1627724fb578b1147ef03030d446addf754c40161f",
+    "ios-tablet-session-start-collection.png": "9edcb38dc9d961b82d69cda6a66250ccd59c3076375a7f19307e9987b73f53ad"
+  }
+}

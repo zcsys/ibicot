@@ -1,0 +1,83 @@
+[
+  {
+    "command": [
+      "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+      "devices",
+      "-l"
+    ],
+    "exit_code": 0,
+    "output": "List of devices attached\nemulator-5556          device product:sdk_gphone64_arm64 model:sdk_gphone64_arm64 device:emu64a transport_id:1\n\n"
+  },
+  {
+    "command": [
+      "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "shell",
+      "getprop",
+      "sys.boot_completed"
+    ],
+    "exit_code": 0,
+    "output": "1\n"
+  },
+  {
+    "command": [
+      "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "shell",
+      "getprop",
+      "ro.build.version.sdk"
+    ],
+    "exit_code": 0,
+    "output": "35\n"
+  },
+  {
+    "command": [
+      "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "shell",
+      "getprop",
+      "ro.build.version.release"
+    ],
+    "exit_code": 0,
+    "output": "15\n"
+  },
+  {
+    "command": [
+      "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "shell",
+      "getprop",
+      "ro.build.fingerprint"
+    ],
+    "exit_code": 0,
+    "output": "google/sdk_gphone64_arm64/emu64a:15/AE3A.240806.043/12960925:userdebug/dev-keys\n"
+  },
+  {
+    "command": [
+      "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "shell",
+      "wm",
+      "size"
+    ],
+    "exit_code": 0,
+    "output": "Physical size: 1080x2400\n"
+  },
+  {
+    "command": [
+      "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "shell",
+      "wm",
+      "density"
+    ],
+    "exit_code": 0,
+    "output": "Physical density: 420\n"
+  }
+]

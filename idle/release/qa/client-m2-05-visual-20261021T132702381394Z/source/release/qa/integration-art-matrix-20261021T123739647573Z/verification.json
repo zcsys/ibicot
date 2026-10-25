@@ -1,0 +1,43 @@
+{
+  "completed": true,
+  "reviewer": "/root/qa_integration",
+  "host_source_input_count": 524,
+  "host_source_fingerprint": "72bcc3eb4ce966f76397abf283d10b719ddf6cd678a29a2d06ab0bfdc7e66c89",
+  "host_runs": {
+    "author_tests": 100,
+    "author_rows": 1632,
+    "independent_tests": 8,
+    "independent_rows": 136
+  },
+  "independent_reconciliation_checks": 1554,
+  "checker_regressions": 26,
+  "checker_repaired_sha256": "2bbf0a53b581f220bcbdb5b453ae0ebc50df4abb38f2eea33b4eb9bc4c5b1ed3",
+  "ART001": "closed at separate checker-only repair pin",
+  "initial_harness_path_failure_retained": true,
+  "original_five_checker_failures_retained": true,
+  "author_pinned_files": 28,
+  "post_run_live_differences": {
+    "game/mobile/test/localization_test.dart": {
+      "tested_sha256": "49ebef48c26441f3129215b05d729ac9fe4fe298ce3d6da390d952f7d704a340",
+      "current_sha256": "d301261ca00f97ad4fe9a7eedcba9b4fd8d2a388ceaefea1689fbb63e199f262"
+    },
+    "source/art/verification/check_matrix.py": {
+      "tested_sha256": "d770eb41d3aa9556053eb30e6b55547e707cb0b7799f405e4aa5a1ab63898443",
+      "current_sha256": "2bbf0a53b581f220bcbdb5b453ae0ebc50df4abb38f2eea33b4eb9bc4c5b1ed3"
+    }
+  },
+  "post_run_differences_explained": "Subsequent root checker repair and separately staged client localization-test viewport parameterization. Art test and all production inputs unchanged. Neither change occurred during QA host executions.",
+  "original_variant_count": 164,
+  "all_original_variants_preserved": true,
+  "recommendations": {
+    "M1-07": "eligible at original reusable slice-component criterion",
+    "S19": "eligible bounded host integrated-presentation verification",
+    "M3-09": "partial; do not accept entire package",
+    "M4-07": "partial; do not accept entire package",
+    "S22": "bounded local presentation/reward-map contribution; separate ownership acquisition/delivery evidence",
+    "S26": "bounded tested-route contribution; not all target flows"
+  },
+  "no_canonical_status_edits": true,
+  "native_physical_rights_provider_acceptance": false,
+  "qa_flutter_lane_released": true
+}

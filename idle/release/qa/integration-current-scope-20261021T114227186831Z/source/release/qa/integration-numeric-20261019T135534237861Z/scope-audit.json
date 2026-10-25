@@ -1,0 +1,105 @@
+{
+  "reviewer": "/root/qa_integration",
+  "completed_utc": "2026-10-19T13:59:20.436902+00:00",
+  "source_fingerprint": "e1a7508d208f828057b35f942fd4d6b9b46853d03e5247fce585da79392003af",
+  "status": "narrow_numeric_exactness_review_not_release_acceptance",
+  "context_validation": {
+    "requirements": 44,
+    "original_packages": 65,
+    "acceptance_or_dependency_changes": [],
+    "scope_reciprocity_errors": [],
+    "source_fingerprints_match": {
+      "TIDEGLASS_DESIGN.md": true,
+      "V1_ROADMAP.md": true,
+      "v1_backlog.json": true,
+      "economy.json": true
+    },
+    "already_accepted_original_packages": 4,
+    "bootstrap_packages_separate": 3
+  },
+  "scope_to_implementation": [
+    {
+      "scope_id": "S03",
+      "requirement": "Five producer prices/outputs, tier ratio 20, growth 1.12, previous-tier unlock at 10",
+      "work_items": [
+        "M1-01",
+        "M1-02",
+        "M2-01",
+        "BOOT-CORE"
+      ],
+      "component_evidence": "Prices, all rate-key inputs, marginal outputs, cache churn, large integers and unchanged formula source verified.",
+      "full_requirement_verified": false
+    },
+    {
+      "scope_id": "S08",
+      "requirement": "24 hours full production plus 48 hours at quarter rate; event-driven saved-policy replay",
+      "work_items": [
+        "M3-01",
+        "M3-10",
+        "M5-01"
+      ],
+      "component_evidence": "62 reference rows include online/offline timelines; additional 73h state/events compare exactly and 176 core regressions pass.",
+      "full_requirement_verified": false
+    },
+    {
+      "scope_id": "S31",
+      "requirement": "60/30fps targets, p95 startup \u22645s, 24h replay \u22643s, measured 30-minute battery/thermal usability",
+      "work_items": [
+        "M5-01",
+        "M5-07"
+      ],
+      "component_evidence": "Bounded immutable memoization and host exactness checks only; no physical performance budget established.",
+      "full_requirement_verified": false
+    }
+  ],
+  "implementation_to_scope": [
+    {
+      "implementation": "engine.dart _prices / cumulative-price wrapper",
+      "scope_ids": [
+        "S03"
+      ],
+      "evidence": "2,048 FIFO entries keyed by tier,count; count>8,192 bypasses retention; arithmetic unchanged."
+    },
+    {
+      "implementation": "engine.dart _countLogs / _chartPower / _rates",
+      "scope_ids": [
+        "S03",
+        "S08",
+        "S31"
+      ],
+      "evidence": "1,024/128/512 FIFO entries; immutable keys and Fixed values; Chart/rate retention <=4,096-bit Charts; output key includes five counts and Charts."
+    },
+    {
+      "implementation": "game/qa/integration_numeric_memo.dart",
+      "scope_ids": [
+        "S03",
+        "S08",
+        "S31"
+      ],
+      "evidence": "8 cases / 12,195 assertions against preserved baseline plus fresh-isolate FIFO probes."
+    },
+    {
+      "implementation": "reproduced before/after fixtures and full core regression",
+      "scope_ids": [
+        "S03",
+        "S08"
+      ],
+      "evidence": "62 byte-identical rows and 176 passing tests."
+    }
+  ],
+  "original_contract": {
+    "id": "M5-01",
+    "status": "in_progress",
+    "source_acceptance": "Meet measured frame/startup/resume budgets on minimum devices; heavy replay is chunked and never silently drops earned time.",
+    "source_acceptance_dependencies": [
+      "M3-10",
+      "M4-02"
+    ],
+    "scope_ids": [
+      "S08",
+      "S31"
+    ]
+  },
+  "new_packages_accepted": [],
+  "remaining_gate": "M5-01 minimum-device frame/startup/resume budgets and all upstream/full release requirements remain open. No beta freeze accepted."
+}

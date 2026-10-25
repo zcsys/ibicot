@@ -1,0 +1,1955 @@
+{
+  "contract_version": 1,
+  "scope": "Envelope shape and domain invariants only; empty gameplay payloads are deliberately not complete production saves.",
+  "cases": [
+    {
+      "id": "valid_new_local_game",
+      "valid": true,
+      "envelope": {
+        "format": "tideglass-save-envelope",
+        "schema_version": 1,
+        "save_id": "00000000-0000-4000-8000-000000000001",
+        "branch_id": "00000000-0000-4000-8000-000000000002",
+        "revision": 0,
+        "parent": null,
+        "written_at_utc": "2026-10-16T12:00:00Z",
+        "settled_through_utc": "2026-10-16T12:00:00Z",
+        "economic_config": {
+          "version": "tideglass-economy-1.0.0",
+          "sha256": "9e5b9bcfcfc7a68d4eaeebc97e8d40cd42d04532fa59f514c7483efee885d2b6"
+        },
+        "gameplay_state": {
+          "schema_version": 1,
+          "payload": {}
+        },
+        "merge_policy": "select_one_progression_branch",
+        "preserved_branches": [],
+        "pending_operations": [],
+        "applied_operation_ids": [],
+        "commerce_cache": {
+          "trust": "display_cache_only",
+          "authority": "independent_verifier_required",
+          "snapshot_reference": null,
+          "entries": []
+        }
+      }
+    },
+    {
+      "id": "valid_prepared_offline_settlement",
+      "valid": true,
+      "envelope": {
+        "format": "tideglass-save-envelope",
+        "schema_version": 1,
+        "save_id": "00000000-0000-4000-8000-000000000001",
+        "branch_id": "00000000-0000-4000-8000-000000000002",
+        "revision": 0,
+        "parent": null,
+        "written_at_utc": "2026-10-16T12:00:00Z",
+        "settled_through_utc": "2026-10-16T12:00:00Z",
+        "economic_config": {
+          "version": "tideglass-economy-1.0.0",
+          "sha256": "9e5b9bcfcfc7a68d4eaeebc97e8d40cd42d04532fa59f514c7483efee885d2b6"
+        },
+        "gameplay_state": {
+          "schema_version": 1,
+          "payload": {}
+        },
+        "merge_policy": "select_one_progression_branch",
+        "preserved_branches": [],
+        "pending_operations": [
+          {
+            "operation_id": "00000000-0000-4000-8000-000000000003",
+            "idempotency_key": "offline:branch-2:2026-10-16T12:00:00Z:2026-10-17T12:00:00Z",
+            "source_id": "return-interval-1",
+            "kind": "offline_settlement",
+            "branch_id": "00000000-0000-4000-8000-000000000002",
+            "expected_revision": 0,
+            "economic_config": {
+              "version": "tideglass-economy-1.0.0",
+              "sha256": "9e5b9bcfcfc7a68d4eaeebc97e8d40cd42d04532fa59f514c7483efee885d2b6"
+            },
+            "offline_interval": {
+              "start_utc": "2026-10-16T12:00:00Z",
+              "end_utc": "2026-10-17T12:00:00Z"
+            }
+          }
+        ],
+        "applied_operation_ids": [],
+        "commerce_cache": {
+          "trust": "display_cache_only",
+          "authority": "independent_verifier_required",
+          "snapshot_reference": null,
+          "entries": []
+        }
+      }
+    },
+    {
+      "id": "valid_child_snapshot",
+      "valid": true,
+      "envelope": {
+        "format": "tideglass-save-envelope",
+        "schema_version": 1,
+        "save_id": "00000000-0000-4000-8000-000000000004",
+        "branch_id": "00000000-0000-4000-8000-000000000002",
+        "revision": 1,
+        "parent": {
+          "save_id": "00000000-0000-4000-8000-000000000001",
+          "branch_id": "00000000-0000-4000-8000-000000000002",
+          "revision": 0
+        },
+        "written_at_utc": "2026-10-16T12:00:00Z",
+        "settled_through_utc": "2026-10-16T12:00:00Z",
+        "economic_config": {
+          "version": "tideglass-economy-1.0.0",
+          "sha256": "9e5b9bcfcfc7a68d4eaeebc97e8d40cd42d04532fa59f514c7483efee885d2b6"
+        },
+        "gameplay_state": {
+          "schema_version": 1,
+          "payload": {}
+        },
+        "merge_policy": "select_one_progression_branch",
+        "preserved_branches": [],
+        "pending_operations": [],
+        "applied_operation_ids": [],
+        "commerce_cache": {
+          "trust": "display_cache_only",
+          "authority": "independent_verifier_required",
+          "snapshot_reference": null,
+          "entries": []
+        }
+      }
+    },
+    {
+      "id": "valid_fork_with_recovery_reference",
+      "valid": true,
+      "envelope": {
+        "format": "tideglass-save-envelope",
+        "schema_version": 1,
+        "save_id": "00000000-0000-4000-8000-000000000004",
+        "branch_id": "00000000-0000-4000-8000-000000000005",
+        "revision": 1,
+        "parent": {
+          "save_id": "00000000-0000-4000-8000-000000000001",
+          "branch_id": "00000000-0000-4000-8000-000000000002",
+          "revision": 0
+        },
+        "written_at_utc": "2026-10-16T12:00:00Z",
+        "settled_through_utc": "2026-10-16T12:00:00Z",
+        "economic_config": {
+          "version": "tideglass-economy-1.0.0",
+          "sha256": "9e5b9bcfcfc7a68d4eaeebc97e8d40cd42d04532fa59f514c7483efee885d2b6"
+        },
+        "gameplay_state": {
+          "schema_version": 1,
+          "payload": {}
+        },
+        "merge_policy": "select_one_progression_branch",
+        "preserved_branches": [
+          {
+            "save_id": "00000000-0000-4000-8000-000000000001",
+            "branch_id": "00000000-0000-4000-8000-000000000002",
+            "revision": 0,
+            "recovery_reference": "local-recovery:parent-snapshot-1"
+          }
+        ],
+        "pending_operations": [],
+        "applied_operation_ids": [],
+        "commerce_cache": {
+          "trust": "display_cache_only",
+          "authority": "independent_verifier_required",
+          "snapshot_reference": null,
+          "entries": []
+        }
+      }
+    },
+    {
+      "id": "valid_clock_rollback_is_not_punished",
+      "valid": true,
+      "envelope": {
+        "format": "tideglass-save-envelope",
+        "schema_version": 1,
+        "save_id": "00000000-0000-4000-8000-000000000001",
+        "branch_id": "00000000-0000-4000-8000-000000000002",
+        "revision": 0,
+        "parent": null,
+        "written_at_utc": "2026-10-15T10:00:00Z",
+        "settled_through_utc": "2026-10-16T12:00:00Z",
+        "economic_config": {
+          "version": "tideglass-economy-1.0.0",
+          "sha256": "9e5b9bcfcfc7a68d4eaeebc97e8d40cd42d04532fa59f514c7483efee885d2b6"
+        },
+        "gameplay_state": {
+          "schema_version": 1,
+          "payload": {}
+        },
+        "merge_policy": "select_one_progression_branch",
+        "preserved_branches": [],
+        "pending_operations": [],
+        "applied_operation_ids": [],
+        "commerce_cache": {
+          "trust": "display_cache_only",
+          "authority": "independent_verifier_required",
+          "snapshot_reference": null,
+          "entries": []
+        }
+      }
+    },
+    {
+      "id": "valid_untrusted_commerce_display_cache",
+      "valid": true,
+      "envelope": {
+        "format": "tideglass-save-envelope",
+        "schema_version": 1,
+        "save_id": "00000000-0000-4000-8000-000000000001",
+        "branch_id": "00000000-0000-4000-8000-000000000002",
+        "revision": 0,
+        "parent": null,
+        "written_at_utc": "2026-10-16T12:00:00Z",
+        "settled_through_utc": "2026-10-16T12:00:00Z",
+        "economic_config": {
+          "version": "tideglass-economy-1.0.0",
+          "sha256": "9e5b9bcfcfc7a68d4eaeebc97e8d40cd42d04532fa59f514c7483efee885d2b6"
+        },
+        "gameplay_state": {
+          "schema_version": 1,
+          "payload": {}
+        },
+        "merge_policy": "select_one_progression_branch",
+        "preserved_branches": [],
+        "pending_operations": [],
+        "applied_operation_ids": [],
+        "commerce_cache": {
+          "trust": "display_cache_only",
+          "authority": "independent_verifier_required",
+          "snapshot_reference": null,
+          "entries": [
+            {
+              "entitlement_id": "cosmetic.harbor.gold",
+              "receipt_reference": "opaque-server-receipt-ref-1",
+              "display_status": "active"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "missing_version",
+      "valid": false,
+      "envelope": {
+        "format": "tideglass-save-envelope",
+        "save_id": "00000000-0000-4000-8000-000000000001",
+        "branch_id": "00000000-0000-4000-8000-000000000002",
+        "revision": 0,
+        "parent": null,
+        "written_at_utc": "2026-10-16T12:00:00Z",
+        "settled_through_utc": "2026-10-16T12:00:00Z",
+        "economic_config": {
+          "version": "tideglass-economy-1.0.0",
+          "sha256": "9e5b9bcfcfc7a68d4eaeebc97e8d40cd42d04532fa59f514c7483efee885d2b6"
+        },
+        "gameplay_state": {
+          "schema_version": 1,
+          "payload": {}
+        },
+        "merge_policy": "select_one_progression_branch",
+        "preserved_branches": [],
+        "pending_operations": [],
+        "applied_operation_ids": [],
+        "commerce_cache": {
+          "trust": "display_cache_only",
+          "authority": "independent_verifier_required",
+          "snapshot_reference": null,
+          "entries": []
+        }
+      },
+      "error_contains": "required field missing"
+    },
+    {
+      "id": "unsupported_version",
+      "valid": false,
+      "envelope": {
+        "format": "tideglass-save-envelope",
+        "schema_version": 2,
+        "save_id": "00000000-0000-4000-8000-000000000001",
+        "branch_id": "00000000-0000-4000-8000-000000000002",
+        "revision": 0,
+        "parent": null,
+        "written_at_utc": "2026-10-16T12:00:00Z",
+        "settled_through_utc": "2026-10-16T12:00:00Z",
+        "economic_config": {
+          "version": "tideglass-economy-1.0.0",
+          "sha256": "9e5b9bcfcfc7a68d4eaeebc97e8d40cd42d04532fa59f514c7483efee885d2b6"
+        },
+        "gameplay_state": {
+          "schema_version": 1,
+          "payload": {}
+        },
+        "merge_policy": "select_one_progression_branch",
+        "preserved_branches": [],
+        "pending_operations": [],
+        "applied_operation_ids": [],
+        "commerce_cache": {
+          "trust": "display_cache_only",
+          "authority": "independent_verifier_required",
+          "snapshot_reference": null,
+          "entries": []
+        }
+      },
+      "error_contains": "expected constant"
+    },
+    {
+      "id": "boolean_is_not_integer",
+      "valid": false,
+      "envelope": {
+        "format": "tideglass-save-envelope",
+        "schema_version": 1,
+        "save_id": "00000000-0000-4000-8000-000000000001",
+        "branch_id": "00000000-0000-4000-8000-000000000002",
+        "revision": true,
+        "parent": null,
+        "written_at_utc": "2026-10-16T12:00:00Z",
+        "settled_through_utc": "2026-10-16T12:00:00Z",
+        "economic_config": {
+          "version": "tideglass-economy-1.0.0",
+          "sha256": "9e5b9bcfcfc7a68d4eaeebc97e8d40cd42d04532fa59f514c7483efee885d2b6"
+        },
+        "gameplay_state": {
+          "schema_version": 1,
+          "payload": {}
+        },
+        "merge_policy": "select_one_progression_branch",
+        "preserved_branches": [],
+        "pending_operations": [],
+        "applied_operation_ids": [],
+        "commerce_cache": {
+          "trust": "display_cache_only",
+          "authority": "independent_verifier_required",
+          "snapshot_reference": null,
+          "entries": []
+        }
+      },
+      "error_contains": "wrong type"
+    },
+    {
+      "id": "negative_revision",
+      "valid": false,
+      "envelope": {
+        "format": "tideglass-save-envelope",
+        "schema_version": 1,
+        "save_id": "00000000-0000-4000-8000-000000000001",
+        "branch_id": "00000000-0000-4000-8000-000000000002",
+        "revision": -1,
+        "parent": null,
+        "written_at_utc": "2026-10-16T12:00:00Z",
+        "settled_through_utc": "2026-10-16T12:00:00Z",
+        "economic_config": {
+          "version": "tideglass-economy-1.0.0",
+          "sha256": "9e5b9bcfcfc7a68d4eaeebc97e8d40cd42d04532fa59f514c7483efee885d2b6"
+        },
+        "gameplay_state": {
+          "schema_version": 1,
+          "payload": {}
+        },
+        "merge_policy": "select_one_progression_branch",
+        "preserved_branches": [],
+        "pending_operations": [],
+        "applied_operation_ids": [],
+        "commerce_cache": {
+          "trust": "display_cache_only",
+          "authority": "independent_verifier_required",
+          "snapshot_reference": null,
+          "entries": []
+        }
+      },
+      "error_contains": "below minimum"
+    },
+    {
+      "id": "unparented_nonzero_revision",
+      "valid": false,
+      "envelope": {
+        "format": "tideglass-save-envelope",
+        "schema_version": 1,
+        "save_id": "00000000-0000-4000-8000-000000000001",
+        "branch_id": "00000000-0000-4000-8000-000000000002",
+        "revision": 1,
+        "parent": null,
+        "written_at_utc": "2026-10-16T12:00:00Z",
+        "settled_through_utc": "2026-10-16T12:00:00Z",
+        "economic_config": {
+          "version": "tideglass-economy-1.0.0",
+          "sha256": "9e5b9bcfcfc7a68d4eaeebc97e8d40cd42d04532fa59f514c7483efee885d2b6"
+        },
+        "gameplay_state": {
+          "schema_version": 1,
+          "payload": {}
+        },
+        "merge_policy": "select_one_progression_branch",
+        "preserved_branches": [],
+        "pending_operations": [],
+        "applied_operation_ids": [],
+        "commerce_cache": {
+          "trust": "display_cache_only",
+          "authority": "independent_verifier_required",
+          "snapshot_reference": null,
+          "entries": []
+        }
+      },
+      "error_contains": "root snapshot"
+    },
+    {
+      "id": "revision_gap",
+      "valid": false,
+      "envelope": {
+        "format": "tideglass-save-envelope",
+        "schema_version": 1,
+        "save_id": "00000000-0000-4000-8000-000000000004",
+        "branch_id": "00000000-0000-4000-8000-000000000002",
+        "revision": 3,
+        "parent": {
+          "save_id": "00000000-0000-4000-8000-000000000001",
+          "branch_id": "00000000-0000-4000-8000-000000000002",
+          "revision": 0
+        },
+        "written_at_utc": "2026-10-16T12:00:00Z",
+        "settled_through_utc": "2026-10-16T12:00:00Z",
+        "economic_config": {
+          "version": "tideglass-economy-1.0.0",
+          "sha256": "9e5b9bcfcfc7a68d4eaeebc97e8d40cd42d04532fa59f514c7483efee885d2b6"
+        },
+        "gameplay_state": {
+          "schema_version": 1,
+          "payload": {}
+        },
+        "merge_policy": "select_one_progression_branch",
+        "preserved_branches": [],
+        "pending_operations": [],
+        "applied_operation_ids": [],
+        "commerce_cache": {
+          "trust": "display_cache_only",
+          "authority": "independent_verifier_required",
+          "snapshot_reference": null,
+          "entries": []
+        }
+      },
+      "error_contains": "increment parent revision"
+    },
+    {
+      "id": "self_parent",
+      "valid": false,
+      "envelope": {
+        "format": "tideglass-save-envelope",
+        "schema_version": 1,
+        "save_id": "00000000-0000-4000-8000-000000000004",
+        "branch_id": "00000000-0000-4000-8000-000000000002",
+        "revision": 1,
+        "parent": {
+          "save_id": "00000000-0000-4000-8000-000000000004",
+          "branch_id": "00000000-0000-4000-8000-000000000002",
+          "revision": 0
+        },
+        "written_at_utc": "2026-10-16T12:00:00Z",
+        "settled_through_utc": "2026-10-16T12:00:00Z",
+        "economic_config": {
+          "version": "tideglass-economy-1.0.0",
+          "sha256": "9e5b9bcfcfc7a68d4eaeebc97e8d40cd42d04532fa59f514c7483efee885d2b6"
+        },
+        "gameplay_state": {
+          "schema_version": 1,
+          "payload": {}
+        },
+        "merge_policy": "select_one_progression_branch",
+        "preserved_branches": [],
+        "pending_operations": [],
+        "applied_operation_ids": [],
+        "commerce_cache": {
+          "trust": "display_cache_only",
+          "authority": "independent_verifier_required",
+          "snapshot_reference": null,
+          "entries": []
+        }
+      },
+      "error_contains": "own parent"
+    },
+    {
+      "id": "fork_loses_recovery_reference",
+      "valid": false,
+      "envelope": {
+        "format": "tideglass-save-envelope",
+        "schema_version": 1,
+        "save_id": "00000000-0000-4000-8000-000000000004",
+        "branch_id": "00000000-0000-4000-8000-000000000005",
+        "revision": 1,
+        "parent": {
+          "save_id": "00000000-0000-4000-8000-000000000001",
+          "branch_id": "00000000-0000-4000-8000-000000000002",
+          "revision": 0
+        },
+        "written_at_utc": "2026-10-16T12:00:00Z",
+        "settled_through_utc": "2026-10-16T12:00:00Z",
+        "economic_config": {
+          "version": "tideglass-economy-1.0.0",
+          "sha256": "9e5b9bcfcfc7a68d4eaeebc97e8d40cd42d04532fa59f514c7483efee885d2b6"
+        },
+        "gameplay_state": {
+          "schema_version": 1,
+          "payload": {}
+        },
+        "merge_policy": "select_one_progression_branch",
+        "preserved_branches": [],
+        "pending_operations": [],
+        "applied_operation_ids": [],
+        "commerce_cache": {
+          "trust": "display_cache_only",
+          "authority": "independent_verifier_required",
+          "snapshot_reference": null,
+          "entries": []
+        }
+      },
+      "error_contains": "parent-branch recovery"
+    },
+    {
+      "id": "fork_duplicate_recovery",
+      "valid": false,
+      "envelope": {
+        "format": "tideglass-save-envelope",
+        "schema_version": 1,
+        "save_id": "00000000-0000-4000-8000-000000000004",
+        "branch_id": "00000000-0000-4000-8000-000000000005",
+        "revision": 1,
+        "parent": {
+          "save_id": "00000000-0000-4000-8000-000000000001",
+          "branch_id": "00000000-0000-4000-8000-000000000002",
+          "revision": 0
+        },
+        "written_at_utc": "2026-10-16T12:00:00Z",
+        "settled_through_utc": "2026-10-16T12:00:00Z",
+        "economic_config": {
+          "version": "tideglass-economy-1.0.0",
+          "sha256": "9e5b9bcfcfc7a68d4eaeebc97e8d40cd42d04532fa59f514c7483efee885d2b6"
+        },
+        "gameplay_state": {
+          "schema_version": 1,
+          "payload": {}
+        },
+        "merge_policy": "select_one_progression_branch",
+        "preserved_branches": [
+          {
+            "save_id": "00000000-0000-4000-8000-000000000001",
+            "branch_id": "00000000-0000-4000-8000-000000000002",
+            "revision": 0,
+            "recovery_reference": "local-recovery:parent-snapshot-1"
+          },
+          {
+            "save_id": "00000000-0000-4000-8000-000000000001",
+            "branch_id": "00000000-0000-4000-8000-000000000002",
+            "revision": 0,
+            "recovery_reference": "local-recovery:parent-snapshot-1"
+          }
+        ],
+        "pending_operations": [],
+        "applied_operation_ids": [],
+        "commerce_cache": {
+          "trust": "display_cache_only",
+          "authority": "independent_verifier_required",
+          "snapshot_reference": null,
+          "entries": []
+        }
+      },
+      "error_contains": "duplicate save_id"
+    },
+    {
+      "id": "recovery_points_to_current_branch",
+      "valid": false,
+      "envelope": {
+        "format": "tideglass-save-envelope",
+        "schema_version": 1,
+        "save_id": "00000000-0000-4000-8000-000000000004",
+        "branch_id": "00000000-0000-4000-8000-000000000005",
+        "revision": 1,
+        "parent": {
+          "save_id": "00000000-0000-4000-8000-000000000001",
+          "branch_id": "00000000-0000-4000-8000-000000000002",
+          "revision": 0
+        },
+        "written_at_utc": "2026-10-16T12:00:00Z",
+        "settled_through_utc": "2026-10-16T12:00:00Z",
+        "economic_config": {
+          "version": "tideglass-economy-1.0.0",
+          "sha256": "9e5b9bcfcfc7a68d4eaeebc97e8d40cd42d04532fa59f514c7483efee885d2b6"
+        },
+        "gameplay_state": {
+          "schema_version": 1,
+          "payload": {}
+        },
+        "merge_policy": "select_one_progression_branch",
+        "preserved_branches": [
+          {
+            "save_id": "00000000-0000-4000-8000-000000000001",
+            "branch_id": "00000000-0000-4000-8000-000000000005",
+            "revision": 0,
+            "recovery_reference": "local-recovery:parent-snapshot-1"
+          }
+        ],
+        "pending_operations": [],
+        "applied_operation_ids": [],
+        "commerce_cache": {
+          "trust": "display_cache_only",
+          "authority": "independent_verifier_required",
+          "snapshot_reference": null,
+          "entries": []
+        }
+      },
+      "error_contains": "another branch"
+    },
+    {
+      "id": "unknown_top_level_field",
+      "valid": false,
+      "envelope": {
+        "format": "tideglass-save-envelope",
+        "schema_version": 1,
+        "save_id": "00000000-0000-4000-8000-000000000001",
+        "branch_id": "00000000-0000-4000-8000-000000000002",
+        "revision": 0,
+        "parent": null,
+        "written_at_utc": "2026-10-16T12:00:00Z",
+        "settled_through_utc": "2026-10-16T12:00:00Z",
+        "economic_config": {
+          "version": "tideglass-economy-1.0.0",
+          "sha256": "9e5b9bcfcfc7a68d4eaeebc97e8d40cd42d04532fa59f514c7483efee885d2b6"
+        },
+        "gameplay_state": {
+          "schema_version": 1,
+          "payload": {}
+        },
+        "merge_policy": "select_one_progression_branch",
+        "preserved_branches": [],
+        "pending_operations": [],
+        "applied_operation_ids": [],
+        "commerce_cache": {
+          "trust": "display_cache_only",
+          "authority": "independent_verifier_required",
+          "snapshot_reference": null,
+          "entries": []
+        },
+        "purchased_power": true
+      },
+      "error_contains": "unexpected field"
+    },
+    {
+      "id": "malformed_save_id",
+      "valid": false,
+      "envelope": {
+        "format": "tideglass-save-envelope",
+        "schema_version": 1,
+        "save_id": "not-a-uuid",
+        "branch_id": "00000000-0000-4000-8000-000000000002",
+        "revision": 0,
+        "parent": null,
+        "written_at_utc": "2026-10-16T12:00:00Z",
+        "settled_through_utc": "2026-10-16T12:00:00Z",
+        "economic_config": {
+          "version": "tideglass-economy-1.0.0",
+          "sha256": "9e5b9bcfcfc7a68d4eaeebc97e8d40cd42d04532fa59f514c7483efee885d2b6"
+        },
+        "gameplay_state": {
+          "schema_version": 1,
+          "payload": {}
+        },
+        "merge_policy": "select_one_progression_branch",
+        "preserved_branches": [],
+        "pending_operations": [],
+        "applied_operation_ids": [],
+        "commerce_cache": {
+          "trust": "display_cache_only",
+          "authority": "independent_verifier_required",
+          "snapshot_reference": null,
+          "entries": []
+        }
+      },
+      "error_contains": "required pattern"
+    },
+    {
+      "id": "invalid_calendar_date",
+      "valid": false,
+      "envelope": {
+        "format": "tideglass-save-envelope",
+        "schema_version": 1,
+        "save_id": "00000000-0000-4000-8000-000000000001",
+        "branch_id": "00000000-0000-4000-8000-000000000002",
+        "revision": 0,
+        "parent": null,
+        "written_at_utc": "2026-02-30T12:00:00Z",
+        "settled_through_utc": "2026-10-16T12:00:00Z",
+        "economic_config": {
+          "version": "tideglass-economy-1.0.0",
+          "sha256": "9e5b9bcfcfc7a68d4eaeebc97e8d40cd42d04532fa59f514c7483efee885d2b6"
+        },
+        "gameplay_state": {
+          "schema_version": 1,
+          "payload": {}
+        },
+        "merge_policy": "select_one_progression_branch",
+        "preserved_branches": [],
+        "pending_operations": [],
+        "applied_operation_ids": [],
+        "commerce_cache": {
+          "trust": "display_cache_only",
+          "authority": "independent_verifier_required",
+          "snapshot_reference": null,
+          "entries": []
+        }
+      },
+      "error_contains": "invalid date-time"
+    },
+    {
+      "id": "missing_utc_time_zone",
+      "valid": false,
+      "envelope": {
+        "format": "tideglass-save-envelope",
+        "schema_version": 1,
+        "save_id": "00000000-0000-4000-8000-000000000001",
+        "branch_id": "00000000-0000-4000-8000-000000000002",
+        "revision": 0,
+        "parent": null,
+        "written_at_utc": "2026-10-16T12:00:00Z",
+        "settled_through_utc": "2026-10-16T12:00:00",
+        "economic_config": {
+          "version": "tideglass-economy-1.0.0",
+          "sha256": "9e5b9bcfcfc7a68d4eaeebc97e8d40cd42d04532fa59f514c7483efee885d2b6"
+        },
+        "gameplay_state": {
+          "schema_version": 1,
+          "payload": {}
+        },
+        "merge_policy": "select_one_progression_branch",
+        "preserved_branches": [],
+        "pending_operations": [],
+        "applied_operation_ids": [],
+        "commerce_cache": {
+          "trust": "display_cache_only",
+          "authority": "independent_verifier_required",
+          "snapshot_reference": null,
+          "entries": []
+        }
+      },
+      "error_contains": "required pattern"
+    },
+    {
+      "id": "unknown_payload_schema",
+      "valid": false,
+      "envelope": {
+        "format": "tideglass-save-envelope",
+        "schema_version": 1,
+        "save_id": "00000000-0000-4000-8000-000000000001",
+        "branch_id": "00000000-0000-4000-8000-000000000002",
+        "revision": 0,
+        "parent": null,
+        "written_at_utc": "2026-10-16T12:00:00Z",
+        "settled_through_utc": "2026-10-16T12:00:00Z",
+        "economic_config": {
+          "version": "tideglass-economy-1.0.0",
+          "sha256": "9e5b9bcfcfc7a68d4eaeebc97e8d40cd42d04532fa59f514c7483efee885d2b6"
+        },
+        "gameplay_state": {
+          "schema_version": 2,
+          "payload": {}
+        },
+        "merge_policy": "select_one_progression_branch",
+        "preserved_branches": [],
+        "pending_operations": [],
+        "applied_operation_ids": [],
+        "commerce_cache": {
+          "trust": "display_cache_only",
+          "authority": "independent_verifier_required",
+          "snapshot_reference": null,
+          "entries": []
+        }
+      },
+      "error_contains": "expected constant"
+    },
+    {
+      "id": "additive_branch_merge",
+      "valid": false,
+      "envelope": {
+        "format": "tideglass-save-envelope",
+        "schema_version": 1,
+        "save_id": "00000000-0000-4000-8000-000000000001",
+        "branch_id": "00000000-0000-4000-8000-000000000002",
+        "revision": 0,
+        "parent": null,
+        "written_at_utc": "2026-10-16T12:00:00Z",
+        "settled_through_utc": "2026-10-16T12:00:00Z",
+        "economic_config": {
+          "version": "tideglass-economy-1.0.0",
+          "sha256": "9e5b9bcfcfc7a68d4eaeebc97e8d40cd42d04532fa59f514c7483efee885d2b6"
+        },
+        "gameplay_state": {
+          "schema_version": 1,
+          "payload": {}
+        },
+        "merge_policy": "add_balances",
+        "preserved_branches": [],
+        "pending_operations": [],
+        "applied_operation_ids": [],
+        "commerce_cache": {
+          "trust": "display_cache_only",
+          "authority": "independent_verifier_required",
+          "snapshot_reference": null,
+          "entries": []
+        }
+      },
+      "error_contains": "expected constant"
+    },
+    {
+      "id": "commerce_claims_local_authority",
+      "valid": false,
+      "envelope": {
+        "format": "tideglass-save-envelope",
+        "schema_version": 1,
+        "save_id": "00000000-0000-4000-8000-000000000001",
+        "branch_id": "00000000-0000-4000-8000-000000000002",
+        "revision": 0,
+        "parent": null,
+        "written_at_utc": "2026-10-16T12:00:00Z",
+        "settled_through_utc": "2026-10-16T12:00:00Z",
+        "economic_config": {
+          "version": "tideglass-economy-1.0.0",
+          "sha256": "9e5b9bcfcfc7a68d4eaeebc97e8d40cd42d04532fa59f514c7483efee885d2b6"
+        },
+        "gameplay_state": {
+          "schema_version": 1,
+          "payload": {}
+        },
+        "merge_policy": "select_one_progression_branch",
+        "preserved_branches": [],
+        "pending_operations": [],
+        "applied_operation_ids": [],
+        "commerce_cache": {
+          "trust": "verified_purchase",
+          "authority": "independent_verifier_required",
+          "snapshot_reference": null,
+          "entries": []
+        }
+      },
+      "error_contains": "expected constant"
+    },
+    {
+      "id": "raw_receipt_in_cache",
+      "valid": false,
+      "envelope": {
+        "format": "tideglass-save-envelope",
+        "schema_version": 1,
+        "save_id": "00000000-0000-4000-8000-000000000001",
+        "branch_id": "00000000-0000-4000-8000-000000000002",
+        "revision": 0,
+        "parent": null,
+        "written_at_utc": "2026-10-16T12:00:00Z",
+        "settled_through_utc": "2026-10-16T12:00:00Z",
+        "economic_config": {
+          "version": "tideglass-economy-1.0.0",
+          "sha256": "9e5b9bcfcfc7a68d4eaeebc97e8d40cd42d04532fa59f514c7483efee885d2b6"
+        },
+        "gameplay_state": {
+          "schema_version": 1,
+          "payload": {}
+        },
+        "merge_policy": "select_one_progression_branch",
+        "preserved_branches": [],
+        "pending_operations": [],
+        "applied_operation_ids": [],
+        "commerce_cache": {
+          "trust": "display_cache_only",
+          "authority": "independent_verifier_required",
+          "snapshot_reference": null,
+          "entries": [],
+          "raw_receipt": "do-not-store-here"
+        }
+      },
+      "error_contains": "unexpected field"
+    },
+    {
+      "id": "duplicate_commerce_entitlement",
+      "valid": false,
+      "envelope": {
+        "format": "tideglass-save-envelope",
+        "schema_version": 1,
+        "save_id": "00000000-0000-4000-8000-000000000001",
+        "branch_id": "00000000-0000-4000-8000-000000000002",
+        "revision": 0,
+        "parent": null,
+        "written_at_utc": "2026-10-16T12:00:00Z",
+        "settled_through_utc": "2026-10-16T12:00:00Z",
+        "economic_config": {
+          "version": "tideglass-economy-1.0.0",
+          "sha256": "9e5b9bcfcfc7a68d4eaeebc97e8d40cd42d04532fa59f514c7483efee885d2b6"
+        },
+        "gameplay_state": {
+          "schema_version": 1,
+          "payload": {}
+        },
+        "merge_policy": "select_one_progression_branch",
+        "preserved_branches": [],
+        "pending_operations": [],
+        "applied_operation_ids": [],
+        "commerce_cache": {
+          "trust": "display_cache_only",
+          "authority": "independent_verifier_required",
+          "snapshot_reference": null,
+          "entries": [
+            {
+              "entitlement_id": "cosmetic.harbor.gold",
+              "receipt_reference": "opaque-server-receipt-ref-1",
+              "display_status": "active"
+            },
+            {
+              "entitlement_id": "cosmetic.harbor.gold",
+              "receipt_reference": "opaque-server-receipt-ref-1",
+              "display_status": "active"
+            }
+          ]
+        }
+      },
+      "error_contains": "duplicate entitlement"
+    },
+    {
+      "id": "invalid_config_digest",
+      "valid": false,
+      "envelope": {
+        "format": "tideglass-save-envelope",
+        "schema_version": 1,
+        "save_id": "00000000-0000-4000-8000-000000000001",
+        "branch_id": "00000000-0000-4000-8000-000000000002",
+        "revision": 0,
+        "parent": null,
+        "written_at_utc": "2026-10-16T12:00:00Z",
+        "settled_through_utc": "2026-10-16T12:00:00Z",
+        "economic_config": {
+          "version": "tideglass-economy-1.0.0",
+          "sha256": "bad"
+        },
+        "gameplay_state": {
+          "schema_version": 1,
+          "payload": {}
+        },
+        "merge_policy": "select_one_progression_branch",
+        "preserved_branches": [],
+        "pending_operations": [],
+        "applied_operation_ids": [],
+        "commerce_cache": {
+          "trust": "display_cache_only",
+          "authority": "independent_verifier_required",
+          "snapshot_reference": null,
+          "entries": []
+        }
+      },
+      "error_contains": "required pattern"
+    },
+    {
+      "id": "invalid_economic_version",
+      "valid": false,
+      "envelope": {
+        "format": "tideglass-save-envelope",
+        "schema_version": 1,
+        "save_id": "00000000-0000-4000-8000-000000000001",
+        "branch_id": "00000000-0000-4000-8000-000000000002",
+        "revision": 0,
+        "parent": null,
+        "written_at_utc": "2026-10-16T12:00:00Z",
+        "settled_through_utc": "2026-10-16T12:00:00Z",
+        "economic_config": {
+          "version": "latest",
+          "sha256": "9e5b9bcfcfc7a68d4eaeebc97e8d40cd42d04532fa59f514c7483efee885d2b6"
+        },
+        "gameplay_state": {
+          "schema_version": 1,
+          "payload": {}
+        },
+        "merge_policy": "select_one_progression_branch",
+        "preserved_branches": [],
+        "pending_operations": [],
+        "applied_operation_ids": [],
+        "commerce_cache": {
+          "trust": "display_cache_only",
+          "authority": "independent_verifier_required",
+          "snapshot_reference": null,
+          "entries": []
+        }
+      },
+      "error_contains": "required pattern"
+    },
+    {
+      "id": "pending_wrong_revision",
+      "valid": false,
+      "envelope": {
+        "format": "tideglass-save-envelope",
+        "schema_version": 1,
+        "save_id": "00000000-0000-4000-8000-000000000001",
+        "branch_id": "00000000-0000-4000-8000-000000000002",
+        "revision": 0,
+        "parent": null,
+        "written_at_utc": "2026-10-16T12:00:00Z",
+        "settled_through_utc": "2026-10-16T12:00:00Z",
+        "economic_config": {
+          "version": "tideglass-economy-1.0.0",
+          "sha256": "9e5b9bcfcfc7a68d4eaeebc97e8d40cd42d04532fa59f514c7483efee885d2b6"
+        },
+        "gameplay_state": {
+          "schema_version": 1,
+          "payload": {}
+        },
+        "merge_policy": "select_one_progression_branch",
+        "preserved_branches": [],
+        "pending_operations": [
+          {
+            "operation_id": "00000000-0000-4000-8000-000000000003",
+            "idempotency_key": "offline:branch-2:2026-10-16T12:00:00Z:2026-10-17T12:00:00Z",
+            "source_id": "return-interval-1",
+            "kind": "offline_settlement",
+            "branch_id": "00000000-0000-4000-8000-000000000002",
+            "expected_revision": 1,
+            "economic_config": {
+              "version": "tideglass-economy-1.0.0",
+              "sha256": "9e5b9bcfcfc7a68d4eaeebc97e8d40cd42d04532fa59f514c7483efee885d2b6"
+            },
+            "offline_interval": {
+              "start_utc": "2026-10-16T12:00:00Z",
+              "end_utc": "2026-10-17T12:00:00Z"
+            }
+          }
+        ],
+        "applied_operation_ids": [],
+        "commerce_cache": {
+          "trust": "display_cache_only",
+          "authority": "independent_verifier_required",
+          "snapshot_reference": null,
+          "entries": []
+        }
+      },
+      "error_contains": "stale or future revision"
+    },
+    {
+      "id": "pending_wrong_branch",
+      "valid": false,
+      "envelope": {
+        "format": "tideglass-save-envelope",
+        "schema_version": 1,
+        "save_id": "00000000-0000-4000-8000-000000000001",
+        "branch_id": "00000000-0000-4000-8000-000000000002",
+        "revision": 0,
+        "parent": null,
+        "written_at_utc": "2026-10-16T12:00:00Z",
+        "settled_through_utc": "2026-10-16T12:00:00Z",
+        "economic_config": {
+          "version": "tideglass-economy-1.0.0",
+          "sha256": "9e5b9bcfcfc7a68d4eaeebc97e8d40cd42d04532fa59f514c7483efee885d2b6"
+        },
+        "gameplay_state": {
+          "schema_version": 1,
+          "payload": {}
+        },
+        "merge_policy": "select_one_progression_branch",
+        "preserved_branches": [],
+        "pending_operations": [
+          {
+            "operation_id": "00000000-0000-4000-8000-000000000003",
+            "idempotency_key": "offline:branch-2:2026-10-16T12:00:00Z:2026-10-17T12:00:00Z",
+            "source_id": "return-interval-1",
+            "kind": "offline_settlement",
+            "branch_id": "00000000-0000-4000-8000-000000000099",
+            "expected_revision": 0,
+            "economic_config": {
+              "version": "tideglass-economy-1.0.0",
+              "sha256": "9e5b9bcfcfc7a68d4eaeebc97e8d40cd42d04532fa59f514c7483efee885d2b6"
+            },
+            "offline_interval": {
+              "start_utc": "2026-10-16T12:00:00Z",
+              "end_utc": "2026-10-17T12:00:00Z"
+            }
+          }
+        ],
+        "applied_operation_ids": [],
+        "commerce_cache": {
+          "trust": "display_cache_only",
+          "authority": "independent_verifier_required",
+          "snapshot_reference": null,
+          "entries": []
+        }
+      },
+      "error_contains": "different branch"
+    },
+    {
+      "id": "pending_changed_economic_version",
+      "valid": false,
+      "envelope": {
+        "format": "tideglass-save-envelope",
+        "schema_version": 1,
+        "save_id": "00000000-0000-4000-8000-000000000001",
+        "branch_id": "00000000-0000-4000-8000-000000000002",
+        "revision": 0,
+        "parent": null,
+        "written_at_utc": "2026-10-16T12:00:00Z",
+        "settled_through_utc": "2026-10-16T12:00:00Z",
+        "economic_config": {
+          "version": "tideglass-economy-1.0.0",
+          "sha256": "9e5b9bcfcfc7a68d4eaeebc97e8d40cd42d04532fa59f514c7483efee885d2b6"
+        },
+        "gameplay_state": {
+          "schema_version": 1,
+          "payload": {}
+        },
+        "merge_policy": "select_one_progression_branch",
+        "preserved_branches": [],
+        "pending_operations": [
+          {
+            "operation_id": "00000000-0000-4000-8000-000000000003",
+            "idempotency_key": "offline:branch-2:2026-10-16T12:00:00Z:2026-10-17T12:00:00Z",
+            "source_id": "return-interval-1",
+            "kind": "offline_settlement",
+            "branch_id": "00000000-0000-4000-8000-000000000002",
+            "expected_revision": 0,
+            "economic_config": {
+              "version": "tideglass-economy-2.0.0",
+              "sha256": "9e5b9bcfcfc7a68d4eaeebc97e8d40cd42d04532fa59f514c7483efee885d2b6"
+            },
+            "offline_interval": {
+              "start_utc": "2026-10-16T12:00:00Z",
+              "end_utc": "2026-10-17T12:00:00Z"
+            }
+          }
+        ],
+        "applied_operation_ids": [],
+        "commerce_cache": {
+          "trust": "display_cache_only",
+          "authority": "independent_verifier_required",
+          "snapshot_reference": null,
+          "entries": []
+        }
+      },
+      "error_contains": "pinned economic version"
+    },
+    {
+      "id": "pending_changed_config_bytes",
+      "valid": false,
+      "envelope": {
+        "format": "tideglass-save-envelope",
+        "schema_version": 1,
+        "save_id": "00000000-0000-4000-8000-000000000001",
+        "branch_id": "00000000-0000-4000-8000-000000000002",
+        "revision": 0,
+        "parent": null,
+        "written_at_utc": "2026-10-16T12:00:00Z",
+        "settled_through_utc": "2026-10-16T12:00:00Z",
+        "economic_config": {
+          "version": "tideglass-economy-1.0.0",
+          "sha256": "9e5b9bcfcfc7a68d4eaeebc97e8d40cd42d04532fa59f514c7483efee885d2b6"
+        },
+        "gameplay_state": {
+          "schema_version": 1,
+          "payload": {}
+        },
+        "merge_policy": "select_one_progression_branch",
+        "preserved_branches": [],
+        "pending_operations": [
+          {
+            "operation_id": "00000000-0000-4000-8000-000000000003",
+            "idempotency_key": "offline:branch-2:2026-10-16T12:00:00Z:2026-10-17T12:00:00Z",
+            "source_id": "return-interval-1",
+            "kind": "offline_settlement",
+            "branch_id": "00000000-0000-4000-8000-000000000002",
+            "expected_revision": 0,
+            "economic_config": {
+              "version": "tideglass-economy-1.0.0",
+              "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+            },
+            "offline_interval": {
+              "start_utc": "2026-10-16T12:00:00Z",
+              "end_utc": "2026-10-17T12:00:00Z"
+            }
+          }
+        ],
+        "applied_operation_ids": [],
+        "commerce_cache": {
+          "trust": "display_cache_only",
+          "authority": "independent_verifier_required",
+          "snapshot_reference": null,
+          "entries": []
+        }
+      },
+      "error_contains": "pinned economic version"
+    },
+    {
+      "id": "pending_already_applied",
+      "valid": false,
+      "envelope": {
+        "format": "tideglass-save-envelope",
+        "schema_version": 1,
+        "save_id": "00000000-0000-4000-8000-000000000001",
+        "branch_id": "00000000-0000-4000-8000-000000000002",
+        "revision": 0,
+        "parent": null,
+        "written_at_utc": "2026-10-16T12:00:00Z",
+        "settled_through_utc": "2026-10-16T12:00:00Z",
+        "economic_config": {
+          "version": "tideglass-economy-1.0.0",
+          "sha256": "9e5b9bcfcfc7a68d4eaeebc97e8d40cd42d04532fa59f514c7483efee885d2b6"
+        },
+        "gameplay_state": {
+          "schema_version": 1,
+          "payload": {}
+        },
+        "merge_policy": "select_one_progression_branch",
+        "preserved_branches": [],
+        "pending_operations": [
+          {
+            "operation_id": "00000000-0000-4000-8000-000000000003",
+            "idempotency_key": "offline:branch-2:2026-10-16T12:00:00Z:2026-10-17T12:00:00Z",
+            "source_id": "return-interval-1",
+            "kind": "offline_settlement",
+            "branch_id": "00000000-0000-4000-8000-000000000002",
+            "expected_revision": 0,
+            "economic_config": {
+              "version": "tideglass-economy-1.0.0",
+              "sha256": "9e5b9bcfcfc7a68d4eaeebc97e8d40cd42d04532fa59f514c7483efee885d2b6"
+            },
+            "offline_interval": {
+              "start_utc": "2026-10-16T12:00:00Z",
+              "end_utc": "2026-10-17T12:00:00Z"
+            }
+          }
+        ],
+        "applied_operation_ids": [
+          "00000000-0000-4000-8000-000000000003"
+        ],
+        "commerce_cache": {
+          "trust": "display_cache_only",
+          "authority": "independent_verifier_required",
+          "snapshot_reference": null,
+          "entries": []
+        }
+      },
+      "error_contains": "already applied"
+    },
+    {
+      "id": "duplicate_applied_id",
+      "valid": false,
+      "envelope": {
+        "format": "tideglass-save-envelope",
+        "schema_version": 1,
+        "save_id": "00000000-0000-4000-8000-000000000001",
+        "branch_id": "00000000-0000-4000-8000-000000000002",
+        "revision": 0,
+        "parent": null,
+        "written_at_utc": "2026-10-16T12:00:00Z",
+        "settled_through_utc": "2026-10-16T12:00:00Z",
+        "economic_config": {
+          "version": "tideglass-economy-1.0.0",
+          "sha256": "9e5b9bcfcfc7a68d4eaeebc97e8d40cd42d04532fa59f514c7483efee885d2b6"
+        },
+        "gameplay_state": {
+          "schema_version": 1,
+          "payload": {}
+        },
+        "merge_policy": "select_one_progression_branch",
+        "preserved_branches": [],
+        "pending_operations": [],
+        "applied_operation_ids": [
+          "00000000-0000-4000-8000-000000000003",
+          "00000000-0000-4000-8000-000000000003"
+        ],
+        "commerce_cache": {
+          "trust": "display_cache_only",
+          "authority": "independent_verifier_required",
+          "snapshot_reference": null,
+          "entries": []
+        }
+      },
+      "error_contains": "duplicate operation ID"
+    },
+    {
+      "id": "duplicate_pending_id",
+      "valid": false,
+      "envelope": {
+        "format": "tideglass-save-envelope",
+        "schema_version": 1,
+        "save_id": "00000000-0000-4000-8000-000000000001",
+        "branch_id": "00000000-0000-4000-8000-000000000002",
+        "revision": 0,
+        "parent": null,
+        "written_at_utc": "2026-10-16T12:00:00Z",
+        "settled_through_utc": "2026-10-16T12:00:00Z",
+        "economic_config": {
+          "version": "tideglass-economy-1.0.0",
+          "sha256": "9e5b9bcfcfc7a68d4eaeebc97e8d40cd42d04532fa59f514c7483efee885d2b6"
+        },
+        "gameplay_state": {
+          "schema_version": 1,
+          "payload": {}
+        },
+        "merge_policy": "select_one_progression_branch",
+        "preserved_branches": [],
+        "pending_operations": [
+          {
+            "operation_id": "00000000-0000-4000-8000-000000000003",
+            "idempotency_key": "offline:branch-2:2026-10-16T12:00:00Z:2026-10-17T12:00:00Z",
+            "source_id": "return-interval-1",
+            "kind": "offline_settlement",
+            "branch_id": "00000000-0000-4000-8000-000000000002",
+            "expected_revision": 0,
+            "economic_config": {
+              "version": "tideglass-economy-1.0.0",
+              "sha256": "9e5b9bcfcfc7a68d4eaeebc97e8d40cd42d04532fa59f514c7483efee885d2b6"
+            },
+            "offline_interval": {
+              "start_utc": "2026-10-16T12:00:00Z",
+              "end_utc": "2026-10-17T12:00:00Z"
+            }
+          },
+          {
+            "operation_id": "00000000-0000-4000-8000-000000000003",
+            "idempotency_key": "offline:branch-2:2026-10-16T12:00:00Z:2026-10-17T12:00:00Z",
+            "source_id": "return-interval-1",
+            "kind": "offline_settlement",
+            "branch_id": "00000000-0000-4000-8000-000000000002",
+            "expected_revision": 0,
+            "economic_config": {
+              "version": "tideglass-economy-1.0.0",
+              "sha256": "9e5b9bcfcfc7a68d4eaeebc97e8d40cd42d04532fa59f514c7483efee885d2b6"
+            },
+            "offline_interval": {
+              "start_utc": "2026-10-16T12:00:00Z",
+              "end_utc": "2026-10-17T12:00:00Z"
+            }
+          }
+        ],
+        "applied_operation_ids": [],
+        "commerce_cache": {
+          "trust": "display_cache_only",
+          "authority": "independent_verifier_required",
+          "snapshot_reference": null,
+          "entries": []
+        }
+      },
+      "error_contains": "duplicate operation_id"
+    },
+    {
+      "id": "duplicate_idempotency_key",
+      "valid": false,
+      "envelope": {
+        "format": "tideglass-save-envelope",
+        "schema_version": 1,
+        "save_id": "00000000-0000-4000-8000-000000000001",
+        "branch_id": "00000000-0000-4000-8000-000000000002",
+        "revision": 0,
+        "parent": null,
+        "written_at_utc": "2026-10-16T12:00:00Z",
+        "settled_through_utc": "2026-10-16T12:00:00Z",
+        "economic_config": {
+          "version": "tideglass-economy-1.0.0",
+          "sha256": "9e5b9bcfcfc7a68d4eaeebc97e8d40cd42d04532fa59f514c7483efee885d2b6"
+        },
+        "gameplay_state": {
+          "schema_version": 1,
+          "payload": {}
+        },
+        "merge_policy": "select_one_progression_branch",
+        "preserved_branches": [],
+        "pending_operations": [
+          {
+            "operation_id": "00000000-0000-4000-8000-000000000003",
+            "idempotency_key": "offline:branch-2:2026-10-16T12:00:00Z:2026-10-17T12:00:00Z",
+            "source_id": "return-interval-1",
+            "kind": "offline_settlement",
+            "branch_id": "00000000-0000-4000-8000-000000000002",
+            "expected_revision": 0,
+            "economic_config": {
+              "version": "tideglass-economy-1.0.0",
+              "sha256": "9e5b9bcfcfc7a68d4eaeebc97e8d40cd42d04532fa59f514c7483efee885d2b6"
+            },
+            "offline_interval": {
+              "start_utc": "2026-10-16T12:00:00Z",
+              "end_utc": "2026-10-17T12:00:00Z"
+            }
+          },
+          {
+            "operation_id": "00000000-0000-4000-8000-000000000007",
+            "idempotency_key": "offline:branch-2:2026-10-16T12:00:00Z:2026-10-17T12:00:00Z",
+            "source_id": "contract-7-notes",
+            "kind": "contract_reward",
+            "branch_id": "00000000-0000-4000-8000-000000000002",
+            "expected_revision": 0,
+            "economic_config": {
+              "version": "tideglass-economy-1.0.0",
+              "sha256": "9e5b9bcfcfc7a68d4eaeebc97e8d40cd42d04532fa59f514c7483efee885d2b6"
+            },
+            "offline_interval": null
+          }
+        ],
+        "applied_operation_ids": [],
+        "commerce_cache": {
+          "trust": "display_cache_only",
+          "authority": "independent_verifier_required",
+          "snapshot_reference": null,
+          "entries": []
+        }
+      },
+      "error_contains": "duplicate idempotency_key"
+    },
+    {
+      "id": "duplicate_reward_source",
+      "valid": false,
+      "envelope": {
+        "format": "tideglass-save-envelope",
+        "schema_version": 1,
+        "save_id": "00000000-0000-4000-8000-000000000001",
+        "branch_id": "00000000-0000-4000-8000-000000000002",
+        "revision": 0,
+        "parent": null,
+        "written_at_utc": "2026-10-16T12:00:00Z",
+        "settled_through_utc": "2026-10-16T12:00:00Z",
+        "economic_config": {
+          "version": "tideglass-economy-1.0.0",
+          "sha256": "9e5b9bcfcfc7a68d4eaeebc97e8d40cd42d04532fa59f514c7483efee885d2b6"
+        },
+        "gameplay_state": {
+          "schema_version": 1,
+          "payload": {}
+        },
+        "merge_policy": "select_one_progression_branch",
+        "preserved_branches": [],
+        "pending_operations": [
+          {
+            "operation_id": "00000000-0000-4000-8000-000000000003",
+            "idempotency_key": "offline:branch-2:2026-10-16T12:00:00Z:2026-10-17T12:00:00Z",
+            "source_id": "return-interval-1",
+            "kind": "offline_settlement",
+            "branch_id": "00000000-0000-4000-8000-000000000002",
+            "expected_revision": 0,
+            "economic_config": {
+              "version": "tideglass-economy-1.0.0",
+              "sha256": "9e5b9bcfcfc7a68d4eaeebc97e8d40cd42d04532fa59f514c7483efee885d2b6"
+            },
+            "offline_interval": {
+              "start_utc": "2026-10-16T12:00:00Z",
+              "end_utc": "2026-10-17T12:00:00Z"
+            }
+          },
+          {
+            "operation_id": "00000000-0000-4000-8000-000000000007",
+            "idempotency_key": "another-key",
+            "source_id": "return-interval-1",
+            "kind": "offline_settlement",
+            "branch_id": "00000000-0000-4000-8000-000000000002",
+            "expected_revision": 0,
+            "economic_config": {
+              "version": "tideglass-economy-1.0.0",
+              "sha256": "9e5b9bcfcfc7a68d4eaeebc97e8d40cd42d04532fa59f514c7483efee885d2b6"
+            },
+            "offline_interval": {
+              "start_utc": "2026-10-16T12:00:00Z",
+              "end_utc": "2026-10-17T12:00:00Z"
+            }
+          }
+        ],
+        "applied_operation_ids": [],
+        "commerce_cache": {
+          "trust": "display_cache_only",
+          "authority": "independent_verifier_required",
+          "snapshot_reference": null,
+          "entries": []
+        }
+      },
+      "error_contains": "duplicate kind/source"
+    },
+    {
+      "id": "missing_offline_interval",
+      "valid": false,
+      "envelope": {
+        "format": "tideglass-save-envelope",
+        "schema_version": 1,
+        "save_id": "00000000-0000-4000-8000-000000000001",
+        "branch_id": "00000000-0000-4000-8000-000000000002",
+        "revision": 0,
+        "parent": null,
+        "written_at_utc": "2026-10-16T12:00:00Z",
+        "settled_through_utc": "2026-10-16T12:00:00Z",
+        "economic_config": {
+          "version": "tideglass-economy-1.0.0",
+          "sha256": "9e5b9bcfcfc7a68d4eaeebc97e8d40cd42d04532fa59f514c7483efee885d2b6"
+        },
+        "gameplay_state": {
+          "schema_version": 1,
+          "payload": {}
+        },
+        "merge_policy": "select_one_progression_branch",
+        "preserved_branches": [],
+        "pending_operations": [
+          {
+            "operation_id": "00000000-0000-4000-8000-000000000003",
+            "idempotency_key": "offline:branch-2:2026-10-16T12:00:00Z:2026-10-17T12:00:00Z",
+            "source_id": "return-interval-1",
+            "kind": "offline_settlement",
+            "branch_id": "00000000-0000-4000-8000-000000000002",
+            "expected_revision": 0,
+            "economic_config": {
+              "version": "tideglass-economy-1.0.0",
+              "sha256": "9e5b9bcfcfc7a68d4eaeebc97e8d40cd42d04532fa59f514c7483efee885d2b6"
+            },
+            "offline_interval": null
+          }
+        ],
+        "applied_operation_ids": [],
+        "commerce_cache": {
+          "trust": "display_cache_only",
+          "authority": "independent_verifier_required",
+          "snapshot_reference": null,
+          "entries": []
+        }
+      },
+      "error_contains": "requires an interval"
+    },
+    {
+      "id": "offline_replays_settled_time",
+      "valid": false,
+      "envelope": {
+        "format": "tideglass-save-envelope",
+        "schema_version": 1,
+        "save_id": "00000000-0000-4000-8000-000000000001",
+        "branch_id": "00000000-0000-4000-8000-000000000002",
+        "revision": 0,
+        "parent": null,
+        "written_at_utc": "2026-10-16T12:00:00Z",
+        "settled_through_utc": "2026-10-16T12:00:00Z",
+        "economic_config": {
+          "version": "tideglass-economy-1.0.0",
+          "sha256": "9e5b9bcfcfc7a68d4eaeebc97e8d40cd42d04532fa59f514c7483efee885d2b6"
+        },
+        "gameplay_state": {
+          "schema_version": 1,
+          "payload": {}
+        },
+        "merge_policy": "select_one_progression_branch",
+        "preserved_branches": [],
+        "pending_operations": [
+          {
+            "operation_id": "00000000-0000-4000-8000-000000000003",
+            "idempotency_key": "offline:branch-2:2026-10-16T12:00:00Z:2026-10-17T12:00:00Z",
+            "source_id": "return-interval-1",
+            "kind": "offline_settlement",
+            "branch_id": "00000000-0000-4000-8000-000000000002",
+            "expected_revision": 0,
+            "economic_config": {
+              "version": "tideglass-economy-1.0.0",
+              "sha256": "9e5b9bcfcfc7a68d4eaeebc97e8d40cd42d04532fa59f514c7483efee885d2b6"
+            },
+            "offline_interval": {
+              "start_utc": "2026-10-15T12:00:00Z",
+              "end_utc": "2026-10-17T12:00:00Z"
+            }
+          }
+        ],
+        "applied_operation_ids": [],
+        "commerce_cache": {
+          "trust": "display_cache_only",
+          "authority": "independent_verifier_required",
+          "snapshot_reference": null,
+          "entries": []
+        }
+      },
+      "error_contains": "begin at settled_through"
+    },
+    {
+      "id": "offline_zero_duration",
+      "valid": false,
+      "envelope": {
+        "format": "tideglass-save-envelope",
+        "schema_version": 1,
+        "save_id": "00000000-0000-4000-8000-000000000001",
+        "branch_id": "00000000-0000-4000-8000-000000000002",
+        "revision": 0,
+        "parent": null,
+        "written_at_utc": "2026-10-16T12:00:00Z",
+        "settled_through_utc": "2026-10-16T12:00:00Z",
+        "economic_config": {
+          "version": "tideglass-economy-1.0.0",
+          "sha256": "9e5b9bcfcfc7a68d4eaeebc97e8d40cd42d04532fa59f514c7483efee885d2b6"
+        },
+        "gameplay_state": {
+          "schema_version": 1,
+          "payload": {}
+        },
+        "merge_policy": "select_one_progression_branch",
+        "preserved_branches": [],
+        "pending_operations": [
+          {
+            "operation_id": "00000000-0000-4000-8000-000000000003",
+            "idempotency_key": "offline:branch-2:2026-10-16T12:00:00Z:2026-10-17T12:00:00Z",
+            "source_id": "return-interval-1",
+            "kind": "offline_settlement",
+            "branch_id": "00000000-0000-4000-8000-000000000002",
+            "expected_revision": 0,
+            "economic_config": {
+              "version": "tideglass-economy-1.0.0",
+              "sha256": "9e5b9bcfcfc7a68d4eaeebc97e8d40cd42d04532fa59f514c7483efee885d2b6"
+            },
+            "offline_interval": {
+              "start_utc": "2026-10-16T12:00:00Z",
+              "end_utc": "2026-10-16T12:00:00Z"
+            }
+          }
+        ],
+        "applied_operation_ids": [],
+        "commerce_cache": {
+          "trust": "display_cache_only",
+          "authority": "independent_verifier_required",
+          "snapshot_reference": null,
+          "entries": []
+        }
+      },
+      "error_contains": "strictly after start"
+    },
+    {
+      "id": "offline_negative_duration",
+      "valid": false,
+      "envelope": {
+        "format": "tideglass-save-envelope",
+        "schema_version": 1,
+        "save_id": "00000000-0000-4000-8000-000000000001",
+        "branch_id": "00000000-0000-4000-8000-000000000002",
+        "revision": 0,
+        "parent": null,
+        "written_at_utc": "2026-10-16T12:00:00Z",
+        "settled_through_utc": "2026-10-16T12:00:00Z",
+        "economic_config": {
+          "version": "tideglass-economy-1.0.0",
+          "sha256": "9e5b9bcfcfc7a68d4eaeebc97e8d40cd42d04532fa59f514c7483efee885d2b6"
+        },
+        "gameplay_state": {
+          "schema_version": 1,
+          "payload": {}
+        },
+        "merge_policy": "select_one_progression_branch",
+        "preserved_branches": [],
+        "pending_operations": [
+          {
+            "operation_id": "00000000-0000-4000-8000-000000000003",
+            "idempotency_key": "offline:branch-2:2026-10-16T12:00:00Z:2026-10-17T12:00:00Z",
+            "source_id": "return-interval-1",
+            "kind": "offline_settlement",
+            "branch_id": "00000000-0000-4000-8000-000000000002",
+            "expected_revision": 0,
+            "economic_config": {
+              "version": "tideglass-economy-1.0.0",
+              "sha256": "9e5b9bcfcfc7a68d4eaeebc97e8d40cd42d04532fa59f514c7483efee885d2b6"
+            },
+            "offline_interval": {
+              "start_utc": "2026-10-16T12:00:00Z",
+              "end_utc": "2026-10-15T12:00:00Z"
+            }
+          }
+        ],
+        "applied_operation_ids": [],
+        "commerce_cache": {
+          "trust": "display_cache_only",
+          "authority": "independent_verifier_required",
+          "snapshot_reference": null,
+          "entries": []
+        }
+      },
+      "error_contains": "strictly after start"
+    },
+    {
+      "id": "nonsettlement_has_offline_interval",
+      "valid": false,
+      "envelope": {
+        "format": "tideglass-save-envelope",
+        "schema_version": 1,
+        "save_id": "00000000-0000-4000-8000-000000000001",
+        "branch_id": "00000000-0000-4000-8000-000000000002",
+        "revision": 0,
+        "parent": null,
+        "written_at_utc": "2026-10-16T12:00:00Z",
+        "settled_through_utc": "2026-10-16T12:00:00Z",
+        "economic_config": {
+          "version": "tideglass-economy-1.0.0",
+          "sha256": "9e5b9bcfcfc7a68d4eaeebc97e8d40cd42d04532fa59f514c7483efee885d2b6"
+        },
+        "gameplay_state": {
+          "schema_version": 1,
+          "payload": {}
+        },
+        "merge_policy": "select_one_progression_branch",
+        "preserved_branches": [],
+        "pending_operations": [
+          {
+            "operation_id": "00000000-0000-4000-8000-000000000003",
+            "idempotency_key": "offline:branch-2:2026-10-16T12:00:00Z:2026-10-17T12:00:00Z",
+            "source_id": "return-interval-1",
+            "kind": "contract_reward",
+            "branch_id": "00000000-0000-4000-8000-000000000002",
+            "expected_revision": 0,
+            "economic_config": {
+              "version": "tideglass-economy-1.0.0",
+              "sha256": "9e5b9bcfcfc7a68d4eaeebc97e8d40cd42d04532fa59f514c7483efee885d2b6"
+            },
+            "offline_interval": {
+              "start_utc": "2026-10-16T12:00:00Z",
+              "end_utc": "2026-10-17T12:00:00Z"
+            }
+          }
+        ],
+        "applied_operation_ids": [],
+        "commerce_cache": {
+          "trust": "display_cache_only",
+          "authority": "independent_verifier_required",
+          "snapshot_reference": null,
+          "entries": []
+        }
+      },
+      "error_contains": "only offline settlement"
+    },
+    {
+      "id": "save_attempts_purchase_grant",
+      "valid": false,
+      "envelope": {
+        "format": "tideglass-save-envelope",
+        "schema_version": 1,
+        "save_id": "00000000-0000-4000-8000-000000000001",
+        "branch_id": "00000000-0000-4000-8000-000000000002",
+        "revision": 0,
+        "parent": null,
+        "written_at_utc": "2026-10-16T12:00:00Z",
+        "settled_through_utc": "2026-10-16T12:00:00Z",
+        "economic_config": {
+          "version": "tideglass-economy-1.0.0",
+          "sha256": "9e5b9bcfcfc7a68d4eaeebc97e8d40cd42d04532fa59f514c7483efee885d2b6"
+        },
+        "gameplay_state": {
+          "schema_version": 1,
+          "payload": {}
+        },
+        "merge_policy": "select_one_progression_branch",
+        "preserved_branches": [],
+        "pending_operations": [
+          {
+            "operation_id": "00000000-0000-4000-8000-000000000003",
+            "idempotency_key": "offline:branch-2:2026-10-16T12:00:00Z:2026-10-17T12:00:00Z",
+            "source_id": "return-interval-1",
+            "kind": "purchase_grant",
+            "branch_id": "00000000-0000-4000-8000-000000000002",
+            "expected_revision": 0,
+            "economic_config": {
+              "version": "tideglass-economy-1.0.0",
+              "sha256": "9e5b9bcfcfc7a68d4eaeebc97e8d40cd42d04532fa59f514c7483efee885d2b6"
+            },
+            "offline_interval": {
+              "start_utc": "2026-10-16T12:00:00Z",
+              "end_utc": "2026-10-17T12:00:00Z"
+            }
+          }
+        ],
+        "applied_operation_ids": [],
+        "commerce_cache": {
+          "trust": "display_cache_only",
+          "authority": "independent_verifier_required",
+          "snapshot_reference": null,
+          "entries": []
+        }
+      },
+      "error_contains": "outside enum"
+    },
+    {
+      "id": "multiple_pending_offline_settlements",
+      "valid": false,
+      "envelope": {
+        "format": "tideglass-save-envelope",
+        "schema_version": 1,
+        "save_id": "00000000-0000-4000-8000-000000000001",
+        "branch_id": "00000000-0000-4000-8000-000000000002",
+        "revision": 0,
+        "parent": null,
+        "written_at_utc": "2026-10-16T12:00:00Z",
+        "settled_through_utc": "2026-10-16T12:00:00Z",
+        "economic_config": {
+          "version": "tideglass-economy-1.0.0",
+          "sha256": "9e5b9bcfcfc7a68d4eaeebc97e8d40cd42d04532fa59f514c7483efee885d2b6"
+        },
+        "gameplay_state": {
+          "schema_version": 1,
+          "payload": {}
+        },
+        "merge_policy": "select_one_progression_branch",
+        "preserved_branches": [],
+        "pending_operations": [
+          {
+            "operation_id": "00000000-0000-4000-8000-000000000003",
+            "idempotency_key": "offline:branch-2:2026-10-16T12:00:00Z:2026-10-17T12:00:00Z",
+            "source_id": "return-interval-1",
+            "kind": "offline_settlement",
+            "branch_id": "00000000-0000-4000-8000-000000000002",
+            "expected_revision": 0,
+            "economic_config": {
+              "version": "tideglass-economy-1.0.0",
+              "sha256": "9e5b9bcfcfc7a68d4eaeebc97e8d40cd42d04532fa59f514c7483efee885d2b6"
+            },
+            "offline_interval": {
+              "start_utc": "2026-10-16T12:00:00Z",
+              "end_utc": "2026-10-17T12:00:00Z"
+            }
+          },
+          {
+            "operation_id": "00000000-0000-4000-8000-000000000007",
+            "idempotency_key": "other-interval",
+            "source_id": "other-interval",
+            "kind": "offline_settlement",
+            "branch_id": "00000000-0000-4000-8000-000000000002",
+            "expected_revision": 0,
+            "economic_config": {
+              "version": "tideglass-economy-1.0.0",
+              "sha256": "9e5b9bcfcfc7a68d4eaeebc97e8d40cd42d04532fa59f514c7483efee885d2b6"
+            },
+            "offline_interval": {
+              "start_utc": "2026-10-16T12:00:00Z",
+              "end_utc": "2026-10-17T12:00:00Z"
+            }
+          }
+        ],
+        "applied_operation_ids": [],
+        "commerce_cache": {
+          "trust": "display_cache_only",
+          "authority": "independent_verifier_required",
+          "snapshot_reference": null,
+          "entries": []
+        }
+      },
+      "error_contains": "only one offline settlement"
+    },
+    {
+      "id": "fractional_utc_cursor",
+      "valid": true,
+      "envelope": {
+        "format": "tideglass-save-envelope",
+        "schema_version": 1,
+        "save_id": "00000000-0000-4000-8000-000000000001",
+        "branch_id": "00000000-0000-4000-8000-000000000002",
+        "revision": 0,
+        "parent": null,
+        "written_at_utc": "2026-10-16T12:00:00Z",
+        "settled_through_utc": "2026-10-16T12:00:00.123456Z",
+        "economic_config": {
+          "version": "tideglass-economy-1.0.0",
+          "sha256": "9e5b9bcfcfc7a68d4eaeebc97e8d40cd42d04532fa59f514c7483efee885d2b6"
+        },
+        "gameplay_state": {
+          "schema_version": 1,
+          "payload": {}
+        },
+        "merge_policy": "select_one_progression_branch",
+        "preserved_branches": [],
+        "pending_operations": [],
+        "applied_operation_ids": [],
+        "commerce_cache": {
+          "trust": "display_cache_only",
+          "authority": "independent_verifier_required",
+          "snapshot_reference": null,
+          "entries": []
+        }
+      }
+    },
+    {
+      "id": "utc_whole_and_fraction_mixed",
+      "valid": true,
+      "envelope": {
+        "format": "tideglass-save-envelope",
+        "schema_version": 1,
+        "save_id": "00000000-0000-4000-8000-000000000001",
+        "branch_id": "00000000-0000-4000-8000-000000000002",
+        "revision": 0,
+        "parent": null,
+        "written_at_utc": "2026-10-16T12:00:00Z",
+        "settled_through_utc": "2026-10-16T12:00:00.1Z",
+        "economic_config": {
+          "version": "tideglass-economy-1.0.0",
+          "sha256": "9e5b9bcfcfc7a68d4eaeebc97e8d40cd42d04532fa59f514c7483efee885d2b6"
+        },
+        "gameplay_state": {
+          "schema_version": 1,
+          "payload": {}
+        },
+        "merge_policy": "select_one_progression_branch",
+        "preserved_branches": [],
+        "pending_operations": [],
+        "applied_operation_ids": [],
+        "commerce_cache": {
+          "trust": "display_cache_only",
+          "authority": "independent_verifier_required",
+          "snapshot_reference": null,
+          "entries": []
+        }
+      }
+    },
+    {
+      "id": "too_many_fractional_digits",
+      "valid": false,
+      "envelope": {
+        "format": "tideglass-save-envelope",
+        "schema_version": 1,
+        "save_id": "00000000-0000-4000-8000-000000000001",
+        "branch_id": "00000000-0000-4000-8000-000000000002",
+        "revision": 0,
+        "parent": null,
+        "written_at_utc": "2026-10-16T12:00:00Z",
+        "settled_through_utc": "2026-10-16T12:00:00.1234567Z",
+        "economic_config": {
+          "version": "tideglass-economy-1.0.0",
+          "sha256": "9e5b9bcfcfc7a68d4eaeebc97e8d40cd42d04532fa59f514c7483efee885d2b6"
+        },
+        "gameplay_state": {
+          "schema_version": 1,
+          "payload": {}
+        },
+        "merge_policy": "select_one_progression_branch",
+        "preserved_branches": [],
+        "pending_operations": [],
+        "applied_operation_ids": [],
+        "commerce_cache": {
+          "trust": "display_cache_only",
+          "authority": "independent_verifier_required",
+          "snapshot_reference": null,
+          "entries": []
+        }
+      }
+    },
+    {
+      "id": "invalid_calendar_date",
+      "valid": false,
+      "envelope": {
+        "format": "tideglass-save-envelope",
+        "schema_version": 1,
+        "save_id": "00000000-0000-4000-8000-000000000001",
+        "branch_id": "00000000-0000-4000-8000-000000000002",
+        "revision": 0,
+        "parent": null,
+        "written_at_utc": "2026-10-16T12:00:00Z",
+        "settled_through_utc": "2026-02-30T12:00:00Z",
+        "economic_config": {
+          "version": "tideglass-economy-1.0.0",
+          "sha256": "9e5b9bcfcfc7a68d4eaeebc97e8d40cd42d04532fa59f514c7483efee885d2b6"
+        },
+        "gameplay_state": {
+          "schema_version": 1,
+          "payload": {}
+        },
+        "merge_policy": "select_one_progression_branch",
+        "preserved_branches": [],
+        "pending_operations": [],
+        "applied_operation_ids": [],
+        "commerce_cache": {
+          "trust": "display_cache_only",
+          "authority": "independent_verifier_required",
+          "snapshot_reference": null,
+          "entries": []
+        }
+      }
+    }
+  ]
+}

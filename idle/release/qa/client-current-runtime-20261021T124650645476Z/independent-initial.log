@@ -1,0 +1,74 @@
+test_actual_identity_uses_selected_app_container_and_android_cmdline (__main__.IndependentCurrentRuntimeReview.test_actual_identity_uses_selected_app_container_and_android_cmdline) ... ok
+test_android_file_symlink_must_not_copy_outside_fixture (__main__.IndependentCurrentRuntimeReview.test_android_file_symlink_must_not_copy_outside_fixture) ... FAIL
+test_android_parent_symlink_must_not_copy_outside_fixture (__main__.IndependentCurrentRuntimeReview.test_android_parent_symlink_must_not_copy_outside_fixture) ... FAIL
+test_android_regular_fixture_read_positive_control (__main__.IndependentCurrentRuntimeReview.test_android_regular_fixture_read_positive_control) ... ok
+test_buffered_native_error_after_prefix_must_not_qualify_interruption (__main__.IndependentCurrentRuntimeReview.test_buffered_native_error_after_prefix_must_not_qualify_interruption) ... 
+  test_buffered_native_error_after_prefix_must_not_qualify_interruption (__main__.IndependentCurrentRuntimeReview.test_buffered_native_error_after_prefix_must_not_qualify_interruption) (failure='E/flutter ( 801): [ERROR:flutter/runtime/dart_vm_initializer.cc(40)] Unhandled Exception: buffered native failure\n') ... FAIL
+  test_buffered_native_error_after_prefix_must_not_qualify_interruption (__main__.IndependentCurrentRuntimeReview.test_buffered_native_error_after_prefix_must_not_qualify_interruption) (failure='flutter: EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK\n') ... FAIL
+  test_buffered_native_error_after_prefix_must_not_qualify_interruption (__main__.IndependentCurrentRuntimeReview.test_buffered_native_error_after_prefix_must_not_qualify_interruption) (failure='flutter: 00:03 +0 -1: teardown [E]\n') ... FAIL
+test_default_absence_and_full_erasure_require_actual_sidecars (__main__.IndependentCurrentRuntimeReview.test_default_absence_and_full_erasure_require_actual_sidecars) ... ok
+test_expected_post_kill_driver_disconnect_is_allowed_positive_control (__main__.IndependentCurrentRuntimeReview.test_expected_post_kill_driver_disconnect_is_allowed_positive_control) ... ok
+test_ios_fixture_symlink_rejected_positive_control (__main__.IndependentCurrentRuntimeReview.test_ios_fixture_symlink_rejected_positive_control) ... ok
+test_native_study_decodes_and_rejects_raw_chain_or_eligibility_changes (__main__.IndependentCurrentRuntimeReview.test_native_study_decodes_and_rejects_raw_chain_or_eligibility_changes) ... ok
+test_pre_kill_native_failures_rejected_positive_control (__main__.IndependentCurrentRuntimeReview.test_pre_kill_native_failures_rejected_positive_control) ... ok
+test_predecessor_same_candidate_linkage_and_raw_pin_rejection (__main__.IndependentCurrentRuntimeReview.test_predecessor_same_candidate_linkage_and_raw_pin_rejection) ... ok
+test_prefix_tamper_and_success_after_kill_are_rejected (__main__.IndependentCurrentRuntimeReview.test_prefix_tamper_and_success_after_kill_are_rejected) ... ok
+test_protected_device_and_bad_pid_reject_without_external_execution (__main__.IndependentCurrentRuntimeReview.test_protected_device_and_bad_pid_reject_without_external_execution) ... ok
+test_recovery_payload_rejects_reused_process_or_wrong_checkpoint (__main__.IndependentCurrentRuntimeReview.test_recovery_payload_rejects_reused_process_or_wrong_checkpoint) ... ok
+test_study_rejects_foreign_candidate_and_real_participant_data (__main__.IndependentCurrentRuntimeReview.test_study_rejects_foreign_candidate_and_real_participant_data) ... ok
+
+======================================================================
+FAIL: test_android_file_symlink_must_not_copy_outside_fixture (__main__.IndependentCurrentRuntimeReview.test_android_file_symlink_must_not_copy_outside_fixture)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/csys/Desktop/ibicot/idle/game/qa/review_current_runtime_boundaries.py", line 230, in test_android_file_symlink_must_not_copy_outside_fixture
+    with self.assertRaises(ValueError): host.read_fixture(native, 'checkpoint.json')
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_android_parent_symlink_must_not_copy_outside_fixture (__main__.IndependentCurrentRuntimeReview.test_android_parent_symlink_must_not_copy_outside_fixture)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/csys/Desktop/ibicot/idle/game/qa/review_current_runtime_boundaries.py", line 239, in test_android_parent_symlink_must_not_copy_outside_fixture
+    with self.assertRaises(ValueError): host.read_fixture(native, 'checkpoint.json')
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_buffered_native_error_after_prefix_must_not_qualify_interruption (__main__.IndependentCurrentRuntimeReview.test_buffered_native_error_after_prefix_must_not_qualify_interruption) (failure='E/flutter ( 801): [ERROR:flutter/runtime/dart_vm_initializer.cc(40)] Unhandled Exception: buffered native failure\n')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/csys/Desktop/ibicot/idle/game/qa/review_current_runtime_boundaries.py", line 136, in test_buffered_native_error_after_prefix_must_not_qualify_interruption
+    self.assertTrue(v.interrupted_errors(prefix + failure, c, marker, ledger),
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                    'Buffered native/framework errors must not be discarded as driver disconnect cleanup.')
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: [] is not true : Buffered native/framework errors must not be discarded as driver disconnect cleanup.
+
+======================================================================
+FAIL: test_buffered_native_error_after_prefix_must_not_qualify_interruption (__main__.IndependentCurrentRuntimeReview.test_buffered_native_error_after_prefix_must_not_qualify_interruption) (failure='flutter: EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK\n')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/csys/Desktop/ibicot/idle/game/qa/review_current_runtime_boundaries.py", line 136, in test_buffered_native_error_after_prefix_must_not_qualify_interruption
+    self.assertTrue(v.interrupted_errors(prefix + failure, c, marker, ledger),
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                    'Buffered native/framework errors must not be discarded as driver disconnect cleanup.')
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: [] is not true : Buffered native/framework errors must not be discarded as driver disconnect cleanup.
+
+======================================================================
+FAIL: test_buffered_native_error_after_prefix_must_not_qualify_interruption (__main__.IndependentCurrentRuntimeReview.test_buffered_native_error_after_prefix_must_not_qualify_interruption) (failure='flutter: 00:03 +0 -1: teardown [E]\n')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/csys/Desktop/ibicot/idle/game/qa/review_current_runtime_boundaries.py", line 136, in test_buffered_native_error_after_prefix_must_not_qualify_interruption
+    self.assertTrue(v.interrupted_errors(prefix + failure, c, marker, ledger),
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                    'Buffered native/framework errors must not be discarded as driver disconnect cleanup.')
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: [] is not true : Buffered native/framework errors must not be discarded as driver disconnect cleanup.
+
+----------------------------------------------------------------------
+Ran 15 tests in 0.019s
+
+FAILED (failures=5)

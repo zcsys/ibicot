@@ -1,0 +1,92 @@
+[
+  {
+    "scenario": "seeded",
+    "command": [
+      "python3",
+      "tool/verify_native.py",
+      ".tooling/build-candidates/20261021T101953.650199Z-152805bf9e26",
+      "--device",
+      "emulator-5556",
+      "--label",
+      "android",
+      "--scenario",
+      "seeded",
+      "--run-id",
+      "final152-oct21-seeded"
+    ],
+    "exit_code": 0,
+    "output": "Native checks for android; evidence: /Users/csys/Desktop/ibicot/idle/release/native-proof/integration-android-20261021T112955.363848Z\nandroid: exit 0\n"
+  },
+  {
+    "scenario": "natural-start",
+    "command": [
+      "python3",
+      "tool/verify_native.py",
+      ".tooling/build-candidates/20261021T101953.650199Z-152805bf9e26",
+      "--device",
+      "emulator-5556",
+      "--label",
+      "android",
+      "--scenario",
+      "natural-start",
+      "--run-id",
+      "final152-oct21-natural"
+    ],
+    "exit_code": 0,
+    "output": "Native checks for android; evidence: /Users/csys/Desktop/ibicot/idle/release/native-proof/integration-android-20261021T113420.217143Z\nandroid: exit 0\n"
+  },
+  {
+    "scenario": "natural-reload",
+    "command": [
+      "python3",
+      "tool/verify_native.py",
+      ".tooling/build-candidates/20261021T101953.650199Z-152805bf9e26",
+      "--device",
+      "emulator-5556",
+      "--label",
+      "android",
+      "--scenario",
+      "natural-reload",
+      "--run-id",
+      "final152-oct21-natural"
+    ],
+    "exit_code": 0,
+    "output": "Native checks for android; evidence: /Users/csys/Desktop/ibicot/idle/release/native-proof/integration-android-20261021T113534.725903Z\nandroid: exit 0\n"
+  },
+  {
+    "scenario": "session-start",
+    "command": [
+      "python3",
+      "tool/verify_native.py",
+      ".tooling/build-candidates/20261021T101953.650199Z-152805bf9e26",
+      "--device",
+      "emulator-5556",
+      "--label",
+      "android",
+      "--scenario",
+      "session-start",
+      "--run-id",
+      "final152-oct21-session"
+    ],
+    "exit_code": 0,
+    "output": "Native checks for android; evidence: /Users/csys/Desktop/ibicot/idle/release/native-proof/integration-android-20261021T113615.104431Z\nandroid: exit 0\n"
+  },
+  {
+    "scenario": "session-reload",
+    "command": [
+      "python3",
+      "tool/verify_native.py",
+      ".tooling/build-candidates/20261021T101953.650199Z-152805bf9e26",
+      "--device",
+      "emulator-5556",
+      "--label",
+      "android",
+      "--scenario",
+      "session-reload",
+      "--run-id",
+      "final152-oct21-session"
+    ],
+    "exit_code": 0,
+    "output": "Native checks for android; evidence: /Users/csys/Desktop/ibicot/idle/release/native-proof/integration-android-20261021T113842.803214Z\nandroid: exit 0\n"
+  }
+]

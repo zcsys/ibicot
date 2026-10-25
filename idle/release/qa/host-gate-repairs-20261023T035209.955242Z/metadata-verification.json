@@ -1,0 +1,49 @@
+{
+  "reviewer": "/root/qa_release",
+  "accepted_bounded_metadata_update": true,
+  "original_criteria_dependencies_package_statuses_reviewers_preserved": true,
+  "scope_changes_only": [
+    "S07",
+    "S33"
+  ],
+  "asset_states_unchanged": 164,
+  "program_status_reference_already_existed_before_forward_audit": true,
+  "changes": {
+    "implementation/program.json": {
+      "before": "1ecbf41e7020d92c724ff6e4fcfd72ddb88c5d3ee2c983766f318f1dc9ece275",
+      "after": "9ce2000d35b4a233014a865b89ba15bc1248c8860b4148f4e1f0471dcbb930e5",
+      "exact_changed_paths": [
+        "/items/45/evidence",
+        "/items/45/evidence_note",
+        "/items/61/evidence_note",
+        "/program_acceptance_evidence"
+      ]
+    },
+    "implementation/scope_requirements.json": {
+      "before": "4a59921b0af46795c2a1e2df219b30eec1cc2f7a60e8a75a151c0e23d0d16338",
+      "after": "ee8e846f2d4436bb56b4e9c58c271d41530c6cfc08cd87cc80b0efcd0ae57692",
+      "exact_changed_paths": [
+        "/requirements/6/delivery_status",
+        "/requirements/6/evidence",
+        "/requirements/6/verification_note",
+        "/requirements/32/delivery_status",
+        "/requirements/32/evidence",
+        "/requirements/32/verification_note"
+      ]
+    },
+    "implementation/content/launch_manifest.json": {
+      "before": "782ad112c6de5a155ce714781fad5e5af609a5b1a785db67c929baccb384ed9d",
+      "after": "7599fe529f0a0d748f2e7968eb3848ca40eaba1cd5dd91f5ff7f0d4fbd8b7bc0",
+      "exact_changed_paths": [
+        "/scope_policy"
+      ]
+    },
+    "implementation/art/program_status_reference.json": {
+      "before": "83a4a9185dbc42353b8df30369265feaad2173e846101884d7dd53da395f65e1",
+      "after": "75ce0592573b8127bcffb1b25a68d83c38eaa8cb87614cb016ac4929df14a52d",
+      "exact_changed_paths": [
+        "/program_sha256"
+      ]
+    }
+  }
+}

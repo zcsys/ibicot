@@ -1,0 +1,47 @@
+{
+  "verification_id": "current-runtime-ios-phone-20261023T075803847485Z",
+  "candidate_fingerprint": "3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59",
+  "harness_sha256": "997e7510aaef0dcebfa6505fc0dcde7d136a25e8a76abea78ede8602b0a4fef9",
+  "scenario": "runtime-study-storage-withdraw",
+  "run_id": "v3b00-ios-phone-withdraw-barrier",
+  "device_label": "ios-phone",
+  "platform": "ios",
+  "os_version": "Version 26.3.1 (Build 23D8133)",
+  "process_id": 12282,
+  "fixture_kind": "INTERNAL SYNTHETIC QUALIFICATION ONLY",
+  "checks": [
+    "Production consented channel records actual PID/app/build/UTC context atomically with its logical app_start.",
+    "Queued production interaction finishes through a healthy already-interactive serialized no-op before synthetic guard injection.",
+    "Synthetic native CAS refusal stops visibly; confirmed UI withdrawal erases registry/events/eligibility and persists stop marker."
+  ],
+  "completed": true,
+  "limitations": [
+    "No real participant, consent, paid transaction or receiving-app delivery.",
+    "Process termination is not physical power loss or a lifecycle callback.",
+    "Injected predecessor/rate/clock/bounds are qualification fixtures only.",
+    "Consented production process observations do not prove release AOT fatal-report matching or a crash-free rate."
+  ],
+  "shared_cache_preflight": "Absent/empty before bootstrap; optional production maintenance may create an empty shared cache.",
+  "fixture_directory": "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Data/Application/AA1BBF72-C959-4EBB-8A6F-918D6900511E/Library/Application Support/native-current-verification/ios-phone-v3b00-ios-phone-withdraw-barrier/study",
+  "native_study_samples": 1,
+  "native_study_process_context": {
+    "application_build": "1",
+    "application_id": "dev.tideglass.game",
+    "application_version": "0.1.0",
+    "native_pid": 12282,
+    "observed_start_utc_ms": 1792742337815,
+    "platform": "ios",
+    "source": "native_process_observation_v1",
+    "status": "available",
+    "version": 1
+  },
+  "native_study_logical_process_id": "20c309e22d245aaed7ad5e0b31429d5e",
+  "storage_failure_visible": true,
+  "withdrawal_durable": true,
+  "checkpoint_sha256": "8f5b2299bb0426fe218ff940279fa04e2e3435aaf2391e6e132c24562329cad1",
+  "screenshots": [
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/current-runtime-ios-phone-20261023T075803847485Z/ios-phone-runtime-study-storage-withdraw-synthetic-consent.png",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/current-runtime-ios-phone-20261023T075803847485Z/ios-phone-runtime-study-storage-withdraw-storage-failure-visible.png",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/current-runtime-ios-phone-20261023T075803847485Z/ios-phone-runtime-study-storage-withdraw-withdrawn.png"
+  ]
+}

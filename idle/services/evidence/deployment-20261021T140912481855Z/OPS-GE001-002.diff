@@ -1,0 +1,82 @@
+--- d92c/services/docs/DEPLOYMENT_PREPARATION.md
++++ 2173/services/docs/DEPLOYMENT_PREPARATION.md
+@@ -31,7 +31,7 @@
+ 
+ If configured provider/browser features are required, also install the existing exact `services/requirements-providers.lock` into that environment and run the existing provider-environment checker and provider tests. The current author HTTP/TLS serving rehearsal deliberately uses the default disabled-provider factory; it does not qualify real provider credentials or public deletion routing.
+ 
+-Copy the loopback example, replace the absolute directory, make it 0700 and the config 0600, then run `--check`. For TLS, use mode `tls`, an explicit IPv4 host, port ≥1024 and the two certificate fields. Certificate acquisition, public DNS and a public operator are not provided. HTTPS hostname/chain validity must be verified from the client side before activation. The rehearsal uses a one-day synthetic self-signed certificate trusted only by its isolated client; it never disables certificate checking.
++Copy the loopback example, replace the absolute directory, make it 0700 and the config 0600, then run `--check`. For TLS, use mode `tls`, an explicit IPv4 string host (numeric JSON values are rejected), port ≥1024 and the two certificate fields. Certificate acquisition, public DNS and a public operator are not provided. HTTPS hostname/chain validity must be verified from the client side before activation. The rehearsal uses a one-day synthetic self-signed certificate trusted only by its isolated client; it never disables certificate checking.
+ 
+ The Linux systemd examples are **uninstalled templates**, with 512 MiB/32-task/CPU bounds for serving and 256 MiB/8-task/55-second runtime for the one-shot operator. Provision paths and OS identity, configure retained-journal limits and verify the target host's cgroup/systemd enforcement. No Linux cgroup limit was measured on this macOS author host. A layer-4 TLS pass-through edge may precede this direct-TLS profile. An HTTP reverse proxy or TLS terminator requires a separately reviewed source-IP/scheme policy; do not enable blanket forwarded-header trust. Confirm edge connection/rate controls and certificate renewal under the real hosting plan.
+ 
+@@ -57,7 +57,7 @@
+ 
+ Recipient/environment IDs are nonidentifying operator-chosen labels. There may be one or two unique configured recipients. Credentials are 24–256 ASCII token characters in owner-only files, never arguments/stdout/logs. URLs cannot carry userinfo, query parameters or fragments. Production requires HTTPS with normal certificate validation. Tests alone use `allow_loopback_http:true` and literal 127.0.0.1. The internal child protocol also validates the enabled private configuration and its exact digest; it is not a bypass entrypoint.
+ 
+-Each POST contains format `tideglass-operator-alert-v1`, environment, generated UTC time, severity, predefined categorical `{check,status,code}` signals, a SHA-256 `delivery_id`, and `release_gate_verified:false`. Raw report details, counts, account IDs, file paths and arbitrary future codes are omitted; unknown codes become `unrecognized_health_code`. `Idempotency-Key` equals the delivery ID. A receiver must authenticate the bearer, durably deduplicate by delivery ID and acknowledge only after durable acceptance with HTTP 200 or 202, JSON content type, and exactly:
++Each POST contains format `tideglass-operator-alert-v1`, environment, generated UTC time, severity, predefined categorical `{check,status,code}` signals, a SHA-256 `delivery_id`, and `release_gate_verified:false`. Overall severity must equal the signal aggregate in the order critical > unknown > warning > OK; contradictory reports are rejected. Raw report details, counts, account IDs, file paths and arbitrary future codes are omitted; unknown codes become `unrecognized_health_code`. `Idempotency-Key` equals the delivery ID. A receiver must authenticate the bearer, durably deduplicate by delivery ID and acknowledge only after durable acceptance with HTTP 200 or 202, JSON content type, and exactly:
+ 
+ ```json
+ {"accepted":true,"delivery_id":"the received 64-character SHA-256 identity"}
+--- d92c/services/tideglass_service/alert_transport.py
++++ 2173/services/tideglass_service/alert_transport.py
+@@ -86,7 +86,10 @@
+         code = signal.get('code')
+         filtered.append({'check': signal['check'], 'status': signal['status'],
+                          'code': code if isinstance(code, str) and code in CODES else 'unrecognized_health_code'})
+-    if (report['status'] == 'ok') != (not filtered):
++    severities = {signal['status'] for signal in filtered}
++    aggregate = next((value for value in ('critical', 'unknown', 'warning')
++                      if value in severities), 'ok')
++    if report['status'] != aggregate:
+         raise ValueError('Health status contradicts signals.')
+     body = {'format': 'tideglass-operator-alert-v1', 'environment': environment,
+             'generated_at': report['generated_at'], 'status': report['status'],
+--- d92c/services/tideglass_service/deployment.py
++++ 2173/services/tideglass_service/deployment.py
+@@ -20,6 +20,8 @@
+                    'timeout_seconds', 'backlog', 'max_requests'},
+            {'service_config', 'certificate_file', 'private_key_file'})
+     integer(value['version'], 1, 1)
++    if not isinstance(value['host'], str):
++        raise ValueError('Explicit IPv4 string required.')
+     host = ipaddress.ip_address(value['host'])
+     if host.version != 4:
+         raise ValueError('This deployment profile supports explicit IPv4 binds only.')
+--- d92c/tests/services/operations/test_operating_delivery.py
++++ 2173/tests/services/operations/test_operating_delivery.py
+@@ -113,6 +113,34 @@
+     def test_inconsistent_report_and_unbounded_signals_refused(self):
+         for report in [dict(REPORT,status='ok'),dict(REPORT,signals=[]),dict(REPORT,signals=REPORT['signals']*17),dict(REPORT,generated_at=True)]:
+             with self.assertRaises(ValueError): envelope(report,'synthetic-local')
++    def test_overall_severity_must_match_signal_aggregate(self):
++        from itertools import combinations
++        ordered=('critical','unknown','warning')
++        for count in range(1,4):
++            for severities in combinations(ordered,count):
++                signals=[{'check':'database','status':status,'code':'database_missing'} for status in severities]
++                for status in (*ordered,'ok'):
++                    report=dict(REPORT,status=status,signals=signals)
++                    with self.subTest(signals=severities,overall=status):
++                        if status==severities[0]:
++                            self.assertEqual(envelope(report,'synthetic-local')['status'],status)
++                        else:
++                            with self.assertRaises(ValueError):envelope(report,'synthetic-local')
++    def test_server_host_rejects_numeric_coercion_and_keeps_literal_bind(self):
++        for host in (2130706433,2130706433.0,True,None,['127.0.0.1']):
++            with self.subTest(host=host),self.assertRaises(ValueError):
++                deployment_config(self.profile(host=host))
++        value=deployment_config(self.profile(host='127.0.0.1'))
++        self.assertEqual(settings(value)['bind'],'127.0.0.1:8765')
++        self.assertFalse((self.folder/'database').exists())
++    def test_downgraded_health_is_replaced_with_critical_operator_failure(self):
++        report=dict(REPORT,status='warning',exit_code=1)
++        child=subprocess.CompletedProcess([],1,json.dumps(report).encode(),b'')
++        with patch('services.tideglass_service.operator_cycle.subprocess.run',return_value=child),patch('services.tideglass_service.operator_cycle.deliver',return_value={'status':'disabled'}) as sender:
++            result=run(self.folder/'missing',lock_file=self.folder/'cycle.lock')
++        self.assertEqual((result['health_status'],result['exit_code']),('critical',2))
++        self.assertEqual(result['health_failure_code'],'health_command_failed')
++        self.assertEqual(sender.call_args.args[0]['signals'],[{'check':'operator','status':'critical','code':'health_command_failed'}])
+     def test_private_child_protocol_cannot_bypass_disabled_config(self):
+         value={'version':1,'enabled':False};path=self.private_json(value)
+         import hashlib

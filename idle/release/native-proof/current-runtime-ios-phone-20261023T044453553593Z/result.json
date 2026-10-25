@@ -1,0 +1,40 @@
+{
+  "verification_id": "current-runtime-ios-phone-20261023T044453553593Z",
+  "candidate_fingerprint": "3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59",
+  "harness_sha256": "102be09eb8043ce9bb496156d9f37b1834c3084ddf58fef073e7c25cdc3c55d5",
+  "scenario": "runtime-study-storage-withdraw",
+  "run_id": "v3b00-ios-phone-withdraw",
+  "device_label": "ios-phone",
+  "platform": "ios",
+  "os_version": "Version 26.3.1 (Build 23D8133)",
+  "process_id": 79141,
+  "fixture_kind": "INTERNAL SYNTHETIC QUALIFICATION ONLY",
+  "checks": [
+    "Production consented channel records actual PID/app/build/UTC context atomically with its logical app_start."
+  ],
+  "completed": false,
+  "limitations": [
+    "No real participant, consent, paid transaction or receiving-app delivery.",
+    "Process termination is not physical power loss or a lifecycle callback.",
+    "Injected predecessor/rate/clock/bounds are qualification fixtures only.",
+    "Consented production process observations do not prove release AOT fatal-report matching or a crash-free rate."
+  ],
+  "shared_cache_preflight": "Absent/empty before bootstrap; optional production maintenance may create an empty shared cache.",
+  "fixture_directory": "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Data/Application/6EE7A222-B482-4A63-93D4-79499B8C3B7F/Library/Application Support/native-current-verification/ios-phone-v3b00-ios-phone-withdraw/study",
+  "native_study_samples": 1,
+  "native_study_process_context": {
+    "application_build": "1",
+    "application_id": "dev.tideglass.game",
+    "application_version": "0.1.0",
+    "native_pid": 79141,
+    "observed_start_utc_ms": 1792730739391,
+    "platform": "ios",
+    "source": "native_process_observation_v1",
+    "status": "available",
+    "version": 1
+  },
+  "native_study_logical_process_id": "35dc939ff1e3df3cbb09aa347aa19b87",
+  "screenshots": [
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/current-runtime-ios-phone-20261023T044453553593Z/ios-phone-runtime-study-storage-withdraw-synthetic-consent.png"
+  ]
+}

@@ -1,0 +1,31 @@
+[
+  {
+    "command": [
+      "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "shell",
+      "am",
+      "force-stop",
+      "dev.tideglass.game"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": "",
+    "utc": "2026-10-23T05:17:37.977749+00:00"
+  },
+  {
+    "command": [
+      "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "shell",
+      "pidof",
+      "dev.tideglass.game"
+    ],
+    "exit_code": 1,
+    "stdout": "",
+    "stderr": "",
+    "utc": "2026-10-23T05:17:38.196794+00:00"
+  }
+]

@@ -1,0 +1,14 @@
+release/native-proof/integration-android-20261021T114929.560297Z/review-exact-frames.swift:15:29: warning: 'copyCGImage(at:actualTime:)' was deprecated in macOS 15.0: Use generateCGImageAsynchronouslyForTime:completionHandler: instead [#DeprecatedDeclaration]
+13 | for second in [1, 6, 11, 17, 23] {
+14 |   var actual = CMTime.zero
+15 |   let frame = try generator.copyCGImage(at: CMTime(seconds: Double(second), preferredTimescale: 600), actualTime: &actual)
+   |                             `- warning: 'copyCGImage(at:actualTime:)' was deprecated in macOS 15.0: Use generateCGImageAsynchronouslyForTime:completionHandler: instead [#DeprecatedDeclaration]
+16 |   let target = output.appendingPathComponent("frame-\(second)s.png")
+17 |   let dest = CGImageDestinationCreateWithURL(target as CFURL, UTType.png.identifier as CFString, 1, nil)!
+
+[#DeprecatedDeclaration]: <https://docs.swift.org/compiler/documentation/diagnostics/deprecated-declaration>
+1: actual 0.0 seconds, 1080x2400
+6: actual 0.0 seconds, 1080x2400
+11: actual 0.0 seconds, 1080x2400
+17: actual 12.964322222222222 seconds, 1080x2400
+23: actual 17.223211111111112 seconds, 1080x2400

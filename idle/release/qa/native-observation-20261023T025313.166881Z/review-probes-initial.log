@@ -1,0 +1,80 @@
+test_existing_success_control (__main__.ReviewProbes.test_existing_success_control) ... ok
+test_fixture_leaf_swapped_to_symlink_before_open_is_rejected (__main__.ReviewProbes.test_fixture_leaf_swapped_to_symlink_before_open_is_rejected) ... FAIL
+test_fixture_root_swapped_after_validation_is_rejected (__main__.ReviewProbes.test_fixture_root_swapped_after_validation_is_rejected) ... FAIL
+test_hook_changes_are_exact_and_no_default_define (__main__.ReviewProbes.test_hook_changes_are_exact_and_no_default_define) ... ok
+test_leaf_replaced_with_fifo_cannot_exceed_host_budget (__main__.ReviewProbes.test_leaf_replaced_with_fifo_cannot_exceed_host_budget) ... FAIL
+test_missing_collector_must_not_finalize (__main__.ReviewProbes.test_missing_collector_must_not_finalize) ... FAIL
+test_preserved_collector_must_match_claimed_hash (__main__.ReviewProbes.test_preserved_collector_must_match_claimed_hash) ... FAIL
+test_protected_device_rejected_before_input_read (__main__.ReviewProbes.test_protected_device_rejected_before_input_read) ... ok
+test_socket_wrong_package_uid_and_missing_table_remain_rejected (__main__.ReviewProbes.test_socket_wrong_package_uid_and_missing_table_remain_rejected) ... ok
+
+======================================================================
+FAIL: test_fixture_leaf_swapped_to_symlink_before_open_is_rejected (__main__.ReviewProbes.test_fixture_leaf_swapped_to_symlink_before_open_is_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/csys/Desktop/ibicot/idle/release/qa/native-observation-20261023T025313.166881Z/review_probes.py", line 70, in test_fixture_leaf_swapped_to_symlink_before_open_is_rejected
+    self.fail('Fixture leaf changed after lstat; collector read/hash came from outside its fixed fixture')
+    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Fixture leaf changed after lstat; collector read/hash came from outside its fixed fixture
+
+======================================================================
+FAIL: test_fixture_root_swapped_after_validation_is_rejected (__main__.ReviewProbes.test_fixture_root_swapped_after_validation_is_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/csys/Desktop/ibicot/idle/release/qa/native-observation-20261023T025313.166881Z/review_probes.py", line 84, in test_fixture_root_swapped_after_validation_is_rejected
+    with self.assertRaises((ValueError, OSError)):
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: (<class 'ValueError'>, <class 'OSError'>) not raised
+
+======================================================================
+FAIL: test_leaf_replaced_with_fifo_cannot_exceed_host_budget (__main__.ReviewProbes.test_leaf_replaced_with_fifo_cannot_exceed_host_budget)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/csys/Desktop/ibicot/idle/release/qa/native-observation-20261023T025313.166881Z/review_probes.py", line 106, in test_leaf_replaced_with_fifo_cannot_exceed_host_budget
+    subprocess.run([sys.executable, '-c', script, str(STAGE / 'runtime_observation.py')], capture_output=True, timeout=1, check=True)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/subprocess.py", line 556, in run
+    stdout, stderr = process.communicate(input, timeout=timeout)
+                     ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/subprocess.py", line 1219, in communicate
+    stdout, stderr = self._communicate(input, endtime, timeout)
+                     ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/subprocess.py", line 2123, in _communicate
+    self._check_timeout(endtime, orig_timeout, stdout, stderr)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/subprocess.py", line 1263, in _check_timeout
+    raise TimeoutExpired(
+    ...<2 lines>...
+            stderr=b''.join(stderr_seq) if stderr_seq else None)
+subprocess.TimeoutExpired: Command '['/Library/Frameworks/Python.framework/Versions/3.13/bin/python3', '-c', "\nimport importlib.util, os\nfrom pathlib import Path\nfrom unittest.mock import patch\nimport sys, tempfile\nspec=importlib.util.spec_from_file_location('o',sys.argv[1]);o=importlib.util.module_from_spec(spec);spec.loader.exec_module(o)\nwith tempfile.TemporaryDirectory() as directory:\n base=Path(directory);(base/'support').mkdir();target=base/'support/tideglass-study.json';target.write_text('fixture')\n original=Path.open\n def racing_open(path,*args,**kwargs):\n  if path==target:\n   path.unlink();os.mkfifo(path)\n  return original(path,*args,**kwargs)\n with patch.object(Path,'open',racing_open):\n  try:o.local_storage(base)\n  except (ValueError,OSError):pass\n", '/Users/csys/Desktop/ibicot/idle/release/native-privacy/runtime-observation-staged/runtime_observation.py']' timed out after 1 seconds
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/csys/Desktop/ibicot/idle/release/qa/native-observation-20261023T025313.166881Z/review_probes.py", line 108, in test_leaf_replaced_with_fifo_cannot_exceed_host_budget
+    self.fail('Local FIFO open blocks outside Host.command deadline; disposable child was terminated by reviewer timeout')
+    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Local FIFO open blocks outside Host.command deadline; disposable child was terminated by reviewer timeout
+
+======================================================================
+FAIL: test_missing_collector_must_not_finalize (__main__.ReviewProbes.test_missing_collector_must_not_finalize)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/csys/Desktop/ibicot/idle/release/qa/native-observation-20261023T025313.166881Z/review_probes.py", line 37, in test_missing_collector_must_not_finalize
+    with self.assertRaises((ValueError, OSError)):
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: (<class 'ValueError'>, <class 'OSError'>) not raised
+
+======================================================================
+FAIL: test_preserved_collector_must_match_claimed_hash (__main__.ReviewProbes.test_preserved_collector_must_match_claimed_hash)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/csys/Desktop/ibicot/idle/release/qa/native-observation-20261023T025313.166881Z/review_probes.py", line 30, in test_preserved_collector_must_match_claimed_hash
+    with self.assertRaisesRegex(ValueError, 'collector|Collector'):
+         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+----------------------------------------------------------------------
+Ran 9 tests in 1.030s
+
+FAILED (failures=5)

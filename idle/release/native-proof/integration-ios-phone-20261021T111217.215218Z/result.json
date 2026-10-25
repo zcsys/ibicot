@@ -1,0 +1,609 @@
+{
+  "verification_id": "integration-ios-phone-20261021T111217.215218Z",
+  "candidate_fingerprint": "152805bf9e269f49d14486286656ac0174a808384d10e6623533a4f92690dc11",
+  "harness_sha256": "d88a0141cede2c2032ce1f55d4ba93e54de6ee15037b341a4ece3291ec0284aa",
+  "platform": "ios",
+  "device_label": "ios-phone",
+  "scenario": "session-reload",
+  "run_id": "final152-oct21-session-r3",
+  "process_id": 30200,
+  "audio_probe": {
+    "decoded": [
+      {
+        "asset": "harbor.m4a",
+        "duration_ms": 64000
+      },
+      {
+        "asset": "current.m4a",
+        "duration_ms": 53333
+      },
+      {
+        "asset": "dawn.m4a",
+        "duration_ms": 71111
+      },
+      {
+        "asset": "purchase.m4a",
+        "duration_ms": 1735
+      },
+      {
+        "asset": "panel.m4a",
+        "duration_ms": 1540
+      },
+      {
+        "asset": "claim.m4a",
+        "duration_ms": 2350
+      },
+      {
+        "asset": "calibration.m4a",
+        "duration_ms": 3450
+      },
+      {
+        "asset": "survey.m4a",
+        "duration_ms": 2920
+      },
+      {
+        "asset": "unlock.m4a",
+        "duration_ms": 3380
+      },
+      {
+        "asset": "milestone.m4a",
+        "duration_ms": 4950
+      },
+      {
+        "asset": "rechart.m4a",
+        "duration_ms": 7800
+      }
+    ],
+    "playback_wait_ms": 722,
+    "position_samples_ms": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      73
+    ],
+    "state": "playing"
+  },
+  "provenance": "Seeded 24-hour absence, earned chapter and Notes. Native worker, UI, storage and audio SDK execute normally. No natural pacing, human audio appraisal or physical-device performance claim.",
+  "save_directory": "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Data/Application/86FCF05C-824B-48E4-B6C2-F9BD7D618BA7/Library/Application Support/native-verification/session-ios-phone-final152-oct21-session-r3",
+  "checks": [
+    "Separate native process retained both cosmetic selections, 50 Notes and earned Radiance",
+    "Production native audio driver initialized, switched all three tracks and respected foreground cue gating",
+    "All eleven AAC assets decoded with positive duration; native music playback clock advanced and paused"
+  ],
+  "launch_single_sample_ms": 895,
+  "seeded_at": null,
+  "loaded_cursor": "2026-10-21T14:13:24.190606",
+  "loaded_core": {
+    "schema_version": 4,
+    "economic_version": "tideglass-economy-1.0.0",
+    "event_order_version": 4,
+    "counts": [
+      1,
+      0,
+      0,
+      0,
+      0
+    ],
+    "wallet_micros": "86480621002",
+    "lifetime_micros": "86480621002",
+    "charts": "0",
+    "elapsed_micros": "86480952109",
+    "earning_remainder": "300000000000000000000000000",
+    "revision": 339,
+    "auto_buy_enabled": false,
+    "focus_charges": 12,
+    "focus_phase_micros": "0",
+    "focus_remaining_micros": "0",
+    "completed_surveys": 3,
+    "survey_phase_micros": "0",
+    "survey_notes": "50",
+    "daily": {
+      "account_seed": "1823f139f76f38710e7dde3727b05511",
+      "utc_offset_minutes": 0,
+      "day_high_water": 20747,
+      "last_materialized_day": 20747,
+      "utc_anchor_micros": "1792494723238497",
+      "available_discovery_kinds": [
+        "archive",
+        "calibration"
+      ],
+      "contracts": [
+        {
+          "id": "contract:1823f139f76f38710e7dde3727b05511:20746:0",
+          "account_day": 20746,
+          "slot": 0,
+          "kind": "discover",
+          "discovery_kind": "archive",
+          "target": "1",
+          "rate_snapshot_raw": "1000000000000000000000000",
+          "cheapest_price_snapshot_micros": "33600000",
+          "lifetime_baseline_micros": "0",
+          "purchased_baseline": "0",
+          "discovery_baseline": "0",
+          "rerolled": false,
+          "claimed": false,
+          "credited_pass_id": null
+        },
+        {
+          "id": "contract:1823f139f76f38710e7dde3727b05511:20746:1",
+          "account_day": 20746,
+          "slot": 1,
+          "kind": "discover",
+          "discovery_kind": "archive",
+          "target": "1",
+          "rate_snapshot_raw": "1000000000000000000000000",
+          "cheapest_price_snapshot_micros": "33600000",
+          "lifetime_baseline_micros": "0",
+          "purchased_baseline": "0",
+          "discovery_baseline": "0",
+          "rerolled": false,
+          "claimed": false,
+          "credited_pass_id": null
+        },
+        {
+          "id": "contract:1823f139f76f38710e7dde3727b05511:20746:2",
+          "account_day": 20746,
+          "slot": 2,
+          "kind": "discover",
+          "discovery_kind": "archive",
+          "target": "1",
+          "rate_snapshot_raw": "1000000000000000000000000",
+          "cheapest_price_snapshot_micros": "33600000",
+          "lifetime_baseline_micros": "0",
+          "purchased_baseline": "0",
+          "discovery_baseline": "0",
+          "rerolled": false,
+          "claimed": false,
+          "credited_pass_id": null
+        },
+        {
+          "id": "contract:1823f139f76f38710e7dde3727b05511:20747:0",
+          "account_day": 20747,
+          "slot": 0,
+          "kind": "build",
+          "discovery_kind": null,
+          "target": "5",
+          "rate_snapshot_raw": "1000000000000000000000000",
+          "cheapest_price_snapshot_micros": "33600000",
+          "lifetime_baseline_micros": "86400110368",
+          "purchased_baseline": "0",
+          "discovery_baseline": "0",
+          "rerolled": false,
+          "claimed": false,
+          "credited_pass_id": null
+        },
+        {
+          "id": "contract:1823f139f76f38710e7dde3727b05511:20747:1",
+          "account_day": 20747,
+          "slot": 1,
+          "kind": "build",
+          "discovery_kind": null,
+          "target": "5",
+          "rate_snapshot_raw": "1000000000000000000000000",
+          "cheapest_price_snapshot_micros": "33600000",
+          "lifetime_baseline_micros": "86400110368",
+          "purchased_baseline": "0",
+          "discovery_baseline": "0",
+          "rerolled": false,
+          "claimed": false,
+          "credited_pass_id": null
+        },
+        {
+          "id": "contract:1823f139f76f38710e7dde3727b05511:20747:2",
+          "account_day": 20747,
+          "slot": 2,
+          "kind": "build",
+          "discovery_kind": null,
+          "target": "5",
+          "rate_snapshot_raw": "1000000000000000000000000",
+          "cheapest_price_snapshot_micros": "33600000",
+          "lifetime_baseline_micros": "86400110368",
+          "purchased_baseline": "0",
+          "discovery_baseline": "0",
+          "rerolled": false,
+          "claimed": false,
+          "credited_pass_id": null
+        }
+      ],
+      "discovery_totals": {},
+      "discovery_operation_ids": [],
+      "discovery_sequence": "0",
+      "selected_pass_id": "pass.01",
+      "pass_xp_by_id": {
+        "pass.01": "0"
+      }
+    },
+    "support": {
+      "remaining_micros": "0",
+      "token_day": 20747,
+      "tokens": [],
+      "caches": [
+        {
+          "id": "offline:1823f139f76f38710e7dde3727b05511:1:1792494723238497:1792581123679972:84600000000",
+          "settlement_id": "offline:1823f139f76f38710e7dde3727b05511:1:1792494723238497:1792581123679972",
+          "start_elapsed_micros": "84600000000",
+          "end_elapsed_micros": "84900000000",
+          "unboosted_micros": "300000000",
+          "settlement_rate_raw": "1000000000000000000000000",
+          "claimed": false
+        },
+        {
+          "id": "offline:1823f139f76f38710e7dde3727b05511:1:1792494723238497:1792581123679972:84900000000",
+          "settlement_id": "offline:1823f139f76f38710e7dde3727b05511:1:1792494723238497:1792581123679972",
+          "start_elapsed_micros": "84900000000",
+          "end_elapsed_micros": "85200000000",
+          "unboosted_micros": "300000000",
+          "settlement_rate_raw": "1000000000000000000000000",
+          "claimed": false
+        },
+        {
+          "id": "offline:1823f139f76f38710e7dde3727b05511:1:1792494723238497:1792581123679972:85200000000",
+          "settlement_id": "offline:1823f139f76f38710e7dde3727b05511:1:1792494723238497:1792581123679972",
+          "start_elapsed_micros": "85200000000",
+          "end_elapsed_micros": "85500000000",
+          "unboosted_micros": "300000000",
+          "settlement_rate_raw": "1000000000000000000000000",
+          "claimed": false
+        },
+        {
+          "id": "offline:1823f139f76f38710e7dde3727b05511:1:1792494723238497:1792581123679972:85500000000",
+          "settlement_id": "offline:1823f139f76f38710e7dde3727b05511:1:1792494723238497:1792581123679972",
+          "start_elapsed_micros": "85500000000",
+          "end_elapsed_micros": "85800000000",
+          "unboosted_micros": "300000000",
+          "settlement_rate_raw": "1000000000000000000000000",
+          "claimed": false
+        },
+        {
+          "id": "offline:1823f139f76f38710e7dde3727b05511:1:1792494723238497:1792581123679972:85800000000",
+          "settlement_id": "offline:1823f139f76f38710e7dde3727b05511:1:1792494723238497:1792581123679972",
+          "start_elapsed_micros": "85800000000",
+          "end_elapsed_micros": "86100000000",
+          "unboosted_micros": "300000000",
+          "settlement_rate_raw": "1000000000000000000000000",
+          "claimed": false
+        },
+        {
+          "id": "offline:1823f139f76f38710e7dde3727b05511:1:1792494723238497:1792581123679972:86100000000",
+          "settlement_id": "offline:1823f139f76f38710e7dde3727b05511:1:1792494723238497:1792581123679972",
+          "start_elapsed_micros": "86100000000",
+          "end_elapsed_micros": "86400000000",
+          "unboosted_micros": "300000000",
+          "settlement_rate_raw": "1000000000000000000000000",
+          "claimed": false
+        }
+      ],
+      "claimed_slice_ids": [],
+      "closed_settlement_ids": [],
+      "grant_source_ids": [],
+      "last_settlement_sequence": "5",
+      "last_settlement_through_utc_micros": "1792581203709399",
+      "last_finalized_settlement_id": "offline:1823f139f76f38710e7dde3727b05511:5:1792581203623954:1792581203709399",
+      "receipt_cursor_migration_required": false,
+      "active_settlement_id": null,
+      "active_settlement_request": null,
+      "source_start_elapsed_micros": "0",
+      "next_offset_micros": "0",
+      "slice_start_offset_micros": "0",
+      "slice_numerator": "0"
+    },
+    "lifetime_purchased_count": "0",
+    "rechart_count": 0,
+    "last_rechart_elapsed_micros": "0",
+    "surveys_collected_total": "0",
+    "completed_calibration_ids": [],
+    "extra_plan_slots": 0,
+    "automation_plans": [
+      {
+        "id": "plan.base",
+        "name": "Base plan",
+        "purchase_policy": "greedy",
+        "tier_priority": [
+          4,
+          3,
+          2,
+          1,
+          0
+        ],
+        "auto_reset_enabled": false,
+        "minimum_additional_charts": "1",
+        "minimum_run_seconds": 600
+      }
+    ],
+    "selected_automation_plan_id": "plan.base"
+  },
+  "final_core": {
+    "schema_version": 4,
+    "economic_version": "tideglass-economy-1.0.0",
+    "event_order_version": 4,
+    "counts": [
+      1,
+      0,
+      0,
+      0,
+      0
+    ],
+    "wallet_micros": "86487144454",
+    "lifetime_micros": "86487144454",
+    "charts": "0",
+    "elapsed_micros": "86487475561",
+    "earning_remainder": "300000000000000000000000000",
+    "revision": 362,
+    "auto_buy_enabled": false,
+    "focus_charges": 12,
+    "focus_phase_micros": "0",
+    "focus_remaining_micros": "0",
+    "completed_surveys": 3,
+    "survey_phase_micros": "0",
+    "survey_notes": "50",
+    "daily": {
+      "account_seed": "1823f139f76f38710e7dde3727b05511",
+      "utc_offset_minutes": 0,
+      "day_high_water": 20747,
+      "last_materialized_day": 20747,
+      "utc_anchor_micros": "1792494723238497",
+      "available_discovery_kinds": [
+        "archive",
+        "calibration"
+      ],
+      "contracts": [
+        {
+          "id": "contract:1823f139f76f38710e7dde3727b05511:20746:0",
+          "account_day": 20746,
+          "slot": 0,
+          "kind": "discover",
+          "discovery_kind": "archive",
+          "target": "1",
+          "rate_snapshot_raw": "1000000000000000000000000",
+          "cheapest_price_snapshot_micros": "33600000",
+          "lifetime_baseline_micros": "0",
+          "purchased_baseline": "0",
+          "discovery_baseline": "0",
+          "rerolled": false,
+          "claimed": false,
+          "credited_pass_id": null
+        },
+        {
+          "id": "contract:1823f139f76f38710e7dde3727b05511:20746:1",
+          "account_day": 20746,
+          "slot": 1,
+          "kind": "discover",
+          "discovery_kind": "archive",
+          "target": "1",
+          "rate_snapshot_raw": "1000000000000000000000000",
+          "cheapest_price_snapshot_micros": "33600000",
+          "lifetime_baseline_micros": "0",
+          "purchased_baseline": "0",
+          "discovery_baseline": "0",
+          "rerolled": false,
+          "claimed": false,
+          "credited_pass_id": null
+        },
+        {
+          "id": "contract:1823f139f76f38710e7dde3727b05511:20746:2",
+          "account_day": 20746,
+          "slot": 2,
+          "kind": "discover",
+          "discovery_kind": "archive",
+          "target": "1",
+          "rate_snapshot_raw": "1000000000000000000000000",
+          "cheapest_price_snapshot_micros": "33600000",
+          "lifetime_baseline_micros": "0",
+          "purchased_baseline": "0",
+          "discovery_baseline": "0",
+          "rerolled": false,
+          "claimed": false,
+          "credited_pass_id": null
+        },
+        {
+          "id": "contract:1823f139f76f38710e7dde3727b05511:20747:0",
+          "account_day": 20747,
+          "slot": 0,
+          "kind": "build",
+          "discovery_kind": null,
+          "target": "5",
+          "rate_snapshot_raw": "1000000000000000000000000",
+          "cheapest_price_snapshot_micros": "33600000",
+          "lifetime_baseline_micros": "86400110368",
+          "purchased_baseline": "0",
+          "discovery_baseline": "0",
+          "rerolled": false,
+          "claimed": false,
+          "credited_pass_id": null
+        },
+        {
+          "id": "contract:1823f139f76f38710e7dde3727b05511:20747:1",
+          "account_day": 20747,
+          "slot": 1,
+          "kind": "build",
+          "discovery_kind": null,
+          "target": "5",
+          "rate_snapshot_raw": "1000000000000000000000000",
+          "cheapest_price_snapshot_micros": "33600000",
+          "lifetime_baseline_micros": "86400110368",
+          "purchased_baseline": "0",
+          "discovery_baseline": "0",
+          "rerolled": false,
+          "claimed": false,
+          "credited_pass_id": null
+        },
+        {
+          "id": "contract:1823f139f76f38710e7dde3727b05511:20747:2",
+          "account_day": 20747,
+          "slot": 2,
+          "kind": "build",
+          "discovery_kind": null,
+          "target": "5",
+          "rate_snapshot_raw": "1000000000000000000000000",
+          "cheapest_price_snapshot_micros": "33600000",
+          "lifetime_baseline_micros": "86400110368",
+          "purchased_baseline": "0",
+          "discovery_baseline": "0",
+          "rerolled": false,
+          "claimed": false,
+          "credited_pass_id": null
+        }
+      ],
+      "discovery_totals": {},
+      "discovery_operation_ids": [],
+      "discovery_sequence": "0",
+      "selected_pass_id": "pass.01",
+      "pass_xp_by_id": {
+        "pass.01": "0"
+      }
+    },
+    "support": {
+      "remaining_micros": "0",
+      "token_day": 20747,
+      "tokens": [],
+      "caches": [
+        {
+          "id": "offline:1823f139f76f38710e7dde3727b05511:1:1792494723238497:1792581123679972:84600000000",
+          "settlement_id": "offline:1823f139f76f38710e7dde3727b05511:1:1792494723238497:1792581123679972",
+          "start_elapsed_micros": "84600000000",
+          "end_elapsed_micros": "84900000000",
+          "unboosted_micros": "300000000",
+          "settlement_rate_raw": "1000000000000000000000000",
+          "claimed": false
+        },
+        {
+          "id": "offline:1823f139f76f38710e7dde3727b05511:1:1792494723238497:1792581123679972:84900000000",
+          "settlement_id": "offline:1823f139f76f38710e7dde3727b05511:1:1792494723238497:1792581123679972",
+          "start_elapsed_micros": "84900000000",
+          "end_elapsed_micros": "85200000000",
+          "unboosted_micros": "300000000",
+          "settlement_rate_raw": "1000000000000000000000000",
+          "claimed": false
+        },
+        {
+          "id": "offline:1823f139f76f38710e7dde3727b05511:1:1792494723238497:1792581123679972:85200000000",
+          "settlement_id": "offline:1823f139f76f38710e7dde3727b05511:1:1792494723238497:1792581123679972",
+          "start_elapsed_micros": "85200000000",
+          "end_elapsed_micros": "85500000000",
+          "unboosted_micros": "300000000",
+          "settlement_rate_raw": "1000000000000000000000000",
+          "claimed": false
+        },
+        {
+          "id": "offline:1823f139f76f38710e7dde3727b05511:1:1792494723238497:1792581123679972:85500000000",
+          "settlement_id": "offline:1823f139f76f38710e7dde3727b05511:1:1792494723238497:1792581123679972",
+          "start_elapsed_micros": "85500000000",
+          "end_elapsed_micros": "85800000000",
+          "unboosted_micros": "300000000",
+          "settlement_rate_raw": "1000000000000000000000000",
+          "claimed": false
+        },
+        {
+          "id": "offline:1823f139f76f38710e7dde3727b05511:1:1792494723238497:1792581123679972:85800000000",
+          "settlement_id": "offline:1823f139f76f38710e7dde3727b05511:1:1792494723238497:1792581123679972",
+          "start_elapsed_micros": "85800000000",
+          "end_elapsed_micros": "86100000000",
+          "unboosted_micros": "300000000",
+          "settlement_rate_raw": "1000000000000000000000000",
+          "claimed": false
+        },
+        {
+          "id": "offline:1823f139f76f38710e7dde3727b05511:1:1792494723238497:1792581123679972:86100000000",
+          "settlement_id": "offline:1823f139f76f38710e7dde3727b05511:1:1792494723238497:1792581123679972",
+          "start_elapsed_micros": "86100000000",
+          "end_elapsed_micros": "86400000000",
+          "unboosted_micros": "300000000",
+          "settlement_rate_raw": "1000000000000000000000000",
+          "claimed": false
+        }
+      ],
+      "claimed_slice_ids": [],
+      "closed_settlement_ids": [],
+      "grant_source_ids": [],
+      "last_settlement_sequence": "6",
+      "last_settlement_through_utc_micros": "1792581205883138",
+      "last_finalized_settlement_id": "offline:1823f139f76f38710e7dde3727b05511:6:1792581204190606:1792581205883138",
+      "receipt_cursor_migration_required": false,
+      "active_settlement_id": null,
+      "active_settlement_request": null,
+      "source_start_elapsed_micros": "0",
+      "next_offset_micros": "0",
+      "slice_start_offset_micros": "0",
+      "slice_numerator": "0"
+    },
+    "lifetime_purchased_count": "0",
+    "rechart_count": 0,
+    "last_rechart_elapsed_micros": "0",
+    "surveys_collected_total": "0",
+    "completed_calibration_ids": [],
+    "extra_plan_slots": 0,
+    "automation_plans": [
+      {
+        "id": "plan.base",
+        "name": "Base plan",
+        "purchase_policy": "greedy",
+        "tier_priority": [
+          4,
+          3,
+          2,
+          1,
+          0
+        ],
+        "auto_reset_enabled": false,
+        "minimum_additional_charts": "1",
+        "minimum_run_seconds": 600
+      }
+    ],
+    "selected_automation_plan_id": "plan.base"
+  },
+  "audio_decoded": [
+    {
+      "asset": "harbor.m4a",
+      "duration_ms": 64000
+    },
+    {
+      "asset": "current.m4a",
+      "duration_ms": 53333
+    },
+    {
+      "asset": "dawn.m4a",
+      "duration_ms": 71111
+    },
+    {
+      "asset": "purchase.m4a",
+      "duration_ms": 1735
+    },
+    {
+      "asset": "panel.m4a",
+      "duration_ms": 1540
+    },
+    {
+      "asset": "claim.m4a",
+      "duration_ms": 2350
+    },
+    {
+      "asset": "calibration.m4a",
+      "duration_ms": 3450
+    },
+    {
+      "asset": "survey.m4a",
+      "duration_ms": 2920
+    },
+    {
+      "asset": "unlock.m4a",
+      "duration_ms": 3380
+    },
+    {
+      "asset": "milestone.m4a",
+      "duration_ms": 4950
+    },
+    {
+      "asset": "rechart.m4a",
+      "duration_ms": 7800
+    }
+  ],
+  "audio_clock_position_ms": 73,
+  "screenshots": [
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/integration-ios-phone-20261021T111217.215218Z/ios-phone-session-reload-collection.png",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/integration-ios-phone-20261021T111217.215218Z/ios-phone-session-reload-harbor.png",
+    "/Users/csys/Desktop/ibicot/idle/release/native-proof/integration-ios-phone-20261021T111217.215218Z/ios-phone-session-reload-producer-stages.png"
+  ]
+}

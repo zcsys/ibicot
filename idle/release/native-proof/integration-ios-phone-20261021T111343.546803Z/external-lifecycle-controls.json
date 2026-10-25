@@ -1,0 +1,32 @@
+{
+  "device": "F05BE4B0-52C1-4CA1-B721-BD64AE559E3F",
+  "observed_window": "Tideglass Development, Device Hub AppWindow-2",
+  "home_action": "CUA clicked observed Home toolbar control, then AX/screenshot confirmed Springboard.",
+  "home_screenshot_sha256": "7d1e2de8416ff7081174d4b51882d07aa3a36a166ed6e7f43a224ed8464df725",
+  "commands": [
+    {
+      "command": [
+        "xcrun",
+        "simctl",
+        "io",
+        "F05BE4B0-52C1-4CA1-B721-BD64AE559E3F",
+        "screenshot",
+        "/Users/csys/Desktop/ibicot/idle/release/native-proof/integration-ios-phone-20261021T111343.546803Z/os-home-before-reopen.png"
+      ],
+      "exit_code": 0,
+      "output": "Detected file type from extension: PNG\nNote: No display specified. Defaulting to display: 521695CD-3908-442F-A252-633821AFE5F4 (screenID: 1, name: LCD)\nWrote screenshot to: /Users/csys/Desktop/ibicot/idle/release/native-proof/integration-ios-phone-20261021T111343.546803Z/os-home-before-reopen.png\n"
+    },
+    {
+      "command": [
+        "xcrun",
+        "simctl",
+        "launch",
+        "F05BE4B0-52C1-4CA1-B721-BD64AE559E3F",
+        "dev.tideglass.game"
+      ],
+      "exit_code": 0,
+      "output": "dev.tideglass.game: 30992\n"
+    }
+  ],
+  "scope": "Actual OS Home and explicit bundle launch to foreground existing process. No injected Flutter lifecycle callbacks."
+}

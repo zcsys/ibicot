@@ -1,0 +1,868 @@
+{
+  "candidate_fingerprint": "3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59",
+  "sealed_utc": "20261023T054217.678143Z",
+  "scope": "Exact current iPhone/Android exclusive-save, three real SIGKILL preparations with separate recoveries, and old/new transition/reopen. Raw pins replayed; intended for independent M1-03 clause review.",
+  "cells": [
+    {
+      "label": "ios-phone",
+      "scenario": "runtime-lock-exclusion",
+      "run_id": "v3b00-ios-phone-lock",
+      "status": "passed",
+      "verification": "/Users/csys/Desktop/ibicot/idle/release/native-proof/current-runtime-ios-phone-20261023T043208754474Z/verification.json",
+      "verification_sha256": "c74d240b837cb078238ab565fe0509b2d3437d4251de12620c96a213f57c418e",
+      "predecessor": null,
+      "native_evidence_sha256": {
+        "runner.py": "d849ab8feb642eb1b988f9a6d82558491b7ebef4c63768fb4fa132f49edf3804",
+        "result.json": "807f2739342c07f06a34e6e4457aab8aea2299a54d326f7e1dcb7ffa6f0129c4",
+        "run.log": "71952767bacd2188d891be26867d6404f1415613178f04c1922362b4fecfdb04",
+        "driver.dart": "911183b5d9ee8ec80769836f477a293dadb66e20cc0c5d5e44314415889749a8",
+        "verify_native.py": "68297f66fc4e32a173b17da2594872334d59ba2b88b7d5878b5ee8905f9b89e5",
+        "study_adjudicate.py": "ccf31107cced115bb7a417407a2b7cfa1498845ce10899b14a1f3ca533a406e6",
+        "study_native_diagnostics.py": "325afe73985b414a23ab3858ad4abc656351258bb3c19e49bd6c665761031430",
+        "harness.dart": "102be09eb8043ce9bb496156d9f37b1834c3084ddf58fef073e7c25cdc3c55d5",
+        "study_report.py": "7109d2e53a8c07b8f00299b749a4c758530e51f38a2d444f4600ae6ef94e7462",
+        "build_native.py": "59ee4e7b94a1445e2c8effadfe4c0510c9c189df0278c7ede6e87f1807bf38ee"
+      },
+      "source_pins": {
+        "runner.py": "d849ab8feb642eb1b988f9a6d82558491b7ebef4c63768fb4fa132f49edf3804",
+        "harness.dart": "102be09eb8043ce9bb496156d9f37b1834c3084ddf58fef073e7c25cdc3c55d5",
+        "driver.dart": "911183b5d9ee8ec80769836f477a293dadb66e20cc0c5d5e44314415889749a8",
+        "build_native.py": "59ee4e7b94a1445e2c8effadfe4c0510c9c189df0278c7ede6e87f1807bf38ee",
+        "verify_native.py": "68297f66fc4e32a173b17da2594872334d59ba2b88b7d5878b5ee8905f9b89e5",
+        "study_adjudicate.py": "ccf31107cced115bb7a417407a2b7cfa1498845ce10899b14a1f3ca533a406e6",
+        "study_report.py": "7109d2e53a8c07b8f00299b749a4c758530e51f38a2d444f4600ae6ef94e7462",
+        "study_native_diagnostics.py": "325afe73985b414a23ab3858ad4abc656351258bb3c19e49bd6c665761031430"
+      },
+      "generations": {},
+      "checkpoint_sha256": null
+    },
+    {
+      "label": "ios-phone",
+      "scenario": "runtime-save-hold-beforeWrite",
+      "run_id": "v3b00-ios-phone-save-beforeWrite",
+      "status": "expected-interrupted",
+      "verification": "/Users/csys/Desktop/ibicot/idle/release/native-proof/current-runtime-ios-phone-20261023T043259564984Z/verification.json",
+      "verification_sha256": "b2ae57c9180a06e8c0666b7f3a2ae69b5691c9ce8167ec496fcc1f783966c096",
+      "predecessor": null,
+      "native_evidence_sha256": {
+        "runner.py": "d849ab8feb642eb1b988f9a6d82558491b7ebef4c63768fb4fa132f49edf3804",
+        "checkpoint.json": "989c4d16f4e48f2b003dca4cab99ff9e96800b6b31001cb43813439ae170a7c5",
+        "run.log": "4bc13ac5fe8f27b0124ed2fe7512e5a01522c95b45a84f4811a26098ea29461f",
+        "generation-0.json": "192304847485fd565d15f064a45f399ebad797d8bbfa399565f98d7f1af9e703",
+        "driver.dart": "911183b5d9ee8ec80769836f477a293dadb66e20cc0c5d5e44314415889749a8",
+        "verify_native.py": "68297f66fc4e32a173b17da2594872334d59ba2b88b7d5878b5ee8905f9b89e5",
+        "study_adjudicate.py": "ccf31107cced115bb7a417407a2b7cfa1498845ce10899b14a1f3ca533a406e6",
+        "pre-kill.log": "fd8013b72f2105eb2d82c2a3ae4f2765e8fb47c70c430d53a4bf18ca9864bd6b",
+        "study_native_diagnostics.py": "325afe73985b414a23ab3858ad4abc656351258bb3c19e49bd6c665761031430",
+        "harness.dart": "102be09eb8043ce9bb496156d9f37b1834c3084ddf58fef073e7c25cdc3c55d5",
+        "study_report.py": "7109d2e53a8c07b8f00299b749a4c758530e51f38a2d444f4600ae6ef94e7462",
+        "build_native.py": "59ee4e7b94a1445e2c8effadfe4c0510c9c189df0278c7ede6e87f1807bf38ee"
+      },
+      "source_pins": {
+        "runner.py": "d849ab8feb642eb1b988f9a6d82558491b7ebef4c63768fb4fa132f49edf3804",
+        "harness.dart": "102be09eb8043ce9bb496156d9f37b1834c3084ddf58fef073e7c25cdc3c55d5",
+        "driver.dart": "911183b5d9ee8ec80769836f477a293dadb66e20cc0c5d5e44314415889749a8",
+        "build_native.py": "59ee4e7b94a1445e2c8effadfe4c0510c9c189df0278c7ede6e87f1807bf38ee",
+        "verify_native.py": "68297f66fc4e32a173b17da2594872334d59ba2b88b7d5878b5ee8905f9b89e5",
+        "study_adjudicate.py": "ccf31107cced115bb7a417407a2b7cfa1498845ce10899b14a1f3ca533a406e6",
+        "study_report.py": "7109d2e53a8c07b8f00299b749a4c758530e51f38a2d444f4600ae6ef94e7462",
+        "study_native_diagnostics.py": "325afe73985b414a23ab3858ad4abc656351258bb3c19e49bd6c665761031430"
+      },
+      "generations": {
+        "generation-0.json": {
+          "size": 853,
+          "sha256": "192304847485fd565d15f064a45f399ebad797d8bbfa399565f98d7f1af9e703"
+        },
+        "generation-1.json": {
+          "size": 0,
+          "sha256": null
+        }
+      },
+      "checkpoint_sha256": "989c4d16f4e48f2b003dca4cab99ff9e96800b6b31001cb43813439ae170a7c5"
+    },
+    {
+      "label": "ios-phone",
+      "scenario": "runtime-save-recover-beforeWrite",
+      "run_id": "v3b00-ios-phone-save-beforeWrite",
+      "status": "passed",
+      "verification": "/Users/csys/Desktop/ibicot/idle/release/native-proof/current-runtime-ios-phone-20261023T043347563069Z/verification.json",
+      "verification_sha256": "3688ba3f60b05b87dcd666edec14f123b3d0baea69f800cf3f78ce2ef252518a",
+      "predecessor": {
+        "path": "/Users/csys/Desktop/ibicot/idle/release/native-proof/current-runtime-ios-phone-20261023T043259564984Z/verification.json",
+        "sha256": "b2ae57c9180a06e8c0666b7f3a2ae69b5691c9ce8167ec496fcc1f783966c096",
+        "verification_id": "current-runtime-ios-phone-20261023T043259564984Z"
+      },
+      "native_evidence_sha256": {
+        "runner.py": "d849ab8feb642eb1b988f9a6d82558491b7ebef4c63768fb4fa132f49edf3804",
+        "checkpoint.json": "989c4d16f4e48f2b003dca4cab99ff9e96800b6b31001cb43813439ae170a7c5",
+        "result.json": "f188ee1f19816576cc70e79aae08ff97b508e0e429dca068b69cdcf2cd41fdf9",
+        "run.log": "18d58124bb199e810e67563d96d7fca5b09386680da43d88d43fb6c40c111c43",
+        "generation-0.json": "192304847485fd565d15f064a45f399ebad797d8bbfa399565f98d7f1af9e703",
+        "generation-1.json": "9826fb215bb7519e404a156c16555141d3a4a3bf7c08b5aac21116948360defa",
+        "driver.dart": "911183b5d9ee8ec80769836f477a293dadb66e20cc0c5d5e44314415889749a8",
+        "verify_native.py": "68297f66fc4e32a173b17da2594872334d59ba2b88b7d5878b5ee8905f9b89e5",
+        "study_adjudicate.py": "ccf31107cced115bb7a417407a2b7cfa1498845ce10899b14a1f3ca533a406e6",
+        "study_native_diagnostics.py": "325afe73985b414a23ab3858ad4abc656351258bb3c19e49bd6c665761031430",
+        "harness.dart": "102be09eb8043ce9bb496156d9f37b1834c3084ddf58fef073e7c25cdc3c55d5",
+        "study_report.py": "7109d2e53a8c07b8f00299b749a4c758530e51f38a2d444f4600ae6ef94e7462",
+        "build_native.py": "59ee4e7b94a1445e2c8effadfe4c0510c9c189df0278c7ede6e87f1807bf38ee"
+      },
+      "source_pins": {
+        "runner.py": "d849ab8feb642eb1b988f9a6d82558491b7ebef4c63768fb4fa132f49edf3804",
+        "harness.dart": "102be09eb8043ce9bb496156d9f37b1834c3084ddf58fef073e7c25cdc3c55d5",
+        "driver.dart": "911183b5d9ee8ec80769836f477a293dadb66e20cc0c5d5e44314415889749a8",
+        "build_native.py": "59ee4e7b94a1445e2c8effadfe4c0510c9c189df0278c7ede6e87f1807bf38ee",
+        "verify_native.py": "68297f66fc4e32a173b17da2594872334d59ba2b88b7d5878b5ee8905f9b89e5",
+        "study_adjudicate.py": "ccf31107cced115bb7a417407a2b7cfa1498845ce10899b14a1f3ca533a406e6",
+        "study_report.py": "7109d2e53a8c07b8f00299b749a4c758530e51f38a2d444f4600ae6ef94e7462",
+        "study_native_diagnostics.py": "325afe73985b414a23ab3858ad4abc656351258bb3c19e49bd6c665761031430"
+      },
+      "generations": {
+        "generation-0.json": {
+          "size": 853,
+          "sha256": "192304847485fd565d15f064a45f399ebad797d8bbfa399565f98d7f1af9e703"
+        },
+        "generation-1.json": {
+          "size": 963,
+          "sha256": "9826fb215bb7519e404a156c16555141d3a4a3bf7c08b5aac21116948360defa"
+        }
+      },
+      "checkpoint_sha256": "989c4d16f4e48f2b003dca4cab99ff9e96800b6b31001cb43813439ae170a7c5"
+    },
+    {
+      "label": "ios-phone",
+      "scenario": "runtime-save-hold-afterFlush",
+      "run_id": "v3b00-ios-phone-save-afterFlush",
+      "status": "expected-interrupted",
+      "verification": "/Users/csys/Desktop/ibicot/idle/release/native-proof/current-runtime-ios-phone-20261023T043434202567Z/verification.json",
+      "verification_sha256": "42365f9532b9ef61add6afd95b102211faaa5d746bab9ba7edc09ca6e08657ea",
+      "predecessor": null,
+      "native_evidence_sha256": {
+        "runner.py": "d849ab8feb642eb1b988f9a6d82558491b7ebef4c63768fb4fa132f49edf3804",
+        "checkpoint.json": "8f5de328c031f43fb53b98104dfe384ba972eade408dcc42a5733d7fa7a5a0f9",
+        "run.log": "3eb04a21f2765697ec41e822e393255f46c5f931c419d35da49283b1961a9f38",
+        "generation-0.json": "e22f38bb8e9372515e83a4a0af4807b40c18eb09ce804f33d9b09023ee256bb7",
+        "driver.dart": "911183b5d9ee8ec80769836f477a293dadb66e20cc0c5d5e44314415889749a8",
+        "verify_native.py": "68297f66fc4e32a173b17da2594872334d59ba2b88b7d5878b5ee8905f9b89e5",
+        "study_adjudicate.py": "ccf31107cced115bb7a417407a2b7cfa1498845ce10899b14a1f3ca533a406e6",
+        "pre-kill.log": "4c8da4d57798eef2b1585c0512aa1e7783e5eb55aff4d77078ce4cac33b87951",
+        "study_native_diagnostics.py": "325afe73985b414a23ab3858ad4abc656351258bb3c19e49bd6c665761031430",
+        "harness.dart": "102be09eb8043ce9bb496156d9f37b1834c3084ddf58fef073e7c25cdc3c55d5",
+        "study_report.py": "7109d2e53a8c07b8f00299b749a4c758530e51f38a2d444f4600ae6ef94e7462",
+        "build_native.py": "59ee4e7b94a1445e2c8effadfe4c0510c9c189df0278c7ede6e87f1807bf38ee"
+      },
+      "source_pins": {
+        "runner.py": "d849ab8feb642eb1b988f9a6d82558491b7ebef4c63768fb4fa132f49edf3804",
+        "harness.dart": "102be09eb8043ce9bb496156d9f37b1834c3084ddf58fef073e7c25cdc3c55d5",
+        "driver.dart": "911183b5d9ee8ec80769836f477a293dadb66e20cc0c5d5e44314415889749a8",
+        "build_native.py": "59ee4e7b94a1445e2c8effadfe4c0510c9c189df0278c7ede6e87f1807bf38ee",
+        "verify_native.py": "68297f66fc4e32a173b17da2594872334d59ba2b88b7d5878b5ee8905f9b89e5",
+        "study_adjudicate.py": "ccf31107cced115bb7a417407a2b7cfa1498845ce10899b14a1f3ca533a406e6",
+        "study_report.py": "7109d2e53a8c07b8f00299b749a4c758530e51f38a2d444f4600ae6ef94e7462",
+        "study_native_diagnostics.py": "325afe73985b414a23ab3858ad4abc656351258bb3c19e49bd6c665761031430"
+      },
+      "generations": {
+        "generation-0.json": {
+          "size": 853,
+          "sha256": "e22f38bb8e9372515e83a4a0af4807b40c18eb09ce804f33d9b09023ee256bb7"
+        },
+        "generation-1.json": {
+          "size": 0,
+          "sha256": null
+        }
+      },
+      "checkpoint_sha256": "8f5de328c031f43fb53b98104dfe384ba972eade408dcc42a5733d7fa7a5a0f9"
+    },
+    {
+      "label": "ios-phone",
+      "scenario": "runtime-save-recover-afterFlush",
+      "run_id": "v3b00-ios-phone-save-afterFlush",
+      "status": "passed",
+      "verification": "/Users/csys/Desktop/ibicot/idle/release/native-proof/current-runtime-ios-phone-20261023T043522664543Z/verification.json",
+      "verification_sha256": "2b0db1c301ce08da77871bba626085edd32c5b077d69bcf8f2d0ff5640b4d278",
+      "predecessor": {
+        "path": "/Users/csys/Desktop/ibicot/idle/release/native-proof/current-runtime-ios-phone-20261023T043434202567Z/verification.json",
+        "sha256": "42365f9532b9ef61add6afd95b102211faaa5d746bab9ba7edc09ca6e08657ea",
+        "verification_id": "current-runtime-ios-phone-20261023T043434202567Z"
+      },
+      "native_evidence_sha256": {
+        "runner.py": "d849ab8feb642eb1b988f9a6d82558491b7ebef4c63768fb4fa132f49edf3804",
+        "checkpoint.json": "8f5de328c031f43fb53b98104dfe384ba972eade408dcc42a5733d7fa7a5a0f9",
+        "result.json": "30fa17add06a4ffd90baca365a8a3c8689056932174501f5ce1d7e9d78cf04c0",
+        "run.log": "fd7870b859ec69900bff340d7202eafda4973a4d6daaf5b33a765f7aaa7459d1",
+        "generation-0.json": "e22f38bb8e9372515e83a4a0af4807b40c18eb09ce804f33d9b09023ee256bb7",
+        "generation-1.json": "cde066207c5acf0c50abcfb49fa1c9077b78f100df671943ac8e277d14b8d9bd",
+        "driver.dart": "911183b5d9ee8ec80769836f477a293dadb66e20cc0c5d5e44314415889749a8",
+        "verify_native.py": "68297f66fc4e32a173b17da2594872334d59ba2b88b7d5878b5ee8905f9b89e5",
+        "study_adjudicate.py": "ccf31107cced115bb7a417407a2b7cfa1498845ce10899b14a1f3ca533a406e6",
+        "study_native_diagnostics.py": "325afe73985b414a23ab3858ad4abc656351258bb3c19e49bd6c665761031430",
+        "harness.dart": "102be09eb8043ce9bb496156d9f37b1834c3084ddf58fef073e7c25cdc3c55d5",
+        "study_report.py": "7109d2e53a8c07b8f00299b749a4c758530e51f38a2d444f4600ae6ef94e7462",
+        "build_native.py": "59ee4e7b94a1445e2c8effadfe4c0510c9c189df0278c7ede6e87f1807bf38ee"
+      },
+      "source_pins": {
+        "runner.py": "d849ab8feb642eb1b988f9a6d82558491b7ebef4c63768fb4fa132f49edf3804",
+        "harness.dart": "102be09eb8043ce9bb496156d9f37b1834c3084ddf58fef073e7c25cdc3c55d5",
+        "driver.dart": "911183b5d9ee8ec80769836f477a293dadb66e20cc0c5d5e44314415889749a8",
+        "build_native.py": "59ee4e7b94a1445e2c8effadfe4c0510c9c189df0278c7ede6e87f1807bf38ee",
+        "verify_native.py": "68297f66fc4e32a173b17da2594872334d59ba2b88b7d5878b5ee8905f9b89e5",
+        "study_adjudicate.py": "ccf31107cced115bb7a417407a2b7cfa1498845ce10899b14a1f3ca533a406e6",
+        "study_report.py": "7109d2e53a8c07b8f00299b749a4c758530e51f38a2d444f4600ae6ef94e7462",
+        "study_native_diagnostics.py": "325afe73985b414a23ab3858ad4abc656351258bb3c19e49bd6c665761031430"
+      },
+      "generations": {
+        "generation-0.json": {
+          "size": 853,
+          "sha256": "e22f38bb8e9372515e83a4a0af4807b40c18eb09ce804f33d9b09023ee256bb7"
+        },
+        "generation-1.json": {
+          "size": 963,
+          "sha256": "cde066207c5acf0c50abcfb49fa1c9077b78f100df671943ac8e277d14b8d9bd"
+        }
+      },
+      "checkpoint_sha256": "8f5de328c031f43fb53b98104dfe384ba972eade408dcc42a5733d7fa7a5a0f9"
+    },
+    {
+      "label": "ios-phone",
+      "scenario": "runtime-save-hold-afterRename",
+      "run_id": "v3b00-ios-phone-save-afterRename",
+      "status": "expected-interrupted",
+      "verification": "/Users/csys/Desktop/ibicot/idle/release/native-proof/current-runtime-ios-phone-20261023T043612069360Z/verification.json",
+      "verification_sha256": "60757cb47ed0c3b8c19aec808bed2143ef7962e79be1fef7b2d8ed8f33b24603",
+      "predecessor": null,
+      "native_evidence_sha256": {
+        "runner.py": "d849ab8feb642eb1b988f9a6d82558491b7ebef4c63768fb4fa132f49edf3804",
+        "checkpoint.json": "21d33499be8e0c0db754c065886e658d57de6557211a495bd39a745f8a125c57",
+        "run.log": "a0cad3b70becac1a672097d0b39137ac1957c124117a6a0d1efbf9b3554722d5",
+        "generation-0.json": "5422e3d8301cffa177f02f95ab1371e086248c6e576096d22716d8c6518c5a09",
+        "generation-1.json": "e25239a1ac7433334d9604382dda6e90da38564bc144a99f3d33dac657bba05b",
+        "driver.dart": "911183b5d9ee8ec80769836f477a293dadb66e20cc0c5d5e44314415889749a8",
+        "verify_native.py": "68297f66fc4e32a173b17da2594872334d59ba2b88b7d5878b5ee8905f9b89e5",
+        "study_adjudicate.py": "ccf31107cced115bb7a417407a2b7cfa1498845ce10899b14a1f3ca533a406e6",
+        "pre-kill.log": "7cb79ca7851fada324a2ab709e95e82479e9f7e3e45a1807b2901cf03d020d70",
+        "study_native_diagnostics.py": "325afe73985b414a23ab3858ad4abc656351258bb3c19e49bd6c665761031430",
+        "harness.dart": "102be09eb8043ce9bb496156d9f37b1834c3084ddf58fef073e7c25cdc3c55d5",
+        "study_report.py": "7109d2e53a8c07b8f00299b749a4c758530e51f38a2d444f4600ae6ef94e7462",
+        "build_native.py": "59ee4e7b94a1445e2c8effadfe4c0510c9c189df0278c7ede6e87f1807bf38ee"
+      },
+      "source_pins": {
+        "runner.py": "d849ab8feb642eb1b988f9a6d82558491b7ebef4c63768fb4fa132f49edf3804",
+        "harness.dart": "102be09eb8043ce9bb496156d9f37b1834c3084ddf58fef073e7c25cdc3c55d5",
+        "driver.dart": "911183b5d9ee8ec80769836f477a293dadb66e20cc0c5d5e44314415889749a8",
+        "build_native.py": "59ee4e7b94a1445e2c8effadfe4c0510c9c189df0278c7ede6e87f1807bf38ee",
+        "verify_native.py": "68297f66fc4e32a173b17da2594872334d59ba2b88b7d5878b5ee8905f9b89e5",
+        "study_adjudicate.py": "ccf31107cced115bb7a417407a2b7cfa1498845ce10899b14a1f3ca533a406e6",
+        "study_report.py": "7109d2e53a8c07b8f00299b749a4c758530e51f38a2d444f4600ae6ef94e7462",
+        "study_native_diagnostics.py": "325afe73985b414a23ab3858ad4abc656351258bb3c19e49bd6c665761031430"
+      },
+      "generations": {
+        "generation-0.json": {
+          "size": 853,
+          "sha256": "5422e3d8301cffa177f02f95ab1371e086248c6e576096d22716d8c6518c5a09"
+        },
+        "generation-1.json": {
+          "size": 963,
+          "sha256": "e25239a1ac7433334d9604382dda6e90da38564bc144a99f3d33dac657bba05b"
+        }
+      },
+      "checkpoint_sha256": "21d33499be8e0c0db754c065886e658d57de6557211a495bd39a745f8a125c57"
+    },
+    {
+      "label": "ios-phone",
+      "scenario": "runtime-save-recover-afterRename",
+      "run_id": "v3b00-ios-phone-save-afterRename",
+      "status": "passed",
+      "verification": "/Users/csys/Desktop/ibicot/idle/release/native-proof/current-runtime-ios-phone-20261023T043658778696Z/verification.json",
+      "verification_sha256": "342e3f7deedf2afa425a3c717a007e85658b9ca0cac9db972caacf4b0ea1a4b8",
+      "predecessor": {
+        "path": "/Users/csys/Desktop/ibicot/idle/release/native-proof/current-runtime-ios-phone-20261023T043612069360Z/verification.json",
+        "sha256": "60757cb47ed0c3b8c19aec808bed2143ef7962e79be1fef7b2d8ed8f33b24603",
+        "verification_id": "current-runtime-ios-phone-20261023T043612069360Z"
+      },
+      "native_evidence_sha256": {
+        "runner.py": "d849ab8feb642eb1b988f9a6d82558491b7ebef4c63768fb4fa132f49edf3804",
+        "checkpoint.json": "21d33499be8e0c0db754c065886e658d57de6557211a495bd39a745f8a125c57",
+        "result.json": "cbc1c8a5e2c131c258b6b4f4fc4f3a305d374c273aa6ee2d383c4735890fed1f",
+        "run.log": "ff87eb6a713a056074378f2986329c41d356e36767c1017d813ed98332959f51",
+        "generation-0.json": "cb36a6d72a93c7ea009bc95e4647fc714fc90208fda0626d3404197a7a1a99e1",
+        "generation-1.json": "e25239a1ac7433334d9604382dda6e90da38564bc144a99f3d33dac657bba05b",
+        "driver.dart": "911183b5d9ee8ec80769836f477a293dadb66e20cc0c5d5e44314415889749a8",
+        "verify_native.py": "68297f66fc4e32a173b17da2594872334d59ba2b88b7d5878b5ee8905f9b89e5",
+        "study_adjudicate.py": "ccf31107cced115bb7a417407a2b7cfa1498845ce10899b14a1f3ca533a406e6",
+        "study_native_diagnostics.py": "325afe73985b414a23ab3858ad4abc656351258bb3c19e49bd6c665761031430",
+        "harness.dart": "102be09eb8043ce9bb496156d9f37b1834c3084ddf58fef073e7c25cdc3c55d5",
+        "study_report.py": "7109d2e53a8c07b8f00299b749a4c758530e51f38a2d444f4600ae6ef94e7462",
+        "build_native.py": "59ee4e7b94a1445e2c8effadfe4c0510c9c189df0278c7ede6e87f1807bf38ee"
+      },
+      "source_pins": {
+        "runner.py": "d849ab8feb642eb1b988f9a6d82558491b7ebef4c63768fb4fa132f49edf3804",
+        "harness.dart": "102be09eb8043ce9bb496156d9f37b1834c3084ddf58fef073e7c25cdc3c55d5",
+        "driver.dart": "911183b5d9ee8ec80769836f477a293dadb66e20cc0c5d5e44314415889749a8",
+        "build_native.py": "59ee4e7b94a1445e2c8effadfe4c0510c9c189df0278c7ede6e87f1807bf38ee",
+        "verify_native.py": "68297f66fc4e32a173b17da2594872334d59ba2b88b7d5878b5ee8905f9b89e5",
+        "study_adjudicate.py": "ccf31107cced115bb7a417407a2b7cfa1498845ce10899b14a1f3ca533a406e6",
+        "study_report.py": "7109d2e53a8c07b8f00299b749a4c758530e51f38a2d444f4600ae6ef94e7462",
+        "study_native_diagnostics.py": "325afe73985b414a23ab3858ad4abc656351258bb3c19e49bd6c665761031430"
+      },
+      "generations": {
+        "generation-0.json": {
+          "size": 963,
+          "sha256": "cb36a6d72a93c7ea009bc95e4647fc714fc90208fda0626d3404197a7a1a99e1"
+        },
+        "generation-1.json": {
+          "size": 963,
+          "sha256": "e25239a1ac7433334d9604382dda6e90da38564bc144a99f3d33dac657bba05b"
+        }
+      },
+      "checkpoint_sha256": "21d33499be8e0c0db754c065886e658d57de6557211a495bd39a745f8a125c57"
+    },
+    {
+      "label": "ios-phone",
+      "scenario": "runtime-transition-start",
+      "run_id": "v3b00-ios-phone-transition",
+      "status": "passed",
+      "verification": "/Users/csys/Desktop/ibicot/idle/release/native-proof/current-runtime-ios-phone-20261023T043748008763Z/verification.json",
+      "verification_sha256": "14f5561ab045e10848969f7ff46a625d6efc1adcecaf87c06ace59139466c635",
+      "predecessor": null,
+      "native_evidence_sha256": {
+        "runner.py": "d849ab8feb642eb1b988f9a6d82558491b7ebef4c63768fb4fa132f49edf3804",
+        "checkpoint.json": "4b8c84d48c15d1cffa0e52ae7c194b44d2aecee9245a771f207dbafdd18cdd8b",
+        "result.json": "2a801cdbe3180549963e5cc2ded4e30071fb7a790f1b8ffadd3e00132948b3ec",
+        "run.log": "784b663a54467333ef8b0c38f6c44a1427cc3b7829a99bba5f1c31cbf8984e04",
+        "generation-0.json": "fa928b570a28c27dc9aeea54a461b06f2daa12d065b0f9aa0d9274bcb9bd631e",
+        "ios-phone-runtime-transition-start-harbor.png": "6573193b5971aabf1e997d56ace4b52abea8e8a7ee629a8e223bc2fc412959ac",
+        "generation-1.json": "99446ec53fa5a83ded1b62bb3a9112a76aadac677ccf40e20a686938af30886c",
+        "driver.dart": "911183b5d9ee8ec80769836f477a293dadb66e20cc0c5d5e44314415889749a8",
+        "verify_native.py": "68297f66fc4e32a173b17da2594872334d59ba2b88b7d5878b5ee8905f9b89e5",
+        "study_adjudicate.py": "ccf31107cced115bb7a417407a2b7cfa1498845ce10899b14a1f3ca533a406e6",
+        "study_native_diagnostics.py": "325afe73985b414a23ab3858ad4abc656351258bb3c19e49bd6c665761031430",
+        "harness.dart": "102be09eb8043ce9bb496156d9f37b1834c3084ddf58fef073e7c25cdc3c55d5",
+        "study_report.py": "7109d2e53a8c07b8f00299b749a4c758530e51f38a2d444f4600ae6ef94e7462",
+        "build_native.py": "59ee4e7b94a1445e2c8effadfe4c0510c9c189df0278c7ede6e87f1807bf38ee"
+      },
+      "source_pins": {
+        "runner.py": "d849ab8feb642eb1b988f9a6d82558491b7ebef4c63768fb4fa132f49edf3804",
+        "harness.dart": "102be09eb8043ce9bb496156d9f37b1834c3084ddf58fef073e7c25cdc3c55d5",
+        "driver.dart": "911183b5d9ee8ec80769836f477a293dadb66e20cc0c5d5e44314415889749a8",
+        "build_native.py": "59ee4e7b94a1445e2c8effadfe4c0510c9c189df0278c7ede6e87f1807bf38ee",
+        "verify_native.py": "68297f66fc4e32a173b17da2594872334d59ba2b88b7d5878b5ee8905f9b89e5",
+        "study_adjudicate.py": "ccf31107cced115bb7a417407a2b7cfa1498845ce10899b14a1f3ca533a406e6",
+        "study_report.py": "7109d2e53a8c07b8f00299b749a4c758530e51f38a2d444f4600ae6ef94e7462",
+        "study_native_diagnostics.py": "325afe73985b414a23ab3858ad4abc656351258bb3c19e49bd6c665761031430"
+      },
+      "generations": {
+        "generation-0.json": {
+          "size": 5071,
+          "sha256": "fa928b570a28c27dc9aeea54a461b06f2daa12d065b0f9aa0d9274bcb9bd631e"
+        },
+        "generation-1.json": {
+          "size": 5071,
+          "sha256": "99446ec53fa5a83ded1b62bb3a9112a76aadac677ccf40e20a686938af30886c"
+        }
+      },
+      "checkpoint_sha256": "4b8c84d48c15d1cffa0e52ae7c194b44d2aecee9245a771f207dbafdd18cdd8b"
+    },
+    {
+      "label": "ios-phone",
+      "scenario": "runtime-transition-reopen",
+      "run_id": "v3b00-ios-phone-transition",
+      "status": "passed",
+      "verification": "/Users/csys/Desktop/ibicot/idle/release/native-proof/current-runtime-ios-phone-20261023T043836348648Z/verification.json",
+      "verification_sha256": "1a083062bd4142e0b81fb72d13d73ecb7273019d6c01daee000d65d1db704499",
+      "predecessor": {
+        "path": "/Users/csys/Desktop/ibicot/idle/release/native-proof/current-runtime-ios-phone-20261023T043748008763Z/verification.json",
+        "sha256": "14f5561ab045e10848969f7ff46a625d6efc1adcecaf87c06ace59139466c635",
+        "verification_id": "current-runtime-ios-phone-20261023T043748008763Z"
+      },
+      "native_evidence_sha256": {
+        "runner.py": "d849ab8feb642eb1b988f9a6d82558491b7ebef4c63768fb4fa132f49edf3804",
+        "checkpoint.json": "4b8c84d48c15d1cffa0e52ae7c194b44d2aecee9245a771f207dbafdd18cdd8b",
+        "result.json": "a36fa755c3ebed06ab6444a0f5cb343eae5e6cf3b0c65d8a8dc7145e41c5060f",
+        "ios-phone-runtime-transition-reopen-harbor.png": "fef92b4a46f5c84abc0be83839074e1d5c5be2d37157c4ce545f63edf838c76e",
+        "run.log": "23ad02e4cc986935d30b1567aff785ce68bb0a55e1becea8e1973c83dc59b587",
+        "generation-0.json": "9bce6f9abee1d3be7cb73cf009e7da6a43783d0c59839be8a277e4438925b838",
+        "generation-1.json": "676e182f84086ccae30f180a7fc731ff54cecf2b54cb6bdcc31993a6b6b289af",
+        "driver.dart": "911183b5d9ee8ec80769836f477a293dadb66e20cc0c5d5e44314415889749a8",
+        "verify_native.py": "68297f66fc4e32a173b17da2594872334d59ba2b88b7d5878b5ee8905f9b89e5",
+        "study_adjudicate.py": "ccf31107cced115bb7a417407a2b7cfa1498845ce10899b14a1f3ca533a406e6",
+        "study_native_diagnostics.py": "325afe73985b414a23ab3858ad4abc656351258bb3c19e49bd6c665761031430",
+        "harness.dart": "102be09eb8043ce9bb496156d9f37b1834c3084ddf58fef073e7c25cdc3c55d5",
+        "study_report.py": "7109d2e53a8c07b8f00299b749a4c758530e51f38a2d444f4600ae6ef94e7462",
+        "build_native.py": "59ee4e7b94a1445e2c8effadfe4c0510c9c189df0278c7ede6e87f1807bf38ee"
+      },
+      "source_pins": {
+        "runner.py": "d849ab8feb642eb1b988f9a6d82558491b7ebef4c63768fb4fa132f49edf3804",
+        "harness.dart": "102be09eb8043ce9bb496156d9f37b1834c3084ddf58fef073e7c25cdc3c55d5",
+        "driver.dart": "911183b5d9ee8ec80769836f477a293dadb66e20cc0c5d5e44314415889749a8",
+        "build_native.py": "59ee4e7b94a1445e2c8effadfe4c0510c9c189df0278c7ede6e87f1807bf38ee",
+        "verify_native.py": "68297f66fc4e32a173b17da2594872334d59ba2b88b7d5878b5ee8905f9b89e5",
+        "study_adjudicate.py": "ccf31107cced115bb7a417407a2b7cfa1498845ce10899b14a1f3ca533a406e6",
+        "study_report.py": "7109d2e53a8c07b8f00299b749a4c758530e51f38a2d444f4600ae6ef94e7462",
+        "study_native_diagnostics.py": "325afe73985b414a23ab3858ad4abc656351258bb3c19e49bd6c665761031430"
+      },
+      "generations": {
+        "generation-0.json": {
+          "size": 5090,
+          "sha256": "9bce6f9abee1d3be7cb73cf009e7da6a43783d0c59839be8a277e4438925b838"
+        },
+        "generation-1.json": {
+          "size": 5090,
+          "sha256": "676e182f84086ccae30f180a7fc731ff54cecf2b54cb6bdcc31993a6b6b289af"
+        }
+      },
+      "checkpoint_sha256": "4b8c84d48c15d1cffa0e52ae7c194b44d2aecee9245a771f207dbafdd18cdd8b"
+    },
+    {
+      "label": "android",
+      "scenario": "runtime-lock-exclusion",
+      "run_id": "v3b00-android-lock",
+      "status": "passed",
+      "verification": "/Users/csys/Desktop/ibicot/idle/release/native-proof/current-runtime-android-20261023T051503798367Z/verification.json",
+      "verification_sha256": "385720dd6b747a003b59c69f22b9ea49e6ab155f3fcea5cf4b2e392264d4ff45",
+      "predecessor": null,
+      "native_evidence_sha256": {
+        "runner.py": "d849ab8feb642eb1b988f9a6d82558491b7ebef4c63768fb4fa132f49edf3804",
+        "result.json": "9933622681022f596fd6a4be3aae91593efde191f1a2bdbe353e50f16e9ac1fd",
+        "run.log": "66dda6736281bb7133330dde2e1cce2e6496055d71127f6ee1d7c1f14c5854ff",
+        "driver.dart": "911183b5d9ee8ec80769836f477a293dadb66e20cc0c5d5e44314415889749a8",
+        "verify_native.py": "68297f66fc4e32a173b17da2594872334d59ba2b88b7d5878b5ee8905f9b89e5",
+        "study_adjudicate.py": "ccf31107cced115bb7a417407a2b7cfa1498845ce10899b14a1f3ca533a406e6",
+        "study_native_diagnostics.py": "325afe73985b414a23ab3858ad4abc656351258bb3c19e49bd6c665761031430",
+        "harness.dart": "102be09eb8043ce9bb496156d9f37b1834c3084ddf58fef073e7c25cdc3c55d5",
+        "study_report.py": "7109d2e53a8c07b8f00299b749a4c758530e51f38a2d444f4600ae6ef94e7462",
+        "build_native.py": "59ee4e7b94a1445e2c8effadfe4c0510c9c189df0278c7ede6e87f1807bf38ee"
+      },
+      "source_pins": {
+        "runner.py": "d849ab8feb642eb1b988f9a6d82558491b7ebef4c63768fb4fa132f49edf3804",
+        "harness.dart": "102be09eb8043ce9bb496156d9f37b1834c3084ddf58fef073e7c25cdc3c55d5",
+        "driver.dart": "911183b5d9ee8ec80769836f477a293dadb66e20cc0c5d5e44314415889749a8",
+        "build_native.py": "59ee4e7b94a1445e2c8effadfe4c0510c9c189df0278c7ede6e87f1807bf38ee",
+        "verify_native.py": "68297f66fc4e32a173b17da2594872334d59ba2b88b7d5878b5ee8905f9b89e5",
+        "study_adjudicate.py": "ccf31107cced115bb7a417407a2b7cfa1498845ce10899b14a1f3ca533a406e6",
+        "study_report.py": "7109d2e53a8c07b8f00299b749a4c758530e51f38a2d444f4600ae6ef94e7462",
+        "study_native_diagnostics.py": "325afe73985b414a23ab3858ad4abc656351258bb3c19e49bd6c665761031430"
+      },
+      "generations": {},
+      "checkpoint_sha256": null
+    },
+    {
+      "label": "android",
+      "scenario": "runtime-save-hold-beforeWrite",
+      "run_id": "v3b00-android-probe-fixed-save-beforeWrite",
+      "status": "expected-interrupted",
+      "verification": "/Users/csys/Desktop/ibicot/idle/release/native-proof/current-runtime-android-20261023T053502355102Z/verification.json",
+      "verification_sha256": "2538785acc55c780325b64a75749b140ab154c1ca4e289322e1cdb51ebe0196b",
+      "predecessor": null,
+      "native_evidence_sha256": {
+        "runner.py": "d1ea6d05085f05a0a3bb6c768531ef7659272e41993858c0551618f74ce5c847",
+        "checkpoint.json": "9f22021d0be52cc7656cc556155834d3fc66d18fd8b194e0a52851dcbc98f4d9",
+        "run.log": "76a7ed6dcc1902cf66d2abba1b3906c0456cbce2d658377be6ccd80ef8270049",
+        "generation-0.json": "6d9c93bfd7d7162618f639d74e71a6a09abffccf2a4a5aa8c941dbdfbb01f31a",
+        "driver.dart": "911183b5d9ee8ec80769836f477a293dadb66e20cc0c5d5e44314415889749a8",
+        "verify_native.py": "68297f66fc4e32a173b17da2594872334d59ba2b88b7d5878b5ee8905f9b89e5",
+        "study_adjudicate.py": "ccf31107cced115bb7a417407a2b7cfa1498845ce10899b14a1f3ca533a406e6",
+        "pre-kill.log": "e09bd74da58e1b78ec9d37d28e6bc4bd69933a0eeb7af70d0beee14eaf62355a",
+        "study_native_diagnostics.py": "325afe73985b414a23ab3858ad4abc656351258bb3c19e49bd6c665761031430",
+        "harness.dart": "102be09eb8043ce9bb496156d9f37b1834c3084ddf58fef073e7c25cdc3c55d5",
+        "study_report.py": "7109d2e53a8c07b8f00299b749a4c758530e51f38a2d444f4600ae6ef94e7462",
+        "build_native.py": "59ee4e7b94a1445e2c8effadfe4c0510c9c189df0278c7ede6e87f1807bf38ee"
+      },
+      "source_pins": {
+        "runner.py": "d1ea6d05085f05a0a3bb6c768531ef7659272e41993858c0551618f74ce5c847",
+        "harness.dart": "102be09eb8043ce9bb496156d9f37b1834c3084ddf58fef073e7c25cdc3c55d5",
+        "driver.dart": "911183b5d9ee8ec80769836f477a293dadb66e20cc0c5d5e44314415889749a8",
+        "build_native.py": "59ee4e7b94a1445e2c8effadfe4c0510c9c189df0278c7ede6e87f1807bf38ee",
+        "verify_native.py": "68297f66fc4e32a173b17da2594872334d59ba2b88b7d5878b5ee8905f9b89e5",
+        "study_adjudicate.py": "ccf31107cced115bb7a417407a2b7cfa1498845ce10899b14a1f3ca533a406e6",
+        "study_report.py": "7109d2e53a8c07b8f00299b749a4c758530e51f38a2d444f4600ae6ef94e7462",
+        "study_native_diagnostics.py": "325afe73985b414a23ab3858ad4abc656351258bb3c19e49bd6c665761031430"
+      },
+      "generations": {
+        "generation-0.json": {
+          "size": 853,
+          "sha256": "6d9c93bfd7d7162618f639d74e71a6a09abffccf2a4a5aa8c941dbdfbb01f31a"
+        },
+        "generation-1.json": {
+          "size": 0,
+          "sha256": null
+        }
+      },
+      "checkpoint_sha256": "9f22021d0be52cc7656cc556155834d3fc66d18fd8b194e0a52851dcbc98f4d9"
+    },
+    {
+      "label": "android",
+      "scenario": "runtime-save-recover-beforeWrite",
+      "run_id": "v3b00-android-probe-fixed-save-beforeWrite",
+      "status": "passed",
+      "verification": "/Users/csys/Desktop/ibicot/idle/release/native-proof/current-runtime-android-20261023T053607041584Z/verification.json",
+      "verification_sha256": "ee5bbb27f0c3983d6e293319b23630b2971c38242dda7dcf8b285919571346e3",
+      "predecessor": {
+        "path": "/Users/csys/Desktop/ibicot/idle/release/native-proof/current-runtime-android-20261023T053502355102Z/verification.json",
+        "sha256": "2538785acc55c780325b64a75749b140ab154c1ca4e289322e1cdb51ebe0196b",
+        "verification_id": "current-runtime-android-20261023T053502355102Z"
+      },
+      "native_evidence_sha256": {
+        "runner.py": "d1ea6d05085f05a0a3bb6c768531ef7659272e41993858c0551618f74ce5c847",
+        "checkpoint.json": "9f22021d0be52cc7656cc556155834d3fc66d18fd8b194e0a52851dcbc98f4d9",
+        "result.json": "529251fa88fad1bdfa817b271a1b235513c1cf2e9b4352caddeda3b922b52059",
+        "run.log": "1e140114e59969fce24f74b43bb1ac4c6d0c016ed9938354167aa5ea46e4d2f4",
+        "generation-0.json": "6d9c93bfd7d7162618f639d74e71a6a09abffccf2a4a5aa8c941dbdfbb01f31a",
+        "generation-1.json": "9e93f5dd4fb80aa360a116e58f1462c07a455df6a46fa78547b6ef643041c909",
+        "driver.dart": "911183b5d9ee8ec80769836f477a293dadb66e20cc0c5d5e44314415889749a8",
+        "verify_native.py": "68297f66fc4e32a173b17da2594872334d59ba2b88b7d5878b5ee8905f9b89e5",
+        "study_adjudicate.py": "ccf31107cced115bb7a417407a2b7cfa1498845ce10899b14a1f3ca533a406e6",
+        "study_native_diagnostics.py": "325afe73985b414a23ab3858ad4abc656351258bb3c19e49bd6c665761031430",
+        "harness.dart": "102be09eb8043ce9bb496156d9f37b1834c3084ddf58fef073e7c25cdc3c55d5",
+        "study_report.py": "7109d2e53a8c07b8f00299b749a4c758530e51f38a2d444f4600ae6ef94e7462",
+        "build_native.py": "59ee4e7b94a1445e2c8effadfe4c0510c9c189df0278c7ede6e87f1807bf38ee"
+      },
+      "source_pins": {
+        "runner.py": "d1ea6d05085f05a0a3bb6c768531ef7659272e41993858c0551618f74ce5c847",
+        "harness.dart": "102be09eb8043ce9bb496156d9f37b1834c3084ddf58fef073e7c25cdc3c55d5",
+        "driver.dart": "911183b5d9ee8ec80769836f477a293dadb66e20cc0c5d5e44314415889749a8",
+        "build_native.py": "59ee4e7b94a1445e2c8effadfe4c0510c9c189df0278c7ede6e87f1807bf38ee",
+        "verify_native.py": "68297f66fc4e32a173b17da2594872334d59ba2b88b7d5878b5ee8905f9b89e5",
+        "study_adjudicate.py": "ccf31107cced115bb7a417407a2b7cfa1498845ce10899b14a1f3ca533a406e6",
+        "study_report.py": "7109d2e53a8c07b8f00299b749a4c758530e51f38a2d444f4600ae6ef94e7462",
+        "study_native_diagnostics.py": "325afe73985b414a23ab3858ad4abc656351258bb3c19e49bd6c665761031430"
+      },
+      "generations": {
+        "generation-0.json": {
+          "size": 853,
+          "sha256": "6d9c93bfd7d7162618f639d74e71a6a09abffccf2a4a5aa8c941dbdfbb01f31a"
+        },
+        "generation-1.json": {
+          "size": 963,
+          "sha256": "9e93f5dd4fb80aa360a116e58f1462c07a455df6a46fa78547b6ef643041c909"
+        }
+      },
+      "checkpoint_sha256": "9f22021d0be52cc7656cc556155834d3fc66d18fd8b194e0a52851dcbc98f4d9"
+    },
+    {
+      "label": "android",
+      "scenario": "runtime-save-hold-afterFlush",
+      "run_id": "v3b00-android-probe-fixed-save-afterFlush",
+      "status": "expected-interrupted",
+      "verification": "/Users/csys/Desktop/ibicot/idle/release/native-proof/current-runtime-android-20261023T053650354573Z/verification.json",
+      "verification_sha256": "549ce8ceb25aa65387dd7bd28e285734deedddbbbb47cdd227c74eca3de9b95e",
+      "predecessor": null,
+      "native_evidence_sha256": {
+        "runner.py": "d1ea6d05085f05a0a3bb6c768531ef7659272e41993858c0551618f74ce5c847",
+        "checkpoint.json": "00392ba03bf109133e4b168caa7298ff27684834197f91adde9affb2a1d138e1",
+        "run.log": "9e2b676424dd583e882bf52637740bd26a81eff973b369b26ccd4bbc0c7f8c57",
+        "generation-0.json": "3f73df5f1eeb24fd1c584ad8a5c42e6c5611adbc423e5d8c3c76bbe5a29521ec",
+        "driver.dart": "911183b5d9ee8ec80769836f477a293dadb66e20cc0c5d5e44314415889749a8",
+        "verify_native.py": "68297f66fc4e32a173b17da2594872334d59ba2b88b7d5878b5ee8905f9b89e5",
+        "study_adjudicate.py": "ccf31107cced115bb7a417407a2b7cfa1498845ce10899b14a1f3ca533a406e6",
+        "pre-kill.log": "9751c085317fde9eb2d5f12cdf97c6b6ccc2fa12ba9a414ee2afd25771bde8c0",
+        "study_native_diagnostics.py": "325afe73985b414a23ab3858ad4abc656351258bb3c19e49bd6c665761031430",
+        "harness.dart": "102be09eb8043ce9bb496156d9f37b1834c3084ddf58fef073e7c25cdc3c55d5",
+        "study_report.py": "7109d2e53a8c07b8f00299b749a4c758530e51f38a2d444f4600ae6ef94e7462",
+        "build_native.py": "59ee4e7b94a1445e2c8effadfe4c0510c9c189df0278c7ede6e87f1807bf38ee"
+      },
+      "source_pins": {
+        "runner.py": "d1ea6d05085f05a0a3bb6c768531ef7659272e41993858c0551618f74ce5c847",
+        "harness.dart": "102be09eb8043ce9bb496156d9f37b1834c3084ddf58fef073e7c25cdc3c55d5",
+        "driver.dart": "911183b5d9ee8ec80769836f477a293dadb66e20cc0c5d5e44314415889749a8",
+        "build_native.py": "59ee4e7b94a1445e2c8effadfe4c0510c9c189df0278c7ede6e87f1807bf38ee",
+        "verify_native.py": "68297f66fc4e32a173b17da2594872334d59ba2b88b7d5878b5ee8905f9b89e5",
+        "study_adjudicate.py": "ccf31107cced115bb7a417407a2b7cfa1498845ce10899b14a1f3ca533a406e6",
+        "study_report.py": "7109d2e53a8c07b8f00299b749a4c758530e51f38a2d444f4600ae6ef94e7462",
+        "study_native_diagnostics.py": "325afe73985b414a23ab3858ad4abc656351258bb3c19e49bd6c665761031430"
+      },
+      "generations": {
+        "generation-0.json": {
+          "size": 853,
+          "sha256": "3f73df5f1eeb24fd1c584ad8a5c42e6c5611adbc423e5d8c3c76bbe5a29521ec"
+        },
+        "generation-1.json": {
+          "size": 0,
+          "sha256": null
+        }
+      },
+      "checkpoint_sha256": "00392ba03bf109133e4b168caa7298ff27684834197f91adde9affb2a1d138e1"
+    },
+    {
+      "label": "android",
+      "scenario": "runtime-save-recover-afterFlush",
+      "run_id": "v3b00-android-probe-fixed-save-afterFlush",
+      "status": "passed",
+      "verification": "/Users/csys/Desktop/ibicot/idle/release/native-proof/current-runtime-android-20261023T053732277809Z/verification.json",
+      "verification_sha256": "c23cee4ef83226370879e6ffb7f2761f912ecaf81822095c305bc75be55a8c3d",
+      "predecessor": {
+        "path": "/Users/csys/Desktop/ibicot/idle/release/native-proof/current-runtime-android-20261023T053650354573Z/verification.json",
+        "sha256": "549ce8ceb25aa65387dd7bd28e285734deedddbbbb47cdd227c74eca3de9b95e",
+        "verification_id": "current-runtime-android-20261023T053650354573Z"
+      },
+      "native_evidence_sha256": {
+        "runner.py": "d1ea6d05085f05a0a3bb6c768531ef7659272e41993858c0551618f74ce5c847",
+        "checkpoint.json": "00392ba03bf109133e4b168caa7298ff27684834197f91adde9affb2a1d138e1",
+        "result.json": "51e11405412f53415a93fc5515fcf731198323dd9520ef9b20eeaf092e8d7aca",
+        "run.log": "33365d375969e73d96bb56b5dff0d1e3fe2c47c330505d8a729cda1f894acd5e",
+        "generation-0.json": "3f73df5f1eeb24fd1c584ad8a5c42e6c5611adbc423e5d8c3c76bbe5a29521ec",
+        "generation-1.json": "87e448f650e80b2781b92a75a6e4673211ae39c4ecd722feb3e3460db0a7d1de",
+        "driver.dart": "911183b5d9ee8ec80769836f477a293dadb66e20cc0c5d5e44314415889749a8",
+        "verify_native.py": "68297f66fc4e32a173b17da2594872334d59ba2b88b7d5878b5ee8905f9b89e5",
+        "study_adjudicate.py": "ccf31107cced115bb7a417407a2b7cfa1498845ce10899b14a1f3ca533a406e6",
+        "study_native_diagnostics.py": "325afe73985b414a23ab3858ad4abc656351258bb3c19e49bd6c665761031430",
+        "harness.dart": "102be09eb8043ce9bb496156d9f37b1834c3084ddf58fef073e7c25cdc3c55d5",
+        "study_report.py": "7109d2e53a8c07b8f00299b749a4c758530e51f38a2d444f4600ae6ef94e7462",
+        "build_native.py": "59ee4e7b94a1445e2c8effadfe4c0510c9c189df0278c7ede6e87f1807bf38ee"
+      },
+      "source_pins": {
+        "runner.py": "d1ea6d05085f05a0a3bb6c768531ef7659272e41993858c0551618f74ce5c847",
+        "harness.dart": "102be09eb8043ce9bb496156d9f37b1834c3084ddf58fef073e7c25cdc3c55d5",
+        "driver.dart": "911183b5d9ee8ec80769836f477a293dadb66e20cc0c5d5e44314415889749a8",
+        "build_native.py": "59ee4e7b94a1445e2c8effadfe4c0510c9c189df0278c7ede6e87f1807bf38ee",
+        "verify_native.py": "68297f66fc4e32a173b17da2594872334d59ba2b88b7d5878b5ee8905f9b89e5",
+        "study_adjudicate.py": "ccf31107cced115bb7a417407a2b7cfa1498845ce10899b14a1f3ca533a406e6",
+        "study_report.py": "7109d2e53a8c07b8f00299b749a4c758530e51f38a2d444f4600ae6ef94e7462",
+        "study_native_diagnostics.py": "325afe73985b414a23ab3858ad4abc656351258bb3c19e49bd6c665761031430"
+      },
+      "generations": {
+        "generation-0.json": {
+          "size": 853,
+          "sha256": "3f73df5f1eeb24fd1c584ad8a5c42e6c5611adbc423e5d8c3c76bbe5a29521ec"
+        },
+        "generation-1.json": {
+          "size": 963,
+          "sha256": "87e448f650e80b2781b92a75a6e4673211ae39c4ecd722feb3e3460db0a7d1de"
+        }
+      },
+      "checkpoint_sha256": "00392ba03bf109133e4b168caa7298ff27684834197f91adde9affb2a1d138e1"
+    },
+    {
+      "label": "android",
+      "scenario": "runtime-save-hold-afterRename",
+      "run_id": "v3b00-android-probe-fixed-save-afterRename",
+      "status": "expected-interrupted",
+      "verification": "/Users/csys/Desktop/ibicot/idle/release/native-proof/current-runtime-android-20261023T053814623553Z/verification.json",
+      "verification_sha256": "824fb34cfbc19950f64d5702265555a873087553fa3f208d0832868fb952c1d4",
+      "predecessor": null,
+      "native_evidence_sha256": {
+        "runner.py": "d1ea6d05085f05a0a3bb6c768531ef7659272e41993858c0551618f74ce5c847",
+        "checkpoint.json": "cd289742ac90142d295c784d7b03fdb32ed147b493950d9105e7ce89ca5f222d",
+        "run.log": "3afd58048d8781ad98fe8c4ad33e5ddfab1fbd05a4b95546c1b275733a55e1b2",
+        "generation-0.json": "9180e24f45d68748c2f847d67102df565bbb354d32713619f7ab533693539dc3",
+        "generation-1.json": "1b656195183e268735384af1bee38aba3579850ea55dbe7ea14649dd04b8e708",
+        "driver.dart": "911183b5d9ee8ec80769836f477a293dadb66e20cc0c5d5e44314415889749a8",
+        "verify_native.py": "68297f66fc4e32a173b17da2594872334d59ba2b88b7d5878b5ee8905f9b89e5",
+        "study_adjudicate.py": "ccf31107cced115bb7a417407a2b7cfa1498845ce10899b14a1f3ca533a406e6",
+        "pre-kill.log": "afd2ace8777df7407f0886b2d4f24dbb579e9a3f33d404edca20e31c51a4bc38",
+        "study_native_diagnostics.py": "325afe73985b414a23ab3858ad4abc656351258bb3c19e49bd6c665761031430",
+        "harness.dart": "102be09eb8043ce9bb496156d9f37b1834c3084ddf58fef073e7c25cdc3c55d5",
+        "study_report.py": "7109d2e53a8c07b8f00299b749a4c758530e51f38a2d444f4600ae6ef94e7462",
+        "build_native.py": "59ee4e7b94a1445e2c8effadfe4c0510c9c189df0278c7ede6e87f1807bf38ee"
+      },
+      "source_pins": {
+        "runner.py": "d1ea6d05085f05a0a3bb6c768531ef7659272e41993858c0551618f74ce5c847",
+        "harness.dart": "102be09eb8043ce9bb496156d9f37b1834c3084ddf58fef073e7c25cdc3c55d5",
+        "driver.dart": "911183b5d9ee8ec80769836f477a293dadb66e20cc0c5d5e44314415889749a8",
+        "build_native.py": "59ee4e7b94a1445e2c8effadfe4c0510c9c189df0278c7ede6e87f1807bf38ee",
+        "verify_native.py": "68297f66fc4e32a173b17da2594872334d59ba2b88b7d5878b5ee8905f9b89e5",
+        "study_adjudicate.py": "ccf31107cced115bb7a417407a2b7cfa1498845ce10899b14a1f3ca533a406e6",
+        "study_report.py": "7109d2e53a8c07b8f00299b749a4c758530e51f38a2d444f4600ae6ef94e7462",
+        "study_native_diagnostics.py": "325afe73985b414a23ab3858ad4abc656351258bb3c19e49bd6c665761031430"
+      },
+      "generations": {
+        "generation-0.json": {
+          "size": 853,
+          "sha256": "9180e24f45d68748c2f847d67102df565bbb354d32713619f7ab533693539dc3"
+        },
+        "generation-1.json": {
+          "size": 963,
+          "sha256": "1b656195183e268735384af1bee38aba3579850ea55dbe7ea14649dd04b8e708"
+        }
+      },
+      "checkpoint_sha256": "cd289742ac90142d295c784d7b03fdb32ed147b493950d9105e7ce89ca5f222d"
+    },
+    {
+      "label": "android",
+      "scenario": "runtime-save-recover-afterRename",
+      "run_id": "v3b00-android-probe-fixed-save-afterRename",
+      "status": "passed",
+      "verification": "/Users/csys/Desktop/ibicot/idle/release/native-proof/current-runtime-android-20261023T053853972412Z/verification.json",
+      "verification_sha256": "1a4930ca896db5c52c9aa1446165e97e3c6ca569816e86368c3c53ebfb3fba8c",
+      "predecessor": {
+        "path": "/Users/csys/Desktop/ibicot/idle/release/native-proof/current-runtime-android-20261023T053814623553Z/verification.json",
+        "sha256": "824fb34cfbc19950f64d5702265555a873087553fa3f208d0832868fb952c1d4",
+        "verification_id": "current-runtime-android-20261023T053814623553Z"
+      },
+      "native_evidence_sha256": {
+        "runner.py": "d1ea6d05085f05a0a3bb6c768531ef7659272e41993858c0551618f74ce5c847",
+        "checkpoint.json": "cd289742ac90142d295c784d7b03fdb32ed147b493950d9105e7ce89ca5f222d",
+        "result.json": "417c2825d487486695c3fc2edb2be2204868db3ba88c1e259aa49c35c12ab26e",
+        "run.log": "37aa637d81bb8ced452f7b94dec03f762421b1bc36beb47b88d275380de24f9a",
+        "generation-0.json": "3cb8a1d631a800b76752896f99d1dbf0833465b3efb59c81097bca0920e35c7e",
+        "generation-1.json": "1b656195183e268735384af1bee38aba3579850ea55dbe7ea14649dd04b8e708",
+        "driver.dart": "911183b5d9ee8ec80769836f477a293dadb66e20cc0c5d5e44314415889749a8",
+        "verify_native.py": "68297f66fc4e32a173b17da2594872334d59ba2b88b7d5878b5ee8905f9b89e5",
+        "study_adjudicate.py": "ccf31107cced115bb7a417407a2b7cfa1498845ce10899b14a1f3ca533a406e6",
+        "study_native_diagnostics.py": "325afe73985b414a23ab3858ad4abc656351258bb3c19e49bd6c665761031430",
+        "harness.dart": "102be09eb8043ce9bb496156d9f37b1834c3084ddf58fef073e7c25cdc3c55d5",
+        "study_report.py": "7109d2e53a8c07b8f00299b749a4c758530e51f38a2d444f4600ae6ef94e7462",
+        "build_native.py": "59ee4e7b94a1445e2c8effadfe4c0510c9c189df0278c7ede6e87f1807bf38ee"
+      },
+      "source_pins": {
+        "runner.py": "d1ea6d05085f05a0a3bb6c768531ef7659272e41993858c0551618f74ce5c847",
+        "harness.dart": "102be09eb8043ce9bb496156d9f37b1834c3084ddf58fef073e7c25cdc3c55d5",
+        "driver.dart": "911183b5d9ee8ec80769836f477a293dadb66e20cc0c5d5e44314415889749a8",
+        "build_native.py": "59ee4e7b94a1445e2c8effadfe4c0510c9c189df0278c7ede6e87f1807bf38ee",
+        "verify_native.py": "68297f66fc4e32a173b17da2594872334d59ba2b88b7d5878b5ee8905f9b89e5",
+        "study_adjudicate.py": "ccf31107cced115bb7a417407a2b7cfa1498845ce10899b14a1f3ca533a406e6",
+        "study_report.py": "7109d2e53a8c07b8f00299b749a4c758530e51f38a2d444f4600ae6ef94e7462",
+        "study_native_diagnostics.py": "325afe73985b414a23ab3858ad4abc656351258bb3c19e49bd6c665761031430"
+      },
+      "generations": {
+        "generation-0.json": {
+          "size": 963,
+          "sha256": "3cb8a1d631a800b76752896f99d1dbf0833465b3efb59c81097bca0920e35c7e"
+        },
+        "generation-1.json": {
+          "size": 963,
+          "sha256": "1b656195183e268735384af1bee38aba3579850ea55dbe7ea14649dd04b8e708"
+        }
+      },
+      "checkpoint_sha256": "cd289742ac90142d295c784d7b03fdb32ed147b493950d9105e7ce89ca5f222d"
+    },
+    {
+      "label": "android",
+      "scenario": "runtime-transition-start",
+      "run_id": "v3b00-android-probe-fixed-transition",
+      "status": "passed",
+      "verification": "/Users/csys/Desktop/ibicot/idle/release/native-proof/current-runtime-android-20261023T053935185222Z/verification.json",
+      "verification_sha256": "e4eba3cf70da21866bd14bc1de404b59b3c9a1dcea6b9960ec5dce2890f30a32",
+      "predecessor": null,
+      "native_evidence_sha256": {
+        "android-runtime-transition-start-harbor.png": "df54262135df47de7bc157b2abb0032e8e623d0b2d15a6221dcd3310b4875427",
+        "runner.py": "d1ea6d05085f05a0a3bb6c768531ef7659272e41993858c0551618f74ce5c847",
+        "checkpoint.json": "1a8e3b869123b705995fa9e450a274b1d94d0416f876669b2d0497ece1c1ba4e",
+        "result.json": "c8d6ecf602f3630ae8c04c207f258bfaf42485e907eb97a32d46d8e3a8a5c248",
+        "run.log": "ee629eca86b71e45b0b8cfc961a9c94931468add430088e02c37c7dcf2e943cc",
+        "generation-0.json": "be2ce2be5963d494abefb6863881618aaded0ebb060db5ab12f3a98780d41c79",
+        "generation-1.json": "43dfe8aa4575e2ce45c61cf2168afb2e3b01112d8e29b9ae5a8e35a95efe18d8",
+        "driver.dart": "911183b5d9ee8ec80769836f477a293dadb66e20cc0c5d5e44314415889749a8",
+        "verify_native.py": "68297f66fc4e32a173b17da2594872334d59ba2b88b7d5878b5ee8905f9b89e5",
+        "study_adjudicate.py": "ccf31107cced115bb7a417407a2b7cfa1498845ce10899b14a1f3ca533a406e6",
+        "study_native_diagnostics.py": "325afe73985b414a23ab3858ad4abc656351258bb3c19e49bd6c665761031430",
+        "harness.dart": "102be09eb8043ce9bb496156d9f37b1834c3084ddf58fef073e7c25cdc3c55d5",
+        "study_report.py": "7109d2e53a8c07b8f00299b749a4c758530e51f38a2d444f4600ae6ef94e7462",
+        "build_native.py": "59ee4e7b94a1445e2c8effadfe4c0510c9c189df0278c7ede6e87f1807bf38ee"
+      },
+      "source_pins": {
+        "runner.py": "d1ea6d05085f05a0a3bb6c768531ef7659272e41993858c0551618f74ce5c847",
+        "harness.dart": "102be09eb8043ce9bb496156d9f37b1834c3084ddf58fef073e7c25cdc3c55d5",
+        "driver.dart": "911183b5d9ee8ec80769836f477a293dadb66e20cc0c5d5e44314415889749a8",
+        "build_native.py": "59ee4e7b94a1445e2c8effadfe4c0510c9c189df0278c7ede6e87f1807bf38ee",
+        "verify_native.py": "68297f66fc4e32a173b17da2594872334d59ba2b88b7d5878b5ee8905f9b89e5",
+        "study_adjudicate.py": "ccf31107cced115bb7a417407a2b7cfa1498845ce10899b14a1f3ca533a406e6",
+        "study_report.py": "7109d2e53a8c07b8f00299b749a4c758530e51f38a2d444f4600ae6ef94e7462",
+        "study_native_diagnostics.py": "325afe73985b414a23ab3858ad4abc656351258bb3c19e49bd6c665761031430"
+      },
+      "generations": {
+        "generation-0.json": {
+          "size": 5071,
+          "sha256": "be2ce2be5963d494abefb6863881618aaded0ebb060db5ab12f3a98780d41c79"
+        },
+        "generation-1.json": {
+          "size": 5071,
+          "sha256": "43dfe8aa4575e2ce45c61cf2168afb2e3b01112d8e29b9ae5a8e35a95efe18d8"
+        }
+      },
+      "checkpoint_sha256": "1a8e3b869123b705995fa9e450a274b1d94d0416f876669b2d0497ece1c1ba4e"
+    },
+    {
+      "label": "android",
+      "scenario": "runtime-transition-reopen",
+      "run_id": "v3b00-android-probe-fixed-transition",
+      "status": "passed",
+      "verification": "/Users/csys/Desktop/ibicot/idle/release/native-proof/current-runtime-android-20261023T054028440301Z/verification.json",
+      "verification_sha256": "a4024ed5013efb9dd4221e6b5ec3e3c60b981a3d0112619d173b5c60d401581f",
+      "predecessor": {
+        "path": "/Users/csys/Desktop/ibicot/idle/release/native-proof/current-runtime-android-20261023T053935185222Z/verification.json",
+        "sha256": "e4eba3cf70da21866bd14bc1de404b59b3c9a1dcea6b9960ec5dce2890f30a32",
+        "verification_id": "current-runtime-android-20261023T053935185222Z"
+      },
+      "native_evidence_sha256": {
+        "runner.py": "d1ea6d05085f05a0a3bb6c768531ef7659272e41993858c0551618f74ce5c847",
+        "checkpoint.json": "1a8e3b869123b705995fa9e450a274b1d94d0416f876669b2d0497ece1c1ba4e",
+        "result.json": "f4ee83213d820f349fc1e0dc4561956917d326baf8bde5e646cc2c4f6acad2dd",
+        "run.log": "eb971e1e2314a6ebf5ffc8f6a32b8133513f8fab545b0314506f327f73672fbc",
+        "generation-0.json": "c7ac93edda7c160af3279eb045941f4b917d07049d21674daa8071fe99a74e6d",
+        "android-runtime-transition-reopen-harbor.png": "360f40a99d47dc30cc6e183f64969d9ed175878e608605ad1d9d848e09ae0918",
+        "generation-1.json": "5b6adc9bc5c82a82bf21095522d3a4716dc3081cea481b9cff6463ea506d005f",
+        "driver.dart": "911183b5d9ee8ec80769836f477a293dadb66e20cc0c5d5e44314415889749a8",
+        "verify_native.py": "68297f66fc4e32a173b17da2594872334d59ba2b88b7d5878b5ee8905f9b89e5",
+        "study_adjudicate.py": "ccf31107cced115bb7a417407a2b7cfa1498845ce10899b14a1f3ca533a406e6",
+        "study_native_diagnostics.py": "325afe73985b414a23ab3858ad4abc656351258bb3c19e49bd6c665761031430",
+        "harness.dart": "102be09eb8043ce9bb496156d9f37b1834c3084ddf58fef073e7c25cdc3c55d5",
+        "study_report.py": "7109d2e53a8c07b8f00299b749a4c758530e51f38a2d444f4600ae6ef94e7462",
+        "build_native.py": "59ee4e7b94a1445e2c8effadfe4c0510c9c189df0278c7ede6e87f1807bf38ee"
+      },
+      "source_pins": {
+        "runner.py": "d1ea6d05085f05a0a3bb6c768531ef7659272e41993858c0551618f74ce5c847",
+        "harness.dart": "102be09eb8043ce9bb496156d9f37b1834c3084ddf58fef073e7c25cdc3c55d5",
+        "driver.dart": "911183b5d9ee8ec80769836f477a293dadb66e20cc0c5d5e44314415889749a8",
+        "build_native.py": "59ee4e7b94a1445e2c8effadfe4c0510c9c189df0278c7ede6e87f1807bf38ee",
+        "verify_native.py": "68297f66fc4e32a173b17da2594872334d59ba2b88b7d5878b5ee8905f9b89e5",
+        "study_adjudicate.py": "ccf31107cced115bb7a417407a2b7cfa1498845ce10899b14a1f3ca533a406e6",
+        "study_report.py": "7109d2e53a8c07b8f00299b749a4c758530e51f38a2d444f4600ae6ef94e7462",
+        "study_native_diagnostics.py": "325afe73985b414a23ab3858ad4abc656351258bb3c19e49bd6c665761031430"
+      },
+      "generations": {
+        "generation-0.json": {
+          "size": 5090,
+          "sha256": "c7ac93edda7c160af3279eb045941f4b917d07049d21674daa8071fe99a74e6d"
+        },
+        "generation-1.json": {
+          "size": 5090,
+          "sha256": "5b6adc9bc5c82a82bf21095522d3a4716dc3081cea481b9cff6463ea506d005f"
+        }
+      },
+      "checkpoint_sha256": "1a8e3b869123b705995fa9e450a274b1d94d0416f876669b2d0497ece1c1ba4e"
+    }
+  ],
+  "counts": {
+    "passed": 12,
+    "expected-interrupted": 6
+  },
+  "preserved_failed_original_android_preparation": {
+    "command": [
+      "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3",
+      "/Users/csys/Desktop/ibicot/idle/tool/verify_current_runtime.py",
+      "/Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261023T040445.261666Z-3b00cc8f7122",
+      "--device",
+      "emulator-5556",
+      "--label",
+      "android",
+      "--scenario",
+      "runtime-save-hold-beforeWrite",
+      "--run-id",
+      "v3b00-android-save-beforeWrite"
+    ],
+    "scenario": "runtime-save-hold-beforeWrite",
+    "label": "android",
+    "run_id": "v3b00-android-save-beforeWrite",
+    "predecessor": null,
+    "started_utc": "20261023T051542.211606Z",
+    "exit_code": 1,
+    "verification": "/Users/csys/Desktop/ibicot/idle/release/native-proof/current-runtime-android-20261023T051542413435Z/verification.json",
+    "verification_sha256": "fc847ee2532e600070f76884efba0d5b704dd337579d687455ed1564d8308eed",
+    "status": "failed",
+    "errors": [
+      "ValueError: Native fixture component is a symlink"
+    ],
+    "finished_utc": "2026-10-23T05:16:20.324979+00:00"
+  },
+  "android_tool_adoption": {
+    "path": "/Users/csys/Desktop/ibicot/idle/release/native-proof/execution-3b00-20261023T040612.562001Z/android-probe-binding-adoption-20261023T053444.391240Z/adoption.json",
+    "sha256": "dc0e778f2464d08b39ca9f67b34fe681ad57b1a4595d39011008c1fb94db5275"
+  },
+  "limitations": [
+    "Six expected-interrupted preparation rows are not passing tests.",
+    "Synthetic local simulator/emulator checks; no physical power-loss, production crash-free rate, receiving-app, store or participant evidence.",
+    "Android default/enroll is now running separately and is excluded from this sealed subset.",
+    "No original clause status is changed by this packet."
+  ],
+  "release_acceptance": false
+}

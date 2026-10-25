@@ -1,0 +1,7 @@
+# Independent daily icon integration review
+
+Root inspected the complete four-file delta from its preserved baseline and reproduced the actual daily tests at phone200% pseudo and tablet200% English. Eight daily widget cases and ten exact state rows pass with all142 runtime/test/source pins matching the author matrix. The extra actual Rechart tests also pass on the combined icon-enabled App (two cases, phone200% pseudo), with ten additional inputs pinned before that command and unchanged afterward.
+
+All12 author conditions,48 cases and60 daily rows have verified output/archive hashes and identical live input pins. Existing text, state controls, callbacks, daily rewards and economic rules are unchanged. The new icons use static Material glyph constants, wrap independently from full text, and exclude only decorative icon semantics. Existing labels retain full semantic meaning. Actual tests read complete lines, check visible icons, all control bounds, >=48px targets and five hit points; rerolls, backlog claims, Survey collection and queued Focus assertions remain intact.
+
+CA-M309-01's three missing icons are implemented and independently checked. This is a bounded host integration review, not full164 asset, native font import, physical accessibility or release qualification. The previous independent25-stage client review is separate. Final named client clause recommendation and lead M3-09 acceptance are still separate from this source/test handoff.

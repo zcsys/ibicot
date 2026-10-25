@@ -1,0 +1,3734 @@
+{
+  "schema_version": 1,
+  "author": "/root/art_content_engineer",
+  "status": "author_evidence_ready_for_independent_review",
+  "original_contract_sha256": "53d9e57a85ec9d9dc16fc5a94b07f829e8c792a392b80ecd7f1b1de3199b18b3",
+  "asset_count": 68,
+  "passed_host_rows": 1632,
+  "runs": {
+    "en-US": {
+      "proof_directory": "release/native-proof/root-art-full-20261021T122040.006324Z",
+      "proof_sha256": "e1b5b0ab4b4af84d47930c81464de6f3f8768945d42a499eaf16c19bba9cde2b",
+      "source_index_sha256": "2e53adf595955fbc91b25c83e9e36de95a4842b85a6ced1cba8a2ac6c036be1f",
+      "report_path": "release/art/catalogue-variants/root-art-full-20261021T122040.006324Z/matrix-results.json",
+      "report_sha256": "717e94848f53ad47fbfe1355e2228144e309bee7cf1a921bcb33477d49d47b91",
+      "check": {
+        "result": "passed_bounded_evidence_integrity",
+        "full_mode": true,
+        "presentation_locale": "en-US",
+        "pseudo_enabled": false,
+        "observed_rows": 816,
+        "rows_by_group": {
+          "harbor": 84,
+          "producer": 300,
+          "cosmetic": 432
+        },
+        "frozen_inputs_checked": 524,
+        "failures": [],
+        "report_sha256": "717e94848f53ad47fbfe1355e2228144e309bee7cf1a921bcb33477d49d47b91",
+        "canonical_acceptance": false
+      }
+    },
+    "qps-ploc": {
+      "proof_directory": "release/native-proof/root-art-pseudo-full-20261021T122636.246158Z",
+      "proof_sha256": "99e436385de4abbff1a1670fc703f0108bc6ab325a0cd61d3dd8a1968839f06a",
+      "source_index_sha256": "739a0b47ccc4f06f8dfc9f81b68be17ad2ba94ea661b5d657d7fb1d8b41a14d5",
+      "report_path": "release/art/catalogue-variants/root-art-pseudo-full-20261021T122636.246158Z/matrix-results.json",
+      "report_sha256": "d132e5e2862b280e885acf870a78267d98b117fa1deef705a9dab2b09aa187f2",
+      "check": {
+        "result": "passed_bounded_evidence_integrity",
+        "full_mode": true,
+        "presentation_locale": "qps-ploc",
+        "pseudo_enabled": true,
+        "observed_rows": 816,
+        "rows_by_group": {
+          "harbor": 84,
+          "producer": 300,
+          "cosmetic": 432
+        },
+        "frozen_inputs_checked": 524,
+        "failures": [],
+        "report_sha256": "d132e5e2862b280e885acf870a78267d98b117fa1deef705a9dab2b09aa187f2",
+        "canonical_acceptance": false
+      }
+    }
+  },
+  "between_run_source_differences": [
+    {
+      "path": "game/mobile/test/art_catalogue_variants_test.dart",
+      "en-US_sha256": "716c13defe491390c8eeee92e5f8921433629bb79b6386318027812902a0c1d0",
+      "qps-ploc_sha256": "b918a61005548a0d31fc155732f5b0ef3b02f474218ad32cc5efffa4556573e4"
+    },
+    {
+      "path": "source/art/verification/check_matrix.py",
+      "en-US_sha256": "3c62775eb0880a1d068a47dbbeeeef8beb8e4e705aaa96773294dad82f01936e",
+      "qps-ploc_sha256": "d770eb41d3aa9556053eb30e6b55547e707cb0b7799f405e4aa5a1ab63898443"
+    }
+  ],
+  "assets": [
+    {
+      "asset_id": "asset.harbor.unlit",
+      "original_required_variants": [
+        "default",
+        "reduced_motion_static",
+        "small_phone_crop",
+        "tablet_crop"
+      ],
+      "original_source_descriptor": "source/art/harbor/harbor.unlit.scene.json",
+      "original_export_descriptor": "game/assets/harbor/harbor.unlit.presentation.json",
+      "evidence_by_presentation_locale": {
+        "en-US": {
+          "report_path": "release/art/catalogue-variants/root-art-full-20261021T122040.006324Z/matrix-results.json",
+          "report_sha256": "717e94848f53ad47fbfe1355e2228144e309bee7cf1a921bcb33477d49d47b91",
+          "condition_ids": [
+            "phone-100-normal",
+            "phone-100-reduced",
+            "phone-150-normal",
+            "phone-150-reduced",
+            "phone-200-normal",
+            "phone-200-reduced",
+            "tablet-100-normal",
+            "tablet-100-reduced",
+            "tablet-150-normal",
+            "tablet-150-reduced",
+            "tablet-200-normal",
+            "tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        },
+        "qps-ploc": {
+          "report_path": "release/art/catalogue-variants/root-art-pseudo-full-20261021T122636.246158Z/matrix-results.json",
+          "report_sha256": "d132e5e2862b280e885acf870a78267d98b117fa1deef705a9dab2b09aa187f2",
+          "condition_ids": [
+            "qps-ploc-phone-100-normal",
+            "qps-ploc-phone-100-reduced",
+            "qps-ploc-phone-150-normal",
+            "qps-ploc-phone-150-reduced",
+            "qps-ploc-phone-200-normal",
+            "qps-ploc-phone-200-reduced",
+            "qps-ploc-tablet-100-normal",
+            "qps-ploc-tablet-100-reduced",
+            "qps-ploc-tablet-150-normal",
+            "qps-ploc-tablet-150-reduced",
+            "qps-ploc-tablet-200-normal",
+            "qps-ploc-tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        }
+      },
+      "review_boundary": "Host behavioral evidence only; original asset approval remains open"
+    },
+    {
+      "asset_id": "asset.harbor.restored.01",
+      "original_required_variants": [
+        "default",
+        "reduced_motion_static",
+        "small_phone_crop",
+        "tablet_crop"
+      ],
+      "original_source_descriptor": "source/art/harbor/harbor.restored.01.scene.json",
+      "original_export_descriptor": "game/assets/harbor/harbor.restored.01.presentation.json",
+      "evidence_by_presentation_locale": {
+        "en-US": {
+          "report_path": "release/art/catalogue-variants/root-art-full-20261021T122040.006324Z/matrix-results.json",
+          "report_sha256": "717e94848f53ad47fbfe1355e2228144e309bee7cf1a921bcb33477d49d47b91",
+          "condition_ids": [
+            "phone-100-normal",
+            "phone-100-reduced",
+            "phone-150-normal",
+            "phone-150-reduced",
+            "phone-200-normal",
+            "phone-200-reduced",
+            "tablet-100-normal",
+            "tablet-100-reduced",
+            "tablet-150-normal",
+            "tablet-150-reduced",
+            "tablet-200-normal",
+            "tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        },
+        "qps-ploc": {
+          "report_path": "release/art/catalogue-variants/root-art-pseudo-full-20261021T122636.246158Z/matrix-results.json",
+          "report_sha256": "d132e5e2862b280e885acf870a78267d98b117fa1deef705a9dab2b09aa187f2",
+          "condition_ids": [
+            "qps-ploc-phone-100-normal",
+            "qps-ploc-phone-100-reduced",
+            "qps-ploc-phone-150-normal",
+            "qps-ploc-phone-150-reduced",
+            "qps-ploc-phone-200-normal",
+            "qps-ploc-phone-200-reduced",
+            "qps-ploc-tablet-100-normal",
+            "qps-ploc-tablet-100-reduced",
+            "qps-ploc-tablet-150-normal",
+            "qps-ploc-tablet-150-reduced",
+            "qps-ploc-tablet-200-normal",
+            "qps-ploc-tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        }
+      },
+      "review_boundary": "Host behavioral evidence only; original asset approval remains open"
+    },
+    {
+      "asset_id": "asset.harbor.restored.02",
+      "original_required_variants": [
+        "default",
+        "reduced_motion_static",
+        "small_phone_crop",
+        "tablet_crop"
+      ],
+      "original_source_descriptor": "source/art/harbor/harbor.restored.02.scene.json",
+      "original_export_descriptor": "game/assets/harbor/harbor.restored.02.presentation.json",
+      "evidence_by_presentation_locale": {
+        "en-US": {
+          "report_path": "release/art/catalogue-variants/root-art-full-20261021T122040.006324Z/matrix-results.json",
+          "report_sha256": "717e94848f53ad47fbfe1355e2228144e309bee7cf1a921bcb33477d49d47b91",
+          "condition_ids": [
+            "phone-100-normal",
+            "phone-100-reduced",
+            "phone-150-normal",
+            "phone-150-reduced",
+            "phone-200-normal",
+            "phone-200-reduced",
+            "tablet-100-normal",
+            "tablet-100-reduced",
+            "tablet-150-normal",
+            "tablet-150-reduced",
+            "tablet-200-normal",
+            "tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        },
+        "qps-ploc": {
+          "report_path": "release/art/catalogue-variants/root-art-pseudo-full-20261021T122636.246158Z/matrix-results.json",
+          "report_sha256": "d132e5e2862b280e885acf870a78267d98b117fa1deef705a9dab2b09aa187f2",
+          "condition_ids": [
+            "qps-ploc-phone-100-normal",
+            "qps-ploc-phone-100-reduced",
+            "qps-ploc-phone-150-normal",
+            "qps-ploc-phone-150-reduced",
+            "qps-ploc-phone-200-normal",
+            "qps-ploc-phone-200-reduced",
+            "qps-ploc-tablet-100-normal",
+            "qps-ploc-tablet-100-reduced",
+            "qps-ploc-tablet-150-normal",
+            "qps-ploc-tablet-150-reduced",
+            "qps-ploc-tablet-200-normal",
+            "qps-ploc-tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        }
+      },
+      "review_boundary": "Host behavioral evidence only; original asset approval remains open"
+    },
+    {
+      "asset_id": "asset.harbor.restored.03",
+      "original_required_variants": [
+        "default",
+        "reduced_motion_static",
+        "small_phone_crop",
+        "tablet_crop"
+      ],
+      "original_source_descriptor": "source/art/harbor/harbor.restored.03.scene.json",
+      "original_export_descriptor": "game/assets/harbor/harbor.restored.03.presentation.json",
+      "evidence_by_presentation_locale": {
+        "en-US": {
+          "report_path": "release/art/catalogue-variants/root-art-full-20261021T122040.006324Z/matrix-results.json",
+          "report_sha256": "717e94848f53ad47fbfe1355e2228144e309bee7cf1a921bcb33477d49d47b91",
+          "condition_ids": [
+            "phone-100-normal",
+            "phone-100-reduced",
+            "phone-150-normal",
+            "phone-150-reduced",
+            "phone-200-normal",
+            "phone-200-reduced",
+            "tablet-100-normal",
+            "tablet-100-reduced",
+            "tablet-150-normal",
+            "tablet-150-reduced",
+            "tablet-200-normal",
+            "tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        },
+        "qps-ploc": {
+          "report_path": "release/art/catalogue-variants/root-art-pseudo-full-20261021T122636.246158Z/matrix-results.json",
+          "report_sha256": "d132e5e2862b280e885acf870a78267d98b117fa1deef705a9dab2b09aa187f2",
+          "condition_ids": [
+            "qps-ploc-phone-100-normal",
+            "qps-ploc-phone-100-reduced",
+            "qps-ploc-phone-150-normal",
+            "qps-ploc-phone-150-reduced",
+            "qps-ploc-phone-200-normal",
+            "qps-ploc-phone-200-reduced",
+            "qps-ploc-tablet-100-normal",
+            "qps-ploc-tablet-100-reduced",
+            "qps-ploc-tablet-150-normal",
+            "qps-ploc-tablet-150-reduced",
+            "qps-ploc-tablet-200-normal",
+            "qps-ploc-tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        }
+      },
+      "review_boundary": "Host behavioral evidence only; original asset approval remains open"
+    },
+    {
+      "asset_id": "asset.harbor.restored.04",
+      "original_required_variants": [
+        "default",
+        "reduced_motion_static",
+        "small_phone_crop",
+        "tablet_crop"
+      ],
+      "original_source_descriptor": "source/art/harbor/harbor.restored.04.scene.json",
+      "original_export_descriptor": "game/assets/harbor/harbor.restored.04.presentation.json",
+      "evidence_by_presentation_locale": {
+        "en-US": {
+          "report_path": "release/art/catalogue-variants/root-art-full-20261021T122040.006324Z/matrix-results.json",
+          "report_sha256": "717e94848f53ad47fbfe1355e2228144e309bee7cf1a921bcb33477d49d47b91",
+          "condition_ids": [
+            "phone-100-normal",
+            "phone-100-reduced",
+            "phone-150-normal",
+            "phone-150-reduced",
+            "phone-200-normal",
+            "phone-200-reduced",
+            "tablet-100-normal",
+            "tablet-100-reduced",
+            "tablet-150-normal",
+            "tablet-150-reduced",
+            "tablet-200-normal",
+            "tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        },
+        "qps-ploc": {
+          "report_path": "release/art/catalogue-variants/root-art-pseudo-full-20261021T122636.246158Z/matrix-results.json",
+          "report_sha256": "d132e5e2862b280e885acf870a78267d98b117fa1deef705a9dab2b09aa187f2",
+          "condition_ids": [
+            "qps-ploc-phone-100-normal",
+            "qps-ploc-phone-100-reduced",
+            "qps-ploc-phone-150-normal",
+            "qps-ploc-phone-150-reduced",
+            "qps-ploc-phone-200-normal",
+            "qps-ploc-phone-200-reduced",
+            "qps-ploc-tablet-100-normal",
+            "qps-ploc-tablet-100-reduced",
+            "qps-ploc-tablet-150-normal",
+            "qps-ploc-tablet-150-reduced",
+            "qps-ploc-tablet-200-normal",
+            "qps-ploc-tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        }
+      },
+      "review_boundary": "Host behavioral evidence only; original asset approval remains open"
+    },
+    {
+      "asset_id": "asset.harbor.restored.05",
+      "original_required_variants": [
+        "default",
+        "reduced_motion_static",
+        "small_phone_crop",
+        "tablet_crop"
+      ],
+      "original_source_descriptor": "source/art/harbor/harbor.restored.05.scene.json",
+      "original_export_descriptor": "game/assets/harbor/harbor.restored.05.presentation.json",
+      "evidence_by_presentation_locale": {
+        "en-US": {
+          "report_path": "release/art/catalogue-variants/root-art-full-20261021T122040.006324Z/matrix-results.json",
+          "report_sha256": "717e94848f53ad47fbfe1355e2228144e309bee7cf1a921bcb33477d49d47b91",
+          "condition_ids": [
+            "phone-100-normal",
+            "phone-100-reduced",
+            "phone-150-normal",
+            "phone-150-reduced",
+            "phone-200-normal",
+            "phone-200-reduced",
+            "tablet-100-normal",
+            "tablet-100-reduced",
+            "tablet-150-normal",
+            "tablet-150-reduced",
+            "tablet-200-normal",
+            "tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        },
+        "qps-ploc": {
+          "report_path": "release/art/catalogue-variants/root-art-pseudo-full-20261021T122636.246158Z/matrix-results.json",
+          "report_sha256": "d132e5e2862b280e885acf870a78267d98b117fa1deef705a9dab2b09aa187f2",
+          "condition_ids": [
+            "qps-ploc-phone-100-normal",
+            "qps-ploc-phone-100-reduced",
+            "qps-ploc-phone-150-normal",
+            "qps-ploc-phone-150-reduced",
+            "qps-ploc-phone-200-normal",
+            "qps-ploc-phone-200-reduced",
+            "qps-ploc-tablet-100-normal",
+            "qps-ploc-tablet-100-reduced",
+            "qps-ploc-tablet-150-normal",
+            "qps-ploc-tablet-150-reduced",
+            "qps-ploc-tablet-200-normal",
+            "qps-ploc-tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        }
+      },
+      "review_boundary": "Host behavioral evidence only; original asset approval remains open"
+    },
+    {
+      "asset_id": "asset.harbor.restored.06",
+      "original_required_variants": [
+        "default",
+        "reduced_motion_static",
+        "small_phone_crop",
+        "tablet_crop"
+      ],
+      "original_source_descriptor": "source/art/harbor/harbor.restored.06.scene.json",
+      "original_export_descriptor": "game/assets/harbor/harbor.restored.06.presentation.json",
+      "evidence_by_presentation_locale": {
+        "en-US": {
+          "report_path": "release/art/catalogue-variants/root-art-full-20261021T122040.006324Z/matrix-results.json",
+          "report_sha256": "717e94848f53ad47fbfe1355e2228144e309bee7cf1a921bcb33477d49d47b91",
+          "condition_ids": [
+            "phone-100-normal",
+            "phone-100-reduced",
+            "phone-150-normal",
+            "phone-150-reduced",
+            "phone-200-normal",
+            "phone-200-reduced",
+            "tablet-100-normal",
+            "tablet-100-reduced",
+            "tablet-150-normal",
+            "tablet-150-reduced",
+            "tablet-200-normal",
+            "tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        },
+        "qps-ploc": {
+          "report_path": "release/art/catalogue-variants/root-art-pseudo-full-20261021T122636.246158Z/matrix-results.json",
+          "report_sha256": "d132e5e2862b280e885acf870a78267d98b117fa1deef705a9dab2b09aa187f2",
+          "condition_ids": [
+            "qps-ploc-phone-100-normal",
+            "qps-ploc-phone-100-reduced",
+            "qps-ploc-phone-150-normal",
+            "qps-ploc-phone-150-reduced",
+            "qps-ploc-phone-200-normal",
+            "qps-ploc-phone-200-reduced",
+            "qps-ploc-tablet-100-normal",
+            "qps-ploc-tablet-100-reduced",
+            "qps-ploc-tablet-150-normal",
+            "qps-ploc-tablet-150-reduced",
+            "qps-ploc-tablet-200-normal",
+            "qps-ploc-tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        }
+      },
+      "review_boundary": "Host behavioral evidence only; original asset approval remains open"
+    },
+    {
+      "asset_id": "asset.producer.01.stage.0",
+      "original_required_variants": [
+        "default",
+        "reduced_motion_static",
+        "small_phone",
+        "tablet",
+        "selected",
+        "locked"
+      ],
+      "original_source_descriptor": "source/art/producers/producer.01.stage.0.scene.json",
+      "original_export_descriptor": "game/assets/producers/producer.01.stage.0.presentation.json",
+      "evidence_by_presentation_locale": {
+        "en-US": {
+          "report_path": "release/art/catalogue-variants/root-art-full-20261021T122040.006324Z/matrix-results.json",
+          "report_sha256": "717e94848f53ad47fbfe1355e2228144e309bee7cf1a921bcb33477d49d47b91",
+          "condition_ids": [
+            "phone-100-normal",
+            "phone-100-reduced",
+            "phone-150-normal",
+            "phone-150-reduced",
+            "phone-200-normal",
+            "phone-200-reduced",
+            "tablet-100-normal",
+            "tablet-100-reduced",
+            "tablet-150-normal",
+            "tablet-150-reduced",
+            "tablet-200-normal",
+            "tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        },
+        "qps-ploc": {
+          "report_path": "release/art/catalogue-variants/root-art-pseudo-full-20261021T122636.246158Z/matrix-results.json",
+          "report_sha256": "d132e5e2862b280e885acf870a78267d98b117fa1deef705a9dab2b09aa187f2",
+          "condition_ids": [
+            "qps-ploc-phone-100-normal",
+            "qps-ploc-phone-100-reduced",
+            "qps-ploc-phone-150-normal",
+            "qps-ploc-phone-150-reduced",
+            "qps-ploc-phone-200-normal",
+            "qps-ploc-phone-200-reduced",
+            "qps-ploc-tablet-100-normal",
+            "qps-ploc-tablet-100-reduced",
+            "qps-ploc-tablet-150-normal",
+            "qps-ploc-tablet-150-reduced",
+            "qps-ploc-tablet-200-normal",
+            "qps-ploc-tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        }
+      },
+      "review_boundary": "Host behavioral evidence only; original asset approval remains open"
+    },
+    {
+      "asset_id": "asset.producer.01.stage.1",
+      "original_required_variants": [
+        "default",
+        "reduced_motion_static",
+        "small_phone",
+        "tablet",
+        "selected",
+        "locked"
+      ],
+      "original_source_descriptor": "source/art/producers/producer.01.stage.1.scene.json",
+      "original_export_descriptor": "game/assets/producers/producer.01.stage.1.presentation.json",
+      "evidence_by_presentation_locale": {
+        "en-US": {
+          "report_path": "release/art/catalogue-variants/root-art-full-20261021T122040.006324Z/matrix-results.json",
+          "report_sha256": "717e94848f53ad47fbfe1355e2228144e309bee7cf1a921bcb33477d49d47b91",
+          "condition_ids": [
+            "phone-100-normal",
+            "phone-100-reduced",
+            "phone-150-normal",
+            "phone-150-reduced",
+            "phone-200-normal",
+            "phone-200-reduced",
+            "tablet-100-normal",
+            "tablet-100-reduced",
+            "tablet-150-normal",
+            "tablet-150-reduced",
+            "tablet-200-normal",
+            "tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        },
+        "qps-ploc": {
+          "report_path": "release/art/catalogue-variants/root-art-pseudo-full-20261021T122636.246158Z/matrix-results.json",
+          "report_sha256": "d132e5e2862b280e885acf870a78267d98b117fa1deef705a9dab2b09aa187f2",
+          "condition_ids": [
+            "qps-ploc-phone-100-normal",
+            "qps-ploc-phone-100-reduced",
+            "qps-ploc-phone-150-normal",
+            "qps-ploc-phone-150-reduced",
+            "qps-ploc-phone-200-normal",
+            "qps-ploc-phone-200-reduced",
+            "qps-ploc-tablet-100-normal",
+            "qps-ploc-tablet-100-reduced",
+            "qps-ploc-tablet-150-normal",
+            "qps-ploc-tablet-150-reduced",
+            "qps-ploc-tablet-200-normal",
+            "qps-ploc-tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        }
+      },
+      "review_boundary": "Host behavioral evidence only; original asset approval remains open"
+    },
+    {
+      "asset_id": "asset.producer.01.stage.2",
+      "original_required_variants": [
+        "default",
+        "reduced_motion_static",
+        "small_phone",
+        "tablet",
+        "selected",
+        "locked"
+      ],
+      "original_source_descriptor": "source/art/producers/producer.01.stage.2.scene.json",
+      "original_export_descriptor": "game/assets/producers/producer.01.stage.2.presentation.json",
+      "evidence_by_presentation_locale": {
+        "en-US": {
+          "report_path": "release/art/catalogue-variants/root-art-full-20261021T122040.006324Z/matrix-results.json",
+          "report_sha256": "717e94848f53ad47fbfe1355e2228144e309bee7cf1a921bcb33477d49d47b91",
+          "condition_ids": [
+            "phone-100-normal",
+            "phone-100-reduced",
+            "phone-150-normal",
+            "phone-150-reduced",
+            "phone-200-normal",
+            "phone-200-reduced",
+            "tablet-100-normal",
+            "tablet-100-reduced",
+            "tablet-150-normal",
+            "tablet-150-reduced",
+            "tablet-200-normal",
+            "tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        },
+        "qps-ploc": {
+          "report_path": "release/art/catalogue-variants/root-art-pseudo-full-20261021T122636.246158Z/matrix-results.json",
+          "report_sha256": "d132e5e2862b280e885acf870a78267d98b117fa1deef705a9dab2b09aa187f2",
+          "condition_ids": [
+            "qps-ploc-phone-100-normal",
+            "qps-ploc-phone-100-reduced",
+            "qps-ploc-phone-150-normal",
+            "qps-ploc-phone-150-reduced",
+            "qps-ploc-phone-200-normal",
+            "qps-ploc-phone-200-reduced",
+            "qps-ploc-tablet-100-normal",
+            "qps-ploc-tablet-100-reduced",
+            "qps-ploc-tablet-150-normal",
+            "qps-ploc-tablet-150-reduced",
+            "qps-ploc-tablet-200-normal",
+            "qps-ploc-tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        }
+      },
+      "review_boundary": "Host behavioral evidence only; original asset approval remains open"
+    },
+    {
+      "asset_id": "asset.producer.01.stage.3",
+      "original_required_variants": [
+        "default",
+        "reduced_motion_static",
+        "small_phone",
+        "tablet",
+        "selected",
+        "locked"
+      ],
+      "original_source_descriptor": "source/art/producers/producer.01.stage.3.scene.json",
+      "original_export_descriptor": "game/assets/producers/producer.01.stage.3.presentation.json",
+      "evidence_by_presentation_locale": {
+        "en-US": {
+          "report_path": "release/art/catalogue-variants/root-art-full-20261021T122040.006324Z/matrix-results.json",
+          "report_sha256": "717e94848f53ad47fbfe1355e2228144e309bee7cf1a921bcb33477d49d47b91",
+          "condition_ids": [
+            "phone-100-normal",
+            "phone-100-reduced",
+            "phone-150-normal",
+            "phone-150-reduced",
+            "phone-200-normal",
+            "phone-200-reduced",
+            "tablet-100-normal",
+            "tablet-100-reduced",
+            "tablet-150-normal",
+            "tablet-150-reduced",
+            "tablet-200-normal",
+            "tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        },
+        "qps-ploc": {
+          "report_path": "release/art/catalogue-variants/root-art-pseudo-full-20261021T122636.246158Z/matrix-results.json",
+          "report_sha256": "d132e5e2862b280e885acf870a78267d98b117fa1deef705a9dab2b09aa187f2",
+          "condition_ids": [
+            "qps-ploc-phone-100-normal",
+            "qps-ploc-phone-100-reduced",
+            "qps-ploc-phone-150-normal",
+            "qps-ploc-phone-150-reduced",
+            "qps-ploc-phone-200-normal",
+            "qps-ploc-phone-200-reduced",
+            "qps-ploc-tablet-100-normal",
+            "qps-ploc-tablet-100-reduced",
+            "qps-ploc-tablet-150-normal",
+            "qps-ploc-tablet-150-reduced",
+            "qps-ploc-tablet-200-normal",
+            "qps-ploc-tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        }
+      },
+      "review_boundary": "Host behavioral evidence only; original asset approval remains open"
+    },
+    {
+      "asset_id": "asset.producer.01.stage.4",
+      "original_required_variants": [
+        "default",
+        "reduced_motion_static",
+        "small_phone",
+        "tablet",
+        "selected",
+        "locked"
+      ],
+      "original_source_descriptor": "source/art/producers/producer.01.stage.4.scene.json",
+      "original_export_descriptor": "game/assets/producers/producer.01.stage.4.presentation.json",
+      "evidence_by_presentation_locale": {
+        "en-US": {
+          "report_path": "release/art/catalogue-variants/root-art-full-20261021T122040.006324Z/matrix-results.json",
+          "report_sha256": "717e94848f53ad47fbfe1355e2228144e309bee7cf1a921bcb33477d49d47b91",
+          "condition_ids": [
+            "phone-100-normal",
+            "phone-100-reduced",
+            "phone-150-normal",
+            "phone-150-reduced",
+            "phone-200-normal",
+            "phone-200-reduced",
+            "tablet-100-normal",
+            "tablet-100-reduced",
+            "tablet-150-normal",
+            "tablet-150-reduced",
+            "tablet-200-normal",
+            "tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        },
+        "qps-ploc": {
+          "report_path": "release/art/catalogue-variants/root-art-pseudo-full-20261021T122636.246158Z/matrix-results.json",
+          "report_sha256": "d132e5e2862b280e885acf870a78267d98b117fa1deef705a9dab2b09aa187f2",
+          "condition_ids": [
+            "qps-ploc-phone-100-normal",
+            "qps-ploc-phone-100-reduced",
+            "qps-ploc-phone-150-normal",
+            "qps-ploc-phone-150-reduced",
+            "qps-ploc-phone-200-normal",
+            "qps-ploc-phone-200-reduced",
+            "qps-ploc-tablet-100-normal",
+            "qps-ploc-tablet-100-reduced",
+            "qps-ploc-tablet-150-normal",
+            "qps-ploc-tablet-150-reduced",
+            "qps-ploc-tablet-200-normal",
+            "qps-ploc-tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        }
+      },
+      "review_boundary": "Host behavioral evidence only; original asset approval remains open"
+    },
+    {
+      "asset_id": "asset.producer.02.stage.0",
+      "original_required_variants": [
+        "default",
+        "reduced_motion_static",
+        "small_phone",
+        "tablet",
+        "selected",
+        "locked"
+      ],
+      "original_source_descriptor": "source/art/producers/producer.02.stage.0.scene.json",
+      "original_export_descriptor": "game/assets/producers/producer.02.stage.0.presentation.json",
+      "evidence_by_presentation_locale": {
+        "en-US": {
+          "report_path": "release/art/catalogue-variants/root-art-full-20261021T122040.006324Z/matrix-results.json",
+          "report_sha256": "717e94848f53ad47fbfe1355e2228144e309bee7cf1a921bcb33477d49d47b91",
+          "condition_ids": [
+            "phone-100-normal",
+            "phone-100-reduced",
+            "phone-150-normal",
+            "phone-150-reduced",
+            "phone-200-normal",
+            "phone-200-reduced",
+            "tablet-100-normal",
+            "tablet-100-reduced",
+            "tablet-150-normal",
+            "tablet-150-reduced",
+            "tablet-200-normal",
+            "tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        },
+        "qps-ploc": {
+          "report_path": "release/art/catalogue-variants/root-art-pseudo-full-20261021T122636.246158Z/matrix-results.json",
+          "report_sha256": "d132e5e2862b280e885acf870a78267d98b117fa1deef705a9dab2b09aa187f2",
+          "condition_ids": [
+            "qps-ploc-phone-100-normal",
+            "qps-ploc-phone-100-reduced",
+            "qps-ploc-phone-150-normal",
+            "qps-ploc-phone-150-reduced",
+            "qps-ploc-phone-200-normal",
+            "qps-ploc-phone-200-reduced",
+            "qps-ploc-tablet-100-normal",
+            "qps-ploc-tablet-100-reduced",
+            "qps-ploc-tablet-150-normal",
+            "qps-ploc-tablet-150-reduced",
+            "qps-ploc-tablet-200-normal",
+            "qps-ploc-tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        }
+      },
+      "review_boundary": "Host behavioral evidence only; original asset approval remains open"
+    },
+    {
+      "asset_id": "asset.producer.02.stage.1",
+      "original_required_variants": [
+        "default",
+        "reduced_motion_static",
+        "small_phone",
+        "tablet",
+        "selected",
+        "locked"
+      ],
+      "original_source_descriptor": "source/art/producers/producer.02.stage.1.scene.json",
+      "original_export_descriptor": "game/assets/producers/producer.02.stage.1.presentation.json",
+      "evidence_by_presentation_locale": {
+        "en-US": {
+          "report_path": "release/art/catalogue-variants/root-art-full-20261021T122040.006324Z/matrix-results.json",
+          "report_sha256": "717e94848f53ad47fbfe1355e2228144e309bee7cf1a921bcb33477d49d47b91",
+          "condition_ids": [
+            "phone-100-normal",
+            "phone-100-reduced",
+            "phone-150-normal",
+            "phone-150-reduced",
+            "phone-200-normal",
+            "phone-200-reduced",
+            "tablet-100-normal",
+            "tablet-100-reduced",
+            "tablet-150-normal",
+            "tablet-150-reduced",
+            "tablet-200-normal",
+            "tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        },
+        "qps-ploc": {
+          "report_path": "release/art/catalogue-variants/root-art-pseudo-full-20261021T122636.246158Z/matrix-results.json",
+          "report_sha256": "d132e5e2862b280e885acf870a78267d98b117fa1deef705a9dab2b09aa187f2",
+          "condition_ids": [
+            "qps-ploc-phone-100-normal",
+            "qps-ploc-phone-100-reduced",
+            "qps-ploc-phone-150-normal",
+            "qps-ploc-phone-150-reduced",
+            "qps-ploc-phone-200-normal",
+            "qps-ploc-phone-200-reduced",
+            "qps-ploc-tablet-100-normal",
+            "qps-ploc-tablet-100-reduced",
+            "qps-ploc-tablet-150-normal",
+            "qps-ploc-tablet-150-reduced",
+            "qps-ploc-tablet-200-normal",
+            "qps-ploc-tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        }
+      },
+      "review_boundary": "Host behavioral evidence only; original asset approval remains open"
+    },
+    {
+      "asset_id": "asset.producer.02.stage.2",
+      "original_required_variants": [
+        "default",
+        "reduced_motion_static",
+        "small_phone",
+        "tablet",
+        "selected",
+        "locked"
+      ],
+      "original_source_descriptor": "source/art/producers/producer.02.stage.2.scene.json",
+      "original_export_descriptor": "game/assets/producers/producer.02.stage.2.presentation.json",
+      "evidence_by_presentation_locale": {
+        "en-US": {
+          "report_path": "release/art/catalogue-variants/root-art-full-20261021T122040.006324Z/matrix-results.json",
+          "report_sha256": "717e94848f53ad47fbfe1355e2228144e309bee7cf1a921bcb33477d49d47b91",
+          "condition_ids": [
+            "phone-100-normal",
+            "phone-100-reduced",
+            "phone-150-normal",
+            "phone-150-reduced",
+            "phone-200-normal",
+            "phone-200-reduced",
+            "tablet-100-normal",
+            "tablet-100-reduced",
+            "tablet-150-normal",
+            "tablet-150-reduced",
+            "tablet-200-normal",
+            "tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        },
+        "qps-ploc": {
+          "report_path": "release/art/catalogue-variants/root-art-pseudo-full-20261021T122636.246158Z/matrix-results.json",
+          "report_sha256": "d132e5e2862b280e885acf870a78267d98b117fa1deef705a9dab2b09aa187f2",
+          "condition_ids": [
+            "qps-ploc-phone-100-normal",
+            "qps-ploc-phone-100-reduced",
+            "qps-ploc-phone-150-normal",
+            "qps-ploc-phone-150-reduced",
+            "qps-ploc-phone-200-normal",
+            "qps-ploc-phone-200-reduced",
+            "qps-ploc-tablet-100-normal",
+            "qps-ploc-tablet-100-reduced",
+            "qps-ploc-tablet-150-normal",
+            "qps-ploc-tablet-150-reduced",
+            "qps-ploc-tablet-200-normal",
+            "qps-ploc-tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        }
+      },
+      "review_boundary": "Host behavioral evidence only; original asset approval remains open"
+    },
+    {
+      "asset_id": "asset.producer.02.stage.3",
+      "original_required_variants": [
+        "default",
+        "reduced_motion_static",
+        "small_phone",
+        "tablet",
+        "selected",
+        "locked"
+      ],
+      "original_source_descriptor": "source/art/producers/producer.02.stage.3.scene.json",
+      "original_export_descriptor": "game/assets/producers/producer.02.stage.3.presentation.json",
+      "evidence_by_presentation_locale": {
+        "en-US": {
+          "report_path": "release/art/catalogue-variants/root-art-full-20261021T122040.006324Z/matrix-results.json",
+          "report_sha256": "717e94848f53ad47fbfe1355e2228144e309bee7cf1a921bcb33477d49d47b91",
+          "condition_ids": [
+            "phone-100-normal",
+            "phone-100-reduced",
+            "phone-150-normal",
+            "phone-150-reduced",
+            "phone-200-normal",
+            "phone-200-reduced",
+            "tablet-100-normal",
+            "tablet-100-reduced",
+            "tablet-150-normal",
+            "tablet-150-reduced",
+            "tablet-200-normal",
+            "tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        },
+        "qps-ploc": {
+          "report_path": "release/art/catalogue-variants/root-art-pseudo-full-20261021T122636.246158Z/matrix-results.json",
+          "report_sha256": "d132e5e2862b280e885acf870a78267d98b117fa1deef705a9dab2b09aa187f2",
+          "condition_ids": [
+            "qps-ploc-phone-100-normal",
+            "qps-ploc-phone-100-reduced",
+            "qps-ploc-phone-150-normal",
+            "qps-ploc-phone-150-reduced",
+            "qps-ploc-phone-200-normal",
+            "qps-ploc-phone-200-reduced",
+            "qps-ploc-tablet-100-normal",
+            "qps-ploc-tablet-100-reduced",
+            "qps-ploc-tablet-150-normal",
+            "qps-ploc-tablet-150-reduced",
+            "qps-ploc-tablet-200-normal",
+            "qps-ploc-tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        }
+      },
+      "review_boundary": "Host behavioral evidence only; original asset approval remains open"
+    },
+    {
+      "asset_id": "asset.producer.02.stage.4",
+      "original_required_variants": [
+        "default",
+        "reduced_motion_static",
+        "small_phone",
+        "tablet",
+        "selected",
+        "locked"
+      ],
+      "original_source_descriptor": "source/art/producers/producer.02.stage.4.scene.json",
+      "original_export_descriptor": "game/assets/producers/producer.02.stage.4.presentation.json",
+      "evidence_by_presentation_locale": {
+        "en-US": {
+          "report_path": "release/art/catalogue-variants/root-art-full-20261021T122040.006324Z/matrix-results.json",
+          "report_sha256": "717e94848f53ad47fbfe1355e2228144e309bee7cf1a921bcb33477d49d47b91",
+          "condition_ids": [
+            "phone-100-normal",
+            "phone-100-reduced",
+            "phone-150-normal",
+            "phone-150-reduced",
+            "phone-200-normal",
+            "phone-200-reduced",
+            "tablet-100-normal",
+            "tablet-100-reduced",
+            "tablet-150-normal",
+            "tablet-150-reduced",
+            "tablet-200-normal",
+            "tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        },
+        "qps-ploc": {
+          "report_path": "release/art/catalogue-variants/root-art-pseudo-full-20261021T122636.246158Z/matrix-results.json",
+          "report_sha256": "d132e5e2862b280e885acf870a78267d98b117fa1deef705a9dab2b09aa187f2",
+          "condition_ids": [
+            "qps-ploc-phone-100-normal",
+            "qps-ploc-phone-100-reduced",
+            "qps-ploc-phone-150-normal",
+            "qps-ploc-phone-150-reduced",
+            "qps-ploc-phone-200-normal",
+            "qps-ploc-phone-200-reduced",
+            "qps-ploc-tablet-100-normal",
+            "qps-ploc-tablet-100-reduced",
+            "qps-ploc-tablet-150-normal",
+            "qps-ploc-tablet-150-reduced",
+            "qps-ploc-tablet-200-normal",
+            "qps-ploc-tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        }
+      },
+      "review_boundary": "Host behavioral evidence only; original asset approval remains open"
+    },
+    {
+      "asset_id": "asset.producer.03.stage.0",
+      "original_required_variants": [
+        "default",
+        "reduced_motion_static",
+        "small_phone",
+        "tablet",
+        "selected",
+        "locked"
+      ],
+      "original_source_descriptor": "source/art/producers/producer.03.stage.0.scene.json",
+      "original_export_descriptor": "game/assets/producers/producer.03.stage.0.presentation.json",
+      "evidence_by_presentation_locale": {
+        "en-US": {
+          "report_path": "release/art/catalogue-variants/root-art-full-20261021T122040.006324Z/matrix-results.json",
+          "report_sha256": "717e94848f53ad47fbfe1355e2228144e309bee7cf1a921bcb33477d49d47b91",
+          "condition_ids": [
+            "phone-100-normal",
+            "phone-100-reduced",
+            "phone-150-normal",
+            "phone-150-reduced",
+            "phone-200-normal",
+            "phone-200-reduced",
+            "tablet-100-normal",
+            "tablet-100-reduced",
+            "tablet-150-normal",
+            "tablet-150-reduced",
+            "tablet-200-normal",
+            "tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        },
+        "qps-ploc": {
+          "report_path": "release/art/catalogue-variants/root-art-pseudo-full-20261021T122636.246158Z/matrix-results.json",
+          "report_sha256": "d132e5e2862b280e885acf870a78267d98b117fa1deef705a9dab2b09aa187f2",
+          "condition_ids": [
+            "qps-ploc-phone-100-normal",
+            "qps-ploc-phone-100-reduced",
+            "qps-ploc-phone-150-normal",
+            "qps-ploc-phone-150-reduced",
+            "qps-ploc-phone-200-normal",
+            "qps-ploc-phone-200-reduced",
+            "qps-ploc-tablet-100-normal",
+            "qps-ploc-tablet-100-reduced",
+            "qps-ploc-tablet-150-normal",
+            "qps-ploc-tablet-150-reduced",
+            "qps-ploc-tablet-200-normal",
+            "qps-ploc-tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        }
+      },
+      "review_boundary": "Host behavioral evidence only; original asset approval remains open"
+    },
+    {
+      "asset_id": "asset.producer.03.stage.1",
+      "original_required_variants": [
+        "default",
+        "reduced_motion_static",
+        "small_phone",
+        "tablet",
+        "selected",
+        "locked"
+      ],
+      "original_source_descriptor": "source/art/producers/producer.03.stage.1.scene.json",
+      "original_export_descriptor": "game/assets/producers/producer.03.stage.1.presentation.json",
+      "evidence_by_presentation_locale": {
+        "en-US": {
+          "report_path": "release/art/catalogue-variants/root-art-full-20261021T122040.006324Z/matrix-results.json",
+          "report_sha256": "717e94848f53ad47fbfe1355e2228144e309bee7cf1a921bcb33477d49d47b91",
+          "condition_ids": [
+            "phone-100-normal",
+            "phone-100-reduced",
+            "phone-150-normal",
+            "phone-150-reduced",
+            "phone-200-normal",
+            "phone-200-reduced",
+            "tablet-100-normal",
+            "tablet-100-reduced",
+            "tablet-150-normal",
+            "tablet-150-reduced",
+            "tablet-200-normal",
+            "tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        },
+        "qps-ploc": {
+          "report_path": "release/art/catalogue-variants/root-art-pseudo-full-20261021T122636.246158Z/matrix-results.json",
+          "report_sha256": "d132e5e2862b280e885acf870a78267d98b117fa1deef705a9dab2b09aa187f2",
+          "condition_ids": [
+            "qps-ploc-phone-100-normal",
+            "qps-ploc-phone-100-reduced",
+            "qps-ploc-phone-150-normal",
+            "qps-ploc-phone-150-reduced",
+            "qps-ploc-phone-200-normal",
+            "qps-ploc-phone-200-reduced",
+            "qps-ploc-tablet-100-normal",
+            "qps-ploc-tablet-100-reduced",
+            "qps-ploc-tablet-150-normal",
+            "qps-ploc-tablet-150-reduced",
+            "qps-ploc-tablet-200-normal",
+            "qps-ploc-tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        }
+      },
+      "review_boundary": "Host behavioral evidence only; original asset approval remains open"
+    },
+    {
+      "asset_id": "asset.producer.03.stage.2",
+      "original_required_variants": [
+        "default",
+        "reduced_motion_static",
+        "small_phone",
+        "tablet",
+        "selected",
+        "locked"
+      ],
+      "original_source_descriptor": "source/art/producers/producer.03.stage.2.scene.json",
+      "original_export_descriptor": "game/assets/producers/producer.03.stage.2.presentation.json",
+      "evidence_by_presentation_locale": {
+        "en-US": {
+          "report_path": "release/art/catalogue-variants/root-art-full-20261021T122040.006324Z/matrix-results.json",
+          "report_sha256": "717e94848f53ad47fbfe1355e2228144e309bee7cf1a921bcb33477d49d47b91",
+          "condition_ids": [
+            "phone-100-normal",
+            "phone-100-reduced",
+            "phone-150-normal",
+            "phone-150-reduced",
+            "phone-200-normal",
+            "phone-200-reduced",
+            "tablet-100-normal",
+            "tablet-100-reduced",
+            "tablet-150-normal",
+            "tablet-150-reduced",
+            "tablet-200-normal",
+            "tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        },
+        "qps-ploc": {
+          "report_path": "release/art/catalogue-variants/root-art-pseudo-full-20261021T122636.246158Z/matrix-results.json",
+          "report_sha256": "d132e5e2862b280e885acf870a78267d98b117fa1deef705a9dab2b09aa187f2",
+          "condition_ids": [
+            "qps-ploc-phone-100-normal",
+            "qps-ploc-phone-100-reduced",
+            "qps-ploc-phone-150-normal",
+            "qps-ploc-phone-150-reduced",
+            "qps-ploc-phone-200-normal",
+            "qps-ploc-phone-200-reduced",
+            "qps-ploc-tablet-100-normal",
+            "qps-ploc-tablet-100-reduced",
+            "qps-ploc-tablet-150-normal",
+            "qps-ploc-tablet-150-reduced",
+            "qps-ploc-tablet-200-normal",
+            "qps-ploc-tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        }
+      },
+      "review_boundary": "Host behavioral evidence only; original asset approval remains open"
+    },
+    {
+      "asset_id": "asset.producer.03.stage.3",
+      "original_required_variants": [
+        "default",
+        "reduced_motion_static",
+        "small_phone",
+        "tablet",
+        "selected",
+        "locked"
+      ],
+      "original_source_descriptor": "source/art/producers/producer.03.stage.3.scene.json",
+      "original_export_descriptor": "game/assets/producers/producer.03.stage.3.presentation.json",
+      "evidence_by_presentation_locale": {
+        "en-US": {
+          "report_path": "release/art/catalogue-variants/root-art-full-20261021T122040.006324Z/matrix-results.json",
+          "report_sha256": "717e94848f53ad47fbfe1355e2228144e309bee7cf1a921bcb33477d49d47b91",
+          "condition_ids": [
+            "phone-100-normal",
+            "phone-100-reduced",
+            "phone-150-normal",
+            "phone-150-reduced",
+            "phone-200-normal",
+            "phone-200-reduced",
+            "tablet-100-normal",
+            "tablet-100-reduced",
+            "tablet-150-normal",
+            "tablet-150-reduced",
+            "tablet-200-normal",
+            "tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        },
+        "qps-ploc": {
+          "report_path": "release/art/catalogue-variants/root-art-pseudo-full-20261021T122636.246158Z/matrix-results.json",
+          "report_sha256": "d132e5e2862b280e885acf870a78267d98b117fa1deef705a9dab2b09aa187f2",
+          "condition_ids": [
+            "qps-ploc-phone-100-normal",
+            "qps-ploc-phone-100-reduced",
+            "qps-ploc-phone-150-normal",
+            "qps-ploc-phone-150-reduced",
+            "qps-ploc-phone-200-normal",
+            "qps-ploc-phone-200-reduced",
+            "qps-ploc-tablet-100-normal",
+            "qps-ploc-tablet-100-reduced",
+            "qps-ploc-tablet-150-normal",
+            "qps-ploc-tablet-150-reduced",
+            "qps-ploc-tablet-200-normal",
+            "qps-ploc-tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        }
+      },
+      "review_boundary": "Host behavioral evidence only; original asset approval remains open"
+    },
+    {
+      "asset_id": "asset.producer.03.stage.4",
+      "original_required_variants": [
+        "default",
+        "reduced_motion_static",
+        "small_phone",
+        "tablet",
+        "selected",
+        "locked"
+      ],
+      "original_source_descriptor": "source/art/producers/producer.03.stage.4.scene.json",
+      "original_export_descriptor": "game/assets/producers/producer.03.stage.4.presentation.json",
+      "evidence_by_presentation_locale": {
+        "en-US": {
+          "report_path": "release/art/catalogue-variants/root-art-full-20261021T122040.006324Z/matrix-results.json",
+          "report_sha256": "717e94848f53ad47fbfe1355e2228144e309bee7cf1a921bcb33477d49d47b91",
+          "condition_ids": [
+            "phone-100-normal",
+            "phone-100-reduced",
+            "phone-150-normal",
+            "phone-150-reduced",
+            "phone-200-normal",
+            "phone-200-reduced",
+            "tablet-100-normal",
+            "tablet-100-reduced",
+            "tablet-150-normal",
+            "tablet-150-reduced",
+            "tablet-200-normal",
+            "tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        },
+        "qps-ploc": {
+          "report_path": "release/art/catalogue-variants/root-art-pseudo-full-20261021T122636.246158Z/matrix-results.json",
+          "report_sha256": "d132e5e2862b280e885acf870a78267d98b117fa1deef705a9dab2b09aa187f2",
+          "condition_ids": [
+            "qps-ploc-phone-100-normal",
+            "qps-ploc-phone-100-reduced",
+            "qps-ploc-phone-150-normal",
+            "qps-ploc-phone-150-reduced",
+            "qps-ploc-phone-200-normal",
+            "qps-ploc-phone-200-reduced",
+            "qps-ploc-tablet-100-normal",
+            "qps-ploc-tablet-100-reduced",
+            "qps-ploc-tablet-150-normal",
+            "qps-ploc-tablet-150-reduced",
+            "qps-ploc-tablet-200-normal",
+            "qps-ploc-tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        }
+      },
+      "review_boundary": "Host behavioral evidence only; original asset approval remains open"
+    },
+    {
+      "asset_id": "asset.producer.04.stage.0",
+      "original_required_variants": [
+        "default",
+        "reduced_motion_static",
+        "small_phone",
+        "tablet",
+        "selected",
+        "locked"
+      ],
+      "original_source_descriptor": "source/art/producers/producer.04.stage.0.scene.json",
+      "original_export_descriptor": "game/assets/producers/producer.04.stage.0.presentation.json",
+      "evidence_by_presentation_locale": {
+        "en-US": {
+          "report_path": "release/art/catalogue-variants/root-art-full-20261021T122040.006324Z/matrix-results.json",
+          "report_sha256": "717e94848f53ad47fbfe1355e2228144e309bee7cf1a921bcb33477d49d47b91",
+          "condition_ids": [
+            "phone-100-normal",
+            "phone-100-reduced",
+            "phone-150-normal",
+            "phone-150-reduced",
+            "phone-200-normal",
+            "phone-200-reduced",
+            "tablet-100-normal",
+            "tablet-100-reduced",
+            "tablet-150-normal",
+            "tablet-150-reduced",
+            "tablet-200-normal",
+            "tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        },
+        "qps-ploc": {
+          "report_path": "release/art/catalogue-variants/root-art-pseudo-full-20261021T122636.246158Z/matrix-results.json",
+          "report_sha256": "d132e5e2862b280e885acf870a78267d98b117fa1deef705a9dab2b09aa187f2",
+          "condition_ids": [
+            "qps-ploc-phone-100-normal",
+            "qps-ploc-phone-100-reduced",
+            "qps-ploc-phone-150-normal",
+            "qps-ploc-phone-150-reduced",
+            "qps-ploc-phone-200-normal",
+            "qps-ploc-phone-200-reduced",
+            "qps-ploc-tablet-100-normal",
+            "qps-ploc-tablet-100-reduced",
+            "qps-ploc-tablet-150-normal",
+            "qps-ploc-tablet-150-reduced",
+            "qps-ploc-tablet-200-normal",
+            "qps-ploc-tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        }
+      },
+      "review_boundary": "Host behavioral evidence only; original asset approval remains open"
+    },
+    {
+      "asset_id": "asset.producer.04.stage.1",
+      "original_required_variants": [
+        "default",
+        "reduced_motion_static",
+        "small_phone",
+        "tablet",
+        "selected",
+        "locked"
+      ],
+      "original_source_descriptor": "source/art/producers/producer.04.stage.1.scene.json",
+      "original_export_descriptor": "game/assets/producers/producer.04.stage.1.presentation.json",
+      "evidence_by_presentation_locale": {
+        "en-US": {
+          "report_path": "release/art/catalogue-variants/root-art-full-20261021T122040.006324Z/matrix-results.json",
+          "report_sha256": "717e94848f53ad47fbfe1355e2228144e309bee7cf1a921bcb33477d49d47b91",
+          "condition_ids": [
+            "phone-100-normal",
+            "phone-100-reduced",
+            "phone-150-normal",
+            "phone-150-reduced",
+            "phone-200-normal",
+            "phone-200-reduced",
+            "tablet-100-normal",
+            "tablet-100-reduced",
+            "tablet-150-normal",
+            "tablet-150-reduced",
+            "tablet-200-normal",
+            "tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        },
+        "qps-ploc": {
+          "report_path": "release/art/catalogue-variants/root-art-pseudo-full-20261021T122636.246158Z/matrix-results.json",
+          "report_sha256": "d132e5e2862b280e885acf870a78267d98b117fa1deef705a9dab2b09aa187f2",
+          "condition_ids": [
+            "qps-ploc-phone-100-normal",
+            "qps-ploc-phone-100-reduced",
+            "qps-ploc-phone-150-normal",
+            "qps-ploc-phone-150-reduced",
+            "qps-ploc-phone-200-normal",
+            "qps-ploc-phone-200-reduced",
+            "qps-ploc-tablet-100-normal",
+            "qps-ploc-tablet-100-reduced",
+            "qps-ploc-tablet-150-normal",
+            "qps-ploc-tablet-150-reduced",
+            "qps-ploc-tablet-200-normal",
+            "qps-ploc-tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        }
+      },
+      "review_boundary": "Host behavioral evidence only; original asset approval remains open"
+    },
+    {
+      "asset_id": "asset.producer.04.stage.2",
+      "original_required_variants": [
+        "default",
+        "reduced_motion_static",
+        "small_phone",
+        "tablet",
+        "selected",
+        "locked"
+      ],
+      "original_source_descriptor": "source/art/producers/producer.04.stage.2.scene.json",
+      "original_export_descriptor": "game/assets/producers/producer.04.stage.2.presentation.json",
+      "evidence_by_presentation_locale": {
+        "en-US": {
+          "report_path": "release/art/catalogue-variants/root-art-full-20261021T122040.006324Z/matrix-results.json",
+          "report_sha256": "717e94848f53ad47fbfe1355e2228144e309bee7cf1a921bcb33477d49d47b91",
+          "condition_ids": [
+            "phone-100-normal",
+            "phone-100-reduced",
+            "phone-150-normal",
+            "phone-150-reduced",
+            "phone-200-normal",
+            "phone-200-reduced",
+            "tablet-100-normal",
+            "tablet-100-reduced",
+            "tablet-150-normal",
+            "tablet-150-reduced",
+            "tablet-200-normal",
+            "tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        },
+        "qps-ploc": {
+          "report_path": "release/art/catalogue-variants/root-art-pseudo-full-20261021T122636.246158Z/matrix-results.json",
+          "report_sha256": "d132e5e2862b280e885acf870a78267d98b117fa1deef705a9dab2b09aa187f2",
+          "condition_ids": [
+            "qps-ploc-phone-100-normal",
+            "qps-ploc-phone-100-reduced",
+            "qps-ploc-phone-150-normal",
+            "qps-ploc-phone-150-reduced",
+            "qps-ploc-phone-200-normal",
+            "qps-ploc-phone-200-reduced",
+            "qps-ploc-tablet-100-normal",
+            "qps-ploc-tablet-100-reduced",
+            "qps-ploc-tablet-150-normal",
+            "qps-ploc-tablet-150-reduced",
+            "qps-ploc-tablet-200-normal",
+            "qps-ploc-tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        }
+      },
+      "review_boundary": "Host behavioral evidence only; original asset approval remains open"
+    },
+    {
+      "asset_id": "asset.producer.04.stage.3",
+      "original_required_variants": [
+        "default",
+        "reduced_motion_static",
+        "small_phone",
+        "tablet",
+        "selected",
+        "locked"
+      ],
+      "original_source_descriptor": "source/art/producers/producer.04.stage.3.scene.json",
+      "original_export_descriptor": "game/assets/producers/producer.04.stage.3.presentation.json",
+      "evidence_by_presentation_locale": {
+        "en-US": {
+          "report_path": "release/art/catalogue-variants/root-art-full-20261021T122040.006324Z/matrix-results.json",
+          "report_sha256": "717e94848f53ad47fbfe1355e2228144e309bee7cf1a921bcb33477d49d47b91",
+          "condition_ids": [
+            "phone-100-normal",
+            "phone-100-reduced",
+            "phone-150-normal",
+            "phone-150-reduced",
+            "phone-200-normal",
+            "phone-200-reduced",
+            "tablet-100-normal",
+            "tablet-100-reduced",
+            "tablet-150-normal",
+            "tablet-150-reduced",
+            "tablet-200-normal",
+            "tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        },
+        "qps-ploc": {
+          "report_path": "release/art/catalogue-variants/root-art-pseudo-full-20261021T122636.246158Z/matrix-results.json",
+          "report_sha256": "d132e5e2862b280e885acf870a78267d98b117fa1deef705a9dab2b09aa187f2",
+          "condition_ids": [
+            "qps-ploc-phone-100-normal",
+            "qps-ploc-phone-100-reduced",
+            "qps-ploc-phone-150-normal",
+            "qps-ploc-phone-150-reduced",
+            "qps-ploc-phone-200-normal",
+            "qps-ploc-phone-200-reduced",
+            "qps-ploc-tablet-100-normal",
+            "qps-ploc-tablet-100-reduced",
+            "qps-ploc-tablet-150-normal",
+            "qps-ploc-tablet-150-reduced",
+            "qps-ploc-tablet-200-normal",
+            "qps-ploc-tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        }
+      },
+      "review_boundary": "Host behavioral evidence only; original asset approval remains open"
+    },
+    {
+      "asset_id": "asset.producer.04.stage.4",
+      "original_required_variants": [
+        "default",
+        "reduced_motion_static",
+        "small_phone",
+        "tablet",
+        "selected",
+        "locked"
+      ],
+      "original_source_descriptor": "source/art/producers/producer.04.stage.4.scene.json",
+      "original_export_descriptor": "game/assets/producers/producer.04.stage.4.presentation.json",
+      "evidence_by_presentation_locale": {
+        "en-US": {
+          "report_path": "release/art/catalogue-variants/root-art-full-20261021T122040.006324Z/matrix-results.json",
+          "report_sha256": "717e94848f53ad47fbfe1355e2228144e309bee7cf1a921bcb33477d49d47b91",
+          "condition_ids": [
+            "phone-100-normal",
+            "phone-100-reduced",
+            "phone-150-normal",
+            "phone-150-reduced",
+            "phone-200-normal",
+            "phone-200-reduced",
+            "tablet-100-normal",
+            "tablet-100-reduced",
+            "tablet-150-normal",
+            "tablet-150-reduced",
+            "tablet-200-normal",
+            "tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        },
+        "qps-ploc": {
+          "report_path": "release/art/catalogue-variants/root-art-pseudo-full-20261021T122636.246158Z/matrix-results.json",
+          "report_sha256": "d132e5e2862b280e885acf870a78267d98b117fa1deef705a9dab2b09aa187f2",
+          "condition_ids": [
+            "qps-ploc-phone-100-normal",
+            "qps-ploc-phone-100-reduced",
+            "qps-ploc-phone-150-normal",
+            "qps-ploc-phone-150-reduced",
+            "qps-ploc-phone-200-normal",
+            "qps-ploc-phone-200-reduced",
+            "qps-ploc-tablet-100-normal",
+            "qps-ploc-tablet-100-reduced",
+            "qps-ploc-tablet-150-normal",
+            "qps-ploc-tablet-150-reduced",
+            "qps-ploc-tablet-200-normal",
+            "qps-ploc-tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        }
+      },
+      "review_boundary": "Host behavioral evidence only; original asset approval remains open"
+    },
+    {
+      "asset_id": "asset.producer.05.stage.0",
+      "original_required_variants": [
+        "default",
+        "reduced_motion_static",
+        "small_phone",
+        "tablet",
+        "selected",
+        "locked"
+      ],
+      "original_source_descriptor": "source/art/producers/producer.05.stage.0.scene.json",
+      "original_export_descriptor": "game/assets/producers/producer.05.stage.0.presentation.json",
+      "evidence_by_presentation_locale": {
+        "en-US": {
+          "report_path": "release/art/catalogue-variants/root-art-full-20261021T122040.006324Z/matrix-results.json",
+          "report_sha256": "717e94848f53ad47fbfe1355e2228144e309bee7cf1a921bcb33477d49d47b91",
+          "condition_ids": [
+            "phone-100-normal",
+            "phone-100-reduced",
+            "phone-150-normal",
+            "phone-150-reduced",
+            "phone-200-normal",
+            "phone-200-reduced",
+            "tablet-100-normal",
+            "tablet-100-reduced",
+            "tablet-150-normal",
+            "tablet-150-reduced",
+            "tablet-200-normal",
+            "tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        },
+        "qps-ploc": {
+          "report_path": "release/art/catalogue-variants/root-art-pseudo-full-20261021T122636.246158Z/matrix-results.json",
+          "report_sha256": "d132e5e2862b280e885acf870a78267d98b117fa1deef705a9dab2b09aa187f2",
+          "condition_ids": [
+            "qps-ploc-phone-100-normal",
+            "qps-ploc-phone-100-reduced",
+            "qps-ploc-phone-150-normal",
+            "qps-ploc-phone-150-reduced",
+            "qps-ploc-phone-200-normal",
+            "qps-ploc-phone-200-reduced",
+            "qps-ploc-tablet-100-normal",
+            "qps-ploc-tablet-100-reduced",
+            "qps-ploc-tablet-150-normal",
+            "qps-ploc-tablet-150-reduced",
+            "qps-ploc-tablet-200-normal",
+            "qps-ploc-tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        }
+      },
+      "review_boundary": "Host behavioral evidence only; original asset approval remains open"
+    },
+    {
+      "asset_id": "asset.producer.05.stage.1",
+      "original_required_variants": [
+        "default",
+        "reduced_motion_static",
+        "small_phone",
+        "tablet",
+        "selected",
+        "locked"
+      ],
+      "original_source_descriptor": "source/art/producers/producer.05.stage.1.scene.json",
+      "original_export_descriptor": "game/assets/producers/producer.05.stage.1.presentation.json",
+      "evidence_by_presentation_locale": {
+        "en-US": {
+          "report_path": "release/art/catalogue-variants/root-art-full-20261021T122040.006324Z/matrix-results.json",
+          "report_sha256": "717e94848f53ad47fbfe1355e2228144e309bee7cf1a921bcb33477d49d47b91",
+          "condition_ids": [
+            "phone-100-normal",
+            "phone-100-reduced",
+            "phone-150-normal",
+            "phone-150-reduced",
+            "phone-200-normal",
+            "phone-200-reduced",
+            "tablet-100-normal",
+            "tablet-100-reduced",
+            "tablet-150-normal",
+            "tablet-150-reduced",
+            "tablet-200-normal",
+            "tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        },
+        "qps-ploc": {
+          "report_path": "release/art/catalogue-variants/root-art-pseudo-full-20261021T122636.246158Z/matrix-results.json",
+          "report_sha256": "d132e5e2862b280e885acf870a78267d98b117fa1deef705a9dab2b09aa187f2",
+          "condition_ids": [
+            "qps-ploc-phone-100-normal",
+            "qps-ploc-phone-100-reduced",
+            "qps-ploc-phone-150-normal",
+            "qps-ploc-phone-150-reduced",
+            "qps-ploc-phone-200-normal",
+            "qps-ploc-phone-200-reduced",
+            "qps-ploc-tablet-100-normal",
+            "qps-ploc-tablet-100-reduced",
+            "qps-ploc-tablet-150-normal",
+            "qps-ploc-tablet-150-reduced",
+            "qps-ploc-tablet-200-normal",
+            "qps-ploc-tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        }
+      },
+      "review_boundary": "Host behavioral evidence only; original asset approval remains open"
+    },
+    {
+      "asset_id": "asset.producer.05.stage.2",
+      "original_required_variants": [
+        "default",
+        "reduced_motion_static",
+        "small_phone",
+        "tablet",
+        "selected",
+        "locked"
+      ],
+      "original_source_descriptor": "source/art/producers/producer.05.stage.2.scene.json",
+      "original_export_descriptor": "game/assets/producers/producer.05.stage.2.presentation.json",
+      "evidence_by_presentation_locale": {
+        "en-US": {
+          "report_path": "release/art/catalogue-variants/root-art-full-20261021T122040.006324Z/matrix-results.json",
+          "report_sha256": "717e94848f53ad47fbfe1355e2228144e309bee7cf1a921bcb33477d49d47b91",
+          "condition_ids": [
+            "phone-100-normal",
+            "phone-100-reduced",
+            "phone-150-normal",
+            "phone-150-reduced",
+            "phone-200-normal",
+            "phone-200-reduced",
+            "tablet-100-normal",
+            "tablet-100-reduced",
+            "tablet-150-normal",
+            "tablet-150-reduced",
+            "tablet-200-normal",
+            "tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        },
+        "qps-ploc": {
+          "report_path": "release/art/catalogue-variants/root-art-pseudo-full-20261021T122636.246158Z/matrix-results.json",
+          "report_sha256": "d132e5e2862b280e885acf870a78267d98b117fa1deef705a9dab2b09aa187f2",
+          "condition_ids": [
+            "qps-ploc-phone-100-normal",
+            "qps-ploc-phone-100-reduced",
+            "qps-ploc-phone-150-normal",
+            "qps-ploc-phone-150-reduced",
+            "qps-ploc-phone-200-normal",
+            "qps-ploc-phone-200-reduced",
+            "qps-ploc-tablet-100-normal",
+            "qps-ploc-tablet-100-reduced",
+            "qps-ploc-tablet-150-normal",
+            "qps-ploc-tablet-150-reduced",
+            "qps-ploc-tablet-200-normal",
+            "qps-ploc-tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        }
+      },
+      "review_boundary": "Host behavioral evidence only; original asset approval remains open"
+    },
+    {
+      "asset_id": "asset.producer.05.stage.3",
+      "original_required_variants": [
+        "default",
+        "reduced_motion_static",
+        "small_phone",
+        "tablet",
+        "selected",
+        "locked"
+      ],
+      "original_source_descriptor": "source/art/producers/producer.05.stage.3.scene.json",
+      "original_export_descriptor": "game/assets/producers/producer.05.stage.3.presentation.json",
+      "evidence_by_presentation_locale": {
+        "en-US": {
+          "report_path": "release/art/catalogue-variants/root-art-full-20261021T122040.006324Z/matrix-results.json",
+          "report_sha256": "717e94848f53ad47fbfe1355e2228144e309bee7cf1a921bcb33477d49d47b91",
+          "condition_ids": [
+            "phone-100-normal",
+            "phone-100-reduced",
+            "phone-150-normal",
+            "phone-150-reduced",
+            "phone-200-normal",
+            "phone-200-reduced",
+            "tablet-100-normal",
+            "tablet-100-reduced",
+            "tablet-150-normal",
+            "tablet-150-reduced",
+            "tablet-200-normal",
+            "tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        },
+        "qps-ploc": {
+          "report_path": "release/art/catalogue-variants/root-art-pseudo-full-20261021T122636.246158Z/matrix-results.json",
+          "report_sha256": "d132e5e2862b280e885acf870a78267d98b117fa1deef705a9dab2b09aa187f2",
+          "condition_ids": [
+            "qps-ploc-phone-100-normal",
+            "qps-ploc-phone-100-reduced",
+            "qps-ploc-phone-150-normal",
+            "qps-ploc-phone-150-reduced",
+            "qps-ploc-phone-200-normal",
+            "qps-ploc-phone-200-reduced",
+            "qps-ploc-tablet-100-normal",
+            "qps-ploc-tablet-100-reduced",
+            "qps-ploc-tablet-150-normal",
+            "qps-ploc-tablet-150-reduced",
+            "qps-ploc-tablet-200-normal",
+            "qps-ploc-tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        }
+      },
+      "review_boundary": "Host behavioral evidence only; original asset approval remains open"
+    },
+    {
+      "asset_id": "asset.producer.05.stage.4",
+      "original_required_variants": [
+        "default",
+        "reduced_motion_static",
+        "small_phone",
+        "tablet",
+        "selected",
+        "locked"
+      ],
+      "original_source_descriptor": "source/art/producers/producer.05.stage.4.scene.json",
+      "original_export_descriptor": "game/assets/producers/producer.05.stage.4.presentation.json",
+      "evidence_by_presentation_locale": {
+        "en-US": {
+          "report_path": "release/art/catalogue-variants/root-art-full-20261021T122040.006324Z/matrix-results.json",
+          "report_sha256": "717e94848f53ad47fbfe1355e2228144e309bee7cf1a921bcb33477d49d47b91",
+          "condition_ids": [
+            "phone-100-normal",
+            "phone-100-reduced",
+            "phone-150-normal",
+            "phone-150-reduced",
+            "phone-200-normal",
+            "phone-200-reduced",
+            "tablet-100-normal",
+            "tablet-100-reduced",
+            "tablet-150-normal",
+            "tablet-150-reduced",
+            "tablet-200-normal",
+            "tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        },
+        "qps-ploc": {
+          "report_path": "release/art/catalogue-variants/root-art-pseudo-full-20261021T122636.246158Z/matrix-results.json",
+          "report_sha256": "d132e5e2862b280e885acf870a78267d98b117fa1deef705a9dab2b09aa187f2",
+          "condition_ids": [
+            "qps-ploc-phone-100-normal",
+            "qps-ploc-phone-100-reduced",
+            "qps-ploc-phone-150-normal",
+            "qps-ploc-phone-150-reduced",
+            "qps-ploc-phone-200-normal",
+            "qps-ploc-phone-200-reduced",
+            "qps-ploc-tablet-100-normal",
+            "qps-ploc-tablet-100-reduced",
+            "qps-ploc-tablet-150-normal",
+            "qps-ploc-tablet-150-reduced",
+            "qps-ploc-tablet-200-normal",
+            "qps-ploc-tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        }
+      },
+      "review_boundary": "Host behavioral evidence only; original asset approval remains open"
+    },
+    {
+      "asset_id": "asset.cosmetic.core.chapter.01",
+      "original_required_variants": [
+        "equipped",
+        "preview",
+        "thumbnail",
+        "reduced_motion_static",
+        "small_phone",
+        "tablet"
+      ],
+      "original_source_descriptor": "source/art/cosmetics/cosmetic.core.chapter.01.scene.json",
+      "original_export_descriptor": "game/assets/cosmetics/cosmetic.core.chapter.01.presentation.json",
+      "evidence_by_presentation_locale": {
+        "en-US": {
+          "report_path": "release/art/catalogue-variants/root-art-full-20261021T122040.006324Z/matrix-results.json",
+          "report_sha256": "717e94848f53ad47fbfe1355e2228144e309bee7cf1a921bcb33477d49d47b91",
+          "condition_ids": [
+            "phone-100-normal",
+            "phone-100-reduced",
+            "phone-150-normal",
+            "phone-150-reduced",
+            "phone-200-normal",
+            "phone-200-reduced",
+            "tablet-100-normal",
+            "tablet-100-reduced",
+            "tablet-150-normal",
+            "tablet-150-reduced",
+            "tablet-200-normal",
+            "tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        },
+        "qps-ploc": {
+          "report_path": "release/art/catalogue-variants/root-art-pseudo-full-20261021T122636.246158Z/matrix-results.json",
+          "report_sha256": "d132e5e2862b280e885acf870a78267d98b117fa1deef705a9dab2b09aa187f2",
+          "condition_ids": [
+            "qps-ploc-phone-100-normal",
+            "qps-ploc-phone-100-reduced",
+            "qps-ploc-phone-150-normal",
+            "qps-ploc-phone-150-reduced",
+            "qps-ploc-phone-200-normal",
+            "qps-ploc-phone-200-reduced",
+            "qps-ploc-tablet-100-normal",
+            "qps-ploc-tablet-100-reduced",
+            "qps-ploc-tablet-150-normal",
+            "qps-ploc-tablet-150-reduced",
+            "qps-ploc-tablet-200-normal",
+            "qps-ploc-tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        }
+      },
+      "review_boundary": "Host behavioral evidence only; original asset approval remains open"
+    },
+    {
+      "asset_id": "asset.cosmetic.core.chapter.02",
+      "original_required_variants": [
+        "equipped",
+        "preview",
+        "thumbnail",
+        "reduced_motion_static",
+        "small_phone",
+        "tablet"
+      ],
+      "original_source_descriptor": "source/art/cosmetics/cosmetic.core.chapter.02.scene.json",
+      "original_export_descriptor": "game/assets/cosmetics/cosmetic.core.chapter.02.presentation.json",
+      "evidence_by_presentation_locale": {
+        "en-US": {
+          "report_path": "release/art/catalogue-variants/root-art-full-20261021T122040.006324Z/matrix-results.json",
+          "report_sha256": "717e94848f53ad47fbfe1355e2228144e309bee7cf1a921bcb33477d49d47b91",
+          "condition_ids": [
+            "phone-100-normal",
+            "phone-100-reduced",
+            "phone-150-normal",
+            "phone-150-reduced",
+            "phone-200-normal",
+            "phone-200-reduced",
+            "tablet-100-normal",
+            "tablet-100-reduced",
+            "tablet-150-normal",
+            "tablet-150-reduced",
+            "tablet-200-normal",
+            "tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        },
+        "qps-ploc": {
+          "report_path": "release/art/catalogue-variants/root-art-pseudo-full-20261021T122636.246158Z/matrix-results.json",
+          "report_sha256": "d132e5e2862b280e885acf870a78267d98b117fa1deef705a9dab2b09aa187f2",
+          "condition_ids": [
+            "qps-ploc-phone-100-normal",
+            "qps-ploc-phone-100-reduced",
+            "qps-ploc-phone-150-normal",
+            "qps-ploc-phone-150-reduced",
+            "qps-ploc-phone-200-normal",
+            "qps-ploc-phone-200-reduced",
+            "qps-ploc-tablet-100-normal",
+            "qps-ploc-tablet-100-reduced",
+            "qps-ploc-tablet-150-normal",
+            "qps-ploc-tablet-150-reduced",
+            "qps-ploc-tablet-200-normal",
+            "qps-ploc-tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        }
+      },
+      "review_boundary": "Host behavioral evidence only; original asset approval remains open"
+    },
+    {
+      "asset_id": "asset.cosmetic.core.chapter.03",
+      "original_required_variants": [
+        "equipped",
+        "preview",
+        "thumbnail",
+        "reduced_motion_static",
+        "small_phone",
+        "tablet"
+      ],
+      "original_source_descriptor": "source/art/cosmetics/cosmetic.core.chapter.03.scene.json",
+      "original_export_descriptor": "game/assets/cosmetics/cosmetic.core.chapter.03.presentation.json",
+      "evidence_by_presentation_locale": {
+        "en-US": {
+          "report_path": "release/art/catalogue-variants/root-art-full-20261021T122040.006324Z/matrix-results.json",
+          "report_sha256": "717e94848f53ad47fbfe1355e2228144e309bee7cf1a921bcb33477d49d47b91",
+          "condition_ids": [
+            "phone-100-normal",
+            "phone-100-reduced",
+            "phone-150-normal",
+            "phone-150-reduced",
+            "phone-200-normal",
+            "phone-200-reduced",
+            "tablet-100-normal",
+            "tablet-100-reduced",
+            "tablet-150-normal",
+            "tablet-150-reduced",
+            "tablet-200-normal",
+            "tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        },
+        "qps-ploc": {
+          "report_path": "release/art/catalogue-variants/root-art-pseudo-full-20261021T122636.246158Z/matrix-results.json",
+          "report_sha256": "d132e5e2862b280e885acf870a78267d98b117fa1deef705a9dab2b09aa187f2",
+          "condition_ids": [
+            "qps-ploc-phone-100-normal",
+            "qps-ploc-phone-100-reduced",
+            "qps-ploc-phone-150-normal",
+            "qps-ploc-phone-150-reduced",
+            "qps-ploc-phone-200-normal",
+            "qps-ploc-phone-200-reduced",
+            "qps-ploc-tablet-100-normal",
+            "qps-ploc-tablet-100-reduced",
+            "qps-ploc-tablet-150-normal",
+            "qps-ploc-tablet-150-reduced",
+            "qps-ploc-tablet-200-normal",
+            "qps-ploc-tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        }
+      },
+      "review_boundary": "Host behavioral evidence only; original asset approval remains open"
+    },
+    {
+      "asset_id": "asset.cosmetic.core.chapter.04",
+      "original_required_variants": [
+        "equipped",
+        "preview",
+        "thumbnail",
+        "reduced_motion_static",
+        "small_phone",
+        "tablet"
+      ],
+      "original_source_descriptor": "source/art/cosmetics/cosmetic.core.chapter.04.scene.json",
+      "original_export_descriptor": "game/assets/cosmetics/cosmetic.core.chapter.04.presentation.json",
+      "evidence_by_presentation_locale": {
+        "en-US": {
+          "report_path": "release/art/catalogue-variants/root-art-full-20261021T122040.006324Z/matrix-results.json",
+          "report_sha256": "717e94848f53ad47fbfe1355e2228144e309bee7cf1a921bcb33477d49d47b91",
+          "condition_ids": [
+            "phone-100-normal",
+            "phone-100-reduced",
+            "phone-150-normal",
+            "phone-150-reduced",
+            "phone-200-normal",
+            "phone-200-reduced",
+            "tablet-100-normal",
+            "tablet-100-reduced",
+            "tablet-150-normal",
+            "tablet-150-reduced",
+            "tablet-200-normal",
+            "tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        },
+        "qps-ploc": {
+          "report_path": "release/art/catalogue-variants/root-art-pseudo-full-20261021T122636.246158Z/matrix-results.json",
+          "report_sha256": "d132e5e2862b280e885acf870a78267d98b117fa1deef705a9dab2b09aa187f2",
+          "condition_ids": [
+            "qps-ploc-phone-100-normal",
+            "qps-ploc-phone-100-reduced",
+            "qps-ploc-phone-150-normal",
+            "qps-ploc-phone-150-reduced",
+            "qps-ploc-phone-200-normal",
+            "qps-ploc-phone-200-reduced",
+            "qps-ploc-tablet-100-normal",
+            "qps-ploc-tablet-100-reduced",
+            "qps-ploc-tablet-150-normal",
+            "qps-ploc-tablet-150-reduced",
+            "qps-ploc-tablet-200-normal",
+            "qps-ploc-tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        }
+      },
+      "review_boundary": "Host behavioral evidence only; original asset approval remains open"
+    },
+    {
+      "asset_id": "asset.cosmetic.core.chapter.05",
+      "original_required_variants": [
+        "equipped",
+        "preview",
+        "thumbnail",
+        "reduced_motion_static",
+        "small_phone",
+        "tablet"
+      ],
+      "original_source_descriptor": "source/art/cosmetics/cosmetic.core.chapter.05.scene.json",
+      "original_export_descriptor": "game/assets/cosmetics/cosmetic.core.chapter.05.presentation.json",
+      "evidence_by_presentation_locale": {
+        "en-US": {
+          "report_path": "release/art/catalogue-variants/root-art-full-20261021T122040.006324Z/matrix-results.json",
+          "report_sha256": "717e94848f53ad47fbfe1355e2228144e309bee7cf1a921bcb33477d49d47b91",
+          "condition_ids": [
+            "phone-100-normal",
+            "phone-100-reduced",
+            "phone-150-normal",
+            "phone-150-reduced",
+            "phone-200-normal",
+            "phone-200-reduced",
+            "tablet-100-normal",
+            "tablet-100-reduced",
+            "tablet-150-normal",
+            "tablet-150-reduced",
+            "tablet-200-normal",
+            "tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        },
+        "qps-ploc": {
+          "report_path": "release/art/catalogue-variants/root-art-pseudo-full-20261021T122636.246158Z/matrix-results.json",
+          "report_sha256": "d132e5e2862b280e885acf870a78267d98b117fa1deef705a9dab2b09aa187f2",
+          "condition_ids": [
+            "qps-ploc-phone-100-normal",
+            "qps-ploc-phone-100-reduced",
+            "qps-ploc-phone-150-normal",
+            "qps-ploc-phone-150-reduced",
+            "qps-ploc-phone-200-normal",
+            "qps-ploc-phone-200-reduced",
+            "qps-ploc-tablet-100-normal",
+            "qps-ploc-tablet-100-reduced",
+            "qps-ploc-tablet-150-normal",
+            "qps-ploc-tablet-150-reduced",
+            "qps-ploc-tablet-200-normal",
+            "qps-ploc-tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        }
+      },
+      "review_boundary": "Host behavioral evidence only; original asset approval remains open"
+    },
+    {
+      "asset_id": "asset.cosmetic.core.chapter.06",
+      "original_required_variants": [
+        "equipped",
+        "preview",
+        "thumbnail",
+        "reduced_motion_static",
+        "small_phone",
+        "tablet"
+      ],
+      "original_source_descriptor": "source/art/cosmetics/cosmetic.core.chapter.06.scene.json",
+      "original_export_descriptor": "game/assets/cosmetics/cosmetic.core.chapter.06.presentation.json",
+      "evidence_by_presentation_locale": {
+        "en-US": {
+          "report_path": "release/art/catalogue-variants/root-art-full-20261021T122040.006324Z/matrix-results.json",
+          "report_sha256": "717e94848f53ad47fbfe1355e2228144e309bee7cf1a921bcb33477d49d47b91",
+          "condition_ids": [
+            "phone-100-normal",
+            "phone-100-reduced",
+            "phone-150-normal",
+            "phone-150-reduced",
+            "phone-200-normal",
+            "phone-200-reduced",
+            "tablet-100-normal",
+            "tablet-100-reduced",
+            "tablet-150-normal",
+            "tablet-150-reduced",
+            "tablet-200-normal",
+            "tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        },
+        "qps-ploc": {
+          "report_path": "release/art/catalogue-variants/root-art-pseudo-full-20261021T122636.246158Z/matrix-results.json",
+          "report_sha256": "d132e5e2862b280e885acf870a78267d98b117fa1deef705a9dab2b09aa187f2",
+          "condition_ids": [
+            "qps-ploc-phone-100-normal",
+            "qps-ploc-phone-100-reduced",
+            "qps-ploc-phone-150-normal",
+            "qps-ploc-phone-150-reduced",
+            "qps-ploc-phone-200-normal",
+            "qps-ploc-phone-200-reduced",
+            "qps-ploc-tablet-100-normal",
+            "qps-ploc-tablet-100-reduced",
+            "qps-ploc-tablet-150-normal",
+            "qps-ploc-tablet-150-reduced",
+            "qps-ploc-tablet-200-normal",
+            "qps-ploc-tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        }
+      },
+      "review_boundary": "Host behavioral evidence only; original asset approval remains open"
+    },
+    {
+      "asset_id": "asset.cosmetic.core.decoration.01",
+      "original_required_variants": [
+        "equipped",
+        "preview",
+        "thumbnail",
+        "reduced_motion_static",
+        "small_phone",
+        "tablet"
+      ],
+      "original_source_descriptor": "source/art/cosmetics/cosmetic.core.decoration.01.scene.json",
+      "original_export_descriptor": "game/assets/cosmetics/cosmetic.core.decoration.01.presentation.json",
+      "evidence_by_presentation_locale": {
+        "en-US": {
+          "report_path": "release/art/catalogue-variants/root-art-full-20261021T122040.006324Z/matrix-results.json",
+          "report_sha256": "717e94848f53ad47fbfe1355e2228144e309bee7cf1a921bcb33477d49d47b91",
+          "condition_ids": [
+            "phone-100-normal",
+            "phone-100-reduced",
+            "phone-150-normal",
+            "phone-150-reduced",
+            "phone-200-normal",
+            "phone-200-reduced",
+            "tablet-100-normal",
+            "tablet-100-reduced",
+            "tablet-150-normal",
+            "tablet-150-reduced",
+            "tablet-200-normal",
+            "tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        },
+        "qps-ploc": {
+          "report_path": "release/art/catalogue-variants/root-art-pseudo-full-20261021T122636.246158Z/matrix-results.json",
+          "report_sha256": "d132e5e2862b280e885acf870a78267d98b117fa1deef705a9dab2b09aa187f2",
+          "condition_ids": [
+            "qps-ploc-phone-100-normal",
+            "qps-ploc-phone-100-reduced",
+            "qps-ploc-phone-150-normal",
+            "qps-ploc-phone-150-reduced",
+            "qps-ploc-phone-200-normal",
+            "qps-ploc-phone-200-reduced",
+            "qps-ploc-tablet-100-normal",
+            "qps-ploc-tablet-100-reduced",
+            "qps-ploc-tablet-150-normal",
+            "qps-ploc-tablet-150-reduced",
+            "qps-ploc-tablet-200-normal",
+            "qps-ploc-tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        }
+      },
+      "review_boundary": "Host behavioral evidence only; original asset approval remains open"
+    },
+    {
+      "asset_id": "asset.cosmetic.core.decoration.02",
+      "original_required_variants": [
+        "equipped",
+        "preview",
+        "thumbnail",
+        "reduced_motion_static",
+        "small_phone",
+        "tablet"
+      ],
+      "original_source_descriptor": "source/art/cosmetics/cosmetic.core.decoration.02.scene.json",
+      "original_export_descriptor": "game/assets/cosmetics/cosmetic.core.decoration.02.presentation.json",
+      "evidence_by_presentation_locale": {
+        "en-US": {
+          "report_path": "release/art/catalogue-variants/root-art-full-20261021T122040.006324Z/matrix-results.json",
+          "report_sha256": "717e94848f53ad47fbfe1355e2228144e309bee7cf1a921bcb33477d49d47b91",
+          "condition_ids": [
+            "phone-100-normal",
+            "phone-100-reduced",
+            "phone-150-normal",
+            "phone-150-reduced",
+            "phone-200-normal",
+            "phone-200-reduced",
+            "tablet-100-normal",
+            "tablet-100-reduced",
+            "tablet-150-normal",
+            "tablet-150-reduced",
+            "tablet-200-normal",
+            "tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        },
+        "qps-ploc": {
+          "report_path": "release/art/catalogue-variants/root-art-pseudo-full-20261021T122636.246158Z/matrix-results.json",
+          "report_sha256": "d132e5e2862b280e885acf870a78267d98b117fa1deef705a9dab2b09aa187f2",
+          "condition_ids": [
+            "qps-ploc-phone-100-normal",
+            "qps-ploc-phone-100-reduced",
+            "qps-ploc-phone-150-normal",
+            "qps-ploc-phone-150-reduced",
+            "qps-ploc-phone-200-normal",
+            "qps-ploc-phone-200-reduced",
+            "qps-ploc-tablet-100-normal",
+            "qps-ploc-tablet-100-reduced",
+            "qps-ploc-tablet-150-normal",
+            "qps-ploc-tablet-150-reduced",
+            "qps-ploc-tablet-200-normal",
+            "qps-ploc-tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        }
+      },
+      "review_boundary": "Host behavioral evidence only; original asset approval remains open"
+    },
+    {
+      "asset_id": "asset.cosmetic.core.decoration.03",
+      "original_required_variants": [
+        "equipped",
+        "preview",
+        "thumbnail",
+        "reduced_motion_static",
+        "small_phone",
+        "tablet"
+      ],
+      "original_source_descriptor": "source/art/cosmetics/cosmetic.core.decoration.03.scene.json",
+      "original_export_descriptor": "game/assets/cosmetics/cosmetic.core.decoration.03.presentation.json",
+      "evidence_by_presentation_locale": {
+        "en-US": {
+          "report_path": "release/art/catalogue-variants/root-art-full-20261021T122040.006324Z/matrix-results.json",
+          "report_sha256": "717e94848f53ad47fbfe1355e2228144e309bee7cf1a921bcb33477d49d47b91",
+          "condition_ids": [
+            "phone-100-normal",
+            "phone-100-reduced",
+            "phone-150-normal",
+            "phone-150-reduced",
+            "phone-200-normal",
+            "phone-200-reduced",
+            "tablet-100-normal",
+            "tablet-100-reduced",
+            "tablet-150-normal",
+            "tablet-150-reduced",
+            "tablet-200-normal",
+            "tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        },
+        "qps-ploc": {
+          "report_path": "release/art/catalogue-variants/root-art-pseudo-full-20261021T122636.246158Z/matrix-results.json",
+          "report_sha256": "d132e5e2862b280e885acf870a78267d98b117fa1deef705a9dab2b09aa187f2",
+          "condition_ids": [
+            "qps-ploc-phone-100-normal",
+            "qps-ploc-phone-100-reduced",
+            "qps-ploc-phone-150-normal",
+            "qps-ploc-phone-150-reduced",
+            "qps-ploc-phone-200-normal",
+            "qps-ploc-phone-200-reduced",
+            "qps-ploc-tablet-100-normal",
+            "qps-ploc-tablet-100-reduced",
+            "qps-ploc-tablet-150-normal",
+            "qps-ploc-tablet-150-reduced",
+            "qps-ploc-tablet-200-normal",
+            "qps-ploc-tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        }
+      },
+      "review_boundary": "Host behavioral evidence only; original asset approval remains open"
+    },
+    {
+      "asset_id": "asset.cosmetic.core.decoration.04",
+      "original_required_variants": [
+        "equipped",
+        "preview",
+        "thumbnail",
+        "reduced_motion_static",
+        "small_phone",
+        "tablet"
+      ],
+      "original_source_descriptor": "source/art/cosmetics/cosmetic.core.decoration.04.scene.json",
+      "original_export_descriptor": "game/assets/cosmetics/cosmetic.core.decoration.04.presentation.json",
+      "evidence_by_presentation_locale": {
+        "en-US": {
+          "report_path": "release/art/catalogue-variants/root-art-full-20261021T122040.006324Z/matrix-results.json",
+          "report_sha256": "717e94848f53ad47fbfe1355e2228144e309bee7cf1a921bcb33477d49d47b91",
+          "condition_ids": [
+            "phone-100-normal",
+            "phone-100-reduced",
+            "phone-150-normal",
+            "phone-150-reduced",
+            "phone-200-normal",
+            "phone-200-reduced",
+            "tablet-100-normal",
+            "tablet-100-reduced",
+            "tablet-150-normal",
+            "tablet-150-reduced",
+            "tablet-200-normal",
+            "tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        },
+        "qps-ploc": {
+          "report_path": "release/art/catalogue-variants/root-art-pseudo-full-20261021T122636.246158Z/matrix-results.json",
+          "report_sha256": "d132e5e2862b280e885acf870a78267d98b117fa1deef705a9dab2b09aa187f2",
+          "condition_ids": [
+            "qps-ploc-phone-100-normal",
+            "qps-ploc-phone-100-reduced",
+            "qps-ploc-phone-150-normal",
+            "qps-ploc-phone-150-reduced",
+            "qps-ploc-phone-200-normal",
+            "qps-ploc-phone-200-reduced",
+            "qps-ploc-tablet-100-normal",
+            "qps-ploc-tablet-100-reduced",
+            "qps-ploc-tablet-150-normal",
+            "qps-ploc-tablet-150-reduced",
+            "qps-ploc-tablet-200-normal",
+            "qps-ploc-tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        }
+      },
+      "review_boundary": "Host behavioral evidence only; original asset approval remains open"
+    },
+    {
+      "asset_id": "asset.cosmetic.core.decoration.05",
+      "original_required_variants": [
+        "equipped",
+        "preview",
+        "thumbnail",
+        "reduced_motion_static",
+        "small_phone",
+        "tablet"
+      ],
+      "original_source_descriptor": "source/art/cosmetics/cosmetic.core.decoration.05.scene.json",
+      "original_export_descriptor": "game/assets/cosmetics/cosmetic.core.decoration.05.presentation.json",
+      "evidence_by_presentation_locale": {
+        "en-US": {
+          "report_path": "release/art/catalogue-variants/root-art-full-20261021T122040.006324Z/matrix-results.json",
+          "report_sha256": "717e94848f53ad47fbfe1355e2228144e309bee7cf1a921bcb33477d49d47b91",
+          "condition_ids": [
+            "phone-100-normal",
+            "phone-100-reduced",
+            "phone-150-normal",
+            "phone-150-reduced",
+            "phone-200-normal",
+            "phone-200-reduced",
+            "tablet-100-normal",
+            "tablet-100-reduced",
+            "tablet-150-normal",
+            "tablet-150-reduced",
+            "tablet-200-normal",
+            "tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        },
+        "qps-ploc": {
+          "report_path": "release/art/catalogue-variants/root-art-pseudo-full-20261021T122636.246158Z/matrix-results.json",
+          "report_sha256": "d132e5e2862b280e885acf870a78267d98b117fa1deef705a9dab2b09aa187f2",
+          "condition_ids": [
+            "qps-ploc-phone-100-normal",
+            "qps-ploc-phone-100-reduced",
+            "qps-ploc-phone-150-normal",
+            "qps-ploc-phone-150-reduced",
+            "qps-ploc-phone-200-normal",
+            "qps-ploc-phone-200-reduced",
+            "qps-ploc-tablet-100-normal",
+            "qps-ploc-tablet-100-reduced",
+            "qps-ploc-tablet-150-normal",
+            "qps-ploc-tablet-150-reduced",
+            "qps-ploc-tablet-200-normal",
+            "qps-ploc-tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        }
+      },
+      "review_boundary": "Host behavioral evidence only; original asset approval remains open"
+    },
+    {
+      "asset_id": "asset.cosmetic.core.decoration.06",
+      "original_required_variants": [
+        "equipped",
+        "preview",
+        "thumbnail",
+        "reduced_motion_static",
+        "small_phone",
+        "tablet"
+      ],
+      "original_source_descriptor": "source/art/cosmetics/cosmetic.core.decoration.06.scene.json",
+      "original_export_descriptor": "game/assets/cosmetics/cosmetic.core.decoration.06.presentation.json",
+      "evidence_by_presentation_locale": {
+        "en-US": {
+          "report_path": "release/art/catalogue-variants/root-art-full-20261021T122040.006324Z/matrix-results.json",
+          "report_sha256": "717e94848f53ad47fbfe1355e2228144e309bee7cf1a921bcb33477d49d47b91",
+          "condition_ids": [
+            "phone-100-normal",
+            "phone-100-reduced",
+            "phone-150-normal",
+            "phone-150-reduced",
+            "phone-200-normal",
+            "phone-200-reduced",
+            "tablet-100-normal",
+            "tablet-100-reduced",
+            "tablet-150-normal",
+            "tablet-150-reduced",
+            "tablet-200-normal",
+            "tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        },
+        "qps-ploc": {
+          "report_path": "release/art/catalogue-variants/root-art-pseudo-full-20261021T122636.246158Z/matrix-results.json",
+          "report_sha256": "d132e5e2862b280e885acf870a78267d98b117fa1deef705a9dab2b09aa187f2",
+          "condition_ids": [
+            "qps-ploc-phone-100-normal",
+            "qps-ploc-phone-100-reduced",
+            "qps-ploc-phone-150-normal",
+            "qps-ploc-phone-150-reduced",
+            "qps-ploc-phone-200-normal",
+            "qps-ploc-phone-200-reduced",
+            "qps-ploc-tablet-100-normal",
+            "qps-ploc-tablet-100-reduced",
+            "qps-ploc-tablet-150-normal",
+            "qps-ploc-tablet-150-reduced",
+            "qps-ploc-tablet-200-normal",
+            "qps-ploc-tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        }
+      },
+      "review_boundary": "Host behavioral evidence only; original asset approval remains open"
+    },
+    {
+      "asset_id": "asset.cosmetic.free_pass.01",
+      "original_required_variants": [
+        "equipped",
+        "preview",
+        "thumbnail",
+        "reduced_motion_static",
+        "small_phone",
+        "tablet"
+      ],
+      "original_source_descriptor": "source/art/cosmetics/cosmetic.free_pass.01.scene.json",
+      "original_export_descriptor": "game/assets/cosmetics/cosmetic.free_pass.01.presentation.json",
+      "evidence_by_presentation_locale": {
+        "en-US": {
+          "report_path": "release/art/catalogue-variants/root-art-full-20261021T122040.006324Z/matrix-results.json",
+          "report_sha256": "717e94848f53ad47fbfe1355e2228144e309bee7cf1a921bcb33477d49d47b91",
+          "condition_ids": [
+            "phone-100-normal",
+            "phone-100-reduced",
+            "phone-150-normal",
+            "phone-150-reduced",
+            "phone-200-normal",
+            "phone-200-reduced",
+            "tablet-100-normal",
+            "tablet-100-reduced",
+            "tablet-150-normal",
+            "tablet-150-reduced",
+            "tablet-200-normal",
+            "tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        },
+        "qps-ploc": {
+          "report_path": "release/art/catalogue-variants/root-art-pseudo-full-20261021T122636.246158Z/matrix-results.json",
+          "report_sha256": "d132e5e2862b280e885acf870a78267d98b117fa1deef705a9dab2b09aa187f2",
+          "condition_ids": [
+            "qps-ploc-phone-100-normal",
+            "qps-ploc-phone-100-reduced",
+            "qps-ploc-phone-150-normal",
+            "qps-ploc-phone-150-reduced",
+            "qps-ploc-phone-200-normal",
+            "qps-ploc-phone-200-reduced",
+            "qps-ploc-tablet-100-normal",
+            "qps-ploc-tablet-100-reduced",
+            "qps-ploc-tablet-150-normal",
+            "qps-ploc-tablet-150-reduced",
+            "qps-ploc-tablet-200-normal",
+            "qps-ploc-tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        }
+      },
+      "review_boundary": "Host behavioral evidence only; original asset approval remains open"
+    },
+    {
+      "asset_id": "asset.cosmetic.free_pass.02",
+      "original_required_variants": [
+        "equipped",
+        "preview",
+        "thumbnail",
+        "reduced_motion_static",
+        "small_phone",
+        "tablet"
+      ],
+      "original_source_descriptor": "source/art/cosmetics/cosmetic.free_pass.02.scene.json",
+      "original_export_descriptor": "game/assets/cosmetics/cosmetic.free_pass.02.presentation.json",
+      "evidence_by_presentation_locale": {
+        "en-US": {
+          "report_path": "release/art/catalogue-variants/root-art-full-20261021T122040.006324Z/matrix-results.json",
+          "report_sha256": "717e94848f53ad47fbfe1355e2228144e309bee7cf1a921bcb33477d49d47b91",
+          "condition_ids": [
+            "phone-100-normal",
+            "phone-100-reduced",
+            "phone-150-normal",
+            "phone-150-reduced",
+            "phone-200-normal",
+            "phone-200-reduced",
+            "tablet-100-normal",
+            "tablet-100-reduced",
+            "tablet-150-normal",
+            "tablet-150-reduced",
+            "tablet-200-normal",
+            "tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        },
+        "qps-ploc": {
+          "report_path": "release/art/catalogue-variants/root-art-pseudo-full-20261021T122636.246158Z/matrix-results.json",
+          "report_sha256": "d132e5e2862b280e885acf870a78267d98b117fa1deef705a9dab2b09aa187f2",
+          "condition_ids": [
+            "qps-ploc-phone-100-normal",
+            "qps-ploc-phone-100-reduced",
+            "qps-ploc-phone-150-normal",
+            "qps-ploc-phone-150-reduced",
+            "qps-ploc-phone-200-normal",
+            "qps-ploc-phone-200-reduced",
+            "qps-ploc-tablet-100-normal",
+            "qps-ploc-tablet-100-reduced",
+            "qps-ploc-tablet-150-normal",
+            "qps-ploc-tablet-150-reduced",
+            "qps-ploc-tablet-200-normal",
+            "qps-ploc-tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        }
+      },
+      "review_boundary": "Host behavioral evidence only; original asset approval remains open"
+    },
+    {
+      "asset_id": "asset.cosmetic.free_pass.03",
+      "original_required_variants": [
+        "equipped",
+        "preview",
+        "thumbnail",
+        "reduced_motion_static",
+        "small_phone",
+        "tablet"
+      ],
+      "original_source_descriptor": "source/art/cosmetics/cosmetic.free_pass.03.scene.json",
+      "original_export_descriptor": "game/assets/cosmetics/cosmetic.free_pass.03.presentation.json",
+      "evidence_by_presentation_locale": {
+        "en-US": {
+          "report_path": "release/art/catalogue-variants/root-art-full-20261021T122040.006324Z/matrix-results.json",
+          "report_sha256": "717e94848f53ad47fbfe1355e2228144e309bee7cf1a921bcb33477d49d47b91",
+          "condition_ids": [
+            "phone-100-normal",
+            "phone-100-reduced",
+            "phone-150-normal",
+            "phone-150-reduced",
+            "phone-200-normal",
+            "phone-200-reduced",
+            "tablet-100-normal",
+            "tablet-100-reduced",
+            "tablet-150-normal",
+            "tablet-150-reduced",
+            "tablet-200-normal",
+            "tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        },
+        "qps-ploc": {
+          "report_path": "release/art/catalogue-variants/root-art-pseudo-full-20261021T122636.246158Z/matrix-results.json",
+          "report_sha256": "d132e5e2862b280e885acf870a78267d98b117fa1deef705a9dab2b09aa187f2",
+          "condition_ids": [
+            "qps-ploc-phone-100-normal",
+            "qps-ploc-phone-100-reduced",
+            "qps-ploc-phone-150-normal",
+            "qps-ploc-phone-150-reduced",
+            "qps-ploc-phone-200-normal",
+            "qps-ploc-phone-200-reduced",
+            "qps-ploc-tablet-100-normal",
+            "qps-ploc-tablet-100-reduced",
+            "qps-ploc-tablet-150-normal",
+            "qps-ploc-tablet-150-reduced",
+            "qps-ploc-tablet-200-normal",
+            "qps-ploc-tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        }
+      },
+      "review_boundary": "Host behavioral evidence only; original asset approval remains open"
+    },
+    {
+      "asset_id": "asset.cosmetic.free_pass.04",
+      "original_required_variants": [
+        "equipped",
+        "preview",
+        "thumbnail",
+        "reduced_motion_static",
+        "small_phone",
+        "tablet"
+      ],
+      "original_source_descriptor": "source/art/cosmetics/cosmetic.free_pass.04.scene.json",
+      "original_export_descriptor": "game/assets/cosmetics/cosmetic.free_pass.04.presentation.json",
+      "evidence_by_presentation_locale": {
+        "en-US": {
+          "report_path": "release/art/catalogue-variants/root-art-full-20261021T122040.006324Z/matrix-results.json",
+          "report_sha256": "717e94848f53ad47fbfe1355e2228144e309bee7cf1a921bcb33477d49d47b91",
+          "condition_ids": [
+            "phone-100-normal",
+            "phone-100-reduced",
+            "phone-150-normal",
+            "phone-150-reduced",
+            "phone-200-normal",
+            "phone-200-reduced",
+            "tablet-100-normal",
+            "tablet-100-reduced",
+            "tablet-150-normal",
+            "tablet-150-reduced",
+            "tablet-200-normal",
+            "tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        },
+        "qps-ploc": {
+          "report_path": "release/art/catalogue-variants/root-art-pseudo-full-20261021T122636.246158Z/matrix-results.json",
+          "report_sha256": "d132e5e2862b280e885acf870a78267d98b117fa1deef705a9dab2b09aa187f2",
+          "condition_ids": [
+            "qps-ploc-phone-100-normal",
+            "qps-ploc-phone-100-reduced",
+            "qps-ploc-phone-150-normal",
+            "qps-ploc-phone-150-reduced",
+            "qps-ploc-phone-200-normal",
+            "qps-ploc-phone-200-reduced",
+            "qps-ploc-tablet-100-normal",
+            "qps-ploc-tablet-100-reduced",
+            "qps-ploc-tablet-150-normal",
+            "qps-ploc-tablet-150-reduced",
+            "qps-ploc-tablet-200-normal",
+            "qps-ploc-tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        }
+      },
+      "review_boundary": "Host behavioral evidence only; original asset approval remains open"
+    },
+    {
+      "asset_id": "asset.cosmetic.free_pass.05",
+      "original_required_variants": [
+        "equipped",
+        "preview",
+        "thumbnail",
+        "reduced_motion_static",
+        "small_phone",
+        "tablet"
+      ],
+      "original_source_descriptor": "source/art/cosmetics/cosmetic.free_pass.05.scene.json",
+      "original_export_descriptor": "game/assets/cosmetics/cosmetic.free_pass.05.presentation.json",
+      "evidence_by_presentation_locale": {
+        "en-US": {
+          "report_path": "release/art/catalogue-variants/root-art-full-20261021T122040.006324Z/matrix-results.json",
+          "report_sha256": "717e94848f53ad47fbfe1355e2228144e309bee7cf1a921bcb33477d49d47b91",
+          "condition_ids": [
+            "phone-100-normal",
+            "phone-100-reduced",
+            "phone-150-normal",
+            "phone-150-reduced",
+            "phone-200-normal",
+            "phone-200-reduced",
+            "tablet-100-normal",
+            "tablet-100-reduced",
+            "tablet-150-normal",
+            "tablet-150-reduced",
+            "tablet-200-normal",
+            "tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        },
+        "qps-ploc": {
+          "report_path": "release/art/catalogue-variants/root-art-pseudo-full-20261021T122636.246158Z/matrix-results.json",
+          "report_sha256": "d132e5e2862b280e885acf870a78267d98b117fa1deef705a9dab2b09aa187f2",
+          "condition_ids": [
+            "qps-ploc-phone-100-normal",
+            "qps-ploc-phone-100-reduced",
+            "qps-ploc-phone-150-normal",
+            "qps-ploc-phone-150-reduced",
+            "qps-ploc-phone-200-normal",
+            "qps-ploc-phone-200-reduced",
+            "qps-ploc-tablet-100-normal",
+            "qps-ploc-tablet-100-reduced",
+            "qps-ploc-tablet-150-normal",
+            "qps-ploc-tablet-150-reduced",
+            "qps-ploc-tablet-200-normal",
+            "qps-ploc-tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        }
+      },
+      "review_boundary": "Host behavioral evidence only; original asset approval remains open"
+    },
+    {
+      "asset_id": "asset.cosmetic.free_pass.06",
+      "original_required_variants": [
+        "equipped",
+        "preview",
+        "thumbnail",
+        "reduced_motion_static",
+        "small_phone",
+        "tablet"
+      ],
+      "original_source_descriptor": "source/art/cosmetics/cosmetic.free_pass.06.scene.json",
+      "original_export_descriptor": "game/assets/cosmetics/cosmetic.free_pass.06.presentation.json",
+      "evidence_by_presentation_locale": {
+        "en-US": {
+          "report_path": "release/art/catalogue-variants/root-art-full-20261021T122040.006324Z/matrix-results.json",
+          "report_sha256": "717e94848f53ad47fbfe1355e2228144e309bee7cf1a921bcb33477d49d47b91",
+          "condition_ids": [
+            "phone-100-normal",
+            "phone-100-reduced",
+            "phone-150-normal",
+            "phone-150-reduced",
+            "phone-200-normal",
+            "phone-200-reduced",
+            "tablet-100-normal",
+            "tablet-100-reduced",
+            "tablet-150-normal",
+            "tablet-150-reduced",
+            "tablet-200-normal",
+            "tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        },
+        "qps-ploc": {
+          "report_path": "release/art/catalogue-variants/root-art-pseudo-full-20261021T122636.246158Z/matrix-results.json",
+          "report_sha256": "d132e5e2862b280e885acf870a78267d98b117fa1deef705a9dab2b09aa187f2",
+          "condition_ids": [
+            "qps-ploc-phone-100-normal",
+            "qps-ploc-phone-100-reduced",
+            "qps-ploc-phone-150-normal",
+            "qps-ploc-phone-150-reduced",
+            "qps-ploc-phone-200-normal",
+            "qps-ploc-phone-200-reduced",
+            "qps-ploc-tablet-100-normal",
+            "qps-ploc-tablet-100-reduced",
+            "qps-ploc-tablet-150-normal",
+            "qps-ploc-tablet-150-reduced",
+            "qps-ploc-tablet-200-normal",
+            "qps-ploc-tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        }
+      },
+      "review_boundary": "Host behavioral evidence only; original asset approval remains open"
+    },
+    {
+      "asset_id": "asset.cosmetic.free_pass.07",
+      "original_required_variants": [
+        "equipped",
+        "preview",
+        "thumbnail",
+        "reduced_motion_static",
+        "small_phone",
+        "tablet"
+      ],
+      "original_source_descriptor": "source/art/cosmetics/cosmetic.free_pass.07.scene.json",
+      "original_export_descriptor": "game/assets/cosmetics/cosmetic.free_pass.07.presentation.json",
+      "evidence_by_presentation_locale": {
+        "en-US": {
+          "report_path": "release/art/catalogue-variants/root-art-full-20261021T122040.006324Z/matrix-results.json",
+          "report_sha256": "717e94848f53ad47fbfe1355e2228144e309bee7cf1a921bcb33477d49d47b91",
+          "condition_ids": [
+            "phone-100-normal",
+            "phone-100-reduced",
+            "phone-150-normal",
+            "phone-150-reduced",
+            "phone-200-normal",
+            "phone-200-reduced",
+            "tablet-100-normal",
+            "tablet-100-reduced",
+            "tablet-150-normal",
+            "tablet-150-reduced",
+            "tablet-200-normal",
+            "tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        },
+        "qps-ploc": {
+          "report_path": "release/art/catalogue-variants/root-art-pseudo-full-20261021T122636.246158Z/matrix-results.json",
+          "report_sha256": "d132e5e2862b280e885acf870a78267d98b117fa1deef705a9dab2b09aa187f2",
+          "condition_ids": [
+            "qps-ploc-phone-100-normal",
+            "qps-ploc-phone-100-reduced",
+            "qps-ploc-phone-150-normal",
+            "qps-ploc-phone-150-reduced",
+            "qps-ploc-phone-200-normal",
+            "qps-ploc-phone-200-reduced",
+            "qps-ploc-tablet-100-normal",
+            "qps-ploc-tablet-100-reduced",
+            "qps-ploc-tablet-150-normal",
+            "qps-ploc-tablet-150-reduced",
+            "qps-ploc-tablet-200-normal",
+            "qps-ploc-tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        }
+      },
+      "review_boundary": "Host behavioral evidence only; original asset approval remains open"
+    },
+    {
+      "asset_id": "asset.cosmetic.free_pass.08",
+      "original_required_variants": [
+        "equipped",
+        "preview",
+        "thumbnail",
+        "reduced_motion_static",
+        "small_phone",
+        "tablet"
+      ],
+      "original_source_descriptor": "source/art/cosmetics/cosmetic.free_pass.08.scene.json",
+      "original_export_descriptor": "game/assets/cosmetics/cosmetic.free_pass.08.presentation.json",
+      "evidence_by_presentation_locale": {
+        "en-US": {
+          "report_path": "release/art/catalogue-variants/root-art-full-20261021T122040.006324Z/matrix-results.json",
+          "report_sha256": "717e94848f53ad47fbfe1355e2228144e309bee7cf1a921bcb33477d49d47b91",
+          "condition_ids": [
+            "phone-100-normal",
+            "phone-100-reduced",
+            "phone-150-normal",
+            "phone-150-reduced",
+            "phone-200-normal",
+            "phone-200-reduced",
+            "tablet-100-normal",
+            "tablet-100-reduced",
+            "tablet-150-normal",
+            "tablet-150-reduced",
+            "tablet-200-normal",
+            "tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        },
+        "qps-ploc": {
+          "report_path": "release/art/catalogue-variants/root-art-pseudo-full-20261021T122636.246158Z/matrix-results.json",
+          "report_sha256": "d132e5e2862b280e885acf870a78267d98b117fa1deef705a9dab2b09aa187f2",
+          "condition_ids": [
+            "qps-ploc-phone-100-normal",
+            "qps-ploc-phone-100-reduced",
+            "qps-ploc-phone-150-normal",
+            "qps-ploc-phone-150-reduced",
+            "qps-ploc-phone-200-normal",
+            "qps-ploc-phone-200-reduced",
+            "qps-ploc-tablet-100-normal",
+            "qps-ploc-tablet-100-reduced",
+            "qps-ploc-tablet-150-normal",
+            "qps-ploc-tablet-150-reduced",
+            "qps-ploc-tablet-200-normal",
+            "qps-ploc-tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        }
+      },
+      "review_boundary": "Host behavioral evidence only; original asset approval remains open"
+    },
+    {
+      "asset_id": "asset.cosmetic.free_pass.09",
+      "original_required_variants": [
+        "equipped",
+        "preview",
+        "thumbnail",
+        "reduced_motion_static",
+        "small_phone",
+        "tablet"
+      ],
+      "original_source_descriptor": "source/art/cosmetics/cosmetic.free_pass.09.scene.json",
+      "original_export_descriptor": "game/assets/cosmetics/cosmetic.free_pass.09.presentation.json",
+      "evidence_by_presentation_locale": {
+        "en-US": {
+          "report_path": "release/art/catalogue-variants/root-art-full-20261021T122040.006324Z/matrix-results.json",
+          "report_sha256": "717e94848f53ad47fbfe1355e2228144e309bee7cf1a921bcb33477d49d47b91",
+          "condition_ids": [
+            "phone-100-normal",
+            "phone-100-reduced",
+            "phone-150-normal",
+            "phone-150-reduced",
+            "phone-200-normal",
+            "phone-200-reduced",
+            "tablet-100-normal",
+            "tablet-100-reduced",
+            "tablet-150-normal",
+            "tablet-150-reduced",
+            "tablet-200-normal",
+            "tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        },
+        "qps-ploc": {
+          "report_path": "release/art/catalogue-variants/root-art-pseudo-full-20261021T122636.246158Z/matrix-results.json",
+          "report_sha256": "d132e5e2862b280e885acf870a78267d98b117fa1deef705a9dab2b09aa187f2",
+          "condition_ids": [
+            "qps-ploc-phone-100-normal",
+            "qps-ploc-phone-100-reduced",
+            "qps-ploc-phone-150-normal",
+            "qps-ploc-phone-150-reduced",
+            "qps-ploc-phone-200-normal",
+            "qps-ploc-phone-200-reduced",
+            "qps-ploc-tablet-100-normal",
+            "qps-ploc-tablet-100-reduced",
+            "qps-ploc-tablet-150-normal",
+            "qps-ploc-tablet-150-reduced",
+            "qps-ploc-tablet-200-normal",
+            "qps-ploc-tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        }
+      },
+      "review_boundary": "Host behavioral evidence only; original asset approval remains open"
+    },
+    {
+      "asset_id": "asset.cosmetic.free_pass.10",
+      "original_required_variants": [
+        "equipped",
+        "preview",
+        "thumbnail",
+        "reduced_motion_static",
+        "small_phone",
+        "tablet"
+      ],
+      "original_source_descriptor": "source/art/cosmetics/cosmetic.free_pass.10.scene.json",
+      "original_export_descriptor": "game/assets/cosmetics/cosmetic.free_pass.10.presentation.json",
+      "evidence_by_presentation_locale": {
+        "en-US": {
+          "report_path": "release/art/catalogue-variants/root-art-full-20261021T122040.006324Z/matrix-results.json",
+          "report_sha256": "717e94848f53ad47fbfe1355e2228144e309bee7cf1a921bcb33477d49d47b91",
+          "condition_ids": [
+            "phone-100-normal",
+            "phone-100-reduced",
+            "phone-150-normal",
+            "phone-150-reduced",
+            "phone-200-normal",
+            "phone-200-reduced",
+            "tablet-100-normal",
+            "tablet-100-reduced",
+            "tablet-150-normal",
+            "tablet-150-reduced",
+            "tablet-200-normal",
+            "tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        },
+        "qps-ploc": {
+          "report_path": "release/art/catalogue-variants/root-art-pseudo-full-20261021T122636.246158Z/matrix-results.json",
+          "report_sha256": "d132e5e2862b280e885acf870a78267d98b117fa1deef705a9dab2b09aa187f2",
+          "condition_ids": [
+            "qps-ploc-phone-100-normal",
+            "qps-ploc-phone-100-reduced",
+            "qps-ploc-phone-150-normal",
+            "qps-ploc-phone-150-reduced",
+            "qps-ploc-phone-200-normal",
+            "qps-ploc-phone-200-reduced",
+            "qps-ploc-tablet-100-normal",
+            "qps-ploc-tablet-100-reduced",
+            "qps-ploc-tablet-150-normal",
+            "qps-ploc-tablet-150-reduced",
+            "qps-ploc-tablet-200-normal",
+            "qps-ploc-tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        }
+      },
+      "review_boundary": "Host behavioral evidence only; original asset approval remains open"
+    },
+    {
+      "asset_id": "asset.cosmetic.premium_pass.01",
+      "original_required_variants": [
+        "equipped",
+        "preview",
+        "thumbnail",
+        "reduced_motion_static",
+        "small_phone",
+        "tablet"
+      ],
+      "original_source_descriptor": "source/art/cosmetics/cosmetic.premium_pass.01.scene.json",
+      "original_export_descriptor": "game/assets/cosmetics/cosmetic.premium_pass.01.presentation.json",
+      "evidence_by_presentation_locale": {
+        "en-US": {
+          "report_path": "release/art/catalogue-variants/root-art-full-20261021T122040.006324Z/matrix-results.json",
+          "report_sha256": "717e94848f53ad47fbfe1355e2228144e309bee7cf1a921bcb33477d49d47b91",
+          "condition_ids": [
+            "phone-100-normal",
+            "phone-100-reduced",
+            "phone-150-normal",
+            "phone-150-reduced",
+            "phone-200-normal",
+            "phone-200-reduced",
+            "tablet-100-normal",
+            "tablet-100-reduced",
+            "tablet-150-normal",
+            "tablet-150-reduced",
+            "tablet-200-normal",
+            "tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        },
+        "qps-ploc": {
+          "report_path": "release/art/catalogue-variants/root-art-pseudo-full-20261021T122636.246158Z/matrix-results.json",
+          "report_sha256": "d132e5e2862b280e885acf870a78267d98b117fa1deef705a9dab2b09aa187f2",
+          "condition_ids": [
+            "qps-ploc-phone-100-normal",
+            "qps-ploc-phone-100-reduced",
+            "qps-ploc-phone-150-normal",
+            "qps-ploc-phone-150-reduced",
+            "qps-ploc-phone-200-normal",
+            "qps-ploc-phone-200-reduced",
+            "qps-ploc-tablet-100-normal",
+            "qps-ploc-tablet-100-reduced",
+            "qps-ploc-tablet-150-normal",
+            "qps-ploc-tablet-150-reduced",
+            "qps-ploc-tablet-200-normal",
+            "qps-ploc-tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        }
+      },
+      "review_boundary": "Host behavioral evidence only; original asset approval remains open"
+    },
+    {
+      "asset_id": "asset.cosmetic.premium_pass.02",
+      "original_required_variants": [
+        "equipped",
+        "preview",
+        "thumbnail",
+        "reduced_motion_static",
+        "small_phone",
+        "tablet"
+      ],
+      "original_source_descriptor": "source/art/cosmetics/cosmetic.premium_pass.02.scene.json",
+      "original_export_descriptor": "game/assets/cosmetics/cosmetic.premium_pass.02.presentation.json",
+      "evidence_by_presentation_locale": {
+        "en-US": {
+          "report_path": "release/art/catalogue-variants/root-art-full-20261021T122040.006324Z/matrix-results.json",
+          "report_sha256": "717e94848f53ad47fbfe1355e2228144e309bee7cf1a921bcb33477d49d47b91",
+          "condition_ids": [
+            "phone-100-normal",
+            "phone-100-reduced",
+            "phone-150-normal",
+            "phone-150-reduced",
+            "phone-200-normal",
+            "phone-200-reduced",
+            "tablet-100-normal",
+            "tablet-100-reduced",
+            "tablet-150-normal",
+            "tablet-150-reduced",
+            "tablet-200-normal",
+            "tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        },
+        "qps-ploc": {
+          "report_path": "release/art/catalogue-variants/root-art-pseudo-full-20261021T122636.246158Z/matrix-results.json",
+          "report_sha256": "d132e5e2862b280e885acf870a78267d98b117fa1deef705a9dab2b09aa187f2",
+          "condition_ids": [
+            "qps-ploc-phone-100-normal",
+            "qps-ploc-phone-100-reduced",
+            "qps-ploc-phone-150-normal",
+            "qps-ploc-phone-150-reduced",
+            "qps-ploc-phone-200-normal",
+            "qps-ploc-phone-200-reduced",
+            "qps-ploc-tablet-100-normal",
+            "qps-ploc-tablet-100-reduced",
+            "qps-ploc-tablet-150-normal",
+            "qps-ploc-tablet-150-reduced",
+            "qps-ploc-tablet-200-normal",
+            "qps-ploc-tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        }
+      },
+      "review_boundary": "Host behavioral evidence only; original asset approval remains open"
+    },
+    {
+      "asset_id": "asset.cosmetic.premium_pass.03",
+      "original_required_variants": [
+        "equipped",
+        "preview",
+        "thumbnail",
+        "reduced_motion_static",
+        "small_phone",
+        "tablet"
+      ],
+      "original_source_descriptor": "source/art/cosmetics/cosmetic.premium_pass.03.scene.json",
+      "original_export_descriptor": "game/assets/cosmetics/cosmetic.premium_pass.03.presentation.json",
+      "evidence_by_presentation_locale": {
+        "en-US": {
+          "report_path": "release/art/catalogue-variants/root-art-full-20261021T122040.006324Z/matrix-results.json",
+          "report_sha256": "717e94848f53ad47fbfe1355e2228144e309bee7cf1a921bcb33477d49d47b91",
+          "condition_ids": [
+            "phone-100-normal",
+            "phone-100-reduced",
+            "phone-150-normal",
+            "phone-150-reduced",
+            "phone-200-normal",
+            "phone-200-reduced",
+            "tablet-100-normal",
+            "tablet-100-reduced",
+            "tablet-150-normal",
+            "tablet-150-reduced",
+            "tablet-200-normal",
+            "tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        },
+        "qps-ploc": {
+          "report_path": "release/art/catalogue-variants/root-art-pseudo-full-20261021T122636.246158Z/matrix-results.json",
+          "report_sha256": "d132e5e2862b280e885acf870a78267d98b117fa1deef705a9dab2b09aa187f2",
+          "condition_ids": [
+            "qps-ploc-phone-100-normal",
+            "qps-ploc-phone-100-reduced",
+            "qps-ploc-phone-150-normal",
+            "qps-ploc-phone-150-reduced",
+            "qps-ploc-phone-200-normal",
+            "qps-ploc-phone-200-reduced",
+            "qps-ploc-tablet-100-normal",
+            "qps-ploc-tablet-100-reduced",
+            "qps-ploc-tablet-150-normal",
+            "qps-ploc-tablet-150-reduced",
+            "qps-ploc-tablet-200-normal",
+            "qps-ploc-tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        }
+      },
+      "review_boundary": "Host behavioral evidence only; original asset approval remains open"
+    },
+    {
+      "asset_id": "asset.cosmetic.premium_pass.04",
+      "original_required_variants": [
+        "equipped",
+        "preview",
+        "thumbnail",
+        "reduced_motion_static",
+        "small_phone",
+        "tablet"
+      ],
+      "original_source_descriptor": "source/art/cosmetics/cosmetic.premium_pass.04.scene.json",
+      "original_export_descriptor": "game/assets/cosmetics/cosmetic.premium_pass.04.presentation.json",
+      "evidence_by_presentation_locale": {
+        "en-US": {
+          "report_path": "release/art/catalogue-variants/root-art-full-20261021T122040.006324Z/matrix-results.json",
+          "report_sha256": "717e94848f53ad47fbfe1355e2228144e309bee7cf1a921bcb33477d49d47b91",
+          "condition_ids": [
+            "phone-100-normal",
+            "phone-100-reduced",
+            "phone-150-normal",
+            "phone-150-reduced",
+            "phone-200-normal",
+            "phone-200-reduced",
+            "tablet-100-normal",
+            "tablet-100-reduced",
+            "tablet-150-normal",
+            "tablet-150-reduced",
+            "tablet-200-normal",
+            "tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        },
+        "qps-ploc": {
+          "report_path": "release/art/catalogue-variants/root-art-pseudo-full-20261021T122636.246158Z/matrix-results.json",
+          "report_sha256": "d132e5e2862b280e885acf870a78267d98b117fa1deef705a9dab2b09aa187f2",
+          "condition_ids": [
+            "qps-ploc-phone-100-normal",
+            "qps-ploc-phone-100-reduced",
+            "qps-ploc-phone-150-normal",
+            "qps-ploc-phone-150-reduced",
+            "qps-ploc-phone-200-normal",
+            "qps-ploc-phone-200-reduced",
+            "qps-ploc-tablet-100-normal",
+            "qps-ploc-tablet-100-reduced",
+            "qps-ploc-tablet-150-normal",
+            "qps-ploc-tablet-150-reduced",
+            "qps-ploc-tablet-200-normal",
+            "qps-ploc-tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        }
+      },
+      "review_boundary": "Host behavioral evidence only; original asset approval remains open"
+    },
+    {
+      "asset_id": "asset.cosmetic.premium_pass.05",
+      "original_required_variants": [
+        "equipped",
+        "preview",
+        "thumbnail",
+        "reduced_motion_static",
+        "small_phone",
+        "tablet"
+      ],
+      "original_source_descriptor": "source/art/cosmetics/cosmetic.premium_pass.05.scene.json",
+      "original_export_descriptor": "game/assets/cosmetics/cosmetic.premium_pass.05.presentation.json",
+      "evidence_by_presentation_locale": {
+        "en-US": {
+          "report_path": "release/art/catalogue-variants/root-art-full-20261021T122040.006324Z/matrix-results.json",
+          "report_sha256": "717e94848f53ad47fbfe1355e2228144e309bee7cf1a921bcb33477d49d47b91",
+          "condition_ids": [
+            "phone-100-normal",
+            "phone-100-reduced",
+            "phone-150-normal",
+            "phone-150-reduced",
+            "phone-200-normal",
+            "phone-200-reduced",
+            "tablet-100-normal",
+            "tablet-100-reduced",
+            "tablet-150-normal",
+            "tablet-150-reduced",
+            "tablet-200-normal",
+            "tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        },
+        "qps-ploc": {
+          "report_path": "release/art/catalogue-variants/root-art-pseudo-full-20261021T122636.246158Z/matrix-results.json",
+          "report_sha256": "d132e5e2862b280e885acf870a78267d98b117fa1deef705a9dab2b09aa187f2",
+          "condition_ids": [
+            "qps-ploc-phone-100-normal",
+            "qps-ploc-phone-100-reduced",
+            "qps-ploc-phone-150-normal",
+            "qps-ploc-phone-150-reduced",
+            "qps-ploc-phone-200-normal",
+            "qps-ploc-phone-200-reduced",
+            "qps-ploc-tablet-100-normal",
+            "qps-ploc-tablet-100-reduced",
+            "qps-ploc-tablet-150-normal",
+            "qps-ploc-tablet-150-reduced",
+            "qps-ploc-tablet-200-normal",
+            "qps-ploc-tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        }
+      },
+      "review_boundary": "Host behavioral evidence only; original asset approval remains open"
+    },
+    {
+      "asset_id": "asset.cosmetic.premium_pass.06",
+      "original_required_variants": [
+        "equipped",
+        "preview",
+        "thumbnail",
+        "reduced_motion_static",
+        "small_phone",
+        "tablet"
+      ],
+      "original_source_descriptor": "source/art/cosmetics/cosmetic.premium_pass.06.scene.json",
+      "original_export_descriptor": "game/assets/cosmetics/cosmetic.premium_pass.06.presentation.json",
+      "evidence_by_presentation_locale": {
+        "en-US": {
+          "report_path": "release/art/catalogue-variants/root-art-full-20261021T122040.006324Z/matrix-results.json",
+          "report_sha256": "717e94848f53ad47fbfe1355e2228144e309bee7cf1a921bcb33477d49d47b91",
+          "condition_ids": [
+            "phone-100-normal",
+            "phone-100-reduced",
+            "phone-150-normal",
+            "phone-150-reduced",
+            "phone-200-normal",
+            "phone-200-reduced",
+            "tablet-100-normal",
+            "tablet-100-reduced",
+            "tablet-150-normal",
+            "tablet-150-reduced",
+            "tablet-200-normal",
+            "tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        },
+        "qps-ploc": {
+          "report_path": "release/art/catalogue-variants/root-art-pseudo-full-20261021T122636.246158Z/matrix-results.json",
+          "report_sha256": "d132e5e2862b280e885acf870a78267d98b117fa1deef705a9dab2b09aa187f2",
+          "condition_ids": [
+            "qps-ploc-phone-100-normal",
+            "qps-ploc-phone-100-reduced",
+            "qps-ploc-phone-150-normal",
+            "qps-ploc-phone-150-reduced",
+            "qps-ploc-phone-200-normal",
+            "qps-ploc-phone-200-reduced",
+            "qps-ploc-tablet-100-normal",
+            "qps-ploc-tablet-100-reduced",
+            "qps-ploc-tablet-150-normal",
+            "qps-ploc-tablet-150-reduced",
+            "qps-ploc-tablet-200-normal",
+            "qps-ploc-tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        }
+      },
+      "review_boundary": "Host behavioral evidence only; original asset approval remains open"
+    },
+    {
+      "asset_id": "asset.cosmetic.premium_pass.07",
+      "original_required_variants": [
+        "equipped",
+        "preview",
+        "thumbnail",
+        "reduced_motion_static",
+        "small_phone",
+        "tablet"
+      ],
+      "original_source_descriptor": "source/art/cosmetics/cosmetic.premium_pass.07.scene.json",
+      "original_export_descriptor": "game/assets/cosmetics/cosmetic.premium_pass.07.presentation.json",
+      "evidence_by_presentation_locale": {
+        "en-US": {
+          "report_path": "release/art/catalogue-variants/root-art-full-20261021T122040.006324Z/matrix-results.json",
+          "report_sha256": "717e94848f53ad47fbfe1355e2228144e309bee7cf1a921bcb33477d49d47b91",
+          "condition_ids": [
+            "phone-100-normal",
+            "phone-100-reduced",
+            "phone-150-normal",
+            "phone-150-reduced",
+            "phone-200-normal",
+            "phone-200-reduced",
+            "tablet-100-normal",
+            "tablet-100-reduced",
+            "tablet-150-normal",
+            "tablet-150-reduced",
+            "tablet-200-normal",
+            "tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        },
+        "qps-ploc": {
+          "report_path": "release/art/catalogue-variants/root-art-pseudo-full-20261021T122636.246158Z/matrix-results.json",
+          "report_sha256": "d132e5e2862b280e885acf870a78267d98b117fa1deef705a9dab2b09aa187f2",
+          "condition_ids": [
+            "qps-ploc-phone-100-normal",
+            "qps-ploc-phone-100-reduced",
+            "qps-ploc-phone-150-normal",
+            "qps-ploc-phone-150-reduced",
+            "qps-ploc-phone-200-normal",
+            "qps-ploc-phone-200-reduced",
+            "qps-ploc-tablet-100-normal",
+            "qps-ploc-tablet-100-reduced",
+            "qps-ploc-tablet-150-normal",
+            "qps-ploc-tablet-150-reduced",
+            "qps-ploc-tablet-200-normal",
+            "qps-ploc-tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        }
+      },
+      "review_boundary": "Host behavioral evidence only; original asset approval remains open"
+    },
+    {
+      "asset_id": "asset.cosmetic.premium_pass.08",
+      "original_required_variants": [
+        "equipped",
+        "preview",
+        "thumbnail",
+        "reduced_motion_static",
+        "small_phone",
+        "tablet"
+      ],
+      "original_source_descriptor": "source/art/cosmetics/cosmetic.premium_pass.08.scene.json",
+      "original_export_descriptor": "game/assets/cosmetics/cosmetic.premium_pass.08.presentation.json",
+      "evidence_by_presentation_locale": {
+        "en-US": {
+          "report_path": "release/art/catalogue-variants/root-art-full-20261021T122040.006324Z/matrix-results.json",
+          "report_sha256": "717e94848f53ad47fbfe1355e2228144e309bee7cf1a921bcb33477d49d47b91",
+          "condition_ids": [
+            "phone-100-normal",
+            "phone-100-reduced",
+            "phone-150-normal",
+            "phone-150-reduced",
+            "phone-200-normal",
+            "phone-200-reduced",
+            "tablet-100-normal",
+            "tablet-100-reduced",
+            "tablet-150-normal",
+            "tablet-150-reduced",
+            "tablet-200-normal",
+            "tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        },
+        "qps-ploc": {
+          "report_path": "release/art/catalogue-variants/root-art-pseudo-full-20261021T122636.246158Z/matrix-results.json",
+          "report_sha256": "d132e5e2862b280e885acf870a78267d98b117fa1deef705a9dab2b09aa187f2",
+          "condition_ids": [
+            "qps-ploc-phone-100-normal",
+            "qps-ploc-phone-100-reduced",
+            "qps-ploc-phone-150-normal",
+            "qps-ploc-phone-150-reduced",
+            "qps-ploc-phone-200-normal",
+            "qps-ploc-phone-200-reduced",
+            "qps-ploc-tablet-100-normal",
+            "qps-ploc-tablet-100-reduced",
+            "qps-ploc-tablet-150-normal",
+            "qps-ploc-tablet-150-reduced",
+            "qps-ploc-tablet-200-normal",
+            "qps-ploc-tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        }
+      },
+      "review_boundary": "Host behavioral evidence only; original asset approval remains open"
+    },
+    {
+      "asset_id": "asset.cosmetic.premium_pass.09",
+      "original_required_variants": [
+        "equipped",
+        "preview",
+        "thumbnail",
+        "reduced_motion_static",
+        "small_phone",
+        "tablet"
+      ],
+      "original_source_descriptor": "source/art/cosmetics/cosmetic.premium_pass.09.scene.json",
+      "original_export_descriptor": "game/assets/cosmetics/cosmetic.premium_pass.09.presentation.json",
+      "evidence_by_presentation_locale": {
+        "en-US": {
+          "report_path": "release/art/catalogue-variants/root-art-full-20261021T122040.006324Z/matrix-results.json",
+          "report_sha256": "717e94848f53ad47fbfe1355e2228144e309bee7cf1a921bcb33477d49d47b91",
+          "condition_ids": [
+            "phone-100-normal",
+            "phone-100-reduced",
+            "phone-150-normal",
+            "phone-150-reduced",
+            "phone-200-normal",
+            "phone-200-reduced",
+            "tablet-100-normal",
+            "tablet-100-reduced",
+            "tablet-150-normal",
+            "tablet-150-reduced",
+            "tablet-200-normal",
+            "tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        },
+        "qps-ploc": {
+          "report_path": "release/art/catalogue-variants/root-art-pseudo-full-20261021T122636.246158Z/matrix-results.json",
+          "report_sha256": "d132e5e2862b280e885acf870a78267d98b117fa1deef705a9dab2b09aa187f2",
+          "condition_ids": [
+            "qps-ploc-phone-100-normal",
+            "qps-ploc-phone-100-reduced",
+            "qps-ploc-phone-150-normal",
+            "qps-ploc-phone-150-reduced",
+            "qps-ploc-phone-200-normal",
+            "qps-ploc-phone-200-reduced",
+            "qps-ploc-tablet-100-normal",
+            "qps-ploc-tablet-100-reduced",
+            "qps-ploc-tablet-150-normal",
+            "qps-ploc-tablet-150-reduced",
+            "qps-ploc-tablet-200-normal",
+            "qps-ploc-tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        }
+      },
+      "review_boundary": "Host behavioral evidence only; original asset approval remains open"
+    },
+    {
+      "asset_id": "asset.cosmetic.premium_pass.10",
+      "original_required_variants": [
+        "equipped",
+        "preview",
+        "thumbnail",
+        "reduced_motion_static",
+        "small_phone",
+        "tablet"
+      ],
+      "original_source_descriptor": "source/art/cosmetics/cosmetic.premium_pass.10.scene.json",
+      "original_export_descriptor": "game/assets/cosmetics/cosmetic.premium_pass.10.presentation.json",
+      "evidence_by_presentation_locale": {
+        "en-US": {
+          "report_path": "release/art/catalogue-variants/root-art-full-20261021T122040.006324Z/matrix-results.json",
+          "report_sha256": "717e94848f53ad47fbfe1355e2228144e309bee7cf1a921bcb33477d49d47b91",
+          "condition_ids": [
+            "phone-100-normal",
+            "phone-100-reduced",
+            "phone-150-normal",
+            "phone-150-reduced",
+            "phone-200-normal",
+            "phone-200-reduced",
+            "tablet-100-normal",
+            "tablet-100-reduced",
+            "tablet-150-normal",
+            "tablet-150-reduced",
+            "tablet-200-normal",
+            "tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        },
+        "qps-ploc": {
+          "report_path": "release/art/catalogue-variants/root-art-pseudo-full-20261021T122636.246158Z/matrix-results.json",
+          "report_sha256": "d132e5e2862b280e885acf870a78267d98b117fa1deef705a9dab2b09aa187f2",
+          "condition_ids": [
+            "qps-ploc-phone-100-normal",
+            "qps-ploc-phone-100-reduced",
+            "qps-ploc-phone-150-normal",
+            "qps-ploc-phone-150-reduced",
+            "qps-ploc-phone-200-normal",
+            "qps-ploc-phone-200-reduced",
+            "qps-ploc-tablet-100-normal",
+            "qps-ploc-tablet-100-reduced",
+            "qps-ploc-tablet-150-normal",
+            "qps-ploc-tablet-150-reduced",
+            "qps-ploc-tablet-200-normal",
+            "qps-ploc-tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        }
+      },
+      "review_boundary": "Host behavioral evidence only; original asset approval remains open"
+    },
+    {
+      "asset_id": "asset.cosmetic.shop.01",
+      "original_required_variants": [
+        "equipped",
+        "preview",
+        "thumbnail",
+        "reduced_motion_static",
+        "small_phone",
+        "tablet"
+      ],
+      "original_source_descriptor": "source/art/cosmetics/cosmetic.shop.01.scene.json",
+      "original_export_descriptor": "game/assets/cosmetics/cosmetic.shop.01.presentation.json",
+      "evidence_by_presentation_locale": {
+        "en-US": {
+          "report_path": "release/art/catalogue-variants/root-art-full-20261021T122040.006324Z/matrix-results.json",
+          "report_sha256": "717e94848f53ad47fbfe1355e2228144e309bee7cf1a921bcb33477d49d47b91",
+          "condition_ids": [
+            "phone-100-normal",
+            "phone-100-reduced",
+            "phone-150-normal",
+            "phone-150-reduced",
+            "phone-200-normal",
+            "phone-200-reduced",
+            "tablet-100-normal",
+            "tablet-100-reduced",
+            "tablet-150-normal",
+            "tablet-150-reduced",
+            "tablet-200-normal",
+            "tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        },
+        "qps-ploc": {
+          "report_path": "release/art/catalogue-variants/root-art-pseudo-full-20261021T122636.246158Z/matrix-results.json",
+          "report_sha256": "d132e5e2862b280e885acf870a78267d98b117fa1deef705a9dab2b09aa187f2",
+          "condition_ids": [
+            "qps-ploc-phone-100-normal",
+            "qps-ploc-phone-100-reduced",
+            "qps-ploc-phone-150-normal",
+            "qps-ploc-phone-150-reduced",
+            "qps-ploc-phone-200-normal",
+            "qps-ploc-phone-200-reduced",
+            "qps-ploc-tablet-100-normal",
+            "qps-ploc-tablet-100-reduced",
+            "qps-ploc-tablet-150-normal",
+            "qps-ploc-tablet-150-reduced",
+            "qps-ploc-tablet-200-normal",
+            "qps-ploc-tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        }
+      },
+      "review_boundary": "Host behavioral evidence only; original asset approval remains open"
+    },
+    {
+      "asset_id": "asset.cosmetic.shop.02",
+      "original_required_variants": [
+        "equipped",
+        "preview",
+        "thumbnail",
+        "reduced_motion_static",
+        "small_phone",
+        "tablet"
+      ],
+      "original_source_descriptor": "source/art/cosmetics/cosmetic.shop.02.scene.json",
+      "original_export_descriptor": "game/assets/cosmetics/cosmetic.shop.02.presentation.json",
+      "evidence_by_presentation_locale": {
+        "en-US": {
+          "report_path": "release/art/catalogue-variants/root-art-full-20261021T122040.006324Z/matrix-results.json",
+          "report_sha256": "717e94848f53ad47fbfe1355e2228144e309bee7cf1a921bcb33477d49d47b91",
+          "condition_ids": [
+            "phone-100-normal",
+            "phone-100-reduced",
+            "phone-150-normal",
+            "phone-150-reduced",
+            "phone-200-normal",
+            "phone-200-reduced",
+            "tablet-100-normal",
+            "tablet-100-reduced",
+            "tablet-150-normal",
+            "tablet-150-reduced",
+            "tablet-200-normal",
+            "tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        },
+        "qps-ploc": {
+          "report_path": "release/art/catalogue-variants/root-art-pseudo-full-20261021T122636.246158Z/matrix-results.json",
+          "report_sha256": "d132e5e2862b280e885acf870a78267d98b117fa1deef705a9dab2b09aa187f2",
+          "condition_ids": [
+            "qps-ploc-phone-100-normal",
+            "qps-ploc-phone-100-reduced",
+            "qps-ploc-phone-150-normal",
+            "qps-ploc-phone-150-reduced",
+            "qps-ploc-phone-200-normal",
+            "qps-ploc-phone-200-reduced",
+            "qps-ploc-tablet-100-normal",
+            "qps-ploc-tablet-100-reduced",
+            "qps-ploc-tablet-150-normal",
+            "qps-ploc-tablet-150-reduced",
+            "qps-ploc-tablet-200-normal",
+            "qps-ploc-tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        }
+      },
+      "review_boundary": "Host behavioral evidence only; original asset approval remains open"
+    },
+    {
+      "asset_id": "asset.cosmetic.shop.03",
+      "original_required_variants": [
+        "equipped",
+        "preview",
+        "thumbnail",
+        "reduced_motion_static",
+        "small_phone",
+        "tablet"
+      ],
+      "original_source_descriptor": "source/art/cosmetics/cosmetic.shop.03.scene.json",
+      "original_export_descriptor": "game/assets/cosmetics/cosmetic.shop.03.presentation.json",
+      "evidence_by_presentation_locale": {
+        "en-US": {
+          "report_path": "release/art/catalogue-variants/root-art-full-20261021T122040.006324Z/matrix-results.json",
+          "report_sha256": "717e94848f53ad47fbfe1355e2228144e309bee7cf1a921bcb33477d49d47b91",
+          "condition_ids": [
+            "phone-100-normal",
+            "phone-100-reduced",
+            "phone-150-normal",
+            "phone-150-reduced",
+            "phone-200-normal",
+            "phone-200-reduced",
+            "tablet-100-normal",
+            "tablet-100-reduced",
+            "tablet-150-normal",
+            "tablet-150-reduced",
+            "tablet-200-normal",
+            "tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        },
+        "qps-ploc": {
+          "report_path": "release/art/catalogue-variants/root-art-pseudo-full-20261021T122636.246158Z/matrix-results.json",
+          "report_sha256": "d132e5e2862b280e885acf870a78267d98b117fa1deef705a9dab2b09aa187f2",
+          "condition_ids": [
+            "qps-ploc-phone-100-normal",
+            "qps-ploc-phone-100-reduced",
+            "qps-ploc-phone-150-normal",
+            "qps-ploc-phone-150-reduced",
+            "qps-ploc-phone-200-normal",
+            "qps-ploc-phone-200-reduced",
+            "qps-ploc-tablet-100-normal",
+            "qps-ploc-tablet-100-reduced",
+            "qps-ploc-tablet-150-normal",
+            "qps-ploc-tablet-150-reduced",
+            "qps-ploc-tablet-200-normal",
+            "qps-ploc-tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        }
+      },
+      "review_boundary": "Host behavioral evidence only; original asset approval remains open"
+    },
+    {
+      "asset_id": "asset.cosmetic.shop.04",
+      "original_required_variants": [
+        "equipped",
+        "preview",
+        "thumbnail",
+        "reduced_motion_static",
+        "small_phone",
+        "tablet"
+      ],
+      "original_source_descriptor": "source/art/cosmetics/cosmetic.shop.04.scene.json",
+      "original_export_descriptor": "game/assets/cosmetics/cosmetic.shop.04.presentation.json",
+      "evidence_by_presentation_locale": {
+        "en-US": {
+          "report_path": "release/art/catalogue-variants/root-art-full-20261021T122040.006324Z/matrix-results.json",
+          "report_sha256": "717e94848f53ad47fbfe1355e2228144e309bee7cf1a921bcb33477d49d47b91",
+          "condition_ids": [
+            "phone-100-normal",
+            "phone-100-reduced",
+            "phone-150-normal",
+            "phone-150-reduced",
+            "phone-200-normal",
+            "phone-200-reduced",
+            "tablet-100-normal",
+            "tablet-100-reduced",
+            "tablet-150-normal",
+            "tablet-150-reduced",
+            "tablet-200-normal",
+            "tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        },
+        "qps-ploc": {
+          "report_path": "release/art/catalogue-variants/root-art-pseudo-full-20261021T122636.246158Z/matrix-results.json",
+          "report_sha256": "d132e5e2862b280e885acf870a78267d98b117fa1deef705a9dab2b09aa187f2",
+          "condition_ids": [
+            "qps-ploc-phone-100-normal",
+            "qps-ploc-phone-100-reduced",
+            "qps-ploc-phone-150-normal",
+            "qps-ploc-phone-150-reduced",
+            "qps-ploc-phone-200-normal",
+            "qps-ploc-phone-200-reduced",
+            "qps-ploc-tablet-100-normal",
+            "qps-ploc-tablet-100-reduced",
+            "qps-ploc-tablet-150-normal",
+            "qps-ploc-tablet-150-reduced",
+            "qps-ploc-tablet-200-normal",
+            "qps-ploc-tablet-200-reduced"
+          ],
+          "passed_bounded_host_rows": 12
+        }
+      },
+      "review_boundary": "Host behavioral evidence only; original asset approval remains open"
+    }
+  ],
+  "selected_and_high_stage_locked_are_component_fixtures": true,
+  "thumbnail_160px_is_component_fixture": true,
+  "paid_ownership_is_synthetic": true,
+  "canonical_verification_written": false,
+  "original_variant_acceptance_promoted": false,
+  "native_physical_rights_or_provider_approval": false
+}

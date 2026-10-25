@@ -1,0 +1,40 @@
+[
+  {
+    "name": "pub-get",
+    "command": [
+      "pub",
+      "get"
+    ],
+    "exit_code": 0,
+    "seconds": 0.15438175201416016
+  },
+  {
+    "name": "original-scenario-probe",
+    "command": [
+      "run",
+      "--packages=.dart_tool/original_core_package_config.json",
+      "../qa/integration_scenario_memo.dart"
+    ],
+    "exit_code": 255,
+    "seconds": 0.5193111896514893
+  },
+  {
+    "name": "repaired-scenario-probe",
+    "command": [
+      "run",
+      "--packages=.dart_tool/package_config.json",
+      "../qa/integration_scenario_memo.dart"
+    ],
+    "exit_code": 0,
+    "seconds": 11.731474161148071
+  },
+  {
+    "name": "repaired-core-analysis",
+    "command": [
+      "analyze",
+      "lib"
+    ],
+    "exit_code": 0,
+    "seconds": 0.5475819110870361
+  }
+]

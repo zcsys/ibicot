@@ -1,0 +1,80 @@
+{
+  "reviewer": "/root/qa_release",
+  "completed_utc": "2026-10-23T05:12:23.813230+00:00",
+  "test_exit_code": 0,
+  "named_tests": 4,
+  "skipped": 0,
+  "errors": 0,
+  "records_exactly_equal_author": true,
+  "first_passing_test_sha256": "46fa400433f0a89284a6cdf44db4376b85365411f1f36d15b3a8a85a17a014d6",
+  "final_test_sha256": "3de6787e7ac4f4fd653f1c4aca3f026128a207c83f8570447207ec3016d754c6",
+  "direct_dart_sha256": "c4cb1c3ddebdfde0a322de05e21d1f7bc849cdf43f074ebb19851c98b55d7313",
+  "direct_dart_version": "3.13.5",
+  "command": [
+    "/Users/csys/Desktop/ibicot/idle/.tooling/flutter/bin/cache/dart-sdk/bin/dart",
+    "--suppress-analytics",
+    "test",
+    "test/qa_midnight_rechart_test.dart",
+    "--reporter=json"
+  ],
+  "working_directory": "/Users/csys/Desktop/ibicot/idle/game/core",
+  "reviewed_inputs": 34,
+  "input_drift": [],
+  "frozen_candidate_core_bridge": {
+    "game/core/lib/rechart_forecast.dart": true,
+    "game/core/lib/tideglass_core.dart": true,
+    "game/core/lib/src/support.dart": true,
+    "game/core/lib/src/fixed.dart": true,
+    "game/core/lib/src/engine.dart": true,
+    "game/core/lib/src/support_engine.dart": true,
+    "game/core/lib/src/daily_engine.dart": true,
+    "game/core/lib/src/daily.dart": true,
+    "game/core/lib/src/state.dart": true,
+    "game/core/pubspec.yaml": true,
+    "game/core/pubspec.lock": true
+  },
+  "independent_decimal_oracle": {
+    "method": "Independent80-digit Decimal evaluation from original constants; no imported Dart rate/output",
+    "initial_base_rate": 30,
+    "build_target": 5,
+    "build_target_unclamped_approximate": "402.04260295006891465361525796325349341897186757913424344519976650353091196984456",
+    "post_purchase_base_rate": 35,
+    "permanent_multiplier": "1 + sqrt(100/10)",
+    "additive_bonus": "1 + 0.20 + 0.25 = 1.45",
+    "seconds": 1,
+    "unfloored_micro_R": "211235591.25354525109894384737996046558626742332075475396301837127922416776094134",
+    "floored_micro_R": "211235591",
+    "fractional_distance_above_floor": "0.25354525109894384737996046558626742332075475396301837127922416776094134",
+    "limit": "Fixture-specific check. Production24decimal multiplier truncation cannot cross this distant integer boundary; not a universal numerical error guarantee."
+  },
+  "exact_assertion_only_delta_matches_author_patch": true,
+  "first_and_strengthened_runs_passed": true,
+  "scoped_author_analysis": "No issues; exact log pinned. Not independently rerun because narrow test execution is sufficient here.",
+  "original_work_item": {
+    "id": "M3-10",
+    "acceptance": "Test 1/3/6 visits, 2/8/24/48/72-hour absences, clock changes, bonus queues and reset/day-boundary collisions; report exact and approximate differences.",
+    "dependencies": [
+      "M3-01",
+      "M3-02",
+      "M3-03",
+      "M3-06",
+      "M3-07"
+    ],
+    "reviewer": "director",
+    "dependency_statuses": {
+      "M3-01": "in_progress",
+      "M3-02": "in_progress",
+      "M3-03": "accepted",
+      "M3-06": "in_progress",
+      "M3-07": "in_progress"
+    },
+    "status": "in_progress"
+  },
+  "known_separate_scope_metadata_delta": {
+    "before": "ed8ad9d997f2a8470c44797fa9cf1c87b3baf474bd15b5d92f28ecd9aa3fcfd1",
+    "after": "88c2320ea41a907f7dd63430cbd5df33ff269b389f388d01adba75bb098b87cf"
+  },
+  "recommendation": "Close the identified reset/account-day collision evidence gap at the exact reviewed shared-core pin. Whole M3-10 retains original criterion, director review and dependency gates.",
+  "flutter_or_native_calls": false,
+  "production_or_status_edits": false
+}

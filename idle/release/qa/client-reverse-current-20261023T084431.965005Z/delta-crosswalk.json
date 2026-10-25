@@ -1,0 +1,269 @@
+[
+  {
+    "id": "D01",
+    "delivered_delta": "Pinned service dependency gate",
+    "scope_ids": [
+      "S24",
+      "S37",
+      "S40"
+    ],
+    "original_work_items": [
+      "M0-02",
+      "M0-03",
+      "M0-08",
+      "M1-04",
+      "M4-03",
+      "M4-04",
+      "M5-04",
+      "M5-08",
+      "M6-05",
+      "M6-08",
+      "M7-04",
+      "M7-08"
+    ],
+    "input_sha256": {
+      "tool/build_native.py": "59ee4e7b94a1445e2c8effadfe4c0510c9c189df0278c7ede6e87f1807bf38ee",
+      "tool/test_native_service_gate.py": "6e7db9a717c5aeffee49d7cf0eace49a8dff1e15ad2273140ef777564e2bf8ca",
+      "tool/test_native_candidates.py": "c0b1571c070fc9d7ee9a16f1c918bc3496ec36f1fac6b375b8d845021079d05b"
+    },
+    "scope_boundary": "Required operations/provider environment is checked before dependent tests; failures remain recorded. No provider configuration, public service or actual transaction follows.",
+    "changes_production_gameplay": false,
+    "acceptance_status_change": false
+  },
+  {
+    "id": "D02",
+    "delivered_delta": "Optional-calibration test/comment correction",
+    "scope_ids": [
+      "S15",
+      "S17",
+      "S33",
+      "S44"
+    ],
+    "original_work_items": [
+      "BOOT-CONTENT",
+      "M1-06",
+      "M3-04",
+      "M3-08",
+      "M4-06",
+      "M5-02",
+      "M5-05",
+      "M6-02",
+      "M6-03"
+    ],
+    "input_sha256": {
+      "game/mobile/test/qa_integration_simulation_test.dart": "c75e6f918fb8d8ad32bf72c001a4bbe3bc95cb8bebfd63a9b9d60af804b6355a",
+      "game/simulation/lib/supplemental_run.dart": "858d1ae271cbd3a451b7c60311369f0ed831dc6f3ef6899ee457f5d0a04081a0"
+    },
+    "scope_boundary": "The harness now matches existing optional calibration semantics; production economic rules are unchanged.",
+    "changes_production_gameplay": false,
+    "acceptance_status_change": false
+  },
+  {
+    "id": "D03",
+    "delivered_delta": "Local public-page status accuracy",
+    "scope_ids": [
+      "S27",
+      "S36",
+      "S39"
+    ],
+    "original_work_items": [
+      "M0-03",
+      "M3-06",
+      "M5-03",
+      "M5-04",
+      "M7-03",
+      "M7-05",
+      "M7-07"
+    ],
+    "input_sha256": {
+      "implementation/content/launch_manifest.json": "7599fe529f0a0d748f2e7968eb3848ca40eaba1cd5dd91f5ff7f0d4fbd8b7bc0"
+    },
+    "scope_boundary": "Only scope_policy text changed: prepared local drafts exist, public hosting/operator publication still unqualified.",
+    "changes_production_gameplay": false,
+    "acceptance_status_change": false
+  },
+  {
+    "id": "D04",
+    "delivered_delta": "Google icon encoding",
+    "scope_ids": [
+      "S43"
+    ],
+    "original_work_items": [
+      "M5-06",
+      "M6-04",
+      "M6-06",
+      "M7-05"
+    ],
+    "input_sha256": {
+      "tool/render_store_creative.py": "300630f3e08276808012e2d8f9c59dfd562f00a2bb4316f583140fe5fa01d2c0",
+      "release/store/creative/google-icon-512.png": "fbd2979afa022908b905bead0837b3838e63f5ef12d47f1f238b4ac0e2e2f2bd"
+    },
+    "scope_boundary": "Opaque RGBA32 encoding preserves existing RGB icon geometry. No generated gameplay or store-ingestion claim.",
+    "changes_production_gameplay": false,
+    "acceptance_status_change": false
+  },
+  {
+    "id": "D05",
+    "delivered_delta": "Actual purchase-mode host evidence",
+    "scope_ids": [
+      "S04"
+    ],
+    "original_work_items": [
+      "M1-02",
+      "M1-05",
+      "M3-09"
+    ],
+    "input_sha256": {
+      "game/mobile/test/qa_purchase_modes_test.dart": "e770614a09fa9517fcf9d59f49617e6a19d85885787cc9fc8c9804e7c629cc36"
+    },
+    "scope_boundary": "Real mode gestures with independently summed rational cost/output controls. Source-bound host fixtures do not imply native/physical or player-pacing observations.",
+    "changes_production_gameplay": false,
+    "acceptance_status_change": false
+  },
+  {
+    "id": "D06",
+    "delivered_delta": "Native study writer-refusal observation",
+    "scope_ids": [
+      "S28",
+      "S30",
+      "S39",
+      "S40"
+    ],
+    "original_work_items": [
+      "M0-02",
+      "M0-03",
+      "M0-08",
+      "M1-04",
+      "M1-08",
+      "M3-06",
+      "M3-10",
+      "M5-03",
+      "M5-04",
+      "M5-07",
+      "M5-08",
+      "M6-05",
+      "M6-07",
+      "M7-06"
+    ],
+    "input_sha256": {
+      "game/mobile/integration_test/current_runtime_test.dart": "997e7510aaef0dcebfa6505fc0dcde7d136a25e8a76abea78ede8602b0a4fef9",
+      "tool/verify_current_runtime.py": "d1ea6d05085f05a0a3bb6c768531ef7659272e41993858c0551618f74ce5c847"
+    },
+    "scope_boundary": "Healthy serialized no-op drains an existing write before synthetic guard injection; Android shell probe preserves actual exit status. These distinguish stopped fixture refusal from concurrent hostile storage or full-disk qualification.",
+    "changes_production_gameplay": false,
+    "acceptance_status_change": false
+  },
+  {
+    "id": "D07",
+    "delivered_delta": "Native reminder test and runner",
+    "scope_ids": [
+      "S26",
+      "S40"
+    ],
+    "original_work_items": [
+      "M0-02",
+      "M0-03",
+      "M0-08",
+      "M1-04",
+      "M3-05",
+      "M5-02"
+    ],
+    "input_sha256": {
+      "game/mobile/integration_test/native_reminders_test.dart": "330ab6428203ec80e4de19e4eb727ad8dcfc6f63572e9ea1b0ef3ff7dc7a71da",
+      "tool/verify_native_reminders.py": "2ff5ce93795e3ed4584ce08fc2976e6c268582c26b995aadae9c7e3b337df1ed",
+      "tool/test_native_reminders.py": "ca219d99b2900eaef2690e6c4638de3c8c520e7e42e4b612d1e4f8d2df8ecc67"
+    },
+    "scope_boundary": "Real native adapter/preferences/lifecycle observation, source/run/device identities, actual timing and permission provenance. Matcher zone repair is test-only. Pending or failed actual delivery/revocation must remain unqualified.",
+    "changes_production_gameplay": false,
+    "acceptance_status_change": false
+  },
+  {
+    "id": "D08",
+    "delivered_delta": "Native gallery capture correction",
+    "scope_ids": [
+      "S43"
+    ],
+    "original_work_items": [
+      "M5-06",
+      "M6-04",
+      "M6-06",
+      "M7-05"
+    ],
+    "input_sha256": {
+      "game/mobile/integration_test/platform_smoke_test.dart": "1c8ed846dff6c007edb867d801d6f592a1cbd8b297e75de21e690603081afb31",
+      "tool/native_recording.py": "b1cbf7d75e58bba41db1fe43d7b3cfd4bb59b888fadda36d8ed1ed68f58ad2c3",
+      "tool/native_integration_driver.dart": "ec880d16153b1ac577a221a46f81e7c309dd5417fbba8aae4ce68f7acbcfb668"
+    },
+    "scope_boundary": "Actual hit-tested gestures use ordinary device event dispatch. Android raw screencap avoids display surface freezing, private completion markers publish complete ACK payloads without overwrite, and recorder PID/start/argv owns stopping. Route landmark settling and real platform-specific cadence preserve elapsed time; raw15\u201330s gate remains.",
+    "changes_production_gameplay": false,
+    "acceptance_status_change": false
+  },
+  {
+    "id": "D09",
+    "delivered_delta": "RGB8 screenshot export and video inspection",
+    "scope_ids": [
+      "S43"
+    ],
+    "original_work_items": [
+      "M5-06",
+      "M6-04",
+      "M6-06",
+      "M7-05"
+    ],
+    "input_sha256": {
+      "release/store/tools/export_screenshots.py": "ec447cddb2b70f44b33440c3daf41392f782f65ee2468e55d8b048bcf952aa51",
+      "release/store/tools/export_preview.swift": "656ad603bc370df9e4de8ccfb14d6364757a1e44eb5f3792e39959fffc3cf79c",
+      "release/store/tools/inspect_preview.swift": "a1c4dce52b6a67e3ef9fbc0a12223450e12e041bfc40efe7b83e404da23b0dbf"
+    },
+    "scope_boundary": "Exact successful native provenance and raw hashes precede conversion. Full-dimension PNG checks opacity at native bit depth, preserves color metadata and documents 16\u21928 quantization. Video preserves full frame at real speed, retains source audio if present and reports measured output metadata. Conversion does not qualify native gameplay or store ingestion.",
+    "changes_production_gameplay": false,
+    "acceptance_status_change": false
+  },
+  {
+    "id": "D10",
+    "delivered_delta": "Current local media decisions",
+    "scope_ids": [
+      "S36",
+      "S43"
+    ],
+    "original_work_items": [
+      "M0-03",
+      "M5-06",
+      "M6-04",
+      "M6-06",
+      "M7-03",
+      "M7-05",
+      "M7-07"
+    ],
+    "input_sha256": {
+      "release/store/README.md": "efe68c4537493d7ec083de7ab0d886bf0d51ce504062565fa407171c54d94221",
+      "release/store/current-export-requirements-20261023.json": "3d580c38344ccee50c50d0efe3c7ea08ceb7697c94309ee186323f1393d7e479"
+    },
+    "scope_boundary": "Local exact-candidate selections, internal-only season preview and source/codec/bitrate/audio limits are disclosed. No publication, account or hosted-service resource is invented.",
+    "changes_production_gameplay": false,
+    "acceptance_status_change": false
+  },
+  {
+    "id": "D11",
+    "delivered_delta": "Actual Settings and target-input host probe",
+    "scope_ids": [
+      "S23",
+      "S26"
+    ],
+    "original_work_items": [
+      "M1-07",
+      "M3-05",
+      "M4-07",
+      "M5-02",
+      "M5-06"
+    ],
+    "input_sha256": {
+      "release/qa/settings-native-20261023T081631.942859Z/qa_settings_controls_review_test.dart": "e0d8776e94e15380027fab72901a0a55362584b0a25d63dbbd958fd39e2e2896",
+      "release/qa/settings-native-20261023T081631.942859Z/SETTINGS_HOST_REVIEW.md": "e71ed32a65dfe477c196121e90ce502e76dba17474e8aba2714f0848da5b5806",
+      "release/qa/lead-settings-reproduction-20261023T084118.092567Z/verification.json": "44bd61491287e6b5d9ddf0b695e321dc94817e0e18ab0b8b42fa0a78c4a4e0c4"
+    },
+    "scope_boundary": "Actual app controls exercise text, notation, reduced motion, Tab/Space and independent audio switches/sliders/master mute. Fake audio/store remain explicit; root independently reproduced two final cases and retained the initial motion assertion failure. Physical input/accessibility/audibility and actual OS reminders are separate.",
+    "changes_production_gameplay": false,
+    "acceptance_status_change": false
+  }
+]

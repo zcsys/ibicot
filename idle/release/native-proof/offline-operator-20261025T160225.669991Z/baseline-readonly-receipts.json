@@ -1,0 +1,97 @@
+[
+  {
+    "argv": [
+      "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "get-state"
+    ],
+    "exit_code": 0,
+    "file": "device.txt",
+    "sha256": "c98373c1abef78070f6beef6b4ae4fbf3de348dac280195c7f93441920584af9"
+  },
+  {
+    "argv": [
+      "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "emu",
+      "avd",
+      "name"
+    ],
+    "exit_code": 0,
+    "file": "avd.txt",
+    "sha256": "12f02d5f9c4612981f46d817db8e1ed0f176156a62b01a2fb813c42dd89d5909"
+  },
+  {
+    "argv": [
+      "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "shell",
+      "getprop",
+      "ro.build.version.sdk"
+    ],
+    "exit_code": 0,
+    "file": "api.txt",
+    "sha256": "90d7ec0f0acef104d8b6252794295f661a0149634868d02a1ae0c358099638f5"
+  },
+  {
+    "argv": [
+      "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "shell",
+      "settings",
+      "get",
+      "global",
+      "airplane_mode_on"
+    ],
+    "exit_code": 0,
+    "file": "airplane.txt",
+    "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+  },
+  {
+    "argv": [
+      "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "shell",
+      "settings",
+      "get",
+      "global",
+      "wifi_on"
+    ],
+    "exit_code": 0,
+    "file": "wifi.txt",
+    "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+  },
+  {
+    "argv": [
+      "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "shell",
+      "settings",
+      "get",
+      "global",
+      "mobile_data"
+    ],
+    "exit_code": 0,
+    "file": "data.txt",
+    "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+  },
+  {
+    "argv": [
+      "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "shell",
+      "dumpsys",
+      "connectivity"
+    ],
+    "exit_code": 0,
+    "file": "connectivity.txt",
+    "sha256": "76e080459f2c3c41bf45e88cfaebb11176e075f94f99f3c11739d6be1de6823c"
+  }
+]

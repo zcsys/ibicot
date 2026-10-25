@@ -1,0 +1,44 @@
+{
+  "utc": "2026-10-25T15:13:23.948898+00:00",
+  "sdk_root": "/Users/csys/Library/Android/sdk/emulator",
+  "app_bundle_directories": [],
+  "metadata_plists": [],
+  "process_pid": 51598,
+  "process_executable": "/Users/csys/Library/Android/sdk/emulator/qemu/darwin-aarch64/qemu-system-aarch64",
+  "commands": [
+    {
+      "command": [
+        "/usr/bin/lsappinfo",
+        "find",
+        "pid=51598"
+      ],
+      "exit_code": 0,
+      "stdout": "ASN:0x0-0x20e20e-\"qemu-system-aarch64\":\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/usr/bin/lsappinfo",
+        "info",
+        "-only",
+        "name,bundleid,bundlepath,executablepath,pid",
+        "-app",
+        "pid=51598"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "mdls",
+        "-name",
+        "kMDItemCFBundleIdentifier",
+        "/Users/csys/Library/Android/sdk/emulator/qemu/darwin-aarch64/qemu-system-aarch64"
+      ],
+      "exit_code": 0,
+      "stdout": "kMDItemCFBundleIdentifier = (null)\n",
+      "stderr": ""
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "author": "/root/client_asset_review",
+  "staged_only": true,
+  "live_promotion": false,
+  "staged_sources": {
+    "tool/native_recording.py": {
+      "expected_live_before_sha256": "343ed23024953c6378bf7a314589a7252a7f97451cd01906168c9018a66c6582",
+      "staged_path": "release/store/android-ack-repair-20261023T081049.643189Z/staged/native_recording.py",
+      "staged_sha256": "77ddd47079b1373e8dc4b99b239b03f1ac8cd8200d125b777c4d0adaa3fe5d18"
+    },
+    "game/mobile/integration_test/platform_smoke_test.dart": {
+      "expected_live_before_sha256": "1925106cb014a4a21575af3aa3bd85fc997873c1c9be74249c966da1cf28318b",
+      "staged_path": "release/store/android-ack-repair-20261023T081049.643189Z/staged/platform_smoke_test.dart",
+      "staged_sha256": "a427de5995a694ecd36c0c8063ce7d2b83145b1a634e249d5bfc37840031e6bc"
+    }
+  },
+  "driver_unchanged_sha256": "ec880d16153b1ac577a221a46f81e7c309dd5417fbba8aae4ce68f7acbcfb668",
+  "real_host_shell_tests_passed": 13,
+  "mocked_recorder_methods_passed": 36,
+  "python_syntax_passed": true,
+  "preservation_checks_sha256": "6838cb1b95e59c5e9a9234ed8712e29f6f33d44b3d1e82eca3458ed9476d0f86",
+  "failed_native_evidence_files_preserved": 9,
+  "production_pins_checked": 482,
+  "production_candidate": "3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59",
+  "native_or_flutter_commands_executed": false,
+  "scoped_dart_analysis_pending": true,
+  "native_ack_and_media_qualification_pending": true,
+  "source_writes_stopped": true,
+  "evidence_sha256": {
+    "AUTHOR_HANDOFF.md": "3ed4e73b305218e2558ede8dcb909494f54980c4af78ea708d3c2624ac0ec2e3",
+    "ack-publication.patch": "9a61ee63f2029e4e9714d711b8e8aedf3faafe9f9300641f1768df18952041c9",
+    "baseline.json": "d68a9e0392caa6cbd14034009a7014a98df2b4c000c40b330524f27c995308b0",
+    "before/native_recording.py": "343ed23024953c6378bf7a314589a7252a7f97451cd01906168c9018a66c6582",
+    "before/platform_smoke_test.dart": "1925106cb014a4a21575af3aa3bd85fc997873c1c9be74249c966da1cf28318b",
+    "host-publication-final.log": "7db972addc9e6019101169a401380d2d865fd2c2a2bac2358b368e5400833993",
+    "host-publication-first.log": "904adf87c34ad45094a6f24bce3265aa24b64f50af9921a7fb6cbc4124c1a0b8",
+    "orchestration-final.log": "5e4cab070cdd53f2e3b7bf6618f3a562f02dc78c3bb9ff354ed196caf2a69a07",
+    "preservation-checks.json": "6838cb1b95e59c5e9a9234ed8712e29f6f33d44b3d1e82eca3458ed9476d0f86",
+    "staged/native_recording.py": "77ddd47079b1373e8dc4b99b239b03f1ac8cd8200d125b777c4d0adaa3fe5d18",
+    "staged/platform_smoke_test.dart": "a427de5995a694ecd36c0c8063ce7d2b83145b1a634e249d5bfc37840031e6bc",
+    "staged-pins.json": "dd990b8b371c4ca47f0275a3a15155a219aed639f0a5310d59c66d7e276d1fd6",
+    "test_ack_publication.first.py": "37f66e6c4723d3e6d85cea23aa9a2dacf72b4ddbb743ef200c168768270dca6a",
+    "test_ack_publication.py": "5b3a606dbd31a60a0d9189445429e9ca198d5ab5f36a3e5a966cb5e5586815f5",
+    "test_staged_recording.py": "037f5ebb5cef4f2fe57af862559f5cfa202be5dd519616d28d8588f33072e2cb"
+  }
+}

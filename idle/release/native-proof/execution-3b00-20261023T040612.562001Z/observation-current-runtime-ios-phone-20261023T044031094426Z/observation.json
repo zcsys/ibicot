@@ -1,0 +1,610 @@
+{
+  "schema_version": 1,
+  "status": "collected-pending-native-completion",
+  "device": "F05BE4B0-52C1-4CA1-B721-BD64AE559E3F",
+  "candidate": "/Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261023T040445.261666Z-3b00cc8f7122",
+  "native_evidence": "/Users/csys/Desktop/ibicot/idle/release/native-proof/current-runtime-ios-phone-20261023T044031094426Z",
+  "samples": [
+    {
+      "started_ns": 53584557865916,
+      "started_utc_ms": 1792730484805,
+      "index": 0,
+      "sockets": {
+        "status": "observed",
+        "rows": [
+          {
+            "fd": "17",
+            "t": [
+              "IPv4"
+            ],
+            "P": [
+              "TCP"
+            ],
+            "n": [
+              "127.0.0.1:50098"
+            ],
+            "T": [
+              "ST=LISTEN",
+              "QR=0",
+              "QS=0"
+            ]
+          },
+          {
+            "fd": "18",
+            "t": [
+              "IPv4"
+            ],
+            "P": [
+              "TCP"
+            ],
+            "n": [
+              "127.0.0.1:50098->127.0.0.1:50100"
+            ],
+            "T": [
+              "ST=ESTABLISHED",
+              "QR=0",
+              "QS=0"
+            ]
+          }
+        ]
+      },
+      "storage": {
+        "status": "observed",
+        "files": {
+          "support/tideglass-study.json": {
+            "present": true,
+            "size": 2604,
+            "sha256": "73aa4b9947d0fa4dfc2721b8bef2cd29af5cc6fe39f4b9edaa39682ee21d4d5e",
+            "mtime_ns": 1792730484273787315,
+            "uid": 501,
+            "inode": 277629410,
+            "device": 16777231
+          },
+          "support/tideglass-study-eligibility.json": {
+            "present": true,
+            "size": 227,
+            "sha256": "5c0cda3a5e4960b62cf9cc4bfc6fa0bdc37666fd1426ea52fa59d2572589b637",
+            "mtime_ns": 1792730483834646233,
+            "uid": 501,
+            "inode": 277629397,
+            "device": 16777231
+          },
+          "support/tideglass-study.json.withdrawn": {
+            "present": false
+          },
+          "support/tideglass/progress.0.json": {
+            "present": true,
+            "size": 4833,
+            "sha256": "8a0741ad2486c79216a25eeb740f16335bd446f9a0d988a04f61342d9cbd3a55",
+            "mtime_ns": 1792730483974955429,
+            "uid": 501,
+            "inode": 277629404,
+            "device": 16777231
+          },
+          "support/tideglass/progress.1.json": {
+            "present": false
+          },
+          "game/progress.0.json": {
+            "present": false
+          },
+          "game/progress.1.json": {
+            "present": false
+          }
+        }
+      },
+      "finished_ns": 53584650911750,
+      "finished_utc_ms": 1792730484898,
+      "process_identity": {
+        "pid": 75249,
+        "uid": 501,
+        "start": "Fri Oct 23 04:41:17 2026",
+        "executable": "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/2EF58395-8D57-45F3-A403-256238BAB504/Runner.app/Runner",
+        "uid_scope": "macOS host UID, not a unique iOS application UID"
+      }
+    },
+    {
+      "started_ns": 53584858666833,
+      "started_utc_ms": 1792730485106,
+      "index": 1,
+      "sockets": {
+        "status": "observed",
+        "rows": [
+          {
+            "fd": "17",
+            "t": [
+              "IPv4"
+            ],
+            "P": [
+              "TCP"
+            ],
+            "n": [
+              "127.0.0.1:50098"
+            ],
+            "T": [
+              "ST=LISTEN",
+              "QR=0",
+              "QS=0"
+            ]
+          },
+          {
+            "fd": "18",
+            "t": [
+              "IPv4"
+            ],
+            "P": [
+              "TCP"
+            ],
+            "n": [
+              "127.0.0.1:50098->127.0.0.1:50100"
+            ],
+            "T": [
+              "ST=ESTABLISHED",
+              "QR=0",
+              "QS=0"
+            ]
+          }
+        ]
+      },
+      "storage": {
+        "status": "observed",
+        "files": {
+          "support/tideglass-study.json": {
+            "present": true,
+            "size": 2604,
+            "sha256": "73aa4b9947d0fa4dfc2721b8bef2cd29af5cc6fe39f4b9edaa39682ee21d4d5e",
+            "mtime_ns": 1792730484273787315,
+            "uid": 501,
+            "inode": 277629410,
+            "device": 16777231
+          },
+          "support/tideglass-study-eligibility.json": {
+            "present": true,
+            "size": 227,
+            "sha256": "5c0cda3a5e4960b62cf9cc4bfc6fa0bdc37666fd1426ea52fa59d2572589b637",
+            "mtime_ns": 1792730483834646233,
+            "uid": 501,
+            "inode": 277629397,
+            "device": 16777231
+          },
+          "support/tideglass-study.json.withdrawn": {
+            "present": false
+          },
+          "support/tideglass/progress.0.json": {
+            "present": true,
+            "size": 4833,
+            "sha256": "8a0741ad2486c79216a25eeb740f16335bd446f9a0d988a04f61342d9cbd3a55",
+            "mtime_ns": 1792730483974955429,
+            "uid": 501,
+            "inode": 277629404,
+            "device": 16777231
+          },
+          "support/tideglass/progress.1.json": {
+            "present": false
+          },
+          "game/progress.0.json": {
+            "present": false
+          },
+          "game/progress.1.json": {
+            "present": false
+          }
+        }
+      },
+      "finished_ns": 53584956045208,
+      "finished_utc_ms": 1792730485203,
+      "process_identity": {
+        "pid": 75249,
+        "uid": 501,
+        "start": "Fri Oct 23 04:41:17 2026",
+        "executable": "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/2EF58395-8D57-45F3-A403-256238BAB504/Runner.app/Runner",
+        "uid_scope": "macOS host UID, not a unique iOS application UID"
+      }
+    },
+    {
+      "started_ns": 53585166950916,
+      "started_utc_ms": 1792730485414,
+      "index": 2,
+      "sockets": {
+        "status": "observed",
+        "rows": [
+          {
+            "fd": "17",
+            "t": [
+              "IPv4"
+            ],
+            "P": [
+              "TCP"
+            ],
+            "n": [
+              "127.0.0.1:50098"
+            ],
+            "T": [
+              "ST=LISTEN",
+              "QR=0",
+              "QS=0"
+            ]
+          },
+          {
+            "fd": "18",
+            "t": [
+              "IPv4"
+            ],
+            "P": [
+              "TCP"
+            ],
+            "n": [
+              "127.0.0.1:50098->127.0.0.1:50100"
+            ],
+            "T": [
+              "ST=ESTABLISHED",
+              "QR=0",
+              "QS=0"
+            ]
+          }
+        ]
+      },
+      "storage": {
+        "status": "observed",
+        "files": {
+          "support/tideglass-study.json": {
+            "present": true,
+            "size": 2604,
+            "sha256": "73aa4b9947d0fa4dfc2721b8bef2cd29af5cc6fe39f4b9edaa39682ee21d4d5e",
+            "mtime_ns": 1792730484273787315,
+            "uid": 501,
+            "inode": 277629410,
+            "device": 16777231
+          },
+          "support/tideglass-study-eligibility.json": {
+            "present": true,
+            "size": 227,
+            "sha256": "5c0cda3a5e4960b62cf9cc4bfc6fa0bdc37666fd1426ea52fa59d2572589b637",
+            "mtime_ns": 1792730483834646233,
+            "uid": 501,
+            "inode": 277629397,
+            "device": 16777231
+          },
+          "support/tideglass-study.json.withdrawn": {
+            "present": false
+          },
+          "support/tideglass/progress.0.json": {
+            "present": true,
+            "size": 4833,
+            "sha256": "8a0741ad2486c79216a25eeb740f16335bd446f9a0d988a04f61342d9cbd3a55",
+            "mtime_ns": 1792730483974955429,
+            "uid": 501,
+            "inode": 277629404,
+            "device": 16777231
+          },
+          "support/tideglass/progress.1.json": {
+            "present": false
+          },
+          "game/progress.0.json": {
+            "present": false
+          },
+          "game/progress.1.json": {
+            "present": false
+          }
+        }
+      },
+      "finished_ns": 53585342595833,
+      "finished_utc_ms": 1792730485590,
+      "process_identity": {
+        "pid": 75249,
+        "uid": 501,
+        "start": "Fri Oct 23 04:41:17 2026",
+        "executable": "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/2EF58395-8D57-45F3-A403-256238BAB504/Runner.app/Runner",
+        "uid_scope": "macOS host UID, not a unique iOS application UID"
+      }
+    }
+  ],
+  "limitations": [
+    "Point-in-time open-socket snapshots are not packets, requests, destinations contacted, or absence of traffic.",
+    "Short-lived sockets between samples, earlier startup and later activity are outside coverage.",
+    "Debug simulator/emulator and automation/VM-service sockets are not release or physical-device behavior.",
+    "Only this PID is selected; subprocesses and OS/SDK services outside it are not observed.",
+    "Host/native UTC containment is required without tolerance; clocks are not authenticated. A mismatch leaves the interval unqualified.",
+    "Private storage inventory covers seven fixed synthetic fixture files, not all SDK caches, Keychain, preferences or files.",
+    "Synthetic study interaction is not participant consent. No paid/provider account, human or crash-free rate evidence.",
+    "Sample identity checks bracket commands; socket descriptors and files may change within a bracket. iOS host ps start time has one-second resolution.",
+    "The window starts after bootstrap/consent assertions; startup activity before OPEN is outside these samples. Audio and reminders use existing harness isolation.",
+    "Android storage is unavailable: no descriptor-anchored native reader has been qualified. No path-check plus shell hash fallback is used.",
+    "Storage identity checks detect lasting replacement or mutation; they are not an atomic filesystem snapshot or protection against a privileged mutation-and-restore adversary.",
+    "Collector and verifier source pins detect lasting changes at operation boundaries; local hashes are integrity records, not external authentication."
+  ],
+  "release_acceptance": false,
+  "traffic_absence_claim": false,
+  "collector_sha256": "f3374fb77c83e2b12ff91a48b4c688aa07c7b66042dd75681f7ec2b5fc00febd",
+  "source_binding": {
+    "candidate_manifest_sha256": "b4322606cd0207425b801feacc0bf4084ac9c460b23a028576204b766eeaeada",
+    "candidate_fingerprint": "3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59",
+    "native_source_sha256": {
+      "verify_native.py": "68297f66fc4e32a173b17da2594872334d59ba2b88b7d5878b5ee8905f9b89e5",
+      "runner.py": "d849ab8feb642eb1b988f9a6d82558491b7ebef4c63768fb4fa132f49edf3804",
+      "harness.dart": "102be09eb8043ce9bb496156d9f37b1834c3084ddf58fef073e7c25cdc3c55d5"
+    },
+    "observation_source_sha256": {
+      "collector.py": "f3374fb77c83e2b12ff91a48b4c688aa07c7b66042dd75681f7ec2b5fc00febd",
+      "completion-verifier.py": "68297f66fc4e32a173b17da2594872334d59ba2b88b7d5878b5ee8905f9b89e5",
+      "native-runner.py": "d849ab8feb642eb1b988f9a6d82558491b7ebef4c63768fb4fa132f49edf3804",
+      "candidate-manifest.json": "b4322606cd0207425b801feacc0bf4084ac9c460b23a028576204b766eeaeada"
+    }
+  },
+  "errors": [],
+  "context": {
+    "verification_id": "current-runtime-ios-phone-20261023T044031094426Z",
+    "candidate_fingerprint": "3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59",
+    "harness_sha256": "102be09eb8043ce9bb496156d9f37b1834c3084ddf58fef073e7c25cdc3c55d5",
+    "platform": "ios",
+    "scenario": "runtime-study-enroll",
+    "run_id": "v3b00-ios-phone-enroll",
+    "device_label": "ios-phone"
+  },
+  "opened": {
+    "verification_id": "current-runtime-ios-phone-20261023T044031094426Z",
+    "candidate_fingerprint": "3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59",
+    "harness_sha256": "102be09eb8043ce9bb496156d9f37b1834c3084ddf58fef073e7c25cdc3c55d5",
+    "scenario": "runtime-study-enroll",
+    "run_id": "v3b00-ios-phone-enroll",
+    "device_label": "ios-phone",
+    "platform": "ios",
+    "process_id": 75249,
+    "fixture_directory": "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Data/Application/D5C5BB7E-07C7-488F-8588-433B0626A4A6/Library/Application Support/native-current-verification/ios-phone-v3b00-ios-phone-enroll/study",
+    "mode": "synthetic-consented",
+    "window_id": "current-runtime-ios-phone-20261023T044031094426Z-privacy",
+    "maximum_ms": 20000,
+    "native_elapsed_us": 59,
+    "native_utc_ms": 1792730484276
+  },
+  "opened_observed_ns": 53584056085333,
+  "open_prefix_bytes": 1464,
+  "open_prefix_sha256": "d7549edb4b057ecbfd3258bdb85d775b06edc60507cbf4c2a48d09fe46ab7301",
+  "process_identity": {
+    "pid": 75249,
+    "uid": 501,
+    "start": "Fri Oct 23 04:41:17 2026",
+    "executable": "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/2EF58395-8D57-45F3-A403-256238BAB504/Runner.app/Runner",
+    "uid_scope": "macOS host UID, not a unique iOS application UID"
+  },
+  "commands": [
+    {
+      "argv": [
+        "xcrun",
+        "simctl",
+        "get_app_container",
+        "F05BE4B0-52C1-4CA1-B721-BD64AE559E3F",
+        "dev.tideglass.game",
+        "data"
+      ],
+      "exit_code": 0,
+      "started_ns": 53584056890291,
+      "finished_ns": 53584403897250,
+      "stdout_sha256": "a10310e8a182476eeece2e243d6a6a981f33ccaf6b327df983229032363a9cbb",
+      "stdout": "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Data/Application/D5C5BB7E-07C7-488F-8588-433B0626A4A6\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "xcrun",
+        "simctl",
+        "get_app_container",
+        "F05BE4B0-52C1-4CA1-B721-BD64AE559E3F",
+        "dev.tideglass.game",
+        "app"
+      ],
+      "exit_code": 0,
+      "started_ns": 53584403929000,
+      "finished_ns": 53584549842750,
+      "stdout_sha256": "bf57aea359fd8f732c4492207b2c8edd6a6a1bd8af656af0a839ba545495ea6a",
+      "stdout": "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/2EF58395-8D57-45F3-A403-256238BAB504/Runner.app\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/bin/ps",
+        "-p",
+        "75249",
+        "-o",
+        "pid=,uid=,lstart=,comm="
+      ],
+      "exit_code": 0,
+      "started_ns": 53584550719375,
+      "finished_ns": 53584553994708,
+      "stdout_sha256": "2fe136f1ff02c0d569080953277626059cfdae25e107484894c1220857145416",
+      "stdout": "75249   501 Fri Oct 23 04:41:17 2026     /Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/2EF58395-8D57-45F3-A403-256238BAB504/Runner.app/Runner\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/bin/ps",
+        "-p",
+        "75249",
+        "-o",
+        "pid=,uid=,lstart=,comm="
+      ],
+      "exit_code": 0,
+      "started_ns": 53584554361416,
+      "finished_ns": 53584557759833,
+      "stdout_sha256": "2fe136f1ff02c0d569080953277626059cfdae25e107484894c1220857145416",
+      "stdout": "75249   501 Fri Oct 23 04:41:17 2026     /Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/2EF58395-8D57-45F3-A403-256238BAB504/Runner.app/Runner\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/usr/sbin/lsof",
+        "-a",
+        "-p",
+        "75249",
+        "-i",
+        "-nP",
+        "-FpcufPtnT"
+      ],
+      "exit_code": 0,
+      "started_ns": 53584557875083,
+      "finished_ns": 53584581893500,
+      "stdout_sha256": "b95b4fca5661701d8e93fe77996c5037891c5533ebbbebfbfaec304e677fc06f",
+      "stdout": "p75249\ncRunner\nu501\nf17\ntIPv4\nPTCP\nn127.0.0.1:50098\nTST=LISTEN\nTQR=0\nTQS=0\nf18\ntIPv4\nPTCP\nn127.0.0.1:50098->127.0.0.1:50100\nTST=ESTABLISHED\nTQR=0\nTQS=0\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3",
+        "/Users/csys/Desktop/ibicot/idle/release/native-privacy/runtime_observation.py",
+        "storage-worker",
+        "--fixture-root",
+        "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Data/Application/D5C5BB7E-07C7-488F-8588-433B0626A4A6/Library/Application Support/native-current-verification/ios-phone-v3b00-ios-phone-enroll/study",
+        "--root-identity",
+        "[16777231,277629389,16384]"
+      ],
+      "exit_code": 0,
+      "started_ns": 53584582063375,
+      "finished_ns": 53584647451083,
+      "stdout_sha256": "2a0e4e8cea978cc74c8f24ec87a2d78f22fd8250657540e792d1d79f1cdc9316",
+      "stdout": "{\"collector_sha256\": \"f3374fb77c83e2b12ff91a48b4c688aa07c7b66042dd75681f7ec2b5fc00febd\", \"root_identity\": [16777231, 277629389, 16384], \"files\": {\"support/tideglass-study.json\": {\"present\": true, \"size\": 2604, \"sha256\": \"73aa4b9947d0fa4dfc2721b8bef2cd29af5cc6fe39f4b9edaa39682ee21d4d5e\", \"mtime_ns\": 1792730484273787315, \"uid\": 501, \"inode\": 277629410, \"device\": 16777231}, \"support/tideglass-study-eligibility.json\": {\"present\": true, \"size\": 227, \"sha256\": \"5c0cda3a5e4960b62cf9cc4bfc6fa0bdc37666fd1426ea52fa59d2572589b637\", \"mtime_ns\": 1792730483834646233, \"uid\": 501, \"inode\": 277629397, \"device\": 16777231}, \"support/tideglass-study.json.withdrawn\": {\"present\": false}, \"support/tideglass/progress.0.json\": {\"present\": true, \"size\": 4833, \"sha256\": \"8a0741ad2486c79216a25eeb740f16335bd446f9a0d988a04f61342d9cbd3a55\", \"mtime_ns\": 1792730483974955429, \"uid\": 501, \"inode\": 277629404, \"device\": 16777231}, \"support/tideglass/progress.1.json\": {\"present\": false}, \"game/progress.0.json\": {\"present\": false}, \"game/progress.1.json\": {\"present\": false}}}\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/bin/ps",
+        "-p",
+        "75249",
+        "-o",
+        "pid=,uid=,lstart=,comm="
+      ],
+      "exit_code": 0,
+      "started_ns": 53584647533541,
+      "finished_ns": 53584650801875,
+      "stdout_sha256": "2fe136f1ff02c0d569080953277626059cfdae25e107484894c1220857145416",
+      "stdout": "75249   501 Fri Oct 23 04:41:17 2026     /Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/2EF58395-8D57-45F3-A403-256238BAB504/Runner.app/Runner\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/bin/ps",
+        "-p",
+        "75249",
+        "-o",
+        "pid=,uid=,lstart=,comm="
+      ],
+      "exit_code": 0,
+      "started_ns": 53584854412083,
+      "finished_ns": 53584858538375,
+      "stdout_sha256": "2fe136f1ff02c0d569080953277626059cfdae25e107484894c1220857145416",
+      "stdout": "75249   501 Fri Oct 23 04:41:17 2026     /Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/2EF58395-8D57-45F3-A403-256238BAB504/Runner.app/Runner\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/usr/sbin/lsof",
+        "-a",
+        "-p",
+        "75249",
+        "-i",
+        "-nP",
+        "-FpcufPtnT"
+      ],
+      "exit_code": 0,
+      "started_ns": 53584858674708,
+      "finished_ns": 53584887061166,
+      "stdout_sha256": "b95b4fca5661701d8e93fe77996c5037891c5533ebbbebfbfaec304e677fc06f",
+      "stdout": "p75249\ncRunner\nu501\nf17\ntIPv4\nPTCP\nn127.0.0.1:50098\nTST=LISTEN\nTQR=0\nTQS=0\nf18\ntIPv4\nPTCP\nn127.0.0.1:50098->127.0.0.1:50100\nTST=ESTABLISHED\nTQR=0\nTQS=0\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3",
+        "/Users/csys/Desktop/ibicot/idle/release/native-privacy/runtime_observation.py",
+        "storage-worker",
+        "--fixture-root",
+        "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Data/Application/D5C5BB7E-07C7-488F-8588-433B0626A4A6/Library/Application Support/native-current-verification/ios-phone-v3b00-ios-phone-enroll/study",
+        "--root-identity",
+        "[16777231,277629389,16384]"
+      ],
+      "exit_code": 0,
+      "started_ns": 53584887168791,
+      "finished_ns": 53584946208041,
+      "stdout_sha256": "2a0e4e8cea978cc74c8f24ec87a2d78f22fd8250657540e792d1d79f1cdc9316",
+      "stdout": "{\"collector_sha256\": \"f3374fb77c83e2b12ff91a48b4c688aa07c7b66042dd75681f7ec2b5fc00febd\", \"root_identity\": [16777231, 277629389, 16384], \"files\": {\"support/tideglass-study.json\": {\"present\": true, \"size\": 2604, \"sha256\": \"73aa4b9947d0fa4dfc2721b8bef2cd29af5cc6fe39f4b9edaa39682ee21d4d5e\", \"mtime_ns\": 1792730484273787315, \"uid\": 501, \"inode\": 277629410, \"device\": 16777231}, \"support/tideglass-study-eligibility.json\": {\"present\": true, \"size\": 227, \"sha256\": \"5c0cda3a5e4960b62cf9cc4bfc6fa0bdc37666fd1426ea52fa59d2572589b637\", \"mtime_ns\": 1792730483834646233, \"uid\": 501, \"inode\": 277629397, \"device\": 16777231}, \"support/tideglass-study.json.withdrawn\": {\"present\": false}, \"support/tideglass/progress.0.json\": {\"present\": true, \"size\": 4833, \"sha256\": \"8a0741ad2486c79216a25eeb740f16335bd446f9a0d988a04f61342d9cbd3a55\", \"mtime_ns\": 1792730483974955429, \"uid\": 501, \"inode\": 277629404, \"device\": 16777231}, \"support/tideglass/progress.1.json\": {\"present\": false}, \"game/progress.0.json\": {\"present\": false}, \"game/progress.1.json\": {\"present\": false}}}\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/bin/ps",
+        "-p",
+        "75249",
+        "-o",
+        "pid=,uid=,lstart=,comm="
+      ],
+      "exit_code": 0,
+      "started_ns": 53584946290125,
+      "finished_ns": 53584955880250,
+      "stdout_sha256": "2fe136f1ff02c0d569080953277626059cfdae25e107484894c1220857145416",
+      "stdout": "75249   501 Fri Oct 23 04:41:17 2026     /Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/2EF58395-8D57-45F3-A403-256238BAB504/Runner.app/Runner\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/bin/ps",
+        "-p",
+        "75249",
+        "-o",
+        "pid=,uid=,lstart=,comm="
+      ],
+      "exit_code": 0,
+      "started_ns": 53585161109125,
+      "finished_ns": 53585166771333,
+      "stdout_sha256": "2fe136f1ff02c0d569080953277626059cfdae25e107484894c1220857145416",
+      "stdout": "75249   501 Fri Oct 23 04:41:17 2026     /Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/2EF58395-8D57-45F3-A403-256238BAB504/Runner.app/Runner\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/usr/sbin/lsof",
+        "-a",
+        "-p",
+        "75249",
+        "-i",
+        "-nP",
+        "-FpcufPtnT"
+      ],
+      "exit_code": 0,
+      "started_ns": 53585166961166,
+      "finished_ns": 53585191704000,
+      "stdout_sha256": "b95b4fca5661701d8e93fe77996c5037891c5533ebbbebfbfaec304e677fc06f",
+      "stdout": "p75249\ncRunner\nu501\nf17\ntIPv4\nPTCP\nn127.0.0.1:50098\nTST=LISTEN\nTQR=0\nTQS=0\nf18\ntIPv4\nPTCP\nn127.0.0.1:50098->127.0.0.1:50100\nTST=ESTABLISHED\nTQR=0\nTQS=0\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3",
+        "/Users/csys/Desktop/ibicot/idle/release/native-privacy/runtime_observation.py",
+        "storage-worker",
+        "--fixture-root",
+        "/Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Data/Application/D5C5BB7E-07C7-488F-8588-433B0626A4A6/Library/Application Support/native-current-verification/ios-phone-v3b00-ios-phone-enroll/study",
+        "--root-identity",
+        "[16777231,277629389,16384]"
+      ],
+      "exit_code": 0,
+      "started_ns": 53585191792875,
+      "finished_ns": 53585335900916,
+      "stdout_sha256": "2a0e4e8cea978cc74c8f24ec87a2d78f22fd8250657540e792d1d79f1cdc9316",
+      "stdout": "{\"collector_sha256\": \"f3374fb77c83e2b12ff91a48b4c688aa07c7b66042dd75681f7ec2b5fc00febd\", \"root_identity\": [16777231, 277629389, 16384], \"files\": {\"support/tideglass-study.json\": {\"present\": true, \"size\": 2604, \"sha256\": \"73aa4b9947d0fa4dfc2721b8bef2cd29af5cc6fe39f4b9edaa39682ee21d4d5e\", \"mtime_ns\": 1792730484273787315, \"uid\": 501, \"inode\": 277629410, \"device\": 16777231}, \"support/tideglass-study-eligibility.json\": {\"present\": true, \"size\": 227, \"sha256\": \"5c0cda3a5e4960b62cf9cc4bfc6fa0bdc37666fd1426ea52fa59d2572589b637\", \"mtime_ns\": 1792730483834646233, \"uid\": 501, \"inode\": 277629397, \"device\": 16777231}, \"support/tideglass-study.json.withdrawn\": {\"present\": false}, \"support/tideglass/progress.0.json\": {\"present\": true, \"size\": 4833, \"sha256\": \"8a0741ad2486c79216a25eeb740f16335bd446f9a0d988a04f61342d9cbd3a55\", \"mtime_ns\": 1792730483974955429, \"uid\": 501, \"inode\": 277629404, \"device\": 16777231}, \"support/tideglass/progress.1.json\": {\"present\": false}, \"game/progress.0.json\": {\"present\": false}, \"game/progress.1.json\": {\"present\": false}}}\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/bin/ps",
+        "-p",
+        "75249",
+        "-o",
+        "pid=,uid=,lstart=,comm="
+      ],
+      "exit_code": 0,
+      "started_ns": 53585336067375,
+      "finished_ns": 53585342439416,
+      "stdout_sha256": "2fe136f1ff02c0d569080953277626059cfdae25e107484894c1220857145416",
+      "stdout": "75249   501 Fri Oct 23 04:41:17 2026     /Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/2EF58395-8D57-45F3-A403-256238BAB504/Runner.app/Runner\n",
+      "stderr": ""
+    }
+  ],
+  "finished_utc": "2026-10-23T04:41:26.150193+00:00"
+}

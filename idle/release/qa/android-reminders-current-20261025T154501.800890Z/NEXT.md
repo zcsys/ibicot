@@ -1,0 +1,1 @@
+Append-only independent Android reminder review. Denied is under review; quiet-cancel, delivery and revoked remain pending sealed intake. Existing default, phone and Settings evidence stays closed. No canonical edits or device/runtime execution by QA.

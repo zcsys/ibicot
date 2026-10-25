@@ -1,0 +1,924 @@
+{
+  "title": "Tideglass v1 development backlog",
+  "planning_date": "2026-10-16",
+  "status": "proposed_plan",
+  "baseline_core_roles": {
+    "PD": "Product and economy designer",
+    "GE": "Gameplay systems engineer",
+    "UI": "Client and UI engineer",
+    "BE": "Platform and services engineer",
+    "AR": "2D artist",
+    "QA": "QA and release lead"
+  },
+  "effort_definition": "Focused implementation person-weeks for the named primary contributor; reviews and other shared work use the unallocated capacity. These are planning estimates, not commitments.",
+  "capacity_assumption": "Six full-time roles for a 36-week target, with 70% focus availability. Phase-role sums fit this envelope. Incremental handoffs in V1_ROADMAP.md are required; M0 must split packages into tasks and level their actual start dependencies. Strict finish-to-start interpretation of all links would have a 59.2-week lower bound before resource conflicts.",
+  "items": [
+    {
+      "id": "M0-01",
+      "milestone": "M0",
+      "title": "Define the release contract",
+      "owner": "PD",
+      "effort_person_weeks": 0.6,
+      "dependencies": [],
+      "acceptance": "Freeze audience, iOS/Android scope, English launch, six-chapter content budget, ethical constraints, device targets and decision owners.",
+      "status": "not_started",
+      "release_class": "v1_required"
+    },
+    {
+      "id": "M0-02",
+      "milestone": "M0",
+      "title": "Qualify engine and numeric approach",
+      "owner": "GE",
+      "effort_person_weeks": 0.8,
+      "dependencies": [
+        "M0-01"
+      ],
+      "acceptance": "Build the same deterministic purchase/reset case on both native targets; compare large-number candidates and record the engine decision.",
+      "status": "not_started",
+      "release_class": "v1_required"
+    },
+    {
+      "id": "M0-03",
+      "milestone": "M0",
+      "title": "Prove native service integrations",
+      "owner": "BE",
+      "effort_person_weeks": 0.8,
+      "dependencies": [
+        "M0-01"
+      ],
+      "acceptance": "Demonstrate sandbox purchase/restore, ad availability and cloud revision handling in a throwaway integration build; list SDK and account dependencies.",
+      "status": "not_started",
+      "release_class": "v1_required"
+    },
+    {
+      "id": "M0-04",
+      "milestone": "M0",
+      "title": "Prototype the player journey",
+      "owner": "UI",
+      "effort_person_weeks": 1,
+      "dependencies": [
+        "M0-01"
+      ],
+      "acceptance": "Clickable flows cover first purchase, Rechart preview, offline return and recovery; identify accessibility and small-screen constraints.",
+      "status": "not_started",
+      "release_class": "v1_required"
+    },
+    {
+      "id": "M0-05",
+      "milestone": "M0",
+      "title": "Set visual production budget",
+      "owner": "AR",
+      "effort_person_weeks": 1,
+      "dependencies": [
+        "M0-01"
+      ],
+      "acceptance": "Approve one harbor look, one producer milestone transformation, asset reuse rules and a complete asset manifest.",
+      "status": "not_started",
+      "release_class": "v1_required"
+    },
+    {
+      "id": "M0-06",
+      "milestone": "M0",
+      "title": "Create quality and device plan",
+      "owner": "QA",
+      "effort_person_weeks": 1,
+      "dependencies": [
+        "M0-01"
+      ],
+      "acceptance": "Name reference devices, severities, reproducible save fixtures, test recruitment plan and the release evidence checklist.",
+      "status": "not_started",
+      "release_class": "v1_required"
+    },
+    {
+      "id": "M0-07",
+      "milestone": "M0",
+      "title": "Establish delivery and operating costs",
+      "owner": "PD",
+      "effort_person_weeks": 0.6,
+      "dependencies": [
+        "M0-01"
+      ],
+      "acceptance": "Confirm six role assignments, contractors, distribution accounts, tester recruitment and service cost model; reforecast for holidays and absences.",
+      "status": "not_started",
+      "release_class": "v1_required"
+    },
+    {
+      "id": "M0-08",
+      "milestone": "M0",
+      "title": "Create reproducible builds",
+      "owner": "GE",
+      "effort_person_weeks": 0.5,
+      "dependencies": [
+        "M0-02"
+      ],
+      "acceptance": "Automated builds run on both targets, version configurations and preserve build artifacts; no production secrets enter the client.",
+      "status": "not_started",
+      "release_class": "v1_required"
+    },
+    {
+      "id": "M1-01",
+      "milestone": "M1",
+      "title": "Implement production number handling",
+      "owner": "GE",
+      "effort_person_weeks": 1.2,
+      "dependencies": [
+        "M0-02"
+      ],
+      "acceptance": "Define precision, comparison and rounding rules; pass bulk-buy and prestige-boundary fixtures including extreme values.",
+      "status": "not_started",
+      "release_class": "v1_required"
+    },
+    {
+      "id": "M1-02",
+      "milestone": "M1",
+      "title": "Implement the economy state machine",
+      "owner": "GE",
+      "effort_person_weeks": 1.4,
+      "dependencies": [
+        "M1-01"
+      ],
+      "acceptance": "Five producers, unlocks, milestones, lifetime ledger and Rechart run without rendering; explicit event ordering is tested.",
+      "status": "not_started",
+      "release_class": "v1_required"
+    },
+    {
+      "id": "M1-03",
+      "milestone": "M1",
+      "title": "Build crash-safe local saves",
+      "owner": "BE",
+      "effort_person_weeks": 1.4,
+      "dependencies": [
+        "M1-02"
+      ],
+      "acceptance": "Atomic saves, rolling backups, checksums, export/import and versioned migration recover from interruption without double rewards.",
+      "status": "not_started",
+      "release_class": "v1_required"
+    },
+    {
+      "id": "M1-04",
+      "milestone": "M1",
+      "title": "Version configuration and content schemas",
+      "owner": "BE",
+      "effort_person_weeks": 1,
+      "dependencies": [
+        "M0-08"
+      ],
+      "acceptance": "Validate configs, pin economic versions to saves and provide safe defaults; reject incompatible updates before application.",
+      "status": "not_started",
+      "release_class": "v1_required"
+    },
+    {
+      "id": "M1-05",
+      "milestone": "M1",
+      "title": "Build the playable client shell",
+      "owner": "UI",
+      "effort_person_weeks": 2.5,
+      "dependencies": [
+        "M0-04",
+        "M1-02"
+      ],
+      "acceptance": "Display wallet, output, producer purchases, milestones, resets and settings on small and large screens.",
+      "status": "not_started",
+      "release_class": "v1_required"
+    },
+    {
+      "id": "M1-06",
+      "milestone": "M1",
+      "title": "Design the full progression map",
+      "owner": "PD",
+      "effort_person_weeks": 2.5,
+      "dependencies": [
+        "M0-01"
+      ],
+      "acceptance": "Specify six chapter goals, ending, challenge entry requirements, Note source/sink budgets and daily/pass exceptions; no new prestige layer is assumed.",
+      "status": "not_started",
+      "release_class": "v1_required"
+    },
+    {
+      "id": "M1-07",
+      "milestone": "M1",
+      "title": "Produce reusable visual components",
+      "owner": "AR",
+      "effort_person_weeks": 2.4,
+      "dependencies": [
+        "M0-05"
+      ],
+      "acceptance": "Deliver modular producer parts, harbor layers, typography, icons and UI states sufficient for the slice.",
+      "status": "not_started",
+      "release_class": "v1_required"
+    },
+    {
+      "id": "M1-08",
+      "milestone": "M1",
+      "title": "Port oracle cases and failure fixtures",
+      "owner": "QA",
+      "effort_person_weeks": 2.5,
+      "dependencies": [
+        "M1-01",
+        "M1-02",
+        "M1-03"
+      ],
+      "acceptance": "Existing checks become production fixtures; add save corruption, rounding, rapid reset and interrupted-transaction cases.",
+      "status": "not_started",
+      "release_class": "v1_required"
+    },
+    {
+      "id": "M2-01",
+      "milestone": "M2",
+      "title": "Complete the first-session economy",
+      "owner": "GE",
+      "effort_person_weeks": 2.7,
+      "dependencies": [
+        "M1-02"
+      ],
+      "acceptance": "Cross-tier synergies, free autobuy unlock and baseline offline replay support first session through 25 Charts with deterministic results.",
+      "status": "not_started",
+      "release_class": "v1_required"
+    },
+    {
+      "id": "M2-02",
+      "milestone": "M2",
+      "title": "Build onboarding and Rechart communication",
+      "owner": "UI",
+      "effort_person_weeks": 1.4,
+      "dependencies": [
+        "M1-05",
+        "M2-01"
+      ],
+      "acceptance": "Teach costs, production, retained progress and automation with skippable guidance; no monetization prompt interrupts onboarding.",
+      "status": "not_started",
+      "release_class": "v1_required"
+    },
+    {
+      "id": "M2-03",
+      "milestone": "M2",
+      "title": "Add purchase and reset forecasts",
+      "owner": "UI",
+      "effort_person_weeks": 1.3,
+      "dependencies": [
+        "M2-01"
+      ],
+      "acceptance": "Show marginal network output, next threshold and conditional reset estimate with readable assumptions and no claim of a universal optimum.",
+      "status": "not_started",
+      "release_class": "v1_required"
+    },
+    {
+      "id": "M2-04",
+      "milestone": "M2",
+      "title": "Implement optional cloud recovery",
+      "owner": "BE",
+      "effort_person_weeks": 2.6,
+      "dependencies": [
+        "M1-03",
+        "M1-04",
+        "M0-03"
+      ],
+      "acceptance": "Save revisions detect conflicts; divergent branches remain recoverable; never add two wallets or replay overlapping offline time.",
+      "status": "not_started",
+      "release_class": "v1_required"
+    },
+    {
+      "id": "M2-05",
+      "milestone": "M2",
+      "title": "Finish representative harbor presentation",
+      "owner": "AR",
+      "effort_person_weeks": 2.7,
+      "dependencies": [
+        "M1-07"
+      ],
+      "acceptance": "One area, all five base silhouettes and a milestone sequence establish final visual quality, including reduced-motion variants.",
+      "status": "not_started",
+      "release_class": "v1_required"
+    },
+    {
+      "id": "M2-06",
+      "milestone": "M2",
+      "title": "Run moderated first-session studies",
+      "owner": "PD",
+      "effort_person_weeks": 2.6,
+      "dependencies": [
+        "M2-02",
+        "M2-03",
+        "M2-05"
+      ],
+      "acceptance": "At least 15 new testers attempt the first reset; capture understanding, friction and pacing, then resolve the largest blockers.",
+      "status": "not_started",
+      "release_class": "v1_required"
+    },
+    {
+      "id": "M2-07",
+      "milestone": "M2",
+      "title": "Certify the vertical slice",
+      "owner": "QA",
+      "effort_person_weeks": 2.7,
+      "dependencies": [
+        "M2-01",
+        "M2-04",
+        "M2-05"
+      ],
+      "acceptance": "Replay purchase/reset/save/resume on reference hardware; publish a slice gate report and evidence for the next funding decision.",
+      "status": "not_started",
+      "release_class": "v1_required"
+    },
+    {
+      "id": "M3-01",
+      "milestone": "M3",
+      "title": "Implement all real-time boundaries",
+      "owner": "GE",
+      "effort_person_weeks": 1.6,
+      "dependencies": [
+        "M2-01",
+        "M1-03"
+      ],
+      "acceptance": "2-hour Focus, 8-hour Surveys, 24/72-hour offline envelope, bonus expiry and account-day boundaries resolve in a single event timeline.",
+      "status": "not_started",
+      "release_class": "v1_required"
+    },
+    {
+      "id": "M3-02",
+      "milestone": "M3",
+      "title": "Implement contracts and their backlog",
+      "owner": "GE",
+      "effort_person_weeks": 1.2,
+      "dependencies": [
+        "M3-01",
+        "M1-06"
+      ],
+      "acceptance": "Seeded contracts, snapshots, offline progress, rerolls and 21-slot backlog preserve claim IDs and do not duplicate rewards.",
+      "status": "not_started",
+      "release_class": "v1_required"
+    },
+    {
+      "id": "M3-03",
+      "milestone": "M3",
+      "title": "Implement player automation plans",
+      "owner": "GE",
+      "effort_person_weeks": 1.3,
+      "dependencies": [
+        "M2-01",
+        "M1-06"
+      ],
+      "acceptance": "Purchase priorities and opt-in reset conditions work identically online/offline; free base plan and Note-priced extra slots follow the blueprint.",
+      "status": "not_started",
+      "release_class": "v1_required"
+    },
+    {
+      "id": "M3-04",
+      "milestone": "M3",
+      "title": "Build calibration and daily interfaces",
+      "owner": "UI",
+      "effort_person_weeks": 2.1,
+      "dependencies": [
+        "M3-01",
+        "M3-02"
+      ],
+      "acceptance": "Untimed calibration, equal-value accessible completion, queued Focus, Surveys and contract management form a complete daily session.",
+      "status": "not_started",
+      "release_class": "v1_required"
+    },
+    {
+      "id": "M3-05",
+      "milestone": "M3",
+      "title": "Complete settings and notification controls",
+      "owner": "UI",
+      "effort_person_weeks": 1.8,
+      "dependencies": [
+        "M1-05",
+        "M3-01"
+      ],
+      "acceptance": "Text scale, number notation, motion/audio controls, input navigation and opt-in quiet-hour notifications function across targets.",
+      "status": "not_started",
+      "release_class": "v1_required"
+    },
+    {
+      "id": "M3-06",
+      "milestone": "M3",
+      "title": "Complete account lifecycle and branch recovery",
+      "owner": "BE",
+      "effort_person_weeks": 2,
+      "dependencies": [
+        "M2-04"
+      ],
+      "acceptance": "Guest linking, account recovery, export, deletion and divergent-save selection preserve recovery copies and purchased ownership.",
+      "status": "not_started",
+      "release_class": "v1_required"
+    },
+    {
+      "id": "M3-07",
+      "milestone": "M3",
+      "title": "Build the entitlement and claim ledger",
+      "owner": "BE",
+      "effort_person_weeks": 1.9,
+      "dependencies": [
+        "M0-03",
+        "M1-04",
+        "M3-06"
+      ],
+      "acceptance": "Unique receipts and idempotent grants separate cosmetics, Support allowance, pass XP and gameplay saves; interrupted grants resume safely.",
+      "status": "not_started",
+      "release_class": "v1_required"
+    },
+    {
+      "id": "M3-08",
+      "milestone": "M3",
+      "title": "Author chapter and challenge specifications",
+      "owner": "PD",
+      "effort_person_weeks": 3.8,
+      "dependencies": [
+        "M1-06",
+        "M2-06"
+      ],
+      "acceptance": "Six chapters and twelve challenges have objectives, unlock rules, reward budgets and completion evidence; passive and active routes are covered.",
+      "status": "not_started",
+      "release_class": "v1_required"
+    },
+    {
+      "id": "M3-09",
+      "milestone": "M3",
+      "title": "Produce producer transformations and core UI art",
+      "owner": "AR",
+      "effort_person_weeks": 4,
+      "dependencies": [
+        "M2-05"
+      ],
+      "acceptance": "Five producer families each have base plus four milestone presentations; daily-loop icons and status states are final.",
+      "status": "not_started",
+      "release_class": "v1_required"
+    },
+    {
+      "id": "M3-10",
+      "milestone": "M3",
+      "title": "Validate the entire daily timeline",
+      "owner": "QA",
+      "effort_person_weeks": 4.1,
+      "dependencies": [
+        "M3-01",
+        "M3-02",
+        "M3-03",
+        "M3-06",
+        "M3-07"
+      ],
+      "acceptance": "Test 1/3/6 visits, 2/8/24/48/72-hour absences, clock changes, bonus queues and reset/day-boundary collisions; report exact and approximate differences.",
+      "status": "not_started",
+      "release_class": "v1_required"
+    },
+    {
+      "id": "M4-01",
+      "milestone": "M4",
+      "title": "Build reusable challenge scenarios",
+      "owner": "GE",
+      "effort_person_weeks": 2,
+      "dependencies": [
+        "M3-08",
+        "M3-03"
+      ],
+      "acceptance": "Challenge state is isolated, goals are deterministic, main automation continues and exit/restart cannot export economic rewards.",
+      "status": "not_started",
+      "release_class": "v1_required"
+    },
+    {
+      "id": "M4-02",
+      "milestone": "M4",
+      "title": "Build the seasonal event state machine",
+      "owner": "GE",
+      "effort_person_weeks": 2,
+      "dependencies": [
+        "M4-01",
+        "M3-01"
+      ],
+      "acceptance": "Season start/end/archive, event coefficients, pinned versions and offline transitions work; no paid or main-world power enters the event.",
+      "status": "not_started",
+      "release_class": "v1_required"
+    },
+    {
+      "id": "M4-03",
+      "milestone": "M4",
+      "title": "Build cosmetic shop and pass experience",
+      "owner": "UI",
+      "effort_person_weeks": 4,
+      "dependencies": [
+        "M3-07",
+        "M4-02"
+      ],
+      "acceptance": "Preview, price, ownership, restoration, selected pass and archived completion are understandable; shared XP grants only once.",
+      "status": "not_started",
+      "release_class": "v1_required"
+    },
+    {
+      "id": "M4-04",
+      "milestone": "M4",
+      "title": "Integrate production purchase handling",
+      "owner": "BE",
+      "effort_person_weeks": 2.2,
+      "dependencies": [
+        "M3-07",
+        "M0-03"
+      ],
+      "acceptance": "Validate, grant, acknowledge, restore and reconcile purchases; pending, duplicate, refunded and interrupted cases have explicit states.",
+      "status": "not_started",
+      "release_class": "v1_required"
+    },
+    {
+      "id": "M4-05",
+      "milestone": "M4",
+      "title": "Integrate optional ads and equal free rewards",
+      "owner": "BE",
+      "effort_person_weeks": 1.9,
+      "dependencies": [
+        "M3-07",
+        "M3-01"
+      ],
+      "acceptance": "Ad and briefing routes consume the same allowance; no-fill, refusal and duplicate callbacks preserve access and cannot multiply rewards.",
+      "status": "not_started",
+      "release_class": "v1_required"
+    },
+    {
+      "id": "M4-06",
+      "milestone": "M4",
+      "title": "Finish all launch content and reward tables",
+      "owner": "PD",
+      "effort_person_weeks": 4.1,
+      "dependencies": [
+        "M3-08",
+        "M4-01",
+        "M4-02"
+      ],
+      "acceptance": "Six chapters, ending, twelve challenges, twelve calibration patterns, eighteen archive entries and Season 1 have complete data and copy.",
+      "status": "not_started",
+      "release_class": "v1_required"
+    },
+    {
+      "id": "M4-07",
+      "milestone": "M4",
+      "title": "Finish launch art and cosmetics",
+      "owner": "AR",
+      "effort_person_weeks": 4.1,
+      "dependencies": [
+        "M3-09",
+        "M4-06"
+      ],
+      "acceptance": "Six harbor restoration states and the fixed 36-item cosmetic manifest are complete; commissioned audio is integrated through client work.",
+      "status": "not_started",
+      "release_class": "v1_required"
+    },
+    {
+      "id": "M4-08",
+      "milestone": "M4",
+      "title": "Verify content and monetization boundaries",
+      "owner": "QA",
+      "effort_person_weeks": 4.1,
+      "dependencies": [
+        "M4-03",
+        "M4-04",
+        "M4-05",
+        "M4-06",
+        "M4-07"
+      ],
+      "acceptance": "Every content ID and reward is reachable; full pass is completable free of paid speed; no event or cosmetic increases core power.",
+      "status": "not_started",
+      "release_class": "v1_required"
+    },
+    {
+      "id": "M5-01",
+      "milestone": "M5",
+      "title": "Optimize runtime and offline replay",
+      "owner": "GE",
+      "effort_person_weeks": 2.7,
+      "dependencies": [
+        "M3-10",
+        "M4-02"
+      ],
+      "acceptance": "Meet measured frame/startup/resume budgets on minimum devices; heavy replay is chunked and never silently drops earned time.",
+      "status": "not_started",
+      "release_class": "v1_required"
+    },
+    {
+      "id": "M5-02",
+      "milestone": "M5",
+      "title": "Complete accessibility and language readiness",
+      "owner": "UI",
+      "effort_person_weeks": 2.7,
+      "dependencies": [
+        "M3-05",
+        "M4-03",
+        "M4-06"
+      ],
+      "acceptance": "Critical flows work at large text, without color/audio/motion dependencies and via target inputs; pseudolocalization has no blocking overflow.",
+      "status": "not_started",
+      "release_class": "v1_required"
+    },
+    {
+      "id": "M5-03",
+      "milestone": "M5",
+      "title": "Complete privacy and service recovery flows",
+      "owner": "BE",
+      "effort_person_weeks": 1.4,
+      "dependencies": [
+        "M3-06",
+        "M4-04",
+        "M4-05"
+      ],
+      "acceptance": "Data inventory matches SDK behavior; consent refusal, export/deletion and service-outage recovery are verified on actual builds.",
+      "status": "not_started",
+      "release_class": "v1_required"
+    },
+    {
+      "id": "M5-04",
+      "milestone": "M5",
+      "title": "Ship measurement and operating tools",
+      "owner": "BE",
+      "effort_person_weeks": 1.3,
+      "dependencies": [
+        "M3-07",
+        "M4-04"
+      ],
+      "acceptance": "Validate economy/session events, entitlement dashboards, alerts, backups, support receipts and feature disable switches in staging.",
+      "status": "not_started",
+      "release_class": "v1_required"
+    },
+    {
+      "id": "M5-05",
+      "milestone": "M5",
+      "title": "Run long-horizon economy and content audit",
+      "owner": "PD",
+      "effort_person_weeks": 2.7,
+      "dependencies": [
+        "M4-06",
+        "M5-04"
+      ],
+      "acceptance": "Simulate 30/90 days across visit and bonus policies, audit Note sinks and content pacing, freeze beta config and metric definitions.",
+      "status": "not_started",
+      "release_class": "v1_required"
+    },
+    {
+      "id": "M5-06",
+      "milestone": "M5",
+      "title": "Complete presentation and store assets",
+      "owner": "AR",
+      "effort_person_weeks": 2.7,
+      "dependencies": [
+        "M4-07"
+      ],
+      "acceptance": "Remove placeholders, integrate final sound direction, and prepare representative screenshots, icon and short footage.",
+      "status": "not_started",
+      "release_class": "v1_required"
+    },
+    {
+      "id": "M5-07",
+      "milestone": "M5",
+      "title": "Run device and migration regression",
+      "owner": "QA",
+      "effort_person_weeks": 1.7,
+      "dependencies": [
+        "M5-01",
+        "M5-02",
+        "M5-03"
+      ],
+      "acceptance": "Complete the device matrix, storage/network interruptions, upgrade migrations and install/return flows with zero open blocking issues.",
+      "status": "not_started",
+      "release_class": "v1_required"
+    },
+    {
+      "id": "M5-08",
+      "milestone": "M5",
+      "title": "Run commerce and service fault tests",
+      "owner": "QA",
+      "effort_person_weeks": 1.1,
+      "dependencies": [
+        "M4-04",
+        "M4-05",
+        "M5-04"
+      ],
+      "acceptance": "Purchase/restore/refund/ad callbacks are tested under packet loss, retries, duplicate messages, crashes and backend outages.",
+      "status": "not_started",
+      "release_class": "v1_required"
+    },
+    {
+      "id": "M6-01",
+      "milestone": "M6",
+      "title": "Recruit and freeze the measurement cohort",
+      "owner": "PD",
+      "effort_person_weeks": 1.8,
+      "dependencies": [
+        "M5-05",
+        "M5-07",
+        "M5-08"
+      ],
+      "acceptance": "Enroll the D30 cohort during week 27; record baseline config, acquisition source, denominator and exclusions before analysis.",
+      "status": "not_started",
+      "release_class": "v1_required"
+    },
+    {
+      "id": "M6-02",
+      "milestone": "M6",
+      "title": "Evaluate retention and content outcomes",
+      "owner": "PD",
+      "effort_person_weeks": 2.3,
+      "dependencies": [
+        "M6-01"
+      ],
+      "acceptance": "Report mature D1/D7/D30 with confidence intervals, campaign progress, bonus impact, satisfaction and explicit ship/change decisions.",
+      "status": "not_started",
+      "release_class": "v1_required"
+    },
+    {
+      "id": "M6-03",
+      "milestone": "M6",
+      "title": "Resolve economy and simulation findings",
+      "owner": "GE",
+      "effort_person_weeks": 3.6,
+      "dependencies": [
+        "M5-01",
+        "M6-01"
+      ],
+      "acceptance": "Fix core bugs using replay fixtures; version any balance changes and keep affected cohorts separate.",
+      "status": "not_started",
+      "release_class": "v1_required"
+    },
+    {
+      "id": "M6-04",
+      "milestone": "M6",
+      "title": "Resolve comprehension and interaction findings",
+      "owner": "UI",
+      "effort_person_weeks": 3.6,
+      "dependencies": [
+        "M5-02",
+        "M6-01"
+      ],
+      "acceptance": "Reduce observed onboarding/recovery friction without adding pressure, hidden rewards or paid advantages.",
+      "status": "not_started",
+      "release_class": "v1_required"
+    },
+    {
+      "id": "M6-05",
+      "milestone": "M6",
+      "title": "Operate staged access and support",
+      "owner": "BE",
+      "effort_person_weeks": 3.7,
+      "dependencies": [
+        "M5-04",
+        "M6-01"
+      ],
+      "acceptance": "Exercise service load, support recovery, purchase reconciliation and feature disable controls with real opt-in testers.",
+      "status": "not_started",
+      "release_class": "v1_required"
+    },
+    {
+      "id": "M6-06",
+      "milestone": "M6",
+      "title": "Polish content from observed play",
+      "owner": "AR",
+      "effort_person_weeks": 2.4,
+      "dependencies": [
+        "M5-06",
+        "M6-01"
+      ],
+      "acceptance": "Address readability, repeated visual issues and content defects without increasing the launch asset count.",
+      "status": "not_started",
+      "release_class": "v1_required"
+    },
+    {
+      "id": "M6-07",
+      "milestone": "M6",
+      "title": "Observe real calendar progression",
+      "owner": "QA",
+      "effort_person_weeks": 2.1,
+      "dependencies": [
+        "M6-01"
+      ],
+      "acceptance": "A real 28-day pass and mature D30 cohort are observed; accelerated testing is documented separately.",
+      "status": "not_started",
+      "release_class": "v1_required"
+    },
+    {
+      "id": "M6-08",
+      "milestone": "M6",
+      "title": "Rehearse season and release recovery",
+      "owner": "QA",
+      "effort_person_weeks": 2.1,
+      "dependencies": [
+        "M4-08",
+        "M6-05"
+      ],
+      "acceptance": "Exercise season archive, paid pass continuation, save migration, purchase replay and compatible rollback/forward repair.",
+      "status": "not_started",
+      "release_class": "v1_required"
+    },
+    {
+      "id": "M7-01",
+      "milestone": "M7",
+      "title": "Decide readiness and freeze release scope",
+      "owner": "PD",
+      "effort_person_weeks": 2,
+      "dependencies": [
+        "M6-02",
+        "M6-07",
+        "M6-08"
+      ],
+      "acceptance": "Review all hard gates and product thresholds, assign accepted minor issues, and freeze the release candidate configuration.",
+      "status": "not_started",
+      "release_class": "v1_required"
+    },
+    {
+      "id": "M7-02",
+      "milestone": "M7",
+      "title": "Stabilize final game build",
+      "owner": "GE",
+      "effort_person_weeks": 2.1,
+      "dependencies": [
+        "M6-03",
+        "M7-01"
+      ],
+      "acceptance": "Fix remaining blockers, tag deterministic core/config versions and prove candidate replay compatibility.",
+      "status": "not_started",
+      "release_class": "v1_required"
+    },
+    {
+      "id": "M7-03",
+      "milestone": "M7",
+      "title": "Package native release candidates",
+      "owner": "UI",
+      "effort_person_weeks": 2.1,
+      "dependencies": [
+        "M6-04",
+        "M7-01"
+      ],
+      "acceptance": "Signing, install/update, responsive layouts, licensed assets and store-visible flows work in final distribution builds.",
+      "status": "not_started",
+      "release_class": "v1_required"
+    },
+    {
+      "id": "M7-04",
+      "milestone": "M7",
+      "title": "Prepare safe staged release",
+      "owner": "BE",
+      "effort_person_weeks": 1.8,
+      "dependencies": [
+        "M6-05",
+        "M7-01"
+      ],
+      "acceptance": "Version-compatible config rollback, feature disables, capacity, backups and entitlement replay are rehearsed and documented.",
+      "status": "not_started",
+      "release_class": "v1_required"
+    },
+    {
+      "id": "M7-05",
+      "milestone": "M7",
+      "title": "Finish store communication and support material",
+      "owner": "AR",
+      "effort_person_weeks": 2,
+      "dependencies": [
+        "M6-06",
+        "M7-01"
+      ],
+      "acceptance": "Screenshots, footage, credits, help visuals and release assets describe the actual shipped game and offers.",
+      "status": "not_started",
+      "release_class": "v1_required"
+    },
+    {
+      "id": "M7-06",
+      "milestone": "M7",
+      "title": "Approve the release evidence pack",
+      "owner": "QA",
+      "effort_person_weeks": 1.6,
+      "dependencies": [
+        "M7-02",
+        "M7-03",
+        "M7-04"
+      ],
+      "acceptance": "All gate evidence is linked; no blocker, save-loss, duplication or unresolved purchase-delivery issue remains.",
+      "status": "not_started",
+      "release_class": "v1_required"
+    },
+    {
+      "id": "M7-07",
+      "milestone": "M7",
+      "title": "Submit and manage platform review",
+      "owner": "QA",
+      "effort_person_weeks": 1.1,
+      "dependencies": [
+        "M7-05",
+        "M7-06"
+      ],
+      "acceptance": "Recheck current platform requirements, provide reviewer access and working products, and resolve review findings before launch.",
+      "status": "not_started",
+      "release_class": "v1_required"
+    },
+    {
+      "id": "M7-08",
+      "milestone": "M7",
+      "title": "Hand over launch operations",
+      "owner": "BE",
+      "effort_person_weeks": 0.9,
+      "dependencies": [
+        "M7-04",
+        "M7-06"
+      ],
+      "acceptance": "Document 14-day coverage, escalation, incident response and Season 2 preparation; launch authority and rollout stop conditions are explicit.",
+      "status": "not_started",
+      "release_class": "v1_required"
+    }
+  ],
+  "dependency_semantics": "Acceptance prerequisites: listed packages must be accepted before the dependent package can be accepted. Work may start earlier against agreed interfaces, fixtures and content manifests. These links are not automatically finish-to-start scheduling constraints.",
+  "schedule_status": "Milestone target with required intermediate handoffs; detailed sprint resource leveling pending M0."
+}

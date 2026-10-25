@@ -1,0 +1,32 @@
+Running Gradle task 'assembleDebug'...                             15.5s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...           3.3s
+W/.tideglass.game( 4391): Accessing hidden method Landroid/view/accessibility/AccessibilityNodeInfo;->getSourceNodeId()J (unsupported,test-api, reflection, allowed)
+W/.tideglass.game( 4391): Accessing hidden method Landroid/view/accessibility/AccessibilityRecord;->getSourceNodeId()J (unsupported, reflection, allowed)
+W/.tideglass.game( 4391): Accessing hidden field Landroid/view/accessibility/AccessibilityNodeInfo;->mChildNodeIds:Landroid/util/LongArray; (unsupported, reflection, allowed)
+W/.tideglass.game( 4391): Accessing hidden method Landroid/util/LongArray;->get(I)J (unsupported, reflection, allowed)
+D/AccessibilityBridge( 4391): Setting not found: accessibility_display_inversion_enabled, using default: 0
+D/FlutterRenderer( 4391): Width is zero. 0,0
+W/HWUI    ( 4391): Unknown dataspace 0
+I/WindowExtensionsImpl( 4391): Initializing Window Extensions, vendor API level=6, activity embedding enabled=true
+D/FlutterRenderer( 4391): Width is zero. 0,0
+D/FlutterJNI( 4391): Sending viewport metrics to the engine.
+W/HWUI    ( 4391): Failed to choose config with EGL_SWAP_BEHAVIOR_PRESERVED, retrying without...
+W/HWUI    ( 4391): Failed to initialize 101010-2 format, error = EGL_SUCCESS
+I/Gralloc4( 4391): mapper 4.x is not supported
+I/.tideglass.game( 4391): Compiler allocated 5250KB to compile void android.view.ViewRootImpl.performTraversals()
+VMServiceFlutterDriver: Connecting to Flutter application at http://127.0.0.1:52865/gTapQ-kjEvc=/
+VMServiceFlutterDriver: Isolate found with number: 7813154210435007
+I/Choreographer( 4391): Skipped 142 frames!  The application may be doing too much work on its main thread.
+D/ProfileInstaller( 4391): Installing profile for dev.tideglass.game
+D/FlutterJNI( 4391): Sending viewport metrics to the engine.
+VMServiceFlutterDriver: Isolate 7813154210435007 is runnable.
+VMServiceFlutterDriver: Isolate is paused at start.
+I/.tideglass.game( 4391): Compiler allocated 5427KB to compile void android.view.ViewRootImpl.performTraversals()
+VMServiceFlutterDriver: Attempting to resume isolate
+I/flutter ( 4391): 00:00 +0: current native runtime qualification: runtime-save-hold-beforeWrite
+VMServiceFlutterDriver: Connected to Flutter application.
+I/Choreographer( 4391): Skipped 45 frames!  The application may be doing too much work on its main thread.
+I/Choreographer( 4391): Skipped 92 frames!  The application may be doing too much work on its main thread.
+I/HWUI    ( 4391): Davey! duration=1626ms; Flags=1, FrameTimelineVsyncId=85654, IntendedVsync=537539437728, Vsync=539072771000, InputEventId=0, HandleInputStart=539083373507, AnimationStart=539083377257, PerformTraversalsStart=539083378382, DrawStart=539093243298, FrameDeadline=537556104394, FrameInterval=539082759507, FrameStartTime=16666666, SyncQueued=539101011882, SyncStart=539101901923, IssueDrawCommandsStart=539104913173, SwapBuffers=539134573465, FrameCompleted=539166332090, DequeueBufferDuration=11101083, QueueBufferDuration=402125, GpuCompleted=539155121382, SwapBuffersCompleted=539166332090, DisplayPresentTime=72904454231359566, CommandSubmissionCompleted=539134573465, 
+I/flutter ( 4391): TIDEGLASS_RUNTIME_KILL_READY {"verification_id":"current-runtime-android-20261023T051542413435Z","candidate_fingerprint":"3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59","harness_sha256":"102be09eb8043ce9bb496156d9f37b1834c3084ddf58fef073e7c25cdc3c55d5","scenario":"runtime-save-hold-beforeWrite","process_id":4391,"checkpoint":"/data/user/0/dev.tideglass.game/files/native-current-verification/android-v3b00-android-save-beforeWrite/save-beforeWrite/checkpoint.json","checkpoint_sha256":"245538dcbe66a9a91759d33f175732b6991d5ebd1379773089f49de531b8f786"}

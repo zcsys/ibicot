@@ -1,0 +1,248 @@
+00:00 +0: loading /Users/csys/Desktop/ibicot/idle/game/mobile/test/art_catalogue_variants_test.dart
+00:00 +0: (setUpAll)
+00:00 +0: harbor7 actual route phone-100-normal
+00:01 +1: producer25 actual purchase cards phone-100-normal
+00:02 +2: producer25 selected locked component variants phone-100-normal
+00:02 +3: cosmetic36 locked owned equipped preview thumbnail phone-100-normal
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: {
+            'schema_version': 4,
+            'economic_version': 'tideglass-economy-1.0.0',
+            'event_order_version': 4,
+            'counts': [1, 0, 0, 0, 0],
+            'wallet_micros': '123000000',
+            'lifetime_micros': '123000000',
+            'charts': '0',
+            'elapsed_micros': '0',
+            'earning_remainder': '0',
+            'revision': 1,
+            'auto_buy_enabled': false,
+            'focus_charges': 0,
+            'focus_phase_micros': '0',
+            'focus_remaining_micros': '0',
+            'completed_surveys': 0,
+            'survey_phase_micros': '0',
+            'survey_notes': '0',
+            'daily': {
+              'account_seed': '3a7bc03ea957d272501142102784b081',
+              'utc_offset_minutes': 0,
+              'day_high_water': 20747,
+              'last_materialized_day': 20747,
+              'utc_anchor_micros': '1792584000000000',
+              'available_discovery_kinds': ['archive'],
+              'contracts': [
+                {
+                  'id': 'contract:3a7bc03ea957d272501142102784b081:20747:0',
+                  'account_day': 20747,
+                  'slot': 0,
+                  'kind': 'restore',
+                  'discovery_kind': null,
+                  'target': '600000000',
+                  'rate_snapshot_raw': '1000000000000000000000000',
+                  'cheapest_price_snapshot_micros': '33600000',
+                  'lifetime_baseline_micros': '123000000',
+                  'purchased_baseline': '0',
+                  'discovery_baseline': '0',
+                  'rerolled': false,
+                  'claimed': false,
+                  'credited_pass_id': null
+                },
+                {
+                  'id': 'contract:3a7bc03ea957d272501142102784b081:20747:1',
+                  'account_day': 20747,
+                  'slot': 1,
+                  'kind': 'restore',
+                  'discovery_kind': null,
+                  'target': '600000000',
+                  'rate_snapshot_raw': '1000000000000000000000000',
+                  'cheapest_price_snapshot_micros': '33600000',
+                  'lifetime_baseline_micros': '123000000',
+                  'purchased_baseline': '0',
+                  'discovery_baseline': '0',
+                  'rerolled': false,
+                  'claimed': false,
+                  'credited_pass_id': null
+                },
+                {
+                  'id': 'contract:3a7bc03ea957d272501142102784b081:20747:2',
+                  'account_day': 20747,
+                  'slot': 2,
+                  'kind': 'restore',
+                  'discovery_kind': null,
+                  'target': '600000000',
+                  'rate_snapshot_raw': '1000000000000000000000000',
+                  'cheapest_price_snapshot_micros': '33600000',
+                  'lifetime_baseline_micros': '123000000',
+                  'purchased_baseline': '0',
+                  'discovery_baseline': '0',
+                  'rerolled': false,
+                  'claimed': false,
+                  'credited_pass_id': null
+                }
+              ],
+              'discovery_totals': {},
+              'discovery_operation_ids': [],
+              'discovery_sequence': '0',
+              'selected_pass_id': 'pass.01',
+              'pass_xp_by_id': {'pass.01': '15000'}
+            },
+            'support': {
+              'remaining_micros': '0',
+              'token_day': 20747,
+              'tokens': [],
+              'caches': [],
+              'claimed_slice_ids': [],
+              'closed_settlement_ids': [],
+              'grant_source_ids': [],
+              'last_settlement_sequence': '0',
+              'last_settlement_through_utc_micros': null,
+              'last_finalized_settlement_id': null,
+              'receipt_cursor_migration_required': false,
+              'active_settlement_id': null,
+              'active_settlement_request': null,
+              'source_start_elapsed_micros': '0',
+              'next_offset_micros': '0',
+              'slice_start_offset_micros': '0',
+              'slice_numerator': '0'
+            },
+            'lifetime_purchased_count': '0',
+            'rechart_count': 0,
+            'last_rechart_elapsed_micros': '0',
+            'surveys_collected_total': '0',
+            'completed_calibration_ids': [],
+            ...
+          }
+  Actual: {
+            'schema_version': 4,
+            'economic_version': 'tideglass-economy-1.0.0',
+            'event_order_version': 4,
+            'counts': [1, 0, 0, 0, 0],
+            'wallet_micros': '123000000',
+            'lifetime_micros': '123000000',
+            'charts': '0',
+            'elapsed_micros': '0',
+            'earning_remainder': '0',
+            'revision': 2,
+            'auto_buy_enabled': false,
+            'focus_charges': 0,
+            'focus_phase_micros': '0',
+            'focus_remaining_micros': '0',
+            'completed_surveys': 0,
+            'survey_phase_micros': '0',
+            'survey_notes': '0',
+            'daily': {
+              'account_seed': '3a7bc03ea957d272501142102784b081',
+              'utc_offset_minutes': 0,
+              'day_high_water': 20747,
+              'last_materialized_day': 20747,
+              'utc_anchor_micros': '1792584000000000',
+              'available_discovery_kinds': ['archive', 'challenge'],
+              'contracts': [
+                {
+                  'id': 'contract:3a7bc03ea957d272501142102784b081:20747:0',
+                  'account_day': 20747,
+                  'slot': 0,
+                  'kind': 'restore',
+                  'discovery_kind': null,
+                  'target': '600000000',
+                  'rate_snapshot_raw': '1000000000000000000000000',
+                  'cheapest_price_snapshot_micros': '33600000',
+                  'lifetime_baseline_micros': '123000000',
+                  'purchased_baseline': '0',
+                  'discovery_baseline': '0',
+                  'rerolled': false,
+                  'claimed': false,
+                  'credited_pass_id': null
+                },
+                {
+                  'id': 'contract:3a7bc03ea957d272501142102784b081:20747:1',
+                  'account_day': 20747,
+                  'slot': 1,
+                  'kind': 'restore',
+                  'discovery_kind': null,
+                  'target': '600000000',
+                  'rate_snapshot_raw': '1000000000000000000000000',
+                  'cheapest_price_snapshot_micros': '33600000',
+                  'lifetime_baseline_micros': '123000000',
+                  'purchased_baseline': '0',
+                  'discovery_baseline': '0',
+                  'rerolled': false,
+                  'claimed': false,
+                  'credited_pass_id': null
+                },
+                {
+                  'id': 'contract:3a7bc03ea957d272501142102784b081:20747:2',
+                  'account_day': 20747,
+                  'slot': 2,
+                  'kind': 'restore',
+                  'discovery_kind': null,
+                  'target': '600000000',
+                  'rate_snapshot_raw': '1000000000000000000000000',
+                  'cheapest_price_snapshot_micros': '33600000',
+                  'lifetime_baseline_micros': '123000000',
+                  'purchased_baseline': '0',
+                  'discovery_baseline': '0',
+                  'rerolled': false,
+                  'claimed': false,
+                  'credited_pass_id': null
+                }
+              ],
+              'discovery_totals': {},
+              'discovery_operation_ids': [],
+              'discovery_sequence': '0',
+              'selected_pass_id': 'pass.01',
+              'pass_xp_by_id': {'pass.01': '15000'}
+            },
+            'support': {
+              'remaining_micros': '0',
+              'token_day': 20747,
+              'tokens': [],
+              'caches': [],
+              'claimed_slice_ids': [],
+              'closed_settlement_ids': [],
+              'grant_source_ids': [],
+              'last_settlement_sequence': '0',
+              'last_settlement_through_utc_micros': null,
+              'last_finalized_settlement_id': null,
+              'receipt_cursor_migration_required': false,
+              'active_settlement_id': null,
+              'active_settlement_request': null,
+              'source_start_elapsed_micros': '0',
+              'next_offset_micros': '0',
+              'slice_start_offset_micros': '0',
+              'slice_numerator': '0'
+            },
+            'lifetime_purchased_count': '0',
+            'rechart_count': 0,
+            'last_rechart_elapsed_micros': '0',
+            'surveys_collected_total': '0',
+            'completed_calibration_ids': [],
+            ...
+          }
+   Which: at location ['revision'] is <2> instead of <1>
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///Users/csys/Desktop/ibicot/idle/game/mobile/test/art_catalogue_variants_test.dart:409:9)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/csys/Desktop/ibicot/idle/game/mobile/test/art_catalogue_variants_test.dart line 409
+The test description was:
+  cosmetic36 locked owned equipped preview thumbnail phone-100-normal
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:04 +3 -1: cosmetic36 locked owned equipped preview thumbnail phone-100-normal [E]
+  Test failed. See exception logs above.
+  The test description was: cosmetic36 locked owned equipped preview thumbnail phone-100-normal
+  
+00:04 +3 -1: (tearDownAll)
+00:04 +3 -1: Some tests failed.
+
+Failing tests:
+  /Users/csys/Desktop/ibicot/idle/game/mobile/test/art_catalogue_variants_test.dart: cosmetic36 locked owned equipped preview thumbnail phone-100-normal

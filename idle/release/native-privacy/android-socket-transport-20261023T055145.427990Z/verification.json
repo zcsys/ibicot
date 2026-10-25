@@ -1,0 +1,43 @@
+{
+  "created_utc": "2026-10-23T05:54:24.538094+00:00",
+  "scope": "socket transport collector only",
+  "live_unchanged_sha256": {
+    "release/native-privacy/runtime_observation.py": "90485bd0ca097af8835d1f7cc280f7f2545085ea578d7a44cf10a6b93cf458cc",
+    "tool/verify_current_runtime.py": "d1ea6d05085f05a0a3bb6c768531ef7659272e41993858c0551618f74ce5c847",
+    "game/mobile/integration_test/current_runtime_test.dart": "102be09eb8043ce9bb496156d9f37b1834c3084ddf58fef073e7c25cdc3c55d5"
+  },
+  "candidate_fingerprint": "3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59",
+  "candidate_files_rehashed": 1190,
+  "proposed_collector_sha256": "f6ae5e4a715b5ffc37999daa2919999e9a463f8ebd3ad238017be193ec47a438",
+  "methods": {
+    "all": 73,
+    "focused": 18,
+    "old_counterexample_expected_failures": 2
+  },
+  "actual_diagnostic": "owned-helper-diagnostic.json",
+  "native_observation_success_claim": false,
+  "release_acceptance": false,
+  "files_sha256": {
+    "AUTHOR_REVIEW.md": "fc120d0a199bceec1116af1371de1d4f3fe46fac851c46b25093d1597cee5b07",
+    "author-tests-missing-fixtures.stderr": "4554ff60936f060c32d55afbccaea723729a904f59b9521ef59dc5c5e7e3f1b0",
+    "author-tests-missing-fixtures.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "author-tests.stderr": "ac08c6398a2a4ccf2cd710518a8d9997ccee2003238f3ec7968e60a5c84b73a3",
+    "author-tests.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "baseline/game/mobile/integration_test/current_runtime_test.dart": "d34649a223a50f08b955691be036fc286131718ed9cb619444419f1b701bc155",
+    "baseline/tool/verify_current_runtime.py": "34239f373943381ecaaa07c071f7e8f3f518f08a32eb17f7f7f1a22ce90637fe",
+    "baseline/tool/verify_native.py": "68297f66fc4e32a173b17da2594872334d59ba2b88b7d5878b5ee8905f9b89e5",
+    "before-runtime_observation.py": "90485bd0ca097af8835d1f7cc280f7f2545085ea578d7a44cf10a6b93cf458cc",
+    "collector.patch": "e221e48c136f1fa4455b634568516b38ea8f229a1a60d65ce8ef6cf858231bb4",
+    "old-collector-counterexample.stderr": "108ec38616f648d4faabcb855b4fe41b8f6c80024b789df4a2c05e67b658956b",
+    "old-collector-counterexample.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "owned-helper-diagnostic.json": "d9ae6dfde7abd14574d8d7ee5619bceabc0ea5c9f3402414e61ec056b3b696db",
+    "runtime_observation.py": "f6ae5e4a715b5ffc37999daa2919999e9a463f8ebd3ad238017be193ec47a438",
+    "source/game/mobile/integration_test/current_runtime_test.dart": "102be09eb8043ce9bb496156d9f37b1834c3084ddf58fef073e7c25cdc3c55d5",
+    "source/tool/verify_current_runtime.py": "d849ab8feb642eb1b988f9a6d82558491b7ebef4c63768fb4fa132f49edf3804",
+    "stage.json": "2148ec0fa481d96ab182b2dd27c2a4c55413ac0ac580aa8f2fab7c72ea21bd13",
+    "test_observation_repairs.py": "e8d98fb7acc10757af85fcba0eb7693fe95d0b9af0b2fe7eb7591c836209558b",
+    "test_probe_binding.py": "93c0f1efbd8c6753a455b2cdd81d6ee4804bb08d401d0c774ae881ee13145448",
+    "test_runtime_observation.py": "1228e623df837ce3ccc565fe3c8ecaa766d3750877e5fe47c1409a6833fd02f7",
+    "test_socket_transport.py": "8bd5208037d2d9017be0d4529cf17ac4986000e96eb9ae4edb848c9bf5fe16d5"
+  }
+}

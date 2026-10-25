@@ -1,0 +1,9 @@
+# Local privacy and support pages
+
+These two buildless pages implement the local content portion of M5-03/M7-05, S27/S39. They are unpublished development references, not a finished legal policy or a substitute for working live support. Serve `dist/` on loopback to preview. No registration, hosting, form, analytics, external font, script or transmission has been added.
+
+Content is based on the actual help/recovery UI (`game/mobile/lib/help_content.dart`), service inventory (`services/docs/PRIVACY.md`), account and entitlement implementations, bounded soundtrack cache, and reviewed study collector/UI. Source-specific verification and data-policy approval remain separate. The notices are deliberate unfinished publication gates; remove them only after approved operator details, contacts, retention terms, native SDK audit and live endpoints exist. `publication.json` preserves missing values as null. Do not invent an email, legal entity, deletion service or response-time promise.
+
+Apple's [review guidelines, section 5.1.1](https://developer.apple.com/app-store/review/guidelines/) and Google's [User data policy](https://support.google.com/googleplay/android-developer/answer/10144311?hl=en-gb) require an accurate privacy policy. Google's [account deletion guidance](https://support.google.com/googleplay/android-developer/answer/13327111?hl=en) also addresses an external deletion-request route. Checked on 21 October 2026; recheck before submission. In-game deletion alone and these local draft pages do not establish compliance or working public links.
+
+The site uses the existing ocean/teal/gold palette with system fonts and text-based navigation. All information works without JavaScript. Native application URLs remain unconfigured until approved publication; no fake live link is installed in the game.

@@ -1,0 +1,33 @@
+{
+  "source_files": 38,
+  "source_fingerprint": "8c2838d79cdcf931c04c7c5b38f0a43157d755e31bb932d5f7efd032bed89587",
+  "source_drift": [],
+  "author_python": {
+    "passed": 52,
+    "composition": "22 native diagnostics +17 adjudicator +13 report"
+  },
+  "author_dart": {
+    "passed": 36
+  },
+  "independent_python": {
+    "new_cases": 10,
+    "passed": 8,
+    "failed": 2,
+    "also_replayed_imported_author_cases": 22
+  },
+  "independent_dart": {
+    "new_cases": 7,
+    "passed": 6,
+    "failed": 1
+  },
+  "findings": [
+    "LINK001: exact integer provenance version missing; true and1.0 linked",
+    "LINK001 companion: Dart erased-document schema1.0/2.0 accepted unlike Python"
+  ],
+  "limitations": [
+    "Synthetic fixtures and host pure Dart/Python only",
+    "Four consent widgets are authored but not executed in this review",
+    "Native Swift/Kotlin uncompiled; channel/device/AOT fatal binding unqualified"
+  ],
+  "no_production_edits": true
+}

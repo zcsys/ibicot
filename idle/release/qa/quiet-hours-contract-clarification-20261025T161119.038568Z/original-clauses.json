@@ -1,0 +1,43 @@
+{
+  "M3-05": {
+    "id": "M3-05",
+    "title": "Complete settings and notification controls",
+    "owner": "client",
+    "reviewer": "qa_release",
+    "batch": "B08",
+    "source": "v1_backlog.json",
+    "source_acceptance": "Text scale, number notation, motion/audio controls, input navigation and opt-in quiet-hour notifications function across targets.",
+    "source_acceptance_dependencies": [
+      "M1-05",
+      "M3-01"
+    ],
+    "scope_ids": [
+      "S26"
+    ],
+    "status": "in_progress",
+    "evidence": [
+      "game/mobile/lib/audio_settings.dart",
+      "game/mobile/lib/app.dart",
+      "game/mobile/lib/notification_service.dart",
+      "game/mobile/lib/reminder_lifecycle.dart",
+      "game/mobile/test/reminder_lifecycle_test.dart",
+      "release/notifications-author-review.md",
+      "release/qa/integration-reminders-initial-20261016T115431767720Z/REMINDERS_REVIEW.md"
+    ],
+    "adaptation": "Preserve original acceptance; AI writes, runs and reviews the implementation. External evidence remains required where specified.",
+    "evidence_note": "Local implementation and separately pinned author/independent evidence. Original acceptance and dependencies remain intact; physical/native/provider/human/elapsed observation gates remain open where unmet."
+  },
+  "S26": {
+    "id": "S26",
+    "requirement": "Settings, target input, readable numbers, contextual help and opt-in quiet-hour notifications",
+    "source": "V1_ROADMAP.md \u00a73",
+    "work_items": [
+      "M3-05",
+      "M5-02"
+    ],
+    "verification": "Large text/reduced motion/non-color cues and critical controls work on named targets.",
+    "delivery_status": "not_verified",
+    "evidence": []
+  },
+  "blueprint_line309": "Use an account-day boundary chosen at onboarding, with a fixed UTC offset for the baseline; changing time zones never grants another day's rewards. Day identifiers, queue states and claim receipts survive Rechart. Notifications are opt-in, can be bundled, and respect quiet hours."
+}

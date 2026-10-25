@@ -1,0 +1,47 @@
+{
+  "utc": "2026-10-25T15:43:59.495834+00:00",
+  "decision": "Adopt the bounded independent forward and reverse audits at their exact cutoff, with the mandatory S08 correction. This is not release approval.",
+  "original_packages": 65,
+  "original_accepted": 23,
+  "bootstrap_accepted": 3,
+  "production_support_unaccepted": 43,
+  "scope_verified": 19,
+  "scope_total": 44,
+  "product_release_ready": false,
+  "canonical_mutations": [],
+  "sealed_forward_artifacts_rehashed": 33,
+  "read_and_reconciled": {
+    "release/qa/scope-forward-final-20261023T085127.503162Z/FORWARD_SCOPE_REVIEW.md": "2bee6787f0f197c623dd4bbc40dae3cb34d84501c42224c7a49ae13a485cb7da",
+    "release/qa/scope-forward-final-20261023T085127.503162Z/final-seal.json": "e1995572f1ae077275028c754b4a2ab66cf98ad78301bf7b5b1323fa4d1d0c1e",
+    "release/qa/client-final-reverse-20261025T150454.466933Z/REVERSE_SCOPE_REVIEW.md": "447c3f55ad880745e76c5919d704109d6482bcc3d71443680b75a11576f59ccb",
+    "release/qa/client-audio-metadata-clarification-20261025T152024.880868Z/METADATA_REVIEW.md": "e8fc8a243ee8b0e9a83e579c22987c59c551a3a3cba8835ecf03461af107d5df",
+    "release/qa/client-audio-adoption-20261025T152944.392520Z/REVIEW.md": "9c396acf6600d76eda5acae1e68b1234940cbcc7dd87887af4d5745317652f4f",
+    "release/qa/s08-return-budget-clarification-20261025T154226.278440Z/REVIEW.md": "c1104998aca2aea39eb88b227d25798f010272d0081ef6000c8b13e5a6909e58",
+    "release/qa/s08-return-budget-clarification-20261025T154226.278440Z/seal.json": "73a3228427981122b6d3ece272b455bcc250de8f83f817403114fc074e18695d",
+    "docs/quality/android-ui-operator.md": "4b841ade92aee43a7292c07bbaa0e0d1306a9468c840e2318eaf0a43fc0e796a",
+    "release/qa/client-android-ui-procedure-20261025T153851.062431Z/REVIEW.md": "f54589031e9a103cd15e1455f2ac3004dcb3d319a77c7f4ef78dbbcccb9e6067",
+    "implementation/program.json": "d259ba03e1e14727ed6dd557f6bb289b35b091e2ea1acf780c903f2346eef876",
+    "implementation/scope_requirements.json": "b215b2cb290721c92810f693142b363586a7266512000b5cbe20ddd7eafab598"
+  },
+  "findings": [
+    {
+      "id": "stale-descriptions",
+      "resolution": "Original reverse descriptive findings closed through independently sealed evidence-note addenda; no status or scope changes."
+    },
+    {
+      "id": "S08-performance-evidence",
+      "resolution": "Forward wording overstated a numeric bridge as return-budget evidence. Append-only QA correction accepted; S08 remains not_verified. Original physical p95 <=3s replay qualification remains absent."
+    },
+    {
+      "id": "android-operator",
+      "resolution": "Self-imposed human-only interpretation removed prospectively. Independently reviewed real SDK UI gestures preserve original native assertions and timing. No old result relabeled."
+    }
+  ],
+  "local_execution_pending": [
+    "Remaining Android notification outcomes and independent review",
+    "Android actual offline guest start/reopen/restoration and independent review"
+  ],
+  "external_release_requirements": "Developer/provider accounts, configured hosting, physical reference devices, genuine human studies and real calendar/launch-support evidence remain unavailable. Original dependencies and requirements remain controlling.",
+  "new_runtime_tests": 0,
+  "note": "Later actual results and any canonical adoption require separately reviewed append-only reconciliation; no production code or qualification inferred from audit coverage. Initial receipt extraction addressed nonexistent work_items and stopped before writing; corrected to actual items schema."
+}

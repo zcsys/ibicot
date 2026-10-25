@@ -1,0 +1,50 @@
+{
+  "verification_id": "integration-ios-phone-20261023T053107.547418Z",
+  "candidate_fingerprint": "3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59",
+  "harness_sha256": "272fa3495fee356a98256c09ecfa983ef1f7af1ffb1c2c4885db97e74905fd76",
+  "scenario": "default",
+  "run_id": "v3b00-ios-phone-reminder-default",
+  "device_label": "ios-phone",
+  "platform": "ios",
+  "passed": false,
+  "exit_code": 1,
+  "errors": [
+    "Identity mismatch: verification_id",
+    "Identity mismatch: candidate_fingerprint",
+    "Identity mismatch: harness_sha256",
+    "Identity mismatch: scenario",
+    "Identity mismatch: run_id",
+    "Identity mismatch: device_label",
+    "Identity mismatch: platform",
+    "Missing actual evidence: completed",
+    "Missing actual evidence: gateway",
+    "Missing actual evidence: preference_store",
+    "Missing actual evidence: fixture_kind",
+    "Missing actual evidence: clock",
+    "Missing actual evidence: default_opted_out",
+    "Missing actual evidence: default_preferences_file_absent",
+    "Missing actual evidence: default_pending_ids",
+    "Real native process ID required",
+    "Initialization changed OS permission or was unsupported",
+    "Invalid actual lifecycle observations",
+    "Default initialization left foreground or lacks observation",
+    "Native action log/result mismatch",
+    "Native build/test failure in log: Some tests failed.",
+    "Native build/test failure in log: EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK",
+    "Native test or teardown error marker in log",
+    "No successful native framework completion marker",
+    "No successful driver completion marker",
+    "Native driver exited unsuccessfully"
+  ],
+  "stop": {
+    "command": [
+      "xcrun",
+      "simctl",
+      "terminate",
+      "F05BE4B0-52C1-4CA1-B721-BD64AE559E3F",
+      "dev.tideglass.game"
+    ],
+    "exit_code": 0,
+    "stderr": ""
+  }
+}

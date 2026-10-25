@@ -1,0 +1,89 @@
+{
+  "time_utc": "2026-10-16T11:32:16.074047+00:00",
+  "kind": "lead_integration_host_check",
+  "checks": [
+    {
+      "command": "tool/flutter test (game/mobile)",
+      "passed": 180
+    },
+    {
+      "command": "tool/dart analyze (game/mobile)",
+      "result": "No issues found"
+    },
+    {
+      "command": "tool/dart test (game/persistence)",
+      "passed": 19
+    },
+    {
+      "command": "tool/dart analyze (game/persistence)",
+      "result": "No issues found"
+    }
+  ],
+  "source_hashes": {
+    "game/mobile/lib/app.dart": "83b30b77c73eb2ab0a1cbd4c66ddac9af86e3fe9a272e3848a706f54d3045125",
+    "game/mobile/lib/audio_bus.dart": "0125e8c886b086bc0d8b29dc9b739e089c498842d706fec99240c8bbd475c120",
+    "game/mobile/lib/audio_settings.dart": "111207ee17e0f52bd9dae700455b867f4f3b7d8852523fbfab57befe132a2556",
+    "game/mobile/lib/bootstrap.dart": "c01670d99d3879aba8ee037cf76078a070c81bfe3a0a4f48be5579527b21500b",
+    "game/mobile/lib/bundled_content.dart": "a2b065810f0ed2c73d266cd83810ff4765f97d66da313e4dce586afd5b3fcd2e",
+    "game/mobile/lib/bundled_hashes.g.dart": "66c32806035bdb7c8b74c981655bd6942b1e4d451debd52f3142d9bd1e6a6215",
+    "game/mobile/lib/calibration_pattern.dart": "5da6ff66b8a9d8317d047c0ec99795a98c89b6b3afe83c640c7a129391899c74",
+    "game/mobile/lib/calibration_screen.dart": "24671c55e43a6cd6818212f4fb32498c3c74ed0b8dce615f94c3046438eaebc0",
+    "game/mobile/lib/cosmetic_art.dart": "3e9a0e4659d82efb52cfc4c2fb875243c5b4954fc4f68078dcc0360e045a8bf4",
+    "game/mobile/lib/cosmetics.dart": "18fc8203b2d61bd0833f59e1c1788381a388e2a84130063a585d3cbdb5f37936",
+    "game/mobile/lib/cosmetics_screen.dart": "aeee09668dc6c889be1b851f0deb902557ea70bfa676a4faf7be04c44de826a6",
+    "game/mobile/lib/daily_panel.dart": "9fb135aee52dc38049dfd9ddf46abfb52e634f4333be2df3a80621443c0f9aeb",
+    "game/mobile/lib/game_controller.dart": "89d0778696badb1d52587364ac2f614be0545327acdde337731f8cdfa66b512c",
+    "game/mobile/lib/harbor_art.dart": "4c72f3ffbd4b168ffdf5be303b116f260c540b75f23bf2ce020f9e68d1b6c203",
+    "game/mobile/lib/main.dart": "cdd6e13c38c9eba01a8adf62e2740118acd431b714e6c388d805e42c9c3dca43",
+    "game/mobile/lib/native_services.dart": "242baf20003c233bc1bba21e3cfbe06834b43283ff14a10eb95545d2d1cd2090",
+    "game/mobile/lib/number_format.dart": "e0652005998010c66df7bc3741fc08aad84714a558b8841db1465bd314debb62",
+    "game/mobile/lib/offline_replay.dart": "5a30386f3689be800dd29c8f79627813c000599ce60502d223e3bac3e0423008",
+    "game/mobile/lib/palette.dart": "1da79c2cd009e271dcaf3dd349f20e380950fbbb67ca54e10ea5180b2ed86d83",
+    "game/mobile/lib/producer_art.dart": "ecf1c624c01e0df5fd92801fef84bc38b218bb8bc7d23543d25cbe7ac3ff2526",
+    "game/mobile/lib/producer_art_data.dart": "305c06487d6d9d8873b5773c23e793b12f781e7b85087f90482cf75ea98e9c26",
+    "game/mobile/lib/season_screen.dart": "28d8f06bc4aec5e2aee4308b89a14e1c4eccd68c6d048593252e4337042e988a",
+    "game/mobile/lib/service_cosmetics.dart": "55031c577868e3e9734d8a62eb1ff0d45ce80b5b3cf2394fe7b9f7f9f2b416d2",
+    "game/mobile/lib/service_settings.dart": "cdc3b2aa6b6e46b1e71a6cb106c38dc536e2ef80b17bc6483f88883d779376b4",
+    "game/mobile/lib/service_support_screen.dart": "95e6e6b1bbb00e2de29dfc983ff110de160b09651a1d0e62e4984ea19c0457a2",
+    "game/mobile/lib/story_screen.dart": "f07546edaef8e32c16da6decc229253031fe6fd2d5f9f88800e9a93335a69d24",
+    "game/mobile/lib/story_state.dart": "feef7ecba80e2d7ed3f1e320856ac218ec33e76fb5d22ea37b88c5c0ef4a0f3c",
+    "game/mobile/lib/strings.dart": "538eba49b65c7bfad237e8f5e47d241af98d28f037ecad581eb102f4bf31c436",
+    "game/mobile/lib/support_screen.dart": "d1ec3820e0406ccabcffaf63194c254d0885eacf68c00ea0ee0a98fe39ec7fa1",
+    "game/mobile/lib/support_service_bridge.dart": "182155f9367a887b7d604aa243819d2a9e2b98bd4e018c117e920f6cc8370ff6",
+    "game/mobile/test/audio_bus_test.dart": "c2bfc10cc707ffc54b0a42b243d454fcbb6af56af00d62b3a6032b82b806e22e",
+    "game/mobile/test/audio_native_adapter_test.dart": "a3be0146613b6e4cda6677f85d005e85e388163b4cce85ccd2f988645b686895",
+    "game/mobile/test/bootstrap_test.dart": "2ccfd69fd5839d917a030ac0818d831f8b7789c67845eb6225c6512a58461855",
+    "game/mobile/test/bundled_content_test.dart": "e9b92d833adbe1d20e4037183aa4c9d87d19417c9f8011e6ca7fc6f546b6cd25",
+    "game/mobile/test/calibration_test.dart": "049d71f3953c81091c145a87ac6ff5e51729495dd00c88a573d7ff6ca12f6e65",
+    "game/mobile/test/client_test.dart": "bd7906fccb2b6580a57dd39833b143d60f3771bcf22f0e59f4faf6ac2c19c8af",
+    "game/mobile/test/cosmetic_session_test.dart": "1285e1b179ae652c5c706f918fa560e9e7327e4b7d21e38e4cff9cf899320f11",
+    "game/mobile/test/cosmetics_test.dart": "24c46c1de04ed2f56dfa942a48931f45b1128beb1164a29c26a41873e1ad7a60",
+    "game/mobile/test/daily_flow_test.dart": "13b325bbd4458c8d5062b5029655eca0143bbabd941862af829af6871da7c43d",
+    "game/mobile/test/native_services_test.dart": "4cc1b90a9958d799e52124cfbc409b9201f4b9d43d71d7a979b39aa00ade2bbf",
+    "game/mobile/test/offline_replay_test.dart": "ff53cda7ee661ef2c3408080210704c6e1a4ebef7d77a1bb82322e66b15d2e10",
+    "game/mobile/test/producer_art_test.dart": "17cfb2a44fb9376c0569848657456016707ec467df593c64e285917b62570f42",
+    "game/mobile/test/qa_integration_audio_test.dart": "670fb2869e83f631480ef592d3bbe1f41e143c3b340f797ed9af259a9da537ad",
+    "game/mobile/test/qa_integration_save_boundaries_test.dart": "640d52ef5b4e70c38446cf688d6fda5e8d444ceb881f7c2cbe8aa111c369b80a",
+    "game/mobile/test/qa_integration_session_test.dart": "adc848ca1b247bde59691af808261871d3541504baa912dcd088cc32b1e8dfe5",
+    "game/mobile/test/season_session_test.dart": "4171943047c4f78bd17e6624accdcf754eb5b57a83bf1456a6368119f33a21e0",
+    "game/mobile/test/season_ui_test.dart": "7fb95432ad0c65d3c17414e0d598a13828c4799ea20e96a5a1d5e7551f9b6c6a",
+    "game/mobile/test/service_cosmetics_test.dart": "65138b3399304eabc2f7aa864bed0dd7b7d184ccd4f47159e63445775ddd9ba1",
+    "game/mobile/test/service_settings_test.dart": "d04d867b80b95cb03ec4983104c323057d839d59cc1a2182d8fc0bad7dea4438",
+    "game/mobile/test/session_clock_test.dart": "42f40ea8baf2ad7206183068479c5934a8fdf7e1ddc406c9027d0cec2dab9dd2",
+    "game/mobile/test/session_progression_test.dart": "c737366b041a866dfbdf9cfaf2ca5348a1437d366a2dab8fd5679f2b9c75820e",
+    "game/mobile/test/story_ui_test.dart": "2ccdc259c09257e06665977d21641b0fac853291b3d43c2d0e2b81ae90c2be39",
+    "game/mobile/test/support_service_bridge_test.dart": "f8ba318b1d3139a3424cf21619bd24420b32430f5bce466c6868b6515fde63d8",
+    "game/mobile/test/support_ui_test.dart": "5d5954bf39a5182a607281d49a675b3c2f84f2fafa7422db5e51028c9fd567db",
+    "game/persistence/lib/tideglass_persistence.dart": "f8aebe4d5deb90378e7ee7cccd5af2eb9603453ae9907cf74656b34ee8b9e4a0",
+    "game/persistence/test/save_repository_test.dart": "eec0a2f853b7cd6bb8b96b1117d3f66e9e739f5b6954064a1425c52b4dec003f",
+    "game/mobile/pubspec.yaml": "b96bb4a81a8c612d1aeec2ea8e6c38e6804c8ecd739a380a6aeefe385e3fc74c",
+    "game/mobile/pubspec.lock": "d5c3a49bde8a69ad50755128d2281f48a7832ad3e587dc8933d1274c4239a1b0"
+  },
+  "limits": [
+    "Host tests do not prove actual store/ad service, deployed hosting or physical device delivery.",
+    "Native candidate344 passed host/debug builds but has a confirmed iOS audio context defect. Its d85 audio-only repair is undergoing fresh native proof.",
+    "This source includes later native service/account/cloud/commerce/Support integration, not yet built or qualified on native hardware.",
+    "Independent QA and original release gates remain open."
+  ],
+  "release_ready": false
+}

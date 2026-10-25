@@ -1,0 +1,26 @@
+# Bounded M5-06 sound-direction clarification
+
+**No missing local audio-authoring or mandated client-integration deliverable was identified.** The remaining local action can be an explicit director decision adopting the existing original score, current track/cue routing and gain/lifecycle policy as the v1 authored sound direction. That is an ordinary design decision within the user's authorized AI replacement studio. The original M5-06 clause and roadmap do not require a human-only creative-direction decision or a purchased external commission.
+
+This is a narrow source/evidence review, not a new audition, native matrix or blanket asset approval. “Integrate final sound direction” should not remain a vague implementation blocker after the director adopts a concrete existing direction. Full M5-06 stays in progress for its unchanged M4-07 dependency and other outstanding original presentation conditions. Physical audible quality, interruptions and genuine supporter fulfillment remain their separate qualifications.
+
+## Existing concrete direction
+
+| Element | Actual authored/integrated policy |
+|---|---|
+| Music palette | Three original sixteen-bar loops: harbor at60BPM in D Dorian, current at72BPM in G major/suspended second, dawn at54BPM in F Lydian/D Dorian. Felt/pad/glass mathematical instruments, restrained harmonics and room reflections; no incorporated recordings/samples. |
+| Music routing | Bootstrap chooses harbor before the campaign ending and dawn after it. Opening Season selects current; returning selects harbor/dawn from current ending state. This is the exact existing routing, not an assertion that completing the ending immediately switches tracks. |
+| Feedback palette | Eight authored cues exist: purchase, panel, claim, calibration, survey, unlock, milestone and rechart. Controller routes accepted purchases/milestone bucket crossings, Rechart, Surveys, calibration, claims and story/panel actions. The authored unlock cue is available but has no current controller emission; no original requirement mandates a separate unlock cue. Do not describe every authored cue as a separately triggered gameplay event. |
+| Mix/control policy | Defaults music0.32/SFX0.55, music driver applies0.5gain; effects share a0.9gain budget across at most8voices. Independent persistent music/SFX/mute plus master mute. This is a bounded gain policy, not a perceptual balance judgment. |
+| Timing/lifecycle | Cues require accepted visible foreground actions, suppress events older than750ms and same-cue repeats within100ms, drop excess voices without queuing, and stop on background. Foreground return restores only the selected ambient track. No offline earnings cue replay. |
+| Export/integration | Eleven original48kHz/24-bit masters, matching AAC runtime exports, and the same three masters in the soundtrack package. All eleven source/runtime/mobile hashes still match the existing measurement record. Existing three-target native session proofs and independently reproduced actual Settings controls support integration. |
+
+The source/decoded measurements already record zero clipped samples, estimated peaks/loudness and bounded loop steps. Their estimates are not certified metering or evidence of perceived clipping/clicks. Historical package fields such as `native_decode_verified:false` and `authored_pending_independent_review` describe the old author packet; newer source-bound native/component reviews supersede those particular generic pending claims without rewriting the old evidence.
+
+The original roadmap asks for a coherent ambient score, interaction feedback, milestone/Rechart cues and independent controls. Its staffing allowance for audio was a small-studio planning assumption superseded by the user's AI-team instruction, not a requirement to procure a human composer. The later audio handoff's “Human speaker/headphone audition” is a physical perceptual qualification record, not authority to block routine local creative selection. A director can adopt the source-defined palette without claiming to have heard an unperformed playback or changing that record to passed.
+
+## Exact next action recommended to the lead
+
+Record a source-pinned director decision adopting this existing score/palette and current route/cue/gain/lifecycle behavior for v1, referencing the original composition, renderer, current bus/controller/app/bootstrap and current native/Settings integration evidence. No new score, cue, package, source edit, external purchase or broad rerun is justified by a concrete defect in this narrow review. If the director elects to change a creative policy, review and test that actual delta; it is not needed merely to replace an unspecified pending label.
+
+Keep actual listening on speakers/headphones, device volume/routing/call interruption behavior, audibility/mix assessment, real paid soundtrack hosting/restore and distribution/public-release terms explicitly unqualified. A local direction decision supplies none of these observations and does not accept all of S23 or M5-06. This clarification narrows the earlier reverse report's generic “final sound direction remains open” wording to the explicit director adoption plus these distinct qualification limits; it does not alter its sealed source or metadata cutoff.

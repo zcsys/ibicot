@@ -1,0 +1,1189 @@
+diff --git a/game/core/lib/rechart_forecast.dart b/game/core/lib/rechart_forecast.dart
+new file mode 100644
+--- /dev/null
++++ b/game/core/lib/rechart_forecast.dart
+@@ -0,0 +1,226 @@
++import 'tideglass_core.dart';
++
++/// A bounded counterfactual, never a command or a universal reset policy.
++/// Both paths buy the best marginal-output/cost unit repeatedly at t=0 and
++/// each minute, stopping when that unit is unaffordable. No later Rechart or
++/// bonus activation occurs. Existing bonus queues expire through real advance.
++/// The objective is ADDITIONAL lifetime production, not terminal wallet wealth.
++enum RechartForecastStatus {
++  estimated,
++  notEligible,
++  unsupportedRules,
++  pendingSettlement,
++  inputLimit,
++  workLimit,
++}
++
++class RechartForecast {
++  const RechartForecast({
++    required this.status,
++    required this.horizonSeconds,
++    required this.samples,
++    required this.work,
++    this.firstCatchUpSeconds,
++    this.breakEvenSeconds,
++    this.rebuildSeconds,
++    this.keepGainMicros,
++    this.resetGainMicros,
++    this.nextChartTarget,
++    this.nextChartLifetimeMicros,
++    this.unlockedChartThresholds = const [],
++  });
++
++  final RechartForecastStatus status;
++  final int horizonSeconds, samples, work;
++
++  /// First positive minute with reset cumulative production >= keep.
++  final int? firstCatchUpSeconds;
++
++  /// First sampled catch-up after the last sampled deficit, only if reset is
++  /// still caught up at the horizon. Earlier crossings may reverse. This does
++  /// not assert dominance between samples or beyond the horizon.
++  final int? breakEvenSeconds;
++
++  /// First sampled reset fleet whose unboosted output reaches the input rate.
++  /// Production is earned throughout reconstruction, never set to zero.
++  final int? rebuildSeconds;
++  final BigInt? keepGainMicros, resetGainMicros;
++  final BigInt? nextChartTarget, nextChartLifetimeMicros;
++  final List<int> unlockedChartThresholds;
++
++  Map<String, dynamic> toJson() => {
++    'status': status.name,
++    'policy': 'minute-best-payback-single-reset-v1',
++    'horizon_seconds': horizonSeconds,
++    'sample_seconds': 60,
++    'samples': samples,
++    'work': work,
++    'first_catch_up_seconds': firstCatchUpSeconds,
++    'break_even_seconds': breakEvenSeconds,
++    'rebuild_seconds': rebuildSeconds,
++    'keep_gain_micros': keepGainMicros?.toString(),
++    'reset_gain_micros': resetGainMicros?.toString(),
++    'next_chart_target': nextChartTarget?.toString(),
++    'next_chart_lifetime_micros': nextChartLifetimeMicros?.toString(),
++    'unlocked_chart_thresholds': unlockedChartThresholds,
++  };
++}
++
++/// Cost is bounded by a 24h horizon, a 1-minute grid, input precision limits and
++/// a shared work budget. Native callers additionally run this in a killable
++/// isolate; a slow device may show unavailable instead of blocking rendering.
++RechartForecast estimateRechart(
++  GameState snapshot, {
++  int horizonSeconds = 86400,
++  int maximumWork = 20000,
++}) {
++  if (horizonSeconds < 60 ||
++      horizonSeconds > 86400 ||
++      horizonSeconds % 60 != 0 ||
++      maximumWork < 1 ||
++      maximumWork > 50000) {
++    throw ArgumentError('Use a whole-minute horizon <=24h and bounded work.');
++  }
++  var work = 0;
++  RechartForecast unavailable(RechartForecastStatus status) => RechartForecast(
++    status: status,
++    horizonSeconds: horizonSeconds,
++    samples: 0,
++    work: work,
++  );
++  if (snapshot.rulesVersion != economyVersion) {
++    return unavailable(RechartForecastStatus.unsupportedRules);
++  }
++  if (snapshot.support.activeSettlementId != null) {
++    return unavailable(RechartForecastStatus.pendingSettlement);
++  }
++  if (snapshot.counts.any((count) => count > 10000) ||
++      [
++        snapshot.walletMicros,
++        snapshot.lifetimeMicros,
++        snapshot.charts,
++        snapshot.focusRemainingMicros,
++        snapshot.supportRemainingMicros,
++        snapshot.elapsedMicros,
++      ].any((value) => value.bitLength > 4096)) {
++    return unavailable(RechartForecastStatus.inputLimit);
++  }
++  const engine = TideglassEngine();
++  final award = engine.prestigeAward(snapshot);
++  if (award == BigInt.zero) {
++    return unavailable(RechartForecastStatus.notEligible);
++  }
++  final afterCharts = snapshot.charts + award;
++  final nextTarget =
++      [
++        10,
++        25,
++        100,
++      ].map(BigInt.from).where((target) => target > afterCharts).firstOrNull ??
++      afterCharts + BigInt.one;
++  final unlocked = [10, 25, 100]
++      .where(
++        (target) =>
++            snapshot.charts < BigInt.from(target) &&
++            afterCharts >= BigInt.from(target),
++      )
++      .toList(growable: false);
++
++  // A projection contains economic/timer inputs only. No account calendar,
++  // receipts, claims, paid state or user automation plan is copied or written.
++  // Explicit manual decisions below work even before the 10-Chart autobuyer.
++  GameState project(GameState state) => GameState(
++    counts: state.counts,
++    walletMicros: state.walletMicros,
++    lifetimeMicros: state.lifetimeMicros,
++    charts: state.charts,
++    earningRemainder: state.earningRemainder,
++    elapsedMicros: state.elapsedMicros,
++    focusCharges: state.focusCharges,
++    focusPhaseMicros: state.focusPhaseMicros,
++    focusRemainingMicros: state.focusRemainingMicros,
++    completedSurveys: state.completedSurveys,
++    surveyPhaseMicros: state.surveyPhaseMicros,
++    support: SupportState(remainingMicros: state.supportRemainingMicros),
++  );
++  void spendWork() {
++    work++;
++    if (work > maximumWork) throw const _ForecastWorkLimit();
++  }
++
++  GameState buyAtDecision(GameState state) {
++    while (true) {
++      spendWork();
++      final tier = engine.chooseAutoBuyTier(state);
++      if (engine.priceMicros(tier, state.counts[tier]) > state.walletMicros) {
++        return state;
++      }
++      final result = engine.buy(state, tier, 1);
++      if (!result.accepted) throw StateError('Forecast purchase rejected.');
++      state = result.state;
++    }
++  }
++
++  GameState minute(GameState state) {
++    spendWork();
++    final advanced = engine.advance(
++      state,
++      const Duration(minutes: 1),
++      autoBuy: false,
++      maximumEvents: 32,
++    );
++    if (!advanced.accepted) throw StateError('Forecast interval rejected.');
++    return buyAtDecision(advanced.state);
++  }
++
++  try {
++    var keep = project(snapshot);
++    final reset = engine.rechart(keep);
++    if (!reset.accepted) throw StateError('Forecast Rechart rejected.');
++    var rebuild = reset.state;
++    final initialRate = engine.outputPerSecond(keep).raw;
++    keep = buyAtDecision(keep);
++    rebuild = buyAtDecision(rebuild);
++    int? firstCatchUp, rebuildSeconds;
++    var lastBehindSeconds = 0;
++    if (engine.outputPerSecond(rebuild).raw >= initialRate) rebuildSeconds = 0;
++    var lastAhead = false;
++    for (var seconds = 60; seconds <= horizonSeconds; seconds += 60) {
++      keep = minute(keep);
++      rebuild = minute(rebuild);
++      if (rebuildSeconds == null &&
++          engine.outputPerSecond(rebuild).raw >= initialRate) {
++        rebuildSeconds = seconds;
++      }
++      final keepGain = keep.lifetimeMicros - snapshot.lifetimeMicros;
++      final resetGain = rebuild.lifetimeMicros - snapshot.lifetimeMicros;
++      lastAhead = resetGain > BigInt.zero && resetGain >= keepGain;
++      if (lastAhead) {
++        firstCatchUp ??= seconds;
++      } else {
++        lastBehindSeconds = seconds;
++      }
++    }
++    return RechartForecast(
++      status: RechartForecastStatus.estimated,
++      horizonSeconds: horizonSeconds,
++      samples: horizonSeconds ~/ 60,
++      work: work,
++      firstCatchUpSeconds: firstCatchUp,
++      breakEvenSeconds: lastAhead ? lastBehindSeconds + 60 : null,
++      rebuildSeconds: rebuildSeconds,
++      keepGainMicros: keep.lifetimeMicros - snapshot.lifetimeMicros,
++      resetGainMicros: rebuild.lifetimeMicros - snapshot.lifetimeMicros,
++      nextChartTarget: nextTarget,
++      nextChartLifetimeMicros: engine.lifetimeForCharts(nextTarget),
++      unlockedChartThresholds: List.unmodifiable(unlocked),
++    );
++  } on _ForecastWorkLimit {
++    // Partial trajectories must never be presented as a complete estimate.
++    return unavailable(RechartForecastStatus.workLimit);
++  }
++}
++
++class _ForecastWorkLimit implements Exception {
++  const _ForecastWorkLimit();
++}
+diff --git a/game/core/test/rechart_forecast_task_test.dart b/game/core/test/rechart_forecast_task_test.dart
+new file mode 100644
+--- /dev/null
++++ b/game/core/test/rechart_forecast_task_test.dart
+@@ -0,0 +1,41 @@
++import 'dart:convert';
++
++import 'package:test/test.dart';
++import 'package:tideglass_core/tideglass_core.dart';
++import 'package:tideglass_core/rechart_forecast.dart';
++
++// Executed in the staged host copy. Production mobile owns this pure worker.
++import '../../mobile/lib/rechart_forecast_task.dart';
++
++void main() {
++  test('actual isolated projection matches synchronous engine and leaves source intact', () async {
++    const engine = TideglassEngine();
++    final state = GameState(
++      counts: [100, 75, 50, 25, 10],
++      walletMicros: BigInt.from(1000000000000),
++      lifetimeMicros: engine.lifetimeForCharts(BigInt.from(10)),
++    );
++    final before = jsonEncode(state.toJson());
++    final task = RechartForecastTask(state);
++    final result = await task.result;
++    expect(result?.toJson(), estimateRechart(state).toJson());
++    expect(jsonEncode(state.toJson()), before);
++    task.cancel(); // Completion cleanup is idempotent.
++  });
++  test(
++    'cancel and expired deadline resolve without a dangling worker',
++    () async {
++      final cancelled = RechartForecastTask(GameState.initial());
++      cancelled.cancel();
++      cancelled.cancel();
++      expect(await cancelled.result, isNull);
++      final expired = RechartForecastTask(
++        GameState.initial(),
++        timeout: Duration.zero,
++      );
++      expect(await expired.result, isNull);
++      await Future<void>.delayed(const Duration(milliseconds: 30));
++      expired.cancel();
++    },
++  );
++}
+diff --git a/game/core/test/rechart_forecast_test.dart b/game/core/test/rechart_forecast_test.dart
+new file mode 100644
+--- /dev/null
++++ b/game/core/test/rechart_forecast_test.dart
+@@ -0,0 +1,246 @@
++import 'dart:convert';
++
++import 'package:test/test.dart';
++import 'package:tideglass_core/tideglass_core.dart';
++import 'package:tideglass_core/rechart_forecast.dart';
++
++const engine = TideglassEngine();
++GameState fixture({int charts = 0, int? entitlement, BigInt? wallet}) =>
++    GameState(
++      counts: [100, 75, 50, 25, 10],
++      charts: BigInt.from(charts),
++      lifetimeMicros: engine.lifetimeForCharts(
++        BigInt.from(entitlement ?? (charts == 0 ? 10 : charts + 10)),
++      ),
++      walletMicros: wallet ?? BigInt.from(1000000000000),
++    );
++
++// A separate fine-step oracle retains the entire account state and uses one
++// second advances, rather than the estimator's reduced projection/minute step.
++Map<String, Object?> oracle(GameState original, int horizon) {
++  GameState prepared(GameState s) => s.copyWith(
++    autoBuyEnabled: false,
++    automationPlans: [AutomationPlan.base()],
++    selectedAutomationPlanId: 'plan.base',
++  );
++  GameState buy(GameState s) {
++    for (var i = 0; i < 10000; i++) {
++      final tier = engine.chooseAutoBuyTier(s);
++      final attempt = engine.buy(s, tier, 1);
++      if (!attempt.accepted) return s;
++      s = attempt.state;
++    }
++    throw StateError('Oracle purchase limit');
++  }
++
++  var keep = prepared(original),
++      reset = engine.rechart(prepared(original)).state;
++  final oldRate = engine.outputPerSecond(original).raw;
++  keep = buy(keep);
++  reset = buy(reset);
++  int? first, rebuild = engine.outputPerSecond(reset).raw >= oldRate ? 0 : null;
++  var lastBehind = 0, ahead = false;
++  for (var second = 1; second <= horizon; second++) {
++    keep = engine
++        .advance(keep, const Duration(seconds: 1), autoBuy: false)
++        .state;
++    reset = engine
++        .advance(reset, const Duration(seconds: 1), autoBuy: false)
++        .state;
++    if (second % 60 != 0) continue;
++    keep = buy(keep);
++    reset = buy(reset);
++    if (rebuild == null && engine.outputPerSecond(reset).raw >= oldRate)
++      rebuild = second;
++    ahead =
++        reset.lifetimeMicros > original.lifetimeMicros &&
++        reset.lifetimeMicros >= keep.lifetimeMicros;
++    if (ahead) {
++      first ??= second;
++    } else {
++      lastBehind = second;
++    }
++  }
++  return {
++    'keep': keep.lifetimeMicros - original.lifetimeMicros,
++    'reset': reset.lifetimeMicros - original.lifetimeMicros,
++    'first': first,
++    'break': ahead ? lastBehind + 60 : null,
++    'rebuild': rebuild,
++    'keep_charts': keep.charts,
++    'reset_charts': reset.charts,
++  };
++}
++
++void main() {
++  test('first minute has analytic exact production and boost expiries', () {
++    final s = GameState(
++      lifetimeMicros: engine.lifetimeForCharts(BigInt.from(10)),
++      focusRemainingMicros: BigInt.from(30000000),
++      support: SupportState(remainingMicros: BigInt.from(45000000)),
++    );
++    final r = estimateRechart(s, horizonSeconds: 60);
++    // 60 + .20*30 + .25*45 = 77.25; first Rechart has 2x power.
++    expect(r.keepGainMicros, BigInt.from(77250000));
++    expect(r.resetGainMicros, BigInt.from(154500000));
++    expect(r.breakEvenSeconds, 60);
++    expect(r.rebuildSeconds, 0);
++  });
++
++  test(
++    'fine-step oracle agrees with full account state, boosts and remainder',
++    () {
++      var s = fixture(charts: 100, entitlement: 135).copyWith(
++        earningRemainder: Fixed.scale * BigInt.from(399),
++        focusCharges: 4,
++        focusPhaseMicros: BigInt.from(7199000000),
++        focusRemainingMicros: BigInt.from(33000000),
++        support: SupportState(remainingMicros: BigInt.from(85000000)),
++        automationPlans: [
++          AutomationPlan(
++            id: 'plan.base',
++            name: 'My reset policy',
++            purchasePolicy: 'priority',
++            autoResetEnabled: true,
++            minimumRunSeconds: 1,
++          ),
++        ],
++        autoBuyEnabled: true,
++      );
++      s = engine
++          .refreshContracts(
++            s,
++            DateTime.utc(2026, 10, 21, 23, 59),
++            accountSeed: 'forecast-fixture',
++          )
++          .state;
++      final before = jsonEncode(s.toJson());
++      final expected = oracle(s, 3600),
++          r = estimateRechart(s, horizonSeconds: 3600);
++      expect(r.keepGainMicros, expected['keep']);
++      expect(r.resetGainMicros, expected['reset']);
++      expect(r.firstCatchUpSeconds, expected['first']);
++      expect(r.breakEvenSeconds, expected['break']);
++      expect(r.rebuildSeconds, expected['rebuild']);
++      expect(expected['keep_charts'], BigInt.from(100));
++      expect(expected['reset_charts'], BigInt.from(135));
++      expect(jsonEncode(s.toJson()), before);
++    },
++  );
++
++  test(
++    'wallet loss affects keeping and rebuilding but old lifetime is not a gain',
++    () {
++      final poor = fixture(wallet: BigInt.zero),
++          rich = fixture(wallet: BigInt.from(1000000000000000));
++      final a = estimateRechart(poor, horizonSeconds: 60),
++          b = estimateRechart(rich, horizonSeconds: 60);
++      expect(b.keepGainMicros! > a.keepGainMicros!, isTrue);
++      expect(b.resetGainMicros, a.resetGainMicros);
++      expect(a.keepGainMicros! < poor.lifetimeMicros, isTrue);
++      expect(b.resetGainMicros, oracle(rich, 60)['reset']);
++    },
++  );
++
++  test('24h baseline fixture has reproducible exact cumulative output', () {
++    final r = estimateRechart(fixture());
++    expect(r.status, RechartForecastStatus.estimated);
++    expect(r.samples, 1440);
++    expect(r.work, 6689);
++    expect(r.breakEvenSeconds, 1560);
++    expect(r.rebuildSeconds, 720);
++    expect(r.keepGainMicros, BigInt.parse('19394345541120000000'));
++    expect(r.resetGainMicros, BigInt.parse('46589002648200000000'));
++  });
++
++  test('small late claim honestly has no catch-up in the horizon', () {
++    final r = estimateRechart(fixture(charts: 10000, entitlement: 10001));
++    expect(r.status, RechartForecastStatus.estimated);
++    expect(r.breakEvenSeconds, isNull);
++    expect(r.resetGainMicros! < r.keepGainMicros!, isTrue);
++  });
++
++  test('10,25,100 unlock thresholds and following Chart are exact', () {
++    for (final row in [
++      [0, 10, 10, 25],
++      [10, 24, 0, 25],
++      [10, 25, 25, 100],
++      [25, 99, 0, 100],
++      [25, 100, 100, 101],
++    ]) {
++      final r = estimateRechart(
++        fixture(charts: row[0], entitlement: row[1]),
++        horizonSeconds: 60,
++      );
++      expect(
++        r.unlockedChartThresholds,
++        row[2] == 0 ? isEmpty : contains(row[2]),
++      );
++      expect(r.nextChartTarget, BigInt.from(row[3]));
++      expect(
++        engine.prestigeEntitlement(r.nextChartLifetimeMicros!),
++        BigInt.from(row[3]),
++      );
++      expect(
++        engine.prestigeEntitlement(r.nextChartLifetimeMicros! - BigInt.one),
++        lessThan(BigInt.from(row[3])),
++      );
++    }
++  });
++
++  test('not eligible, mismatched rules and pending replay never simulate', () {
++    expect(
++      estimateRechart(GameState.initial()).status,
++      RechartForecastStatus.notEligible,
++    );
++    expect(
++      estimateRechart(
++        fixture().copyWith(rulesVersion: 'tideglass-economy-0.9.0'),
++      ).status,
++      RechartForecastStatus.unsupportedRules,
++    );
++    final request = OfflineSettlementRequest(
++      sequence: BigInt.one,
++      fromUtc: DateTime.utc(2026, 10, 21),
++      throughUtc: DateTime.utc(2026, 10, 21, 0, 1),
++    );
++    final pending = fixture().copyWith(
++      support: SupportState(
++        activeSettlementId: request.identity('local'),
++        activeSettlementRequest: request,
++      ),
++    );
++    // Use the canonical account seed, not an invented receipt identity.
++    final aligned = pending.copyWith(
++      support: pending.support.copyWith(
++        activeSettlementId: request.identity(pending.daily.accountSeed),
++      ),
++    );
++    expect(
++      estimateRechart(aligned).status,
++      RechartForecastStatus.pendingSettlement,
++    );
++  });
++
++  test('work and input limits never expose partial positive advice', () {
++    final r = estimateRechart(fixture(), maximumWork: 1);
++    expect(r.status, RechartForecastStatus.workLimit);
++    expect(r.samples, 0);
++    expect(r.keepGainMicros, isNull);
++    expect(r.breakEvenSeconds, isNull);
++    expect(
++      estimateRechart(fixture().copyWith(counts: [10001, 0, 0, 0, 0])).status,
++      RechartForecastStatus.inputLimit,
++    );
++    expect(
++      estimateRechart(GameState(lifetimeMicros: BigInt.one << 4097)).status,
++      RechartForecastStatus.inputLimit,
++    );
++    for (final horizon in [0, 59, 61, 86460]) {
++      expect(
++        () => estimateRechart(fixture(), horizonSeconds: horizon),
++        throwsArgumentError,
++      );
++    }
++  });
++}
+diff --git a/game/mobile/lib/app.dart b/game/mobile/lib/app.dart
+--- a/game/mobile/lib/app.dart
++++ b/game/mobile/lib/app.dart
+@@ -27,6 +27,7 @@
+ import 'help_content.dart';
+ import 'help_screen.dart';
+ import 'study_gate.dart';
++import 'rechart_estimate.dart';
+ 
+ class ClientPreferences {
+   const ClientPreferences({
+@@ -876,7 +877,7 @@
+               FilledButton(
+                 key: const ValueKey('preview-rechart'),
+                 onPressed: eligible
+-                    ? () => _confirmRechart(context, claim)
++                    ? () => _confirmRechart(context)
+                     : null,
+                 child: LocalizedText(
+                   eligible
+@@ -958,62 +959,71 @@
+       ],
+     ),
+   );
+-  Future<void> _confirmRechart(
+-    BuildContext context,
+-    BigInt claim,
+-  ) => showDialog<void>(
+-    context: context,
+-    builder: (dialog) => ReadingDialog(
+-      title: const LocalizedText(UiCopy.chartABrighterOcean),
+-      content: SingleChildScrollView(
+-        child: Column(
+-          mainAxisSize: MainAxisSize.min,
+-          crossAxisAlignment: CrossAxisAlignment.start,
+-          children: [
+-            LocalizedText(
+-              UiEnglish.appClaimClaimNewCharts(claim),
+-              style: const TextStyle(color: TideColors.amber, fontSize: 23),
+-            ),
+-            const SizedBox(height: 12),
+-            LocalizedText(
+-              UiEnglish.appPermanentPowerGameEnginePrestigeMultiplierGameState(
+-                game.engine
+-                    .prestigeMultiplier(game.state.charts)
+-                    .toDecimalString(decimals: 2),
+-                game.engine
+-                    .prestigeMultiplier(game.state.charts + claim)
+-                    .toDecimalString(decimals: 2),
+-              ),
+-            ),
+-            const SizedBox(height: 18),
+-            const LocalizedText(Copy.rechartLost),
+-            const SizedBox(height: 12),
+-            const LocalizedText(Copy.rechartKept),
+-            const SizedBox(height: 12),
+-            const LocalizedText(
+-              UiCopy.yourCurrentFleetStopsEarningAs,
+-              style: TextStyle(color: TideColors.muted),
+-            ),
+-          ],
+-        ),
+-      ),
+-      actions: [
+-        TextButton(
+-          onPressed: () => Navigator.pop(dialog),
+-          child: const LocalizedText(UiCopy.keepBuilding),
+-        ),
+-        FilledButton(
+-          key: const ValueKey('confirm-rechart'),
+-          onPressed: () {
+-            game.rechart();
+-            Navigator.pop(dialog);
+-            setState(() => tab = 0);
+-          },
+-          child: const LocalizedText(UiCopy.rechart),
+-        ),
+-      ],
+-    ),
+-  );
++  Future<void> _confirmRechart(BuildContext context) {
++    final previewState = game.state;
++    final claim = game.engine.prestigeAward(previewState);
++    return showDialog<void>(
++      context: context,
++      builder: (dialog) => ReadingDialog(
++        title: const LocalizedText(UiCopy.chartABrighterOcean),
++        content: SingleChildScrollView(
++          child: Column(
++            mainAxisSize: MainAxisSize.min,
++            crossAxisAlignment: CrossAxisAlignment.start,
++            children: [
++              LocalizedText(
++                UiEnglish.appClaimClaimNewCharts(claim),
++                style: const TextStyle(color: TideColors.amber, fontSize: 23),
++              ),
++              const SizedBox(height: 12),
++              LocalizedText(
++                UiEnglish.appPermanentPowerGameEnginePrestigeMultiplierGameState(
++                  game.engine
++                      .prestigeMultiplier(previewState.charts)
++                      .toDecimalString(decimals: 2),
++                  game.engine
++                      .prestigeMultiplier(previewState.charts + claim)
++                      .toDecimalString(decimals: 2),
++                ),
++              ),
++              const SizedBox(height: 18),
++              const LocalizedText(Copy.rechartLost),
++              const SizedBox(height: 12),
++              const LocalizedText(Copy.rechartKept),
++              const SizedBox(height: 12),
++              const LocalizedText(
++                UiCopy.yourCurrentFleetStopsEarningAs,
++                style: TextStyle(color: TideColors.muted),
++              ),
++              const SizedBox(height: 18),
++              const Divider(),
++              const SizedBox(height: 18),
++              RechartEstimatePanel(
++                key: const ValueKey('rechart-estimate'),
++                snapshot: previewState,
++              ),
++            ],
++          ),
++        ),
++        actions: [
++          TextButton(
++            onPressed: () => Navigator.pop(dialog),
++            child: const LocalizedText(UiCopy.keepBuilding),
++          ),
++          FilledButton(
++            key: const ValueKey('confirm-rechart'),
++            onPressed: () {
++              game.rechart();
++              Navigator.pop(dialog);
++              setState(() => tab = 0);
++            },
++            child: const LocalizedText(UiCopy.rechart),
++          ),
++        ],
++      ),
++    );
++  }
++
+   Widget _journal(BuildContext context) => _page(
+     children: [
+       LocalizedText(
+diff --git a/game/mobile/lib/rechart_copy.dart b/game/mobile/lib/rechart_copy.dart
+new file mode 100644
+--- /dev/null
++++ b/game/mobile/lib/rechart_copy.dart
+@@ -0,0 +1,53 @@
++import 'presentation.dart';
++
++/// Central launch-English copy; templates protect values in pseudo mode.
++/// No translated text or formatted duration feeds back into the simulation.
++abstract final class RechartCopy {
++  static const title = 'Estimated break-even';
++  static const calculating = 'Comparing rebuilding with keeping this fleet…';
++  static const unavailable =
++      'Estimate unavailable for this preview. You can still choose whether to Rechart.';
++  static const notEligible =
++      'Earn another eligible Chart before comparing a Rechart.';
++  static const noCatchUp =
++      'No lasting catch-up found within 24 hours under this policy.';
++  static const definition =
++      'At each one-minute check from this point through 24 hours, Rechart has earned at least as much new Radiance as keeping this fleet. The paths may cross between checks or after 24 hours.';
++  static const assumptionsTitle = 'What this estimate assumes';
++  static const purchases =
++      'Buy at opening and every minute: choose the unit with the best added output per cost, repeat until that unit is unaffordable, then wait. This assumes active buying before automation unlocks and replaces your saved plan for this comparison only.';
++  static const continuation =
++      'No later Rechart or new bonus activation. Current Focus and Support boosts expire normally. Both paths earn at full rate for 24 hours.';
++  static const objective =
++      'Compare new Radiance earned, not wallet wealth. Keeping the fleet can invest its current wallet; Rechart loses that wallet and rebuilds from the free Skiff while earning throughout.';
++  static const snapshot =
++      'Uses the fleet when this preview opened. New purchases, bonuses or waiting can change the result. This is not a universally best reset time.';
++  static const rebuildBeyond =
++      'Rebuilding did not reach today’s unboosted output within 24 hours.';
++  static const rebuildNow =
++      'The free Skiff already reaches today’s unboosted output.';
++  static const autoBuy = 'automatic buying';
++  static const synergy = 'cross-tier synergies';
++  static const resetPlans = 'conditional reset plans';
++  static String breakEven(String time) => Presentation.template(
++    'About {time}, on the one-minute grid.',
++    {'time': time},
++  );
++  static String rebuild(String time) => Presentation.template(
++    'Rebuilding reaches today’s unboosted output in about {time}.',
++    {'time': time},
++  );
++  static String nextUnlock(BigInt target, String feature) =>
++      Presentation.template(
++        'Next atlas milestone: {target} total Charts unlock {feature}.',
++        {'target': target, 'feature': Presentation.text(feature)},
++      );
++  static String nextChart(BigInt target) => Presentation.template(
++    'Next atlas step: {target} total Charts. No further automation unlock is assumed.',
++    {'target': target},
++  );
++  static String unlocked(String feature) => Presentation.template(
++    'This claim unlocks {feature}.',
++    {'feature': Presentation.text(feature)},
++  );
++}
+diff --git a/game/mobile/lib/rechart_estimate.dart b/game/mobile/lib/rechart_estimate.dart
+new file mode 100644
+--- /dev/null
++++ b/game/mobile/lib/rechart_estimate.dart
+@@ -0,0 +1,139 @@
++import 'package:flutter/material.dart';
++import 'package:tideglass_core/tideglass_core.dart';
++import 'package:tideglass_core/rechart_forecast.dart';
++
++import 'number_format.dart';
++import 'presentation.dart';
++import 'rechart_copy.dart';
++import 'rechart_forecast_task.dart';
++
++/// Wraps naturally in the existing ReadingDialog, including its large-text
++/// fullscreen scroll path. No table, fixed height, truncation or small type.
++class RechartEstimatePanel extends StatefulWidget {
++  const RechartEstimatePanel({super.key, required this.snapshot});
++  final GameState snapshot;
++  @override
++  State<RechartEstimatePanel> createState() => _RechartEstimatePanelState();
++}
++
++class _RechartEstimatePanelState extends State<RechartEstimatePanel> {
++  late RechartForecastTask task;
++  @override
++  void initState() {
++    super.initState();
++    task = RechartForecastTask(widget.snapshot);
++  }
++
++  @override
++  void didUpdateWidget(RechartEstimatePanel oldWidget) {
++    super.didUpdateWidget(oldWidget);
++    if (!identical(oldWidget.snapshot, widget.snapshot)) {
++      task.cancel();
++      task = RechartForecastTask(widget.snapshot);
++    }
++  }
++
++  @override
++  void dispose() {
++    task.cancel();
++    super.dispose();
++  }
++
++  @override
++  Widget build(BuildContext context) => FutureBuilder<RechartForecast?>(
++    future: task.result,
++    builder: (context, value) => RechartEstimateContent(
++      forecast: value.data,
++      loading: value.connectionState != ConnectionState.done,
++    ),
++  );
++}
++
++/// Separate immutable presentation enables status/layout tests without timing
++/// a worker. The real preview above always runs the actual forecast task.
++class RechartEstimateContent extends StatelessWidget {
++  const RechartEstimateContent({
++    super.key,
++    this.forecast,
++    this.loading = false,
++  });
++  final RechartForecast? forecast;
++  final bool loading;
++  String feature(int threshold) => switch (threshold) {
++    10 => RechartCopy.autoBuy,
++    25 => RechartCopy.synergy,
++    100 => RechartCopy.resetPlans,
++    _ => throw ArgumentError('Unknown atlas unlock'),
++  };
++
++  @override
++  Widget build(BuildContext context) {
++    final result = forecast;
++    final valid = !loading && result?.status == RechartForecastStatus.estimated;
++    final paragraphs = <String>[];
++    if (loading) {
++      paragraphs.add(RechartCopy.calculating);
++    } else if (!valid) {
++      paragraphs.add(
++        result?.status == RechartForecastStatus.notEligible
++            ? RechartCopy.notEligible
++            : RechartCopy.unavailable,
++      );
++    } else {
++      final value = result!;
++      paragraphs.add(
++        value.breakEvenSeconds == null
++            ? RechartCopy.noCatchUp
++            : RechartCopy.breakEven(
++                durationLabel(Duration(seconds: value.breakEvenSeconds!)),
++              ),
++      );
++      if (value.breakEvenSeconds != null)
++        paragraphs.add(RechartCopy.definition);
++      paragraphs.add(
++        value.rebuildSeconds == null
++            ? RechartCopy.rebuildBeyond
++            : value.rebuildSeconds == 0
++            ? RechartCopy.rebuildNow
++            : RechartCopy.rebuild(
++                durationLabel(Duration(seconds: value.rebuildSeconds!)),
++              ),
++      );
++      for (final threshold in value.unlockedChartThresholds) {
++        paragraphs.add(RechartCopy.unlocked(feature(threshold)));
++      }
++      final target = value.nextChartTarget!;
++      paragraphs.add(
++        [10, 25, 100].map(BigInt.from).contains(target)
++            ? RechartCopy.nextUnlock(target, feature(target.toInt()))
++            : RechartCopy.nextChart(target),
++      );
++      paragraphs.addAll([
++        RechartCopy.assumptionsTitle,
++        RechartCopy.purchases,
++        RechartCopy.continuation,
++        RechartCopy.objective,
++        RechartCopy.snapshot,
++      ]);
++    }
++    return Semantics(
++      container: true,
++      child: Column(
++        crossAxisAlignment: CrossAxisAlignment.stretch,
++        children: [
++          Semantics(
++            header: true,
++            child: LocalizedText(
++              RechartCopy.title,
++              style: Theme.of(context).textTheme.titleMedium,
++            ),
++          ),
++          for (final paragraph in paragraphs) ...[
++            const SizedBox(height: 12),
++            LocalizedText(paragraph),
++          ],
++        ],
++      ),
++    );
++  }
++}
+diff --git a/game/mobile/lib/rechart_forecast_task.dart b/game/mobile/lib/rechart_forecast_task.dart
+new file mode 100644
+--- /dev/null
++++ b/game/mobile/lib/rechart_forecast_task.dart
+@@ -0,0 +1,59 @@
++import 'dart:async';
++import 'dart:isolate';
++
++import 'package:tideglass_core/tideglass_core.dart';
++import 'package:tideglass_core/rechart_forecast.dart';
++
++/// One preview owns one worker. Closing it or reaching the deadline kills the
++/// worker; timing out a Future alone would leave expensive work running.
++class RechartForecastTask {
++  RechartForecastTask(
++    GameState snapshot, {
++    Duration timeout = const Duration(seconds: 3),
++  }) {
++    _port.listen((message) {
++      _finish(message is RechartForecast ? message : null);
++    });
++    _timer = Timer(timeout, () => _finish(null));
++    unawaited(
++      Isolate.spawn(
++            _estimate,
++            [_port.sendPort, snapshot],
++            onError: _port.sendPort,
++            onExit: _port.sendPort,
++            errorsAreFatal: true,
++          )
++          .then((worker) {
++            if (_finished) {
++              worker.kill(priority: Isolate.immediate);
++            } else {
++              _worker = worker;
++            }
++          })
++          .catchError((Object _) {
++            _finish(null);
++          }),
++    );
++  }
++  final _completed = Completer<RechartForecast?>();
++  final _port = ReceivePort();
++  Isolate? _worker;
++  Timer? _timer;
++  bool _finished = false;
++  Future<RechartForecast?> get result => _completed.future;
++
++  void cancel() => _finish(null);
++  void _finish(RechartForecast? value) {
++    if (_finished) return;
++    _finished = true;
++    _timer?.cancel();
++    _worker?.kill(priority: Isolate.immediate);
++    _port.close();
++    _completed.complete(value);
++  }
++}
++
++void _estimate(List<Object?> message) {
++  final port = message[0] as SendPort;
++  port.send(estimateRechart(message[1] as GameState));
++}
+diff --git a/game/mobile/test/rechart_estimate_test.dart b/game/mobile/test/rechart_estimate_test.dart
+new file mode 100644
+--- /dev/null
++++ b/game/mobile/test/rechart_estimate_test.dart
+@@ -0,0 +1,242 @@
++import 'dart:io';
++import 'dart:ui' as ui;
++
++import 'package:flutter/material.dart';
++import 'package:flutter/rendering.dart';
++import 'package:flutter/services.dart';
++import 'package:flutter_test/flutter_test.dart';
++import 'package:tideglass/app.dart';
++import 'package:tideglass/game_controller.dart';
++import 'package:tideglass/palette.dart';
++import 'package:tideglass/presentation.dart';
++import 'package:tideglass/rechart_copy.dart';
++import 'package:tideglass/rechart_estimate.dart';
++import 'package:tideglass_core/tideglass_core.dart';
++import 'package:tideglass_core/rechart_forecast.dart';
++
++RechartForecast sample({bool caught = true}) => RechartForecast(
++  status: RechartForecastStatus.estimated,
++  horizonSeconds: 86400,
++  samples: 1440,
++  work: 6700,
++  firstCatchUpSeconds: caught ? 1560 : null,
++  breakEvenSeconds: caught ? 1560 : null,
++  rebuildSeconds: 720,
++  keepGainMicros: BigInt.from(100),
++  resetGainMicros: BigInt.from(caught ? 200 : 90),
++  nextChartTarget: BigInt.from(25),
++  unlockedChartThresholds: [10],
++);
++
++void configure(WidgetTester tester, Size size) {
++  tester.view.physicalSize = size;
++  tester.view.devicePixelRatio = 1;
++  tester.platformDispatcher.textScaleFactorTestValue = 2;
++  addTearDown(tester.view.resetPhysicalSize);
++  addTearDown(tester.view.resetDevicePixelRatio);
++  addTearDown(tester.platformDispatcher.clearTextScaleFactorTestValue);
++}
++
++Future<void> capture(
++  WidgetTester tester,
++  GlobalKey boundaryKey,
++  String name,
++) async {
++  const output = String.fromEnvironment('TIDEGLASS_RESET_EVIDENCE');
++  if (output.isEmpty) return;
++  final boundary =
++      boundaryKey.currentContext!.findRenderObject()! as RenderRepaintBoundary;
++  await tester.runAsync(() async {
++    final image = await boundary.toImage(pixelRatio: 1);
++    final bytes = await image.toByteData(format: ui.ImageByteFormat.png);
++    final file = File(
++      '$output/${Presentation.pseudoEnabled ? 'pseudo' : 'english'}-$name.png',
++    );
++    await file.parent.create(recursive: true);
++    await file.writeAsBytes(bytes!.buffer.asUint8List());
++    image.dispose();
++  });
++}
++
++void main() {
++  for (final width in [320, 1024]) {
++    final size = Size(width.toDouble(), width == 320 ? 720 : 768);
++    for (final mode in [
++      'estimated',
++      'no-catch-up',
++      'unavailable',
++      'not-eligible',
++      'loading',
++    ]) {
++      testWidgets('$width px 200percent real ReadingDialog $mode', (
++        tester,
++      ) async {
++        configure(tester, size);
++        final result = switch (mode) {
++          'estimated' => sample(),
++          'no-catch-up' => sample(caught: false),
++          'not-eligible' => const RechartForecast(
++            status: RechartForecastStatus.notEligible,
++            horizonSeconds: 86400,
++            samples: 0,
++            work: 0,
++          ),
++          _ => null,
++        };
++        var confirmed = false;
++        await tester.pumpWidget(
++          MaterialApp(
++            theme: tideglassTheme(),
++            home: Scaffold(
++              body: ReadingDialog(
++                title: const LocalizedText('Rechart preview'),
++                content: SingleChildScrollView(
++                  child: RechartEstimateContent(
++                    forecast: result,
++                    loading: mode == 'loading',
++                  ),
++                ),
++                actions: [
++                  FilledButton(
++                    key: const ValueKey('test-confirm'),
++                    onPressed: () => confirmed = true,
++                    child: const LocalizedText('Rechart'),
++                  ),
++                ],
++              ),
++            ),
++          ),
++        );
++        await tester.pumpAndSettle();
++        expect(tester.takeException(), isNull);
++        expect(find.text(Presentation.text(RechartCopy.title)), findsOneWidget);
++        if (result?.status == RechartForecastStatus.estimated) {
++          for (final copy in [
++            RechartCopy.purchases,
++            RechartCopy.continuation,
++            RechartCopy.objective,
++            RechartCopy.snapshot,
++          ]) {
++            final text = find.text(Presentation.text(copy));
++            await tester.ensureVisible(text);
++            await tester.pumpAndSettle();
++            expect(text.hitTestable(), findsOneWidget);
++            expect(tester.takeException(), isNull);
++          }
++        }
++        final button = find.byKey(const ValueKey('test-confirm'));
++        await tester.ensureVisible(button);
++        await tester.pumpAndSettle();
++        await tester.tap(button);
++        expect(confirmed, isTrue);
++        expect(tester.takeException(), isNull);
++      });
++    }
++    testWidgets(
++      '$width px actual Atlas estimate, readable assumptions and Rechart actions',
++      (tester) async {
++        configure(tester, size);
++        await tester.runAsync(() async {
++          for (final entry in {
++            'Roboto': 'Roboto-Regular.ttf',
++            'MaterialIcons': 'MaterialIcons-Regular.otf',
++          }.entries) {
++            final file = File(
++              '../../.tooling/flutter/bin/cache/artifacts/material_fonts/${entry.value}',
++            );
++            await (FontLoader(
++              entry.key,
++            )..addFont(file.readAsBytes().then(ByteData.sublistView))).load();
++          }
++        });
++        const engine = TideglassEngine();
++        final game = GameController(
++          initialState: GameState(
++            counts: [100, 75, 50, 25, 10],
++            walletMicros: BigInt.from(1000000000000),
++            lifetimeMicros: engine.lifetimeForCharts(BigInt.from(10)),
++          ),
++          startTicker: false,
++          clock: () => DateTime.utc(2026, 10, 21),
++        );
++        addTearDown(game.dispose);
++        final before = game.state.toJson(), boundary = GlobalKey();
++        await tester.pumpWidget(
++          RepaintBoundary(
++            key: boundary,
++            child: TideglassApp(
++              controller: game,
++              initialPreferences: const ClientPreferences(
++                onboardingDismissed: true,
++                reduceMotion: true,
++              ),
++            ),
++          ),
++        );
++        await tester.pumpAndSettle();
++        await tester.tap(find.byType(NavigationDestination).at(1));
++        await tester.pumpAndSettle();
++        final preview = find.byKey(const ValueKey('preview-rechart'));
++        await tester.ensureVisible(preview);
++        await tester.tap(preview);
++        await tester.pump();
++        final panel = find.byKey(const ValueKey('rechart-estimate'));
++        expect(panel, findsOneWidget);
++        final future = tester
++            .widget<FutureBuilder<RechartForecast?>>(
++              find.descendant(
++                of: panel,
++                matching: find.byType(FutureBuilder<RechartForecast?>),
++              ),
++            )
++            .future!;
++        final result = await tester.runAsync(
++          () => future.timeout(const Duration(seconds: 5)),
++        );
++        expect(result?.status, RechartForecastStatus.estimated);
++        expect(result?.breakEvenSeconds, 1560);
++        await tester.pumpAndSettle();
++        expect(game.state.toJson(), before);
++        final lines = {
++          'estimate': RechartCopy.title,
++          'purchases': RechartCopy.purchases,
++          'effects': RechartCopy.continuation,
++          'objective': RechartCopy.objective,
++          'snapshot': RechartCopy.snapshot,
++        };
++        for (final entry in lines.entries) {
++          final text = find.text(Presentation.text(entry.value));
++          await tester.ensureVisible(text);
++          await tester.pumpAndSettle();
++          expect(text.hitTestable(), findsOneWidget);
++          expect(tester.takeException(), isNull);
++          await capture(tester, boundary, '$width-${entry.key}');
++        }
++        final keep = find.text(Presentation.text('Keep building'));
++        await tester.ensureVisible(keep);
++        await tester.pumpAndSettle();
++        await capture(tester, boundary, '$width-actions');
++        await tester.tap(keep);
++        await tester.pumpAndSettle();
++        expect(game.state.toJson(), before);
++        await tester.ensureVisible(preview);
++        await tester.tap(preview);
++        await tester.pump();
++        final confirm = find.byKey(const ValueKey('confirm-rechart'));
++        await tester.ensureVisible(confirm);
++        await tester.pumpAndSettle();
++        await tester.tap(confirm);
++        await tester.pumpAndSettle();
++        expect(game.state.charts, BigInt.from(10));
++        expect(game.state.counts, [1, 0, 0, 0, 0]);
++        expect(game.state.walletMicros, BigInt.zero);
++        expect(
++          game.state.lifetimeMicros,
++          BigInt.parse(before['lifetime_micros'] as String),
++        );
++        expect(tester.takeException(), isNull);
++        await tester.pumpWidget(const SizedBox.shrink());
++      },
++    );
++  }
++}

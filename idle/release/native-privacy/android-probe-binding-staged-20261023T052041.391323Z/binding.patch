@@ -1,0 +1,79 @@
+--- original-collector
++++ staged-collector
+@@ -491,18 +491,44 @@
+                    'harness.dart': 'game/mobile/integration_test/current_runtime_test.dart'}
+ 
+ 
+-def source_binding(candidate, evidence, manifest):
++ANDROID_PROBE_BRIDGE = {
++    'candidate_fingerprint': '3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59',
++    'candidate_runner_sha256': 'd849ab8feb642eb1b988f9a6d82558491b7ebef4c63768fb4fa132f49edf3804',
++    'executed_runner_sha256': 'd1ea6d05085f05a0a3bb6c768531ef7659272e41993858c0551618f74ce5c847',
++}
++_PROBE_BEFORE = b"self.adb_command('exec-out', 'run-as', BUNDLE, 'test', flag, str(target))"
++_PROBE_AFTER = b"self.adb_command('shell', 'run-as', BUNDLE, 'test', flag, str(target))"
++
++
++def source_binding(candidate, evidence, manifest, *, platform=None):
+     """Bind the runner's actual archived sources to this exact candidate."""
+     manifest_raw = read_bounded(candidate / 'manifest.json', 16 * 1024 * 1024)
+     require(json.loads(manifest_raw) == manifest, 'Candidate manifest changed')
+     sources = {}
++    bridge = None
++    original_runner = None
+     for archive, relative in SOURCE_ARCHIVES.items():
+         data = read_bounded(candidate / 'source' / relative)
+         require(sha(data) == manifest['source_sha256'].get(relative),
+                 'Candidate omitted or changed reviewed source: ' + relative)
+-        require(read_bounded(evidence / archive) == data,
+-                'Archived native source differs from candidate: ' + archive)
+-        sources[archive] = data
++        executed = read_bounded(evidence / archive)
++        if executed != data:
++            # One reviewed Android host-probe correction. This is an explicit
++            # verification-tool revision, not an arbitrary source override.
++            # Completion verifier and Dart harness remain candidate-exact.
++            require(archive == 'runner.py' and platform == 'android',
++                    'Archived native source differs from candidate: ' + archive)
++            require(manifest['source_fingerprint'] == ANDROID_PROBE_BRIDGE['candidate_fingerprint']
++                    and sha(data) == ANDROID_PROBE_BRIDGE['candidate_runner_sha256']
++                    and sha(executed) == ANDROID_PROBE_BRIDGE['executed_runner_sha256'],
++                    'Unknown Android probe verification revision')
++            require(data.count(_PROBE_BEFORE) == 1
++                    and executed == data.replace(_PROBE_BEFORE, _PROBE_AFTER, 1),
++                    'Android probe revision has additional changes')
++            original_runner = data
++            bridge = dict(ANDROID_PROBE_BRIDGE,
++                          scope='Android test exit-status transport only; raw binary transfer unchanged')
++        sources[archive] = executed
+     binding = {'candidate_manifest_sha256': sha(manifest_raw),
+                'candidate_fingerprint': manifest['source_fingerprint'],
+                'native_source_sha256': {name: sha(data) for name, data in sources.items()}}
+@@ -510,6 +536,9 @@
+                 'completion-verifier.py': sources['verify_native.py'],
+                 'native-runner.py': sources['runner.py'],
+                 'candidate-manifest.json': manifest_raw}
++    if bridge is not None:
++        binding['verification_tool_bridge'] = bridge
++        archives['candidate-native-runner.py'] = original_runner
+     binding['observation_source_sha256'] = {name: sha(data) for name, data in archives.items()}
+     return binding, archives
+ 
+@@ -523,7 +552,7 @@
+     manifest, context = context_for(candidate, evidence, report['device'])
+     require(all(report['context'][key] == value for key, value in context.items()),
+             'Candidate/harness context changed')
+-    binding, archives = source_binding(candidate, evidence, manifest)
++    binding, archives = source_binding(candidate, evidence, manifest, platform=context['platform'])
+     require(binding == report['source_binding'], 'Collector/completion source binding changed')
+     for name, data in archives.items():
+         require(read_bounded(output / name, 16 * 1024 * 1024) == data,
+@@ -551,7 +580,7 @@
+     collector_source_unchanged()
+     require(not output.exists(), 'Evidence directory already exists')
+     manifest, context = context_for(candidate, evidence, device)
+-    binding, archives = source_binding(candidate, evidence, manifest)
++    binding, archives = source_binding(candidate, evidence, manifest, platform=context['platform'])
+     output.mkdir(parents=True)
+     report = {'schema_version': 1, 'status': 'incomplete', 'device': device,
+               'candidate': str(candidate), 'native_evidence': str(evidence), 'samples': [],

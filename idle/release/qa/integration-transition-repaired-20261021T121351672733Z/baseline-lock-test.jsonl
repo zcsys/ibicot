@@ -1,0 +1,10 @@
+{"protocolVersion":"0.1.1","runnerVersion":"1.33.0","pid":48719,"type":"start","time":0}
+{"suite":{"id":0,"platform":"vm","path":"test/economic_lock_test.dart"},"type":"suite","time":0}
+{"test":{"id":1,"name":"loading test/economic_lock_test.dart","suiteID":0,"groupIDs":[],"metadata":{"skip":false,"skipReason":null},"line":null,"column":null,"url":null},"type":"testStart","time":1}
+{"count":1,"time":7,"type":"allSuites"}
+{"testID":1,"result":"success","skipped":false,"hidden":true,"type":"testDone","time":847}
+{"group":{"id":2,"suiteID":0,"parentID":null,"name":"","metadata":{"skip":false,"skipReason":null},"testCount":1,"line":null,"column":null,"url":null},"type":"group","time":849}
+{"test":{"id":3,"name":"independent isolate cannot commit while another holds writer lock","suiteID":0,"groupIDs":[2],"metadata":{"skip":false,"skipReason":null},"line":45,"column":3,"url":"file:///Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-transition-repaired-20261021T121351672733Z/baseline-persistence/test/economic_lock_test.dart"},"type":"testStart","time":850}
+{"testID":3,"error":"Expected: not <Instance of 'SaveSnapshot'>\n  Actual: <Instance of 'SaveSnapshot'>\nA separate isolate must not commit through the held OS lock.\n","stackTrace":"package:matcher                    expect\ntest/economic_lock_test.dart 82:9  main.<fn>\n","isFailure":true,"type":"error","time":940}
+{"testID":3,"result":"failure","skipped":false,"hidden":false,"type":"testDone","time":940}
+{"success":false,"type":"done","time":952}

@@ -1,0 +1,89 @@
+[
+  {
+    "start_utc": "2026-10-25T17:13:17.607492+00:00",
+    "end_utc": "2026-10-25T17:13:19.193830+00:00",
+    "argv": [
+      "/Users/csys/Library/Android/sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "shell",
+      "run-as",
+      "dev.tideglass.game",
+      "sh",
+      "-c",
+      "'find . -type f -exec sha256sum '\"'\"'{}'\"'\"' '\"'\"';'\"'\"''"
+    ],
+    "exit": 0,
+    "stderr": "",
+    "file": "data-before.txt",
+    "sha256": "14c13e6f3a22121a718b161e4a18d926b97f585a7155271f595b3d52be48b347"
+  },
+  {
+    "start_utc": "2026-10-25T17:13:19.195376+00:00",
+    "end_utc": "2026-10-25T17:13:20.204200+00:00",
+    "argv": [
+      "/Users/csys/Library/Android/sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "install",
+      "-r",
+      "/Users/csys/Desktop/ibicot/idle/release/native-proof/20261023T040548.338966Z/artifacts/tideglass-debug.apk"
+    ],
+    "exit": 0,
+    "stderr": "",
+    "file": "install.txt",
+    "sha256": "781a31c82430c97897af612ece5e0ca2205e301cb5ff121ce2660541ea5182c7"
+  },
+  {
+    "start_utc": "2026-10-25T17:13:20.204659+00:00",
+    "end_utc": "2026-10-25T17:13:23.437013+00:00",
+    "argv": [
+      "/Users/csys/Library/Android/sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "shell",
+      "run-as",
+      "dev.tideglass.game",
+      "sh",
+      "-c",
+      "'find . -type f -exec sha256sum '\"'\"'{}'\"'\"' '\"'\"';'\"'\"''"
+    ],
+    "exit": 0,
+    "stderr": "",
+    "file": "data-after.txt",
+    "sha256": "14c13e6f3a22121a718b161e4a18d926b97f585a7155271f595b3d52be48b347"
+  },
+  {
+    "start_utc": "2026-10-25T17:13:23.437999+00:00",
+    "end_utc": "2026-10-25T17:13:23.502188+00:00",
+    "argv": [
+      "/Users/csys/Library/Android/sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "shell",
+      "pm",
+      "path",
+      "dev.tideglass.game"
+    ],
+    "exit": 0,
+    "stderr": "",
+    "file": "installed-path.txt",
+    "sha256": "db55af93ed764a3be48b252421d4d9498590d84a110cef46cf203f72e7a85675"
+  },
+  {
+    "start_utc": "2026-10-25T17:13:23.503647+00:00",
+    "end_utc": "2026-10-25T17:13:23.859504+00:00",
+    "argv": [
+      "/Users/csys/Library/Android/sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "shell",
+      "sha256sum",
+      "/data/app/~~Zl_m2eljCp_dPoTHXPeQqQ==/dev.tideglass.game-a9l4Ef2W0ckGomc7KtxDeg==/base.apk"
+    ],
+    "exit": 0,
+    "stderr": "",
+    "file": "installed-sha256.txt",
+    "sha256": "86d3e495b21784b1dcb67f581f537849ceff2794cb28b59fb2cb382b8f68780f"
+  }
+]

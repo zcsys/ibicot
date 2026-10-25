@@ -1,0 +1,1154 @@
+{
+  "raw_report_sha256": "16aa9e488af37cf91489d75c53aadb4617117cd0013f2cb866eec24610005ff8",
+  "analysis_source_sha256": "87dac9b25769a28a60591b2b0dd5afa557547f83b4030d9c644bf5f41ec9a063",
+  "source_digest": "394da363f5598c9b4d6ad84be7c85dee351daf3897f5c758a714db5eb6e3e1fb",
+  "source_archive": "../../release/balance/supplemental-source-394da363f5598c9b4d6ad84be7c85dee351daf3897f5c758a714db5eb6e3e1fb",
+  "trajectories": 90,
+  "reset_comparisons": [
+    {
+      "days": 30,
+      "visits": 1,
+      "policy": "fixed-10-charts",
+      "recharts": 31,
+      "charts": "9310726",
+      "lifetime_micros": "1612026717695436435489684",
+      "lifetime_fraction_of_best_in_matched_group": "0.9731",
+      "ending_day_upper_bound": 10.17,
+      "maximum_observed_reconstruction_seconds_upper_bound": 72300,
+      "unrecovered_before_next_reset": 0
+    },
+    {
+      "days": 30,
+      "visits": 1,
+      "policy": "fixed-100-charts",
+      "recharts": 30,
+      "charts": "9233914",
+      "lifetime_micros": "1592339094369941414995590",
+      "lifetime_fraction_of_best_in_matched_group": "0.9612",
+      "ending_day_upper_bound": 10.17,
+      "maximum_observed_reconstruction_seconds_upper_bound": 72300,
+      "unrecovered_before_next_reset": 0
+    },
+    {
+      "days": 30,
+      "visits": 1,
+      "policy": "multiplier-20-percent",
+      "recharts": 11,
+      "charts": "6530018",
+      "lifetime_micros": "1626538453004370365853407",
+      "lifetime_fraction_of_best_in_matched_group": "0.9819",
+      "ending_day_upper_bound": 11.17,
+      "maximum_observed_reconstruction_seconds_upper_bound": 29100,
+      "unrecovered_before_next_reset": 0
+    },
+    {
+      "days": 30,
+      "visits": 1,
+      "policy": "forecast-1h-output-1percent-margin",
+      "recharts": 8,
+      "charts": "5069420",
+      "lifetime_micros": "1479471145883990745568238",
+      "lifetime_fraction_of_best_in_matched_group": "0.8931",
+      "ending_day_upper_bound": 11.17,
+      "maximum_observed_reconstruction_seconds_upper_bound": 14700,
+      "unrecovered_before_next_reset": 0
+    },
+    {
+      "days": 30,
+      "visits": 1,
+      "policy": "forecast-8h-output-1percent-margin",
+      "recharts": 11,
+      "charts": "7484351",
+      "lifetime_micros": "1610126198469637603121500",
+      "lifetime_fraction_of_best_in_matched_group": "0.9720",
+      "ending_day_upper_bound": 10.17,
+      "maximum_observed_reconstruction_seconds_upper_bound": 14700,
+      "unrecovered_before_next_reset": 0
+    },
+    {
+      "days": 30,
+      "visits": 1,
+      "policy": "forecast-24h-output-1percent-margin",
+      "recharts": 14,
+      "charts": "8380296",
+      "lifetime_micros": "1656571645142870233376668",
+      "lifetime_fraction_of_best_in_matched_group": "1.0000",
+      "ending_day_upper_bound": 11.17,
+      "maximum_observed_reconstruction_seconds_upper_bound": 29100,
+      "unrecovered_before_next_reset": 0
+    },
+    {
+      "days": 30,
+      "visits": 3,
+      "policy": "fixed-10-charts",
+      "recharts": 91,
+      "charts": "9410320",
+      "lifetime_micros": "1576858197109904880726357",
+      "lifetime_fraction_of_best_in_matched_group": "0.9014",
+      "ending_day_upper_bound": 10.17,
+      "maximum_observed_reconstruction_seconds_upper_bound": 28800,
+      "unrecovered_before_next_reset": 0
+    },
+    {
+      "days": 30,
+      "visits": 3,
+      "policy": "fixed-100-charts",
+      "recharts": 90,
+      "charts": "9380580",
+      "lifetime_micros": "1569285248914608778089688",
+      "lifetime_fraction_of_best_in_matched_group": "0.8971",
+      "ending_day_upper_bound": 10.17,
+      "maximum_observed_reconstruction_seconds_upper_bound": 28800,
+      "unrecovered_before_next_reset": 0
+    },
+    {
+      "days": 30,
+      "visits": 3,
+      "policy": "multiplier-20-percent",
+      "recharts": 15,
+      "charts": "9263538",
+      "lifetime_micros": "1727196737524166408484367",
+      "lifetime_fraction_of_best_in_matched_group": "0.9874",
+      "ending_day_upper_bound": 10.17,
+      "maximum_observed_reconstruction_seconds_upper_bound": 28800,
+      "unrecovered_before_next_reset": 0
+    },
+    {
+      "days": 30,
+      "visits": 3,
+      "policy": "forecast-1h-output-1percent-margin",
+      "recharts": 10,
+      "charts": "5718746",
+      "lifetime_micros": "1576749188893941568652278",
+      "lifetime_fraction_of_best_in_matched_group": "0.9014",
+      "ending_day_upper_bound": 10.503,
+      "maximum_observed_reconstruction_seconds_upper_bound": 14700,
+      "unrecovered_before_next_reset": 0
+    },
+    {
+      "days": 30,
+      "visits": 3,
+      "policy": "forecast-8h-output-1percent-margin",
+      "recharts": 16,
+      "charts": "8793505",
+      "lifetime_micros": "1700699682244272104727273",
+      "lifetime_fraction_of_best_in_matched_group": "0.9722",
+      "ending_day_upper_bound": 10.503,
+      "maximum_observed_reconstruction_seconds_upper_bound": 14700,
+      "unrecovered_before_next_reset": 0
+    },
+    {
+      "days": 30,
+      "visits": 3,
+      "policy": "forecast-24h-output-1percent-margin",
+      "recharts": 22,
+      "charts": "9223772",
+      "lifetime_micros": "1749261439700392575048727",
+      "lifetime_fraction_of_best_in_matched_group": "1.0000",
+      "ending_day_upper_bound": 10.503,
+      "maximum_observed_reconstruction_seconds_upper_bound": 28800,
+      "unrecovered_before_next_reset": 0
+    },
+    {
+      "days": 30,
+      "visits": 6,
+      "policy": "fixed-10-charts",
+      "recharts": 181,
+      "charts": "9156251",
+      "lifetime_micros": "1498429215826593055495185",
+      "lifetime_fraction_of_best_in_matched_group": "0.8478",
+      "ending_day_upper_bound": 11.167,
+      "maximum_observed_reconstruction_seconds_upper_bound": 14400,
+      "unrecovered_before_next_reset": 0
+    },
+    {
+      "days": 30,
+      "visits": 6,
+      "policy": "fixed-100-charts",
+      "recharts": 180,
+      "charts": "9139406",
+      "lifetime_micros": "1494213987708378324603389",
+      "lifetime_fraction_of_best_in_matched_group": "0.8454",
+      "ending_day_upper_bound": 11.167,
+      "maximum_observed_reconstruction_seconds_upper_bound": 14400,
+      "unrecovered_before_next_reset": 0
+    },
+    {
+      "days": 30,
+      "visits": 6,
+      "policy": "multiplier-20-percent",
+      "recharts": 17,
+      "charts": "9347617",
+      "lifetime_micros": "1749396458703348299619791",
+      "lifetime_fraction_of_best_in_matched_group": "0.9898",
+      "ending_day_upper_bound": 11.167,
+      "maximum_observed_reconstruction_seconds_upper_bound": 28800,
+      "unrecovered_before_next_reset": 0
+    },
+    {
+      "days": 30,
+      "visits": 6,
+      "policy": "forecast-1h-output-1percent-margin",
+      "recharts": 12,
+      "charts": "7224896",
+      "lifetime_micros": "1588065472047283348948261",
+      "lifetime_fraction_of_best_in_matched_group": "0.8985",
+      "ending_day_upper_bound": 11.167,
+      "maximum_observed_reconstruction_seconds_upper_bound": 14400,
+      "unrecovered_before_next_reset": 0
+    },
+    {
+      "days": 30,
+      "visits": 6,
+      "policy": "forecast-8h-output-1percent-margin",
+      "recharts": 20,
+      "charts": "6751458",
+      "lifetime_micros": "1730636336408394138462053",
+      "lifetime_fraction_of_best_in_matched_group": "0.9791",
+      "ending_day_upper_bound": 11.167,
+      "maximum_observed_reconstruction_seconds_upper_bound": 14400,
+      "unrecovered_before_next_reset": 0
+    },
+    {
+      "days": 30,
+      "visits": 6,
+      "policy": "forecast-24h-output-1percent-margin",
+      "recharts": 30,
+      "charts": "9230936",
+      "lifetime_micros": "1767503698976503659284929",
+      "lifetime_fraction_of_best_in_matched_group": "1.0000",
+      "ending_day_upper_bound": 11.167,
+      "maximum_observed_reconstruction_seconds_upper_bound": 28800,
+      "unrecovered_before_next_reset": 0
+    },
+    {
+      "days": 90,
+      "visits": 1,
+      "policy": "fixed-10-charts",
+      "recharts": 91,
+      "charts": "29989214",
+      "lifetime_micros": "9379500264008175504776751",
+      "lifetime_fraction_of_best_in_matched_group": "0.9319",
+      "ending_day_upper_bound": 10.17,
+      "maximum_observed_reconstruction_seconds_upper_bound": 86400,
+      "unrecovered_before_next_reset": 0
+    },
+    {
+      "days": 90,
+      "visits": 1,
+      "policy": "fixed-100-charts",
+      "recharts": 90,
+      "charts": "29912679",
+      "lifetime_micros": "9343118539567163222677005",
+      "lifetime_fraction_of_best_in_matched_group": "0.9283",
+      "ending_day_upper_bound": 10.17,
+      "maximum_observed_reconstruction_seconds_upper_bound": 86400,
+      "unrecovered_before_next_reset": 0
+    },
+    {
+      "days": 90,
+      "visits": 1,
+      "policy": "multiplier-20-percent",
+      "recharts": 15,
+      "charts": "29513071",
+      "lifetime_micros": "10065272878009689322123585",
+      "lifetime_fraction_of_best_in_matched_group": "1.0000",
+      "ending_day_upper_bound": 11.17,
+      "maximum_observed_reconstruction_seconds_upper_bound": 57900,
+      "unrecovered_before_next_reset": 0
+    },
+    {
+      "days": 90,
+      "visits": 1,
+      "policy": "forecast-1h-output-1percent-margin",
+      "recharts": 9,
+      "charts": "12051285",
+      "lifetime_micros": "8498250026310997239895855",
+      "lifetime_fraction_of_best_in_matched_group": "0.8443",
+      "ending_day_upper_bound": 11.17,
+      "maximum_observed_reconstruction_seconds_upper_bound": 14700,
+      "unrecovered_before_next_reset": 0
+    },
+    {
+      "days": 90,
+      "visits": 1,
+      "policy": "forecast-8h-output-1percent-margin",
+      "recharts": 13,
+      "charts": "23857482",
+      "lifetime_micros": "9709492942211984891864203",
+      "lifetime_fraction_of_best_in_matched_group": "0.9647",
+      "ending_day_upper_bound": 10.17,
+      "maximum_observed_reconstruction_seconds_upper_bound": 14700,
+      "unrecovered_before_next_reset": 0
+    },
+    {
+      "days": 90,
+      "visits": 1,
+      "policy": "forecast-24h-output-1percent-margin",
+      "recharts": 17,
+      "charts": "30087785",
+      "lifetime_micros": "9970011864953929634708562",
+      "lifetime_fraction_of_best_in_matched_group": "0.9905",
+      "ending_day_upper_bound": 11.17,
+      "maximum_observed_reconstruction_seconds_upper_bound": 29100,
+      "unrecovered_before_next_reset": 0
+    },
+    {
+      "days": 90,
+      "visits": 3,
+      "policy": "fixed-10-charts",
+      "recharts": 271,
+      "charts": "28809579",
+      "lifetime_micros": "8714396938497062543244021",
+      "lifetime_fraction_of_best_in_matched_group": "0.8456",
+      "ending_day_upper_bound": 10.17,
+      "maximum_observed_reconstruction_seconds_upper_bound": 28800,
+      "unrecovered_before_next_reset": 0
+    },
+    {
+      "days": 90,
+      "visits": 3,
+      "policy": "fixed-100-charts",
+      "recharts": 270,
+      "charts": "28780009",
+      "lifetime_micros": "8700691622710271805311882",
+      "lifetime_fraction_of_best_in_matched_group": "0.8443",
+      "ending_day_upper_bound": 10.17,
+      "maximum_observed_reconstruction_seconds_upper_bound": 28800,
+      "unrecovered_before_next_reset": 0
+    },
+    {
+      "days": 90,
+      "visits": 3,
+      "policy": "multiplier-20-percent",
+      "recharts": 18,
+      "charts": "27818744",
+      "lifetime_micros": "10305291544431562702793094",
+      "lifetime_fraction_of_best_in_matched_group": "1.0000",
+      "ending_day_upper_bound": 10.17,
+      "maximum_observed_reconstruction_seconds_upper_bound": 57600,
+      "unrecovered_before_next_reset": 0
+    },
+    {
+      "days": 90,
+      "visits": 3,
+      "policy": "forecast-1h-output-1percent-margin",
+      "recharts": 11,
+      "charts": "13491653",
+      "lifetime_micros": "8846521731377996501230999",
+      "lifetime_fraction_of_best_in_matched_group": "0.8584",
+      "ending_day_upper_bound": 10.503,
+      "maximum_observed_reconstruction_seconds_upper_bound": 14700,
+      "unrecovered_before_next_reset": 0
+    },
+    {
+      "days": 90,
+      "visits": 3,
+      "policy": "forecast-8h-output-1percent-margin",
+      "recharts": 18,
+      "charts": "28498841",
+      "lifetime_micros": "9760479702197148987962371",
+      "lifetime_fraction_of_best_in_matched_group": "0.9471",
+      "ending_day_upper_bound": 10.503,
+      "maximum_observed_reconstruction_seconds_upper_bound": 14700,
+      "unrecovered_before_next_reset": 0
+    },
+    {
+      "days": 90,
+      "visits": 3,
+      "policy": "forecast-24h-output-1percent-margin",
+      "recharts": 24,
+      "charts": "21121241",
+      "lifetime_micros": "10209462806076571811309493",
+      "lifetime_fraction_of_best_in_matched_group": "0.9907",
+      "ending_day_upper_bound": 10.503,
+      "maximum_observed_reconstruction_seconds_upper_bound": 28800,
+      "unrecovered_before_next_reset": 0
+    },
+    {
+      "days": 90,
+      "visits": 6,
+      "policy": "fixed-10-charts",
+      "recharts": 541,
+      "charts": "27720094",
+      "lifetime_micros": "8188999459862022599041020",
+      "lifetime_fraction_of_best_in_matched_group": "0.7914",
+      "ending_day_upper_bound": 11.167,
+      "maximum_observed_reconstruction_seconds_upper_bound": 14400,
+      "unrecovered_before_next_reset": 0
+    },
+    {
+      "days": 90,
+      "visits": 6,
+      "policy": "fixed-100-charts",
+      "recharts": 540,
+      "charts": "27703333",
+      "lifetime_micros": "8181397339937626935179866",
+      "lifetime_fraction_of_best_in_matched_group": "0.7907",
+      "ending_day_upper_bound": 11.167,
+      "maximum_observed_reconstruction_seconds_upper_bound": 14400,
+      "unrecovered_before_next_reset": 0
+    },
+    {
+      "days": 90,
+      "visits": 6,
+      "policy": "multiplier-20-percent",
+      "recharts": 20,
+      "charts": "28031980",
+      "lifetime_micros": "10347528387225396974193775",
+      "lifetime_fraction_of_best_in_matched_group": "1.0000",
+      "ending_day_upper_bound": 11.167,
+      "maximum_observed_reconstruction_seconds_upper_bound": 57600,
+      "unrecovered_before_next_reset": 0
+    },
+    {
+      "days": 90,
+      "visits": 6,
+      "policy": "forecast-1h-output-1percent-margin",
+      "recharts": 13,
+      "charts": "17422229",
+      "lifetime_micros": "9143450923556297122171315",
+      "lifetime_fraction_of_best_in_matched_group": "0.8836",
+      "ending_day_upper_bound": 11.167,
+      "maximum_observed_reconstruction_seconds_upper_bound": 14400,
+      "unrecovered_before_next_reset": 0
+    },
+    {
+      "days": 90,
+      "visits": 6,
+      "policy": "forecast-8h-output-1percent-margin",
+      "recharts": 22,
+      "charts": "20685417",
+      "lifetime_micros": "9958957658045033619062675",
+      "lifetime_fraction_of_best_in_matched_group": "0.9624",
+      "ending_day_upper_bound": 11.167,
+      "maximum_observed_reconstruction_seconds_upper_bound": 14400,
+      "unrecovered_before_next_reset": 0
+    },
+    {
+      "days": 90,
+      "visits": 6,
+      "policy": "forecast-24h-output-1percent-margin",
+      "recharts": 32,
+      "charts": "21129051",
+      "lifetime_micros": "10241985245525071145467332",
+      "lifetime_fraction_of_best_in_matched_group": "0.9898",
+      "ending_day_upper_bound": 11.167,
+      "maximum_observed_reconstruction_seconds_upper_bound": 28800,
+      "unrecovered_before_next_reset": 0
+    }
+  ],
+  "note_spending_comparisons": [
+    {
+      "days": 30,
+      "contracts": "oneReadyPerVisit",
+      "sink_order": "campaignFirst",
+      "notes_earned": {
+        "min": 1170,
+        "max": 1170,
+        "unreached": 0,
+        "cases": 3
+      },
+      "notes_spent": {
+        "min": 1100,
+        "max": 1100,
+        "unreached": 0,
+        "cases": 3
+      },
+      "ending_days_upper_bound": {
+        "min": 15.17,
+        "max": 15.17,
+        "unreached": 0,
+        "cases": 3
+      },
+      "all_sinks_purchased_days_upper_bound": {
+        "min": null,
+        "max": null,
+        "unreached": 3,
+        "cases": 3
+      },
+      "full_dossier_completion_cases": 0
+    },
+    {
+      "days": 30,
+      "contracts": "oneReadyPerVisit",
+      "sink_order": "decorationsFirst",
+      "notes_earned": {
+        "min": 1170,
+        "max": 1170,
+        "unreached": 0,
+        "cases": 3
+      },
+      "notes_spent": {
+        "min": 1150,
+        "max": 1150,
+        "unreached": 0,
+        "cases": 3
+      },
+      "ending_days_upper_bound": {
+        "min": 29.17,
+        "max": 29.17,
+        "unreached": 0,
+        "cases": 3
+      },
+      "all_sinks_purchased_days_upper_bound": {
+        "min": null,
+        "max": null,
+        "unreached": 3,
+        "cases": 3
+      },
+      "full_dossier_completion_cases": 0
+    },
+    {
+      "days": 30,
+      "contracts": "oneReadyPerVisit",
+      "sink_order": "plansFirst",
+      "notes_earned": {
+        "min": 1170,
+        "max": 1170,
+        "unreached": 0,
+        "cases": 3
+      },
+      "notes_spent": {
+        "min": 1150,
+        "max": 1150,
+        "unreached": 0,
+        "cases": 3
+      },
+      "ending_days_upper_bound": {
+        "min": 21.17,
+        "max": 21.17,
+        "unreached": 0,
+        "cases": 3
+      },
+      "all_sinks_purchased_days_upper_bound": {
+        "min": null,
+        "max": null,
+        "unreached": 3,
+        "cases": 3
+      },
+      "full_dossier_completion_cases": 0
+    },
+    {
+      "days": 30,
+      "contracts": "pursueWithSeason",
+      "sink_order": "campaignFirst",
+      "notes_earned": {
+        "min": 1740,
+        "max": 1760,
+        "unreached": 0,
+        "cases": 3
+      },
+      "notes_spent": {
+        "min": 1700,
+        "max": 1750,
+        "unreached": 0,
+        "cases": 3
+      },
+      "ending_days_upper_bound": {
+        "min": 10.17,
+        "max": 10.17,
+        "unreached": 0,
+        "cases": 3
+      },
+      "all_sinks_purchased_days_upper_bound": {
+        "min": 29.0,
+        "max": 29.0,
+        "unreached": 2,
+        "cases": 3
+      },
+      "full_dossier_completion_cases": 3
+    },
+    {
+      "days": 30,
+      "contracts": "pursueWithSeason",
+      "sink_order": "decorationsFirst",
+      "notes_earned": {
+        "min": 1740,
+        "max": 1750,
+        "unreached": 0,
+        "cases": 3
+      },
+      "notes_spent": {
+        "min": 1650,
+        "max": 1750,
+        "unreached": 0,
+        "cases": 3
+      },
+      "ending_days_upper_bound": {
+        "min": 20.17,
+        "max": 20.17,
+        "unreached": 0,
+        "cases": 3
+      },
+      "all_sinks_purchased_days_upper_bound": {
+        "min": 29.0,
+        "max": 29.0,
+        "unreached": 2,
+        "cases": 3
+      },
+      "full_dossier_completion_cases": 1
+    },
+    {
+      "days": 30,
+      "contracts": "pursueWithSeason",
+      "sink_order": "plansFirst",
+      "notes_earned": {
+        "min": 1740,
+        "max": 1750,
+        "unreached": 0,
+        "cases": 3
+      },
+      "notes_spent": {
+        "min": 1650,
+        "max": 1750,
+        "unreached": 0,
+        "cases": 3
+      },
+      "ending_days_upper_bound": {
+        "min": 14.17,
+        "max": 15.17,
+        "unreached": 0,
+        "cases": 3
+      },
+      "all_sinks_purchased_days_upper_bound": {
+        "min": 29.0,
+        "max": 29.0,
+        "unreached": 2,
+        "cases": 3
+      },
+      "full_dossier_completion_cases": 1
+    },
+    {
+      "days": 30,
+      "contracts": "surveysOnly",
+      "sink_order": "campaignFirst",
+      "notes_earned": {
+        "min": 870,
+        "max": 870,
+        "unreached": 0,
+        "cases": 3
+      },
+      "notes_spent": {
+        "min": 800,
+        "max": 800,
+        "unreached": 0,
+        "cases": 3
+      },
+      "ending_days_upper_bound": {
+        "min": 20.17,
+        "max": 20.17,
+        "unreached": 0,
+        "cases": 3
+      },
+      "all_sinks_purchased_days_upper_bound": {
+        "min": null,
+        "max": null,
+        "unreached": 3,
+        "cases": 3
+      },
+      "full_dossier_completion_cases": 0
+    },
+    {
+      "days": 30,
+      "contracts": "surveysOnly",
+      "sink_order": "decorationsFirst",
+      "notes_earned": {
+        "min": 870,
+        "max": 870,
+        "unreached": 0,
+        "cases": 3
+      },
+      "notes_spent": {
+        "min": 850,
+        "max": 850,
+        "unreached": 0,
+        "cases": 3
+      },
+      "ending_days_upper_bound": {
+        "min": null,
+        "max": null,
+        "unreached": 3,
+        "cases": 3
+      },
+      "all_sinks_purchased_days_upper_bound": {
+        "min": null,
+        "max": null,
+        "unreached": 3,
+        "cases": 3
+      },
+      "full_dossier_completion_cases": 0
+    },
+    {
+      "days": 30,
+      "contracts": "surveysOnly",
+      "sink_order": "plansFirst",
+      "notes_earned": {
+        "min": 870,
+        "max": 870,
+        "unreached": 0,
+        "cases": 3
+      },
+      "notes_spent": {
+        "min": 850,
+        "max": 850,
+        "unreached": 0,
+        "cases": 3
+      },
+      "ending_days_upper_bound": {
+        "min": 29.17,
+        "max": 29.17,
+        "unreached": 0,
+        "cases": 3
+      },
+      "all_sinks_purchased_days_upper_bound": {
+        "min": null,
+        "max": null,
+        "unreached": 3,
+        "cases": 3
+      },
+      "full_dossier_completion_cases": 0
+    },
+    {
+      "days": 90,
+      "contracts": "oneReadyPerVisit",
+      "sink_order": "campaignFirst",
+      "notes_earned": {
+        "min": 3570,
+        "max": 3570,
+        "unreached": 0,
+        "cases": 3
+      },
+      "notes_spent": {
+        "min": 1750,
+        "max": 1750,
+        "unreached": 0,
+        "cases": 3
+      },
+      "ending_days_upper_bound": {
+        "min": 15.17,
+        "max": 15.17,
+        "unreached": 0,
+        "cases": 3
+      },
+      "all_sinks_purchased_days_upper_bound": {
+        "min": 44.0,
+        "max": 44.0,
+        "unreached": 0,
+        "cases": 3
+      },
+      "full_dossier_completion_cases": 3
+    },
+    {
+      "days": 90,
+      "contracts": "oneReadyPerVisit",
+      "sink_order": "decorationsFirst",
+      "notes_earned": {
+        "min": 3570,
+        "max": 3570,
+        "unreached": 0,
+        "cases": 3
+      },
+      "notes_spent": {
+        "min": 1750,
+        "max": 1750,
+        "unreached": 0,
+        "cases": 3
+      },
+      "ending_days_upper_bound": {
+        "min": 29.17,
+        "max": 29.17,
+        "unreached": 0,
+        "cases": 3
+      },
+      "all_sinks_purchased_days_upper_bound": {
+        "min": 44.0,
+        "max": 44.0,
+        "unreached": 0,
+        "cases": 3
+      },
+      "full_dossier_completion_cases": 3
+    },
+    {
+      "days": 90,
+      "contracts": "oneReadyPerVisit",
+      "sink_order": "plansFirst",
+      "notes_earned": {
+        "min": 3570,
+        "max": 3570,
+        "unreached": 0,
+        "cases": 3
+      },
+      "notes_spent": {
+        "min": 1750,
+        "max": 1750,
+        "unreached": 0,
+        "cases": 3
+      },
+      "ending_days_upper_bound": {
+        "min": 21.17,
+        "max": 21.17,
+        "unreached": 0,
+        "cases": 3
+      },
+      "all_sinks_purchased_days_upper_bound": {
+        "min": 44.0,
+        "max": 44.0,
+        "unreached": 0,
+        "cases": 3
+      },
+      "full_dossier_completion_cases": 3
+    },
+    {
+      "days": 90,
+      "contracts": "pursueWithSeason",
+      "sink_order": "campaignFirst",
+      "notes_earned": {
+        "min": 5340,
+        "max": 5360,
+        "unreached": 0,
+        "cases": 3
+      },
+      "notes_spent": {
+        "min": 1750,
+        "max": 1750,
+        "unreached": 0,
+        "cases": 3
+      },
+      "ending_days_upper_bound": {
+        "min": 10.17,
+        "max": 10.17,
+        "unreached": 0,
+        "cases": 3
+      },
+      "all_sinks_purchased_days_upper_bound": {
+        "min": 29.0,
+        "max": 30.0,
+        "unreached": 0,
+        "cases": 3
+      },
+      "full_dossier_completion_cases": 3
+    },
+    {
+      "days": 90,
+      "contracts": "pursueWithSeason",
+      "sink_order": "decorationsFirst",
+      "notes_earned": {
+        "min": 5340,
+        "max": 5360,
+        "unreached": 0,
+        "cases": 3
+      },
+      "notes_spent": {
+        "min": 1750,
+        "max": 1750,
+        "unreached": 0,
+        "cases": 3
+      },
+      "ending_days_upper_bound": {
+        "min": 20.17,
+        "max": 20.17,
+        "unreached": 0,
+        "cases": 3
+      },
+      "all_sinks_purchased_days_upper_bound": {
+        "min": 29.0,
+        "max": 30.0,
+        "unreached": 0,
+        "cases": 3
+      },
+      "full_dossier_completion_cases": 3
+    },
+    {
+      "days": 90,
+      "contracts": "pursueWithSeason",
+      "sink_order": "plansFirst",
+      "notes_earned": {
+        "min": 5340,
+        "max": 5360,
+        "unreached": 0,
+        "cases": 3
+      },
+      "notes_spent": {
+        "min": 1750,
+        "max": 1750,
+        "unreached": 0,
+        "cases": 3
+      },
+      "ending_days_upper_bound": {
+        "min": 14.17,
+        "max": 15.17,
+        "unreached": 0,
+        "cases": 3
+      },
+      "all_sinks_purchased_days_upper_bound": {
+        "min": 29.0,
+        "max": 30.0,
+        "unreached": 0,
+        "cases": 3
+      },
+      "full_dossier_completion_cases": 3
+    },
+    {
+      "days": 90,
+      "contracts": "surveysOnly",
+      "sink_order": "campaignFirst",
+      "notes_earned": {
+        "min": 2670,
+        "max": 2670,
+        "unreached": 0,
+        "cases": 3
+      },
+      "notes_spent": {
+        "min": 1750,
+        "max": 1750,
+        "unreached": 0,
+        "cases": 3
+      },
+      "ending_days_upper_bound": {
+        "min": 20.17,
+        "max": 20.17,
+        "unreached": 0,
+        "cases": 3
+      },
+      "all_sinks_purchased_days_upper_bound": {
+        "min": 59.0,
+        "max": 59.0,
+        "unreached": 0,
+        "cases": 3
+      },
+      "full_dossier_completion_cases": 3
+    },
+    {
+      "days": 90,
+      "contracts": "surveysOnly",
+      "sink_order": "decorationsFirst",
+      "notes_earned": {
+        "min": 2670,
+        "max": 2670,
+        "unreached": 0,
+        "cases": 3
+      },
+      "notes_spent": {
+        "min": 1750,
+        "max": 1750,
+        "unreached": 0,
+        "cases": 3
+      },
+      "ending_days_upper_bound": {
+        "min": 39.17,
+        "max": 39.17,
+        "unreached": 0,
+        "cases": 3
+      },
+      "all_sinks_purchased_days_upper_bound": {
+        "min": 59.0,
+        "max": 59.0,
+        "unreached": 0,
+        "cases": 3
+      },
+      "full_dossier_completion_cases": 3
+    },
+    {
+      "days": 90,
+      "contracts": "surveysOnly",
+      "sink_order": "plansFirst",
+      "notes_earned": {
+        "min": 2670,
+        "max": 2670,
+        "unreached": 0,
+        "cases": 3
+      },
+      "notes_spent": {
+        "min": 1750,
+        "max": 1750,
+        "unreached": 0,
+        "cases": 3
+      },
+      "ending_days_upper_bound": {
+        "min": 29.17,
+        "max": 29.17,
+        "unreached": 0,
+        "cases": 3
+      },
+      "all_sinks_purchased_days_upper_bound": {
+        "min": 59.0,
+        "max": 59.0,
+        "unreached": 0,
+        "cases": 3
+      },
+      "full_dossier_completion_cases": 3
+    }
+  ],
+  "low_tier_relevance": {
+    "sampled_reachable_states": 225,
+    "sampled_states_with_low_tier_best_one_unit_efficiency": 41,
+    "low_tier_externality_positive_samples": 450,
+    "low_tier_externality_sample_denominator": 450,
+    "cross_tier_share_of_low_tier_gain_min": "0.9994833493529423149721182350",
+    "cross_tier_share_of_low_tier_gain_max": "0.9999423286239845840131288555",
+    "ninety_day_cases": 45,
+    "ninety_day_cases_buying_both_low_tiers_after_day30": 45,
+    "caveat": "After-day30 purchases include reset reconstruction. Exact one-unit efficiency is not a proof of an optimal multi-purchase policy."
+  },
+  "season_isolation": [
+    {
+      "cadence": "continuous_online",
+      "new_account_charts": "0",
+      "veteran_account_charts": "9310726",
+      "veteran_lifetime_micros": "1612026717695436435489684",
+      "main_profiles_differ": true,
+      "main_profiles_unchanged": true,
+      "paired_event_states_identical": true,
+      "main_power_injection_rejected": true,
+      "archive_resume_day31_lifetime_micros": "1935107833869547591576",
+      "observations": [
+        {
+          "day": 1,
+          "phase": "live",
+          "lifetime_micros": "43238096538021457847",
+          "counts": [
+            205,
+            174,
+            116,
+            122,
+            121
+          ],
+          "paired_state_sha256": "22ded7106cfd1bddfc990875f5ca0b966449a0f8e6d84ba156abaca75622357f"
+        },
+        {
+          "day": 7,
+          "phase": "live",
+          "lifetime_micros": "411394984843042538341",
+          "counts": [
+            224,
+            194,
+            135,
+            141,
+            141
+          ],
+          "paired_state_sha256": "2227c891bf77191a0033fdd6322666e9811a8f4df990f0bf7432859748966161"
+        },
+        {
+          "day": 28,
+          "phase": "archived",
+          "lifetime_micros": "1863145188278123187800",
+          "counts": [
+            239,
+            208,
+            148,
+            155,
+            154
+          ],
+          "paired_state_sha256": "e80d561a56b18926452e2a1ce3a0b48998d258bfd27ff2af0253c60b592ae320"
+        },
+        {
+          "day": 29,
+          "phase": "archived",
+          "lifetime_micros": "1863145188278123187800",
+          "counts": [
+            239,
+            208,
+            148,
+            155,
+            154
+          ],
+          "paired_state_sha256": "c30d3d11eda6a8043928fd3b92d63400200a33e6684ead7406dcb1c14160ad08"
+        },
+        {
+          "day": 30,
+          "phase": "archived",
+          "lifetime_micros": "1863145188278123187800",
+          "counts": [
+            239,
+            208,
+            148,
+            155,
+            154
+          ],
+          "paired_state_sha256": "43843cd9e1905cb4173e87b1703f5c20fb752b4b919171a43cc2edea3e6c4299"
+        }
+      ]
+    },
+    {
+      "cadence": "daily_offline_returns",
+      "new_account_charts": "0",
+      "veteran_account_charts": "9310726",
+      "veteran_lifetime_micros": "1612026717695436435489684",
+      "main_profiles_differ": true,
+      "main_profiles_unchanged": true,
+      "paired_event_states_identical": true,
+      "main_power_injection_rejected": true,
+      "archive_resume_day31_lifetime_micros": "1935107833869547591576",
+      "observations": [
+        {
+          "day": 1,
+          "phase": "live",
+          "lifetime_micros": "43238096538021457847",
+          "counts": [
+            205,
+            174,
+            116,
+            122,
+            121
+          ],
+          "paired_state_sha256": "22ded7106cfd1bddfc990875f5ca0b966449a0f8e6d84ba156abaca75622357f"
+        },
+        {
+          "day": 7,
+          "phase": "live",
+          "lifetime_micros": "411394984843042538341",
+          "counts": [
+            224,
+            194,
+            135,
+            141,
+            141
+          ],
+          "paired_state_sha256": "2227c891bf77191a0033fdd6322666e9811a8f4df990f0bf7432859748966161"
+        },
+        {
+          "day": 28,
+          "phase": "archived",
+          "lifetime_micros": "1863145188278123187800",
+          "counts": [
+            239,
+            208,
+            148,
+            155,
+            154
+          ],
+          "paired_state_sha256": "e80d561a56b18926452e2a1ce3a0b48998d258bfd27ff2af0253c60b592ae320"
+        },
+        {
+          "day": 29,
+          "phase": "archived",
+          "lifetime_micros": "1863145188278123187800",
+          "counts": [
+            239,
+            208,
+            148,
+            155,
+            154
+          ],
+          "paired_state_sha256": "c30d3d11eda6a8043928fd3b92d63400200a33e6684ead7406dcb1c14160ad08"
+        },
+        {
+          "day": 30,
+          "phase": "archived",
+          "lifetime_micros": "1863145188278123187800",
+          "counts": [
+            239,
+            208,
+            148,
+            155,
+            154
+          ],
+          "paired_state_sha256": "43843cd9e1905cb4173e87b1703f5c20fb752b4b919171a43cc2edea3e6c4299"
+        }
+      ]
+    }
+  ],
+  "actual_engine_seconds": 770.544,
+  "acceptance": "Supplemental author evidence only; no original package/scope/beta gate accepted."
+}

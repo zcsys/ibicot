@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/Users/csys/Desktop/ibicot/idle/release/qa/android-delivery-final-20261025T163933.344789Z/review.py", line 39, in <module>
+    q=deepcopy(p);change(q);errors=ns['payload_errors'](q,r,log);check('negative '+name,bool(errors));neg.append({'mutation':name,'errors':errors})
+                                                                 ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/csys/Desktop/ibicot/idle/release/qa/android-delivery-final-20261025T163933.344789Z/review.py", line 9, in check
+    def check(n,v):checks.append({'name':n,'passed':bool(v)});assert v,n
+                                                                     ^
+AssertionError: negative callback-failure

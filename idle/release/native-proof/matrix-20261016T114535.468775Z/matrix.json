@@ -1,0 +1,75 @@
+{
+  "candidate": ".tooling/build-candidates/20261016T112921.896155Z-d85bdf74433d",
+  "started_utc": "20261016T114535.468775Z",
+  "natural_start_evidence": "release/native-proof/integration-ios-phone-20261016T114357.818511Z/verification.json",
+  "cases": [
+    {
+      "label": "ios-phone",
+      "device": "F05BE4B0-52C1-4CA1-B721-BD64AE559E3F",
+      "scenario": "natural-reload",
+      "run_id": "natural-d85-c",
+      "exit_code": 0,
+      "runner_output": "Native checks for ios-phone; evidence: /Users/csys/Desktop/ibicot/idle/release/native-proof/integration-ios-phone-20261016T114535.655272Z\nios-phone: exit 0\n"
+    },
+    {
+      "label": "android-phone",
+      "device": "emulator-5556",
+      "scenario": "session-start",
+      "run_id": "integrated-d85-c",
+      "exit_code": 0,
+      "runner_output": "Native checks for android-phone; evidence: /Users/csys/Desktop/ibicot/idle/release/native-proof/integration-android-phone-20261016T114617.323080Z\nandroid-phone: exit 0\n"
+    },
+    {
+      "label": "android-phone",
+      "device": "emulator-5556",
+      "scenario": "session-reload",
+      "run_id": "integrated-d85-c",
+      "exit_code": 0,
+      "runner_output": "Native checks for android-phone; evidence: /Users/csys/Desktop/ibicot/idle/release/native-proof/integration-android-phone-20261016T114657.623540Z\nandroid-phone: exit 0\n"
+    },
+    {
+      "label": "android-phone",
+      "device": "emulator-5556",
+      "scenario": "seeded",
+      "run_id": "",
+      "exit_code": 0,
+      "runner_output": "Native checks for android-phone; evidence: /Users/csys/Desktop/ibicot/idle/release/native-proof/integration-android-phone-20261016T114741.809690Z\nandroid-phone: exit 0\n"
+    },
+    {
+      "label": "android-phone",
+      "device": "emulator-5556",
+      "scenario": "natural-start",
+      "run_id": "natural-d85-c",
+      "exit_code": 0,
+      "runner_output": "Native checks for android-phone; evidence: /Users/csys/Desktop/ibicot/idle/release/native-proof/integration-android-phone-20261016T114829.379514Z\nandroid-phone: exit 0\n"
+    },
+    {
+      "label": "android-phone",
+      "device": "emulator-5556",
+      "scenario": "natural-reload",
+      "run_id": "natural-d85-c",
+      "exit_code": 0,
+      "runner_output": "Native checks for android-phone; evidence: /Users/csys/Desktop/ibicot/idle/release/native-proof/integration-android-phone-20261016T114943.334641Z\nandroid-phone: exit 0\n"
+    },
+    {
+      "label": "ios-tablet",
+      "device": "F103390E-7B7C-4F0B-9404-5E029C7131FF",
+      "scenario": "seeded",
+      "run_id": "",
+      "exit_code": 0,
+      "runner_output": "Native checks for ios-tablet; evidence: /Users/csys/Desktop/ibicot/idle/release/native-proof/integration-ios-tablet-20261016T115014.482900Z\nios-tablet: exit 0\n"
+    },
+    {
+      "label": "ios-tablet",
+      "device": "F103390E-7B7C-4F0B-9404-5E029C7131FF",
+      "scenario": "session-start",
+      "run_id": "integrated-d85-c",
+      "exit_code": 0,
+      "runner_output": "Native checks for ios-tablet; evidence: /Users/csys/Desktop/ibicot/idle/release/native-proof/integration-ios-tablet-20261016T115114.931802Z\nios-tablet: exit 0\n"
+    }
+  ],
+  "unsigned_release": {
+    "exit_code": 1,
+    "runner_output": "Frozen candidate: /Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261016T112921.896155Z-d85bdf74433d\nEvidence: /Users/csys/Desktop/ibicot/idle/release/native-proof/20261016T115204.670734Z\nBuilding ios; log: /Users/csys/Desktop/ibicot/idle/release/native-proof/20261016T115204.670734Z/ios.log\nios: exit 0\nBuilding android; log: /Users/csys/Desktop/ibicot/idle/release/native-proof/20261016T115204.670734Z/android.log\nandroid: exit 1\n"
+  }
+}

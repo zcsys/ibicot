@@ -1,0 +1,50 @@
+[
+  {
+    "utc": "2026-10-25T16:20:48.468376+00:00",
+    "argv": [
+      "/Users/csys/Library/Android/sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "shell",
+      "-tt",
+      "uiautomator",
+      "dump",
+      "/dev/tty"
+    ],
+    "exit_code": 0,
+    "file": "operator-shade-closed-hierarchy.txt",
+    "sha256": "ef9a63205266f2ba96c5527849fbcc6b3677adfdfb23505c4665aa0f7ac60acc",
+    "stderr": ""
+  },
+  {
+    "utc": "2026-10-25T16:20:50.825233+00:00",
+    "argv": [
+      "/Users/csys/Library/Android/sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "exec-out",
+      "screencap",
+      "-p"
+    ],
+    "exit_code": 0,
+    "file": "operator-shade-closed.png",
+    "sha256": "ecb95967b47602c09501be84454ffabf96ecfeae5dc2ce14a80843a6f74964fc",
+    "stderr": ""
+  },
+  {
+    "utc": "2026-10-25T16:20:51.581795+00:00",
+    "argv": [
+      "/Users/csys/Library/Android/sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "shell",
+      "dumpsys",
+      "activity",
+      "activities"
+    ],
+    "exit_code": 0,
+    "file": "operator-shade-closed-activities.txt",
+    "sha256": "c96ae625a28738dedac85604b416551cbee34ea46aee24c894295f68aa1ef346",
+    "stderr": ""
+  }
+]

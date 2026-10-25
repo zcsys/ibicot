@@ -1,0 +1,31 @@
+--- before/platform_smoke_test.dart
++++ proposed/platform_smoke_test.dart
+@@ -675,11 +675,11 @@
+       await pumpNativeUi(tester);
+     }
+ 
+-    await until(const Duration(seconds: 4));
++    await until(Duration(seconds: Platform.isAndroid ? 2 : 4));
+     final beforeCount = subject.state.counts.first;
+     await tap(find.byKey(const ValueKey('buy-0')));
+     expect(subject.state.counts.first, beforeCount + 1);
+-    await until(const Duration(seconds: 8));
++    await until(Duration(seconds: Platform.isAndroid ? 5 : 8));
+     await tap(find.text('Logbook'));
+     await tap(find.byKey(const ValueKey('open-story')));
+     await tester.ensureVisible(
+@@ -687,12 +687,12 @@
+     );
+     await pumpNativeUi(tester);
+     await screenshot('chapter');
+-    await until(const Duration(seconds: 14));
++    await until(Duration(seconds: Platform.isAndroid ? 11 : 14));
+     await tap(find.byKey(const ValueKey('story-tab-1')));
+     await tester.ensureVisible(find.byKey(const ValueKey('active-challenge')));
+     await pumpNativeUi(tester);
+     await screenshot('challenge');
+-    await until(const Duration(seconds: 20));
++    await until(Duration(seconds: Platform.isAndroid ? 16 : 20));
+     await tester.pageBack();
+     await pumpNativeUi(tester);
+     final openSeason = find.byKey(const ValueKey('open-season'));

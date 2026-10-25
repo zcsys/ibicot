@@ -1,0 +1,120 @@
+{
+  "original_scope": {
+    "id": "S08",
+    "requirement": "24 hours full production plus 48 hours at quarter rate; event-driven saved-policy replay",
+    "source": "V1_ROADMAP.md \u00a7\u00a73,6,8",
+    "work_items": [
+      "M3-01",
+      "M3-10",
+      "M5-01"
+    ],
+    "verification": "Equivalent event histories match integer decisions; 72-hour cap and 24-hour return budget tested.",
+    "delivery_status": "not_verified",
+    "evidence": []
+  },
+  "core_numeric_bridge": [
+    {
+      "path": "game/core/lib/src/daily.dart",
+      "expected": "1a43e6a035472d52430c6fc1ca609bcb4cd2f564794e2b49a36cef507803338a",
+      "current": "1a43e6a035472d52430c6fc1ca609bcb4cd2f564794e2b49a36cef507803338a",
+      "matches": true
+    },
+    {
+      "path": "game/core/lib/src/daily_engine.dart",
+      "expected": "1949239d4ae3bba5c72d716a3a027c0ada52ec97e434431a132c941001db322f",
+      "current": "1949239d4ae3bba5c72d716a3a027c0ada52ec97e434431a132c941001db322f",
+      "matches": true
+    },
+    {
+      "path": "game/core/lib/src/engine.dart",
+      "expected": "0fbc3f3dfbb54df8a0cef41a8b8c788baef473d0bbffe643301a3d9c9d9eade6",
+      "current": "0fbc3f3dfbb54df8a0cef41a8b8c788baef473d0bbffe643301a3d9c9d9eade6",
+      "matches": true
+    },
+    {
+      "path": "game/core/lib/src/fixed.dart",
+      "expected": "c167fdf3c4b95965f1bfc3658095dad81b6f013c71fa5abc7505b7731d6c698f",
+      "current": "c167fdf3c4b95965f1bfc3658095dad81b6f013c71fa5abc7505b7731d6c698f",
+      "matches": true
+    },
+    {
+      "path": "game/core/lib/src/state.dart",
+      "expected": "04e1210cb26e7cc15cf3294c682f43bd266d9c52acbc238465061d9c7aa46a9e",
+      "current": "04e1210cb26e7cc15cf3294c682f43bd266d9c52acbc238465061d9c7aa46a9e",
+      "matches": true
+    },
+    {
+      "path": "game/core/lib/src/support.dart",
+      "expected": "b09af96c6523177cc62214d58d34dbb83467c0b0a384d024ba1b4ead46ebaa23",
+      "current": "b09af96c6523177cc62214d58d34dbb83467c0b0a384d024ba1b4ead46ebaa23",
+      "matches": true
+    },
+    {
+      "path": "game/core/lib/src/support_engine.dart",
+      "expected": "ae08becad0f438878f4bdf2bbd9f2045c7bcdcf1bcf17e6a39943e574ad79e53",
+      "current": "ae08becad0f438878f4bdf2bbd9f2045c7bcdcf1bcf17e6a39943e574ad79e53",
+      "matches": true
+    },
+    {
+      "path": "game/core/lib/tideglass_core.dart",
+      "expected": "8c0d10c89cc961221fc04c217fde4d3c799e574c8abd178f1249632a565ccee4",
+      "current": "8c0d10c89cc961221fc04c217fde4d3c799e574c8abd178f1249632a565ccee4",
+      "matches": true
+    }
+  ],
+  "numeric_bridge_exact_rows": 62,
+  "current_native_single_samples": [
+    {
+      "label": "ios-phone",
+      "report": "release/native-proof/integration-ios-phone-20261023T042413.249061Z/verification.json",
+      "report_sha256": "884480a2af2bf66e51908fa5806ccdca54213b044ec7d4cf7094e1bfbf9f2e83",
+      "result_sha256": "e88fb49297330933fe475fb3b589f036ec0e09f5ee5ea8d512056ea3015c48f8",
+      "harness_sha256": "7622fd5997fff4d1e23f1a2facc66694e6a81741ddfbce4a3062fd7e61e1f647",
+      "launch_single_sample_ms": 692,
+      "provenance": "Seeded 24-hour absence, earned chapter and Notes. Native worker, UI, storage and audio SDK execute normally. No natural pacing, human audio appraisal or physical-device performance claim.",
+      "checks": [
+        "Native bootstrap completed seeded 24-hour worker replay and finalized salvage receipt",
+        "Collection route equipped earned chapter appearance and spent exactly 50 Notes on coexisting decoration",
+        "Production native audio driver initialized, switched all three tracks and respected foreground cue gating",
+        "All eleven AAC assets decoded with positive duration; native music playback clock advanced and paused"
+      ],
+      "not_p95": true,
+      "not_physical_device": true
+    },
+    {
+      "label": "android",
+      "report": "release/native-proof/integration-android-20261023T045839.608141Z/verification.json",
+      "report_sha256": "e7d311d5dae80a0acd7b6758a2248602605c31d5460d7baec52a908bff5b1faf",
+      "result_sha256": "4ada75f4ddd6b54ca3765b4a111af572c6b71b99a3cd86c24ad4591fbc346357",
+      "harness_sha256": "071635c01ed508077b467462bac279107a8716861ac97a5b657a5401b2cc3506",
+      "launch_single_sample_ms": 6322,
+      "provenance": "Seeded 24-hour absence, earned chapter and Notes. Native worker, UI, storage and audio SDK execute normally. No natural pacing, human audio appraisal or physical-device performance claim.",
+      "checks": [
+        "Native bootstrap completed seeded 24-hour worker replay and finalized salvage receipt",
+        "Collection route equipped earned chapter appearance and spent exactly 50 Notes on coexisting decoration",
+        "Production native audio driver initialized, switched all three tracks and respected foreground cue gating",
+        "All eleven AAC assets decoded with positive duration; native music playback clock advanced and paused"
+      ],
+      "not_p95": true,
+      "not_physical_device": true
+    },
+    {
+      "label": "ios-tablet",
+      "report": "release/native-proof/integration-ios-tablet-20261023T052438.108744Z/verification.json",
+      "report_sha256": "a8ae36e877ceee6e8f4eddd8b61967d0077b50b28dac1bc87967bf44cf98e7cd",
+      "result_sha256": "f6df78f033b01366392bf5421272bd371211a2c6f39dd04ef876dca46ce70cdd",
+      "harness_sha256": "071635c01ed508077b467462bac279107a8716861ac97a5b657a5401b2cc3506",
+      "launch_single_sample_ms": 700,
+      "provenance": "Seeded 24-hour absence, earned chapter and Notes. Native worker, UI, storage and audio SDK execute normally. No natural pacing, human audio appraisal or physical-device performance claim.",
+      "checks": [
+        "Native bootstrap completed seeded 24-hour worker replay and finalized salvage receipt",
+        "Collection route equipped earned chapter appearance and spent exactly 50 Notes on coexisting decoration",
+        "Production native audio driver initialized, switched all three tracks and respected foreground cue gating",
+        "All eleven AAC assets decoded with positive duration; native music playback clock advanced and paused"
+      ],
+      "not_p95": true,
+      "not_physical_device": true
+    }
+  ],
+  "no_new_runtime_execution": true
+}

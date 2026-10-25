@@ -1,0 +1,91 @@
+Running Gradle task 'assembleDebug'...                             22.6s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...        1,706ms
+D/AccessibilityBridge( 5708): Setting not found: accessibility_display_inversion_enabled, using default: 0
+D/FlutterRenderer( 5708): Width is zero. 0,0
+W/HWUI    ( 5708): Unknown dataspace 0
+I/WindowExtensionsImpl( 5708): Initializing Window Extensions, vendor API level=6, activity embedding enabled=true
+D/FlutterRenderer( 5708): Width is zero. 0,0
+D/FlutterJNI( 5708): Sending viewport metrics to the engine.
+W/HWUI    ( 5708): Failed to choose config with EGL_SWAP_BEHAVIOR_PRESERVED, retrying without...
+W/HWUI    ( 5708): Failed to initialize 101010-2 format, error = EGL_SUCCESS
+I/Gralloc4( 5708): mapper 4.x is not supported
+I/.tideglass.game( 5708): Compiler allocated 5250KB to compile void android.view.ViewRootImpl.performTraversals()
+I/Choreographer( 5708): Skipped 65 frames!  The application may be doing too much work on its main thread.
+D/FlutterJNI( 5708): Sending viewport metrics to the engine.
+VMServiceFlutterDriver: Connecting to Flutter application at http://127.0.0.1:62345/RXL4ngkhdHs=/
+VMServiceFlutterDriver: Isolate found with number: 6322233474857079
+VMServiceFlutterDriver: Isolate 6322233474857079 is runnable.
+VMServiceFlutterDriver: Isolate is paused at start.
+VMServiceFlutterDriver: Attempting to resume isolate
+I/flutter ( 5708): 00:00 +0: real OS reminder qualification: delivery
+VMServiceFlutterDriver: Connected to Flutter application.
+D/ProfileInstaller( 5708): Installing profile for dev.tideglass.game
+D/FlutterJNI( 5708): Sending viewport metrics to the engine.
+I/flutter ( 5708): TIDEGLASS_REMINDER_ACTION {"verification_id":"integration-android-20261025T154824471008Z","candidate_fingerprint":"3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59","harness_sha256":"330ab6428203ec80e4de19e4eb727ad8dcfc6f63572e9ea1b0ef3ff7dc7a71da","scenario":"delivery","run_id":"v3b00-r20261025-android-delivery","device_label":"android","platform":"android","process_id":5708,"action":"allow_permission_if_prompted","utc_ms":1792943342659}
+I/flutter ( 5708): TIDEGLASS_REMINDER_ACTION {"verification_id":"integration-android-20261025T154824471008Z","candidate_fingerprint":"3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59","harness_sha256":"330ab6428203ec80e4de19e4eb727ad8dcfc6f63572e9ea1b0ef3ff7dc7a71da","scenario":"delivery","run_id":"v3b00-r20261025-android-delivery","device_label":"android","platform":"android","process_id":5708,"action":"background_app_now_using_os_home","utc_ms":1792943342791}
+D/EGL_emulation( 5708): app_time_stats: avg=14355.26ms min=1114.77ms max=27595.75ms count=2
+D/VRI[MainActivity]( 5708): visibilityChanged oldVisibility=true newVisibility=false
+I/flutter ( 5708): TIDEGLASS_REMINDER_ACTION {"verification_id":"integration-android-20261025T154824471008Z","candidate_fingerprint":"3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59","harness_sha256":"330ab6428203ec80e4de19e4eb727ad8dcfc6f63572e9ea1b0ef3ff7dc7a71da","scenario":"delivery","run_id":"v3b00-r20261025-android-delivery","device_label":"android","platform":"android","process_id":5708,"action":"wait_until_due_then_return_via_app_icon","utc_ms":1792943384685,"not_before_utc_ms":1792943700000}
+E/SurfaceSyncGroup( 5708): Failed to receive transaction ready in 1000ms. Marking SurfaceSyncGroup(wmsSync-VRI[MainActivity]#4) as ready
+E/SurfaceSyncGroup( 5708): Failed to receive transaction ready in 1000ms. Marking SurfaceSyncGroup(VRI[MainActivity]#5) as ready
+E/SurfaceSyncGroup( 5708): Failed to receive transaction ready in 1000ms. Marking SurfaceSyncGroup(SurfaceView[dev.tideglass.game/dev.tideglass.game.MainActivity]#3) as ready
+I/flutter ( 5708): ══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+I/flutter ( 5708): The following TestFailure was thrown running a test:
+I/flutter ( 5708): Expected: non-empty
+I/flutter ( 5708):   Actual: []
+I/flutter ( 5708): A scheduled request alone is not actual delivery.
+I/flutter ( 5708): 
+I/flutter ( 5708): When the exception was thrown, this was the stack:
+I/flutter ( 5708): #4      validateObservedReminderDelivery (file:///Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261023T040445.261666Z-3b00cc8f7122/workspace/game/mobile/integration_test/reminders_330ab6428203ec80_test.dart:497:3)
+I/flutter ( 5708): #5      main.<anonymous closure> (file:///Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261023T040445.261666Z-3b00cc8f7122/workspace/game/mobile/integration_test/reminders_330ab6428203ec80_test.dart:385:11)
+I/flutter ( 5708): <asynchronous suspension>
+I/flutter ( 5708): #6      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+I/flutter ( 5708): <asynchronous suspension>
+I/flutter ( 5708): #7      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+I/flutter ( 5708): <asynchronous suspension>
+I/flutter ( 5708): #8      TestWidgetsFlutterBinding._createTestCompletionHandler.<anonymous closure> (package:flutter_test/src/binding.dart:1707:12)
+I/flutter ( 5708): <asynchronous suspension>
+I/flutter ( 5708): 
+I/flutter ( 5708): This was caught by the test expectation on the following line:
+I/flutter ( 5708):   file:///Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261023T040445.261666Z-3b00cc8f7122/workspace/game/mobile/integration_test/reminders_330ab6428203ec80_test.dart line 497
+I/flutter ( 5708): The test description was:
+I/flutter ( 5708):   real OS reminder qualification: delivery
+I/flutter ( 5708): ════════════════════════════════════════════════════════════════════════════════════════════════════
+I/flutter ( 5708): 06:43 +0: real OS reminder qualification: delivery [E]
+I/flutter ( 5708):   Test failed. See exception logs above.
+I/flutter ( 5708):   The test description was: real OS reminder qualification: delivery
+I/flutter ( 5708):   
+I/flutter ( 5708): 06:43 +0 -1: (tearDownAll)
+I/flutter ( 5708): 06:43 +1 -1: Some tests failed.
+D/EGL_emulation( 5708): app_time_stats: avg=694.16ms min=207.19ms max=1181.13ms count=2
+Failure Details:
+Failure in method: real OS reminder qualification: delivery
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞═════════════════
+The following TestFailure was thrown running a test:
+Expected: non-empty
+  Actual: []
+A scheduled request alone is not actual delivery.
+
+When the exception was thrown, this was the stack:
+#4      validateObservedReminderDelivery (file:///Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261023T040445.261666Z-3b00cc8f7122/workspace/game/mobile/integration_test/reminders_330ab6428203ec80_test.dart:497:3)
+#5      main.<anonymous closure> (file:///Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261023T040445.261666Z-3b00cc8f7122/workspace/game/mobile/integration_test/reminders_330ab6428203ec80_test.dart:385:11)
+<asynchronous suspension>
+#6      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#7      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+#8      TestWidgetsFlutterBinding._createTestCompletionHandler.<anonymous closure> (package:flutter_test/src/binding.dart:1707:12)
+<asynchronous suspension>
+
+This was caught by the test expectation on the following line:
+  file:///Users/csys/Desktop/ibicot/idle/.tooling/build-candidates/20261023T040445.261666Z-3b00cc8f7122/workspace/game/mobile/integration_test/reminders_330ab6428203ec80_test.dart line 497
+The test description was:
+  real OS reminder qualification: delivery
+═════════════════════════════════════════════════════════════════
+
+end of failure 1
+
+
+
+Leaving the application running.

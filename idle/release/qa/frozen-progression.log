@@ -1,0 +1,23 @@
+COMMAND /Users/csys/Desktop/ibicot/idle/tool/dart pub get
+Resolving dependencies...
+Downloading packages...
+Got dependencies!
+COMMAND /Users/csys/Desktop/ibicot/idle/tool/dart analyze
+Analyzing progression...
+No issues found!
+COMMAND /Users/csys/Desktop/ibicot/idle/tool/dart test --reporter expanded
+00:00 +0: loading test/progression_test.dart
+00:00 +0 -1: loading test/progression_test.dart [E]
+  Failed to load "test/progression_test.dart": Cannot open file, path = '../content/challenges/challenge.01.json' (OS Error: No such file or directory, errno = 2)
+  dart:io                           _File.readAsStringSync
+  test/progression_test.dart 9:53   read
+  test/progression_test.dart 13:5   dossiers.<fn>
+  dart:core                         new _GrowableList.generate
+  test/progression_test.dart 10:23  dossiers
+  test/progression_test.dart        dossiers
+  test/progression_test.dart 35:28  main
+  
+00:00 +0 -1: Some tests failed.
+
+Failing tests:
+  test/progression_test.dart: loading test/progression_test.dart

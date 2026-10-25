@@ -1,0 +1,41 @@
+{
+  "candidate_fingerprint": "ce46598c4b513477c643f0dff4f5160400ac800b4ee76579c48ca2a5e08e1ffd",
+  "device": "F05BE4B0-52C1-4CA1-B721-BD64AE559E3F",
+  "label": "ios-phone",
+  "started_utc": "20261016T100648.818501Z",
+  "command": [
+    "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+    "drive",
+    "--driver=test_driver/evidence_911183b5d9ee.dart",
+    "--target=integration_test/evidence_9a0debe693af_test.dart",
+    "-d",
+    "F05BE4B0-52C1-4CA1-B721-BD64AE559E3F",
+    "--dart-define=TIDEGLASS_DEVICE_LABEL=ios-phone",
+    "--dart-define=TIDEGLASS_SCENARIO=natural-reload",
+    "--dart-define=TIDEGLASS_RUN_ID=first-run-01",
+    "--dart-define=TIDEGLASS_VERIFICATION_ID=integration-ios-phone-20261016T100648.818501Z",
+    "--no-pub"
+  ],
+  "scenario": "natural-reload",
+  "run_id": "first-run-01",
+  "harness_sha256": {
+    "harness.dart": "9a0debe693af3ceec2ff8419f9a817893e7b8227f7d08c14ccfaa7d41e087c3c",
+    "driver.dart": "911183b5d9ee8ec80769836f477a293dadb66e20cc0c5d5e44314415889749a8"
+  },
+  "provenance": "Real elapsed native bootstrap and separate-process reload; isolated test save directory",
+  "exit_code": 1,
+  "verification_errors": [
+    "device_label: expected 'ios-phone', received None",
+    "scenario: expected 'natural-reload', received None",
+    "run_id: expected 'first-run-01', received None",
+    "verification_id: expected 'integration-ios-phone-20261016T100648.818501Z', received None",
+    "No successful test completion in native log"
+  ],
+  "passed": false,
+  "evidence_sha256": {
+    "result.json": "6e038c68cae41b41259cb4234fbaa2e36171c2ae6b639911f92985bf9f4bc1e3",
+    "run.log": "23212587b86a0203d8fbf3a4cab75b15438a9d5075faf7b2bf1bbe851bacfb7e",
+    "driver.dart": "911183b5d9ee8ec80769836f477a293dadb66e20cc0c5d5e44314415889749a8",
+    "harness.dart": "9a0debe693af3ceec2ff8419f9a817893e7b8227f7d08c14ccfaa7d41e087c3c"
+  }
+}

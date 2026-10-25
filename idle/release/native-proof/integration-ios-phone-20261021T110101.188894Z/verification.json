@@ -1,0 +1,63 @@
+{
+  "candidate_fingerprint": "152805bf9e269f49d14486286656ac0174a808384d10e6623533a4f92690dc11",
+  "device": "F05BE4B0-52C1-4CA1-B721-BD64AE559E3F",
+  "label": "ios-phone",
+  "platform": "ios",
+  "started_utc": "20261021T110101.188894Z",
+  "command": [
+    "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+    "drive",
+    "--driver=test_driver/evidence_911183b5d9ee.dart",
+    "--target=integration_test/evidence_b98071d77fe6_test.dart",
+    "-d",
+    "F05BE4B0-52C1-4CA1-B721-BD64AE559E3F",
+    "--dart-define=TIDEGLASS_DEVICE_LABEL=ios-phone",
+    "--dart-define=TIDEGLASS_SCENARIO=session-start",
+    "--dart-define=TIDEGLASS_RUN_ID=final152-oct21-session-r2",
+    "--dart-define=TIDEGLASS_VERIFICATION_ID=integration-ios-phone-20261021T110101.188894Z",
+    "--dart-define=TIDEGLASS_CANDIDATE_FINGERPRINT=152805bf9e269f49d14486286656ac0174a808384d10e6623533a4f92690dc11",
+    "--dart-define=TIDEGLASS_HARNESS_SHA256=b98071d77fe6c19078030dda2e1678e7e9cbbfcae498c5226354bb15f5151ce7",
+    "--keep-app-running",
+    "--timeout=180",
+    "--no-pub"
+  ],
+  "runner_sha256": "5e034adc3b42dc0a2c79c8878d55b563c1653190838e3c7a3adf41bd01e8831a",
+  "candidate_validation_runner_sha256": "56714b9cc215a56bcd710c6678f117866be68211e46f6c24b387b8ed8696f556",
+  "scenario": "session-start",
+  "run_id": "final152-oct21-session-r2",
+  "harness_sha256": {
+    "harness.dart": "b98071d77fe6c19078030dda2e1678e7e9cbbfcae498c5226354bb15f5151ce7",
+    "driver.dart": "911183b5d9ee8ec80769836f477a293dadb66e20cc0c5d5e44314415889749a8"
+  },
+  "production_inputs_match_snapshot": true,
+  "provenance": "Seeded native boundary/presentation test; no natural pacing or physical-device claim",
+  "exit_code": 0,
+  "production_input_differences_after_run": [],
+  "source_snapshot_unchanged": true,
+  "harness_source_differences_during_run": [],
+  "native_process_stop": {
+    "command": [
+      "xcrun",
+      "simctl",
+      "terminate",
+      "F05BE4B0-52C1-4CA1-B721-BD64AE559E3F",
+      "dev.tideglass.game"
+    ],
+    "exit_code": 0,
+    "output": ""
+  },
+  "verification_errors": [],
+  "passed": true,
+  "evidence_sha256": {
+    "native-save-progress.1.json": "09a30e9c7ad2a39539372e8335ac2925d69071e0350b6c1d4f7da719d2911ecc",
+    "native-save-progress.0.json": "15af7e939d8d4b1d4104ca70870ac3bf8b2b39a1a275ce189d6ee775732344b3",
+    "result.json": "91031b223f097c7ac5b3072fd5c19f7b230088d156fe7e71eb24da600e1d7301",
+    "run.log": "a677ee130c9fdfd5c2a08d252b0c4d0d8c8b0fac0fd0e66b1de618568c995c79",
+    "ios-phone-session-start-producer-stages.png": "0d4807f2238988336072f94c8f966e87cba740c2891d8763462a313da39ec24a",
+    "driver.dart": "911183b5d9ee8ec80769836f477a293dadb66e20cc0c5d5e44314415889749a8",
+    "verify_native.py": "5e034adc3b42dc0a2c79c8878d55b563c1653190838e3c7a3adf41bd01e8831a",
+    "harness.dart": "b98071d77fe6c19078030dda2e1678e7e9cbbfcae498c5226354bb15f5151ce7",
+    "ios-phone-session-start-collection.png": "06119de03f285f5c13b483b98b3db30f47d6705d4005bd0e86e184b41cee1128",
+    "ios-phone-session-start-harbor.png": "dcc9af9ba252779533e78be28f5dfd82198c4e6242ef57e6f87d302e7582ac59"
+  }
+}

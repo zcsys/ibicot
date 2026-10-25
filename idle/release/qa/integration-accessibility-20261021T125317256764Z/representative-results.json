@@ -1,0 +1,69 @@
+{
+  "source_differences": [],
+  "results": [
+    {
+      "locale": "en-US",
+      "name": "navigation",
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+        "test",
+        "../qa/integration_calibration_navigation_test.dart",
+        "--reporter=expanded",
+        "--timeout=120s"
+      ],
+      "exit_code": 1,
+      "started_utc": "2026-10-21T12:57:45.141738+00:00",
+      "log_sha256": "c951a6068be982cec71dc034146fc016f96cf0e03d46c14dce8de15d2f0b8143"
+    },
+    {
+      "locale": "en-US",
+      "name": "matrix",
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+        "test",
+        "test/calibration_accessibility_matrix_test.dart",
+        "--reporter=expanded",
+        "--timeout=120s",
+        "--name",
+        "^calibration\\.(01|12) exact routes earned practice (en-US|qps-ploc)-phone-200-(normal|reduced)$",
+        "--dart-define=TIDEGLASS_ACCESSIBILITY_REPORT_DIR=/Users/csys/Desktop/ibicot/idle/release/qa/integration-accessibility-20261021T125317256764Z/representative/en-US/report"
+      ],
+      "exit_code": 0,
+      "started_utc": "2026-10-21T12:57:48.682987+00:00",
+      "log_sha256": "9f24adb82540a71aefeebcfcec960048f7843b51f91a3121f984affba18a3b5c"
+    },
+    {
+      "locale": "qps-ploc",
+      "name": "navigation",
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+        "test",
+        "../qa/integration_calibration_navigation_test.dart",
+        "--reporter=expanded",
+        "--timeout=120s",
+        "--dart-define=TIDEGLASS_PSEUDO=true"
+      ],
+      "exit_code": 1,
+      "started_utc": "2026-10-21T12:57:58.944806+00:00",
+      "log_sha256": "c951a6068be982cec71dc034146fc016f96cf0e03d46c14dce8de15d2f0b8143"
+    },
+    {
+      "locale": "qps-ploc",
+      "name": "matrix",
+      "command": [
+        "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+        "test",
+        "test/calibration_accessibility_matrix_test.dart",
+        "--reporter=expanded",
+        "--timeout=120s",
+        "--dart-define=TIDEGLASS_PSEUDO=true",
+        "--name",
+        "^calibration\\.(01|12) exact routes earned practice (en-US|qps-ploc)-phone-200-(normal|reduced)$",
+        "--dart-define=TIDEGLASS_ACCESSIBILITY_REPORT_DIR=/Users/csys/Desktop/ibicot/idle/release/qa/integration-accessibility-20261021T125317256764Z/representative/qps-ploc/report"
+      ],
+      "exit_code": 0,
+      "started_utc": "2026-10-21T12:58:01.767356+00:00",
+      "log_sha256": "0940d7029c6007d074ea478413168ecd29752ead679e381fe953df89a72227d4"
+    }
+  ]
+}

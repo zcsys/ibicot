@@ -1,0 +1,43 @@
+Running Gradle task 'assembleDebug'...                             16.6s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...           3.2s
+D/nativeloader( 3346): Load /data/app/~~apfGvs-1ytrvaIfa6uo4Kw==/dev.tideglass.game-Zk-cnfo4a5B1FpgAe-iepw==/base.apk!/lib/arm64-v8a/libdartjni.so using ns clns-7 from class loader (caller=/data/app/~~apfGvs-1ytrvaIfa6uo4Kw==/dev.tideglass.game-Zk-cnfo4a5B1FpgAe-iepw==/base.apk!classes9.dex): ok
+W/.tideglass.game( 3346): Accessing hidden method Landroid/view/accessibility/AccessibilityNodeInfo;->getSourceNodeId()J (unsupported,test-api, reflection, allowed)
+W/.tideglass.game( 3346): Accessing hidden method Landroid/view/accessibility/AccessibilityRecord;->getSourceNodeId()J (unsupported, reflection, allowed)
+W/.tideglass.game( 3346): Accessing hidden field Landroid/view/accessibility/AccessibilityNodeInfo;->mChildNodeIds:Landroid/util/LongArray; (unsupported, reflection, allowed)
+W/.tideglass.game( 3346): Accessing hidden method Landroid/util/LongArray;->get(I)J (unsupported, reflection, allowed)
+D/AccessibilityBridge( 3346): Setting not found: accessibility_display_inversion_enabled, using default: 0
+D/FlutterRenderer( 3346): Width is zero. 0,0
+W/HWUI    ( 3346): Unknown dataspace 0
+D/ProfileInstaller( 3346): Installing profile for dev.tideglass.game
+I/WindowExtensionsImpl( 3346): Initializing Window Extensions, vendor API level=6, activity embedding enabled=true
+D/FlutterRenderer( 3346): Width is zero. 0,0
+D/FlutterJNI( 3346): Sending viewport metrics to the engine.
+W/HWUI    ( 3346): Failed to choose config with EGL_SWAP_BEHAVIOR_PRESERVED, retrying without...
+W/HWUI    ( 3346): Failed to initialize 101010-2 format, error = EGL_SUCCESS
+I/Gralloc4( 3346): mapper 4.x is not supported
+I/.tideglass.game( 3346): Compiler allocated 5250KB to compile void android.view.ViewRootImpl.performTraversals()
+VMServiceFlutterDriver: Connecting to Flutter application at http://127.0.0.1:52201/iPxEMJhuilk=/
+VMServiceFlutterDriver: Isolate found with number: 1841483458010251
+I/Choreographer( 3346): Skipped 118 frames!  The application may be doing too much work on its main thread.
+VMServiceFlutterDriver: Isolate 1841483458010251 is runnable.
+VMServiceFlutterDriver: Isolate is paused at start.
+VMServiceFlutterDriver: Attempting to resume isolate
+D/FlutterJNI( 3346): Sending viewport metrics to the engine.
+I/.tideglass.game( 3346): Compiler allocated 5427KB to compile void android.view.ViewRootImpl.performTraversals()
+I/flutter ( 3346): 00:00 +0: actual native ownership clock: clock-start
+VMServiceFlutterDriver: Connected to Flutter application.
+I/Choreographer( 3346): Skipped 33 frames!  The application may be doing too much work on its main thread.
+I/Choreographer( 3346): Skipped 60 frames!  The application may be doing too much work on its main thread.
+I/HWUI    ( 3346): Davey! duration=1096ms; Flags=1, FrameTimelineVsyncId=16768, IntendedVsync=123639454284, Vsync=124639454244, InputEventId=0, HandleInputStart=124644779434, AnimationStart=124644781267, PerformTraversalsStart=124644782101, DrawStart=124652793226, FrameDeadline=123656120950, FrameInterval=124644555559, FrameStartTime=16666666, SyncQueued=124661268559, SyncStart=124665924392, IssueDrawCommandsStart=124669813351, SwapBuffers=124714474059, FrameCompleted=124740644101, DequeueBufferDuration=9911917, QueueBufferDuration=2050750, GpuCompleted=124740644101, SwapBuffersCompleted=124739247684, DisplayPresentTime=72904454231359566, CommandSubmissionCompleted=124714474059, 
+D/FlutterJNI( 3346): Sending viewport metrics to the engine.
+I/flutter ( 3346): TIDEGLASS_NATIVE_CLOCK_SURFACE_READY
+I/flutter ( 3346): TIDEGLASS_NATIVE_CLOCK_BACKGROUND_READY
+D/EGL_emulation( 3346): app_time_stats: avg=543.47ms min=227.61ms max=873.88ms count=3
+D/EGL_emulation( 3346): app_time_stats: avg=1633.08ms min=184.24ms max=4379.07ms count=3
+I/flutter ( 3346): TIDEGLASS_NATIVE_CLOCK_ASSERTIONS_DONE
+D/EGL_emulation( 3346): app_time_stats: avg=367.50ms min=128.03ms max=625.37ms count=4
+I/flutter ( 3346): 00:11 +1: (tearDownAll)
+I/flutter ( 3346): 00:11 +2: All tests passed!
+All tests passed.
+Leaving the application running.

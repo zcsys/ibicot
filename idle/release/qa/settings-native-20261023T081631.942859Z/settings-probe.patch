@@ -1,0 +1,27 @@
+--- initial
++++ final
+@@ -7,6 +7,7 @@
+ import 'package:tideglass/audio_bus.dart';
+ import 'package:tideglass/audio_settings.dart';
+ import 'package:tideglass/game_controller.dart';
++import 'package:tideglass/harbor_art.dart';
+ import 'package:tideglass/presentation.dart';
+ import 'package:tideglass/strings.dart';
+ import 'package:tideglass_core/tideglass_core.dart';
+@@ -121,6 +122,16 @@
+           true,
+         );
+         await frame();
++        final phaseBefore = tester
++            .widget<HarborArt>(find.byType(HarborArt))
++            .phase;
++        await tester.pump(const Duration(seconds: 1));
++        final phaseAfter = tester
++            .widget<HarborArt>(find.byType(HarborArt))
++            .phase;
++        expect(phaseAfter, phaseBefore);
++        // Check the actual decorative phase; allow transient control/route
++        // callbacks to settle before the separate no-continuing-ticker check.
+         expect(tester.binding.transientCallbackCount, 0);
+         await tap(tile(Copy.largerText));
+         expect(saved.largeText, true);

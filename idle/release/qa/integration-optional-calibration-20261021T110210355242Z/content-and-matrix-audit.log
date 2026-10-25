@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/Users/csys/Desktop/ibicot/idle/game/qa/integration_optional_calibration_audit.py", line 57, in <module>
+    check(set(changed) == {'game/content/progression/campaign.json', 'game/content/locales/en-US/chapter.03.copy.json'}, 'only two existing simulation content inputs change')
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/csys/Desktop/ibicot/idle/game/qa/integration_optional_calibration_audit.py", line 19, in check
+    assert value, message
+           ^^^^^
+AssertionError: only two existing simulation content inputs change

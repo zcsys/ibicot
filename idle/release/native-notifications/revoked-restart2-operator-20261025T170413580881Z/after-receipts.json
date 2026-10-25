@@ -1,0 +1,77 @@
+[
+  {
+    "started_stamp": {
+      "utc_ns": 1792947910034874000,
+      "monotonic_lower_ns": 63947842643791,
+      "monotonic_upper_ns": 63947842644250
+    },
+    "finished_stamp": {
+      "utc_ns": 1792947912200118000,
+      "monotonic_lower_ns": 63950007828375,
+      "monotonic_upper_ns": 63950007829875
+    },
+    "argv": [
+      "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "shell",
+      "-tt",
+      "uiautomator",
+      "dump",
+      "/dev/tty"
+    ],
+    "exit_code": 0,
+    "file": "after.xml",
+    "sha256": "060ea92ef08bb8936f9b7b9539d9906459a1d49ba892e128b99ff78366e88928",
+    "stderr": ""
+  },
+  {
+    "started_stamp": {
+      "utc_ns": 1792947912200788000,
+      "monotonic_lower_ns": 63950008499791,
+      "monotonic_upper_ns": 63950008500208
+    },
+    "finished_stamp": {
+      "utc_ns": 1792947912428537000,
+      "monotonic_lower_ns": 63950236240791,
+      "monotonic_upper_ns": 63950236242458
+    },
+    "argv": [
+      "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "exec-out",
+      "screencap",
+      "-p"
+    ],
+    "exit_code": 0,
+    "file": "after.png",
+    "sha256": "3e098c64e494441a2e5d9ea60bfee1b7e7ec17f39ee02e995958be774ec9a3d4",
+    "stderr": ""
+  },
+  {
+    "started_stamp": {
+      "utc_ns": 1792947912429211000,
+      "monotonic_lower_ns": 63950236915958,
+      "monotonic_upper_ns": 63950236916208
+    },
+    "finished_stamp": {
+      "utc_ns": 1792947912466168000,
+      "monotonic_lower_ns": 63950273870333,
+      "monotonic_upper_ns": 63950273872333
+    },
+    "argv": [
+      "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "shell",
+      "dumpsys",
+      "activity",
+      "activities"
+    ],
+    "exit_code": 0,
+    "file": "after-activities.txt",
+    "sha256": "bae61a19185ac4c3447d5ee000957fd23a96c4231eba311afd10b052cba2159f",
+    "stderr": ""
+  }
+]

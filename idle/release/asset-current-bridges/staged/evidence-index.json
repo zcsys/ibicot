@@ -1,0 +1,1778 @@
+{
+  "evidence": {
+    "inventory_prior": {
+      "files": [
+        {
+          "path": "release/content-evidence/inventory-assets.json",
+          "exists": true,
+          "sha256": "dc93aba8201163a65df18251aa6446b93a759573e4317dbc073f5f58470f7037",
+          "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/content-evidence/inventory-assets.json"
+        },
+        {
+          "path": "release/qa/integration-inventory-20261021T104607526377Z/INVENTORY_REVIEW.md",
+          "exists": true,
+          "sha256": "53d1ba9281a7f1e0eb784038d597d4cb62e65b29ea02d809fc6599d741b061c6",
+          "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/qa/integration-inventory-20261021T104607526377Z/INVENTORY_REVIEW.md"
+        }
+      ],
+      "scope": "Historical 164-ID inventory; 37 original registration gaps then remained. Current existence is recomputed here."
+    },
+    "registration": {
+      "files": [
+        {
+          "path": "release/qa/integration-registration-20261021T111626112740Z/REGISTRATION_REVIEW.md",
+          "exists": true,
+          "sha256": "8afb6128140089dbda6a752b90a01341af44053c43ca4f6ff79c0076df501c50",
+          "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/qa/integration-registration-20261021T111626112740Z/REGISTRATION_REVIEW.md"
+        },
+        {
+          "path": "release/native-proof/root-art-registration-20261021T111004.738637Z/source-before.json",
+          "exists": true,
+          "sha256": "2bb79af61fd8cf59dacae5c67bfb535697abdbccd6d2a53b0b5616a66021aaaf",
+          "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/native-proof/root-art-registration-20261021T111004.738637Z/source-before.json"
+        },
+        {
+          "path": "release/native-proof/root-art-registration-20261021T111004.738637Z/verification.json",
+          "exists": true,
+          "sha256": "0225541d23d2f44c9e302168c652738c0fca87d42fa18a3f4b37526afdf264b7",
+          "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/native-proof/root-art-registration-20261021T111004.738637Z/verification.json"
+        },
+        {
+          "path": "source/art/registration/AUTHOR_REPORT.md",
+          "exists": true,
+          "sha256": "aeb3b8faa38f5b2420d958b0e291427e3bf3824756fb4572a6bc05bde4a069f7",
+          "snapshot_path": "release/asset-current-bridges/staged/snapshot/source/art/registration/AUTHOR_REPORT.md"
+        }
+      ],
+      "scope": "Different-reviewer source/sample closure for 35 registrations + bounded cosmetic/chapter03 repins; historical 33 PNG captures, not all-variant/native approval."
+    },
+    "art": {
+      "files": [
+        {
+          "path": "release/qa/integration-art-matrix-20261021T123739647573Z/ART_MATRIX_REVIEW.md",
+          "exists": true,
+          "sha256": "a77553eb337fae3e8ddb7e25519bd24f6a5486c2f4e404eb1541c7199c1ff15f",
+          "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/qa/integration-art-matrix-20261021T123739647573Z/ART_MATRIX_REVIEW.md"
+        },
+        {
+          "path": "source/art/verification/check_matrix.py",
+          "exists": true,
+          "sha256": "2bbf0a53b581f220bcbdb5b453ae0ebc50df4abb38f2eea33b4eb9bc4c5b1ed3",
+          "snapshot_path": "release/asset-current-bridges/staged/snapshot/source/art/verification/check_matrix.py"
+        },
+        {
+          "path": "release/art/catalogue-variants/per-id-evidence.json",
+          "exists": true,
+          "sha256": "74e046971e71c27417c946b05be616efd38028a8d91b40c340bb2b8815906194",
+          "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/art/catalogue-variants/per-id-evidence.json"
+        }
+      ],
+      "scope": "68 IDs, two complete 12-condition host matrices. ART001 checker repair independently closed at 2bbf0a53; no blanket 164-asset rights acceptance."
+    },
+    "calibration": {
+      "files": [
+        {
+          "path": "release/qa/integration-accessibility-20261021T125317256764Z/CALIBRATION_REVIEW.md",
+          "exists": true,
+          "sha256": "2905afef7d0fbbd69b12f49a6f1457449b0feb277445ee0d5704d05002ab9cc6",
+          "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/qa/integration-accessibility-20261021T125317256764Z/CALIBRATION_REVIEW.md"
+        }
+      ],
+      "scope": "Twelve actual patterns and equal-value crew paths, 432 state rows per language; static route, fixed-clock host evidence."
+    },
+    "help_descriptor": {
+      "files": [
+        {
+          "path": "release/qa/integration-content-descriptor-20261021T141301217842Z/REVIEW.md",
+          "exists": true,
+          "sha256": "584924bdecf251fa4097eb6cb220edc954839ffcc8f17c9d8a48e0d9f28a76f6",
+          "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/qa/integration-content-descriptor-20261021T141301217842Z/REVIEW.md"
+        },
+        {
+          "path": "release/qa/integration-content-descriptor-20261021T141301217842Z/verification.json",
+          "exists": true,
+          "sha256": "fa9ecc2c637f1705efeb626e9b8626e364288975667d850d805bd78abfd9db1a",
+          "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/qa/integration-content-descriptor-20261021T141301217842Z/verification.json"
+        },
+        {
+          "path": "release/qa/integration-content-descriptor-20261021T141301217842Z/source-before.json",
+          "exists": true,
+          "sha256": "5697936f5cdc358b68be2e2bc54b7ff464df2fcb9d1cce2f251b55e0cb36981e",
+          "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/qa/integration-content-descriptor-20261021T141301217842Z/source-before.json"
+        },
+        {
+          "path": "release/content-presentation/help-descriptor-refresh-20261021T141049.467500Z/refresh.json",
+          "exists": true,
+          "sha256": "d01a5601895b62213336d7dbc9c7974982824ca91e227ad0aa2a6b8955234661",
+          "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/content-presentation/help-descriptor-refresh-20261021T141049.467500Z/refresh.json"
+        }
+      ],
+      "scope": "CONTENT002 closed for actual four HelpContent descriptor correspondences. Prior mismatched matrix stays rejected; new complete content matrix remains pending."
+    },
+    "public_refresh_author": {
+      "files": [
+        {
+          "path": "release/public-pages/evidence/refresh-20261021T134412.822191Z/REPAIR.md",
+          "exists": true,
+          "sha256": "d958e94b88d5fbaf034003fef1dd214a1b7041961b933bfa2ca01f5688d16dae",
+          "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/public-pages/evidence/refresh-20261021T134412.822191Z/REPAIR.md"
+        },
+        {
+          "path": "release/public-pages/evidence/refresh-20261021T134412.822191Z/author-verification.json",
+          "exists": true,
+          "sha256": "299e303fba0a4d70f64973c22c60393875667614d1283f8bc2865c47e86d3560",
+          "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/public-pages/evidence/refresh-20261021T134412.822191Z/author-verification.json"
+        },
+        {
+          "path": "release/public-pages/publication.json",
+          "exists": true,
+          "sha256": "06384fddf6a1be2a74468f38c8ad2dc1f9585ce632df08e11fd49d535328acdc",
+          "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/public-pages/publication.json"
+        }
+      ],
+      "scope": "Author-local Chrome 12 configurations/28 links; current privacy documentation delta under independent review. No public URL/operator/native policy approval."
+    },
+    "public_prior": {
+      "files": [
+        {
+          "path": "release/public-pages/INDEPENDENT_REVIEW.md",
+          "exists": true,
+          "sha256": "2a8fc6b56f6962926a4a11fd8eb39b87928ee3b1f03ba9aa4645da16de8c0389",
+          "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/public-pages/INDEPENDENT_REVIEW.md"
+        },
+        {
+          "path": "release/public-pages/INDEPENDENT_REVIEW.json",
+          "exists": true,
+          "sha256": "878258b7c0bb0ad4bed65d04f7b2a1d825873c2867937ff15007f899c9ddaa9d",
+          "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/public-pages/INDEPENDENT_REVIEW.json"
+        }
+      ],
+      "scope": "Earlier page source only, including corrected JPEG filenames. No automatic transfer to refreshed HTML/CSS."
+    },
+    "public_metadata_refresh": {
+      "files": [
+        {
+          "path": "release/public-pages/evidence/documentation-pin-refresh-20261021T143040.492826Z/verification.json",
+          "exists": true,
+          "sha256": "a66a4ff9eb79dced21dd0d4c682bbe27f63848baf5b8201d166300d0faf43846",
+          "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/public-pages/evidence/documentation-pin-refresh-20261021T143040.492826Z/verification.json"
+        },
+        {
+          "path": "release/public-pages/evidence/documentation-pin-refresh-20261021T143040.492826Z/asset.support.privacy_page.json",
+          "exists": true,
+          "sha256": "7d47779dcdc3f86161debf7c14eb36a01803a9b6a687251206ba95ad25f22a3c",
+          "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/public-pages/evidence/documentation-pin-refresh-20261021T143040.492826Z/asset.support.privacy_page.json"
+        },
+        {
+          "path": "release/public-pages/evidence/documentation-pin-refresh-20261021T143040.492826Z/asset.support.support_page.json",
+          "exists": true,
+          "sha256": "396bc98b0f8d1497d6ea675581b8c52404923df078be275f2eebea0ad4d2e50e",
+          "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/public-pages/evidence/documentation-pin-refresh-20261021T143040.492826Z/asset.support.support_page.json"
+        }
+      ],
+      "scope": "Lead applied the different-reviewer-permitted documentation-only provenance pin refresh. Historical records are preserved; HTML/CSS/export bytes and all reviewer/acceptance fields unchanged."
+    },
+    "story_final_source": {
+      "files": [
+        {
+          "path": "release/content-presentation/story-heading-repair-20261021T142446.966463Z/final.json",
+          "exists": true,
+          "sha256": "b1bb6e939506e09fb1417b2943801a6b2b8c56023f22b9088dafe2da364ad386",
+          "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/content-presentation/story-heading-repair-20261021T142446.966463Z/final.json"
+        },
+        {
+          "path": "release/content-presentation/story-heading-repair-20261021T142446.966463Z/story_screen-final.dart",
+          "exists": true,
+          "sha256": "13c917f53adc8563f35fd8df7aefafea186db2a441fa51d49a7303d6f2066713",
+          "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/content-presentation/story-heading-repair-20261021T142446.966463Z/story_screen-final.dart"
+        },
+        {
+          "path": "release/native-proof/root-current-runtime-analyze-20261021T143040.537924Z/verification.json",
+          "exists": true,
+          "sha256": "81bd515d57f2db1073dc50d0dd9485844ccdf0b4bbeb1ec8f18c4f4365a56c95",
+          "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/native-proof/root-current-runtime-analyze-20261021T143040.537924Z/verification.json"
+        }
+      ],
+      "scope": "Final StoryScreen 13c917f5 source identity and bounded author73case phone200pseudo result only; independent full content12 remains pending. Intermediate failed runs are not adopted."
+    },
+    "public_refresh_review": {
+      "files": [
+        {
+          "path": "release/qa/integration-public-pages-refresh-20261021T141933905061Z/PUBLIC_REFRESH_REVIEW.md",
+          "exists": true,
+          "sha256": "714d3b58583400f88f2bdbb4d312ede99b2702894d996566de2c2875ddb3890e",
+          "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/qa/integration-public-pages-refresh-20261021T141933905061Z/PUBLIC_REFRESH_REVIEW.md"
+        },
+        {
+          "path": "release/qa/integration-public-pages-refresh-20261021T141933905061Z/verification.json",
+          "exists": true,
+          "sha256": "25417f359adf9a7c97069205a3a43d18d191e0ca3677f13a5bc1869bd4b18f7d",
+          "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/qa/integration-public-pages-refresh-20261021T141933905061Z/verification.json"
+        },
+        {
+          "path": "release/qa/integration-public-pages-refresh-20261021T141933905061Z/browser.json",
+          "exists": true,
+          "sha256": "87af147fb0fb5817decc292ddd813a499dc5d364dc1a2111d3a6ac969bf18a4d",
+          "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/qa/integration-public-pages-refresh-20261021T141933905061Z/browser.json"
+        },
+        {
+          "path": "release/qa/integration-public-pages-refresh-20261021T141933905061Z/privacy-inventory.diff",
+          "exists": true,
+          "sha256": "dfd96ef204ded65a3677b5312fe826afe13a2d81889b6b91d4ab5d182a9fc2ac",
+          "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/qa/integration-public-pages-refresh-20261021T141933905061Z/privacy-inventory.diff"
+        }
+      ],
+      "scope": "Different-reviewer actual Chrome 12 conditions/28 links/13291 rectangles; HTML/export equality and current study disclosure/doc delta supported. Provenance documentation pins remain stale; no pseudo/OS/publication/operator acceptance."
+    },
+    "audio": {
+      "files": [
+        {
+          "path": "release/audio/capability-and-rights.json",
+          "exists": true,
+          "sha256": "d4c425664c734a159f1cfa45c8ed907a90b635c93676d2a2a49bab1ef47d893a",
+          "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/audio/capability-and-rights.json"
+        },
+        {
+          "path": "release/audio/playback-report.json",
+          "exists": true,
+          "sha256": "1d9bba1f37e31f4a615439c5609a96e0fa07b558187fca6cb35465bcc1f53da5",
+          "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/audio/playback-report.json"
+        },
+        {
+          "path": "release/audio/IMPLEMENTATION_HANDOFF.md",
+          "exists": true,
+          "sha256": "19a9e858aeb7ee13223c0bd31c804cfd20e0ce147e6aa8b7281b5e1015275c57",
+          "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/audio/IMPLEMENTATION_HANDOFF.md"
+        }
+      ],
+      "scope": "Original authored synthesis/export facts and explicitly bounded host/historical candidate evidence; no fresh current native listening/route/store/standalone distribution approval."
+    },
+    "chapter03": {
+      "files": [
+        {
+          "path": "source/art/registration/chapter03-source.patch",
+          "exists": true,
+          "sha256": "517d4012b4cf76bb6c26615ecd7a71e83f03965784909e8b0ddc400dc0e0030c",
+          "snapshot_path": "release/asset-current-bridges/staged/snapshot/source/art/registration/chapter03-source.patch"
+        },
+        {
+          "path": "source/art/registration/chapter03-export.patch",
+          "exists": true,
+          "sha256": "f34c51da4178113d9c27f83d9aeadd82ce1fcbd258801c4a804dab2ce06dc95d",
+          "snapshot_path": "release/asset-current-bridges/staged/snapshot/source/art/registration/chapter03-export.patch"
+        },
+        {
+          "path": "release/qa/integration-optional-calibration-20261021T110210355242Z/OPTIONAL_CALIBRATION_REVIEW.md",
+          "exists": true,
+          "sha256": "b1b0590a8f32705009be20accce5bf967e875d0f3aceb4b04d8246faa59575dc",
+          "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/qa/integration-optional-calibration-20261021T110210355242Z/OPTIONAL_CALIBRATION_REVIEW.md"
+        }
+      ],
+      "scope": "Optional calibration hint source/export change and independent campaign remedy; no changed natural pacing or full copy variants inferred."
+    },
+    "cosmetic_renderer": {
+      "files": [
+        {
+          "path": "source/art/registration/cosmetic-renderer-refresh.patch",
+          "exists": true,
+          "sha256": "96374be17be2e96d586cdf8f7f962f0ccb6d303daf84b0757e0692306428bb56",
+          "snapshot_path": "release/asset-current-bridges/staged/snapshot/source/art/registration/cosmetic-renderer-refresh.patch"
+        },
+        {
+          "path": "release/qa/integration-inventory-20261021T104607526377Z/cosmetic-renderer-comparison.json",
+          "exists": true,
+          "sha256": "e8884ff54f7d2f69e5d6333a3f2daed7a91203bee14dc9fb86736be2b726de07",
+          "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/qa/integration-inventory-20261021T104607526377Z/cosmetic-renderer-comparison.json"
+        }
+      ],
+      "scope": "Exact old-to-new renderer patch: two localization imports and semantic label only; 72 historical exports unchanged, no new render claimed."
+    }
+  },
+  "versions": {
+    "art_en": {
+      "source_index": {
+        "path": "release/native-proof/root-art-full-20261021T122040.006324Z/source-before.json",
+        "exists": true,
+        "sha256": "2e53adf595955fbc91b25c83e9e36de95a4842b85a6ced1cba8a2ac6c036be1f",
+        "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/native-proof/root-art-full-20261021T122040.006324Z/source-before.json"
+      },
+      "report": {
+        "path": "release/art/catalogue-variants/root-art-full-20261021T122040.006324Z/matrix-results.json",
+        "exists": true,
+        "sha256": "717e94848f53ad47fbfe1355e2228144e309bee7cf1a921bcb33477d49d47b91",
+        "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/art/catalogue-variants/root-art-full-20261021T122040.006324Z/matrix-results.json"
+      },
+      "runner_verification": {
+        "path": "release/native-proof/root-art-full-20261021T122040.006324Z/verification.json",
+        "exists": true,
+        "sha256": "e1b5b0ab4b4af84d47930c81464de6f3f8768945d42a499eaf16c19bba9cde2b",
+        "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/native-proof/root-art-full-20261021T122040.006324Z/verification.json"
+      },
+      "independent_review": {
+        "path": "release/qa/integration-art-matrix-20261021T123739647573Z/ART_MATRIX_REVIEW.md",
+        "exists": true,
+        "sha256": "a77553eb337fae3e8ddb7e25519bd24f6a5486c2f4e404eb1541c7199c1ff15f",
+        "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/qa/integration-art-matrix-20261021T123739647573Z/ART_MATRIX_REVIEW.md"
+      },
+      "archive_root": "release/native-proof/root-art-full-20261021T122040.006324Z/source",
+      "archived_input_count": 524,
+      "current_changed_input_count": 18,
+      "changed_inputs": [
+        {
+          "path": "game/content/locales/en-US/support.release_notes.json",
+          "recorded_sha256": "cfac60cb01c55d2d0887ca34bccf6aea7a7a60171914134f6e9fdb2903ac70dc",
+          "current_sha256": "77f7dc5ba8a8fca1eece53500b6a8ea659320bcfa5f18e82859179cf4f9f9401",
+          "relation": "changed",
+          "historical_source": {
+            "path": "release/native-proof/root-art-full-20261021T122040.006324Z/source/game/content/locales/en-US/support.release_notes.json",
+            "exists": true,
+            "sha256": "cfac60cb01c55d2d0887ca34bccf6aea7a7a60171914134f6e9fdb2903ac70dc",
+            "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/native-proof/root-art-full-20261021T122040.006324Z/source/game/content/locales/en-US/support.release_notes.json"
+          },
+          "difference_id": "824fc98cec598223b505"
+        },
+        {
+          "path": "game/mobile/android/app/src/main/kotlin/dev/tideglass/game/MainActivity.kt",
+          "recorded_sha256": "b53bd92f01e9847f53e785d44f1591b4abb7ae8539cae84e5e73b473892914b9",
+          "current_sha256": "d6fdd6373c1e400d9c5f27e4e2ec56b32e73473f5f5d3316215bd7ec13a4abdf",
+          "relation": "changed",
+          "historical_source": {
+            "path": "release/native-proof/root-art-full-20261021T122040.006324Z/source/game/mobile/android/app/src/main/kotlin/dev/tideglass/game/MainActivity.kt",
+            "exists": true,
+            "sha256": "b53bd92f01e9847f53e785d44f1591b4abb7ae8539cae84e5e73b473892914b9",
+            "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/native-proof/root-art-full-20261021T122040.006324Z/source/game/mobile/android/app/src/main/kotlin/dev/tideglass/game/MainActivity.kt"
+          },
+          "difference_id": "a19c13994bda455f1c0a"
+        },
+        {
+          "path": "game/mobile/ios/Runner/AppDelegate.swift",
+          "recorded_sha256": "93b0d32d184bdd94c5737acc503cceb6257851b2a844caf02c7f5fd232fd8601",
+          "current_sha256": "5c7bac17fd6ab5c3995ff25e4c7af74c653fa5c02dc94b2bbe1751fdd9fa1dc1",
+          "relation": "changed",
+          "historical_source": {
+            "path": "release/native-proof/root-art-full-20261021T122040.006324Z/source/game/mobile/ios/Runner/AppDelegate.swift",
+            "exists": true,
+            "sha256": "93b0d32d184bdd94c5737acc503cceb6257851b2a844caf02c7f5fd232fd8601",
+            "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/native-proof/root-art-full-20261021T122040.006324Z/source/game/mobile/ios/Runner/AppDelegate.swift"
+          },
+          "difference_id": "3540f7132fce2e1a67e4"
+        },
+        {
+          "path": "game/mobile/lib/calibration_screen.dart",
+          "recorded_sha256": "541613d83be2a8bbe9c8ac9a41f8fae97138727586ceb29213b5d15d9b0a3d51",
+          "current_sha256": "5c392ede4071705a4efbafb7c79906bef4c94c99ab2dee765d358dda43537f94",
+          "relation": "changed",
+          "historical_source": {
+            "path": "release/native-proof/root-art-full-20261021T122040.006324Z/source/game/mobile/lib/calibration_screen.dart",
+            "exists": true,
+            "sha256": "541613d83be2a8bbe9c8ac9a41f8fae97138727586ceb29213b5d15d9b0a3d51",
+            "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/native-proof/root-art-full-20261021T122040.006324Z/source/game/mobile/lib/calibration_screen.dart"
+          },
+          "difference_id": "b2117e3327f2e6a68e89"
+        },
+        {
+          "path": "game/mobile/lib/help_content.dart",
+          "recorded_sha256": "73434078cd083feaac50bc12d2f75242044d5ae5e6158eddf1c9ab56836e3ef7",
+          "current_sha256": "4ae52390f8e12a1e792d23a9c6c29f526281d2ca2613e38d9cd874b8630485b3",
+          "relation": "changed",
+          "historical_source": {
+            "path": "release/native-proof/root-art-full-20261021T122040.006324Z/source/game/mobile/lib/help_content.dart",
+            "exists": true,
+            "sha256": "73434078cd083feaac50bc12d2f75242044d5ae5e6158eddf1c9ab56836e3ef7",
+            "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/native-proof/root-art-full-20261021T122040.006324Z/source/game/mobile/lib/help_content.dart"
+          },
+          "difference_id": "3f3ca049f9606e83349d"
+        },
+        {
+          "path": "game/mobile/lib/help_screen.dart",
+          "recorded_sha256": "f5ecfa5f2af2d9fea56f8c52fa1411040bfc72f5e8fac133c5766b075fb42850",
+          "current_sha256": "74cab0741cc50e4f4f3efbc3f16a7a7a00ac83b11b35578cdaacba2690b60989",
+          "relation": "changed",
+          "historical_source": {
+            "path": "release/native-proof/root-art-full-20261021T122040.006324Z/source/game/mobile/lib/help_screen.dart",
+            "exists": true,
+            "sha256": "f5ecfa5f2af2d9fea56f8c52fa1411040bfc72f5e8fac133c5766b075fb42850",
+            "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/native-proof/root-art-full-20261021T122040.006324Z/source/game/mobile/lib/help_screen.dart"
+          },
+          "difference_id": "4114f20aa1691787675e"
+        },
+        {
+          "path": "game/mobile/lib/native_services.dart",
+          "recorded_sha256": "884a440659c58f0faab746435cc0aba89b69601ef4e8393fd4f4416f489ddf14",
+          "current_sha256": "f56a6a8ac2ce6fe583b859d1c65336ea4d858711456bf4243ba9d1fa24eb0e73",
+          "relation": "changed",
+          "historical_source": {
+            "path": "release/native-proof/root-art-full-20261021T122040.006324Z/source/game/mobile/lib/native_services.dart",
+            "exists": true,
+            "sha256": "884a440659c58f0faab746435cc0aba89b69601ef4e8393fd4f4416f489ddf14",
+            "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/native-proof/root-art-full-20261021T122040.006324Z/source/game/mobile/lib/native_services.dart"
+          },
+          "difference_id": "545a2ed0c577fc7b8dbb"
+        },
+        {
+          "path": "game/mobile/lib/notification_settings.dart",
+          "recorded_sha256": "46b00068acccd03516fc5999a4e548e3dfcc7eee1ab02a3b0e139042f7916264",
+          "current_sha256": "f135edc13f54379f32d87aef22e1f028d2320bc147b4307b0002cd087bf857be",
+          "relation": "changed",
+          "historical_source": {
+            "path": "release/native-proof/root-art-full-20261021T122040.006324Z/source/game/mobile/lib/notification_settings.dart",
+            "exists": true,
+            "sha256": "46b00068acccd03516fc5999a4e548e3dfcc7eee1ab02a3b0e139042f7916264",
+            "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/native-proof/root-art-full-20261021T122040.006324Z/source/game/mobile/lib/notification_settings.dart"
+          },
+          "difference_id": "5b6547e558a5117ae7cb"
+        },
+        {
+          "path": "game/mobile/lib/season_screen.dart",
+          "recorded_sha256": "f05af571cdbdbd84d194f08a51bb91cb7544a9a366fa90babba2f29a354040e5",
+          "current_sha256": "caed42e2bf64a32e501034822a5982bc53e9879035cd37059896b2665e495ff9",
+          "relation": "changed",
+          "historical_source": {
+            "path": "release/native-proof/root-art-full-20261021T122040.006324Z/source/game/mobile/lib/season_screen.dart",
+            "exists": true,
+            "sha256": "f05af571cdbdbd84d194f08a51bb91cb7544a9a366fa90babba2f29a354040e5",
+            "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/native-proof/root-art-full-20261021T122040.006324Z/source/game/mobile/lib/season_screen.dart"
+          },
+          "difference_id": "b38957f1c9cda04e8018"
+        },
+        {
+          "path": "game/mobile/lib/service_settings.dart",
+          "recorded_sha256": "5eaeb67398f371664ffedaa865577f701e8f80e062e33a1e64f59754943dd429",
+          "current_sha256": "ff3a5b61c50a4239a943da85dd652ce81d3ff18e69c96d2b90ae367fcd571115",
+          "relation": "changed",
+          "historical_source": {
+            "path": "release/native-proof/root-art-full-20261021T122040.006324Z/source/game/mobile/lib/service_settings.dart",
+            "exists": true,
+            "sha256": "5eaeb67398f371664ffedaa865577f701e8f80e062e33a1e64f59754943dd429",
+            "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/native-proof/root-art-full-20261021T122040.006324Z/source/game/mobile/lib/service_settings.dart"
+          },
+          "difference_id": "f62fd08050a1cba083da"
+        },
+        {
+          "path": "game/mobile/lib/story_screen.dart",
+          "recorded_sha256": "b546eb1ce88fb8f46ebde390249849a1b728fe28d6b7420466188ed97c92fc2e",
+          "current_sha256": "13c917f53adc8563f35fd8df7aefafea186db2a441fa51d49a7303d6f2066713",
+          "relation": "changed",
+          "historical_source": {
+            "path": "release/native-proof/root-art-full-20261021T122040.006324Z/source/game/mobile/lib/story_screen.dart",
+            "exists": true,
+            "sha256": "b546eb1ce88fb8f46ebde390249849a1b728fe28d6b7420466188ed97c92fc2e",
+            "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/native-proof/root-art-full-20261021T122040.006324Z/source/game/mobile/lib/story_screen.dart"
+          },
+          "difference_id": "a78e86e6c3d3b8d5ab6c"
+        },
+        {
+          "path": "game/mobile/lib/study_gate.dart",
+          "recorded_sha256": "bc019a763d72476ddd38594c96f90c081ffb9992b0e650aa1defd8a3514d923b",
+          "current_sha256": "99757790494004865b5b68a4798191170955ff7b4bc000c98cc4f78094b9f7d9",
+          "relation": "changed",
+          "historical_source": {
+            "path": "release/native-proof/root-art-full-20261021T122040.006324Z/source/game/mobile/lib/study_gate.dart",
+            "exists": true,
+            "sha256": "bc019a763d72476ddd38594c96f90c081ffb9992b0e650aa1defd8a3514d923b",
+            "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/native-proof/root-art-full-20261021T122040.006324Z/source/game/mobile/lib/study_gate.dart"
+          },
+          "difference_id": "2f60aac8208a58d23191"
+        },
+        {
+          "path": "game/mobile/pubspec.lock",
+          "recorded_sha256": "75d094d1dcd86b951c60cc082db6ded8c45db95aae02ea2b39ebaff0858a1a03",
+          "current_sha256": "ef6e4f3380061a48688603cdc5c3446cce611641bb7d6601265a55c472e73b64",
+          "relation": "changed",
+          "historical_source": {
+            "path": "release/native-proof/root-art-full-20261021T122040.006324Z/source/game/mobile/pubspec.lock",
+            "exists": true,
+            "sha256": "75d094d1dcd86b951c60cc082db6ded8c45db95aae02ea2b39ebaff0858a1a03",
+            "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/native-proof/root-art-full-20261021T122040.006324Z/source/game/mobile/pubspec.lock"
+          },
+          "difference_id": "9bc39464406390960768"
+        },
+        {
+          "path": "game/mobile/pubspec.yaml",
+          "recorded_sha256": "3dee7db8606a8d0d36daec69616f3a8110a33c16f1e86cdc11ba1cca4145efea",
+          "current_sha256": "b176d218ea2398948b31991696761d3a2d1023b3843e5fe80dfe0880cc32ed24",
+          "relation": "changed",
+          "historical_source": {
+            "path": "release/native-proof/root-art-full-20261021T122040.006324Z/source/game/mobile/pubspec.yaml",
+            "exists": true,
+            "sha256": "3dee7db8606a8d0d36daec69616f3a8110a33c16f1e86cdc11ba1cca4145efea",
+            "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/native-proof/root-art-full-20261021T122040.006324Z/source/game/mobile/pubspec.yaml"
+          },
+          "difference_id": "9c56e4d6fa51574358ea"
+        },
+        {
+          "path": "game/mobile/test/art_catalogue_variants_test.dart",
+          "recorded_sha256": "716c13defe491390c8eeee92e5f8921433629bb79b6386318027812902a0c1d0",
+          "current_sha256": "b918a61005548a0d31fc155732f5b0ef3b02f474218ad32cc5efffa4556573e4",
+          "relation": "changed",
+          "historical_source": {
+            "path": "release/native-proof/root-art-full-20261021T122040.006324Z/source/game/mobile/test/art_catalogue_variants_test.dart",
+            "exists": true,
+            "sha256": "716c13defe491390c8eeee92e5f8921433629bb79b6386318027812902a0c1d0",
+            "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/native-proof/root-art-full-20261021T122040.006324Z/source/game/mobile/test/art_catalogue_variants_test.dart"
+          },
+          "difference_id": "4d3e83f599ccafde5aa3"
+        },
+        {
+          "path": "game/mobile/test/localization_test.dart",
+          "recorded_sha256": "49ebef48c26441f3129215b05d729ac9fe4fe298ce3d6da390d952f7d704a340",
+          "current_sha256": "74a51e160d15c2e13cf7716a2b9555b46fa996c1e89a9672f0ccba244c2d4b0f",
+          "relation": "changed",
+          "historical_source": {
+            "path": "release/native-proof/root-art-full-20261021T122040.006324Z/source/game/mobile/test/localization_test.dart",
+            "exists": true,
+            "sha256": "49ebef48c26441f3129215b05d729ac9fe4fe298ce3d6da390d952f7d704a340",
+            "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/native-proof/root-art-full-20261021T122040.006324Z/source/game/mobile/test/localization_test.dart"
+          },
+          "difference_id": "2200d467ce173d1a5dff"
+        },
+        {
+          "path": "game/platform/lib/study_recorder.dart",
+          "recorded_sha256": "40be5e8ae640edfe67c6704074bbfb5a2f62fca2e8060b0d96cf50d22b72904f",
+          "current_sha256": "6c6137fa4d62398b120e69f1fff47a49dd3c6e8025cee2b3ccd7f426e15c1775",
+          "relation": "changed",
+          "historical_source": {
+            "path": "release/native-proof/root-art-full-20261021T122040.006324Z/source/game/platform/lib/study_recorder.dart",
+            "exists": true,
+            "sha256": "40be5e8ae640edfe67c6704074bbfb5a2f62fca2e8060b0d96cf50d22b72904f",
+            "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/native-proof/root-art-full-20261021T122040.006324Z/source/game/platform/lib/study_recorder.dart"
+          },
+          "difference_id": "cf1e9c94fe62cba81466"
+        },
+        {
+          "path": "source/art/verification/check_matrix.py",
+          "recorded_sha256": "3c62775eb0880a1d068a47dbbeeeef8beb8e4e705aaa96773294dad82f01936e",
+          "current_sha256": "2bbf0a53b581f220bcbdb5b453ae0ebc50df4abb38f2eea33b4eb9bc4c5b1ed3",
+          "relation": "changed",
+          "historical_source": {
+            "path": "release/native-proof/root-art-full-20261021T122040.006324Z/source/source/art/verification/check_matrix.py",
+            "exists": true,
+            "sha256": "3c62775eb0880a1d068a47dbbeeeef8beb8e4e705aaa96773294dad82f01936e",
+            "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/native-proof/root-art-full-20261021T122040.006324Z/source/source/art/verification/check_matrix.py"
+          },
+          "difference_id": "53eaa7e6c0f411976bfc"
+        }
+      ],
+      "conditions": [
+        {
+          "condition_id": "phone-100-normal",
+          "viewport": [
+            320.0,
+            720.0
+          ],
+          "text_scale": 1.0,
+          "reduced_motion": false,
+          "environment": "Flutter host test; not a physical device"
+        },
+        {
+          "condition_id": "phone-100-reduced",
+          "viewport": [
+            320.0,
+            720.0
+          ],
+          "text_scale": 1.0,
+          "reduced_motion": true,
+          "environment": "Flutter host test; not a physical device"
+        },
+        {
+          "condition_id": "phone-150-normal",
+          "viewport": [
+            320.0,
+            720.0
+          ],
+          "text_scale": 1.5,
+          "reduced_motion": false,
+          "environment": "Flutter host test; not a physical device"
+        },
+        {
+          "condition_id": "phone-150-reduced",
+          "viewport": [
+            320.0,
+            720.0
+          ],
+          "text_scale": 1.5,
+          "reduced_motion": true,
+          "environment": "Flutter host test; not a physical device"
+        },
+        {
+          "condition_id": "phone-200-normal",
+          "viewport": [
+            320.0,
+            720.0
+          ],
+          "text_scale": 2.0,
+          "reduced_motion": false,
+          "environment": "Flutter host test; not a physical device"
+        },
+        {
+          "condition_id": "phone-200-reduced",
+          "viewport": [
+            320.0,
+            720.0
+          ],
+          "text_scale": 2.0,
+          "reduced_motion": true,
+          "environment": "Flutter host test; not a physical device"
+        },
+        {
+          "condition_id": "tablet-100-normal",
+          "viewport": [
+            1024.0,
+            768.0
+          ],
+          "text_scale": 1.0,
+          "reduced_motion": false,
+          "environment": "Flutter host test; not a physical device"
+        },
+        {
+          "condition_id": "tablet-100-reduced",
+          "viewport": [
+            1024.0,
+            768.0
+          ],
+          "text_scale": 1.0,
+          "reduced_motion": true,
+          "environment": "Flutter host test; not a physical device"
+        },
+        {
+          "condition_id": "tablet-150-normal",
+          "viewport": [
+            1024.0,
+            768.0
+          ],
+          "text_scale": 1.5,
+          "reduced_motion": false,
+          "environment": "Flutter host test; not a physical device"
+        },
+        {
+          "condition_id": "tablet-150-reduced",
+          "viewport": [
+            1024.0,
+            768.0
+          ],
+          "text_scale": 1.5,
+          "reduced_motion": true,
+          "environment": "Flutter host test; not a physical device"
+        },
+        {
+          "condition_id": "tablet-200-normal",
+          "viewport": [
+            1024.0,
+            768.0
+          ],
+          "text_scale": 2.0,
+          "reduced_motion": false,
+          "environment": "Flutter host test; not a physical device"
+        },
+        {
+          "condition_id": "tablet-200-reduced",
+          "viewport": [
+            1024.0,
+            768.0
+          ],
+          "text_scale": 2.0,
+          "reduced_motion": true,
+          "environment": "Flutter host test; not a physical device"
+        }
+      ],
+      "meaning": "Reviewed actual host execution at archived bytes. Unchanged component inputs are individually identified; changed consumers/dependencies do not inherit integrated current or native acceptance."
+    },
+    "art_pseudo": {
+      "source_index": {
+        "path": "release/native-proof/root-art-pseudo-full-20261021T122636.246158Z/source-before.json",
+        "exists": true,
+        "sha256": "739a0b47ccc4f06f8dfc9f81b68be17ad2ba94ea661b5d657d7fb1d8b41a14d5",
+        "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/native-proof/root-art-pseudo-full-20261021T122636.246158Z/source-before.json"
+      },
+      "report": {
+        "path": "release/art/catalogue-variants/root-art-pseudo-full-20261021T122636.246158Z/matrix-results.json",
+        "exists": true,
+        "sha256": "d132e5e2862b280e885acf870a78267d98b117fa1deef705a9dab2b09aa187f2",
+        "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/art/catalogue-variants/root-art-pseudo-full-20261021T122636.246158Z/matrix-results.json"
+      },
+      "runner_verification": {
+        "path": "release/native-proof/root-art-pseudo-full-20261021T122636.246158Z/verification.json",
+        "exists": true,
+        "sha256": "99e436385de4abbff1a1670fc703f0108bc6ab325a0cd61d3dd8a1968839f06a",
+        "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/native-proof/root-art-pseudo-full-20261021T122636.246158Z/verification.json"
+      },
+      "independent_review": {
+        "path": "release/qa/integration-art-matrix-20261021T123739647573Z/ART_MATRIX_REVIEW.md",
+        "exists": true,
+        "sha256": "a77553eb337fae3e8ddb7e25519bd24f6a5486c2f4e404eb1541c7199c1ff15f",
+        "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/qa/integration-art-matrix-20261021T123739647573Z/ART_MATRIX_REVIEW.md"
+      },
+      "archive_root": "release/native-proof/root-art-pseudo-full-20261021T122636.246158Z/source",
+      "archived_input_count": 524,
+      "current_changed_input_count": 17,
+      "changed_inputs": [
+        {
+          "path": "game/content/locales/en-US/support.release_notes.json",
+          "recorded_sha256": "cfac60cb01c55d2d0887ca34bccf6aea7a7a60171914134f6e9fdb2903ac70dc",
+          "current_sha256": "77f7dc5ba8a8fca1eece53500b6a8ea659320bcfa5f18e82859179cf4f9f9401",
+          "relation": "changed",
+          "historical_source": {
+            "path": "release/native-proof/root-art-pseudo-full-20261021T122636.246158Z/source/game/content/locales/en-US/support.release_notes.json",
+            "exists": true,
+            "sha256": "cfac60cb01c55d2d0887ca34bccf6aea7a7a60171914134f6e9fdb2903ac70dc",
+            "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/native-proof/root-art-pseudo-full-20261021T122636.246158Z/source/game/content/locales/en-US/support.release_notes.json"
+          },
+          "difference_id": "824fc98cec598223b505"
+        },
+        {
+          "path": "game/mobile/android/app/src/main/kotlin/dev/tideglass/game/MainActivity.kt",
+          "recorded_sha256": "b53bd92f01e9847f53e785d44f1591b4abb7ae8539cae84e5e73b473892914b9",
+          "current_sha256": "d6fdd6373c1e400d9c5f27e4e2ec56b32e73473f5f5d3316215bd7ec13a4abdf",
+          "relation": "changed",
+          "historical_source": {
+            "path": "release/native-proof/root-art-pseudo-full-20261021T122636.246158Z/source/game/mobile/android/app/src/main/kotlin/dev/tideglass/game/MainActivity.kt",
+            "exists": true,
+            "sha256": "b53bd92f01e9847f53e785d44f1591b4abb7ae8539cae84e5e73b473892914b9",
+            "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/native-proof/root-art-pseudo-full-20261021T122636.246158Z/source/game/mobile/android/app/src/main/kotlin/dev/tideglass/game/MainActivity.kt"
+          },
+          "difference_id": "a19c13994bda455f1c0a"
+        },
+        {
+          "path": "game/mobile/ios/Runner/AppDelegate.swift",
+          "recorded_sha256": "93b0d32d184bdd94c5737acc503cceb6257851b2a844caf02c7f5fd232fd8601",
+          "current_sha256": "5c7bac17fd6ab5c3995ff25e4c7af74c653fa5c02dc94b2bbe1751fdd9fa1dc1",
+          "relation": "changed",
+          "historical_source": {
+            "path": "release/native-proof/root-art-pseudo-full-20261021T122636.246158Z/source/game/mobile/ios/Runner/AppDelegate.swift",
+            "exists": true,
+            "sha256": "93b0d32d184bdd94c5737acc503cceb6257851b2a844caf02c7f5fd232fd8601",
+            "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/native-proof/root-art-pseudo-full-20261021T122636.246158Z/source/game/mobile/ios/Runner/AppDelegate.swift"
+          },
+          "difference_id": "3540f7132fce2e1a67e4"
+        },
+        {
+          "path": "game/mobile/lib/calibration_screen.dart",
+          "recorded_sha256": "541613d83be2a8bbe9c8ac9a41f8fae97138727586ceb29213b5d15d9b0a3d51",
+          "current_sha256": "5c392ede4071705a4efbafb7c79906bef4c94c99ab2dee765d358dda43537f94",
+          "relation": "changed",
+          "historical_source": {
+            "path": "release/native-proof/root-art-pseudo-full-20261021T122636.246158Z/source/game/mobile/lib/calibration_screen.dart",
+            "exists": true,
+            "sha256": "541613d83be2a8bbe9c8ac9a41f8fae97138727586ceb29213b5d15d9b0a3d51",
+            "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/native-proof/root-art-pseudo-full-20261021T122636.246158Z/source/game/mobile/lib/calibration_screen.dart"
+          },
+          "difference_id": "b2117e3327f2e6a68e89"
+        },
+        {
+          "path": "game/mobile/lib/help_content.dart",
+          "recorded_sha256": "73434078cd083feaac50bc12d2f75242044d5ae5e6158eddf1c9ab56836e3ef7",
+          "current_sha256": "4ae52390f8e12a1e792d23a9c6c29f526281d2ca2613e38d9cd874b8630485b3",
+          "relation": "changed",
+          "historical_source": {
+            "path": "release/native-proof/root-art-pseudo-full-20261021T122636.246158Z/source/game/mobile/lib/help_content.dart",
+            "exists": true,
+            "sha256": "73434078cd083feaac50bc12d2f75242044d5ae5e6158eddf1c9ab56836e3ef7",
+            "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/native-proof/root-art-pseudo-full-20261021T122636.246158Z/source/game/mobile/lib/help_content.dart"
+          },
+          "difference_id": "3f3ca049f9606e83349d"
+        },
+        {
+          "path": "game/mobile/lib/help_screen.dart",
+          "recorded_sha256": "f5ecfa5f2af2d9fea56f8c52fa1411040bfc72f5e8fac133c5766b075fb42850",
+          "current_sha256": "74cab0741cc50e4f4f3efbc3f16a7a7a00ac83b11b35578cdaacba2690b60989",
+          "relation": "changed",
+          "historical_source": {
+            "path": "release/native-proof/root-art-pseudo-full-20261021T122636.246158Z/source/game/mobile/lib/help_screen.dart",
+            "exists": true,
+            "sha256": "f5ecfa5f2af2d9fea56f8c52fa1411040bfc72f5e8fac133c5766b075fb42850",
+            "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/native-proof/root-art-pseudo-full-20261021T122636.246158Z/source/game/mobile/lib/help_screen.dart"
+          },
+          "difference_id": "4114f20aa1691787675e"
+        },
+        {
+          "path": "game/mobile/lib/native_services.dart",
+          "recorded_sha256": "884a440659c58f0faab746435cc0aba89b69601ef4e8393fd4f4416f489ddf14",
+          "current_sha256": "f56a6a8ac2ce6fe583b859d1c65336ea4d858711456bf4243ba9d1fa24eb0e73",
+          "relation": "changed",
+          "historical_source": {
+            "path": "release/native-proof/root-art-pseudo-full-20261021T122636.246158Z/source/game/mobile/lib/native_services.dart",
+            "exists": true,
+            "sha256": "884a440659c58f0faab746435cc0aba89b69601ef4e8393fd4f4416f489ddf14",
+            "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/native-proof/root-art-pseudo-full-20261021T122636.246158Z/source/game/mobile/lib/native_services.dart"
+          },
+          "difference_id": "545a2ed0c577fc7b8dbb"
+        },
+        {
+          "path": "game/mobile/lib/notification_settings.dart",
+          "recorded_sha256": "46b00068acccd03516fc5999a4e548e3dfcc7eee1ab02a3b0e139042f7916264",
+          "current_sha256": "f135edc13f54379f32d87aef22e1f028d2320bc147b4307b0002cd087bf857be",
+          "relation": "changed",
+          "historical_source": {
+            "path": "release/native-proof/root-art-pseudo-full-20261021T122636.246158Z/source/game/mobile/lib/notification_settings.dart",
+            "exists": true,
+            "sha256": "46b00068acccd03516fc5999a4e548e3dfcc7eee1ab02a3b0e139042f7916264",
+            "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/native-proof/root-art-pseudo-full-20261021T122636.246158Z/source/game/mobile/lib/notification_settings.dart"
+          },
+          "difference_id": "5b6547e558a5117ae7cb"
+        },
+        {
+          "path": "game/mobile/lib/season_screen.dart",
+          "recorded_sha256": "f05af571cdbdbd84d194f08a51bb91cb7544a9a366fa90babba2f29a354040e5",
+          "current_sha256": "caed42e2bf64a32e501034822a5982bc53e9879035cd37059896b2665e495ff9",
+          "relation": "changed",
+          "historical_source": {
+            "path": "release/native-proof/root-art-pseudo-full-20261021T122636.246158Z/source/game/mobile/lib/season_screen.dart",
+            "exists": true,
+            "sha256": "f05af571cdbdbd84d194f08a51bb91cb7544a9a366fa90babba2f29a354040e5",
+            "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/native-proof/root-art-pseudo-full-20261021T122636.246158Z/source/game/mobile/lib/season_screen.dart"
+          },
+          "difference_id": "b38957f1c9cda04e8018"
+        },
+        {
+          "path": "game/mobile/lib/service_settings.dart",
+          "recorded_sha256": "5eaeb67398f371664ffedaa865577f701e8f80e062e33a1e64f59754943dd429",
+          "current_sha256": "ff3a5b61c50a4239a943da85dd652ce81d3ff18e69c96d2b90ae367fcd571115",
+          "relation": "changed",
+          "historical_source": {
+            "path": "release/native-proof/root-art-pseudo-full-20261021T122636.246158Z/source/game/mobile/lib/service_settings.dart",
+            "exists": true,
+            "sha256": "5eaeb67398f371664ffedaa865577f701e8f80e062e33a1e64f59754943dd429",
+            "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/native-proof/root-art-pseudo-full-20261021T122636.246158Z/source/game/mobile/lib/service_settings.dart"
+          },
+          "difference_id": "f62fd08050a1cba083da"
+        },
+        {
+          "path": "game/mobile/lib/story_screen.dart",
+          "recorded_sha256": "b546eb1ce88fb8f46ebde390249849a1b728fe28d6b7420466188ed97c92fc2e",
+          "current_sha256": "13c917f53adc8563f35fd8df7aefafea186db2a441fa51d49a7303d6f2066713",
+          "relation": "changed",
+          "historical_source": {
+            "path": "release/native-proof/root-art-pseudo-full-20261021T122636.246158Z/source/game/mobile/lib/story_screen.dart",
+            "exists": true,
+            "sha256": "b546eb1ce88fb8f46ebde390249849a1b728fe28d6b7420466188ed97c92fc2e",
+            "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/native-proof/root-art-pseudo-full-20261021T122636.246158Z/source/game/mobile/lib/story_screen.dart"
+          },
+          "difference_id": "a78e86e6c3d3b8d5ab6c"
+        },
+        {
+          "path": "game/mobile/lib/study_gate.dart",
+          "recorded_sha256": "bc019a763d72476ddd38594c96f90c081ffb9992b0e650aa1defd8a3514d923b",
+          "current_sha256": "99757790494004865b5b68a4798191170955ff7b4bc000c98cc4f78094b9f7d9",
+          "relation": "changed",
+          "historical_source": {
+            "path": "release/native-proof/root-art-pseudo-full-20261021T122636.246158Z/source/game/mobile/lib/study_gate.dart",
+            "exists": true,
+            "sha256": "bc019a763d72476ddd38594c96f90c081ffb9992b0e650aa1defd8a3514d923b",
+            "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/native-proof/root-art-pseudo-full-20261021T122636.246158Z/source/game/mobile/lib/study_gate.dart"
+          },
+          "difference_id": "2f60aac8208a58d23191"
+        },
+        {
+          "path": "game/mobile/pubspec.lock",
+          "recorded_sha256": "75d094d1dcd86b951c60cc082db6ded8c45db95aae02ea2b39ebaff0858a1a03",
+          "current_sha256": "ef6e4f3380061a48688603cdc5c3446cce611641bb7d6601265a55c472e73b64",
+          "relation": "changed",
+          "historical_source": {
+            "path": "release/native-proof/root-art-pseudo-full-20261021T122636.246158Z/source/game/mobile/pubspec.lock",
+            "exists": true,
+            "sha256": "75d094d1dcd86b951c60cc082db6ded8c45db95aae02ea2b39ebaff0858a1a03",
+            "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/native-proof/root-art-pseudo-full-20261021T122636.246158Z/source/game/mobile/pubspec.lock"
+          },
+          "difference_id": "9bc39464406390960768"
+        },
+        {
+          "path": "game/mobile/pubspec.yaml",
+          "recorded_sha256": "3dee7db8606a8d0d36daec69616f3a8110a33c16f1e86cdc11ba1cca4145efea",
+          "current_sha256": "b176d218ea2398948b31991696761d3a2d1023b3843e5fe80dfe0880cc32ed24",
+          "relation": "changed",
+          "historical_source": {
+            "path": "release/native-proof/root-art-pseudo-full-20261021T122636.246158Z/source/game/mobile/pubspec.yaml",
+            "exists": true,
+            "sha256": "3dee7db8606a8d0d36daec69616f3a8110a33c16f1e86cdc11ba1cca4145efea",
+            "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/native-proof/root-art-pseudo-full-20261021T122636.246158Z/source/game/mobile/pubspec.yaml"
+          },
+          "difference_id": "9c56e4d6fa51574358ea"
+        },
+        {
+          "path": "game/mobile/test/localization_test.dart",
+          "recorded_sha256": "49ebef48c26441f3129215b05d729ac9fe4fe298ce3d6da390d952f7d704a340",
+          "current_sha256": "74a51e160d15c2e13cf7716a2b9555b46fa996c1e89a9672f0ccba244c2d4b0f",
+          "relation": "changed",
+          "historical_source": {
+            "path": "release/native-proof/root-art-pseudo-full-20261021T122636.246158Z/source/game/mobile/test/localization_test.dart",
+            "exists": true,
+            "sha256": "49ebef48c26441f3129215b05d729ac9fe4fe298ce3d6da390d952f7d704a340",
+            "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/native-proof/root-art-pseudo-full-20261021T122636.246158Z/source/game/mobile/test/localization_test.dart"
+          },
+          "difference_id": "2200d467ce173d1a5dff"
+        },
+        {
+          "path": "game/platform/lib/study_recorder.dart",
+          "recorded_sha256": "40be5e8ae640edfe67c6704074bbfb5a2f62fca2e8060b0d96cf50d22b72904f",
+          "current_sha256": "6c6137fa4d62398b120e69f1fff47a49dd3c6e8025cee2b3ccd7f426e15c1775",
+          "relation": "changed",
+          "historical_source": {
+            "path": "release/native-proof/root-art-pseudo-full-20261021T122636.246158Z/source/game/platform/lib/study_recorder.dart",
+            "exists": true,
+            "sha256": "40be5e8ae640edfe67c6704074bbfb5a2f62fca2e8060b0d96cf50d22b72904f",
+            "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/native-proof/root-art-pseudo-full-20261021T122636.246158Z/source/game/platform/lib/study_recorder.dart"
+          },
+          "difference_id": "cf1e9c94fe62cba81466"
+        },
+        {
+          "path": "source/art/verification/check_matrix.py",
+          "recorded_sha256": "d770eb41d3aa9556053eb30e6b55547e707cb0b7799f405e4aa5a1ab63898443",
+          "current_sha256": "2bbf0a53b581f220bcbdb5b453ae0ebc50df4abb38f2eea33b4eb9bc4c5b1ed3",
+          "relation": "changed",
+          "historical_source": {
+            "path": "release/native-proof/root-art-pseudo-full-20261021T122636.246158Z/source/source/art/verification/check_matrix.py",
+            "exists": true,
+            "sha256": "d770eb41d3aa9556053eb30e6b55547e707cb0b7799f405e4aa5a1ab63898443",
+            "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/native-proof/root-art-pseudo-full-20261021T122636.246158Z/source/source/art/verification/check_matrix.py"
+          },
+          "difference_id": "30da3643f2abfdc968b4"
+        }
+      ],
+      "conditions": [
+        {
+          "condition_id": "qps-ploc-phone-100-normal",
+          "presentation_locale": "qps-ploc",
+          "pseudo_enabled": true,
+          "viewport": [
+            320.0,
+            720.0
+          ],
+          "text_scale": 1.0,
+          "reduced_motion": false,
+          "environment": "Flutter host test; not a physical device"
+        },
+        {
+          "condition_id": "qps-ploc-phone-100-reduced",
+          "presentation_locale": "qps-ploc",
+          "pseudo_enabled": true,
+          "viewport": [
+            320.0,
+            720.0
+          ],
+          "text_scale": 1.0,
+          "reduced_motion": true,
+          "environment": "Flutter host test; not a physical device"
+        },
+        {
+          "condition_id": "qps-ploc-phone-150-normal",
+          "presentation_locale": "qps-ploc",
+          "pseudo_enabled": true,
+          "viewport": [
+            320.0,
+            720.0
+          ],
+          "text_scale": 1.5,
+          "reduced_motion": false,
+          "environment": "Flutter host test; not a physical device"
+        },
+        {
+          "condition_id": "qps-ploc-phone-150-reduced",
+          "presentation_locale": "qps-ploc",
+          "pseudo_enabled": true,
+          "viewport": [
+            320.0,
+            720.0
+          ],
+          "text_scale": 1.5,
+          "reduced_motion": true,
+          "environment": "Flutter host test; not a physical device"
+        },
+        {
+          "condition_id": "qps-ploc-phone-200-normal",
+          "presentation_locale": "qps-ploc",
+          "pseudo_enabled": true,
+          "viewport": [
+            320.0,
+            720.0
+          ],
+          "text_scale": 2.0,
+          "reduced_motion": false,
+          "environment": "Flutter host test; not a physical device"
+        },
+        {
+          "condition_id": "qps-ploc-phone-200-reduced",
+          "presentation_locale": "qps-ploc",
+          "pseudo_enabled": true,
+          "viewport": [
+            320.0,
+            720.0
+          ],
+          "text_scale": 2.0,
+          "reduced_motion": true,
+          "environment": "Flutter host test; not a physical device"
+        },
+        {
+          "condition_id": "qps-ploc-tablet-100-normal",
+          "presentation_locale": "qps-ploc",
+          "pseudo_enabled": true,
+          "viewport": [
+            1024.0,
+            768.0
+          ],
+          "text_scale": 1.0,
+          "reduced_motion": false,
+          "environment": "Flutter host test; not a physical device"
+        },
+        {
+          "condition_id": "qps-ploc-tablet-100-reduced",
+          "presentation_locale": "qps-ploc",
+          "pseudo_enabled": true,
+          "viewport": [
+            1024.0,
+            768.0
+          ],
+          "text_scale": 1.0,
+          "reduced_motion": true,
+          "environment": "Flutter host test; not a physical device"
+        },
+        {
+          "condition_id": "qps-ploc-tablet-150-normal",
+          "presentation_locale": "qps-ploc",
+          "pseudo_enabled": true,
+          "viewport": [
+            1024.0,
+            768.0
+          ],
+          "text_scale": 1.5,
+          "reduced_motion": false,
+          "environment": "Flutter host test; not a physical device"
+        },
+        {
+          "condition_id": "qps-ploc-tablet-150-reduced",
+          "presentation_locale": "qps-ploc",
+          "pseudo_enabled": true,
+          "viewport": [
+            1024.0,
+            768.0
+          ],
+          "text_scale": 1.5,
+          "reduced_motion": true,
+          "environment": "Flutter host test; not a physical device"
+        },
+        {
+          "condition_id": "qps-ploc-tablet-200-normal",
+          "presentation_locale": "qps-ploc",
+          "pseudo_enabled": true,
+          "viewport": [
+            1024.0,
+            768.0
+          ],
+          "text_scale": 2.0,
+          "reduced_motion": false,
+          "environment": "Flutter host test; not a physical device"
+        },
+        {
+          "condition_id": "qps-ploc-tablet-200-reduced",
+          "presentation_locale": "qps-ploc",
+          "pseudo_enabled": true,
+          "viewport": [
+            1024.0,
+            768.0
+          ],
+          "text_scale": 2.0,
+          "reduced_motion": true,
+          "environment": "Flutter host test; not a physical device"
+        }
+      ],
+      "meaning": "Reviewed actual host execution at archived bytes. Unchanged component inputs are individually identified; changed consumers/dependencies do not inherit integrated current or native acceptance."
+    },
+    "calibration_en": {
+      "source_index": {
+        "path": "release/native-proof/root-calibration-full-20261021T125314.174315Z/source-before.json",
+        "exists": true,
+        "sha256": "662f650abb0b1bd76f2ea4488301342baea3ce5c275d98557b744a3b0fa28ab7",
+        "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/native-proof/root-calibration-full-20261021T125314.174315Z/source-before.json"
+      },
+      "report": {
+        "path": "release/accessibility-current/root-calibration-full-20261021T125314.174315Z/calibration-matrix.json",
+        "exists": true,
+        "sha256": "4cddd1ea3d8f7c3a099b2ee3df64766b7515e7205e95d37cdaac61b0d8db32b4",
+        "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/accessibility-current/root-calibration-full-20261021T125314.174315Z/calibration-matrix.json"
+      },
+      "runner_verification": {
+        "path": "release/native-proof/root-calibration-full-20261021T125314.174315Z/verification.json",
+        "exists": true,
+        "sha256": "cb737b9e5dd1c9d2815d4bcc7bef6659caeeee174bbbad259530cf35ab3a5ee1",
+        "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/native-proof/root-calibration-full-20261021T125314.174315Z/verification.json"
+      },
+      "independent_review": {
+        "path": "release/qa/integration-accessibility-20261021T125317256764Z/CALIBRATION_REVIEW.md",
+        "exists": true,
+        "sha256": "2905afef7d0fbbd69b12f49a6f1457449b0feb277445ee0d5704d05002ab9cc6",
+        "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/qa/integration-accessibility-20261021T125317256764Z/CALIBRATION_REVIEW.md"
+      },
+      "archive_root": "release/native-proof/root-calibration-full-20261021T125314.174315Z/source",
+      "archived_input_count": 525,
+      "current_changed_input_count": 15,
+      "changed_inputs": [
+        {
+          "path": "game/content/locales/en-US/support.release_notes.json",
+          "recorded_sha256": "cfac60cb01c55d2d0887ca34bccf6aea7a7a60171914134f6e9fdb2903ac70dc",
+          "current_sha256": "77f7dc5ba8a8fca1eece53500b6a8ea659320bcfa5f18e82859179cf4f9f9401",
+          "relation": "changed",
+          "historical_source": {
+            "path": "release/native-proof/root-calibration-full-20261021T125314.174315Z/source/game/content/locales/en-US/support.release_notes.json",
+            "exists": true,
+            "sha256": "cfac60cb01c55d2d0887ca34bccf6aea7a7a60171914134f6e9fdb2903ac70dc",
+            "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/native-proof/root-calibration-full-20261021T125314.174315Z/source/game/content/locales/en-US/support.release_notes.json"
+          },
+          "difference_id": "824fc98cec598223b505"
+        },
+        {
+          "path": "game/mobile/android/app/src/main/kotlin/dev/tideglass/game/MainActivity.kt",
+          "recorded_sha256": "b53bd92f01e9847f53e785d44f1591b4abb7ae8539cae84e5e73b473892914b9",
+          "current_sha256": "d6fdd6373c1e400d9c5f27e4e2ec56b32e73473f5f5d3316215bd7ec13a4abdf",
+          "relation": "changed",
+          "historical_source": {
+            "path": "release/native-proof/root-calibration-full-20261021T125314.174315Z/source/game/mobile/android/app/src/main/kotlin/dev/tideglass/game/MainActivity.kt",
+            "exists": true,
+            "sha256": "b53bd92f01e9847f53e785d44f1591b4abb7ae8539cae84e5e73b473892914b9",
+            "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/native-proof/root-calibration-full-20261021T125314.174315Z/source/game/mobile/android/app/src/main/kotlin/dev/tideglass/game/MainActivity.kt"
+          },
+          "difference_id": "a19c13994bda455f1c0a"
+        },
+        {
+          "path": "game/mobile/ios/Runner/AppDelegate.swift",
+          "recorded_sha256": "93b0d32d184bdd94c5737acc503cceb6257851b2a844caf02c7f5fd232fd8601",
+          "current_sha256": "5c7bac17fd6ab5c3995ff25e4c7af74c653fa5c02dc94b2bbe1751fdd9fa1dc1",
+          "relation": "changed",
+          "historical_source": {
+            "path": "release/native-proof/root-calibration-full-20261021T125314.174315Z/source/game/mobile/ios/Runner/AppDelegate.swift",
+            "exists": true,
+            "sha256": "93b0d32d184bdd94c5737acc503cceb6257851b2a844caf02c7f5fd232fd8601",
+            "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/native-proof/root-calibration-full-20261021T125314.174315Z/source/game/mobile/ios/Runner/AppDelegate.swift"
+          },
+          "difference_id": "3540f7132fce2e1a67e4"
+        },
+        {
+          "path": "game/mobile/lib/help_content.dart",
+          "recorded_sha256": "73434078cd083feaac50bc12d2f75242044d5ae5e6158eddf1c9ab56836e3ef7",
+          "current_sha256": "4ae52390f8e12a1e792d23a9c6c29f526281d2ca2613e38d9cd874b8630485b3",
+          "relation": "changed",
+          "historical_source": {
+            "path": "release/native-proof/root-calibration-full-20261021T125314.174315Z/source/game/mobile/lib/help_content.dart",
+            "exists": true,
+            "sha256": "73434078cd083feaac50bc12d2f75242044d5ae5e6158eddf1c9ab56836e3ef7",
+            "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/native-proof/root-calibration-full-20261021T125314.174315Z/source/game/mobile/lib/help_content.dart"
+          },
+          "difference_id": "3f3ca049f9606e83349d"
+        },
+        {
+          "path": "game/mobile/lib/help_screen.dart",
+          "recorded_sha256": "f5ecfa5f2af2d9fea56f8c52fa1411040bfc72f5e8fac133c5766b075fb42850",
+          "current_sha256": "74cab0741cc50e4f4f3efbc3f16a7a7a00ac83b11b35578cdaacba2690b60989",
+          "relation": "changed",
+          "historical_source": {
+            "path": "release/native-proof/root-calibration-full-20261021T125314.174315Z/source/game/mobile/lib/help_screen.dart",
+            "exists": true,
+            "sha256": "f5ecfa5f2af2d9fea56f8c52fa1411040bfc72f5e8fac133c5766b075fb42850",
+            "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/native-proof/root-calibration-full-20261021T125314.174315Z/source/game/mobile/lib/help_screen.dart"
+          },
+          "difference_id": "4114f20aa1691787675e"
+        },
+        {
+          "path": "game/mobile/lib/native_services.dart",
+          "recorded_sha256": "884a440659c58f0faab746435cc0aba89b69601ef4e8393fd4f4416f489ddf14",
+          "current_sha256": "f56a6a8ac2ce6fe583b859d1c65336ea4d858711456bf4243ba9d1fa24eb0e73",
+          "relation": "changed",
+          "historical_source": {
+            "path": "release/native-proof/root-calibration-full-20261021T125314.174315Z/source/game/mobile/lib/native_services.dart",
+            "exists": true,
+            "sha256": "884a440659c58f0faab746435cc0aba89b69601ef4e8393fd4f4416f489ddf14",
+            "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/native-proof/root-calibration-full-20261021T125314.174315Z/source/game/mobile/lib/native_services.dart"
+          },
+          "difference_id": "545a2ed0c577fc7b8dbb"
+        },
+        {
+          "path": "game/mobile/lib/notification_settings.dart",
+          "recorded_sha256": "46b00068acccd03516fc5999a4e548e3dfcc7eee1ab02a3b0e139042f7916264",
+          "current_sha256": "f135edc13f54379f32d87aef22e1f028d2320bc147b4307b0002cd087bf857be",
+          "relation": "changed",
+          "historical_source": {
+            "path": "release/native-proof/root-calibration-full-20261021T125314.174315Z/source/game/mobile/lib/notification_settings.dart",
+            "exists": true,
+            "sha256": "46b00068acccd03516fc5999a4e548e3dfcc7eee1ab02a3b0e139042f7916264",
+            "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/native-proof/root-calibration-full-20261021T125314.174315Z/source/game/mobile/lib/notification_settings.dart"
+          },
+          "difference_id": "5b6547e558a5117ae7cb"
+        },
+        {
+          "path": "game/mobile/lib/season_screen.dart",
+          "recorded_sha256": "f05af571cdbdbd84d194f08a51bb91cb7544a9a366fa90babba2f29a354040e5",
+          "current_sha256": "caed42e2bf64a32e501034822a5982bc53e9879035cd37059896b2665e495ff9",
+          "relation": "changed",
+          "historical_source": {
+            "path": "release/native-proof/root-calibration-full-20261021T125314.174315Z/source/game/mobile/lib/season_screen.dart",
+            "exists": true,
+            "sha256": "f05af571cdbdbd84d194f08a51bb91cb7544a9a366fa90babba2f29a354040e5",
+            "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/native-proof/root-calibration-full-20261021T125314.174315Z/source/game/mobile/lib/season_screen.dart"
+          },
+          "difference_id": "b38957f1c9cda04e8018"
+        },
+        {
+          "path": "game/mobile/lib/service_settings.dart",
+          "recorded_sha256": "5eaeb67398f371664ffedaa865577f701e8f80e062e33a1e64f59754943dd429",
+          "current_sha256": "ff3a5b61c50a4239a943da85dd652ce81d3ff18e69c96d2b90ae367fcd571115",
+          "relation": "changed",
+          "historical_source": {
+            "path": "release/native-proof/root-calibration-full-20261021T125314.174315Z/source/game/mobile/lib/service_settings.dart",
+            "exists": true,
+            "sha256": "5eaeb67398f371664ffedaa865577f701e8f80e062e33a1e64f59754943dd429",
+            "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/native-proof/root-calibration-full-20261021T125314.174315Z/source/game/mobile/lib/service_settings.dart"
+          },
+          "difference_id": "f62fd08050a1cba083da"
+        },
+        {
+          "path": "game/mobile/lib/story_screen.dart",
+          "recorded_sha256": "b546eb1ce88fb8f46ebde390249849a1b728fe28d6b7420466188ed97c92fc2e",
+          "current_sha256": "13c917f53adc8563f35fd8df7aefafea186db2a441fa51d49a7303d6f2066713",
+          "relation": "changed",
+          "historical_source": {
+            "path": "release/native-proof/root-calibration-full-20261021T125314.174315Z/source/game/mobile/lib/story_screen.dart",
+            "exists": true,
+            "sha256": "b546eb1ce88fb8f46ebde390249849a1b728fe28d6b7420466188ed97c92fc2e",
+            "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/native-proof/root-calibration-full-20261021T125314.174315Z/source/game/mobile/lib/story_screen.dart"
+          },
+          "difference_id": "a78e86e6c3d3b8d5ab6c"
+        },
+        {
+          "path": "game/mobile/lib/study_gate.dart",
+          "recorded_sha256": "bc019a763d72476ddd38594c96f90c081ffb9992b0e650aa1defd8a3514d923b",
+          "current_sha256": "99757790494004865b5b68a4798191170955ff7b4bc000c98cc4f78094b9f7d9",
+          "relation": "changed",
+          "historical_source": {
+            "path": "release/native-proof/root-calibration-full-20261021T125314.174315Z/source/game/mobile/lib/study_gate.dart",
+            "exists": true,
+            "sha256": "bc019a763d72476ddd38594c96f90c081ffb9992b0e650aa1defd8a3514d923b",
+            "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/native-proof/root-calibration-full-20261021T125314.174315Z/source/game/mobile/lib/study_gate.dart"
+          },
+          "difference_id": "2f60aac8208a58d23191"
+        },
+        {
+          "path": "game/mobile/pubspec.lock",
+          "recorded_sha256": "75d094d1dcd86b951c60cc082db6ded8c45db95aae02ea2b39ebaff0858a1a03",
+          "current_sha256": "ef6e4f3380061a48688603cdc5c3446cce611641bb7d6601265a55c472e73b64",
+          "relation": "changed",
+          "historical_source": {
+            "path": "release/native-proof/root-calibration-full-20261021T125314.174315Z/source/game/mobile/pubspec.lock",
+            "exists": true,
+            "sha256": "75d094d1dcd86b951c60cc082db6ded8c45db95aae02ea2b39ebaff0858a1a03",
+            "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/native-proof/root-calibration-full-20261021T125314.174315Z/source/game/mobile/pubspec.lock"
+          },
+          "difference_id": "9bc39464406390960768"
+        },
+        {
+          "path": "game/mobile/pubspec.yaml",
+          "recorded_sha256": "3dee7db8606a8d0d36daec69616f3a8110a33c16f1e86cdc11ba1cca4145efea",
+          "current_sha256": "b176d218ea2398948b31991696761d3a2d1023b3843e5fe80dfe0880cc32ed24",
+          "relation": "changed",
+          "historical_source": {
+            "path": "release/native-proof/root-calibration-full-20261021T125314.174315Z/source/game/mobile/pubspec.yaml",
+            "exists": true,
+            "sha256": "3dee7db8606a8d0d36daec69616f3a8110a33c16f1e86cdc11ba1cca4145efea",
+            "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/native-proof/root-calibration-full-20261021T125314.174315Z/source/game/mobile/pubspec.yaml"
+          },
+          "difference_id": "9c56e4d6fa51574358ea"
+        },
+        {
+          "path": "game/mobile/test/localization_test.dart",
+          "recorded_sha256": "d301261ca00f97ad4fe9a7eedcba9b4fd8d2a388ceaefea1689fbb63e199f262",
+          "current_sha256": "74a51e160d15c2e13cf7716a2b9555b46fa996c1e89a9672f0ccba244c2d4b0f",
+          "relation": "changed",
+          "historical_source": {
+            "path": "release/native-proof/root-calibration-full-20261021T125314.174315Z/source/game/mobile/test/localization_test.dart",
+            "exists": true,
+            "sha256": "d301261ca00f97ad4fe9a7eedcba9b4fd8d2a388ceaefea1689fbb63e199f262",
+            "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/native-proof/root-calibration-full-20261021T125314.174315Z/source/game/mobile/test/localization_test.dart"
+          },
+          "difference_id": "784b08f363552f308034"
+        },
+        {
+          "path": "game/platform/lib/study_recorder.dart",
+          "recorded_sha256": "40be5e8ae640edfe67c6704074bbfb5a2f62fca2e8060b0d96cf50d22b72904f",
+          "current_sha256": "6c6137fa4d62398b120e69f1fff47a49dd3c6e8025cee2b3ccd7f426e15c1775",
+          "relation": "changed",
+          "historical_source": {
+            "path": "release/native-proof/root-calibration-full-20261021T125314.174315Z/source/game/platform/lib/study_recorder.dart",
+            "exists": true,
+            "sha256": "40be5e8ae640edfe67c6704074bbfb5a2f62fca2e8060b0d96cf50d22b72904f",
+            "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/native-proof/root-calibration-full-20261021T125314.174315Z/source/game/platform/lib/study_recorder.dart"
+          },
+          "difference_id": "cf1e9c94fe62cba81466"
+        }
+      ],
+      "conditions": [
+        {
+          "condition_id": "en-US-phone-100-normal",
+          "locale": "en-US",
+          "viewport": [
+            320.0,
+            720.0
+          ],
+          "text_scale": 1.0,
+          "reduced_motion": false
+        },
+        {
+          "condition_id": "en-US-phone-100-reduced",
+          "locale": "en-US",
+          "viewport": [
+            320.0,
+            720.0
+          ],
+          "text_scale": 1.0,
+          "reduced_motion": true
+        },
+        {
+          "condition_id": "en-US-phone-150-normal",
+          "locale": "en-US",
+          "viewport": [
+            320.0,
+            720.0
+          ],
+          "text_scale": 1.5,
+          "reduced_motion": false
+        },
+        {
+          "condition_id": "en-US-phone-150-reduced",
+          "locale": "en-US",
+          "viewport": [
+            320.0,
+            720.0
+          ],
+          "text_scale": 1.5,
+          "reduced_motion": true
+        },
+        {
+          "condition_id": "en-US-phone-200-normal",
+          "locale": "en-US",
+          "viewport": [
+            320.0,
+            720.0
+          ],
+          "text_scale": 2.0,
+          "reduced_motion": false
+        },
+        {
+          "condition_id": "en-US-phone-200-reduced",
+          "locale": "en-US",
+          "viewport": [
+            320.0,
+            720.0
+          ],
+          "text_scale": 2.0,
+          "reduced_motion": true
+        },
+        {
+          "condition_id": "en-US-tablet-100-normal",
+          "locale": "en-US",
+          "viewport": [
+            1024.0,
+            768.0
+          ],
+          "text_scale": 1.0,
+          "reduced_motion": false
+        },
+        {
+          "condition_id": "en-US-tablet-100-reduced",
+          "locale": "en-US",
+          "viewport": [
+            1024.0,
+            768.0
+          ],
+          "text_scale": 1.0,
+          "reduced_motion": true
+        },
+        {
+          "condition_id": "en-US-tablet-150-normal",
+          "locale": "en-US",
+          "viewport": [
+            1024.0,
+            768.0
+          ],
+          "text_scale": 1.5,
+          "reduced_motion": false
+        },
+        {
+          "condition_id": "en-US-tablet-150-reduced",
+          "locale": "en-US",
+          "viewport": [
+            1024.0,
+            768.0
+          ],
+          "text_scale": 1.5,
+          "reduced_motion": true
+        },
+        {
+          "condition_id": "en-US-tablet-200-normal",
+          "locale": "en-US",
+          "viewport": [
+            1024.0,
+            768.0
+          ],
+          "text_scale": 2.0,
+          "reduced_motion": false
+        },
+        {
+          "condition_id": "en-US-tablet-200-reduced",
+          "locale": "en-US",
+          "viewport": [
+            1024.0,
+            768.0
+          ],
+          "text_scale": 2.0,
+          "reduced_motion": true
+        }
+      ],
+      "meaning": "Reviewed actual host execution at archived bytes. Unchanged component inputs are individually identified; changed consumers/dependencies do not inherit integrated current or native acceptance."
+    },
+    "calibration_pseudo": {
+      "source_index": {
+        "path": "release/native-proof/root-calibration-pseudo-full-20261021T125549.278518Z/source-before.json",
+        "exists": true,
+        "sha256": "662f650abb0b1bd76f2ea4488301342baea3ce5c275d98557b744a3b0fa28ab7",
+        "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/native-proof/root-calibration-pseudo-full-20261021T125549.278518Z/source-before.json"
+      },
+      "report": {
+        "path": "release/accessibility-current/root-calibration-pseudo-full-20261021T125549.278518Z/calibration-matrix.json",
+        "exists": true,
+        "sha256": "55d2fdd2fa0a88c38ee6cc36c1e3687f29bbb17fb493844c1995e108729bc7bb",
+        "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/accessibility-current/root-calibration-pseudo-full-20261021T125549.278518Z/calibration-matrix.json"
+      },
+      "runner_verification": {
+        "path": "release/native-proof/root-calibration-pseudo-full-20261021T125549.278518Z/verification.json",
+        "exists": true,
+        "sha256": "689a123629720db387a4ac35966f84d30a6156846b95d1da2da008455b61886c",
+        "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/native-proof/root-calibration-pseudo-full-20261021T125549.278518Z/verification.json"
+      },
+      "independent_review": {
+        "path": "release/qa/integration-accessibility-20261021T125317256764Z/CALIBRATION_REVIEW.md",
+        "exists": true,
+        "sha256": "2905afef7d0fbbd69b12f49a6f1457449b0feb277445ee0d5704d05002ab9cc6",
+        "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/qa/integration-accessibility-20261021T125317256764Z/CALIBRATION_REVIEW.md"
+      },
+      "archive_root": "release/native-proof/root-calibration-pseudo-full-20261021T125549.278518Z/source",
+      "archived_input_count": 525,
+      "current_changed_input_count": 15,
+      "changed_inputs": [
+        {
+          "path": "game/content/locales/en-US/support.release_notes.json",
+          "recorded_sha256": "cfac60cb01c55d2d0887ca34bccf6aea7a7a60171914134f6e9fdb2903ac70dc",
+          "current_sha256": "77f7dc5ba8a8fca1eece53500b6a8ea659320bcfa5f18e82859179cf4f9f9401",
+          "relation": "changed",
+          "historical_source": {
+            "path": "release/native-proof/root-calibration-pseudo-full-20261021T125549.278518Z/source/game/content/locales/en-US/support.release_notes.json",
+            "exists": true,
+            "sha256": "cfac60cb01c55d2d0887ca34bccf6aea7a7a60171914134f6e9fdb2903ac70dc",
+            "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/native-proof/root-calibration-pseudo-full-20261021T125549.278518Z/source/game/content/locales/en-US/support.release_notes.json"
+          },
+          "difference_id": "824fc98cec598223b505"
+        },
+        {
+          "path": "game/mobile/android/app/src/main/kotlin/dev/tideglass/game/MainActivity.kt",
+          "recorded_sha256": "b53bd92f01e9847f53e785d44f1591b4abb7ae8539cae84e5e73b473892914b9",
+          "current_sha256": "d6fdd6373c1e400d9c5f27e4e2ec56b32e73473f5f5d3316215bd7ec13a4abdf",
+          "relation": "changed",
+          "historical_source": {
+            "path": "release/native-proof/root-calibration-pseudo-full-20261021T125549.278518Z/source/game/mobile/android/app/src/main/kotlin/dev/tideglass/game/MainActivity.kt",
+            "exists": true,
+            "sha256": "b53bd92f01e9847f53e785d44f1591b4abb7ae8539cae84e5e73b473892914b9",
+            "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/native-proof/root-calibration-pseudo-full-20261021T125549.278518Z/source/game/mobile/android/app/src/main/kotlin/dev/tideglass/game/MainActivity.kt"
+          },
+          "difference_id": "a19c13994bda455f1c0a"
+        },
+        {
+          "path": "game/mobile/ios/Runner/AppDelegate.swift",
+          "recorded_sha256": "93b0d32d184bdd94c5737acc503cceb6257851b2a844caf02c7f5fd232fd8601",
+          "current_sha256": "5c7bac17fd6ab5c3995ff25e4c7af74c653fa5c02dc94b2bbe1751fdd9fa1dc1",
+          "relation": "changed",
+          "historical_source": {
+            "path": "release/native-proof/root-calibration-pseudo-full-20261021T125549.278518Z/source/game/mobile/ios/Runner/AppDelegate.swift",
+            "exists": true,
+            "sha256": "93b0d32d184bdd94c5737acc503cceb6257851b2a844caf02c7f5fd232fd8601",
+            "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/native-proof/root-calibration-pseudo-full-20261021T125549.278518Z/source/game/mobile/ios/Runner/AppDelegate.swift"
+          },
+          "difference_id": "3540f7132fce2e1a67e4"
+        },
+        {
+          "path": "game/mobile/lib/help_content.dart",
+          "recorded_sha256": "73434078cd083feaac50bc12d2f75242044d5ae5e6158eddf1c9ab56836e3ef7",
+          "current_sha256": "4ae52390f8e12a1e792d23a9c6c29f526281d2ca2613e38d9cd874b8630485b3",
+          "relation": "changed",
+          "historical_source": {
+            "path": "release/native-proof/root-calibration-pseudo-full-20261021T125549.278518Z/source/game/mobile/lib/help_content.dart",
+            "exists": true,
+            "sha256": "73434078cd083feaac50bc12d2f75242044d5ae5e6158eddf1c9ab56836e3ef7",
+            "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/native-proof/root-calibration-pseudo-full-20261021T125549.278518Z/source/game/mobile/lib/help_content.dart"
+          },
+          "difference_id": "3f3ca049f9606e83349d"
+        },
+        {
+          "path": "game/mobile/lib/help_screen.dart",
+          "recorded_sha256": "f5ecfa5f2af2d9fea56f8c52fa1411040bfc72f5e8fac133c5766b075fb42850",
+          "current_sha256": "74cab0741cc50e4f4f3efbc3f16a7a7a00ac83b11b35578cdaacba2690b60989",
+          "relation": "changed",
+          "historical_source": {
+            "path": "release/native-proof/root-calibration-pseudo-full-20261021T125549.278518Z/source/game/mobile/lib/help_screen.dart",
+            "exists": true,
+            "sha256": "f5ecfa5f2af2d9fea56f8c52fa1411040bfc72f5e8fac133c5766b075fb42850",
+            "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/native-proof/root-calibration-pseudo-full-20261021T125549.278518Z/source/game/mobile/lib/help_screen.dart"
+          },
+          "difference_id": "4114f20aa1691787675e"
+        },
+        {
+          "path": "game/mobile/lib/native_services.dart",
+          "recorded_sha256": "884a440659c58f0faab746435cc0aba89b69601ef4e8393fd4f4416f489ddf14",
+          "current_sha256": "f56a6a8ac2ce6fe583b859d1c65336ea4d858711456bf4243ba9d1fa24eb0e73",
+          "relation": "changed",
+          "historical_source": {
+            "path": "release/native-proof/root-calibration-pseudo-full-20261021T125549.278518Z/source/game/mobile/lib/native_services.dart",
+            "exists": true,
+            "sha256": "884a440659c58f0faab746435cc0aba89b69601ef4e8393fd4f4416f489ddf14",
+            "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/native-proof/root-calibration-pseudo-full-20261021T125549.278518Z/source/game/mobile/lib/native_services.dart"
+          },
+          "difference_id": "545a2ed0c577fc7b8dbb"
+        },
+        {
+          "path": "game/mobile/lib/notification_settings.dart",
+          "recorded_sha256": "46b00068acccd03516fc5999a4e548e3dfcc7eee1ab02a3b0e139042f7916264",
+          "current_sha256": "f135edc13f54379f32d87aef22e1f028d2320bc147b4307b0002cd087bf857be",
+          "relation": "changed",
+          "historical_source": {
+            "path": "release/native-proof/root-calibration-pseudo-full-20261021T125549.278518Z/source/game/mobile/lib/notification_settings.dart",
+            "exists": true,
+            "sha256": "46b00068acccd03516fc5999a4e548e3dfcc7eee1ab02a3b0e139042f7916264",
+            "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/native-proof/root-calibration-pseudo-full-20261021T125549.278518Z/source/game/mobile/lib/notification_settings.dart"
+          },
+          "difference_id": "5b6547e558a5117ae7cb"
+        },
+        {
+          "path": "game/mobile/lib/season_screen.dart",
+          "recorded_sha256": "f05af571cdbdbd84d194f08a51bb91cb7544a9a366fa90babba2f29a354040e5",
+          "current_sha256": "caed42e2bf64a32e501034822a5982bc53e9879035cd37059896b2665e495ff9",
+          "relation": "changed",
+          "historical_source": {
+            "path": "release/native-proof/root-calibration-pseudo-full-20261021T125549.278518Z/source/game/mobile/lib/season_screen.dart",
+            "exists": true,
+            "sha256": "f05af571cdbdbd84d194f08a51bb91cb7544a9a366fa90babba2f29a354040e5",
+            "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/native-proof/root-calibration-pseudo-full-20261021T125549.278518Z/source/game/mobile/lib/season_screen.dart"
+          },
+          "difference_id": "b38957f1c9cda04e8018"
+        },
+        {
+          "path": "game/mobile/lib/service_settings.dart",
+          "recorded_sha256": "5eaeb67398f371664ffedaa865577f701e8f80e062e33a1e64f59754943dd429",
+          "current_sha256": "ff3a5b61c50a4239a943da85dd652ce81d3ff18e69c96d2b90ae367fcd571115",
+          "relation": "changed",
+          "historical_source": {
+            "path": "release/native-proof/root-calibration-pseudo-full-20261021T125549.278518Z/source/game/mobile/lib/service_settings.dart",
+            "exists": true,
+            "sha256": "5eaeb67398f371664ffedaa865577f701e8f80e062e33a1e64f59754943dd429",
+            "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/native-proof/root-calibration-pseudo-full-20261021T125549.278518Z/source/game/mobile/lib/service_settings.dart"
+          },
+          "difference_id": "f62fd08050a1cba083da"
+        },
+        {
+          "path": "game/mobile/lib/story_screen.dart",
+          "recorded_sha256": "b546eb1ce88fb8f46ebde390249849a1b728fe28d6b7420466188ed97c92fc2e",
+          "current_sha256": "13c917f53adc8563f35fd8df7aefafea186db2a441fa51d49a7303d6f2066713",
+          "relation": "changed",
+          "historical_source": {
+            "path": "release/native-proof/root-calibration-pseudo-full-20261021T125549.278518Z/source/game/mobile/lib/story_screen.dart",
+            "exists": true,
+            "sha256": "b546eb1ce88fb8f46ebde390249849a1b728fe28d6b7420466188ed97c92fc2e",
+            "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/native-proof/root-calibration-pseudo-full-20261021T125549.278518Z/source/game/mobile/lib/story_screen.dart"
+          },
+          "difference_id": "a78e86e6c3d3b8d5ab6c"
+        },
+        {
+          "path": "game/mobile/lib/study_gate.dart",
+          "recorded_sha256": "bc019a763d72476ddd38594c96f90c081ffb9992b0e650aa1defd8a3514d923b",
+          "current_sha256": "99757790494004865b5b68a4798191170955ff7b4bc000c98cc4f78094b9f7d9",
+          "relation": "changed",
+          "historical_source": {
+            "path": "release/native-proof/root-calibration-pseudo-full-20261021T125549.278518Z/source/game/mobile/lib/study_gate.dart",
+            "exists": true,
+            "sha256": "bc019a763d72476ddd38594c96f90c081ffb9992b0e650aa1defd8a3514d923b",
+            "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/native-proof/root-calibration-pseudo-full-20261021T125549.278518Z/source/game/mobile/lib/study_gate.dart"
+          },
+          "difference_id": "2f60aac8208a58d23191"
+        },
+        {
+          "path": "game/mobile/pubspec.lock",
+          "recorded_sha256": "75d094d1dcd86b951c60cc082db6ded8c45db95aae02ea2b39ebaff0858a1a03",
+          "current_sha256": "ef6e4f3380061a48688603cdc5c3446cce611641bb7d6601265a55c472e73b64",
+          "relation": "changed",
+          "historical_source": {
+            "path": "release/native-proof/root-calibration-pseudo-full-20261021T125549.278518Z/source/game/mobile/pubspec.lock",
+            "exists": true,
+            "sha256": "75d094d1dcd86b951c60cc082db6ded8c45db95aae02ea2b39ebaff0858a1a03",
+            "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/native-proof/root-calibration-pseudo-full-20261021T125549.278518Z/source/game/mobile/pubspec.lock"
+          },
+          "difference_id": "9bc39464406390960768"
+        },
+        {
+          "path": "game/mobile/pubspec.yaml",
+          "recorded_sha256": "3dee7db8606a8d0d36daec69616f3a8110a33c16f1e86cdc11ba1cca4145efea",
+          "current_sha256": "b176d218ea2398948b31991696761d3a2d1023b3843e5fe80dfe0880cc32ed24",
+          "relation": "changed",
+          "historical_source": {
+            "path": "release/native-proof/root-calibration-pseudo-full-20261021T125549.278518Z/source/game/mobile/pubspec.yaml",
+            "exists": true,
+            "sha256": "3dee7db8606a8d0d36daec69616f3a8110a33c16f1e86cdc11ba1cca4145efea",
+            "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/native-proof/root-calibration-pseudo-full-20261021T125549.278518Z/source/game/mobile/pubspec.yaml"
+          },
+          "difference_id": "9c56e4d6fa51574358ea"
+        },
+        {
+          "path": "game/mobile/test/localization_test.dart",
+          "recorded_sha256": "d301261ca00f97ad4fe9a7eedcba9b4fd8d2a388ceaefea1689fbb63e199f262",
+          "current_sha256": "74a51e160d15c2e13cf7716a2b9555b46fa996c1e89a9672f0ccba244c2d4b0f",
+          "relation": "changed",
+          "historical_source": {
+            "path": "release/native-proof/root-calibration-pseudo-full-20261021T125549.278518Z/source/game/mobile/test/localization_test.dart",
+            "exists": true,
+            "sha256": "d301261ca00f97ad4fe9a7eedcba9b4fd8d2a388ceaefea1689fbb63e199f262",
+            "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/native-proof/root-calibration-pseudo-full-20261021T125549.278518Z/source/game/mobile/test/localization_test.dart"
+          },
+          "difference_id": "784b08f363552f308034"
+        },
+        {
+          "path": "game/platform/lib/study_recorder.dart",
+          "recorded_sha256": "40be5e8ae640edfe67c6704074bbfb5a2f62fca2e8060b0d96cf50d22b72904f",
+          "current_sha256": "6c6137fa4d62398b120e69f1fff47a49dd3c6e8025cee2b3ccd7f426e15c1775",
+          "relation": "changed",
+          "historical_source": {
+            "path": "release/native-proof/root-calibration-pseudo-full-20261021T125549.278518Z/source/game/platform/lib/study_recorder.dart",
+            "exists": true,
+            "sha256": "40be5e8ae640edfe67c6704074bbfb5a2f62fca2e8060b0d96cf50d22b72904f",
+            "snapshot_path": "release/asset-current-bridges/staged/snapshot/release/native-proof/root-calibration-pseudo-full-20261021T125549.278518Z/source/game/platform/lib/study_recorder.dart"
+          },
+          "difference_id": "cf1e9c94fe62cba81466"
+        }
+      ],
+      "conditions": [
+        {
+          "condition_id": "qps-ploc-phone-100-normal",
+          "locale": "qps-ploc",
+          "viewport": [
+            320.0,
+            720.0
+          ],
+          "text_scale": 1.0,
+          "reduced_motion": false
+        },
+        {
+          "condition_id": "qps-ploc-phone-100-reduced",
+          "locale": "qps-ploc",
+          "viewport": [
+            320.0,
+            720.0
+          ],
+          "text_scale": 1.0,
+          "reduced_motion": true
+        },
+        {
+          "condition_id": "qps-ploc-phone-150-normal",
+          "locale": "qps-ploc",
+          "viewport": [
+            320.0,
+            720.0
+          ],
+          "text_scale": 1.5,
+          "reduced_motion": false
+        },
+        {
+          "condition_id": "qps-ploc-phone-150-reduced",
+          "locale": "qps-ploc",
+          "viewport": [
+            320.0,
+            720.0
+          ],
+          "text_scale": 1.5,
+          "reduced_motion": true
+        },
+        {
+          "condition_id": "qps-ploc-phone-200-normal",
+          "locale": "qps-ploc",
+          "viewport": [
+            320.0,
+            720.0
+          ],
+          "text_scale": 2.0,
+          "reduced_motion": false
+        },
+        {
+          "condition_id": "qps-ploc-phone-200-reduced",
+          "locale": "qps-ploc",
+          "viewport": [
+            320.0,
+            720.0
+          ],
+          "text_scale": 2.0,
+          "reduced_motion": true
+        },
+        {
+          "condition_id": "qps-ploc-tablet-100-normal",
+          "locale": "qps-ploc",
+          "viewport": [
+            1024.0,
+            768.0
+          ],
+          "text_scale": 1.0,
+          "reduced_motion": false
+        },
+        {
+          "condition_id": "qps-ploc-tablet-100-reduced",
+          "locale": "qps-ploc",
+          "viewport": [
+            1024.0,
+            768.0
+          ],
+          "text_scale": 1.0,
+          "reduced_motion": true
+        },
+        {
+          "condition_id": "qps-ploc-tablet-150-normal",
+          "locale": "qps-ploc",
+          "viewport": [
+            1024.0,
+            768.0
+          ],
+          "text_scale": 1.5,
+          "reduced_motion": false
+        },
+        {
+          "condition_id": "qps-ploc-tablet-150-reduced",
+          "locale": "qps-ploc",
+          "viewport": [
+            1024.0,
+            768.0
+          ],
+          "text_scale": 1.5,
+          "reduced_motion": true
+        },
+        {
+          "condition_id": "qps-ploc-tablet-200-normal",
+          "locale": "qps-ploc",
+          "viewport": [
+            1024.0,
+            768.0
+          ],
+          "text_scale": 2.0,
+          "reduced_motion": false
+        },
+        {
+          "condition_id": "qps-ploc-tablet-200-reduced",
+          "locale": "qps-ploc",
+          "viewport": [
+            1024.0,
+            768.0
+          ],
+          "text_scale": 2.0,
+          "reduced_motion": true
+        }
+      ],
+      "meaning": "Reviewed actual host execution at archived bytes. Unchanged component inputs are individually identified; changed consumers/dependencies do not inherit integrated current or native acceptance."
+    }
+  }
+}

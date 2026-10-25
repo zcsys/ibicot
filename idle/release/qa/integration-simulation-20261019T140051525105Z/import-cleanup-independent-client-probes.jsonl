@@ -1,0 +1,29 @@
+Resolving dependencies...
+Downloading packages...
+  in_app_purchase_storekit 0.4.13+3 (0.4.14 available)
+  material_color_utilities 0.13.0 (0.13.1 available)
+  test_api 0.7.12 (0.7.15 available)
+Got dependencies!
+3 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
+{"protocolVersion":"0.1.1","runnerVersion":null,"pid":8593,"type":"start","time":0}
+{"suite":{"id":0,"platform":"vm","path":"/Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-simulation-20261019T140051525105Z/game/mobile/test/qa_integration_simulation_test.dart"},"type":"suite","time":0}
+{"test":{"id":1,"name":"loading /Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-simulation-20261019T140051525105Z/game/mobile/test/qa_integration_simulation_test.dart","suiteID":0,"groupIDs":[],"metadata":{"skip":false,"skipReason":null},"line":null,"column":null,"url":null},"type":"testStart","time":0}
+{"count":1,"time":3,"type":"allSuites"}
+{"testID":1,"result":"success","skipped":false,"hidden":true,"type":"testDone","time":1379}
+{"group":{"id":2,"suiteID":0,"parentID":null,"name":"","metadata":{"skip":false,"skipReason":null},"testCount":6,"line":null,"column":null,"url":null},"type":"group","time":1380}
+{"test":{"id":3,"name":"120h single-absence simulator and native worker preserve economic partitions","suiteID":0,"groupIDs":[2],"metadata":{"skip":false,"skipReason":null},"line":36,"column":3,"url":"file:///Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-simulation-20261019T140051525105Z/game/mobile/test/qa_integration_simulation_test.dart"},"type":"testStart","time":1380}
+{"testID":3,"messageType":"print","message":"{\"finding\":\"end_of_run_daily_materialization_gap\",\"simulator_last_day\":20746,\"native_last_day\":20752,\"simulator_contracts\":3,\"native_contracts\":21}","type":"print","time":3310}
+{"testID":3,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":3311}
+{"test":{"id":4,"name":"one 120h absence is invariant under 1h versus 4h simulator chunks","suiteID":0,"groupIDs":[2],"metadata":{"skip":false,"skipReason":null},"line":82,"column":3,"url":"file:///Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-simulation-20261019T140051525105Z/game/mobile/test/qa_integration_simulation_test.dart"},"type":"testStart","time":3311}
+{"testID":4,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":4984}
+{"test":{"id":5,"name":"72h and120h single absences give same core income with no automation","suiteID":0,"groupIDs":[2],"metadata":{"skip":false,"skipReason":null},"line":98,"column":3,"url":"file:///Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-simulation-20261019T140051525105Z/game/mobile/test/qa_integration_simulation_test.dart"},"type":"testStart","time":4985}
+{"testID":5,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":5183}
+{"test":{"id":6,"name":"minimal campaign uses three actual accessible Focus activations; none does not","suiteID":0,"groupIDs":[2],"metadata":{"skip":false,"skipReason":null},"line":113,"column":3,"url":"file:///Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-simulation-20261019T140051525105Z/game/mobile/test/qa_integration_simulation_test.dart"},"type":"testStart","time":5183}
+{"testID":6,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":6512}
+{"test":{"id":7,"name":"client permits repeated archive reflection omitted by claim-ready policy","suiteID":0,"groupIDs":[2],"metadata":{"skip":false,"skipReason":null},"line":148,"column":3,"url":"file:///Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-simulation-20261019T140051525105Z/game/mobile/test/qa_integration_simulation_test.dart"},"type":"testStart","time":6513}
+{"testID":7,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":6875}
+{"test":{"id":8,"name":"exhausted first-completion dossiers must not be offered as available discovery","suiteID":0,"groupIDs":[2],"metadata":{"skip":false,"skipReason":null},"line":169,"column":3,"url":"file:///Users/csys/Desktop/ibicot/idle/game/qa/workspaces/integration-simulation-20261019T140051525105Z/game/mobile/test/qa_integration_simulation_test.dart"},"type":"testStart","time":6875}
+{"testID":8,"error":"Expected: not contains 'challenge'\n  Actual: ['archive', 'challenge', 'calibration']\n","stackTrace":"package:matcher                                     expect\npackage:flutter_test/src/widget_tester.dart 473:18  expect\ntest/qa_integration_simulation_test.dart 236:7      main.<fn>\n","isFailure":true,"type":"error","time":6897}
+{"testID":8,"result":"failure","skipped":false,"hidden":false,"type":"testDone","time":6897}
+{"success":false,"type":"done","time":6904}

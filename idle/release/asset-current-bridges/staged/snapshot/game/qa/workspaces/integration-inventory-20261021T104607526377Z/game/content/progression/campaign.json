@@ -1,0 +1,260 @@
+{
+  "schema_version": 1,
+  "content_version": "campaign-1.0.0",
+  "status": "authored_balance_validation_pending",
+  "chapters": [
+    {
+      "id": "chapter.01",
+      "title": "First Light",
+      "order": 1,
+      "prerequisite": null,
+      "intro": "A skiff returns with a single thread of Radiance. The harbor has forgotten how to hold the dawn. Set a light on the water, learn its rhythm, and draw the first new chart.",
+      "completion": "The first route survives the rebuilding. One constellation is bright enough to follow home.",
+      "objective_mode": "all",
+      "objectives": [
+        {
+          "kind": "stat_min",
+          "stat": "recharts",
+          "value": 1
+        }
+      ],
+      "hints": [
+        "Build toward the Dawn Observatory.",
+        "Rechart when you are ready; Charts and lifetime earnings remain."
+      ],
+      "reward_cosmetic_id": "cosmetic.core.chapter.01",
+      "harbor_state": "harbor.restored.01",
+      "archive_ids": [
+        "archive.main.01",
+        "archive.main.02",
+        "archive.main.03"
+      ],
+      "economic_rewards": [],
+      "paid_requirements": [],
+      "status": "authored_runtime_integration_pending"
+    },
+    {
+      "id": "chapter.02",
+      "title": "A Shared Horizon",
+      "order": 2,
+      "prerequisite": "chapter.01",
+      "intro": "A lone light can mark a channel. A network can reveal the whole coast. Small skiffs and prism beds still shape the work of the largest observatories.",
+      "completion": "The harbor recognizes a pattern: old craft and new instruments belong to the same sky.",
+      "objective_mode": "all",
+      "objectives": [
+        {
+          "kind": "stat_min",
+          "stat": "charts_awarded",
+          "value": 25
+        },
+        {
+          "kind": "owned_min",
+          "tier": 1,
+          "value": 25
+        },
+        {
+          "kind": "owned_min",
+          "tier": 2,
+          "value": 25
+        }
+      ],
+      "hints": [
+        "Reach 25 Charts to reveal cross-tier links.",
+        "Build 25 Skiffs and 25 Nurseries in the same fleet."
+      ],
+      "reward_cosmetic_id": "cosmetic.core.chapter.02",
+      "harbor_state": "harbor.restored.02",
+      "archive_ids": [
+        "archive.main.04",
+        "archive.main.05",
+        "archive.main.06"
+      ],
+      "economic_rewards": [],
+      "paid_requirements": [],
+      "status": "authored_runtime_integration_pending"
+    },
+    {
+      "id": "chapter.03",
+      "title": "The Quiet Watch",
+      "order": 3,
+      "prerequisite": "chapter.02",
+      "intro": "Survey crews learn the coast while you are away. Let their notes accumulate, then choose a constellation to study. The harbor has no need for a sleepless keeper.",
+      "completion": "The watch stations can carry a night without you. Their patient records reveal the channels that the darkness hid.",
+      "objective_mode": "all",
+      "objectives": [
+        {
+          "kind": "stat_min",
+          "stat": "surveys_collected",
+          "value": 12
+        },
+        {
+          "kind": "stat_min",
+          "stat": "unique_calibrations",
+          "value": 3
+        }
+      ],
+      "hints": [
+        "Collect twelve completed Surveys over your visits.",
+        "Discover three calibration patterns; accessible completion gives the same result."
+      ],
+      "reward_cosmetic_id": "cosmetic.core.chapter.03",
+      "harbor_state": "harbor.restored.03",
+      "archive_ids": [
+        "archive.main.07",
+        "archive.main.08",
+        "archive.main.09"
+      ],
+      "economic_rewards": [],
+      "paid_requirements": [],
+      "status": "authored_runtime_integration_pending"
+    },
+    {
+      "id": "chapter.04",
+      "title": "Three Ways Through",
+      "order": 4,
+      "prerequisite": "chapter.03",
+      "intro": "Beyond the harbor lie three difficult passages. Each asks a different question: what can a small fleet achieve, which links matter most, and what plan holds while you are gone?",
+      "completion": "Three passages are charted. Their answers disagree in useful ways, and your archive has room for each.",
+      "objective_mode": "all",
+      "objectives": [
+        {
+          "kind": "challenge_family_min",
+          "family": "constrained_fleets",
+          "value": 1
+        },
+        {
+          "kind": "challenge_family_min",
+          "family": "synergy_priorities",
+          "value": 1
+        },
+        {
+          "kind": "challenge_family_min",
+          "family": "automation_planning",
+          "value": 1
+        }
+      ],
+      "hints": [
+        "Open and complete one dossier from each rule family.",
+        "Each dossier costs 100 Survey Notes once and remains replayable."
+      ],
+      "reward_cosmetic_id": "cosmetic.core.chapter.04",
+      "harbor_state": "harbor.restored.04",
+      "archive_ids": [
+        "archive.main.10",
+        "archive.main.11",
+        "archive.main.12"
+      ],
+      "economic_rewards": [],
+      "paid_requirements": [],
+      "status": "authored_runtime_integration_pending"
+    },
+    {
+      "id": "chapter.05",
+      "title": "The Keeper’s Craft",
+      "order": 5,
+      "prerequisite": "chapter.04",
+      "intro": "A restored harbor is a practice, not a perfect machine. Rebuild with what you have learned. You can set a plan or keep each decision in your own hands.",
+      "completion": "Your charts describe choices as well as coastlines. Future keepers will know why the lights were placed.",
+      "objective_mode": "all",
+      "objectives": [
+        {
+          "kind": "stat_min",
+          "stat": "charts_awarded",
+          "value": 100
+        },
+        {
+          "kind": "stat_min",
+          "stat": "recharts",
+          "value": 5
+        },
+        {
+          "kind": "owned_min",
+          "tier": 5,
+          "value": 1
+        }
+      ],
+      "hints": [
+        "Reach 100 Charts and complete five Recharts in total.",
+        "Return to a complete five-tier fleet. Automatic resets remain optional."
+      ],
+      "reward_cosmetic_id": "cosmetic.core.chapter.05",
+      "harbor_state": "harbor.restored.05",
+      "archive_ids": [
+        "archive.main.13",
+        "archive.main.14",
+        "archive.main.15"
+      ],
+      "economic_rewards": [],
+      "paid_requirements": [],
+      "status": "authored_runtime_integration_pending"
+    },
+    {
+      "id": "chapter.06",
+      "title": "A Sea of Stars",
+      "order": 6,
+      "prerequisite": "chapter.05",
+      "intro": "The final restoration is a map of six safe passages, with two examples of each craft. No single solution should own the sea. Finish the survey, and leave the horizon open.",
+      "completion": "At dawn, the whole harbor answers. The sea has not become smaller; it has become navigable. Your restoration is complete. Keep charting, revisit a favorite challenge, or let the lights watch over the water until you return.",
+      "objective_mode": "all",
+      "objectives": [
+        {
+          "kind": "challenge_family_min",
+          "family": "constrained_fleets",
+          "value": 2
+        },
+        {
+          "kind": "challenge_family_min",
+          "family": "synergy_priorities",
+          "value": 2
+        },
+        {
+          "kind": "challenge_family_min",
+          "family": "automation_planning",
+          "value": 2
+        }
+      ],
+      "hints": [
+        "Complete two distinct dossiers from each family.",
+        "Six optional dossiers, extra plan slots and decorations can remain unpurchased."
+      ],
+      "reward_cosmetic_id": "cosmetic.core.chapter.06",
+      "harbor_state": "harbor.restored.06",
+      "archive_ids": [
+        "archive.main.16",
+        "archive.main.17",
+        "archive.main.18"
+      ],
+      "economic_rewards": [],
+      "paid_requirements": [],
+      "status": "authored_runtime_integration_pending"
+    }
+  ],
+  "ending": {
+    "id": "ending.main",
+    "chapter_id": "chapter.06",
+    "title": "The Harbor Remembers",
+    "text": "At dawn, the whole harbor answers. The sea has not become smaller; it has become navigable. Your restoration is complete. Keep charting, revisit a favorite challenge, or let the lights watch over the water until you return.",
+    "allows_continued_play": true
+  },
+  "rules": {
+    "prior_chapter_required": true,
+    "retroactive_lifetime_stats": true,
+    "ownership_conditions_use_current_fleet": true,
+    "no_calendar_date_locks": true,
+    "automatic_rechart_optional": true,
+    "mandatory_note_sinks": [
+      "six_distinct_challenge_dossiers"
+    ],
+    "maximum_mandatory_dossier_notes": 600,
+    "all_note_sinks_required": false
+  },
+  "balance_hypothesis": {
+    "mandatory_dossier_generation_days_surveys_only": 20,
+    "mandatory_dossier_generation_days_all_contracts": 10,
+    "target_calendar_days": [
+      15,
+      30
+    ],
+    "note": "Counts exclude unlock timing and time spent learning. Actual completion needs native simulations and human cohort evidence; targets are not measured results."
+  }
+}

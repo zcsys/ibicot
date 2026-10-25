@@ -1,0 +1,47 @@
+--- game/qa/workspaces/integration-registration-20261021T111626112740Z/source/provenance/asset.support.help.json
++++ source/provenance/asset.support.help.json
+@@ -8,15 +8,15 @@
+     "game/mobile/lib/help_screen.dart",
+     "game/mobile/lib/app.dart",
+     "game/mobile/lib/presentation.dart",
+-    "source/art/registration/help-runtime-extract.json"
++    "source/art/registration/help-runtime-current-20261021T141049Z.json"
+   ],
+   "source_media_sha256": {
+     "source/content/en-US/support.help.md": "b9485dd625df85b8f8249dce6808f06990a378750acddae51a573e8e3e6f9094",
+-    "game/mobile/lib/help_content.dart": "73434078cd083feaac50bc12d2f75242044d5ae5e6158eddf1c9ab56836e3ef7",
+-    "game/mobile/lib/help_screen.dart": "f5ecfa5f2af2d9fea56f8c52fa1411040bfc72f5e8fac133c5766b075fb42850",
++    "game/mobile/lib/help_content.dart": "4ae52390f8e12a1e792d23a9c6c29f526281d2ca2613e38d9cd874b8630485b3",
++    "game/mobile/lib/help_screen.dart": "74cab0741cc50e4f4f3efbc3f16a7a7a00ac83b11b35578cdaacba2690b60989",
+     "game/mobile/lib/app.dart": "c26efdd6b59c7a8ce4404c9c8dee538b40ee2b3809be9df76e3eae537b360c20",
+     "game/mobile/lib/presentation.dart": "0b891f8baa973d11f1aabe6d985fafbe8bf0e08904007cb0f218e68044fd9b63",
+-    "source/art/registration/help-runtime-extract.json": "bbc671c448b7173abae2c3b9b5e04debfee3d82eb1f65e736c3e1f98a08e1db6"
++    "source/art/registration/help-runtime-current-20261021T141049Z.json": "a074ed0a4a299e9f0c5c23452c3aee8d0a81e1896c4dbc247e4ba4ae8a7cba31"
+   },
+   "source_kind": "original_project_authored_text",
+   "license_or_authorship_basis": "Existing original Tideglass code/text listed here, registered without external artwork or quoted source prose. This is authorship traceability, not independent rights or release approval.",
+@@ -26,7 +26,7 @@
+     "game/mobile/lib/help_screen.dart",
+     "game/mobile/lib/app.dart",
+     "game/mobile/lib/presentation.dart",
+-    "source/art/registration/help-runtime-extract.json"
++    "source/art/registration/help-runtime-current-20261021T141049Z.json"
+   ],
+   "allowed_uses": [
+     "local_project_development_and_review"
+@@ -68,5 +68,14 @@
+     "text_scale_200": "open_independent_complete_variant_acceptance",
+     "pseudolocalized": "open_independent_complete_variant_acceptance"
+   },
+-  "production_acceptance": false
++  "production_acceptance": false,
++  "current_source_refresh": {
++    "evidence": "release/content-presentation/help-descriptor-refresh-20261021T141049.467500Z",
++    "reason": "CONTENT002: public-links runtime paragraph changed after original registration; current Help layout also repaired. Original provenance and descriptors preserved in evidence/before.",
++    "runtime_extraction": "source/art/registration/help-runtime-current-20261021T141049Z.json",
++    "runtime_extraction_method": "Execute actual HelpContent values through pure Dart, using same registered field mapping. No source regex or widget render claim.",
++    "prior_host_capture": "Historical version only; original bounded_host_capture_evidence retained unchanged.",
++    "independent_review": "pending",
++    "release_acceptance": false
++  }
+ }

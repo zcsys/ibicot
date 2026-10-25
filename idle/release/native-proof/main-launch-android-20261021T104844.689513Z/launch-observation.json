@@ -1,0 +1,15 @@
+{
+  "observed_utc": "2026-10-21T10:54:43.015437+00:00",
+  "passed": false,
+  "finding": "OS removed the app during pending process attachment and killed it with start timeout; no recorded app FATAL EXCEPTION. Splash then launcher, no app PID.",
+  "confound": "Concurrent first release R8 optimizer on16GB host with3iOS simulators andAndroid emulator. Other system/Google processes also logged start timeouts. No causal production conclusion.",
+  "next_action": "Retest same exported APK with release build complete, idle Gradle stopped, other dedicated simulators shut down. Protected original tablet remains active.",
+  "evidence_sha256": {
+    "main-launch.json": "01b6f31cf3971c639ba2f33f87567cc9e36794f9ecf37f887e8d486bd678c2dc",
+    "process-diagnostic.log": "a0f59f46b53c640ea7f0eb2420e74f1fa98d8296a7f62f22e9a189d3c5762a57",
+    "runtime-log.txt": "e8078dec042067938d37026d1ee8da513ef83e56878df1bcb697141cc793f2db",
+    "process.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "android-main.png": "cdf99be8035e61f7849083e7426952c8c7fa49c69b17010b35816392ec2aea7c",
+    "android-main-later.png": "689093ecff8d2684bbece9f640e43b61d6d6952a47ed7ead593d589bc0e0214c"
+  }
+}

@@ -1,0 +1,30 @@
+# Preparation only: manual one-shot; no timer or actual operator is installed.
+[Unit]
+Description=Tideglass bounded health and alert receipt cycle
+
+[Service]
+Type=oneshot
+User=tideglass
+Group=tideglass
+WorkingDirectory=/opt/tideglass/current
+ExecStart=/opt/tideglass/venv/bin/python -m services.tideglass_service.operator_cycle --database /var/lib/tideglass/service.sqlite3 --lock-file /var/lib/tideglass/operator.lock --backup /var/lib/tideglass/backup.sqlite3 --alert-config /etc/tideglass/alerts.json
+TimeoutStartSec=55
+TimeoutStopSec=3
+KillMode=control-group
+UMask=0077
+LimitNOFILE=128
+LimitCORE=0
+MemoryMax=256M
+MemorySwapMax=0
+TasksMax=8
+CPUQuota=100%
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/tideglass
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+StandardOutput=journal
+StandardError=journal
+LogRateLimitIntervalSec=30s
+LogRateLimitBurst=20

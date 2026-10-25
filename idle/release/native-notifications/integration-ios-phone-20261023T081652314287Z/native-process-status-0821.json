@@ -1,0 +1,15 @@
+{
+  "verification_id": "integration-ios-phone-20261023T081652314287Z",
+  "scope": "Read-only exact native test process status; does not establish scheduling or delivery",
+  "utc": "2026-10-23T08:22:03.714837+00:00",
+  "command": [
+    "/bin/ps",
+    "-p",
+    "19200",
+    "-o",
+    "pid=,state=,etime=,comm="
+  ],
+  "exit_code": 0,
+  "stdout": "19200 Ss   04:30 /Users/csys/Library/Developer/CoreSimulator/Devices/F05BE4B0-52C1-4CA1-B721-BD64AE559E3F/data/Containers/Bundle/Application/ADDD889C-3FAF-4975-9945-E2D2563290F3/Runner.app/Runner\n",
+  "stderr": ""
+}

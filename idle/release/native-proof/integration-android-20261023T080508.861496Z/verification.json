@@ -1,0 +1,144 @@
+{
+  "candidate_fingerprint": "3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59",
+  "device": "emulator-5556",
+  "label": "android",
+  "platform": "android",
+  "started_utc": "20261023T080508.861496Z",
+  "command": [
+    "/Users/csys/Desktop/ibicot/idle/tool/flutter",
+    "drive",
+    "--driver=test_driver/evidence_ec880d16153b.dart",
+    "--target=integration_test/evidence_1925106cb014_test.dart",
+    "-d",
+    "emulator-5556",
+    "--dart-define=TIDEGLASS_DEVICE_LABEL=android",
+    "--dart-define=TIDEGLASS_SCENARIO=capture-gallery",
+    "--dart-define=TIDEGLASS_RUN_ID=v3b00-android-gallery-surface-fixed",
+    "--dart-define=TIDEGLASS_VERIFICATION_ID=integration-android-20261023T080508.861496Z",
+    "--dart-define=TIDEGLASS_CANDIDATE_FINGERPRINT=3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59",
+    "--dart-define=TIDEGLASS_HARNESS_SHA256=1925106cb014a4a21575af3aa3bd85fc997873c1c9be74249c966da1cf28318b",
+    "--keep-app-running",
+    "--timeout=180",
+    "--no-pub"
+  ],
+  "runner_sha256": "68297f66fc4e32a173b17da2594872334d59ba2b88b7d5878b5ee8905f9b89e5",
+  "candidate_validation_runner_sha256": "59ee4e7b94a1445e2c8effadfe4c0510c9c189df0278c7ede6e87f1807bf38ee",
+  "scenario": "capture-gallery",
+  "run_id": "v3b00-android-gallery-surface-fixed",
+  "harness_sha256": {
+    "harness.dart": "1925106cb014a4a21575af3aa3bd85fc997873c1c9be74249c966da1cf28318b",
+    "driver.dart": "ec880d16153b1ac577a221a46f81e7c309dd5417fbba8aae4ce68f7acbcfb668",
+    "native_recording.py": "343ed23024953c6378bf7a314589a7252a7f97451cd01906168c9018a66c6582",
+    "native_video_metadata.swift": "2a3bb616cc2108f7d25cb6d2edd910b460bd4efc406fd0a2875cdc4197402450"
+  },
+  "production_inputs_match_snapshot": true,
+  "provenance": "Seeded production screen set and real-time UI actions in unedited silent simulator footage; no natural progression, human playtest or paid ownership claim.",
+  "recording": {
+    "platform": "android",
+    "device": "emulator-5556",
+    "audio_recorded": false,
+    "editing": "None; native simulator screen recorder output",
+    "commands": [
+      {
+        "command": [
+          "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+          "-s",
+          "emulator-5556",
+          "exec-out",
+          "screencap",
+          "-p"
+        ],
+        "exit_code": 0,
+        "stderr": "",
+        "raw_bytes": 154091
+      },
+      {
+        "command": [
+          "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+          "-s",
+          "emulator-5556",
+          "shell",
+          "run-as",
+          "dev.tideglass.game",
+          "sh",
+          "-c",
+          "'set -C; cat > /data/user/0/dev.tideglass.game/files/native-verification/capture-android-v3b00-android-gallery-surface-fixed/screenshot-1-ready.json.pending && ln /data/user/0/dev.tideglass.game/files/native-verification/capture-android-v3b00-android-gallery-surface-fixed/screenshot-1-ready.json.pending /data/user/0/dev.tideglass.game/files/native-verification/capture-android-v3b00-android-gallery-surface-fixed/screenshot-1-ready.json && rm /data/user/0/dev.tideglass.game/files/native-verification/capture-android-v3b00-android-gallery-surface-fixed/screenshot-1-ready.json.pending'"
+        ],
+        "exit_code": 1,
+        "output": "ln: cannot create hard link from '/data/user/0/dev.tideglass.game/files/native-verification/capture-android-v3b00-android-gallery-surface-fixed/screenshot-1-ready.json.pending' to '/data/user/0/dev.tideglass.game/files/native-verification/capture-android-v3b00-android-gallery-surface-fixed/screenshot-1-ready.json': Permission denied\n"
+      }
+    ],
+    "errors": [
+      "Recorder orchestration: Native capture command failed: /Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+      "No synchronized gallery start marker",
+      "No completed gameplay marker",
+      "Native video artifact is missing"
+    ],
+    "android_screenshots": [
+      {
+        "verification_id": "integration-android-20261023T080508.861496Z",
+        "candidate_fingerprint": "3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59",
+        "harness_sha256": "1925106cb014a4a21575af3aa3bd85fc997873c1c9be74249c966da1cf28318b",
+        "device_label": "android",
+        "run_id": "v3b00-android-gallery-surface-fixed",
+        "platform": "android",
+        "scenario": "capture-gallery",
+        "directory": "/data/user/0/dev.tideglass.game/files/native-verification/capture-android-v3b00-android-gallery-surface-fixed",
+        "sequence": 1,
+        "file": "android-capture-main.png",
+        "width": 1080,
+        "height": 1920,
+        "gameplay_elapsed_ms": 0,
+        "sha256": "5af6b247b2e9222cb69900092271c0e0ef277f6fb3786d6426c4e2fd6eece1e4",
+        "bytes": 154091,
+        "capture_method": "adb exec-out screencap -p",
+        "host_capture_start_monotonic_ns": 65854420611250,
+        "host_capture_end_monotonic_ns": 65856697947500
+      }
+    ],
+    "passed": false
+  },
+  "exit_code": 0,
+  "production_input_differences_after_run": [],
+  "source_snapshot_unchanged": true,
+  "harness_source_differences_during_run": [],
+  "native_process_stop": {
+    "command": [
+      "/Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+      "-s",
+      "emulator-5556",
+      "shell",
+      "am",
+      "force-stop",
+      "dev.tideglass.game"
+    ],
+    "exit_code": 0,
+    "output": ""
+  },
+  "verification_errors": [
+    "Recorder orchestration: Native capture command failed: /Users/csys/Desktop/ibicot/idle/.tooling/android-sdk/platform-tools/adb",
+    "No synchronized gallery start marker",
+    "No completed gameplay marker",
+    "Native video artifact is missing",
+    "platform: expected 'android', received None",
+    "device_label: expected 'android', received None",
+    "scenario: expected 'capture-gallery', received None",
+    "run_id: expected 'v3b00-android-gallery-surface-fixed', received None",
+    "verification_id: expected 'integration-android-20261023T080508.861496Z', received None",
+    "candidate_fingerprint: expected '3b00cc8f71222f35b60f18ee83a8bb3ba71e39aa5364222dbeb7f6d2a5c45c59', received None",
+    "harness_sha256: expected '1925106cb014a4a21575af3aa3bd85fc997873c1c9be74249c966da1cf28318b', received None",
+    "No successful native framework completion marker",
+    "No successful driver completion marker"
+  ],
+  "passed": false,
+  "evidence_sha256": {
+    "run.log": "84828202048ef751db996e54673d92729c764e1f03d1f65c7a7d30cf78b2d7bc",
+    "native_recording.py": "343ed23024953c6378bf7a314589a7252a7f97451cd01906168c9018a66c6582",
+    "recording.json": "4a2676a26e527d2104253837c339e81edc617cc5a0ec4d776688a373f03da107",
+    "android-capture-main.png": "5af6b247b2e9222cb69900092271c0e0ef277f6fb3786d6426c4e2fd6eece1e4",
+    "driver.dart": "ec880d16153b1ac577a221a46f81e7c309dd5417fbba8aae4ce68f7acbcfb668",
+    "verify_native.py": "68297f66fc4e32a173b17da2594872334d59ba2b88b7d5878b5ee8905f9b89e5",
+    "harness.dart": "1925106cb014a4a21575af3aa3bd85fc997873c1c9be74249c966da1cf28318b",
+    "native_video_metadata.swift": "2a3bb616cc2108f7d25cb6d2edd910b460bd4efc406fd0a2875cdc4197402450"
+  }
+}

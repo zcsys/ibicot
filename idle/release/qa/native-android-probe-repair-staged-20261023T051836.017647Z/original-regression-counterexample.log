@@ -1,0 +1,23 @@
+test_directory_not_link_remote_false_status_survives_transport (probe_suite.ProbeTests.test_directory_not_link_remote_false_status_survives_transport) ... ERROR
+
+======================================================================
+ERROR: test_directory_not_link_remote_false_status_survives_transport (probe_suite.ProbeTests.test_directory_not_link_remote_false_status_survives_transport)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/csys/Desktop/ibicot/idle/release/qa/native-android-probe-repair-staged-20261023T051836.017647Z/test_android_fixture_exit_status.py", line 37, in test_directory_not_link_remote_false_status_survives_transport
+    with self.transport(h):self.assertEqual(self.read(h),b'{}')
+                                            ~~~~~~~~~^^^
+  File "/Users/csys/Desktop/ibicot/idle/release/qa/native-android-probe-repair-staged-20261023T051836.017647Z/test_android_fixture_exit_status.py", line 33, in read
+    def read(self,h,**kw):return h.read_fixture(DIR,'checkpoint.json',**kw)
+                                 ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/csys/Desktop/ibicot/idle/release/qa/native-android-probe-repair-staged-20261023T051836.017647Z/before-verify_current_runtime.py", line 360, in read_fixture
+    require(not probe('-L', cursor), 'Native fixture component is a symlink')
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/csys/Desktop/ibicot/idle/release/qa/native-android-probe-repair-staged-20261023T051836.017647Z/before-verify_current_runtime.py", line 59, in require
+    raise ValueError(message)
+ValueError: Native fixture component is a symlink
+
+----------------------------------------------------------------------
+Ran 1 test in 0.001s
+
+FAILED (errors=1)

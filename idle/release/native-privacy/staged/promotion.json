@@ -1,0 +1,87 @@
+{
+  "recorded_at": "2026-10-21T14:05:10.900402+00:00",
+  "scope": [
+    "M5-03",
+    "S39"
+  ],
+  "status": "staged_only_unrun",
+  "live_baseline_checks": {
+    "game/mobile/lib/native_services.dart": {
+      "expected": "884a440659c58f0faab746435cc0aba89b69601ef4e8393fd4f4416f489ddf14",
+      "current": "884a440659c58f0faab746435cc0aba89b69601ef4e8393fd4f4416f489ddf14",
+      "unchanged": true
+    },
+    "game/mobile/lib/service_settings.dart": {
+      "expected": "5eaeb67398f371664ffedaa865577f701e8f80e062e33a1e64f59754943dd429",
+      "current": "5eaeb67398f371664ffedaa865577f701e8f80e062e33a1e64f59754943dd429",
+      "unchanged": true
+    },
+    "game/mobile/test/native_services_test.dart": {
+      "expected": "4cc1b90a9958d799e52124cfbc409b9201f4b9d43d71d7a979b39aa00ade2bbf",
+      "current": "4cc1b90a9958d799e52124cfbc409b9201f4b9d43d71d7a979b39aa00ade2bbf",
+      "unchanged": true
+    },
+    "game/mobile/test/service_settings_test.dart": {
+      "expected": "d04d867b80b95cb03ec4983104c323057d839d59cc1a2182d8fc0bad7dea4438",
+      "current": "d04d867b80b95cb03ec4983104c323057d839d59cc1a2182d8fc0bad7dea4438",
+      "unchanged": true
+    },
+    "game/mobile/lib/presentation.dart": {
+      "expected": "0b891f8baa973d11f1aabe6d985fafbe8bf0e08904007cb0f218e68044fd9b63",
+      "current": "0b891f8baa973d11f1aabe6d985fafbe8bf0e08904007cb0f218e68044fd9b63",
+      "unchanged": true
+    }
+  },
+  "promotion_files": [
+    {
+      "staged": "release/native-privacy/staged/game/mobile/lib/native_services.dart",
+      "target": "game/mobile/lib/native_services.dart",
+      "sha256": "f56a6a8ac2ce6fe583b859d1c65336ea4d858711456bf4243ba9d1fa24eb0e73",
+      "target_baseline_sha256": "884a440659c58f0faab746435cc0aba89b69601ef4e8393fd4f4416f489ddf14",
+      "new_target_absent": null
+    },
+    {
+      "staged": "release/native-privacy/staged/game/mobile/lib/service_settings.dart",
+      "target": "game/mobile/lib/service_settings.dart",
+      "sha256": "ff3a5b61c50a4239a943da85dd652ce81d3ff18e69c96d2b90ae367fcd571115",
+      "target_baseline_sha256": "5eaeb67398f371664ffedaa865577f701e8f80e062e33a1e64f59754943dd429",
+      "new_target_absent": null
+    },
+    {
+      "staged": "release/native-privacy/staged/game/mobile/lib/ad_privacy_copy.dart",
+      "target": "game/mobile/lib/ad_privacy_copy.dart",
+      "sha256": "e7b00d968f6f9b32f4e9688565a3b71972df318a417c0fc4a79f77395920bc79",
+      "target_baseline_sha256": null,
+      "new_target_absent": true
+    },
+    {
+      "staged": "release/native-privacy/staged/game/mobile/test/ad_privacy_test.dart",
+      "target": "game/mobile/test/ad_privacy_test.dart",
+      "sha256": "ecd708b02160a4291da388f3438ae8adcbbc7ff2fecdf56669402caad7d5b621",
+      "target_baseline_sha256": null,
+      "new_target_absent": true
+    }
+  ],
+  "sdk_version": "google_mobile_ads 9.1.0",
+  "sdk_source_pins": {
+    ".tooling/pub-cache/hosted/pub.dev/google_mobile_ads-9.1.0/lib/src/ump/user_messaging_channel.dart": "2cb9e00337d723995bc637de24c5f7802970b9856e6293244602beeb2d86591f",
+    ".tooling/pub-cache/hosted/pub.dev/google_mobile_ads-9.1.0/lib/src/ump/user_messaging_codec.dart": "0b5548fd1af8d34d36a4402e5525a8268d16e48e01b4a24d71529a26035b3aea",
+    ".tooling/pub-cache/hosted/pub.dev/google_mobile_ads-9.1.0/lib/src/ump/consent_information.dart": "c41b3c3682e1d7ca42e07d36b931a5732e48afa80985157ae660079c0327a409",
+    ".tooling/pub-cache/hosted/pub.dev/google_mobile_ads-9.1.0/lib/src/ump/consent_form.dart": "df053d2479905c51e7d42bacf1cf7a4d58bad04b3db23b68cbf7d7c5bb425ee3"
+  },
+  "authored_tests": 17,
+  "executed_checks": [
+    "Dart formatter (four staged sources parsed and formatted)",
+    "live baseline SHA-256 comparison (five inputs unchanged)",
+    "manual staged diff and pinned SDK API inspection"
+  ],
+  "not_executed": [
+    "Flutter test English",
+    "Flutter test pseudolocale",
+    "Flutter analyzer",
+    "native UMP integration",
+    "physical device consent revocation",
+    "live provider configuration"
+  ],
+  "economic_changes": false
+}

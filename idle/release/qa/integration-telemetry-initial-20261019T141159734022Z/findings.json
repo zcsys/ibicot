@@ -1,0 +1,27 @@
+[
+  {
+    "id": "QA015",
+    "priority": "P1",
+    "status": "reproduced_in_initial_pin",
+    "component": "NativeServicesManager.refreshTelemetryConsent",
+    "source": "game/mobile/lib/native_services.dart",
+    "failures": [
+      {
+        "sequence": "GET A pending; GET B false/revision2 accepted; GET A true/revision1 returns",
+        "expected": "Remain locally withdrawn",
+        "actual": "telemetryEnabled becomes true and old consent revision1 is persisted"
+      },
+      {
+        "sequence": "GET A pending; GET B true/revision3 accepted; GET A true/revision1 returns",
+        "expected": "Keep revision3",
+        "actual": "Confirmed revision downgrades to1"
+      }
+    ],
+    "scope_ids": [
+      "S27"
+    ],
+    "exposure_limit": "The server independently rejects stale revisions. The repro establishes local collection/preference resurrection and revision rollback, not acceptance of unauthorized events by the backend.",
+    "independent_test": "game/mobile/test/qa_integration_measurement_test.dart",
+    "immutable_log": "independent-telemetry-probes.jsonl"
+  }
+]
